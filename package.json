@@ -1,0 +1,23 @@
+{
+  "name": "aps",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vovagrechka/aps.git"
+  },
+  "author": "Vladimir Grechka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vovagrechka/aps/issues"
+  },
+  "homepage": "https://github.com/vovagrechka/aps#readme",
+  "dependencies": {
+    "regenerator-runtime": "^0.9.5",
+    "source-map-support": "^0.4.0"
+  }
+}
