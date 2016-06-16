@@ -4,7 +4,10 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+const {spawn} = require('child_process')
 import static 'into-u'
+
+let runnerProcess
 
 makeConfig = {
     modules: [
@@ -14,14 +17,32 @@ makeConfig = {
                 await buildStaticSites()
             },
             watch() {
-                chokidar.watch(['aps/lib/make-static-sites.js'], {ignoreInitial: true})
-                        .on('all', _=> buildStaticSites())
+                doDyingNoisa(async function() {
+                    const port = 3901
+                    const server = new net.Server
+                    server.on('connection', socket => {
+                        socket.on('data', data => {
+                            data = data.toString()
+                            if (data === '0') {
+                                dlog('IIIIIII GOOOOOOOOOOOOOOT ZEEEEEEEEEEEROOOOOOOOOO')
+                            }
+                        })
+                    })
+                    server.on('listening', _=> {
+                        clog('Listening to global shortcut messages on ' + port)
+                        spawn(process.env.ELECTRON, ['aps/lib/global-shortcut-listener', port], {stdio: 'inherit'})
+                    })
+                    server.listen({port})
+                })
+                
+//                chokidar.watch(['aps/lib/make-static-sites.js'], {ignoreInitial: true})
+//                        .on('all', _=> buildStaticSites())
             },
         }
     ]
 }
 
-// @possible-should-extract Running external build tool, collecting its output, sending build status to DevUI
+// @extract-candidate Running external build tool, collecting its output, sending build status to DevUI
 function buildStaticSites() {
     return new Promise((resolve, reject) => {
         const makeResult = {maker: 'Static Sites', stdall: ''}

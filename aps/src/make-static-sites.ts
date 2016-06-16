@@ -77,23 +77,50 @@ makeCustomerSite({
     }
 })
 
-//crashForDebuggingSake_randomly()
-//clog('OK')
-
-
 function makeCustomerSite(def) {
     const root = `${__dirname}/../built/${def.dir}`
     sh.rm('-rf', root)
     sh.mkdir('-p', root)
     
+    const vendor = `${__dirname}/../vendor`
+    sh.cp(`${vendor}/jquery-3.0.0/dist/jquery.min.js`, root)
+//    sh.cp(`${vendor}/bootstrap-v4-dev/dist/css/bootstrap.min.css`, root)
+//    sh.cp(`${vendor}/bootstrap-v4-dev/dist/js/bootstrap.min.js`, root)
+    sh.cp(`${vendor}/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.min.css`, root)
+    sh.cp(`${vendor}/bootstrap-4.0.0-alpha.2/dist/js/bootstrap.min.js`, root)
+    sh.cp('-r', `${vendor}/font-awesome-4.6.3`, root)
+    
     writePage('index', div(
-        div('hello4'),
-        div('world'),
+        diva({className: 'container'},
+            diva({className: 'row'},
+                diva({className: 'col-md-4'}, 'first column'),
+                diva({className: 'col-md-4'}, 'second column'),
+                diva({className: 'col-md-4'}, 'third column')),
+            diva({className: 'row'},
+                loremParas(3, 3))),
     ))
     
     
     function writePage(name, comp) {
-        fs.writeFileSync(`${root}/${name}.html`, ReactDOMServer.renderToStaticMarkup(comp))
+        fs.writeFileSync(`${root}/${name}.html`, `
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+                    <link rel="stylesheet" href="/bootstrap.min.css">
+                    <link rel="stylesheet" href="/font-awesome-4.6.3/css/font-awesome.min.css">
+                </head>
+                <body>
+                    ${ReactDOMServer.renderToStaticMarkup(comp)}
+                    
+                    <script src="/jquery.min.js"></script>
+                    <script src="/bootstrap.min.js"></script>
+                </body>
+            </html>            
+        `)
     }
 }
 
