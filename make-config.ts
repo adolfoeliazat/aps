@@ -5,10 +5,9 @@
  */
 
 const {spawn} = require('child_process')
-const webdriverio = require(`${process.cwd()}/node_modules/webdriverio`)
 import static 'into-u'
 
-let runnerProcess, wio
+let dyna
 
 makeConfig = {
     modules: [
@@ -23,31 +22,18 @@ makeConfig = {
                     const server = new net.Server
                     server.on('connection', socket => {
                         socket.on('data', async function(data) {
-                            data = data.toString()
-                            if (data === '0') {
-                                if (wio) {
-                                    wio.end()
+                            try {
+                                data = data.toString()
+                                const dynaModulePath = origRequire.resolve(process.cwd() + '/aps/lib/make-config-dyna')
+                                if (dyna) {
+                                    dyna.dispose()
+                                    delete origRequire.cache[dynaModulePath]
                                 }
+                                dyna = origRequire(dynaModulePath)
+                                await dyna.onKey(data, {buildStaticSites})
                                 
-                                await buildStaticSites()
-                                
-                                //### URL FOR KEY 0: http://127.0.0.1:3001
-                                const mySource = fs.readFileSync(__filename.replace(/(\\|\/)lib(\\|\/)/, '/src/'), 'utf8')
-                                const marker = '//### URL FOR KEY 0: '
-                                const fromIndex = mySource.indexOf(marker) + marker.length
-                                const toIndex = mySource.indexOf('\n', fromIndex)
-                                const url = mySource.slice(fromIndex, toIndex).trim()
-                                
-                                dlog('now running browser on ' + url)
-                                wio = webdriverio
-                                    .remote({
-                                        desiredCapabilities: {
-                                            browserName: 'chrome'
-                                        }
-                                    })
-                                    .init()
-                                    .windowHandleMaximize()
-                                    .url('http://127.0.0.1:3001')
+                            } catch (e) {
+                                console.error(e)
                             }
                         })
                     })
