@@ -83,14 +83,11 @@ function makeCustomerSite(def) {
     sh.mkdir('-p', root)
     
     const vendor = `${__dirname}/../vendor`
-    sh.cp(`${vendor}/jquery-3.0.0/dist/jquery.min.js`, root)
-//    sh.cp(`${vendor}/bootstrap-v4-dev/dist/css/bootstrap.min.css`, root)
-//    sh.cp(`${vendor}/bootstrap-v4-dev/dist/js/bootstrap.min.js`, root)
-    sh.cp(`${vendor}/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.min.css`, root)
-    sh.cp(`${vendor}/bootstrap-4.0.0-alpha.2/dist/js/bootstrap.min.js`, root)
+    sh.cp(`${vendor}/jquery-2.2.4/jquery.min.js`, root)
+    sh.cp('-r', `${vendor}/bootstrap-master`, root)
     sh.cp('-r', `${vendor}/font-awesome-4.6.3`, root)
     
-    writePage('index', div(
+    writePage({name: 'index', title: 'APS', comp: div(
         diva({className: 'container'},
             diva({className: 'row'},
                 diva({className: 'col-md-4'}, 'first column!!!!!'),
@@ -98,28 +95,29 @@ function makeCustomerSite(def) {
                 diva({className: 'col-md-4'}, 'third column')),
             diva({className: 'row'},
                 loremParas(10, 3))),
-    ))
+    )})
     
     
-    function writePage(name, comp) {
+    function writePage({name, title, comp}) {
         fs.writeFileSync(`${root}/${name}.html`, `
             <!DOCTYPE html>
             <html lang="en">
                 <head>
                     <meta charset="utf-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                    <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-                    <link rel="stylesheet" href="/bootstrap.min.css">
-                    <link rel="stylesheet" href="/font-awesome-4.6.3/css/font-awesome.min.css">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    
+                    ${ReactDOMServer.renderToStaticMarkup(React.createElement('title', {}, title))}
+                    
+                    <link href="bootstrap-master/css/bootstrap.min.css" rel="stylesheet">
                 </head>
                 <body>
                     ${ReactDOMServer.renderToStaticMarkup(comp)}
-                    
-                    <script src="/jquery.min.js"></script>
-                    <script src="/bootstrap.min.js"></script>
+
+                    <script src="jquery.min.js"></script>
+                    <script src="bootstrap-master/js/bootstrap.min.js"></script>
                 </body>
-            </html>            
+            </html>
         `)
     }
 }
