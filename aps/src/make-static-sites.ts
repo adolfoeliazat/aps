@@ -48,7 +48,7 @@ makeCustomerSite({
                 {glyph: 'envira', content: `Custom essay, research, thesis writing`},
                 {glyph: 'rocket', content: `Plagiarism-free original papers written from scratch`},
                 {glyph: 'bomb', content: `Proofreading and editing of written papers`},
-                {glyph: 'book', content: `Free guidelines on successful essay topic selection and writing process`},
+                {glyph: 'book', content: `Free guidelines on essay topic selection and writing process`},
             ],
             secondary: [
                 {glyph: '', content: `Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports`},
