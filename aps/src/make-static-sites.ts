@@ -97,7 +97,7 @@ function makeCustomerSite(def) {
                 diva({className: 'col-md-4'}, 'second column'),
                 diva({className: 'col-md-4'}, 'third column')),
             diva({className: 'row'},
-                loremParas(3, 3))),
+                loremParas(10, 3))),
     ))
     
     
