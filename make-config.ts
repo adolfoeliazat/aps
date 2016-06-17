@@ -5,9 +5,10 @@
  */
 
 const {spawn} = require('child_process')
+const webdriverio = require(`${process.cwd()}/node_modules/webdriverio`)
 import static 'into-u'
 
-let runnerProcess
+let runnerProcess, wio
 
 makeConfig = {
     modules: [
@@ -21,10 +22,32 @@ makeConfig = {
                     const port = 3901
                     const server = new net.Server
                     server.on('connection', socket => {
-                        socket.on('data', data => {
+                        socket.on('data', async function(data) {
                             data = data.toString()
                             if (data === '0') {
-                                dlog('IIIIIII GOOOOOOOOOOOOOOT ZEEEEEEEEEEEROOOOOOOOOO')
+                                if (wio) {
+                                    wio.end()
+                                }
+                                
+                                await buildStaticSites()
+                                
+                                //### URL FOR KEY 0: http://127.0.0.1:3001
+                                const mySource = fs.readFileSync(__filename.replace(/(\\|\/)lib(\\|\/)/, '/src/'), 'utf8')
+                                const marker = '//### URL FOR KEY 0: '
+                                const fromIndex = mySource.indexOf(marker) + marker.length
+                                const toIndex = mySource.indexOf('\n', fromIndex)
+                                const url = mySource.slice(fromIndex, toIndex).trim()
+                                
+                                dlog('now running browser on ' + url)
+                                wio = webdriverio
+                                    .remote({
+                                        desiredCapabilities: {
+                                            browserName: 'chrome'
+                                        }
+                                    })
+                                    .init()
+                                    .windowHandleMaximize()
+                                    .url('http://127.0.0.1:3001')
                             }
                         })
                     })

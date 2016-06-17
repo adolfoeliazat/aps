@@ -93,7 +93,7 @@ function makeCustomerSite(def) {
     writePage('index', div(
         diva({className: 'container'},
             diva({className: 'row'},
-                diva({className: 'col-md-4'}, 'first column'),
+                diva({className: 'col-md-4'}, 'first column!!!!!'),
                 diva({className: 'col-md-4'}, 'second column'),
                 diva({className: 'col-md-4'}, 'third column')),
             diva({className: 'row'},
