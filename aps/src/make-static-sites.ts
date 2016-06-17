@@ -12,55 +12,68 @@ sh.config.fatal = true
 
 makeCustomerSite({
     dir: 'ua-customer',
+    title: 'APS UA',
     home: {
         welcomeSection: {
             title: `Welcome to AcademicPaperServed`,
             content: `
                 Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
+                    
                 Sitting in front of your laptop, desperately typing the keywords in your search engine browser and wondering why AcademicPaperServed came up with an idea of giving written assignments to the needy students like yourself?
+                    
                 Can’t be effective in the workplace, because there’s a persuasive essay you’ve got to turn in early next week?
+                    
                 Now relax. You’ve just reached the right destination! At AcademicPaperServed writing papers is really very easy!
+                
                 Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
             `
         },
         
         whoWeAreSection: {
+            title: `Who We Are`,
             content: `
                 AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
+                
                 Our writers are versed in various fields of academic writing, so if you do not find a suitable category on this page, feel free to contact our Support Center to find out availability of writing help in your area of interest.
+                
                 We have access to most reliable and complete online libraries to make your research or essay unique.
-                academicpaperserved team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.            
+                
+                AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.            
             `
         },
         
         whatWeOfferSection: {
+            title: `What We Offer`,
             primary: [
-                {glyph: 'envira', title: `Custom essay / research / thesis writing`},
-                {glyph: 'rocket', title: `Plagiarism-free original papers written from scratch`},
-                {glyph: 'bomb', title: `Proofreading and editing of written papers`},
-                {glyph: 'book', title: `Free guidelines on successful essay topic selection and writing process`},
+                {glyph: 'envira', content: `Custom essay, research, thesis writing`},
+                {glyph: 'rocket', content: `Plagiarism-free original papers written from scratch`},
+                {glyph: 'bomb', content: `Proofreading and editing of written papers`},
+                {glyph: 'book', content: `Free guidelines on successful essay topic selection and writing process`},
             ],
             secondary: [
-                {glyph: '', title: `Custom essay / research paper / book report / term paper/ precis / sketch / poetry analysis / data collection / thesis writing / SWOT analysis / lab reports / dissertations / reviews / speeches / presentations / case studies / courseworks / homeworks / assignments / creative writing / blog writing / capstone project / grant proposal / lab reports`},
-                {glyph: '', title: `Plagiarism-free original papers written from scratch`},
-                {glyph: '', title: `Proofreading and editing of written papers`},
-                {glyph: '', title: `Choosing sources for your paper, providing with annotated bibliography upon request`},
-                {glyph: '', title: `Free guidelines on successful essay topic selection and writing process`},
-                {glyph: '', title: `Individual Approach to Every Customer, no Repetitions, Free Consulting on the Paper Content`},
-                {glyph: '', title: `Free Revisions till You are Completely Satisfied`},
-                {glyph: '', title: `Meeting Your Deadline`},
-                {glyph: '', title: `Security and Confidentiality`},
+                {glyph: '', content: `Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports`},
+                {glyph: '', content: `Plagiarism-free original papers written from scratch`},
+                {glyph: '', content: `Proofreading and editing of written papers`},
+                {glyph: '', content: `Choosing sources for your paper, providing with annotated bibliography upon request`},
+                {glyph: '', content: `Free guidelines on successful essay topic selection and writing process`},
+                {glyph: '', content: `Individual approach to every customer, no repetitions, free consulting on the paper content`},
+                {glyph: '', content: `Free revisions till you are completely satisfied`},
+                {glyph: '', content: `Meeting your deadline`},
+                {glyph: '', content: `Security and confidentiality`},
             ],
         },
         
         featuresSection: {
-            primary: [
-                {glyph: 'pencil', title: `No plagiarism!`},
-                {glyph: 'star', title: `Only Premium Quality!`},
-                {glyph: 'list', title: `Free title page / outline / list of references!`},
-                {glyph: 'credit-card', title: `One-time and life-time discounts to returning customers!`},
-                {glyph: 'diamond', title: `30-days money back guarantee!`},
-                {glyph: 'life-saver', title: `24/7 support!`},
+            title: `Features`,
+            primary1: [
+                {glyph: 'pencil', content: `No plagiarism`},
+                {glyph: 'star', content: `Only premium quality`},
+                {glyph: 'list', content: `Free title page, outline, list\u00a0of\u00a0references`},
+            ],
+            primary2: [
+                {glyph: 'credit-card', content: `One-time and life-time discounts to returning customers`},
+                {glyph: 'diamond', content: `30-days money back guarantee`},
+                {glyph: 'life-saver', content: `24/7 support`},
             ],
         },
         
@@ -87,16 +100,32 @@ function makeCustomerSite(def) {
     sh.cp('-r', `${vendor}/bootstrap-master`, root)
     sh.cp('-r', `${vendor}/font-awesome-4.6.3`, root)
     
-    writePage({name: 'index', title: 'APS', comp: div(
+    writePage({name: 'index', title: def.title, comp: div(
         diva({className: 'container'},
-            diva({className: 'row'},
-                diva({className: 'col-md-4'}, 'first column!!!!!'),
-                diva({className: 'col-md-4'}, 'second column'),
-                diva({className: 'col-md-4'}, 'third column')),
-            diva({className: 'row'},
-                loremParas(10, 3))),
+            pageHeader(def.home.welcomeSection.title, {size: 3}),
+            markdown(dedent(def.home.welcomeSection.content)),
+            
+            pageHeader(def.home.featuresSection.title, {size: 3}),
+            horizBulletsRow(def.home.featuresSection.primary1, {horizContentMargin: 40}),
+            horizBulletsRow(def.home.featuresSection.primary2, {horizContentMargin: 40}),
+            
+            pageHeader(def.home.whoWeAreSection.title, {size: 3}),
+            markdown(dedent(def.home.whoWeAreSection.content)),
+            
+            pageHeader(def.home.whatWeOfferSection.title, {size: 3}),
+            horizBulletsRow(def.home.whatWeOfferSection.primary),
+            ula({className: 'fa-ul', style: {marginLeft: 22}}, ...def.home.whatWeOfferSection.secondary.map(x =>
+                lisa({marginBottom: 10}, glyph('star', {className: 'fa-li', style: {color: BLUE_GRAY_600}}), x.content)))
+        ),
     )})
     
+    function horizBulletsRow(items, {horizContentMargin=0}={}) {
+        const colSize = 12 / items.length
+        return diva({className: 'row', style: {marginBottom: 20}}, ...items.map(x =>
+                   diva({className: 'col-md-' + colSize},
+                       divsa({textAlign: 'center', marginBottom: 10}, glyph(x.glyph, {className: 'fa-2x', style: {color: BLUE_GRAY_600}})),
+                       divsa({textAlign: 'center', margin: `0 ${horizContentMargin}px`}, x.content))))
+    }
     
     function writePage({name, title, comp}) {
         fs.writeFileSync(`${root}/${name}.html`, `
@@ -110,8 +139,45 @@ function makeCustomerSite(def) {
                     ${ReactDOMServer.renderToStaticMarkup(React.createElement('title', {}, title))}
                     
                     <link href="bootstrap-master/css/bootstrap.min.css" rel="stylesheet">
+                    <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
                 </head>
-                <body>
+                <body style="padding-top: 50px;">
+                    <nav class="navbar navbar-default navbar-fixed-top">
+                      <div class="container-fluid">
+                        <div class="navbar-header">
+                          <a class="navbar-brand" href="#">APS</a>
+                        </div>
+
+                        <div class="collapse navbar-collapse" style="text-align: center;" id="bs-example-navbar-collapse-1">
+                          <ul class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+                            <li class="active"><a href="why.html">Why Us?</a></li>
+                            <li><a href="prices.html">Prices</a></li>
+                            <li><a href="samples.html">Sample Papers</a></li>
+                            <li><a href="order.html">Order a Paper</a></li>
+                            <li><a href="faq.html">FAQ</a></li>
+                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="blog.html">Writing Blog</a></li>
+                          </ul>
+                          <ul class="nav navbar-nav navbar-right">
+                            <li><a href="sign-in.html">Sign In</a></li>
+                            <!--
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                              <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                              </ul>
+                            </li>
+                            -->
+                          </ul>
+                          </div><!-- /.navbar-collapse -->
+                      </div><!-- /.container-fluid -->
+                    </nav>
+                
+                
                     ${ReactDOMServer.renderToStaticMarkup(comp)}
 
                     <script src="jquery.min.js"></script>
