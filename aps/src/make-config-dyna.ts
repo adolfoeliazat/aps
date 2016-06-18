@@ -13,17 +13,18 @@ export async function onKey(key, {buildStaticSites}) {
         await buildStaticSites()
         
         const url = 'http://127.0.0.1:3001'
-        // dlog('Now running browser on ' + url)
-        wio = webdriverio
-            .remote({
+        doNoisa(async function() {
+            wio = webdriverio.remote({
                 desiredCapabilities: {
                     browserName: 'chrome'
                 }
             })
-            .init()
-            .windowHandleMaximize()
-            .url(url)
-            .keys('\uE009\uE008j\uE000') // Open console
+            await wio.init()
+            await wio.windowHandleMaximize()
+            await wio.url(url)
+            await wio.scroll(0, 500)
+            await openDevConsole()
+        })
     }
 }
 
@@ -32,6 +33,14 @@ export function dispose() {
     if (wio) {
         wio.end()
     }
+}
+
+async function openDevConsole() {
+    await wio.keys('\uE009\uE008j\uE000')
+}
+
+async function pressDown(times=1) {
+    await wio.keys(repeat('\uE015', times))
 }
 
 /*

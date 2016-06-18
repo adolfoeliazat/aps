@@ -51,15 +51,15 @@ makeCustomerSite({
                 {glyph: 'book', content: `Free guidelines on essay topic selection and writing process`},
             ],
             secondary: [
-                {glyph: '', content: `Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports`},
-                {glyph: '', content: `Plagiarism-free original papers written from scratch`},
-                {glyph: '', content: `Proofreading and editing of written papers`},
-                {glyph: '', content: `Choosing sources for your paper, providing with annotated bibliography upon request`},
-                {glyph: '', content: `Free guidelines on successful essay topic selection and writing process`},
-                {glyph: '', content: `Individual approach to every customer, no repetitions, free consulting on the paper content`},
-                {glyph: '', content: `Free revisions till you are completely satisfied`},
-                {glyph: '', content: `Meeting your deadline`},
-                {glyph: '', content: `Security and confidentiality`},
+                {content: `Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports`},
+                {content: `Plagiarism-free original papers written from scratch`},
+                {content: `Proofreading and editing of written papers`},
+                {content: `Choosing sources for your paper, providing with annotated bibliography upon request`},
+                {content: `Free guidelines on successful essay topic selection and writing process`},
+                {content: `Individual approach to every customer, no repetitions, free consulting on the paper content`},
+                {content: `Free revisions till you are completely satisfied`},
+                {content: `Meeting your deadline`},
+                {content: `Security and confidentiality`},
             ],
         },
         
@@ -71,13 +71,14 @@ makeCustomerSite({
                 {glyph: 'list', content: `Free title page, outline, list\u00a0of\u00a0references`},
             ],
             primary2: [
-                {glyph: 'credit-card', content: `One-time and life-time discounts to returning customers`},
-                {glyph: 'diamond', content: `30-days money back guarantee`},
+                {glyph: 'gi-piggy-bank', content: `One-time and life-time discounts to returning customers`},
+                {glyph: 'credit-card', content: `30-days money back guarantee`},
                 {glyph: 'life-saver', content: `24/7 support`},
             ],
         },
         
         testimonials: {
+            title: `What People Say`,
             primary: [
                 {name: 'Nicole', img: 'nicole.jpg', says: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`},
                 {name: 'Miranda', img: 'miranda.jpg', says: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`},
@@ -112,6 +113,41 @@ function makeCustomerSite(def) {
             pageHeader(def.home.whoWeAreSection.title, {size: 3}),
             markdown(dedent(def.home.whoWeAreSection.content)),
             
+            pageHeader(def.home.testimonials.title, {size: 3}),
+            rawHtml(`
+                
+      <div class="row" style="position: relative;">
+            
+          <div style="display: flex;  align-items: center; position: absolute; width: 20px; height: 20px; right: 0px; top: 0px; height: 100%;" class="testimonials-right">
+            <div>
+            <i class="fa fa-chevron-right fa-2x" style="color: #cfd8dc;"></i>
+            </div>
+          </div>
+            
+          <div class="col-md-6">
+            <div class="media">
+              <div class="media-left">
+                  <img class="media-object" style="margin-top: 0;" src="https://raw.githubusercontent.com/vovagrechka/aps/master/aps/asset/nicole.jpg">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">Nicole</h4> Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="media">
+              <div class="media-left">
+                  <img class="media-object" style="margin-top: 0;" src="https://raw.githubusercontent.com/vovagrechka/aps/master/aps/asset/miranda.jpg">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">Miranda</h4>Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!
+              </div>
+            </div>
+          </div>
+    </div>
+            `),
+            
             pageHeader(def.home.whatWeOfferSection.title, {size: 3}),
             horizBulletsRow(def.home.whatWeOfferSection.primary),
             ula({className: 'fa-ul', style: {marginLeft: 22}}, ...def.home.whatWeOfferSection.secondary.map(x =>
@@ -140,6 +176,12 @@ function makeCustomerSite(def) {
                     
                     <link href="bootstrap-master/css/bootstrap.min.css" rel="stylesheet">
                     <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
+                    
+                    <style>
+                        .testimonials-right:hover {
+                            background-color: green;
+                        }
+                    </style>
                 </head>
                 <body style="padding-top: 50px;">
                     <nav class="navbar navbar-default navbar-fixed-top">
