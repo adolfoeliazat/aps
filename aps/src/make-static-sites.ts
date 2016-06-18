@@ -140,55 +140,54 @@ function makeCustomerSite(def) {
         
         css: `
             @media (min-width: 992px) {
-              #testimonials-window {
-                width: 970px;
-              }
-              .testimonials-item {
-                  width: 485px;
-              }
+                #testimonials-window {
+                    width: 970px;
+                }
+                .testimonials-item {
+                    width: 485px;
+                }
             }
 
             @media (min-width: 1200px) {
-              #testimonials-window {
-                width: 1170px;
-              }
-              .testimonials-item {
-                width: 585px;
-              }
+                #testimonials-window {
+                    width: 1170px;
+                }
+                .testimonials-item {
+                    width: 585px;
+                }
             }
 
             #testimonials-window {
-              overflow: hidden;
-              margin-right: -15px;
-              margin-left: -15px;
-              position: relative;
+                overflow: hidden;
+                margin-right: -15px;
+                margin-left: -15px;
+                position: relative;
             }
 
             #testimonials-strip {
-              width: 10000px;
-              margin-left: -0px;
+                width: 10000px;
+                margin-left: -0px;
             }
 
             .testimonials-item {
-              display: inline-block;
-              vertical-align: top;
-              padding-right: 15px;
-              padding-left: 15px;
+                display: inline-block;
+                vertical-align: top;
+                padding-right: 15px;
+                padding-left: 15px;
             }
 
             #testimonials-right {
-              cursor: pointer;
-              color: #cfd8dc;
+                cursor: pointer;
+                color: #cfd8dc;
             }
 
             #testimonials-right:hover {
-              color: #546e7a;
+                color: #546e7a;
             }                    
         `,
         
         js: `
             !function initTestimonials() {
-              
               var numSlides = 3,
                   numFrames = 60,
                   autoIgnitionPeriod = 15000,
@@ -212,112 +211,112 @@ function makeCustomerSite(def) {
               
               function calcTrajectory() {
                 var plot = [
-                  'o                             ',
-                  '  o                           ',
-                  '       o                      ',
-                  '                   o          ',
-                  '               o              ',
-                  '                  o           ',
-                  '                o             ',
-                  '                 o            ',
-                  '------------------------------',
-                  '                 x            ']
+                    'o                             ',
+                    '  o                           ',
+                    '       o                      ',
+                    '                   o          ',
+                    '               o              ',
+                    '                  o           ',
+                    '                o             ',
+                    '                 o            ',
+                    '------------------------------',
+                    '                 x            ']
 
                 var numShiftFractions,  posFor100
                 for (var i = 0; i < plot.length; ++i) {
-                  if (plot[i].charAt(0) === '-') {
-                      numShiftFractions = i
-                      posFor100 = plot[i + 1].indexOf('x')
-                  }
+                    if (plot[i].charAt(0) === '-') {
+                        numShiftFractions = i
+                        posFor100 = plot[i + 1].indexOf('x')
+                    }
                 }
 
                 shiftFractions = []
                 for (var i = 0; i < numShiftFractions; ++i) {
-                  var pos = plot[i].indexOf('o')
-                  shiftFractions.push(pos / posFor100)
+                    var pos = plot[i].indexOf('o')
+                    shiftFractions.push(pos / posFor100)
                 }
               }
               
               function onMediaChange() {
-                clearTimeout(autoIgnitionTimeoutHandle)
-                slide = 0
-                $('#testimonials-strip').css('margin-left', '')
-                $('.testimonials-item').css('margin-right', '').css('visibility', '')
-                
-                magic = undefined
-                if (window.matchMedia('(min-width: 1200px)').matches) {
-                  console.log('Screen is large')
-                  magic = 970 + 200
-                } else if (window.matchMedia('(min-width: 992px)').matches) {
-                  console.log('Screen is medium')
-                  magic = 970
-                }
-                
-                if (!magic) {
-                  console.log('No testimonial sliding for you')
-                  $('#testimonials-right').hide()
+                  clearTimeout(autoIgnitionTimeoutHandle)
+                  slide = 0
+                  $('#testimonials-strip').css('margin-left', '')
+                  $('.testimonials-item').css('margin-right', '').css('visibility', '')
+                  
+                  magic = undefined
+                  if (window.matchMedia('(min-width: 1200px)').matches) {
+                      console.log('Screen is large')
+                      magic = 970 + 200
+                  } else if (window.matchMedia('(min-width: 992px)').matches) {
+                      console.log('Screen is medium')
+                      magic = 970
+                  }
+                  
+                  if (!magic) {
+                      console.log('No testimonial sliding for you')
+                      $('#testimonials-right').hide()
+                      var items = $('.testimonials-item')
+                      $(items[items.length - 1]).hide()
+                      $(items[items.length - 2]).hide()
+                      return
+                  }
+                  
                   var items = $('.testimonials-item')
-                  $(items[items.length - 1]).hide()
-                  $(items[items.length - 2]).hide()
-                  return
-                }
-                
-                var items = $('.testimonials-item')
-                $(items[items.length - 1]).show()
-                $(items[items.length - 2]).show()
-                $('#testimonials-right').show()
-                scheduleAutoIgnition()
+                  $(items[items.length - 1]).show()
+                  $(items[items.length - 2]).show()
+                  $('#testimonials-right').show()
+                  scheduleAutoIgnition()
               }
               
               function scheduleAutoIgnition() {
-                autoIgnitionTimeoutHandle = setTimeout(ignite, autoIgnitionPeriod)
+                  autoIgnitionTimeoutHandle = setTimeout(ignite, autoIgnitionPeriod)
               }
 
               function ignite() {
-                clearTimeout(autoIgnitionTimeoutHandle)
-                $('#testimonials-right').hide()
-                
-                var elementToEnlargeRight = $($('.testimonials-item')[slide * 2 + 3])
-                elementToEnlargeRight.css('margin-right', '300px')
-                var elementToHideOnHitFloor = $($('.testimonials-item')[slide * 2 + 1])
-                
-                var framesDone = 0
-                requestAnimationFrame(step)
-
-                function step() {      
-                  var maxShift = magic
-                        
-                  var shiftFractionIdxMiddle = (shiftFractions.length - 1) * framesDone / (numFrames - 1)
-                  var shiftFractionIdx1 = Math.floor(shiftFractionIdxMiddle)
-                  var shiftFractionIdx2 = Math.ceil(shiftFractionIdxMiddle)
-                  var shiftFractionFraction = shiftFractionIdxMiddle - shiftFractionIdx1
-                  var shiftFraction1 = shiftFractions[shiftFractionIdx1]
-                  var shiftFraction2 = shiftFractions[shiftFractionIdx2]
-                  var shiftFraction = shiftFraction1 + (shiftFraction2 - shiftFraction1) * shiftFractionFraction
-                  var shift = maxShift * shiftFraction
-                  var offset = slide * magic + shift
+                  clearTimeout(autoIgnitionTimeoutHandle)
+                  $('#testimonials-right').hide()
                   
-                  $('#testimonials-strip').css('margin-left', -offset + 'px')
-                  if (shift >= maxShift) {
-                    elementToHideOnHitFloor.css('visibility', 'hidden')
-                  }
+                  var elementToEnlargeRight = $($('.testimonials-item')[slide * 2 + 3])
+                  elementToEnlargeRight.css('margin-right', '300px')
+                  var elementToHideOnHitFloor = $($('.testimonials-item')[slide * 2 + 1])
+                  
+                  var framesDone = 0
+                  requestAnimationFrame(step)
 
-                  if (++framesDone === numFrames) {
-                    if (++slide === numSlides) {
-                      slide = 0
-                    }
-                    
-                    elementToEnlargeRight.css('margin-right', '')
-                    elementToHideOnHitFloor.css('visibility', '')
-                    
-                    setTimeout(function() {
-                      $('#testimonials-right').show()
-                      scheduleAutoIgnition()
-                    }, rightArrowAppearsDelay)
-                  } else {
-                    requestAnimationFrame(step)
+                  function step() {
+                      var maxShift = magic
+                            
+                      var shiftFractionIdxMiddle = (shiftFractions.length - 1) * framesDone / (numFrames - 1)
+                      var shiftFractionIdx1 = Math.floor(shiftFractionIdxMiddle)
+                      var shiftFractionIdx2 = Math.ceil(shiftFractionIdxMiddle)
+                      var shiftFractionFraction = shiftFractionIdxMiddle - shiftFractionIdx1
+                      var shiftFraction1 = shiftFractions[shiftFractionIdx1]
+                      var shiftFraction2 = shiftFractions[shiftFractionIdx2]
+                      var shiftFraction = shiftFraction1 + (shiftFraction2 - shiftFraction1) * shiftFractionFraction
+                      var shift = maxShift * shiftFraction
+                      var offset = slide * magic + shift
+                      
+                      $('#testimonials-strip').css('margin-left', -offset + 'px')
+                      if (shift >= maxShift) {
+                          elementToHideOnHitFloor.css('visibility', 'hidden')
+                      }
+
+                      if (++framesDone === numFrames) {
+                          if (++slide === numSlides) {
+                              slide = 0
+                          }
+                          
+                          elementToEnlargeRight.css('margin-right', '')
+                          elementToHideOnHitFloor.css('visibility', '')
+                          
+                          setTimeout(function() {
+                              $('#testimonials-right').show()
+                              scheduleAutoIgnition()
+                          }, rightArrowAppearsDelay)
+                      } else {
+                          requestAnimationFrame(step)
+                      }
                   }
-                }
               }
             }()                    
         `
@@ -348,40 +347,39 @@ function makeCustomerSite(def) {
                 </head>
                 <body style="padding-top: 50px;">
                     <nav class="navbar navbar-default navbar-fixed-top">
-                      <div class="container-fluid">
-                        <div class="navbar-header">
-                          <a class="navbar-brand" href="#">APS</a>
-                        </div>
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                              <a class="navbar-brand" href="#">APS</a>
+                            </div>
 
-                        <div class="collapse navbar-collapse" style="text-align: center;" id="bs-example-navbar-collapse-1">
-                          <ul class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
-                            <li class="active"><a href="why.html">Why Us?</a></li>
-                            <li><a href="prices.html">Prices</a></li>
-                            <li><a href="samples.html">Sample Papers</a></li>
-                            <li><a href="order.html">Order a Paper</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="contact.html">Contact Us</a></li>
-                            <li><a href="blog.html">Writing Blog</a></li>
-                          </ul>
-                          <ul class="nav navbar-nav navbar-right">
-                            <li><a href="sign-in.html">Sign In</a></li>
-                            <!--
-                            <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                              <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                              </ul>
-                            </li>
-                            -->
-                          </ul>
-                          </div><!-- /.navbar-collapse -->
-                      </div><!-- /.container-fluid -->
+                            <div class="collapse navbar-collapse" style="text-align: center;" id="bs-example-navbar-collapse-1">
+                                <ul class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+                                    <li class="active"><a href="why.html">Why Us?</a></li>
+                                    <li><a href="prices.html">Prices</a></li>
+                                    <li><a href="samples.html">Sample Papers</a></li>
+                                    <li><a href="order.html">Order a Paper</a></li>
+                                    <li><a href="faq.html">FAQ</a></li>
+                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="blog.html">Writing Blog</a></li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="sign-in.html">Sign In</a></li>
+                                    <!--
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Action</a></li>
+                                            <li><a href="#">Another action</a></li>
+                                            <li><a href="#">Something else here</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#">Separated link</a></li>
+                                        </ul>
+                                    </li>
+                                    -->
+                                </ul>
+                              </div> <!-- /.navbar-collapse -->
+                        </div> <!-- /.container-fluid -->
                     </nav>
-                
                 
                     ${ReactDOMServer.renderToStaticMarkup(comp)}
 
