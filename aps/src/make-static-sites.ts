@@ -367,7 +367,7 @@ function makeCustomerSite({lang}) {
                     {glyph: 'bomb', en: `Proofreading and editing of written papers`, ua: `Proofreading and editing of written papers`},
                     {glyph: 'book', en: `Free guidelines on essay topic selection and writing process`, ua: `Free guidelines on essay topic selection and writing process`},
                 ]),
-                bullets([
+                locBullets([
                     {en: `Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports`, ua: `Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports`},
                     {en: `Plagiarism-free original papers written from scratch`, ua: `Plagiarism-free original papers written from scratch`},
                     {en: `Proofreading and editing of written papers`, ua: `Proofreading and editing of written papers`},
@@ -654,7 +654,7 @@ function makeCustomerSite({lang}) {
                     },
                 ].map(section => 
                     divsa({},
-                        divsa({}, h3(section.title[lang])),
+                        divsa({}, h3Smaller(section.title[lang])),
                         divsa({}, markdown(dedent(section.content[lang])))))
             )
         )
@@ -664,7 +664,6 @@ function makeCustomerSite({lang}) {
     for (const dopt of deliveryOptions()) {
         let firstRowForDopt = true
         for (const top of typesOfPaper(lang)) {
-            dlog({dopt, top})
             const curr = lang
             priceTableRows.push([
                 firstRowForDopt ? deliveryOptionTitle(dopt, lang) : '',
@@ -719,7 +718,7 @@ function makeCustomerSite({lang}) {
                     en: `Ordering a paper at AcademicPaperServed, you also get:`,
                     ua: `Ordering a paper at AcademicPaperServed, you also get:`,
                 }),
-                bullets([
+                locBullets([
                     {en: `Free Title Page`, ua: `Free Title Page`},
                     {en: `Free Outline`, ua: `Free Outline`},
                     {en: `Free List of References`, ua: `Free List of References`},
@@ -731,7 +730,7 @@ function makeCustomerSite({lang}) {
                     en: `Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:`,
                     ua: `Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:`,
                 }),
-                bullets([
+                locBullets([
                     {en: `More than 50 pages${mdash}5%`, ua: `Более 50 страниц ${ndash} 5%`},
                     {en: `More than 100 pages${mdash}10%`, ua: `Более 100 страниц ${ndash} 10%`},
                     {en: `More than 150 pages${mdash}15%`, ua: `Более 150 страниц ${ndash} 15%`},
@@ -744,12 +743,163 @@ function makeCustomerSite({lang}) {
             )
         )
     })
-            
     
+    const sampleItems = {
+        en: [
+            {title: 'Sample APA paper', href: 'apa-sample.doc'},
+            {title: 'Sample MLA research paper', href: 'mla-sample.doc'},
+            {title: 'Sample Harvard-style paper', href: 'harvard-sample.doc'},
+            {title: 'Sample Chicago paper', href: 'chicago-sample.doc'},
+            {title: 'Sample Turabian paper', href: 'turabian-sample.doc'},
+        ],
+        ua: [
+            {title: 'Пример реферата', href: 'ua_essay-sample.doc'},
+            {title: 'Пример курсовой работы', href: 'ua_course-sample.doc'},
+            {title: 'Пример дипломной работы', href: 'ua_graduate-sample.doc'},
+        ],
+    }[lang]
+    
+    writePage({name: 'samples', activeNav: 'samples',
+        comp: div(
+            diva({className: 'container'},
+                pageHeader({en: `Sample Papers`, ua: `Примеры работ`}),
+                hrefBullets(sampleItems),
+            )
+        )
+    })
+            
+    writePage({name: 'faq', activeNav: 'faq',
+        comp: div(
+            diva({className: 'container'},
+                pageHeader({en: `FAQ`, ua: `FAQ`}),
+                ...[{
+                        title: {en: `How does AcademicPaperServed work?`, ua: `How does AcademicPaperServed work?`},
+                        content: {
+                            en: `As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail.`,
+                            ua: `As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail.`
+                        }
+                    },
+                    {
+                        title: {en: `I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?`, ua: `I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?`},
+                        content: {
+                            en: `Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price.`,
+                            ua: `Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price.`
+                        }
+                    },
+                    {
+                        title: {en: `How safe is your service? Is there any risk to place an order online?`, ua: `How safe is your service? Is there any risk to place an order online?`},
+                        content: {
+                            en: `It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card.`,
+                            ua: `It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card.`
+                        }
+                    },
+                    {
+                        title: {en: `What are your policies concerning the paper format and citation?`, ua: `What are your policies concerning the paper format and citation?`},
+                        content: {
+                            en: `
+                                Our writers use Microsoft Word .doc format by default (Times New Roman, 12, double-spaced, ~ 250-300 words/page). However, any format specified by the customer is available. The same concerns citation style.,
+                                
+                                If not chosen, the writer chooses a citation style most appropriate for the written assignment in process. The latest edition with newest formatting style and its rules is applied, unless indicated otherwise.
+                            `,
+                            ua: `
+                                Our writers use Microsoft Word .doc format by default (Times New Roman, 12, double-spaced, ~ 250-300 words/page). However, any format specified by the customer is available. The same concerns citation style.
+                                
+                                If not chosen, the writer chooses a citation style most appropriate for the written assignment in process. The latest edition with newest formatting style and its rules is applied, unless indicated otherwise.
+                            `
+                        }
+                    },
+                    {
+                        title: {en: `What if I don’t like my paper and it does not meet the requirements?`, ua: `What if I don’t like my paper and it does not meet the requirements?`},
+                        content: {
+                            en: `After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy.`,
+                            ua: `After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy.`
+                        }
+                    },
+                    {
+                        title: {en: `Does your service provide refunds?`, ua: `Does your service provide refunds?`},
+                        content: {
+                            en: `Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order.`,
+                            ua: `Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order.`
+                        }
+                    },
+                    {
+                        title: {en: `What if my paper is found to be plagiarized?`, ua: `What if my paper is found to be plagiarized?`},
+                        content: {
+                            en: `In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper.`,
+                            ua: `In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper.`
+                        }
+                    },
+                    {
+                        title: {en: `Can I check my order status?`, ua: `Can I check my order status?`},
+                        content: {
+                            en: `In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions.`,
+                            ua: `In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions.`
+                        }
+                    },
+                    {
+                        title: {en: `Can I contact the writer?`, ua: `Can I contact the writer?`},
+                        content: {
+                            en: `Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way.`,
+                            ua: `Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way.`
+                        }
+                    },
+                    {
+                        title: {en: `Can I ever find my ordered paper being available to the public?`, ua: `Can I ever find my ordered paper being available to the public?`},
+                        content: {
+                            en: `Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system.`,
+                            ua: `Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system.`
+                        }
+                    },
+                    {
+                        title: {en: `How can I make sure the writer has understood my assignment correctly?`, ua: `How can I make sure the writer has understood my assignment correctly?`},
+                        content: {
+                            en: `
+                                When you start an ordering process, please, make sure you provide your writer with all necessary info, instructions, guidelines, additional materials for study, your class notes if any, and your personal preferences as to the writing style and paper formatting. It will surely facilitate the writing process and advance your chances in getting a higher grade.
+                                    
+                                We specifically created an easy-to-use interface for your communication with the writer and support center in the process of paper writing. 
+                                    
+                                AcademicPaperServed writers’ team is highly flexible and is ready to consider every order on a personal basis. We value our customers and set communication as a priority. We will appreciate your help in giving explicit order details once your order is made.
+                            `,
+                            ua: `
+                                When you start an ordering process, please, make sure you provide your writer with all necessary info, instructions, guidelines, additional materials for study, your class notes if any, and your personal preferences as to the writing style and paper formatting. It will surely facilitate the writing process and advance your chances in getting a higher grade.
+                                    
+                                We specifically created an easy-to-use interface for your communication with the writer and support center in the process of paper writing. 
+                                    
+                                AcademicPaperServed writers’ team is highly flexible and is ready to consider every order on a personal basis. We value our customers and set communication as a priority. We will appreciate your help in giving explicit order details once your order is made.
+                            `
+                        }
+                    },
+                    {
+                        title: {en: `What if my professor requires to hand in all copies of sources used?`, ua: `What if my professor requires to hand in all copies of sources used?`},
+                        content: {
+                            en: `The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. `,
+                            ua: `The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. `
+                        }
+                    },
+                ].map(section => 
+                    divsa({},
+                        divsa({}, h3Smaller(section.title[lang])),
+                        divsa({}, markdown(dedent(section.content[lang])))))
+            )
+        )
+    })
+    
+    
+    function h3Smaller(it) {
+        return h3(spansa({fontSize: '80%'}, it))
+    }
     
     function bullets(items) {
         return ula({className: 'fa-ul', style: {marginLeft: 22}}, ...items.map(item =>
-                   lisa({marginBottom: 10}, glyph('star', {className: 'fa-li', style: {color: BLUE_GRAY_600}}), item[lang])))
+                   lisa({marginBottom: 10}, glyph('star', {className: 'fa-li', style: {color: BLUE_GRAY_600}}), item)))
+    }
+    
+    function locBullets(items) {
+        return bullets(items.map(x => x[lang]))
+    }
+    
+    function hrefBullets(items) {
+        return bullets(items.map(x => aa({href: x.href}, x.title)))
     }
     
     function t(ss) {
