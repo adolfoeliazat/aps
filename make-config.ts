@@ -54,13 +54,13 @@ makeConfig = {
 // @extract-candidate Running external build tool, collecting its output, sending build status to DevUI
 function buildStaticSites() {
     return new Promise((resolve, reject) => {
-        const makeResult = {maker: 'Static Sites', stdall: ''}
+        const commandResult = {command: 'make-static-sites', stdall: ''}
         
         clog('Building static sites...')
         const m = beginMeasure()
         const child = sh.exec('node aps/lib/make-static-sites', {silent: true}, code => {
             const elapsedString = m.end()
-            makeResult.code = code
+            commandResult.code = code
             if (code === 0) {
                 clog('Built static sites ' + okWithTimeLabel(elapsedString))
                 resolve()
@@ -69,20 +69,14 @@ function buildStaticSites() {
                 reject(Error(`Static site maker failed with code ${code}`))
             }
             
-            const i = findIndex(makeResults, x => x.maker === makeResult.maker)
-            if (~i) {
-                makeResults[i] = makeResult
-            } else {
-                makeResults.push(makeResult)
-            }
-            sendBuildStatus()
+            sendBuildStatus({commandResult})
         })
         child.stdout.on('data', data => {
-            makeResult.stdall += data
+            commandResult.stdall += data
             process.stdout.write(data)
         })
         child.stderr.on('data', data => {
-            makeResult.stdall += data
+            commandResult.stdall += data
             process.stderr.write(data)
         })
     })

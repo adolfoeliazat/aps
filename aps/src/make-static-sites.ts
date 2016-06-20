@@ -266,7 +266,9 @@ function makeCustomerSite({lang}) {
     sh.cp('-r', `${vendor}/font-awesome-4.6.3`, root)
     sh.cp(`${__dirname}/../asset/*`, root)
     
-    writePage({name: 'index', title: {en: `APS`, ua: `APS UA`}[lang],
+    const tabTitle = {en: `APS`, ua: `APS UA`}[lang]
+    
+    writePage({name: 'index',
         comp: div(
             diva({className: 'container'},
                 pageHeader({en: `Welcome to AcademicPaperServed`, ua: `Welcome to AcademicPaperServed UA`}),
@@ -564,14 +566,97 @@ function makeCustomerSite({lang}) {
         `
     })
     
-    0&& writePage({name: 'why', title: def.title, activeNav: 'why',
+    writePage({name: 'why', activeNav: 'why',
         comp: div(
             diva({className: 'container'},
-                pageHeader(def.why.title, {size: 3}),
-                ...def.why.sections.map(section => 
+                pageHeader({en: `Why AcademicPaperServed?`, ua: `Why AcademicPaperServed UA?`}),
+                ...[{
+                        title: {en: `We care about each customer’s academic success`, ua: `We care about each customer’s academic success`},
+                        content: {
+                            en: `According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal.`,
+                            ua: `According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal.`
+                        }
+                    },
+                    {
+                        title: {en: `We make a very strong commitment to quality`, ua: `We make a very strong commitment to quality`},
+                        content: {
+                            en: `Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge.`,
+                            ua: `Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge.`
+                        }
+                    },
+                    {
+                        title: {en: `We show an individual approach`, ua: `We show an individual approach`},
+                        content: {
+                            en: `
+                                To Every Customer and Every Project we deal with.
+                                
+                                With us customers are sure to get their high school, college and university papers tailored exactly to their requirements and needs. No need to worry about quality! Your professor will be completely satisfied. We follow paper details specifically, provide with relevant sources from our library and/or use definite sources (books, journal and magazine articles, encyclopedia excerpts, peer reviewed studies, etc.) requested by the customer.
+                                
+                                Our team is aware of students’ concerns and issues. Any academic achievement becomes joyful and easy with our team. You are sure to get your writer’s comments on the paper content, advice on choosing a suitable topic, primary and secondary sources selection, ways of presenting it in pubic if needed, etc. You are a getting a complex academic help along with the written coherent text which you, surely, deserve!
+                                
+                                24/7 support will provide you with prompt unrivalled assistance in every matter of your concern and makes sure you’ll get excellent quality paper!
+                                
+                                AcademicPaperServed team helps English speaking customers from all over the world with anything an academic writing implies, from research ideas to styles and design of your paper. We are strictly following the rules of academic presentation combining it with modern and creative approaches. You are sure to get your project written in a plain, clear language with smooth transitions and coherent rendering.
+                            `,
+                            ua: `
+                                To Every Customer and Every Project we deal with.
+                                
+                                With us customers are sure to get their high school, college and university papers tailored exactly to their requirements and needs. No need to worry about quality! Your professor will be completely satisfied. We follow paper details specifically, provide with relevant sources from our library and/or use definite sources (books, journal and magazine articles, encyclopedia excerpts, peer reviewed studies, etc.) requested by the customer.
+                                
+                                Our team is aware of students’ concerns and issues. Any academic achievement becomes joyful and easy with our team. You are sure to get your writer’s comments on the paper content, advice on choosing a suitable topic, primary and secondary sources selection, ways of presenting it in pubic if needed, etc. You are a getting a complex academic help along with the written coherent text which you, surely, deserve!
+                                
+                                24/7 support will provide you with prompt unrivalled assistance in every matter of your concern and makes sure you’ll get excellent quality paper!
+                                
+                                AcademicPaperServed team helps English speaking customers from all over the world with anything an academic writing implies, from research ideas to styles and design of your paper. We are strictly following the rules of academic presentation combining it with modern and creative approaches. You are sure to get your project written in a plain, clear language with smooth transitions and coherent rendering.
+                            `
+                        }
+                    },
+                    {
+                        title: {en: `We hire only expert writers`, ua: `We hire only expert writers`},
+                        content: {
+                            en: `
+                                We involve only experienced staff in the writing process! Each member of the AcademicPaperServed writing team has at least 2 years + experience in academic research field.
+                                
+                                You are sure to get your custom paper done by a native English speaker, who is versed in the area of your research, formats your paper according to the latest requirements of citation styles (MLA, APA, Harvard, Chicago, Turabian, Oxford and others) and delivers with no delays.
+                                
+                                US-based customer support will offer samples of various academic papers for your consideration.
+                                
+                                We’ve been dealing with ALL types of academic papers and we are always glad to offer you help with any essay (like scholarship essay, admission essay, application essay, entrance essay, personal statement) and research paper type at any academic level and in every possible discipline. If you want your paper to be well-organized and logically constructed, choose us!
+                            `,
+                            ua: `
+                                We involve only experienced staff in the writing process! Each member of the AcademicPaperServed writing team has at least 2 years + experience in academic research field.
+                                
+                                You are sure to get your custom paper done by a native English speaker, who is versed in the area of your research, formats your paper according to the latest requirements of citation styles (MLA, APA, Harvard, Chicago, Turabian, Oxford and others) and delivers with no delays.
+                                
+                                US-based customer support will offer samples of various academic papers for your consideration.
+                                
+                                We’ve been dealing with ALL types of academic papers and we are always glad to offer you help with any essay (like scholarship essay, admission essay, application essay, entrance essay, personal statement) and research paper type at any academic level and in every possible discipline. If you want your paper to be well-organized and logically constructed, choose us!
+                            `,
+                        }
+                    },
+                    {
+                        title: {en: `Plagiarism-free and full-of-creativity zone`, ua: `Plagiarism-free and full-of-creativity zone`},
+                        content: {
+                            en: `
+                                Our writers get paid only when they use their own thoughts and ideas, elucidated through high-quality research and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with the most up-to-date plagiarism detection software prior to being delivered to customer. There is totally no chance of delivering a plagiarized paper.
+                                
+                                At AcademicPaperServed all writers apply a creative approach to every essay. Each custom paper is written in compliance with the requests and desires of the customer.
+                                
+                                Be assured our friendly and knowledgeable staff will provide you with immediate, top-quality, and US-based customer support. All responses are personalized to the needs of the student.
+                            `,
+                            ua: `
+                                Our writers get paid only when they use their own thoughts and ideas, elucidated through high-quality research and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with the most up-to-date plagiarism detection software prior to being delivered to customer. There is totally no chance of delivering a plagiarized paper.
+                                
+                                At AcademicPaperServed all writers apply a creative approach to every essay. Each custom paper is written in compliance with the requests and desires of the customer.
+                                
+                                Be assured our friendly and knowledgeable staff will provide you with immediate, top-quality, and US-based customer support. All responses are personalized to the needs of the student.
+                            `,
+                        } 
+                    },
+                ].map(section => 
                     divsa({},
-                        divsa({}, h3(section.title)),
-                        divsa({}, markdown(dedent(section.content)))))
+                        divsa({}, h3(section.title[lang])),
+                        divsa({}, markdown(dedent(section.content[lang])))))
             )
         )
     })
@@ -594,7 +679,7 @@ function makeCustomerSite({lang}) {
                        divsa({textAlign: 'center', margin: `0 ${horizContentMargin}px`}, x[lang]))))
     }
     
-    function writePage({name, title, comp, css='', js='', activeNav}) {
+    function writePage({name, comp, css='', js='', activeNav}) {
         fs.writeFileSync(`${root}/${name}.html`, `
             <!DOCTYPE html>
             <html lang="en">
@@ -603,7 +688,7 @@ function makeCustomerSite({lang}) {
                     <meta http-equiv="X-UA-Compatible" content="IE=edge">
                     <meta name="viewport" content="width=device-width, initial-scale=1">
                     
-                    ${ReactDOMServer.renderToStaticMarkup(React.createElement('title', {}, title))}
+                    ${ReactDOMServer.renderToStaticMarkup(React.createElement('title', {}, tabTitle))}
                     
                     <link href="bootstrap-master/css/bootstrap.min.css" rel="stylesheet">
                     <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
