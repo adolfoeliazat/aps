@@ -7,8 +7,10 @@
 import express = require('express')
 import static 'into-u'
 
-serve(3001, 'ua-customer')
-serve(3002, 'ua-writer')
+serve(3011, 'en-customer')
+serve(3012, 'ua-customer')
+serve(3021, 'en-writer')
+serve(3022, 'ua-writer')
 
 
 function serve(port, dir) {

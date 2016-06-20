@@ -12,7 +12,8 @@ export async function onKey(key, {buildStaticSites}) {
         
         await buildStaticSites()
         
-        const url = 'http://127.0.0.1:3001'
+//        const url = 'http://127.0.0.1:3012/prices.html'
+        const url = 'http://127.0.0.1:3012'
         doNoisa(async function() {
             wio = webdriverio.remote({
                 desiredCapabilities: {
@@ -22,7 +23,7 @@ export async function onKey(key, {buildStaticSites}) {
             await wio.init()
             await wio.windowHandleMaximize()
             await wio.url(url)
-            await wio.scroll(0, 500)
+            // await wio.scroll(0, 500)
             await openDevConsole()
         })
     }
