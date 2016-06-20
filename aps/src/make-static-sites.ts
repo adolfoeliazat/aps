@@ -6,7 +6,7 @@
 
 import fs = require('fs')
 import sh = require('shelljs')
-import static 'into-u'
+import static 'into-u ./stuff'
 
 sh.config.fatal = true
 Error.stackTraceLimit = Infinity
@@ -367,7 +367,7 @@ function makeCustomerSite({lang}) {
                     {glyph: 'bomb', en: `Proofreading and editing of written papers`, ua: `Proofreading and editing of written papers`},
                     {glyph: 'book', en: `Free guidelines on essay topic selection and writing process`, ua: `Free guidelines on essay topic selection and writing process`},
                 ]),
-                ula({className: 'fa-ul', style: {marginLeft: 22}}, ...[
+                bullets([
                     {en: `Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports`, ua: `Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports`},
                     {en: `Plagiarism-free original papers written from scratch`, ua: `Plagiarism-free original papers written from scratch`},
                     {en: `Proofreading and editing of written papers`, ua: `Proofreading and editing of written papers`},
@@ -377,8 +377,7 @@ function makeCustomerSite({lang}) {
                     {en: `Free revisions till you are completely satisfied`, ua: `Free revisions till you are completely satisfied`},
                     {en: `Meeting your deadline`, ua: `Meeting your deadline`},
                     {en: `Security and confidentiality`, ua: `Security and confidentiality`},
-                    ].map(item =>
-                        lisa({marginBottom: 10}, glyph('star', {className: 'fa-li', style: {color: BLUE_GRAY_600}}), item[lang])))
+                ])
             ),
         ),
         
@@ -661,6 +660,101 @@ function makeCustomerSite({lang}) {
         )
     })
     
+    const priceTableRows = []
+    for (const dopt of deliveryOptions()) {
+        let firstRowForDopt = true
+        for (const top of typesOfPaper(lang)) {
+            dlog({dopt, top})
+            const curr = lang
+            priceTableRows.push([
+                firstRowForDopt ? deliveryOptionTitle(dopt, lang) : '',
+                typeOfPaperTitle(top, lang),
+                moneyTitleWithCurrency(priceForDeliveryOptionAndTypeOfPaper(dopt, top), curr, lang)])
+            firstRowForDopt = false
+        }
+    }
+    
+    writePage({name: 'prices', activeNav: 'prices',
+        comp: div(
+            diva({className: 'container'},
+                pageHeader({en: `Our Prices`, ua: `Наши цены`}),
+                el('table', {className: 'table table-hover table-condensed'},
+                    el('thead', {},
+                        el('tr', {},
+                            el('th', {}, t({en: 'Delivery Option', ua: 'Срочность'})),
+                            el('th', {}, t({en: 'Type of Paper', ua: 'Тип работы'})),
+                            el('th', {}, t({en: 'Price', ua: 'Цена'})),
+                        )),
+                    el('tbody', {},
+                        ...priceTableRows.map(row => el('tr', {},
+                            el('td', {}, row[0]),
+                            el('td', {}, row[1]),
+                            el('td', {}, row[2]),
+                            )))),
+                            
+                pageHeader({en: `Pricing Policy`, ua: `Pricing Policy`}),
+                markdownPiece({
+                    en: `
+                        Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
+                            
+                        Our support is daily queried on how one can buy an essay or research paper on a certain topic. AcademicPaperServed does sell pre-written papers, each assignment is made individually and each research is written from scratch. Top-notch writing quality is only achieved through effective communication of the writer and the customer, be it an order on a blog article, high school debate project or a music review.
+                            
+                        Each quote we give to our customer is based primarily on the delivery date opted, type of an academic written assignment, number of pages and the amount of discount your membership is liable to.
+                            
+                        You may find out your quote in one minute! Simply press the Order Your Custom Essay Now tab at the top of the page marked in green. Our Customer Support employee will advise you on the price and terms of delivery. 
+                    `,
+                    ua: `
+                        Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
+                            
+                        Our support is daily queried on how one can buy an essay or research paper on a certain topic. AcademicPaperServed does sell pre-written papers, each assignment is made individually and each research is written from scratch. Top-notch writing quality is only achieved through effective communication of the writer and the customer, be it an order on a blog article, high school debate project or a music review.
+                            
+                        Each quote we give to our customer is based primarily on the delivery date opted, type of an academic written assignment, number of pages and the amount of discount your membership is liable to.
+                            
+                        You may find out your quote in one minute! Simply press the Order Your Custom Essay Now tab at the top of the page marked in green. Our Customer Support employee will advise you on the price and terms of delivery. 
+                    `
+                }),
+                
+                pageHeader({en: `Bonuses`, ua: `Bonuses`}),
+                markdownPiece({
+                    en: `Ordering a paper at AcademicPaperServed, you also get:`,
+                    ua: `Ordering a paper at AcademicPaperServed, you also get:`,
+                }),
+                bullets([
+                    {en: `Free Title Page`, ua: `Free Title Page`},
+                    {en: `Free Outline`, ua: `Free Outline`},
+                    {en: `Free List of References`, ua: `Free List of References`},
+                    {en: `Free Plagiarism Report (upon additional request)`, ua: `Free Plagiarism Report (upon additional request)`},
+                ]),
+                
+                pageHeader({en: `Discount Policy`, ua: `Discount Policy`}),
+                markdownPiece({
+                    en: `Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:`,
+                    ua: `Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:`,
+                }),
+                bullets([
+                    {en: `More than 50 pages${mdash}5%`, ua: `Более 50 страниц ${ndash} 5%`},
+                    {en: `More than 100 pages${mdash}10%`, ua: `Более 100 страниц ${ndash} 10%`},
+                    {en: `More than 150 pages${mdash}15%`, ua: `Более 150 страниц ${ndash} 15%`},
+                    {en: `More than 200 pages${mdash}30%`, ua: `Более 200 страниц ${ndash} 30%`},
+                ]),
+                markdownPiece({
+                    en: `We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.`,
+                    ua: `We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.`,
+                }),
+            )
+        )
+    })
+            
+    
+    
+    function bullets(items) {
+        return ula({className: 'fa-ul', style: {marginLeft: 22}}, ...items.map(item =>
+                   lisa({marginBottom: 10}, glyph('star', {className: 'fa-li', style: {color: BLUE_GRAY_600}}), item[lang])))
+    }
+    
+    function t(ss) {
+        return ss[lang]
+    }
     
     function pageHeader(title) {
         return diva({className: 'page-header', style: {marginTop: 30}},
