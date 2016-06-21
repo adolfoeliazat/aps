@@ -878,8 +878,355 @@ function makeCustomerSite({lang}) {
                     },
                 ].map(section => 
                     divsa({},
-                        divsa({}, h3Smaller(section.title[lang])),
-                        divsa({}, markdown(dedent(section.content[lang])))))
+                        divsa({}, markdownPiece('> ' + section.title[lang])),
+                        divsa({marginBottom: 20, marginTop: -5}, markdown(dedent(section.content[lang])))))
+            )
+        )
+    })
+    
+    writePage({name: 'contact', activeNav: 'contact',
+        comp: div(
+            diva({className: 'container'},
+                pageHeader({en: `Contact Us`, ua: `Contact Us`}),
+                markdownPiece({
+                    en: `
+                        Thank you for visiting AcademicPaperServed website! We will be happy to answer any questions, give a quote, and select a writer for your paper at any academic level. We value each customer and strive to achieve best results through communication process. Customer support representative is ready to advise you on the ordering process, choosing your delivery option and selecting an appropriate writer.
+                    `,
+                    ua: `
+                        Thank you for visiting AcademicPaperServed website! We will be happy to answer any questions, give a quote, and select a writer for your paper at any academic level. We value each customer and strive to achieve best results through communication process. Customer support representative is ready to advise you on the ordering process, choosing your delivery option and selecting an appropriate writer.
+                    `
+                }),
+                
+                divsa({marginBottom: 10}, t({en: 'AcademicPaperServed headquarter:', ua: 'AcademicPaperServed headquarter:'})),
+                divsa({whiteSpace: 'pre', fontFamily: 'monospace'}, tdedent({
+                    en: `
+                        DP World Inc
+                        624 W Kristina Ln
+                        Round Lake, IL 60073
+                        United States
+                    `,
+                    ua: `
+                        DP World Inc
+                        624 W Kristina Ln
+                        Round Lake, IL 60073
+                        United States
+                    `
+                }))
+            )
+        )
+    })
+    
+    const blogItems = {
+        en: [
+            {
+                listTitle: 'Why Would I Order a Research Paper Online?',
+                title: 'Being a Student is not Easy',
+                slug: 'why-order',
+                content: `
+                    Thousands of students find themselves torn between multiple obligations. They badly need good grades, but when it comes to writing essays and term papers, the situation becomes even more problematic. Remember, how hard you try to write a paper. You spend hours, trying to choose the best topic. You need to write a paper that is grammatically and stylistically correct. You need to present your argument logically and convincingly. 
+                        
+                    No wonder that, in these moments, the only thing you want is to have someone write a good custom essay for you. When you no longer feel capable of producing quality essays and term papers, all you need is to know that a qualified professional will help you to deal with your custom essay. You need to know that your essays and term papers will be submitted on time. You also need to know that your custom essay will be academically sound.
+                        
+                    What to do? This is a difficult question, but we have a good answer. Order a research paper, and you will forget about your writing troubles. When you have difficulty writing a custom essay, you can order a research paper that will meet the standards of advanced academic writing. You can have your essays and term papers written by an educated professional, which will increase your chances to earn a good grade. If you are tired of looking for good topics and arguments to write a paper, ordering a research paper is the best solution to your writing problems. Feel free to spend your time with family and friends, while professional writers are working on your custom essay! 
+                    
+                    Order a research paper, and you will see how your life becoming easy and self-fulfilling!
+                `
+            },
+            {
+                listTitle: 'High School Debate Topics in the United States',
+                title: 'High School Debate Topics in the United States',
+                slug: 'debate-topics',
+                content: `
+                    These days high school debate (from the Latin “debatum” meaning “to reach an argument between two opposite viewpoints”) is undoubtedly one of the most popular forms of academic discussions. High school debate topics in the United States are diverse and selected with purpose to involve students into two essential processes: argumentative thinking and communication. All modern US secondary and high schools use debate as an integral element of classroom activity, as a form of knowledge appraisal, testing and skill gap detection. High school debate topics generally relate to students’ research activity (development of information management skills) and to the educational activity (development of capability to work individually and in team; development of leadership qualities).
+                        
+                    Modern debate topics for high school students are selected with purpose to teach them how to analyze different problems (past and current) thoroughly and to recognize tolerance and respect as the highest values to be considered at problem discussion. High school debate topics must encourage and motivate students to search for truth rather than just to practice rhetoric. In other words, competitiveness and hunger for victory should not be dominant over readiness and willingness to understand and explore the subject matter.
+                        
+                    Debate topics for high school students should not stimulate the use of any double standards, but should promote tolerance to other men’s standpoints and search for common values, considering the difference of debate participants.
+                        
+                    High school debate topics should never be used as propaganda of any political parties and actions, advertisement of organizations and infrastructures, exaltation of some particular idea or personality.
+                        
+                    Educators admit the fact that sometimes it is very difficult to choose the right high school debate topic for classroom activity. The topic must possess a set of specific properties to be able to transform a classroom discussion into a debate, and namely: it should be formulated in a way that would reflect the modern students’ lifestyles and meet their expectations (school debate topic must catch students’ attention); it must be somehow relative to students’ area of interests and current research/study theme; it must be up to date and must consider further development, real-life implementation and alternative solutions.
+                        
+                    So, what classroom debate topics may possess these characteristics? Our online survey finds that the most popular high school debate topics in the United States are:
+                    
+                    * Should your class be considered for a field trip this year?
+                    * Should school uniform become obligatory?
+                    * Should slow achievers be permitted to have a job such as baby-sitting or mowing yards?
+                    * Should you be allowed to spend your own money in the way you want?
+                    * Should you be allowed to come to the class with extraordinary hair styles and excessive piercing?
+                    * Should you be allowed to watch R-rated movies?
+                    * Should your parents permit you to attend sleep-over parties?
+                    * Should your parents require that you do chores around the house?
+                    * Should you wear formal clothes for special occasions if your parents require it from you and you do not feel like doing this?
+                    * Should you be permitted to have any hobby you want?
+                    * Should your parents permit you to get a tattoo?
+                    * Should you be allowed to purchase alcohol and cigarettes before you are 21?
+                    * Should light drugs like marihuana be legalized?
+                    * Should you be permitted to bring your pet to the classroom?
+                    
+                    However, besides classroom debate, many US high schools organize formal academic debate for which high school debate topics, different from those used in the class, are chosen. During such formal debates students are divided in two groups, the assigned instructor provides a student debate topic and the group of couches (usually representatives of the academic staff and their invited colleagues from other high schools) judge the debate. In this case high school debate resembles some internal oratory contest or an interesting game. The formal debate should adhere to some ethical norms and all three parties – debaters, instructors and couches – must follow these norms which are, in fact, mutual respect and tolerance, sincerity, honesty and cultural exchange of ideas.
+                
+                    At discussion of high school debate topics debaters should keep away from attacking their opponents and should argue in a friendly manner. It is required that debaters use precise data and facts when constructing an argument and do not state anything that does not fall within the limits of their own expertise and knowledge base. It is forbidden for debaters to misrepresent facts, examples and opinions. Debaters must listen to their opponents attentively and must not misrepresent their statements in further discussions.
+                
+                    For formal academic debates topics for high school students are usually chosen by the debate organizers. The instructors should make sure that debaters are cogent to the school debate topic and do not go to debris.
+                
+                    Our research shows that formal high school debate topics widely used in the United States are rather politics and business oriented. High school debate topics evidence that modern US society is very much concerned about President Bush’s governance, conflicts in the Middle East, gun control, threats to liberty and democracy etc. To exemplify this observation, let us view the Michigan Education Report and look at the program of 2005 High School Debate Workshop hosted by the Mackinac Center for Public Policy, one of the leading America’s academic debate organizers and councilors. The workshop was attended by more than 300 high school debaters and their instructors. During the workshop the high school debate topic was: “Resolved: That the United States federal government should substantially decrease its authority either to detain without charge or to search without probable cause”. As an opening of this student debate topic the quotation excerpted from the National Federation of State High School Associations Report was used: “The American Constitution was designed to limit and constrain the use of power in order to protect liberty. But as the founders knew, and as has become even clearer in modern times, liberty can be threatened even by well-meaning people. . . The greatest dangers to liberty lurk in insidious encroachment by men of zeal, well-meaning but without understanding” ([http://www.mackinac.org/pubs/mer/article.aspx?ID=7480](http://www.mackinac.org/pubs/mer/article.aspx?ID=7480)).
+                
+                    We are using this example as an argument to the above statement that formal high school debate topics substantially reflect current concerns of present-day America’s society. The Mackinac High School Debate Workshop of 2005 was considered to be the best debate program in ten years.
+                
+                    Other less prominent examples show that the most popular formal high school debate topics in the United States are:
+                
+                    * Should wearing a helmet at biking be mandatory?
+                    * Does the US President do a good job?
+                    * Should the Pledge of Allegiance be recited in schools on a daily basis?
+                    * Is beauty only skin deep?
+                    * Does our society have a right to put convicts to death?
+                    * Should cloning be outlawed?
+                    * Should animals be used for scientific research and experiments?
+                    
+                    So, as we can see, high school debate topics substantially reflect the key questions that both the US policy-makers and average citizens put themselves every now and then. Putting some actual and commonplace topic at stake, educators involve their students in modeling of real-life situations and teach them to be able to argumentatively defend their own standpoints and to honestly attack the opposite viewpoints. And no secret that these abilities are sometimes more important in real life than any theoretical knowledge obtained during high school lectures.
+                `
+            },
+            {
+                listTitle: 'How to Choose a Good Informative Speech Topic',
+                title: 'How to Choose a Good Informative Speech Topic',
+                slug: 'speech-topc',
+                content: `
+                    Informative speaking is one of the most essential components of high school and college students’ activities. In fact, it offers students a good opportunity to practice their writing, organizing, speaking and researching skills. Informative speaking helps students learn how to discover, manage and present information clearly. Another great advantage of informative speaking consists in allowing young people to overcome public speaking barriers and to develop their own unique public speaking style that will undoubtedly be of use in professional careers.
+                        
+                    Specialists claim that to make a successful informative speech, it is of primary importance to choose a good informative speech topic. There are a great many various strategies aimed at helping choose informative speech topics that will definitely work. It is highly recommended that a student selects informative speech topic that is first of all interesting and exciting to him/her. Only interesting informative speech topics will allow a person to be enthusiastic and to attract the audience’s attention while delivering the speech. Interesting informative speech topic will also motivate a student to research the subject matter closely and to gain some advanced knowledge about the issue at hand. It is suggested that a public speaker makes sure that his/her informative speech topic is appropriate for the situation and that it is an excellent match for interests and desires of the target audience. Another suggestion is that a speaker makes sure that his/her informative speech topic is specific enough. The latter suggestion is explained by the fact that a speaker is usually limited in speech time and will not be able to cover any informative speech topic quite fully.
+                        
+                    Those of you who have ever been public speakers before must know how hard it is to find the best topic for an informative speech. Those who only plan of making a public speech some day must always keep in mind that it is not easy to find a good informative speech topic. Below we will try to provide you with some important tips as for how to choose a proper informative speech topic and make your future speech a real success.
+                        
+                    So, where can you get ideas for good informative speech topics? In fact, everywhere! First of all just calm down, take a seat and think about what type of informative speech you are going to make. There are four major types of informative speeches: speeches about objects, about processes, about concepts and about events. Now that you have taken your time and chosen your informative speech type, you can begin searching for a good informative speech topic. If you plan to speak about objects, you must focus on things that either already exist in this world, or are about to be introduced to the mankind. Now spend some time for brainstorming. Potential sources of information you will use for your speech preparation are: public or high school libraries, Internet and scientific journals. The list of possible interesting topics for informative speech about objects includes: a bike, a scuba, surgical lasers, the Central Intelligence Agency, the lemmings etc.
+                        
+                    If you choose to speak about the process, you must focus on patterns of action. In other words, your speech should be a “how-to” guide. The sources of inspiration stay the same: libraries, online databases, journals. You can, however, expand your search by studying laboratory reports and forum/conference briefings. Here is the list of possible interesting topics for informative speech about the processes: how the World Wide Web works, how to write a rival-beating resume, how to use scuba/bike etc. Remember, once you decide to speak about the process, your search key words must be “HOW TO”.
+                    
+                    But you prefer to speak about events? Ok, no problems! Here you should focus on things that already happened, are currently happening or are supposed to happen in the future. To tell you the truth, it is one of the most difficult types of informative speech. It is very hard to find a good informative speech topic if you want to speak about events. As a matter of fact, most of historical events may be well-known to your audience (especially if you speak in front of the history or political sciences’ class) and your listeners will be bored hearing about them once again. So, the suggestion is that you try to find some unique and publicly unknown information about this or that famous event in order to make your informative speech interesting. Always limit your speech focus to those aspects which can easily be adapted for your audience and further discussion. Look at the list of good informative speech topics in regards to events and try to understand how to choose the best informative speech topic: new vision of Kennedy’s murder, the 1963 Civil Rights March on Washington, the Battle of the Bulge, the World Series, newly discovered facts about Marilyn Monroe etc. But keep in mind – you will probably have to burn the midnight oil in order to prepare a great and attractive speech for your informative speech topic.
+                    
+                    Informative speeches about concepts usually relate to ideas, beliefs and theories. Many public speakers find this type of informative speech very interesting, since it allows them to use their abstract thinking and to develop creativity. However, upon deciding to make a speech about the concept, take care to be comprehensible and clear while presenting your selected concept. Such informative speeches often employ a persuasive tone. All the data and facts used within the limits of your informative speech topic must be based on argumentative and unbiased information. To develop your informative speech topic, go to statistics reports, thematic books and journals and try to find numerous expert opinions about the single subject matter. The list of potential informative speech topics is as follows: the philosophy of Buddhism, feminism, the Big Bang theory etc.
+                
+                    Nevertheless, in many cases you may not have an assigned informative speech topic or you may be asked to prepare a free informative speech topic. First thing you should do is…relax and take it easy! Then shoot up and start dancing! We are not kidding. This may be your once-in-a-lifetime chance to express your creative mindset and artistic skills. Now you can choose any informative speech topic you like. But still do not forget – the more you know about your topic, the better speech you will make. You must be ready to answer the audience’s questions which can be very provocative in a way. So, show them your best!
+                
+                    Now you are a generator of topic ideas for informative college or high school speech. You already know where to look for information. And prior to doing a research, think about your own interests. If you like arts, try to relate your informative speech topic to arts. Look at the list of free art-related informative speech topics below and adjust your thinking accordingly:
+                        
+                    * Graffiti is a unique expression of youth sub-culture.
+                    * Why did Malevich’s “Black Square” become world-recognized?
+                    * Is it possible to combine classical music and rap?
+                    * Cyber punk as a new literature trend.
+                    * How to promote your fiction writing online etc, etc.
+                        
+                    And you have much broader horizons to use! Just switch on your imagination! Still not sure which free informative speech topic will be good enough for you? No problems, we will give you some more useful tips!
+                        
+                    **Tip 1.** Think about your recent classes and remember which classroom debates you have experienced (if any). The cause of the debate may be a good informative speech topic.
+                        
+                    **Tip 2.** Talk to your friends and peers and try to find out what interests them most of all.
+                        
+                    **Tip 3.** Take surf on diverse online forums and discussion boards. Each of them definitely has a thread highlighting youngsters’ interests and hobbies. Use them as your informative speech topic’s ideas.
+                        
+                    And our last tip summarizing all the above described things is – like your informative speech topic and make sure to research it as deeply as possible! And maybe some day you will become a prominent advisor on interesting informative speech topics’ selection! 
+                `
+            },
+            {
+                listTitle: 'How to Choose a Good Research or Essay Topic',
+                title: 'How to Choose a Good Research or Essay Topic',
+                slug: 'essay-topic',
+                content: `
+                    Henry Miller once said, ‘Writing, like life itself, is a voyage of discovery’. In this life we are guided by our parents, teachers and mentors who constantly teach us how to properly plan our steps in order to make as few errors as possible. Life is driven by other men’s experience. AcademicPaperServed is designed specifically to smoothly guide you through unruly and impertinent ocean of college research topics, topics for high school debate, informative speech topics, essay topics etc. Over quite a long period of time we have been observing the situations when students could not reveal their actual writing potential due to wrongly chosen college and high school research, essay or debate topics. One of the key goals of EasyWriting.Org is to teach you how to choose a good high school debate, informative speech, and college essay or research topic - a topic that will work and satisfy your own, your audience and your instructor’s aspirations and expectations! We’d like to share with you the best practice of putting a pen to the paper successfully. Our suggestions are based on experience of people who reached the highest goal of effective writing and not on some common practice of some abstract personalities!
+                        
+                    > Writing is not a preplanned recitation of what you know; writing Is thinking.
+                    >
+                    > ${mdash}Donald Murray
+                        
+                    Why not perceive writing as an exciting opportunity to make meaning out of your experiences and ideas, to help you think more clearly and independently and to establish new understandings in order to make new connections? In other words, change your current attitude towards writing!
+                        
+                    > The two most engaging powers of an author are to make new things familiar and familiar things new.
+                    >
+                    > ${mdash}Dr. Samuel Johnson
+                        
+                    Be sure you understand your assignment well and do not hesitate overloading your instructor with as many questions as possible to get an in-depth and insightful understanding of what to write about! Feel the power of being able to inform others, while learning something new at the same time! Isn’t it exciting to deliver via obtaining? Millions of men worldwide dream of having such a power. Think of what you can lose if you don’t try to love writing.
+                        
+                    > It's good to rub and polish our brain against that of others.
+                    >
+                    > ${mdash}Montaigne
+                        
+                    When choosing a good topic for your informative speech, high school debate, college essay or research, brainstorm your topic ideas first! Take a sheet of paper and a pen, draw a line in the center of the paper, and write questions on the left and answers on the right. Ask yourself:
+                        
+                    * What you are interested in
+                    * Which topic has the greatest potential to inspire your creative thinking
+                    * What you feel strongly about
+                    * What you are more competent about
+                    * What you want to learn more about
+                    * Whether you have recently watched anything interesting and attention-grabbing on TV
+                        
+                    C’mon! Polish your brain! Open your eyes! What if a good argumentative essay topic is hiding in your fridge? Maybe there is a good informative speech topic hanging in your wardrobe?
+                `
+            },
+        ],
+        ua: [
+            {
+                listTitle: 'Why Would I Order a Research Paper Online?',
+                title: 'Being a Student is not Easy',
+                slug: 'why-order',
+                content: `
+                    Thousands of students find themselves torn between multiple obligations. They badly need good grades, but when it comes to writing essays and term papers, the situation becomes even more problematic. Remember, how hard you try to write a paper. You spend hours, trying to choose the best topic. You need to write a paper that is grammatically and stylistically correct. You need to present your argument logically and convincingly. 
+                        
+                    No wonder that, in these moments, the only thing you want is to have someone write a good custom essay for you. When you no longer feel capable of producing quality essays and term papers, all you need is to know that a qualified professional will help you to deal with your custom essay. You need to know that your essays and term papers will be submitted on time. You also need to know that your custom essay will be academically sound.
+                        
+                    What to do? This is a difficult question, but we have a good answer. Order a research paper, and you will forget about your writing troubles. When you have difficulty writing a custom essay, you can order a research paper that will meet the standards of advanced academic writing. You can have your essays and term papers written by an educated professional, which will increase your chances to earn a good grade. If you are tired of looking for good topics and arguments to write a paper, ordering a research paper is the best solution to your writing problems. Feel free to spend your time with family and friends, while professional writers are working on your custom essay! 
+                    
+                    Order a research paper, and you will see how your life becoming easy and self-fulfilling!
+                `
+            },
+            {
+                listTitle: 'High School Debate Topics in the United States',
+                title: 'High School Debate Topics in the United States',
+                slug: 'debate-topics',
+                content: `
+                    These days high school debate (from the Latin “debatum” meaning “to reach an argument between two opposite viewpoints”) is undoubtedly one of the most popular forms of academic discussions. High school debate topics in the United States are diverse and selected with purpose to involve students into two essential processes: argumentative thinking and communication. All modern US secondary and high schools use debate as an integral element of classroom activity, as a form of knowledge appraisal, testing and skill gap detection. High school debate topics generally relate to students’ research activity (development of information management skills) and to the educational activity (development of capability to work individually and in team; development of leadership qualities).
+                        
+                    Modern debate topics for high school students are selected with purpose to teach them how to analyze different problems (past and current) thoroughly and to recognize tolerance and respect as the highest values to be considered at problem discussion. High school debate topics must encourage and motivate students to search for truth rather than just to practice rhetoric. In other words, competitiveness and hunger for victory should not be dominant over readiness and willingness to understand and explore the subject matter.
+                        
+                    Debate topics for high school students should not stimulate the use of any double standards, but should promote tolerance to other men’s standpoints and search for common values, considering the difference of debate participants.
+                        
+                    High school debate topics should never be used as propaganda of any political parties and actions, advertisement of organizations and infrastructures, exaltation of some particular idea or personality.
+                        
+                    Educators admit the fact that sometimes it is very difficult to choose the right high school debate topic for classroom activity. The topic must possess a set of specific properties to be able to transform a classroom discussion into a debate, and namely: it should be formulated in a way that would reflect the modern students’ lifestyles and meet their expectations (school debate topic must catch students’ attention); it must be somehow relative to students’ area of interests and current research/study theme; it must be up to date and must consider further development, real-life implementation and alternative solutions.
+                        
+                    So, what classroom debate topics may possess these characteristics? Our online survey finds that the most popular high school debate topics in the United States are:
+                    
+                    * Should your class be considered for a field trip this year?
+                    * Should school uniform become obligatory?
+                    * Should slow achievers be permitted to have a job such as baby-sitting or mowing yards?
+                    * Should you be allowed to spend your own money in the way you want?
+                    * Should you be allowed to come to the class with extraordinary hair styles and excessive piercing?
+                    * Should you be allowed to watch R-rated movies?
+                    * Should your parents permit you to attend sleep-over parties?
+                    * Should your parents require that you do chores around the house?
+                    * Should you wear formal clothes for special occasions if your parents require it from you and you do not feel like doing this?
+                    * Should you be permitted to have any hobby you want?
+                    * Should your parents permit you to get a tattoo?
+                    * Should you be allowed to purchase alcohol and cigarettes before you are 21?
+                    * Should light drugs like marihuana be legalized?
+                    * Should you be permitted to bring your pet to the classroom?
+                    
+                    However, besides classroom debate, many US high schools organize formal academic debate for which high school debate topics, different from those used in the class, are chosen. During such formal debates students are divided in two groups, the assigned instructor provides a student debate topic and the group of couches (usually representatives of the academic staff and their invited colleagues from other high schools) judge the debate. In this case high school debate resembles some internal oratory contest or an interesting game. The formal debate should adhere to some ethical norms and all three parties – debaters, instructors and couches – must follow these norms which are, in fact, mutual respect and tolerance, sincerity, honesty and cultural exchange of ideas.
+                
+                    At discussion of high school debate topics debaters should keep away from attacking their opponents and should argue in a friendly manner. It is required that debaters use precise data and facts when constructing an argument and do not state anything that does not fall within the limits of their own expertise and knowledge base. It is forbidden for debaters to misrepresent facts, examples and opinions. Debaters must listen to their opponents attentively and must not misrepresent their statements in further discussions.
+                
+                    For formal academic debates topics for high school students are usually chosen by the debate organizers. The instructors should make sure that debaters are cogent to the school debate topic and do not go to debris.
+                
+                    Our research shows that formal high school debate topics widely used in the United States are rather politics and business oriented. High school debate topics evidence that modern US society is very much concerned about President Bush’s governance, conflicts in the Middle East, gun control, threats to liberty and democracy etc. To exemplify this observation, let us view the Michigan Education Report and look at the program of 2005 High School Debate Workshop hosted by the Mackinac Center for Public Policy, one of the leading America’s academic debate organizers and councilors. The workshop was attended by more than 300 high school debaters and their instructors. During the workshop the high school debate topic was: “Resolved: That the United States federal government should substantially decrease its authority either to detain without charge or to search without probable cause”. As an opening of this student debate topic the quotation excerpted from the National Federation of State High School Associations Report was used: “The American Constitution was designed to limit and constrain the use of power in order to protect liberty. But as the founders knew, and as has become even clearer in modern times, liberty can be threatened even by well-meaning people. . . The greatest dangers to liberty lurk in insidious encroachment by men of zeal, well-meaning but without understanding” ([http://www.mackinac.org/pubs/mer/article.aspx?ID=7480](http://www.mackinac.org/pubs/mer/article.aspx?ID=7480)).
+                
+                    We are using this example as an argument to the above statement that formal high school debate topics substantially reflect current concerns of present-day America’s society. The Mackinac High School Debate Workshop of 2005 was considered to be the best debate program in ten years.
+                
+                    Other less prominent examples show that the most popular formal high school debate topics in the United States are:
+                
+                    * Should wearing a helmet at biking be mandatory?
+                    * Does the US President do a good job?
+                    * Should the Pledge of Allegiance be recited in schools on a daily basis?
+                    * Is beauty only skin deep?
+                    * Does our society have a right to put convicts to death?
+                    * Should cloning be outlawed?
+                    * Should animals be used for scientific research and experiments?
+                    
+                    So, as we can see, high school debate topics substantially reflect the key questions that both the US policy-makers and average citizens put themselves every now and then. Putting some actual and commonplace topic at stake, educators involve their students in modeling of real-life situations and teach them to be able to argumentatively defend their own standpoints and to honestly attack the opposite viewpoints. And no secret that these abilities are sometimes more important in real life than any theoretical knowledge obtained during high school lectures.
+                `
+            },
+            {
+                listTitle: 'How to Choose a Good Informative Speech Topic',
+                title: 'How to Choose a Good Informative Speech Topic',
+                slug: 'speech-topc',
+                content: `
+                    Informative speaking is one of the most essential components of high school and college students’ activities. In fact, it offers students a good opportunity to practice their writing, organizing, speaking and researching skills. Informative speaking helps students learn how to discover, manage and present information clearly. Another great advantage of informative speaking consists in allowing young people to overcome public speaking barriers and to develop their own unique public speaking style that will undoubtedly be of use in professional careers.
+                        
+                    Specialists claim that to make a successful informative speech, it is of primary importance to choose a good informative speech topic. There are a great many various strategies aimed at helping choose informative speech topics that will definitely work. It is highly recommended that a student selects informative speech topic that is first of all interesting and exciting to him/her. Only interesting informative speech topics will allow a person to be enthusiastic and to attract the audience’s attention while delivering the speech. Interesting informative speech topic will also motivate a student to research the subject matter closely and to gain some advanced knowledge about the issue at hand. It is suggested that a public speaker makes sure that his/her informative speech topic is appropriate for the situation and that it is an excellent match for interests and desires of the target audience. Another suggestion is that a speaker makes sure that his/her informative speech topic is specific enough. The latter suggestion is explained by the fact that a speaker is usually limited in speech time and will not be able to cover any informative speech topic quite fully.
+                        
+                    Those of you who have ever been public speakers before must know how hard it is to find the best topic for an informative speech. Those who only plan of making a public speech some day must always keep in mind that it is not easy to find a good informative speech topic. Below we will try to provide you with some important tips as for how to choose a proper informative speech topic and make your future speech a real success.
+                        
+                    So, where can you get ideas for good informative speech topics? In fact, everywhere! First of all just calm down, take a seat and think about what type of informative speech you are going to make. There are four major types of informative speeches: speeches about objects, about processes, about concepts and about events. Now that you have taken your time and chosen your informative speech type, you can begin searching for a good informative speech topic. If you plan to speak about objects, you must focus on things that either already exist in this world, or are about to be introduced to the mankind. Now spend some time for brainstorming. Potential sources of information you will use for your speech preparation are: public or high school libraries, Internet and scientific journals. The list of possible interesting topics for informative speech about objects includes: a bike, a scuba, surgical lasers, the Central Intelligence Agency, the lemmings etc.
+                        
+                    If you choose to speak about the process, you must focus on patterns of action. In other words, your speech should be a “how-to” guide. The sources of inspiration stay the same: libraries, online databases, journals. You can, however, expand your search by studying laboratory reports and forum/conference briefings. Here is the list of possible interesting topics for informative speech about the processes: how the World Wide Web works, how to write a rival-beating resume, how to use scuba/bike etc. Remember, once you decide to speak about the process, your search key words must be “HOW TO”.
+                    
+                    But you prefer to speak about events? Ok, no problems! Here you should focus on things that already happened, are currently happening or are supposed to happen in the future. To tell you the truth, it is one of the most difficult types of informative speech. It is very hard to find a good informative speech topic if you want to speak about events. As a matter of fact, most of historical events may be well-known to your audience (especially if you speak in front of the history or political sciences’ class) and your listeners will be bored hearing about them once again. So, the suggestion is that you try to find some unique and publicly unknown information about this or that famous event in order to make your informative speech interesting. Always limit your speech focus to those aspects which can easily be adapted for your audience and further discussion. Look at the list of good informative speech topics in regards to events and try to understand how to choose the best informative speech topic: new vision of Kennedy’s murder, the 1963 Civil Rights March on Washington, the Battle of the Bulge, the World Series, newly discovered facts about Marilyn Monroe etc. But keep in mind – you will probably have to burn the midnight oil in order to prepare a great and attractive speech for your informative speech topic.
+                    
+                    Informative speeches about concepts usually relate to ideas, beliefs and theories. Many public speakers find this type of informative speech very interesting, since it allows them to use their abstract thinking and to develop creativity. However, upon deciding to make a speech about the concept, take care to be comprehensible and clear while presenting your selected concept. Such informative speeches often employ a persuasive tone. All the data and facts used within the limits of your informative speech topic must be based on argumentative and unbiased information. To develop your informative speech topic, go to statistics reports, thematic books and journals and try to find numerous expert opinions about the single subject matter. The list of potential informative speech topics is as follows: the philosophy of Buddhism, feminism, the Big Bang theory etc.
+                
+                    Nevertheless, in many cases you may not have an assigned informative speech topic or you may be asked to prepare a free informative speech topic. First thing you should do is…relax and take it easy! Then shoot up and start dancing! We are not kidding. This may be your once-in-a-lifetime chance to express your creative mindset and artistic skills. Now you can choose any informative speech topic you like. But still do not forget – the more you know about your topic, the better speech you will make. You must be ready to answer the audience’s questions which can be very provocative in a way. So, show them your best!
+                
+                    Now you are a generator of topic ideas for informative college or high school speech. You already know where to look for information. And prior to doing a research, think about your own interests. If you like arts, try to relate your informative speech topic to arts. Look at the list of free art-related informative speech topics below and adjust your thinking accordingly:
+                        
+                    * Graffiti is a unique expression of youth sub-culture.
+                    * Why did Malevich’s “Black Square” become world-recognized?
+                    * Is it possible to combine classical music and rap?
+                    * Cyber punk as a new literature trend.
+                    * How to promote your fiction writing online etc, etc.
+                        
+                    And you have much broader horizons to use! Just switch on your imagination! Still not sure which free informative speech topic will be good enough for you? No problems, we will give you some more useful tips!
+                        
+                    **Tip 1.** Think about your recent classes and remember which classroom debates you have experienced (if any). The cause of the debate may be a good informative speech topic.
+                        
+                    **Tip 2.** Talk to your friends and peers and try to find out what interests them most of all.
+                        
+                    **Tip 3.** Take surf on diverse online forums and discussion boards. Each of them definitely has a thread highlighting youngsters’ interests and hobbies. Use them as your informative speech topic’s ideas.
+                        
+                    And our last tip summarizing all the above described things is – like your informative speech topic and make sure to research it as deeply as possible! And maybe some day you will become a prominent advisor on interesting informative speech topics’ selection! 
+                `
+            },
+            {
+                listTitle: 'How to Choose a Good Research or Essay Topic',
+                title: 'How to Choose a Good Research or Essay Topic',
+                slug: 'essay-topic',
+                content: `
+                    Henry Miller once said, ‘Writing, like life itself, is a voyage of discovery’. In this life we are guided by our parents, teachers and mentors who constantly teach us how to properly plan our steps in order to make as few errors as possible. Life is driven by other men’s experience. AcademicPaperServed is designed specifically to smoothly guide you through unruly and impertinent ocean of college research topics, topics for high school debate, informative speech topics, essay topics etc. Over quite a long period of time we have been observing the situations when students could not reveal their actual writing potential due to wrongly chosen college and high school research, essay or debate topics. One of the key goals of EasyWriting.Org is to teach you how to choose a good high school debate, informative speech, and college essay or research topic - a topic that will work and satisfy your own, your audience and your instructor’s aspirations and expectations! We’d like to share with you the best practice of putting a pen to the paper successfully. Our suggestions are based on experience of people who reached the highest goal of effective writing and not on some common practice of some abstract personalities!
+                        
+                    > Writing is not a preplanned recitation of what you know; writing Is thinking.
+                    >
+                    > ${mdash}Donald Murray
+                        
+                    Why not perceive writing as an exciting opportunity to make meaning out of your experiences and ideas, to help you think more clearly and independently and to establish new understandings in order to make new connections? In other words, change your current attitude towards writing!
+                        
+                    > The two most engaging powers of an author are to make new things familiar and familiar things new.
+                    >
+                    > ${mdash}Dr. Samuel Johnson
+                        
+                    Be sure you understand your assignment well and do not hesitate overloading your instructor with as many questions as possible to get an in-depth and insightful understanding of what to write about! Feel the power of being able to inform others, while learning something new at the same time! Isn’t it exciting to deliver via obtaining? Millions of men worldwide dream of having such a power. Think of what you can lose if you don’t try to love writing.
+                        
+                    > It's good to rub and polish our brain against that of others.
+                    >
+                    > ${mdash}Montaigne
+                        
+                    When choosing a good topic for your informative speech, high school debate, college essay or research, brainstorm your topic ideas first! Take a sheet of paper and a pen, draw a line in the center of the paper, and write questions on the left and answers on the right. Ask yourself:
+                        
+                    * What you are interested in
+                    * Which topic has the greatest potential to inspire your creative thinking
+                    * What you feel strongly about
+                    * What you are more competent about
+                    * What you want to learn more about
+                    * Whether you have recently watched anything interesting and attention-grabbing on TV
+                        
+                    C’mon! Polish your brain! Open your eyes! What if a good argumentative essay topic is hiding in your fridge? Maybe there is a good informative speech topic hanging in your wardrobe?
+                `
+            },
+        ],
+    }[lang]
+    
+    for (const item of blogItems) {
+        writePage({name: `blog-${item.slug}`, activeNav: 'blog',
+            comp: div(
+                diva({className: 'container'},
+                    pageHeader(item.title),
+                    markdownPiece(item.content)
+                )
+            )
+        })
+    }
+    
+    writePage({name: 'blog', activeNav: 'blog',
+        comp: div(
+            diva({className: 'container'},
+                pageHeader({en: `Writing Blog`, ua: `Писательский Блог`}),
+                hrefBullets(blogItems.map(x => ({title: x.listTitle, href: `blog-${x.slug}.html`}))),
             )
         )
     })
@@ -902,17 +1249,27 @@ function makeCustomerSite({lang}) {
         return bullets(items.map(x => aa({href: x.href}, x.title)))
     }
     
+    function tdedent(ss) {
+        return t(omapo(ss, dedent))
+    }
+    
     function t(ss) {
         return ss[lang]
     }
     
     function pageHeader(title) {
+        if (typeof title === 'object') {
+            title = title[lang]
+        }
         return diva({className: 'page-header', style: {marginTop: 30}},
-                   el('h3', {}, title[lang]))
+                   el('h3', {}, title))
     }
     
     function markdownPiece(content) {
-        return markdown(dedent(content[lang]))
+        if (typeof content === 'object') {
+            content = content[lang]
+        }
+        return markdown(dedent(content))
     }
     
     function horizBulletsRow(items, {horizContentMargin=0}={}) {
