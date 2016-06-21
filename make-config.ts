@@ -25,6 +25,15 @@ makeConfig = {
             name: 'aps',
             browserify: 'true',
             browserifyEntry: 'client-stuff.js',
+            onBrowserifyBundle() {
+                for (const dir of tokens('en-customer ua-customer')) {
+                    const target = `aps/built/${dir}`
+                    if (pathExists.sync(target)) {
+                        sh.cp('aps/lib/bundle.js', target)
+                        dlog('Copied bundle to ' + target)
+                    }
+                }
+            },
             
             async afterFirstCompile() {
                 await buildStaticSites()

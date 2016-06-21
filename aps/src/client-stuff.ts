@@ -20,7 +20,7 @@ asn(global, {
                 const emailInput = Input()
                 const passwordInput = Input({type: 'password'})
                 ReactDOM.render(
-                    form(
+                    formsa({width: '50%', margin: '0 auto'},
                         diva({className: 'form-group'},
                             label(t({en: 'E-mail', ua: 'Почта'})),
                             emailInput),
