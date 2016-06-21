@@ -1235,10 +1235,27 @@ function makeCustomerSite({lang}) {
         comp: div(
             diva({className: 'container'},
                 pageHeader({en: `Sign In`, ua: `Вход`}),
+                wholePageSpinner(),
             )
         )
     })
     
+    
+    function wholePageSpinner() {
+        return diva({id: 'wholePageSpinner',
+                     style: {
+                         position: 'absolute',
+                         right: '0px',
+                         left: '0px',
+                         bottom: '0px',
+                         top: '0px',
+                         display: 'flex',
+                         alignItems: 'center',
+                         justifyContent: 'center'
+                     }},
+                     img('https://raw.githubusercontent.com/vovagrechka/aps/master/aps/asset/chasing-arrows-100-999999.gif'),
+                     t({en: 'Breathe slowly...', ua: 'Дышите глубоко...'}))
+    }
     
     function h3Smaller(it) {
         return h3(spansa({fontSize: '80%'}, it))
