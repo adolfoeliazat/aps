@@ -1101,7 +1101,7 @@ function makeCustomerSite({lang}) {
                                     <li ${activeNav === 'blog' ? `class="active"` : ``}><a href="blog.html">${{en: `Writing Blog`, ua: `Писательский Блог`}[lang]}</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li ${activeNav === 'sign-in' ? `class="active"` : ``}><a href="sign-in.html">Sign In</a></li>
+                                    <li ${activeNav === 'sign-in' ? `class="active"` : ``}><a href="sign-in.html">${{en: `Sign In`, ua: `Вход`}[lang]}</a></li>
                                     <!--
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>

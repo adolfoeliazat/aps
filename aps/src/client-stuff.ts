@@ -4,7 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-const DEBUG_SIMULATE_SLOW_NETWORK = true
+BOOTSTRAP_VERSION = 3
+DEBUG_SIMULATE_SLOW_NETWORK = true
 
 require('regenerator-runtime/runtime')
 import static 'into-u/utils-client into-u/ui'
@@ -17,16 +18,21 @@ asn(global, {
         timeoutSet(DEBUG_SIMULATE_SLOW_NETWORK ? 1000 : 0, _=> {
             $('#wholePageSpinner').hide()
             if (opts.pageName === 'sign-in') {
-                const emailInput = Input()
+                const emailInput = Input({autoFocus: true})
                 const passwordInput = Input({type: 'password'})
                 ReactDOM.render(
                     formsa({width: '50%', margin: '0 auto'},
                         diva({className: 'form-group'},
-                            label(t({en: 'E-mail', ua: 'Почта'})),
+                            label(t('E-mail', 'Почта')),
                             emailInput),
                         diva({className: 'form-group'},
-                            label(t({en: 'Password', ua: 'Пароль'})),
+                            label(t('Password', 'Пароль')),
                             passwordInput),
+                        div(link(t('Still don’t have an account? Create it!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
+                            dlog('create acccccccc')
+                        })),
+                        div(
+                            button({title: 'Go', onClick() { dlog('goooooing') }})),
                     ),
                     byid0('root'))
             }
@@ -34,7 +40,13 @@ asn(global, {
     }
 })
 
-function t(ss) {
+function t(first, second) {
+    let ss
+    if (second) {
+        ss = {en: first, ua: second}
+    } else {
+        ss = first
+    }
     return ss[lang]
 }
 
