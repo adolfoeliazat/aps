@@ -7,7 +7,6 @@
 import fs = require('fs')
 import sh = require('shelljs')
 import static 'into-u ./stuff'
-clog('hi there')
 
 sh.config.fatal = true
 Error.stackTraceLimit = Infinity
@@ -1092,13 +1091,13 @@ function makeCustomerSite({lang}) {
 
                             <div class="collapse navbar-collapse" style="text-align: center;" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
-                                    <li ${activeNav === 'why' ? `class="active"` : ``}><a href="why.html">Why Us?</a></li>
-                                    <li ${activeNav === 'prices' ? `class="active"` : ``}><a href="prices.html">Prices</a></li>
-                                    <li ${activeNav === 'samples' ? `class="active"` : ``}><a href="samples.html">Sample Papers</a></li>
-                                    <li ${activeNav === 'order' ? `class="active"` : ``}><a href="order.html">Order a Paper</a></li>
-                                    <li ${activeNav === 'faq' ? `class="active"` : ``}><a href="faq.html">FAQ</a></li>
-                                    <li ${activeNav === 'contact' ? `class="active"` : ``}><a href="contact.html">Contact Us</a></li>
-                                    <li ${activeNav === 'blog' ? `class="active"` : ``}><a href="blog.html">Writing Blog</a></li>
+                                    <li ${activeNav === 'why' ? `class="active"` : ``}><a href="why.html">${{en: `Why Us?`, ua: `Почему мы?`}[lang]}</a></li>
+                                    <li ${activeNav === 'prices' ? `class="active"` : ``}><a href="prices.html">${{en: `Prices`, ua: `Цены`}[lang]}</a></li>
+                                    <li ${activeNav === 'samples' ? `class="active"` : ``}><a href="samples.html">${{en: `Sample Papers`, ua: `Примеры работ`}[lang]}</a></li>
+                                    <li ${activeNav === 'order' ? `class="active"` : ``}><a href="order.html">${{en: `Order a Paper`, ua: `Сделать заказ`}[lang]}</a></li>
+                                    <li ${activeNav === 'faq' ? `class="active"` : ``}><a href="faq.html">${{en: `FAQ`, ua: `ЧаВо`}[lang]}</a></li>
+                                    <li ${activeNav === 'contact' ? `class="active"` : ``}><a href="contact.html">${{en: `Contact Us`, ua: `Связь`}[lang]}</a></li>
+                                    <li ${activeNav === 'blog' ? `class="active"` : ``}><a href="blog.html">${{en: `Writing Blog`, ua: `Писательский Блог`}[lang]}</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
                                     <li ${activeNav === 'sign-in' ? `class="active"` : ``}><a href="sign-in.html">Sign In</a></li>
@@ -1125,6 +1124,8 @@ function makeCustomerSite({lang}) {
                     <script src="bootstrap-master/js/bootstrap.min.js"></script>
                     <script>${js}</script>
                     <script src="bundle.js"></script>
+                    
+                    <script>initCustomerUI({lang: '${lang}', pageName: '${name}'})</script>
                 </body>
             </html>
         `)
