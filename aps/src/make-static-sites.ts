@@ -1231,6 +1231,14 @@ function makeCustomerSite({lang}) {
         )
     })
     
+    writePage({name: `sign-in`, activeNav: 'sign-in',
+        comp: div(
+            diva({className: 'container'},
+                pageHeader({en: `Sign In`, ua: `Вход`}),
+            )
+        )
+    })
+    
     
     function h3Smaller(it) {
         return h3(spansa({fontSize: '80%'}, it))
@@ -1313,7 +1321,7 @@ function makeCustomerSite({lang}) {
                                     <li ${activeNav === 'blog' ? `class="active"` : ``}><a href="blog.html">Writing Blog</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li><a href="sign-in.html">Sign In</a></li>
+                                    <li ${activeNav === 'sign-in' ? `class="active"` : ``}><a href="sign-in.html">Sign In</a></li>
                                     <!--
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>

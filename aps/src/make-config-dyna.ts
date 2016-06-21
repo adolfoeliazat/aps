@@ -18,7 +18,8 @@ export async function onKey(key, {buildStaticSites}) {
 //        const url = 'http://127.0.0.1:3012/prices.html'
 //        const url = 'http://127.0.0.1:3012/faq.html'
 //        const url = 'http://127.0.0.1:3012/contact.html'
-        const url = 'http://127.0.0.1:3012/blog.html'
+//        const url = 'http://127.0.0.1:3012/blog.html'
+        const url = 'http://127.0.0.1:3012/sign-in.html'
         doNoisa(async function() {
             wio = webdriverio.remote({
                 desiredCapabilities: {
