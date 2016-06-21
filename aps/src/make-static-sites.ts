@@ -997,7 +997,6 @@ function makeCustomerSite({lang}) {
         comp: div(
             diva({className: 'container'},
                 diva({id: 'root'},
-                    // TODO:vgrechka @refactor Use something from client-stuff for this
                     pageHeader({en: `Sign In`, ua: `Вход`}[lang]),
                     wholePageSpinner()),
             )
@@ -1040,15 +1039,6 @@ function makeCustomerSite({lang}) {
     function t(ss) {
         return ss[lang]
     }
-    
-    // TODO:vgrechka @refactor Use something from client-stuff.ts
-//    function pageHeader(title) {
-//        if (typeof title === 'object') {
-//            title = title[lang]
-//        }
-//        return diva({className: 'page-header', style: {marginTop: 30}},
-//                   el('h3', {}, title))
-//    }
     
     function markdownPiece(content) {
         if (typeof content === 'object') {
