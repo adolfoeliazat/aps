@@ -265,6 +265,7 @@ function makeCustomerSite({lang}) {
     sh.cp('-r', `${vendor}/bootstrap-master`, root)
     sh.cp('-r', `${vendor}/font-awesome-4.6.3`, root)
     sh.cp(`${__dirname}/../asset/*`, root)
+    sh.cp(`${__dirname}/../lib/bundle.js`, root)
     
     const tabTitle = {en: `APS`, ua: `APS UA`}[lang]
     
@@ -1253,7 +1254,7 @@ function makeCustomerSite({lang}) {
                          alignItems: 'center',
                          justifyContent: 'center'
                      }},
-                     img('https://raw.githubusercontent.com/vovagrechka/aps/master/aps/asset/chasing-arrows-100-999999.gif'),
+                     img('chasing-arrows-100-999999.gif'),
                      t({en: 'Breathe slowly...', ua: 'Дышите глубоко...'}))
     }
     
@@ -1361,6 +1362,7 @@ function makeCustomerSite({lang}) {
                     <script src="jquery.min.js"></script>
                     <script src="bootstrap-master/js/bootstrap.min.js"></script>
                     <script>${js}</script>
+                    <script src="bundle.js"></script>
                 </body>
             </html>
         `)

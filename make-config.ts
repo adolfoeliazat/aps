@@ -10,12 +10,26 @@ import static 'into-u'
 let dyna
 
 makeConfig = {
+    
+    requireSourceMapSupport({file}) {
+        return ~['aps/src/make-static-sites.ts',
+                 'aps/src/global-shortcut-listener.ts'].indexOf(file)
+    },
+    
+    requireRegeneratorRuntime(...args) {
+        return makeConfig.requireSourceMapSupport(...args)
+    },
+    
     modules: [
         {
             name: 'aps',
+            browserify: 'true',
+            browserifyEntry: 'client-stuff.js',
+            
             async afterFirstCompile() {
                 await buildStaticSites()
             },
+            
             watch() {
                 doDyingNoisa(async function() {
                     const port = 3901
