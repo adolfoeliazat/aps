@@ -998,6 +998,7 @@ function makeCustomerSite({lang}) {
             diva({className: 'container'},
                 pageHeader({en: `Sign In`, ua: `Вход`}),
                 wholePageSpinner(),
+                diva({id: 'root'}),
             )
         )
     })
