@@ -1081,6 +1081,17 @@ function makeCustomerSite({lang}) {
                     
                     <link href="bootstrap-master/css/bootstrap.min.css" rel="stylesheet">
                     <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
+                    <style>
+                        button:disabled {
+                            cursor: default !important;
+                        }
+                        input:disabled {
+                            cursor: default !important;
+                        }
+                        select:disabled {
+                            cursor: default !important;
+                        }
+                    </style>
                     <style>${css}</style>
                 </head>
                 <body style="padding-top: 50px;">

@@ -18,27 +18,51 @@ asn(global, {
         timeoutSet(DEBUG_SIMULATE_SLOW_NETWORK ? 1000 : 0, _=> {
             $('#wholePageSpinner').hide()
             if (opts.pageName === 'sign-in') {
-                const emailInput = Input({autoFocus: true})
-                const passwordInput = Input({type: 'password'})
-                ReactDOM.render(
-                    formsa({width: '50%', margin: '0 auto'},
-                        diva({className: 'form-group'},
-                            label(t('E-mail', 'Почта')),
-                            emailInput),
-                        diva({className: 'form-group'},
-                            label(t('Password', 'Пароль')),
-                            passwordInput),
-                        div(link(t('Still don’t have an account? Create it!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
-                            dlog('create acccccccc')
-                        })),
-                        div(
-                            button({title: 'Go', onClick() { dlog('goooooing') }})),
-                    ),
+                ReactDOM.render(updatableElement(update => {
+                        const emailInput = Input({autoFocus: true})
+                        const passwordInput = Input({type: 'password'})
+                        let working
+                        
+                        return _=> formsa({width: '50%', margin: '0 auto'},
+                            diva({className: 'form-group'},
+                                label(t('E-mail', 'Почта')),
+                                emailInput),
+                            diva({className: 'form-group'},
+                                label(t('Password', 'Пароль')),
+                                passwordInput),
+                            divsa({textAlign: 'left'},
+                                button.primary({title: t('Sign In', 'Войти'), disabled: working}, async function() {
+                                    working = true
+                                    emailInput.disabled = true
+                                    passwordInput.disabled = true
+                                    update()
+                                    
+                                    const res = await rpc()
+                                    dlog('got result', res)
+                                    
+                                    working = false
+                                    emailInput.disabled = false
+                                    passwordInput.disabled = false
+                                    update()
+                                }),
+                                working && divsa({float: 'right'}, spinnerMedium())),
+                            hr(),
+                            divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create it!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
+                                dlog('create acccccccc')
+                            })),
+                        )
+                    }),
                     byid0('root'))
             }
         })
     }
 })
+
+function rpc() {
+    return new Promise(resolve => {
+        timeoutSet(3000, _=> resolve('hiiiiiii'))
+    })
+}
 
 function t(first, second) {
     let ss
