@@ -18,12 +18,14 @@ asn(global, {
         timeoutSet(DEBUG_SIMULATE_SLOW_NETWORK ? 1000 : 0, _=> {
             $('#wholePageSpinner').hide()
             if (opts.pageName === 'sign-in') {
-                ReactDOM.render(updatableElement(update => {
+                setRoot(updatableElement(update => {
                         const emailInput = Input({autoFocus: true})
                         const passwordInput = Input({type: 'password'})
                         let working
                         
-                        return _=> formsa({width: '50%', margin: '0 auto'},
+                        return _=> div(
+                            pageHeader(t(`Sign In`, `Вход`)),
+                            formsa({width: '50%', margin: '0 auto'},
                             diva({className: 'form-group'},
                                 label(t('E-mail', 'Почта')),
                                 emailInput),
@@ -37,8 +39,16 @@ asn(global, {
                                     passwordInput.disabled = true
                                     update()
                                     
-                                    const res = await rpc()
-                                    dlog('got result', res)
+                                    const res = await rpc({fun: 'signIn', email: emailInput.value, password: passwordInput.value})
+                                    
+                                    if (res.error) {
+                                        error = res.error
+                                    } else {
+                                        dlog('successssssssssss')
+                                        error = undefined
+                                        byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
+                                        setRoot(DashboardPage())
+                                    }
                                     
                                     working = false
                                     emailInput.disabled = false
@@ -50,13 +60,29 @@ asn(global, {
                             divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create it!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
                                 dlog('create acccccccc')
                             })),
-                        )
-                    }),
-                    byid0('root'))
+                        ))
+                    }))
             }
         })
     }
 })
+
+function setRoot(comp) {
+    ReactDOM.render(comp, byid0('root'))
+}
+
+function DashboardPage() {
+    return updatableElement(update => {
+        return _=> div(
+            pageHeader(t('Dashboard', 'Панель')),
+            div('i am dashboard'))
+    })
+}
+
+export function pageHeader(title) {
+    return diva({className: 'page-header', style: {marginTop: 30}},
+               el('h3', {}, title))
+}
 
 function rpc() {
     return new Promise(resolve => {
