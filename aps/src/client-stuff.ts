@@ -6,14 +6,8 @@
 
 global = window
 
-//global.Buffer = require('buffer').Buffer
-//global.process = {
-//    argv: ['something', 'running'],
-//    env: {},
-//}
-
 import static 'into-u/client'
 
 
-console.log('Client code is kind of loaded')
+clog('Client code is kind of loaded')
 
