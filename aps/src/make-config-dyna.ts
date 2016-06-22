@@ -12,14 +12,14 @@ export async function onKey(key, {buildStaticSites}) {
         
         await buildStaticSites()
         
-//        const url = 'http://127.0.0.1:3012'
-//        const url = 'http://127.0.0.1:3012/prices.html'
-//        const url = 'http://127.0.0.1:3012/why.html'
-//        const url = 'http://127.0.0.1:3012/prices.html'
-//        const url = 'http://127.0.0.1:3012/faq.html'
-//        const url = 'http://127.0.0.1:3012/contact.html'
-//        const url = 'http://127.0.0.1:3012/blog.html'
-        const url = 'http://127.0.0.1:3012/sign-in.html'
+//        const url = 'http://aps-ua-customer.local:3012'
+//        const url = 'http://aps-ua-customer.local:3012/prices.html'
+//        const url = 'http://aps-ua-customer.local:3012/why.html'
+//        const url = 'http://aps-ua-customer.local:3012/prices.html'
+//        const url = 'http://aps-ua-customer.local:3012/faq.html'
+//        const url = 'http://aps-ua-customer.local:3012/contact.html'
+//        const url = 'http://aps-ua-customer.local:3012/blog.html'
+        const url = 'http://aps-ua-customer.local:3012/sign-in.html'
         doNoisa(async function() {
             wio = webdriverio.remote({
                 desiredCapabilities: {

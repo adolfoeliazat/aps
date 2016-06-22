@@ -1,0 +1,5 @@
+127.0.0.1    aps-backend.local
+127.0.0.1    aps-ua-customer.local
+127.0.0.1    aps-ua-writer.local
+127.0.0.1    aps-en-customer.local
+127.0.0.1    aps-en-writer.local

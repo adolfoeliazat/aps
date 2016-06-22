@@ -6,6 +6,7 @@
 
 BOOTSTRAP_VERSION = 3
 DEBUG_SIMULATE_SLOW_NETWORK = true
+BACKEND_URL = 'http://localhost:3100'
 
 require('regenerator-runtime/runtime')
 import static 'into-u/utils-client into-u/ui'
@@ -35,9 +36,10 @@ asn(global, {
                                 passwordInput),
                             divsa({textAlign: 'left'},
                                 button.primary({title: t('Sign In', 'Войти'), disabled: working}, async function() {
-                                    working = true
                                     emailInput.disabled = true
                                     passwordInput.disabled = true
+                                    error = undefined
+                                    working = true
                                     update()
                                     
                                     const res = await rpc({fun: 'signIn', email: emailInput.value, password: passwordInput.value})
@@ -85,11 +87,28 @@ export function pageHeader(title) {
                el('h3', {}, title))
 }
 
-function rpc() {
-    return new Promise(resolve => {
-        timeoutSet(1000, _=> resolve({error: 'fuckup here'}))
-//        timeoutSet(1000, _=> resolve('hiiiiiii'))
-    })
+async function rpc(message) {
+    try {
+        var request = require('superagent');
+        const response = await request
+            .post(`${BACKEND_URL}/rpc`)
+            .set('X-Requested-With', 'XMLHttpRequest')
+            .set('Expires', '-1')
+            .set('Cache-Control', 'no-cache,no-store,must-revalidate,max-age=-1,private')
+            .set('APS-Token', 'something')
+            .type('application/json')
+            .send(asn({lang}, message))
+            
+        if (DEBUG_SIMULATE_SLOW_NETWORK) {
+            await delay(1000)
+        }
+        
+        // dlog('response body', response.body)
+        return response.body
+    } catch (e) {
+        console.error(e)
+        return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
+    }
 }
 
 function t(first, second) {
