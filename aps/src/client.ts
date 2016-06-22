@@ -9,13 +9,15 @@ DEBUG_SIMULATE_SLOW_NETWORK = true
 BACKEND_URL = 'http://localhost:3100'
 
 require('regenerator-runtime/runtime')
-import static 'into-u/utils-client into-u/ui'
+import static 'into-u/utils-client into-u/ui ./stuff'
 
-let lang
+let lang, t
 
 asn(global, {
     initCustomerUI(opts) {
         lang = opts.lang
+        t = makeT(lang)
+        
         timeoutSet(DEBUG_SIMULATE_SLOW_NETWORK ? 1000 : 0, _=> {
             $('#wholePageSpinner').hide()
             if (opts.pageName === 'sign-in') {
@@ -111,14 +113,5 @@ async function rpc(message) {
     }
 }
 
-function t(first, second) {
-    let ss
-    if (second) {
-        ss = {en: first, ua: second}
-    } else {
-        ss = first
-    }
-    return ss[lang]
-}
 
 clog('Client code is kind of loaded')

@@ -6,7 +6,7 @@
 
 import fs = require('fs')
 import sh = require('shelljs')
-import static 'into-u ./stuff ./client-stuff'
+import static 'into-u ./stuff ./client'
 
 sh.config.fatal = true
 Error.stackTraceLimit = Infinity
@@ -15,7 +15,7 @@ makeCustomerSite({lang: 'en'})
 makeCustomerSite({lang: 'ua'})
 
 function makeCustomerSite({lang}) {
-    const def = {}
+    const t = makeT(lang)
     
     const root = `${__dirname}/../built/${lang}-customer`
     sh.rm('-rf', root)
@@ -28,12 +28,12 @@ function makeCustomerSite({lang}) {
     sh.cp(`${__dirname}/../asset/*`, root)
     sh.cp(`${__dirname}/../lib/bundle.js`, root)
     
-    const tabTitle = {en: `APS`, ua: `APS UA`}[lang]
+    const tabTitle = t({en: `APS`, ua: `APS UA`})
     
     writePage({name: 'index',
         comp: div(
             diva({className: 'container'},
-                pageHeader({en: `Welcome to AcademicPaperServed`, ua: `Welcome to AcademicPaperServed UA`}[lang]),
+                pageHeader(t({en: `Welcome to AcademicPaperServed`, ua: `Welcome to AcademicPaperServed UA`})),
                 markdownPiece({en: `
                                    Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
                                    
@@ -57,7 +57,7 @@ function makeCustomerSite({lang}) {
                                    Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.                    
                                `}),
                 
-                pageHeader({en: `Features`, ua: `Features`}[lang]),
+                pageHeader(t({en: `Features`, ua: `Features`})),
                 horizBulletsRow([
                     {glyph: 'pencil', en: `No plagiarism`, ua: `No plagiarism`},
                     {glyph: 'star', en: `Only premium quality`, ua: `Only premium quality`},
@@ -69,7 +69,7 @@ function makeCustomerSite({lang}) {
                     {glyph: 'life-saver', en: `24/7 support`, ua: `24/7 support`},
                 ], {horizContentMargin: 40}),
                 
-                pageHeader({en: `Who We Are`, ua: `Who We Are`}[lang]),
+                pageHeader(t({en: `Who We Are`, ua: `Who We Are`})),
                 markdownPiece({en: `
                                    AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
                                    
@@ -89,25 +89,25 @@ function makeCustomerSite({lang}) {
                                    AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.            
                                `}),
                 
-                pageHeader({en: `What People Say`, ua: `What People Say`}[lang]),
+                pageHeader(t({en: `What People Say`, ua: `What People Say`})),
                 diva({id: 'testimonials-window'},
                     diva({id: 'testimonials-strip'}, ...[
                         {name: {en: 'Nicole', ua: 'Nicole'}, img: 'nicole.jpg', says: {
                              en: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`,
                              ua: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`}},
-                        {name: 'Miranda', img: 'miranda.jpg', says: {
+                        {name: {en: 'Miranda', ua: 'Miranda'}, img: 'miranda.jpg', says: {
                              en: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`,
                              ua: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`}},
-                        {name: 'Mike P.', img: 'mike-p.jpg', says: {
+                        {name: {en: 'Mike P.', ua: 'Mike P.'}, img: 'mike-p.jpg', says: {
                              en: `I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!`,
                              ua: `I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!`}},
-                        {name: 'Joseph B.', img: 'joseph-b.jpg', says: {
+                        {name: {en: 'Joseph B.', ua: 'Joseph B.'}, img: 'joseph-b.jpg', says: {
                              en: `First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?`,
                              ua: `First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?`}},
-                        {name: 'Mark C.', img: 'mark-c.jpg', says: {
+                        {name: {en: 'Mark C.', ua: 'Mark C.'}, img: 'mark-c.jpg', says: {
                              en: `How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.`,
                              ua: `How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.`}},
-                        {name: 'Linda R.', img: 'linda-r.jpg', says: {
+                        {name: {en: 'Linda R.', ua: 'Linda R.'}, img: 'linda-r.jpg', says: {
                              en: `I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!`,
                              ua: `I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!`}},
                         ].map(item =>
@@ -116,13 +116,13 @@ function makeCustomerSite({lang}) {
                                     diva({className: 'media-left'},
                                         img(item.img, {className: 'media-object'})),
                                     diva({className: 'media-body'},
-                                        h4a({className: 'media-heading'}, item.name[lang]),
-                                        span(item.says[lang])))))),
+                                        h4a({className: 'media-heading'}, t(item.name)),
+                                        span(t(item.says))))))),
                                         
                     divsa({display: 'flex', alignItems: 'center', position: 'absolute', width: 20, right: 0, top: 0, height: '100%'},
                         glyph('chevron-right', {id: 'testimonials-right', className: 'fa-2x'}))),
                 
-                pageHeader({en: `What We Offer`, ua: `What We Offer`}[lang]),
+                pageHeader(t({en: `What We Offer`, ua: `What We Offer`})),
                 horizBulletsRow([
                     {glyph: 'envira', en: `Custom essay, research, thesis writing`, ua: `Custom essay, research, thesis writing`},
                     {glyph: 'rocket', en: `Plagiarism-free original papers written from scratch`, ua: `Plagiarism-free original papers written from scratch`},
@@ -330,7 +330,7 @@ function makeCustomerSite({lang}) {
     writePage({name: 'why', activeNav: 'why',
         comp: div(
             diva({className: 'container'},
-                pageHeader({en: `Why AcademicPaperServed?`, ua: `Why AcademicPaperServed UA?`}[lang]),
+                pageHeader(t({en: `Why AcademicPaperServed?`, ua: `Why AcademicPaperServed UA?`})),
                 ...[{
                         title: {en: `We care about each customer’s academic success`, ua: `We care about each customer’s academic success`},
                         content: {
@@ -416,8 +416,8 @@ function makeCustomerSite({lang}) {
                     },
                 ].map(section => 
                     divsa({},
-                        divsa({}, h3Smaller(section.title[lang])),
-                        divsa({}, markdown(dedent(section.content[lang])))))
+                        divsa({}, h3Smaller(t(section.title))),
+                        divsa({}, markdown(dedent(t(section.content))))))
             )
         )
     })
@@ -438,7 +438,7 @@ function makeCustomerSite({lang}) {
     writePage({name: 'prices', activeNav: 'prices',
         comp: div(
             diva({className: 'container'},
-                pageHeader({en: `Our Prices`, ua: `Наши цены`}[lang]),
+                pageHeader(t({en: `Our Prices`, ua: `Наши цены`})),
                 el('table', {className: 'table table-hover table-condensed'},
                     el('thead', {},
                         el('tr', {},
@@ -453,7 +453,7 @@ function makeCustomerSite({lang}) {
                             el('td', {}, row[2]),
                             )))),
                             
-                pageHeader({en: `Pricing Policy`, ua: `Pricing Policy`}[lang]),
+                pageHeader(t({en: `Pricing Policy`, ua: `Pricing Policy`})),
                 markdownPiece({
                     en: `
                         Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
@@ -475,7 +475,7 @@ function makeCustomerSite({lang}) {
                     `
                 }),
                 
-                pageHeader({en: `Bonuses`, ua: `Bonuses`}[lang]),
+                pageHeader(t({en: `Bonuses`, ua: `Bonuses`})),
                 markdownPiece({
                     en: `Ordering a paper at AcademicPaperServed, you also get:`,
                     ua: `Ordering a paper at AcademicPaperServed, you also get:`,
@@ -487,7 +487,7 @@ function makeCustomerSite({lang}) {
                     {en: `Free Plagiarism Report (upon additional request)`, ua: `Free Plagiarism Report (upon additional request)`},
                 ]),
                 
-                pageHeader({en: `Discount Policy`, ua: `Discount Policy`}[lang]),
+                pageHeader(t({en: `Discount Policy`, ua: `Discount Policy`})),
                 markdownPiece({
                     en: `Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:`,
                     ua: `Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:`,
@@ -506,7 +506,7 @@ function makeCustomerSite({lang}) {
         )
     })
     
-    const sampleItems = {
+    const sampleItems = t({
         en: [
             {title: 'Sample APA paper', href: 'apa-sample.doc'},
             {title: 'Sample MLA research paper', href: 'mla-sample.doc'},
@@ -519,12 +519,12 @@ function makeCustomerSite({lang}) {
             {title: 'Пример курсовой работы', href: 'ua_course-sample.doc'},
             {title: 'Пример дипломной работы', href: 'ua_graduate-sample.doc'},
         ],
-    }[lang]
+    })
     
     writePage({name: 'samples', activeNav: 'samples',
         comp: div(
             diva({className: 'container'},
-                pageHeader({en: `Sample Papers`, ua: `Примеры работ`}[lang]),
+                pageHeader(t({en: `Sample Papers`, ua: `Примеры работ`})),
                 hrefBullets(sampleItems),
             )
         )
@@ -533,7 +533,7 @@ function makeCustomerSite({lang}) {
     writePage({name: 'faq', activeNav: 'faq',
         comp: div(
             diva({className: 'container'},
-                pageHeader({en: `FAQ`, ua: `FAQ`}[lang]),
+                pageHeader(t({en: `FAQ`, ua: `FAQ`})),
                 ...[{
                         title: {en: `How does AcademicPaperServed work?`, ua: `How does AcademicPaperServed work?`},
                         content: {
@@ -640,8 +640,8 @@ function makeCustomerSite({lang}) {
                     },
                 ].map(section => 
                     divsa({},
-                        divsa({}, markdownPiece('> ' + section.title[lang])),
-                        divsa({marginBottom: 20, marginTop: -5}, markdown(dedent(section.content[lang])))))
+                        divsa({}, markdownPiece('> ' + t(section.title))),
+                        divsa({marginBottom: 20, marginTop: -5}, markdown(dedent(t(section.content))))))
             )
         )
     })
@@ -649,7 +649,7 @@ function makeCustomerSite({lang}) {
     writePage({name: 'contact', activeNav: 'contact',
         comp: div(
             diva({className: 'container'},
-                pageHeader({en: `Contact Us`, ua: `Contact Us`}[lang]),
+                pageHeader(t({en: `Contact Us`, ua: `Contact Us`})),
                 markdownPiece({
                     en: `
                         Thank you for visiting AcademicPaperServed website! We will be happy to answer any questions, give a quote, and select a writer for your paper at any academic level. We value each customer and strive to achieve best results through communication process. Customer support representative is ready to advise you on the ordering process, choosing your delivery option and selecting an appropriate writer.
@@ -678,7 +678,7 @@ function makeCustomerSite({lang}) {
         )
     })
     
-    const blogItems = {
+    const blogItems = t({
         en: [
             {
                 listTitle: 'Why Would I Order a Research Paper Online?',
@@ -971,7 +971,7 @@ function makeCustomerSite({lang}) {
                 `
             },
         ],
-    }[lang]
+    })
     
     for (const item of blogItems) {
         writePage({name: `blog-${item.slug}`, activeNav: 'blog',
@@ -987,7 +987,7 @@ function makeCustomerSite({lang}) {
     writePage({name: 'blog', activeNav: 'blog',
         comp: div(
             diva({className: 'container'},
-                pageHeader({en: `Writing Blog`, ua: `Писательский Блог`}[lang]),
+                pageHeader(t({en: `Writing Blog`, ua: `Писательский Блог`})),
                 hrefBullets(blogItems.map(x => ({title: x.listTitle, href: `blog-${x.slug}.html`}))),
             )
         )
@@ -997,7 +997,7 @@ function makeCustomerSite({lang}) {
         comp: div(
             diva({className: 'container'},
                 diva({id: 'root'},
-                    pageHeader({en: `Sign In`, ua: `Вход`}[lang]),
+                    pageHeader(t({en: `Sign In`, ua: `Вход`})),
                     wholePageSpinner()),
             )
         )
@@ -1025,7 +1025,7 @@ function makeCustomerSite({lang}) {
     }
     
     function locBullets(items) {
-        return bullets(items.map(x => x[lang]))
+        return bullets(items.map(x => t(x)))
     }
     
     function hrefBullets(items) {
@@ -1036,13 +1036,9 @@ function makeCustomerSite({lang}) {
         return t(omapo(ss, dedent))
     }
     
-    function t(ss) {
-        return ss[lang]
-    }
-    
     function markdownPiece(content) {
         if (typeof content === 'object') {
-            content = content[lang]
+            content = t(content)
         }
         return markdown(dedent(content))
     }
@@ -1052,7 +1048,7 @@ function makeCustomerSite({lang}) {
         return diva({className: 'row', style: {marginBottom: 20}}, ...items.map(x =>
                    diva({className: 'col-md-' + colSize},
                        divsa({textAlign: 'center', marginBottom: 10}, glyph(x.glyph, {className: 'fa-2x', style: {color: BLUE_GRAY_600}})),
-                       divsa({textAlign: 'center', margin: `0 ${horizContentMargin}px`}, x[lang]))))
+                       divsa({textAlign: 'center', margin: `0 ${horizContentMargin}px`}, t(x)))))
     }
     
     function writePage({name, comp, css='', js='', activeNav}) {
@@ -1090,16 +1086,16 @@ function makeCustomerSite({lang}) {
 
                             <div class="collapse navbar-collapse" style="text-align: center;" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
-                                    <li ${activeNav === 'why' ? `class="active"` : ``}><a href="why.html">${{en: `Why Us?`, ua: `Почему мы?`}[lang]}</a></li>
-                                    <li ${activeNav === 'prices' ? `class="active"` : ``}><a href="prices.html">${{en: `Prices`, ua: `Цены`}[lang]}</a></li>
-                                    <li ${activeNav === 'samples' ? `class="active"` : ``}><a href="samples.html">${{en: `Sample Papers`, ua: `Примеры работ`}[lang]}</a></li>
-                                    <li ${activeNav === 'order' ? `class="active"` : ``}><a href="order.html">${{en: `Order a Paper`, ua: `Сделать заказ`}[lang]}</a></li>
-                                    <li ${activeNav === 'faq' ? `class="active"` : ``}><a href="faq.html">${{en: `FAQ`, ua: `ЧаВо`}[lang]}</a></li>
-                                    <li ${activeNav === 'contact' ? `class="active"` : ``}><a href="contact.html">${{en: `Contact Us`, ua: `Связь`}[lang]}</a></li>
-                                    <li ${activeNav === 'blog' ? `class="active"` : ``}><a href="blog.html">${{en: `Writing Blog`, ua: `Писательский Блог`}[lang]}</a></li>
+                                    <li ${activeNav === 'why' ? `class="active"` : ``}><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>
+                                    <li ${activeNav === 'prices' ? `class="active"` : ``}><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>
+                                    <li ${activeNav === 'samples' ? `class="active"` : ``}><a href="samples.html">${t({en: `Sample Papers`, ua: `Примеры работ`})}</a></li>
+                                    <li ${activeNav === 'order' ? `class="active"` : ``}><a href="order.html">${t({en: `Order a Paper`, ua: `Сделать заказ`})}</a></li>
+                                    <li ${activeNav === 'faq' ? `class="active"` : ``}><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>
+                                    <li ${activeNav === 'contact' ? `class="active"` : ``}><a href="contact.html">${t({en: `Contact Us`, ua: `Связь`})}</a></li>
+                                    <li ${activeNav === 'blog' ? `class="active"` : ``}><a href="blog.html">${t({en: `Writing Blog`, ua: `Писательский Блог`})}</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li ${activeNav === 'sign-in' ? `class="active"` : ``}><a id="signInNavLink" href="sign-in.html">${{en: `Sign In`, ua: `Вход`}[lang]}</a></li>
+                                    <li ${activeNav === 'sign-in' ? `class="active"` : ``}><a id="signInNavLink" href="sign-in.html">${t({en: `Sign In`, ua: `Вход`})}</a></li>
                                     <!--
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>

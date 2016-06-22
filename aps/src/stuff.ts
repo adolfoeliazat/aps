@@ -4,7 +4,7 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-import static 'into-u'
+import static 'into-u/utils-client'
 
 export function deliveryOptions() {
     return ['8d', '7d', '5d', '3d', '24h', '12h']
@@ -125,6 +125,19 @@ export function priceForDeliveryOptionAndTypeOfPaper(dopt, top) {
     }[dopt][top]
 }
 
+export function makeT(lang) {
+    return function t(first, second) {
+        let ss
+        if (second) {
+            ss = {en: first, ua: second}
+        } else {
+            ss = first
+        }
+        const res = ss[lang]
+        if (!res) raise('Localize me: ' + deepInspect({lang, arguments}))
+        return res
+    }
+}
 
 
 

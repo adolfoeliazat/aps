@@ -7,7 +7,7 @@
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
 import express = require('express')
-import static 'into-u'
+import static 'into-u ./stuff'
 
 const app = express()
 var bodyParser = require('body-parser')
@@ -27,6 +27,8 @@ app.post('/rpc', (req, res) => {
     
     async function handle() {
         const msg = req.body
+        const t = makeT(msg.lang)
+        
         try {
             if (msg.fun === 'signIn') {
                 const rows = await pgQuery('select * from users where email = $1', [msg.email])
@@ -59,20 +61,8 @@ app.post('/rpc', (req, res) => {
                 return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
             } catch (reallyFucked) {
                 clog('/rpc handle() is so fucked up, it cannot even complain in localized fashion', reallyFucked.stack)
-                return {error: 'I, as a backend, am really fucked up'}
+                return {error: 'As a backend, I am really fucked up'}
             }
-        }
-    
-        function t(first, second) {
-            let ss
-            if (second) {
-                ss = {en: first, ua: second}
-            } else {
-                ss = first
-            }
-            const res = ss[msg.lang]
-            if (!res) raise('Localize me')
-            return res
         }
     }
 })
