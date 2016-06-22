@@ -21,11 +21,12 @@ asn(global, {
                 setRoot(updatableElement(update => {
                         const emailInput = Input({autoFocus: true})
                         const passwordInput = Input({type: 'password'})
-                        let working
+                        let working, error
                         
                         return _=> div(
                             pageHeader(t(`Sign In`, `Вход`)),
                             formsa({width: '50%', margin: '0 auto'},
+                            error && quoteDanger(error),
                             diva({className: 'form-group'},
                                 label(t('E-mail', 'Почта')),
                                 emailInput),
@@ -86,7 +87,8 @@ export function pageHeader(title) {
 
 function rpc() {
     return new Promise(resolve => {
-        timeoutSet(3000, _=> resolve('hiiiiiii'))
+        timeoutSet(1000, _=> resolve({error: 'fuckup here'}))
+//        timeoutSet(1000, _=> resolve('hiiiiiii'))
     })
 }
 
