@@ -144,6 +144,10 @@ function makeCustomerSite({lang}) {
         ),
         
         css: `
+            @media (min-width: 768px) {
+                /* TODO:vgrechka Testimonials style for 768px */
+            }
+            
             @media (min-width: 992px) {
                 #testimonials-window {
                     width: 970px;
@@ -1074,6 +1078,24 @@ function makeCustomerSite({lang}) {
                         }
                         select:disabled {
                             cursor: default !important;
+                        }
+            
+                        @media (min-width: 768px) {
+                            .padding-left-to-center-720 {
+                                padding-left: 0px;
+                            }
+                        }
+                        
+                        @media (min-width: 992px) {
+                            .padding-left-to-center-720 {
+                                padding-left: 110px; /* (940-720)/2 */
+                            }
+                        }
+
+                        @media (min-width: 1200px) {
+                            .padding-left-to-center-720 {
+                                padding-left: 210px; /* (1140-720)/2 */
+                            }
                         }
                     </style>
                     <style>${css}</style>

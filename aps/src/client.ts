@@ -169,7 +169,7 @@ asn(global, {
                     }
                     
                     return _=> div(
-                        pageHeader(def.pageTitle, {className: 'padding-left-100-or-0'}),
+                        pageHeader(def.pageTitle, {className: 'padding-left-to-center-720'}),
                         formsa({width: 720, margin: '0 auto'},
                             error && quoteDanger(error),
                             ...values(def.fields).map(field => {

@@ -5,3 +5,6 @@ export async function onKey(key, {buildStaticSites}) {
         await buildStaticSites()
     }
 }
+
+export async function dispose() {
+}
