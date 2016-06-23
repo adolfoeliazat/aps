@@ -88,17 +88,9 @@ asn(global, {
                             title: t('Last Name', 'Фамилия'),
                             type: 'text',
                         },
-                        agree: {
+                        agreeTerms: {
                             type: 'agreeTerms'
                         },
-//                        password: {
-//                            title: t('Password', 'Пароль'),
-//                            type: 'password',
-//                        },
-//                        passwordAgain: {
-//                            title: t('Password Again', 'Пароль еще раз'),
-//                            type: 'password',
-//                        },
                     },
                     rpcFun: 'signUp',
                     onSuccess(res) {
@@ -117,20 +109,25 @@ asn(global, {
                     
                     for (const [name, field] of toPairs(def.fields)) {
                         field.attrs = field.attrs || {}
-                        field.attrs.id = field.attrs.id || 'field-' + name
+                        field.attrs.id = field.attrs.id || 'field-' + name // TODO:vgrechka @kill
                         
                         if (field.type === 'text') {
                             field.control = Input(asn({}, field.attrs))
                         } else if (field.type === 'password') {
                             field.control = Input(asn({type: 'password'}, field.attrs))
                         } else if (field.type === 'agreeTerms') {
+                            let myError
                             const checkbox = Checkbox({id: 'field-agreeTerms'})
                             field.getValue = _=> checkbox.value
-                            field.control = divsa({display: 'flex'},
+                            field.setDisabled = noop
+//                            field.setError = x => { myError = x; dlog('set error to', myError) }
+                            field.setError = x => update(myError = x)
+                            field.control = _=> divsa({display: 'flex'},
                                 checkbox,
                                 divsa({width: 5}),
                                 t({en: div('I’ve read and agreed with ', link('terms and conditions', popupTerms)),
-                                   ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}))
+                                   ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}),
+                                myError && divsa({width: '15px', height: '15px', backgroundColor: '#e57373', borderRadius: '10px', marginTop: '3px', marginLeft: 'auto'}))
                                    
                             function popupTerms() {
                                 alert('terms here')
@@ -139,8 +136,16 @@ asn(global, {
                             raiseInspect('WTF is the field', field)
                         }
                         
+                        field.getValue = field.getValue || (_=> field.control.value)
+                        field.setDisabled = field.setDisabled || (x => field.control.disabled = x)
+                        field.setError = field.setError || (x => field.control.error = x)
+                        
                         if (field.titleControl === undefined && field.title) {
                             field.titleControl = label(field.title)
+                        }
+                        
+                        window['test_setControlValue_' + name] = function(value) {
+                            field.control.value = value
                         }
                     }
                     
@@ -155,13 +160,15 @@ asn(global, {
                             }),
                             divsa({textAlign: 'left'},
                                 button.primary({title: def.primaryButtonTitle, disabled: working}, async function() {
-                                    values(def.fields).forEach(x => x.disabled = true)
-
+                                    for (const [name, field] of toPairs(def.fields)) {
+                                        field.setError(undefined)
+                                        field.setDisabled(true)
+                                    }
                                     error = undefined
                                     working = true
                                     update()
                                     
-                                    const res = await rpc(asn({fun: def.rpcFun}, omapo(def.fields, x => x.control.value)))
+                                    const res = await rpc(asn({fun: def.rpcFun}, omapo(def.fields, x => x.getValue())))
                                     
                                     if (res.error) {
                                         error = res.error
@@ -171,7 +178,10 @@ asn(global, {
                                     }
                                     
                                     working = false
-                                    values(def.fields).forEach(x => x.disabled = false)
+                                    for (const [name, field] of toPairs(def.fields)) {
+                                        field.setError(res.fieldErrors && res.fieldErrors[name])
+                                        field.setDisabled(false)
+                                    }
                                     update()
                                 }),
                                 working && divsa({float: 'right'}, spinnerMedium())),
@@ -235,7 +245,7 @@ async function testScenario_signUp1() {
     history.replaceState(null, '', 'sign-up.html')
     showWhatsInPath()
     populateFields({
-        email: 'fred@test.me',
+        email: 'fred-apstest@mailinator.com',
         firstName: 'Fred',
         lastName: 'Black',
     })
@@ -243,7 +253,12 @@ async function testScenario_signUp1() {
 
 function populateFields(data) {
     for (const [name, value] of toPairs(data)) {
-        byid('field-' + name).val(value)
+        // byid('field-' + name).val(value)
+        
+        const functionName = 'test_setControlValue_' + name
+        const setValue = window[functionName]
+        if (!setValue) raise('I want function ' + functionName)
+        setValue(value)
     }
 }
 

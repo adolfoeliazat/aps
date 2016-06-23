@@ -52,6 +52,13 @@ app.post('/rpc', (req, res) => {
                 function invalidEmailOrPasswordMessage() {
                     return {error: t('Invalid email or password', 'Неверная почта или пароль')}
                 }
+            } else if (msg.fun === 'signUp') {
+                if (!msg.agreeTerms) return {
+                    error: t('You have to agree with terms and conditions', 'Необходимо принять соглашение'),
+                    fieldErrors: {
+                        agreeTerms: true
+                    }}
+                return {error: 'implement me'}
             }
             
             return {error: 'WTF is the rpc function?'}
