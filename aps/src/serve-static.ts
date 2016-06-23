@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+require('regenerator-runtime/runtime')
+require('source-map-support').install()
 import express = require('express')
 import static 'into-u'
 

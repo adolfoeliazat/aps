@@ -29,43 +29,42 @@ asn(global, {
                         return _=> div(
                             pageHeader(t(`Sign In`, `Вход`)),
                             formsa({width: '50%', margin: '0 auto'},
-                            error && quoteDanger(error),
-                            diva({className: 'form-group'},
-                                label(t('E-mail', 'Почта')),
-                                emailInput),
-                            diva({className: 'form-group'},
-                                label(t('Password', 'Пароль')),
-                                passwordInput),
-                            divsa({textAlign: 'left'},
-                                button.primary({title: t('Sign In', 'Войти'), disabled: working}, async function() {
-                                    emailInput.disabled = true
-                                    passwordInput.disabled = true
-                                    error = undefined
-                                    working = true
-                                    update()
-                                    
-                                    const res = await rpc({fun: 'signIn', email: emailInput.value, password: passwordInput.value})
-                                    
-                                    if (res.error) {
-                                        error = res.error
-                                    } else {
-                                        dlog('successssssssssss')
+                                error && quoteDanger(error),
+                                diva({className: 'form-group'},
+                                    label(t('E-mail', 'Почта')),
+                                    emailInput),
+                                diva({className: 'form-group'},
+                                    label(t('Password', 'Пароль')),
+                                    passwordInput),
+                                divsa({textAlign: 'left'},
+                                    button.primary({title: t('Sign In', 'Войти'), disabled: working}, async function() {
+                                        emailInput.disabled = true
+                                        passwordInput.disabled = true
                                         error = undefined
-                                        byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
-                                        setRoot(DashboardPage())
-                                    }
-                                    
-                                    working = false
-                                    emailInput.disabled = false
-                                    passwordInput.disabled = false
-                                    update()
-                                }),
-                                working && divsa({float: 'right'}, spinnerMedium())),
-                            hr(),
-                            divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create it!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
-                                dlog('create acccccccc')
-                            })),
-                        ))
+                                        working = true
+                                        update()
+                                        
+                                        const res = await rpc({fun: 'signIn', email: emailInput.value, password: passwordInput.value})
+                                        
+                                        if (res.error) {
+                                            error = res.error
+                                        } else {
+                                            dlog('successssssssssss')
+                                            error = undefined
+                                            byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
+                                            setRoot(DashboardPage())
+                                        }
+                                        
+                                        working = false
+                                        emailInput.disabled = false
+                                        passwordInput.disabled = false
+                                        update()
+                                    }),
+                                    working && divsa({float: 'right'}, spinnerMedium())),
+                                hr(),
+                                divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create it!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
+                                })),
+                            ))
                     }))
             }
         })
