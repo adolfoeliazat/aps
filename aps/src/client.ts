@@ -27,6 +27,7 @@ asn(global, {
                 showWhatsInPath()
             }
             
+            window.showWhatsInPath = showWhatsInPath
             showWhatsInPath()
             
             
@@ -77,7 +78,7 @@ asn(global, {
                         email: {
                             title: t('E-mail', 'Почта'),
                             type: 'text',
-                            attrs: {autoFocus: true},
+                            attrs: {id: 'email', autoFocus: true},
                         },
                         firstName: {
                             title: t('First Name', 'Имя'),
@@ -160,6 +161,8 @@ asn(global, {
                         ))
                 }))
             }
+            
+            doNoisa(testScenario_signUp1)
         })
     }
 })
@@ -203,6 +206,12 @@ async function rpc(message) {
         console.error(e)
         return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
     }
+}
+
+
+async function testScenario_signUp1() {
+    history.replaceState(null, '', 'sign-up.html')
+    showWhatsInPath()
 }
 
 

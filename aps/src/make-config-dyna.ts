@@ -12,15 +12,23 @@ export async function onKey(key, {buildStaticSites}) {
         
         await buildStaticSites()
         
-//        const url = 'http://aps-ua-customer.local:3012'
-//        const url = 'http://aps-ua-customer.local:3012/prices.html'
-//        const url = 'http://aps-ua-customer.local:3012/why.html'
-//        const url = 'http://aps-ua-customer.local:3012/prices.html'
-//        const url = 'http://aps-ua-customer.local:3012/faq.html'
-//        const url = 'http://aps-ua-customer.local:3012/contact.html'
-//        const url = 'http://aps-ua-customer.local:3012/blog.html'
-        const url = 'http://aps-ua-customer.local:3012/sign-in.html'
-        doNoisa(async function() {
+//        openURL('http://aps-ua-customer.local:3012/sign-up.html')
+        go(scenarioSignUp1)
+        
+        
+        function go(scenario) {
+            doNoisa(async function() {
+                await scenario()
+                // await openDevConsole()
+            })
+        }
+        
+        async function scenarioSignUp1() {
+            await openURL('http://aps-ua-customer.local:3012/sign-up.html')
+            // await wio.setValue('#email', 'fred@test.me')
+        }
+        
+        async function openURL(url) {
             wio = webdriverio.remote({
                 desiredCapabilities: {
                     browserName: 'chrome'
@@ -31,9 +39,7 @@ export async function onKey(key, {buildStaticSites}) {
             await wio.init()
             await wio.windowHandleMaximize()
             await wio.url(url)
-            // await wio.scroll(0, 500)
-            await openDevConsole()
-        })
+        }
     }
 }
 
