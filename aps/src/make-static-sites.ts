@@ -1118,7 +1118,6 @@ function makeCustomerSite({lang}) {
                         <script src="bundle.js"></script>
                         <script>initDynamicCustomerUI({lang: '${lang}'})</script>
                     `:``}
-                    }
                 </body>
             </html>
         `)

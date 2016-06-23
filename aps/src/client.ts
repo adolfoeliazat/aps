@@ -169,8 +169,8 @@ asn(global, {
                     }
                     
                     return _=> div(
-                        pageHeader(def.pageTitle),
-                        formsa({width: '50%', margin: '0 auto'},
+                        pageHeader(def.pageTitle, {className: 'padding-left-100-or-0'}),
+                        formsa({width: 720, margin: '0 auto'},
                             error && quoteDanger(error),
                             ...values(def.fields).map(field => {
                                 return diva({className: 'form-group'},
@@ -230,8 +230,9 @@ function DashboardPage() {
     })
 }
 
-export function pageHeader(title) {
-    return diva({className: 'page-header', style: {marginTop: 30}},
+export function pageHeader(title, attrs={}) {
+    #extract {className=''} from attrs
+    return diva(asn({className: `page-header ${className}`, style: {marginTop: 30}}, attrs),
                el('h3', {}, title))
 }
 
@@ -261,7 +262,9 @@ async function rpc(message) {
 
 // ======================================== TEST SCENARIOS ========================================
 
-window.testScenario = testScenario_signUp_missingEmail
+if (typeof window === 'object') { // Module can be (actually is) required in server context
+    window.testScenario = testScenario_signUp_missingEmail
+}
 
 async function testScenario_signUp_1() {
     simulateNavigatePage('sign-up')
