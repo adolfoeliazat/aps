@@ -993,16 +993,19 @@ function makeCustomerSite({lang}) {
         )
     })
     
-    writePage({name: `sign-in`, activeNav: 'sign-in',
-        comp: div(
-            diva({className: 'container'},
-                diva({id: 'root'},
-                    pageHeader(t({en: `Sign In`, ua: `Вход`})),
-                    wholePageSpinner()),
-            )
-        )
-    })
+    // TODO:vgrechka @refactor Share titles with client.ts
+    writeDynamicPage({name: 'sign-in', title: t({en: `Sign In`, ua: `Вход`})})
+    writeDynamicPage({name: 'sign-up', title: t({en: `Sign Up`, ua: `Регистрация`})})
+
     
+    function writeDynamicPage(def) {
+        writePage({name: def.name, activeNav: 'sign-in',
+            comp: div(
+                diva({className: 'container'},
+                    diva({id: 'root'},
+                        pageHeader(def.title),
+                        wholePageSpinner())))})
+    }
     
     function wholePageSpinner() {
         return diva({id: 'wholePageSpinner',
@@ -1118,9 +1121,11 @@ function makeCustomerSite({lang}) {
                     <script src="jquery.min.js"></script>
                     <script src="bootstrap-master/js/bootstrap.min.js"></script>
                     <script>${js}</script>
+                    
+                    <!-- TODO:vgrechka Don't load bundle for simple static pages? -->
                     <script src="bundle.js"></script>
                     
-                    <script>initCustomerUI({lang: '${lang}', pageName: '${name}'})</script>
+                    <script>initCustomerUI({lang: '${lang}'})</script>
                 </body>
             </html>
         `)

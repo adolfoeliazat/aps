@@ -1,0 +1,10 @@
+- Top-right nav title should correspond to active dynamic page.
+
+  What if user was at Dashboard (so at top-right there is "Dashboard") and then goes to
+  something static like FAQ. Top-right nav should still be "Dashboard", but from where does
+  static page get this information?
+  
+  Or it's better to show user's name instead of "Dashboard". Same question here.
+  
+  
+  
