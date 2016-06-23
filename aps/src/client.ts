@@ -78,7 +78,7 @@ asn(global, {
                         email: {
                             title: t('E-mail', 'Почта'),
                             type: 'text',
-                            attrs: {id: 'email', autoFocus: true},
+                            attrs: {autoFocus: true},
                         },
                         firstName: {
                             title: t('First Name', 'Имя'),
@@ -88,14 +88,17 @@ asn(global, {
                             title: t('Last Name', 'Фамилия'),
                             type: 'text',
                         },
-                        password: {
-                            title: t('Password', 'Пароль'),
-                            type: 'password',
+                        agree: {
+                            type: 'agreeTerms'
                         },
-                        passwordAgain: {
-                            title: t('Password Again', 'Пароль еще раз'),
-                            type: 'password',
-                        },
+//                        password: {
+//                            title: t('Password', 'Пароль'),
+//                            type: 'password',
+//                        },
+//                        passwordAgain: {
+//                            title: t('Password Again', 'Пароль еще раз'),
+//                            type: 'password',
+//                        },
                     },
                     rpcFun: 'signUp',
                     onSuccess(res) {
@@ -112,13 +115,32 @@ asn(global, {
                 setRoot(updatableElement(update => {
                     let working, error
                     
-                    for (const field of values(def.fields)) {
+                    for (const [name, field] of toPairs(def.fields)) {
+                        field.attrs = field.attrs || {}
+                        field.attrs.id = field.attrs.id || 'field-' + name
+                        
                         if (field.type === 'text') {
                             field.control = Input(asn({}, field.attrs))
                         } else if (field.type === 'password') {
                             field.control = Input(asn({type: 'password'}, field.attrs))
+                        } else if (field.type === 'agreeTerms') {
+                            const checkbox = Checkbox({id: 'field-agreeTerms'})
+                            field.getValue = _=> checkbox.value
+                            field.control = divsa({display: 'flex'},
+                                checkbox,
+                                divsa({width: 5}),
+                                t({en: div('I’ve read and agreed with ', link('terms and conditions', popupTerms)),
+                                   ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}))
+                                   
+                            function popupTerms() {
+                                alert('terms here')
+                            }
                         } else {
                             raiseInspect('WTF is the field', field)
+                        }
+                        
+                        if (field.titleControl === undefined && field.title) {
+                            field.titleControl = label(field.title)
                         }
                     }
                     
@@ -128,7 +150,7 @@ asn(global, {
                             error && quoteDanger(error),
                             ...values(def.fields).map(field => {
                                 return diva({className: 'form-group'},
-                                           label(field.title),
+                                           field.titleControl,
                                            field.control)
                             }),
                             divsa({textAlign: 'left'},
@@ -212,6 +234,17 @@ async function rpc(message) {
 async function testScenario_signUp1() {
     history.replaceState(null, '', 'sign-up.html')
     showWhatsInPath()
+    populateFields({
+        email: 'fred@test.me',
+        firstName: 'Fred',
+        lastName: 'Black',
+    })
+}
+
+function populateFields(data) {
+    for (const [name, value] of toPairs(data)) {
+        byid('field-' + name).val(value)
+    }
 }
 
 
