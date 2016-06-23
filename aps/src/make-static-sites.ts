@@ -327,7 +327,7 @@ function makeCustomerSite({lang}) {
         `
     })
     
-    writePage({name: 'why', activeNav: 'why',
+    writePage({name: 'why', highlightedNav: 'why',
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Why AcademicPaperServed?`, ua: `Why AcademicPaperServed UA?`})),
@@ -435,7 +435,7 @@ function makeCustomerSite({lang}) {
         }
     }
     
-    writePage({name: 'prices', activeNav: 'prices',
+    writePage({name: 'prices', highlightedNav: 'prices',
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Our Prices`, ua: `Наши цены`})),
@@ -521,7 +521,7 @@ function makeCustomerSite({lang}) {
         ],
     })
     
-    writePage({name: 'samples', activeNav: 'samples',
+    writePage({name: 'samples', highlightedNav: 'samples',
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Sample Papers`, ua: `Примеры работ`})),
@@ -530,7 +530,7 @@ function makeCustomerSite({lang}) {
         )
     })
             
-    writePage({name: 'faq', activeNav: 'faq',
+    writePage({name: 'faq', highlightedNav: 'faq',
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `FAQ`, ua: `FAQ`})),
@@ -646,7 +646,7 @@ function makeCustomerSite({lang}) {
         )
     })
     
-    writePage({name: 'contact', activeNav: 'contact',
+    writePage({name: 'contact', highlightedNav: 'contact',
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Contact Us`, ua: `Contact Us`})),
@@ -974,7 +974,7 @@ function makeCustomerSite({lang}) {
     })
     
     for (const item of blogItems) {
-        writePage({name: `blog-${item.slug}`, activeNav: 'blog',
+        writePage({name: `blog-${item.slug}`, highlightedNav: 'blog',
             comp: div(
                 diva({className: 'container'},
                     pageHeader(item.title),
@@ -984,7 +984,7 @@ function makeCustomerSite({lang}) {
         })
     }
     
-    writePage({name: 'blog', activeNav: 'blog',
+    writePage({name: 'blog', highlightedNav: 'blog',
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Writing Blog`, ua: `Писательский Блог`})),
@@ -993,17 +993,13 @@ function makeCustomerSite({lang}) {
         )
     })
     
-    // TODO:vgrechka @refactor Share titles with client.ts
-    writeDynamicPage({name: 'sign-in', title: t({en: `Sign In`, ua: `Вход`})})
-    writeDynamicPage({name: 'sign-up', title: t({en: `Sign Up`, ua: `Регистрация`})})
-
+    dynamicPageNames().forEach(x => writeDynamicPage(x))
     
-    function writeDynamicPage(def) {
-        writePage({name: def.name, activeNav: 'sign-in',
+    function writeDynamicPage(name) {
+        writePage({name: name, highlightedNav: 'private',
             comp: div(
                 diva({className: 'container'},
                     diva({id: 'root'},
-                        pageHeader(def.title),
                         wholePageSpinner())))})
     }
     
@@ -1012,7 +1008,9 @@ function makeCustomerSite({lang}) {
                      style: {
                          display: 'flex',
                          alignItems: 'center',
-                         justifyContent: 'center'
+                         justifyContent: 'center',
+                         position: 'absolute',
+                         left: 0, top: -250, width: '100%', height: '100%',
                      }},
                      img('chasing-arrows-100-999999.gif'),
                      spansa({marginLeft: 10}, t({en: 'Breathe slowly...', ua: 'Дышите глубоко...'})))
@@ -1054,7 +1052,7 @@ function makeCustomerSite({lang}) {
                        divsa({textAlign: 'center', margin: `0 ${horizContentMargin}px`}, t(x)))))
     }
     
-    function writePage({name, comp, css='', js='', activeNav}) {
+    function writePage({name, comp, css='', js='', highlightedNav}) {
         fs.writeFileSync(`${root}/${name}.html`, `
             <!DOCTYPE html>
             <html lang="en">
@@ -1089,28 +1087,22 @@ function makeCustomerSite({lang}) {
 
                             <div class="collapse navbar-collapse" style="text-align: center;" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
-                                    <li ${activeNav === 'why' ? `class="active"` : ``}><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>
-                                    <li ${activeNav === 'prices' ? `class="active"` : ``}><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>
-                                    <li ${activeNav === 'samples' ? `class="active"` : ``}><a href="samples.html">${t({en: `Sample Papers`, ua: `Примеры работ`})}</a></li>
-                                    <li ${activeNav === 'order' ? `class="active"` : ``}><a href="order.html">${t({en: `Order a Paper`, ua: `Сделать заказ`})}</a></li>
-                                    <li ${activeNav === 'faq' ? `class="active"` : ``}><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>
-                                    <li ${activeNav === 'contact' ? `class="active"` : ``}><a href="contact.html">${t({en: `Contact Us`, ua: `Связь`})}</a></li>
-                                    <li ${activeNav === 'blog' ? `class="active"` : ``}><a href="blog.html">${t({en: `Writing Blog`, ua: `Писательский Блог`})}</a></li>
+                                    <li ${highlightedNav === 'why' ? `class="active"` : ``}><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>
+                                    <li ${highlightedNav === 'prices' ? `class="active"` : ``}><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>
+                                    <li ${highlightedNav === 'samples' ? `class="active"` : ``}><a href="samples.html">${t({en: `Sample Papers`, ua: `Примеры работ`})}</a></li>
+                                    <li ${highlightedNav === 'order' ? `class="active"` : ``}><a href="order.html">${t({en: `Order a Paper`, ua: `Сделать заказ`})}</a></li>
+                                    <li ${highlightedNav === 'faq' ? `class="active"` : ``}><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>
+                                    <li ${highlightedNav === 'contact' ? `class="active"` : ``}><a href="contact.html">${t({en: `Contact Us`, ua: `Связь`})}</a></li>
+                                    <li ${highlightedNav === 'blog' ? `class="active"` : ``}><a href="blog.html">${t({en: `Writing Blog`, ua: `Писательский Блог`})}</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li ${activeNav === 'sign-in' ? `class="active"` : ``}><a id="signInNavLink" href="sign-in.html">${t({en: `Sign In`, ua: `Вход`})}</a></li>
-                                    <!--
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </li>
-                                    -->
+                                    <li ${highlightedNav === 'private' ? `class="active"` : ``}><a id="privateNavLink" href="#"></a></li>
+                                    <script>
+                                        var privateNavLink = document.getElementById('privateNavLink')
+                                        var userTitle = localStorage.getItem('userTitle')
+                                        privateNavLink.textContent = userTitle || '${t({en: `Sign In`, ua: `Вход`})}'
+                                        privateNavLink.href = userTitle ? 'dashboard.html' : 'sign-in.html'
+                                    </script>
                                 </ul>
                               </div> <!-- /.navbar-collapse -->
                         </div> <!-- /.container-fluid -->
@@ -1122,10 +1114,11 @@ function makeCustomerSite({lang}) {
                     <script src="bootstrap-master/js/bootstrap.min.js"></script>
                     <script>${js}</script>
                     
-                    <!-- TODO:vgrechka Don't load bundle for simple static pages? -->
-                    <script src="bundle.js"></script>
-                    
-                    <script>initCustomerUI({lang: '${lang}'})</script>
+                    ${highlightedNav === 'private' ? `
+                        <script src="bundle.js"></script>
+                        <script>initDynamicCustomerUI({lang: '${lang}'})</script>
+                    `:``}
+                    }
                 </body>
             </html>
         `)

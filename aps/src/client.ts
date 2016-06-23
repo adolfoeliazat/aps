@@ -13,14 +13,16 @@ import static 'into-u/utils-client into-u/ui ./stuff'
 
 let lang, t
 
+export function dynamicPageNames() {
+    return tokens('sign-in sign-up dashboard')
+}
+
 asn(global, {
-    initCustomerUI(opts) {
+    initDynamicCustomerUI(opts) {
         lang = opts.lang
         t = makeT(lang)
         
         timeoutSet(DEBUG_SIMULATE_SLOW_NETWORK ? 1000 : 0, _=> {
-            $('#wholePageSpinner').hide()
-            
             window.onpopstate = function(e) {
                 showWhatsInPath()
             }
@@ -32,6 +34,14 @@ asn(global, {
                 const path = document.location.pathname
                 if (path.endsWith('/sign-in.html')) return showSignIn()
                 if (path.endsWith('/sign-up.html')) return showSignUp()
+                
+                if (localStorage.getItem('userTitle')) {
+                    if (path.endsWith('/orders.html')) return showOrders()
+                    return showDashboard()
+                }
+                
+                history.replaceState(null, '', 'sign-in.html')
+                return showSignIn()
             }
             
             function showSignIn() {

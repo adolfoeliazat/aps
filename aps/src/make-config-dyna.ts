@@ -24,6 +24,8 @@ export async function onKey(key, {buildStaticSites}) {
             wio = webdriverio.remote({
                 desiredCapabilities: {
                     browserName: 'chrome'
+                },
+                chromeOptions: {
                 }
             })
             await wio.init()

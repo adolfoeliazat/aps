@@ -5,7 +5,7 @@ cd /d e:\work\foundation\devui
 title devui-runner & %FOUNDATION_HOME%\devui\devui-runner.cmd
 
 cd /d e:\work\aps
-title aps watch & make clean watch
+title aps watch & make watch
 
 cd /d E:\work\aps
 title aps static & node aps/lib/serve-static
@@ -14,4 +14,5 @@ cd /d e:\work\aps\aps
 title aps backend & backend.cmd
 
 cd /d C:\opt\selenium
-java -jar selenium-server-standalone-2.53.0.jar
+title selenium & java -jar selenium-server-standalone-2.53.0.jar
+
