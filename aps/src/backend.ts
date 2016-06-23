@@ -29,6 +29,12 @@ app.post('/rpc', (req, res) => {
         const msg = req.body
         const t = makeT(msg.lang)
         
+        const fieldErrors = {}
+        const youFixErrors = {
+            error: t('Please fix errors below', 'Пожалуйста, исправьте ошибки ниже'),
+            fieldErrors
+        }
+        
         try {
             if (msg.fun === 'signIn') {
                 const rows = await pgQuery('select * from users where email = $1', [msg.email])
@@ -52,16 +58,33 @@ app.post('/rpc', (req, res) => {
                 function invalidEmailOrPasswordMessage() {
                     return {error: t('Invalid email or password', 'Неверная почта или пароль')}
                 }
-            } else if (msg.fun === 'signUp') {
-                if (!msg.agreeTerms) return {
-                    error: t('You have to agree with terms and conditions', 'Необходимо принять соглашение'),
-                    fieldErrors: {
-                        agreeTerms: true
-                    }}
+            }
+            
+            else if (msg.fun === 'signUp') {
+                if (!msg.agreeTerms) {
+                    fieldErrors.agreeTerms = t('You have to agree with terms and conditions', 'Необходимо принять соглашение')
+                }
+                
+                if (isBlank(msg.email)) {
+                    fieldErrors.email = t('Email is mandatory', 'Почта обязательна')
+                } else if (!isValidEmail(msg.email)) {
+                    fieldErrors.email = t('Weird kind of email', 'Интересная почта какая-то')
+                }
+                
+                if (isBlank(msg.firstName)) {
+                    fieldErrors.firstName = t('First name is mandatory', 'Имя обязательно')
+                }
+                
+                if (isBlank(msg.lastName)) {
+                    fieldErrors.lastName = t('Last name is mandatory', 'Фамилия обязательна')
+                }
+                
+                if (!isEmpty(fieldErrors)) return youFixErrors
+                
                 return {error: 'implement me'}
             }
             
-            return {error: 'WTF is the rpc function?'}
+            return {error: 'WTF is the RPC function?'}
         } catch (fucked) {
             clog('/rpc handle() is fucked up', fucked.stack)
             try {

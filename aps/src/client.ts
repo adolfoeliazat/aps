@@ -112,22 +112,29 @@ asn(global, {
                         field.attrs.id = field.attrs.id || 'field-' + name // TODO:vgrechka @kill
                         
                         if (field.type === 'text') {
-                            field.control = Input(asn({}, field.attrs))
+                            const input = Input({
+                                volatileStyle() {
+                                    if (impl.error) return {paddingRight: 30}
+                                }
+                            })
+                            const impl = genericFieldImpl(field, input)
+                            field.control = _=> divsa({position: 'relative'},
+                                input,
+                                impl.error && divsa({color: RED_300, marginTop: 5, marginRight: 9, textAlign: 'right'}, impl.error),
+                                impl.error && divsa({width: 15, height: 15, backgroundColor: RED_300, borderRadius: 10, position: 'absolute', right: 8, top: 10}))
                         } else if (field.type === 'password') {
                             field.control = Input(asn({type: 'password'}, field.attrs))
                         } else if (field.type === 'agreeTerms') {
-                            let myError
-                            const checkbox = Checkbox({id: 'field-agreeTerms'})
-                            field.getValue = _=> checkbox.value
-                            field.setDisabled = noop
-//                            field.setError = x => { myError = x; dlog('set error to', myError) }
-                            field.setError = x => update(myError = x)
-                            field.control = _=> divsa({display: 'flex'},
-                                checkbox,
-                                divsa({width: 5}),
-                                t({en: div('I’ve read and agreed with ', link('terms and conditions', popupTerms)),
-                                   ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}),
-                                myError && divsa({width: '15px', height: '15px', backgroundColor: '#e57373', borderRadius: '10px', marginTop: '3px', marginLeft: 'auto'}))
+                            const checkbox = Checkbox()
+                            const impl = genericFieldImpl(field, checkbox)
+                            field.control = _=> div(
+                                divsa({display: 'flex'},
+                                    checkbox,
+                                    divsa({width: 5}),
+                                    t({en: div('I’ve read and agreed with ', link('terms and conditions', popupTerms)),
+                                       ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}),
+                                    impl.error && divsa({width: 15, height: 15, borderRadius: 10, marginTop: 3, marginRight: 9, marginLeft: 'auto', backgroundColor: RED_300})),
+                                impl.error && divsa({color: RED_300, marginTop: 5, marginRight: 9, textAlign: 'right'}, impl.error))
                                    
                             function popupTerms() {
                                 alert('terms here')
@@ -137,6 +144,7 @@ asn(global, {
                         }
                         
                         field.getValue = field.getValue || (_=> field.control.value)
+                        field.setValue = field.setValue || (x => field.control.value = x)
                         field.setDisabled = field.setDisabled || (x => field.control.disabled = x)
                         field.setError = field.setError || (x => field.control.error = x)
                         
@@ -144,8 +152,19 @@ asn(global, {
                             field.titleControl = label(field.title)
                         }
                         
-                        window['test_setControlValue_' + name] = function(value) {
-                            field.control.value = value
+                        window['simulate_setControlValue_' + name] = function(x) {
+                            field.setValue(x)
+                        }
+                        
+                        
+                        function genericFieldImpl(field, to) {
+                            field.getValue = _=> to.value
+                            field.setValue = x => to.value = x
+                            field.setDisabled = x => to.disabled = x
+                            field.setError = x => impl.error = x
+                            
+                            const impl = {}
+                            return impl
                         }
                     }
                     
@@ -159,7 +178,7 @@ asn(global, {
                                            field.control)
                             }),
                             divsa({textAlign: 'left'},
-                                button.primary({title: def.primaryButtonTitle, disabled: working}, async function() {
+                                button.primary({title: def.primaryButtonTitle, disabled: working}, window['simulate_click_primary'] = async function() {
                                     for (const [name, field] of toPairs(def.fields)) {
                                         field.setError(undefined)
                                         field.setDisabled(true)
@@ -194,7 +213,7 @@ asn(global, {
                 }))
             }
             
-            doNoisa(testScenario_signUp1)
+            window.testScenario && doNoisa(window.testScenario)
         })
     }
 })
@@ -240,26 +259,49 @@ async function rpc(message) {
     }
 }
 
+// ======================================== TEST SCENARIOS ========================================
 
-async function testScenario_signUp1() {
-    history.replaceState(null, '', 'sign-up.html')
-    showWhatsInPath()
+window.testScenario = testScenario_signUp_missingEmail
+
+async function testScenario_signUp_1() {
+    simulateNavigatePage('sign-up')
     populateFields({
         email: 'fred-apstest@mailinator.com',
         firstName: 'Fred',
         lastName: 'Black',
+        agreeTerms: true,
     })
+}
+
+async function testScenario_signUp_missingEmail() {
+    simulateNavigatePage('sign-up')
+    populateFields({
+        firstName: 'Fred',
+        lastName: 'Black',
+        // agreeTerms: true,
+    })
+    simulateClick('primary')
+}
+
+function simulateNavigatePage(pageName) {
+    history.replaceState(null, '', pageName + '.html')
+    showWhatsInPath()
 }
 
 function populateFields(data) {
     for (const [name, value] of toPairs(data)) {
-        // byid('field-' + name).val(value)
-        
-        const functionName = 'test_setControlValue_' + name
+        const functionName = 'simulate_setControlValue_' + name
         const setValue = window[functionName]
         if (!setValue) raise('I want function ' + functionName)
         setValue(value)
     }
+}
+
+function simulateClick(name) {
+    const functionName = 'simulate_click_' + name
+    const click = window[functionName]
+    if (!click) raise('I want function ' + functionName)
+    click()
 }
 
 
