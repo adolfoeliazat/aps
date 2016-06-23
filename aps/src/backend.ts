@@ -54,7 +54,7 @@ app.post('/rpc', (req, res) => {
                 }
             }
             
-            return {error: 'WTF'}
+            return {error: 'WTF is the rpc function?'}
         } catch (fucked) {
             clog('/rpc handle() is fucked up', fucked.stack)
             try {
