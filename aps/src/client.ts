@@ -172,7 +172,7 @@ asn(global, {
                     return _=> div(
                         pageHeader(def.pageTitle, {className: 'padding-left-to-center-720'}),
                         formsa({width: 720, margin: '0 auto'},
-                            error && quoteDanger(error),
+                            error && errorBanner(error),
                             ...values(def.fields).map(field => {
                                 return diva({className: 'form-group'},
                                            field.titleControl,
@@ -250,7 +250,7 @@ async function rpc(message) {
             .send(asn({lang}, message))
             
         if (DEBUG_SIMULATE_SLOW_NETWORK) {
-            await delay(1000)
+            await delay(250)
         }
         
         // dlog('response body', response.body)
@@ -263,33 +263,54 @@ async function rpc(message) {
 
 // ======================================== TEST SCENARIOS ========================================
 
-const testScenarioToRun = 'Customer UA :: Sign Up :: Missing email and unchecked agree terms'
+const testScenarioToRun = 'Customer UA :: Sign Up :: 1'
     
 global.testGlobal = {errorLabels: {}}
 
 const testScenarios = {
-    async 'Sign Up :: 1'() {
+    async 'Customer UA :: Sign Up :: 1'() {
         simulateNavigatePage('sign-up')
+        
         simulatePopulateFields({
-            email: 'fred-apstest@mailinator.com',
-            firstName: 'Fred',
-            lastName: 'Black',
-            agreeTerms: true,
-        })
-    },
-
-    async 'Customer UA :: Sign Up :: Missing email and unchecked agree terms'() {
-        simulateNavigatePage('sign-up')
-        simulatePopulateFields({
-            firstName: 'Fred',
-            lastName: 'Black',
-            // agreeTerms: true,
         })
         simulateClick('primary')
-        await shitStartsSpinningThenStops({timeout: 2000})
-        assertErrorLabelTitle('Почта обязательна')
-        assertErrorLabelTitle('Необходимо принять соглашение')
+        await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Почта обязательна', 'Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
+        
+        simulatePopulateFields({
+            email: 'lalala',
+        })
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Интересная почта какая-то', 'Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
+        
+        simulatePopulateFields({
+            email: 'fred-apstest@mailinator.com',
+        })
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
+
+        
+            // firstName: 'Fred',
+            // lastName: 'Black',
+            // agreeTerms: true,
     },
+}
+
+function assertErrorBanner(expected) {
+    uiAssert(testGlobal.errorBanner === expected, `I want error banner [${expected}]`)
+}
+
+function assertNoErrorBanner() {
+    uiAssert(testGlobal.errorBanner === undefined, `I don't want error banner`)
+}
+
+function assertErrorLabelTitlesExactly(...expected) {
+    const actual = values(testGlobal.errorLabels).map(x => x.title)
+    const expectedDescr = expected.map(x => `[${x}]`).join(', ')
+    uiAssert(deepEquals(sortBy(expected), sortBy(actual)), `I want exactly following error labels: ${expectedDescr}`)
 }
 
 if (MODE === 'debug' && typeof window === 'object') {
@@ -314,8 +335,11 @@ if (MODE === 'debug' && typeof window === 'object') {
 
     function capture() {
         let gen = ''
-        for (const label of values(testGlobal.errorLabels)) {
-            gen += `assertErrorLabelTitle('${escapeStringLiteral(label.title)}')\n`
+        gen += `assertErrorLabelTitlesExactly(${values(testGlobal.errorLabels).map(x => "'" + escapeStringLiteral(x.title) + "'").join(', ')})\n`
+        if (testGlobal.errorBanner === undefined) {
+            gen += `assertNoErrorBanner()\n`
+        } else {
+            gen += `assertErrorBanner(${toStringLiteralCode(testGlobal.errorBanner)})\n`
         }
         return gen
     }
@@ -332,7 +356,7 @@ async function runTestScenario() {
             width: 100%;
             background-color: ${GREEN_700};
             color: ${WHITE};
-            padding: 20px 10px;
+            padding: 10px 10px;
             text-align: center;
             font-weight: bold;
         "></div>
@@ -344,16 +368,16 @@ function assertErrorLabelTitle(expectedTitle) {
     uiAssert(ofind(testGlobal.errorLabels, x => x.title === expectedTitle), `I want error label [${expectedTitle}] on screen`)
 }
 
-async function shitStartsSpinningThenStops({timeout=2000}={}) {
+async function assertShitSpinsForMax(maxTime) {
     assertShitSpins()
     
     const t0 = Date.now()
-    while (Date.now() - t0 < timeout) {
+    while (Date.now() - t0 < maxTime) {
         if (!testGlobal.shitSpins) return
         await delay(100)
     }
     
-    uiAssert(false, `I expected the shit to stop spinning in ${timeout}ms`)
+    uiAssert(false, `I expected the shit to stop spinning in ${maxTime}ms`)
 }
 
 function assertShitSpins() {
@@ -370,7 +394,7 @@ function uiAssert(condition, errorMessage) {
             width: 100%;
             background-color: ${RED_700};
             color: ${WHITE};
-            padding: 20px 10px;
+            padding: 10px 10px;
             text-align: center;
             font-weight: bold;
         "></div>

@@ -29,13 +29,29 @@ app.post('/rpc', (req, res) => {
         const msg = req.body
         const t = makeT(msg.lang)
         
-        const fieldErrors = {}
-        const youFixErrors = {
-            error: t('Please fix errors below', 'Пожалуйста, исправьте ошибки ниже'),
-            fieldErrors
-        }
-        
         try {
+            const fieldErrors = {}
+            
+            // TODO:vgrechka @to-really-do Protect with secret token
+            if (msg.fun === 'eval') {
+                try {
+                    let log = ''
+                    const f = Function('logToRemoteEvalResponse', msg.code)
+                    f(
+                        function logToRemoteEvalResponse(...args) {
+                            dlog({logToRemoteEvalResponse: args})
+                            log += args.map(x => {
+                                if (typeof x === 'string') return x
+                                return deepInspect(x)
+                            }).join(' ')
+                        }
+                    )
+                    return {res: log}
+                } catch (e) {
+                    return {err: e.stack}
+                }
+            }
+            
             if (msg.fun === 'signIn') {
                 const rows = await pgQuery('select * from users where email = $1', [msg.email])
                 if (!rows.length) {
@@ -79,12 +95,21 @@ app.post('/rpc', (req, res) => {
                     fieldErrors.lastName = t('Last name is mandatory', 'Фамилия обязательна')
                 }
                 
-                if (!isEmpty(fieldErrors)) return youFixErrors
+                if (!isEmpty(fieldErrors)) return youFixErrors()
                 
                 return {error: 'implement me'}
             }
             
             return {error: 'WTF is the RPC function?'}
+            
+            
+            function youFixErrors() {
+                return {
+                    error: t('Please fix errors below', 'Пожалуйста, исправьте ошибки ниже'),
+                    fieldErrors
+                }
+            }
+                
         } catch (fucked) {
             clog('/rpc handle() is fucked up', fucked.stack)
             try {
