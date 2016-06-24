@@ -35,18 +35,41 @@ app.post('/rpc', (req, res) => {
             // TODO:vgrechka @to-really-do Protect with secret token
             if (msg.fun === 'eval') {
                 try {
+                    const lines = msg.text.split('\n')
+                    let offsetLine = 0
+                    for (let i = 0; i < msg.text.length; ++i) {
+                        if (i === msg.offset) break
+                        if (msg.text[i] === '\n') ++offsetLine
+                    }
+                    
+                    if (!lines[offsetLine].trim().length) return {err: 'Put the damn caret where some text is'}
+                    
+                    let fromLine = offsetLine
+                    for (;;) {
+                        if (fromLine === 0 || !lines[fromLine - 1].trim().length) break
+                        --fromLine
+                    }
+                    let toLine = offsetLine
+                    for (;;) {
+                        if (toLine === lines.length - 1 || !lines[toLine + 1].trim().length) break
+                        ++toLine
+                    }
+                    
+                    const pieceOfCode = lines.slice(fromLine, toLine + 1).join('\n')
+                    
                     let log = ''
-                    const f = Function('logToRemoteEvalResponse', msg.code)
-                    f(
-                        function logToRemoteEvalResponse(...args) {
-                            dlog({logToRemoteEvalResponse: args})
-                            log += args.map(x => {
-                                if (typeof x === 'string') return x
-                                return deepInspect(x)
-                            }).join(' ')
-                        }
-                    )
+                    eval(`!function() { ${pieceOfCode}\n }()`)
+                    
                     return {res: log}
+                    
+                    
+                    function relog(...args) {
+                        dlog({logToRemoteEvalResponse: args})
+                        log += args.map(x => {
+                            if (typeof x === 'string') return x
+                            return deepInspect(x)
+                        }).join(' ') + '\n'
+                    }
                 } catch (e) {
                     return {err: e.stack}
                 }
@@ -147,5 +170,20 @@ async function pgQuery(sql, args) {
     } finally {
         con.release()
     }
+}
+
+function heyBackend_sayHelloToMe({askerName}) {
+    dlog({askerName})
+    return `Hello, ${askerName}`
+}
+
+let kindOfState
+
+function heyBackend_changeYourStateTo(state) {
+    kindOfState = state
+}
+
+function heyBackend_whatsYourState() {
+    return kindOfState
 }
 
