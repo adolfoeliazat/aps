@@ -213,7 +213,7 @@ asn(global, {
                 }))
             }
             
-            window.testScenario && doNoisa(window.testScenario)
+            testScenarioToRun && doNoisa(testScenarios[testScenarioToRun])
         })
     }
 })
@@ -262,28 +262,60 @@ async function rpc(message) {
 
 // ======================================== TEST SCENARIOS ========================================
 
-if (typeof window === 'object') { // Module can be (actually is) required in server context
-    window.testScenario = testScenario_signUp_missingEmail
+const testScenarioToRun = 'Sign Up :: Missing email and unchecked agree terms'
+    
+global.testGlobal = {}
+    
+const testScenarios = {
+    async 'Sign Up :: 1'() {
+        simulateNavigatePage('sign-up')
+        simulatePopulateFields({
+            email: 'fred-apstest@mailinator.com',
+            firstName: 'Fred',
+            lastName: 'Black',
+            agreeTerms: true,
+        })
+    },
+
+    async 'Sign Up :: Missing email and unchecked agree terms'() {
+        simulateNavigatePage('sign-up')
+        simulatePopulateFields({
+            firstName: 'Fred',
+            lastName: 'Black',
+            // agreeTerms: true,
+        })
+        simulateClick('primary')
+        await shitStartsSpinningThenStops()
+        dlog('now checking errors')
+    },
 }
 
-async function testScenario_signUp_1() {
-    simulateNavigatePage('sign-up')
-    populateFields({
-        email: 'fred-apstest@mailinator.com',
-        firstName: 'Fred',
-        lastName: 'Black',
-        agreeTerms: true,
-    })
+async function shitStartsSpinningThenStops({timeout=2000}={}) {
+    assertShitSpins()
 }
 
-async function testScenario_signUp_missingEmail() {
-    simulateNavigatePage('sign-up')
-    populateFields({
-        firstName: 'Fred',
-        lastName: 'Black',
-        // agreeTerms: true,
-    })
-    simulateClick('primary')
+function assertShitSpins() {
+    uiAssert(testGlobal.shitSpins, 'I want shit to be spinning')
+}
+
+function uiAssert(condition, errorMessage) {
+    if (condition) return
+    
+    $(document.body).append(`
+        <div id="uiAssertionErrorBanner" style="
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background-color: ${RED_A200};
+            color: ${WHITE};
+            padding: 20px 10px;
+            text-align: center;
+            font-weight: bold;
+        "></div>
+    `)
+    byid0('uiAssertionErrorBanner').textContent = errorMessage
+    
+    raise('UI assertion failed')
 }
 
 function simulateNavigatePage(pageName) {
@@ -291,7 +323,7 @@ function simulateNavigatePage(pageName) {
     showWhatsInPath()
 }
 
-function populateFields(data) {
+function simulatePopulateFields(data) {
     for (const [name, value] of toPairs(data)) {
         const functionName = 'simulate_setControlValue_' + name
         const setValue = window[functionName]
