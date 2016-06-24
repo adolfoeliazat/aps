@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 })
 
 app.post('/rpc', (req, res) => {
-    dlog({body: req.body, headers: req.headers})
+    // dlog({body: req.body, headers: req.headers})
     handle().then(message => {
         res.json(message)
     })
@@ -79,7 +79,7 @@ app.post('/rpc', (req, res) => {
                 }
             }
             
-            if (msg.fun === 'signIn') {
+            else if (msg.fun === 'signIn') {
                 const rows = await pgQuery('select * from users where email = $1', [msg.email])
                 if (!rows.length) {
                     logFailure('Non-existing email')
@@ -164,16 +164,28 @@ async function pgQuery(sql, args) {
             password: 'apssecret',
         })
     }
-        
-    const con = await pgPool.connect()
-    try {
-        // dlog({sql, args})
-        const res = await con.query(sql, args)
-        // dlog({res})
-        return res.rows
-    } finally {
-        con.release()
-    }
+    
+    // If args is bad, con.query fails without telling us
+    invariant(args === undefined || isArray(args), 'pgQuery wants args to be array or undefined')
+    
+    return await new Promise((resolve, reject) => {
+        pgPool.connect((err, con, done) => {
+            if (err) {
+                clog('PG connection failed', err)
+                done(err)
+                return reject(err)
+            }
+
+            con.query(sql, args, (err, res) => {
+                done()
+                if (err) {
+                    clog('PG query failed', {sql, args, err})
+                    return reject(err)
+                }
+                resolve(res.rows)
+            })
+        })
+    })
 }
 
 function heyBackend_sayHelloToMe({askerName}) {

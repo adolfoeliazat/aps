@@ -271,26 +271,40 @@ const testScenarios = {
     async 'Customer UA :: Sign Up :: 1'() {
         simulateNavigatePage('sign-up')
         
-        simulatePopulateFields({
-        })
         simulateClick('primary')
         await assertShitSpinsForMax(2000)
         assertErrorLabelTitlesExactly('Почта обязательна', 'Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
         assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
         
-        simulatePopulateFields({
-            email: 'lalala',
-        })
+        simulatePopulateFields({email: 'lalala'})
         simulateClick('primary')
         await assertShitSpinsForMax(2000)
         assertErrorLabelTitlesExactly('Интересная почта какая-то', 'Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
         assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
         
-        simulatePopulateFields({
-            email: 'fred-apstest@mailinator.com',
-        })
+        simulatePopulateFields({email: 'fred-apstest@mailinator.com'})
         simulateClick('primary')
         await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
+        
+        simulatePopulateFields({firstName: 'Wilma'})
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Фамилия обязательна', 'Необходимо принять соглашение')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
+        
+        simulatePopulateFields({lastName: 'Blue'})
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Необходимо принять соглашение')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
+        
+        simulatePopulateFields({agreeTerms: true})
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
+
+
 
         
             // firstName: 'Fred',
@@ -427,3 +441,4 @@ function simulateClick(name) {
 
 
 clog('Client code is kind of loaded')
+

@@ -16,3 +16,5 @@ title aps backend & backend.cmd
 cd /d C:\opt\selenium
 title selenium & java -jar selenium-server-standalone-2.53.0.jar
 
+cd /d e:\work\eclipse-newhotness\enh-dll
+title enh-dll & make watch

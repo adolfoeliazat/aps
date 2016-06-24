@@ -26,7 +26,8 @@ doDyingNoisa(async function() {
       if(err) {
         return console.error('error fetching client from pool', err);
       }
-      client.query('select * from users where email = $1', ['toor'], function(err, result) {
+//      client.query('select * from users where email = $1', ['toor'], function(err, result) {
+      client.query(`insert into users(email, hash, firstName, lastName) values('fred-apstest@mailinator.com', 'qwe', 'zzz', 'yyyy'`, undefined, function(err, result) {
         //call `done()` to release the client back to the pool
         done();
 
