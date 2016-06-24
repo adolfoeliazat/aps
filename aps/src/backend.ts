@@ -55,16 +55,20 @@ app.post('/rpc', (req, res) => {
                         ++toLine
                     }
                     
-                    const pieceOfCode = lines.slice(fromLine, toLine + 1).join('\n')
+                    const compiler = require(process.env.FOUNDATION_HOME + '/maker/compile.js')
+                    let pieceOfCode = lines.slice(fromLine, toLine + 1).join('\n')
+                    pieceOfCode = `(async function() { ${pieceOfCode}\n })()`
+                    pieceOfCode = compiler.preDecorateJSLikeCode(pieceOfCode)
+                    pieceOfCode = compiler.compileTS({fileName: 'snippet.ts', code: pieceOfCode})
+                    pieceOfCode = compiler.postDecorateJSLikeCode(pieceOfCode)
                     
                     let log = ''
-                    eval(`!function() { ${pieceOfCode}\n }()`)
+                    await eval(pieceOfCode)
                     
                     return {res: log}
                     
                     
                     function relog(...args) {
-                        dlog({logToRemoteEvalResponse: args})
                         log += args.map(x => {
                             if (typeof x === 'string') return x
                             return deepInspect(x)
