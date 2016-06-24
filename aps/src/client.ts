@@ -250,7 +250,7 @@ async function rpc(message) {
             .send(asn({lang}, message))
             
         if (DEBUG_SIMULATE_SLOW_NETWORK) {
-            await delay(250)
+            await delay(100)
         }
         
         // dlog('response body', response.body)
@@ -282,7 +282,7 @@ const testScenarios = {
         assertErrorLabelTitlesExactly('Интересная почта какая-то', 'Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
         assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
         
-        simulatePopulateFields({email: 'fred-apstest@mailinator.com'})
+        simulatePopulateFields({email: 'fred.red-apstest@mailinator.com'})
         simulateClick('primary')
         await assertShitSpinsForMax(2000)
         assertErrorLabelTitlesExactly('Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
@@ -303,13 +303,20 @@ const testScenarios = {
         simulatePopulateFields({agreeTerms: true})
         simulateClick('primary')
         await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Такая почта уже зарегистрирована')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
 
+        // Extra spaces in email
+        simulatePopulateFields({email: '      fred.red-apstest@mailinator.com     '})
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Такая почта уже зарегистрирована')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
 
+        simulatePopulateFields({email: '   wilma.blue-apstest@mailinator.com      '})
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
 
-        
-            // firstName: 'Fred',
-            // lastName: 'Black',
-            // agreeTerms: true,
     },
 }
 

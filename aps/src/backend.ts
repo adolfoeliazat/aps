@@ -108,23 +108,41 @@ app.post('/rpc', (req, res) => {
                     fieldErrors.agreeTerms = t('You have to agree with terms and conditions', 'Необходимо принять соглашение')
                 }
                 
-                if (isBlank(msg.email)) {
+                const email = sanitizeString(msg.email)
+                if (isBlank(email)) {
                     fieldErrors.email = t('Email is mandatory', 'Почта обязательна')
-                } else if (!isValidEmail(msg.email)) {
+                } else if (!isValidEmail(email)) {
                     fieldErrors.email = t('Weird kind of email', 'Интересная почта какая-то')
                 }
                 
-                if (isBlank(msg.firstName)) {
+                const firstName = sanitizeString(msg.firstName)
+                if (isBlank(firstName)) {
                     fieldErrors.firstName = t('First name is mandatory', 'Имя обязательно')
                 }
                 
-                if (isBlank(msg.lastName)) {
+                const lastName = sanitizeString(msg.lastName)
+                if (isBlank(lastName)) {
                     fieldErrors.lastName = t('Last name is mandatory', 'Фамилия обязательна')
                 }
                 
-                if (!isEmpty(fieldErrors)) return youFixErrors()
+                const password = uuid()
                 
-                return {error: 'implement me'}
+                if (isEmpty(fieldErrors)) {
+                    try {
+                        await pgQuery(`insert into users(email, hash, firstName, lastName) values($1, $2, $3, $4)`,
+                                [email, await hashPassword(password), firstName, lastName])
+                        return {hunky: 'dory'}
+                    } catch (e) {
+                        if (e.code === '23505') {
+                            fieldErrors.email = t('This email is already registered', 'Такая почта уже зарегистрирована')
+                            return youFixErrors()
+                        } else {
+                            throw e
+                        }
+                    }
+                }
+                
+                return youFixErrors()
             }
             
             return {error: 'WTF is the RPC function?'}
@@ -203,3 +221,7 @@ function heyBackend_whatsYourState() {
     return kindOfState
 }
 
+function sanitizeString(s) {
+    if (typeof s !== 'string') raise('Fuck you with you hacky request')
+    return s.trim()
+}

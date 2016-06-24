@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+NO WAY -- Prevent accidental running of whole script in pgAdmin
+
 drop function if exists onInsert();
 create or replace function onInsert()
 returns trigger as $$
@@ -43,7 +45,7 @@ insert into users(email, hash) values ('root', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1
 update users set firstName = 'Vladimir', lastName = 'Grechka' where email = 'root';
 insert into users(email, hash) values ('toor', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
 update users set firstName = 'Evil', lastName = 'Twin' where email = 'toor';
-insert into users(email, hash, firstName, lastName) values ('fred-apstest@mailinator.com', '$2a$10$bMCn.W0bOYbWrU5shYx7/e5C.ygQpz2cQWcIqsTtHjNbRL/FeHXlu', 'Fred', 'Black');
+insert into users(email, hash, firstName, lastName) values ('fred.red-apstest@mailinator.com', '$2a$10$bMCn.W0bOYbWrU5shYx7/e5C.ygQpz2cQWcIqsTtHjNbRL/FeHXlu', 'Fred', 'Red');
 
 
 /* -------------------------------------------------------------------
@@ -55,6 +57,8 @@ select * from pg_trigger;
 select * from information_schema.triggers;
 
 select * from users;
+
+delete from users where id = 32;
 
 create table test_collation(id bigserial, name text);
 insert into test_collation(name) values
