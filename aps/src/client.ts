@@ -4,8 +4,9 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-BOOTSTRAP_VERSION = 3
+MODE = 'debug'
 DEBUG_SIMULATE_SLOW_NETWORK = true
+BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
 require('regenerator-runtime/runtime')
@@ -266,25 +267,6 @@ const testScenarioToRun = 'Customer UA :: Sign Up :: Missing email and unchecked
     
 global.testGlobal = {errorLabels: {}}
 
-async function runTestScenario() {
-    if (!testScenarioToRun) return
-    await testScenarios[testScenarioToRun]()
-    
-    $(document.body).append(`
-        <div id="uiTestPassedBanner" style="
-            position: absolute;
-            bottom: 0px;
-            width: 100%;
-            background-color: ${GREEN_700};
-            color: ${WHITE};
-            padding: 20px 10px;
-            text-align: center;
-            font-weight: bold;
-        "></div>
-    `)
-    $('#uiTestPassedBanner').text(testScenarioToRun)
-}
-
 const testScenarios = {
     async 'Sign Up :: 1'() {
         simulateNavigatePage('sign-up')
@@ -305,12 +287,60 @@ const testScenarios = {
         })
         simulateClick('primary')
         await shitStartsSpinningThenStops({timeout: 2000})
-        assertErrorLabel('Почта обязательна')
-        assertErrorLabel('Необходимо принять соглашение')
+        assertErrorLabelTitle('Почта обязательна')
+        assertErrorLabelTitle('Необходимо принять соглашение')
     },
 }
 
-function assertErrorLabel(expectedTitle) {
+if (MODE === 'debug' && typeof window === 'object') {
+    window.captureShitToAssert = function() {
+        clog('------------ BEGIN Generated code -------------')
+        clog(capture())
+        clog('------------ END Generated code -------------')
+    }
+    
+    window.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.altKey && e.key === 'k') {
+            const code = capture()
+            $(document.body).append(`
+                <textarea id="capturedCode" rows="10" style="position: absolute; bottom: 0px; width: 100%; font-family: monospace;"></textarea>
+            `)
+            const area = $('#capturedCode')
+            area.val(code)
+            area.focus()
+            area.select()
+        }
+    })
+
+    function capture() {
+        let gen = ''
+        for (const label of values(testGlobal.errorLabels)) {
+            gen += `assertErrorLabelTitle('${escapeStringLiteral(label.title)}')\n`
+        }
+        return gen
+    }
+}
+
+async function runTestScenario() {
+    if (MODE !== 'debug' || !testScenarioToRun) return
+    await testScenarios[testScenarioToRun]()
+    
+    $(document.body).append(`
+        <div id="uiTestPassedBanner" style="
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background-color: ${GREEN_700};
+            color: ${WHITE};
+            padding: 20px 10px;
+            text-align: center;
+            font-weight: bold;
+        "></div>
+    `)
+    $('#uiTestPassedBanner').text(testScenarioToRun)
+}
+
+function assertErrorLabelTitle(expectedTitle) {
     uiAssert(ofind(testGlobal.errorLabels, x => x.title === expectedTitle), `I want error label [${expectedTitle}] on screen`)
 }
 
