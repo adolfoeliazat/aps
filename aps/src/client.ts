@@ -120,7 +120,7 @@ asn(global, {
                             const impl = genericFieldImpl(field, input)
                             field.control = _=> divsa({position: 'relative'},
                                 input,
-                                impl.error && divsa({color: RED_300, marginTop: 5, marginRight: 9, textAlign: 'right'}, impl.error),
+                                impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}),
                                 impl.error && divsa({width: 15, height: 15, backgroundColor: RED_300, borderRadius: 10, position: 'absolute', right: 8, top: 10}))
                         } else if (field.type === 'password') {
                             field.control = Input(asn({type: 'password'}, field.attrs))
@@ -134,7 +134,7 @@ asn(global, {
                                     t({en: div('I’ve read and agreed with ', link('terms and conditions', popupTerms)),
                                        ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}),
                                     impl.error && divsa({width: 15, height: 15, borderRadius: 10, marginTop: 3, marginRight: 9, marginLeft: 'auto', backgroundColor: RED_300})),
-                                impl.error && divsa({color: RED_300, marginTop: 5, marginRight: 9, textAlign: 'right'}, impl.error))
+                                impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}))
                                    
                             function popupTerms() {
                                 alert('terms here')
@@ -213,7 +213,7 @@ asn(global, {
                 }))
             }
             
-            testScenarioToRun && doNoisa(testScenarios[testScenarioToRun])
+            runTestScenario()
         })
     }
 })
@@ -262,10 +262,29 @@ async function rpc(message) {
 
 // ======================================== TEST SCENARIOS ========================================
 
-const testScenarioToRun = 'Sign Up :: Missing email and unchecked agree terms'
+const testScenarioToRun = 'Customer UA :: Sign Up :: Missing email and unchecked agree terms'
     
-global.testGlobal = {}
+global.testGlobal = {errorLabels: {}}
+
+async function runTestScenario() {
+    if (!testScenarioToRun) return
+    await testScenarios[testScenarioToRun]()
     
+    $(document.body).append(`
+        <div id="uiTestPassedBanner" style="
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background-color: ${GREEN_700};
+            color: ${WHITE};
+            padding: 20px 10px;
+            text-align: center;
+            font-weight: bold;
+        "></div>
+    `)
+    $('#uiTestPassedBanner').text(testScenarioToRun)
+}
+
 const testScenarios = {
     async 'Sign Up :: 1'() {
         simulateNavigatePage('sign-up')
@@ -277,7 +296,7 @@ const testScenarios = {
         })
     },
 
-    async 'Sign Up :: Missing email and unchecked agree terms'() {
+    async 'Customer UA :: Sign Up :: Missing email and unchecked agree terms'() {
         simulateNavigatePage('sign-up')
         simulatePopulateFields({
             firstName: 'Fred',
@@ -285,13 +304,26 @@ const testScenarios = {
             // agreeTerms: true,
         })
         simulateClick('primary')
-        await shitStartsSpinningThenStops()
-        dlog('now checking errors')
+        await shitStartsSpinningThenStops({timeout: 2000})
+        assertErrorLabel('Почта обязательна')
+        assertErrorLabel('Необходимо принять соглашение')
     },
+}
+
+function assertErrorLabel(expectedTitle) {
+    uiAssert(ofind(testGlobal.errorLabels, x => x.title === expectedTitle), `I want error label [${expectedTitle}] on screen`)
 }
 
 async function shitStartsSpinningThenStops({timeout=2000}={}) {
     assertShitSpins()
+    
+    const t0 = Date.now()
+    while (Date.now() - t0 < timeout) {
+        if (!testGlobal.shitSpins) return
+        await delay(100)
+    }
+    
+    uiAssert(false, `I expected the shit to stop spinning in ${timeout}ms`)
 }
 
 function assertShitSpins() {
@@ -306,14 +338,14 @@ function uiAssert(condition, errorMessage) {
             position: absolute;
             bottom: 0px;
             width: 100%;
-            background-color: ${RED_A200};
+            background-color: ${RED_700};
             color: ${WHITE};
             padding: 20px 10px;
             text-align: center;
             font-weight: bold;
         "></div>
     `)
-    byid0('uiAssertionErrorBanner').textContent = errorMessage
+    $('#uiAssertionErrorBanner').text(errorMessage)
     
     raise('UI assertion failed')
 }
