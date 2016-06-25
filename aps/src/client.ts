@@ -56,202 +56,200 @@ asn(global, {
         
         if (MODE === 'debug') {
             await initSourceMapConsumer()
-            if (DEBUG_SIMULATE_SLOW_NETWORK) await delay(1000)
         }
         
-        timeoutSet(DEBUG_SIMULATE_SLOW_NETWORK ? 1000 : 0, _=> {
-            window.onpopstate = function(e) {
-                showWhatsInPath()
-            }
-            
-            window.showWhatsInPath = showWhatsInPath
+        window.onpopstate = function(e) {
             showWhatsInPath()
+        }
+        
+        window.showWhatsInPath = showWhatsInPath
+        showWhatsInPath()
+        
+        
+        function showWhatsInPath() {
+            const path = document.location.pathname
+            if (path.endsWith('/sign-in.html')) return showSignIn()
+            if (path.endsWith('/sign-up.html')) return showSignUp()
             
+            if (localStorage.getItem('userTitle')) {
+                if (path.endsWith('/orders.html')) return showOrders()
+                return showDashboard()
+            }
             
-            function showWhatsInPath() {
-                const path = document.location.pathname
-                if (path.endsWith('/sign-in.html')) return showSignIn()
-                if (path.endsWith('/sign-up.html')) return showSignUp()
+            history.replaceState(null, '', 'sign-in.html')
+            return showSignIn()
+        }
+        
+        function showSignIn() {
+            renameme({
+                pageTitle: t('Sign In', 'Вход'),
+                primaryButtonTitle: t('Sign In', 'Войти'),
+                fields: {
+                    email: {
+                        title: t('E-mail', 'Почта'),
+                        type: 'text',
+                        attrs: {autoFocus: true},
+                    },
+                    password: {
+                        title: t('Password', 'Пароль'),
+                        type: 'password',
+                    },
+                },
+                rpcFun: 'signIn',
+                onSuccess(res) {
+                    byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
+                    setRoot(DashboardPage())
+                },
+                bottomLinkTitle: t('Still don’t have an account? Create one!', 'Как? Еще нет аккаунта? Срочно создать!'),
+                bottomLinkPath: 'sign-up.html',
+            })
+        }
+        
+        function showSignUp() {
+            renameme({
+                pageTitle: t('Sign Up', 'Регистрация'),
+                primaryButtonTitle: t('Proceed', 'Вперед'),
+                fields: {
+                    email: {
+                        title: t('E-mail', 'Почта'),
+                        type: 'text',
+                        attrs: {autoFocus: true},
+                    },
+                    firstName: {
+                        title: t('First Name', 'Имя'),
+                        type: 'text',
+                    },
+                    lastName: {
+                        title: t('Last Name', 'Фамилия'),
+                        type: 'text',
+                    },
+                    agreeTerms: {
+                        type: 'agreeTerms'
+                    },
+                },
+                rpcFun: 'signUp',
+                onSuccess(res) {
+                    // byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
+                    // setRoot(DashboardPage())
+                    dlog('todo show confirmation instructions')
+                },
+                bottomLinkTitle: t('Already have an account? Sign in here.', 'Уже есть аккаунт? Тогда входим сюда.'),
+                bottomLinkPath: 'sign-in.html',
+            })
+        }
+        
+        function renameme(def) {
+            setRoot(updatableElement(update => {
+                let working, error
                 
-                if (localStorage.getItem('userTitle')) {
-                    if (path.endsWith('/orders.html')) return showOrders()
-                    return showDashboard()
-                }
-                
-                history.replaceState(null, '', 'sign-in.html')
-                return showSignIn()
-            }
-            
-            function showSignIn() {
-                renameme({
-                    pageTitle: t('Sign In', 'Вход'),
-                    primaryButtonTitle: t('Sign In', 'Войти'),
-                    fields: {
-                        email: {
-                            title: t('E-mail', 'Почта'),
-                            type: 'text',
-                            attrs: {autoFocus: true},
-                        },
-                        password: {
-                            title: t('Password', 'Пароль'),
-                            type: 'password',
-                        },
-                    },
-                    rpcFun: 'signIn',
-                    onSuccess(res) {
-                        byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
-                        setRoot(DashboardPage())
-                    },
-                    bottomLinkTitle: t('Still don’t have an account? Create one!', 'Как? Еще нет аккаунта? Срочно создать!'),
-                    bottomLinkPath: 'sign-up.html',
-                })
-            }
-            
-            function showSignUp() {
-                renameme({
-                    pageTitle: t('Sign Up', 'Регистрация'),
-                    primaryButtonTitle: t('Proceed', 'Вперед'),
-                    fields: {
-                        email: {
-                            title: t('E-mail', 'Почта'),
-                            type: 'text',
-                            attrs: {autoFocus: true},
-                        },
-                        firstName: {
-                            title: t('First Name', 'Имя'),
-                            type: 'text',
-                        },
-                        lastName: {
-                            title: t('Last Name', 'Фамилия'),
-                            type: 'text',
-                        },
-                        agreeTerms: {
-                            type: 'agreeTerms'
-                        },
-                    },
-                    rpcFun: 'signUp',
-                    onSuccess(res) {
-                        // byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
-                        // setRoot(DashboardPage())
-                        dlog('todo show confirmation instructions')
-                    },
-                    bottomLinkTitle: t('Already have an account? Sign in here.', 'Уже есть аккаунт? Тогда входим сюда.'),
-                    bottomLinkPath: 'sign-in.html',
-                })
-            }
-            
-            function renameme(def) {
-                setRoot(updatableElement(update => {
-                    let working, error
+                for (const [name, field] of toPairs(def.fields)) {
+                    field.attrs = field.attrs || {}
+                    field.attrs.id = field.attrs.id || 'field-' + name // TODO:vgrechka @kill
                     
-                    for (const [name, field] of toPairs(def.fields)) {
-                        field.attrs = field.attrs || {}
-                        field.attrs.id = field.attrs.id || 'field-' + name // TODO:vgrechka @kill
-                        
-                        if (field.type === 'text') {
-                            const input = Input({
-                                volatileStyle() {
-                                    if (impl.error) return {paddingRight: 30}
-                                }
-                            })
-                            const impl = genericFieldImpl(field, input)
-                            field.control = _=> divsa({position: 'relative'},
-                                input,
-                                impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}),
-                                impl.error && divsa({width: 15, height: 15, backgroundColor: RED_300, borderRadius: 10, position: 'absolute', right: 8, top: 10}))
-                        } else if (field.type === 'password') {
-                            field.control = Input(asn({type: 'password'}, field.attrs))
-                        } else if (field.type === 'agreeTerms') {
-                            const checkbox = Checkbox()
-                            const impl = genericFieldImpl(field, checkbox)
-                            field.control = _=> div(
-                                divsa({display: 'flex'},
-                                    checkbox,
-                                    divsa({width: 5}),
-                                    t({en: div('I’ve read and agreed with ', link('terms and conditions', popupTerms)),
-                                       ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}),
-                                    impl.error && divsa({width: 15, height: 15, borderRadius: 10, marginTop: 3, marginRight: 9, marginLeft: 'auto', backgroundColor: RED_300})),
-                                impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}))
-                                   
-                            function popupTerms() {
-                                alert('terms here')
+                    if (field.type === 'text') {
+                        const input = Input({
+                            testName: name,
+                            volatileStyle() {
+                                if (impl.error) return {paddingRight: 30}
                             }
-                        } else {
-                            raiseInspect('WTF is the field', field)
+                        })
+                        const impl = genericFieldImpl(field, input)
+                        field.control = _=> divsa({position: 'relative'},
+                            input,
+                            impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}),
+                            impl.error && divsa({width: 15, height: 15, backgroundColor: RED_300, borderRadius: 10, position: 'absolute', right: 8, top: 10}))
+                    } else if (field.type === 'password') {
+                        field.control = Input(asn({type: 'password'}, field.attrs))
+                    } else if (field.type === 'agreeTerms') {
+                        const checkbox = Checkbox()
+                        const impl = genericFieldImpl(field, checkbox)
+                        field.control = _=> div(
+                            divsa({display: 'flex'},
+                                checkbox,
+                                divsa({width: 5}),
+                                t({en: div('I’ve read and agreed with ', link('terms and conditions', popupTerms)),
+                                   ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}),
+                                impl.error && divsa({width: 15, height: 15, borderRadius: 10, marginTop: 3, marginRight: 9, marginLeft: 'auto', backgroundColor: RED_300})),
+                            impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}))
+                               
+                        function popupTerms() {
+                            alert('terms here')
                         }
-                        
-                        field.getValue = field.getValue || (_=> field.control.value)
-                        field.setValue = field.setValue || (x => field.control.value = x)
-                        field.setDisabled = field.setDisabled || (x => field.control.disabled = x)
-                        field.setError = field.setError || (x => field.control.error = x)
-                        
-                        if (field.titleControl === undefined && field.title) {
-                            field.titleControl = label(field.title)
-                        }
-                        
-                        window['simulate_setControlValue_' + name] = function(x) {
-                            field.setValue(x)
-                        }
-                        
-                        
-                        function genericFieldImpl(field, to) {
-                            field.getValue = _=> to.value
-                            field.setValue = x => to.value = x
-                            field.setDisabled = x => to.disabled = x
-                            field.setError = x => impl.error = x
-                            
-                            const impl = {}
-                            return impl
-                        }
+                    } else {
+                        raiseInspect('WTF is the field', field)
                     }
                     
-                    return _=> div(
-                        pageHeader(def.pageTitle, {className: 'padding-left-to-center-720'}),
-                        formsa({width: 720, margin: '0 auto'},
-                            error && errorBanner(error),
-                            ...values(def.fields).map(field => {
-                                return diva({className: 'form-group'},
-                                           field.titleControl,
-                                           field.control)
-                            }),
-                            divsa({textAlign: 'left'},
-                                button.primary({title: def.primaryButtonTitle, disabled: working}, window['simulate_click_primary'] = async function() {
-                                    for (const [name, field] of toPairs(def.fields)) {
-                                        field.setError(undefined)
-                                        field.setDisabled(true)
-                                    }
+                    field.getValue = field.getValue || (_=> field.control.value)
+                    field.setValue = field.setValue || (x => field.control.value = x)
+                    field.setDisabled = field.setDisabled || (x => field.control.disabled = x)
+                    field.setError = field.setError || (x => field.control.error = x)
+                    
+                    if (field.titleControl === undefined && field.title) {
+                        field.titleControl = label(field.title)
+                    }
+                    
+                    window['simulate_setControlValue_' + name] = function(x) { // TODO:vgrechka Use testGlobal.inputs
+                        field.setValue(x)
+                    }
+                    
+                    
+                    function genericFieldImpl(field, to) {
+                        field.getValue = _=> to.value
+                        field.setValue = x => to.value = x
+                        field.setDisabled = x => to.disabled = x
+                        field.setError = x => impl.error = x
+                        
+                        const impl = {}
+                        return impl
+                    }
+                }
+                
+                return _=> div(
+                    pageHeader(def.pageTitle, {className: 'padding-left-to-center-720'}),
+                    formsa({width: 720, margin: '0 auto'},
+                        error && errorBanner(error),
+                        ...values(def.fields).map(field => {
+                            return diva({className: 'form-group'},
+                                       field.titleControl,
+                                       field.control)
+                        }),
+                        divsa({textAlign: 'left'},
+                            button.primary({title: def.primaryButtonTitle, disabled: working}, window['simulate_click_primary'] = async function() {
+                                for (const [name, field] of toPairs(def.fields)) {
+                                    field.setError(undefined)
+                                    field.setDisabled(true)
+                                }
+                                error = undefined
+                                working = true
+                                update()
+                                
+                                const res = await rpcSoft(asn({fun: def.rpcFun}, omapo(def.fields, x => x.getValue())))
+                                
+                                if (res.error) {
+                                    error = res.error
+                                } else {
                                     error = undefined
-                                    working = true
-                                    update()
-                                    
-                                    const res = await rpcSoft(asn({fun: def.rpcFun}, omapo(def.fields, x => x.getValue())))
-                                    
-                                    if (res.error) {
-                                        error = res.error
-                                    } else {
-                                        error = undefined
-                                        def.onSuccess(res)
-                                    }
-                                    
-                                    working = false
-                                    for (const [name, field] of toPairs(def.fields)) {
-                                        field.setError(res.fieldErrors && res.fieldErrors[name])
-                                        field.setDisabled(false)
-                                    }
-                                    update()
-                                }),
-                                working && divsa({float: 'right'}, spinnerMedium())),
-                            hr(),
-                            divsa({textAlign: 'left'}, link(def.bottomLinkTitle, _=> {
-                                history.pushState(null, '', def.bottomLinkPath)
-                                showWhatsInPath()
-                            })),
-                        ))
-                }))
-            }
-            
-            runTestScenario()
-        })
+                                    def.onSuccess(res)
+                                }
+                                
+                                working = false
+                                for (const [name, field] of toPairs(def.fields)) {
+                                    field.setError(res.fieldErrors && res.fieldErrors[name])
+                                    field.setDisabled(false)
+                                }
+                                update()
+                            }),
+                            working && divsa({float: 'right'}, spinnerMedium())),
+                        hr(),
+                        divsa({textAlign: 'left'}, link(def.bottomLinkTitle, _=> {
+                            history.pushState(null, '', def.bottomLinkPath)
+                            showWhatsInPath()
+                        })),
+                    ))
+            }))
+        }
+        
+        runTestScenario()
     }
 })
 
@@ -292,7 +290,7 @@ async function rpc(message) {
         .send(asn({lang, APS_DANGEROUS_TOKEN}, message))
         
     if (MODE === 'debug' && DEBUG_SIMULATE_SLOW_NETWORK) {
-        await delay(50)
+        await delay(inTestScenario ? 50 : 1000)
     }
     
     if (response.body.fatal) throw Error('RPC fatal: ' + response.body.fatal)
@@ -302,15 +300,25 @@ async function rpc(message) {
 
 // ======================================== TEST SCENARIOS ========================================
 
+const testScenarioToRun = 'Customer UA :: Sign In :: After Wilma signs up'
 //const testScenarioToRun = 'Something'
-const testScenarioToRun = 'Customer UA :: Sign Up :: 1'
+//const testScenarioToRun = 'Customer UA :: Sign Up :: 1'
     
-global.testGlobal = {errorLabels: {}}
+let inTestScenario
+global.testGlobal = {errorLabels: {}, inputs: {}}
 
 const testScenarios = {
     async 'Something'() {
-        const response = await superagent.get(`bundle.js`)
-        dlog(response.text.split('\n').slice(0, 10).join('\n'))
+    },
+    
+    async 'Customer UA :: Sign In :: After Wilma signs up'() {
+        await rpc({fun: 'killWilma'})
+        
+        simulateNavigatePage('sign-up')
+//        simulatePopulateFields({
+//            email: '    wilma.blue-apstest@mailinator.com      ',
+//            firstName: '     Wilma   '
+//        })
     },
     
     async 'Customer UA :: Sign Up :: 1'() {
@@ -423,43 +431,45 @@ function assertErrorLabelTitlesExactly(...expected) {
 }
 
 if (MODE === 'debug' && typeof window === 'object') {
-    window.captureShitToAssert = function() {
-        clog('------------ BEGIN Generated code -------------')
-        clog(capture())
-        clog('------------ END Generated code -------------')
-    }
-    
     window.addEventListener('keydown', e => {
-        if (e.ctrlKey && e.altKey && e.key === 'k') {
-            const code = capture()
-            $(document.body).append(`
-                <textarea id="capturedCode" rows="10" style="position: absolute; bottom: 0px; width: 100%; font-family: monospace;"></textarea>
-            `)
+        if (MODE !== 'debug') return
+        let capturedAsCode
+        
+        if (e.ctrlKey && e.altKey && e.key === 'k') { // Capture errors
+            capturedAsCode = ''
+            capturedAsCode += `assertErrorLabelTitlesExactly(${values(testGlobal.errorLabels).map(x => "'" + escapeStringLiteral(x.title) + "'").join(', ')})\n`
+            if (testGlobal.errorBanner === undefined) {
+                capturedAsCode += `assertNoErrorBanner()\n`
+            } else {
+                capturedAsCode += `assertErrorBanner(${toStringLiteralCode(testGlobal.errorBanner)})\n`
+            }
+        } else if (e.ctrlKey && e.altKey && e.key === 'i') { // Capture inputs
+            capturedAsCode = values(testGlobal.inputs).map(x => x.captureAsCode()).join('\n')
+        }
+        
+        if (capturedAsCode) {
+            $('#capturedCode').remove()
+            $(document.body).append(`<textarea id="capturedCode" rows="10" style="position: absolute; bottom: 0px; width: 100%; font-family: monospace;"></textarea>`)
             const area = $('#capturedCode')
-            area.val(code)
+            area.val(capturedAsCode)
             area.focus()
             area.select()
         }
     })
-
-    function capture() {
-        let gen = ''
-        gen += `assertErrorLabelTitlesExactly(${values(testGlobal.errorLabels).map(x => "'" + escapeStringLiteral(x.title) + "'").join(', ')})\n`
-        if (testGlobal.errorBanner === undefined) {
-            gen += `assertNoErrorBanner()\n`
-        } else {
-            gen += `assertErrorBanner(${toStringLiteralCode(testGlobal.errorBanner)})\n`
-        }
-        return gen
-    }
 }
 
 let currentTestScenarioName
 
 async function runTestScenario() {
     if (MODE !== 'debug' || !testScenarioToRun) return
-    currentTestScenarioName = testScenarioToRun
-    await testScenarios[testScenarioToRun]()
+    
+    try {
+        inTestScenario = true
+        currentTestScenarioName = testScenarioToRun
+        await testScenarios[testScenarioToRun]()
+    } finally {
+        inTestScenario = false
+    }
     
     $(document.body).append(`
         <div id="uiTestPassedBanner" style="

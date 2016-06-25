@@ -77,7 +77,7 @@ app.post('/rpc', (req, res) => {
                         }).join(' ') + '\n'
                     }
                 } catch (e) {
-                    return {err: e.stack}
+                    return {fatal: e.stack}
                 }
             }
             
