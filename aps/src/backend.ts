@@ -83,6 +83,8 @@ app.post('/rpc', (req, res) => {
             
             else if (msg.fun === 'killWilma') {
                 checkDangerousToken()
+                await pgQuery(`delete from users where email = 'wilma.blue-apstest@mailinator.com'`)
+                return hunkyDory()
             }
             
             else if (msg.fun === 'signIn') {

@@ -314,9 +314,7 @@ const testScenarios = {
     },
     
     async 'Customer UA :: Sign Up :: 1'() {
-        dlog(1111)
         await rpc({fun: 'killWilma'})
-        dlog(2222)
         
         simulateNavigatePage('sign-up')
         
@@ -382,12 +380,14 @@ const testScenarios = {
     },
 }
 
+
+
 function assertErrorBanner(expected) {
     uiAssert(testGlobal.errorBanner === expected, `I want error banner [${expected}]`)
 }
 
 function assertNoErrorBanner() {
-    uiAssert(testGlobal.errorBanner === undefined, `I don't want an error banner`)
+    uiAssert(testGlobal.errorBanner === undefined, `I don't want an error banner hanging here`)
 }
 
 function stack() {
@@ -410,6 +410,10 @@ function stack() {
     })
     
     return usefulLines
+}
+
+function assertNoErrorLabels() {
+    uiAssert(isEmpty(testGlobal.errorLabels), `I don't want any error labels here`)
 }
 
 function assertErrorLabelTitlesExactly(...expected) {
