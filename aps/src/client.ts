@@ -224,7 +224,7 @@ asn(global, {
                                     working = true
                                     update()
                                     
-                                    const res = await rpc(asn({fun: def.rpcFun}, omapo(def.fields, x => x.getValue())))
+                                    const res = await rpcSoft(asn({fun: def.rpcFun}, omapo(def.fields, x => x.getValue())))
                                     
                                     if (res.error) {
                                         error = res.error
@@ -273,26 +273,31 @@ export function pageHeader(title, attrs={}) {
                el('h3', {}, title))
 }
 
-async function rpc(message) {
+async function rpcSoft(message) {
     try {
-        const response = await superagent
-            .post(`${BACKEND_URL}/rpc`)
-            .set('X-Requested-With', 'XMLHttpRequest')
-            .set('Expires', '-1')
-            .set('Cache-Control', 'no-cache,no-store,must-revalidate,max-age=-1,private')
-            .set('APS-Token', 'something')
-            .type('application/json')
-            .send(asn({lang}, message))
-            
-        if (MODE === 'debug' && DEBUG_SIMULATE_SLOW_NETWORK) {
-            await delay(50)
-        }
-        
-        return response.body
+        return await rpc(message)
     } catch (e) {
-        console.error(e)
         return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
     }
+}
+
+async function rpc(message) {
+    const response = await superagent
+        .post(`${BACKEND_URL}/rpc`)
+        .set('X-Requested-With', 'XMLHttpRequest')
+        .set('Expires', '-1')
+        .set('Cache-Control', 'no-cache,no-store,must-revalidate,max-age=-1,private')
+        .set('APS-Token', 'something')
+        .type('application/json')
+        .send(asn({lang, APS_DANGEROUS_TOKEN}, message))
+        
+    if (MODE === 'debug' && DEBUG_SIMULATE_SLOW_NETWORK) {
+        await delay(50)
+    }
+    
+    if (response.body.fatal) throw Error('RPC fatal: ' + response.body.fatal)
+    
+    return response.body
 }
 
 // ======================================== TEST SCENARIOS ========================================
@@ -309,6 +314,10 @@ const testScenarios = {
     },
     
     async 'Customer UA :: Sign Up :: 1'() {
+        dlog(1111)
+        await rpc({fun: 'killWilma'})
+        dlog(2222)
+        
         simulateNavigatePage('sign-up')
         
         simulateClick('primary')

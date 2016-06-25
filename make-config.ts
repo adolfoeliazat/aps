@@ -25,6 +25,7 @@ makeConfig = {
             name: 'aps',
             browserify: 'true',
             browserifyEntry: 'client.js',
+            
             onBrowserifyBundle() {
                 for (const dir of tokens('en-customer ua-customer')) {
                     const target = `aps/built/${dir}`
@@ -33,6 +34,10 @@ makeConfig = {
                         dlog('Copied bundle to ' + target)
                     }
                 }
+            },
+            
+            postDecorateBundle(code) {
+                return `APS_DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}';${code}`
             },
             
             async afterFirstCompile() {

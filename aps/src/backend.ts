@@ -34,8 +34,8 @@ app.post('/rpc', (req, res) => {
         try {
             const fieldErrors = {}
             
-            // TODO:vgrechka @to-really-do Protect with secret token
             if (msg.fun === 'eval') {
+                checkDangerousToken()
                 try {
                     const lines = msg.text.split('\n')
                     let offsetLine = 0
@@ -81,6 +81,10 @@ app.post('/rpc', (req, res) => {
                 }
             }
             
+            else if (msg.fun === 'killWilma') {
+                checkDangerousToken()
+            }
+            
             else if (msg.fun === 'signIn') {
                 const rows = await pgQuery('select * from users where email = $1', [msg.email])
                 if (!rows.length) {
@@ -93,7 +97,7 @@ app.post('/rpc', (req, res) => {
                     return invalidEmailOrPasswordMessage()
                 }
                 
-                return {hunky: 'dory'}
+                return hunkyDory()
                 
                 
                 function logFailure(reason) {
@@ -137,7 +141,7 @@ app.post('/rpc', (req, res) => {
                     try {
                         await pgQuery(`insert into users(email, hash, firstName, lastName) values($1, $2, $3, $4)`,
                                 [email, await hashPassword(password), firstName, lastName])
-                        return {hunky: 'dory'}
+                        return hunkyDory()
                     } catch (e) {
                         if (e.code === '23505') {
                             fieldErrors.email = t('This email is already registered', 'Такая почта уже зарегистрирована')
@@ -151,7 +155,9 @@ app.post('/rpc', (req, res) => {
                 return youFixErrors()
             }
             
-            return {error: 'WTF is the RPC function?'}
+            const situation = `WTF is the RPC function ${msg.fun}?`
+            clog(situation)
+            return {fatal: situation}
             
             
             function youFixErrors() {
@@ -160,15 +166,22 @@ app.post('/rpc', (req, res) => {
                     fieldErrors
                 }
             }
-                
-        } catch (fucked) {
-            clog('/rpc handle() is fucked up', fucked.stack)
-            try {
-                return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
-            } catch (reallyFucked) {
-                clog('/rpc handle() is so fucked up, it cannot even complain in localized fashion', reallyFucked.stack)
-                return {error: 'As a backend, I am really fucked up'}
+            
+            function hunkyDory() {
+                return {hunky: 'dory'}
             }
+            
+            function checkDangerousToken() {
+                const serverToken = process.env.APS_DANGEROUS_TOKEN
+                if (!serverToken) raise('I want APS_DANGEROUS_TOKEN configured on server')
+                const clientToken = msg.APS_DANGEROUS_TOKEN
+                if (clientToken !== serverToken) raise('Fuck you, mister hacker')
+            }
+            
+        } catch (fucked) {
+            const situation = `/rpc handle() is fucked up: ${fucked.stack}`
+            clog(situation)
+            return {fatal: situation}
         }
     }
 })
