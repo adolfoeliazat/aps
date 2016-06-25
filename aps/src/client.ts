@@ -214,7 +214,7 @@ asn(global, {
                                        field.control)
                         }),
                         divsa({textAlign: 'left'},
-                            button.primary({title: def.primaryButtonTitle, disabled: working}, window['simulate_click_primary'] = async function() {
+                            button.primary({title: def.primaryButtonTitle, disabled: working, testName: 'primary'}, async function() {
                                 for (const [name, field] of toPairs(def.fields)) {
                                     field.setError(undefined)
                                     field.setDisabled(true)
@@ -254,7 +254,11 @@ asn(global, {
 })
 
 function setRoot(comp) {
-    ReactDOM.render(comp, byid0('root'))
+    ReactDOM.render(updatableElement(update => {
+        return _=> div(
+            comp,
+            MODE === 'debug' && capturePane)
+    }), byid0('root'))
 }
 
 function DashboardPage() {
@@ -305,7 +309,7 @@ const testScenarioToRun = 'Customer UA :: Sign In :: After Wilma signs up'
 //const testScenarioToRun = 'Customer UA :: Sign Up :: 1'
     
 let inTestScenario
-global.testGlobal = {errorLabels: {}, inputs: {}}
+global.testGlobal = {errorLabels: {}, inputs: {}, buttons: {}}
 
 const testScenarios = {
     async 'Something'() {
@@ -313,17 +317,20 @@ const testScenarios = {
     
     async 'Customer UA :: Sign In :: After Wilma signs up'() {
         await rpc({fun: 'killWilma'})
-        
         simulateNavigatePage('sign-up')
-//        simulatePopulateFields({
-//            email: '    wilma.blue-apstest@mailinator.com      ',
-//            firstName: '     Wilma   '
-//        })
+        
+        // Inputs
+        testGlobal.inputs['email'].value = 'wilma.blue-apstest@mailinator.com'
+        testGlobal.inputs['firstName'].value = 'Wilma'
+        testGlobal.inputs['lastName'].value = 'Blue'
+        testGlobal.inputs['agreeTerms'].value = true
+        // Action
+        testGlobal.buttons['primary'].click()
+        await assertShitSpinsForMax(2000)
     },
     
     async 'Customer UA :: Sign Up :: 1'() {
         await rpc({fun: 'killWilma'})
-        
         simulateNavigatePage('sign-up')
         
         simulateClick('primary')
@@ -433,55 +440,8 @@ function assertErrorLabelTitlesExactly(...expected) {
 if (MODE === 'debug' && typeof window === 'object') {
     window.addEventListener('keydown', e => {
         if (MODE !== 'debug') return
-        let gen
-        
-        if (e.ctrlKey && e.altKey && e.key === 'k') { // Capture errors
-            gen = ''
-            gen += `assertErrorLabelTitlesExactly(${values(testGlobal.errorLabels).map(x => "'" + escapeStringLiteral(x.title) + "'").join(', ')})\n`
-            if (testGlobal.errorBanner === undefined) {
-                gen += `assertNoErrorBanner()\n`
-            } else {
-                gen += `assertErrorBanner(${toStringLiteralCode(testGlobal.errorBanner)})\n`
-            }
-        } else if (e.ctrlKey && e.altKey && e.key === 'i') { // Capture inputs
-            gen = values(testGlobal.inputs).map(x => x.captureAsCode()).join('\n')
-        }
-        
-        if (gen) {
-            removePane()
-            $(document.body).append(`<div id="capturedCodeContainer" style="position: absolute; bottom: 0px; width: 100%; height: 250px;"></div>`)
-            
-            ReactDOM.render(statefulElement(update => {
-                const codeArea = Input({kind: 'textarea',
-                                        style: {width: '100%', height: '100%', fontFamily: 'monospace'},
-                                        onKeyDown(e) {
-                                            if (e.keyCode === 27) {
-                                                removePane()
-                                            }
-                                        }})
-                codeArea.value = gen
-                
-                return {
-                    render() {
-                        return divsa({position: 'relative', width: '100%', height: '100%'},
-                                   codeArea,
-                                   button.danger.close({style: {position: 'absolute', right: 5, top: 5}}, _=> {
-                                       removePane()
-                                   }))
-                    },
-                    
-                    componentDidMount() {
-                        codeArea.select()
-                        codeArea.focus()
-                    },
-                }
-            }).element, byid0('capturedCodeContainer'))
-            
-            
-            function removePane() {
-                $('#capturedCodeContainer').remove()
-            }
-        }
+        if (e.ctrlKey && e.altKey && e.key === 'k') return captureState()
+        if (e.ctrlKey && e.altKey && e.key === 'i') return captureInputs()
     })
 }
 
@@ -566,6 +526,7 @@ function simulatePopulateFields(data) {
     }
 }
 
+// TODO:vgrechka Use testGlobal.buttons[...].click()
 function simulateClick(name) {
     const functionName = 'simulate_click_' + name
     const click = window[functionName]
