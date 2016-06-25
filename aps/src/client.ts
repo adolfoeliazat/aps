@@ -131,11 +131,19 @@ asn(global, {
                 onSuccess(res) {
                     // byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
                     // setRoot(DashboardPage())
-                    dlog('todo show confirmation instructions')
+                    showSignUpConfirmationInstructions()
                 },
                 bottomLinkTitle: t('Already have an account? Sign in here.', 'Уже есть аккаунт? Тогда входим сюда.'),
                 bottomLinkPath: 'sign-in.html',
             })
+        }
+        
+        function showSignUpConfirmationInstructions() {
+            setRoot(div(
+                responsivePageHeader(t('Sign Up', 'Регистрация')),
+                p(t('Check your mailbox. We sent you instructions for confirming sign up.',
+                    'Проверьте почту. Мы отправили вам инструкции для подтверждения регистрации.'))
+            ))
         }
         
         function renameme(def) {
@@ -205,7 +213,7 @@ asn(global, {
                 }
                 
                 return _=> div(
-                    pageHeader(def.pageTitle, {className: 'padding-left-to-center-720'}),
+                    responsivePageHeader(def.pageTitle),
                     formsa({width: 720, margin: '0 auto'},
                         error && errorBanner(error),
                         ...values(def.fields).map(field => {
@@ -294,7 +302,7 @@ async function rpc(message) {
         .send(asn({lang, APS_DANGEROUS_TOKEN}, message))
         
     if (MODE === 'debug' && DEBUG_SIMULATE_SLOW_NETWORK) {
-        await delay(inTestScenario ? 50 : 1000)
+        await delay(inTestScenario ? 250 : 1000)
     }
     
     if (response.body.fatal) throw Error('RPC fatal: ' + response.body.fatal)
@@ -327,6 +335,10 @@ const testScenarios = {
         // Action
         testGlobal.buttons['primary'].click()
         await assertShitSpinsForMax(2000)
+        // Expected state
+        assertErrorLabelTitlesExactly()
+        assertNoErrorBanner()
+        assertTextSomewhere('Проверьте почту')
     },
     
     async 'Customer UA :: Sign Up :: 1'() {
@@ -396,6 +408,9 @@ const testScenarios = {
 }
 
 
+function assertTextSomewhere(expected) {
+    uiAssert(~$(document.body).text().indexOf(expected), `I want following text on screen: [${expected}]`)
+}
 
 function assertErrorBanner(expected) {
     uiAssert(testGlobal.errorBanner === expected, `I want error banner [${expected}]`)
@@ -535,9 +550,19 @@ function simulateClick(name) {
 }
 
 
+function responsivePageHeader(title) {
+    return pageHeader(title, {className: 'padding-left-to-center-720'})
+}
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 clog('Client code is kind of loaded')
-
-
-
-
-
