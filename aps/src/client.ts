@@ -10,6 +10,7 @@ BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
 require('regenerator-runtime/runtime')
+import superagent = require('superagent')
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 let lang, t
@@ -18,10 +19,45 @@ export function dynamicPageNames() {
     return tokens('sign-in sign-up dashboard')
 }
 
+let sourceMapConsumer
+async function initSourceMapConsumer() {
+    const logTime = beginLogTime('initSourceMapConsumer')
+    try {
+        global.Buffer = require('buffer').Buffer
+        const sourceMap = require('source-map')
+        const convertSourceMap = require('convert-source-map')
+        
+        sourceMapConsumer = false // Will indicate failure of creation and prevent further attempts
+        try {
+            const response = await superagent.get(`bundle.js`)
+            const text = response.text
+            const smcIndex = text.lastIndexOf('//# sourceMappingURL=data:application/json;')
+            if (~smcIndex) {
+                sourceMapConsumer = new sourceMap.SourceMapConsumer(
+                    convertSourceMap.fromComment(
+                        text.slice(smcIndex)).toJSON())
+            } else {
+                dlog(`No inline source map found in bundle.js`)
+                return lines
+            }
+        } catch (e) {
+            dlog(`Failed to make source map consumer: ${e}`)
+            return lines
+        }
+    } finally {
+        logTime.end()
+    }
+}
+
 asn(global, {
-    initDynamicCustomerUI(opts) {
+    async initDynamicCustomerUI(opts) {
         lang = opts.lang
         t = makeT(lang)
+        
+        if (MODE === 'debug') {
+            await initSourceMapConsumer()
+            if (DEBUG_SIMULATE_SLOW_NETWORK) await delay(1000)
+        }
         
         timeoutSet(DEBUG_SIMULATE_SLOW_NETWORK ? 1000 : 0, _=> {
             window.onpopstate = function(e) {
@@ -239,8 +275,7 @@ export function pageHeader(title, attrs={}) {
 
 async function rpc(message) {
     try {
-        var request = require('superagent');
-        const response = await request
+        const response = await superagent
             .post(`${BACKEND_URL}/rpc`)
             .set('X-Requested-With', 'XMLHttpRequest')
             .set('Expires', '-1')
@@ -249,11 +284,10 @@ async function rpc(message) {
             .type('application/json')
             .send(asn({lang}, message))
             
-        if (DEBUG_SIMULATE_SLOW_NETWORK) {
-            await delay(100)
+        if (MODE === 'debug' && DEBUG_SIMULATE_SLOW_NETWORK) {
+            await delay(50)
         }
         
-        // dlog('response body', response.body)
         return response.body
     } catch (e) {
         console.error(e)
@@ -263,11 +297,17 @@ async function rpc(message) {
 
 // ======================================== TEST SCENARIOS ========================================
 
+//const testScenarioToRun = 'Something'
 const testScenarioToRun = 'Customer UA :: Sign Up :: 1'
     
 global.testGlobal = {errorLabels: {}}
 
 const testScenarios = {
+    async 'Something'() {
+        const response = await superagent.get(`bundle.js`)
+        dlog(response.text.split('\n').slice(0, 10).join('\n'))
+    },
+    
     async 'Customer UA :: Sign Up :: 1'() {
         simulateNavigatePage('sign-up')
         
@@ -288,10 +328,22 @@ const testScenarios = {
         assertErrorLabelTitlesExactly('Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
         assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
         
+        simulatePopulateFields({firstName: 'WilmaWilmaWilmaWilmaWilmaWilmaWilmaWilmaWilmaWilma1'})
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Не более 50 символов', 'Фамилия обязательна', 'Необходимо принять соглашение')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
+        
         simulatePopulateFields({firstName: 'Wilma'})
         simulateClick('primary')
         await assertShitSpinsForMax(2000)
         assertErrorLabelTitlesExactly('Фамилия обязательна', 'Необходимо принять соглашение')
+        assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
+        
+        simulatePopulateFields({lastName: 'BlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlue111'})
+        simulateClick('primary')
+        await assertShitSpinsForMax(2000)
+        assertErrorLabelTitlesExactly('Не более 50 символов', 'Необходимо принять соглашение')
         assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
         
         simulatePopulateFields({lastName: 'Blue'})
@@ -305,7 +357,7 @@ const testScenarios = {
         await assertShitSpinsForMax(2000)
         assertErrorLabelTitlesExactly('Такая почта уже зарегистрирована')
         assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-
+        
         // Extra spaces in email
         simulatePopulateFields({email: '      fred.red-apstest@mailinator.com     '})
         simulateClick('primary')
@@ -316,7 +368,8 @@ const testScenarios = {
         simulatePopulateFields({email: '   wilma.blue-apstest@mailinator.com      '})
         simulateClick('primary')
         await assertShitSpinsForMax(2000)
-
+        assertNoErrorBanner()
+        assertNoErrorLabels()
     },
 }
 
@@ -325,7 +378,29 @@ function assertErrorBanner(expected) {
 }
 
 function assertNoErrorBanner() {
-    uiAssert(testGlobal.errorBanner === undefined, `I don't want error banner`)
+    uiAssert(testGlobal.errorBanner === undefined, `I don't want an error banner`)
+}
+
+function stack() {
+    const e = Error()
+    const lines = e.stack.split('\n').slice(3)
+    const usefulLines = []
+    lines.forEach((lineText, i) => {
+        const bjsi = lineText.indexOf('bundle.js:')
+        if (!~bjsi) return
+        const [line, column] = lineText.slice(bjsi + 'bundle.js:'.length, lineText.length - 1).split(':')
+        const pos = sourceMapConsumer.originalPositionFor({line: parseInt(line), column: parseInt(column)}) 
+        
+        // Members of returned thing can be null 
+        // https://github.com/mozilla/source-map/blob/182f4459415de309667845af2b05716fcf9c59ad/lib/source-map-consumer.js#L637
+        if (pos.source) {
+            lineText = lineText.slice(0, lineText.indexOf('('/*)*/)) + `(${pos.source}:${pos.line}:${pos.column})`
+        }
+        
+        usefulLines.push(lineText)
+    })
+    
+    return usefulLines
 }
 
 function assertErrorLabelTitlesExactly(...expected) {
@@ -366,8 +441,11 @@ if (MODE === 'debug' && typeof window === 'object') {
     }
 }
 
+let currentTestScenarioName
+
 async function runTestScenario() {
     if (MODE !== 'debug' || !testScenarioToRun) return
+    currentTestScenarioName = testScenarioToRun
     await testScenarios[testScenarioToRun]()
     
     $(document.body).append(`
@@ -389,13 +467,17 @@ function assertErrorLabelTitle(expectedTitle) {
     uiAssert(ofind(testGlobal.errorLabels, x => x.title === expectedTitle), `I want error label [${expectedTitle}] on screen`)
 }
 
+function assertFail() {
+    uiAssert(false, 'Just failing here, OK?')
+}
+
 async function assertShitSpinsForMax(maxTime) {
     assertShitSpins()
     
     const t0 = Date.now()
     while (Date.now() - t0 < maxTime) {
         if (!testGlobal.shitSpins) return
-        await delay(100)
+        await delay(50)
     }
     
     uiAssert(false, `I expected the shit to stop spinning in ${maxTime}ms`)
@@ -409,18 +491,13 @@ function uiAssert(condition, errorMessage) {
     if (condition) return
     
     $(document.body).append(`
-        <div id="uiAssertionErrorBanner" style="
-            position: absolute;
-            bottom: 0px;
-            width: 100%;
-            background-color: ${RED_700};
-            color: ${WHITE};
-            padding: 10px 10px;
-            text-align: center;
-            font-weight: bold;
-        "></div>
+        <div style="position: absolute; bottom: 0px; width: 100%; background-color: ${RED_700}; color: ${WHITE}; padding: 10px 10px; text-align: left;">
+            <div id="uiAssertionErrorBanner-message" style="font-weight: bold; border-bottom: 2px solid white; padding-bottom: 5px; margin-bottom: 5px;"></div>
+            <div id="uiAssertionErrorBanner-stack" style="white-space: pre-wrap;"></div>
+        </div>
     `)
-    $('#uiAssertionErrorBanner').text(errorMessage)
+    $('#uiAssertionErrorBanner-message').text(errorMessage + mdash + currentTestScenarioName)
+    $('#uiAssertionErrorBanner-stack').text(stack().join('\n'))
     
     raise('UI assertion failed')
 }
@@ -448,4 +525,8 @@ function simulateClick(name) {
 
 
 clog('Client code is kind of loaded')
+
+
+
+
 

@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+MAX_NAME = 50
+
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
 import express = require('express')
@@ -118,11 +120,15 @@ app.post('/rpc', (req, res) => {
                 const firstName = sanitizeString(msg.firstName)
                 if (isBlank(firstName)) {
                     fieldErrors.firstName = t('First name is mandatory', 'Имя обязательно')
+                } else if (firstName.length > MAX_NAME) {
+                    fieldErrors.firstName = t(`No more than ${MAX_NAME} symbols`, `Не более ${MAX_NAME} символов`)
                 }
                 
                 const lastName = sanitizeString(msg.lastName)
                 if (isBlank(lastName)) {
                     fieldErrors.lastName = t('Last name is mandatory', 'Фамилия обязательна')
+                } else if (lastName.length > MAX_NAME) {
+                    fieldErrors.lastName = t(`No more than ${MAX_NAME} symbols`, `Не более ${MAX_NAME} символов`)
                 }
                 
                 const password = uuid()
