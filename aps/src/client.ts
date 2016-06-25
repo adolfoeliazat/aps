@@ -159,9 +159,9 @@ asn(global, {
                             impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}),
                             impl.error && divsa({width: 15, height: 15, backgroundColor: RED_300, borderRadius: 10, position: 'absolute', right: 8, top: 10}))
                     } else if (field.type === 'password') {
-                        field.control = Input(asn({type: 'password'}, field.attrs))
+                        field.control = Input(asn({type: 'password', testName: name}, field.attrs))
                     } else if (field.type === 'agreeTerms') {
-                        const checkbox = Checkbox()
+                        const checkbox = Checkbox({testName: name})
                         const impl = genericFieldImpl(field, checkbox)
                         field.control = _=> div(
                             divsa({display: 'flex'},
@@ -433,27 +433,54 @@ function assertErrorLabelTitlesExactly(...expected) {
 if (MODE === 'debug' && typeof window === 'object') {
     window.addEventListener('keydown', e => {
         if (MODE !== 'debug') return
-        let capturedAsCode
+        let gen
         
         if (e.ctrlKey && e.altKey && e.key === 'k') { // Capture errors
-            capturedAsCode = ''
-            capturedAsCode += `assertErrorLabelTitlesExactly(${values(testGlobal.errorLabels).map(x => "'" + escapeStringLiteral(x.title) + "'").join(', ')})\n`
+            gen = ''
+            gen += `assertErrorLabelTitlesExactly(${values(testGlobal.errorLabels).map(x => "'" + escapeStringLiteral(x.title) + "'").join(', ')})\n`
             if (testGlobal.errorBanner === undefined) {
-                capturedAsCode += `assertNoErrorBanner()\n`
+                gen += `assertNoErrorBanner()\n`
             } else {
-                capturedAsCode += `assertErrorBanner(${toStringLiteralCode(testGlobal.errorBanner)})\n`
+                gen += `assertErrorBanner(${toStringLiteralCode(testGlobal.errorBanner)})\n`
             }
         } else if (e.ctrlKey && e.altKey && e.key === 'i') { // Capture inputs
-            capturedAsCode = values(testGlobal.inputs).map(x => x.captureAsCode()).join('\n')
+            gen = values(testGlobal.inputs).map(x => x.captureAsCode()).join('\n')
         }
         
-        if (capturedAsCode) {
-            $('#capturedCode').remove()
-            $(document.body).append(`<textarea id="capturedCode" rows="10" style="position: absolute; bottom: 0px; width: 100%; font-family: monospace;"></textarea>`)
-            const area = $('#capturedCode')
-            area.val(capturedAsCode)
-            area.focus()
-            area.select()
+        if (gen) {
+            removePane()
+            $(document.body).append(`<div id="capturedCodeContainer" style="position: absolute; bottom: 0px; width: 100%; height: 250px;"></div>`)
+            
+            ReactDOM.render(statefulElement(update => {
+                const codeArea = Input({kind: 'textarea',
+                                        style: {width: '100%', height: '100%', fontFamily: 'monospace'},
+                                        onKeyDown(e) {
+                                            if (e.keyCode === 27) {
+                                                removePane()
+                                            }
+                                        }})
+                codeArea.value = gen
+                
+                return {
+                    render() {
+                        return divsa({position: 'relative', width: '100%', height: '100%'},
+                                   codeArea,
+                                   button.danger.close({style: {position: 'absolute', right: 5, top: 5}}, _=> {
+                                       removePane()
+                                   }))
+                    },
+                    
+                    componentDidMount() {
+                        codeArea.select()
+                        codeArea.focus()
+                    },
+                }
+            }).element, byid0('capturedCodeContainer'))
+            
+            
+            function removePane() {
+                $('#capturedCodeContainer').remove()
+            }
         }
     })
 }
