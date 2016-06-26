@@ -8,18 +8,9 @@ MAX_NAME = 50
 
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
-import express = require('express')
 import static 'into-u ./stuff'
 
-const app = express()
-var bodyParser = require('body-parser')
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Cache-Control, Expires, APS-Token')
-    next()
-})
+const app = newExpress()
 
 app.post('/rpc', (req, res) => {
     // dlog({body: req.body, headers: req.headers})
