@@ -52,7 +52,8 @@ global.initDynamicCustomerUI = async function(opts) {
         }()
     }
     
-    const urlQuery = querystring.parse(url.parse(location.href).query)
+    const urlObject = url.parse(location.href)
+    const urlQuery = querystring.parse(urlObject.query)
     
     window.onpopstate = function(e) {
         showWhatsInPath()
@@ -296,7 +297,7 @@ global.initDynamicCustomerUI = async function(opts) {
         async 'Customer UA :: Sign In :: After Wilma signs up'() {
             await maildev.clearSentMail()
             await rpc({fun: 'killWilma'})
-            simulateNavigatePage('sign-up')
+            simulateNavigatePath('sign-up.html')
             
             // Inputs
             testGlobal.inputs['email'].value = 'wilma.blue-apstest@mailinator.com'
@@ -314,7 +315,7 @@ global.initDynamicCustomerUI = async function(opts) {
         
         async 'Customer UA :: Sign Up :: 1'() {
             await rpc({fun: 'killWilma'})
-            simulateNavigatePage('sign-up')
+            simulateNavigatePath('sign-up.html')
             
             simulateClick('primary')
             await assertShitSpinsForMax(2000)
@@ -437,11 +438,13 @@ global.initDynamicCustomerUI = async function(opts) {
         const testScenarioToRun = urlQuery.testScenario
         if (MODE !== 'debug' || !testScenarioToRun) return
         
+        const initialPath = location.pathname + location.search
         try {
             currentTestScenarioName = testScenarioToRun
             await testScenarios()[testScenarioToRun]()
         } finally {
             currentTestScenarioName = undefined
+            history.replaceState(null, '', initialPath)
         }
         
         $(document.body).append(`
@@ -498,8 +501,8 @@ global.initDynamicCustomerUI = async function(opts) {
         raise('UI assertion failed')
     }
 
-    function simulateNavigatePage(pageName) {
-        history.replaceState(null, '', pageName + '.html')
+    function simulateNavigatePath(path) {
+        history.replaceState(null, '', path)
         showWhatsInPath()
     }
 
