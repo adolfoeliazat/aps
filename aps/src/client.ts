@@ -312,7 +312,7 @@ global.initUI = async function(opts) {
             assertNoErrorLabels()
             assertNoErrorBanner()
             assertTextSomewhere('Проверьте почту')
-            await assertSentMailsAreExactly([{
+            await assertSentMailsAreExactly('Sign up confirmation mail', [{
                 from: `APS <noreply@aps.local>`,
                 to: `Wilma Blue <wilma.blue@test.shit>`,
                 subject: `Подтверждение регистрации в APS`,
@@ -389,7 +389,7 @@ global.initUI = async function(opts) {
         },
     }}
     
-    async function assertSentMailsAreExactly(expected) {
+    async function assertSentMailsAreExactly(descr, expected) {
         const actual = await rpc({fun: 'danger_getSentMails'})
         if (deepEquals(actual, expected)) return
         
@@ -405,21 +405,40 @@ global.initUI = async function(opts) {
             if (item.added) {
                 backgroundColor = RED_100
                 label = 'Actual'
-            } else {
+            } else if (item.removed) {
                 backgroundColor = GREEN_100
                 label = 'Expected'
+            } else {
+                backgroundColor = WHITE
+                label = undefined
             }
-            if (label !== prevLabel) {
+            if (label && label !== prevLabel) {
                 diffDivs.push(divsa({backgroundColor, fontWeight: 'bold'}, label))
-                prevLabel = label
             }
+            prevLabel = label
             diffDivs.push(divsa({backgroundColor}, item.value))
         }
         
-        uiAssert(false, 'Shit', {detailsUI: updatableElement(update => {
+        uiAssert(false, descr, {detailsUI: updatableElement(update => {
+            const tabs = Tabs({
+                tabs: {
+                    diff: {
+                        title: 'Difference',
+                        content: divsa({whiteSpace: 'pre-wrap'}, ...diffDivs)
+                    },
+                    actual: {
+                        title: 'Actual',
+                        content: divsa({whiteSpace: 'pre-wrap'}, actualString)
+                    },
+                    expected: {
+                        title: 'Expected',
+                        content: divsa({whiteSpace: 'pre-wrap'}, expectedString)
+                    },
+                }
+            })
             return _=> divsa({},
-                divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, whiteSpace: 'pre-wrap', fontSize: '100%'},
-                    ...diffDivs))
+                divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, fontSize: '100%'},
+                    tabs))
         })})
         
         
