@@ -448,7 +448,18 @@ global.initUI = async function(opts) {
                         update()
                     }})
                 ),
-                divsa({marginBottom: 5}, spansa({fontWeight: 'bold'}, 'Assertion ID: '), aid),
+                divsa({marginBottom: 5},
+                    spansa({fontWeight: 'bold'}, 'Assertion ID: '),
+                    link(aid, {style: {color: BLACK, textDecoration: 'underline'}}, async function() {
+                        update(my.linkProgress = glyph('refresh fa-spin'))
+                        try {
+                            await rpc({fun: 'danger_openEditorAtAssertionID', aid})
+                            update(my.linkProgress = glyph('check'))
+                        } catch (e) {
+                            update(my.linkProgress = glyph('exclamation-triangle'))
+                        }
+                    }),
+                    spansa({marginLeft: 10}, my.linkProgress)),
                 divsa({fontSize: '100%'},
                     tabs))
         })})

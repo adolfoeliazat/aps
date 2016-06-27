@@ -122,6 +122,18 @@ app.post('/rpc', (req, res) => {
                 return hunkyDory()
             }
             
+            else if (msg.fun === 'danger_openEditorAtAssertionID') {
+                const file = 'E:/work/aps/aps/src/client.ts'
+                const lines = fs.readFileSync(file, 'utf8').split('\n')
+                for (let i = 0; i < lines.length; ++i) {
+                    if (~lines[i].indexOf(msg.aid)) {
+                        await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, line: i})
+                        return hunkyDory()
+                    }
+                }
+                return {error: 'Code not found'}
+            }
+            
             else if (msg.fun === 'signIn') {
                 const rows = await pgQuery('select * from users where email = $1', [msg.email])
                 if (!rows.length) {
