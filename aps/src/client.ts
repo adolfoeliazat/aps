@@ -398,23 +398,27 @@ global.initUI = async function(opts) {
         const actualString = deepInspect(actual)
         const expectedString = deepInspect(expected)
         const diffItems = require('diff').diffLines(expectedString, actualString)
-        const diffDivs = diffItems.map(item => {
+        const diffDivs = []
+        let prevLabel
+        for (const item of diffItems) {
             let backgroundColor, label
             if (item.added) {
-                backgroundColor = GREEN_100
+                backgroundColor = RED_100
                 label = 'Actual'
             } else {
-                backgroundColor = RED_100
+                backgroundColor = GREEN_100
                 label = 'Expected'
             }
-            return divsa({backgroundColor},
-                       divsa({fontWeight: 'bold'}, label),
-                       divsa({}, item.value))
-        })
+            if (label !== prevLabel) {
+                diffDivs.push(divsa({backgroundColor, fontWeight: 'bold'}, label))
+                prevLabel = label
+            }
+            diffDivs.push(divsa({backgroundColor}, item.value))
+        }
         
         uiAssert(false, 'Shit', {detailsUI: updatableElement(update => {
             return _=> divsa({},
-                divsa({height: 300, marginTop: 5, padding: 5, backgroundColor: WHITE, whiteSpace: 'pre-wrap', fontSize: '100%'},
+                divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, whiteSpace: 'pre-wrap', fontSize: '100%'},
                     ...diffDivs))
         })})
         
@@ -547,12 +551,12 @@ global.initUI = async function(opts) {
     }
     
     const assertionErrorPane = statefulElement(update => {
-        let visible, content
+        let visible, content, top
         
         return {
             render() {
                 if (!visible) return null
-                return divsa({position: 'absolute', left: 0, bottom: 0, width: '100%', backgroundColor: RED_700, padding: '10px 10px', textAlign: 'left'},
+                return divsa({position: 'absolute', left: 0, top, width: '100%', backgroundColor: RED_700, padding: '10px 10px', textAlign: 'left'},
                            divsa({fontWeight: 'bold', borderBottom: '2px solid white', paddingBottom: 5, marginBottom: 5, color: WHITE}, content.message),
                            divsa({whiteSpace: 'pre-wrap', color: WHITE}, content.stack),
                            content.detailsUI,
@@ -560,7 +564,9 @@ global.initUI = async function(opts) {
             },
             
             set(_content) {
+                top = $('#footer').offset().top + 40
                 update(content = _content, visible = true)
+                document.body.scrollTop = 99999
             },
         }
     })

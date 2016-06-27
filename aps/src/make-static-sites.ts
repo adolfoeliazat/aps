@@ -1059,7 +1059,7 @@ function makeCustomerSite({lang}) {
     function writePage({name, comp, css='', js='', highlightedNav}) {
         fs.writeFileSync(`${root}/${name}.html`, `
             <!DOCTYPE html>
-            <html lang="en">
+            <html lang="en" style="position: relative; min-height: 100%;">
                 <head>
                     <meta charset="utf-8">
                     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -1100,7 +1100,7 @@ function makeCustomerSite({lang}) {
                     </style>
                     <style>${css}</style>
                 </head>
-                <body style="padding-top: 50px;">
+                <body style="padding-top: 50px; padding-bottom: 40px;">
                     <nav class="navbar navbar-default navbar-fixed-top">
                         <div class="container-fluid">
                             <div class="navbar-header">
@@ -1131,6 +1131,10 @@ function makeCustomerSite({lang}) {
                     </nav>
                 
                     ${ReactDOMServer.renderToStaticMarkup(comp)}
+                                        
+                    <div id="footer" style="background-color: #f8f8f8; border: 1px solid #e7e7e7; position: absolute; left: 0px; bottom: 0px; width: 100%; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 5px 15px;">
+                        © Copyright 2015-2016 AcademicPaperServed. All rights reserved
+                    </div>
 
                     <script src="jquery.min.js"></script>
                     <script src="bootstrap-master/js/bootstrap.min.js"></script>
