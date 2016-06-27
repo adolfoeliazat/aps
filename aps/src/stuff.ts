@@ -4,6 +4,11 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+DOMAIN_UA_CUSTOMER = 'aps-ua-customer.local'
+DOMAIN_UA_WRITER = 'aps-ua-writer.local'
+DOMAIN_EN_CUSTOMER = 'aps-en-customer.local'
+DOMAIN_EN_WRITER = 'aps-en-writer.local'
+
 import static 'into-u/utils-client'
 
 export function deliveryOptions() {

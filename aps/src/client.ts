@@ -13,16 +13,14 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 import * as url from 'url'
 import * as querystring from 'querystring'
-import * as maildev from 'foundation/mail/lib/mail-dev-client-api'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
-global.initDynamicCustomerUI = async function(opts) {
-    const lang = opts.lang
-    const t = makeT(lang)
+global.initUI = async function(opts) {
+    const t = makeT(LANG)
     
     let sourceMapConsumer
     if (MODE === 'debug') {
-        await async function initSourceMapConsumer() {
+        await async function initSourceMapConsumer() { // TODO:vgrechka @refactor Extract to foundation/utils-client
             const logTime = beginLogTime('initSourceMapConsumer')
             try {
                 global.Buffer = require('buffer').Buffer
@@ -260,7 +258,7 @@ global.initDynamicCustomerUI = async function(opts) {
         ReactDOM.render(updatableElement(update => {
             return _=> div(
                 comp,
-                MODE === 'debug' && capturePane)
+                MODE === 'debug' && div(capturePane, assertionErrorPane))
         }), byid0('root'))
     }
 
@@ -280,10 +278,13 @@ global.initDynamicCustomerUI = async function(opts) {
         }
     }
 
-    const rpcclient = RPCClient({url: `${BACKEND_URL}/rpc`})
+    let rpcclient
     async function rpc(message) {
+        if (!rpcclient) {
+            rpcclient = RPCClient({url: `${BACKEND_URL}/rpc`})
+        }
         return await rpcclient.call(
-            asn({lang, APS_DANGEROUS_TOKEN}, message),
+            asn({LANG, CLIENT_KIND, APS_DANGEROUS_TOKEN, isTesting: !!currentTestScenarioName}, message),
             {slowNetworkSimulationDelay: MODE === 'debug' && DEBUG_SIMULATE_SLOW_NETWORK && (currentTestScenarioName ? 250 : 1000)}
         )
     }
@@ -295,26 +296,35 @@ global.initDynamicCustomerUI = async function(opts) {
         // ======================================== CUSTOMER UA TEST SCENARIOS ========================================
         
         async 'Customer UA :: Sign In :: After Wilma signs up'() {
-            await maildev.clearSentMail()
-            await rpc({fun: 'killWilma'})
+            await rpc({fun: 'danger_clearSentMails'})
+            await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
             simulateNavigatePath('sign-up.html')
             
             // Inputs
-            testGlobal.inputs['email'].value = 'wilma.blue-apstest@mailinator.com'
-            testGlobal.inputs['firstName'].value = 'Wilma'
-            testGlobal.inputs['lastName'].value = 'Blue'
+            testGlobal.inputs['email'].value = 'wilma.blue@test.shit.ua'
+            testGlobal.inputs['firstName'].value = 'Вильма'
+            testGlobal.inputs['lastName'].value = 'Блу'
             testGlobal.inputs['agreeTerms'].value = true
             // Action
             testGlobal.buttons['primary'].click()
             await assertShitSpinsForMax(2000)
             // Expected state
-            assertErrorLabelTitlesExactly()
+            assertNoErrorLabels()
             assertNoErrorBanner()
             assertTextSomewhere('Проверьте почту')
+            await assertSentMailsAreExactly([{
+                from: `APS <noreply@aps.local>`,
+                to: `Wilma Blue <wilma.blue@test.shit>`,
+                subject: `Подтверждение регистрации в APS`,
+                html: `
+                    Привет, Wilma!<br><br>
+                    Для подтверждения регистрации перейди по этой ссылке: zzzzz
+                `
+            }], uiFail)
         },
         
         async 'Customer UA :: Sign Up :: 1'() {
-            await rpc({fun: 'killWilma'})
+            await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.ua.shit'})
             simulateNavigatePath('sign-up.html')
             
             simulateClick('primary')
@@ -378,7 +388,53 @@ global.initDynamicCustomerUI = async function(opts) {
             assertNoErrorLabels()
         },
     }}
-
+    
+    async function assertSentMailsAreExactly(expected) {
+        const actual = await rpc({fun: 'danger_getSentMails'})
+        if (deepEquals(actual, expected)) return
+        
+        sortKeys(actual)
+        sortKeys(expected)
+        const actualString = deepInspect(actual)
+        const expectedString = deepInspect(expected)
+        const diffItems = require('diff').diffLines(expectedString, actualString)
+        const diffDivs = diffItems.map(item => {
+            let backgroundColor, label
+            if (item.added) {
+                backgroundColor = GREEN_100
+                label = 'Actual'
+            } else {
+                backgroundColor = RED_100
+                label = 'Expected'
+            }
+            return divsa({backgroundColor},
+                       divsa({fontWeight: 'bold'}, label),
+                       divsa({}, item.value))
+        })
+        
+        uiAssert(false, 'Shit', {detailsUI: updatableElement(update => {
+            return _=> divsa({},
+                divsa({height: 300, marginTop: 5, padding: 5, backgroundColor: WHITE, whiteSpace: 'pre-wrap', fontSize: '100%'},
+                    ...diffDivs))
+        })})
+        
+        
+        function sortKeys(o) {
+            if (isArray(o)) {
+                o.filter(isObject).forEach(sortKeys)
+            } else if (isObject(o)) {
+                const pairs = toPairs(o)
+                sortBy(pairs, x => x[0])
+                pairs.forEach(([k, v]) => delete o[k])
+                pairs.forEach(([k, v]) => {
+                    o[k] = v
+                    if (isObject(v)) {
+                        sortKeys(v)
+                    }
+                })
+            }
+        }
+    }
 
     function assertTextSomewhere(expected) {
         uiAssert(~$(document.body).text().indexOf(expected), `I want following text on screen: [${expected}]`)
@@ -392,7 +448,7 @@ global.initDynamicCustomerUI = async function(opts) {
         uiAssert(testGlobal.errorBanner === undefined, `I don't want an error banner hanging here`)
     }
 
-    function stack() {
+    function stack() { // TODO:vgrechka @refactor Extract to foundation/utils-client
         const e = Error()
         const lines = e.stack.split('\n').slice(3)
         const usefulLines = []
@@ -485,19 +541,34 @@ global.initDynamicCustomerUI = async function(opts) {
     function assertShitSpins() {
         uiAssert(testGlobal.shitSpins, 'I want shit to be spinning')
     }
+    
+    function uiFail(errorMessage) {
+        uiAssert(false, errorMessage)
+    }
+    
+    const assertionErrorPane = statefulElement(update => {
+        let visible, content
+        
+        return {
+            render() {
+                if (!visible) return null
+                return divsa({position: 'absolute', left: 0, bottom: 0, width: '100%', backgroundColor: RED_700, padding: '10px 10px', textAlign: 'left'},
+                           divsa({fontWeight: 'bold', borderBottom: '2px solid white', paddingBottom: 5, marginBottom: 5, color: WHITE}, content.message),
+                           divsa({whiteSpace: 'pre-wrap', color: WHITE}, content.stack),
+                           content.detailsUI,
+                       )
+            },
+            
+            set(_content) {
+                update(content = _content, visible = true)
+            },
+        }
+    })
 
-    function uiAssert(condition, errorMessage) {
+    function uiAssert(condition, errorMessage, {detailsUI}={}) {
         if (condition) return
         
-        $(document.body).append(`
-            <div style="position: absolute; bottom: 0px; width: 100%; background-color: ${RED_700}; color: ${WHITE}; padding: 10px 10px; text-align: left;">
-                <div id="uiAssertionErrorBanner-message" style="font-weight: bold; border-bottom: 2px solid white; padding-bottom: 5px; margin-bottom: 5px;"></div>
-                <div id="uiAssertionErrorBanner-stack" style="white-space: pre-wrap;"></div>
-            </div>
-        `)
-        $('#uiAssertionErrorBanner-message').text(errorMessage + mdash + currentTestScenarioName)
-        $('#uiAssertionErrorBanner-stack').text(stack().join('\n'))
-        
+        assertionErrorPane.set({message: errorMessage + mdash + currentTestScenarioName, stack: stack().join('\n'), detailsUI})
         raise('UI assertion failed')
     }
 
@@ -538,5 +609,6 @@ export function pageHeader(title, attrs={}) {
     return diva(asn({className: `page-header ${className}`, style: {marginTop: 30}}, attrs),
                el('h3', {}, title))
 }
+
                 
 clog('Client code is kind of loaded')

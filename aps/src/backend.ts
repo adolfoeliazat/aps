@@ -11,6 +11,7 @@ require('source-map-support').install()
 import static 'into-u ./stuff'
 
 const app = newExpress()
+let mailTransport, sentMails = []
 
 app.post('/rpc', (req, res) => {
     // dlog({body: req.body, headers: req.headers})
@@ -20,13 +21,29 @@ app.post('/rpc', (req, res) => {
     
     async function handle() {
         const msg = req.body
-        const t = makeT(msg.lang)
+        const t = makeT(msg.LANG)
         
         try {
             const fieldErrors = {}
             
-            if (msg.fun === 'eval') {
-                checkDangerousToken()
+            if (msg.fun.startsWith('danger_') || msg.isTesting) {
+                const serverToken = process.env.APS_DANGEROUS_TOKEN
+                if (!serverToken) raise('I want APS_DANGEROUS_TOKEN configured on server')
+                const clientToken = msg.APS_DANGEROUS_TOKEN
+                if (clientToken !== serverToken) raise('Fuck you, mister hacker')
+            }
+        
+            const clientProtocol = msg.isTesting ? 'http' : 'https'
+            const clientDomain = {
+                uaCustomer: DOMAIN_UA_CUSTOMER,
+                uaWriter: DOMAIN_UA_WRITER,
+                enCustomer: DOMAIN_EN_CUSTOMER,
+                enWriter: DOMAIN_EN_WRITER,
+            }[msg.CLIENT_KIND]
+            if (!clientDomain) raise('WTF is the clientKind?')
+            
+            
+            if (msg.fun === 'danger_eval') {
                 try {
                     const lines = msg.text.split('\n')
                     let offsetLine = 0
@@ -72,9 +89,17 @@ app.post('/rpc', (req, res) => {
                 }
             }
             
-            else if (msg.fun === 'killWilma') {
-                checkDangerousToken()
-                await pgQuery(`delete from users where email = 'wilma.blue-apstest@mailinator.com'`)
+            else if (msg.fun === 'danger_clearSentMails') {
+                sentMails = []
+                return hunkyDory()
+            }
+            
+            else if (msg.fun === 'danger_getSentMails') {
+                return sentMails
+            }
+            
+            else if (msg.fun === 'danger_killUser') {
+                await pgQuery(`delete from users where email = $1`, [msg.email])
                 return hunkyDory()
             }
             
@@ -128,12 +153,28 @@ app.post('/rpc', (req, res) => {
                     fieldErrors.lastName = t(`No more than ${MAX_NAME} symbols`, `Не более ${MAX_NAME} символов`)
                 }
                 
-                const password = uuid()
-                
                 if (isEmpty(fieldErrors)) {
                     try {
-                        await pgQuery(`insert into users(email, hash, firstName, lastName) values($1, $2, $3, $4)`,
-                                [email, await hashPassword(password), firstName, lastName])
+                        const password = uuid()
+                        const confirmationCode = uuid()
+                
+                        await pgQuery(`insert into users(email, state, passwordHash, confirmationCode, firstName, lastName) values($1, $2, $3, $4, $5, $6)`,
+                                      [email, 'awaitingConfirmation', await hashPassword(password), confirmationCode, firstName, lastName])
+                        
+                        const confirmationLink = `${clientProtocol}://${clientDomain}/confirm-sign-up.html?code=${encodeURIComponent(confirmationCode)}`
+                        
+                        await sendMail({
+                            to: `${firstName} ${lastName} <${email}>`,
+                            subject: t('APS Sign Up Confirmation', 'Подтверждение регистрации в APS'),
+                            html: dedent(t({
+                                en: `
+                                    TODO
+                                `,
+                                ua: `
+                                    Привет, ${firstName}!<br><br>
+                                    Для подтверждения регистрации перейди по этой ссылке: <a href="${confirmationLink}">${confirmationLink}</a>
+                                `
+                        }))})
                         return hunkyDory()
                     } catch (e) {
                         if (e.code === '23505') {
@@ -164,11 +205,37 @@ app.post('/rpc', (req, res) => {
                 return {hunky: 'dory'}
             }
             
-            function checkDangerousToken() {
-                const serverToken = process.env.APS_DANGEROUS_TOKEN
-                if (!serverToken) raise('I want APS_DANGEROUS_TOKEN configured on server')
-                const clientToken = msg.APS_DANGEROUS_TOKEN
-                if (clientToken !== serverToken) raise('Fuck you, mister hacker')
+            async function sendMail(it) { // TODO:vgrechka @refactor Extract to foundation/utils-server
+                if (msg.isTesting) {
+                    sentMails.push(it)
+                    return
+                }
+                
+                if (!mailTransport) {
+                    const nodemailer = require('nodemailer')
+                    mailTransport = nodemailer.createTransport({
+                        // TODO:vgrechka Externalize configuration
+                        host: '127.0.0.1',
+                        port: 2525,
+                        auth: {
+                            user: 'into/mail',
+                            pass: 'bigsecret'
+                        }
+                    })
+                }
+                
+                const mail = asn({
+                    from: `APS <noreply@${clientDomain}>`,
+                    it
+                })
+                await new Promise((resolve, reject) => {
+                    mailTransport.sendMail(mail, (err, res) => {
+                        if (err) {
+                            return reject(err)
+                        }
+                        resolve('Message sent: ' + res.response)
+                    })
+                })
             }
             
         } catch (fucked) {

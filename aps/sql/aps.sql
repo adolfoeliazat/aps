@@ -34,21 +34,24 @@ create table users(
     insertedAt timestamp,
     updatedAt timestamp,
     email text unique,
-    hash text,
+    passwordHash text,
+    confirmationCode text,
     state text,
     firstName text,
     lastName text);
 create trigger onInsert before insert on users for each row execute procedure onInsert();
 create trigger onUpdate before update on users for each row execute procedure onUpdate();
 
-insert into users(email, hash) values ('root', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1uZBXiW84OMzcoTvY559e8azTcXcK');
+insert into users(email, passwordHash) values ('root', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1uZBXiW84OMzcoTvY559e8azTcXcK');
 update users set firstName = 'Vladimir', lastName = 'Grechka' where email = 'root';
-insert into users(email, hash) values ('toor', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
+insert into users(email, passwordHash) values ('toor', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
 update users set firstName = 'Evil', lastName = 'Twin' where email = 'toor';
-insert into users(email, hash, firstName, lastName) values ('fred.red-apstest@mailinator.com', '$2a$10$bMCn.W0bOYbWrU5shYx7/e5C.ygQpz2cQWcIqsTtHjNbRL/FeHXlu', 'Fred', 'Red');
+insert into users(email, passwordHash, firstName, lastName) values ('fred.red@test.shit', '$2a$10$bMCn.W0bOYbWrU5shYx7/e5C.ygQpz2cQWcIqsTtHjNbRL/FeHXlu', 'Fred', 'Red');
 
 
 /* -------------------------------------------------------------------
+
+drop table users;
 
 create table test_foo(id bigserial);
 create table test_bar(id bigserial);
@@ -58,7 +61,7 @@ select * from information_schema.triggers;
 
 select * from users;
 
-delete from users where id = 32;
+delete from users where id = 38;
 
 create table test_collation(id bigserial, name text);
 insert into test_collation(name) values

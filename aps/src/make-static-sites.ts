@@ -1137,8 +1137,12 @@ function makeCustomerSite({lang}) {
                     <script>${js}</script>
                     
                     ${highlightedNav === 'private' ? `
+                        <script>
+                            LANG = '${lang}'
+                            CLIENT_KIND = '${lang}Customer'
+                        </script>
                         <script src="bundle.js"></script>
-                        <script>initDynamicCustomerUI({lang: '${lang}'})</script>
+                        <script>initUI()</script>
                     `:``}
                 </body>
             </html>
