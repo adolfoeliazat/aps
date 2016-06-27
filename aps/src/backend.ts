@@ -8,6 +8,7 @@ MAX_NAME = 50
 
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
+import * as fs from 'fs'
 import static 'into-u ./stuff'
 
 const app = newExpress()
@@ -87,6 +88,24 @@ app.post('/rpc', (req, res) => {
                 } catch (e) {
                     return {fatal: e.stack}
                 }
+            }
+            
+            else if (msg.fun === 'danger_updateExpectation') {
+                const genfile = 'E:/work/aps/aps/gen/client-expectations.js'
+                const code = fs.readFileSync(genfile, 'utf8')
+                const newLineOfCode = `EXPECTATIONS['${msg.aid}'] = ${deepInspect(msg.actual).replace(/\r|\n/g, ' ')}`
+                const lines = code.split('\n')
+                const updated = lines.some((s, i) => {
+                    if (~s.indexOf(msg.aid)) {
+                        lines[i] = newLineOfCode
+                        return true
+                    }
+                })
+                if (!updated) {
+                    lines.push(newLineOfCode)
+                }
+                fs.writeFileSync(genfile, lines.join('\n'))
+                return hunkyDory()
             }
             
             else if (msg.fun === 'danger_clearSentMails') {

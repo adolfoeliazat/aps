@@ -1,0 +1,3 @@
+EXPECTATIONS = {}
+
+EXPECTATIONS['169a6331-c004-47fd-9b53-05242915d9f7'] = [ { to: 'Вильма Блу <wilma.blue@test.shit.ua>',     subject: 'Подтверждение регистрации в APS',     html: 'Привет, Вильма!<br><br>\nДля подтверждения регистрации перейди по этой ссылке: <a href="http://aps-ua-customer.local/confirm-sign-up.html?code=228640c4-6cc7-44a1-b575-2574751c989d">http://aps-ua-customer.local/confirm-sign-up.html?code=228640c4-6cc7-44a1-b575-2574751c989d</a>' } ]

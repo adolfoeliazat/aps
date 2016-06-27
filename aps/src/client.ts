@@ -13,6 +13,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 import * as url from 'url'
 import * as querystring from 'querystring'
+import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 global.initUI = async function(opts) {
@@ -285,7 +286,10 @@ global.initUI = async function(opts) {
         }
         return await rpcclient.call(
             asn({LANG, CLIENT_KIND, APS_DANGEROUS_TOKEN, isTesting: !!currentTestScenarioName}, message),
-            {slowNetworkSimulationDelay: MODE === 'debug' && DEBUG_SIMULATE_SLOW_NETWORK && (currentTestScenarioName ? 250 : 1000)}
+            {slowNetworkSimulationDelay: MODE === 'debug'
+                                         && DEBUG_SIMULATE_SLOW_NETWORK
+                                         && !message.fun.startsWith('danger_')
+                                         && (currentTestScenarioName ? 250 : 1000)}
         )
     }
     
@@ -313,17 +317,7 @@ global.initUI = async function(opts) {
             assertNoErrorBanner()
             assertTextSomewhere('Проверьте почту')
             
-            await assertSentMailsAreExactly({descr: 'Sign up confirmation mail', aid: '169a6331-c004-47fd-9b53-05242915d9f7'})
-            
-//            await assertSentMailsAreExactly({assertionId: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Sign up confirmation mail', expected: [{
-//                from: `APS <noreply@aps.local>`,
-//                to: `Wilma Blue <wilma.blue@test.shit>`,
-//                subject: `Подтверждение регистрации в APS`,
-//                html: `
-//                    Привет, Wilma!<br><br>
-//                    Для подтверждения регистрации перейди по этой ссылке: zzzzz
-//                `
-//            }]})
+            await assertSentMails({descr: 'Sign up confirmation mail', aid: '169a6331-c004-47fd-9b53-05242915d9f7'})
         },
         
         async 'Customer UA :: Sign Up :: 1'() {
@@ -392,11 +386,12 @@ global.initUI = async function(opts) {
         },
     }}
     
-    async function assertSentMailsAreExactly({assertionId, descr, expected}) {
+    async function assertSentMails({descr, aid}) {
         const actual = await rpc({fun: 'danger_getSentMails'})
+        const expected = EXPECTATIONS[aid] || '--- not yet hardened ---'
         if (deepEquals(actual, expected)) return
         
-        sortKeys(actual)
+        sortKeys(actual) // Order of keys sent over the wire is mangled
         sortKeys(expected)
         const actualString = deepInspect(actual)
         const expectedString = deepInspect(expected)
@@ -423,6 +418,7 @@ global.initUI = async function(opts) {
         }
         
         uiAssert(false, descr, {detailsUI: updatableElement(update => {
+            const my = {}
             const tabs = Tabs({
                 tabs: {
                     diff: {
@@ -440,11 +436,19 @@ global.initUI = async function(opts) {
                 }
             })
             return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
-                assertionId && divsa({position: 'absolute', right: 5, top: 5},
-                    button.primary.pencil('Update Assertion Code', _=> {
-                    })
+                aid && divsa({position: 'absolute', right: 5, top: 5},
+                    my.ueb = my.ueb || WorkButton({title: 'Update Expectation', level: 'primary', glyph: 'pencil', async work() {
+                        try {
+                            await rpc({fun: 'danger_updateExpectation', aid, actual})
+                            my.ueb = divsa({fontWeight: 'bold'}, 'Expectation updated')
+                        } catch (e) {
+                            console.error(e)
+                            my.ueb = divsa({color: RED_700, fontWeight: 'bold'}, 'Expectation update fucked up')
+                        }
+                        update()
+                    }})
                 ),
-                divsa({marginBottom: 5}, spansa({fontWeight: 'bold'}, 'Assertion ID: '), assertionId),
+                divsa({marginBottom: 5}, spansa({fontWeight: 'bold'}, 'Assertion ID: '), aid),
                 divsa({fontSize: '100%'},
                     tabs))
         })})
