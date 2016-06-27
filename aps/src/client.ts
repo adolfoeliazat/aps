@@ -393,12 +393,12 @@ global.initUI = async function(opts) {
         
         sortKeys(actual) // Order of keys sent over the wire is mangled
         sortKeys(expected)
-        const actualString = deepInspect(actual)
-        const expectedString = deepInspect(expected)
-        const diffItems = require('diff').diffLines(expectedString, actualString)
+        const actualString = repr(actual)
+        const expectedString = repr(expected)
+        const diffLineItems = require('diff').diffLines(expectedString, actualString)
         const diffDivs = []
         let prevLabel
-        for (const item of diffItems) {
+        for (const item of diffLineItems) {
             let backgroundColor, label
             if (item.added) {
                 backgroundColor = RED_100
@@ -468,6 +468,12 @@ global.initUI = async function(opts) {
                     }
                 })
             }
+        }
+        
+        function repr(it) {
+            let s = deepInspect(it)
+            s = s.replace(/\\n/g, '\n') // @expect-break
+            return s
         }
     }
 

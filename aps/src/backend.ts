@@ -191,7 +191,8 @@ app.post('/rpc', (req, res) => {
                                 `,
                                 ua: `
                                     Привет, ${firstName}!<br><br>
-                                    Для подтверждения регистрации перейди по этой ссылке: <a href="${confirmationLink}">${confirmationLink}</a>
+                                    Для подтверждения регистрации перейди по этой ссылке:
+                                    <a href="${confirmationLink}">${confirmationLink}</a>
                                 `
                         }))})
                         return hunkyDory()
