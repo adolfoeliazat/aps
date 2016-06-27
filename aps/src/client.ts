@@ -312,15 +312,18 @@ global.initUI = async function(opts) {
             assertNoErrorLabels()
             assertNoErrorBanner()
             assertTextSomewhere('Проверьте почту')
-            await assertSentMailsAreExactly('Sign up confirmation mail', [{
-                from: `APS <noreply@aps.local>`,
-                to: `Wilma Blue <wilma.blue@test.shit>`,
-                subject: `Подтверждение регистрации в APS`,
-                html: `
-                    Привет, Wilma!<br><br>
-                    Для подтверждения регистрации перейди по этой ссылке: zzzzz
-                `
-            }], uiFail)
+            
+            await assertSentMailsAreExactly({assertionId: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Sign up confirmation mail'})
+            
+//            await assertSentMailsAreExactly({assertionId: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Sign up confirmation mail', expected: [{
+//                from: `APS <noreply@aps.local>`,
+//                to: `Wilma Blue <wilma.blue@test.shit>`,
+//                subject: `Подтверждение регистрации в APS`,
+//                html: `
+//                    Привет, Wilma!<br><br>
+//                    Для подтверждения регистрации перейди по этой ссылке: zzzzz
+//                `
+//            }]})
         },
         
         async 'Customer UA :: Sign Up :: 1'() {
@@ -389,7 +392,7 @@ global.initUI = async function(opts) {
         },
     }}
     
-    async function assertSentMailsAreExactly(descr, expected) {
+    async function assertSentMailsAreExactly({assertionId, descr, expected}) {
         const actual = await rpc({fun: 'danger_getSentMails'})
         if (deepEquals(actual, expected)) return
         
@@ -424,20 +427,25 @@ global.initUI = async function(opts) {
                 tabs: {
                     diff: {
                         title: 'Difference',
-                        content: divsa({whiteSpace: 'pre-wrap'}, ...diffDivs)
+                        content: divsa({whiteSpace: 'pre-wrap'}, ...diffDivs),
                     },
                     actual: {
                         title: 'Actual',
-                        content: divsa({whiteSpace: 'pre-wrap'}, actualString)
+                        content: divsa({whiteSpace: 'pre-wrap'}, actualString),
                     },
                     expected: {
                         title: 'Expected',
-                        content: divsa({whiteSpace: 'pre-wrap'}, expectedString)
+                        content: divsa({whiteSpace: 'pre-wrap'}, expectedString),
                     },
                 }
             })
-            return _=> divsa({},
-                divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, fontSize: '100%'},
+            return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
+                assertionId && divsa({position: 'absolute', right: 5, top: 5},
+                    button.primary.pencil('Update Assertion Code', _=> {
+                    })
+                ),
+                divsa({marginBottom: 5}, spansa({fontWeight: 'bold'}, 'Assertion ID: '), assertionId),
+                divsa({fontSize: '100%'},
                     tabs))
         })})
         
