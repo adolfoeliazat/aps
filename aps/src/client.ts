@@ -313,7 +313,7 @@ global.initUI = async function(opts) {
             assertNoErrorBanner()
             assertTextSomewhere('Проверьте почту')
             
-            await assertSentMailsAreExactly({assertionId: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Sign up confirmation mail'})
+            await assertSentMailsAreExactly({descr: 'Sign up confirmation mail', aid: '169a6331-c004-47fd-9b53-05242915d9f7'})
             
 //            await assertSentMailsAreExactly({assertionId: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Sign up confirmation mail', expected: [{
 //                from: `APS <noreply@aps.local>`,
