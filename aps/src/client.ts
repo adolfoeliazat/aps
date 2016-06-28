@@ -19,36 +19,8 @@ import static 'into-u/utils-client into-u/ui ./stuff'
 global.initUI = async function(opts) {
     const t = makeT(LANG)
     
-    let sourceMapConsumer
     if (MODE === 'debug') {
-        await async function initSourceMapConsumer() { // TODO:vgrechka @refactor Extract to foundation/utils-client
-            const logTime = beginLogTime('initSourceMapConsumer')
-            try {
-                global.Buffer = require('buffer').Buffer
-                const sourceMap = require('source-map')
-                const convertSourceMap = require('convert-source-map')
-                
-                sourceMapConsumer = false // Will indicate failure of creation and prevent further attempts
-                try {
-                    const response = await superagent.get(`bundle.js`)
-                    const text = response.text
-                    const smcIndex = text.lastIndexOf('//# sourceMappingURL=data:application/json;')
-                    if (~smcIndex) {
-                        sourceMapConsumer = new sourceMap.SourceMapConsumer(
-                            convertSourceMap.fromComment(
-                                text.slice(smcIndex)).toJSON())
-                    } else {
-                        dlog(`No inline source map found in bundle.js`)
-                        return lines
-                    }
-                } catch (e) {
-                    dlog(`Failed to make source map consumer: ${e}`)
-                    return lines
-                }
-            } finally {
-                logTime.end()
-            }
-        }()
+        await initClientStackSourceMapConsumer()
     }
     
     const urlObject = url.parse(location.href)
@@ -470,7 +442,7 @@ global.initUI = async function(opts) {
                     }})
                 ),
                 divsa({marginBottom: 5},
-                    spansa({fontWeight: 'bold'}, 'Assertion ID: '),
+                    spana({$fuckingLine: 'client.ts:445', style: {fontWeight: 'bold'}}, 'Assertion ID: '),
                     my.codeLink = my.codeLink || OpenEditorAtUUIDLink(aid)),
                 divsa({fontSize: '100%'},
                     tabs))
@@ -512,27 +484,6 @@ global.initUI = async function(opts) {
         uiAssert(testGlobal.errorBanner === undefined, `I don't want an error banner hanging here`)
     }
 
-    function stack() { // TODO:vgrechka @refactor Extract to foundation/utils-client
-        const e = Error()
-        const lines = e.stack.split('\n').slice(3)
-        const usefulLines = []
-        lines.forEach((lineText, i) => {
-            const bjsi = lineText.indexOf('bundle.js:')
-            if (!~bjsi) return
-            const [line, column] = lineText.slice(bjsi + 'bundle.js:'.length, lineText.length - 1).split(':')
-            const pos = sourceMapConsumer.originalPositionFor({line: parseInt(line), column: parseInt(column)}) 
-            
-            // Members of returned thing can be null 
-            // https://github.com/mozilla/source-map/blob/182f4459415de309667845af2b05716fcf9c59ad/lib/source-map-consumer.js#L637
-            if (pos.source) {
-                lineText = lineText.slice(0, lineText.indexOf('('/*)*/)) + `(${pos.source}:${pos.line}:${pos.column})`
-            }
-            
-            usefulLines.push(lineText)
-        })
-        
-        return usefulLines
-    }
 
     function assertNoErrorLabels() {
         uiAssert(isEmpty(testGlobal.errorLabels), `I don't want any error labels here`)
@@ -635,7 +586,7 @@ global.initUI = async function(opts) {
     function uiAssert(condition, errorMessage, {detailsUI}={}) {
         if (condition) return
         
-        assertionErrorPane.set({message: errorMessage + mdash + currentTestScenarioName, stack: stack().join('\n'), detailsUI})
+        assertionErrorPane.set({message: errorMessage + mdash + currentTestScenarioName, stack: clientStack().join('\n'), detailsUI})
         raise('UI assertion failed')
     }
 
