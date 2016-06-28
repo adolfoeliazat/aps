@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+#pragma instrument-ui-rendering
+
 MODE = 'debug'
 DEBUG_SIMULATE_SLOW_NETWORK = true
 BOOTSTRAP_VERSION = 3
@@ -442,7 +444,7 @@ global.initUI = async function(opts) {
                     }})
                 ),
                 divsa({marginBottom: 5},
-                    spana({$fuckingLine: 'client.ts:445', style: {fontWeight: 'bold'}}, 'Assertion ID: '),
+                    spana({$testme: true, style: {fontWeight: 'bold'}}, 'Assertion ID: '),
                     my.codeLink = my.codeLink || OpenEditorAtUUIDLink(aid)),
                 divsa({fontSize: '100%'},
                     tabs))
