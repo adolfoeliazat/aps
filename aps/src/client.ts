@@ -159,7 +159,7 @@ global.initUI = async function(opts) {
                     const impl = genericFieldImpl(field, input)
                     field.control = _=> divsa({position: 'relative'},
                         input,
-                        impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}),
+                        impl.error && errorLabel(impl.error, {testName: name, style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}),
                         impl.error && divsa({width: 15, height: 15, backgroundColor: RED_300, borderRadius: 10, position: 'absolute', right: 8, top: 10}))
                 } else if (field.type === 'password') {
                     field.control = Input(asn({type: 'password', testName: name}, field.attrs))
@@ -293,6 +293,8 @@ global.initUI = async function(opts) {
         )
     }
     
+    setUIDebugRPC(rpc)
+    
     function testScenarios() {return{
         async 'Something'() {
         },
@@ -304,20 +306,24 @@ global.initUI = async function(opts) {
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
             simulateNavigatePath('sign-up.html')
             
-            // Inputs
-            testGlobal.inputs['email'].value = 'wilma.blue@test.shit.ua'
-            testGlobal.inputs['firstName'].value = 'Вильма'
-            testGlobal.inputs['lastName'].value = 'Блу'
-            testGlobal.inputs['agreeTerms'].value = true
-            // Action
-            testGlobal.buttons['primary'].click()
-            await assertShitSpinsForMax(2000)
-            // Expected state
-            assertNoErrorLabels()
-            assertNoErrorBanner()
-            assertTextSomewhere('Проверьте почту')
+            // assertUIState({aid: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0'})
             
-            await assertSentMails({descr: 'Sign up confirmation mail', aid: '169a6331-c004-47fd-9b53-05242915d9f7'})
+            uiFail('Implement me')
+            
+//            // Inputs
+//            testGlobal.inputs['email'].value = 'wilma.blue@test.shit.ua'
+//            testGlobal.inputs['firstName'].value = 'Вильма'
+//            testGlobal.inputs['lastName'].value = 'Блу'
+//            testGlobal.inputs['agreeTerms'].value = true
+//            // Action
+//            testGlobal.buttons['primary'].click()
+//            await assertShitSpinsForMax(2000)
+//            // Expected state
+//            assertNoErrorLabels()
+//            assertNoErrorBanner()
+//            assertTextSomewhere('Проверьте почту')
+            
+            // await assertSentMails({descr: 'Sign up confirmation mail', aid: '169a6331-c004-47fd-9b53-05242915d9f7'})
         },
         
         async 'Customer UA :: Sign Up :: 1'() {
@@ -385,10 +391,25 @@ global.initUI = async function(opts) {
             assertNoErrorLabels()
         },
     }}
+            
+    function assertUIState(def) {
+        const actual = {
+            inputs: omapo(testGlobal.inputs, x => x.capture()),
+            errorLabels: testGlobal.errorLabels,
+            errorBanner: testGlobal.errorBanner,
+        }
+        assertRenameme(asn(def, {actual}))
+    }
     
-    async function assertSentMails({descr, aid}) {
+    async function assertSentMails(def) {
         const actual = await rpc({fun: 'danger_getSentMails'})
-        const expected = EXPECTATIONS[aid] || '--- not yet hardened ---'
+        assertRenameme(asn(def, {actual}))
+    }
+    
+    function assertRenameme({descr='Describe me', aid, actual, expected}) {
+        if (expected === undefined) {
+            expected = EXPECTATIONS[aid] || '--- not yet hardened ---'
+        }
         if (deepEquals(actual, expected)) return
         
         sortKeys(actual) // Order of keys sent over the wire is mangled
@@ -452,12 +473,17 @@ global.initUI = async function(opts) {
                     spansa({fontWeight: 'bold'}, 'Assertion ID: '),
                     link(aid, {style: {color: BLACK, textDecoration: 'underline'}}, async function() {
                         update(my.linkProgress = glyph('refresh fa-spin'))
+                        let error
                         try {
-                            await rpc({fun: 'danger_openEditorAtAssertionID', aid})
-                            update(my.linkProgress = glyph('check'))
+                            const res = await rpc({fun: 'danger_openEditorAtAssertionID', aid})
+                            if (!(error = res.error)) {
+                                return update(my.linkProgress = glyph('check'))
+                            }
                         } catch (e) {
-                            update(my.linkProgress = glyph('exclamation-triangle'))
+                            error = 'Big internal fuckup'
                         }
+                        
+                        update(my.linkProgress = spansa({color: RED_700}, glyph('exclamation-triangle'), spansa({marginLeft: 10}, error)))
                     }),
                     spansa({marginLeft: 10}, my.linkProgress)),
                 divsa({fontSize: '100%'},
@@ -537,6 +563,7 @@ global.initUI = async function(opts) {
             if (MODE !== 'debug') return
             if (e.ctrlKey && e.altKey && e.key === 'k') return captureState()
             if (e.ctrlKey && e.altKey && e.key === 'i') return captureInputs()
+            if (e.ctrlKey && e.altKey && e.key === 'a') return assertUIState({aid: 'just-showing-actual'})
         })
     }
 
@@ -604,7 +631,7 @@ global.initUI = async function(opts) {
         return {
             render() {
                 if (!visible) return null
-                return divsa({position: 'absolute', left: 0, top, width: '100%', backgroundColor: RED_700, padding: '10px 10px', textAlign: 'left'},
+                return diva({$tag: 'a47a707b-9c52-4a60-837d-a00787bd4746', style: {position: 'absolute', left: 0, top, width: '100%', backgroundColor: RED_700, padding: '10px 10px', textAlign: 'left'}},
                            divsa({fontWeight: 'bold', borderBottom: '2px solid white', paddingBottom: 5, marginBottom: 5, color: WHITE}, content.message),
                            divsa({whiteSpace: 'pre-wrap', color: WHITE}, content.stack),
                            content.detailsUI,

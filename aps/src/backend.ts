@@ -122,16 +122,13 @@ app.post('/rpc', (req, res) => {
                 return hunkyDory()
             }
             
-            else if (msg.fun === 'danger_openEditorAtAssertionID') {
+            else if (msg.fun === 'danger_openEditorAtUUID') {
                 const file = 'E:/work/aps/aps/src/client.ts'
-                const lines = fs.readFileSync(file, 'utf8').split('\n')
-                for (let i = 0; i < lines.length; ++i) {
-                    if (~lines[i].indexOf(msg.aid)) {
-                        await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, line: i})
-                        return hunkyDory()
-                    }
-                }
-                return {error: 'Code not found'}
+                const code = fs.readFileSync(file, 'utf8')
+                const offset = code.indexOf(msg.uuid)
+                if (offset === -1) return {error: 'UUID is not found in code'}
+                await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, offset})
+                return hunkyDory()
             }
             
             else if (msg.fun === 'signIn') {
