@@ -306,7 +306,7 @@ global.initUI = async function(opts) {
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
             simulateNavigatePath('sign-up.html')
             
-            // assertUIState({aid: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0'})
+            assertUIState({aid: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0'})
             
             uiFail('Implement me')
             
@@ -471,21 +471,7 @@ global.initUI = async function(opts) {
                 ),
                 divsa({marginBottom: 5},
                     spansa({fontWeight: 'bold'}, 'Assertion ID: '),
-                    link(aid, {style: {color: BLACK, textDecoration: 'underline'}}, async function() {
-                        update(my.linkProgress = glyph('refresh fa-spin'))
-                        let error
-                        try {
-                            const res = await rpc({fun: 'danger_openEditorAtAssertionID', aid})
-                            if (!(error = res.error)) {
-                                return update(my.linkProgress = glyph('check'))
-                            }
-                        } catch (e) {
-                            error = 'Big internal fuckup'
-                        }
-                        
-                        update(my.linkProgress = spansa({color: RED_700}, glyph('exclamation-triangle'), spansa({marginLeft: 10}, error)))
-                    }),
-                    spansa({marginLeft: 10}, my.linkProgress)),
+                    my.codeLink = my.codeLink || OpenEditorAtUUIDLink(aid)),
                 divsa({fontSize: '100%'},
                     tabs))
         })})
