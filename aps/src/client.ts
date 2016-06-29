@@ -280,6 +280,7 @@ global.initUI = async function(opts) {
         async 'Customer UA :: Sign In :: After Wilma signs up'() {
             await rpc({fun: 'danger_clearSentMails'})
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
+            await rpc({fun: 'danger_fixNextGeneratedConfirmationCode', code: '9b7202f3-66e5-4f0a-aa66-f94f515360f0'})
             
             simulateNavigatePath('sign-up.html')
             assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
@@ -311,7 +312,7 @@ global.initUI = async function(opts) {
                     html: dedent(`
                         Привет, Вильма!<br><br>
                         Для подтверждения регистрации перейди по этой ссылке:
-                        <a href="http://aps-ua-customer.local/confirm-sign-up.html?code=a739f171-2825-4cfe-a428-553012733f91">http://aps-ua-customer.local/confirm-sign-up.html?code=a739f171-2825-4cfe-a428-553012733f91</a>`) } 
+                        <a href="http://aps-ua-customer.local/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0">http://aps-ua-customer.local/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0</a>`) } 
             ]})
         },
         

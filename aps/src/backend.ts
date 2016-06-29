@@ -12,7 +12,7 @@ import * as fs from 'fs'
 import static 'into-u ./stuff'
 
 const app = newExpress()
-let mailTransport, sentMails = []
+let mailTransport, sentMails = [], fixedNextGeneratedConfirmationCode, fixedNextGeneratedPassword
 
 app.post('/rpc', (req, res) => {
     // dlog({body: req.body, headers: req.headers})
@@ -122,6 +122,11 @@ app.post('/rpc', (req, res) => {
                 return hunkyDory()
             }
             
+            else if (msg.fun === 'danger_fixNextGeneratedConfirmationCode') {
+                fixedNextGeneratedConfirmationCode = msg.code
+                return hunkyDory()
+            }
+            
             else if (msg.fun === 'danger_openSourceCode') {
                 const file = 'E:/work/aps/aps/src/client.ts' // TODO:vgrechka Other files
                 const code = fs.readFileSync(file, 'utf8')
@@ -193,8 +198,17 @@ app.post('/rpc', (req, res) => {
                 
                 if (isEmpty(fieldErrors)) {
                     try {
-                        const password = uuid()
-                        const confirmationCode = uuid()
+                        let password = uuid()
+                        let confirmationCode = uuid()
+                        
+                        if (fixedNextGeneratedPassword) {
+                            password = fixedNextGeneratedPassword
+                            fixedNextGeneratedPassword = undefined
+                        }
+                        if (fixedNextGeneratedConfirmationCode) {
+                            confirmationCode = fixedNextGeneratedConfirmationCode
+                            fixedNextGeneratedConfirmationCode = undefined
+                        }
                 
                         await pgQuery(`insert into users(email, state, passwordHash, confirmationCode, firstName, lastName) values($1, $2, $3, $4, $5, $6)`,
                                       [email, 'awaitingConfirmation', await hashPassword(password), confirmationCode, firstName, lastName])
