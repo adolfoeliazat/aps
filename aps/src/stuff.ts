@@ -138,6 +138,7 @@ export function makeT(lang) {
         } else {
             ss = first
         }
+        
         const res = ss[lang]
         if (!res) raise('Localize me: ' + deepInspect({lang, arguments}))
         return res

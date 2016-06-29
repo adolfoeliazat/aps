@@ -19,7 +19,10 @@ import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 global.initUI = async function(opts) {
-    const t = makeT(LANG)
+    const _t = makeT(LANG)
+    function t(meta, ...args) {
+        return {meta, meat: _t(...args)}
+    }
     
     if (MODE === 'debug') {
         await initClientStackSourceMapConsumer()
@@ -144,8 +147,7 @@ global.initUI = async function(opts) {
                         divsa({display: 'flex'},
                             checkbox,
                             divsa({width: 5}),
-                            t({en: div('I’ve read and agreed with ', link('terms and conditions', popupTerms)),
-                               ua: div('Я прочитал и принял ', link('соглашение', popupTerms))}),
+                            div(t('I’ve read and agreed with ', 'Я прочитал и принял '), link(t('terms and conditions', 'соглашение'), popupTerms)),
                             impl.error && divsa({width: 15, height: 15, borderRadius: 10, marginTop: 3, marginRight: 9, marginLeft: 'auto', backgroundColor: RED_300})),
                         impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}))
                            
@@ -187,8 +189,8 @@ global.initUI = async function(opts) {
                     error && errorBanner(error),
                     ...values(def.fields).map(field => {
                         return diva({className: 'form-group'},
-                                   field.titleControl,
-                                   field.control)
+                                    field.titleControl,
+                                    field.control)
                     }),
                     divsa({textAlign: 'left'},
                         button.primary({title: def.primaryButtonTitle, disabled: working, testName: 'primary'}, async function() {
@@ -627,7 +629,9 @@ export function dynamicPageNames() {
 export function pageHeader(title, attrs={}) {
     #extract {className=''} from attrs
     return diva(asn({className: `page-header ${className}`, style: {marginTop: 30}}, attrs),
-               el('h3', {}, title))
+               h3(title))
+//    return diva(asn({className: `page-header ${className}`, style: {marginTop: 30}}, attrs),
+//               el('h3', {}, title))
 }
 
                 
