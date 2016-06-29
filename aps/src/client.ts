@@ -305,12 +305,17 @@ global.initUI = async function(opts) {
                 inputs: {}, errorLabels: {}, errorBanner: undefined 
             }})
             assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Проверьте почту. Мы отправили вам инструкции для подтверждения регистрации.'})
- 
-            
-//            failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
-            
-//            await assertSentMails({descr: 'Sign up confirmation mail', aid: '169a6331-c004-47fd-9b53-05242915d9f7'})
+            await assertSentMails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Sign up confirmation mail', expected: [
+                { to: `Вильма Блу <wilma.blue@test.shit.ua>`,
+                    subject: `Подтверждение регистрации в APS`,
+                    html: dedent(`
+                        Привет, Вильма!<br><br>
+                        Для подтверждения регистрации перейди по этой ссылке:
+                        <a href="http://aps-ua-customer.local/confirm-sign-up.html?code=a739f171-2825-4cfe-a428-553012733f91">http://aps-ua-customer.local/confirm-sign-up.html?code=a739f171-2825-4cfe-a428-553012733f91</a>`) } 
+            ]})
         },
+        
+//            failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
         
         async 'Customer UA :: Sign Up :: 1'() {
             raise('reimplement')
@@ -438,8 +443,40 @@ global.initUI = async function(opts) {
             const my = {}
             
             let actualStringForPasting = actualString.trim()
-            if (actualStringForPasting[0] === '{'/*}*/) actualStringForPasting = actualStringForPasting.slice(1)
-            if (actualStringForPasting[actualStringForPasting.length - 1] === /*{*/'}') actualStringForPasting = actualStringForPasting.slice(0, actualStringForPasting.length - 1)
+            if (actualStringForPasting[0] === '{'/*}*/ || actualStringForPasting[0] === '['/*]*/) {
+                actualStringForPasting = actualStringForPasting.slice(1, actualStringForPasting.length - 1)
+            }
+            const chars = actualStringForPasting.split('')
+            for (let i = 0; i < chars.length; ++i) {
+                if (chars[i] === "'" && (i === 0 || chars[i - 1] !== '\\')) {
+                    chars[i] = '`'
+                }
+            }
+            actualStringForPasting = chars.join('')
+            const replacements = []
+            let backtickIndex, from = 0, btis = []
+            while (~(backtickIndex = actualStringForPasting.indexOf('`', from))) {
+                btis.push(backtickIndex)
+                if (btis.length === 2) {
+                    let literal = actualStringForPasting.slice(btis[0], btis[1] + 1)
+                    if (/\r|\n/.test(literal)) {
+                        literal = literal[0] + '\n' + literal.slice(1)
+                        literal = literal.replace(/(\r?\n)/g, '$1        ')
+                        literal = `dedent(${literal})`
+                        replacements.push({from: btis[0], oldStringLength: btis[1] - btis[0] + 1, newString: literal})
+                    }
+                    btis = []
+                }
+                from = backtickIndex + 1
+            }
+            replacements = sortBy(replacements, 'from')
+            let newActualStringForPasting = ''; from = 0
+            for (const replacement of replacements) {
+                newActualStringForPasting += actualStringForPasting.slice(from, replacement.from) + replacement.newString
+                from = replacement.from + replacement.oldStringLength
+            }
+            newActualStringForPasting += actualStringForPasting.slice(from)
+            actualStringForPasting = newActualStringForPasting
             actualStringForPasting += '\n'
             
             const tabs = Tabs({
@@ -460,16 +497,16 @@ global.initUI = async function(opts) {
             })
             return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
                 $tag && divsa({position: 'absolute', right: 5, top: 5},
-                    my.ueb = my.ueb || WorkButton({title: t('Update Expectation'), level: 'primary', glyph: 'pencil', async work() {
-                        try {
-                            await rpc({fun: 'danger_updateExpectation', aid: $tag, actual})
-                            my.ueb = divsa({fontWeight: 'bold'}, 'Expectation updated')
-                        } catch (e) {
-                            console.error(e)
-                            my.ueb = divsa({color: RED_700, fontWeight: 'bold'}, 'Expectation update fucked up')
-                        }
-                        update()
-                    }})
+//                    my.ueb = my.ueb || WorkButton({title: t('Update Expectation'), level: 'primary', glyph: 'pencil', async work() {
+//                        try {
+//                            await rpc({fun: 'danger_updateExpectation', aid: $tag, actual})
+//                            my.ueb = divsa({fontWeight: 'bold'}, 'Expectation updated')
+//                        } catch (e) {
+//                            console.error(e)
+//                            my.ueb = divsa({color: RED_700, fontWeight: 'bold'}, 'Expectation update fucked up')
+//                        }
+//                        update()
+//                    }})
                 ),
                 horiza({style: {marginBottom: 5}},
                     spana({$testme: true, style: {fontWeight: 'bold'}}, t('Assertion ID: ')),
