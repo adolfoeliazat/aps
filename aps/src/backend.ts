@@ -45,7 +45,7 @@ app.post('/rpc', (req, res) => {
                 uaWriter: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
                 enCustomer: [DOMAIN_EN_CUSTOMER, PORT_SUFFIX_EN_CUSTOMER],
                 enWriter: [DOMAIN_EN_WRITER, PORT_SUFFIX_EN_WRITER],
-            }[msg.CLIENT_KIND]
+            }[msg.CLIENT_KIND] || [undefined, undefined]
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv') raise('WTF is the clientKind?')
             
             
@@ -262,12 +262,14 @@ app.post('/rpc', (req, res) => {
             }
             
             else if (msg.fun === 'confirmSignUp') {
-                const rows = await pgQuery('select * from users where confirmationCode = $1', [msg.code])
-                if (!rows.length) {
-                    return {error: t('Wrong code', 'Неверный код'), errorCode: 'wrong-code'}
-                }
+                return await pgTransaction(async function(tx) {
+                    const rows = await tx.query('select * from users where confirmationCode = $1', [msg.code])
+                    if (!rows.length) {
+                        return {error: t('Wrong code', 'Неверный код'), errorCode: 'wrong-code'}
+                    }
 
-                return hunkyDory()
+                    return hunkyDory()
+                })
             }
             
             const situation = `WTF is the RPC function ${msg.fun}?`
@@ -333,6 +335,55 @@ app.listen(port, _=> {
 })
 
 let pgPool
+
+function pgTransaction(doInTransaction) {
+    if (!pgPool) {
+        pgPool = new (require('pg').Pool)({
+            database: 'aps',
+            port: 5432,
+            user: 'aps',
+            password: 'apssecret',
+        })
+    }
+    
+    return new Promise((resolvePgTransaction, rejectPgTransaction) => {
+        pgPool.connect((conerr, con, doneWithConnection) => {
+            if (conerr) {
+                clog('PG connection failed', conerr)
+                doneWithConnection(conerr)
+                return rejectPgTransaction(conerr)
+            }
+            
+            const api = {
+                query(sql, args) {
+                    // If args is bad, con.query fails without telling us
+                    invariant(args === undefined || isArray(args), 'tx.query wants args to be array or undefined')
+                    
+                    return new Promise((resolveQuery, rejectQuery) => {
+                        con.query(sql, args, (qerr, qres) => {
+                            if (qerr) {
+                                clog('PG query failed', {sql, args, qerr})
+                                return rejectQuery(qerr)
+                            }
+                            resolveQuery(qres.rows)
+                        })
+                    })
+                }
+            }
+            
+            doInTransaction(api)
+                .then(ditres => {
+                    doneWithConnection()
+                    resolvePgTransaction(ditres)
+                })
+                .catch(diterr => {
+                    doneWithConnection()
+                    rejectPgTransaction(diterr)
+                })
+        })
+    })
+}
+
 async function pgQuery(sql, args) {
     if (!pgPool) {
         pgPool = new (require('pg').Pool)({

@@ -66,7 +66,11 @@ relog(`                field.setError = field.setError || (x => field.control.er
 
 
 
-
+const p = new Promise((resolve, reject) => {})
+relog(p instanceof Promise)
+const f = async function() {}
+const q = f()
+relog(q instanceof Promise)
 
 
 
