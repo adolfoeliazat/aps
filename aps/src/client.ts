@@ -280,9 +280,9 @@ global.initUI = async function(opts) {
         async 'Customer UA :: Sign In :: After Wilma signs up'() {
             await rpc({fun: 'danger_clearSentMails'})
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
-            simulateNavigatePath('sign-up.html')
             
-            assertUIState({aid: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
+            simulateNavigatePath('sign-up.html')
+            assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
                 inputs: 
                 { email: { value: '' },
                   firstName: { value: '' },
@@ -291,26 +291,29 @@ global.initUI = async function(opts) {
                errorLabels: {},
                errorBanner: undefined 
             }})
+
+            // Inputs
+            testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
+            testGlobal.inputs.firstName.value = 'Вильма'
+            testGlobal.inputs.lastName.value = 'Блу'
+            testGlobal.inputs.agreeTerms.value = true
+            // Action
+            testGlobal.buttons.primary.click()
+            await assertShitSpinsForMax(2000)
+            // Check
+            assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
+                inputs: {}, errorLabels: {}, errorBanner: undefined 
+            }})
+            assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Проверьте почту. Мы отправили вам инструкции для подтверждения регистрации.'})
+ 
             
-            failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
+//            failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
             
-//            // Inputs
-//            testGlobal.inputs['email'].value = 'wilma.blue@test.shit.ua'
-//            testGlobal.inputs['firstName'].value = 'Вильма'
-//            testGlobal.inputs['lastName'].value = 'Блу'
-//            testGlobal.inputs['agreeTerms'].value = true
-//            // Action
-//            testGlobal.buttons['primary'].click()
-//            await assertShitSpinsForMax(2000)
-//            // Expected state
-//            assertNoErrorLabels()
-//            assertNoErrorBanner()
-//            assertTextSomewhere('Проверьте почту')
-            
-            // await assertSentMails({descr: 'Sign up confirmation mail', aid: '169a6331-c004-47fd-9b53-05242915d9f7'})
+//            await assertSentMails({descr: 'Sign up confirmation mail', aid: '169a6331-c004-47fd-9b53-05242915d9f7'})
         },
         
         async 'Customer UA :: Sign Up :: 1'() {
+            raise('reimplement')
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.ua.shit'})
             simulateNavigatePath('sign-up.html')
             
@@ -398,9 +401,9 @@ global.initUI = async function(opts) {
         })})
     }
     
-    function assertRenameme({descr='Describe me', aid, actual, expected}) {
+    function assertRenameme({descr='Describe me', $tag, actual, expected}) {
         if (expected === undefined) {
-            expected = EXPECTATIONS[aid] || '--- not yet hardened ---'
+            expected = EXPECTATIONS[$tag] || '--- not yet hardened ---'
         }
         if (deepEquals(actual, expected)) return
         
@@ -456,10 +459,10 @@ global.initUI = async function(opts) {
                 }
             })
             return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
-                aid && divsa({position: 'absolute', right: 5, top: 5},
+                $tag && divsa({position: 'absolute', right: 5, top: 5},
                     my.ueb = my.ueb || WorkButton({title: t('Update Expectation'), level: 'primary', glyph: 'pencil', async work() {
                         try {
-                            await rpc({fun: 'danger_updateExpectation', aid, actual})
+                            await rpc({fun: 'danger_updateExpectation', aid: $tag, actual})
                             my.ueb = divsa({fontWeight: 'bold'}, 'Expectation updated')
                         } catch (e) {
                             console.error(e)
@@ -470,7 +473,7 @@ global.initUI = async function(opts) {
                 ),
                 horiza({style: {marginBottom: 5}},
                     spana({$testme: true, style: {fontWeight: 'bold'}}, t('Assertion ID: ')),
-                    my.codeLink = my.codeLink || OpenSourceCodeLink({$tag: aid})),
+                    my.codeLink = my.codeLink || OpenSourceCodeLink({$tag})),
                 divsa({fontSize: '100%'},
                     tabs))
         })})
@@ -499,8 +502,14 @@ global.initUI = async function(opts) {
         }
     }
 
-    function assertTextSomewhere(expected) {
-        uiAssert(~$(document.body).text().indexOf(expected), `I want following text on screen: [${expected}]`)
+    function assertTextSomewhere({$tag, expected}) {
+        uiAssert(~$(document.body).text().indexOf(expected), `I want following text on screen: [${expected}]`, {
+            detailsUI: updatableElement(update => {
+                const link = OpenSourceCodeLink({$tag})
+                return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
+                               div(horiz(t('Jump and fix that shit: '), link)))
+            })
+        })
     }
 
     function assertErrorBanner(expected) {
