@@ -384,69 +384,6 @@ global.initUI = async function(opts) {
 // failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
         
         async 'Customer UA :: Sign Up :: 1'() {
-            raise('reimplement')
-            await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.ua.shit'})
-            simulateNavigatePath('sign-up.html')
-            
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Почта обязательна', 'Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-            
-            simulatePopulateFields({email: 'lalala'})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Интересная почта какая-то', 'Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-            
-            simulatePopulateFields({email: 'fred.red-apstest@mailinator.com'})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Имя обязательно', 'Фамилия обязательна', 'Необходимо принять соглашение')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-            
-            simulatePopulateFields({firstName: 'WilmaWilmaWilmaWilmaWilmaWilmaWilmaWilmaWilmaWilma1'})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Не более 50 символов', 'Фамилия обязательна', 'Необходимо принять соглашение')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-            
-            simulatePopulateFields({firstName: 'Wilma'})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Фамилия обязательна', 'Необходимо принять соглашение')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-            
-            simulatePopulateFields({lastName: 'BlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlue111'})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Не более 50 символов', 'Необходимо принять соглашение')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-            
-            simulatePopulateFields({lastName: 'Blue'})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Необходимо принять соглашение')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-            
-            simulatePopulateFields({agreeTerms: true})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Такая почта уже зарегистрирована')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-            
-            // Extra spaces in email
-            simulatePopulateFields({email: '      fred.red-apstest@mailinator.com     '})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertErrorLabelTitlesExactly('Такая почта уже зарегистрирована')
-            assertErrorBanner('Пожалуйста, исправьте ошибки ниже')
-
-            simulatePopulateFields({email: '   wilma.blue-apstest@mailinator.com      '})
-            simulateClick('primary')
-            await assertShitSpinsForMax(2000)
-            assertNoErrorBanner()
-            assertNoErrorLabels()
         },
     }}
     

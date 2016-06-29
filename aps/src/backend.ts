@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+#pragma instrument-ui-rendering
+
 MAX_NAME = 50
 
 require('regenerator-runtime/runtime')
@@ -22,7 +24,10 @@ app.post('/rpc', (req, res) => {
     
     async function handle() {
         const msg = req.body
-        const t = makeT(msg.LANG)
+        const _t = makeT(msg.LANG)
+        function t(meta, ...args) {
+            return {meta, meat: _t(...args)}
+        }
         
         try {
             const fieldErrors = {}
@@ -133,20 +138,29 @@ app.post('/rpc', (req, res) => {
             }
             
             else if (msg.fun === 'danger_openSourceCode') {
-                const file = 'E:/work/aps/aps/src/client.ts' // TODO:vgrechka Other files
-                const code = fs.readFileSync(file, 'utf8')
-                let offset
+                let file, offset
                 if (msg.$tag) {
-                    offset = code.indexOf(msg.$tag)
+                    for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/client.ts']) {
+                        const code = fs.readFileSync(file, 'utf8')
+                        if (~(offset = code.indexOf(msg.$tag))) break
+                    }
                     if (!~offset) return {error: 'Tag is not found in code'}
                 } else if (msg.$sourceLocation) {
+                    // Source location example: aps/src/backend.ts[7556]:181:35
                     const openBracket = msg.$sourceLocation.indexOf('[' /*]*/)
                     const closingBracket = msg.$sourceLocation.indexOf(/*[*/ ']')
-                    if (!~openBracket || !~closingBracket) raise('I want an offset in brackets')
+                    if (!~openBracket || !~closingBracket) raise('I want brackets')
+                    const filePart = msg.$sourceLocation.slice(0, openBracket)
+                    file = {
+                        'aps/src/client.ts': 'E:/work/aps/aps/src/client.ts',
+                        'aps/src/backend.ts': 'E:/work/aps/aps/src/backend.ts',
+                    }[filePart]
+                    if (!file) return {error: 'Weird file in source location'}
                     offset = parseInt(msg.$sourceLocation.slice(openBracket + 1, closingBracket))
                 } else {
                     raise('Weird source location descriptor')
                 }
+                
                 await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, offset})
                 return hunkyDory()
             }
