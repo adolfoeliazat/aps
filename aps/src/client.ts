@@ -282,7 +282,15 @@ global.initUI = async function(opts) {
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
             simulateNavigatePath('sign-up.html')
             
-            assertUIState({aid: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0'})
+            assertUIState({aid: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
+                inputs: 
+                { email: { value: 'qwe' },
+                  firstName: { value: '' },
+                  lastName: { value: '' },
+                  agreeTerms: { value: false } },
+               errorLabels: {},
+               errorBanner: undefined 
+            }})
             
             uiFail('Implement me')
             
@@ -399,10 +407,10 @@ global.initUI = async function(opts) {
             let backgroundColor, label
             if (item.added) {
                 backgroundColor = RED_100
-                label = 'Actual'
+                label = t('Actual')
             } else if (item.removed) {
                 backgroundColor = GREEN_100
-                label = 'Expected'
+                label = t('Expected')
             } else {
                 backgroundColor = WHITE
                 label = undefined
@@ -411,30 +419,37 @@ global.initUI = async function(opts) {
                 diffDivs.push(divsa({backgroundColor, fontWeight: 'bold'}, label))
             }
             prevLabel = label
-            diffDivs.push(divsa({backgroundColor}, item.value))
+            diffDivs.push(divsa({backgroundColor, position: 'relative'},
+                item.value))
         }
         
         uiAssert(false, descr, {detailsUI: updatableElement(update => {
             const my = {}
+            
+            let actualStringForPasting = actualString.trim()
+            if (actualStringForPasting[0] === '{'/*}*/) actualStringForPasting = actualStringForPasting.slice(1)
+            if (actualStringForPasting[actualStringForPasting.length - 1] === /*{*/'}') actualStringForPasting = actualStringForPasting.slice(0, actualStringForPasting.length - 1)
+            actualStringForPasting += '\n'
+            
             const tabs = Tabs({
                 tabs: {
                     diff: {
-                        title: 'Difference',
+                        title: t('Difference'),
                         content: divsa({whiteSpace: 'pre-wrap'}, ...diffDivs),
                     },
                     actual: {
-                        title: 'Actual',
-                        content: divsa({whiteSpace: 'pre-wrap'}, actualString),
+                        title: t('Actual'),
+                        content: divsa({whiteSpace: 'pre-wrap'}, Input({initialValue: actualStringForPasting, kind: 'textarea', rows: 10, style: {width: '100%', height: '100%'}})),
                     },
                     expected: {
-                        title: 'Expected',
+                        title: t('Expected'),
                         content: divsa({whiteSpace: 'pre-wrap'}, expectedString),
                     },
                 }
             })
             return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
                 aid && divsa({position: 'absolute', right: 5, top: 5},
-                    my.ueb = my.ueb || WorkButton({title: 'Update Expectation', level: 'primary', glyph: 'pencil', async work() {
+                    my.ueb = my.ueb || WorkButton({title: t('Update Expectation'), level: 'primary', glyph: 'pencil', async work() {
                         try {
                             await rpc({fun: 'danger_updateExpectation', aid, actual})
                             my.ueb = divsa({fontWeight: 'bold'}, 'Expectation updated')
@@ -445,8 +460,8 @@ global.initUI = async function(opts) {
                         update()
                     }})
                 ),
-                divsa({marginBottom: 5},
-                    spana({$testme: true, style: {fontWeight: 'bold'}}, 'Assertion ID: '),
+                horiza({style: {marginBottom: 5}},
+                    spana({$testme: true, style: {fontWeight: 'bold'}}, t('Assertion ID: ')),
                     my.codeLink = my.codeLink || OpenSourceCodeLink({$tag: aid})),
                 divsa({fontSize: '100%'},
                     tabs))
