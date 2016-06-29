@@ -284,7 +284,7 @@ global.initUI = async function(opts) {
             
             assertUIState({aid: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
                 inputs: 
-                { email: { value: 'qwe' },
+                { email: { value: '' },
                   firstName: { value: '' },
                   lastName: { value: '' },
                   agreeTerms: { value: false } },
@@ -292,7 +292,7 @@ global.initUI = async function(opts) {
                errorBanner: undefined 
             }})
             
-            uiFail('Implement me')
+            failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
             
 //            // Inputs
 //            testGlobal.inputs['email'].value = 'wilma.blue@test.shit.ua'
@@ -388,6 +388,14 @@ global.initUI = async function(opts) {
     async function assertSentMails(def) {
         const actual = await rpc({fun: 'danger_getSentMails'})
         assertRenameme(asn(def, {actual}))
+    }
+    
+    function failForJumping(message, $tag) {
+        uiAssert(false, message, {detailsUI: updatableElement(update => {
+            const link = OpenSourceCodeLink({$tag})
+            return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
+                           div(horiz(t('Jump and fix that shit: '), link)))
+        })})
     }
     
     function assertRenameme({descr='Describe me', aid, actual, expected}) {

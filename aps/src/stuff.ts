@@ -135,7 +135,7 @@ export function makeT(lang) {
         if (!args[0]) raise('I don’t want falsy first argument in t()')
         let ss
         if (typeof args[0] === 'object') {
-            ss = first
+            ss = args[0]
         } else {
             ss = {en: args[0], ua: args[1] || args[0]}
         }
