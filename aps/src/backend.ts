@@ -247,6 +247,15 @@ app.post('/rpc', (req, res) => {
                 return youFixErrors()
             }
             
+            else if (msg.fun === 'confirmSignUp') {
+                const rows = await pgQuery('select * from users where confirmationCode = $1', [msg.code])
+                if (!rows.length) {
+                    return {error: t('Wrong code', 'Неверный код'), errorCode: 'wrong-code'}
+                }
+
+                return hunkyDory()
+            }
+            
             const situation = `WTF is the RPC function ${msg.fun}?`
             clog(situation)
             return {fatal: situation}

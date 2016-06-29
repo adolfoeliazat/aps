@@ -28,9 +28,12 @@ global.initUI = async function(opts) {
         await initClientStackSourceMapConsumer()
     }
     
+    // @ctx state
     let urlObject = url.parse(location.href)
     let urlQuery = querystring.parse(urlObject.query)
     let shouldRestoreInitialPathAfterTest = true, shouldSayConfirmationWasOK
+    let pageState = {}
+    let updateCurrentPage = noop
     
     window.onpopstate = function(e) {
         showWhatsInPath()
@@ -55,8 +58,25 @@ global.initUI = async function(opts) {
         return showSignIn()
     }
     
-    function showConfirmSignUp() {
+    async function showConfirmSignUp() {
+        setPage({
+            pageTitle: t('Sign Up Confirmation', 'Подтверждение регистрации'),
+            pageBody: t('Checking your code...', 'Проверяем ваш код...'),
+        })
         
+        updateCurrentPage(pageState.headerShitSpins = true)
+        const res = await rpc({fun: 'confirmSignUp', code: urlQuery.code})
+        pageState.headerShitSpins = false
+        pageState.error = res.error
+        if (res.error) {
+            if (res.errorCode === 'wrong-code') {
+                pageState.pageBody = t('Tough luck, buddy. Maybe copy URL from confirmation email more carefully and try again?',
+                                       'Хреновые дела, приятель. Может, скопируй URL из письма аккуратнее и попробуй еще разок?')
+            } else {
+                pageState.pageBody = t('Tough luck, buddy', 'Хреновые дела, приятель')
+            }
+        }
+        updateCurrentPage()
     }
     
     function showSignIn() {
@@ -133,6 +153,21 @@ global.initUI = async function(opts) {
         ))
     }
     
+    function setPage(def) {
+        setRoot(updatableElement(update => {
+            pageState = {
+                pageBody: def.pageBody
+            }
+            updateCurrentPage = update
+            
+            return _=> diva({style: {position: 'relative'}},
+                responsivePageHeader(fov(def.pageTitle)),
+                pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium()),
+                pageState.error && errorBanner(pageState.error),
+                pageState.pageBody
+            )
+        }))
+    }
     
     function renameme(def) {
         setRoot(updatableElement(update => {
@@ -732,7 +767,7 @@ global.initUI = async function(opts) {
 }
 
 export function dynamicPageNames() {
-    return tokens('sign-in sign-up dashboard')
+    return tokens('sign-in sign-up confirm-sign-up dashboard')
 }
 
 export function pageHeader(title, attrs={}) {
