@@ -28,8 +28,9 @@ global.initUI = async function(opts) {
         await initClientStackSourceMapConsumer()
     }
     
-    const urlObject = url.parse(location.href)
-    const urlQuery = querystring.parse(urlObject.query)
+    let urlObject = url.parse(location.href)
+    let urlQuery = querystring.parse(urlObject.query)
+    let shouldRestoreInitialPathAfterTest = true, shouldSayConfirmationWasOK
     
     window.onpopstate = function(e) {
         showWhatsInPath()
@@ -40,6 +41,8 @@ global.initUI = async function(opts) {
     
     function showWhatsInPath() {
         const path = document.location.pathname
+        
+        if (path.endsWith('/confirm-sign-up.html')) return showConfirmSignUp()
         if (path.endsWith('/sign-in.html')) return showSignIn()
         if (path.endsWith('/sign-up.html')) return showSignUp()
         
@@ -52,9 +55,21 @@ global.initUI = async function(opts) {
         return showSignIn()
     }
     
+    function showConfirmSignUp() {
+        
+    }
+    
     function showSignIn() {
+        let prelude
+        if (shouldSayConfirmationWasOK) {
+            shouldSayConfirmationWasOK = false
+            prelude = t('Cool. Your account is now confirmed. We emailed you the password.',
+                        'Все круто. Твой аккаунт теперь подтвержден. Мы отправили пароль на почту.')
+        }
+        
         renameme({
             pageTitle: t('Sign In', 'Вход'),
+            prelude,
             primaryButtonTitle: t('Sign In', 'Войти'),
             fields: {
                 email: {
@@ -117,6 +132,7 @@ global.initUI = async function(opts) {
                 'Проверьте почту. Мы отправили вам инструкции для подтверждения регистрации.'))
         ))
     }
+    
     
     function renameme(def) {
         setRoot(updatableElement(update => {
@@ -185,6 +201,7 @@ global.initUI = async function(opts) {
             
             return _=> div(
                 responsivePageHeader(def.pageTitle),
+                def.prelude && p(def.prelude),
                 formsa({width: 720, margin: '0 auto'},
                     error && errorBanner(error),
                     ...values(def.fields).map(field => {
@@ -286,12 +303,13 @@ global.initUI = async function(opts) {
             simulateNavigatePath('sign-up.html')
             assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
                 inputs: 
-                { email: { value: '' },
-                  firstName: { value: '' },
-                  lastName: { value: '' },
+                { email: { value: `` },
+                  firstName: { value: `` },
+                  lastName: { value: `` },
                   agreeTerms: { value: false } },
                errorLabels: {},
-               errorBanner: undefined 
+               errorBanner: undefined,
+               pageHeader: `Регистрация` 
             }})
 
             // Inputs
@@ -304,7 +322,10 @@ global.initUI = async function(opts) {
             await assertShitSpinsForMax(2000)
             // Check
             assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
-                inputs: {}, errorLabels: {}, errorBanner: undefined 
+                inputs: {},
+                errorLabels: {},
+                errorBanner: undefined,
+                pageHeader: `Регистрация` 
             }})
             assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Проверьте почту. Мы отправили вам инструкции для подтверждения регистрации.'})
             await assertSentMails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Sign up confirmation mail', expected: [
@@ -315,9 +336,17 @@ global.initUI = async function(opts) {
                         Для подтверждения регистрации перейди по этой ссылке:
                         <a href="http://aps-ua-customer.local:3012/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0">http://aps-ua-customer.local:3012/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0</a>`) } 
             ]})
+            
+            simulateNavigatePath('confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0')
+            assertHref({$tag: '8d188498-0b84-48fb-902f-e9db816bd710', expected: 'http://aps-ua-customer.local:3012/sign-in.html'})
+            assertUIState({$tag: 'f114b0a3-c1c0-433b-98a9-2d38b9b5fd21', expected: {
+
+            }})            
+
         },
         
-//            failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
+// shouldRestoreInitialPathAfterTest = false
+// failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
         
         async 'Customer UA :: Sign Up :: 1'() {
             raise('reimplement')
@@ -385,12 +414,17 @@ global.initUI = async function(opts) {
             assertNoErrorLabels()
         },
     }}
+    
+    function assertHref({$tag, expected}) {
+        uiAssert(document.location.href === expected, `I want to be at following URL: [${expected}]`, jumpToShitDetailsUI($tag))
+    }
             
     function assertUIState(def) {
         const actual = {
             inputs: omapo(testGlobal.inputs, x => x.capture()),
             errorLabels: testGlobal.errorLabels,
             errorBanner: testGlobal.errorBanner,
+            pageHeader: testGlobal.pageHeader,
         }
         assertRenameme(asn(def, {actual}))
     }
@@ -401,11 +435,7 @@ global.initUI = async function(opts) {
     }
     
     function failForJumping(message, $tag) {
-        uiAssert(false, message, {detailsUI: updatableElement(update => {
-            const link = OpenSourceCodeLink({$tag})
-            return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
-                           div(horiz(t('Jump and fix that shit: '), link)))
-        })})
+        uiAssert(false, message, jumpToShitDetailsUI($tag))
     }
     
     function assertRenameme({descr='Describe me', $tag, actual, expected}) {
@@ -542,13 +572,17 @@ global.initUI = async function(opts) {
     }
 
     function assertTextSomewhere({$tag, expected}) {
-        uiAssert(~$(document.body).text().indexOf(expected), `I want following text on screen: [${expected}]`, {
+        uiAssert(~$(document.body).text().indexOf(expected), `I want following text on screen: [${expected}]`, jumpToShitDetailsUI($tag))
+    }
+    
+    function jumpToShitDetailsUI($tag) {
+        return {
             detailsUI: updatableElement(update => {
                 const link = OpenSourceCodeLink({$tag})
                 return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
                                div(horiz(t('Jump and fix that shit: '), link)))
             })
-        })
+        } 
     }
 
     function assertErrorBanner(expected) {
@@ -591,7 +625,9 @@ global.initUI = async function(opts) {
             await testScenarios()[testScenarioToRun]()
         } finally {
             currentTestScenarioName = undefined
-            history.replaceState(null, '', initialPath)
+            if (shouldRestoreInitialPathAfterTest) {
+                history.replaceState(null, '', initialPath)
+            }
         }
         
         $(document.body).append(`
@@ -667,6 +703,8 @@ global.initUI = async function(opts) {
 
     function simulateNavigatePath(path) {
         history.replaceState(null, '', path)
+        urlObject = url.parse(location.href)
+        urlQuery = querystring.parse(urlObject.query)
         showWhatsInPath()
     }
 
@@ -699,10 +737,18 @@ export function dynamicPageNames() {
 
 export function pageHeader(title, attrs={}) {
     #extract {className=''} from attrs
-    return diva(asn({className: `page-header ${className}`, style: {marginTop: 30}}, attrs),
-               h3(title))
-//    return diva(asn({className: `page-header ${className}`, style: {marginTop: 30}}, attrs),
-//               el('h3', {}, title))
+    return elcl({
+        render() {
+            return diva(asn({className: `page-header ${className}`, style: {marginTop: 30}}, attrs),
+                       h3(title))
+        },
+        componentDidMount() {
+            testGlobal.pageHeader = textMeat(title)
+        },
+        componentWillUnmount() {
+            testGlobal.pageHeader = undefined
+        },
+    })
 }
 
                 
