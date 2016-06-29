@@ -280,6 +280,7 @@ global.initUI = async function(opts) {
         async 'Customer UA :: Sign In :: After Wilma signs up'() {
             await rpc({fun: 'danger_clearSentMails'})
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
+            await rpc({fun: 'danger_fixNextGeneratedPassword', code: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
             await rpc({fun: 'danger_fixNextGeneratedConfirmationCode', code: '9b7202f3-66e5-4f0a-aa66-f94f515360f0'})
             
             simulateNavigatePath('sign-up.html')
@@ -312,7 +313,7 @@ global.initUI = async function(opts) {
                     html: dedent(`
                         Привет, Вильма!<br><br>
                         Для подтверждения регистрации перейди по этой ссылке:
-                        <a href="http://aps-ua-customer.local/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0">http://aps-ua-customer.local/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0</a>`) } 
+                        <a href="http://aps-ua-customer.local:3012/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0">http://aps-ua-customer.local:3012/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0</a>`) } 
             ]})
         },
         

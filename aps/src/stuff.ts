@@ -4,10 +4,10 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-DOMAIN_UA_CUSTOMER = 'aps-ua-customer.local'
-DOMAIN_UA_WRITER = 'aps-ua-writer.local'
-DOMAIN_EN_CUSTOMER = 'aps-en-customer.local'
-DOMAIN_EN_WRITER = 'aps-en-writer.local'
+DOMAIN_UA_CUSTOMER = 'aps-ua-customer.local'; PORT_SUFFIX_UA_CUSTOMER = ':3012'
+DOMAIN_UA_WRITER = 'aps-ua-writer.local'; PORT_SUFFIX_UA_WRITER = ':3022'
+DOMAIN_EN_CUSTOMER = 'aps-en-customer.local'; PORT_SUFFIX_EN_CUSTOMER = ':3011'
+DOMAIN_EN_WRITER = 'aps-en-writer.local'; PORT_SUFFIX_EN_WRITER = ':3021'
 
 import static 'into-u/utils-client'
 

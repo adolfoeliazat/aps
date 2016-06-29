@@ -35,11 +35,11 @@ app.post('/rpc', (req, res) => {
             }
         
             const clientProtocol = msg.isTesting ? 'http' : 'https'
-            const clientDomain = {
-                uaCustomer: DOMAIN_UA_CUSTOMER,
-                uaWriter: DOMAIN_UA_WRITER,
-                enCustomer: DOMAIN_EN_CUSTOMER,
-                enWriter: DOMAIN_EN_WRITER,
+            const [clientDomain, clientPortSuffix] = {
+                uaCustomer: [DOMAIN_UA_CUSTOMER, PORT_SUFFIX_UA_CUSTOMER],
+                uaWriter: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
+                enCustomer: [DOMAIN_EN_CUSTOMER, PORT_SUFFIX_EN_CUSTOMER],
+                enWriter: [DOMAIN_EN_WRITER, PORT_SUFFIX_EN_WRITER],
             }[msg.CLIENT_KIND]
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv') raise('WTF is the clientKind?')
             
@@ -119,6 +119,11 @@ app.post('/rpc', (req, res) => {
             
             else if (msg.fun === 'danger_killUser') {
                 await pgQuery(`delete from users where email = $1`, [msg.email])
+                return hunkyDory()
+            }
+            
+            else if (msg.fun === 'danger_fixNextGeneratedPassword') {
+                fixedNextGeneratedPassword = msg.password
                 return hunkyDory()
             }
             
@@ -213,7 +218,7 @@ app.post('/rpc', (req, res) => {
                         await pgQuery(`insert into users(email, state, passwordHash, confirmationCode, firstName, lastName) values($1, $2, $3, $4, $5, $6)`,
                                       [email, 'awaitingConfirmation', await hashPassword(password), confirmationCode, firstName, lastName])
                         
-                        const confirmationLink = `${clientProtocol}://${clientDomain}/confirm-sign-up.html?code=${encodeURIComponent(confirmationCode)}`
+                        const confirmationLink = `${clientProtocol}://${clientDomain}${clientPortSuffix}/confirm-sign-up.html?code=${encodeURIComponent(confirmationCode)}`
                         
                         await sendMail({
                             to: `${firstName} ${lastName} <${email}>`,
