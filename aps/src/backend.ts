@@ -41,7 +41,7 @@ app.post('/rpc', (req, res) => {
                 enCustomer: DOMAIN_EN_CUSTOMER,
                 enWriter: DOMAIN_EN_WRITER,
             }[msg.CLIENT_KIND]
-            if (!clientDomain) raise('WTF is the clientKind?')
+            if (!clientDomain && msg.CLIENT_KIND !== 'devenv') raise('WTF is the clientKind?')
             
             
             if (msg.fun === 'danger_eval') {
@@ -122,11 +122,21 @@ app.post('/rpc', (req, res) => {
                 return hunkyDory()
             }
             
-            else if (msg.fun === 'danger_openEditorAtUUID') {
-                const file = 'E:/work/aps/aps/src/client.ts'
+            else if (msg.fun === 'danger_openSourceCode') {
+                const file = 'E:/work/aps/aps/src/client.ts' // TODO:vgrechka Other files
                 const code = fs.readFileSync(file, 'utf8')
-                const offset = code.indexOf(msg.uuid)
-                if (offset === -1) return {error: 'UUID is not found in code'}
+                let offset
+                if (msg.$tag) {
+                    offset = code.indexOf(msg.$tag)
+                    if (!~offset) return {error: 'Tag is not found in code'}
+                } else if (msg.$sourceLocation) {
+                    const openBracket = msg.$sourceLocation.indexOf('[' /*]*/)
+                    const closingBracket = msg.$sourceLocation.indexOf(/*[*/ ']')
+                    if (!~openBracket || !~closingBracket) raise('I want an offset in brackets')
+                    offset = parseInt(msg.$sourceLocation.slice(openBracket + 1, closingBracket))
+                } else {
+                    raise('Weird source location descriptor')
+                }
                 await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, offset})
                 return hunkyDory()
             }

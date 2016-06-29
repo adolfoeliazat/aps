@@ -445,7 +445,7 @@ global.initUI = async function(opts) {
                 ),
                 divsa({marginBottom: 5},
                     spana({$testme: true, style: {fontWeight: 'bold'}}, 'Assertion ID: '),
-                    my.codeLink = my.codeLink || OpenEditorAtUUIDLink(aid)),
+                    my.codeLink = my.codeLink || OpenSourceCodeLink({$tag: aid})),
                 divsa({fontSize: '100%'},
                     tabs))
         })})

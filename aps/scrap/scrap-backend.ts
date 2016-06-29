@@ -46,7 +46,23 @@ relog(await new Promise((resolve, reject) => {
 relog(decodeQuotedPrintable('=D0=9F=D1=80=D0=B8=D0=B2=D0=B5=D1=82, Wilma!<br><br>'))
 
 
-
+const file = 'E:/work/aps/aps/src/client.ts'
+let code = fs.readFileSync(file, 'utf8')
+relog('len = ' + code.length)
+relog(code.slice(0, 6697).indexOf(undefined))
+relog('-------------')
+relog('--------------')
+relog(`                field.setError = field.setError || (x => field.control.error = x)
+                
+                if (field.titleControl === undefined && field.title) {
+                    field.titleControl = label(field.title)
+                }
+`.indexOf(undefined))
+//for (let i = 0; i < code.length; ++i) {
+//    if (i >= 1 && code[i] === '\n' && code[i-1] !== '\r') {
+//        relog(i + '  ')
+//    }
+//}
 
 
 
