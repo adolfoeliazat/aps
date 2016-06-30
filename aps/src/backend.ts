@@ -14,7 +14,7 @@ import * as fs from 'fs'
 import static 'into-u ./stuff'
 
 const app = newExpress()
-let mailTransport, sentMails = [], fixedNextGeneratedConfirmationCode, fixedNextGeneratedPassword
+let mailTransport, sentEmails = [], fixedNextGeneratedPassword
 
 app.post('/rpc', (req, res) => {
     // dlog({body: req.body, headers: req.headers})
@@ -113,13 +113,13 @@ app.post('/rpc', (req, res) => {
                 return hunkyDory()
             }
             
-            else if (msg.fun === 'danger_clearSentMails') {
-                sentMails = []
+            else if (msg.fun === 'danger_clearSentEmails') {
+                sentEmails = []
                 return hunkyDory()
             }
             
-            else if (msg.fun === 'danger_getSentMails') {
-                return sentMails
+            else if (msg.fun === 'danger_getSentEmails') {
+                return sentEmails
             }
             
             else if (msg.fun === 'danger_killUser') {
@@ -129,11 +129,6 @@ app.post('/rpc', (req, res) => {
             
             else if (msg.fun === 'danger_fixNextGeneratedPassword') {
                 fixedNextGeneratedPassword = msg.password
-                return hunkyDory()
-            }
-            
-            else if (msg.fun === 'danger_fixNextGeneratedConfirmationCode') {
-                fixedNextGeneratedConfirmationCode = msg.code
                 return hunkyDory()
             }
             
@@ -172,7 +167,7 @@ app.post('/rpc', (req, res) => {
                     return invalidEmailOrPasswordMessage()
                 }
                 const user = rows[0]
-                if (!(await comparePassword(msg.password, user.hash))) {
+                if (!(await comparePassword(msg.password, user.password_hash))) {
                     logFailure('Invalid password for existing email')
                     return invalidEmailOrPasswordMessage()
                 }
@@ -218,33 +213,29 @@ app.post('/rpc', (req, res) => {
                 if (isEmpty(fieldErrors)) {
                     try {
                         let password = uuid()
-                        let confirmationCode = uuid()
                         
                         if (fixedNextGeneratedPassword) {
                             password = fixedNextGeneratedPassword
                             fixedNextGeneratedPassword = undefined
                         }
-                        if (fixedNextGeneratedConfirmationCode) {
-                            confirmationCode = fixedNextGeneratedConfirmationCode
-                            fixedNextGeneratedConfirmationCode = undefined
-                        }
                 
-                        await pgQuery(`insert into users(email, state, passwordHash, confirmationCode, firstName, lastName) values($1, $2, $3, $4, $5, $6)`,
-                                      [email, 'awaitingConfirmation', await hashPassword(password), confirmationCode, firstName, lastName])
+                        await pgQuery(`insert into users(email, state, password_hash, first_name, last_name) values($1, $2, $3, $4, $5)`,
+                                      [email, 'cool', await hashPassword(password), firstName, lastName])
                         
-                        const confirmationLink = `${clientProtocol}://${clientDomain}${clientPortSuffix}/confirm-sign-up.html?code=${encodeURIComponent(confirmationCode)}`
+                        const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                         
-                        await sendMail({
+                        await sendEmail({
                             to: `${firstName} ${lastName} <${email}>`,
-                            subject: _t('APS Sign Up Confirmation', 'Подтверждение регистрации в APS'),
+                            subject: _t('APS Password', 'Пароль для APS'),
                             html: dedent(_t({
                                 en: `
                                     TODO
                                 `,
                                 ua: `
                                     Привет, ${firstName}!<br><br>
-                                    Для подтверждения регистрации перейди по этой ссылке:
-                                    <a href="${confirmationLink}">${confirmationLink}</a>
+                                    Вот твой пароль: ${password}
+                                    <br><br>
+                                    <a href="${signInURL}">${signInURL}</a>
                                 `
                             }))})
                         return hunkyDory()
@@ -259,17 +250,6 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 return youFixErrors()
-            }
-            
-            else if (msg.fun === 'confirmSignUp') {
-                return await pgTransaction(async function(tx) {
-                    const rows = await tx.query('select * from users where confirmationCode = $1', [msg.code])
-                    if (!rows.length) {
-                        return {error: t('Wrong code', 'Неверный код'), errorCode: 'wrong-code'}
-                    }
-
-                    return hunkyDory()
-                })
             }
             
             const situation = `WTF is the RPC function ${msg.fun}?`
@@ -288,9 +268,9 @@ app.post('/rpc', (req, res) => {
                 return {hunky: 'dory'}
             }
             
-            async function sendMail(it) { // TODO:vgrechka @refactor Extract to foundation/utils-server
+            async function sendEmail(it) { // TODO:vgrechka @refactor Extract to foundation/utils-server
                 if (msg.isTesting) {
-                    sentMails.push(it)
+                    sentEmails.push(it)
                     return
                 }
                 
@@ -307,12 +287,12 @@ app.post('/rpc', (req, res) => {
                     })
                 }
                 
-                const mail = asn({
+                const email = asn({
                     from: `APS <noreply@${clientDomain}>`,
                     it
                 })
                 await new Promise((resolve, reject) => {
-                    mailTransport.sendMail(mail, (err, res) => {
+                    mailTransport.sendMail(email, (err, res) => {
                         if (err) {
                             return reject(err)
                         }

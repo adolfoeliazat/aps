@@ -21,7 +21,7 @@ import static 'into-u/utils-client into-u/ui ./stuff'
 global.initUI = async function(opts) {
     // @ctx state
     const _t = makeT(LANG)
-    let urlObject, urlQuery, updateReactShit, rootContent, confirmationWasOK, pageState, rpcclient
+    let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK
     let updateCurrentPage
     let testScenarioToRun, preventRestoringURLAfterTest, currentTestScenarioName, assertionErrorPane
     
@@ -108,7 +108,6 @@ global.initUI = async function(opts) {
         urlQuery = querystring.parse(urlObject.query)
         const path = document.location.pathname
         
-        if (path.endsWith('/confirm-sign-up.html')) return showConfirmSignUp()
         if (path.endsWith('/sign-in.html')) return showSignIn()
         if (path.endsWith('/sign-up.html')) return showSignUp()
         
@@ -121,37 +120,12 @@ global.initUI = async function(opts) {
         return showSignIn()
     }
     
-    async function showConfirmSignUp() {
-        setPage({
-            pageTitle: t('Sign Up Confirmation', 'Подтверждение регистрации'),
-            pageBody: t('Checking your code...', 'Проверяем ваш код...'),
-        })
-        
-        updateCurrentPage(pageState.headerShitSpins = true)
-        const res = await rpc({fun: 'confirmSignUp', code: urlQuery.code})
-        pageState.error = res.error
-        if (res.error) {
-            if (res.errorCode === 'wrong-code') {
-                pageState.pageBody = t('Tough luck, buddy. Maybe copy URL from confirmation email more carefully and try again?',
-                                       'Хреновые дела, приятель. Может, скопируй URL из письма аккуратнее и попробуй еще разок?')
-            } else {
-                pageState.pageBody = t('Tough luck, buddy', 'Хреновые дела, приятель')
-            }
-            pageState.headerShitSpins = false
-            updateCurrentPage()
-            return
-        }
-        
-        confirmationWasOK = true
-        pushNavigate('sign-in.html')
-    }
-    
     function showSignIn() {
         const form = Form({
             primaryButtonTitle: t('Sign In', 'Войти'),
             fields: {
                 email: {
-                    title: t('E-mail', 'Почта'),
+                    title: t('Email', 'Почта'),
                     type: 'text',
                     attrs: {autoFocus: true},
                 },
@@ -170,13 +144,13 @@ global.initUI = async function(opts) {
         setPage({
             pageTitle: t('Sign In', 'Вход'),
             pageBody: div(
-                confirmationWasOK && preludeWithCheck(
-                    t('Cool. Your account is now activated. We sent you another email, where you can find you password.',
-                      'Все круто. Теперь твой аккаунт активирован. Мы отправили еще одно письмо, с паролем.')),
+                signedUpOK && preludeWithCheck(
+                    t('Cool. You have an account now. We sent you email with password.',
+                      'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.')),
                     
                 form,
                                
-                !confirmationWasOK && div(
+                !signedUpOK && div(
                     hr(),
                     divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create one!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
                         pushNavigate('sign-up.html')
@@ -197,7 +171,7 @@ global.initUI = async function(opts) {
             primaryButtonTitle: t('Proceed', 'Вперед'),
             fields: {
                 email: {
-                    title: t('E-mail', 'Почта'),
+                    title: t('Email', 'Почта'),
                     type: 'text',
                     attrs: {autoFocus: true},
                 },
@@ -215,7 +189,8 @@ global.initUI = async function(opts) {
             },
             rpcFun: 'signUp',
             onSuccess(res) {
-                showSignUpConfirmationInstructions()
+                signedUpOK = true
+                pushNavigate('sign-in.html')
             },
         })
         
@@ -237,15 +212,6 @@ global.initUI = async function(opts) {
         history.pushState(null, '', where)
 //        requestAnimationFrame(_=> showWhatsInURL())
         showWhatsInURL()
-    }
-    
-    function showSignUpConfirmationInstructions() {
-        setPage({
-            pageTitle: t('Sign Up', 'Регистрация'),
-            pageBody: preludeWithCheck(t(
-                'Check your mailbox. We sent you instructions for confirming sign up.',
-                'Проверьте почту. Мы отправили вам инструкции для подтверждения регистрации.'))
-        })
     }
     
     function setPage(def) {
@@ -406,10 +372,9 @@ global.initUI = async function(opts) {
         // ======================================== CUSTOMER UA TEST SCENARIOS ========================================
         
         async 'Customer UA :: Sign In :: After Wilma signs up'() {
-            await rpc({fun: 'danger_clearSentMails'})
+            await rpc({fun: 'danger_clearSentEmails'})
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
-            await rpc({fun: 'danger_fixNextGeneratedPassword', code: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
-            await rpc({fun: 'danger_fixNextGeneratedConfirmationCode', code: '9b7202f3-66e5-4f0a-aa66-f94f515360f0'})
+            await rpc({fun: 'danger_fixNextGeneratedPassword', password: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
             
             simulateURLNavigation('sign-up.html')
             assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
@@ -432,30 +397,22 @@ global.initUI = async function(opts) {
             testGlobal.buttons.primary.click()
             await assertShitSpinsForMax({$tag: '29832372-ff89-46dd-ba9d-cf54154503f5', max: 2000})
             // Check
+            assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
             assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
-                inputs: {},
+                inputs: { email: { value: `` }, password: { value: `` } },
                 errorLabels: {},
                 errorBanner: undefined,
-                pageHeader: `Регистрация` 
+                pageHeader: `Вход` 
             }})
-            assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Проверьте почту. Мы отправили вам инструкции для подтверждения регистрации.'})
-            await assertSentMails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Sign up confirmation mail', expected: [
+            await assertSentEmails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Email with password', expected: [
                 { to: `Вильма Блу <wilma.blue@test.shit.ua>`,
-                    subject: `Подтверждение регистрации в APS`,
+                    subject: `Пароль для APS`,
                     html: dedent(`
                         Привет, Вильма!<br><br>
-                        Для подтверждения регистрации перейди по этой ссылке:
-                        <a href="http://aps-ua-customer.local:3012/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0">http://aps-ua-customer.local:3012/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0</a>`) } 
+                        Вот твой пароль: 63b2439c-bf18-42c5-9f7a-42d7357f966a
+                        <br><br>
+                        <a href="http://aps-ua-customer.local:3012/sign-in.html">http://aps-ua-customer.local:3012/sign-in.html</a>`) } 
             ]})
-            
-            simulateURLNavigation('confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0')
-            await assertHeaderShitSpinsForMax({$tag: '808eacb8-010f-43ac-ae56-08c996dbfa7d', max: 2000})
-            assertHref({$tag: '8d188498-0b84-48fb-902f-e9db816bd710', expected: 'http://aps-ua-customer.local:3012/sign-in.html'})
-            assertTextSomewhere({$tag: 'be12aed8-969e-42ea-8771-47d60bbdb4e2', expected: 'Все круто. Теперь твой аккаунт активирован. Мы отправили еще одно письмо, с паролем.'})            
-            assertUIState({$tag: 'f114b0a3-c1c0-433b-98a9-2d38b9b5fd21', expected: {
-
-            }})            
-
         },
         
 // preventRestoringURLAfterTest = true
@@ -479,8 +436,8 @@ global.initUI = async function(opts) {
         assertRenameme(asn(def, {actual}))
     }
     
-    async function assertSentMails(def) {
-        const actual = await rpc({fun: 'danger_getSentMails'})
+    async function assertSentEmails(def) {
+        const actual = await rpc({fun: 'danger_getSentEmails'})
         assertRenameme(asn(def, {actual}))
     }
     
@@ -735,7 +692,7 @@ global.initUI = async function(opts) {
 }
 
 export function dynamicPageNames() {
-    return tokens('sign-in sign-up confirm-sign-up dashboard')
+    return tokens('sign-in sign-up dashboard')
 }
 
 export function pageHeader(title, attrs={}) {
