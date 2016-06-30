@@ -18,14 +18,16 @@ import * as querystring from 'querystring'
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
+let debugShitInitialized, currentTestScenarioName
+
 global.initUI = async function(opts) {
     // @ctx state
     const _t = makeT(LANG)
-    let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK
+    let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK, user
     let updateCurrentPage
-    let testScenarioToRun, preventRestoringURLAfterTest, currentTestScenarioName, assertionErrorPane
+    let testScenarioToRun, preventRestoringURLAfterTest, assertionErrorPane
     
-    if (MODE === 'debug') {
+    if (MODE === 'debug' && !debugShitInitialized) {
         await initClientStackSourceMapConsumer()
         setUIDebugRPC(rpc)
         window.addEventListener('keydown', e => {
@@ -55,14 +57,22 @@ global.initUI = async function(opts) {
             }
         })
         
+        $(document.body).append('<div id="debugShit"></div>')
+        ReactDOM.render(updatableElement(update => {
+            updateReactShit = update
+            return _=> div(assertionErrorPane, capturePane)
+        }), byid0('debugShit'))
+        
         urlObject = url.parse(location.href)
         urlQuery = querystring.parse(urlObject.query)
         testScenarioToRun = urlQuery.testScenario
+        
+        debugShitInitialized = true
     }
     
     ReactDOM.render(updatableElement(update => {
         updateReactShit = update
-        return _=> div(rootContent, assertionErrorPane, capturePane)
+        return _=> div(rootContent)
     }), byid0('root'))
     
     window.onpopstate = function(e) {
@@ -70,6 +80,11 @@ global.initUI = async function(opts) {
     }
     
     if (!testScenarioToRun) {
+        // dlog('--- localStorage stuff', localStorage.getItem('stuff'))
+        const stuffJSON = localStorage.getItem('stuff') // TODO:vgrechka This can throw, should handle
+        if (stuffJSON) {
+            user = JSON.parse(stuffJSON)
+        }
         showWhatsInURL()
     } else {
         const initialPath = location.pathname + location.search
@@ -111,13 +126,21 @@ global.initUI = async function(opts) {
         if (path.endsWith('/sign-in.html')) return showSignIn()
         if (path.endsWith('/sign-up.html')) return showSignUp()
         
-        if (localStorage.getItem('userTitle')) {
+        if (user) {
             if (path.endsWith('/orders.html')) return showOrders()
             return showDashboard()
         }
         
         history.replaceState(null, '', 'sign-in.html')
         return showSignIn()
+    }
+    
+    function showDashboard() {
+        setPage({
+            pageTitle: t('Dashboard', 'Панель'),
+            pageBody: div(
+                )
+        })
     }
     
     function showSignIn() {
@@ -136,8 +159,14 @@ global.initUI = async function(opts) {
             },
             rpcFun: 'signIn',
             onSuccess(res) {
-                byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
-                raise('implement successful login')
+                user = res.user
+                localStorage.setItem('stuff', JSON.stringify({user}))
+                
+                ReactDOM.render(updatableElement(update => {
+                    return _=> el('a', {href: '#', onClick() {}}, user.first_name)
+                }), byid0('privateNavLinkContainer'))
+                
+                pushNavigate('dashboard.html')
             },
         })
         
@@ -371,21 +400,33 @@ global.initUI = async function(opts) {
     
         // ======================================== CUSTOMER UA TEST SCENARIOS ========================================
         
-        async 'Customer UA :: Sign In :: After Wilma signs up'() {
+        async 'Customer UA :: Sign Up :: 1'() {
+            simulateCleanBrowser()
+            
             await rpc({fun: 'danger_clearSentEmails'})
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
             await rpc({fun: 'danger_fixNextGeneratedPassword', password: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
             
+            simulateURLNavigation('dashboard.html')
+            assertUIState({$tag: '62112552-36ac-47fd-9bac-a4d6a7b3c4d4', expected: {
+                url: `http://aps-ua-customer.local:3012/sign-in.html`,
+                pageHeader: `Вход`,
+                inputs: { email: { value: `` }, password: { value: `` } },
+                errorLabels: {},
+                errorBanner: undefined 
+            }})           
+                        
             simulateURLNavigation('sign-up.html')
             assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
+                url: `http://aps-ua-customer.local:3012/sign-up.html`,
+                pageHeader: `Регистрация`,
                 inputs: 
-                { email: { value: `` },
-                  firstName: { value: `` },
-                  lastName: { value: `` },
-                  agreeTerms: { value: false } },
-               errorLabels: {},
-               errorBanner: undefined,
-               pageHeader: `Регистрация` 
+                 { email: { value: `` },
+                   firstName: { value: `` },
+                   lastName: { value: `` },
+                   agreeTerms: { value: false } },
+                errorLabels: {},
+                errorBanner: undefined 
             }})
 
             // Inputs
@@ -399,10 +440,11 @@ global.initUI = async function(opts) {
             // Check
             assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
             assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
+                url: `http://aps-ua-customer.local:3012/sign-in.html`,
+                pageHeader: `Вход`,
                 inputs: { email: { value: `` }, password: { value: `` } },
                 errorLabels: {},
-                errorBanner: undefined,
-                pageHeader: `Вход` 
+                errorBanner: undefined 
             }})
             await assertSentEmails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Email with password', expected: [
                 { to: `Вильма Блу <wilma.blue@test.shit.ua>`,
@@ -413,14 +455,40 @@ global.initUI = async function(opts) {
                         <br><br>
                         <a href="http://aps-ua-customer.local:3012/sign-in.html">http://aps-ua-customer.local:3012/sign-in.html</a>`) } 
             ]})
+            
+            // Inputs
+            testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
+            testGlobal.inputs.password.value = '63b2439c-bf18-42c5-9f7a-42d7357f966a'
+            // Action
+            testGlobal.buttons.primary.click()
+            await assertShitSpinsForMax({$tag: '96f4aa5d-4f5d-4de4-869b-07f2f6f53b8b', max: 2000})
+            assertLinkWithTextSomewhere({$tag: 'aa6eda4b-fc78-43ac-959d-a2eb44f3061f', expected: 'Вильма'})
+            assertUIState({$tag: 'd9c42d17-322e-4427-b4ec-d946af422ba0', expected: {
+                url: `http://aps-ua-customer.local:3012/dashboard.html`,
+                pageHeader: `Панель`,
+                inputs: {},
+                errorLabels: {},
+                errorBanner: undefined 
+            }})
+            
+            simulateURLNavigation('dashboard.html')
         },
         
 // preventRestoringURLAfterTest = true
 // failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
         
-        async 'Customer UA :: Sign Up :: 1'() {
-        },
     }}
+    
+    function simulateCleanBrowser() {
+        localStorage.setItem('stuff', null)
+    }
+            
+    function assertLinkWithTextSomewhere({$tag, expected}) {
+        for (const a of $('a')) {
+            if (a.text === expected) return
+        }
+        uiAssert(false, `I want a link with following text somewhere: [${expected}]`, jumpToShitDetailsUI($tag))
+    }
     
     function assertHref({$tag, expected}) {
         uiAssert(document.location.href === expected, `I want to be at following URL: [${expected}]`, jumpToShitDetailsUI($tag))
@@ -428,10 +496,11 @@ global.initUI = async function(opts) {
             
     function assertUIState(def) {
         const actual = {
+            url: location.href,
+            pageHeader: testGlobal.pageHeader,
             inputs: omapo(testGlobal.inputs, x => x.capture()),
             errorLabels: testGlobal.errorLabels,
             errorBanner: testGlobal.errorBanner,
-            pageHeader: testGlobal.pageHeader,
         }
         assertRenameme(asn(def, {actual}))
     }
@@ -665,7 +734,9 @@ global.initUI = async function(opts) {
 
     function simulateURLNavigation(url) {
         history.replaceState(null, '', url)
-        showWhatsInURL()
+        initUI()
+        // requestAnimationFrame(_=> initUI())
+        // showWhatsInURL()
     }
 
     function simulatePopulateFields(data) {

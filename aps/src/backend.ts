@@ -172,7 +172,7 @@ app.post('/rpc', (req, res) => {
                     return invalidEmailOrPasswordMessage()
                 }
                 
-                return hunkyDory()
+                return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name')})
                 
                 
                 function logFailure(reason) {
@@ -264,8 +264,8 @@ app.post('/rpc', (req, res) => {
                 }
             }
             
-            function hunkyDory() {
-                return {hunky: 'dory'}
+            function hunkyDory(res) {
+                return asn({hunky: 'dory'}, res)
             }
             
             async function sendEmail(it) { // TODO:vgrechka @refactor Extract to foundation/utils-server

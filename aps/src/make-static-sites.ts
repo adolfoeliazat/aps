@@ -1118,7 +1118,7 @@ function makeCustomerSite({lang}) {
                                     <li ${highlightedNav === 'blog' ? `class="active"` : ``}><a href="blog.html">${t({en: `Writing Blog`, ua: `Писательский Блог`})}</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li ${highlightedNav === 'private' ? `class="active"` : ``}><a id="privateNavLink" href="#"></a></li>
+                                    <li id="privateNavLinkContainer" ${highlightedNav === 'private' ? `class="active"` : ``}><a id="privateNavLink" href="#"></a></li>
                                     <script>
                                         var privateNavLink = document.getElementById('privateNavLink')
                                         var userTitle = localStorage.getItem('userTitle')
