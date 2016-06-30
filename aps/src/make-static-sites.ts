@@ -1120,10 +1120,24 @@ function makeCustomerSite({lang}) {
                                 <ul class="nav navbar-nav navbar-right">
                                     <li id="privateNavLinkContainer" ${highlightedNav === 'private' ? `class="active"` : ``}><a id="privateNavLink" href="#"></a></li>
                                     <script>
-                                        var privateNavLink = document.getElementById('privateNavLink')
-                                        var userTitle = localStorage.getItem('userTitle')
-                                        privateNavLink.textContent = userTitle || '${t({en: `Sign In`, ua: `Вход`})}'
-                                        privateNavLink.href = userTitle ? 'dashboard.html' : 'sign-in.html'
+                                        updatePrivateNavLink()
+                                        
+                                        function updatePrivateNavLink() {
+                                            var privateNavLink = document.getElementById('privateNavLink')
+                                        
+                                            var stuffJSON = localStorage.getItem('stuff')
+                                            if (stuffJSON) {
+                                                var user = JSON.parse(stuffJSON).user
+                                                if (user) {
+                                                    privateNavLink.textContent = user.first_name
+                                                    privateNavLink.href = 'dashboard.html'
+                                                    return
+                                                }
+                                            }
+                                        
+                                            privateNavLink.textContent = '${t({en: `Sign In`, ua: `Вход`})}'
+                                            privateNavLink.href = 'sign-in.html'
+                                        }
                                     </script>
                                 </ul>
                               </div> <!-- /.navbar-collapse -->

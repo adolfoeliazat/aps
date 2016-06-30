@@ -161,10 +161,7 @@ global.initUI = async function(opts) {
             onSuccess(res) {
                 user = res.user
                 localStorage.setItem('stuff', JSON.stringify({user}))
-                
-                ReactDOM.render(updatableElement(update => {
-                    return _=> el('a', {href: '#', onClick() {}}, user.first_name)
-                }), byid0('privateNavLinkContainer'))
+                updatePrivateNavLink()
                 
                 pushNavigate('dashboard.html')
             },
@@ -480,7 +477,8 @@ global.initUI = async function(opts) {
     }}
     
     function simulateCleanBrowser() {
-        localStorage.setItem('stuff', null)
+        localStorage.setItem('stuff', '')
+        updatePrivateNavLink()
     }
             
     function assertLinkWithTextSomewhere({$tag, expected}) {
