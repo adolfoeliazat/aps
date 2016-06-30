@@ -31,12 +31,12 @@ global.initUI = async function(opts) {
     // @ctx state
     let urlObject = url.parse(location.href)
     let urlQuery = querystring.parse(urlObject.query)
-    let shouldRestoreInitialPathAfterTest = true, shouldSayConfirmationWasOK
+    let shouldRestoreInitialPathAfterTest = true, confirmationWasOK
     let pageState = {}
     let updateCurrentPage = noop
     
     window.onpopstate = function(e) {
-        showWhatsInPath()
+        // showWhatsInPath()
     }
     window.showWhatsInPath = showWhatsInPath
     showWhatsInPath()
@@ -66,7 +66,6 @@ global.initUI = async function(opts) {
         
         updateCurrentPage(pageState.headerShitSpins = true)
         const res = await rpc({fun: 'confirmSignUp', code: urlQuery.code})
-        pageState.headerShitSpins = false
         pageState.error = res.error
         if (res.error) {
             if (res.errorCode === 'wrong-code') {
@@ -75,21 +74,17 @@ global.initUI = async function(opts) {
             } else {
                 pageState.pageBody = t('Tough luck, buddy', 'Хреновые дела, приятель')
             }
+            pageState.headerShitSpins = false
+            updateCurrentPage()
+            return
         }
-        updateCurrentPage()
+        
+        confirmationWasOK = true
+        pushNavigate('sign-in.html')
     }
     
     function showSignIn() {
-        let prelude
-        if (shouldSayConfirmationWasOK) {
-            shouldSayConfirmationWasOK = false
-            prelude = t('Cool. Your account is now confirmed. We emailed you the password.',
-                        'Все круто. Твой аккаунт теперь подтвержден. Мы отправили пароль на почту.')
-        }
-        
-        renameme({
-            pageTitle: t('Sign In', 'Вход'),
-            prelude,
+        const form = Form({
             primaryButtonTitle: t('Sign In', 'Войти'),
             fields: {
                 email: {
@@ -105,16 +100,37 @@ global.initUI = async function(opts) {
             rpcFun: 'signIn',
             onSuccess(res) {
                 byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
-                setRoot(DashboardPage())
+                raise('implement successful login')
             },
-            bottomLinkTitle: t('Still don’t have an account? Create one!', 'Как? Еще нет аккаунта? Срочно создать!'),
-            bottomLinkPath: 'sign-up.html',
+        })
+        
+        setPage({
+            pageTitle: t('Sign In', 'Вход'),
+            pageBody: div(
+                confirmationWasOK && preludeWithCheck(
+                    t('Cool. Your account is now activated. We sent you another email, where you can find you password.',
+                      'Все круто. Теперь твой аккаунт активирован. Мы отправили еще одно письмо, с паролем.')),
+                    
+                form,
+                               
+                !confirmationWasOK && div(
+                    hr(),
+                    divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create one!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
+                        pushNavigate('sign-up.html')
+                    })))
+                )
         })
     }
     
+    function preludeWithCheck(content) {
+        return diva({style: {marginBottom: 15}},
+                    glyph('check', {style: {color: LIGHT_GREEN_700}}),
+                    nbsp, nbsp,
+                    content)
+    }
+    
     function showSignUp() {
-        renameme({
-            pageTitle: t('Sign Up', 'Регистрация'),
+        const form = Form({
             primaryButtonTitle: t('Proceed', 'Вперед'),
             fields: {
                 email: {
@@ -136,21 +152,36 @@ global.initUI = async function(opts) {
             },
             rpcFun: 'signUp',
             onSuccess(res) {
-                // byid('signInNavLink').attr('href', '#').text(t('Dashboard', 'Панель'))
-                // setRoot(DashboardPage())
                 showSignUpConfirmationInstructions()
             },
-            bottomLinkTitle: t('Already have an account? Sign in here.', 'Уже есть аккаунт? Тогда входим сюда.'),
-            bottomLinkPath: 'sign-in.html',
+        })
+        
+        setPage({
+            pageTitle: t('Sign Up', 'Регистрация'),
+            pageBody: div(
+                form,
+                               
+                div(
+                    hr(),
+                    divsa({textAlign: 'left'}, link(t('Already have an account? Sign in here.', 'Уже есть аккаунт? Тогда входим сюда.'), _=> {
+                        pushNavigate('sign-in.html')
+                    })))
+                )
         })
     }
     
+    function pushNavigate(where) {
+        history.pushState(null, '', where)
+        requestAnimationFrame(_=> showWhatsInPath())
+    }
+    
     function showSignUpConfirmationInstructions() {
-        setRoot(div(
-            responsivePageHeader(t('Sign Up', 'Регистрация')),
-            p(t('Check your mailbox. We sent you instructions for confirming sign up.',
+        setPage({
+            pageTitle: t('Sign Up', 'Регистрация'),
+            pageBody: preludeWithCheck(t(
+                'Check your mailbox. We sent you instructions for confirming sign up.',
                 'Проверьте почту. Мы отправили вам инструкции для подтверждения регистрации.'))
-        ))
+        })
     }
     
     function setPage(def) {
@@ -162,15 +193,15 @@ global.initUI = async function(opts) {
             
             return _=> diva({style: {position: 'relative'}},
                 responsivePageHeader(fov(def.pageTitle)),
-                pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium()),
+                pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium({testName: 'headerShit'})),
                 pageState.error && errorBanner(pageState.error),
                 pageState.pageBody
             )
         }))
     }
     
-    function renameme(def) {
-        setRoot(updatableElement(update => {
+    function Form(def) {
+        return updatableElement(update => {
             let working, error
             
             for (const [name, field] of toPairs(def.fields)) {
@@ -235,8 +266,6 @@ global.initUI = async function(opts) {
             }
             
             return _=> div(
-                responsivePageHeader(def.pageTitle),
-                def.prelude && p(def.prelude),
                 formsa({width: 720, margin: '0 auto'},
                     error && errorBanner(error),
                     ...values(def.fields).map(field => {
@@ -271,13 +300,8 @@ global.initUI = async function(opts) {
                             update()
                         }),
                         working && divsa({float: 'right'}, spinnerMedium())),
-                    hr(),
-                    divsa({textAlign: 'left'}, link(def.bottomLinkTitle, _=> {
-                        history.pushState(null, '', def.bottomLinkPath)
-                        showWhatsInPath()
-                    })),
                 ))
-        }))
+        })
     }
     
     runTestScenario()
@@ -354,7 +378,7 @@ global.initUI = async function(opts) {
             testGlobal.inputs.agreeTerms.value = true
             // Action
             testGlobal.buttons.primary.click()
-            await assertShitSpinsForMax(2000)
+            await assertShitSpinsForMax({$tag: '29832372-ff89-46dd-ba9d-cf54154503f5', max: 2000})
             // Check
             assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
                 inputs: {},
@@ -373,7 +397,9 @@ global.initUI = async function(opts) {
             ]})
             
             simulateNavigatePath('confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0')
+            await assertShitSpinsForMax({$tag: '808eacb8-010f-43ac-ae56-08c996dbfa7d', max: 2000})
             assertHref({$tag: '8d188498-0b84-48fb-902f-e9db816bd710', expected: 'http://aps-ua-customer.local:3012/sign-in.html'})
+            assertTextSomewhere({$tag: 'be12aed8-969e-42ea-8771-47d60bbdb4e2', expected: 'Все круто. Теперь твой аккаунт активирован. Мы отправили еще одно письмо, с паролем.'})            
             assertUIState({$tag: 'f114b0a3-c1c0-433b-98a9-2d38b9b5fd21', expected: {
 
             }})            
@@ -388,6 +414,7 @@ global.initUI = async function(opts) {
     }}
     
     function assertHref({$tag, expected}) {
+        dlog('---- actual: ' + document.location.href)
         uiAssert(document.location.href === expected, `I want to be at following URL: [${expected}]`, jumpToShitDetailsUI($tag))
     }
             
@@ -624,21 +651,37 @@ global.initUI = async function(opts) {
     function assertFail() {
         uiAssert(false, 'Just failing here, OK?')
     }
-
-    async function assertShitSpinsForMax(maxTime) {
-        assertShitSpins()
+    
+    async function assertSpinsForMax({$tag, name, max}) {
+        assertSpins({$tag, name})
         
         const t0 = Date.now()
-        while (Date.now() - t0 < maxTime) {
-            if (!testGlobal.shitSpins) return
+        while (Date.now() - t0 < max) {
+            if (!testGlobal[name + 'Spins']) return
             await delay(50)
         }
         
-        uiAssert(false, `I expected the shit to stop spinning in ${maxTime}ms`)
+        uiAssert(false, `I expected ${name} to stop spinning in ${max}ms`)
     }
 
-    function assertShitSpins() {
-        uiAssert(testGlobal.shitSpins, 'I want shit to be spinning')
+    function assertSpins({$tag, name}) {
+        uiAssert(testGlobal[name + 'Spins'], `I want ${name} to be spinning`)
+    }
+
+    async function assertShitSpinsForMax({$tag, name, max}) {
+        await assertSpinsForMax({$tag, name: 'shit', max})
+    }
+
+    function assertShitSpins({$tag}) {
+        assertSpins({name: 'shit'})
+    }
+    
+    async function assertHeaderShitSpinsForMax({$tag, max}) {
+        await assertSpinsForMax({$tag, name: 'headerShit', max})
+    }
+
+    function assertHeaderShitSpins() {
+        assertSpins({name: 'headerShit'})
     }
     
     function uiFail(errorMessage) {
@@ -725,3 +768,11 @@ export function pageHeader(title, attrs={}) {
 
                 
 clog('Client code is kind of loaded')
+
+
+
+        
+//                    spana({className: 'fa-stack fa-lg'},
+//                        el('i', {className: 'fa fa-circle fa-stack-2x', style: {color: LIGHT_GREEN_700}}),
+//                        el('i', {className: 'fa fa-check fa-stack-1x fa-inverse'})),
+

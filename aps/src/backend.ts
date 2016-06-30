@@ -236,8 +236,8 @@ app.post('/rpc', (req, res) => {
                         
                         await sendMail({
                             to: `${firstName} ${lastName} <${email}>`,
-                            subject: t('APS Sign Up Confirmation', 'Подтверждение регистрации в APS'),
-                            html: dedent(t({
+                            subject: _t('APS Sign Up Confirmation', 'Подтверждение регистрации в APS'),
+                            html: dedent(_t({
                                 en: `
                                     TODO
                                 `,
@@ -246,7 +246,7 @@ app.post('/rpc', (req, res) => {
                                     Для подтверждения регистрации перейди по этой ссылке:
                                     <a href="${confirmationLink}">${confirmationLink}</a>
                                 `
-                        }))})
+                            }))})
                         return hunkyDory()
                     } catch (e) {
                         if (e.code === '23505') {
