@@ -19,30 +19,93 @@ import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 global.initUI = async function(opts) {
+    // @ctx state
     const _t = makeT(LANG)
+    let urlObject, urlQuery, updateReactShit, rootContent, confirmationWasOK, pageState, rpcclient
+    let updateCurrentPage
+    let testScenarioToRun, preventRestoringURLAfterTest, currentTestScenarioName, assertionErrorPane
+    
+    if (MODE === 'debug') {
+        await initClientStackSourceMapConsumer()
+        setUIDebugRPC(rpc)
+        window.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.altKey && e.key === 'k') return captureState()
+            if (e.ctrlKey && e.altKey && e.key === 'i') return captureInputs()
+            if (e.ctrlKey && e.altKey && e.key === 'a') return assertUIState({$tag: 'just-showing-actual', expected: undefined})
+        })
+        
+        assertionErrorPane = statefulElement(update => {
+            let visible, content, top
+            
+            return {
+                render() {
+                    if (!visible) return null
+                    return diva({style: {position: 'absolute', left: 0, top, width: '100%', backgroundColor: RED_700, padding: '10px 10px', textAlign: 'left'}},
+                               divsa({fontWeight: 'bold', borderBottom: '2px solid white', paddingBottom: 5, marginBottom: 5, color: WHITE}, content.message),
+                               divsa({whiteSpace: 'pre-wrap', color: WHITE}, content.stack),
+                               content.detailsUI,
+                           )
+                },
+                
+                set(_content) {
+                    top = $('#footer').offset().top + 40
+                    update(content = _content, visible = true)
+                    document.body.scrollTop = 99999
+                },
+            }
+        })
+        
+        urlObject = url.parse(location.href)
+        urlQuery = querystring.parse(urlObject.query)
+        testScenarioToRun = urlQuery.testScenario
+    }
+    
+    ReactDOM.render(updatableElement(update => {
+        updateReactShit = update
+        return _=> div(rootContent, assertionErrorPane, capturePane)
+    }), byid0('root'))
+    
+    window.onpopstate = function(e) {
+        showWhatsInURL()
+    }
+    
+    if (!testScenarioToRun) {
+        showWhatsInURL()
+    } else {
+        const initialPath = location.pathname + location.search
+        try {
+            currentTestScenarioName = testScenarioToRun
+            await testScenarios()[testScenarioToRun]()
+        } finally {
+            currentTestScenarioName = undefined
+            if (!preventRestoringURLAfterTest) {
+                history.replaceState(null, '', initialPath)
+            }
+        }
+        
+        $(document.body).append(`
+            <div id="uiTestPassedBanner" style="
+                position: absolute;
+                bottom: 0px;
+                width: 100%;
+                background-color: ${GREEN_700};
+                color: ${WHITE};
+                padding: 10px 10px;
+                text-align: center;
+                font-weight: bold;
+            "></div>
+        `)
+        $('#uiTestPassedBanner').text(testScenarioToRun)
+    }
+    
+    
     function t(meta, ...args) {
         return {meta, meat: _t(...args)}
     }
     
-    if (MODE === 'debug') {
-        await initClientStackSourceMapConsumer()
-    }
-    
-    // @ctx state
-    let urlObject = url.parse(location.href)
-    let urlQuery = querystring.parse(urlObject.query)
-    let shouldRestoreInitialPathAfterTest = true, confirmationWasOK
-    let pageState = {}
-    let updateCurrentPage = noop
-    
-    window.onpopstate = function(e) {
-        // showWhatsInPath()
-    }
-    window.showWhatsInPath = showWhatsInPath
-    showWhatsInPath()
-    
-    
-    function showWhatsInPath() {
+    function showWhatsInURL() {
+        urlObject = url.parse(location.href)
+        urlQuery = querystring.parse(urlObject.query)
         const path = document.location.pathname
         
         if (path.endsWith('/confirm-sign-up.html')) return showConfirmSignUp()
@@ -172,7 +235,8 @@ global.initUI = async function(opts) {
     
     function pushNavigate(where) {
         history.pushState(null, '', where)
-        requestAnimationFrame(_=> showWhatsInPath())
+//        requestAnimationFrame(_=> showWhatsInURL())
+        showWhatsInURL()
     }
     
     function showSignUpConfirmationInstructions() {
@@ -185,17 +249,18 @@ global.initUI = async function(opts) {
     }
     
     function setPage(def) {
-        setRoot(updatableElement(update => {
+        updateReactShit(rootContent = updatableElement(update => {
+            updateCurrentPage = update
+            
             pageState = {
                 pageBody: def.pageBody
             }
-            updateCurrentPage = update
             
             return _=> diva({style: {position: 'relative'}},
                 responsivePageHeader(fov(def.pageTitle)),
-                pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium({testName: 'headerShit'})),
+                pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium({name: 'headerShit'})),
                 pageState.error && errorBanner(pageState.error),
-                pageState.pageBody
+                pageState.pageBody,
             )
         }))
     }
@@ -304,17 +369,7 @@ global.initUI = async function(opts) {
         })
     }
     
-    runTestScenario()
     
-    
-    function setRoot(comp) {
-        ReactDOM.render(updatableElement(update => {
-            return _=> div(
-                comp,
-                MODE === 'debug' && div(capturePane, assertionErrorPane))
-        }), byid0('root'))
-    }
-
     function DashboardPage() {
         return updatableElement(update => {
             return _=> div(
@@ -331,7 +386,6 @@ global.initUI = async function(opts) {
         }
     }
 
-    let rpcclient
     async function rpc(message) {
         if (!rpcclient) {
             rpcclient = RPCClient({url: `${BACKEND_URL}/rpc`})
@@ -345,8 +399,6 @@ global.initUI = async function(opts) {
         )
     }
     
-    setUIDebugRPC(rpc)
-    
     function testScenarios() {return{
         async 'Something'() {
         },
@@ -359,7 +411,7 @@ global.initUI = async function(opts) {
             await rpc({fun: 'danger_fixNextGeneratedPassword', code: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
             await rpc({fun: 'danger_fixNextGeneratedConfirmationCode', code: '9b7202f3-66e5-4f0a-aa66-f94f515360f0'})
             
-            simulateNavigatePath('sign-up.html')
+            simulateURLNavigation('sign-up.html')
             assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
                 inputs: 
                 { email: { value: `` },
@@ -396,8 +448,8 @@ global.initUI = async function(opts) {
                         <a href="http://aps-ua-customer.local:3012/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0">http://aps-ua-customer.local:3012/confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0</a>`) } 
             ]})
             
-            simulateNavigatePath('confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0')
-            await assertShitSpinsForMax({$tag: '808eacb8-010f-43ac-ae56-08c996dbfa7d', max: 2000})
+            simulateURLNavigation('confirm-sign-up.html?code=9b7202f3-66e5-4f0a-aa66-f94f515360f0')
+            await assertHeaderShitSpinsForMax({$tag: '808eacb8-010f-43ac-ae56-08c996dbfa7d', max: 2000})
             assertHref({$tag: '8d188498-0b84-48fb-902f-e9db816bd710', expected: 'http://aps-ua-customer.local:3012/sign-in.html'})
             assertTextSomewhere({$tag: 'be12aed8-969e-42ea-8771-47d60bbdb4e2', expected: 'Все круто. Теперь твой аккаунт активирован. Мы отправили еще одно письмо, с паролем.'})            
             assertUIState({$tag: 'f114b0a3-c1c0-433b-98a9-2d38b9b5fd21', expected: {
@@ -406,7 +458,7 @@ global.initUI = async function(opts) {
 
         },
         
-// shouldRestoreInitialPathAfterTest = false
+// preventRestoringURLAfterTest = true
 // failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
         
         async 'Customer UA :: Sign Up :: 1'() {
@@ -414,7 +466,6 @@ global.initUI = async function(opts) {
     }}
     
     function assertHref({$tag, expected}) {
-        dlog('---- actual: ' + document.location.href)
         uiAssert(document.location.href === expected, `I want to be at following URL: [${expected}]`, jumpToShitDetailsUI($tag))
     }
             
@@ -565,7 +616,7 @@ global.initUI = async function(opts) {
         
         function repr(it) {
             let s = deepInspect(it)
-            s = s.replace(/\\n/g, '\n') // @expect-break
+            s = s.replace(/\\n/g, '\n')
             return s
         }
     }
@@ -603,46 +654,6 @@ global.initUI = async function(opts) {
         uiAssert(deepEquals(sortBy(expected), sortBy(actual)), `I want exactly following error labels: ${expectedDescr}`)
     }
 
-    if (MODE === 'debug' && typeof window === 'object') {
-        window.addEventListener('keydown', e => {
-            if (MODE !== 'debug') return
-            if (e.ctrlKey && e.altKey && e.key === 'k') return captureState()
-            if (e.ctrlKey && e.altKey && e.key === 'i') return captureInputs()
-            if (e.ctrlKey && e.altKey && e.key === 'a') return assertUIState({aid: 'just-showing-actual'})
-        })
-    }
-
-    let currentTestScenarioName
-
-    async function runTestScenario() {
-        const testScenarioToRun = urlQuery.testScenario
-        if (MODE !== 'debug' || !testScenarioToRun) return
-        
-        const initialPath = location.pathname + location.search
-        try {
-            currentTestScenarioName = testScenarioToRun
-            await testScenarios()[testScenarioToRun]()
-        } finally {
-            currentTestScenarioName = undefined
-            if (shouldRestoreInitialPathAfterTest) {
-                history.replaceState(null, '', initialPath)
-            }
-        }
-        
-        $(document.body).append(`
-            <div id="uiTestPassedBanner" style="
-                position: absolute;
-                bottom: 0px;
-                width: 100%;
-                background-color: ${GREEN_700};
-                color: ${WHITE};
-                padding: 10px 10px;
-                text-align: center;
-                font-weight: bold;
-            "></div>
-        `)
-        $('#uiTestPassedBanner').text(testScenarioToRun)
-    }
 
     function assertErrorLabelTitle(expectedTitle) {
         uiAssert(ofind(testGlobal.errorLabels, x => x.title === expectedTitle), `I want error label [${expectedTitle}] on screen`)
@@ -688,27 +699,6 @@ global.initUI = async function(opts) {
         uiAssert(false, errorMessage)
     }
     
-    const assertionErrorPane = statefulElement(update => {
-        let visible, content, top
-        
-        return {
-            render() {
-                if (!visible) return null
-                return diva({$tag: 'a47a707b-9c52-4a60-837d-a00787bd4746', style: {position: 'absolute', left: 0, top, width: '100%', backgroundColor: RED_700, padding: '10px 10px', textAlign: 'left'}},
-                           divsa({fontWeight: 'bold', borderBottom: '2px solid white', paddingBottom: 5, marginBottom: 5, color: WHITE}, content.message),
-                           divsa({whiteSpace: 'pre-wrap', color: WHITE}, content.stack),
-                           content.detailsUI,
-                       )
-            },
-            
-            set(_content) {
-                top = $('#footer').offset().top + 40
-                update(content = _content, visible = true)
-                document.body.scrollTop = 99999
-            },
-        }
-    })
-
     function uiAssert(condition, errorMessage, {detailsUI}={}) {
         if (condition) return
         
@@ -716,11 +706,9 @@ global.initUI = async function(opts) {
         raise('UI assertion failed')
     }
 
-    function simulateNavigatePath(path) {
-        history.replaceState(null, '', path)
-        urlObject = url.parse(location.href)
-        urlQuery = querystring.parse(urlObject.query)
-        showWhatsInPath()
+    function simulateURLNavigation(url) {
+        history.replaceState(null, '', url)
+        showWhatsInURL()
     }
 
     function simulatePopulateFields(data) {
