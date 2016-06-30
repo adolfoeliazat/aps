@@ -398,8 +398,6 @@ global.initUI = async function(opts) {
         // ======================================== CUSTOMER UA TEST SCENARIOS ========================================
         
         async 'Customer UA :: Sign Up :: 1'() {
-            simulateCleanBrowser()
-            
             await rpc({fun: 'danger_clearSentEmails'})
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
             await rpc({fun: 'danger_fixNextGeneratedPassword', password: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
@@ -476,11 +474,6 @@ global.initUI = async function(opts) {
         
     }}
     
-    function simulateCleanBrowser() {
-        localStorage.setItem('stuff', '')
-        updatePrivateNavLink()
-    }
-            
     function assertLinkWithTextSomewhere({$tag, expected}) {
         for (const a of $('a')) {
             if (a.text === expected) return

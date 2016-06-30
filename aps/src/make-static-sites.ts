@@ -1120,6 +1120,10 @@ function makeCustomerSite({lang}) {
                                 <ul class="nav navbar-nav navbar-right">
                                     <li id="privateNavLinkContainer" ${highlightedNav === 'private' ? `class="active"` : ``}><a id="privateNavLink" href="#"></a></li>
                                     <script>
+                                        if (location.href.indexOf('testScenario')) {
+                                            localStorage.setItem('stuff', '')
+                                        }
+                                        
                                         updatePrivateNavLink()
                                         
                                         function updatePrivateNavLink() {
