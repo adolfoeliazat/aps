@@ -386,6 +386,7 @@ global.initUI = async function(opts) {
                 pageState.pageBody,
             )
         }))
+        debugStatusBar.setFunctions([])
     }
     
     function Form(def) {
@@ -885,8 +886,12 @@ global.initUI = async function(opts) {
     }
 }
 
-export function dynamicPageNames() {
+export function customerDynamicPageNames() {
     return tokens('sign-in sign-up dashboard orders support')
+}
+
+export function writerDynamicPageNames() {
+    return tokens('sign-in sign-up dashboard orders support store users')
 }
 
 export function pageHeader(title, attrs={}) {
