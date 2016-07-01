@@ -27,7 +27,7 @@ makeConfig = {
             browserifyEntry: 'client.js',
             
             onBrowserifyBundle() {
-                for (const dir of tokens('en-customer ua-customer')) {
+                for (const dir of tokens('en-customer ua-writer')) {
                     const target = `aps/built/${dir}`
                     if (pathExists.sync(target)) {
                         sh.cp('aps/lib/bundle.js', target)

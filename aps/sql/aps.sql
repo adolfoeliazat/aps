@@ -33,6 +33,7 @@ create table users(
     deleted boolean,
     inserted_at timestamp,
     updated_at timestamp,
+    kind text,
     email text unique,
     password_hash text,
     state text,
@@ -41,11 +42,9 @@ create table users(
 create trigger on_insert before insert on users for each row execute procedure on_insert();
 create trigger on_update before update on users for each row execute procedure on_update();
 
-insert into users(email, password_hash) values ('root', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1uZBXiW84OMzcoTvY559e8azTcXcK');
-update users set first_name = 'Vladimir', last_name = 'Grechka' where email = 'root';
-insert into users(email, password_hash) values ('toor', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
-update users set first_name = 'Evil', last_name = 'Twin' where email = 'toor';
-insert into users(email, password_hash, first_name, last_name) values ('fred.red@test.shit', '$2a$10$bMCn.W0bOYbWrU5shYx7/e5C.ygQpz2cQWcIqsTtHjNbRL/FeHXlu', 'Fred', 'Red');
+insert into users(email, kind, first_name, last_name, password_hash) values ('root', 'root', 'Vladimir', 'Grechka', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1uZBXiW84OMzcoTvY559e8azTcXcK');
+insert into users(email, kind, first_name, last_name, password_hash) values ('toor', 'toor', 'Evil', 'Twin', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
+insert into users(email, kind, first_name, last_name, password_hash) values ('dasja@test.shit.ua', 'admin', 'Даша', 'Босс', '$2a$10$Dt.OhdqCtSoF9chaj4uPZOi84AUfjSF6kQHaBLsrbG/XpEjELuEuK');
 
 
 /* -------------------------------------------------------------------

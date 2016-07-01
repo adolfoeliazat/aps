@@ -18,7 +18,7 @@ import * as querystring from 'querystring'
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
-let debugShitInitialized, currentTestScenarioName
+let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar
 
 global.initUI = async function(opts) {
     const navLinkNames = tokens('right orders support')
@@ -27,7 +27,7 @@ global.initUI = async function(opts) {
     const _t = makeT(LANG)
     let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK, user, activePage
     let updateCurrentPage
-    let testScenarioToRun, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar
+    let testScenarioToRun
     
     if (MODE === 'debug' && !debugShitInitialized) {
         await initClientStackSourceMapConsumer()
@@ -129,9 +129,19 @@ global.initUI = async function(opts) {
     if (userJSON) {
         user = JSON.parse(userJSON)
     }
-    showWhatsInURL()
     
     if (testScenarioToRun) {
+        let scenarioNameOK
+        if (LANG == 'ua' && CLIENT_KIND === 'customer' && testScenarioToRun.startsWith('UA Customer :: ')) scenarioNameOK = true
+        if (LANG == 'ua' && CLIENT_KIND === 'writer' && testScenarioToRun.startsWith('UA Writer :: ')) scenarioNameOK = true
+        if (!scenarioNameOK) raise(`Bad scenario name for ${LANG} ${CLIENT_KIND} client: ${testScenarioToRun}`)
+        
+        window.locationProxy = {
+            set href(x) {
+                history.replaceState(null, '', x)
+            }
+        }
+        
         const initialPath = location.pathname + location.search
         try {
             currentTestScenarioName = testScenarioToRun
@@ -156,6 +166,8 @@ global.initUI = async function(opts) {
             "></div>
         `)
         $('#uiTestPassedBanner').text(testScenarioToRun)
+    } else {
+        showWhatsInURL()
     }
     
     
@@ -201,8 +213,8 @@ global.initUI = async function(opts) {
             }
         }
         
-        if (!shower) raise('Can’t determine fucking shower')
-        if (!activeNavLink) raise('Can’t determine fucking activeNavLink')
+        if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
+        if (!activeNavLink) raise(`Can’t determine fucking activeNavLink for path ${path}`)
         
         for (const name of navLinkNames) {
             const link = byid(name + 'NavLink')
@@ -367,7 +379,6 @@ global.initUI = async function(opts) {
     
     function pushNavigate(where) {
         history.pushState(null, '', where)
-//        requestAnimationFrame(_=> showWhatsInURL())
         showWhatsInURL()
     }
     
@@ -527,9 +538,9 @@ global.initUI = async function(opts) {
         async 'Something'() {
         },
     
-        // ======================================== CUSTOMER UA TEST SCENARIOS ========================================
+        // ======================================== UA CUSTOMER TEST SCENARIOS ========================================
         
-        async 'Customer UA :: Sign Up :: 1'() {
+        async 'UA Customer :: Sign Up :: 1'() {
             await rpc({fun: 'danger_clearSentEmails'})
             await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
             await rpc({fun: 'danger_fixNextGeneratedPassword', password: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
@@ -599,6 +610,23 @@ global.initUI = async function(opts) {
             }})
             
             simulateURLNavigation('dashboard.html')
+        },
+        
+        // ======================================== UA WRITER TEST SCENARIOS ========================================
+        
+        async 'UA Writer :: Sign Up :: 1'() {
+            await rpc({fun: 'danger_clearSentEmails'})
+            await rpc({fun: 'danger_killUser', email: 'fred.red@test.shit.ua'})
+            await rpc({fun: 'danger_fixNextGeneratedPassword', password: 'b34b80fb-ae50-4456-8557-399366fe45e4'})
+            
+            simulateURLNavigation('dashboard.html')
+            assertUIState({$tag: '20059334-7dff-4922-8bf5-ac07999d892d', expected: {
+                url: `http://aps-ua-writer.local:3022/sign-in.html`,
+                pageHeader: `Вход`,
+                inputs: { email: { value: `` }, password: { value: `` } },
+                errorLabels: {},
+                errorBanner: undefined 
+            }})
         },
         
 // preventRestoringURLAfterTest = true
@@ -857,9 +885,8 @@ global.initUI = async function(opts) {
 
     function simulateURLNavigation(url) {
         history.replaceState(null, '', url)
+        initUI0()
         initUI()
-        // requestAnimationFrame(_=> initUI())
-        // showWhatsInURL()
     }
 
     function simulatePopulateFields(data) {

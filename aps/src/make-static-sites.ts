@@ -612,7 +612,7 @@ function makeWriterSite({lang}) {
         )
     })
     
-    customerDynamicPageNames().forEach(x => writeDynamicPage(x))
+    writerDynamicPageNames().forEach(x => writeDynamicPage(x))
     
     
     function writeDynamicPage(name) {
@@ -1692,6 +1692,12 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                             <ul id="rightNavbar" class="nav navbar-nav navbar-right"></ul>
                                     
                             <script>
+                                window.locationProxy = {
+                                    set href(x) {
+                                        location.href = x
+                                    }
+                                }
+        
                                 if (~location.href.indexOf('testScenario')) {
                                     localStorage.clear()
                                 }
@@ -1708,12 +1714,12 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                                     ${run(_=> {
                                          if (clientKind === 'customer') return `
                                              if (!user && !~['/', '/sign-in.html', '/sign-up.html', '/why.html', '/prices.html', '/samples.html', '/faq.html', '/contact.html', '/blog.html'].indexOf(location.pathname)) {
-                                                 location.href = '/sign-in.html'
+                                                 locationProxy.href = '/sign-in.html'
                                              }
                                          `
                                     else if (clientKind === 'writer') return `
                                              if (!user && !~['/', '/sign-in.html', '/sign-up.html', '/why.html', '/prices.html', '/faq.html'].indexOf(location.pathname)) {
-                                                 location.href = '/sign-in.html'
+                                                 locationProxy.href = '/sign-in.html'
                                              }
                                          `
                                     })}
@@ -1808,7 +1814,7 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                 ${highlightedNav === 'private' ? `
                     <script>
                         LANG = '${lang}'
-                        CLIENT_KIND = '${lang}${capitalize(clientKind)}'
+                        CLIENT_KIND = '${clientKind}'
                     </script>
                     <script src="bundle.js"></script>
                     <script>initUI()</script>

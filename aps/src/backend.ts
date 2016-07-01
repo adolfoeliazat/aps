@@ -41,11 +41,11 @@ app.post('/rpc', (req, res) => {
         
             const clientProtocol = msg.isTesting ? 'http' : 'https'
             const [clientDomain, clientPortSuffix] = {
-                uaCustomer: [DOMAIN_UA_CUSTOMER, PORT_SUFFIX_UA_CUSTOMER],
-                uaWriter: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
-                enCustomer: [DOMAIN_EN_CUSTOMER, PORT_SUFFIX_EN_CUSTOMER],
-                enWriter: [DOMAIN_EN_WRITER, PORT_SUFFIX_EN_WRITER],
-            }[msg.CLIENT_KIND] || [undefined, undefined]
+                ua_customer: [DOMAIN_UA_CUSTOMER, PORT_SUFFIX_UA_CUSTOMER],
+                ua_writer: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
+                en_customer: [DOMAIN_EN_CUSTOMER, PORT_SUFFIX_EN_CUSTOMER],
+                en_writer: [DOMAIN_EN_WRITER, PORT_SUFFIX_EN_WRITER],
+            }[msg.LANG + '_' + msg.CLIENT_KIND] || [undefined, undefined]
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv') raise('WTF is the clientKind?')
             
             
