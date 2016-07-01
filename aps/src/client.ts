@@ -235,8 +235,44 @@ global.initUI = async function(opts) {
         setPage({
             pageTitle: t('Dashboard', 'Панель'),
             pageBody: div(
+                diva({className: 'row'},
+                    diva({className: 'col-sm-6'},
+                        sectionTitle(t('Account', 'Аккаунт')),
+                        sectionLinks(
+                            [t('Sign out', 'Выйти прочь'), _=> {
+                                dlog('implement sign out')
+                            }],
+                            [t('Change password', 'Сменить пароль'), _=> {
+                                dlog('implement change password')
+                            }]
+                        )))
                 )
         })
+        
+        
+        function sectionTitle(title) {
+            return diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title)
+        }
+        
+        function sectionLinks(...items) {
+            return ula({className: 'fa-ul', style: {marginLeft: 20}},
+                       ...items.map(([itemTitle, action]) =>
+                           lia({style: {marginBottom: 5}},
+                               ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_500}}),
+                               link(itemTitle, {style: {color: '#333'}}, action))))
+        }
+        
+        /*
+<div class="row">
+    <div class="col-sm-6">
+      <div style="background-color: #eceff1; font-weight: bold; padding: 2px 5px; margin-bottom: 10px;">Account</div>
+      <ul class="fa-ul" style="margin-left: 20px;">
+        <li style="margin-bottom: 5px;"><i class="fa fa-li fa-chevron-right" style="color: #607d8b;"></i><a href="#" style="color: #333;">Sign out</a></li>
+        <li><i class="fa fa-li fa-chevron-right" style="color: #607d8b;"></i>Change password</li>
+      </ul>
+    </div>
+  </div>
+         */
     }
     
     function showSignIn() {
@@ -858,7 +894,8 @@ global.initUI = async function(opts) {
 
 
     function responsivePageHeader(title) {
-        return pageHeader(title, {className: 'padding-left-to-center-720'})
+        return pageHeader(title, {})
+//        return pageHeader(title, {className: 'padding-left-to-center-720'})
     }
 }
 
