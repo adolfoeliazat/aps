@@ -1115,18 +1115,23 @@ function makeCustomerSite({lang}) {
                                     if (~location.href.indexOf('testScenario')) {
                                         localStorage.setItem('stuff', '')
                                     }
+            
+                                    var user
+                                    var stuffJSON = localStorage.getItem('stuff')
+                                    if (stuffJSON) {
+                                        user = JSON.parse(stuffJSON).user
+                                    }
+                                    user = undefined
+                                    console.log('---user', user)
+            
+                                    if (!user && !~['/', '/sign-in.html', '/sign-up.html', '/why.html', '/prices.html', '/samples.html', '/faq.html', '/contact.html', '/blog.html'].indexOf(location.pathname)) {
+                                        location.href = '/sign-in.html'
+                                    }
+            
                                     
                                     makeNavbar()
                                     
                                     function makeNavbar() {
-                                        var user
-                                        var stuffJSON = localStorage.getItem('stuff')
-                                        if (stuffJSON) {
-                                            user = JSON.parse(stuffJSON).user
-                                        }
-                                        user = undefined
-                                        console.log('---user', user)
-            
                                         // TODO:vgrechka Remove Order item from Prose
                                         var proseItems = ''
                                         proseItems += '<li class="' + (location.pathname === '/why.html' ? 'active' : '') + '"><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>'
