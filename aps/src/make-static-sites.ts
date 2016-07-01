@@ -1079,6 +1079,10 @@ function makeCustomerSite({lang}) {
                             cursor: default !important;
                         }
             
+                        .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a {
+                            background: none;
+                        }
+            
                         @media (min-width: 768px) {
                             .padding-left-to-center-720 {
                                 padding-left: 0px;
@@ -1116,23 +1120,20 @@ function makeCustomerSite({lang}) {
                                         localStorage.setItem('stuff', '')
                                     }
             
-                                    var user
-                                    var stuffJSON = localStorage.getItem('stuff')
-                                    if (stuffJSON) {
-                                        user = JSON.parse(stuffJSON).user
-                                    }
-                                    user = undefined
-                                    console.log('---user', user)
+                                    initUI0()
             
-                                    if (!user && !~['/', '/sign-in.html', '/sign-up.html', '/why.html', '/prices.html', '/samples.html', '/faq.html', '/contact.html', '/blog.html'].indexOf(location.pathname)) {
-                                        location.href = '/sign-in.html'
-                                    }
-            
-                                    
-                                    makeNavbar()
-                                    
-                                    function makeNavbar() {
-                                        // TODO:vgrechka Remove Order item from Prose
+                                    function initUI0() {
+                                        var user
+                                        var stuffJSON = localStorage.getItem('stuff')
+                                        if (stuffJSON) {
+                                            user = JSON.parse(stuffJSON).user
+                                        }
+                
+                                        if (!user && !~['/', '/sign-in.html', '/sign-up.html', '/why.html', '/prices.html', '/samples.html', '/faq.html', '/contact.html', '/blog.html'].indexOf(location.pathname)) {
+                                            location.href = '/sign-in.html'
+                                        }
+                
+                                        
                                         var proseItems = ''
                                         proseItems += '<li class="' + (location.pathname === '/why.html' ? 'active' : '') + '"><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>'
                                         proseItems += '<li class="' + (location.pathname === '/prices.html' ? 'active' : '') + '"><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>'
@@ -1157,16 +1158,16 @@ function makeCustomerSite({lang}) {
                                                 + '        </ul>'
                                                 + '    </a>'
                                                 + '</li>'
-                                                + '<li class="' + (location.pathname === '/orders.html' ? 'active' : '') + '"><a href="orders.html">${t({en: `My Orders`, ua: `Мои заказы`})}</a></li>'
-                                                + '<li class="' + (location.pathname === '/support.html' ? 'active' : '') + '"><a href="support.html">${t({en: `Support`, ua: `Служба поддержки`})}</a></li>'
+                                                + '<li class="' + (location.pathname === '/orders.html' ? 'active' : '') + '"><a id="ordersNavLink" href="orders.html">${t({en: `My Orders`, ua: `Мои заказы`})}</a></li>'
+                                                + '<li class="' + (location.pathname === '/support.html' ? 'active' : '') + '"><a id="supportNavLink" href="support.html">${t({en: `Support`, ua: `Служба поддержки`})}</a></li>'
                                                     
-                                            document.getElementById('rightNavbar').innerHTML = '<li class="' + (location.pathname === '/dashboard.html' ? 'active' : '') + '"><a id="privateNavLink" href="dashboard.html"></a></li>'
-                                            document.getElementById('privateNavLink').textContent = user.first_name
+                                            document.getElementById('rightNavbar').innerHTML = '<li class="' + (location.pathname === '/dashboard.html' ? 'active' : '') + '"><a id="rightNavLink" href="dashboard.html"></a></li>'
+                                            document.getElementById('rightNavLink').textContent = user.first_name
                                         } else {
                                             document.getElementById('leftNavbar').innerHTML = proseItems
                                             
-                                            document.getElementById('rightNavbar').innerHTML = '<li class="' + (~['/sign-in.html', '/sign-up.html'].indexOf(location.pathname) ? 'active' : '') + '"><a id="privateNavLink" href="sign-in.html"></a></li>'
-                                            document.getElementById('privateNavLink').textContent = '${t({en: `Sign In`, ua: `Вход`})}'
+                                            document.getElementById('rightNavbar').innerHTML = '<li class="' + (~['/sign-in.html', '/sign-up.html'].indexOf(location.pathname) ? 'active' : '') + '"><a id="rightNavLink" href="sign-in.html"></a></li>'
+                                            document.getElementById('rightNavLink').textContent = '${t({en: `Sign In`, ua: `Вход`})}'
                                         }
                                     }
                                 </script>

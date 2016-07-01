@@ -21,7 +21,8 @@ import static 'into-u/utils-client into-u/ui ./stuff'
 let debugShitInitialized, currentTestScenarioName
 
 global.initUI = async function(opts) {
-    dlog('---- initializing')
+    const navLinkNames = tokens('right orders support')
+        
     // @ctx state
     const _t = makeT(LANG)
     let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK, user, activePage
@@ -69,6 +70,16 @@ global.initUI = async function(opts) {
         testScenarioToRun = urlQuery.testScenario
         
         debugShitInitialized = true
+    }
+    
+    for (const name of navLinkNames) {
+        const link = byid0(name + 'NavLink')
+        if (link) {
+            link.onclick = e => {
+                e.preventDefault()
+                pushNavigate(link.getAttribute('href'))
+            }
+        }
     }
     
     ReactDOM.render(updatableElement(update => {
@@ -124,22 +135,63 @@ global.initUI = async function(opts) {
         urlQuery = querystring.parse(urlObject.query)
         const path = document.location.pathname
         
-        if (path.endsWith('/sign-in.html')) return showSignIn()
-        if (path.endsWith('/sign-up.html')) return showSignUp()
+        let shower, activeNavLink
         
-        if (user) {
-            if (path.endsWith('/orders.html')) return showOrders()
-            return showDashboard()
+        if (path.endsWith('/sign-in.html')) {
+            shower = showSignIn
+            activeNavLink = 'right'
+        } else if (path.endsWith('/sign-up.html')) {
+            shower = showSignUp
+            activeNavLink = 'right'
+        } else if (user) {
+            if (path.endsWith('/orders.html')) {
+                activeNavLink = 'orders'
+                shower = showOrders
+            } else if (path.endsWith('/support.html')) {
+                activeNavLink = 'support'
+                shower = showSupport
+            } else if (path.endsWith('/dashboard.html')) {
+                activeNavLink = 'right'
+                shower = showDashboard
+            }
         }
         
-        history.replaceState(null, '', 'sign-in.html')
-        return showSignIn()
+        if (!shower) raise('Can’t determine fucking shower')
+        if (!activeNavLink) raise('Can’t determine fucking activeNavLink')
+        
+        for (const name of navLinkNames) {
+            const link = byid(name + 'NavLink')
+            if (link.length) {
+                const li = link.parent()
+                li.removeClass('active')
+                if (name === activeNavLink) {
+                    li.addClass('active')
+                }
+            }
+        }
+        
+        shower()
+    }
+    
+    function showSupport() {
+        setPage({
+            pageTitle: t('Support', 'Служба поддержки'),
+            pageBody: div(
+                )
+        })
+    }
+    
+    function showOrders() {
+        setPage({
+            pageTitle: t('My Orders', 'Мои заказы'),
+            pageBody: div(
+                )
+        })
     }
     
     function showDashboard() {
         setPage({
             pageTitle: t('Dashboard', 'Панель'),
-            layout: 'private',
             pageBody: div(
                 )
         })
@@ -163,7 +215,20 @@ global.initUI = async function(opts) {
             onSuccess(res) {
                 user = res.user
                 localStorage.setItem('stuff', JSON.stringify({user}))
-                updatePrivateNavLink()
+                initUI0()
+                
+//                $('#ordersNavLink').addEventListener('click', e => {
+//                    e.preventDefault()
+//                    pushNavigate('orders.html')
+//                })
+//                $('#supportNavLink').addEventListener('click', e => {
+//                    e.preventDefault()
+//                    pushNavigate('support.html')
+//                })
+//                $('#dashboardNavLink').addEventListener('click', e => {
+//                    e.preventDefault()
+//                    pushNavigate('dashboard.html')
+//                })
                 
                 pushNavigate('dashboard.html')
             },
@@ -171,7 +236,6 @@ global.initUI = async function(opts) {
         
         setPage({
             pageTitle: t('Sign In', 'Вход'),
-            layout: 'public',
             pageBody: div(
                 signedUpOK && preludeWithCheck(
                     t('Cool. You have an account now. We sent you email with password.',
@@ -225,7 +289,6 @@ global.initUI = async function(opts) {
         
         setPage({
             pageTitle: t('Sign Up', 'Регистрация'),
-            layout: 'public',
             pageBody: div(
                 form,
                                
