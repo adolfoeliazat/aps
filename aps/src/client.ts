@@ -21,9 +21,10 @@ import static 'into-u/utils-client into-u/ui ./stuff'
 let debugShitInitialized, currentTestScenarioName
 
 global.initUI = async function(opts) {
+    dlog('---- initializing')
     // @ctx state
     const _t = makeT(LANG)
-    let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK, user
+    let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK, user, activePage
     let updateCurrentPage
     let testScenarioToRun, preventRestoringURLAfterTest, assertionErrorPane
     
@@ -138,6 +139,7 @@ global.initUI = async function(opts) {
     function showDashboard() {
         setPage({
             pageTitle: t('Dashboard', 'Панель'),
+            layout: 'private',
             pageBody: div(
                 )
         })
@@ -169,6 +171,7 @@ global.initUI = async function(opts) {
         
         setPage({
             pageTitle: t('Sign In', 'Вход'),
+            layout: 'public',
             pageBody: div(
                 signedUpOK && preludeWithCheck(
                     t('Cool. You have an account now. We sent you email with password.',
@@ -222,6 +225,7 @@ global.initUI = async function(opts) {
         
         setPage({
             pageTitle: t('Sign Up', 'Регистрация'),
+            layout: 'public',
             pageBody: div(
                 form,
                                
@@ -248,7 +252,7 @@ global.initUI = async function(opts) {
                 pageBody: def.pageBody
             }
             
-            return _=> diva({style: {position: 'relative'}},
+            return _=> diva({className: 'container', style: {position: 'relative'}},
                 responsivePageHeader(fov(def.pageTitle)),
                 pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium({name: 'headerShit'})),
                 pageState.error && errorBanner(pageState.error),
@@ -754,7 +758,7 @@ global.initUI = async function(opts) {
 }
 
 export function dynamicPageNames() {
-    return tokens('sign-in sign-up dashboard')
+    return tokens('sign-in sign-up dashboard orders support')
 }
 
 export function pageHeader(title, attrs={}) {

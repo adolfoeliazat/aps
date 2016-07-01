@@ -1001,10 +1001,9 @@ function makeCustomerSite({lang}) {
     
     function writeDynamicPage(name) {
         writePage({name: name, highlightedNav: 'private',
-            comp: div(
-                diva({className: 'container'},
-                    diva({id: 'root'},
-                        wholePageSpinner())))})
+            comp: diva({id: 'root'},
+                      diva({className: 'container'},
+                          wholePageSpinner()))})
     }
     
     function wholePageSpinner() {
@@ -1101,58 +1100,82 @@ function makeCustomerSite({lang}) {
                     <style>${css}</style>
                 </head>
                 <body style="padding-top: 50px; padding-bottom: 40px;">
+                    <div id="everything">
                     <nav class="navbar navbar-default navbar-fixed-top">
                         <div class="container-fluid">
                             <div class="navbar-header">
                               <a class="navbar-brand" href="/">APS</a>
                             </div>
 
-                            <div class="collapse navbar-collapse" style="text-align: center;" id="bs-example-navbar-collapse-1">
-                                <ul class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
-                                    <li ${highlightedNav === 'why' ? `class="active"` : ``}><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>
-                                    <li ${highlightedNav === 'prices' ? `class="active"` : ``}><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>
-                                    <li ${highlightedNav === 'samples' ? `class="active"` : ``}><a href="samples.html">${t({en: `Sample Papers`, ua: `Примеры работ`})}</a></li>
-                                    <li ${highlightedNav === 'order' ? `class="active"` : ``}><a href="order.html">${t({en: `Order a Paper`, ua: `Сделать заказ`})}</a></li>
-                                    <li ${highlightedNav === 'faq' ? `class="active"` : ``}><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>
-                                    <li ${highlightedNav === 'contact' ? `class="active"` : ``}><a href="contact.html">${t({en: `Contact Us`, ua: `Связь`})}</a></li>
-                                    <li ${highlightedNav === 'blog' ? `class="active"` : ``}><a href="blog.html">${t({en: `Writing Blog`, ua: `Писательский Блог`})}</a></li>
-                                </ul>
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li id="privateNavLinkContainer" ${highlightedNav === 'private' ? `class="active"` : ``}><a id="privateNavLink" href="#"></a></li>
-                                    <script>
-                                        if (location.href.indexOf('testScenario')) {
-                                            localStorage.setItem('stuff', '')
+                            <div style="text-align: left;">
+                                <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;"></ul>
+                                <ul id="rightNavbar" class="nav navbar-nav navbar-right"></ul>
+                                        
+                                <script>
+                                    if (~location.href.indexOf('testScenario')) {
+                                        localStorage.setItem('stuff', '')
+                                    }
+                                    
+                                    makeNavbar()
+                                    
+                                    function makeNavbar() {
+                                        var user
+                                        var stuffJSON = localStorage.getItem('stuff')
+                                        if (stuffJSON) {
+                                            user = JSON.parse(stuffJSON).user
                                         }
+                                        user = undefined
+                                        console.log('---user', user)
+            
+                                        // TODO:vgrechka Remove Order item from Prose
+                                        var proseItems = ''
+                                        proseItems += '<li class="' + (location.pathname === '/why.html' ? 'active' : '') + '"><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>'
+                                        proseItems += '<li class="' + (location.pathname === '/prices.html' ? 'active' : '') + '"><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>'
+                                        proseItems += '<li class="' + (location.pathname === '/samples.html' ? 'active' : '') + '"><a href="samples.html">${t({en: `Samples`, ua: `Примеры`})}</a></li>'
+                                        if (!user) {
+                                            proseItems += '<li class="' + (location.pathname === '/order.html' ? 'active' : '') + '"><a href="order.html">${t({en: `Order`, ua: `Заказать`})}</a></li>'
+                                        }
+                                        proseItems += '<li class="' + (location.pathname === '/faq.html' ? 'active' : '') + '"><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>'
+                                        proseItems += '<li class="' + (location.pathname === '/contact.html' ? 'active' : '') + '"><a href="contact.html">${t({en: `Contact Us`, ua: `Связь`})}</a></li>'
+                                        proseItems += '<li class="' + (location.pathname === '/blog.html' ? 'active' : '') + '"><a href="blog.html">${t({en: `Blog`, ua: `Блог`})}</a></li>'
                                         
-                                        updatePrivateNavLink()
-                                        
-                                        function updatePrivateNavLink() {
-                                            var privateNavLink = document.getElementById('privateNavLink')
-                                        
-                                            var stuffJSON = localStorage.getItem('stuff')
-                                            if (stuffJSON) {
-                                                var user = JSON.parse(stuffJSON).user
-                                                if (user) {
-                                                    privateNavLink.textContent = user.first_name
-                                                    privateNavLink.href = 'dashboard.html'
-                                                    return
-                                                }
+                                        if (user) {
+                                            var proseStyle = ''
+                                            if (~['/why.html', '/prices.html', '/samples.html', '/faq.html', '/contact.html', '/blog.html'].indexOf(location.pathname)) {
+                                                proseStyle = 'background-color: #e7e7e7'
                                             }
-                                        
-                                            privateNavLink.textContent = '${t({en: `Sign In`, ua: `Вход`})}'
-                                            privateNavLink.href = 'sign-in.html'
+                                            document.getElementById('leftNavbar').innerHTML = ''
+                                                + '<li class="dropdown">'
+                                                + '    <a href="#" class="dropdown-toggle" style="' + proseStyle + '" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${t({en: `Prose`, ua: `Проза`})} <span class="caret"></span></a>'
+                                                + '        <ul class="dropdown-menu">'
+                                                +              proseItems
+                                                + '        </ul>'
+                                                + '    </a>'
+                                                + '</li>'
+                                                + '<li class="' + (location.pathname === '/orders.html' ? 'active' : '') + '"><a href="orders.html">${t({en: `My Orders`, ua: `Мои заказы`})}</a></li>'
+                                                + '<li class="' + (location.pathname === '/support.html' ? 'active' : '') + '"><a href="support.html">${t({en: `Support`, ua: `Служба поддержки`})}</a></li>'
+                                                    
+                                            document.getElementById('rightNavbar').innerHTML = '<li class="' + (location.pathname === '/dashboard.html' ? 'active' : '') + '"><a id="privateNavLink" href="dashboard.html"></a></li>'
+                                            document.getElementById('privateNavLink').textContent = user.first_name
+                                        } else {
+                                            document.getElementById('leftNavbar').innerHTML = proseItems
+                                            
+                                            document.getElementById('rightNavbar').innerHTML = '<li class="' + (~['/sign-in.html', '/sign-up.html'].indexOf(location.pathname) ? 'active' : '') + '"><a id="privateNavLink" href="sign-in.html"></a></li>'
+                                            document.getElementById('privateNavLink').textContent = '${t({en: `Sign In`, ua: `Вход`})}'
                                         }
-                                    </script>
-                                </ul>
+                                    }
+                                </script>
+                                            
                               </div> <!-- /.navbar-collapse -->
                         </div> <!-- /.container-fluid -->
                     </nav>
                 
                     ${ReactDOMServer.renderToStaticMarkup(comp)}
                                         
-                    <div id="footer" style="background-color: #f8f8f8; border: 1px solid #e7e7e7; position: absolute; left: 0px; bottom: 0px; width: 100%; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 5px 15px;">
+                    <div id="footer" style="background-color: #f8f8f8; border: 1px solid #e7e7e7; position: absolute; left: 0px; bottom: 0px; width: 100%; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 5px 15px; height: 28px;">
                         © Copyright 2015-2016 AcademicPaperServed. All rights reserved
                     </div>
+                    </div> <!-- /#everything -->
 
                     <script src="jquery.min.js"></script>
                     <script src="bootstrap-master/js/bootstrap.min.js"></script>
