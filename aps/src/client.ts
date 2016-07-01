@@ -309,7 +309,8 @@ global.initUI = async function(opts) {
             pageBody: div(
                 signedUpOK && preludeWithCheck(
                     t('Cool. You have an account now. We sent you email with password.',
-                      'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.')),
+                      'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'),
+                    {center: 720}),
                     
                 form,
                                
@@ -328,8 +329,14 @@ global.initUI = async function(opts) {
         }}])
     }
     
-    function preludeWithCheck(content) {
-        return diva({style: {marginBottom: 15}},
+    function preludeWithCheck(content, {center}={}) {
+        const style = {}
+        if (center) {
+            asn(style, {width: center, margin: '0 auto'})
+        }
+        asn(style, {marginBottom: 15})
+        
+        return diva({style},
                     glyph('check', {style: {color: LIGHT_GREEN_700}}),
                     nbsp, nbsp,
                     content)
@@ -649,13 +656,40 @@ global.initUI = async function(opts) {
             // Action
             testGlobal.buttons.primary.click()
             await assertShitSpinsForMax({$tag: '39df3f4b-5ca0-4929-bae7-ec1d3bd008ed', max: 2000})
-
+            
+            await assertSentEmails({$tag: '024f202c-ee75-44ed-ac26-44154d4caf13', descr: 'Email with password', expected: [
+                { to: `Фред Ред <fred.red@test.shit.ua>`,
+                    subject: `Пароль для Writer UA`,
+                    html: dedent(`
+                        Привет, Фред!<br><br>
+                        Вот твой пароль: b34b80fb-ae50-4456-8557-399366fe45e4
+                        <br><br>
+                        <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>`) } 
+            ]})
             assertUIState({$tag: '24ca0059-e2e9-4fc4-9056-ede17e586029', expected: {
-
+                url: `http://aps-ua-writer.local:3022/sign-in.html`,
+                pageHeader: `Вход`,
+                inputs: { email: { value: `` }, password: { value: `` } },
+                errorLabels: {},
+                errorBanner: undefined 
             }})            
-             
-                        
-            failForJumping('Booooooom', 'e559cd51-11d0-4942-b0e6-aa818d7e9709')
+            assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
+
+            // Inputs
+            testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
+            testGlobal.inputs.password.value = 'b34b80fb-ae50-4456-8557-399366fe45e4'
+            // Action
+            testGlobal.buttons.primary.click()
+            await assertShitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
+
+            assertUIState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
+                url: `http://aps-ua-writer.local:3022/dashboard.html`,
+                pageHeader: `Панель`,
+                inputs: {},
+                errorLabels: {},
+                errorBanner: undefined 
+            }})                        
+            assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Фред'})
         },
         
 // preventRestoringURLAfterTest = true

@@ -226,10 +226,18 @@ app.post('/rpc', (req, res) => {
                                       [email, msg.CLIENT_KIND, msg.LANG, 'cool', await hashPassword(password), firstName, lastName])
                         
                         const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
+                            
+                        let subject
+                        if (msg.LANG === 'ua' && msg.CLIENT_KIND === 'customer') {
+                            subject = 'Пароль для APS'
+                        } else if (msg.LANG === 'ua' && msg.CLIENT_KIND === 'writer') {
+                            subject = 'Пароль для Writer UA'
+                        }
+                        if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
                         
                         await sendEmail({
                             to: `${firstName} ${lastName} <${email}>`,
-                            subject: _t('APS Password', 'Пароль для APS'),
+                            subject,
                             html: dedent(_t({
                                 en: `
                                     TODO
@@ -306,6 +314,10 @@ app.post('/rpc', (req, res) => {
             
             function failOnClientUserMismatch() {
                 if (user.kind !== msg.CLIENT_KIND || user.lang !== msg.LANG) raise('Client/user mismatch')
+            }
+            
+            function clientKindDescr() {
+                return `client ${msg.LANG} ${msg.CLIENT_KIND}`
             }
             
         } catch (fucked) {
