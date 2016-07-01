@@ -114,15 +114,7 @@ global.initUI = async function(opts) {
         debugShitInitialized = true
     }
     
-    for (const name of navLinkNames) {
-        const link = byid0(name + 'NavLink')
-        if (link) {
-            link.onclick = e => {
-                e.preventDefault()
-                pushNavigate(link.getAttribute('href'))
-            }
-        }
-    }
+    spaifyNavbar()
     
     ReactDOM.render(updatableElement(update => {
         updateReactShit = update
@@ -166,6 +158,18 @@ global.initUI = async function(opts) {
         $('#uiTestPassedBanner').text(testScenarioToRun)
     }
     
+    
+    function spaifyNavbar() {
+        for (const name of navLinkNames) {
+            const link = byid0(name + 'NavLink')
+            if (link) {
+                link.onclick = e => {
+                    e.preventDefault()
+                    pushNavigate(link.getAttribute('href'))
+                }
+            }
+        }
+    }
     
     function t(meta, ...args) {
         return {meta, meat: _t(...args)}
@@ -283,6 +287,7 @@ global.initUI = async function(opts) {
                 user = res.user
                 localStorage.setItem('user', JSON.stringify(user))
                 initUI0()
+                spaifyNavbar()
                 pushNavigate('dashboard.html')
             },
         })
@@ -305,7 +310,9 @@ global.initUI = async function(opts) {
         })
         
         debugStatusBar.setFunctions([{title: t('F1'), action() {
-            dlog('doooooing f1')
+            testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
+            testGlobal.inputs.password.value = '63b2439c-bf18-42c5-9f7a-42d7357f966a'
+            testGlobal.buttons.primary.click()
         }}])
     }
     
