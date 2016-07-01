@@ -34,6 +34,7 @@ create table users(
     inserted_at timestamp,
     updated_at timestamp,
     kind text,
+    lang text,
     email text unique,
     password_hash text,
     state text,
@@ -42,9 +43,9 @@ create table users(
 create trigger on_insert before insert on users for each row execute procedure on_insert();
 create trigger on_update before update on users for each row execute procedure on_update();
 
-insert into users(email, kind, first_name, last_name, password_hash) values ('root', 'root', 'Vladimir', 'Grechka', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1uZBXiW84OMzcoTvY559e8azTcXcK');
-insert into users(email, kind, first_name, last_name, password_hash) values ('toor', 'toor', 'Evil', 'Twin', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
-insert into users(email, kind, first_name, last_name, password_hash) values ('dasja@test.shit.ua', 'admin', 'Даша', 'Босс', '$2a$10$Dt.OhdqCtSoF9chaj4uPZOi84AUfjSF6kQHaBLsrbG/XpEjELuEuK');
+insert into users(email, kind, lang, first_name, last_name, password_hash) values ('root', 'root', 'ua', 'Vladimir', 'Grechka', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1uZBXiW84OMzcoTvY559e8azTcXcK');
+insert into users(email, kind, lang, first_name, last_name, password_hash) values ('toor', 'toor', 'ua', 'Evil', 'Twin', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
+insert into users(email, kind, lang, first_name, last_name, password_hash) values ('dasja@test.shit.ua', 'admin', 'ua', 'Даша', 'Босс', '$2a$10$Dt.OhdqCtSoF9chaj4uPZOi84AUfjSF6kQHaBLsrbG/XpEjELuEuK');
 
 
 /* -------------------------------------------------------------------

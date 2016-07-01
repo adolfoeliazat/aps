@@ -315,7 +315,7 @@ global.initUI = async function(opts) {
                                
                 !signedUpOK && div(
                     hr(),
-                    divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create one!', 'Как? Еще нет аккаунта? Срочно создать!'), _=> {
+                    divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create one!', 'Как? Еще нет аккаунта? Срочно создать!'), {name: 'createAccount'}, _=> {
                         pushNavigate('sign-up.html')
                     })))
                 )
@@ -627,6 +627,35 @@ global.initUI = async function(opts) {
                 errorLabels: {},
                 errorBanner: undefined 
             }})
+            
+            testGlobal.links.createAccount.click()
+            assertUIState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
+                url: `http://aps-ua-writer.local:3022/sign-up.html`,
+                pageHeader: `Регистрация`,
+                inputs: 
+                 { email: { value: `` },
+                   firstName: { value: `` },
+                   lastName: { value: `` },
+                   agreeTerms: { value: false } },
+                errorLabels: {},
+                errorBanner: undefined 
+            }})            
+            
+            // Inputs
+            testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
+            testGlobal.inputs.firstName.value = 'Фред'
+            testGlobal.inputs.lastName.value = 'Ред'
+            testGlobal.inputs.agreeTerms.value = true
+            // Action
+            testGlobal.buttons.primary.click()
+            await assertShitSpinsForMax({$tag: '39df3f4b-5ca0-4929-bae7-ec1d3bd008ed', max: 2000})
+
+            assertUIState({$tag: '24ca0059-e2e9-4fc4-9056-ede17e586029', expected: {
+
+            }})            
+             
+                        
+            failForJumping('Booooooom', 'e559cd51-11d0-4942-b0e6-aa818d7e9709')
         },
         
 // preventRestoringURLAfterTest = true

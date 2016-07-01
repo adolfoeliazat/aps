@@ -31,6 +31,7 @@ app.post('/rpc', (req, res) => {
         
         try {
             const fieldErrors = {}
+            let user
             
             if (msg.fun.startsWith('danger_') || msg.isTesting) {
                 const serverToken = process.env.APS_DANGEROUS_TOKEN
@@ -166,11 +167,13 @@ app.post('/rpc', (req, res) => {
                     logFailure('Non-existing email')
                     return invalidEmailOrPasswordMessage()
                 }
-                const user = rows[0]
+                user = rows[0]
                 if (!(await comparePassword(msg.password, user.password_hash))) {
                     logFailure('Invalid password for existing email')
                     return invalidEmailOrPasswordMessage()
                 }
+                
+                failOnClientUserMismatch()
                 
                 return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name')})
                 
@@ -219,8 +222,8 @@ app.post('/rpc', (req, res) => {
                             fixedNextGeneratedPassword = undefined
                         }
                 
-                        await pgQuery(`insert into users(email, state, password_hash, first_name, last_name) values($1, $2, $3, $4, $5)`,
-                                      [email, 'cool', await hashPassword(password), firstName, lastName])
+                        await pgQuery(`insert into users(email, kind, lang, state, password_hash, first_name, last_name) values($1, $2, $3, $4, $5, $6, $7)`,
+                                      [email, msg.CLIENT_KIND, msg.LANG, 'cool', await hashPassword(password), firstName, lastName])
                         
                         const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                         
@@ -299,6 +302,10 @@ app.post('/rpc', (req, res) => {
                         resolve('Message sent: ' + res.response)
                     })
                 })
+            }
+            
+            function failOnClientUserMismatch() {
+                if (user.kind !== msg.CLIENT_KIND || user.lang !== msg.LANG) raise('Client/user mismatch')
             }
             
         } catch (fucked) {
