@@ -72,6 +72,48 @@ global.initUI = async function(opts) {
         debugShitInitialized = true
     }
     
+    {   // Track screen size
+        var mqLarge = window.matchMedia('(min-width: 1200px)')
+        var mqMedium = window.matchMedia('(min-width: 992px)')
+        var mqSmall = window.matchMedia('(min-width: 768px)')
+        mqLarge.addListener(onScreenSizeChange)
+        mqMedium.addListener(onScreenSizeChange)
+        mqSmall.addListener(onScreenSizeChange)
+        onScreenSizeChange()
+        
+        function onScreenSizeChange() {
+            if (MODE === 'debug') {
+                let sss = byid('screenSizeStatus')
+                if (!sss.length) {
+                    // $(document.body).append(`<div style="position: absolute; right: 0px;">qweqweeeeeeee</div>`)
+                    $(document.body).append(`
+                        <div id="screenSizeStatus" style="
+                            position: absolute;
+                            right: 0px;
+                            bottom: 0px;
+                            height: 28px;
+                            padding: 0 5px;
+                            padding-top: 5px;
+                            background-color: ${BLUE_GRAY_500};
+                            color: ${WHITE};
+                            font-size: 85%;
+                        ">Screen size</div>`)
+                    sss = byid('screenSizeStatus')
+                }
+                
+                if (window.matchMedia('(min-width: 1200px)').matches) {
+                    sss.text('Large')
+                } else if (window.matchMedia('(min-width: 992px)').matches) {
+                    sss.text('Medium')
+                } else if (window.matchMedia('(min-width: 768px)').matches) {
+                    sss.text('Small')
+                } else {
+                    sss.text('Weird screen')
+                }
+            }
+        }
+    }
+    
     for (const name of navLinkNames) {
         const link = byid0(name + 'NavLink')
         if (link) {
