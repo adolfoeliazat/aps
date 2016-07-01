@@ -1117,16 +1117,16 @@ function makeCustomerSite({lang}) {
                                         
                                 <script>
                                     if (~location.href.indexOf('testScenario')) {
-                                        localStorage.setItem('stuff', '')
+                                        localStorage.clear()
                                     }
             
                                     initUI0()
             
                                     function initUI0() {
                                         var user
-                                        var stuffJSON = localStorage.getItem('stuff')
-                                        if (stuffJSON) {
-                                            user = JSON.parse(stuffJSON).user
+                                        var userJSON = localStorage.getItem('user')
+                                        if (userJSON) {
+                                            user = JSON.parse(userJSON)
                                         }
                 
                                         if (!user && !~['/', '/sign-in.html', '/sign-up.html', '/why.html', '/prices.html', '/samples.html', '/faq.html', '/contact.html', '/blog.html'].indexOf(location.pathname)) {

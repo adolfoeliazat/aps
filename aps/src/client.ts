@@ -27,7 +27,7 @@ global.initUI = async function(opts) {
     const _t = makeT(LANG)
     let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK, user, activePage
     let updateCurrentPage
-    let testScenarioToRun, preventRestoringURLAfterTest, assertionErrorPane
+    let testScenarioToRun, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar
     
     if (MODE === 'debug' && !debugShitInitialized) {
         await initClientStackSourceMapConsumer()
@@ -59,10 +59,52 @@ global.initUI = async function(opts) {
             }
         })
         
+        debugStatusBar = statefulElement(update => {
+            let functions = []
+            let screenSize
+            
+            var mqLarge = window.matchMedia('(min-width: 1200px)')
+            var mqMedium = window.matchMedia('(min-width: 992px)')
+            var mqSmall = window.matchMedia('(min-width: 768px)')
+            mqLarge.addListener(onScreenSizeChange)
+            mqMedium.addListener(onScreenSizeChange)
+            mqSmall.addListener(onScreenSizeChange)
+            onScreenSizeChange()
+            
+            function onScreenSizeChange() {
+                if (window.matchMedia('(min-width: 1200px)').matches) {
+                    update(screenSize = 'Large')
+                } else if (window.matchMedia('(min-width: 992px)').matches) {
+                    update(screenSize = 'Medium')
+                } else if (window.matchMedia('(min-width: 768px)').matches) {
+                    update(screenSize = 'Small')
+                } else {
+                    update(screenSize = 'Weird screen')
+                }
+            }
+            
+            return {
+                render() {
+                    return diva({style: {position: 'absolute', display: 'flex', right: 0, bottom: 0, height: 28}},
+                        ...functions.map(({title, action}) => diva({style: {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, backgroundColor: BLUE_GRAY_500, color: WHITE, fontSize: '85%', cursor: 'pointer'},
+                            onClick: action},
+                            title)),
+                            
+                        diva({style: {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, backgroundColor: BLUE_GRAY_500, color: WHITE, fontSize: '85%'}},
+                            screenSize),
+                    )
+                },
+                
+                setFunctions(x) {
+                    update(functions = x)
+                },
+            }
+        })
+        
         $(document.body).append('<div id="debugShit"></div>')
         ReactDOM.render(updatableElement(update => {
             updateReactShit = update
-            return _=> div(assertionErrorPane, capturePane)
+            return _=> div(assertionErrorPane, capturePane, debugStatusBar)
         }), byid0('debugShit'))
         
         urlObject = url.parse(location.href)
@@ -70,48 +112,6 @@ global.initUI = async function(opts) {
         testScenarioToRun = urlQuery.testScenario
         
         debugShitInitialized = true
-    }
-    
-    {   // Track screen size
-        var mqLarge = window.matchMedia('(min-width: 1200px)')
-        var mqMedium = window.matchMedia('(min-width: 992px)')
-        var mqSmall = window.matchMedia('(min-width: 768px)')
-        mqLarge.addListener(onScreenSizeChange)
-        mqMedium.addListener(onScreenSizeChange)
-        mqSmall.addListener(onScreenSizeChange)
-        onScreenSizeChange()
-        
-        function onScreenSizeChange() {
-            if (MODE === 'debug') {
-                let sss = byid('screenSizeStatus')
-                if (!sss.length) {
-                    // $(document.body).append(`<div style="position: absolute; right: 0px;">qweqweeeeeeee</div>`)
-                    $(document.body).append(`
-                        <div id="screenSizeStatus" style="
-                            position: absolute;
-                            right: 0px;
-                            bottom: 0px;
-                            height: 28px;
-                            padding: 0 5px;
-                            padding-top: 5px;
-                            background-color: ${BLUE_GRAY_500};
-                            color: ${WHITE};
-                            font-size: 85%;
-                        ">Screen size</div>`)
-                    sss = byid('screenSizeStatus')
-                }
-                
-                if (window.matchMedia('(min-width: 1200px)').matches) {
-                    sss.text('Large')
-                } else if (window.matchMedia('(min-width: 992px)').matches) {
-                    sss.text('Medium')
-                } else if (window.matchMedia('(min-width: 768px)').matches) {
-                    sss.text('Small')
-                } else {
-                    sss.text('Weird screen')
-                }
-            }
-        }
     }
     
     for (const name of navLinkNames) {
@@ -133,14 +133,13 @@ global.initUI = async function(opts) {
         showWhatsInURL()
     }
     
-    if (!testScenarioToRun) {
-        // dlog('--- localStorage stuff', localStorage.getItem('stuff'))
-        const stuffJSON = localStorage.getItem('stuff') // TODO:vgrechka This can throw, should handle
-        if (stuffJSON) {
-            user = JSON.parse(stuffJSON)
-        }
-        showWhatsInURL()
-    } else {
+    const userJSON = localStorage.getItem('user') // TODO:vgrechka This can throw (according to MDN), should handle
+    if (userJSON) {
+        user = JSON.parse(userJSON)
+    }
+    showWhatsInURL()
+    
+    if (testScenarioToRun) {
         const initialPath = location.pathname + location.search
         try {
             currentTestScenarioName = testScenarioToRun
@@ -240,7 +239,9 @@ global.initUI = async function(opts) {
                         sectionTitle(t('Account', 'Аккаунт')),
                         sectionLinks(
                             [t('Sign out', 'Выйти прочь'), _=> {
-                                dlog('implement sign out')
+                                localStorage.removeItem('user')
+                                user = undefined
+                                location.href = '/'
                             }],
                             [t('Change password', 'Сменить пароль'), _=> {
                                 dlog('implement change password')
@@ -261,18 +262,6 @@ global.initUI = async function(opts) {
                                ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_500}}),
                                link(itemTitle, {style: {color: '#333'}}, action))))
         }
-        
-        /*
-<div class="row">
-    <div class="col-sm-6">
-      <div style="background-color: #eceff1; font-weight: bold; padding: 2px 5px; margin-bottom: 10px;">Account</div>
-      <ul class="fa-ul" style="margin-left: 20px;">
-        <li style="margin-bottom: 5px;"><i class="fa fa-li fa-chevron-right" style="color: #607d8b;"></i><a href="#" style="color: #333;">Sign out</a></li>
-        <li><i class="fa fa-li fa-chevron-right" style="color: #607d8b;"></i>Change password</li>
-      </ul>
-    </div>
-  </div>
-         */
     }
     
     function showSignIn() {
@@ -292,22 +281,8 @@ global.initUI = async function(opts) {
             rpcFun: 'signIn',
             onSuccess(res) {
                 user = res.user
-                localStorage.setItem('stuff', JSON.stringify({user}))
+                localStorage.setItem('user', JSON.stringify(user))
                 initUI0()
-                
-//                $('#ordersNavLink').addEventListener('click', e => {
-//                    e.preventDefault()
-//                    pushNavigate('orders.html')
-//                })
-//                $('#supportNavLink').addEventListener('click', e => {
-//                    e.preventDefault()
-//                    pushNavigate('support.html')
-//                })
-//                $('#dashboardNavLink').addEventListener('click', e => {
-//                    e.preventDefault()
-//                    pushNavigate('dashboard.html')
-//                })
-                
                 pushNavigate('dashboard.html')
             },
         })
@@ -328,6 +303,10 @@ global.initUI = async function(opts) {
                     })))
                 )
         })
+        
+        debugStatusBar.setFunctions([{title: t('F1'), action() {
+            dlog('doooooing f1')
+        }}])
     }
     
     function preludeWithCheck(content) {
