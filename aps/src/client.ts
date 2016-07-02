@@ -811,6 +811,9 @@ global.initUI = async function(opts) {
                 errorBanner: undefined 
             }})                        
             assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Фред'})
+            
+            assertNoTextSomewhere({$tag: '4d0713f8-ccfb-4d05-b064-3987492852a5', unexpected: 'Мои заказы'})
+            assertNoTextSomewhere({$tag: 'a3e73a3e-8ed7-4a69-b748-e955ae4fd606', unexpected: 'Аукцион'})
         },
         
 // preventRestoringURLAfterTest = true
@@ -983,7 +986,31 @@ global.initUI = async function(opts) {
     }
 
     function assertTextSomewhere({$tag, expected}) {
-        uiAssert(~$(document.body).text().indexOf(expected), `I want following text on screen: [${expected}]`, jumpToShitDetailsUI($tag))
+        uiAssert(textSomewhere(expected), `I want following text on screen: [${expected}]`, jumpToShitDetailsUI($tag))
+    }
+    
+    function assertNoTextSomewhere({$tag, unexpected}) {
+        if (!unexpected) raise('Gimme `unexpected` argument. Maybe you misnamed it `expected`?')
+        uiAssert(!textSomewhere(unexpected), `I DON’T want following text on screen: [${unexpected}]`, jumpToShitDetailsUI($tag))
+    }
+    
+    function textSomewhere(text) {
+        let found
+        run(function descend(element) {
+            if (element.nodeType === 3 /*TEXT_NODE*/) {
+                if (~element.textContent.indexOf(text)) {
+                    found = true
+                    return
+                }
+            }
+            // TODO:vgrechka Cut off invisible elements
+            if (element.tagName !== 'SCRIPT') {
+                for (let i = 0; i < element.childNodes.length; ++i) {
+                    descend(element.childNodes[i])
+                }
+            }
+        }, document.body)
+        return found
     }
     
     function jumpToShitDetailsUI($tag) {

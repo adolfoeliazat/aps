@@ -1772,8 +1772,8 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                                                      + '<li class="' + (location.pathname === '/support.html' ? 'active' : '') + '"><a id="supportNavLink" href="support.html">${t({en: `Support`, ua: `Служба поддержки`})}</a></li>'
                                                  `
                                             else if (clientKind === 'writer') return `
-                                                     + '<li class="' + (location.pathname === '/orders.html' ? 'active' : '') + '"><a id="ordersNavLink" href="orders.html">${t({en: `My Orders`, ua: `Мои заказы`})}</a></li>'
-                                                     + '<li class="' + (location.pathname === '/store.html' ? 'active' : '') + '"><a id="storeNavLink" href="store.html">${t({en: `Store`, ua: `Аукцион`})}</a></li>'
+                                                     + (user.approved ? '<li class="' + (location.pathname === '/orders.html' ? 'active' : '') + '"><a id="ordersNavLink" href="orders.html">${t({en: `My Orders`, ua: `Мои заказы`})}</a></li>': '')
+                                                     + (user.approved ? '<li class="' + (location.pathname === '/store.html' ? 'active' : '') + '"><a id="storeNavLink" href="store.html">${t({en: `Store`, ua: `Аукцион`})}</a></li>': '')
                                                      + '<li class="' + (location.pathname === '/support.html' ? 'active' : '') + '"><a id="supportNavLink" href="support.html">${t({en: `Support`, ua: `Служба поддержки`})}</a></li>'
                                                  `
                                             })}
