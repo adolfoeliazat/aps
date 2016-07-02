@@ -1,0 +1,8 @@
+WRITER SIGN UP
+
+- On successful sign up, user's state is set to 'profile-pending'
+- If user with 'profile-pending' tries to sign in
+    - We allow her to sign in
+    - All features except 'update profile' and 'support' are hidden/forbidden
+    - After sign in, if state is 'profile-pending', go to Profile screen
+

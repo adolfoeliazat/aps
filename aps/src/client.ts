@@ -85,13 +85,15 @@ global.initUI = async function(opts) {
             
             return {
                 render() {
-                    return diva({style: {position: 'absolute', display: 'flex', right: 0, bottom: 0, height: 28}},
+                    return diva({style: {position: 'absolute', display: 'flex', right: 0, bottom: 0, height: 28, zIndex: 1000}},
                         ...functions.map(({title, theme='default', action}) => {
                             const style = {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, fontSize: '85%', cursor: 'pointer'}
                             if (theme === 'default') {
                                 asn(style, {backgroundColor: BLUE_GRAY_500, color: WHITE})
                             } else if (theme === 'danger') {
                                 asn(style, {backgroundColor: RED_500, color: WHITE})
+                            } else if (theme === 'black') {
+                                asn(style, {backgroundColor: BLACK, color: WHITE})
                             }
                             return diva({style, onClick: action}, title)
                         }),
@@ -102,7 +104,32 @@ global.initUI = async function(opts) {
                 },
                 
                 setFunctions(x) {
-                    update(functions = x)
+                    functions = x
+                    functions.unshift({
+                        title: t('Q'),
+                        theme: 'black',
+                        action() {
+                            revealer.reveal(updatableElement(update => {
+                                let ui
+                                let loading = true
+                                
+                                run(async function() {
+                                    update(ui = spinnerMedium())
+                                    try {
+                                        const queries = await rpc({fun: 'danger_getQueries'})
+                                        dlogs({queries})
+                                        update(ui = div('loaded'))
+                                    } catch (e) {
+                                       update(ui = spansa({color: RED_700}, glyph('exclamation-triangle'), spansa({marginLeft: 10}, 'Shit: ' + e.message)))
+                                    }
+                                })
+                                
+                                return _=> ui
+                            }))
+                        }
+                    })
+                    
+                    update()
                 },
             }
         })
