@@ -145,14 +145,47 @@ app.post('/rpc', (req, res) => {
                     // Source location example: aps/src/backend.ts[7556]:181:35
                     const openBracket = msg.$sourceLocation.indexOf('[' /*]*/)
                     const closingBracket = msg.$sourceLocation.indexOf(/*[*/ ']')
-                    if (!~openBracket || !~closingBracket) raise('I want brackets')
-                    const filePart = msg.$sourceLocation.slice(0, openBracket)
+                    const firstColon = msg.$sourceLocation.indexOf(':')
+                    const secondColon = msg.$sourceLocation.indexOf(':', firstColon + 1)
+                    let filePartEnd
+                    if (~openBracket && ~closingBracket) {
+                        filePartEnd = openBracket
+                    } else if (~firstColon && ~secondColon) {
+                        filePartEnd = firstColon
+                    } else {
+                        return {error: 'I want either brackets or two colons in source location'}
+                    }
+                    const filePart = msg.$sourceLocation.slice(0, filePartEnd)
                     file = {
                         'aps/src/client.ts': 'E:/work/aps/aps/src/client.ts',
                         'aps/src/backend.ts': 'E:/work/aps/aps/src/backend.ts',
+                        'backend.ts': 'E:/work/aps/aps/src/backend.ts',
                     }[filePart]
-                    if (!file) return {error: 'Weird file in source location'}
-                    offset = parseInt(msg.$sourceLocation.slice(openBracket + 1, closingBracket))
+                    if (!file) return {error: `Weird file in source location: [${filePart}]`}
+                    if (~openBracket && ~closingBracket) {
+                        offset = parseInt(msg.$sourceLocation.slice(openBracket + 1, closingBracket))
+                    } else if (~firstColon && ~secondColon) {
+                        const line = parseInt(msg.$sourceLocation.slice(firstColon + 1, secondColon), 10) - 1
+                        const column = parseInt(msg.$sourceLocation.slice(secondColon + 1), 10) - 1
+                        const code = fs.readFileSync(file, 'utf8')
+                        let currentLine = 0, currentColumn = 0
+                        offset = 0
+                        while (offset < code.length) {
+                            if (currentLine === line && currentColumn === column) break
+                            if (code[offset] === '\r' && code[offset + 1] === '\n') {
+                                offset += 2
+                                currentLine += 1
+                                currentColumn = 0
+                            } else if (code[offset] === '\n') {
+                                offset += 1
+                                currentLine += 1
+                                currentColumn = 0
+                            } else {
+                                offset += 1
+                                currentColumn += 1
+                            }
+                        }
+                    }
                 } else {
                     raise('Weird source location descriptor')
                 }
@@ -323,7 +356,7 @@ app.post('/rpc', (req, res) => {
         } catch (fucked) {
             const situation = `/rpc handle() is fucked up: ${fucked.stack}`
             clog(situation)
-            return {fatal: situation}
+            return {fatal: situation, stack: fucked.stack} // TODO:vgrechka Send stack only if debug mode
         }
     }
 })

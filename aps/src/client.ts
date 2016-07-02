@@ -86,9 +86,15 @@ global.initUI = async function(opts) {
             return {
                 render() {
                     return diva({style: {position: 'absolute', display: 'flex', right: 0, bottom: 0, height: 28}},
-                        ...functions.map(({title, action}) => diva({style: {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, backgroundColor: BLUE_GRAY_500, color: WHITE, fontSize: '85%', cursor: 'pointer'},
-                            onClick: action},
-                            title)),
+                        ...functions.map(({title, theme='default', action}) => {
+                            const style = {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, fontSize: '85%', cursor: 'pointer'}
+                            if (theme === 'default') {
+                                asn(style, {backgroundColor: BLUE_GRAY_500, color: WHITE})
+                            } else if (theme === 'danger') {
+                                asn(style, {backgroundColor: RED_500, color: WHITE})
+                            }
+                            return diva({style, onClick: action}, title)
+                        }),
                             
                         diva({style: {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, backgroundColor: BLUE_GRAY_500, color: WHITE, fontSize: '85%'}},
                             screenSize),
@@ -322,11 +328,33 @@ global.initUI = async function(opts) {
                 )
         })
         
-        debugStatusBar.setFunctions([{title: t('F1'), action() {
-            testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
-            testGlobal.inputs.password.value = '63b2439c-bf18-42c5-9f7a-42d7357f966a'
-            testGlobal.buttons.primary.click()
-        }}])
+        const debugFuns = [
+            {
+                title: t('F1'),
+                action() {
+                    if (CLIENT_KIND === 'customer') {
+                        testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
+                        testGlobal.inputs.password.value = '63b2439c-bf18-42c5-9f7a-42d7357f966a'
+                    } else if (CLIENT_KIND === 'writer') {
+                        testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
+                        testGlobal.inputs.password.value = 'b34b80fb-ae50-4456-8557-399366fe45e4'
+                    }
+                    
+                    testGlobal.buttons.primary.click()
+                }
+            }
+        ]
+        if (CLIENT_KIND === 'writer') {
+            debugFuns.push({
+                title: t('dasja'),
+                action() {
+                    testGlobal.inputs.email.value = 'dasja@test.shit.ua'
+                    testGlobal.inputs.password.value = 'adminsecret'
+                    testGlobal.buttons.primary.click()
+                }
+            })
+        }
+        debugStatusBar.setFunctions(debugFuns)
     }
     
     function preludeWithCheck(content, {center}={}) {
@@ -524,6 +552,16 @@ global.initUI = async function(opts) {
         try {
             return await rpc(message)
         } catch (e) {
+            if (MODE === 'debug' && rpcclient.stack) {
+                let stack = rpcclient.stack
+                debugStatusBar.setFunctions([{
+                    title: t('BS'),
+                    theme: 'danger',
+                    action() {
+                        revealer.revealStack(stack)
+                    }
+                }])
+            }
             return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
         }
     }
