@@ -18,7 +18,7 @@ import * as querystring from 'querystring'
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
-let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar
+let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar, testPassedPane
 
 global.initUI = async function(opts) {
     const navLinkNames = tokens('right orders support')
@@ -55,6 +55,30 @@ global.initUI = async function(opts) {
                     top = $('#footer').offset().top + 40
                     update(content = _content, visible = true)
                     document.body.scrollTop = 99999
+                },
+            }
+        })
+        
+        testPassedPane = statefulElement(update => {
+            let scenarioName, link
+            
+            return {
+                render() {
+                    if (!scenarioName) return null
+                    return diva({style: {position: 'absolute', bottom: 0, width: '100%', backgroundColor: GREEN_700, color: WHITE,
+                                         padding: '10px 10px', textAlign: 'center', fontWeight: 'bold'}},
+                                scenarioName,
+                                link)
+                },
+                
+                show(_scenarioName) {
+                    scenarioName = _scenarioName
+                    const m = /\s+([0-9a-z]{8})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{12})$/.exec(scenarioName)
+                    if (m) {
+                        scenarioName = scenarioName.slice(0, m.index)
+                        link = OpenSourceCodeLink({$tag: m[0].trim()}, {style: {color: WHITE}})
+                    }
+                    update()
                 },
             }
         })
@@ -149,7 +173,7 @@ global.initUI = async function(opts) {
         $(document.body).append('<div id="debugShit"></div>')
         ReactDOM.render(updatableElement(update => {
             updateReactShit = update
-            return _=> div(assertionErrorPane, capturePane, debugStatusBar)
+            return _=> div(assertionErrorPane, testPassedPane, capturePane, debugStatusBar)
         }), byid0('debugShit'))
         
         urlObject = url.parse(location.href)
@@ -198,19 +222,8 @@ global.initUI = async function(opts) {
             }
         }
         
-        $(document.body).append(`
-            <div id="uiTestPassedBanner" style="
-                position: absolute;
-                bottom: 0px;
-                width: 100%;
-                background-color: ${GREEN_700};
-                color: ${WHITE};
-                padding: 10px 10px;
-                text-align: center;
-                font-weight: bold;
-            "></div>
-        `)
         $('#uiTestPassedBanner').text(testScenarioToRun)
+        testPassedPane.show(testScenarioToRun)
     } else {
         showWhatsInURL()
     }
@@ -729,7 +742,7 @@ global.initUI = async function(opts) {
         
         // ======================================== UA WRITER TEST SCENARIOS ========================================
         
-        async 'UA Writer :: Sign Up :: 1'() {
+        async 'UA Writer :: Sign Up :: 1    b583c010-f383-4635-a826-3d2bb79f0806'() {
             await rpc({fun: 'danger_clearSentEmails'})
             await rpc({fun: 'danger_killUser', email: 'fred.red@test.shit.ua'})
             await rpc({fun: 'danger_fixNextGeneratedPassword', password: 'b34b80fb-ae50-4456-8557-399366fe45e4'})

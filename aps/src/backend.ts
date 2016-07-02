@@ -274,8 +274,9 @@ app.post('/rpc', (req, res) => {
                             }
                     
                             await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb'},
-                                `insert into users(email, kind, lang, state, password_hash, first_name, last_name) values($1, $2, $3, $4, $5, $6, $7)`,
-                                [email, msg.CLIENT_KIND, msg.LANG, 'cool', await hashPassword(password), firstName, lastName])
+                                `insert into users(email, kind, lang, state, password_hash, first_name, last_name)
+                                             values($1, $2, $3, $4, $5, $6, $7)`,
+                                [email, msg.CLIENT_KIND, msg.LANG, 'profile-pending', await hashPassword(password), firstName, lastName])
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
