@@ -268,6 +268,9 @@ global.initUI = async function(opts) {
             } else if (path.endsWith('/dashboard.html')) {
                 activeNavLink = 'right'
                 shower = showDashboard
+            } else if (path.endsWith('/profile.html')) {
+                activeNavLink = 'profile'
+                shower = showProfile
             }
         }
         
@@ -286,6 +289,15 @@ global.initUI = async function(opts) {
         }
         
         shower()
+    }
+    
+    function showProfile() {
+        setPage({
+            pageTitle: t('Profile', 'Профиль'),
+            pageBody: div(
+                'prooooooooooooooooooo'
+                )
+        })
     }
     
     function showSupport() {
@@ -358,7 +370,11 @@ global.initUI = async function(opts) {
                 localStorage.setItem('user', JSON.stringify(user))
                 initUI0()
                 spaifyNavbar()
-                pushNavigate('dashboard.html')
+                if (user.approved) {
+                    pushNavigate('dashboard.html')
+                } else {
+                    pushNavigate('profile.html')
+                }
             },
         })
         
@@ -804,8 +820,8 @@ global.initUI = async function(opts) {
             await assertShitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
 
             assertUIState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
-                url: `http://aps-ua-writer.local:3022/dashboard.html`,
-                pageHeader: `Панель`,
+                url: `http://aps-ua-writer.local:3022/profile.html`,
+                pageHeader: `Профиль`,
                 inputs: {},
                 errorLabels: {},
                 errorBanner: undefined 
@@ -1129,7 +1145,7 @@ export function customerDynamicPageNames() {
 }
 
 export function writerDynamicPageNames() {
-    return tokens('sign-in sign-up dashboard orders support store users')
+    return tokens('sign-in sign-up dashboard orders support store users profile')
 }
 
 export function pageHeader(title, attrs={}) {
