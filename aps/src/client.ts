@@ -116,9 +116,21 @@ global.initUI = async function(opts) {
                                 run(async function() {
                                     update(ui = spinnerMedium())
                                     try {
-                                        const queries = await rpc({fun: 'danger_getQueries'})
-                                        dlogs({queries})
-                                        update(ui = div('loaded'))
+                                        const queries = await rpc({fun: 'danger_getQueries', last: 5})
+                                        // dlogs({queries})
+                                        if (!queries.length) return update(ui = div('No queries'))
+                                        const divs = []
+                                        queries.forEach((query, i) => {
+                                            if (i > 0) {
+                                                divs.push(diva({style: {marginTop: 5, marginBottom: 5, height: 2, backgroundColor: GRAY_500}}))
+                                            }
+                                            if (query.$tag) {
+                                                divs.push(diva({}, OpenSourceCodeLink(query)))
+                                            }
+                                            let descr = deepInspect({sql: query.sql, args: query.args})
+                                            divs.push(diva({style: {space: 'pre-wrap', fontFamily: 'monospace'}}, descr))
+                                        })
+                                        update(ui = div(...divs))
                                     } catch (e) {
                                        update(ui = spansa({color: RED_700}, glyph('exclamation-triangle'), spansa({marginLeft: 10}, 'Shit: ' + e.message)))
                                     }

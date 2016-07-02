@@ -139,7 +139,7 @@ app.post('/rpc', (req, res) => {
                 else if (msg.fun === 'danger_openSourceCode') {
                     let file, offset
                     if (msg.$tag) {
-                        for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/client.ts']) {
+                        for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/backend.ts']) {
                             const code = fs.readFileSync(file, 'utf8')
                             if (~(offset = code.indexOf(msg.$tag))) break
                         }
@@ -208,7 +208,7 @@ app.post('/rpc', (req, res) => {
                 
                 else if (msg.fun === 'danger_getQueries') {
                     let last = msg.last || 1
-                    return queryLog.slice(queryLog.slice(queryLog.length - last))
+                    return queryLog.slice(queryLog.length - last)
                 }
                 
                 
@@ -273,8 +273,9 @@ app.post('/rpc', (req, res) => {
                                 fixedNextGeneratedPassword = undefined
                             }
                     
-                            await tx.query(`insert into users(email, kind, lang, state, password_hash, first_name, last_name) values($1, $2, $3, $4, $5, $6, $7)`,
-                                           [email, msg.CLIENT_KIND, msg.LANG, 'cool', await hashPassword(password), firstName, lastName])
+                            await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb'},
+                                `insert into users(email, kind, lang, state, password_hash, first_name, last_name) values($1, $2, $3, $4, $5, $6, $7)`,
+                                [email, msg.CLIENT_KIND, msg.LANG, 'cool', await hashPassword(password), firstName, lastName])
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
@@ -413,12 +414,19 @@ function pgTransaction(doInTransaction) {
             }
             
             const api = {
-                query(sql, args) {
+                query(...xs) {
+                    let $tag, sql, args
+                    if (typeof xs[0] === 'object' && xs[0].$tag) {
+                        $tag = xs[0].$tag
+                        xs.shift()
+                    }
+                    [sql, args] = xs
+                    
                     // If args is bad, con.query fails without telling us
                     invariant(args === undefined || isArray(args), 'tx.query wants args to be array or undefined')
                     
                     return new Promise((resolveQuery, rejectQuery) => {
-                        const queryLogRecord = {sql, args}
+                        const queryLogRecord = {sql, args, $tag}
                         queryLog.push(queryLogRecord)
                         con.query(sql, args, (qerr, qres) => {
                             if (qerr) {
