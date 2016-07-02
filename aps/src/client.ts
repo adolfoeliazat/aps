@@ -328,6 +328,8 @@ global.initUI = async function(opts) {
                 )
         })
         
+        //------------------------------ Sign in debug functions ------------------------------
+        
         const debugFuns = [
             {
                 title: t('F1'),
@@ -410,6 +412,25 @@ global.initUI = async function(opts) {
                     })))
                 )
         })
+        
+        //------------------------------ Sign up debug functions ------------------------------
+        
+        const debugFuns = []
+        if (CLIENT_KIND === 'writer') {
+            debugFuns.push({
+                title: t('joe'),
+                async action() {
+                    await rpc({fun: 'danger_killUser', email: 'joe.average@test.shit.ua'})
+                    await rpc({fun: 'danger_fixNextGeneratedPassword', password: '5fca502f-73e2-4c3d-89c8-bc3dabf434d6'})
+                    testGlobal.inputs.email.value = 'joe.average@test.shit.ua'
+                    testGlobal.inputs.firstName.value = 'Джо'
+                    testGlobal.inputs.lastName.value = 'Авераж'
+                    testGlobal.inputs.agreeTerms.value = true
+                    testGlobal.buttons.primary.click()
+                }
+            })
+        }
+        debugStatusBar.setFunctions(debugFuns)
     }
     
     function pushNavigate(where) {
@@ -552,15 +573,17 @@ global.initUI = async function(opts) {
         try {
             return await rpc(message)
         } catch (e) {
-            if (MODE === 'debug' && rpcclient.stack) {
-                let stack = rpcclient.stack
-                debugStatusBar.setFunctions([{
-                    title: t('BS'),
-                    theme: 'danger',
-                    action() {
-                        revealer.revealStack(stack)
-                    }
-                }])
+            if (MODE === 'debug') {
+                let resp = rpcclient.lastResponse
+                if (resp.body.stack) {
+                    debugStatusBar.setFunctions([{
+                        title: t('BS'),
+                        theme: 'danger',
+                        action() {
+                            revealer.revealStack(resp.body.stack, resp.body.stackBeforeAwait)
+                        }
+                    }])
+                }
             }
             return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
         }

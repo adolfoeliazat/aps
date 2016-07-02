@@ -29,6 +29,8 @@ app.post('/rpc', (req, res) => {
             return {meta, meat: _t(...args)}
         }
         
+        let stackBeforeAwait
+        
         try {
             const fieldErrors = {}
             let user
@@ -268,7 +270,7 @@ app.post('/rpc', (req, res) => {
                         }
                         if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
                         
-                        await sendEmail({
+                        stackBeforeAwait = new Error('Gimme stack').stack; await sendEmail({
                             to: `${firstName} ${lastName} <${email}>`,
                             subject,
                             html: dedent(_t({
@@ -281,7 +283,7 @@ app.post('/rpc', (req, res) => {
                                     <br><br>
                                     <a href="${signInURL}">${signInURL}</a>
                                 `
-                            }))})
+                            }))}); stackBeforeAwait = undefined
                         return hunkyDory()
                     } catch (e) {
                         if (e.code === '23505') {
@@ -358,7 +360,10 @@ app.post('/rpc', (req, res) => {
         } catch (fucked) {
             const situation = `/rpc handle() is fucked up: ${fucked.stack}`
             clog(situation)
-            return {fatal: situation, stack: fucked.stack} // TODO:vgrechka Send stack only if debug mode
+            if (stackBeforeAwait) {
+                clog(`Stack before await: ${stackBeforeAwait}`)
+            }
+            return {fatal: situation, stack: fucked.stack, stackBeforeAwait} // TODO:vgrechka Send stack only if debug mode
         }
     }
 })
