@@ -346,7 +346,9 @@ app.post('/rpc', (req, res) => {
             }
             
             function failOnClientUserMismatch() {
-                if (user.kind !== msg.CLIENT_KIND || user.lang !== msg.LANG) raise('Client/user mismatch')
+                if (user.lang !== msg.LANG) raise('Client/user language mismatch')
+                if (msg.CLIENT_KIND === 'writer' && (user.kind === 'admin' || user.kind === 'root' || user.kind === 'toor')) return
+                if (user.kind !== msg.CLIENT_KIND) raise('Client/user kind mismatch')
             }
             
             function clientKindDescr() {
