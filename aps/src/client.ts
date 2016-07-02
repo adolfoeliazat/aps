@@ -355,6 +355,14 @@ global.initUI = async function(opts) {
                     testGlobal.buttons.primary.click()
                 }
             })
+            debugFuns.push({
+                title: t('joe'),
+                action() {
+                    testGlobal.inputs.email.value = 'joe.average@test.shit.ua'
+                    testGlobal.inputs.password.value = '5fca502f-73e2-4c3d-89c8-bc3dabf434d6'
+                    testGlobal.buttons.primary.click()
+                }
+            })
         }
         debugStatusBar.setFunctions(debugFuns)
     }

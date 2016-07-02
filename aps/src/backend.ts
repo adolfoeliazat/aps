@@ -279,20 +279,22 @@ app.post('/rpc', (req, res) => {
                         }
                         if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
                         
-                        #await sendEmail({
-                            to: `${firstName} ${lastName} <${email}>`,
-                            subject,
-                            html: dedent(_t({
-                                en: `
-                                    TODO
-                                `,
-                                ua: `
-                                    Привет, ${firstName}!<br><br>
-                                    Вот твой пароль: ${password}
-                                    <br><br>
-                                    <a href="${signInURL}">${signInURL}</a>
-                                `
-                            }))})
+                        if (false) {
+                            #await sendEmail({
+                                to: `${firstName} ${lastName} <${email}>`,
+                                subject,
+                                html: dedent(_t({
+                                    en: `
+                                        TODO
+                                    `,
+                                    ua: `
+                                        Привет, ${firstName}!<br><br>
+                                        Вот твой пароль: ${password}
+                                        <br><br>
+                                        <a href="${signInURL}">${signInURL}</a>
+                                    `
+                                }))})
+                        }
                         return hunkyDory()
                     } catch (e) {
                         if (e.code === '23505') {
