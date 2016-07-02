@@ -226,7 +226,7 @@ app.post('/rpc', (req, res) => {
                     
                     failOnClientUserMismatch()
                     
-                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name')})
+                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state')})
                     
                     
                     function logFailure(reason) {

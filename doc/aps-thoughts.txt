@@ -1,8 +1,84 @@
-WRITER SIGN UP
+site
+    'customer'
+    'writer'
+    
+user, cachedUser
+    kind
+        undefined
+        'customer'
+        'writer'
+        'admin'
+        'root'
+    state
+        'banned'
+        'profile-pending'
+        'profile-in-review'
+        'approved'
+        
+urlKind
+    'static'
+    'dynamic-public'
+    'dynamic-private'
+    
+bundleLoaded: boolean
+        
 
-- On successful sign up, user's state is set to 'profile-pending'
-- If user with 'profile-pending' tries to sign in
-    - We allow her to sign in
-    - All features except 'update profile' and 'support' are hidden/forbidden
-    - After sign in, if state is 'profile-pending', go to Profile screen
+-------------------------------------
+
+if (site === 'writer') {
+    if (urlKind === 'static') {
+        if (!cachedUser) {
+            // leftNavbar = static pages
+            // rightNavbar = Sign In
+            // navbarHighlight = whats in url
+            // body = static content
+        }
+        cachedUser
+            !user
+                * leftNavbar = Prose
+                * rightNavbar = spinner
+                * navbarHighlight = Prose
+                * body = static content
+            user.kind === 'admin'
+                TODO
+            user.kind === 'writer'
+                user.state === 'banned'
+                    * leftNavbar = nothing
+                    * rightNavbar = nothing
+                    * navbarHighlight = n/a
+                    * body = You are not welcome here
+                user.state === 'profile-pending'
+                    * leftNavbar = Prose, Profile, Support
+                    * rightNavbar = user name
+                    * navbarHighlight = Prose
+                    * body = static content
+                user.state === 'profile-in-review'
+                    * leftNavbar = Prose, Profile, Support
+                    * rightNavbar = user name
+                    * navbarHighlight = Prose
+                    * body = static content
+                user.state === 'approved'
+                    * leftNavbar = Prose, Store, My Orders, Support, Profile
+                    * rightNavbar = user name
+                    * navbarHighlight = Prose
+                    * body = static content
+    }
+}
+                    
+                
+            
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
 

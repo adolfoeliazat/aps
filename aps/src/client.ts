@@ -20,6 +20,56 @@ import static 'into-u/utils-client into-u/ui ./stuff'
 
 let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar, testPassedPane
 
+function fuckingUIState() {
+    if (site === 'writer') {
+        if (urlKind === 'static') {
+            if (!cachedUser) {
+                // leftNavbar = static pages
+                // rightNavbar = Sign In
+                // navbarHighlight = whats in url
+                // body = static content
+            }
+            else if (cachedUser) {
+                if (!user) {
+                    // leftNavbar = Prose
+                    // rightNavbar = spinner
+                    // navbarHighlight = Prose
+                    // body = static content
+                }
+                else if (user.kind === 'admin') {
+                    // TODO
+                }
+                else if (user.kind === 'writer') {
+                    if (user.state === 'banned') {
+                        // leftNavbar = nothing
+                        // rightNavbar = nothing
+                        // navbarHighlight = n/a
+                        // body = You are not welcome here
+                    }
+                    else if (user.state === 'profile-pending') {
+                        // leftNavbar = Prose, Profile, Support
+                        // rightNavbar = user name
+                        // navbarHighlight = Prose
+                        // body = static content
+                    }
+                    else if (user.state === 'profile-in-review') {
+                        // leftNavbar = Prose, Profile, Support
+                        // rightNavbar = user name
+                        // navbarHighlight = Prose
+                        // body = static content
+                    }
+                    else if (user.state === 'approved') {
+                        // leftNavbar = Prose, Store, My Orders, Support, Profile
+                        // rightNavbar = user name
+                        // navbarHighlight = Prose
+                        // body = static content
+                    }
+                }
+            }
+        }
+    }
+}
+
 global.initUI = async function(opts) {
     const navLinkNames = tokens('right orders support')
         
@@ -292,10 +342,33 @@ global.initUI = async function(opts) {
     }
     
     function showProfile() {
+        let primaryButtonTitle
+        if (user.state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
+        else primaryButtonTitle = t('WTF')
+        
+        const form = Form({
+            primaryButtonTitle,
+            fields: {
+                phone: {
+                    title: t('Phone', 'Телефон'),
+                    type: 'text',
+                    attrs: {autoFocus: true},
+                },
+            },
+            rpcFun: 'private_updateProfile',
+            onSuccess(res) {
+                dlog('implement update profile success')
+            },
+        })
+        
         setPage({
             pageTitle: t('Profile', 'Профиль'),
             pageBody: div(
-                'prooooooooooooooooooo'
+                user.state === 'profile-pending' && preludeWithOrangeTriangle(
+                    t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'),
+                    {center: 720}),
+
+                form
                 )
         })
     }
@@ -368,13 +441,13 @@ global.initUI = async function(opts) {
             onSuccess(res) {
                 user = res.user
                 localStorage.setItem('user', JSON.stringify(user))
-                initUI0()
-                spaifyNavbar()
                 if (user.approved) {
                     pushNavigate('dashboard.html')
                 } else {
                     pushNavigate('profile.html')
                 }
+                initUI0()
+                spaifyNavbar()
             },
         })
         
@@ -433,6 +506,19 @@ global.initUI = async function(opts) {
             })
         }
         debugStatusBar.setFunctions(debugFuns)
+    }
+    
+    function preludeWithOrangeTriangle(content, {center}={}) {
+        const style = {}
+        if (center) {
+            asn(style, {width: center, margin: '0 auto'})
+        }
+        asn(style, {marginBottom: 15})
+        
+        return diva({style},
+                    glyph('exclamation-triangle', {style: {color: AMBER_900}}),
+                    nbsp, nbsp,
+                    content)
     }
     
     function preludeWithCheck(content, {center}={}) {
