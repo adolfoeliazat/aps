@@ -29,7 +29,7 @@ app.post('/rpc', (req, res) => {
             return {meta, meat: _t(...args)}
         }
         
-        let stackBeforeAwait
+        let stackBeforeAwait, awaitRes
         
         try {
             const fieldErrors = {}
@@ -170,11 +170,20 @@ app.post('/rpc', (req, res) => {
                         const line = parseInt(msg.$sourceLocation.slice(firstColon + 1, secondColon), 10) - 1
                         const column = parseInt(msg.$sourceLocation.slice(secondColon + 1), 10) - 1
                         const code = fs.readFileSync(file, 'utf8')
-                        let currentLine = 0, currentColumn = 0
+                        let currentLine = 0, currentColumn = 0, feasibleLineStartOffset
                         offset = 0
                         while (offset < code.length) {
-                            if (currentLine === line && currentColumn === column) break
+                            if (currentLine === line) {
+                                if (feasibleLineStartOffset === undefined) {
+                                    feasibleLineStartOffset = offset
+                                }
+                                if (currentColumn === column) break
+                            }
                             if (code[offset] === '\r' && code[offset + 1] === '\n') {
+                                if (feasibleLineStartOffset !== undefined) { // Likely, column was mangled by code generation
+                                    offset = feasibleLineStartOffset
+                                    break
+                                }
                                 offset += 2
                                 currentLine += 1
                                 currentColumn = 0
@@ -270,7 +279,7 @@ app.post('/rpc', (req, res) => {
                         }
                         if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
                         
-                        stackBeforeAwait = new Error('Gimme stack').stack; await sendEmail({
+                        #await sendEmail({
                             to: `${firstName} ${lastName} <${email}>`,
                             subject,
                             html: dedent(_t({
@@ -283,7 +292,7 @@ app.post('/rpc', (req, res) => {
                                     <br><br>
                                     <a href="${signInURL}">${signInURL}</a>
                                 `
-                            }))}); stackBeforeAwait = undefined
+                            }))})
                         return hunkyDory()
                     } catch (e) {
                         if (e.code === '23505') {
