@@ -19,56 +19,7 @@ import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar, testPassedPane
-
-function fuckingUIState() {
-    if (site === 'writer') {
-        if (urlKind === 'static') {
-            if (!cachedUser) {
-                // leftNavbar = static pages
-                // rightNavbar = Sign In
-                // navbarHighlight = whats in url
-                // body = static content
-            }
-            else if (cachedUser) {
-                if (!user) {
-                    // leftNavbar = Prose
-                    // rightNavbar = spinner
-                    // navbarHighlight = Prose
-                    // body = static content
-                }
-                else if (user.kind === 'admin') {
-                    // TODO
-                }
-                else if (user.kind === 'writer') {
-                    if (user.state === 'banned') {
-                        // leftNavbar = nothing
-                        // rightNavbar = nothing
-                        // navbarHighlight = n/a
-                        // body = You are not welcome here
-                    }
-                    else if (user.state === 'profile-pending') {
-                        // leftNavbar = Prose, Profile, Support
-                        // rightNavbar = user name
-                        // navbarHighlight = Prose
-                        // body = static content
-                    }
-                    else if (user.state === 'profile-in-review') {
-                        // leftNavbar = Prose, Profile, Support
-                        // rightNavbar = user name
-                        // navbarHighlight = Prose
-                        // body = static content
-                    }
-                    else if (user.state === 'approved') {
-                        // leftNavbar = Prose, Store, My Orders, Support, Profile
-                        // rightNavbar = user name
-                        // navbarHighlight = Prose
-                        // body = static content
-                    }
-                }
-            }
-        }
-    }
-}
+let shitInitialized
 
 global.initUI = async function(opts) {
     const navLinkNames = tokens('right orders support')
@@ -163,7 +114,7 @@ global.initUI = async function(opts) {
                         ...functions.map(({title, theme='default', action}) => {
                             const style = {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, fontSize: '85%', cursor: 'pointer'}
                             if (theme === 'default') {
-                                asn(style, {backgroundColor: BLUE_GRAY_500, color: WHITE})
+                                asn(style, {backgroundColor: BLUE_GRAY_600, color: WHITE})
                             } else if (theme === 'danger') {
                                 asn(style, {backgroundColor: RED_500, color: WHITE})
                             } else if (theme === 'black') {
@@ -172,7 +123,7 @@ global.initUI = async function(opts) {
                             return diva({style, onClick: action}, title)
                         }),
                             
-                        diva({style: {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, backgroundColor: BLUE_GRAY_500, color: WHITE, fontSize: '85%'}},
+                        diva({style: {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, backgroundColor: BLUE_GRAY_600, color: WHITE, fontSize: '85%'}},
                             screenSize),
                     )
                 },
@@ -233,20 +184,64 @@ global.initUI = async function(opts) {
         debugShitInitialized = true
     }
     
-    spaifyNavbar()
+    const effects = statefulElement(update => {
+        let blinker, blinkerInterval
+        
+        return {
+            render() {
+                return div(blinker)
+            },
+            
+            blinkOn(id) {
+                const target = byid(id)
+                const targetOffset = target.offset()
+                const targetWidth = target.outerWidth(true)
+                const targetHeight = target.outerHeight(true)
+                const width = targetWidth
+                const height = 3
+                const left = targetOffset.left
+                const top = targetOffset.top + targetHeight - height
+                
+                blinkerInterval = setInterval(_=> {
+                    blinker = blinker ? undefined : diva({style: {position: 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_600, left, top, width, height}})
+                    update()
+                }, 125)
+            },
+            
+            blinkOff() {
+                update(blinker = undefined)
+            }
+        }
+    })
+    $(document.body).append('<div id="effects"></div>')
+    ReactDOM.render(effects.element, byid0('effects'))
     
-    ReactDOM.render(updatableElement(update => {
-        updateReactShit = update
-        return _=> div(rootContent)
-    }), byid0('root'))
-    
-    window.onpopstate = function(e) {
-        showWhatsInURL()
+    { // TODO:vgrechka @kill
+        global.start = function() {
+            effects.blinkOn('liii')
+        }
+        global.stop = function() {
+            effects.blinkOff()
+        }
     }
     
-    const userJSON = localStorage.getItem('user') // TODO:vgrechka This can throw (according to MDN), should handle
-    if (userJSON) {
-        user = JSON.parse(userJSON)
+    
+    if (false) {
+        spaifyNavbar()
+        
+        ReactDOM.render(updatableElement(update => {
+            updateReactShit = update
+            return _=> div(rootContent)
+        }), byid0('root'))
+        
+        window.onpopstate = function(e) {
+            showWhatsInURL()
+        }
+        
+        const userJSON = localStorage.getItem('user') // TODO:vgrechka This can throw (according to MDN), should handle
+        if (userJSON) {
+            user = JSON.parse(userJSON)
+        }
     }
     
     if (testScenarioToRun) {
@@ -277,6 +272,7 @@ global.initUI = async function(opts) {
     } else {
         showWhatsInURL()
     }
+    
     
     
     function spaifyNavbar() {
@@ -418,7 +414,7 @@ global.initUI = async function(opts) {
             return ula({className: 'fa-ul', style: {marginLeft: 20}},
                        ...items.map(([itemTitle, action]) =>
                            lia({style: {marginBottom: 5}},
-                               ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_500}}),
+                               ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
                                link(itemTitle, {style: {color: '#333'}}, action))))
         }
     }
@@ -1197,9 +1193,10 @@ global.initUI = async function(opts) {
     }
 
     function simulateURLNavigation(url) {
-        history.replaceState(null, '', url)
-        initUI0()
-        initUI()
+        raise('rethink')
+//        history.replaceState(null, '', url)
+//        initUI0()
+//        initUI()
     }
 
     function simulatePopulateFields(data) {
@@ -1260,3 +1257,173 @@ clog('Client code is kind of loaded')
 //                        el('i', {className: 'fa fa-circle fa-stack-2x', style: {color: LIGHT_GREEN_700}}),
 //                        el('i', {className: 'fa fa-check fa-stack-1x fa-inverse'})),
 
+
+function fuckingUIState() {
+    let proseNavItems, navItems, rightNavItem, highlightedNavItem
+    
+    
+    
+    if (site === 'writer') {
+        if (urlKind === 'static') {
+            if (!cachedUser) {
+                // leftNavbar = static pages
+                // rightNavbar = Sign In
+                // navbarHighlight = whats in url
+                // body = static content
+            }
+            else if (cachedUser) {
+                if (!user) {
+                    // leftNavbar = Prose
+                    // rightNavbar = user name
+                    // navbarHighlight = Prose
+                    // body = static content
+                }
+                else if (user.kind === 'admin') {
+                    raise('Handle me')
+                }
+                else if (user.kind === 'writer') {
+                    if (user.state === 'banned') {
+                        // leftNavbar = nothing
+                        // rightNavbar = nothing
+                        // navbarHighlight = n/a
+                        // body = You are not welcome here
+                    }
+                    else if (user.state === 'profile-pending') {
+                        // leftNavbar = Prose, Profile, Support
+                        // rightNavbar = user name
+                        // navbarHighlight = Prose
+                        // body = static content
+                    }
+                    else if (user.state === 'profile-in-review') {
+                        // leftNavbar = Prose, Profile, Support
+                        // rightNavbar = user name
+                        // navbarHighlight = Prose
+                        // body = static content
+                    }
+                    else if (user.state === 'approved') {
+                        // leftNavbar = Prose, Store, My Orders, Profile, Support
+                        // rightNavbar = user name
+                        // navbarHighlight = Prose
+                        // body = static content
+                    }
+                    else {
+                        raise('Handle me')
+                    }
+                }
+            }
+        }
+        else if (urlKind === 'dynamic') {
+            if (urlAccess === 'public') { // sign-in.html or sign-up.html
+                if (!cachedUser) {
+                    if (!bundleLoaded) {
+                        // leftNavbar = static pages
+                        // rightNavbar = Sign In
+                        // navbarHighlight = right
+                        // body = spinner
+                    }
+                    else if (bundleLoaded) {
+                        // leftNavbar = static pages
+                        // rightNavbar = Sign In
+                        // navbarHighlight = right
+                        // body = Sign In or Sign Up
+                    }
+                }
+                else if (cachedUser) {
+                    if (!user) {
+                        // Not yet synced with backend, so don't know which navbar items are appropriate
+                        
+                        // leftNavbar = Prose
+                        // rightNavbar = user name
+                        // navbarHighlight = right
+                        // body = spinner
+                    }
+                    else if (user.kind === 'admin') {
+                        raise('Handle me')
+                    }
+                    else if (user.kind === 'writer') {
+                        if (user.state === 'banned') {
+                            // leftNavbar = nothing
+                            // rightNavbar = nothing
+                            // navbarHighlight = n/a
+                            // body = You are not welcome here
+                        }
+                        else if (user.state === 'profile-pending') {
+                            // Sign In/Up page doesn't make sense if user is signed in.
+                            // But nothing useful can be done until profile is approved.
+                            // So redirect to Profile page, and ask for filling it.
+                            
+                            // leftNavbar = Prose, Profile, Support
+                            // rightNavbar = user name
+                            // navbarHighlight = Profile
+                            // body = Profile
+                        }
+                        else if (user.state === 'profile-in-review') {
+                            // Sign In/Up page doesn't make sense if user is signed in.
+                            // But nothing useful can be done until profile is approved.
+                            // So redirect to Profile page, where say that submission is being considered.
+                            
+                            // leftNavbar = Prose, Profile, Support
+                            // rightNavbar = user name
+                            // navbarHighlight = Profile
+                            // body = Profile
+                        }
+                        else if (user.state === 'approved') {
+                            // Sign In/Up page doesn't make sense if user is signed in, so redirect to Dashboard
+                            
+                            // leftNavbar = Prose, Store, My Orders, Profile, Support
+                            // rightNavbar = user name
+                            // navbarHighlight = right
+                            // body = Dashboard
+                        }
+                        else {
+                            raise('Handle me')
+                        }
+                    }
+                }
+            }
+            else if (urlAccess === 'private') {
+                if (!cachedUser) {
+                    if (!bundleLoaded) {
+                        // url = sign-in.html
+                        // leftNavbar = static pages
+                        // rightNavbar = Sign In
+                        // navbarHighlight = right
+                        // body = spinner
+                    }
+                    else if (bundleLoaded) {
+                        // url = sign-in.html
+                        // leftNavbar = static pages
+                        // rightNavbar = Sign In
+                        // navbarHighlight = right
+                        // body = Sign In
+                    }
+                }
+                else if (cachedUser) {
+                    if (!user) {
+                        // leftNavbar = Prose
+                        // rightNavbar = user name
+                        // navbarHighlight = right
+                    }
+                    else if (user.kind === 'admin') {
+                        raise('Handle me')
+                    }
+                    else if (user.kind === 'writer') {
+                        if (user.state === 'banned') {
+                            // leftNavbar = nothing
+                            // rightNavbar = nothing
+                            // navbarHighlight = n/a
+                            // body = You are not welcome here
+                        }
+                        else {
+                            if (!user.approved && !urlAllowedForUnapproved) {
+                                url = 'profile.html'
+                            }
+                            leftNavbar = user.approved ? leftNavbarForUnapproved : leftNavbarForApproved
+                            rightNavbar = rightNavbarUserName
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

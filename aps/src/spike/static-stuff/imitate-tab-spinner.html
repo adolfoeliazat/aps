@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <button onclick="startSpinning()">Start Spinning</button>
+    <button onclick="stopSpinning()">Stop Spinning</button>
+    
+    <iframe id="iframe"></iframe>
+    
+    <script>
+        function startSpinning() {
+            setFavicon('chasing-arrows-16-000000.gif')
+        }
+        
+        function stopSpinning() {
+            setFavicon(undefined)
+        }
+        
+        function setFavicon(src) {
+            var oldLink = document.getElementById('dynamic-favicon');
+            if (oldLink) {
+             document.head.removeChild(oldLink);
+            }
+            
+			var link = document.createElement('link')
+			link.id = 'dynamic-favicon';
+			link.rel = 'shortcut icon';
+			link.href = src;
+			document.head.appendChild(link);
+           }
+    </script>
+</body>
+</html>

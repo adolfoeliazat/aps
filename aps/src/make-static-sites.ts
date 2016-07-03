@@ -1673,6 +1673,20 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                     }
                 </style>
                 <style>${css}</style>
+        
+                <script>
+                    LANG = '${lang}'
+                    CLIENT_KIND = '${clientKind}'
+                    setFavicon('${clientKind === 'customer' ? 'favicon-customer.ico' : 'favicon-writer.ico'}')
+        
+                    function setFavicon(src) {
+                        var link = document.createElement('link')
+                        link.id = 'favicon'
+                        link.rel = 'shortcut icon'
+                        link.href = src
+                        document.head.appendChild(link)
+                    }
+                </script>
             </head>
             <body style="padding-top: 50px; padding-bottom: 40px;">
                 <div id="everything">
@@ -1740,7 +1754,7 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                                     else if (clientKind === 'writer') return `
                                              proseItems += '<li class="' + (location.pathname === '/why.html' ? 'active' : '') + '"><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>'
                                              proseItems += '<li class="' + (location.pathname === '/prices.html' ? 'active' : '') + '"><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>'
-                                             proseItems += '<li class="' + (location.pathname === '/faq.html' ? 'active' : '') + '"><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>'
+                                             proseItems += '<li id="liii" class="' + (location.pathname === '/faq.html' ? 'active' : '') + '"><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>'
                                          `
                                     })}
                                     
@@ -1816,13 +1830,9 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                 <script src="bootstrap-master/js/bootstrap.min.js"></script>
                 <script>${js}</script>
                 
+                <script src="bundle.js"></script>
+                <script>initUI()</script>
                 ${highlightedNav === 'private' ? `
-                    <script>
-                        LANG = '${lang}'
-                        CLIENT_KIND = '${clientKind}'
-                    </script>
-                    <script src="bundle.js"></script>
-                    <script>initUI()</script>
                 `:``}
             </body>
         </html>

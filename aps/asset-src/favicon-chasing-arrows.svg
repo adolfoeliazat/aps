@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   id="svg6644"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="favicon-chasing-arrows.svg"
+   inkscape:export-filename="E:\work\aps\aps\asset\chasing-arrows-16-0.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs6646" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.2"
+     inkscape:cx="26.142858"
+     inkscape:cy="2.1428579"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata6649">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1036.3622)">
+    <g
+       transform="matrix(0.48944376,0.55196179,-0.55211899,0.48958315,162.15059,797.42982)"
+       id="g6623"
+       style="fill:#546e7a;fill-opacity:1;stroke:none"
+       inkscape:export-filename="E:\work\aps\aps\asset\favicon-chasing-arrows-45.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:#546e7a;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.05331637px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 103.7619,376.67752 2.61787,0.0157 c 0,0 1.24498,-3.67549 4.13229,-3.99743 2.88732,-0.32194 4.6356,1.44873 4.6356,1.44873 0,0 -2.49982,2.37868 -1.33644,2.57878 1.09078,0.18761 5.56372,-0.12819 5.56372,-0.12819 0,0 0.3672,-4.93573 -0.19053,-5.71602 -0.6065,-0.84854 -2.15603,1.46793 -2.15603,1.46793 0,0 -2.66117,-2.82328 -6.80315,-2.18881 -5.76998,0.88385 -6.46333,6.51929 -6.46333,6.51929 z"
+         id="path6619"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccscscscsc" />
+      <path
+         sodipodi:nodetypes="ccscscscsc"
+         inkscape:connector-curvature="0"
+         id="path6621"
+         d="m 119.27816,379.40001 -2.61787,-0.0157 c 0,0 -1.24498,3.67548 -4.13229,3.99742 -2.88732,0.32194 -4.6356,-1.44873 -4.6356,-1.44873 0,0 2.49983,-2.37868 1.33644,-2.57878 -1.09078,-0.18761 -5.56371,0.12819 -5.56371,0.12819 0,0 -0.36721,4.93573 0.19052,5.71602 0.60651,0.84854 2.15603,-1.46793 2.15603,-1.46793 0,0 2.66118,2.82329 6.80315,2.18881 5.76998,-0.88385 6.46333,-6.51929 6.46333,-6.51929 z"
+         style="fill:#546e7a;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.05331637px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>
