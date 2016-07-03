@@ -18,14 +18,18 @@ import * as querystring from 'querystring'
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
+let t, effects
 let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar, testPassedPane
-let shitInitialized
 
 global.initUI = async function(opts) {
     const navLinkNames = tokens('right orders support')
         
-    // @ctx state
     const _t = makeT(LANG)
+    t = function(meta, ...args) {
+        return {meta, meat: _t(...args)}
+    }
+    
+    // @ctx state
     let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK, user, activePage
     let updateCurrentPage
     let testScenarioToRun
@@ -184,41 +188,56 @@ global.initUI = async function(opts) {
         debugShitInitialized = true
     }
     
-    const effects = statefulElement(update => {
-        let blinker, blinkerInterval
+    effects = statefulElement(update => {
+        let me, blinker, blinkerInterval
         
-        return {
+        return me = {
             render() {
                 return div(blinker)
             },
             
-            blinkOn(id) {
-                const target = byid(id)
+            blinkOn(target, {fixed, dleft=0, dwidth=0}={}) {
+                me.blinkOff()
+                
                 const targetOffset = target.offset()
                 const targetWidth = target.outerWidth(true)
                 const targetHeight = target.outerHeight(true)
-                const width = targetWidth
+                const width = targetWidth + dwidth
                 const height = 3
-                const left = targetOffset.left
-                const top = targetOffset.top + targetHeight - height
+                const left = targetOffset.left + dleft
+                let top = targetOffset.top + targetHeight - height
+                if (fixed) {
+                    top -= $(document).scrollTop()
+                }
+                // dlog({left, top, width, height})
                 
-                blinkerInterval = setInterval(_=> {
-                    blinker = blinker ? undefined : diva({style: {position: 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_600, left, top, width, height}})
+                blink()
+                blinkerInterval = setInterval(blink, 125)
+                
+                function blink() {
+                    blinker = blinker ? undefined : diva({style: {position: fixed ? 'fixed' : 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_400, left, top, width, height}})
                     update()
-                }, 125)
+                }
             },
             
             blinkOff() {
-                update(blinker = undefined)
+                clearInterval(blinkerInterval)
+                blinker = undefined
+                update()
             }
         }
     })
     $(document.body).append('<div id="effects"></div>')
     ReactDOM.render(effects.element, byid0('effects'))
     
+    ReactDOM.render(updatableElement(update => {
+        return _=> renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem: ''})
+    }), byid0('topNavbarContainer'))
+
+    
     { // TODO:vgrechka @kill
         global.start = function() {
-            effects.blinkOn('liii')
+            effects.blinkOn('liii', {fixed: true})
         }
         global.stop = function() {
             effects.blinkOff()
@@ -285,10 +304,6 @@ global.initUI = async function(opts) {
                 }
             }
         }
-    }
-    
-    function t(meta, ...args) {
-        return {meta, meat: _t(...args)}
     }
     
     function showWhatsInURL() {
@@ -1223,6 +1238,10 @@ global.initUI = async function(opts) {
     }
 }
 
+export function imposeClientT(newT) {
+    t = newT
+}
+
 export function customerDynamicPageNames() {
     return tokens('sign-in sign-up dashboard orders support')
 }
@@ -1245,6 +1264,63 @@ export function pageHeader(title, attrs={}) {
             testGlobal.pageHeader = undefined
         },
     })
+}
+
+export function renderTopNavbar({clientKind, highlightedItem, spa=true}) {
+    let proseItems
+    if (clientKind === 'customer') {
+        proseItems = [
+            ['why', t({en: `Why Us?`, ua: `Почему мы?`})],
+            ['prices', t({en: `Prices`, ua: `Цены`})],
+            ['samples', t({en: `Samples`, ua: `Примеры`})],
+            ['faq', t({en: `FAQ`, ua: `ЧаВо`})],
+            ['contact', t({en: `Contact Us`, ua: `Связь`})],
+            ['blog', t({en: `Blog`, ua: `Блог`})],
+        ]
+    } else {
+        proseItems = [
+            ['why', t({en: `Why Us?`, ua: `Почему мы?`})],
+            ['prices', t({en: `Prices`, ua: `Цены`})],
+            ['faq', t({en: `FAQ`, ua: `ЧаВо`})],
+        ]
+    }
+    proseItems = proseItems.map(([name, title]) =>
+        lia({className: highlightedItem === name ? 'active' : ''},
+            makeLink(`${name}.html`, title)))
+    
+    return nava({className: 'navbar navbar-default navbar-fixed-top'},
+               diva({className: 'container-fluid'},
+                   diva({className: 'navbar-header'},
+                       makeLink('/', clientKind === 'customer' ? 'APS' : t('Writer', 'Писец'), 'navbar-brand')),
+                       
+                   diva({style: {textAlign: 'left'}},
+                       ula({id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
+                           ...proseItems),
+                       ula({id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
+                           ))))
+                           
+                           
+    function makeLink(href, title, className) {
+        const id = puid()
+        let onClick
+        if (spa) {
+            let dleft = 0, dwidth = 0
+            if (href === '/') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
+                dleft = -15
+                dwidth = 15
+            }
+            onClick = function(e) {
+                e.preventDefault()
+                effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
+                dlog('implement navigation handler')
+            }
+        }
+        
+        return aa({id, className, href, onClick}, title)
+    }
+                       
+    function navigateOnClick(url) {
+    }
 }
 
                 

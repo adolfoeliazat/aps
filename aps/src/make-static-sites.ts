@@ -8,10 +8,10 @@ import fs = require('fs')
 import sh = require('shelljs')
 #import static 'into-u ./stuff ./client'
 
+let t
+
 sh.config.fatal = true
 Error.stackTraceLimit = Infinity
-
-let t
 
 makeWriterSite({lang: 'ua'})
 // makeCustomerSite({lang: 'en'})
@@ -19,7 +19,8 @@ makeCustomerSite({lang: 'ua'})
 
 
 function makeWriterSite({lang}) {
-    t = makeT(lang)
+    t = makeT(lang) // Global because stuff used from client.ts also needs it
+    imposeClientT(t)
     
     const root = `${__dirname}/../built/${lang}-writer`
     sh.rm('-rf', root)
@@ -630,6 +631,7 @@ function makeWriterSite({lang}) {
 
 function makeCustomerSite({lang}) {
     t = makeT(lang)
+    imposeClientT(t)
     
     const root = `${__dirname}/../built/${lang}-customer`
     sh.rm('-rf', root)
@@ -1690,6 +1692,7 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
             </head>
             <body style="padding-top: 50px; padding-bottom: 40px;">
                 <div id="everything">
+                <div id="topNavbarContainer">
                 <nav class="navbar navbar-default navbar-fixed-top">
                     <div class="container-fluid">
                         <div class="navbar-header">
@@ -1811,6 +1814,7 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                           </div> <!-- /.navbar-collapse -->
                     </div> <!-- /.container-fluid -->
                 </nav>
+                </div> <!-- /#topNavbarContainer -->
             
                 ${ReactDOMServer.renderToStaticMarkup(comp)}
                                     
