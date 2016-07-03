@@ -18,7 +18,7 @@ import * as querystring from 'querystring'
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
-let t, effects
+let t, effects, updateNavbar
 let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar, testPassedPane
 
 global.initUI = async function(opts) {
@@ -231,7 +231,11 @@ global.initUI = async function(opts) {
     ReactDOM.render(effects.element, byid0('effects'))
     
     ReactDOM.render(updatableElement(update => {
-        return _=> renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem: ''})
+        updateNavbar = update
+        return _=> {
+            const highlightedItem = location.pathname.slice(1, location.pathname.length - '.html'.length)
+            return renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem})
+        }
     }), byid0('topNavbarContainer'))
 
     
@@ -1309,10 +1313,21 @@ export function renderTopNavbar({clientKind, highlightedItem, spa=true}) {
                 dleft = -15
                 dwidth = 15
             }
-            onClick = function(e) {
+            
+            onClick = async function(e) {
                 e.preventDefault()
                 effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
-                dlog('implement navigation handler')
+                
+                let content = (await superagent.get(href).send()).text
+                if (DEBUG_SIMULATE_SLOW_NETWORK) {
+                    await delay(1000)
+                }
+                content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
+                byid('content').html(content)
+                history.pushState(null, '', href)
+                updateNavbar()
+                
+                setTimeout(effects.blinkOff, 250)
             }
         }
         

@@ -1816,7 +1816,11 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                 </nav>
                 </div> <!-- /#topNavbarContainer -->
             
-                ${ReactDOMServer.renderToStaticMarkup(comp)}
+                <div id="content">
+                    <!-- BEGIN CONTENT -->
+                    ${ReactDOMServer.renderToStaticMarkup(comp)}
+                    <!-- END CONTENT -->
+                </div>
                                     
                 <div id="footer" style="background-color: #f8f8f8; border: 1px solid #e7e7e7; position: absolute; left: 0px; bottom: 0px; width: 100%; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 5px 15px; height: 28px;">
                     ${run(_=> {
