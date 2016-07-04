@@ -19,7 +19,8 @@ import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 let t, effects, updateNavbar
-let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane, debugStatusBar, testPassedPane
+let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane,
+    debugStatusBar, testPassedPane, updateDebugShit
 
 global.initUI = async function(opts) {
     const navLinkNames = tokens('right orders support')
@@ -177,7 +178,7 @@ global.initUI = async function(opts) {
         
         $(document.body).append('<div id="debugShit"></div>')
         ReactDOM.render(updatableElement(update => {
-            updateReactShit = update
+            updateDebugShit = update
             return _=> div(assertionErrorPane, testPassedPane, capturePane, debugStatusBar)
         }), byid0('debugShit'))
         
@@ -234,28 +235,13 @@ global.initUI = async function(opts) {
         updateNavbar = update
         return _=> {
             const highlightedItem = location.pathname.slice(1, location.pathname.length - '.html'.length)
-            return renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem})
+            return renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem, loadPageForURL, setRootContent})
         }
     }), byid0('topNavbarContainer'))
 
     
-    { // TODO:vgrechka @kill
-        global.start = function() {
-            effects.blinkOn('liii', {fixed: true})
-        }
-        global.stop = function() {
-            effects.blinkOff()
-        }
-    }
-    
-    
-    if (false) {
+    if (false) { // TODO:vgrechka @kill
         spaifyNavbar()
-        
-        ReactDOM.render(updatableElement(update => {
-            updateReactShit = update
-            return _=> div(rootContent)
-        }), byid0('root'))
         
         window.onpopstate = function(e) {
             showWhatsInURL()
@@ -293,7 +279,7 @@ global.initUI = async function(opts) {
         $('#uiTestPassedBanner').text(testScenarioToRun)
         testPassedPane.show(testScenarioToRun)
     } else {
-        showWhatsInURL()
+        // showWhatsInURL()
     }
     
     
@@ -308,6 +294,34 @@ global.initUI = async function(opts) {
                 }
             }
         }
+    }
+    
+    function loadPageForURL() {
+        urlObject = url.parse(location.href)
+        urlQuery = querystring.parse(urlObject.query)
+        const path = document.location.pathname
+        
+        let shower
+        
+        if (path.endsWith('/sign-in.html')) {
+            shower = showSignIn
+        } else if (path.endsWith('/sign-up.html')) {
+            shower = showSignUp
+        } else if (user) {
+            if (path.endsWith('/orders.html')) {
+                shower = showOrders
+            } else if (path.endsWith('/support.html')) {
+                shower = showSupport
+            } else if (path.endsWith('/dashboard.html')) {
+                shower = showDashboard
+            } else if (path.endsWith('/profile.html')) {
+                shower = showProfile
+            }
+        }
+        
+        if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
+        
+        shower()
     }
     
     function showWhatsInURL() {
@@ -615,8 +629,21 @@ global.initUI = async function(opts) {
         showWhatsInURL()
     }
     
+    function setRootContent(newRootContent) {
+        rootContent = newRootContent
+        
+        if (!updateReactShit) {
+            ReactDOM.render(updatableElement(update => {
+                updateReactShit = update
+                return _=> div(rootContent)
+            }), byid0('root'))
+        }
+        
+        updateReactShit()
+    }
+    
     function setPage(def) {
-        updateReactShit(rootContent = updatableElement(update => {
+        setRootContent(updatableElement(update => {
             updateCurrentPage = update
             
             pageState = {
@@ -630,6 +657,7 @@ global.initUI = async function(opts) {
                 pageState.pageBody,
             )
         }))
+        
         debugStatusBar.setFunctions([])
     }
     
@@ -1270,7 +1298,7 @@ export function pageHeader(title, attrs={}) {
     })
 }
 
-export function renderTopNavbar({clientKind, highlightedItem, spa=true}) {
+export function renderTopNavbar({clientKind, highlightedItem, spa=true, loadPageForURL, setRootContent}) {
     let proseItems
     if (clientKind === 'customer') {
         proseItems = [
@@ -1288,28 +1316,31 @@ export function renderTopNavbar({clientKind, highlightedItem, spa=true}) {
             ['faq', t({en: `FAQ`, ua: `ЧаВо`})],
         ]
     }
-    proseItems = proseItems.map(([name, title]) =>
-        lia({className: highlightedItem === name ? 'active' : ''},
-            makeLink(`${name}.html`, title)))
     
     return nava({className: 'navbar navbar-default navbar-fixed-top'},
                diva({className: 'container-fluid'},
                    diva({className: 'navbar-header'},
-                       makeLink('/', clientKind === 'customer' ? 'APS' : t('Writer', 'Писец'), 'navbar-brand')),
+                       makeLink('home', clientKind === 'customer' ? 'APS' : t('Writer', 'Писец'), 'navbar-brand')),
                        
                    diva({style: {textAlign: 'left'}},
                        ula({id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
-                           ...proseItems),
+                           ...proseItems.map(itemToLia)),
                        ula({id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
-                           ))))
+                           itemToLia(['sign-in', t({en: `Sign In`, ua: `Вход`})])))))
                            
+    
+    function itemToLia([name, title]) {
+        return lia({className: highlightedItem === name ? 'active' : ''},
+            makeLink(name, title))
+    }
                            
-    function makeLink(href, title, className) {
+    function makeLink(name, title, className) {
         const id = puid()
+        const href = name === 'home' ? '/' : `${name}.html`
         let onClick
         if (spa) {
             let dleft = 0, dwidth = 0
-            if (href === '/') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
+            if (name === 'home') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
                 dleft = -15
                 dwidth = 15
             }
@@ -1318,13 +1349,23 @@ export function renderTopNavbar({clientKind, highlightedItem, spa=true}) {
                 e.preventDefault()
                 effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
                 
-                let content = (await superagent.get(href).send()).text
+                history.pushState(null, '', href)
+                
                 if (DEBUG_SIMULATE_SLOW_NETWORK) {
                     await delay(1000)
                 }
-                content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
-                byid('content').html(content)
-                history.pushState(null, '', href)
+                
+                const isDynamicPage = clientKind === 'customer' ? ~customerDynamicPageNames().indexOf(name)
+                                                                : ~writerDynamicPageNames().indexOf(name)
+                if (isDynamicPage) {
+                    await loadPageForURL()
+                } else {
+                    let content = (await superagent.get(href).send()).text
+                    content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
+                    setRootContent(rawHtml(content))
+                }
+                
+                $(document).scrollTop(0)
                 updateNavbar()
                 
                 setTimeout(effects.blinkOff, 250)

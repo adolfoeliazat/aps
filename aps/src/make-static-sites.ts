@@ -1816,7 +1816,7 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                 </nav>
                 </div> <!-- /#topNavbarContainer -->
             
-                <div id="content">
+                <div id="root">
                     <!-- BEGIN CONTENT -->
                     ${ReactDOMServer.renderToStaticMarkup(comp)}
                     <!-- END CONTENT -->
