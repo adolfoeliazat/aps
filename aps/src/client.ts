@@ -21,7 +21,7 @@ import static 'into-u/utils-client into-u/ui ./stuff'
 let t, effects, updateNavbar
 let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane,
     debugStatusBar, testPassedPane, updateDebugShit
-
+    
 global.initUI = async function(opts) {
     const navLinkNames = tokens('right orders support')
         
@@ -279,9 +279,8 @@ global.initUI = async function(opts) {
         $('#uiTestPassedBanner').text(testScenarioToRun)
         testPassedPane.show(testScenarioToRun)
     } else {
-        // showWhatsInURL()
+        loadPageForURL()
     }
-    
     
     
     function spaifyNavbar() {

@@ -619,21 +619,25 @@ function makeWriterSite({lang}) {
         )
     })
     
-    writerDynamicPageNames().forEach(x => writeDynamicPage(x))
-    
-    
-    function writeDynamicPage(name) {
-        writePage({name: name, highlightedItem: 'sign-in',
-            comp: diva({id: 'root'},
-                      diva({className: 'container'},
-                          wholePageSpinner()))})
-    }
+    writeDynamicPages(writerDynamicPageNames(), writePage)
     
     function writePage(def) {
         genericWritePage(asn(def, {root, tabTitle, lang, clientKind: 'writer', t}))
     }
 }
 
+function writeDynamicPages(names, writePage) {
+    names.forEach(name =>
+        writePage({name: name, highlightedItem: 'sign-in',
+            comp: rawHtml(`
+                <div class="container">
+                    <div style="display: flex; align-items: center; justify-content: center; position: absolute; left: 0px; top: 200px; width: 100%;">
+                        <span style="margin-left: 10">${t({en: 'Breathe slowly...', ua: 'Дышите глубоко...'})}</span>
+                        <div id="wholePageTicker" class="progressTicker" style="background-color: ${BLUE_GRAY_400}; width: 14px; height: 28px; margin-left: 10px; margin-top: -5px"></div>
+                    </div>
+                </div>
+                `)}))
+}
 
 function makeCustomerSite({lang}) {
     const _t = makeT(lang)
@@ -1625,14 +1629,7 @@ function makeCustomerSite({lang}) {
         )
     })
     
-    customerDynamicPageNames().forEach(x => writeDynamicPage(x))
-    
-    function writeDynamicPage(name) {
-        writePage({name: name, highlightedItem: 'sign-in',
-            comp: diva({id: 'root'},
-                      diva({className: 'container'},
-                          wholePageSpinner()))})
-    }
+    writeDynamicPages(customerDynamicPageNames(), writePage)
     
     function writePage(def) {
         genericWritePage(asn(def, {root, tabTitle, lang, clientKind: 'customer', t}))
@@ -1685,6 +1682,35 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                             padding-left: 210px; /* (1140-720)/2 */
                         }
                     }
+        
+                    .progressTicker {
+                        animation-name: progressTicker;
+                        animation-duration: 500ms;
+                        animation-iteration-count: infinite;
+        
+                        -webkit-animation-name: progressTicker;
+                        -webkit-animation-duration: 500ms;
+                        -webkit-animation-iteration-count: infinite;
+                    }
+
+                    @keyframes progressTicker {
+                        0% {
+                            opacity: 1;
+                        }
+                        
+                        100% {
+                            opacity: 0;
+                        }
+                    }        
+                    @-webkit-keyframes progressTicker {
+                        0% {
+                            opacity: 1;
+                        }
+                        
+                        100% {
+                            opacity: 0;
+                        }
+                    }        
                 </style>
                 <style>${css}</style>
         
