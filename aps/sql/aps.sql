@@ -29,7 +29,7 @@ $$ language 'plpgsql';
 
 
 create table users(
-    id bigserial,
+    id bigserial primary key,
     deleted boolean,
     inserted_at timestamp,
     updated_at timestamp,
@@ -48,7 +48,27 @@ insert into users(email, kind, lang, first_name, last_name, password_hash) value
 insert into users(email, kind, lang, first_name, last_name, password_hash) values ('dasja@test.shit.ua', 'admin', 'ua', 'Даша', 'Босс', '$2a$10$Dt.OhdqCtSoF9chaj4uPZOi84AUfjSF6kQHaBLsrbG/XpEjELuEuK');
 
 
+create table user_tokens(
+    id bigserial primary key,
+    deleted boolean,
+    inserted_at timestamp,
+    updated_at timestamp,
+    user_id bigint references users(id),
+    token text
+    );
+create trigger on_insert before insert on user_tokens for each row execute procedure on_insert();
+create trigger on_update before update on user_tokens for each row execute procedure on_update();
+
+
+
+
 /* -------------------------------------------------------------------
+
+
+select * from users;
+select * from user_tokens;
+
+
 
 drop table users;
 

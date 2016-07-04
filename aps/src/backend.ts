@@ -212,7 +212,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 
-                else if (msg.fun === 'signIn') {
+                else if (msg.fun === 'signInWithPassword') {
                     const rows = await tx.query('select * from users where email = $1', [msg.email])
                     if (!rows.length) {
                         logFailure('Non-existing email')
@@ -226,7 +226,10 @@ app.post('/rpc', (req, res) => {
                     
                     failOnClientUserMismatch()
                     
-                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state')})
+                    const token = uuid()
+                    await tx.query('insert into user_tokens(user_id, token) values($1, $2)', [user.id, token])
+                    
+                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state'), token})
                     
                     
                     function logFailure(reason) {
@@ -407,7 +410,7 @@ function pgTransaction(doInTransaction) {
     }
     
     return new Promise((resolvePgTransaction, rejectPgTransaction) => {
-        pgPool.connect((conerr, con, doneWithConnection) => {
+        pgPool.connect(async function(conerr, con, doneWithConnection) {
             if (conerr) {
                 clog('PG connection failed', conerr)
                 doneWithConnection(conerr)
@@ -443,17 +446,45 @@ function pgTransaction(doInTransaction) {
                 }
             }
             
-            // TODO:vgrechka Actually SQL BEGIN TRANSACTION, then COMMIT or ROLLBACK
+            try {
+                await _query('start transaction isolation level read committed')
+                const ditres = await doInTransaction(api)
+                await _query('commit')
+                doneWithConnection()
+                resolvePgTransaction(ditres)
+            } catch (diterr) {
+                try {
+                    await _query('rollback')
+                } catch (e) {
+                    clog('PG fuckup, cannot rollback', e.stack)
+                }
+                doneWithConnection()
+                rejectPgTransaction(diterr)
+            }
             
-            doInTransaction(api)
-                .then(ditres => {
-                    doneWithConnection()
-                    resolvePgTransaction(ditres)
+            
+            function _query(sql, args) {
+                return new Promise((resolveQuery, rejectQuery) => {
+                    con.query(sql, args, (qerr, qres) => {
+                        if (qerr) {
+                            clog('PG query failed', {sql, args, qerr})
+                            return rejectQuery(qerr)
+                        }
+                        
+                        resolveQuery(qres.rows)
+                    })
                 })
-                .catch(diterr => {
-                    doneWithConnection()
-                    rejectPgTransaction(diterr)
-                })
+            }
+            
+//            doInTransaction(api)
+//                .then(ditres => {
+//                    doneWithConnection()
+//                    resolvePgTransaction(ditres)
+//                })
+//                .catch(diterr => {
+//                    doneWithConnection()
+//                    rejectPgTransaction(diterr)
+//                })
         })
     })
 }

@@ -237,7 +237,7 @@ global.initUI = async function(opts) {
         spaifyNavbar()
         
         window.onpopstate = function(e) {
-            showWhatsInURL()
+            loadPageForURL()
         }
         
         const userJSON = localStorage.getItem('user') // TODO:vgrechka This can throw (according to MDN), should handle
@@ -296,9 +296,9 @@ global.initUI = async function(opts) {
         let shower
         
         if (path.endsWith('/sign-in.html')) {
-            shower = showSignIn
+            shower = loadSignInPage
         } else if (path.endsWith('/sign-up.html')) {
-            shower = showSignUp
+            shower = loadSignUpPage
         } else if (user) {
             if (path.endsWith('/orders.html')) {
                 shower = showOrders
@@ -315,52 +315,6 @@ global.initUI = async function(opts) {
         
         shower()
     }
-    
-//    function showWhatsInURL() {
-//        urlObject = url.parse(location.href)
-//        urlQuery = querystring.parse(urlObject.query)
-//        const path = document.location.pathname
-//        
-//        let shower, activeNavLink
-//        
-//        if (path.endsWith('/sign-in.html')) {
-//            shower = showSignIn
-//            activeNavLink = 'right'
-//        } else if (path.endsWith('/sign-up.html')) {
-//            shower = showSignUp
-//            activeNavLink = 'right'
-//        } else if (user) {
-//            if (path.endsWith('/orders.html')) {
-//                activeNavLink = 'orders'
-//                shower = showOrders
-//            } else if (path.endsWith('/support.html')) {
-//                activeNavLink = 'support'
-//                shower = showSupport
-//            } else if (path.endsWith('/dashboard.html')) {
-//                activeNavLink = 'right'
-//                shower = showDashboard
-//            } else if (path.endsWith('/profile.html')) {
-//                activeNavLink = 'profile'
-//                shower = showProfile
-//            }
-//        }
-//        
-//        if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
-//        if (!activeNavLink) raise(`Can’t determine fucking activeNavLink for path ${path}`)
-//        
-//        for (const name of navLinkNames) {
-//            const link = byid(name + 'NavLink')
-//            if (link.length) {
-//                const li = link.parent()
-//                li.removeClass('active')
-//                if (name === activeNavLink) {
-//                    li.addClass('active')
-//                }
-//            }
-//        }
-//        
-//        shower()
-//    }
     
     function showProfile() {
         let primaryButtonTitle
@@ -444,7 +398,7 @@ global.initUI = async function(opts) {
         }
     }
     
-    function showSignIn() {
+    function loadSignInPage() {
         const form = Form({
             primaryButtonTitle: t('Sign In', 'Войти'),
             fields: {
@@ -458,17 +412,18 @@ global.initUI = async function(opts) {
                     type: 'password',
                 },
             },
-            rpcFun: 'signIn',
+            rpcFun: 'signInWithPassword',
             onSuccess(res) {
-                user = res.user
-                localStorage.setItem('user', JSON.stringify(user))
-                if (user.approved) {
-                    pushNavigate('dashboard.html')
-                } else {
-                    pushNavigate('profile.html')
-                }
-                initUI0()
-                spaifyNavbar()
+                dlogs('got response', res)
+//                user = res.user
+//                localStorage.setItem('user', JSON.stringify(user))
+//                if (user.approved) {
+//                    pushNavigate('dashboard.html')
+//                } else {
+//                    pushNavigate('profile.html')
+//                }
+//                initUI0()
+//                spaifyNavbar()
             },
         })
         
@@ -555,7 +510,7 @@ global.initUI = async function(opts) {
                     content)
     }
     
-    function showSignUp() {
+    function loadSignUpPage() {
         const form = Form({
             primaryButtonTitle: t('Proceed', 'Вперед'),
             fields: {
@@ -618,7 +573,7 @@ global.initUI = async function(opts) {
     
     function pushNavigate(where) {
         history.pushState(null, '', where)
-        showWhatsInURL()
+        loadPageForURL()
     }
     
     function setRootContent(newRootContent) {
@@ -742,10 +697,10 @@ global.initUI = async function(opts) {
                                 error = res.error
                             } else {
                                 error = undefined
-                                // def.onSuccess(res)
+                                def.onSuccess(res)
                             }
                             
-                            // working = false
+                            working = false
                             for (const [name, field] of toPairs(def.fields)) {
                                 field.setError(res.fieldErrors && res.fieldErrors[name])
                                 field.setDisabled(false)
@@ -753,7 +708,6 @@ global.initUI = async function(opts) {
                             update()
                         }),
                         working && formTicker()),
-//                        working && divsa({float: 'right'}, spinnerMedium())),
                 ))
         })
     }
