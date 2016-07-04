@@ -212,17 +212,19 @@ global.initUI = async function(opts) {
                 }
                 // dlog({left, top, width, height})
                 
-                blink()
-                blinkerInterval = setInterval(blink, 125)
+                update(blinker = diva({className: 'progressTicker', style: {position: fixed ? 'fixed' : 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_400, left, top, width, height}}))
                 
-                function blink() {
-                    blinker = blinker ? undefined : diva({style: {position: fixed ? 'fixed' : 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_400, left, top, width, height}})
-                    update()
-                }
+//                blink()
+//                blinkerInterval = setInterval(blink, 125)
+//                
+//                function blink() {
+//                    blinker = blinker ? undefined : diva({style: {position: fixed ? 'fixed' : 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_400, left, top, width, height}})
+//                    update()
+//                }
             },
             
             blinkOff() {
-                clearInterval(blinkerInterval)
+//                clearInterval(blinkerInterval)
                 blinker = undefined
                 update()
             }
