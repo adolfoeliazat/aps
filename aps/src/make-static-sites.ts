@@ -633,7 +633,7 @@ function writeDynamicPages(names, writePage) {
                 <div class="container">
                     <div style="display: flex; align-items: center; justify-content: center; position: absolute; left: 0px; top: 200px; width: 100%;">
                         <span style="margin-left: 10">${t({en: 'Breathe slowly...', ua: 'Дышите глубоко...'})}</span>
-                        <div id="wholePageTicker" class="progressTicker" style="background-color: ${BLUE_GRAY_400}; width: 14px; height: 28px; margin-left: 10px; margin-top: -5px"></div>
+                        <div id="wholePageTicker" class="progressTicker" style="background-color: ${BLUE_GRAY_600}; width: 14px; height: 28px; margin-left: 10px; margin-top: -5px"></div>
                     </div>
                 </div>
                 `)}))

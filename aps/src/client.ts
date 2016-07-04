@@ -212,19 +212,10 @@ global.initUI = async function(opts) {
                 }
                 // dlog({left, top, width, height})
                 
-                update(blinker = diva({className: 'progressTicker', style: {position: fixed ? 'fixed' : 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_400, left, top, width, height}}))
-                
-//                blink()
-//                blinkerInterval = setInterval(blink, 125)
-//                
-//                function blink() {
-//                    blinker = blinker ? undefined : diva({style: {position: fixed ? 'fixed' : 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_400, left, top, width, height}})
-//                    update()
-//                }
+                update(blinker = diva({className: 'progressTicker', style: {position: fixed ? 'fixed' : 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_600, left, top, width, height}}))
             },
             
             blinkOff() {
-//                clearInterval(blinkerInterval)
                 blinker = undefined
                 update()
             }
@@ -325,51 +316,51 @@ global.initUI = async function(opts) {
         shower()
     }
     
-    function showWhatsInURL() {
-        urlObject = url.parse(location.href)
-        urlQuery = querystring.parse(urlObject.query)
-        const path = document.location.pathname
-        
-        let shower, activeNavLink
-        
-        if (path.endsWith('/sign-in.html')) {
-            shower = showSignIn
-            activeNavLink = 'right'
-        } else if (path.endsWith('/sign-up.html')) {
-            shower = showSignUp
-            activeNavLink = 'right'
-        } else if (user) {
-            if (path.endsWith('/orders.html')) {
-                activeNavLink = 'orders'
-                shower = showOrders
-            } else if (path.endsWith('/support.html')) {
-                activeNavLink = 'support'
-                shower = showSupport
-            } else if (path.endsWith('/dashboard.html')) {
-                activeNavLink = 'right'
-                shower = showDashboard
-            } else if (path.endsWith('/profile.html')) {
-                activeNavLink = 'profile'
-                shower = showProfile
-            }
-        }
-        
-        if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
-        if (!activeNavLink) raise(`Can’t determine fucking activeNavLink for path ${path}`)
-        
-        for (const name of navLinkNames) {
-            const link = byid(name + 'NavLink')
-            if (link.length) {
-                const li = link.parent()
-                li.removeClass('active')
-                if (name === activeNavLink) {
-                    li.addClass('active')
-                }
-            }
-        }
-        
-        shower()
-    }
+//    function showWhatsInURL() {
+//        urlObject = url.parse(location.href)
+//        urlQuery = querystring.parse(urlObject.query)
+//        const path = document.location.pathname
+//        
+//        let shower, activeNavLink
+//        
+//        if (path.endsWith('/sign-in.html')) {
+//            shower = showSignIn
+//            activeNavLink = 'right'
+//        } else if (path.endsWith('/sign-up.html')) {
+//            shower = showSignUp
+//            activeNavLink = 'right'
+//        } else if (user) {
+//            if (path.endsWith('/orders.html')) {
+//                activeNavLink = 'orders'
+//                shower = showOrders
+//            } else if (path.endsWith('/support.html')) {
+//                activeNavLink = 'support'
+//                shower = showSupport
+//            } else if (path.endsWith('/dashboard.html')) {
+//                activeNavLink = 'right'
+//                shower = showDashboard
+//            } else if (path.endsWith('/profile.html')) {
+//                activeNavLink = 'profile'
+//                shower = showProfile
+//            }
+//        }
+//        
+//        if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
+//        if (!activeNavLink) raise(`Can’t determine fucking activeNavLink for path ${path}`)
+//        
+//        for (const name of navLinkNames) {
+//            const link = byid(name + 'NavLink')
+//            if (link.length) {
+//                const li = link.parent()
+//                li.removeClass('active')
+//                if (name === activeNavLink) {
+//                    li.addClass('active')
+//                }
+//            }
+//        }
+//        
+//        shower()
+//    }
     
     function showProfile() {
         let primaryButtonTitle
@@ -751,19 +742,24 @@ global.initUI = async function(opts) {
                                 error = res.error
                             } else {
                                 error = undefined
-                                def.onSuccess(res)
+                                // def.onSuccess(res)
                             }
                             
-                            working = false
+                            // working = false
                             for (const [name, field] of toPairs(def.fields)) {
                                 field.setError(res.fieldErrors && res.fieldErrors[name])
                                 field.setDisabled(false)
                             }
                             update()
                         }),
-                        working && divsa({float: 'right'}, spinnerMedium())),
+                        working && formTicker()),
+//                        working && divsa({float: 'right'}, spinnerMedium())),
                 ))
         })
+    }
+    
+    function formTicker() {
+        return diva({className: 'progressTicker', style: {float: 'right', width: 14, height: 28, backgroundColor: BLUE_GRAY_600}})
     }
     
     
