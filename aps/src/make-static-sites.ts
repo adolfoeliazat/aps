@@ -19,7 +19,13 @@ makeCustomerSite({lang: 'ua'})
 
 
 function makeWriterSite({lang}) {
-    t = makeT(lang) // Global because stuff used from client.ts also needs it
+    const _t = makeT(lang)
+    t = function(...args) {
+        if (typeof args[0] === 'object' && args[0].$sourceLocation) {
+            args.shift()
+        }
+        return _t(...args)
+    }
     imposeClientT(t)
     
     const root = `${__dirname}/../built/${lang}-writer`
@@ -336,7 +342,7 @@ function makeWriterSite({lang}) {
         `
     })
     
-    writePage({name: 'why', highlightedNav: 'why', // For Writer site
+    writePage({name: 'why', highlightedItem: 'why', // For Writer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Why Writer?`, ua: `Почему Писец?`})),
@@ -431,7 +437,7 @@ function makeWriterSite({lang}) {
         )
     })
     
-    writePage({name: 'prices', highlightedNav: 'prices', // For Writer site
+    writePage({name: 'prices', highlightedItem: 'prices', // For Writer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Our Prices`, ua: `Наши цены`})),
@@ -497,7 +503,7 @@ function makeWriterSite({lang}) {
         )
     })
     
-    writePage({name: 'faq', highlightedNav: 'faq', // For Writer site
+    writePage({name: 'faq', highlightedItem: 'faq', // For Writer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `FAQ`, ua: `Частые вопросы`})),
@@ -617,7 +623,7 @@ function makeWriterSite({lang}) {
     
     
     function writeDynamicPage(name) {
-        writePage({name: name, highlightedNav: 'private',
+        writePage({name: name, highlightedItem: 'sign-in',
             comp: diva({id: 'root'},
                       diva({className: 'container'},
                           wholePageSpinner()))})
@@ -630,7 +636,13 @@ function makeWriterSite({lang}) {
 
 
 function makeCustomerSite({lang}) {
-    t = makeT(lang)
+    const _t = makeT(lang)
+    t = function(...args) {
+        if (typeof args[0] === 'object' && args[0].$sourceLocation) {
+            args.shift()
+        }
+        return _t(...args)
+    }
     imposeClientT(t)
     
     const root = `${__dirname}/../built/${lang}-customer`
@@ -947,7 +959,7 @@ function makeCustomerSite({lang}) {
         `
     })
     
-    writePage({name: 'why', highlightedNav: 'why', // For Customer site
+    writePage({name: 'why', highlightedItem: 'why', // For Customer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Why AcademicPaperServed?`, ua: `Why AcademicPaperServed UA?`})),
@@ -1055,7 +1067,7 @@ function makeCustomerSite({lang}) {
         }
     }
     
-    writePage({name: 'prices', highlightedNav: 'prices', // For Customer site
+    writePage({name: 'prices', highlightedItem: 'prices', // For Customer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Our Prices`, ua: `Наши цены`})),
@@ -1141,7 +1153,7 @@ function makeCustomerSite({lang}) {
         ],
     })
     
-    writePage({name: 'samples', highlightedNav: 'samples', // For Customer site
+    writePage({name: 'samples', highlightedItem: 'samples', // For Customer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Sample Papers`, ua: `Примеры работ`})),
@@ -1150,7 +1162,7 @@ function makeCustomerSite({lang}) {
         )
     })
             
-    writePage({name: 'faq', highlightedNav: 'faq', // For Customer site
+    writePage({name: 'faq', highlightedItem: 'faq', // For Customer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `FAQ`, ua: `FAQ`})),
@@ -1266,7 +1278,7 @@ function makeCustomerSite({lang}) {
         )
     })
     
-    writePage({name: 'contact', highlightedNav: 'contact', // For Customer site
+    writePage({name: 'contact', highlightedItem: 'contact', // For Customer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Contact Us`, ua: `Contact Us`})),
@@ -1594,7 +1606,7 @@ function makeCustomerSite({lang}) {
     })
     
     for (const item of blogItems) {
-        writePage({name: `blog-${item.slug}`, highlightedNav: 'blog', // For Customer site
+        writePage({name: `blog-${item.slug}`, highlightedItem: 'blog', // For Customer site
             comp: div(
                 diva({className: 'container'},
                     pageHeader(item.title),
@@ -1604,7 +1616,7 @@ function makeCustomerSite({lang}) {
         })
     }
     
-    writePage({name: 'blog', highlightedNav: 'blog', // For Customer site
+    writePage({name: 'blog', highlightedItem: 'blog', // For Customer site
         comp: div(
             diva({className: 'container'},
                 pageHeader(t({en: `Writing Blog`, ua: `Писательский Блог`})),
@@ -1616,7 +1628,7 @@ function makeCustomerSite({lang}) {
     customerDynamicPageNames().forEach(x => writeDynamicPage(x))
     
     function writeDynamicPage(name) {
-        writePage({name: name, highlightedNav: 'private',
+        writePage({name: name, highlightedItem: 'sign-in',
             comp: diva({id: 'root'},
                       diva({className: 'container'},
                           wholePageSpinner()))})
@@ -1628,7 +1640,7 @@ function makeCustomerSite({lang}) {
     
 }
 
-function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabTitle, lang, clientKind, t}) {
+function genericWritePage({name, comp, css='', js='', highlightedItem, root, tabTitle, lang, clientKind, t}) {
     fs.writeFileSync(`${root}/${name}.html`, `
         <!DOCTYPE html>
         <html lang="en" style="position: relative; min-height: 100%;">
@@ -1690,10 +1702,11 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                     }
                 </script>
             </head>
-            <body style="padding-top: 50px; padding-bottom: 40px;">
+            <body style="padding-top: 50px; padding-bottom: 40px; overflow-y: scroll;">
                 <div id="everything">
                 <div id="topNavbarContainer">
-                <nav class="navbar navbar-default navbar-fixed-top">
+                ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar({clientKind, highlightedItem, spa: false}))}
+                <nav class="navbar navbar-default navbar-fixed-top" style="display: none;">
                     <div class="container-fluid">
                         <div class="navbar-header">
                           <a class="navbar-brand" href="/">
@@ -1840,8 +1853,6 @@ function genericWritePage({name, comp, css='', js='', highlightedNav, root, tabT
                 
                 <script src="bundle.js"></script>
                 <script>initUI()</script>
-                ${highlightedNav === 'private' ? `
-                `:``}
             </body>
         </html>
     `)
