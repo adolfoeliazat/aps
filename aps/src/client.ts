@@ -216,8 +216,7 @@ global.initUI = async function(opts) {
             },
             
             blinkOff() {
-                blinker = undefined
-                update()
+                update(blinker = undefined)
             }
         }
     })
@@ -1311,43 +1310,6 @@ export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, lo
     function makeLink(name, title, className) {
         const id = puid()
         const href = name === 'home' ? '/' : `${name}.html`
-        let onClick
-        if (spa) {
-            let dleft = 0, dwidth = 0
-            if (name === 'home') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
-                dleft = -15
-                dwidth = 15
-            }
-            
-//            onClick = async function(e) {
-//                dlog('---aa onclick')
-//                e.preventDefault()
-//                e.stopPropagation()
-//                return
-//                effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
-//                
-//                history.pushState(null, '', href)
-//                
-//                if (DEBUG_SIMULATE_SLOW_NETWORK) {
-//                    await delay(1000)
-//                }
-//                
-//                const isDynamicPage = clientKind === 'customer' ? ~customerDynamicPageNames().indexOf(name)
-//                                                                : ~writerDynamicPageNames().indexOf(name)
-//                if (isDynamicPage) {
-//                    await loadPageForURL()
-//                } else {
-//                    let content = (await superagent.get(href).send()).text
-//                    content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
-//                    setRootContent(rawHtml(content))
-//                }
-//                
-//                $(document).scrollTop(0)
-//                updateNavbar()
-//                
-//                setTimeout(effects.blinkOff, 250)
-//            }
-        }
         
         let dleft = 0, dwidth = 0
         if (name === 'home') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
@@ -1357,10 +1319,16 @@ export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, lo
         
         return elcl({
             render() {
-                return aa({id, className, href, onClick}, title)
+                return aa({id, className, href}, title)
             },
             
             componentDidMount() {
+                // XXX Have to add event handler in weird way in order to prevent Bootstrap from hiding dropdown.
+                //     It turned out, React doesn't actually add event handlers on elements, that's why e.stopPropagation()
+                //     in onClick(e) doesn't cancel non-React handlers on upper-level elements.
+                //
+                //     https://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#under-the-hood-autobinding-and-event-delegation
+                
                 byid(id).on('click', async function(e) {
                     e.preventDefault()
                     e.stopPropagation()
@@ -1396,13 +1364,16 @@ export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, lo
                 byid(id).off()
             },
         })
-//        return aa({id, className, href, onClick}, title)
     }
 }
 
                 
 clog('Client code is kind of loaded')
 
+
+
+
+//------------------------------ SHIT BEGINS HERE ------------------------------
 
 
         
