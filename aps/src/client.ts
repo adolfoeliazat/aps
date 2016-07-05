@@ -13,22 +13,416 @@ BACKEND_URL = 'http://localhost:3100'
 
 require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as I don't want to support old browsers anyway
 
-import * as url from 'url'
-import * as querystring from 'querystring'
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
-let t, effects, updateNavbar, token
-let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane,
-    debugStatusBar, testPassedPane, updateDebugShit
-    
-global.initUI = async function(opts) {
-    const navLinkNames = tokens('right orders support')
+global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigate}) => {
+    return {
+        isDynamicPage(name) {
+            if (CLIENT_KIND === 'customer') return ~customerDynamicPageNames().indexOf(name)
+            return ~writerDynamicPageNames().indexOf(name)
+        },
         
-    const _t = makeT(LANG)
-    t = function(meta, ...args) {
-        return {meta, meat: _t(...args)}
+        privatePageLoader(name) {
+            return {
+                orders: ordersPageLoader,
+                support: supportPageLoader,
+                dashboard: dashboardPageLoader,
+                profile: profilePageLoader,
+            }[name]
+            
+            
+            function ordersPageLoader() {
+                setPage({
+                    pageTitle: t('My Orders', 'Мои заказы'),
+                    pageBody: div(
+                        )
+                })
+            }
+            
+            function supportPageLoader() {
+                setPage({
+                    pageTitle: t('Support', 'Служба поддержки'),
+                    pageBody: div(
+                        )
+                })
+            }
+            
+            function dashboardPageLoader() {
+                setPage({
+                    pageTitle: t('Dashboard', 'Панель'),
+                    pageBody: div(
+                        diva({className: 'row'},
+                            diva({className: 'col-sm-6'},
+                                sectionTitle(t('Account', 'Аккаунт')),
+                                sectionLinks(
+                                    [t('Sign out', 'Выйти прочь'), _=> {
+                                        localStorage.clear()
+                                        token = undefined
+                                        user = undefined
+                                        replaceNavigate('/')
+                                    }],
+                                    [t('Change password', 'Сменить пароль'), _=> {
+                                        dlog('implement change password')
+                                    }]
+                                )))
+                        )
+                })
+                
+                
+                function sectionTitle(title) {
+                    return diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title)
+                }
+                
+                function sectionLinks(...items) {
+                    return ula({className: 'fa-ul', style: {marginLeft: 20}},
+                               ...items.map(([itemTitle, action]) =>
+                                   lia({style: {marginBottom: 5}},
+                                       ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
+                                       link(itemTitle, {style: {color: '#333'}}, action))))
+                }
+            }
+            
+            function profilePageLoader() {
+                let primaryButtonTitle
+                if (getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
+                else primaryButtonTitle = t('WTF')
+                
+                const form = Form({
+                    primaryButtonTitle,
+                    fields: {
+                        phone: {
+                            title: t('Phone', 'Телефон'),
+                            type: 'text',
+                            attrs: {autoFocus: true},
+                        },
+                    },
+                    rpcFun: 'private_updateProfile',
+                    onSuccess(res) {
+                        dlog('implement update profile success')
+                    },
+                })
+                
+                setPage({
+                    pageTitle: t('Profile', 'Профиль'),
+                    pageBody: div(
+                        getUser().state === 'profile-pending' && preludeWithOrangeTriangle(
+                            t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'),
+                            {center: 720}),
+
+                        form
+                        )
+                })
+            }
+        },
+        
+        renderTopNavbar,
+        
+        isTestScenarioNameOK(name) {
+            if (LANG == 'ua' && CLIENT_KIND === 'customer' && name.startsWith('UA Customer :: ')) return true
+            if (LANG == 'ua' && CLIENT_KIND === 'writer' && name.startsWith('UA Writer :: ')) return true
+        },
+        
+        testScenarios() {return{
+            async 'Something'() {
+            },
+        
+            // ======================================== UA CUSTOMER TEST SCENARIOS ========================================
+            
+            async 'UA Customer :: Sign Up :: 1'() {
+                await rpc({fun: 'danger_clearSentEmails'})
+                await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
+                await rpc({fun: 'danger_fixNextGeneratedPassword', password: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
+                
+                simulateURLNavigation('dashboard.html')
+                assertUIState({$tag: '62112552-36ac-47fd-9bac-a4d6a7b3c4d4', expected: {
+                    url: `http://aps-ua-customer.local:3012/sign-in.html`,
+                    pageHeader: `Вход`,
+                    inputs: { email: { value: `` }, password: { value: `` } },
+                    errorLabels: {},
+                    errorBanner: undefined 
+                }})           
+                            
+                simulateURLNavigation('sign-up.html')
+                assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
+                    url: `http://aps-ua-customer.local:3012/sign-up.html`,
+                    pageHeader: `Регистрация`,
+                    inputs: 
+                     { email: { value: `` },
+                       firstName: { value: `` },
+                       lastName: { value: `` },
+                       agreeTerms: { value: false } },
+                    errorLabels: {},
+                    errorBanner: undefined 
+                }})
+
+                // Inputs
+                testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
+                testGlobal.inputs.firstName.value = 'Вильма'
+                testGlobal.inputs.lastName.value = 'Блу'
+                testGlobal.inputs.agreeTerms.value = true
+                // Action
+                testGlobal.buttons.primary.click()
+                await assertShitSpinsForMax({$tag: '29832372-ff89-46dd-ba9d-cf54154503f5', max: 2000})
+                // Check
+                assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
+                assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
+                    url: `http://aps-ua-customer.local:3012/sign-in.html`,
+                    pageHeader: `Вход`,
+                    inputs: { email: { value: `` }, password: { value: `` } },
+                    errorLabels: {},
+                    errorBanner: undefined 
+                }})
+                await assertSentEmails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Email with password', expected: [
+                    { to: `Вильма Блу <wilma.blue@test.shit.ua>`,
+                        subject: `Пароль для APS`,
+                        html: dedent(`
+                            Привет, Вильма!<br><br>
+                            Вот твой пароль: 63b2439c-bf18-42c5-9f7a-42d7357f966a
+                            <br><br>
+                            <a href="http://aps-ua-customer.local:3012/sign-in.html">http://aps-ua-customer.local:3012/sign-in.html</a>`) } 
+                ]})
+                
+                // Inputs
+                testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
+                testGlobal.inputs.password.value = '63b2439c-bf18-42c5-9f7a-42d7357f966a'
+                // Action
+                testGlobal.buttons.primary.click()
+                await assertShitSpinsForMax({$tag: '96f4aa5d-4f5d-4de4-869b-07f2f6f53b8b', max: 2000})
+                assertLinkWithTextSomewhere({$tag: 'aa6eda4b-fc78-43ac-959d-a2eb44f3061f', expected: 'Вильма'})
+                assertUIState({$tag: 'd9c42d17-322e-4427-b4ec-d946af422ba0', expected: {
+                    url: `http://aps-ua-customer.local:3012/dashboard.html`,
+                    pageHeader: `Панель`,
+                    inputs: {},
+                    errorLabels: {},
+                    errorBanner: undefined 
+                }})
+                
+                simulateURLNavigation('dashboard.html')
+            },
+            
+            // ======================================== UA WRITER TEST SCENARIOS ========================================
+            
+            async 'UA Writer :: Sign Up :: 1    b583c010-f383-4635-a826-3d2bb79f0806'() {
+                await rpc({fun: 'danger_clearSentEmails'})
+                await rpc({fun: 'danger_killUser', email: 'fred.red@test.shit.ua'})
+                await rpc({fun: 'danger_fixNextGeneratedPassword', password: 'b34b80fb-ae50-4456-8557-399366fe45e4'})
+                
+                simulateURLNavigation('dashboard.html')
+                assertUIState({$tag: '20059334-7dff-4922-8bf5-ac07999d892d', expected: {
+                    url: `http://aps-ua-writer.local:3022/sign-in.html`,
+                    pageHeader: `Вход`,
+                    inputs: { email: { value: `` }, password: { value: `` } },
+                    errorLabels: {},
+                    errorBanner: undefined 
+                }})
+                
+                testGlobal.links.createAccount.click()
+                assertUIState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
+                    url: `http://aps-ua-writer.local:3022/sign-up.html`,
+                    pageHeader: `Регистрация`,
+                    inputs: 
+                     { email: { value: `` },
+                       firstName: { value: `` },
+                       lastName: { value: `` },
+                       agreeTerms: { value: false } },
+                    errorLabels: {},
+                    errorBanner: undefined 
+                }})            
+                
+                // Inputs
+                testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
+                testGlobal.inputs.firstName.value = 'Фред'
+                testGlobal.inputs.lastName.value = 'Ред'
+                testGlobal.inputs.agreeTerms.value = true
+                // Action
+                testGlobal.buttons.primary.click()
+                await assertShitSpinsForMax({$tag: '39df3f4b-5ca0-4929-bae7-ec1d3bd008ed', max: 2000})
+                
+                await assertSentEmails({$tag: '024f202c-ee75-44ed-ac26-44154d4caf13', descr: 'Email with password', expected: [
+                    { to: `Фред Ред <fred.red@test.shit.ua>`,
+                        subject: `Пароль для Writer UA`,
+                        html: dedent(`
+                            Привет, Фред!<br><br>
+                            Вот твой пароль: b34b80fb-ae50-4456-8557-399366fe45e4
+                            <br><br>
+                            <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>`) } 
+                ]})
+                assertUIState({$tag: '24ca0059-e2e9-4fc4-9056-ede17e586029', expected: {
+                    url: `http://aps-ua-writer.local:3022/sign-in.html`,
+                    pageHeader: `Вход`,
+                    inputs: { email: { value: `` }, password: { value: `` } },
+                    errorLabels: {},
+                    errorBanner: undefined 
+                }})            
+                assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
+
+                // Inputs
+                testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
+                testGlobal.inputs.password.value = 'b34b80fb-ae50-4456-8557-399366fe45e4'
+                // Action
+                testGlobal.buttons.primary.click()
+                await assertShitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
+
+                assertUIState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
+                    url: `http://aps-ua-writer.local:3022/profile.html`,
+                    pageHeader: `Профиль`,
+                    inputs: {},
+                    errorLabels: {},
+                    errorBanner: undefined 
+                }})                        
+                assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Фред'})
+                
+                assertNoTextSomewhere({$tag: '4d0713f8-ccfb-4d05-b064-3987492852a5', unexpected: 'Мои заказы'})
+                assertNoTextSomewhere({$tag: 'a3e73a3e-8ed7-4a69-b748-e955ae4fd606', unexpected: 'Аукцион'})
+            },
+            
+            // preventRestoringURLAfterTest = true
+            // failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
+            
+        }},
     }
+})
+
+export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, loadPageForURL, t}) {
+    let proseItems
+    if (clientKind === 'customer') {
+        proseItems = [
+            ['why', t(`Why Us?`, `Почему мы?`)],
+            ['prices', t(`Prices`, `Цены`)],
+            ['samples', t(`Samples`, `Примеры`)],
+            ['faq', t(`FAQ`, `ЧаВо`)],
+            ['contact', t(`Contact Us`, `Связь`)],
+            ['blog', t(`Blog`, `Блог`)],
+        ]
+    } else {
+        proseItems = [
+            ['why', t(`Why Us?`, `Почему мы?`)],
+            ['prices', t(`Prices`, `Цены`)],
+            ['faq', t(`FAQ`, `ЧаВо`)],
+        ]
+    }
+    
+    let privateItems
+    if (user) {
+        if (clientKind === 'customer') {
+            privateItems = [
+                ['orders', t(`My Orders`, `Мои заказы`)],
+                ['support', t(`Support`, `Служба поддержки`)],
+            ]
+        } else {
+            privateItems = compact([
+                user.state === 'cool' && ['orders', t(`My Orders`, `Мои заказы`)],
+                user.state === 'cool' && ['store', t(`Store`, `Аукцион`)],
+                ['profile', t(`Profile`, `Профиль`)],
+                ['support', t(`Support`, `Служба поддержки`)]
+            ])
+        }
+    }
+    
+    let leftNavbarItems, rightNavbarItem
+    if (user) {
+        let dropdownAStyle
+        if (proseItems.some(x => x[0] === highlightedItem)) {
+            dropdownAStyle = {backgroundColor: '#e7e7e7'}
+        }
+        const liaid = puid()
+        leftNavbarItems = [
+            lia({className: 'dropdown'},
+                aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
+                ula({className: 'dropdown-menu'},
+                    ...proseItems.map(itemToLia))),
+            ...privateItems.map(itemToLia)
+        ]
+        rightNavbarItem = itemToLia(['dashboard', t(user.first_name)])
+    } else {
+        leftNavbarItems = proseItems.map(itemToLia)
+        rightNavbarItem = itemToLia(['sign-in', t(`Sign In`, `Вход`)])
+    }
+    
+    return nava({className: 'navbar navbar-default navbar-fixed-top'},
+               diva({className: 'container-fluid'},
+                   diva({className: 'navbar-header'},
+                       makeLink('home', clientKind === 'customer' ? 'APS' : t('Writer', 'Писец'), 'navbar-brand')),
+                       
+                   diva({style: {textAlign: 'left'}},
+                       ula({id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
+                           ...leftNavbarItems),
+                       ula({id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
+                           rightNavbarItem))))
+                           
+    
+    function itemToLia([name, title]) {
+        return lia({className: highlightedItem === name ? 'active' : ''},
+            makeLink(name, title))
+    }
+                           
+    function makeLink(name, title, className) {
+        const id = puid()
+        const href = name === 'home' ? '/' : `${name}.html`
+        
+        let dleft = 0, dwidth = 0
+        if (name === 'home') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
+            dleft = -15
+            dwidth = 15
+        }
+        
+        return elcl({
+            render() {
+                return aa({id, className, href}, title)
+            },
+            
+            componentDidMount() {
+                // XXX Have to add event handler in weird way in order to prevent Bootstrap from hiding dropdown.
+                //     It turned out, React doesn't actually add event handlers on elements, that's why e.stopPropagation()
+                //     in onClick(e) doesn't cancel non-React handlers on upper-level elements.
+                //
+                //     https://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#under-the-hood-autobinding-and-event-delegation
+                
+                byid(id).on('click', async function(e) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    getEffects().blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
+                    
+                    history.pushState(null, '', href)
+                    
+                    if (DEBUG_SIMULATE_SLOW_NETWORK) {
+                        await delay(1000)
+                    }
+                    
+                    await loadPageForURL()
+                    
+                    setTimeout(_=> {
+                        getEffects().blinkOff()
+                        bsClearMenus()
+                    }, 250)
+                })
+            },
+            
+            componentWillUnmount() {
+                byid(id).off()
+            },
+        })
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//let t, effects, updateNavbar, token
+//let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane,
+//    debugStatusBar, testPassedPane, updateDebugShit
+    
+async function zzzzznormalInit() {
     
     // @ctx state
     let urlObject, urlQuery, updateReactShit, rootContent, pageState, rpcclient, signedUpOK, user, activePage
@@ -36,201 +430,18 @@ global.initUI = async function(opts) {
     let testScenarioToRun
     
     if (MODE === 'debug' && !debugShitInitialized) {
-        await initClientStackSourceMapConsumer()
-        setUIDebugRPC(rpc)
         window.addEventListener('keydown', e => {
             if (e.ctrlKey && e.altKey && e.key === 'k') return captureState()
             if (e.ctrlKey && e.altKey && e.key === 'i') return captureInputs()
             if (e.ctrlKey && e.altKey && e.key === 'a') return assertUIState({$tag: 'just-showing-actual', expected: undefined})
         })
         
-        assertionErrorPane = statefulElement(update => {
-            let visible, content, top
-            
-            return {
-                render() {
-                    if (!visible) return null
-                    return diva({style: {position: 'absolute', left: 0, top, width: '100%', backgroundColor: RED_700, padding: '10px 10px', textAlign: 'left'}},
-                               divsa({fontWeight: 'bold', borderBottom: '2px solid white', paddingBottom: 5, marginBottom: 5, color: WHITE}, content.message),
-                               divsa({whiteSpace: 'pre-wrap', color: WHITE}, content.stack),
-                               content.detailsUI,
-                           )
-                },
-                
-                set(_content) {
-                    top = $('#footer').offset().top + 40
-                    update(content = _content, visible = true)
-                    document.body.scrollTop = 99999
-                },
-            }
-        })
         
-        testPassedPane = statefulElement(update => {
-            let scenarioName, link
-            
-            return {
-                render() {
-                    if (!scenarioName) return null
-                    return diva({style: {position: 'absolute', bottom: 0, width: '100%', backgroundColor: GREEN_700, color: WHITE,
-                                         padding: '10px 10px', textAlign: 'center', fontWeight: 'bold'}},
-                                scenarioName,
-                                link)
-                },
-                
-                show(_scenarioName) {
-                    scenarioName = _scenarioName
-                    const m = /\s+([0-9a-z]{8})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{12})$/.exec(scenarioName)
-                    if (m) {
-                        scenarioName = scenarioName.slice(0, m.index)
-                        link = OpenSourceCodeLink({$tag: m[0].trim()}, {style: {color: WHITE}})
-                    }
-                    update()
-                },
-            }
-        })
-        
-        debugStatusBar = statefulElement(update => {
-            let functions = []
-            let screenSize
-            
-            var mqLarge = window.matchMedia('(min-width: 1200px)')
-            var mqMedium = window.matchMedia('(min-width: 992px)')
-            var mqSmall = window.matchMedia('(min-width: 768px)')
-            mqLarge.addListener(onScreenSizeChange)
-            mqMedium.addListener(onScreenSizeChange)
-            mqSmall.addListener(onScreenSizeChange)
-            onScreenSizeChange()
-            
-            function onScreenSizeChange() {
-                if (window.matchMedia('(min-width: 1200px)').matches) {
-                    update(screenSize = 'Large')
-                } else if (window.matchMedia('(min-width: 992px)').matches) {
-                    update(screenSize = 'Medium')
-                } else if (window.matchMedia('(min-width: 768px)').matches) {
-                    update(screenSize = 'Small')
-                } else {
-                    update(screenSize = 'Weird screen')
-                }
-            }
-            
-            return {
-                render() {
-                    return diva({style: {position: 'absolute', display: 'flex', right: 0, bottom: 0, height: 28, zIndex: 1000}},
-                        ...functions.map(({title, theme='default', action}) => {
-                            const style = {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, fontSize: '85%', cursor: 'pointer'}
-                            if (theme === 'default') {
-                                asn(style, {backgroundColor: BLUE_GRAY_600, color: WHITE})
-                            } else if (theme === 'danger') {
-                                asn(style, {backgroundColor: RED_500, color: WHITE})
-                            } else if (theme === 'black') {
-                                asn(style, {backgroundColor: BLACK, color: WHITE})
-                            }
-                            return diva({style, onClick: action}, title)
-                        }),
-                            
-                        diva({style: {marginLeft: 3, height: '100%', padding: '0 5px', paddingTop: 7, backgroundColor: BLUE_GRAY_600, color: WHITE, fontSize: '85%'}},
-                            screenSize),
-                    )
-                },
-                
-                setFunctions(x) {
-                    functions = x
-                    functions.unshift({
-                        title: t('Q'),
-                        theme: 'black',
-                        action() {
-                            revealer.reveal(updatableElement(update => {
-                                let ui
-                                let loading = true
-                                
-                                run(async function() {
-                                    update(ui = spinnerMedium())
-                                    try {
-                                        const queries = await rpc({fun: 'danger_getQueries', last: 5})
-                                        // dlogs({queries})
-                                        if (!queries.length) return update(ui = div('No queries'))
-                                        const divs = []
-                                        queries.forEach((query, i) => {
-                                            if (i > 0) {
-                                                divs.push(diva({style: {marginTop: 5, marginBottom: 5, height: 2, backgroundColor: GRAY_500}}))
-                                            }
-                                            if (query.$tag) {
-                                                divs.push(diva({}, OpenSourceCodeLink(query)))
-                                            }
-                                            let descr = deepInspect({sql: query.sql, args: query.args})
-                                            divs.push(diva({style: {space: 'pre-wrap', fontFamily: 'monospace'}}, descr))
-                                        })
-                                        update(ui = div(...divs))
-                                    } catch (e) {
-                                       update(ui = spansa({color: RED_700}, glyph('exclamation-triangle'), spansa({marginLeft: 10}, 'Shit: ' + e.message)))
-                                    }
-                                })
-                                
-                                return _=> ui
-                            }))
-                        }
-                    })
-                    
-                    update()
-                },
-            }
-        })
-        
-        $(document.body).append('<div id="debugShit"></div>')
-        ReactDOM.render(updatableElement(update => {
-            updateDebugShit = update
-            return _=> div(assertionErrorPane, testPassedPane, capturePane, debugStatusBar)
-        }), byid0('debugShit'))
-        
-        urlObject = url.parse(location.href)
-        urlQuery = querystring.parse(urlObject.query)
-        testScenarioToRun = urlQuery.testScenario
         
         debugShitInitialized = true
     }
     
-    effects = statefulElement(update => {
-        let me, blinker, blinkerInterval
-        
-        return me = {
-            render() {
-                return div(blinker)
-            },
-            
-            blinkOn(target, {fixed, dleft=0, dwidth=0}={}) {
-                me.blinkOff()
-                
-                const targetOffset = target.offset()
-                const targetWidth = target.outerWidth(true)
-                const targetHeight = target.outerHeight(true)
-                const width = targetWidth + dwidth
-                const height = 3
-                const left = targetOffset.left + dleft
-                let top = targetOffset.top + targetHeight - height
-                if (fixed) {
-                    top -= $(document).scrollTop()
-                }
-                // dlog({left, top, width, height})
-                
-                update(blinker = diva({className: 'progressTicker', style: {position: fixed ? 'fixed' : 'absolute', zIndex: 10000, backgroundColor: BLUE_GRAY_600, left, top, width, height}}))
-            },
-            
-            blinkOff() {
-                update(blinker = undefined)
-            }
-        }
-    })
-    $(document.body).append('<div id="effects"></div>')
-    ReactDOM.render(effects.element, byid0('effects'))
     
-    ReactDOM.render(updatableElement(update => {
-        updateNavbar = update
-        return _=> {
-            const highlightedItem = location.pathname.slice(1, location.pathname.length - '.html'.length)
-            return renderTopNavbar({clientKind: CLIENT_KIND, user, highlightedItem, loadPageForURL, setRootContent})
-        }
-    }), byid0('topNavbarContainer'))
-
     
     if (false) { // TODO:vgrechka @kill
         spaifyNavbar()
@@ -246,10 +457,6 @@ global.initUI = async function(opts) {
     }
     
     if (testScenarioToRun) {
-        let scenarioNameOK
-        if (LANG == 'ua' && CLIENT_KIND === 'customer' && testScenarioToRun.startsWith('UA Customer :: ')) scenarioNameOK = true
-        if (LANG == 'ua' && CLIENT_KIND === 'writer' && testScenarioToRun.startsWith('UA Writer :: ')) scenarioNameOK = true
-        if (!scenarioNameOK) raise(`Bad scenario name for ${LANG} ${CLIENT_KIND} client: ${testScenarioToRun}`)
         
         window.locationProxy = {
             set href(x) {
@@ -257,291 +464,24 @@ global.initUI = async function(opts) {
             }
         }
         
-        const initialPath = location.pathname + location.search
-        try {
-            currentTestScenarioName = testScenarioToRun
-            await testScenarios()[testScenarioToRun]()
-        } finally {
-            currentTestScenarioName = undefined
-            if (!preventRestoringURLAfterTest) {
-                history.replaceState(null, '', initialPath)
-            }
-        }
         
-        $('#uiTestPassedBanner').text(testScenarioToRun)
-        testPassedPane.show(testScenarioToRun)
     } else {
-        token = localStorage.getItem('token')
-        if (token) {
-            try {
-                const res = await rpc({fun: 'private_getUserInfo', token})
-                user = res.user
-            } catch (e) {
-                // Pretend no one was signed in.
-                // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
-                dlog('Failed to private_getUserInfo', e)
-                token = undefined
-                localStorage.clear()
-            }
-        }
-        
-        loadPageForURL()
     }
     
-    async function loadPageForURL() {
-        if (!window.avoidStaticShitRendering) {
-            disposeStaticShit()
-        }
-        
-        urlObject = url.parse(location.href)
-        urlQuery = querystring.parse(urlObject.query)
-        const path = document.location.pathname
-        let name
-        if (path.endsWith('.html')) {
-            name = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('.'))
-        } else {
-            name = 'home'
-        }
-        
-        let shower // TODO:vgrechka Better name
-        
-        if (path.endsWith('/sign-in.html')) {
-            shower = loadSignInPage
-        } else if (path.endsWith('/sign-up.html')) {
-            shower = loadSignUpPage
-        } else if (user) {
-            if (path.endsWith('/orders.html')) {
-                shower = showOrders
-            } else if (path.endsWith('/support.html')) {
-                shower = showSupport
-            } else if (path.endsWith('/dashboard.html')) {
-                shower = showDashboard
-            } else if (path.endsWith('/profile.html')) {
-                shower = showProfile
-            }
-        }
-        
-        const isDynamicPage = CLIENT_KIND === 'customer' ? ~customerDynamicPageNames().indexOf(name)
-                                                         : ~writerDynamicPageNames().indexOf(name)
-        if (!isDynamicPage) {
-            shower = async function() {
-                const href = name === 'home' ? '/' : `${name}.html`
-                let content = (await superagent.get(href).send()).text
-                content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
-                setRootContent(rawHtml(content))
-            }
-        }
-        
-        if (!shower) {
-            console.error(`Can’t determine fucking shower for path ${path}`)
-            return
-        }
-        
-        if (window.avoidStaticShitRendering) {
-            window.avoidStaticShitRendering = false
-        } else {
-            await shower()
-            $(document).scrollTop(0)
-            initStaticShit()
-        }
-        
-        updateNavbar()
-    }
     
     function showProfile() {
-        let primaryButtonTitle
-        if (user.state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
-        else primaryButtonTitle = t('WTF')
-        
-        const form = Form({
-            primaryButtonTitle,
-            fields: {
-                phone: {
-                    title: t('Phone', 'Телефон'),
-                    type: 'text',
-                    attrs: {autoFocus: true},
-                },
-            },
-            rpcFun: 'private_updateProfile',
-            onSuccess(res) {
-                dlog('implement update profile success')
-            },
-        })
-        
-        setPage({
-            pageTitle: t('Profile', 'Профиль'),
-            pageBody: div(
-                user.state === 'profile-pending' && preludeWithOrangeTriangle(
-                    t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'),
-                    {center: 720}),
-
-                form
-                )
-        })
     }
     
     function showSupport() {
-        setPage({
-            pageTitle: t('Support', 'Служба поддержки'),
-            pageBody: div(
-                )
-        })
     }
     
     function showOrders() {
-        setPage({
-            pageTitle: t('My Orders', 'Мои заказы'),
-            pageBody: div(
-                )
-        })
     }
     
     function showDashboard() {
-        setPage({
-            pageTitle: t('Dashboard', 'Панель'),
-            pageBody: div(
-                diva({className: 'row'},
-                    diva({className: 'col-sm-6'},
-                        sectionTitle(t('Account', 'Аккаунт')),
-                        sectionLinks(
-                            [t('Sign out', 'Выйти прочь'), _=> {
-                                localStorage.clear()
-                                token = undefined
-                                user = undefined
-                                replaceNavigate('/')
-                            }],
-                            [t('Change password', 'Сменить пароль'), _=> {
-                                dlog('implement change password')
-                            }]
-                        )))
-                )
-        })
-        
-        
-        function sectionTitle(title) {
-            return diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title)
-        }
-        
-        function sectionLinks(...items) {
-            return ula({className: 'fa-ul', style: {marginLeft: 20}},
-                       ...items.map(([itemTitle, action]) =>
-                           lia({style: {marginBottom: 5}},
-                               ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
-                               link(itemTitle, {style: {color: '#333'}}, action))))
-        }
     }
     
-    function loadSignInPage() {
-        const form = Form({
-            primaryButtonTitle: t('Sign In', 'Войти'),
-            fields: {
-                email: {
-                    title: t('Email', 'Почта'),
-                    type: 'text',
-                    attrs: {autoFocus: true},
-                },
-                password: {
-                    title: t('Password', 'Пароль'),
-                    type: 'password',
-                },
-            },
-            rpcFun: 'signInWithPassword',
-            onSuccess(res) {
-                // dlogs('got response', res)
-                user = res.user
-                token = res.token
-                localStorage.setItem('token', token)
-                // updateNavbar()
-                if (user.state === 'cool') {
-                    pushNavigate('dashboard.html')
-                } else {
-                    pushNavigate('profile.html')
-                }
-            },
-        })
-        
-        setPage({
-            pageTitle: t('Sign In', 'Вход'),
-            pageBody: div(
-                signedUpOK && preludeWithCheck(
-                    t('Cool. You have an account now. We sent you email with password.',
-                      'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'),
-                    {center: 720}),
-                    
-                form,
-                               
-                !signedUpOK && div(
-                    hr(),
-                    divsa({textAlign: 'left'}, link(t('Still don’t have an account? Create one!', 'Как? Еще нет аккаунта? Срочно создать!'), {name: 'createAccount'}, _=> {
-                        pushNavigate('sign-up.html')
-                    })))
-                )
-        })
-        
-        //------------------------------ Sign in debug functions ------------------------------
-        
-        const debugFuns = [
-            {
-                title: t('F1'),
-                action() {
-                    if (CLIENT_KIND === 'customer') {
-                        testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
-                        testGlobal.inputs.password.value = '63b2439c-bf18-42c5-9f7a-42d7357f966a'
-                    } else if (CLIENT_KIND === 'writer') {
-                        testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
-                        testGlobal.inputs.password.value = 'b34b80fb-ae50-4456-8557-399366fe45e4'
-                    }
-                    
-                    testGlobal.buttons.primary.click()
-                }
-            }
-        ]
-        if (CLIENT_KIND === 'writer') {
-            debugFuns.push({
-                title: t('dasja'),
-                action() {
-                    testGlobal.inputs.email.value = 'dasja@test.shit.ua'
-                    testGlobal.inputs.password.value = 'adminsecret'
-                    testGlobal.buttons.primary.click()
-                }
-            })
-            debugFuns.push({
-                title: t('joe'),
-                action() {
-                    testGlobal.inputs.email.value = 'joe.average@test.shit.ua'
-                    testGlobal.inputs.password.value = '5fca502f-73e2-4c3d-89c8-bc3dabf434d6'
-                    testGlobal.buttons.primary.click()
-                }
-            })
-        }
-        debugStatusBar.setFunctions(debugFuns)
-    }
     
-    function preludeWithOrangeTriangle(content, {center}={}) {
-        const style = {}
-        if (center) {
-            asn(style, {width: center, margin: '0 auto'})
-        }
-        asn(style, {marginBottom: 15})
-        
-        return diva({style},
-                    glyph('exclamation-triangle', {style: {color: AMBER_900}}),
-                    nbsp, nbsp,
-                    content)
-    }
-    
-    function preludeWithCheck(content, {center}={}) {
-        const style = {}
-        if (center) {
-            asn(style, {width: center, margin: '0 auto'})
-        }
-        asn(style, {marginBottom: 15})
-        
-        return diva({style},
-                    glyph('check', {style: {color: LIGHT_GREEN_700}}),
-                    nbsp, nbsp,
-                    content)
-    }
     
     function loadSignUpPage() {
         const form = Form({
@@ -604,155 +544,8 @@ global.initUI = async function(opts) {
         debugStatusBar.setFunctions(debugFuns)
     }
     
-    function pushNavigate(where) {
-        history.pushState(null, '', where)
-        loadPageForURL()
-    }
     
-    function replaceNavigate(where) {
-        history.replaceState(null, '', where)
-        loadPageForURL()
-    }
     
-    function setRootContent(newRootContent) {
-        rootContent = newRootContent
-        
-        if (!updateReactShit) {
-            ReactDOM.render(updatableElement(update => {
-                updateReactShit = update
-                return _=> div(rootContent)
-            }), byid0('root'))
-        }
-        
-        updateReactShit()
-    }
-    
-    function setPage(def) {
-        setRootContent(updatableElement(update => {
-            updateCurrentPage = update
-            
-            pageState = {
-                pageBody: def.pageBody
-            }
-            
-            return _=> diva({className: 'container', style: {position: 'relative'}},
-                responsivePageHeader(fov(def.pageTitle)),
-//                pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium({name: 'headerShit'})),
-                pageState.error && errorBanner(pageState.error),
-                pageState.pageBody,
-            )
-        }))
-        
-        debugStatusBar.setFunctions([])
-    }
-    
-    function Form(def) {
-        return updatableElement(update => {
-            let working, error
-            
-            for (const [name, field] of toPairs(def.fields)) {
-                field.attrs = field.attrs || {}
-                field.attrs.id = field.attrs.id || 'field-' + name // TODO:vgrechka @kill
-                
-                if (field.type === 'text') {
-                    const input = Input({
-                        testName: name,
-                        volatileStyle() {
-                            if (impl.error) return {paddingRight: 30}
-                        }
-                    })
-                    const impl = genericFieldImpl(field, input)
-                    field.control = _=> divsa({position: 'relative'},
-                        input,
-                        impl.error && errorLabel(impl.error, {testName: name, style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}),
-                        impl.error && divsa({width: 15, height: 15, backgroundColor: RED_300, borderRadius: 10, position: 'absolute', right: 8, top: 10}))
-                } else if (field.type === 'password') {
-                    field.control = Input(asn({type: 'password', testName: name}, field.attrs))
-                } else if (field.type === 'agreeTerms') {
-                    const checkbox = Checkbox({testName: name})
-                    const impl = genericFieldImpl(field, checkbox)
-                    field.control = _=> div(
-                        divsa({display: 'flex'},
-                            checkbox,
-                            divsa({width: 5}),
-                            div(t('I’ve read and agreed with ', 'Я прочитал и принял '), link(t('terms and conditions', 'соглашение'), popupTerms)),
-                            impl.error && divsa({width: 15, height: 15, borderRadius: 10, marginTop: 3, marginRight: 9, marginLeft: 'auto', backgroundColor: RED_300})),
-                        impl.error && errorLabel(impl.error, {style: {marginTop: 5, marginRight: 9, textAlign: 'right'}}))
-                           
-                    function popupTerms() {
-                        alert('terms here')
-                    }
-                } else {
-                    raiseInspect('WTF is the field', field)
-                }
-                
-                field.getValue = field.getValue || (_=> field.control.value)
-                field.setValue = field.setValue || (x => field.control.value = x)
-                field.setDisabled = field.setDisabled || (x => field.control.disabled = x)
-                field.setError = field.setError || (x => field.control.error = x)
-                
-                if (field.titleControl === undefined && field.title) {
-                    field.titleControl = label(field.title)
-                }
-                
-                window['simulate_setControlValue_' + name] = function(x) { // TODO:vgrechka Use testGlobal.inputs
-                    field.setValue(x)
-                }
-                
-                
-                function genericFieldImpl(field, to) {
-                    field.getValue = _=> to.value
-                    field.setValue = x => to.value = x
-                    field.setDisabled = x => to.disabled = x
-                    field.setError = x => impl.error = x
-                    
-                    const impl = {}
-                    return impl
-                }
-            }
-            
-            return _=> div(
-                formsa({width: 720, margin: '0 auto'},
-                    error && errorBanner(error),
-                    ...values(def.fields).map(field => {
-                        return diva({className: 'form-group'},
-                                    field.titleControl,
-                                    field.control)
-                    }),
-                    divsa({textAlign: 'left'},
-                        button.primary({title: def.primaryButtonTitle, disabled: working, testName: 'primary'}, async function() {
-                            for (const [name, field] of toPairs(def.fields)) {
-                                field.setError(undefined)
-                                field.setDisabled(true)
-                            }
-                            error = undefined
-                            working = true
-                            update()
-                            
-                            const res = await rpcSoft(asn({fun: def.rpcFun}, omapo(def.fields, x => x.getValue())))
-                            
-                            if (res.error) {
-                                error = res.error
-                            } else {
-                                error = undefined
-                                def.onSuccess(res)
-                            }
-                            
-                            working = false
-                            for (const [name, field] of toPairs(def.fields)) {
-                                field.setError(res.fieldErrors && res.fieldErrors[name])
-                                field.setDisabled(false)
-                            }
-                            update()
-                        }),
-                        working && formTicker()),
-                ))
-        })
-    }
-    
-    function formTicker() {
-        return diva({className: 'progressTicker', style: {float: 'right', width: 14, height: 28, backgroundColor: BLUE_GRAY_600}})
-    }
     
     
     function DashboardPage() {
@@ -763,202 +556,7 @@ global.initUI = async function(opts) {
         })
     }
     
-    async function rpcSoft(message) {
-        try {
-            return await rpc(message)
-        } catch (e) {
-            return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
-        }
-    }
-
-    async function rpc(message) {
-        if (!rpcclient) {
-            rpcclient = RPCClient({url: `${BACKEND_URL}/rpc`})
-        }
-
-        try {
-            return await rpcclient.call(
-                asn({LANG, CLIENT_KIND, APS_DANGEROUS_TOKEN, token, isTesting: !!currentTestScenarioName}, message),
-                {slowNetworkSimulationDelay: MODE === 'debug'
-                                             && DEBUG_SIMULATE_SLOW_NETWORK
-                                             && !message.fun.startsWith('danger_')
-                                             && (currentTestScenarioName ? 250 : 1000)})
-        } catch (e) {
-            if (MODE === 'debug') {
-                let resp = rpcclient.lastResponse
-                if (resp.body.stack) {
-                    debugStatusBar.setFunctions([{
-                        title: t('BS'),
-                        theme: 'danger',
-                        action() {
-                            revealer.revealStack(resp.body.stack, resp.body.stackBeforeAwait)
-                        }
-                    }])
-                }
-            }
-            
-            throw e
-        }
-    }
     
-    function testScenarios() {return{
-        async 'Something'() {
-        },
-    
-        // ======================================== UA CUSTOMER TEST SCENARIOS ========================================
-        
-        async 'UA Customer :: Sign Up :: 1'() {
-            await rpc({fun: 'danger_clearSentEmails'})
-            await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
-            await rpc({fun: 'danger_fixNextGeneratedPassword', password: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
-            
-            simulateURLNavigation('dashboard.html')
-            assertUIState({$tag: '62112552-36ac-47fd-9bac-a4d6a7b3c4d4', expected: {
-                url: `http://aps-ua-customer.local:3012/sign-in.html`,
-                pageHeader: `Вход`,
-                inputs: { email: { value: `` }, password: { value: `` } },
-                errorLabels: {},
-                errorBanner: undefined 
-            }})           
-                        
-            simulateURLNavigation('sign-up.html')
-            assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
-                url: `http://aps-ua-customer.local:3012/sign-up.html`,
-                pageHeader: `Регистрация`,
-                inputs: 
-                 { email: { value: `` },
-                   firstName: { value: `` },
-                   lastName: { value: `` },
-                   agreeTerms: { value: false } },
-                errorLabels: {},
-                errorBanner: undefined 
-            }})
-
-            // Inputs
-            testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
-            testGlobal.inputs.firstName.value = 'Вильма'
-            testGlobal.inputs.lastName.value = 'Блу'
-            testGlobal.inputs.agreeTerms.value = true
-            // Action
-            testGlobal.buttons.primary.click()
-            await assertShitSpinsForMax({$tag: '29832372-ff89-46dd-ba9d-cf54154503f5', max: 2000})
-            // Check
-            assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
-            assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
-                url: `http://aps-ua-customer.local:3012/sign-in.html`,
-                pageHeader: `Вход`,
-                inputs: { email: { value: `` }, password: { value: `` } },
-                errorLabels: {},
-                errorBanner: undefined 
-            }})
-            await assertSentEmails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Email with password', expected: [
-                { to: `Вильма Блу <wilma.blue@test.shit.ua>`,
-                    subject: `Пароль для APS`,
-                    html: dedent(`
-                        Привет, Вильма!<br><br>
-                        Вот твой пароль: 63b2439c-bf18-42c5-9f7a-42d7357f966a
-                        <br><br>
-                        <a href="http://aps-ua-customer.local:3012/sign-in.html">http://aps-ua-customer.local:3012/sign-in.html</a>`) } 
-            ]})
-            
-            // Inputs
-            testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
-            testGlobal.inputs.password.value = '63b2439c-bf18-42c5-9f7a-42d7357f966a'
-            // Action
-            testGlobal.buttons.primary.click()
-            await assertShitSpinsForMax({$tag: '96f4aa5d-4f5d-4de4-869b-07f2f6f53b8b', max: 2000})
-            assertLinkWithTextSomewhere({$tag: 'aa6eda4b-fc78-43ac-959d-a2eb44f3061f', expected: 'Вильма'})
-            assertUIState({$tag: 'd9c42d17-322e-4427-b4ec-d946af422ba0', expected: {
-                url: `http://aps-ua-customer.local:3012/dashboard.html`,
-                pageHeader: `Панель`,
-                inputs: {},
-                errorLabels: {},
-                errorBanner: undefined 
-            }})
-            
-            simulateURLNavigation('dashboard.html')
-        },
-        
-        // ======================================== UA WRITER TEST SCENARIOS ========================================
-        
-        async 'UA Writer :: Sign Up :: 1    b583c010-f383-4635-a826-3d2bb79f0806'() {
-            await rpc({fun: 'danger_clearSentEmails'})
-            await rpc({fun: 'danger_killUser', email: 'fred.red@test.shit.ua'})
-            await rpc({fun: 'danger_fixNextGeneratedPassword', password: 'b34b80fb-ae50-4456-8557-399366fe45e4'})
-            
-            simulateURLNavigation('dashboard.html')
-            assertUIState({$tag: '20059334-7dff-4922-8bf5-ac07999d892d', expected: {
-                url: `http://aps-ua-writer.local:3022/sign-in.html`,
-                pageHeader: `Вход`,
-                inputs: { email: { value: `` }, password: { value: `` } },
-                errorLabels: {},
-                errorBanner: undefined 
-            }})
-            
-            testGlobal.links.createAccount.click()
-            assertUIState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
-                url: `http://aps-ua-writer.local:3022/sign-up.html`,
-                pageHeader: `Регистрация`,
-                inputs: 
-                 { email: { value: `` },
-                   firstName: { value: `` },
-                   lastName: { value: `` },
-                   agreeTerms: { value: false } },
-                errorLabels: {},
-                errorBanner: undefined 
-            }})            
-            
-            // Inputs
-            testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
-            testGlobal.inputs.firstName.value = 'Фред'
-            testGlobal.inputs.lastName.value = 'Ред'
-            testGlobal.inputs.agreeTerms.value = true
-            // Action
-            testGlobal.buttons.primary.click()
-            await assertShitSpinsForMax({$tag: '39df3f4b-5ca0-4929-bae7-ec1d3bd008ed', max: 2000})
-            
-            await assertSentEmails({$tag: '024f202c-ee75-44ed-ac26-44154d4caf13', descr: 'Email with password', expected: [
-                { to: `Фред Ред <fred.red@test.shit.ua>`,
-                    subject: `Пароль для Writer UA`,
-                    html: dedent(`
-                        Привет, Фред!<br><br>
-                        Вот твой пароль: b34b80fb-ae50-4456-8557-399366fe45e4
-                        <br><br>
-                        <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>`) } 
-            ]})
-            assertUIState({$tag: '24ca0059-e2e9-4fc4-9056-ede17e586029', expected: {
-                url: `http://aps-ua-writer.local:3022/sign-in.html`,
-                pageHeader: `Вход`,
-                inputs: { email: { value: `` }, password: { value: `` } },
-                errorLabels: {},
-                errorBanner: undefined 
-            }})            
-            assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
-
-            // Inputs
-            testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
-            testGlobal.inputs.password.value = 'b34b80fb-ae50-4456-8557-399366fe45e4'
-            // Action
-            testGlobal.buttons.primary.click()
-            await assertShitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
-
-            assertUIState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
-                url: `http://aps-ua-writer.local:3022/profile.html`,
-                pageHeader: `Профиль`,
-                inputs: {},
-                errorLabels: {},
-                errorBanner: undefined 
-            }})                        
-            assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Фред'})
-            
-            assertNoTextSomewhere({$tag: '4d0713f8-ccfb-4d05-b064-3987492852a5', unexpected: 'Мои заказы'})
-            assertNoTextSomewhere({$tag: 'a3e73a3e-8ed7-4a69-b748-e955ae4fd606', unexpected: 'Аукцион'})
-        },
-        
-// preventRestoringURLAfterTest = true
-// failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
-        
-    }}
     
     function assertLinkWithTextSomewhere({$tag, expected}) {
         for (const a of $('a')) {
@@ -1258,10 +856,6 @@ global.initUI = async function(opts) {
     }
 
 
-    function responsivePageHeader(title) {
-        return pageHeader(title, {})
-//        return pageHeader(title, {className: 'padding-left-to-center-720'})
-    }
 }
 
 export function imposeClientT(newT) {
@@ -1269,155 +863,19 @@ export function imposeClientT(newT) {
 }
 
 export function customerDynamicPageNames() {
-    return tokens('sign-in sign-up dashboard orders support')
+    return tokens('test sign-in sign-up dashboard orders support')
 }
 
 export function writerDynamicPageNames() {
-    return tokens('sign-in sign-up dashboard orders support store users profile')
+    return tokens('test sign-in sign-up dashboard orders support store users profile')
 }
 
-export function pageHeader(title, attrs={}) {
-    #extract {className=''} from attrs
-    return elcl({
-        render() {
-            return diva(asn({className: `page-header ${className}`, style: {marginTop: 30}}, attrs),
-                       h3(title))
-        },
-        componentDidMount() {
-            testGlobal.pageHeader = textMeat(title)
-        },
-        componentWillUnmount() {
-            testGlobal.pageHeader = undefined
-        },
-    })
-}
 
 //function isDynamicPage(name, clientKind) {
 //    return clientKind === 'customer' ? ~customerDynamicPageNames().indexOf(name)
 //                                     : ~writerDynamicPageNames().indexOf(name)
 //}
 
-export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, loadPageForURL, setRootContent}) {
-    let proseItems
-    if (clientKind === 'customer') {
-        proseItems = [
-            ['why', t(`Why Us?`, `Почему мы?`)],
-            ['prices', t(`Prices`, `Цены`)],
-            ['samples', t(`Samples`, `Примеры`)],
-            ['faq', t(`FAQ`, `ЧаВо`)],
-            ['contact', t(`Contact Us`, `Связь`)],
-            ['blog', t(`Blog`, `Блог`)],
-        ]
-    } else {
-        proseItems = [
-            ['why', t(`Why Us?`, `Почему мы?`)],
-            ['prices', t(`Prices`, `Цены`)],
-            ['faq', t(`FAQ`, `ЧаВо`)],
-        ]
-    }
-    
-    let privateItems
-    if (user) {
-        if (clientKind === 'customer') {
-            privateItems = [
-                ['orders', t(`My Orders`, `Мои заказы`)],
-                ['support', t(`Support`, `Служба поддержки`)],
-            ]
-        } else {
-            privateItems = compact([
-                user.state === 'cool' && ['orders', t(`My Orders`, `Мои заказы`)],
-                user.state === 'cool' && ['store', t(`Store`, `Аукцион`)],
-                ['profile', t(`Profile`, `Профиль`)],
-                ['support', t(`Support`, `Служба поддержки`)]
-            ])
-        }
-    }
-    
-    let leftNavbarItems, rightNavbarItem
-    if (user) {
-        let dropdownAStyle
-        if (proseItems.some(x => x[0] === highlightedItem)) {
-            dropdownAStyle = {backgroundColor: '#e7e7e7'}
-        }
-        const liaid = puid()
-        leftNavbarItems = [
-            lia({className: 'dropdown'},
-                aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
-                ula({className: 'dropdown-menu'},
-                    ...proseItems.map(itemToLia))),
-            ...privateItems.map(itemToLia)
-        ]
-        rightNavbarItem = itemToLia(['dashboard', t(user.first_name)])
-    } else {
-        leftNavbarItems = proseItems.map(itemToLia)
-        rightNavbarItem = itemToLia(['sign-in', t(`Sign In`, `Вход`)])
-    }
-    
-    return nava({className: 'navbar navbar-default navbar-fixed-top'},
-               diva({className: 'container-fluid'},
-                   diva({className: 'navbar-header'},
-                       makeLink('home', clientKind === 'customer' ? 'APS' : t('Writer', 'Писец'), 'navbar-brand')),
-                       
-                   diva({style: {textAlign: 'left'}},
-                       ula({id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
-                           ...leftNavbarItems),
-                       ula({id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
-                           rightNavbarItem))))
-                           
-    
-    function itemToLia([name, title]) {
-        return lia({className: highlightedItem === name ? 'active' : ''},
-            makeLink(name, title))
-    }
-                           
-    function makeLink(name, title, className) {
-        const id = puid()
-        const href = name === 'home' ? '/' : `${name}.html`
-        
-        let dleft = 0, dwidth = 0
-        if (name === 'home') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
-            dleft = -15
-            dwidth = 15
-        }
-        
-        return elcl({
-            render() {
-                return aa({id, className, href}, title)
-            },
-            
-            componentDidMount() {
-                // XXX Have to add event handler in weird way in order to prevent Bootstrap from hiding dropdown.
-                //     It turned out, React doesn't actually add event handlers on elements, that's why e.stopPropagation()
-                //     in onClick(e) doesn't cancel non-React handlers on upper-level elements.
-                //
-                //     https://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#under-the-hood-autobinding-and-event-delegation
-                
-                byid(id).on('click', async function(e) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
-                    
-                    history.pushState(null, '', href)
-                    
-                    if (DEBUG_SIMULATE_SLOW_NETWORK) {
-                        await delay(1000)
-                    }
-                    
-                    await loadPageForURL()
-                    
-                    setTimeout(_=> {
-                        effects.blinkOff()
-                        bsClearMenus()
-                    }, 250)
-                })
-            },
-            
-            componentWillUnmount() {
-                byid(id).off()
-            },
-        })
-    }
-}
 
                 
 clog('Client code is kind of loaded')

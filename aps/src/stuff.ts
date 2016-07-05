@@ -130,22 +130,6 @@ export function priceForDeliveryOptionAndTypeOfPaper(dopt, top) {
     }[dopt][top]
 }
 
-export function makeT(lang) {
-    return function t(...args) {
-        if (!args[0]) raise('I don’t want falsy first argument in t()')
-        let ss
-        if (typeof args[0] === 'object') {
-            ss = args[0]
-        } else {
-            ss = {en: args[0], ua: args[1] || args[0]}
-        }
-        
-        const res = ss[lang]
-        if (!res) raise('Localize me: ' + deepInspect({lang, arguments}))
-        return res
-    }
-}
-
 
 
 

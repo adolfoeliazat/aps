@@ -26,7 +26,7 @@ function makeWriterSite({lang}) {
         }
         return _t(...args)
     }
-    imposeClientT(t)
+    // imposeClientT(t)
     
     const root = `${__dirname}/../built/${lang}-writer`
     sh.rm('-rf', root)
@@ -432,7 +432,7 @@ function makeCustomerSite({lang}) {
         }
         return _t(...args)
     }
-    imposeClientT(t)
+    // imposeClientT(t)
     
     const root = `${__dirname}/../built/${lang}-customer`
     sh.rm('-rf', root)
@@ -1347,7 +1347,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
             </head>
             <body style="padding-top: 50px; padding-bottom: 40px; overflow-y: scroll;">
                 <div id="topNavbarContainer">
-                    ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar({clientKind, highlightedItem, spa: false}))}
+                    ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar({clientKind, highlightedItem, spa: false, t}))}
                 </div>
             
                 <div id="root">
@@ -1364,7 +1364,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                             document.getElementById('ticker').style.display = ''
                         } else {
                             document.getElementById('staticShit').style.display = ''
-                            window.avoidStaticShitRendering = true
+                            window.staticShitIsRenderedStatically = true
                         }
                     </script>
                 </div>
@@ -1557,7 +1557,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 </script>
                             
                 <script src="bundle.js"></script>
-                <script>initUI()</script>
+                <script>igniteShit()</script>
             </body>
         </html>
     `)

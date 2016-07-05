@@ -37,7 +37,7 @@ makeConfig = {
             },
             
             postDecorateBundle(code) {
-                return `APS_DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}';${code}`
+                return `DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}';${code}`
             },
             
             async afterFirstCompile() {

@@ -38,7 +38,7 @@ app.post('/rpc', (req, res) => {
             if (msg.fun.startsWith('danger_') || msg.isTesting) {
                 const serverToken = process.env.APS_DANGEROUS_TOKEN
                 if (!serverToken) raise('I want APS_DANGEROUS_TOKEN configured on server')
-                const clientToken = msg.APS_DANGEROUS_TOKEN
+                const clientToken = msg.DANGEROUS_TOKEN
                 if (clientToken !== serverToken) raise('Fuck you, mister hacker')
             }
         
