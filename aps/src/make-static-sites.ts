@@ -1364,6 +1364,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                             document.getElementById('ticker').style.display = ''
                         } else {
                             document.getElementById('staticShit').style.display = ''
+                            window.avoidStaticShitRendering = true
                         }
                     </script>
                 </div>

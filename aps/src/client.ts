@@ -285,11 +285,11 @@ global.initUI = async function(opts) {
             }
         }
         
-        loadPageForURL({initial: true})
+        loadPageForURL()
     }
     
-    async function loadPageForURL({initial}={}) {
-        if (!initial) {
+    async function loadPageForURL() {
+        if (!window.avoidStaticShitRendering) {
             disposeStaticShit()
         }
         
@@ -332,9 +332,14 @@ global.initUI = async function(opts) {
             }
         }
         
-        if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
+        if (!shower) {
+            console.error(`Can’t determine fucking shower for path ${path}`)
+            return
+        }
         
-        if (!initial) {
+        if (window.avoidStaticShitRendering) {
+            window.avoidStaticShitRendering = false
+        } else {
             await shower()
             $(document).scrollTop(0)
             initStaticShit()
