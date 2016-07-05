@@ -18,7 +18,7 @@ import * as querystring from 'querystring'
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
-let t, effects, updateNavbar
+let t, effects, updateNavbar, token
 let debugShitInitialized, currentTestScenarioName, preventRestoringURLAfterTest, assertionErrorPane,
     debugStatusBar, testPassedPane, updateDebugShit
     
@@ -228,7 +228,7 @@ global.initUI = async function(opts) {
         updateNavbar = update
         return _=> {
             const highlightedItem = location.pathname.slice(1, location.pathname.length - '.html'.length)
-            return renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem, loadPageForURL, setRootContent})
+            return renderTopNavbar({clientKind: CLIENT_KIND, user, highlightedItem, loadPageForURL, setRootContent})
         }
     }), byid0('topNavbarContainer'))
 
@@ -275,19 +275,6 @@ global.initUI = async function(opts) {
         loadPageForURL()
     }
     
-    
-    function spaifyNavbar() {
-        for (const name of navLinkNames) {
-            const link = byid0(name + 'NavLink')
-            if (link) {
-                link.onclick = e => {
-                    e.preventDefault()
-                    pushNavigate(link.getAttribute('href'))
-                }
-            }
-        }
-    }
-    
     function loadPageForURL() {
         urlObject = url.parse(location.href)
         urlQuery = querystring.parse(urlObject.query)
@@ -314,6 +301,7 @@ global.initUI = async function(opts) {
         if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
         
         shower()
+        updateNavbar()
     }
     
     function showProfile() {
@@ -414,16 +402,16 @@ global.initUI = async function(opts) {
             },
             rpcFun: 'signInWithPassword',
             onSuccess(res) {
-                dlogs('got response', res)
-//                user = res.user
-//                localStorage.setItem('user', JSON.stringify(user))
-//                if (user.approved) {
-//                    pushNavigate('dashboard.html')
-//                } else {
-//                    pushNavigate('profile.html')
-//                }
-//                initUI0()
-//                spaifyNavbar()
+                // dlogs('got response', res)
+                user = res.user
+                token = res.token
+                localStorage.setItem('token', token)
+                updateNavbar()
+                if (user.state === 'cool') {
+                    pushNavigate('dashboard.html')
+                } else {
+                    pushNavigate('profile.html')
+                }
             },
         })
         
@@ -750,7 +738,7 @@ global.initUI = async function(opts) {
             rpcclient = RPCClient({url: `${BACKEND_URL}/rpc`})
         }
         return await rpcclient.call(
-            asn({LANG, CLIENT_KIND, APS_DANGEROUS_TOKEN, isTesting: !!currentTestScenarioName}, message),
+            asn({LANG, CLIENT_KIND, APS_DANGEROUS_TOKEN, token, isTesting: !!currentTestScenarioName}, message),
             {slowNetworkSimulationDelay: MODE === 'debug'
                                          && DEBUG_SIMULATE_SLOW_NETWORK
                                          && !message.fun.startsWith('danger_')
@@ -1249,23 +1237,58 @@ export function pageHeader(title, attrs={}) {
     })
 }
 
-export function renderTopNavbar({clientKind, highlightedItem, spa=true, loadPageForURL, setRootContent}) {
+export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, loadPageForURL, setRootContent}) {
     let proseItems
     if (clientKind === 'customer') {
         proseItems = [
-            ['why', t({en: `Why Us?`, ua: `Почему мы?`})],
-            ['prices', t({en: `Prices`, ua: `Цены`})],
-            ['samples', t({en: `Samples`, ua: `Примеры`})],
-            ['faq', t({en: `FAQ`, ua: `ЧаВо`})],
-            ['contact', t({en: `Contact Us`, ua: `Связь`})],
-            ['blog', t({en: `Blog`, ua: `Блог`})],
+            ['why', t(`Why Us?`, `Почему мы?`)],
+            ['prices', t(`Prices`, `Цены`)],
+            ['samples', t(`Samples`, `Примеры`)],
+            ['faq', t(`FAQ`, `ЧаВо`)],
+            ['contact', t(`Contact Us`, `Связь`)],
+            ['blog', t(`Blog`, `Блог`)],
         ]
     } else {
         proseItems = [
-            ['why', t({en: `Why Us?`, ua: `Почему мы?`})],
-            ['prices', t({en: `Prices`, ua: `Цены`})],
-            ['faq', t({en: `FAQ`, ua: `ЧаВо`})],
+            ['why', t(`Why Us?`, `Почему мы?`)],
+            ['prices', t(`Prices`, `Цены`)],
+            ['faq', t(`FAQ`, `ЧаВо`)],
         ]
+    }
+    
+    let privateItems
+    if (user) {
+        if (clientKind === 'customer') {
+            privateItems = [
+                ['orders', t(`My Orders`, `Мои заказы`)],
+                ['support', t(`Support`, `Служба поддержки`)],
+            ]
+        } else {
+            privateItems = compact([
+                user.state === 'cool' && ['orders', t(`My Orders`, `Мои заказы`)],
+                user.state === 'cool' && ['store', t(`Store`, `Аукцион`)],
+                ['profile', t(`Profile`, `Профиль`)],
+                ['support', t(`Support`, `Служба поддержки`)]
+            ])
+        }
+    }
+    
+    let leftNavbarItems
+    if (user) {
+        let dropdownAStyle
+        if (proseItems.some(x => x[0] === highlightedItem)) {
+            dropdownAStyle = {backgroundColor: '#e7e7e7'}
+        }
+        const liaid = puid()
+        leftNavbarItems = [
+            lia({className: 'dropdown'},
+                aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
+                ula({className: 'dropdown-menu'},
+                    ...proseItems.map(itemToLia))),
+            ...privateItems.map(itemToLia)
+        ]
+    } else {
+        leftNavbarItems = proseItems.map(itemToLia)
     }
     
     return nava({className: 'navbar navbar-default navbar-fixed-top'},
@@ -1275,7 +1298,7 @@ export function renderTopNavbar({clientKind, highlightedItem, spa=true, loadPage
                        
                    diva({style: {textAlign: 'left'}},
                        ula({id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
-                           ...proseItems.map(itemToLia)),
+                           ...leftNavbarItems),
                        ula({id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
                            itemToLia(['sign-in', t({en: `Sign In`, ua: `Вход`})])))))
                            
@@ -1296,37 +1319,84 @@ export function renderTopNavbar({clientKind, highlightedItem, spa=true, loadPage
                 dwidth = 15
             }
             
-            onClick = async function(e) {
-                e.preventDefault()
-                effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
-                
-                history.pushState(null, '', href)
-                
-                if (DEBUG_SIMULATE_SLOW_NETWORK) {
-                    await delay(1000)
-                }
-                
-                const isDynamicPage = clientKind === 'customer' ? ~customerDynamicPageNames().indexOf(name)
-                                                                : ~writerDynamicPageNames().indexOf(name)
-                if (isDynamicPage) {
-                    await loadPageForURL()
-                } else {
-                    let content = (await superagent.get(href).send()).text
-                    content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
-                    setRootContent(rawHtml(content))
-                }
-                
-                $(document).scrollTop(0)
-                updateNavbar()
-                
-                setTimeout(effects.blinkOff, 250)
-            }
+//            onClick = async function(e) {
+//                dlog('---aa onclick')
+//                e.preventDefault()
+//                e.stopPropagation()
+//                return
+//                effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
+//                
+//                history.pushState(null, '', href)
+//                
+//                if (DEBUG_SIMULATE_SLOW_NETWORK) {
+//                    await delay(1000)
+//                }
+//                
+//                const isDynamicPage = clientKind === 'customer' ? ~customerDynamicPageNames().indexOf(name)
+//                                                                : ~writerDynamicPageNames().indexOf(name)
+//                if (isDynamicPage) {
+//                    await loadPageForURL()
+//                } else {
+//                    let content = (await superagent.get(href).send()).text
+//                    content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
+//                    setRootContent(rawHtml(content))
+//                }
+//                
+//                $(document).scrollTop(0)
+//                updateNavbar()
+//                
+//                setTimeout(effects.blinkOff, 250)
+//            }
         }
         
-        return aa({id, className, href, onClick}, title)
-    }
-                       
-    function navigateOnClick(url) {
+        let dleft = 0, dwidth = 0
+        if (name === 'home') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
+            dleft = -15
+            dwidth = 15
+        }
+        
+        return elcl({
+            render() {
+                return aa({id, className, href, onClick}, title)
+            },
+            
+            componentDidMount() {
+                byid(id).on('click', async function(e) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
+                    
+                    history.pushState(null, '', href)
+                    
+                    if (DEBUG_SIMULATE_SLOW_NETWORK) {
+                        await delay(1000)
+                    }
+                    
+                    const isDynamicPage = clientKind === 'customer' ? ~customerDynamicPageNames().indexOf(name)
+                                                                    : ~writerDynamicPageNames().indexOf(name)
+                    if (isDynamicPage) {
+                        await loadPageForURL()
+                    } else {
+                        let content = (await superagent.get(href).send()).text
+                        content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
+                        setRootContent(rawHtml(content))
+                    }
+                    
+                    $(document).scrollTop(0)
+                    updateNavbar()
+                    
+                    setTimeout(_=> {
+                        effects.blinkOff()
+                        bsClearMenus()
+                    }, 250)
+                })
+            },
+            
+            componentWillUnmount() {
+                byid(id).off()
+            },
+        })
+//        return aa({id, className, href, onClick}, title)
     }
 }
 

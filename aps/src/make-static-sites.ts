@@ -1873,8 +1873,10 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 </div>
                 </div> <!-- /#everything -->
 
+                <!-- <script src="jquery-hack.js"></script> -->
                 <script src="jquery.min.js"></script>
-                <script src="bootstrap-master/js/bootstrap.min.js"></script>
+                <script src="bootstrap-hack.js"></script>
+                <!-- <script src="bootstrap-master/js/bootstrap.min.js"></script> -->
                 <script>${js}</script>
                 
                 <script src="bundle.js"></script>
