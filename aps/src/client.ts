@@ -285,10 +285,14 @@ global.initUI = async function(opts) {
             }
         }
         
-        loadPageForURL()
+        loadPageForURL({initial: true})
     }
     
-    async function loadPageForURL() {
+    async function loadPageForURL({initial}={}) {
+        if (!initial) {
+            disposeStaticShit()
+        }
+        
         urlObject = url.parse(location.href)
         urlQuery = querystring.parse(urlObject.query)
         const path = document.location.pathname
@@ -330,8 +334,12 @@ global.initUI = async function(opts) {
         
         if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
         
-        await shower()
-        $(document).scrollTop(0)
+        if (!initial) {
+            await shower()
+            $(document).scrollTop(0)
+            initStaticShit()
+        }
+        
         updateNavbar()
     }
     
@@ -392,9 +400,10 @@ global.initUI = async function(opts) {
                         sectionTitle(t('Account', 'Аккаунт')),
                         sectionLinks(
                             [t('Sign out', 'Выйти прочь'), _=> {
-                                localStorage.removeItem('user')
+                                localStorage.clear()
+                                token = undefined
                                 user = undefined
-                                location.href = '/'
+                                replaceNavigate('/')
                             }],
                             [t('Change password', 'Сменить пароль'), _=> {
                                 dlog('implement change password')
@@ -592,6 +601,11 @@ global.initUI = async function(opts) {
     
     function pushNavigate(where) {
         history.pushState(null, '', where)
+        loadPageForURL()
+    }
+    
+    function replaceNavigate(where) {
+        history.replaceState(null, '', where)
         loadPageForURL()
     }
     

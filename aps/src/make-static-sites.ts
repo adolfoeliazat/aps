@@ -99,39 +99,8 @@ function makeWriterSite({lang}) {
                                    
                                    AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.            
                                `}),
-                
-                pageHeader(t({en: `What People Say`, ua: `Что о нас говорят`})),
-                diva({id: 'testimonials-window'},
-                    diva({id: 'testimonials-strip'}, ...[
-                        {name: {en: 'Nicole', ua: 'Nicole'}, img: 'nicole.jpg', says: {
-                             en: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`,
-                             ua: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`}},
-                        {name: {en: 'Miranda', ua: 'Miranda'}, img: 'miranda.jpg', says: {
-                             en: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`,
-                             ua: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`}},
-                        {name: {en: 'Mike P.', ua: 'Mike P.'}, img: 'mike-p.jpg', says: {
-                             en: `I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!`,
-                             ua: `I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!`}},
-                        {name: {en: 'Joseph B.', ua: 'Joseph B.'}, img: 'joseph-b.jpg', says: {
-                             en: `First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?`,
-                             ua: `First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?`}},
-                        {name: {en: 'Mark C.', ua: 'Mark C.'}, img: 'mark-c.jpg', says: {
-                             en: `How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.`,
-                             ua: `How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.`}},
-                        {name: {en: 'Linda R.', ua: 'Linda R.'}, img: 'linda-r.jpg', says: {
-                             en: `I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!`,
-                             ua: `I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!`}},
-                        ].map(item =>
-                            diva({className: 'testimonials-item'},
-                                diva({className: 'media'},
-                                    diva({className: 'media-left'},
-                                        img(item.img, {className: 'media-object'})),
-                                    diva({className: 'media-body'},
-                                        h4a({className: 'media-heading'}, t(item.name)),
-                                        span(t(item.says))))))),
-                                        
-                    divsa({display: 'flex', alignItems: 'center', position: 'absolute', width: 20, right: 0, top: 0, height: '100%'},
-                        glyph('chevron-right', {id: 'testimonials-right', className: 'fa-2x'}))),
+                               
+                renderTestimonials('writer'),
                 
                 pageHeader(t({en: `What We Offer`, ua: `Мы предлагаем`})),
                 horizBulletsRow([
@@ -153,193 +122,6 @@ function makeWriterSite({lang}) {
                 ])
             ),
         ),
-        
-        css: `
-            @media (min-width: 768px) {
-                /* TODO:vgrechka Testimonials style for 768px */
-            }
-            
-            @media (min-width: 992px) {
-                #testimonials-window {
-                    width: 970px;
-                }
-                .testimonials-item {
-                    width: 485px;
-                }
-            }
-
-            @media (min-width: 1200px) {
-                #testimonials-window {
-                    width: 1170px;
-                }
-                .testimonials-item {
-                    width: 585px;
-                }
-            }
-
-            #testimonials-window {
-                overflow: hidden;
-                margin-right: -15px;
-                margin-left: -15px;
-                position: relative;
-            }
-
-            #testimonials-strip {
-                width: 10000px;
-                margin-left: -0px;
-            }
-
-            .testimonials-item {
-                display: inline-block;
-                vertical-align: top;
-                padding-right: 15px;
-                padding-left: 15px;
-            }
-
-            #testimonials-right {
-                cursor: pointer;
-                color: #cfd8dc;
-            }
-
-            #testimonials-right:hover {
-                color: #546e7a;
-            }                    
-        `,
-        
-        js: `
-            !function initTestimonials() {
-              var numSlides = 3,
-                  numFrames = 60,
-                  autoIgnitionPeriod = 15000,
-                  rightArrowAppearsDelay = 200,
-                  shiftFractions,
-                  slide,
-                  autoIgnitionTimeoutHandle,
-                  magic
-              
-              calcTrajectory()
-              
-              $('.testimonials-item').slice(0, 2).clone().appendTo($('#testimonials-strip'))
-              $('#testimonials-right').on('click', ignite)
-              
-              var mqLarge = window.matchMedia('(min-width: 1200px)')
-              var mqMedium = window.matchMedia('(min-width: 992px)')
-              mqLarge.addListener(onMediaChange)
-              mqMedium.addListener(onMediaChange)
-              onMediaChange()
-              
-              
-              function calcTrajectory() {
-                var plot = [
-                    'o                             ',
-                    '  o                           ',
-                    '       o                      ',
-                    '                   o          ',
-                    '               o              ',
-                    '                  o           ',
-                    '                o             ',
-                    '                 o            ',
-                    '------------------------------',
-                    '                 x            ']
-
-                var numShiftFractions,  posFor100
-                for (var i = 0; i < plot.length; ++i) {
-                    if (plot[i].charAt(0) === '-') {
-                        numShiftFractions = i
-                        posFor100 = plot[i + 1].indexOf('x')
-                    }
-                }
-
-                shiftFractions = []
-                for (var i = 0; i < numShiftFractions; ++i) {
-                    var pos = plot[i].indexOf('o')
-                    shiftFractions.push(pos / posFor100)
-                }
-              }
-              
-              function onMediaChange() {
-                  clearTimeout(autoIgnitionTimeoutHandle)
-                  slide = 0
-                  $('#testimonials-strip').css('margin-left', '')
-                  $('.testimonials-item').css('margin-right', '').css('visibility', '')
-                  
-                  magic = undefined
-                  if (window.matchMedia('(min-width: 1200px)').matches) {
-                      console.log('Screen is large')
-                      magic = 970 + 200
-                  } else if (window.matchMedia('(min-width: 992px)').matches) {
-                      console.log('Screen is medium')
-                      magic = 970
-                  }
-                  
-                  if (!magic) {
-                      console.log('No testimonial sliding for you')
-                      $('#testimonials-right').hide()
-                      var items = $('.testimonials-item')
-                      $(items[items.length - 1]).hide()
-                      $(items[items.length - 2]).hide()
-                      return
-                  }
-                  
-                  var items = $('.testimonials-item')
-                  $(items[items.length - 1]).show()
-                  $(items[items.length - 2]).show()
-                  $('#testimonials-right').show()
-                  scheduleAutoIgnition()
-              }
-              
-              function scheduleAutoIgnition() {
-                  autoIgnitionTimeoutHandle = setTimeout(ignite, autoIgnitionPeriod)
-              }
-
-              function ignite() {
-                  clearTimeout(autoIgnitionTimeoutHandle)
-                  $('#testimonials-right').hide()
-                  
-                  var elementToEnlargeRight = $($('.testimonials-item')[slide * 2 + 3])
-                  elementToEnlargeRight.css('margin-right', '300px')
-                  var elementToHideOnHitFloor = $($('.testimonials-item')[slide * 2 + 1])
-                  
-                  var framesDone = 0
-                  requestAnimationFrame(step)
-
-                  function step() {
-                      var maxShift = magic
-                            
-                      var shiftFractionIdxMiddle = (shiftFractions.length - 1) * framesDone / (numFrames - 1)
-                      var shiftFractionIdx1 = Math.floor(shiftFractionIdxMiddle)
-                      var shiftFractionIdx2 = Math.ceil(shiftFractionIdxMiddle)
-                      var shiftFractionFraction = shiftFractionIdxMiddle - shiftFractionIdx1
-                      var shiftFraction1 = shiftFractions[shiftFractionIdx1]
-                      var shiftFraction2 = shiftFractions[shiftFractionIdx2]
-                      var shiftFraction = shiftFraction1 + (shiftFraction2 - shiftFraction1) * shiftFractionFraction
-                      var shift = maxShift * shiftFraction
-                      var offset = slide * magic + shift
-                      
-                      $('#testimonials-strip').css('margin-left', -offset + 'px')
-                      if (shift >= maxShift) {
-                          elementToHideOnHitFloor.css('visibility', 'hidden')
-                      }
-
-                      if (++framesDone === numFrames) {
-                          if (++slide === numSlides) {
-                              slide = 0
-                          }
-                          
-                          elementToEnlargeRight.css('margin-right', '')
-                          elementToHideOnHitFloor.css('visibility', '')
-                          
-                          setTimeout(function() {
-                              $('#testimonials-right').show()
-                              scheduleAutoIgnition()
-                          }, rightArrowAppearsDelay)
-                      } else {
-                          requestAnimationFrame(step)
-                      }
-                  }
-              }
-            }()                    
-        `
     })
     
     writePage({name: 'why', highlightedItem: 'why', // For Writer site
@@ -724,38 +506,7 @@ function makeCustomerSite({lang}) {
                                    AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.            
                                `}),
                 
-                pageHeader(t({en: `What People Say`, ua: `What People Say`})),
-                diva({id: 'testimonials-window'},
-                    diva({id: 'testimonials-strip'}, ...[
-                        {name: {en: 'Nicole', ua: 'Nicole'}, img: 'nicole.jpg', says: {
-                             en: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`,
-                             ua: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`}},
-                        {name: {en: 'Miranda', ua: 'Miranda'}, img: 'miranda.jpg', says: {
-                             en: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`,
-                             ua: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`}},
-                        {name: {en: 'Mike P.', ua: 'Mike P.'}, img: 'mike-p.jpg', says: {
-                             en: `I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!`,
-                             ua: `I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!`}},
-                        {name: {en: 'Joseph B.', ua: 'Joseph B.'}, img: 'joseph-b.jpg', says: {
-                             en: `First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?`,
-                             ua: `First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?`}},
-                        {name: {en: 'Mark C.', ua: 'Mark C.'}, img: 'mark-c.jpg', says: {
-                             en: `How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.`,
-                             ua: `How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.`}},
-                        {name: {en: 'Linda R.', ua: 'Linda R.'}, img: 'linda-r.jpg', says: {
-                             en: `I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!`,
-                             ua: `I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!`}},
-                        ].map(item =>
-                            diva({className: 'testimonials-item'},
-                                diva({className: 'media'},
-                                    diva({className: 'media-left'},
-                                        img(item.img, {className: 'media-object'})),
-                                    diva({className: 'media-body'},
-                                        h4a({className: 'media-heading'}, t(item.name)),
-                                        span(t(item.says))))))),
-                                        
-                    divsa({display: 'flex', alignItems: 'center', position: 'absolute', width: 20, right: 0, top: 0, height: '100%'},
-                        glyph('chevron-right', {id: 'testimonials-right', className: 'fa-2x'}))),
+                renderTestimonials('customer'),
                 
                 pageHeader(t({en: `What We Offer`, ua: `What We Offer`})),
                 horizBulletsRow([
@@ -777,193 +528,6 @@ function makeCustomerSite({lang}) {
                 ])
             ),
         ),
-        
-        css: `
-            @media (min-width: 768px) {
-                /* TODO:vgrechka Testimonials style for 768px */
-            }
-            
-            @media (min-width: 992px) {
-                #testimonials-window {
-                    width: 970px;
-                }
-                .testimonials-item {
-                    width: 485px;
-                }
-            }
-
-            @media (min-width: 1200px) {
-                #testimonials-window {
-                    width: 1170px;
-                }
-                .testimonials-item {
-                    width: 585px;
-                }
-            }
-
-            #testimonials-window {
-                overflow: hidden;
-                margin-right: -15px;
-                margin-left: -15px;
-                position: relative;
-            }
-
-            #testimonials-strip {
-                width: 10000px;
-                margin-left: -0px;
-            }
-
-            .testimonials-item {
-                display: inline-block;
-                vertical-align: top;
-                padding-right: 15px;
-                padding-left: 15px;
-            }
-
-            #testimonials-right {
-                cursor: pointer;
-                color: #cfd8dc;
-            }
-
-            #testimonials-right:hover {
-                color: #546e7a;
-            }                    
-        `,
-        
-        js: `
-            !function initTestimonials() {
-              var numSlides = 3,
-                  numFrames = 60,
-                  autoIgnitionPeriod = 15000,
-                  rightArrowAppearsDelay = 200,
-                  shiftFractions,
-                  slide,
-                  autoIgnitionTimeoutHandle,
-                  magic
-              
-              calcTrajectory()
-              
-              $('.testimonials-item').slice(0, 2).clone().appendTo($('#testimonials-strip'))
-              $('#testimonials-right').on('click', ignite)
-              
-              var mqLarge = window.matchMedia('(min-width: 1200px)')
-              var mqMedium = window.matchMedia('(min-width: 992px)')
-              mqLarge.addListener(onMediaChange)
-              mqMedium.addListener(onMediaChange)
-              onMediaChange()
-              
-              
-              function calcTrajectory() {
-                var plot = [
-                    'o                             ',
-                    '  o                           ',
-                    '       o                      ',
-                    '                   o          ',
-                    '               o              ',
-                    '                  o           ',
-                    '                o             ',
-                    '                 o            ',
-                    '------------------------------',
-                    '                 x            ']
-
-                var numShiftFractions,  posFor100
-                for (var i = 0; i < plot.length; ++i) {
-                    if (plot[i].charAt(0) === '-') {
-                        numShiftFractions = i
-                        posFor100 = plot[i + 1].indexOf('x')
-                    }
-                }
-
-                shiftFractions = []
-                for (var i = 0; i < numShiftFractions; ++i) {
-                    var pos = plot[i].indexOf('o')
-                    shiftFractions.push(pos / posFor100)
-                }
-              }
-              
-              function onMediaChange() {
-                  clearTimeout(autoIgnitionTimeoutHandle)
-                  slide = 0
-                  $('#testimonials-strip').css('margin-left', '')
-                  $('.testimonials-item').css('margin-right', '').css('visibility', '')
-                  
-                  magic = undefined
-                  if (window.matchMedia('(min-width: 1200px)').matches) {
-                      console.log('Screen is large')
-                      magic = 970 + 200
-                  } else if (window.matchMedia('(min-width: 992px)').matches) {
-                      console.log('Screen is medium')
-                      magic = 970
-                  }
-                  
-                  if (!magic) {
-                      console.log('No testimonial sliding for you')
-                      $('#testimonials-right').hide()
-                      var items = $('.testimonials-item')
-                      $(items[items.length - 1]).hide()
-                      $(items[items.length - 2]).hide()
-                      return
-                  }
-                  
-                  var items = $('.testimonials-item')
-                  $(items[items.length - 1]).show()
-                  $(items[items.length - 2]).show()
-                  $('#testimonials-right').show()
-                  scheduleAutoIgnition()
-              }
-              
-              function scheduleAutoIgnition() {
-                  autoIgnitionTimeoutHandle = setTimeout(ignite, autoIgnitionPeriod)
-              }
-
-              function ignite() {
-                  clearTimeout(autoIgnitionTimeoutHandle)
-                  $('#testimonials-right').hide()
-                  
-                  var elementToEnlargeRight = $($('.testimonials-item')[slide * 2 + 3])
-                  elementToEnlargeRight.css('margin-right', '300px')
-                  var elementToHideOnHitFloor = $($('.testimonials-item')[slide * 2 + 1])
-                  
-                  var framesDone = 0
-                  requestAnimationFrame(step)
-
-                  function step() {
-                      var maxShift = magic
-                            
-                      var shiftFractionIdxMiddle = (shiftFractions.length - 1) * framesDone / (numFrames - 1)
-                      var shiftFractionIdx1 = Math.floor(shiftFractionIdxMiddle)
-                      var shiftFractionIdx2 = Math.ceil(shiftFractionIdxMiddle)
-                      var shiftFractionFraction = shiftFractionIdxMiddle - shiftFractionIdx1
-                      var shiftFraction1 = shiftFractions[shiftFractionIdx1]
-                      var shiftFraction2 = shiftFractions[shiftFractionIdx2]
-                      var shiftFraction = shiftFraction1 + (shiftFraction2 - shiftFraction1) * shiftFractionFraction
-                      var shift = maxShift * shiftFraction
-                      var offset = slide * magic + shift
-                      
-                      $('#testimonials-strip').css('margin-left', -offset + 'px')
-                      if (shift >= maxShift) {
-                          elementToHideOnHitFloor.css('visibility', 'hidden')
-                      }
-
-                      if (++framesDone === numFrames) {
-                          if (++slide === numSlides) {
-                              slide = 0
-                          }
-                          
-                          elementToEnlargeRight.css('margin-right', '')
-                          elementToHideOnHitFloor.css('visibility', '')
-                          
-                          setTimeout(function() {
-                              $('#testimonials-right').show()
-                              scheduleAutoIgnition()
-                          }, rightArrowAppearsDelay)
-                      } else {
-                          requestAnimationFrame(step)
-                      }
-                  }
-              }
-            }()                    
-        `
     })
     
     writePage({name: 'why', highlightedItem: 'why', // For Customer site
@@ -1714,8 +1278,58 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                             opacity: 0;
                         }
                     }        
+        
+                    @media (min-width: 768px) {
+                        /* TODO:vgrechka Testimonials style for 768px */
+                    }
+                    
+                    @media (min-width: 992px) {
+                        #testimonials-window {
+                            width: 970px;
+                        }
+                        .testimonials-item {
+                            width: 485px;
+                        }
+                    }
+
+                    @media (min-width: 1200px) {
+                        #testimonials-window {
+                            width: 1170px;
+                        }
+                        .testimonials-item {
+                            width: 585px;
+                        }
+                    }
+
+                    #testimonials-window {
+                        overflow: hidden;
+                        margin-right: -15px;
+                        margin-left: -15px;
+                        position: relative;
+                    }
+
+                    #testimonials-strip {
+                        width: 10000px;
+                        margin-left: -0px;
+                    }
+
+                    .testimonials-item {
+                        display: inline-block;
+                        vertical-align: top;
+                        padding-right: 15px;
+                        padding-left: 15px;
+                    }
+
+                    #testimonials-right {
+                        cursor: pointer;
+                        color: #cfd8dc;
+                    }
+
+                    #testimonials-right:hover {
+                        color: #546e7a;
+                    }                    
+        
                 </style>
-                <style>${css}</style>
         
                 <script>
                     LANG = '${lang}'
@@ -1765,19 +1379,228 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                     })}
                 </div>
 
-                <!-- <script src="jquery-hack.js"></script> -->
                 <script src="jquery.min.js"></script>
+                <!-- <script src="jquery-hack.js"></script> -->
                 <script src="bootstrap-hack.js"></script>
                 <!-- <script src="bootstrap-master/js/bootstrap.min.js"></script> -->
-                <script>${js}</script>
-                
+                            
+                <script>
+                    var testimonials
+                            
+                    initStaticShit()
+                            
+                            
+                    function initStaticShit() {
+                        testimonials = Testimonials()
+                    }
+
+                    function disposeStaticShit() {
+                        testimonials.dispose()
+                    }
+                            
+                    function Testimonials() {
+                        var numSlides = 3,
+                            numFrames = 60,
+                            autoIgnitionPeriod = 15000,
+                            rightArrowAppearsDelay = 200,
+                            shiftFractions,
+                            slide,
+                            autoIgnitionTimeoutHandle,
+                            magic,
+                            disposed
+                            
+                        if (!$('#testimonials-window').length) {
+                            return {
+                                dispose() {}
+                            }
+                        }
+                    
+                        window.testimonialsIncarnationID = window.testimonialsIncarnationID || 0
+                        ++window.testimonialsIncarnationID
+                      
+                        calcTrajectory()
+                        
+                        $('.testimonials-item').slice(0, 2).clone().appendTo($('#testimonials-strip'))
+                        $('#testimonials-right').on('click', ignite)
+                        
+                        var mqLarge = window.matchMedia('(min-width: 1200px)')
+                        var mqMedium = window.matchMedia('(min-width: 992px)')
+                        mqLarge.addListener(onMediaChange)
+                        mqMedium.addListener(onMediaChange)
+                    
+                        onMediaChange()
+                            
+                        return {
+                            dispose() {
+                                mqLarge.removeListener(onMediaChange)
+                                mqMedium.removeListener(onMediaChange)
+                                disposed = true
+                            }
+                        }
+                        
+                        
+                        function calcTrajectory() {
+                            var plot = [
+                                'o                             ',
+                                '  o                           ',
+                                '       o                      ',
+                                '                   o          ',
+                                '               o              ',
+                                '                  o           ',
+                                '                o             ',
+                                '                 o            ',
+                                '------------------------------',
+                                '                 x            ']
+
+                            var numShiftFractions,  posFor100
+                            for (var i = 0; i < plot.length; ++i) {
+                                if (plot[i].charAt(0) === '-') {
+                                    numShiftFractions = i
+                                    posFor100 = plot[i + 1].indexOf('x')
+                                }
+                            }
+
+                            shiftFractions = []
+                            for (var i = 0; i < numShiftFractions; ++i) {
+                                var pos = plot[i].indexOf('o')
+                                shiftFractions.push(pos / posFor100)
+                            }
+                        }
+                        
+                        function onMediaChange() {
+                            console.log('Testimonials onMediaChange ' + testimonialsIncarnationID)
+                            clearTimeout(autoIgnitionTimeoutHandle)
+                            slide = 0
+                            $('#testimonials-strip').css('margin-left', '')
+                            $('.testimonials-item').css('margin-right', '').css('visibility', '')
+                            
+                            magic = undefined
+                            if (window.matchMedia('(min-width: 1200px)').matches) {
+                                console.log('Screen is large')
+                                magic = 970 + 200
+                            } else if (window.matchMedia('(min-width: 992px)').matches) {
+                                console.log('Screen is medium')
+                                magic = 970
+                            }
+                            
+                            if (!magic) {
+                                console.log('No testimonial sliding for you')
+                                $('#testimonials-right').hide()
+                                var items = $('.testimonials-item')
+                                $(items[items.length - 1]).hide()
+                                $(items[items.length - 2]).hide()
+                                return
+                            }
+                            
+                            var items = $('.testimonials-item')
+                            $(items[items.length - 1]).show()
+                            $(items[items.length - 2]).show()
+                            $('#testimonials-right').show()
+                            scheduleAutoIgnition()
+                        }
+                        
+                        function scheduleAutoIgnition() {
+                            autoIgnitionTimeoutHandle = setTimeout(ignite, autoIgnitionPeriod)
+                        }
+
+                        function ignite() {
+                            if (disposed) return
+                            console.log('Igniting testimonials ' + testimonialsIncarnationID)
+                            clearTimeout(autoIgnitionTimeoutHandle)
+                            $('#testimonials-right').hide()
+                            
+                            var elementToEnlargeRight = $($('.testimonials-item')[slide * 2 + 3])
+                            elementToEnlargeRight.css('margin-right', '300px')
+                            var elementToHideOnHitFloor = $($('.testimonials-item')[slide * 2 + 1])
+                            
+                            var framesDone = 0
+                            requestAnimationFrame(step)
+
+                            function step() {
+                                var maxShift = magic
+                                      
+                                var shiftFractionIdxMiddle = (shiftFractions.length - 1) * framesDone / (numFrames - 1)
+                                var shiftFractionIdx1 = Math.floor(shiftFractionIdxMiddle)
+                                var shiftFractionIdx2 = Math.ceil(shiftFractionIdxMiddle)
+                                var shiftFractionFraction = shiftFractionIdxMiddle - shiftFractionIdx1
+                                var shiftFraction1 = shiftFractions[shiftFractionIdx1]
+                                var shiftFraction2 = shiftFractions[shiftFractionIdx2]
+                                var shiftFraction = shiftFraction1 + (shiftFraction2 - shiftFraction1) * shiftFractionFraction
+                                var shift = maxShift * shiftFraction
+                                var offset = slide * magic + shift
+                                
+                                $('#testimonials-strip').css('margin-left', -offset + 'px')
+                                if (shift >= maxShift) {
+                                    elementToHideOnHitFloor.css('visibility', 'hidden')
+                                }
+
+                                if (++framesDone === numFrames) {
+                                    if (++slide === numSlides) {
+                                        slide = 0
+                                    }
+                                    
+                                    elementToEnlargeRight.css('margin-right', '')
+                                    elementToHideOnHitFloor.css('visibility', '')
+                                    
+                                    setTimeout(function() {
+                                        if (disposed) return
+                                        $('#testimonials-right').show()
+                                        scheduleAutoIgnition()
+                                    }, rightArrowAppearsDelay)
+                                } else {
+                                    requestAnimationFrame(step)
+                                }
+                            }
+                        }
+                    }
+                </script>
+                            
                 <script src="bundle.js"></script>
                 <script>initUI()</script>
             </body>
         </html>
     `)
 }
-    
+
+function renderTestimonials(clientKind) {
+    return div(
+        pageHeader(t({en: `What People Say`, ua: `Что о нас говорят`})),
+        diva({id: 'testimonials-window'},
+            diva({id: 'testimonials-strip'}, ...[
+                {name: {en: 'Nicole', ua: 'Nicole'}, img: 'nicole.jpg', says: {
+                     en: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`,
+                     ua: `Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.`}},
+                {name: {en: 'Miranda', ua: 'Miranda'}, img: 'miranda.jpg', says: {
+                     en: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`,
+                     ua: `Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!`}},
+                {name: {en: 'Mike P.', ua: 'Mike P.'}, img: 'mike-p.jpg', says: {
+                     en: `I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!`,
+                     ua: `I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!`}},
+                {name: {en: 'Joseph B.', ua: 'Joseph B.'}, img: 'joseph-b.jpg', says: {
+                     en: `First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?`,
+                     ua: `First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?`}},
+                {name: {en: 'Mark C.', ua: 'Mark C.'}, img: 'mark-c.jpg', says: {
+                     en: `How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.`,
+                     ua: `How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.`}},
+                {name: {en: 'Linda R.', ua: 'Linda R.'}, img: 'linda-r.jpg', says: {
+                     en: `I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!`,
+                     ua: `I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!`}},
+                ].map(item =>
+                    diva({className: 'testimonials-item'},
+                        diva({className: 'media'},
+                            diva({className: 'media-left'},
+                                img(item.img, {className: 'media-object'})),
+                            diva({className: 'media-body'},
+                                h4a({className: 'media-heading'}, t(item.name)),
+                                span(t(item.says))))))),
+                                
+            divsa({display: 'flex', alignItems: 'center', position: 'absolute', width: 20, right: 0, top: 0, height: '100%'},
+                glyph('chevron-right', {id: 'testimonials-right', className: 'fa-2x'}))),
+                
+        rawHtml(``),
+    )
+}
+
 function h3Smaller(it) {
     return h3(spansa({fontSize: '80%'}, it))
 }
