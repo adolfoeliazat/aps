@@ -68,6 +68,9 @@ create trigger on_update before update on user_tokens for each row execute proce
 select * from users;
 select * from user_tokens;
 
+select * from users, user_tokens
+where user_tokens.token = '45550a30-9124-4f9d-9219-204af0737b21' and
+      users.id = user_tokens.user_id
 
 
 drop table users;

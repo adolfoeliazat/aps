@@ -628,15 +628,18 @@ function makeWriterSite({lang}) {
 
 function writeDynamicPages(names, writePage) {
     names.forEach(name =>
-        writePage({name: name, highlightedItem: 'sign-in',
-            comp: rawHtml(`
-                <div class="container">
-                    <div style="display: flex; align-items: center; justify-content: center; position: absolute; left: 0px; top: 200px; width: 100%;">
-                        <span style="margin-left: 10">${t({en: 'Breathe slowly...', ua: 'Дышите глубоко...'})}</span>
-                        <div id="wholePageTicker" class="progressTicker" style="background-color: ${BLUE_GRAY_600}; width: 14px; height: 28px; margin-left: 10px; margin-top: -5px"></div>
-                    </div>
-                </div>
-                `)}))
+        writePage({name: name, highlightedItem: '',
+            comp: wholePageTicker()}))
+}
+
+function wholePageTicker() {
+    return rawHtml(`
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: center; position: absolute; left: 0px; top: 200px; width: 100%;">
+                <span style="margin-left: 10">${t({en: 'Breathe slowly...', ua: 'Дышите глубоко...'})}</span>
+                <div id="wholePageTicker" class="progressTicker" style="background-color: ${BLUE_GRAY_600}; width: 14px; height: 28px; margin-left: 10px; margin-top: -5px"></div>
+            </div>
+        </div>`)
 }
 
 function makeCustomerSite({lang}) {
@@ -1729,136 +1732,26 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 </script>
             </head>
             <body style="padding-top: 50px; padding-bottom: 40px; overflow-y: scroll;">
-                <div id="everything">
                 <div id="topNavbarContainer">
-                ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar({clientKind, highlightedItem, spa: false}))}
-                <nav class="navbar navbar-default navbar-fixed-top" style="display: none;">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                          <a class="navbar-brand" href="/">
-                              ${run(_=> {
-                                   if (clientKind === 'customer') return 'APS'
-                              else if (clientKind === 'writer') return t('Writer', 'Писец')
-                              })}
-                          </a>
-                        </div>
-
-                        <div style="text-align: left;">
-                            <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;"></ul>
-                            <ul id="rightNavbar" class="nav navbar-nav navbar-right"></ul>
-                                    
-                            <script>
-                                window.locationProxy = {
-                                    set href(x) {
-                                        location.href = x
-                                    }
-                                }
-        
-                                if (~location.href.indexOf('testScenario')) {
-                                    localStorage.clear()
-                                }
-        
-                                initUI0()
-        
-                                function initUI0() {
-                                    var user
-                                    var userJSON = localStorage.getItem('user')
-                                    if (userJSON) {
-                                        user = JSON.parse(userJSON)
-                                    }
-        
-                                    ${run(_=> {
-                                         if (clientKind === 'customer') return `
-                                             if (!user && !~['/', '/sign-in.html', '/sign-up.html', '/why.html', '/prices.html', '/samples.html', '/faq.html', '/contact.html', '/blog.html'].indexOf(location.pathname)) {
-                                                 locationProxy.href = '/sign-in.html'
-                                             }
-                                         `
-                                    else if (clientKind === 'writer') return `
-                                             if (!user && !~['/', '/sign-in.html', '/sign-up.html', '/why.html', '/prices.html', '/faq.html'].indexOf(location.pathname)) {
-                                                 locationProxy.href = '/sign-in.html'
-                                             }
-                                         `
-                                    })}
-                                    
-                                    var proseItems = ''
-                                    ${run(_=> {
-                                         if (clientKind === 'customer') return `
-                                             proseItems += '<li class="' + (location.pathname === '/why.html' ? 'active' : '') + '"><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>'
-                                             proseItems += '<li class="' + (location.pathname === '/prices.html' ? 'active' : '') + '"><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>'
-                                             proseItems += '<li class="' + (location.pathname === '/samples.html' ? 'active' : '') + '"><a href="samples.html">${t({en: `Samples`, ua: `Примеры`})}</a></li>'
-                                             if (!user) {
-                                                 proseItems += '<li class="' + (location.pathname === '/order.html' ? 'active' : '') + '"><a href="order.html">${t({en: `Order`, ua: `Заказать`})}</a></li>'
-                                             }
-                                             proseItems += '<li class="' + (location.pathname === '/faq.html' ? 'active' : '') + '"><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>'
-                                             proseItems += '<li class="' + (location.pathname === '/contact.html' ? 'active' : '') + '"><a href="contact.html">${t({en: `Contact Us`, ua: `Связь`})}</a></li>'
-                                             proseItems += '<li class="' + (location.pathname === '/blog.html' ? 'active' : '') + '"><a href="blog.html">${t({en: `Blog`, ua: `Блог`})}</a></li>'
-                                         `
-                                    else if (clientKind === 'writer') return `
-                                             proseItems += '<li class="' + (location.pathname === '/why.html' ? 'active' : '') + '"><a href="why.html">${t({en: `Why Us?`, ua: `Почему мы?`})}</a></li>'
-                                             proseItems += '<li class="' + (location.pathname === '/prices.html' ? 'active' : '') + '"><a href="prices.html">${t({en: `Prices`, ua: `Цены`})}</a></li>'
-                                             proseItems += '<li id="liii" class="' + (location.pathname === '/faq.html' ? 'active' : '') + '"><a href="faq.html">${t({en: `FAQ`, ua: `ЧаВо`})}</a></li>'
-                                         `
-                                    })}
-                                    
-                                    if (user) {
-                                        var proseStyle = ''
-                                        ${run(_=> {
-                                             if (clientKind === 'customer') return `
-                                                 if (~['/why.html', '/prices.html', '/samples.html', '/faq.html', '/contact.html', '/blog.html'].indexOf(location.pathname)) {
-                                                     proseStyle = 'background-color: #e7e7e7'
-                                                 }
-                                             `
-                                        else if (clientKind === 'writer') return `
-                                                 if (~['/why.html', '/prices.html', '/faq.html'].indexOf(location.pathname)) {
-                                                     proseStyle = 'background-color: #e7e7e7'
-                                                 }
-                                             `
-                                        })}
-                                        document.getElementById('leftNavbar').innerHTML = ''
-                                            + '<li class="dropdown">'
-                                            + '    <a href="#" class="dropdown-toggle" style="' + proseStyle + '" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${t({en: `Prose`, ua: `Проза`})} <span class="caret"></span></a>'
-                                            + '        <ul class="dropdown-menu">'
-                                            +              proseItems
-                                            + '        </ul>'
-                                            + '    </a>'
-                                            + '</li>'
-                                            ${run(_=> {
-                                                 if (clientKind === 'customer') return `
-                                                    /*
-                                                     */
-                                                     + '<li class="' + (location.pathname === '/orders.html' ? 'active' : '') + '"><a id="ordersNavLink" href="orders.html">${t({en: `My Orders`, ua: `Мои заказы`})}</a></li>'
-                                                     + '<li class="' + (location.pathname === '/support.html' ? 'active' : '') + '"><a id="supportNavLink" href="support.html">${t({en: `Support`, ua: `Служба поддержки`})}</a></li>'
-                                                 `
-                                            else if (clientKind === 'writer') return `
-                                                    /*
-                                                     */
-                                                     + '<li class="' + (location.pathname === '/profile.html' ? 'active' : '') + '"><a id="profileNavLink" href="profile.html">${t({en: `Profile`, ua: `Профиль`})}</a></li>'
-                                                     + (user.approved ? '<li class="' + (location.pathname === '/orders.html' ? 'active' : '') + '"><a id="ordersNavLink" href="orders.html">${t({en: `My Orders`, ua: `Мои заказы`})}</a></li>': '')
-                                                     + (user.approved ? '<li class="' + (location.pathname === '/store.html' ? 'active' : '') + '"><a id="storeNavLink" href="store.html">${t({en: `Store`, ua: `Аукцион`})}</a></li>': '')
-                                                     + '<li class="' + (location.pathname === '/support.html' ? 'active' : '') + '"><a id="supportNavLink" href="support.html">${t({en: `Support`, ua: `Служба поддержки`})}</a></li>'
-                                                 `
-                                            })}
-                                                
-                                        document.getElementById('rightNavbar').innerHTML = '<li class="' + (location.pathname === '/dashboard.html' ? 'active' : '') + '"><a id="rightNavLink" href="dashboard.html"></a></li>'
-                                        document.getElementById('rightNavLink').textContent = user.first_name
-                                    } else {
-                                        document.getElementById('leftNavbar').innerHTML = proseItems
-                                        
-                                        document.getElementById('rightNavbar').innerHTML = '<li class="' + (~['/sign-in.html', '/sign-up.html'].indexOf(location.pathname) ? 'active' : '') + '"><a id="rightNavLink" href="sign-in.html"></a></li>'
-                                        document.getElementById('rightNavLink').textContent = '${t({en: `Sign In`, ua: `Вход`})}'
-                                    }
-                                }
-                            </script>
-                                        
-                          </div> <!-- /.navbar-collapse -->
-                    </div> <!-- /.container-fluid -->
-                </nav>
-                </div> <!-- /#topNavbarContainer -->
+                    ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar({clientKind, highlightedItem, spa: false}))}
+                </div>
             
                 <div id="root">
-                    <!-- BEGIN CONTENT -->
-                    ${ReactDOMServer.renderToStaticMarkup(comp)}
-                    <!-- END CONTENT -->
+                    <div id="staticShit" style="display: none;">
+                        <!-- BEGIN CONTENT -->
+                        ${ReactDOMServer.renderToStaticMarkup(comp)}
+                        <!-- END CONTENT -->
+                    </div>
+        
+                    <div id="ticker" style="display: none;">${ReactDOMServer.renderToStaticMarkup(wholePageTicker())}</div>
+        
+                    <script>
+                        if (localStorage.getItem('token')) {
+                            document.getElementById('ticker').style.display = ''
+                        } else {
+                            document.getElementById('staticShit').style.display = ''
+                        }
+                    </script>
                 </div>
                                     
                 <div id="footer" style="background-color: #f8f8f8; border: 1px solid #e7e7e7; position: absolute; left: 0px; bottom: 0px; width: 100%; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 5px 15px; height: 28px;">
@@ -1871,7 +1764,6 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                          `
                     })}
                 </div>
-                </div> <!-- /#everything -->
 
                 <!-- <script src="jquery-hack.js"></script> -->
                 <script src="jquery.min.js"></script>
@@ -1886,19 +1778,6 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
     `)
 }
     
-function wholePageSpinner() {
-    return diva({id: 'wholePageSpinner',
-                 style: {
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                     position: 'absolute',
-                     left: 0, top: -250, width: '100%', height: '100%',
-                 }},
-                 img('chasing-arrows-100-999999.gif'),
-                 spansa({marginLeft: 10}, t({en: 'Breathe slowly...', ua: 'Дышите глубоко...'})))
-}
-
 function h3Smaller(it) {
     return h3(spansa({fontSize: '80%'}, it))
 }

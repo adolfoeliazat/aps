@@ -52,6 +52,17 @@ app.post('/rpc', (req, res) => {
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv') raise('WTF is the clientKind?')
             
             return await pgTransaction(async function(tx) {
+                if (msg.fun.startsWith('private_')) {
+                    const rows = await tx.query(`
+                        select * from users, user_tokens
+                        where user_tokens.token = $1 and users.id = user_tokens.user_id`,
+                        [msg.token])
+                    if (!rows.length) {
+                        raise('Invalid token')
+                    }
+                    user = rows[0]
+                    failOnClientUserMismatch()
+                }
                 
                 if (msg.fun === 'danger_eval') {
                     try {
@@ -239,6 +250,10 @@ app.post('/rpc', (req, res) => {
                     function invalidEmailOrPasswordMessage() {
                         return {error: t('Invalid email or password', 'Неверная почта или пароль')}
                     }
+                }
+                
+                else if (msg.fun === 'private_getUserInfo') {
+                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state')})
                 }
                 
                 else if (msg.fun === 'signUp') {

@@ -271,15 +271,35 @@ global.initUI = async function(opts) {
         $('#uiTestPassedBanner').text(testScenarioToRun)
         testPassedPane.show(testScenarioToRun)
     } else {
+        token = localStorage.getItem('token')
+        if (token) {
+            try {
+                const res = await rpc({fun: 'private_getUserInfo', token})
+                user = res.user
+            } catch (e) {
+                // Pretend no one was signed in.
+                // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
+                dlog('Failed to private_getUserInfo', e)
+                token = undefined
+                localStorage.clear()
+            }
+        }
+        
         loadPageForURL()
     }
     
-    function loadPageForURL() {
+    async function loadPageForURL() {
         urlObject = url.parse(location.href)
         urlQuery = querystring.parse(urlObject.query)
         const path = document.location.pathname
+        let name
+        if (path.endsWith('.html')) {
+            name = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('.'))
+        } else {
+            name = 'home'
+        }
         
-        let shower
+        let shower // TODO:vgrechka Better name
         
         if (path.endsWith('/sign-in.html')) {
             shower = loadSignInPage
@@ -297,9 +317,21 @@ global.initUI = async function(opts) {
             }
         }
         
+        const isDynamicPage = CLIENT_KIND === 'customer' ? ~customerDynamicPageNames().indexOf(name)
+                                                         : ~writerDynamicPageNames().indexOf(name)
+        if (!isDynamicPage) {
+            shower = async function() {
+                const href = name === 'home' ? '/' : `${name}.html`
+                let content = (await superagent.get(href).send()).text
+                content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
+                setRootContent(rawHtml(content))
+            }
+        }
+        
         if (!shower) raise(`Can’t determine fucking shower for path ${path}`)
         
-        shower()
+        await shower()
+        $(document).scrollTop(0)
         updateNavbar()
     }
     
@@ -405,7 +437,7 @@ global.initUI = async function(opts) {
                 user = res.user
                 token = res.token
                 localStorage.setItem('token', token)
-                updateNavbar()
+                // updateNavbar()
                 if (user.state === 'cool') {
                     pushNavigate('dashboard.html')
                 } else {
@@ -586,7 +618,7 @@ global.initUI = async function(opts) {
             
             return _=> diva({className: 'container', style: {position: 'relative'}},
                 responsivePageHeader(fov(def.pageTitle)),
-                pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium({name: 'headerShit'})),
+//                pageState.headerShitSpins && diva({style: {position: 'absolute', right: 0, top: 0}}, spinnerMedium({name: 'headerShit'})),
                 pageState.error && errorBanner(pageState.error),
                 pageState.pageBody,
             )
@@ -716,6 +748,23 @@ global.initUI = async function(opts) {
         try {
             return await rpc(message)
         } catch (e) {
+            return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
+        }
+    }
+
+    async function rpc(message) {
+        if (!rpcclient) {
+            rpcclient = RPCClient({url: `${BACKEND_URL}/rpc`})
+        }
+
+        try {
+            return await rpcclient.call(
+                asn({LANG, CLIENT_KIND, APS_DANGEROUS_TOKEN, token, isTesting: !!currentTestScenarioName}, message),
+                {slowNetworkSimulationDelay: MODE === 'debug'
+                                             && DEBUG_SIMULATE_SLOW_NETWORK
+                                             && !message.fun.startsWith('danger_')
+                                             && (currentTestScenarioName ? 250 : 1000)})
+        } catch (e) {
             if (MODE === 'debug') {
                 let resp = rpcclient.lastResponse
                 if (resp.body.stack) {
@@ -728,21 +777,9 @@ global.initUI = async function(opts) {
                     }])
                 }
             }
-            return {error: t('Sorry, service is temporarily unavailable', 'Извините, сервис временно недоступен')}
+            
+            throw e
         }
-    }
-
-    async function rpc(message) {
-        if (!rpcclient) {
-            rpcclient = RPCClient({url: `${BACKEND_URL}/rpc`})
-        }
-        return await rpcclient.call(
-            asn({LANG, CLIENT_KIND, APS_DANGEROUS_TOKEN, token, isTesting: !!currentTestScenarioName}, message),
-            {slowNetworkSimulationDelay: MODE === 'debug'
-                                         && DEBUG_SIMULATE_SLOW_NETWORK
-                                         && !message.fun.startsWith('danger_')
-                                         && (currentTestScenarioName ? 250 : 1000)}
-        )
     }
     
     function testScenarios() {return{
@@ -1158,13 +1195,13 @@ global.initUI = async function(opts) {
         assertSpins({name: 'shit'})
     }
     
-    async function assertHeaderShitSpinsForMax({$tag, max}) {
-        await assertSpinsForMax({$tag, name: 'headerShit', max})
-    }
-
-    function assertHeaderShitSpins() {
-        assertSpins({name: 'headerShit'})
-    }
+//    async function assertHeaderShitSpinsForMax({$tag, max}) {
+//        await assertSpinsForMax({$tag, name: 'headerShit', max})
+//    }
+//
+//    function assertHeaderShitSpins() {
+//        assertSpins({name: 'headerShit'})
+//    }
     
     function uiFail(errorMessage) {
         uiAssert(false, errorMessage)
@@ -1236,6 +1273,11 @@ export function pageHeader(title, attrs={}) {
     })
 }
 
+//function isDynamicPage(name, clientKind) {
+//    return clientKind === 'customer' ? ~customerDynamicPageNames().indexOf(name)
+//                                     : ~writerDynamicPageNames().indexOf(name)
+//}
+
 export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, loadPageForURL, setRootContent}) {
     let proseItems
     if (clientKind === 'customer') {
@@ -1272,7 +1314,7 @@ export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, lo
         }
     }
     
-    let leftNavbarItems
+    let leftNavbarItems, rightNavbarItem
     if (user) {
         let dropdownAStyle
         if (proseItems.some(x => x[0] === highlightedItem)) {
@@ -1286,8 +1328,10 @@ export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, lo
                     ...proseItems.map(itemToLia))),
             ...privateItems.map(itemToLia)
         ]
+        rightNavbarItem = itemToLia(['dashboard', t(user.first_name)])
     } else {
         leftNavbarItems = proseItems.map(itemToLia)
+        rightNavbarItem = itemToLia(['sign-in', t(`Sign In`, `Вход`)])
     }
     
     return nava({className: 'navbar navbar-default navbar-fixed-top'},
@@ -1299,7 +1343,7 @@ export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, lo
                        ula({id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
                            ...leftNavbarItems),
                        ula({id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
-                           itemToLia(['sign-in', t({en: `Sign In`, ua: `Вход`})])))))
+                           rightNavbarItem))))
                            
     
     function itemToLia([name, title]) {
@@ -1340,18 +1384,7 @@ export function renderTopNavbar({clientKind, user, highlightedItem, spa=true, lo
                         await delay(1000)
                     }
                     
-                    const isDynamicPage = clientKind === 'customer' ? ~customerDynamicPageNames().indexOf(name)
-                                                                    : ~writerDynamicPageNames().indexOf(name)
-                    if (isDynamicPage) {
-                        await loadPageForURL()
-                    } else {
-                        let content = (await superagent.get(href).send()).text
-                        content = content.slice(content.indexOf('<!-- BEGIN CONTENT -->'), content.indexOf('<!-- END CONTENT -->'))
-                        setRootContent(rawHtml(content))
-                    }
-                    
-                    $(document).scrollTop(0)
-                    updateNavbar()
+                    await loadPageForURL()
                     
                     setTimeout(_=> {
                         effects.blinkOff()
@@ -1381,173 +1414,3 @@ clog('Client code is kind of loaded')
 //                        el('i', {className: 'fa fa-circle fa-stack-2x', style: {color: LIGHT_GREEN_700}}),
 //                        el('i', {className: 'fa fa-check fa-stack-1x fa-inverse'})),
 
-
-function fuckingUIState() {
-    let proseNavItems, navItems, rightNavItem, highlightedNavItem
-    
-    
-    
-    if (site === 'writer') {
-        if (urlKind === 'static') {
-            if (!cachedUser) {
-                // leftNavbar = static pages
-                // rightNavbar = Sign In
-                // navbarHighlight = whats in url
-                // body = static content
-            }
-            else if (cachedUser) {
-                if (!user) {
-                    // leftNavbar = Prose
-                    // rightNavbar = user name
-                    // navbarHighlight = Prose
-                    // body = static content
-                }
-                else if (user.kind === 'admin') {
-                    raise('Handle me')
-                }
-                else if (user.kind === 'writer') {
-                    if (user.state === 'banned') {
-                        // leftNavbar = nothing
-                        // rightNavbar = nothing
-                        // navbarHighlight = n/a
-                        // body = You are not welcome here
-                    }
-                    else if (user.state === 'profile-pending') {
-                        // leftNavbar = Prose, Profile, Support
-                        // rightNavbar = user name
-                        // navbarHighlight = Prose
-                        // body = static content
-                    }
-                    else if (user.state === 'profile-in-review') {
-                        // leftNavbar = Prose, Profile, Support
-                        // rightNavbar = user name
-                        // navbarHighlight = Prose
-                        // body = static content
-                    }
-                    else if (user.state === 'approved') {
-                        // leftNavbar = Prose, Store, My Orders, Profile, Support
-                        // rightNavbar = user name
-                        // navbarHighlight = Prose
-                        // body = static content
-                    }
-                    else {
-                        raise('Handle me')
-                    }
-                }
-            }
-        }
-        else if (urlKind === 'dynamic') {
-            if (urlAccess === 'public') { // sign-in.html or sign-up.html
-                if (!cachedUser) {
-                    if (!bundleLoaded) {
-                        // leftNavbar = static pages
-                        // rightNavbar = Sign In
-                        // navbarHighlight = right
-                        // body = spinner
-                    }
-                    else if (bundleLoaded) {
-                        // leftNavbar = static pages
-                        // rightNavbar = Sign In
-                        // navbarHighlight = right
-                        // body = Sign In or Sign Up
-                    }
-                }
-                else if (cachedUser) {
-                    if (!user) {
-                        // Not yet synced with backend, so don't know which navbar items are appropriate
-                        
-                        // leftNavbar = Prose
-                        // rightNavbar = user name
-                        // navbarHighlight = right
-                        // body = spinner
-                    }
-                    else if (user.kind === 'admin') {
-                        raise('Handle me')
-                    }
-                    else if (user.kind === 'writer') {
-                        if (user.state === 'banned') {
-                            // leftNavbar = nothing
-                            // rightNavbar = nothing
-                            // navbarHighlight = n/a
-                            // body = You are not welcome here
-                        }
-                        else if (user.state === 'profile-pending') {
-                            // Sign In/Up page doesn't make sense if user is signed in.
-                            // But nothing useful can be done until profile is approved.
-                            // So redirect to Profile page, and ask for filling it.
-                            
-                            // leftNavbar = Prose, Profile, Support
-                            // rightNavbar = user name
-                            // navbarHighlight = Profile
-                            // body = Profile
-                        }
-                        else if (user.state === 'profile-in-review') {
-                            // Sign In/Up page doesn't make sense if user is signed in.
-                            // But nothing useful can be done until profile is approved.
-                            // So redirect to Profile page, where say that submission is being considered.
-                            
-                            // leftNavbar = Prose, Profile, Support
-                            // rightNavbar = user name
-                            // navbarHighlight = Profile
-                            // body = Profile
-                        }
-                        else if (user.state === 'approved') {
-                            // Sign In/Up page doesn't make sense if user is signed in, so redirect to Dashboard
-                            
-                            // leftNavbar = Prose, Store, My Orders, Profile, Support
-                            // rightNavbar = user name
-                            // navbarHighlight = right
-                            // body = Dashboard
-                        }
-                        else {
-                            raise('Handle me')
-                        }
-                    }
-                }
-            }
-            else if (urlAccess === 'private') {
-                if (!cachedUser) {
-                    if (!bundleLoaded) {
-                        // url = sign-in.html
-                        // leftNavbar = static pages
-                        // rightNavbar = Sign In
-                        // navbarHighlight = right
-                        // body = spinner
-                    }
-                    else if (bundleLoaded) {
-                        // url = sign-in.html
-                        // leftNavbar = static pages
-                        // rightNavbar = Sign In
-                        // navbarHighlight = right
-                        // body = Sign In
-                    }
-                }
-                else if (cachedUser) {
-                    if (!user) {
-                        // leftNavbar = Prose
-                        // rightNavbar = user name
-                        // navbarHighlight = right
-                    }
-                    else if (user.kind === 'admin') {
-                        raise('Handle me')
-                    }
-                    else if (user.kind === 'writer') {
-                        if (user.state === 'banned') {
-                            // leftNavbar = nothing
-                            // rightNavbar = nothing
-                            // navbarHighlight = n/a
-                            // body = You are not welcome here
-                        }
-                        else {
-                            if (!user.approved && !urlAllowedForUnapproved) {
-                                url = 'profile.html'
-                            }
-                            leftNavbar = user.approved ? leftNavbarForUnapproved : leftNavbarForApproved
-                            rightNavbar = rightNavbarUserName
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
