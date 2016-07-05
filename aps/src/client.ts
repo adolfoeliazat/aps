@@ -16,7 +16,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
-global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigate}) => {
+global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigate, signOut}) => {
     return {
         isDynamicPage(name) {
             if (CLIENT_KIND === 'customer') return ~customerDynamicPageNames().indexOf(name)
@@ -57,10 +57,7 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                                 sectionTitle(t('Account', 'Аккаунт')),
                                 sectionLinks(
                                     [t('Sign out', 'Выйти прочь'), _=> {
-                                        localStorage.clear()
-                                        token = undefined
-                                        user = undefined
-                                        replaceNavigate('/')
+                                        signOut()
                                     }],
                                     [t('Change password', 'Сменить пароль'), _=> {
                                         dlog('implement change password')
