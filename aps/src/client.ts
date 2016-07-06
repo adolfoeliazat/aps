@@ -16,8 +16,14 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 import '../gen/client-expectations'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
-global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigate, signOut}) => {
+global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigate, signOut, art}) => {
+    let ui
+        
     return {
+        injectUI(x) {
+            ui = x
+        },
+        
         isDynamicPage(name) {
             if (CLIENT_KIND === 'customer') return ~customerDynamicPageNames().indexOf(name)
             return ~writerDynamicPageNames().indexOf(name)
@@ -131,8 +137,8 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                 await rpc({fun: 'danger_killUser', email: 'wilma.blue@test.shit.ua'})
                 await rpc({fun: 'danger_fixNextGeneratedPassword', password: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
                 
-                simulateURLNavigation('dashboard.html')
-                assertUIState({$tag: '62112552-36ac-47fd-9bac-a4d6a7b3c4d4', expected: {
+                await art.simulateURLNavigation('dashboard.html')
+                art.assertUIState({$tag: '62112552-36ac-47fd-9bac-a4d6a7b3c4d4', expected: {
                     url: `http://aps-ua-customer.local:3012/sign-in.html`,
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
@@ -140,8 +146,8 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                     errorBanner: undefined 
                 }})           
                             
-                simulateURLNavigation('sign-up.html')
-                assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
+                await art.simulateURLNavigation('sign-up.html')
+                art.assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
                     url: `http://aps-ua-customer.local:3012/sign-up.html`,
                     pageHeader: `Регистрация`,
                     inputs: 
@@ -163,7 +169,7 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                 await assertShitSpinsForMax({$tag: '29832372-ff89-46dd-ba9d-cf54154503f5', max: 2000})
                 // Check
                 assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
-                assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
+                art.assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
                     url: `http://aps-ua-customer.local:3012/sign-in.html`,
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
@@ -187,7 +193,7 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                 testGlobal.buttons.primary.click()
                 await assertShitSpinsForMax({$tag: '96f4aa5d-4f5d-4de4-869b-07f2f6f53b8b', max: 2000})
                 assertLinkWithTextSomewhere({$tag: 'aa6eda4b-fc78-43ac-959d-a2eb44f3061f', expected: 'Вильма'})
-                assertUIState({$tag: 'd9c42d17-322e-4427-b4ec-d946af422ba0', expected: {
+                art.assertUIState({$tag: 'd9c42d17-322e-4427-b4ec-d946af422ba0', expected: {
                     url: `http://aps-ua-customer.local:3012/dashboard.html`,
                     pageHeader: `Панель`,
                     inputs: {},
@@ -195,7 +201,7 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                     errorBanner: undefined 
                 }})
                 
-                simulateURLNavigation('dashboard.html')
+                await art.simulateURLNavigation('dashboard.html')
             },
             
             // ======================================== UA WRITER TEST SCENARIOS ========================================
@@ -205,8 +211,8 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                 await rpc({fun: 'danger_killUser', email: 'fred.red@test.shit.ua'})
                 await rpc({fun: 'danger_fixNextGeneratedPassword', password: 'b34b80fb-ae50-4456-8557-399366fe45e4'})
                 
-                simulateURLNavigation('dashboard.html')
-                assertUIState({$tag: '20059334-7dff-4922-8bf5-ac07999d892d', expected: {
+                await art.simulateURLNavigation('dashboard.html')
+                art.assertUIState({$tag: '20059334-7dff-4922-8bf5-ac07999d892d', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-in.html`,
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
@@ -215,7 +221,7 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                 }})
                 
                 testGlobal.links.createAccount.click()
-                assertUIState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
+                art.assertUIState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-up.html`,
                     pageHeader: `Регистрация`,
                     inputs: 
@@ -245,7 +251,7 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                             <br><br>
                             <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>`) } 
                 ]})
-                assertUIState({$tag: '24ca0059-e2e9-4fc4-9056-ede17e586029', expected: {
+                art.assertUIState({$tag: '24ca0059-e2e9-4fc4-9056-ede17e586029', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-in.html`,
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
@@ -261,7 +267,7 @@ global.igniteShit = makeUIShitIgniter(({t, setPage, replaceNavigate, pushNavigat
                 testGlobal.buttons.primary.click()
                 await assertShitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
 
-                assertUIState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
+                art.assertUIState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
                     url: `http://aps-ua-writer.local:3022/profile.html`,
                     pageHeader: `Профиль`,
                     inputs: {},
@@ -430,7 +436,7 @@ async function zzzzznormalInit() {
         window.addEventListener('keydown', e => {
             if (e.ctrlKey && e.altKey && e.key === 'k') return captureState()
             if (e.ctrlKey && e.altKey && e.key === 'i') return captureInputs()
-            if (e.ctrlKey && e.altKey && e.key === 'a') return assertUIState({$tag: 'just-showing-actual', expected: undefined})
+            if (e.ctrlKey && e.altKey && e.key === 'a') return art.assertUIState({$tag: 'just-showing-actual', expected: undefined})
         })
         
         
@@ -543,18 +549,6 @@ async function zzzzznormalInit() {
     
     
     
-    
-    
-    function DashboardPage() {
-        return updatableElement(update => {
-            return _=> div(
-                pageHeader(t('Dashboard', 'Панель')),
-                div('i am dashboard'))
-        })
-    }
-    
-    
-    
     function assertLinkWithTextSomewhere({$tag, expected}) {
         for (const a of $('a')) {
             if (a.text === expected) return
@@ -566,16 +560,6 @@ async function zzzzznormalInit() {
         uiAssert(document.location.href === expected, `I want to be at following URL: [${expected}]`, jumpToShitDetailsUI($tag))
     }
             
-    function assertUIState(def) {
-        const actual = {
-            url: location.href,
-            pageHeader: testGlobal.pageHeader,
-            inputs: omapo(testGlobal.inputs, x => x.capture()),
-            errorLabels: testGlobal.errorLabels,
-            errorBanner: testGlobal.errorBanner,
-        }
-        assertRenameme(asn(def, {actual}))
-    }
     
     async function assertSentEmails(def) {
         const actual = await rpc({fun: 'danger_getSentEmails'})
@@ -586,138 +570,6 @@ async function zzzzznormalInit() {
         uiAssert(false, message, jumpToShitDetailsUI($tag))
     }
     
-    function assertRenameme({descr='Describe me', $tag, actual, expected}) {
-        if (expected === undefined) {
-            expected = EXPECTATIONS[$tag] || '--- not yet hardened ---'
-        }
-        if (deepEquals(actual, expected)) return
-        
-        sortKeys(actual) // Order of keys sent over the wire is mangled
-        sortKeys(expected)
-        const actualString = repr(actual)
-        const expectedString = repr(expected)
-        const diffLineItems = require('diff').diffLines(expectedString, actualString)
-        const diffDivs = []
-        let prevLabel
-        for (const item of diffLineItems) {
-            let backgroundColor, label
-            if (item.added) {
-                backgroundColor = RED_100
-                label = t('Actual')
-            } else if (item.removed) {
-                backgroundColor = GREEN_100
-                label = t('Expected')
-            } else {
-                backgroundColor = WHITE
-                label = undefined
-            }
-            if (label && label !== prevLabel) {
-                diffDivs.push(divsa({backgroundColor, fontWeight: 'bold'}, label))
-            }
-            prevLabel = label
-            diffDivs.push(divsa({backgroundColor, position: 'relative'},
-                item.value))
-        }
-        
-        uiAssert(false, descr, {detailsUI: updatableElement(update => {
-            const my = {}
-            
-            let actualStringForPasting = actualString.trim()
-            if (actualStringForPasting[0] === '{'/*}*/ || actualStringForPasting[0] === '['/*]*/) {
-                actualStringForPasting = actualStringForPasting.slice(1, actualStringForPasting.length - 1)
-            }
-            const chars = actualStringForPasting.split('')
-            for (let i = 0; i < chars.length; ++i) {
-                if (chars[i] === "'" && (i === 0 || chars[i - 1] !== '\\')) {
-                    chars[i] = '`'
-                }
-            }
-            actualStringForPasting = chars.join('')
-            const replacements = []
-            let backtickIndex, from = 0, btis = []
-            while (~(backtickIndex = actualStringForPasting.indexOf('`', from))) {
-                btis.push(backtickIndex)
-                if (btis.length === 2) {
-                    let literal = actualStringForPasting.slice(btis[0], btis[1] + 1)
-                    if (/\r|\n/.test(literal)) {
-                        literal = literal[0] + '\n' + literal.slice(1)
-                        literal = literal.replace(/(\r?\n)/g, '$1        ')
-                        literal = `dedent(${literal})`
-                        replacements.push({from: btis[0], oldStringLength: btis[1] - btis[0] + 1, newString: literal})
-                    }
-                    btis = []
-                }
-                from = backtickIndex + 1
-            }
-            replacements = sortBy(replacements, 'from')
-            let newActualStringForPasting = ''; from = 0
-            for (const replacement of replacements) {
-                newActualStringForPasting += actualStringForPasting.slice(from, replacement.from) + replacement.newString
-                from = replacement.from + replacement.oldStringLength
-            }
-            newActualStringForPasting += actualStringForPasting.slice(from)
-            actualStringForPasting = newActualStringForPasting
-            actualStringForPasting += '\n'
-            
-            const tabs = Tabs({
-                tabs: {
-                    diff: {
-                        title: t('Difference'),
-                        content: divsa({whiteSpace: 'pre-wrap'}, ...diffDivs),
-                    },
-                    actual: {
-                        title: t('Actual'),
-                        content: divsa({whiteSpace: 'pre-wrap'}, Input({initialValue: actualStringForPasting, kind: 'textarea', rows: 10, style: {width: '100%', height: '100%'}})),
-                    },
-                    expected: {
-                        title: t('Expected'),
-                        content: divsa({whiteSpace: 'pre-wrap'}, expectedString),
-                    },
-                }
-            })
-            return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
-                $tag && divsa({position: 'absolute', right: 5, top: 5},
-//                    my.ueb = my.ueb || WorkButton({title: t('Update Expectation'), level: 'primary', glyph: 'pencil', async work() {
-//                        try {
-//                            await rpc({fun: 'danger_updateExpectation', aid: $tag, actual})
-//                            my.ueb = divsa({fontWeight: 'bold'}, 'Expectation updated')
-//                        } catch (e) {
-//                            console.error(e)
-//                            my.ueb = divsa({color: RED_700, fontWeight: 'bold'}, 'Expectation update fucked up')
-//                        }
-//                        update()
-//                    }})
-                ),
-                horiza({style: {marginBottom: 5}},
-                    spana({$testme: true, style: {fontWeight: 'bold'}}, t('Assertion ID: ')),
-                    my.codeLink = my.codeLink || OpenSourceCodeLink({$tag})),
-                divsa({fontSize: '100%'},
-                    tabs))
-        })})
-        
-        
-        function sortKeys(o) {
-            if (isArray(o)) {
-                o.filter(isObject).forEach(sortKeys)
-            } else if (isObject(o)) {
-                const pairs = toPairs(o)
-                sortBy(pairs, x => x[0])
-                pairs.forEach(([k, v]) => delete o[k])
-                pairs.forEach(([k, v]) => {
-                    o[k] = v
-                    if (isObject(v)) {
-                        sortKeys(v)
-                    }
-                })
-            }
-        }
-        
-        function repr(it) {
-            let s = deepInspect(it)
-            s = s.replace(/\\n/g, '\n')
-            return s
-        }
-    }
 
     function assertTextSomewhere({$tag, expected}) {
         uiAssert(textSomewhere(expected), `I want following text on screen: [${expected}]`, jumpToShitDetailsUI($tag))
@@ -821,19 +673,6 @@ async function zzzzznormalInit() {
         uiAssert(false, errorMessage)
     }
     
-    function uiAssert(condition, errorMessage, {detailsUI}={}) {
-        if (condition) return
-        
-        assertionErrorPane.set({message: errorMessage + mdash + currentTestScenarioName, stack: clientStack().join('\n'), detailsUI})
-        raise('UI assertion failed')
-    }
-
-    function simulateURLNavigation(url) {
-        raise('rethink')
-//        history.replaceState(null, '', url)
-//        initUI0()
-//        initUI()
-    }
 
     function simulatePopulateFields(data) {
         for (const [name, value] of toPairs(data)) {
