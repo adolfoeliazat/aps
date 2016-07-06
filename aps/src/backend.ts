@@ -15,7 +15,7 @@ import * as fs from 'fs'
 import static 'into-u ./stuff'
 
 const app = newExpress()
-let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLog = []
+let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = []
 
 app.post('/rpc', (req, res) => {
     // dlog({body: req.body, headers: req.headers})
@@ -33,9 +33,6 @@ app.post('/rpc', (req, res) => {
         let stackBeforeAwait, awaitRes
         
         try {
-            const fieldErrors = {}
-            let user
-            
             if (msg.fun.startsWith('danger_')) {
                 const serverToken = process.env.APS_DANGEROUS_TOKEN
                 if (!serverToken) raise('I want APS_DANGEROUS_TOKEN configured on server')
@@ -52,15 +49,18 @@ app.post('/rpc', (req, res) => {
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv' && msg.CLIENT_KIND !== 'debug') raise('WTF is the clientKind?')
             
             return await pgTransaction(async function(tx) {
+                const fieldErrors = {}
+                let user
+            
                 if (msg.fun.startsWith('private_')) {
-                    const rows = await tx.query(`
-                        select * from users, user_tokens
-                        where user_tokens.token = $1 and users.id = user_tokens.user_id`,
-                        [msg.token])
+                    const rows = #await tx.query({$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false}, q`
+                        select users.id user_id, * from users, user_tokens
+                        where user_tokens.token = ${msg.token} and users.id = user_tokens.user_id`)
                     if (!rows.length) {
                         raise('Invalid token')
                     }
                     user = rows[0]
+                    user.id = user.user_id // To tell users.id from user_tokens.id it's selected additionaly as `user_id`
                     failOnClientUserMismatch()
                 }
                 
@@ -138,10 +138,10 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'danger_killUser') {
-                    #await tx.query({$tag: 'e9622700-e408-4bf9-a3cd-434ddf6fb11b'},
-                        `delete from user_tokens where user_id = (select id from users where email = $1)`, [msg.email])
-                    #await tx.query({$tag: 'c3cf9e53-2a4e-4423-8869-09a8c7078257'},
-                        `delete from users where email = $1`, [msg.email])
+                    #await tx.query({$tag: 'e9622700-e408-4bf9-a3cd-434ddf6fb11b'}, q`
+                        delete from user_tokens where user_id = (select id from users where email = ${msg.email})`)
+                    #await tx.query({$tag: 'c3cf9e53-2a4e-4423-8869-09a8c7078257'}, q`
+                        delete from users where email = ${msg.email}`)
                     return hunkyDory()
                 }
                 
@@ -225,12 +225,13 @@ app.post('/rpc', (req, res) => {
                 
                 else if (msg.fun === 'danger_getQueries') {
                     let last = msg.last || 1
-                    return queryLog.slice(queryLog.length - last)
+                    return queryLogForUI.slice(queryLogForUI.length - last)
                 }
                 
                 
                 else if (msg.fun === 'signInWithPassword') {
-                    const rows = await tx.query('select * from users where email = $1', [msg.email])
+                    const rows = #await tx.query({$tag: '4281bc8b-7f86-4a7a-86e6-bb4d7587b654'}, q`
+                        select * from users where email = ${msg.email}`)
                     if (!rows.length) {
                         logFailure('Non-existing email')
                         return invalidEmailOrPasswordMessage()
@@ -244,7 +245,8 @@ app.post('/rpc', (req, res) => {
                     failOnClientUserMismatch()
                     
                     const token = uuid()
-                    await tx.query('insert into user_tokens(user_id, token) values($1, $2)', [user.id, token])
+                    #await tx.query({$tag: 'e8ccf032-2c17-4a98-8666-cd18f82326c7'}, q`
+                        insert into user_tokens(user_id, token) values(${user.id}, ${token})`)
                     
                     return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state'), token})
                     
@@ -297,10 +299,9 @@ app.post('/rpc', (req, res) => {
                                 fixedNextGeneratedPassword = undefined
                             }
                     
-                            await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb'},
-                                `insert into users(email, kind, lang, state, password_hash, first_name, last_name)
-                                             values($1, $2, $3, $4, $5, $6, $7)`,
-                                [email, msg.CLIENT_KIND, msg.LANG, 'profile-pending', await hashPassword(password), firstName, lastName])
+                            #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb'}, q`
+                                insert into users (email,    kind,               lang,        state,                password_hash,                   first_name,   last_name)
+                                            values(${email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${firstName}, ${lastName})`)
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
@@ -337,6 +338,24 @@ app.post('/rpc', (req, res) => {
                         }
                     }
                     
+                    return youFixErrors()
+                }
+                
+                else if (msg.fun === 'private_updateProfile') {
+                    const phone = sanitizeString(msg.phone)
+                    if (isBlank(phone)) {
+                        fieldErrors.phone = t('TOTE', 'Телефон обязателен')
+                    } else if (!isValidPhone(phone)) {
+                        fieldErrors.phone = t('TOTE', 'Странный телефон какой-то')
+                    }
+
+                    if (isEmpty(fieldErrors)) {
+                        #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8'}, q`
+                            update users set profile_updated_at = now() at time zone 'utc',
+                                             phone = ${phone}
+                                   where id = ${user.id}`)
+                        return hunkyDory()
+                    }
                     return youFixErrors()
                 }
                 
@@ -438,39 +457,56 @@ function pgTransaction(doInTransaction) {
             }
             
             const api = {
-                query(...xs) {
-                    let $tag, sql, args
-                    if (typeof xs[0] === 'object' && xs[0].$tag) {
-                        $tag = xs[0].$tag
-                        xs.shift()
+                query({$tag, shouldLogForUI=true}, ...xs) {
+                    if (!$tag) raise('I want all queries to be tagged')
+                    
+                    let sql, args
+                    if (typeof xs[0] === 'object' && xs[0].q) {
+                        ;({sql, args} = xs[0].q)
+                    } else {
+                        ;[sql, args] = xs
+                        if (typeof sql !== 'string') raise('Query should be string or q-thing')
                     }
-                    [sql, args] = xs
+                    
+                    if (MODE !== 'debug') {
+                        shouldLogForUI = false
+                    }
                     
                     // If args is bad, con.query fails without telling us
                     invariant(args === undefined || isArray(args), 'tx.query wants args to be array or undefined')
                     
                     return new Promise((resolveQuery, rejectQuery) => {
-                        const queryLogRecord = {sql, args, $tag}
-                        queryLog.push(queryLogRecord)
+                        let queryLogRecordForUI
+                        if (shouldLogForUI) {
+                            queryLogRecordForUI = {sql, args, $tag}
+                            queryLogForUI.push(queryLogRecordForUI)
+                        }
+                        
                         con.query(sql, args, (qerr, qres) => {
                             if (qerr) {
                                 clog('PG query failed', {sql, args, qerr})
-                                queryLogRecord.err = qerr
+                                if (shouldLogForUI) {
+                                    queryLogRecordForUI.err = qerr
+                                }
+                                
                                 return rejectQuery(qerr)
                             }
                             
-                            const prepres = cloneDeep(qres)
-                            for (const k of keys(prepres)) {
-                                if (k.startsWith('_')) {
-                                    delete prepres[k]
+                            if (shouldLogForUI) {
+                                const prepres = cloneDeep(qres)
+                                for (const k of keys(prepres)) {
+                                    if (k.startsWith('_')) {
+                                        delete prepres[k]
+                                    }
                                 }
+                                const maxRows = 10
+                                if (isArray(prepres.rows) && prepres.rows.length > maxRows) {
+                                    prepres[`FIRST_${maxRows}_ROWS`] = prepres.rows.slice(0, maxRows)
+                                    delete prepres.rows
+                                }
+                                queryLogRecordForUI.res = prepres
                             }
-                            const maxRows = 10
-                            if (isArray(prepres.rows) && prepres.rows.length > maxRows) {
-                                prepres[`FIRST_${maxRows}_ROWS`] = prepres.rows.slice(0, maxRows)
-                                delete prepres.rows
-                            }
-                            queryLogRecord.res = prepres
+                            
                             resolveQuery(qres.rows)
                         })
                     })
@@ -520,6 +556,18 @@ function pgTransaction(doInTransaction) {
     })
 }
 
+function q(ss, ...substs) {
+    let sql = ''
+    const args = []
+    substs.forEach((subst, i) => {
+        sql += ss[i] + '$' + (i + 1)
+        args.push(subst)
+    })
+    sql += ss[substs.length]
+    return {q: {sql, args}}
+    // return {ss, substs}
+}
+
 function heyBackend_sayHelloToMe({askerName}) {
     dlog({askerName})
     return `Hello, ${askerName}`
@@ -539,3 +587,41 @@ function sanitizeString(s) {
     if (typeof s !== 'string') raise('Fuck you with you hacky request')
     return s.trim()
 }
+
+function isValidPhone(s) {
+    let numberCount = 0
+    for (const c of s.split('')) {
+        if (!/\d| |-|\(|\)/.test(c)) return false
+        if (/\d/.test(c)) {
+            ++numberCount
+        }
+    }
+    if (numberCount < 6) return false
+    return true
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

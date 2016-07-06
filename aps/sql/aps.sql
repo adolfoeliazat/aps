@@ -33,13 +33,15 @@ create table users(
     deleted boolean,
     inserted_at timestamp,
     updated_at timestamp,
+    profile_updated_at timestamp,
     kind text,
     lang text,
     email text unique,
     password_hash text,
     state text,
     first_name text,
-    last_name text);
+    last_name text,
+    phone text);
 create trigger on_insert before insert on users for each row execute procedure on_insert();
 create trigger on_update before update on users for each row execute procedure on_update();
 
@@ -64,15 +66,17 @@ create trigger on_update before update on user_tokens for each row execute proce
 
 /* -------------------------------------------------------------------
 
-
 select * from users;
 select * from user_tokens;
+
+select id from users where email = 'fred.red@test.shit.ua'
 
 select * from users, user_tokens
 where user_tokens.token = '45550a30-9124-4f9d-9219-204af0737b21' and
       users.id = user_tokens.user_id
 
 
+drop table user_tokens;
 drop table users;
 
 create table test_foo(id bigserial);
@@ -97,4 +101,5 @@ select * from test_collation order by name desc;
 
 alter table test_collation owner to aps;
 
+select now() at time zone 'utc'
 */

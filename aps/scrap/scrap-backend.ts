@@ -73,6 +73,10 @@ const q = f()
 relog(q instanceof Promise)
 
 
+const phone = '1231212'
+const user = {name: 'Joe', id: 54}
+relog(q`update users set profile_updated_at = now() at time zone 'utc', phone = ${phone} where id = ${user.id}`)
+
 
 
 

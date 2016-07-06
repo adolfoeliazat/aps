@@ -86,7 +86,7 @@ global.igniteShit = makeUIShitIgniter({
                     if (ui.getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
                     else primaryButtonTitle = t('WTF')
                     
-                    const form = Form({
+                    const form = ui.Form({
                         primaryButtonTitle,
                         fields: {
                             phone: {
@@ -204,6 +204,7 @@ global.igniteShit = makeUIShitIgniter({
                 }})
                 
                 await sim.navigate('dashboard.html')
+                
             },
             
             // ======================================== UA WRITER TEST SCENARIOS ========================================
@@ -280,6 +281,43 @@ global.igniteShit = makeUIShitIgniter({
                 
                 art.noTextSomewhere({$tag: '4d0713f8-ccfb-4d05-b064-3987492852a5', unexpected: 'Мои заказы'})
                 art.noTextSomewhere({$tag: 'a3e73a3e-8ed7-4a69-b748-e955ae4fd606', unexpected: 'Аукцион'})
+                
+                // Inputs
+                testGlobal.inputs.phone.value = ''
+                // Action
+                testGlobal.buttons.primary.click()
+                await art.shitSpinsForMax({$tag: 'fbe5bc76-cf5a-4ed4-90af-a815784cfd1e', max: 2000})
+                art.uiState({$tag: '80db2840-cf3b-428e-8f7a-3a447f94d93a', expected: {
+                    url: `http://aps-ua-writer.local:3022/profile.html`,
+                    pageHeader: `Профиль`,
+                    inputs: { phone: { value: `` } },
+                    errorLabels: { phone: { title: `Телефон обязателен` } },
+                    errorBanner: `Пожалуйста, исправьте ошибки ниже` 
+                }})
+
+                // Inputs
+                testGlobal.inputs.phone.value = 'adsfasdf'
+                // Action
+                testGlobal.buttons.primary.click()
+                await art.shitSpinsForMax({$tag: '2d6f5c02-1eae-49cb-9c5a-0509a4f29e05', max: 2000})
+                art.uiState({$tag: '24d5e9b2-0dac-40d6-94e8-57d0cfe00c9b', expected: {
+                    url: `http://aps-ua-writer.local:3022/profile.html`,
+                    pageHeader: `Профиль`,
+                    inputs: { phone: { value: `adsfasdf` } },
+                    errorLabels: { phone: { title: `Странный телефон какой-то` } },
+                    errorBanner: `Пожалуйста, исправьте ошибки ниже` 
+                }})
+                
+
+                // Inputs
+                testGlobal.inputs.phone.value = '123-45-67'
+                // Action
+                testGlobal.buttons.primary.click()
+                await art.shitSpinsForMax({$tag: 'e804da7e-6d1e-4fe4-a40e-e7697cb23622', max: 2000})
+                art.uiState({$tag: '47a1c72b-4813-4dcd-a2fc-25ca3b739a92', expected: {
+
+                }})
+
             },
             
             // preventRestoringURLAfterTest = true
