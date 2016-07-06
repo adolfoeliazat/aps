@@ -1347,7 +1347,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
             </head>
             <body style="padding-top: 50px; padding-bottom: 40px; overflow-y: scroll;">
                 <div id="topNavbarContainer">
-                    ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar({clientKind, highlightedItem, spa: false, t}))}
+                    ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar({clientKind, highlightedItem, t}))}
                 </div>
             
                 <div id="root">

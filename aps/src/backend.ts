@@ -6,6 +6,7 @@
 
 #pragma instrument-ui-rendering
 
+MODE = 'debug'
 MAX_NAME = 50
 
 require('regenerator-runtime/runtime')
@@ -35,21 +36,20 @@ app.post('/rpc', (req, res) => {
             const fieldErrors = {}
             let user
             
-            if (msg.fun.startsWith('danger_') || msg.isTesting) {
+            if (msg.fun.startsWith('danger_')) {
                 const serverToken = process.env.APS_DANGEROUS_TOKEN
                 if (!serverToken) raise('I want APS_DANGEROUS_TOKEN configured on server')
                 const clientToken = msg.DANGEROUS_TOKEN
                 if (clientToken !== serverToken) raise('Fuck you, mister hacker')
             }
         
-            const clientProtocol = msg.isTesting ? 'http' : 'https'
             const [clientDomain, clientPortSuffix] = {
                 ua_customer: [DOMAIN_UA_CUSTOMER, PORT_SUFFIX_UA_CUSTOMER],
                 ua_writer: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
                 en_customer: [DOMAIN_EN_CUSTOMER, PORT_SUFFIX_EN_CUSTOMER],
                 en_writer: [DOMAIN_EN_WRITER, PORT_SUFFIX_EN_WRITER],
             }[msg.LANG + '_' + msg.CLIENT_KIND] || [undefined, undefined]
-            if (!clientDomain && msg.CLIENT_KIND !== 'devenv') raise('WTF is the clientKind?')
+            if (!clientDomain && msg.CLIENT_KIND !== 'devenv' && msg.CLIENT_KIND !== 'debug') raise('WTF is the clientKind?')
             
             return await pgTransaction(async function(tx) {
                 if (msg.fun.startsWith('private_')) {
@@ -174,6 +174,7 @@ app.post('/rpc', (req, res) => {
                             'aps/src/client.ts': 'E:/work/aps/aps/src/client.ts',
                             'aps/src/backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'backend.ts': 'E:/work/aps/aps/src/backend.ts',
+                            'ui.ts': 'E:/work/foundation/u/src/ui.ts',
                         }[filePart]
                         if (!file) return {error: `Weird file in source location: [${filePart}]`}
                         if (~openBracket && ~closingBracket) {
@@ -351,9 +352,8 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 async function sendEmail(it) { // TODO:vgrechka @refactor Extract to foundation/utils-server
-                    if (msg.isTesting) {
+                    if (MODE === 'debug') {
                         sentEmails.push(it)
-                        return
                     }
                     
                     return
