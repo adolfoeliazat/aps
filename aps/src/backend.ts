@@ -138,7 +138,10 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'danger_killUser') {
-                    await tx.query(`delete from users where email = $1`, [msg.email])
+                    #await tx.query({$tag: 'e9622700-e408-4bf9-a3cd-434ddf6fb11b'},
+                        `delete from user_tokens where user_id = (select id from users where email = $1)`, [msg.email])
+                    #await tx.query({$tag: 'c3cf9e53-2a4e-4423-8869-09a8c7078257'},
+                        `delete from users where email = $1`, [msg.email])
                     return hunkyDory()
                 }
                 
@@ -172,9 +175,11 @@ app.post('/rpc', (req, res) => {
                         const filePart = msg.$sourceLocation.slice(0, filePartEnd)
                         file = {
                             'aps/src/client.ts': 'E:/work/aps/aps/src/client.ts',
+                            'client.ts': 'E:/work/aps/aps/src/client.ts',
                             'aps/src/backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'ui.ts': 'E:/work/foundation/u/src/ui.ts',
+                            'u/src/ui.ts': 'E:/work/foundation/u/src/ui.ts',
                         }[filePart]
                         if (!file) return {error: `Weird file in source location: [${filePart}]`}
                         if (~openBracket && ~closingBracket) {
@@ -454,7 +459,18 @@ function pgTransaction(doInTransaction) {
                                 return rejectQuery(qerr)
                             }
                             
-                            queryLogRecord.rows = qres.rows
+                            const prepres = cloneDeep(qres)
+                            for (const k of keys(prepres)) {
+                                if (k.startsWith('_')) {
+                                    delete prepres[k]
+                                }
+                            }
+                            const maxRows = 10
+                            if (isArray(prepres.rows) && prepres.rows.length > maxRows) {
+                                prepres[`FIRST_${maxRows}_ROWS`] = prepres.rows.slice(0, maxRows)
+                                delete prepres.rows
+                            }
+                            queryLogRecord.res = prepres
                             resolveQuery(qres.rows)
                         })
                     })

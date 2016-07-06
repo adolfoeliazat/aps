@@ -83,7 +83,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 function profilePageLoader() {
                     let primaryButtonTitle
-                    if (getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
+                    if (ui.getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
                     else primaryButtonTitle = t('WTF')
                     
                     const form = Form({
@@ -101,10 +101,10 @@ global.igniteShit = makeUIShitIgniter({
                         },
                     })
                     
-                    setPage({
+                    ui.setPage({
                         pageTitle: t('Profile', 'Профиль'),
                         pageBody: div(
-                            getUser().state === 'profile-pending' && preludeWithOrangeTriangle(
+                            ui.getUser().state === 'profile-pending' && preludeWithOrangeTriangle(
                                 t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'),
                                 {center: 720}),
 
@@ -140,7 +140,7 @@ global.igniteShit = makeUIShitIgniter({
                 await drpc({fun: 'danger_fixNextGeneratedPassword', password: '63b2439c-bf18-42c5-9f7a-42d7357f966a'})
                 
                 await sim.navigate('dashboard.html')
-                art.assertUIState({$tag: '62112552-36ac-47fd-9bac-a4d6a7b3c4d4', expected: {
+                art.uiState({$tag: '62112552-36ac-47fd-9bac-a4d6a7b3c4d4', expected: {
                     url: `http://aps-ua-customer.local:3012/sign-in.html`,
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
@@ -149,7 +149,7 @@ global.igniteShit = makeUIShitIgniter({
                 }})           
                             
                 await sim.navigate('sign-up.html')
-                art.assertUIState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
+                art.uiState({$tag: '6aa1c1bf-804b-4f5c-98e5-c081cd6238a0', expected: {
                     url: `http://aps-ua-customer.local:3012/sign-up.html`,
                     pageHeader: `Регистрация`,
                     inputs: 
@@ -168,17 +168,17 @@ global.igniteShit = makeUIShitIgniter({
                 testGlobal.inputs.agreeTerms.value = true
                 // Action
                 testGlobal.buttons.primary.click()
-                await assertShitSpinsForMax({$tag: '29832372-ff89-46dd-ba9d-cf54154503f5', max: 2000})
+                await art.shitSpinsForMax({$tag: '29832372-ff89-46dd-ba9d-cf54154503f5', max: 2000})
                 // Check
-                assertTextSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
-                art.assertUIState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
+                art.textSomewhere({$tag: '853610e2-c607-4ce5-9d60-74744ca63580', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
+                art.uiState({$tag: '361d46a0-6ec1-40c4-a683-bc5263c41bba', expected: {
                     url: `http://aps-ua-customer.local:3012/sign-in.html`,
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
                     errorLabels: {},
                     errorBanner: undefined 
                 }})
-                await assertSentEmails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Email with password', expected: [
+                await art.sentEmails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Email with password', expected: [
                     { to: `Вильма Блу <wilma.blue@test.shit.ua>`,
                         subject: `Пароль для APS`,
                         html: dedent(`
@@ -195,7 +195,7 @@ global.igniteShit = makeUIShitIgniter({
                 testGlobal.buttons.primary.click()
                 await assertShitSpinsForMax({$tag: '96f4aa5d-4f5d-4de4-869b-07f2f6f53b8b', max: 2000})
                 assertLinkWithTextSomewhere({$tag: 'aa6eda4b-fc78-43ac-959d-a2eb44f3061f', expected: 'Вильма'})
-                art.assertUIState({$tag: 'd9c42d17-322e-4427-b4ec-d946af422ba0', expected: {
+                art.uiState({$tag: 'd9c42d17-322e-4427-b4ec-d946af422ba0', expected: {
                     url: `http://aps-ua-customer.local:3012/dashboard.html`,
                     pageHeader: `Панель`,
                     inputs: {},
@@ -214,7 +214,7 @@ global.igniteShit = makeUIShitIgniter({
                 await drpc({fun: 'danger_fixNextGeneratedPassword', password: 'b34b80fb-ae50-4456-8557-399366fe45e4'})
                 
                 await sim.navigate('dashboard.html')
-                art.assertUIState({$tag: '20059334-7dff-4922-8bf5-ac07999d892d', expected: {
+                art.uiState({$tag: '20059334-7dff-4922-8bf5-ac07999d892d', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-in.html`,
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
@@ -223,7 +223,7 @@ global.igniteShit = makeUIShitIgniter({
                 }})
                 
                 testGlobal.links.createAccount.click()
-                art.assertUIState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
+                art.uiState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-up.html`,
                     pageHeader: `Регистрация`,
                     inputs: 
@@ -242,9 +242,9 @@ global.igniteShit = makeUIShitIgniter({
                 testGlobal.inputs.agreeTerms.value = true
                 // Action
                 testGlobal.buttons.primary.click()
-                await assertShitSpinsForMax({$tag: '39df3f4b-5ca0-4929-bae7-ec1d3bd008ed', max: 2000})
+                await art.shitSpinsForMax({$tag: '39df3f4b-5ca0-4929-bae7-ec1d3bd008ed', max: 2000})
                 
-                await assertSentEmails({$tag: '024f202c-ee75-44ed-ac26-44154d4caf13', descr: 'Email with password', expected: [
+                await art.sentEmails({$tag: '024f202c-ee75-44ed-ac26-44154d4caf13', descr: 'Email with password', expected: [
                     { to: `Фред Ред <fred.red@test.shit.ua>`,
                         subject: `Пароль для Writer UA`,
                         html: dedent(`
@@ -253,33 +253,33 @@ global.igniteShit = makeUIShitIgniter({
                             <br><br>
                             <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>`) } 
                 ]})
-                art.assertUIState({$tag: '24ca0059-e2e9-4fc4-9056-ede17e586029', expected: {
+                art.uiState({$tag: '24ca0059-e2e9-4fc4-9056-ede17e586029', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-in.html`,
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
                     errorLabels: {},
                     errorBanner: undefined 
                 }})            
-                assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
+                art.textSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
 
                 // Inputs
                 testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
                 testGlobal.inputs.password.value = 'b34b80fb-ae50-4456-8557-399366fe45e4'
                 // Action
                 testGlobal.buttons.primary.click()
-                await assertShitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
+                await art.shitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
 
-                art.assertUIState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
+                art.uiState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
                     url: `http://aps-ua-writer.local:3022/profile.html`,
                     pageHeader: `Профиль`,
-                    inputs: {},
+                    inputs: { phone: { value: `` } },
                     errorLabels: {},
                     errorBanner: undefined 
                 }})                        
-                assertTextSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Фред'})
+                art.textSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Фред'})
                 
-                assertNoTextSomewhere({$tag: '4d0713f8-ccfb-4d05-b064-3987492852a5', unexpected: 'Мои заказы'})
-                assertNoTextSomewhere({$tag: 'a3e73a3e-8ed7-4a69-b748-e955ae4fd606', unexpected: 'Аукцион'})
+                art.noTextSomewhere({$tag: '4d0713f8-ccfb-4d05-b064-3987492852a5', unexpected: 'Мои заказы'})
+                art.noTextSomewhere({$tag: 'a3e73a3e-8ed7-4a69-b748-e955ae4fd606', unexpected: 'Аукцион'})
             },
             
             // preventRestoringURLAfterTest = true
@@ -434,7 +434,7 @@ clog('Client code is kind of loaded')
 //        window.addEventListener('keydown', e => {
 //            if (e.ctrlKey && e.altKey && e.key === 'k') return captureState()
 //            if (e.ctrlKey && e.altKey && e.key === 'i') return captureInputs()
-//            if (e.ctrlKey && e.altKey && e.key === 'a') return art.assertUIState({$tag: 'just-showing-actual', expected: undefined})
+//            if (e.ctrlKey && e.altKey && e.key === 'a') return art.uiState({$tag: 'just-showing-actual', expected: undefined})
 //        })
 //        
 //        
@@ -484,66 +484,6 @@ clog('Client code is kind of loaded')
 //    
 //    
 //    
-//    function loadSignUpPage() {
-//        const form = Form({
-//            primaryButtonTitle: t('Proceed', 'Вперед'),
-//            fields: {
-//                email: {
-//                    title: t('Email', 'Почта'),
-//                    type: 'text',
-//                    attrs: {autoFocus: true},
-//                },
-//                firstName: {
-//                    title: t('First Name', 'Имя'),
-//                    type: 'text',
-//                },
-//                lastName: {
-//                    title: t('Last Name', 'Фамилия'),
-//                    type: 'text',
-//                },
-//                agreeTerms: {
-//                    type: 'agreeTerms'
-//                },
-//            },
-//            rpcFun: 'signUp',
-//            onSuccess(res) {
-//                signedUpOK = true
-//                pushNavigate('sign-in.html')
-//            },
-//        })
-//        
-//        setPage({
-//            pageTitle: t('Sign Up', 'Регистрация'),
-//            pageBody: div(
-//                form,
-//                               
-//                div(
-//                    hr(),
-//                    divsa({textAlign: 'left'}, link(t('Already have an account? Sign in here.', 'Уже есть аккаунт? Тогда входим сюда.'), _=> {
-//                        pushNavigate('sign-in.html')
-//                    })))
-//                )
-//        })
-//        
-//        //------------------------------ Sign up debug functions ------------------------------
-//        
-//        const debugFuns = []
-//        if (CLIENT_KIND === 'writer') {
-//            debugFuns.push({
-//                title: t('joe'),
-//                async action() {
-//                    await rpc({fun: 'danger_killUser', email: 'joe.average@test.shit.ua'})
-//                    await rpc({fun: 'danger_fixNextGeneratedPassword', password: '5fca502f-73e2-4c3d-89c8-bc3dabf434d6'})
-//                    testGlobal.inputs.email.value = 'joe.average@test.shit.ua'
-//                    testGlobal.inputs.firstName.value = 'Джо'
-//                    testGlobal.inputs.lastName.value = 'Авераж'
-//                    testGlobal.inputs.agreeTerms.value = true
-//                    testGlobal.buttons.primary.click()
-//                }
-//            })
-//        }
-//        debugStatusBar.setFunctions(debugFuns)
-//    }
 //    
 //    
 //    
@@ -559,53 +499,13 @@ clog('Client code is kind of loaded')
 //    }
 //            
 //    
-//    async function assertSentEmails(def) {
-//        const actual = await rpc({fun: 'danger_getSentEmails'})
-//        assertRenameme(asn(def, {actual}))
-//    }
-//    
 //    function failForJumping(message, $tag) {
 //        uiAssert(false, message, jumpToShitDetailsUI($tag))
 //    }
 //    
 //
-//    function assertTextSomewhere({$tag, expected}) {
-//        uiAssert(textSomewhere(expected), `I want following text on screen: [${expected}]`, jumpToShitDetailsUI($tag))
-//    }
 //    
-//    function assertNoTextSomewhere({$tag, unexpected}) {
-//        if (!unexpected) raise('Gimme `unexpected` argument. Maybe you misnamed it `expected`?')
-//        uiAssert(!textSomewhere(unexpected), `I DON’T want following text on screen: [${unexpected}]`, jumpToShitDetailsUI($tag))
-//    }
 //    
-//    function textSomewhere(text) {
-//        let found
-//        run(function descend(element) {
-//            if (element.nodeType === 3 /*TEXT_NODE*/) {
-//                if (~element.textContent.indexOf(text)) {
-//                    found = true
-//                    return
-//                }
-//            }
-//            // TODO:vgrechka Cut off invisible elements
-//            if (element.tagName !== 'SCRIPT') {
-//                for (let i = 0; i < element.childNodes.length; ++i) {
-//                    descend(element.childNodes[i])
-//                }
-//            }
-//        }, document.body)
-//        return found
-//    }
-//    
-//    function jumpToShitDetailsUI($tag) {
-//        return {
-//            detailsUI: updatableElement(update => {
-//                const link = OpenSourceCodeLink({$tag})
-//                return _=> divsa({marginTop: 5, padding: 5, backgroundColor: WHITE, position: 'relative'},
-//                               div(horiz(t('Jump and fix that shit: '), link)))
-//            })
-//        } 
-//    }
 //
 //    function assertErrorBanner(expected) {
 //        uiAssert(testGlobal.errorBanner === expected, `I want error banner [${expected}]`)
@@ -635,25 +535,7 @@ clog('Client code is kind of loaded')
 //        uiAssert(false, 'Just failing here, OK?')
 //    }
 //    
-//    async function assertSpinsForMax({$tag, name, max}) {
-//        assertSpins({$tag, name})
-//        
-//        const t0 = Date.now()
-//        while (Date.now() - t0 < max) {
-//            if (!testGlobal[name + 'Spins']) return
-//            await delay(50)
-//        }
-//        
-//        uiAssert(false, `I expected ${name} to stop spinning in ${max}ms`)
-//    }
 //
-//    function assertSpins({$tag, name}) {
-//        uiAssert(testGlobal[name + 'Spins'], `I want ${name} to be spinning`)
-//    }
-//
-//    async function assertShitSpinsForMax({$tag, name, max}) {
-//        await assertSpinsForMax({$tag, name: 'shit', max})
-//    }
 //
 //    function assertShitSpins({$tag}) {
 //        assertSpins({name: 'shit'})
