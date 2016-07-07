@@ -43,7 +43,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 function supportPageLoader() {
                     ui.setPage({
-                        pageTitle: t('Support', 'Саппорт'),
+                        pageTitle: t('Support', 'Поддержка'),
                         pageBody: div(
                             )
                     })
@@ -110,7 +110,7 @@ global.igniteShit = makeUIShitIgniter({
                                        form)
                     } else if (userState === 'profile-approval-pending') {
                         pageBody = div(preludeWithHourglass(span(t('TOTE', 'Админ проверяет профиль, жди извещения почтой. Если есть вопросы, можно написать в '),
-                                                                 link(t('TOTE', 'поддержку'), _=> ui.replaceNavigate('support.html')),
+                                                                 ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
                                                                  t('.')), {center: 720}),
                                        userDisplayForm(ui.getUser()))
                     }
@@ -336,8 +336,21 @@ global.igniteShit = makeUIShitIgniter({
                 await art.shitSpinsForMax({$tag: 'e804da7e-6d1e-4fe4-a40e-e7697cb23622', max: 2000})
                 
                 art.uiState({$tag: '47a1c72b-4813-4dcd-a2fc-25ca3b739a92', expected: {
-
+                    url: `http://aps-ua-writer.local:3022/profile.html`,
+                    pageHeader: `Профиль`,
+                    inputs: {},
+                    errorLabels: {},
+                    errorBanner: undefined,
+                    displayLabels: 
+                     { first_name: { content: `Фред` },
+                       last_name: { content: `Ред` },
+                       email: { content: `fred.red@test.shit.ua` },
+                       phone: { content: `123-45-67` },
+                       inserted_at: { content: `03/07/2016 16:21:36 (Киев)` },
+                       profile_updated_at: { content: `03/07/2016 16:24:51 (Киев)` } } 
                 }})
+                
+                testGlobal.links.support.click()
 
             },
             
@@ -372,14 +385,14 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
         if (clientKind === 'customer') {
             privateItems = [
                 ['orders', t(`My Orders`, `Мои заказы`)],
-                ['support', t(`Support`, `Саппорт`)],
+                ['support', t(`Support`, `Поддержка`)],
             ]
         } else {
             privateItems = compact([
                 ui.getUser().state === 'cool' && ['orders', t(`My Orders`, `Мои заказы`)],
                 ui.getUser().state === 'cool' && ['store', t(`Store`, `Аукцион`)],
                 ['profile', t(`Profile`, `Профиль`)],
-                ['support', t(`Support`, `Саппорт`)]
+                ['support', t(`Support`, `Поддержка`)]
             ])
         }
     }
