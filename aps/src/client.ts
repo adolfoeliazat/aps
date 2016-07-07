@@ -29,12 +29,57 @@ global.igniteShit = makeUIShitIgniter({
                     orders: ordersPageLoader,
                     
                     async support() {
-                        await delay(500)
-                        ui.setPage({
-                            pageTitle: t('Support', 'Поддержка'),
-                            pageBody: div(
-                                )
-                        })
+                        render(await ui.rpcSoft({fun: 'private_getSupportThreads'}))
+                        
+                        function render(res) {
+                            if (res.error) {
+                                return ui.setPage({
+                                    pageTitle: t('Support', 'Поддержка'),
+                                    pageBody: div(errorBanner(res.error))
+                                })
+                            }
+                            
+                            // dlogs('messages', res.messages)
+                            const messageDivs = []
+//                            for (const msg of res.messages) {
+//                                let fromTitle
+//                                if (msg.sender_id === ui.getUser().id) {
+//                                    fromTitle = t(`TOTE`, `Я`)
+//                                } else {
+//                                    fromTitle = msg.sender_name
+//                                }
+//                                messageDivs.push(diva({style},
+//                                    diva({}, timestampString(msg.inserted_at)),
+//                                    diva({}, fromTitle),
+//                                    diva({}, toTitle),
+//                                    diva({}, msg.message),
+//                                    ))
+//                            }
+                            
+                            const form = ui.Form({
+                                primaryButtonTitle: t(`TOTE`, `Создать тему`),
+                                fields: {
+                                    topic: {
+                                        title: t(`TOTE`, `Тема`),
+                                        type: 'text',
+                                        attrs: {autoFocus: true},
+                                    },
+                                    message: {
+                                        title: t(`TOTE`, `Сообщение`),
+                                        type: 'textarea',
+                                    },
+                                },
+                                rpcFun: 'private_createSupportThread',
+                                onSuccess(res) {
+                                    render(res)
+                                },
+                            })
+                            
+                            ui.setPage({
+                                pageTitle: t('Support', 'Поддержка'),
+                                pageBody: div(...messageDivs, form)
+                            })
+                        }
                     },
                 
                     dashboard: dashboardPageLoader,

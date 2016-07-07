@@ -255,7 +255,7 @@ app.post('/rpc', (req, res) => {
                     #await tx.query({$tag: 'e8ccf032-2c17-4a98-8666-cd18f82326c7'}, q`
                         insert into user_tokens(user_id, token) values(${user.id}, ${token})`)
                     
-                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state', 'inserted_at', 'profile_updated_at'), token})
+                    return hunkyDory({user: pickFromUser(), token})
                     
                     
                     function logFailure(reason) {
@@ -268,7 +268,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getUserInfo') {
-                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state')})
+                    return hunkyDory({user: pickFromUser()})
                 }
                 
                 else if (msg.fun === 'signUp') {
@@ -290,8 +290,8 @@ app.post('/rpc', (req, res) => {
                             }
                     
                             #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb'}, q`
-                                insert into users (inserted_at,         email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
-                                            values(${requestTimestamp}, ${fields.email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`)
+                                insert into users (inserted_at,         updated_at,          email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
+                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`)
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
@@ -341,7 +341,37 @@ app.post('/rpc', (req, res) => {
                                              state = 'profile-approval-pending'
                                    where id = ${user.id}`)
                         #await loadUserForToken()
-                        return hunkyDory({newUser: user})
+                        return hunkyDory({newUser: pickFromUser()})
+                    }
+                    return youFixErrors()
+                }
+                
+                else if (msg.fun === 'private_getSupportThreads') {
+                    const threads = #await tx.query({$tag: 'e6dd4dfa-8118-4e25-9f71-13665dada843'}, q`
+                        select * from support_threads
+                                 where supportee_id = ${user.id}
+                                 order by inserted_at desc
+                    `)
+                    return hunkyDory({threads})
+                }
+                
+                else if (msg.fun === 'private_createSupportThread') {
+                    loadField({key: 'topic', kind: 'topic', mandatory: true})
+                    loadField({key: 'message', kind: 'message', mandatory: true})
+
+                    if (isEmpty(fieldErrors)) {
+                        const thread_id = #await insertInto({$tag: 'c8a54fb2-4a92-4c95-a13d-7ae145c7ebe9'}, {table: 'support_threads', values: {
+                            topic: fields.topic,
+                            supportee_id: user.id,
+                        }})
+                        
+                        #await insertInto({$tag: '44178859-236b-411b-b3df-247ffb47e89e'}, {table: 'support_thread_messages', values: {
+                            thread_id,
+                            sender_id: user.id,
+                            message: fields.message,
+                        }})
+                        
+                        return hunkyDory({thread_id})
                     }
                     return youFixErrors()
                 }
@@ -351,6 +381,23 @@ app.post('/rpc', (req, res) => {
                 return {fatal: situation}
                 
                 // @ctx handle helpers
+                
+                function pickFromUser() {
+                    return pick(user, 'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at', 'profile_updated_at', 'phone')
+                }
+                
+                
+                async function insertInto(meta, {table, values}) {
+                    let sql = `insert into "${table}"(inserted_at, updated_at`
+                    const args = [requestTimestamp, requestTimestamp]
+                    for (const [k, v] of toPairs(values)) {
+                        sql += `, "${k}"`
+                        args.push(v)
+                    }
+                    sql += ') values(' + range(keys(values).length + 2).map(x => '$' + (x + 1)).join(', ') + ') returning id'
+                    const rows = await tx.query(meta, {q: {sql, args}})
+                    return rows[0].id
+                }
                 
                 function youFixErrors() {
                     return {
@@ -426,6 +473,8 @@ app.post('/rpc', (req, res) => {
                             firstName: 50,
                             lastName: 50,
                             phone: 20,
+                            topic: 300,
+                            message: 300,
                         }[kind]
                         if (!maxlen) raise(`WTF, define maxlen for ${kind}`)
                         if (value.length > maxlen) error(t('TOTE', `Не более ${maxlen} символов`))
@@ -646,15 +695,6 @@ function heyBackend_changeYourStateTo(state) {
 function heyBackend_whatsYourState() {
     return kindOfState
 }
-
-function testPGQuery(...args) {
-    return async function() { // XXX TS bug workaround: rest arguments in __awaiter
-        return await pgTransaction(async function(tx) {
-            return await tx.query(...args)
-        })
-    }()
-}
-
 
 
 

@@ -68,12 +68,45 @@ create trigger on_insert before insert on user_tokens for each row execute proce
 create trigger on_update before update on user_tokens for each row execute procedure on_update();
 
 
+create table support_threads(
+    id bigserial primary key,
+    deleted boolean,
+    inserted_at timestamp,
+    updated_at timestamp,
+    topic text,
+    supportee_id bigint references users(id),
+    supporter_id bigint references users(id)
+    );
+create trigger on_insert before insert on support_threads for each row execute procedure on_insert();
+create trigger on_update before update on support_threads for each row execute procedure on_update();
 
+
+create table support_thread_messages(
+    id bigserial primary key,
+    deleted boolean,
+    inserted_at timestamp,
+    updated_at timestamp,
+    thread_id bigint references support_threads(id),
+    sender_id bigint references users(id),
+    recipient_id bigint references users(id),
+    message text
+    );
+create trigger on_insert before insert on support_thread_messages for each row execute procedure on_insert();
+create trigger on_update before update on support_thread_messages for each row execute procedure on_update();
+
+
+create table foobar(id bigserial, foo text);
 
 /* -------------------------------------------------------------------
 
+drop table support_thread_messages; drop table support_threads
+
 select * from users;
 select * from user_tokens;
+
+select * from support_messages
+delete from support_messages
+drop table support_messages
 
 select id from users where email = 'fred.red@test.shit.ua'
 
@@ -114,6 +147,8 @@ select users.id user_id, * from users, user_tokens
 select typname, oid, typarray from pg_type order by oid
 
 select typname, oid, typarray from pg_type where typname = 'daterange' order by oid
+
+select version()
 
 
 */
