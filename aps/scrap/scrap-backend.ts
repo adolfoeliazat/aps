@@ -77,7 +77,7 @@ const user = {name: 'Joe', id: 54}
 relog(q`update users set profile_updated_at = now() at time zone 'utc', phone = ${phone} where id = ${user.id}`)
 
 
-relog(moment.tz)
+relog(moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS'))
 
 
 

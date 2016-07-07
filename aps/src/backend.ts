@@ -15,7 +15,7 @@ import * as fs from 'fs'
 import static 'into-u ./stuff'
 
 const app = newExpress()
-let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = []
+let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp
 
 require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
     return s
@@ -28,6 +28,12 @@ app.post('/rpc', (req, res) => {
     })
     
     async function handle() {
+        let requestTimestamp = moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS')
+        if (imposedRequestTimestamp) {
+            requestTimestamp = imposedRequestTimestamp
+            imposedRequestTimestamp = undefined
+        }
+        
         const msg = req.body
         const _t = makeT(msg.LANG)
         function t(meta, ...args) {
@@ -126,6 +132,11 @@ app.post('/rpc', (req, res) => {
                 
                 else if (msg.fun === 'danger_clearSentEmails') {
                     sentEmails = []
+                    return hunkyDory()
+                }
+                
+                else if (msg.fun === 'danger_imposeNextRequestTimestamp') {
+                    imposedRequestTimestamp = msg.timestamp
                     return hunkyDory()
                 }
                 
@@ -279,8 +290,8 @@ app.post('/rpc', (req, res) => {
                             }
                     
                             #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb'}, q`
-                                insert into users (email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
-                                            values(${fields.email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`)
+                                insert into users (inserted_at,         email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
+                                            values(${requestTimestamp}, ${fields.email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`)
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
@@ -325,7 +336,7 @@ app.post('/rpc', (req, res) => {
 
                     if (isEmpty(fieldErrors)) {
                         #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8'}, q`
-                            update users set profile_updated_at = now() at time zone 'utc',
+                            update users set profile_updated_at = ${requestTimestamp},
                                              phone = ${fields.phone},
                                              state = 'profile-approval-pending'
                                    where id = ${user.id}`)
@@ -462,13 +473,13 @@ app.post('/rpc', (req, res) => {
                 
                 async function loadUserForToken() {
                     const rows = #await tx.query({$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false}, q`
-                        select users.id user_id, * from users, user_tokens
+                        select users.* from users, user_tokens
                         where user_tokens.token = ${msg.token} and users.id = user_tokens.user_id`)
                     if (!rows.length) {
                         raise('Invalid token')
                     }
                     user = rows[0]
-                    user.id = user.user_id // To tell users.id from user_tokens.id it's selected additionaly as `user_id`
+                    // user.id = user.user_id // To tell users.id from user_tokens.id it's selected additionaly as `user_id`
                     failOnClientUserMismatch()
                 }
             })

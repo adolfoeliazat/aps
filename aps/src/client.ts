@@ -250,6 +250,8 @@ global.igniteShit = makeUIShitIgniter({
                     displayLabels: {} 
                 }})            
                 
+                await drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:21:36'})
+                
                 // Inputs
                 testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
                 testGlobal.inputs.firstName.value = 'Фред'
@@ -326,7 +328,7 @@ global.igniteShit = makeUIShitIgniter({
                     displayLabels: {}
                 }})
                 
-
+                await drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:24:51'})
                 // Inputs
                 testGlobal.inputs.phone.value = '123-45-67'
                 // Action
@@ -505,6 +507,10 @@ function userDisplayForm(user) {
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Аккаунт создан`)),
                     diva({}, displayLabel({name: 'inserted_at', content: timestampString(user.inserted_at)})))),
+            diva({className: 'col-sm-4'},
+                diva({className: 'form-group'},
+                    labela({}, t(`TOTE`, `Профиль изменен`)),
+                    diva({}, displayLabel({name: 'profile_updated_at', content: timestampString(user.profile_updated_at)})))),
         ),
     ))
 }

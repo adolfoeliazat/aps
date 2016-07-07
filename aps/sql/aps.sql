@@ -11,8 +11,12 @@ create or replace function on_insert()
 returns trigger as $$
 begin
     new.deleted = false;
-    new.inserted_at = now() at time zone 'utc';
-    new.updated_at = new.inserted_at;
+    if new.inserted_at is null then
+        new.inserted_at = now() at time zone 'utc';
+    end if;
+    if new.updated_at is null then
+        new.updated_at = new.inserted_at;
+    end if;
     return new;	
 end;
 $$ language 'plpgsql';
@@ -22,7 +26,9 @@ drop function if exists on_update();
 create or replace function on_update()
 returns trigger as $$
 begin
-    new.updated_at = now() at time zone 'utc';
+    if new.updated_at is null then
+        new.updated_at = now() at time zone 'utc';
+    end if;
     return new;	
 end;
 $$ language 'plpgsql';
