@@ -53,15 +53,7 @@ app.post('/rpc', (req, res) => {
                 let user
             
                 if (msg.fun.startsWith('private_')) {
-                    const rows = #await tx.query({$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false}, q`
-                        select users.id user_id, * from users, user_tokens
-                        where user_tokens.token = ${msg.token} and users.id = user_tokens.user_id`)
-                    if (!rows.length) {
-                        raise('Invalid token')
-                    }
-                    user = rows[0]
-                    user.id = user.user_id // To tell users.id from user_tokens.id it's selected additionaly as `user_id`
-                    failOnClientUserMismatch()
+                    #await loadUserForToken()
                 }
                 
                 if (msg.fun === 'danger_eval') {
@@ -330,9 +322,11 @@ app.post('/rpc', (req, res) => {
                     if (isEmpty(fieldErrors)) {
                         #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8'}, q`
                             update users set profile_updated_at = now() at time zone 'utc',
-                                             phone = ${fields.phone}
+                                             phone = ${fields.phone},
+                                             state = 'profile-approval-pending'
                                    where id = ${user.id}`)
-                        return hunkyDory()
+                        #await loadUserForToken()
+                        return hunkyDory({newUser: user})
                     }
                     return youFixErrors()
                 }
@@ -460,6 +454,18 @@ app.post('/rpc', (req, res) => {
                     function error(message) {
                         throw {$$type: 'validation', message}
                     }
+                }
+                
+                async function loadUserForToken() {
+                    const rows = #await tx.query({$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false}, q`
+                        select users.id user_id, * from users, user_tokens
+                        where user_tokens.token = ${msg.token} and users.id = user_tokens.user_id`)
+                    if (!rows.length) {
+                        raise('Invalid token')
+                    }
+                    user = rows[0]
+                    user.id = user.user_id // To tell users.id from user_tokens.id it's selected additionaly as `user_id`
+                    failOnClientUserMismatch()
                 }
             })
             

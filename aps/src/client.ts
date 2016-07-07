@@ -34,7 +34,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 
                 function ordersPageLoader() {
-                    setPage({
+                    ui.setPage({
                         pageTitle: t('My Orders', 'Мои заказы'),
                         pageBody: div(
                             )
@@ -42,7 +42,7 @@ global.igniteShit = makeUIShitIgniter({
                 }
                 
                 function supportPageLoader() {
-                    setPage({
+                    ui.setPage({
                         pageTitle: t('Support', 'Служба поддержки'),
                         pageBody: div(
                             )
@@ -50,7 +50,7 @@ global.igniteShit = makeUIShitIgniter({
                 }
                 
                 function dashboardPageLoader() {
-                    setPage({
+                    ui.setPage({
                         pageTitle: t('Dashboard', 'Панель'),
                         pageBody: div(
                             diva({className: 'row'},
@@ -58,7 +58,7 @@ global.igniteShit = makeUIShitIgniter({
                                     sectionTitle(t('Account', 'Аккаунт')),
                                     sectionLinks(
                                         [t('Sign out', 'Выйти прочь'), _=> {
-                                            signOut()
+                                            ui.signOut()
                                         }],
                                         [t('Change password', 'Сменить пароль'), _=> {
                                             dlog('implement change password')
@@ -97,19 +97,27 @@ global.igniteShit = makeUIShitIgniter({
                         },
                         rpcFun: 'private_updateProfile',
                         onSuccess(res) {
-                            dlog('implement update profile success')
+                            // ui.getUser().state = 'profile-approval-pending'
+                            ui.setUser(res.newUser)
+                            ui.replaceNavigate('profile.html')
                         },
                     })
                     
+                    let pageBody
+                    const userState = ui.getUser().state
+                    if (userState === 'profile-pending') {
+                        pageBody = div(preludeWithOrangeTriangle(t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), {center: 720}),
+                                       form)
+                    } else if (userState === 'profile-approval-pending') {
+                        pageBody = div(preludeWithHourglass(span(t('TOTE', 'Админ проверяет профиль, жди извещения почтой. Если есть вопросы, можно написать в '),
+                                                                 link(t('TOTE', 'поддержку'), _=> ui.replaceNavigate('support.html')),
+                                                                 t('.')), {center: 720}),
+                                       userDisplayForm(ui.getUser()))
+                    }
+                    
                     ui.setPage({
                         pageTitle: t('Profile', 'Профиль'),
-                        pageBody: div(
-                            ui.getUser().state === 'profile-pending' && preludeWithOrangeTriangle(
-                                t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'),
-                                {center: 720}),
-
-                            form
-                            )
+                        pageBody
                     })
                 }
             },
@@ -145,7 +153,8 @@ global.igniteShit = makeUIShitIgniter({
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
                     errorLabels: {},
-                    errorBanner: undefined 
+                    errorBanner: undefined,
+                    displayLabels: {} 
                 }})           
                             
                 await sim.navigate('sign-up.html')
@@ -158,7 +167,8 @@ global.igniteShit = makeUIShitIgniter({
                        lastName: { value: `` },
                        agreeTerms: { value: false } },
                     errorLabels: {},
-                    errorBanner: undefined 
+                    errorBanner: undefined,
+                    displayLabels: {}
                 }})
 
                 // Inputs
@@ -176,7 +186,8 @@ global.igniteShit = makeUIShitIgniter({
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
                     errorLabels: {},
-                    errorBanner: undefined 
+                    errorBanner: undefined,
+                    displayLabels: {} 
                 }})
                 await art.sentEmails({$tag: '169a6331-c004-47fd-9b53-05242915d9f7', descr: 'Email with password', expected: [
                     { to: `Вильма Блу <wilma.blue@test.shit.ua>`,
@@ -200,7 +211,8 @@ global.igniteShit = makeUIShitIgniter({
                     pageHeader: `Панель`,
                     inputs: {},
                     errorLabels: {},
-                    errorBanner: undefined 
+                    errorBanner: undefined,
+                    displayLabels: {} 
                 }})
                 
                 await sim.navigate('dashboard.html')
@@ -220,7 +232,8 @@ global.igniteShit = makeUIShitIgniter({
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
                     errorLabels: {},
-                    errorBanner: undefined 
+                    errorBanner: undefined,
+                    displayLabels: {} 
                 }})
                 
                 testGlobal.links.createAccount.click()
@@ -233,7 +246,8 @@ global.igniteShit = makeUIShitIgniter({
                        lastName: { value: `` },
                        agreeTerms: { value: false } },
                     errorLabels: {},
-                    errorBanner: undefined 
+                    errorBanner: undefined,
+                    displayLabels: {} 
                 }})            
                 
                 // Inputs
@@ -259,7 +273,8 @@ global.igniteShit = makeUIShitIgniter({
                     pageHeader: `Вход`,
                     inputs: { email: { value: `` }, password: { value: `` } },
                     errorLabels: {},
-                    errorBanner: undefined 
+                    errorBanner: undefined,
+                    displayLabels: {} 
                 }})            
                 art.textSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
 
@@ -275,7 +290,8 @@ global.igniteShit = makeUIShitIgniter({
                     pageHeader: `Профиль`,
                     inputs: { phone: { value: `` } },
                     errorLabels: {},
-                    errorBanner: undefined 
+                    errorBanner: undefined,
+                    displayLabels: {} 
                 }})                        
                 art.textSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Фред'})
                 
@@ -292,7 +308,8 @@ global.igniteShit = makeUIShitIgniter({
                     pageHeader: `Профиль`,
                     inputs: { phone: { value: `` } },
                     errorLabels: { phone: { title: `Телефон обязателен` } },
-                    errorBanner: `Пожалуйста, исправьте ошибки ниже` 
+                    errorBanner: `Пожалуйста, исправьте ошибки ниже`,
+                    displayLabels: {}
                 }})
 
                 // Inputs
@@ -305,7 +322,8 @@ global.igniteShit = makeUIShitIgniter({
                     pageHeader: `Профиль`,
                     inputs: { phone: { value: `adsfasdf` } },
                     errorLabels: { phone: { title: `Странный телефон какой-то` } },
-                    errorBanner: `Пожалуйста, исправьте ошибки ниже` 
+                    errorBanner: `Пожалуйста, исправьте ошибки ниже`,
+                    displayLabels: {}
                 }})
                 
 
@@ -314,6 +332,7 @@ global.igniteShit = makeUIShitIgniter({
                 // Action
                 testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: 'e804da7e-6d1e-4fe4-a40e-e7697cb23622', max: 2000})
+                
                 art.uiState({$tag: '47a1c72b-4813-4dcd-a2fc-25ca3b739a92', expected: {
 
                 }})
@@ -457,6 +476,26 @@ export function customerDynamicPageNames() {
 
 export function writerDynamicPageNames() {
     return tokens('test sign-in sign-up dashboard orders support store users profile')
+}
+
+function userDisplayForm(user) {
+    return centered720(diva({},
+        diva({className: 'row'},
+            diva({className: 'col-sm-4'},
+                diva({className: 'form-group'},
+                    labela({}, t(`TOTE`, `Имя`)),
+                    diva({}, displayLabel({name: 'first_name', content: user.first_name})))),
+            diva({className: 'col-sm-4'},
+                diva({className: 'form-group'},
+                    labela({}, t(`TOTE`, `Фамилия`)),
+                    diva({}, displayLabel({name: 'last_name', content: user.last_name})))),
+            diva({className: 'col-sm-4'},
+                diva({className: 'form-group'},
+                    labela({}, t(`TOTE`, `Почта`)),
+                    diva({}, displayLabel({name: 'email', content: user.email})))),
+                    
+        ),
+    ))
 }
 
 clog('Client code is kind of loaded')
