@@ -43,7 +43,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 function supportPageLoader() {
                     ui.setPage({
-                        pageTitle: t('Support', 'Служба поддержки'),
+                        pageTitle: t('Support', 'Саппорт'),
                         pageBody: div(
                             )
                     })
@@ -370,14 +370,14 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
         if (clientKind === 'customer') {
             privateItems = [
                 ['orders', t(`My Orders`, `Мои заказы`)],
-                ['support', t(`Support`, `Служба поддержки`)],
+                ['support', t(`Support`, `Саппорт`)],
             ]
         } else {
             privateItems = compact([
                 ui.getUser().state === 'cool' && ['orders', t(`My Orders`, `Мои заказы`)],
                 ui.getUser().state === 'cool' && ['store', t(`Store`, `Аукцион`)],
                 ['profile', t(`Profile`, `Профиль`)],
-                ['support', t(`Support`, `Служба поддержки`)]
+                ['support', t(`Support`, `Саппорт`)]
             ])
         }
     }
@@ -493,7 +493,18 @@ function userDisplayForm(user) {
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Почта`)),
                     diva({}, displayLabel({name: 'email', content: user.email})))),
-                    
+        ),
+        diva({className: 'row'},
+            diva({className: 'col-sm-4'},
+                diva({className: 'form-group'},
+                    labela({}, t(`TOTE`, `Телефон`)),
+                    diva({}, displayLabel({name: 'phone', content: user.phone})))),
+        ),
+        diva({className: 'row'},
+            diva({className: 'col-sm-4'},
+                diva({className: 'form-group'},
+                    labela({}, t(`TOTE`, `Аккаунт создан`)),
+                    diva({}, displayLabel({name: 'inserted_at', content: timestampString(user.inserted_at)})))),
         ),
     ))
 }

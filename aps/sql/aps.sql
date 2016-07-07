@@ -102,4 +102,12 @@ select * from test_collation order by name desc;
 alter table test_collation owner to aps;
 
 select now() at time zone 'utc'
+
+select users.id user_id, * from users, user_tokens
+
+select typname, oid, typarray from pg_type order by oid
+
+select typname, oid, typarray from pg_type where typname = 'daterange' order by oid
+
+
 */

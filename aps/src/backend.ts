@@ -17,6 +17,10 @@ import static 'into-u ./stuff'
 const app = newExpress()
 let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = []
 
+require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
+    return s
+})
+
 app.post('/rpc', (req, res) => {
     // dlog({body: req.body, headers: req.headers})
     handle().then(message => {
@@ -240,7 +244,7 @@ app.post('/rpc', (req, res) => {
                     #await tx.query({$tag: 'e8ccf032-2c17-4a98-8666-cd18f82326c7'}, q`
                         insert into user_tokens(user_id, token) values(${user.id}, ${token})`)
                     
-                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state'), token})
+                    return hunkyDory({user: pick(user, 'id', 'first_name', 'last_name', 'state', 'inserted_at', 'profile_updated_at'), token})
                     
                     
                     function logFailure(reason) {
@@ -630,6 +634,14 @@ function heyBackend_changeYourStateTo(state) {
 
 function heyBackend_whatsYourState() {
     return kindOfState
+}
+
+function testPGQuery(...args) {
+    return async function() { // XXX TS bug workaround: rest arguments in __awaiter
+        return await pgTransaction(async function(tx) {
+            return await tx.query(...args)
+        })
+    }()
 }
 
 
