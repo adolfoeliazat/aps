@@ -325,20 +325,12 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_updateProfile') {
-                    const phone = sanitizeString(msg.phone)
-                    if (isBlank(phone)) {
-                        fieldErrors.phone = t('TOTE', 'Телефон обязателен')
-                    } else {
-                        fieldErrors.phone = validatePhone(phone)
-                    }
-//                    } else if (!isValidPhone(phone)) {
-//                        fieldErrors.phone = t('TOTE', 'Странный телефон какой-то')
-//                    }
+                    loadField({key: 'phone', kind: 'phone', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
                         #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8'}, q`
                             update users set profile_updated_at = now() at time zone 'utc',
-                                             phone = ${phone}
+                                             phone = ${fields.phone}
                                    where id = ${user.id}`)
                         return hunkyDory()
                     }
@@ -416,6 +408,7 @@ app.post('/rpc', (req, res) => {
                             email: t('TOTE', 'Почта обязательна'),
                             firstName: t('TOTE', 'Имя обязательно'),
                             lastName: t('TOTE', 'Фамилия обязательна'),
+                            phone: t('TOTE', 'Телефон обязателен'),
                             _default: t('TOTE', 'Поле обязательно'),
                         })
                         
@@ -423,6 +416,7 @@ app.post('/rpc', (req, res) => {
                             email: 50,
                             firstName: 50,
                             lastName: 50,
+                            phone: 20,
                         }[kind]
                         if (!maxlen) raise(`WTF, define maxlen for ${kind}`)
                         if (value.length > maxlen) error(t('TOTE', `Не более ${maxlen} символов`))
