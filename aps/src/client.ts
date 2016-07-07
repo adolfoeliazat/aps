@@ -396,12 +396,50 @@ global.igniteShit = makeUIShitIgniter({
                        inserted_at: { content: `03/07/2016 16:21:36 (Киев)` },
                        profile_updated_at: { content: `03/07/2016 16:24:51 (Киев)` } } 
                 }})
+                
+                // ---------- Posting a message to support ----------
                             
+                // Action
                 testGlobal.links.support.click()
                 await art.linkBlinksForMax({$tag: 'eceeb886-f96e-4baa-a0c1-e75cc79d4e84', name: 'support', max: 2000})
                 art.uiState({$tag: '0f630ccd-9936-4d27-ac1c-4d391a184e79', expected: {
-
+                    url: `http://aps-ua-writer.local:3022/support.html`,
+                    pageHeader: `Поддержка`,
+                    inputs: { topic: { value: `` }, message: { value: `` } },
+                    errorLabels: {},
+                    errorBanner: undefined,
+                    displayLabels: {} 
                 }})                
+
+                // Inputs
+                testGlobal.inputs.topic.value = ''
+                testGlobal.inputs.message.value = ''
+                // Action
+                testGlobal.buttons.primary.click()
+                await art.shitSpinsForMax({$tag: '88d16caa-e430-4f95-8279-f3a25a0c857d', max: 2000})
+                art.uiState({$tag: 'b4572e9b-f721-494f-980a-9c2a13041e3b', expected: {
+                    url: `http://aps-ua-writer.local:3022/support.html`,
+                    pageHeader: `Поддержка`,
+                    inputs: { topic: { value: `` }, message: { value: `` } },
+                    errorLabels: 
+                     { topic: { title: `Поле обязательно` },
+                       message: { title: `Поле обязательно` } },
+                    errorBanner: `Пожалуйста, исправьте ошибки ниже`,
+                    displayLabels: {} 
+                }})
+                
+                // Inputs
+                testGlobal.inputs.topic.value = 'Заапрувьте меня'
+                testGlobal.inputs.message.value = 'И побыстрее, мать вашу!'
+                // Action
+                testGlobal.buttons.primary.click()
+                await art.shitSpinsForMax({$tag: '0f39d2be-7ebe-454d-9c3b-413bb7a4b9f3', max: 2000})
+                art.uiState({$tag: 'c02d34e4-4a28-4d59-bd09-91d84bd06a1a', expected: {
+
+                }})
+
+
+
 
                 // @ctx test
             },

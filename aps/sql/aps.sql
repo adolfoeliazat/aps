@@ -99,7 +99,14 @@ create table foobar(id bigserial, foo text);
 
 /* -------------------------------------------------------------------
 
+select * from support_threads
+select * from support_thread_messages
+
 drop table support_thread_messages; drop table support_threads
+
+select * from foobar
+delete from foobar
+insert into foobar(foo) values('qqqqq') returning id
 
 select * from users;
 select * from user_tokens;
