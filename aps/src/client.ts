@@ -27,7 +27,16 @@ global.igniteShit = makeUIShitIgniter({
             privatePageLoader(name) {
                 return {
                     orders: ordersPageLoader,
-                    support: supportPageLoader,
+                    
+                    async support() {
+                        await delay(500)
+                        ui.setPage({
+                            pageTitle: t('Support', 'Поддержка'),
+                            pageBody: div(
+                                )
+                        })
+                    },
+                
                     dashboard: dashboardPageLoader,
                     profile: profilePageLoader,
                 }[name]
@@ -41,13 +50,6 @@ global.igniteShit = makeUIShitIgniter({
                     })
                 }
                 
-                function supportPageLoader() {
-                    ui.setPage({
-                        pageTitle: t('Support', 'Поддержка'),
-                        pageBody: div(
-                            )
-                    })
-                }
                 
                 function dashboardPageLoader() {
                     ui.setPage({
@@ -349,9 +351,14 @@ global.igniteShit = makeUIShitIgniter({
                        inserted_at: { content: `03/07/2016 16:21:36 (Киев)` },
                        profile_updated_at: { content: `03/07/2016 16:24:51 (Киев)` } } 
                 }})
-                
+                            
                 testGlobal.links.support.click()
+                await art.linkBlinksForMax({$tag: 'eceeb886-f96e-4baa-a0c1-e75cc79d4e84', name: 'support', max: 2000})
+                art.uiState({$tag: '0f630ccd-9936-4d27-ac1c-4d391a184e79', expected: {
 
+                }})                
+
+                // @ctx test
             },
             
             // preventRestoringURLAfterTest = true
