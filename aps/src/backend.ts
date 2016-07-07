@@ -49,7 +49,7 @@ app.post('/rpc', (req, res) => {
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv' && msg.CLIENT_KIND !== 'debug') raise('WTF is the clientKind?')
             
             return await pgTransaction(async function(tx) {
-                const fieldErrors = {}
+                const fieldErrors = {}, fields = {}
                 let user
             
                 if (msg.fun.startsWith('private_')) {
@@ -269,26 +269,9 @@ app.post('/rpc', (req, res) => {
                         fieldErrors.agreeTerms = t('You have to agree with terms and conditions', 'Необходимо принять соглашение')
                     }
                     
-                    const email = sanitizeString(msg.email)
-                    if (isBlank(email)) {
-                        fieldErrors.email = t('Email is mandatory', 'Почта обязательна')
-                    } else if (!isValidEmail(email)) {
-                        fieldErrors.email = t('Weird kind of email', 'Интересная почта какая-то')
-                    }
-                    
-                    const firstName = sanitizeString(msg.firstName)
-                    if (isBlank(firstName)) {
-                        fieldErrors.firstName = t('First name is mandatory', 'Имя обязательно')
-                    } else if (firstName.length > MAX_NAME) {
-                        fieldErrors.firstName = t(`No more than ${MAX_NAME} symbols`, `Не более ${MAX_NAME} символов`)
-                    }
-                    
-                    const lastName = sanitizeString(msg.lastName)
-                    if (isBlank(lastName)) {
-                        fieldErrors.lastName = t('Last name is mandatory', 'Фамилия обязательна')
-                    } else if (lastName.length > MAX_NAME) {
-                        fieldErrors.lastName = t(`No more than ${MAX_NAME} symbols`, `Не более ${MAX_NAME} символов`)
-                    }
+                    loadField({key: 'email', kind: 'email', mandatory: true})
+                    loadField({key: 'firstName', kind: 'firstName', mandatory: true})
+                    loadField({key: 'lastName', kind: 'lastName', mandatory: true})
                     
                     if (isEmpty(fieldErrors)) {
                         try {
@@ -300,8 +283,8 @@ app.post('/rpc', (req, res) => {
                             }
                     
                             #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb'}, q`
-                                insert into users (email,    kind,               lang,        state,                password_hash,                   first_name,   last_name)
-                                            values(${email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${firstName}, ${lastName})`)
+                                insert into users (email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
+                                            values(${fields.email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`)
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
@@ -314,14 +297,14 @@ app.post('/rpc', (req, res) => {
                             if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
                             
                             #await sendEmail({
-                                to: `${firstName} ${lastName} <${email}>`,
+                                to: `${fields.firstName} ${fields.lastName} <${fields.email}>`,
                                 subject,
                                 html: dedent(_t({
                                     en: `
                                         TODO
                                     `,
                                     ua: `
-                                        Привет, ${firstName}!<br><br>
+                                        Привет, ${fields.firstName}!<br><br>
                                         Вот твой пароль: ${password}
                                         <br><br>
                                         <a href="${signInURL}">${signInURL}</a>
@@ -345,9 +328,12 @@ app.post('/rpc', (req, res) => {
                     const phone = sanitizeString(msg.phone)
                     if (isBlank(phone)) {
                         fieldErrors.phone = t('TOTE', 'Телефон обязателен')
-                    } else if (!isValidPhone(phone)) {
-                        fieldErrors.phone = t('TOTE', 'Странный телефон какой-то')
+                    } else {
+                        fieldErrors.phone = validatePhone(phone)
                     }
+//                    } else if (!isValidPhone(phone)) {
+//                        fieldErrors.phone = t('TOTE', 'Странный телефон какой-то')
+//                    }
 
                     if (isEmpty(fieldErrors)) {
                         #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8'}, q`
@@ -363,6 +349,7 @@ app.post('/rpc', (req, res) => {
                 clog(situation)
                 return {fatal: situation}
                 
+                // @ctx handle helpers
                 
                 function youFixErrors() {
                     return {
@@ -417,6 +404,68 @@ app.post('/rpc', (req, res) => {
                 
                 function clientKindDescr() {
                     return `client ${msg.LANG} ${msg.CLIENT_KIND}`
+                }
+                
+                function loadField({key, kind, mandatory}) {
+                    try {
+                        let value = msg[key]
+                        if (typeof value !== 'string') raise('Fuck you with you hacky request')
+                        value = value.trim()
+                        
+                        if (mandatory && isBlank(value)) errorByKind({
+                            email: t('TOTE', 'Почта обязательна'),
+                            firstName: t('TOTE', 'Имя обязательно'),
+                            lastName: t('TOTE', 'Фамилия обязательна'),
+                            _default: t('TOTE', 'Поле обязательно'),
+                        })
+                        
+                        const maxlen = {
+                            email: 50,
+                            firstName: 50,
+                            lastName: 50,
+                        }[kind]
+                        if (!maxlen) raise(`WTF, define maxlen for ${kind}`)
+                        if (value.length > maxlen) error(t('TOTE', `Не более ${maxlen} символов`))
+                        
+                        const minlen = {
+                            email: 3,
+                        }[kind]
+                        if (minlen) {
+                            if (value.length < minlen) error(t('TOTE', `Не менее ${minlen} символов`))
+                        }
+                        
+                        if (kind === 'email') {
+                            if (!isValidEmail(value)) error(t('TOTE', 'Странная почта какая-то'))
+                        } else if (kind === 'phone') {
+                            let digitCount = 0
+                            for (const c of value.split('')) {
+                                if (!/\d| |-|\(|\)/.test(c)) error(t('TOTE', 'Странный телефон какой-то'))
+                                if (/\d/.test(c)) {
+                                    ++digitCount
+                                }
+                            }
+                            const minDigitCount = 6
+                            if (digitCount < minDigitCount) error(t('TOTE', `Не менее ${minDigitCount} цифр`))
+                        }
+
+                        
+                        fields[key] = value
+                    } catch (e) {
+                        if (e.$$type === 'validation') {
+                            fieldErrors[key] = e.message
+                        } else {
+                            throw e
+                        }
+                    }
+                    
+                    
+                    function errorByKind(table) {
+                        error(table[kind] || table._default || raise(`WTF, implement at least default error for ${kind}`))
+                    }
+                    
+                    function error(message) {
+                        throw {$$type: 'validation', message}
+                    }
                 }
             })
             
@@ -583,22 +632,6 @@ function heyBackend_whatsYourState() {
     return kindOfState
 }
 
-function sanitizeString(s) {
-    if (typeof s !== 'string') raise('Fuck you with you hacky request')
-    return s.trim()
-}
-
-function isValidPhone(s) {
-    let numberCount = 0
-    for (const c of s.split('')) {
-        if (!/\d| |-|\(|\)/.test(c)) return false
-        if (/\d/.test(c)) {
-            ++numberCount
-        }
-    }
-    if (numberCount < 6) return false
-    return true
-}
 
 
 
