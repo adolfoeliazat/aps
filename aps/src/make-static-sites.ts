@@ -1329,6 +1329,46 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                         color: #546e7a;
                     }                    
         
+                    /*---------- Minimize/maximize animation ----------*/
+        
+                    .aniMinimize {
+                        animation-name: aniMinimize;
+                        animation-duration: 500ms;
+                        animation-iteration-count: 1;
+                        animation-fill-mode: forwards;
+                      }
+
+                      @keyframes aniMinimize {
+                        0% {
+                          opacity: 1;
+                          transform: scale(1);
+                        }
+                        
+                        100% {
+                          opacity: 0;
+                          transform: scale(0.25);
+                        }
+                      }
+
+                      .aniMaximize {
+                        animation-name: aniMaximize;
+                        animation-duration: 500ms;
+                        animation-iteration-count: infinite;
+                      }
+
+                      @keyframes aniMaximize {
+                        0% {
+                          opacity: 0;
+                          transform: scale(0.25);
+                        }
+                        
+                        100% {
+                          opacity: 1;
+                          transform: scale(1);
+                        }
+                      }
+
+        
                 </style>
         
                 <script>

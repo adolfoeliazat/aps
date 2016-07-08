@@ -102,6 +102,8 @@ create table foobar(id bigserial, foo text);
 select * from support_threads
 select * from support_thread_messages
 
+delete from support_thread_messages; delete from support_threads
+
 drop table support_thread_messages; drop table support_threads
 
 select * from foobar

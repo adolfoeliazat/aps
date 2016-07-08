@@ -145,10 +145,24 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'danger_killUser') {
+                    const u = #await tx.query({$tag: '8adf924e-47f3-4098-abf9-e5ceee5c7832'}, q`
+                        select * from users where email = ${msg.email}`)[0]
+                        
                     #await tx.query({$tag: 'e9622700-e408-4bf9-a3cd-434ddf6fb11b'}, q`
-                        delete from user_tokens where user_id = (select id from users where email = ${msg.email})`)
+                        delete from user_tokens where user_id = ${u.id}`)
+                        
+                    const supportThreads = #await tx.query({$tag: 'b0477a7a-68af-4553-94bc-65dad3db6f18'}, q`
+                        select * from support_threads where supportee_id = ${u.id}`)
+                    for (const thread of supportThreads) {
+                        #await tx.query({$tag: '96facfd5-9ee6-4ff9-83c8-fef391908c0c'}, q`
+                            delete from support_thread_messages where thread_id = ${thread.id}`)
+                        #await tx.query({$tag: 'bf0f5d43-2258-4ad5-842e-388e205ccb98'}, q`
+                            delete from support_threads where id = ${thread.id}`)
+                    }
+                        
                     #await tx.query({$tag: 'c3cf9e53-2a4e-4423-8869-09a8c7078257'}, q`
                         delete from users where email = ${msg.email}`)
+                        
                     return hunkyDory()
                 }
                 
@@ -347,12 +361,12 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getSupportThreads') {
-                    const threads = #await tx.query({$tag: 'e6dd4dfa-8118-4e25-9f71-13665dada843'}, q`
+                    const items = #await tx.query({$tag: 'e6dd4dfa-8118-4e25-9f71-13665dada843'}, q`
                         select * from support_threads
                                  where supportee_id = ${user.id}
                                  order by inserted_at desc
                     `)
-                    return hunkyDory({threads})
+                    return hunkyDory({items})
                 }
                 
                 else if (msg.fun === 'private_createSupportThread') {
