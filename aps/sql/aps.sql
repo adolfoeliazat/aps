@@ -79,7 +79,7 @@ create table support_threads(
     );
 create trigger on_insert before insert on support_threads for each row execute procedure on_insert();
 create trigger on_update before update on support_threads for each row execute procedure on_update();
-
+alter sequence support_threads_id_seq restart with 1000;
 
 create table support_thread_messages(
     id bigserial primary key,
@@ -98,6 +98,13 @@ create trigger on_update before update on support_thread_messages for each row e
 create table foobar(id bigserial, foo text);
 
 /* -------------------------------------------------------------------
+
+select * from users where id in (2, 78)
+
+select * from support_thread_messages t1,
+              users t2,
+              users t3
+         where support_thread_messages.sender_id = users.id
 
 select * from support_threads
 select * from support_thread_messages
@@ -158,6 +165,10 @@ select typname, oid, typarray from pg_type order by oid
 select typname, oid, typarray from pg_type where typname = 'daterange' order by oid
 
 select version()
+
+select * from foobar
+
+insert into foobar(id, foo) values(null, 'qqqqqqq')
 
 
 */

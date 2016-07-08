@@ -15,7 +15,8 @@ import * as fs from 'fs'
 import static 'into-u ./stuff'
 
 const app = newExpress()
-let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp
+let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp,
+    imposedNextID
 
 require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
     return s
@@ -137,6 +138,11 @@ app.post('/rpc', (req, res) => {
                 
                 else if (msg.fun === 'danger_imposeNextRequestTimestamp') {
                     imposedRequestTimestamp = msg.timestamp
+                    return hunkyDory()
+                }
+                
+                else if (msg.fun === 'danger_imposeNextID') {
+                    imposedNextID = msg.id
                     return hunkyDory()
                 }
                 
@@ -361,12 +367,66 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getSupportThreads') {
+                    // TODO:vgrechka Place threads with recent messages first
                     const items = #await tx.query({$tag: 'e6dd4dfa-8118-4e25-9f71-13665dada843'}, q`
                         select * from support_threads
                                  where supportee_id = ${user.id}
                                  order by inserted_at desc
                     `)
                     return hunkyDory({items})
+                }
+                
+                else if (msg.fun === 'private_getSupportThreadMessages') {
+                    // TODO:vgrechka Reject bogus params
+                    // TODO:vgrechka Check access
+                    
+                    const entities = #await tx.query({$tag: 'f13a4eda-ab97-496d-b037-8b8f2b2599e1'}, q`
+                        select * from support_threads
+                                 where id = ${msg.entityID}
+                    `)
+                    // TODO:vgrechka Handle request for non-existing entity
+                    const entity = entities[0]
+
+                    const items = #await tx.query({$tag: 'b40d63d7-2cd2-4326-9f08-db3892522d7f'}, q`
+                        select * from support_thread_messages
+                                 where thread_id = ${msg.entityID}
+                                 order by inserted_at desc
+                    `)
+                    #await fillForeigns(items, 'users', ['sender', 'recipient'])
+                    // dlogs({items})
+                    return hunkyDory({entity, items})
+                    
+                    async function fillForeigns(rows, table, columns) {
+                        const ids = []
+                        for (const row of rows) {
+                            for (const column of columns) {
+                                const id = row[column + '_id']
+                                if (id !== undefined && id !== null) {
+                                    ids.push(id)
+                                }
+                            }
+                        }
+                        if (!ids.length) return
+                        
+                        const placeholders = range(ids.length).map(x => '$' + (x + 1)).join(', ')
+                        const foreignRows = #await tx.query({$tag: '0afa1c4f-885b-42f0-b102-ba9e862fa3d2'}, {q: {
+                            sql: `select * from users where id in (${placeholders})`,
+                            args: ids}})
+                            
+                        for (const row of rows) {
+                            for (const column of columns) {
+                                let entity
+                                for (const fr of foreignRows) {
+                                    if (fr.id === row[column + '_id']) {
+                                        entity = fr
+                                        delete entity.password_hash
+                                        break
+                                    }
+                                }
+                                row[column] = entity
+                            }
+                        }
+                    }
                 }
                 
                 else if (msg.fun === 'private_createSupportThread') {
@@ -385,7 +445,7 @@ app.post('/rpc', (req, res) => {
                             message: fields.message,
                         }})
                         
-                        return hunkyDory({thread_id})
+                        return hunkyDory({entity: {id: thread_id}})
                     }
                     return youFixErrors()
                 }
@@ -402,6 +462,12 @@ app.post('/rpc', (req, res) => {
                 
                 
                 async function insertInto(meta, {table, values}) {
+                    values = cloneDeep(values)
+                    if (imposedNextID) {
+                        values.id = imposedNextID
+                        imposedNextID = undefined
+                    }
+                    
                     let sql = `insert into "${table}"(inserted_at, updated_at`
                     const args = [requestTimestamp, requestTimestamp]
                     for (const [k, v] of toPairs(values)) {

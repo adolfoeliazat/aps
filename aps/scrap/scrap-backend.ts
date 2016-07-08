@@ -7,6 +7,10 @@ relog('Its state is', heyBackend_whatsYourState())
 relog(await tx.query({$tag: '03bb8d7f-09e5-4591-98ef-7f4bf6282bef'}, q`insert into foobar(foo) values(${'hello world'}) returning id`))
 
 
+relog(await tx.query({$tag: '03bb8d7f-09e5-4591-98ef-7f4bf6282bef'}, q`
+    select * from users where id in (${2}, ${78})`))
+
+
 relog(await testPGQuery({$tag: '03bb8d7f-09e5-4591-98ef-7f4bf6282bef'}, `select * from users`))
 
 relog(await pgQuery(`select * from users where email = $1`, ['toor']))

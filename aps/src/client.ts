@@ -29,12 +29,11 @@ global.igniteShit = makeUIShitIgniter({
                     orders: ordersPageLoader,
                     
                     async support() {
-                        if (ui.urlQuery.thread_id) {
-                            raise('implement me')
-                            render(await ui.rpcSoft({fun: 'private_getSupportThreadMessages', thread_id}))
+                        if (ui.urlQuery.thread) {
+                            render(await ui.rpcSoft({fun: 'private_getSupportThreadMessages', entityID: ui.urlQuery.thread}))
                             
                             function render(res) {
-                                const pageTitle = t(`TOTE`, `Запрос в поддержку №${res.thread.id}`),
+                                const pageTitle = t(`TOTE`, `Запрос в поддержку № ${res.entity.id}`),
                                 
                                 if (res.error) {
                                     return ui.setPage({
@@ -43,47 +42,19 @@ global.igniteShit = makeUIShitIgniter({
                                     })
                                 }
                                 
-                                const messageDivs = []
-    //                            for (const msg of res.messages) {
-    //                                let fromTitle
-    //                                if (msg.sender_id === ui.getUser().id) {
-    //                                    fromTitle = t(`TOTE`, `Я`)
-    //                                } else {
-    //                                    fromTitle = msg.sender_name
-    //                                }
-    //                                messageDivs.push(diva({style},
-    //                                    diva({}, timestampString(msg.inserted_at)),
-    //                                    diva({}, fromTitle),
-    //                                    diva({}, toTitle),
-    //                                    diva({}, msg.message),
-    //                                    ))
-    //                            }
-                                
-                                const form = ui.Form({
-                                    primaryButtonTitle: t(`TOTE`, `Создать тему`),
-                                    fields: {
-                                        topic: {
-                                            title: t(`TOTE`, `Тема`),
-                                            type: 'text',
-                                            attrs: {autoFocus: true},
-                                        },
-                                        message: {
-                                            title: t(`TOTE`, `Сообщение`),
-                                            type: 'textarea',
-                                        },
-                                    },
-                                    rpcFun: 'private_createSupportThread',
-                                    onSuccess(res) {
-                                        ui.pushNavigate(`support.html?thread=${res.thread_id}`)
-                                    },
-                                })
-                                
                                 ui.setPage({
-                                    pageTitle: t('Support', 'Поддержка'),
-                                    pageBody: div(...messageDivs, form)
+                                    pageTitle,
+                                    pageBody: div(
+                                        blockquotea({}, res.entity.topic),
+                                        div(...res.items.map((item, i) => {
+                                            return div(
+                                                diva({}, item.sender.first_name + ' ' + item.sender.last_name),
+                                                diva({}, item.message),
+                                                )
+                                        })))
                                 })
                             }
-                        } else if (!ui.urlQuery.thread_id) {
+                        } else if (!ui.urlQuery.thread) {
                             pageTitle = t('Support', 'Поддержка')
                             
                             const res = await ui.rpcSoft({fun: 'private_getSupportThreads', fromID: 0})
@@ -143,9 +114,8 @@ global.igniteShit = makeUIShitIgniter({
                                                     ui.updatePage()
                                                 })
                                             },
-                                            onSuccess(res) {
-                                                dlog('implement me')
-                                                // ui.pushNavigate(`support.html?thread=${res.thread_id}`)
+                                            async onSuccess(res) {
+                                                await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
                                             },
                                         })
                                         
@@ -518,6 +488,8 @@ global.igniteShit = makeUIShitIgniter({
                     errorBanner: `Пожалуйста, исправьте ошибки ниже`,
                     displayLabels: {} 
                 }})
+                
+                await drpc({fun: 'danger_imposeNextID', id: 312})
 
                 // Inputs
                 testGlobal.inputs.topic.value = 'Заапрувьте меня'
@@ -529,6 +501,7 @@ global.igniteShit = makeUIShitIgniter({
 
                 }})
 
+                art.preventRestoringURLAfterTest()
 
  
                 
