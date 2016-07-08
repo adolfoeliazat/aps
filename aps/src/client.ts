@@ -94,15 +94,16 @@ global.igniteShit = makeUIShitIgniter({
                                 })
                             }
                             
-                            let items, showEmptyLabel = true, form
+                            let items, showEmptyLabel = true, form, plusButtonVisible = true, plusButtonClass, formClass
                             render()
                             
                             function render() {
                                 ui.setPage({
                                     pageTitle,
                                     pageBody: div(
-                                        form,
+                                        diva({className: formClass}, form),
                                         run(function renderItems() {
+                                            return lorem()
                                             if (!res.items.length) {
                                                 if (showEmptyLabel) {
                                                     return div(t(`TOTE`, `Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.`))
@@ -112,30 +113,54 @@ global.igniteShit = makeUIShitIgniter({
                                             }
                                         })
                                     ),
-                                    headerControls: diva({}, button.primary.plus({name: 'plus'}, _=> {
-                                        showEmptyLabel = false
-                                        
-                                        form = ui.Form({
-                                            primaryButtonTitle: t(`TOTE`, `Запостить`),
-                                            fields: {
-                                                topic: {
-                                                    title: t(`TOTE`, `Тема`),
-                                                    type: 'text',
-                                                    attrs: {autoFocus: true},
+                                    headerControls: diva({},
+                                        plusButtonVisible && button.primary.plus({name: 'plus', className: plusButtonClass}, _=> {
+                                            showEmptyLabel = false
+                                            plusButtonClass = 'aniMinimize'
+                                            formClass = 'aniFadeIn'
+                                            
+                                            form = ui.Form({
+                                                primaryButtonTitle: t(`TOTE`, `Запостить`),
+                                                cancelButtonTitle: t(`TOTE`, `Отмена`),
+                                                fields: {
+                                                    topic: {
+                                                        title: t(`TOTE`, `Тема`),
+                                                        type: 'text',
+                                                        attrs: {autoFocus: true},
+                                                    },
+                                                    message: {
+                                                        title: t(`TOTE`, `Сообщение`),
+                                                        type: 'textarea',
+                                                    },
                                                 },
-                                                message: {
-                                                    title: t(`TOTE`, `Сообщение`),
-                                                    type: 'textarea',
+                                                rpcFun: 'private_createSupportThread',
+                                                onCancel() {
+                                                    plusButtonVisible = true
+                                                    plusButtonClass = 'aniFadeIn'
+                                                    // formClass = 'aniFadeOut'
+                                                    // formClass = 'aniMinimize'
+                                                    form = undefined
+                                                    render()
+                                                        
+                                                    timeoutSet(500, _=> {
+                                                        // form = undefined
+                                                        plusButtonClass = undefined
+                                                        render()
+                                                    })
                                                 },
-                                            },
-                                            rpcFun: 'private_createSupportThread',
-                                            onSuccess(res) {
-                                                dlog('implement me')
-                                                // ui.pushNavigate(`support.html?thread=${res.thread_id}`)
-                                            },
-                                        })
-                                        
-                                        render()
+                                                onSuccess(res) {
+                                                    dlog('implement me')
+                                                    // ui.pushNavigate(`support.html?thread=${res.thread_id}`)
+                                                },
+                                            })
+                                            
+                                            render()
+                                            
+                                            timeoutSet(500, _=> {
+                                                plusButtonVisible = false
+                                                formClass = undefined
+                                                render()
+                                            })
                                     }))
                                 })
                             }
