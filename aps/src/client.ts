@@ -95,75 +95,69 @@ global.igniteShit = makeUIShitIgniter({
                             }
                             
                             let items, showEmptyLabel = true, form, plusButtonVisible = true, plusButtonClass, formClass
-                            render()
                             
-                            function render() {
-                                ui.setPage({
-                                    pageTitle,
-                                    pageBody: div(
-                                        diva({className: formClass}, form),
-                                        run(function renderItems() {
-                                            return lorem()
-                                            if (!res.items.length) {
-                                                if (showEmptyLabel) {
-                                                    return div(t(`TOTE`, `Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.`))
-                                                }
-                                            } else {
-                                                return div('liiiiiiist')
+                            ui.setPage({
+                                pageTitle,
+                                pageBody: _=> div(
+                                    diva({className: formClass}, form),
+                                    run(function renderItems() {
+                                        if (!res.items.length) {
+                                            if (showEmptyLabel) {
+                                                return div(t(`TOTE`, `Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.`))
                                             }
+                                        } else {
+                                            return div('liiiiiiist')
+                                        }
+                                    })
+                                ),
+                                headerControls: _=> diva({style: {display: 'flex'}},
+                                    diva({style: {marginRight: 10, marginTop: 8}}, t('Filter here')),
+                                    plusButtonVisible && button.primary.plus({name: 'plus', className: plusButtonClass}, _=> {
+                                        showEmptyLabel = false
+                                        plusButtonClass = 'aniMinimize'
+                                        formClass = 'aniFadeIn'
+                                        
+                                        form = ui.Form({
+                                            primaryButtonTitle: t(`TOTE`, `Запостить`),
+                                            cancelButtonTitle: t(`TOTE`, `Не стоит`),
+                                            fields: {
+                                                topic: {
+                                                    title: t(`TOTE`, `Тема`),
+                                                    type: 'text',
+                                                    autoFocus: true,
+                                                },
+                                                message: {
+                                                    title: t(`TOTE`, `Сообщение`),
+                                                    type: 'textarea',
+                                                },
+                                            },
+                                            rpcFun: 'private_createSupportThread',
+                                            onCancel() {
+                                                plusButtonVisible = true
+                                                plusButtonClass = 'aniFadeIn'
+                                                form = undefined
+                                                ui.updatePage()
+                                                    
+                                                timeoutSet(500, _=> {
+                                                    plusButtonClass = undefined
+                                                    ui.updatePage()
+                                                })
+                                            },
+                                            onSuccess(res) {
+                                                dlog('implement me')
+                                                // ui.pushNavigate(`support.html?thread=${res.thread_id}`)
+                                            },
                                         })
-                                    ),
-                                    headerControls: diva({},
-                                        plusButtonVisible && button.primary.plus({name: 'plus', className: plusButtonClass}, _=> {
-                                            showEmptyLabel = false
-                                            plusButtonClass = 'aniMinimize'
-                                            formClass = 'aniFadeIn'
-                                            
-                                            form = ui.Form({
-                                                primaryButtonTitle: t(`TOTE`, `Запостить`),
-                                                cancelButtonTitle: t(`TOTE`, `Отмена`),
-                                                fields: {
-                                                    topic: {
-                                                        title: t(`TOTE`, `Тема`),
-                                                        type: 'text',
-                                                        attrs: {autoFocus: true},
-                                                    },
-                                                    message: {
-                                                        title: t(`TOTE`, `Сообщение`),
-                                                        type: 'textarea',
-                                                    },
-                                                },
-                                                rpcFun: 'private_createSupportThread',
-                                                onCancel() {
-                                                    plusButtonVisible = true
-                                                    plusButtonClass = 'aniFadeIn'
-                                                    // formClass = 'aniFadeOut'
-                                                    // formClass = 'aniMinimize'
-                                                    form = undefined
-                                                    render()
-                                                        
-                                                    timeoutSet(500, _=> {
-                                                        // form = undefined
-                                                        plusButtonClass = undefined
-                                                        render()
-                                                    })
-                                                },
-                                                onSuccess(res) {
-                                                    dlog('implement me')
-                                                    // ui.pushNavigate(`support.html?thread=${res.thread_id}`)
-                                                },
-                                            })
-                                            
-                                            render()
-                                            
-                                            timeoutSet(500, _=> {
-                                                plusButtonVisible = false
-                                                formClass = undefined
-                                                render()
-                                            })
-                                    }))
-                                })
-                            }
+                                        
+                                        ui.updatePage()
+                                        
+                                        timeoutSet(250, _=> {
+                                            plusButtonVisible = false
+                                            formClass = undefined
+                                            ui.updatePageHeader()
+                                        })
+                                }))
+                            })
                         }
                     },
                 
@@ -243,7 +237,7 @@ global.igniteShit = makeUIShitIgniter({
                     } else if (userState === 'profile-approval-pending') {
                         pageBody = div(preludeWithHourglass(span(t('TOTE', 'Админ проверяет профиль, жди извещения почтой. Если есть вопросы, можно написать в '),
                                                                  ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
-                                                                 t('.')), {center: 720}),
+                                                                 t('.'))),
                                        userDisplayForm(ui.getUser()))
                     }
                     
@@ -487,22 +481,34 @@ global.igniteShit = makeUIShitIgniter({
                 // Action
                 testGlobal.links.support.click()
                 await art.linkBlinksForMax({$tag: 'eceeb886-f96e-4baa-a0c1-e75cc79d4e84', name: 'support', max: 2000})
+                art.textSomewhere({$tag: '35738e20-16f0-4657-bdc1-60ba524d011b', expected: 'Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.'})
                 art.uiState({$tag: '0f630ccd-9936-4d27-ac1c-4d391a184e79', expected: {
+                    url: `http://aps-ua-writer.local:3022/support.html`,
+                    pageHeader: `Поддержка`,
+                    inputs: {},
+                    errorLabels: {},
+                    errorBanner: undefined,
+                    displayLabels: {} 
+                }})                
+                
+                // Action
+                testGlobal.buttons.plus.click()
+                art.uiState({$tag: 'b990c804-6621-4b49-879e-57caffc7bcce', expected: {
                     url: `http://aps-ua-writer.local:3022/support.html`,
                     pageHeader: `Поддержка`,
                     inputs: { topic: { value: `` }, message: { value: `` } },
                     errorLabels: {},
                     errorBanner: undefined,
                     displayLabels: {} 
-                }})                
+                }})
 
                 // Inputs
                 testGlobal.inputs.topic.value = ''
                 testGlobal.inputs.message.value = ''
                 // Action
                 testGlobal.buttons.primary.click()
-                await art.shitSpinsForMax({$tag: '88d16caa-e430-4f95-8279-f3a25a0c857d', max: 2000})
-                art.uiState({$tag: 'b4572e9b-f721-494f-980a-9c2a13041e3b', expected: {
+                await art.shitSpinsForMax({$tag: '40894d9d-cc5f-486c-a1c5-213283b754fe', max: 2000})
+                art.uiState({$tag: '1c53f5c2-ed8b-4157-a4ef-400c1617f16d', expected: {
                     url: `http://aps-ua-writer.local:3022/support.html`,
                     pageHeader: `Поддержка`,
                     inputs: { topic: { value: `` }, message: { value: `` } },
@@ -512,16 +518,48 @@ global.igniteShit = makeUIShitIgniter({
                     errorBanner: `Пожалуйста, исправьте ошибки ниже`,
                     displayLabels: {} 
                 }})
-                
+
                 // Inputs
                 testGlobal.inputs.topic.value = 'Заапрувьте меня'
-                testGlobal.inputs.message.value = 'И побыстрее, мать вашу!'
+                testGlobal.inputs.message.value = 'И побыстрее давайте!'
                 // Action
                 testGlobal.buttons.primary.click()
-                await art.shitSpinsForMax({$tag: '0f39d2be-7ebe-454d-9c3b-413bb7a4b9f3', max: 2000})
-                art.uiState({$tag: 'c02d34e4-4a28-4d59-bd09-91d84bd06a1a', expected: {
+                await art.shitSpinsForMax({$tag: '08a79fdd-1e1e-48b4-8f80-f2b1695ee096', max: 2000})
+                art.uiState({$tag: '848839fb-f059-4cc3-87bf-3875e6deff0f', expected: {
 
                 }})
+
+
+ 
+                
+                //art.boom('1fbfe070-6d05-4fdf-9bf1-f250cfb7089a')
+
+//                // Inputs
+//                testGlobal.inputs.topic.value = ''
+//                testGlobal.inputs.message.value = ''
+//                // Action
+//                testGlobal.buttons.primary.click()
+//                await art.shitSpinsForMax({$tag: '88d16caa-e430-4f95-8279-f3a25a0c857d', max: 2000})
+//                art.uiState({$tag: 'b4572e9b-f721-494f-980a-9c2a13041e3b', expected: {
+//                    url: `http://aps-ua-writer.local:3022/support.html`,
+//                    pageHeader: `Поддержка`,
+//                    inputs: { topic: { value: `` }, message: { value: `` } },
+//                    errorLabels: 
+//                     { topic: { title: `Поле обязательно` },
+//                       message: { title: `Поле обязательно` } },
+//                    errorBanner: `Пожалуйста, исправьте ошибки ниже`,
+//                    displayLabels: {} 
+//                }})
+//                
+//                // Inputs
+//                testGlobal.inputs.topic.value = 'Заапрувьте меня'
+//                testGlobal.inputs.message.value = 'И побыстрее, мать вашу!'
+//                // Action
+//                testGlobal.buttons.primary.click()
+//                await art.shitSpinsForMax({$tag: '0f39d2be-7ebe-454d-9c3b-413bb7a4b9f3', max: 2000})
+//                art.uiState({$tag: 'c02d34e4-4a28-4d59-bd09-91d84bd06a1a', expected: {
+//
+//                }})
 
 
 
@@ -669,38 +707,42 @@ export function writerDynamicPageNames() {
 }
 
 function userDisplayForm(user) {
-    return centered720(diva({},
+    return diva({},
         diva({className: 'row'},
-            diva({className: 'col-sm-4'},
+            diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Имя`)),
                     diva({}, displayLabel({name: 'first_name', content: user.first_name})))),
-            diva({className: 'col-sm-4'},
+            diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Фамилия`)),
                     diva({}, displayLabel({name: 'last_name', content: user.last_name})))),
-            diva({className: 'col-sm-4'},
+            diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Почта`)),
                     diva({}, displayLabel({name: 'email', content: user.email})))),
-        ),
-        diva({className: 'row'},
-            diva({className: 'col-sm-4'},
+            diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Телефон`)),
                     diva({}, displayLabel({name: 'phone', content: user.phone})))),
         ),
+//        diva({className: 'row'},
+//            diva({className: 'col-sm-4'},
+//                diva({className: 'form-group'},
+//                    labela({}, t(`TOTE`, `Телефон`)),
+//                    diva({}, displayLabel({name: 'phone', content: user.phone})))),
+//        ),
         diva({className: 'row'},
-            diva({className: 'col-sm-4'},
+            diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Аккаунт создан`)),
                     diva({}, displayLabel({name: 'inserted_at', content: timestampString(user.inserted_at)})))),
-            diva({className: 'col-sm-4'},
+            diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Профиль изменен`)),
                     diva({}, displayLabel({name: 'profile_updated_at', content: timestampString(user.profile_updated_at)})))),
         ),
-    ))
+    )
 }
 
 clog('Client code is kind of loaded')
