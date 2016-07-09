@@ -403,6 +403,7 @@ global.igniteShit = makeUIShitIgniter({
                 }})            
                 art.textSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
 
+                #hawait art.pausePoint({title: 'Before entering password received by email', $tag: '51076622-8afd-45f5-9fda-a55b98380410'})
                 // Inputs
                 #hawait testGlobal.inputs.email.setValue('fred.red@test.shit.ua')
                 #hawait testGlobal.inputs.password.setValue('b34b80fb-ae50-4456-8557-399366fe45e4')
