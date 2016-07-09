@@ -43,6 +43,7 @@ app.post('/rpc', (req, res) => {
         
         let stackBeforeAwait, awaitRes
         
+        const t0 = Date.now()
         try {
             if (msg.fun.startsWith('danger_')) {
                 const serverToken = process.env.APS_DANGEROUS_TOKEN
@@ -621,6 +622,9 @@ app.post('/rpc', (req, res) => {
                 clog(`Stack before await: ${stackBeforeAwait}`)
             }
             return {fatal: situation, stack: fucked.stack, stackBeforeAwait} // TODO:vgrechka Send stack only if debug mode
+        } finally {
+            const elapsed = Date.now() - t0
+            dlog(`${msg.fun}: ${elapsed}ms`)
         }
     }
 })

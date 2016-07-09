@@ -9,7 +9,6 @@
 MODE = 'debug'
 DEBUG_SIMULATE_SLOW_NETWORK = true
 DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 1000
-// DEBUG_RPC_LAG_FOR_AUTOMATED_TESTS = 50
 BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
@@ -138,6 +137,7 @@ global.igniteShit = makeUIShitIgniter({
                                                 })
                                             },
                                             async onSuccess(res) {
+                                                makeNextRPCNotLaggingInTests()
                                                 await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
                                             },
                                         })
