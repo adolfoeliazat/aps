@@ -153,6 +153,7 @@ app.post('/rpc', (req, res) => {
                 else if (msg.fun === 'danger_killUser') {
                     const u = #await tx.query({$tag: '8adf924e-47f3-4098-abf9-e5ceee5c7832'}, q`
                         select * from users where email = ${msg.email}`)[0]
+                    if (!u) return hunkyDory()
                         
                     #await tx.query({$tag: 'e9622700-e408-4bf9-a3cd-434ddf6fb11b'}, q`
                         delete from user_tokens where user_id = ${u.id}`)

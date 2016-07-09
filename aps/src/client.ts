@@ -8,6 +8,8 @@
 
 MODE = 'debug'
 DEBUG_SIMULATE_SLOW_NETWORK = true
+DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 1000
+DEBUG_RPC_LAG_FOR_AUTOMATED_TESTS = 50
 BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
@@ -353,6 +355,7 @@ global.igniteShit = makeUIShitIgniter({
                     displayLabels: {} 
                 }})
                 
+                await art.pausePoint({title: 'Before clicking "Create account" link', $tag: 'ee90e201-9429-4577-aea9-0277e66979ad'})
                 testGlobal.links.createAccount.click()
                 art.uiState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-up.html`,
@@ -366,6 +369,7 @@ global.igniteShit = makeUIShitIgniter({
                     errorBanner: undefined,
                     displayLabels: {} 
                 }})            
+                await art.pausePoint({title: 'After clicking "Create account" link', $tag: '8cf1b341-6f24-4c5b-89e8-aff163a505f5'})
                 
                 await drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:21:36'})
                 
