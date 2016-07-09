@@ -46,12 +46,33 @@ global.igniteShit = makeUIShitIgniter({
                                     pageTitle,
                                     pageBody: div(
                                         blockquotea({}, res.entity.topic),
-                                        div(...res.items.map((item, i) => {
-                                            return div(
-                                                diva({}, item.sender.first_name + ' ' + item.sender.last_name),
-                                                diva({}, item.message),
-                                                )
-                                        })))
+                                        dataArray('messages', _=> div(...res.items.map((item, i) => {
+                                            // dlogs(item)
+                                            
+                                            let rowBackground, lineColor
+                                            if (item.sender.kind === 'customer' || item.sender.kind === 'writer') {
+                                                rowBackground = WHITE
+                                                lineColor = BLUE_GRAY_50
+                                            } else {
+                                                rowBackground = BLUE_GRAY_50
+                                                lineColor = WHITE
+                                            }
+                                            
+                                            return dataObject('message', _=> diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
+                                                diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 5}},
+                                                    diva({}, spana({style: {fontWeight: 'bold'}},
+                                                        t(`TOTE`, `От: `)),
+                                                        dataField('from', item.sender.first_name + ' ' + item.sender.last_name)),
+                                                    diva({}, spana({style: {fontWeight: 'bold'}},
+                                                        t(`TOTE`, `Кому: `)),
+                                                        item.recipient ? diva({}, item.recipient.first_name + ' ' + item.recipient.last_name)
+                                                                       : t(`TOTE`, `В рельсу`)),
+                                                    diva({style: {marginTop: 10}}, timestampString(item.inserted_at))
+                                                ),
+                                                diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
+                                                    item.message)
+                                                ))
+                                        }))))
                                 })
                             }
                         } else if (!ui.urlQuery.thread) {
@@ -490,6 +511,7 @@ global.igniteShit = makeUIShitIgniter({
                 }})
                 
                 await drpc({fun: 'danger_imposeNextID', id: 312})
+                await drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:30:45'})
 
                 // Inputs
                 testGlobal.inputs.topic.value = 'Заапрувьте меня'
@@ -501,7 +523,7 @@ global.igniteShit = makeUIShitIgniter({
 
                 }})
 
-                art.preventRestoringURLAfterTest()
+                // art.preventRestoringURLAfterTest()
 
  
                 
@@ -709,11 +731,11 @@ function userDisplayForm(user) {
             diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Аккаунт создан`)),
-                    diva({}, displayLabel({name: 'inserted_at', content: timestampString(user.inserted_at)})))),
+                    diva({}, displayLabel({name: 'inserted_at', content: timestampString(user.inserted_at, {includeTZ: true})})))),
             diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
                     labela({}, t(`TOTE`, `Профиль изменен`)),
-                    diva({}, displayLabel({name: 'profile_updated_at', content: timestampString(user.profile_updated_at)})))),
+                    diva({}, displayLabel({name: 'profile_updated_at', content: timestampString(user.profile_updated_at, {includeTZ: true})})))),
         ),
     )
 }
