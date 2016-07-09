@@ -1379,7 +1379,22 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                         opacity: 0;
                       }
                     }
-                     
+        
+                    .aniBlinkingFast {
+                        animation-name: aniBlinkingFast;
+                        animation-duration: 250ms;
+                        animation-iteration-count: infinite;
+                      }
+                    @keyframes aniBlinkingFast {
+                      0% {
+                        opacity: 0;
+                      }
+                      
+                      100% {
+                        opacity: 1;
+                      }
+                    }
+                   
         
                 </style>
         

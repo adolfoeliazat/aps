@@ -9,7 +9,7 @@
 MODE = 'debug'
 DEBUG_SIMULATE_SLOW_NETWORK = true
 DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 1000
-DEBUG_RPC_LAG_FOR_AUTOMATED_TESTS = 50
+// DEBUG_RPC_LAG_FOR_AUTOMATED_TESTS = 50
 BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
@@ -356,7 +356,7 @@ global.igniteShit = makeUIShitIgniter({
                 }})
                 
                 await art.pausePoint({title: 'Before clicking "Create account" link', $tag: 'ee90e201-9429-4577-aea9-0277e66979ad'})
-                testGlobal.links.createAccount.click()
+                await testGlobal.links.createAccount.click()
                 await art.linkBlinksForMax({$tag: '67abf17a-ab93-4891-a844-54b6baa0c387', name: 'createAccount', max: 2000})
                 art.uiState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-up.html`,
@@ -380,7 +380,7 @@ global.igniteShit = makeUIShitIgniter({
                 testGlobal.inputs.lastName.value = 'Ред'
                 testGlobal.inputs.agreeTerms.value = true
                 // Action
-                testGlobal.buttons.primary.click()
+                await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '39df3f4b-5ca0-4929-bae7-ec1d3bd008ed', max: 2000})
                 
                 await art.sentEmails({$tag: '024f202c-ee75-44ed-ac26-44154d4caf13', descr: 'Email with password', expected: [
@@ -406,7 +406,7 @@ global.igniteShit = makeUIShitIgniter({
                 testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
                 testGlobal.inputs.password.value = 'b34b80fb-ae50-4456-8557-399366fe45e4'
                 // Action
-                testGlobal.buttons.primary.click()
+                await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
 
                 art.uiState({$tag: '4d88eed7-d800-4a00-bfea-6b011329eaf0', expected: {
@@ -425,7 +425,7 @@ global.igniteShit = makeUIShitIgniter({
                 // Inputs
                 testGlobal.inputs.phone.value = ''
                 // Action
-                testGlobal.buttons.primary.click()
+                await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: 'fbe5bc76-cf5a-4ed4-90af-a815784cfd1e', max: 2000})
                 art.uiState({$tag: '80db2840-cf3b-428e-8f7a-3a447f94d93a', expected: {
                     url: `http://aps-ua-writer.local:3022/profile.html`,
@@ -439,7 +439,7 @@ global.igniteShit = makeUIShitIgniter({
                 // Inputs
                 testGlobal.inputs.phone.value = 'adsfasdf'
                 // Action
-                testGlobal.buttons.primary.click()
+                await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '2d6f5c02-1eae-49cb-9c5a-0509a4f29e05', max: 2000})
                 art.uiState({$tag: '24d5e9b2-0dac-40d6-94e8-57d0cfe00c9b', expected: {
                     url: `http://aps-ua-writer.local:3022/profile.html`,
@@ -454,7 +454,7 @@ global.igniteShit = makeUIShitIgniter({
                 // Inputs
                 testGlobal.inputs.phone.value = '123-45-67'
                 // Action
-                testGlobal.buttons.primary.click()
+                await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: 'e804da7e-6d1e-4fe4-a40e-e7697cb23622', max: 2000})
                 
                 art.uiState({$tag: '47a1c72b-4813-4dcd-a2fc-25ca3b739a92', expected: {
@@ -476,7 +476,7 @@ global.igniteShit = makeUIShitIgniter({
                             
                 await art.pausePoint({title: 'Before clicking "Support" link', $tag: 'c7d7eed5-df24-4db3-a361-9da4470c4bd1'})
                 // Action
-                testGlobal.links.support.click()
+                await testGlobal.links.support.click()
                 await art.linkBlinksForMax({$tag: 'eceeb886-f96e-4baa-a0c1-e75cc79d4e84', name: 'support', max: 2000})
                 art.textSomewhere({$tag: '35738e20-16f0-4657-bdc1-60ba524d011b', expected: 'Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.'})
                 art.uiState({$tag: '0f630ccd-9936-4d27-ac1c-4d391a184e79', expected: {
@@ -489,7 +489,7 @@ global.igniteShit = makeUIShitIgniter({
                 }})                
                 
                 // Action
-                testGlobal.buttons.plus.click()
+                await testGlobal.buttons.plus.click()
                 art.uiState({$tag: 'b990c804-6621-4b49-879e-57caffc7bcce', expected: {
                     url: `http://aps-ua-writer.local:3022/support.html`,
                     pageHeader: `Поддержка`,
@@ -503,7 +503,7 @@ global.igniteShit = makeUIShitIgniter({
                 testGlobal.inputs.topic.value = ''
                 testGlobal.inputs.message.value = ''
                 // Action
-                testGlobal.buttons.primary.click()
+                await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '40894d9d-cc5f-486c-a1c5-213283b754fe', max: 2000})
                 art.uiState({$tag: '1c53f5c2-ed8b-4157-a4ef-400c1617f16d', expected: {
                     url: `http://aps-ua-writer.local:3022/support.html`,
@@ -523,54 +523,16 @@ global.igniteShit = makeUIShitIgniter({
                 testGlobal.inputs.topic.value = 'Заапрувьте меня'
                 testGlobal.inputs.message.value = 'И побыстрее давайте!'
                 // Action
-                testGlobal.buttons.primary.click()
+                await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '08a79fdd-1e1e-48b4-8f80-f2b1695ee096', max: 2000})
                 art.uiState({$tag: '848839fb-f059-4cc3-87bf-3875e6deff0f', expected: {
 
                 }})
 
-                // art.preventRestoringURLAfterTest()
-
- 
-                
                 //art.boom('1fbfe070-6d05-4fdf-9bf1-f250cfb7089a')
-
-//                // Inputs
-//                testGlobal.inputs.topic.value = ''
-//                testGlobal.inputs.message.value = ''
-//                // Action
-//                testGlobal.buttons.primary.click()
-//                await art.shitSpinsForMax({$tag: '88d16caa-e430-4f95-8279-f3a25a0c857d', max: 2000})
-//                art.uiState({$tag: 'b4572e9b-f721-494f-980a-9c2a13041e3b', expected: {
-//                    url: `http://aps-ua-writer.local:3022/support.html`,
-//                    pageHeader: `Поддержка`,
-//                    inputs: { topic: { value: `` }, message: { value: `` } },
-//                    errorLabels: 
-//                     { topic: { title: `Поле обязательно` },
-//                       message: { title: `Поле обязательно` } },
-//                    errorBanner: `Пожалуйста, исправьте ошибки ниже`,
-//                    displayLabels: {} 
-//                }})
-//                
-//                // Inputs
-//                testGlobal.inputs.topic.value = 'Заапрувьте меня'
-//                testGlobal.inputs.message.value = 'И побыстрее, мать вашу!'
-//                // Action
-//                testGlobal.buttons.primary.click()
-//                await art.shitSpinsForMax({$tag: '0f39d2be-7ebe-454d-9c3b-413bb7a4b9f3', max: 2000})
-//                art.uiState({$tag: 'c02d34e4-4a28-4d59-bd09-91d84bd06a1a', expected: {
-//
-//                }})
-
-
-
 
                 // @ctx test
             },
-            
-            // preventRestoringURLAfterTest = true
-            // failForJumping('Implement me', '182853f7-c8ee-41b9-b45f-d52636f9a154')
-            
         }
     },
 })
