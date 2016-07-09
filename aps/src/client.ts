@@ -357,6 +357,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 await art.pausePoint({title: 'Before clicking "Create account" link', $tag: 'ee90e201-9429-4577-aea9-0277e66979ad'})
                 testGlobal.links.createAccount.click()
+                await art.linkBlinksForMax({$tag: '67abf17a-ab93-4891-a844-54b6baa0c387', name: 'createAccount', max: 2000})
                 art.uiState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-up.html`,
                     pageHeader: `Регистрация`,
@@ -473,6 +474,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 // ---------- Posting a message to support ----------
                             
+                await art.pausePoint({title: 'Before clicking "Support" link', $tag: 'c7d7eed5-df24-4db3-a361-9da4470c4bd1'})
                 // Action
                 testGlobal.links.support.click()
                 await art.linkBlinksForMax({$tag: 'eceeb886-f96e-4baa-a0c1-e75cc79d4e84', name: 'support', max: 2000})
