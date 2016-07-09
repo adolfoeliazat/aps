@@ -46,7 +46,7 @@ global.igniteShit = makeUIShitIgniter({
                                     pageTitle,
                                     pageBody: div(
                                         blockquotea({}, res.entity.topic),
-                                        dataArray('messages', _=> div(...res.items.map((item, i) => {
+                                        dataArray('supportThreadMessages', _=> div(...res.items.map((item, i) => {
                                             // dlogs(item)
                                             
                                             let rowBackground, lineColor
@@ -58,15 +58,15 @@ global.igniteShit = makeUIShitIgniter({
                                                 lineColor = WHITE
                                             }
                                             
-                                            return dataObject('message', _=> diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
+                                            return dataItemObject('supportThreadMessage', _=> diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
                                                 diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 5}},
                                                     diva({}, spana({style: {fontWeight: 'bold'}},
                                                         t(`TOTE`, `От: `)),
                                                         dataField('from', item.sender.first_name + ' ' + item.sender.last_name)),
                                                     diva({}, spana({style: {fontWeight: 'bold'}},
                                                         t(`TOTE`, `Кому: `)),
-                                                        item.recipient ? diva({}, item.recipient.first_name + ' ' + item.recipient.last_name)
-                                                                       : t(`TOTE`, `В рельсу`)),
+                                                        dataField('to', item.recipient ? (item.recipient.first_name + ' ' + item.recipient.last_name)
+                                                                                       : t(`TOTE`, `В рельсу`))),
                                                     diva({style: {marginTop: 10}}, timestampString(item.inserted_at))
                                                 ),
                                                 diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
