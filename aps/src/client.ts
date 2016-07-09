@@ -291,10 +291,10 @@ global.igniteShit = makeUIShitIgniter({
                 }})
 
                 // Inputs
-                testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
-                testGlobal.inputs.firstName.value = 'Вильма'
-                testGlobal.inputs.lastName.value = 'Блу'
-                testGlobal.inputs.agreeTerms.value = true
+                await testGlobal.inputs.email.setValue('wilma.blue@test.shit.ua')
+                await testGlobal.inputs.firstName.setValue('Вильма')
+                await testGlobal.inputs.lastName.setValue('Блу')
+                await testGlobal.inputs.agreeTerms.setValue(true)
                 // Action
                 testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '29832372-ff89-46dd-ba9d-cf54154503f5', max: 2000})
@@ -319,8 +319,8 @@ global.igniteShit = makeUIShitIgniter({
                 ]})
                 
                 // Inputs
-                testGlobal.inputs.email.value = 'wilma.blue@test.shit.ua'
-                testGlobal.inputs.password.value = '63b2439c-bf18-42c5-9f7a-42d7357f966a'
+                await testGlobal.inputs.email.setValue('wilma.blue@test.shit.ua')
+                await testGlobal.inputs.password.setValue('63b2439c-bf18-42c5-9f7a-42d7357f966a')
                 // Action
                 testGlobal.buttons.primary.click()
                 await assertShitSpinsForMax({$tag: '96f4aa5d-4f5d-4de4-869b-07f2f6f53b8b', max: 2000})
@@ -375,10 +375,11 @@ global.igniteShit = makeUIShitIgniter({
                 await drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:21:36'})
                 
                 // Inputs
-                testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
-                testGlobal.inputs.firstName.value = 'Фред'
-                testGlobal.inputs.lastName.value = 'Ред'
-                testGlobal.inputs.agreeTerms.value = true
+                await testGlobal.inputs.email.setValue('fred.red@test.shit.ua')
+                await testGlobal.inputs.firstName.setValue('Фред')
+                await testGlobal.inputs.lastName.setValue('Ред')
+                await testGlobal.inputs.agreeTerms.setValue(true)
+                
                 // Action
                 await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '39df3f4b-5ca0-4929-bae7-ec1d3bd008ed', max: 2000})
@@ -403,8 +404,8 @@ global.igniteShit = makeUIShitIgniter({
                 art.textSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
 
                 // Inputs
-                testGlobal.inputs.email.value = 'fred.red@test.shit.ua'
-                testGlobal.inputs.password.value = 'b34b80fb-ae50-4456-8557-399366fe45e4'
+                await testGlobal.inputs.email.setValue('fred.red@test.shit.ua')
+                await testGlobal.inputs.password.setValue('b34b80fb-ae50-4456-8557-399366fe45e4')
                 // Action
                 await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: 'd880053c-0f24-46ec-8c47-c635e91d6a39', max: 2000})
@@ -423,7 +424,7 @@ global.igniteShit = makeUIShitIgniter({
                 art.noTextSomewhere({$tag: 'a3e73a3e-8ed7-4a69-b748-e955ae4fd606', unexpected: 'Аукцион'})
                 
                 // Inputs
-                testGlobal.inputs.phone.value = ''
+                await testGlobal.inputs.phone.setValue('')
                 // Action
                 await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: 'fbe5bc76-cf5a-4ed4-90af-a815784cfd1e', max: 2000})
@@ -437,7 +438,7 @@ global.igniteShit = makeUIShitIgniter({
                 }})
 
                 // Inputs
-                testGlobal.inputs.phone.value = 'adsfasdf'
+                await testGlobal.inputs.phone.setValue('adsfasdf')
                 // Action
                 await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '2d6f5c02-1eae-49cb-9c5a-0509a4f29e05', max: 2000})
@@ -452,7 +453,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 await drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:24:51'})
                 // Inputs
-                testGlobal.inputs.phone.value = '123-45-67'
+                await testGlobal.inputs.phone.setValue('123-45-67')
                 // Action
                 await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: 'e804da7e-6d1e-4fe4-a40e-e7697cb23622', max: 2000})
@@ -500,8 +501,8 @@ global.igniteShit = makeUIShitIgniter({
                 }})
 
                 // Inputs
-                testGlobal.inputs.topic.value = ''
-                testGlobal.inputs.message.value = ''
+                await testGlobal.inputs.topic.setValue('')
+                await testGlobal.inputs.message.setValue('')
                 // Action
                 await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '40894d9d-cc5f-486c-a1c5-213283b754fe', max: 2000})
@@ -520,8 +521,8 @@ global.igniteShit = makeUIShitIgniter({
                 await drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:30:45'})
 
                 // Inputs
-                testGlobal.inputs.topic.value = 'Заапрувьте меня'
-                testGlobal.inputs.message.value = 'И побыстрее давайте!'
+                await testGlobal.inputs.topic.setValue('Заапрувьте меня')
+                await testGlobal.inputs.message.setValue('И побыстрее давайте!')
                 // Action
                 await testGlobal.buttons.primary.click()
                 await art.shitSpinsForMax({$tag: '08a79fdd-1e1e-48b4-8f80-f2b1695ee096', max: 2000})
