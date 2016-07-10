@@ -378,6 +378,7 @@ global.igniteShit = makeUIShitIgniter({
             async 'UA Writer :: Sign Up :: 1    b583c010-f383-4635-a826-3d2bb79f0806'() {
                 #hawait drpc({fun: 'danger_clearSentEmails'})
                 #hawait drpc({fun: 'danger_killUser', email: 'fred.red@test.shit.ua'})
+                #hawait drpc({fun: 'danger_setUpTestUsers'})
                 
                 // ---------- Browser: fred ----------
                 
@@ -656,10 +657,31 @@ global.igniteShit = makeUIShitIgniter({
                 #hawait sim.navigate('dashboard.html')
                 #hawait art.pausePoint({title: 'Now Todd from support comes into play', $tag: '4dbe962a-9a7d-4d43-bcc2-7e1e2f8785a8'})
                 
+                art.uiState({$tag: '6cfa0fe3-e86b-4d25-a9fb-751faba69643', expected: {
+                    url: `http://aps-ua-writer.local:3022/sign-in.html`,
+                    pageHeader: `Вход`,
+                    inputs: { email: { value: `` }, password: { value: `` } },
+                    errorLabels: {},
+                    errorBanner: undefined,
+                    displayLabels: {},
+                    pageData: {} 
+                }})                
+                
+
+                // Inputs
+                #hawait testGlobal.inputs.email.setValue('todd@test.shit.ua')
+                #hawait testGlobal.inputs.password.setValue('toddsecret')
+                // Action
+                #hawait testGlobal.buttons.primary.click()
+                #hawait art.shitSpinsForMax({$tag: 'aea4767a-629e-4249-9687-ea0feccee7fd', max: 2000})
+                art.uiState({$tag: '5b27f321-4fc1-4507-8452-255178aaa493', expected: {
+
+                }})
+
 
                 // ---------- Browser: fred ----------
                 
-                sim.selectBrowser('fred')
+                // sim.selectBrowser('fred')
                 
                 
                 //art.boom('1fbfe070-6d05-4fdf-9bf1-f250cfb7089a')
