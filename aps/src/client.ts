@@ -60,7 +60,7 @@ global.igniteShit = makeUIShitIgniter({
                                             }
                                             
                                             return dataItemObject('supportThreadMessage', _=> diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
-                                                diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 5}},
+                                                diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
                                                     diva({}, spana({style: {fontWeight: 'bold'}},
                                                         t(`TOTE`, `От: `)),
                                                         dataField('from', item.sender.first_name + ' ' + item.sender.last_name)),
@@ -68,10 +68,10 @@ global.igniteShit = makeUIShitIgniter({
                                                         t(`TOTE`, `Кому: `)),
                                                         dataField('to', item.recipient ? (item.recipient.first_name + ' ' + item.recipient.last_name)
                                                                                        : t(`TOTE`, `В рельсу`))),
-                                                    diva({style: {marginTop: 10}}, timestampString(item.inserted_at))
+                                                    diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.inserted_at)))
                                                 ),
                                                 diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
-                                                    item.message)
+                                                    dataField('message', item.message))
                                                 ))
                                         }))))
                                 })
@@ -528,7 +528,19 @@ global.igniteShit = makeUIShitIgniter({
                 #hawait testGlobal.buttons.primary.click()
                 #hawait art.shitSpinsForMax({$tag: '08a79fdd-1e1e-48b4-8f80-f2b1695ee096', max: 2000})
                 art.uiState({$tag: '848839fb-f059-4cc3-87bf-3875e6deff0f', expected: {
-
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=312`,
+                        pageHeader: `Запрос в поддержку № 312`,
+                        inputs: {},
+                        errorLabels: {},
+                        errorBanner: undefined,
+                        displayLabels: {},
+                        pageData: 
+                         { supportThreadMessages: 
+                            [ { '$$type': `supportThreadMessage`,
+                                from: `Фред Ред`,
+                                to: `В рельсу`,
+                                timestamp: `03/07/2016 16:30:45`,
+                                message: `И побыстрее давайте!` } ] } 
                 }})
 
                 //art.boom('1fbfe070-6d05-4fdf-9bf1-f250cfb7089a')
