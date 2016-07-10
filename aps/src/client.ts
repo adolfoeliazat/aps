@@ -575,6 +575,55 @@ global.igniteShit = makeUIShitIgniter({
                                 message: `И побыстрее давайте!` } ] } 
                 }})
 
+                // Action
+                #hawait testGlobal.buttons.plus.click()
+                art.uiState({$tag: '01cb87af-fe6c-42fe-a490-5943a5bb5d1d', expected: {
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=312`,
+                        pageHeader: `Запрос в поддержку № 312`,
+                        inputs: { message: { value: `` } },
+                        errorLabels: {},
+                        errorBanner: undefined,
+                        displayLabels: {},
+                        pageData: 
+                         { supportThreadMessages: 
+                            [ { '$$type': `supportThreadMessage`,
+                                from: `Фред Ред`,
+                                to: `В рельсу`,
+                                timestamp: `03/07/2016 16:30:45`,
+                                message: `И побыстрее давайте!` } ] } 
+                }})
+                
+                // Inputs
+                await testGlobal.inputs.message.setValue('')
+                // Action
+                #hawait testGlobal.buttons.primary.click()
+                #hawait art.shitSpinsForMax({$tag: '644b634f-e8a3-4c4d-be61-69970a4082b0', max: 2000})
+                art.uiState({$tag: '24f268a1-d56c-4f1f-a10f-4d637ff4e2b4', expected: {
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=312`,
+                        pageHeader: `Запрос в поддержку № 312`,
+                        inputs: { message: { value: `` } },
+                        errorLabels: { message: { title: `Поле обязательно` } },
+                        errorBanner: `Пожалуйста, исправьте ошибки ниже`,
+                        displayLabels: {},
+                        pageData: 
+                         { supportThreadMessages: 
+                            [ { '$$type': `supportThreadMessage`,
+                                from: `Фред Ред`,
+                                to: `В рельсу`,
+                                timestamp: `03/07/2016 16:30:45`,
+                                message: `И побыстрее давайте!` } ] } 
+                }})
+                
+                // Inputs
+                await testGlobal.inputs.message.setValue('Че за фигня? Где админы? Почему так долго все?')
+                // Action
+                #hawait testGlobal.buttons.primary.click()
+                #hawait art.shitSpinsForMax({$tag: '0133f044-47fc-419a-8aed-93350d909fb5', max: 2000})
+                art.uiState({$tag: 'de45a710-a428-4e2c-ac2f-e918850e4dd8', expected: {
+                }})
+
+
+                
                 //art.boom('1fbfe070-6d05-4fdf-9bf1-f250cfb7089a')
 
                 // @ctx test

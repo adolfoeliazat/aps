@@ -452,6 +452,22 @@ app.post('/rpc', (req, res) => {
                     return youFixErrors()
                 }
                 
+                else if (msg.fun === 'private_createSupportThreadMessage') {
+                    // TODO:vgrechka Security
+                    loadField({key: 'message', kind: 'message', mandatory: true})
+
+                    if (isEmpty(fieldErrors)) {
+                        #await insertInto({$tag: 'f978c0c2-b9b4-4989-a117-ff3a1c80820b'}, {table: 'support_thread_messages', values: {
+                            thread_id: msg.entityID,
+                            sender_id: user.id,
+                            message: fields.message,
+                        }})
+                        
+                        return hunkyDory({})
+                    }
+                    return youFixErrors()
+                }
+                
                 const situation = `WTF is the RPC function ${msg.fun}?`
                 clog(situation)
                 return {fatal: situation}

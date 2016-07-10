@@ -70,27 +70,28 @@ create trigger on_update before update on user_tokens for each row execute proce
 
 create table support_threads(
     id bigserial primary key,
-    deleted boolean,
-    inserted_at timestamp,
-    updated_at timestamp,
-    topic text,
-    supportee_id bigint references users(id),
-    supporter_id bigint references users(id)
+    deleted boolean not null,
+    inserted_at timestamp not null,
+    updated_at timestamp not null,
+    topic text not null,
+    supportee_id bigint not null references users(id),
+    supporter_id bigint /*can be null*/ references users(id)
     );
+alter sequence support_threads_id_seq restart with 1000;    
 create trigger on_insert before insert on support_threads for each row execute procedure on_insert();
 create trigger on_update before update on support_threads for each row execute procedure on_update();
-alter sequence support_threads_id_seq restart with 1000;
 
 create table support_thread_messages(
     id bigserial primary key,
-    deleted boolean,
-    inserted_at timestamp,
-    updated_at timestamp,
-    thread_id bigint references support_threads(id),
-    sender_id bigint references users(id),
-    recipient_id bigint references users(id),
-    message text
+    deleted boolean not null,
+    inserted_at timestamp not null,
+    updated_at timestamp not null,
+    thread_id bigint not null references support_threads(id),
+    sender_id bigint not null references users(id),
+    recipient_id bigint /*can be null*/ references users(id),
+    message text not null
     );
+alter sequence support_thread_messages_id_seq restart with 1000;
 create trigger on_insert before insert on support_thread_messages for each row execute procedure on_insert();
 create trigger on_update before update on support_thread_messages for each row execute procedure on_update();
 
@@ -98,6 +99,12 @@ create trigger on_update before update on support_thread_messages for each row e
 create table foobar(id bigserial, foo text);
 
 /* -------------------------------------------------------------------
+
+
+delete from support_thread_messages; delete from support_threads;
+drop table support_thread_messages; drop table support_threads;
+
+
 
 select * from users where id in (2, 78)
 
@@ -109,9 +116,7 @@ select * from support_thread_messages t1,
 select * from support_threads
 select * from support_thread_messages
 
-delete from support_thread_messages; delete from support_threads
 
-drop table support_thread_messages; drop table support_threads
 
 select * from foobar
 delete from foobar
