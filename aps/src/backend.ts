@@ -457,7 +457,7 @@ app.post('/rpc', (req, res) => {
                     loadField({key: 'message', kind: 'message', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
-                        #await insertInto({$tag: 'f978c0c2-b9b4-4989-a117-ff3a1c80820b'}, {table: 'support_thread_messages', values: {
+                        #await insertInto({$tag: 'a370d299-23e8-43d0-ae77-adf5c4b599fc'}, {table: 'support_thread_messages', values: {
                             thread_id: msg.entityID,
                             sender_id: user.id,
                             message: fields.message,

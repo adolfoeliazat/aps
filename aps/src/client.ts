@@ -31,7 +31,7 @@ global.igniteShit = makeUIShitIgniter({
                     
                     async support() {
                         if (ui.urlQuery.thread) {
-                            lala({
+                            await lala({
                                 itemsFun: 'private_getSupportThreadMessages',
                                 entityID: ui.urlQuery.thread,
                                 pageTitle: res => t(`TOTE`, `Запрос в поддержку № ${res.entity.id}`),
@@ -71,6 +71,10 @@ global.igniteShit = makeUIShitIgniter({
                                     primaryButtonTitle: t(`TOTE`, `Запостить`),
                                     cancelButtonTitle: t(`TOTE`, `Передумал`),
                                     fields: {
+                                        entityID: {
+                                            type: 'hidden',
+                                            value: ui.urlQuery.thread,
+                                        },
                                         message: {
                                             title: t(`TOTE`, `Сообщение`),
                                             type: 'textarea',
@@ -80,7 +84,7 @@ global.igniteShit = makeUIShitIgniter({
                                     rpcFun: 'private_createSupportThreadMessage',
                                     async onSuccess(res) {
                                         makeNextRPCNotLaggingInTests()
-                                        await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
+                                        await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
                                     },
                                 },
                             })
@@ -374,6 +378,11 @@ global.igniteShit = makeUIShitIgniter({
             async 'UA Writer :: Sign Up :: 1    b583c010-f383-4635-a826-3d2bb79f0806'() {
                 #hawait drpc({fun: 'danger_clearSentEmails'})
                 #hawait drpc({fun: 'danger_killUser', email: 'fred.red@test.shit.ua'})
+                
+                // ---------- Browser: fred ----------
+                
+                sim.selectBrowser('fred')
+                
                 #hawait drpc({fun: 'danger_fixNextGeneratedPassword', password: 'b34b80fb-ae50-4456-8557-399366fe45e4'})
                 
                 #hawait sim.navigate('dashboard.html')
@@ -505,8 +514,6 @@ global.igniteShit = makeUIShitIgniter({
                        profile_updated_at: { content: `03/07/2016 16:24:51 (Киев)` } } 
                 }})
                 
-                // ---------- Posting a message to support ----------
-                            
                 #hawait art.pausePoint({title: 'Before clicking "Support" link', $tag: 'c7d7eed5-df24-4db3-a361-9da4470c4bd1'})
                 // Action
                 #hawait testGlobal.links.support.click()
@@ -614,15 +621,46 @@ global.igniteShit = makeUIShitIgniter({
                                 message: `И побыстрее давайте!` } ] } 
                 }})
                 
+                #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:33:17'})
+                
                 // Inputs
                 await testGlobal.inputs.message.setValue('Че за фигня? Где админы? Почему так долго все?')
                 // Action
                 #hawait testGlobal.buttons.primary.click()
                 #hawait art.shitSpinsForMax({$tag: '0133f044-47fc-419a-8aed-93350d909fb5', max: 2000})
                 art.uiState({$tag: 'de45a710-a428-4e2c-ac2f-e918850e4dd8', expected: {
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=312`,
+                        pageHeader: `Запрос в поддержку № 312`,
+                        inputs: {},
+                        errorLabels: {},
+                        errorBanner: undefined,
+                        displayLabels: {},
+                        pageData: 
+                         { supportThreadMessages: 
+                            [ { '$$type': `supportThreadMessage`,
+                                from: `Фред Ред`,
+                                to: `В рельсу`,
+                                timestamp: `03/07/2016 16:33:17`,
+                                message: `Че за фигня? Где админы? Почему так долго все?` },
+                              { '$$type': `supportThreadMessage`,
+                                from: `Фред Ред`,
+                                to: `В рельсу`,
+                                timestamp: `03/07/2016 16:30:45`,
+                                message: `И побыстрее давайте!` } ] } 
                 }})
 
 
+                // ---------- Browser: todd ----------
+                
+                sim.selectBrowser('todd')
+                #hawait sim.navigate('dashboard.html')
+                #hawait art.pausePoint({title: 'Now Todd from support comes into play', $tag: '4dbe962a-9a7d-4d43-bcc2-7e1e2f8785a8'})
+                
+
+                // ---------- Browser: fred ----------
+                
+                sim.selectBrowser('fred')
+                
                 
                 //art.boom('1fbfe070-6d05-4fdf-9bf1-f250cfb7089a')
 
