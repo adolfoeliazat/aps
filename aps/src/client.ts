@@ -458,7 +458,10 @@ global.igniteShit = makeUIShitIgniter({
                     inputs: { phone: { value: `` } },
                     errorLabels: {},
                     errorBanner: undefined,
-                    displayLabels: {} 
+                    displayLabels: {},
+                    pageData: 
+                     { 'topNavItem.profile.title': `Профиль`,
+                       'topNavItem.support.title': `Поддержка` } 
                 }})                        
                 art.textSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Фред'})
                 
@@ -476,7 +479,10 @@ global.igniteShit = makeUIShitIgniter({
                     inputs: { phone: { value: `` } },
                     errorLabels: { phone: { title: `Телефон обязателен` } },
                     errorBanner: `Пожалуйста, исправьте ошибки ниже`,
-                    displayLabels: {}
+                    displayLabels: {},
+                    pageData: 
+                    { 'topNavItem.profile.title': `Профиль`,
+                      'topNavItem.support.title': `Поддержка` }
                 }})
 
                 // Inputs
@@ -490,7 +496,10 @@ global.igniteShit = makeUIShitIgniter({
                     inputs: { phone: { value: `adsfasdf` } },
                     errorLabels: { phone: { title: `Странный телефон какой-то` } },
                     errorBanner: `Пожалуйста, исправьте ошибки ниже`,
-                    displayLabels: {}
+                    displayLabels: {},
+                    pageData: 
+                    { 'topNavItem.profile.title': `Профиль`,
+                      'topNavItem.support.title': `Поддержка` }
                 }})
                 
                 #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:24:51'})
@@ -512,7 +521,10 @@ global.igniteShit = makeUIShitIgniter({
                        email: { content: `fred.red@test.shit.ua` },
                        phone: { content: `123-45-67` },
                        inserted_at: { content: `03/07/2016 16:21:36 (Киев)` },
-                       profile_updated_at: { content: `03/07/2016 16:24:51 (Киев)` } } 
+                       profile_updated_at: { content: `03/07/2016 16:24:51 (Киев)` } },
+                       pageData: 
+                       { 'topNavItem.profile.title': `Профиль`,
+                         'topNavItem.support.title': `Поддержка` }
                 }})
                 
                 #hawait art.pausePoint({title: 'Before clicking "Support" link', $tag: 'c7d7eed5-df24-4db3-a361-9da4470c4bd1'})
@@ -526,7 +538,10 @@ global.igniteShit = makeUIShitIgniter({
                     inputs: {},
                     errorLabels: {},
                     errorBanner: undefined,
-                    displayLabels: {} 
+                    displayLabels: {},
+                    pageData: 
+                    { 'topNavItem.profile.title': `Профиль`,
+                      'topNavItem.support.title': `Поддержка` }
                 }})                
                 
                 #hawait art.pausePoint({title: 'Before clicking plus', $tag: '328b20bf-9fa3-4633-8ee3-fdd80d712bfb'})
@@ -538,7 +553,10 @@ global.igniteShit = makeUIShitIgniter({
                     inputs: { topic: { value: `` }, message: { value: `` } },
                     errorLabels: {},
                     errorBanner: undefined,
-                    displayLabels: {} 
+                    displayLabels: {},
+                    pageData: 
+                    { 'topNavItem.profile.title': `Профиль`,
+                      'topNavItem.support.title': `Поддержка` }
                 }})
 
                 // Inputs
@@ -555,7 +573,10 @@ global.igniteShit = makeUIShitIgniter({
                      { topic: { title: `Поле обязательно` },
                        message: { title: `Поле обязательно` } },
                     errorBanner: `Пожалуйста, исправьте ошибки ниже`,
-                    displayLabels: {} 
+                    displayLabels: {},
+                    pageData: 
+                    { 'topNavItem.profile.title': `Профиль`,
+                      'topNavItem.support.title': `Поддержка` }
                 }})
                 
                 #hawait drpc({fun: 'danger_imposeNextID', id: 312})
@@ -580,7 +601,9 @@ global.igniteShit = makeUIShitIgniter({
                                 from: `Фред Ред`,
                                 to: `В рельсу`,
                                 timestamp: `03/07/2016 16:30:45`,
-                                message: `И побыстрее давайте!` } ] } 
+                                message: `И побыстрее давайте!` } ],
+                           'topNavItem.profile.title': `Профиль`,
+                           'topNavItem.support.title': `Поддержка` } 
                 }})
 
                 // Action
@@ -598,7 +621,9 @@ global.igniteShit = makeUIShitIgniter({
                                 from: `Фред Ред`,
                                 to: `В рельсу`,
                                 timestamp: `03/07/2016 16:30:45`,
-                                message: `И побыстрее давайте!` } ] } 
+                                message: `И побыстрее давайте!` } ],
+                                'topNavItem.profile.title': `Профиль`,
+                                'topNavItem.support.title': `Поддержка` } 
                 }})
                 
                 // Inputs
@@ -619,7 +644,9 @@ global.igniteShit = makeUIShitIgniter({
                                 from: `Фред Ред`,
                                 to: `В рельсу`,
                                 timestamp: `03/07/2016 16:30:45`,
-                                message: `И побыстрее давайте!` } ] } 
+                                message: `И побыстрее давайте!` } ],
+                                'topNavItem.profile.title': `Профиль`,
+                                'topNavItem.support.title': `Поддержка` } 
                 }})
                 
                 #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016-07-03 13:33:17'})
@@ -647,7 +674,9 @@ global.igniteShit = makeUIShitIgniter({
                                 from: `Фред Ред`,
                                 to: `В рельсу`,
                                 timestamp: `03/07/2016 16:30:45`,
-                                message: `И побыстрее давайте!` } ] } 
+                                message: `И побыстрее давайте!` } ],
+                                'topNavItem.profile.title': `Профиль`,
+                                'topNavItem.support.title': `Поддержка` } 
                 }})
 
 
@@ -696,6 +725,11 @@ global.igniteShit = makeUIShitIgniter({
 })
 
 export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
+    let user
+    if (ui) {
+        user = ui.getUser()
+    }
+    
     let proseItems
     if (clientKind === 'customer') {
         proseItems = [
@@ -707,54 +741,68 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
             ['blog', t(`Blog`, `Блог`)],
         ]
     } else {
-        proseItems = [
-            ['why', t(`Why Us?`, `Почему мы?`)],
-            ['prices', t(`Prices`, `Цены`)],
-            ['faq', t(`FAQ`, `ЧаВо`)],
-        ]
+        if (!user || user.kind !== 'admin') {
+            proseItems = [
+                ['why', t(`Why Us?`, `Почему мы?`)],
+                ['prices', t(`Prices`, `Цены`)],
+                ['faq', t(`FAQ`, `ЧаВо`)],
+            ]
+        }
     }
     
     let privateItems
-    if (ui && ui.getUser()) {
+    if (user) {
         if (clientKind === 'customer') {
             privateItems = [
-                ['orders', t(`My Orders`, `Мои заказы`)],
-                ['support', t(`Support`, `Поддержка`)],
+                ['orders', span(dataField('topNavItem.myOrders.title', t(`My Orders`, `Мои заказы`)))],
+                ['support', span(dataField('topNavItem.support.title', t(`Support`, `Поддержка`)))],
             ]
         } else {
             privateItems = compact([
-                ui.getUser().state === 'cool' && ['orders', t(`My Orders`, `Мои заказы`)],
-                ui.getUser().state === 'cool' && ['store', t(`Store`, `Аукцион`)],
-                ['profile', t(`Profile`, `Профиль`)],
-                ['support', t(`Support`, `Поддержка`)]
+                user.state === 'cool' && ['orders', span(dataField('topNavItem.myOrders.title', t(`My Orders`, `Мои заказы`)))],
+                user.state === 'cool' && ['store', span(dataField('topNavItem.store.title', t(`Store`, `Аукцион`)))],
+                ['profile', span(dataField('topNavItem.profile.title', t(`Profile`, `Профиль`)))],
+                ['support', span(dataField('topNavItem.support.title', t(`Support`, `Поддержка`)))]
             ])
         }
     }
     
     let leftNavbarItems, rightNavbarItem
-    if (ui && ui.getUser()) {
-        let dropdownAStyle
-        if (proseItems.some(x => x[0] === highlightedItem)) {
-            dropdownAStyle = {backgroundColor: '#e7e7e7'}
-        }
+    if (user) {
         const liaid = puid()
-        leftNavbarItems = [
-            lia({className: 'dropdown'},
-                aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
-                ula({className: 'dropdown-menu'},
-                    ...proseItems.map(itemToLia))),
-            ...privateItems.map(itemToLia)
-        ]
-        rightNavbarItem = itemToLia(['dashboard', t(ui.getUser().first_name)])
+        leftNavbarItems = []
+        if (user.kind !== 'admin') {
+            let dropdownAStyle
+            if (proseItems.some(x => x[0] === highlightedItem)) {
+                dropdownAStyle = {backgroundColor: '#e7e7e7'}
+            }
+            leftNavbarItems.push(
+                lia({className: 'dropdown'},
+                    aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
+                    ula({className: 'dropdown-menu'},
+                        ...proseItems.map(itemToLia))))
+        }
+        leftNavbarItems.push(...privateItems.map(itemToLia))
+        rightNavbarItem = itemToLia(['dashboard', t(user.first_name)])
     } else {
         leftNavbarItems = proseItems.map(itemToLia)
         rightNavbarItem = itemToLia(['sign-in', t(`Sign In`, `Вход`)])
     }
     
+    let brand
+    if (clientKind === 'customer') {
+        brand = 'APS'
+    } else {
+        brand = t('Writer', 'Писец')
+        if (user && user.kind === 'admin') {
+            brand = t('Admin', 'Админ')
+        }
+    }
+    
     return nava({className: 'navbar navbar-default navbar-fixed-top'},
                diva({className: 'container-fluid'},
                    diva({className: 'navbar-header'},
-                       makeLink('home', clientKind === 'customer' ? 'APS' : t('Writer', 'Писец'), 'navbar-brand')),
+                       makeLink('home', brand, 'navbar-brand')),
                        
                    diva({style: {textAlign: 'left'}},
                        ula({id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},

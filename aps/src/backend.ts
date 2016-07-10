@@ -277,7 +277,8 @@ app.post('/rpc', (req, res) => {
                     const token = uuid()
                     #await tx.query({$tag: 'e8ccf032-2c17-4a98-8666-cd18f82326c7'}, q`
                         insert into user_tokens(user_id, token) values(${user.id}, ${token})`)
-                    
+
+                    #await loadUserData()
                     return hunkyDory({user: pickFromUser(), token})
                     
                     
@@ -476,7 +477,8 @@ app.post('/rpc', (req, res) => {
                 // @ctx handle helpers
                 
                 function pickFromUser() {
-                    return pick(user, 'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at', 'profile_updated_at', 'phone')
+                    return pick(user, 'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at',
+                                      'profile_updated_at', 'phone', 'kind', 'roles')
                 }
                 
                 
@@ -629,6 +631,7 @@ app.post('/rpc', (req, res) => {
                     user = rows[0]
                     // user.id = user.user_id // To tell users.id from user_tokens.id it's selected additionaly as `user_id`
                     failOnClientUserMismatch()
+                    #await loadUserData()
                 }
                 
                 async function dangerouslyKillUser({email}) {
@@ -653,6 +656,15 @@ app.post('/rpc', (req, res) => {
                         
                     #await tx.query({$tag: 'c3cf9e53-2a4e-4423-8869-09a8c7078257'}, q`
                         delete from users where email = ${email}`)
+                }
+                
+                async function loadUserData() {
+                    user.roles = {}
+                    const rows = #await tx.query({$tag: 'aea627a2-a69a-4715-ad03-761537ada2fc'}, q`
+                        select * from user_roles where user_id = ${user.id}`)
+                    for (const row of rows) {
+                        user.roles[row.role] = true
+                    }
                 }
             })
             
