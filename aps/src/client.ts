@@ -31,125 +31,88 @@ global.igniteShit = makeUIShitIgniter({
                     
                     async support() {
                         if (ui.urlQuery.thread) {
-                            render(await ui.rpcSoft({fun: 'private_getSupportThreadMessages', entityID: ui.urlQuery.thread}))
-                            
-                            function render(res) {
-                                const pageTitle = t(`TOTE`, `Запрос в поддержку № ${res.entity.id}`),
-                                
-                                if (res.error) {
-                                    return ui.setPage({
-                                        pageTitle,
-                                        pageBody: div(errorBanner(res.error))
-                                    })
-                                }
-                                
-                                ui.setPage({
-                                    pageTitle,
-                                    pageBody: div(
-                                        blockquotea({}, res.entity.topic),
-                                        dataArray('supportThreadMessages', _=> div(...res.items.map((item, i) => {
-                                            // dlogs(item)
-                                            
-                                            let rowBackground, lineColor
-                                            if (item.sender.kind === 'customer' || item.sender.kind === 'writer') {
-                                                rowBackground = WHITE
-                                                lineColor = BLUE_GRAY_50
-                                            } else {
-                                                rowBackground = BLUE_GRAY_50
-                                                lineColor = WHITE
-                                            }
-                                            
-                                            return dataItemObject('supportThreadMessage', _=> diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
-                                                diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
-                                                    diva({}, spana({style: {fontWeight: 'bold'}},
-                                                        t(`TOTE`, `От: `)),
-                                                        dataField('from', item.sender.first_name + ' ' + item.sender.last_name)),
-                                                    diva({}, spana({style: {fontWeight: 'bold'}},
-                                                        t(`TOTE`, `Кому: `)),
-                                                        dataField('to', item.recipient ? (item.recipient.first_name + ' ' + item.recipient.last_name)
-                                                                                       : t(`TOTE`, `В рельсу`))),
-                                                    diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.inserted_at)))
-                                                ),
-                                                diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
-                                                    dataField('message', item.message))
-                                                ))
-                                        }))))
-                                })
-                            }
+                            lala({
+                                itemsFun: 'private_getSupportThreadMessages',
+                                entityID: ui.urlQuery.thread,
+                                pageTitle: res => t(`TOTE`, `Запрос в поддержку № ${res.entity.id}`),
+                                emptyMessage: t(`TOTE`, `Странно, здесь ничего нет. А должно что-то быть...`),
+                                aboveItems(res) {
+                                    return div(
+                                        blockquotea({}, res.entity.topic))
+                                },
+                                dataArrayName: 'supportThreadMessages',
+                                renderItem(item, i) {
+                                    let rowBackground, lineColor
+                                    if (item.sender.kind === 'customer' || item.sender.kind === 'writer') {
+                                        rowBackground = WHITE
+                                        lineColor = BLUE_GRAY_50
+                                    } else {
+                                        rowBackground = BLUE_GRAY_50
+                                        lineColor = WHITE
+                                    }
+                                    
+                                    return dataItemObject('supportThreadMessage', _=> diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
+                                        diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
+                                            diva({}, spana({style: {fontWeight: 'bold'}},
+                                                t(`TOTE`, `От: `)),
+                                                dataField('from', item.sender.first_name + ' ' + item.sender.last_name)),
+                                            diva({}, spana({style: {fontWeight: 'bold'}},
+                                                t(`TOTE`, `Кому: `)),
+                                                dataField('to', item.recipient ? (item.recipient.first_name + ' ' + item.recipient.last_name)
+                                                                               : t(`TOTE`, `В рельсу`))),
+                                            diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.inserted_at)))
+                                        ),
+                                        diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
+                                            dataField('message', item.message))
+                                        ))
+                                },
+                                plusGlyph: 'comment',
+                                plusForm: {
+                                    primaryButtonTitle: t(`TOTE`, `Запостить`),
+                                    cancelButtonTitle: t(`TOTE`, `Передумал`),
+                                    fields: {
+                                        message: {
+                                            title: t(`TOTE`, `Сообщение`),
+                                            type: 'textarea',
+                                            autoFocus: true,
+                                        },
+                                    },
+                                    rpcFun: 'private_createSupportThreadMessage',
+                                    async onSuccess(res) {
+                                        makeNextRPCNotLaggingInTests()
+                                        await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
+                                    },
+                                },
+                            })
                         } else if (!ui.urlQuery.thread) {
-                            pageTitle = t('Support', 'Поддержка')
-                            
-                            const res = await ui.rpcSoft({fun: 'private_getSupportThreads', fromID: 0})
-                            if (res.error) {
-                                return ui.setPage({
-                                    pageTitle,
-                                    pageBody: div(errorBanner(res.error))
-                                })
-                            }
-                            
-                            let items, showEmptyLabel = true, form, plusButtonVisible = true, plusButtonClass, formClass
-                            
-                            ui.setPage({
-                                pageTitle,
-                                pageBody: _=> div(
-                                    diva({className: formClass}, form),
-                                    run(function renderItems() {
-                                        if (!res.items.length) {
-                                            if (showEmptyLabel) {
-                                                return div(t(`TOTE`, `Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.`))
-                                            }
-                                        } else {
-                                            return div('liiiiiiist')
-                                        }
-                                    })
-                                ),
-                                headerControls: _=> diva({style: {display: 'flex'}},
-                                    diva({style: {marginRight: 10, marginTop: 8}}, t('Filter here')),
-                                    plusButtonVisible && button.primary.plus({name: 'plus', className: plusButtonClass}, _=> {
-                                        showEmptyLabel = false
-                                        plusButtonClass = 'aniMinimize'
-                                        formClass = 'aniFadeIn'
-                                        
-                                        form = ui.Form({
-                                            primaryButtonTitle: t(`TOTE`, `Запостить`),
-                                            cancelButtonTitle: t(`TOTE`, `Не стоит`),
-                                            fields: {
-                                                topic: {
-                                                    title: t(`TOTE`, `Тема`),
-                                                    type: 'text',
-                                                    autoFocus: true,
-                                                },
-                                                message: {
-                                                    title: t(`TOTE`, `Сообщение`),
-                                                    type: 'textarea',
-                                                },
-                                            },
-                                            rpcFun: 'private_createSupportThread',
-                                            onCancel() {
-                                                plusButtonVisible = true
-                                                plusButtonClass = 'aniFadeIn'
-                                                form = undefined
-                                                ui.updatePage()
-                                                    
-                                                timeoutSet(500, _=> {
-                                                    plusButtonClass = undefined
-                                                    ui.updatePage()
-                                                })
-                                            },
-                                            async onSuccess(res) {
-                                                makeNextRPCNotLaggingInTests()
-                                                await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
-                                            },
-                                        })
-                                        
-                                        ui.updatePage()
-                                        
-                                        timeoutSet(250, _=> {
-                                            plusButtonVisible = false
-                                            formClass = undefined
-                                            ui.updatePageHeader()
-                                        })
-                                }))
+                            await lala({
+                                pageTitle: t('Support', 'Поддержка'),
+                                itemsFun: 'private_getSupportThreads',
+                                emptyMessage: t(`TOTE`, `Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.`),
+                                renderItem(item, i) {
+                                    return t('todo render item')
+                                },
+                                plusGlyph: 'plus',
+                                plusForm: {
+                                    primaryButtonTitle: t(`TOTE`, `Запостить`),
+                                    cancelButtonTitle: t(`TOTE`, `Не стоит`),
+                                    fields: {
+                                        topic: {
+                                            title: t(`TOTE`, `Тема`),
+                                            type: 'text',
+                                            autoFocus: true,
+                                        },
+                                        message: {
+                                            title: t(`TOTE`, `Сообщение`),
+                                            type: 'textarea',
+                                        },
+                                    },
+                                    rpcFun: 'private_createSupportThread',
+                                    async onSuccess(res) {
+                                        makeNextRPCNotLaggingInTests()
+                                        await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
+                                    },
+                                },
                             })
                         }
                     },
@@ -157,6 +120,74 @@ global.igniteShit = makeUIShitIgniter({
                     dashboard: dashboardPageLoader,
                     profile: profilePageLoader,
                 }[name]
+                
+                
+                async function lala({pageTitle, entityID, itemsFun, emptyMessage, plusGlyph='plus', plusForm, aboveItems, dataArrayName, renderItem}) {
+                    const res = await ui.rpcSoft({fun: itemsFun, entityID, fromID: 0})
+                    pageTitle = fov(pageTitle, res)
+                    if (res.error) {
+                        return ui.setPage({
+                            pageTitle,
+                            pageBody: div(errorBanner(res.error))
+                        })
+                    }
+                    
+                    let items, showEmptyLabel = true, form, plusButtonVisible = true, plusButtonClass, formClass
+                    
+                    ui.setPage({
+                        pageTitle,
+                        pageBody: _=> div(
+                            form && diva({className: formClass, style: {marginBottom: 15}}, form),
+                            fov(aboveItems, res),
+                            run(function renderItems() {
+                                if (!res.items.length) {
+                                    if (showEmptyLabel) {
+                                        return div(emptyMessage)
+                                    }
+                                    return ''
+                                }
+                                
+                                return dataArray(dataArrayName, _=> div(...res.items.map((item, i) => {
+                                    return renderItem(item, i)
+                                })))
+                            }),
+                        ),
+                        headerControls: _=> diva({style: {display: 'flex'}},
+                            diva({style: {marginRight: 10, marginTop: 8}}, t('Filter here')),
+                            plusButtonVisible && button.primary[plusGlyph]({name: 'plus', className: plusButtonClass}, _=> {
+                                showEmptyLabel = false
+                                plusButtonClass = 'aniMinimize'
+                                formClass = 'aniFadeIn'
+                                
+                                form = ui.Form({
+                                    primaryButtonTitle: plusForm.primaryButtonTitle,
+                                    cancelButtonTitle: plusForm.cancelButtonTitle,
+                                    fields: plusForm.fields,
+                                    rpcFun: plusForm.rpcFun,
+                                    onCancel() {
+                                        plusButtonVisible = true
+                                        plusButtonClass = 'aniFadeIn'
+                                        form = undefined
+                                        ui.updatePage()
+                                            
+                                        timeoutSet(500, _=> {
+                                            plusButtonClass = undefined
+                                            ui.updatePage()
+                                        })
+                                    },
+                                    onSuccess: plusForm.onSuccess,
+                                })
+                                
+                                ui.updatePage()
+                                
+                                timeoutSet(250, _=> {
+                                    plusButtonVisible = false
+                                    formClass = undefined
+                                    ui.updatePageHeader()
+                                })
+                        }))
+                    })
+                }
                 
                 
                 function ordersPageLoader() {
@@ -490,6 +521,7 @@ global.igniteShit = makeUIShitIgniter({
                     displayLabels: {} 
                 }})                
                 
+                #hawait art.pausePoint({title: 'Before clicking plus', $tag: '328b20bf-9fa3-4633-8ee3-fdd80d712bfb'})
                 // Action
                 #hawait testGlobal.buttons.plus.click()
                 art.uiState({$tag: 'b990c804-6621-4b49-879e-57caffc7bcce', expected: {
