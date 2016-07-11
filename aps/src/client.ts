@@ -26,7 +26,7 @@ global.igniteShit = makeUIShitIgniter({
                 return {
                     orders: ordersPageLoader,
                     
-                    async 'admin-support'() {
+                    async 'admin-my-tasks'() {
                         ui.setPage({
                             pageTitle: 'qweqwe',
                             pageBody: div(
@@ -717,16 +717,18 @@ global.igniteShit = makeUIShitIgniter({
                     errorLabels: {},
                     errorBanner: undefined,
                     displayLabels: {},
-                    pageData: { 'topNavItem.admin-support.title': `Поддержка` } 
+                    pageData: 
+                     { 'topNavItem.admin-my-tasks.title': `Мои задачи`,
+                       'topNavItem.admin-heap.title': `Куча` } 
                 }})
-                art.respectArtPauses = true; setTestSpeed('slow')
-                #hawait art.pausePoint({title: `
-                    Todd is registered as  admin user with "support" role,
-                    top navigation bar reflects what he’s supposed to do`, $tag: '0d27f99c-d89b-44cf-a65c-ed65789d206d'})
+                // art.respectArtPauses = true; setTestSpeed('slow')
+//                #hawait art.pausePoint({title: `
+//                    Todd is registered as  admin user with "support" role,
+//                    top navigation bar reflects what he’s supposed to do`, $tag: '0d27f99c-d89b-44cf-a65c-ed65789d206d'})
 
                 // Action
-                #hawait testGlobal.topNavbarLinks['admin-support'].click()
-                #hawait art.linkBlinksForMax({$tag: '1a2c9122-6a9f-49fc-8565-659cd221eef0', kind: 'topNavbarLink', name: 'admin-support', max: 2000})
+                #hawait testGlobal.topNavbarLinks['admin-my-tasks'].click()
+                #hawait art.linkBlinksForMax({$tag: '1a2c9122-6a9f-49fc-8565-659cd221eef0', kind: 'topNavbarLink', name: 'admin-my-tasks', max: 2000})
                 art.uiState({$tag: 'ca4b25dc-c973-40d4-aa13-697f26fe401b', expected: {
 
                 }})
@@ -797,7 +799,8 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
             } else {
                 privateItems = []
                 if (user.roles.support) {
-                    privateItems.push(['admin-support', span(dataField('topNavItem.admin-support.title', t(`Support`, `Поддержка`)))])
+                    privateItems.push(['admin-my-tasks', span(dataField('topNavItem.admin-my-tasks.title', t(`TOTE`, `Мои задачи`)))])
+                    privateItems.push(['admin-heap', span(dataField('topNavItem.admin-heap.title', t(`TOTE`, `Куча`)))])
                 }
             }
         }
@@ -946,7 +949,7 @@ export function customerDynamicPageNames() {
 }
 
 export function writerDynamicPageNames() {
-    return tokens('test sign-in sign-up dashboard orders support store users profile admin-support')
+    return tokens('test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap')
 }
 
 function userDisplayForm(user) {
