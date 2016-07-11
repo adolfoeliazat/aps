@@ -3,6 +3,10 @@ relog(heyBackend_sayHelloToMe({askerName}))
 heyBackend_changeYourStateTo({foo: 10, bar: 20})
 relog('Its state is', heyBackend_whatsYourState())
 
+relog(range(10).map(i => `${i}. ` + randomSentence()).join('\n'))
+
+relog(generateLoremSupportThreads(10))
+
 
 relog(await tx.query({$tag: '03bb8d7f-09e5-4591-98ef-7f4bf6282bef'}, q`insert into foobar(foo) values(${'hello world'}) returning id`))
 
