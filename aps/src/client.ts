@@ -26,6 +26,14 @@ global.igniteShit = makeUIShitIgniter({
                 return {
                     orders: ordersPageLoader,
                     
+                    async 'admin-support'() {
+                        ui.setPage({
+                            pageTitle: 'qweqwe',
+                            pageBody: div(
+                                t(`TOTE`, `foooooooooo`), aa({href: '#', onClick() { dlog('cliiiiick') }}, t('qqqqqqqqqqq')))
+                        })
+                    },
+                    
                     async support() {
                         if (ui.urlQuery.thread) {
                             await lala({
@@ -714,7 +722,7 @@ global.igniteShit = makeUIShitIgniter({
                 art.respectArtPauses = true; setTestSpeed('slow')
                 #hawait art.pausePoint({title: `
                     Todd is registered as  admin user with "support" role,
-                    top navigation bar reflects what he’s supposed to do.`, $tag: '0d27f99c-d89b-44cf-a65c-ed65789d206d'})
+                    top navigation bar reflects what he’s supposed to do`, $tag: '0d27f99c-d89b-44cf-a65c-ed65789d206d'})
 
                 // Action
                 #hawait testGlobal.topNavbarLinks['admin-support'].click()
@@ -884,6 +892,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                 
                 async function onClick(e) {
                     if (e) { // Not simulated in test
+                        if (e.ctrlKey) return // Allow debug revelations
                         e.preventDefault()
                         e.stopPropagation()
                     }
