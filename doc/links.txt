@@ -1,0 +1,21 @@
+W1
+aps-ua-writer.local:3022/test.html?testScenario=UA Writer :: Sign Up :: 1 b583c010-f383-4635-a826-3d2bb79f0806
+
+W1 NR
+aps-ua-writer.local:3022/test.html?testScenario=UA Writer :: Sign Up :: 1 b583c010-f383-4635-a826-3d2bb79f0806&scrollToBottom=no&revealException=no
+
+W1 S
+aps-ua-writer.local:3022/test.html?testScenario=UA Writer :: Sign Up :: 1 b583c010-f383-4635-a826-3d2bb79f0806&scrollToBottom=no&revealException=no&testSpeed=slow
+
+W1 SP
+aps-ua-writer.local:3022/test.html?testScenario=UA Writer :: Sign Up :: 1 b583c010-f383-4635-a826-3d2bb79f0806&scrollToBottom=no&revealException=no&respectArtPauses=yes&testSpeed=slow
+
+W1 FP
+aps-ua-writer.local:3022/test.html?testScenario=UA Writer :: Sign Up :: 1 b583c010-f383-4635-a826-3d2bb79f0806&scrollToBottom=no&revealException=no&respectArtPauses=yes&testSpeed=fast
+
+W1 MNR
+aps-ua-writer.local:3022/test.html?testScenario=UA Writer :: Sign Up :: 1 b583c010-f383-4635-a826-3d2bb79f0806&scrollToBottom=no&revealException=no&testSpeed=medium
+
+A1 NR
+aps-ua-writer.local:3022/test.html?testScenario=UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c&scrollToBottom=no&revealException=no
+

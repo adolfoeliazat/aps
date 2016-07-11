@@ -158,6 +158,14 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
+                else if (msg.fun === 'danger_killSupportThreads') {
+                    #await tx.query({$tag: '0b66e201-0353-4d93-9d68-58932de199ca'}, q`
+                        delete from support_thread_messages`)
+                    #await tx.query({$tag: '4aa830b9-a217-4515-bff7-353baa0eba62'}, q`
+                        delete from support_threads`)
+                    return hunkyDory()
+                }
+                
                 else if (msg.fun === 'danger_setUpTestUsers') {
                     #await dangerouslyKillUser({email: 'todd@test.shit.ua'})
                     #await insertInto({$tag: '334d9edb-8880-4d01-a366-ba4ffd724f37'}, {table: 'users', values: {
@@ -185,7 +193,8 @@ app.post('/rpc', (req, res) => {
                 else if (msg.fun === 'danger_openSourceCode') {
                     let file, offset
                     if (msg.$tag) {
-                        for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/backend.ts']) {
+                        for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/backend.ts',
+                                      'E:/work/aps/aps/src/client-writer-tests.ts', 'E:/work/aps/aps/src/client-admin-tests.ts']) {
                             const code = fs.readFileSync(file, 'utf8')
                             if (~(offset = code.indexOf(msg.$tag))) break
                         }
@@ -298,7 +307,12 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getLiveStatus') {
-                    return hunkyDory({heapSize: 1})
+                    let heapSize = 0
+                    const unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259'}, q`
+                        select count(*) as value from support_threads where supporter_id is null`)[0].value, 10)
+                    heapSize += unassignedSupportThreadCount
+                        
+                    return hunkyDory({heapSize, unassignedSupportThreadCount})
                 }
                 
                 else if (msg.fun === 'signUp') {
