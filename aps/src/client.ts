@@ -710,7 +710,7 @@ global.igniteShit = makeUIShitIgniter({
                 // Action
                 #hawait testGlobal.buttons.primary.click()
                 #hawait art.shitSpinsForMax({$tag: 'aea4767a-629e-4249-9687-ea0feccee7fd', max: 2000})
-                art.uiState({$tag: '5b27f321-4fc1-4507-8452-255178aaa493', expected: {
+                #hawait art.uiStateAfterLiveStatusPolling({$tag: '5b27f321-4fc1-4507-8452-255178aaa493', expected: {
                     url: `http://aps-ua-writer.local:3022/dashboard.html`,
                     pageHeader: `Панель`,
                     inputs: {},
@@ -719,7 +719,8 @@ global.igniteShit = makeUIShitIgniter({
                     displayLabels: {},
                     pageData: 
                      { 'topNavItem.admin-my-tasks.title': `Мои задачи`,
-                       'topNavItem.admin-heap.title': `Куча` } 
+                       'topNavItem.admin-heap.title': `Куча`,
+                       'topNavItem.admin-heap.badge': `1` } 
                 }})
                 // art.respectArtPauses = true; setTestSpeed('slow')
 //                #hawait art.pausePoint({title: `
@@ -800,7 +801,11 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                 privateItems = []
                 if (user.roles.support) {
                     privateItems.push(['admin-my-tasks', span(dataField('topNavItem.admin-my-tasks.title', t(`TOTE`, `Мои задачи`)))])
-                    privateItems.push(['admin-heap', span(dataField('topNavItem.admin-heap.title', t(`TOTE`, `Куча`)))])
+                    
+                    privateItems.push(['admin-heap',
+                        span(dataField('topNavItem.admin-heap.title', t(`TOTE`, `Куча`)),
+                        ui.liveBadge({dataFieldName: 'topNavItem.admin-heap.badge', liveStatusFieldName: 'heapSize'})
+                        )])
                 }
             }
         }

@@ -14,6 +14,8 @@ require('source-map-support').install()
 import * as fs from 'fs'
 import static 'into-u ./stuff'
 
+let testGlobalCounter = 0
+
 const app = newExpress()
 let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp,
     imposedNextID
@@ -293,6 +295,10 @@ app.post('/rpc', (req, res) => {
                 
                 else if (msg.fun === 'private_getUserInfo') {
                     return hunkyDory({user: pickFromUser()})
+                }
+                
+                else if (msg.fun === 'private_getLiveStatus') {
+                    return hunkyDory({heapSize: 1})
                 }
                 
                 else if (msg.fun === 'signUp') {

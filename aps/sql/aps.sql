@@ -113,10 +113,8 @@ create table foobar(id bigserial, foo text);
 
 /* -------------------------------------------------------------------
 
-
-delete from support_thread_messages; delete from support_threads;
-drop table support_thread_messages; drop table support_threads;
-
+select * from users
+select * from support_threads
 
 
 select * from users where id in (2, 78)
