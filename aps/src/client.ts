@@ -20,10 +20,7 @@ import static 'into-u/utils-client into-u/ui ./stuff'
 global.igniteShit = makeUIShitIgniter({
     Impl({ui}) {
         return {
-            isDynamicPage(name) {
-                if (CLIENT_KIND === 'customer') return ~customerDynamicPageNames().indexOf(name)
-                return ~writerDynamicPageNames().indexOf(name)
-            },
+            isDynamicPage,
             
             privatePageLoader(name) {
                 return {
@@ -376,6 +373,8 @@ global.igniteShit = makeUIShitIgniter({
             // ======================================== UA WRITER TEST SCENARIOS ========================================
             
             async 'UA Writer :: Sign Up :: 1    b583c010-f383-4635-a826-3d2bb79f0806'() {
+                // art.respectArtPauses = false
+                
                 #hawait drpc({fun: 'danger_clearSentEmails'})
                 #hawait drpc({fun: 'danger_killUser', email: 'fred.red@test.shit.ua'})
                 #hawait drpc({fun: 'danger_setUpTestUsers'})
@@ -704,9 +703,25 @@ global.igniteShit = makeUIShitIgniter({
                 #hawait testGlobal.buttons.primary.click()
                 #hawait art.shitSpinsForMax({$tag: 'aea4767a-629e-4249-9687-ea0feccee7fd', max: 2000})
                 art.uiState({$tag: '5b27f321-4fc1-4507-8452-255178aaa493', expected: {
+                    url: `http://aps-ua-writer.local:3022/dashboard.html`,
+                    pageHeader: `Панель`,
+                    inputs: {},
+                    errorLabels: {},
+                    errorBanner: undefined,
+                    displayLabels: {},
+                    pageData: { 'topNavItem.admin-support.title': `Поддержка` } 
+                }})
+                art.respectArtPauses = true; setTestSpeed('slow')
+                #hawait art.pausePoint({title: `
+                    Todd is registered as  admin user with "support" role,
+                    top navigation bar reflects what he’s supposed to do.`, $tag: '0d27f99c-d89b-44cf-a65c-ed65789d206d'})
+
+                // Action
+                #hawait testGlobal.topNavbarLinks['admin-support'].click()
+                #hawait art.linkBlinksForMax({$tag: '1a2c9122-6a9f-49fc-8565-659cd221eef0', kind: 'topNavbarLink', name: 'admin-support', max: 2000})
+                art.uiState({$tag: 'ca4b25dc-c973-40d4-aa13-697f26fe401b', expected: {
 
                 }})
-
 
                 // ---------- Browser: fred ----------
                 
@@ -723,6 +738,12 @@ global.igniteShit = makeUIShitIgniter({
         }
     },
 })
+
+function isDynamicPage(name) {
+    if (CLIENT_KIND === 'customer') return ~customerDynamicPageNames().indexOf(name)
+    return ~writerDynamicPageNames().indexOf(name)
+}
+
 
 export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
     let user
@@ -758,12 +779,19 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                 ['support', span(dataField('topNavItem.support.title', t(`Support`, `Поддержка`)))],
             ]
         } else {
-            privateItems = compact([
-                user.state === 'cool' && ['orders', span(dataField('topNavItem.myOrders.title', t(`My Orders`, `Мои заказы`)))],
-                user.state === 'cool' && ['store', span(dataField('topNavItem.store.title', t(`Store`, `Аукцион`)))],
-                ['profile', span(dataField('topNavItem.profile.title', t(`Profile`, `Профиль`)))],
-                ['support', span(dataField('topNavItem.support.title', t(`Support`, `Поддержка`)))]
-            ])
+            if (user.kind !== 'admin') {
+                privateItems = compact([
+                    user.state === 'cool' && ['orders', span(dataField('topNavItem.myOrders.title', t(`My Orders`, `Мои заказы`)))],
+                    user.state === 'cool' && ['store', span(dataField('topNavItem.store.title', t(`Store`, `Аукцион`)))],
+                    ['profile', span(dataField('topNavItem.profile.title', t(`Profile`, `Профиль`)))],
+                    ['support', span(dataField('topNavItem.support.title', t(`Support`, `Поддержка`)))]
+                ])
+            } else {
+                privateItems = []
+                if (user.roles.support) {
+                    privateItems.push(['admin-support', span(dataField('topNavItem.admin-support.title', t(`Support`, `Поддержка`)))])
+                }
+            }
         }
     }
     
@@ -838,27 +866,64 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                 //
                 //     https://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#under-the-hood-autobinding-and-event-delegation
                 
-                byid(id).on('click', async function(e) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
-                    
-                    history.pushState(null, '', href)
-                    
-                    if (DEBUG_SIMULATE_SLOW_NETWORK) {
-                        await delay(1000)
+                testGlobal.topNavbarLinks[name] = {
+                    async click() {
+                        if (getTestSpeed() === 'slow') {
+                            const testActionHand = showTestActionHand(byid(id))
+                            await delay(DEBUG_ACTION_HAND_DELAY)
+                            testActionHand.delete()
+                            onClick()
+                        } else {
+                            onClick()
+                        }
+                    }
+                }
+                
+                byid(id).on('click', onClick)
+                
+                
+                async function onClick(e) {
+                    if (e) { // Not simulated in test
+                        e.preventDefault()
+                        e.stopPropagation()
                     }
                     
-                    await ui.loadPageForURL()
+                    if (MODE === 'debug' && e && e.ctrlKey && e.shiftKey) {
+                        const cp = getCapturePane()
+                        cp.show()
+                        cp.addCode(`\n`)
+                        captureInputs()
+                        cp.addCode(`// Action\n`
+                                 + `${'#'}hawait testGlobal.topNavbarLinks['${name}'].click()\n`)
+                        cp.focusAndSelect()
+                        return
+                    }
+                    
+                    effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
+                    testGlobal['topNavbarLink_' + name + '_blinks'] = true
+                    
+                    if ((!isDynamicPage(name) || ~['sign-in', 'sign-up'].indexOf(name)) && !(isInTestScenario() && getTestSpeed() === 'fast')) {
+                        await delay(ACTION_DELAY_FOR_FANCINESS)
+                    }
+                    await ui.pushNavigate(href)
+                    
+// TODO:vgrechka @kill
+//                    history.pushState(null, '', href)
+//                    if (DEBUG_SIMULATE_SLOW_NETWORK) {
+//                        await delay(1000)
+//                    }
+//                    await ui.loadPageForURL()
                     
                     setTimeout(_=> {
                         effects.blinkOff()
+                        testGlobal['topNavbarLink_' + name + '_blinks'] = false
                         bsClearMenus()
                     }, 250)
-                })
+                }
             },
             
             componentWillUnmount() {
+                delete testGlobal.topNavbarLinks[name]
                 byid(id).off()
             },
         })
@@ -872,7 +937,7 @@ export function customerDynamicPageNames() {
 }
 
 export function writerDynamicPageNames() {
-    return tokens('test sign-in sign-up dashboard orders support store users profile')
+    return tokens('test sign-in sign-up dashboard orders support store users profile admin-support')
 }
 
 function userDisplayForm(user) {
