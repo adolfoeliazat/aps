@@ -1,8 +1,3 @@
-const askerName = 'Sailor'
-relog(heyBackend_sayHelloToMe({askerName}))
-heyBackend_changeYourStateTo({foo: 10, bar: 20})
-relog('Its state is', heyBackend_whatsYourState())
-
 try {
     const res = await handle({msg: {fun: 'danger_shitIntoDatabase', DANGEROUS_TOKEN: process.env.APS_DANGEROUS_TOKEN, CLIENT_KIND: 'debug'}})
     if (res.fatal) {
@@ -23,6 +18,88 @@ try {
 function section(title) {
     relog(`\n-------------- ${title} ----------------\n`)
 }
+
+
+relog(findConflict(testdata.ua.supportThreads))
+;
+function findConflict(items) {
+    const pastParsedItems = []
+    for (let i = 0; i < items.length; ++i) {
+        const parsedItem = {}
+        let s = items[i].toLowerCase().replace(/\.|,|\?|!/g, '')
+        const words = s.split(/\s+/).filter(x => x.length)
+        parsedItem.uniqueWords = uniq(words)
+        for (let j = 0; j < pastParsedItems.length; ++j) {
+            const error = conflicts(parsedItem, pastParsedItems[j])
+            if (error) {
+                return `${i} conflicts with ${j}: ${error}\n`
+                     + `${i}: ${items[i]}\n`
+                     + `${j}: ${items[j]}`
+            }
+        }
+        pastParsedItems.push(parsedItem)
+    }
+    return '--- All good ---'
+    ;
+    function conflicts(pi1, pi2) {
+        const commonWords = intersection(pi1.uniqueWords, pi2.uniqueWords)
+        if (commonWords.length >= 3) return `Too many common words: ${commonWords.join(', ')}`
+    }
+}
+
+
+relog(run(function gen1() {
+    const random = new Random(Random.engines.mt19937().seed(123123))
+    ;
+    const newUniqueID = uniqueGenerator(_=> random.integer(100, 100000 - 1))
+    const newUniqueStamp = uniqueGenerator(_=> testdata.randomStamp(random))
+    ;
+    const threads = cloneDeep(testdata.ua.supportThreads)
+    let res = ''
+    for (const item of threads) {
+        const thread = item.thread
+        if (!thread.id) {
+            thread.id = newUniqueID(threads, 'thread.id')
+        }
+        if (!thread.inserted_at) {
+            thread.inserted_at = thread.updated_at = newUniqueStamp(threads, 'thread.inserted_at', 'thread.updated_at')
+        }
+        orderKeys(thread, ['id', 'topic', 'inserted_at', 'updated_at'])
+        res += JSON.stringify(item) + ',\n'
+    }
+    return res
+    ;
+    function uniqueGenerator(f) {
+        return function(items, ...paths) {
+            const existing = flatMap(items, x => at(x, paths))
+            for (;;) {
+                const generated = f()
+                if (!existing.includes(generated)) return generated
+            }
+        }
+    }
+    ;
+    function orderKeys(o, orderedKeys) {
+//        const diff1 = difference(keys(o), orderedKeys)
+//        if (diff1.length) raise(`Unwanted key difference: ${diff1}`)
+//        const diff2 = difference(orderedKeys, keys(o))
+//        if (diff2.length) raise(`Unwanted key difference: ${diff2}`)
+        for (const key of orderedKeys) {
+            const value = o[key]
+            delete o[key]
+            o[key] = value
+        }
+    }
+}))
+
+
+const askerName = 'Sailor'
+relog(heyBackend_sayHelloToMe({askerName}))
+heyBackend_changeYourStateTo({foo: 10, bar: 20})
+relog('Its state is', heyBackend_whatsYourState())
+
+
+
 
 relog(generateRandomShitForDatabase())
 
