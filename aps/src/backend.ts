@@ -30,14 +30,13 @@ app.post('/rpc', (req, res) => {
         res.json(message)
     })
     
-    async function handle() {
+    async function handle({msg=req.body}={}) {
         let requestTimestamp = moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS')
         if (imposedRequestTimestamp) {
             requestTimestamp = imposedRequestTimestamp
             imposedRequestTimestamp = undefined
         }
         
-        const msg = req.body
         const _t = makeT(msg.LANG)
         function t(meta, ...args) {
             return {meta, meat: _t(...args)}
@@ -171,22 +170,22 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_setUpTestUsers') {
-                    #await tx.query({$tag: '518050b0-dedc-40f1-93e0-c51b1021a6ad'}, q`
-                        delete from support_thread_messages where sender_id >= 100 and sender_id < 1000`)
-                    #await tx.query({$tag: 'c46dbaf9-b7b0-4442-9ac1-acc75ef1330b'}, q`
-                        delete from support_threads where supportee_id >= 100 and supportee_id < 1000`)
-                    #await tx.query({$tag: '183a4e24-8885-4dcb-b360-5c767893e4bb'}, q`
-                        delete from user_tokens where user_id >= 100 and user_id < 1000`)
-                    #await tx.query({$tag: 'b8b2d24e-26b4-45b3-b242-0d639742e4da'}, q`
-                        delete from user_roles where user_id >= 100 and user_id < 1000`)
-                    #await tx.query({$tag: 'b9d25014-36d2-4ae8-a92c-1716253bc1d9'}, q`
-                        delete from users where id >= 100 and id < 1000`)
-                    #await insertInto({$tag: '334d9edb-8880-4d01-a366-ba4ffd724f37'}, {table: 'users', rows: testdata.users})
-                    #await insertInto({$tag: 'd07e2a4b-5cda-4cb1-8578-e2004c70140d'}, {table: 'user_roles', values: {
-                        user_id: 100,
-                        role: 'support',
-                    }})
+                else if (msg.fun === 'danger_shitIntoDatabase') {
+                    const password_hash = '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6' // secret
+                        
+                    #await testQuery(q`delete from support_thread_messages where sender_id >= 100 and sender_id < 100000`)
+                    #await testQuery(q`delete from support_threads where supportee_id >= 100 and supportee_id < 100000`)
+                    #await testQuery(q`delete from user_tokens where user_id >= 100 and user_id < 100000`)
+                    #await testQuery(q`delete from user_roles where user_id >= 100 and user_id < 100000`)
+                    #await testQuery(q`delete from users where id >= 100 and id < 100000`)
+                        
+                    for (const u of testdata.users.ua.admin) {
+                        #await testInsertInto({table: 'users', values: asn({kind: 'admin', state: 'cool', password_hash}, u.user)})
+                        for (const role of u.roles) {
+                            #await testInsertInto({table: 'user_roles', values: {user_id: u.user.id, role}})
+                        }
+                    }
+                
                     return hunkyDory()
                 }
                 
@@ -727,6 +726,14 @@ app.post('/rpc', (req, res) => {
                         user.roles[row.role] = true
                     }
                 }
+                
+                async function testQuery(opts) {
+                    return await tx.query({$tag: 'test--efaaf077-e713-492a-833c-61b3395c0c21'}, opts)
+                }
+                
+                async function testInsertInto(opts) {
+                    return await insertInto({$tag: 'test--8db55c55-84c2-48cf-b49d-8fbea1b1aa86'}, opts)
+                }
             })
             
         } catch (fucked) {
@@ -895,16 +902,32 @@ function heyBackend_whatsYourState() {
     return kindOfState
 }
 
-function generateRandomSupportThreads(count) {
+function generateRandomShitForDatabase() {
+    const random = new Random(Random.engines.mt19937().seed(123123))
+    const value = random.integer(1, 2)
+    
+    return `
+        await drpc({fun: 'danger_insert', table: 'support_threads', rows: [
+        ]})
+    `
+}
+
+function randomStamp() {
+    const year = random(2014, 2016)
+    const month = prependZero(random(1, 12))
+    const day = prependZero(random(1, 25))
+    const hour = prependZero(random(0, 23))
+    const minute = prependZero(random(0, 59))
+    const second = prependZero(random(0, 59))
+    return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+}
+
+const randomThreadCount = 50
+
+function generateRandomSupportThreads() {
     const rows = []
-    range(count).forEach(i => {
-        const year = random(2014, 2016)
-        const month = prependZero(random(1, 12))
-        const day = prependZero(random(1, 25))
-        const hour = prependZero(random(0, 23))
-        const minute = prependZero(random(0, 59))
-        const second = prependZero(random(0, 59))
-        const stamp = `${year}-${month}-${day} ${hour}:${minute}:${second}`
+    range(randomThreadCount).forEach(i => {
+        const stamp = randomStamp()
         const supportee_id = randomItem(testdata.customerAndWriterUserIDs)
         let topic = randomShortSentences()[i]
         if (topic.endsWith('.')) {
@@ -913,20 +936,42 @@ function generateRandomSupportThreads(count) {
         rows.push({id: undefined, inserted_at: stamp, updated_at: stamp, supportee_id, topic})
     })
     rows = sortBy(rows, 'inserted_at')
-    range(count).forEach(i => {
+    range(randomThreadCount).forEach(i => {
         rows[i].id = i + 1
     })
         
     return rows.map(JSON.stringify).join(',\n')
+}
+
+function generateRandomSupportThreadMessages() {
+    const messageRows = []
+    range(randomThreadCount).forEach(ithread => {
+            const stamp = randomStamp()
+            const supportee_id = randomItem(testdata.customerAndWriterUserIDs)
+            let topic = randomShortSentences()[i]
+            if (topic.endsWith('.')) {
+                topic = topic.slice(0, topic.length - 1)
+            }
+            messageRows.push({id: undefined, inserted_at: stamp, updated_at: stamp, thread_id: ithread + 1, sender_id})
+    })
+    messageRows = idifyRows(messageRows)
+        
+    return messageRows.map(JSON.stringify).join(',\n')
+}
+
+function idifyRows(rows) {
+    rows = sortBy(rows, 'inserted_at')
+    range(rows.length).forEach(i => {
+        rows[i].id = i + 1
+    })
+}
     
-    
-    function prependZero(x) {
-        x = '' + x
-        if (x.length === 1) {
-            x = '0' + x
-        }
-        return x
+function prependZero(x) {
+    x = '' + x
+    if (x.length === 1) {
+        x = '0' + x
     }
+    return x
 }
 
 function extractRandomSentences(pilef) {

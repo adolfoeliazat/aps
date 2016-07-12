@@ -3,13 +3,38 @@ relog(heyBackend_sayHelloToMe({askerName}))
 heyBackend_changeYourStateTo({foo: 10, bar: 20})
 relog('Its state is', heyBackend_whatsYourState())
 
+try {
+    const res = await handle({msg: {fun: 'danger_shitIntoDatabase', DANGEROUS_TOKEN: process.env.APS_DANGEROUS_TOKEN, CLIENT_KIND: 'debug'}})
+    if (res.fatal) {
+        relog(res.fatal.split('\n').slice(0, 1).join('\n'))
+        section('Handle stack'); relog(res.stack)
+        section('Handle stack before await'); relog(res.stackBeforeAwait)
+        return
+    }
+    ;
+    relog(res)
+    section('Users')
+    relog(await testQuery(q`select * from users`))
+} catch (e) {
+    section('My stack'); relog(e.stack)
+    section('My stack before await'); relog(stackBeforeAwait)
+}
+;
+function section(title) {
+    relog(`\n-------------- ${title} ----------------\n`)
+}
+
+relog(generateRandomShitForDatabase())
+
 relog(randomShortSentences().length)
 
 relog(randomLongSentences().length)
 
 relog(extractRandomSentences(somePile1))
 
-relog(generateRandomSupportThreads(50))
+relog(generateRandomSupportThreads({threadCount: 50}))
+
+relog(generateRandomSupportThreadMessages({threadCount: 50}))
 
 
 relog(await tx.query({$tag: '03bb8d7f-09e5-4591-98ef-7f4bf6282bef'}, q`insert into foobar(foo) values(${'hello world'}) returning id`))

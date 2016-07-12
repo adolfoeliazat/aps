@@ -47,7 +47,7 @@ create table users(
     first_name text not null,
     last_name text not null,
     phone text /*can be null*/);
-alter sequence users_id_seq restart with 1000;
+alter sequence users_id_seq restart with 100000;
 create trigger on_insert before insert on users for each row execute procedure on_insert();
 create trigger on_update before update on users for each row execute procedure on_update();
 
@@ -89,7 +89,7 @@ create table support_threads(
     supportee_id bigint not null references users(id),
     supporter_id bigint /*can be null*/ references users(id)
     );
-alter sequence support_threads_id_seq restart with 1000;    
+alter sequence support_threads_id_seq restart with 100000;    
 create trigger on_insert before insert on support_threads for each row execute procedure on_insert();
 create trigger on_update before update on support_threads for each row execute procedure on_update();
 
@@ -104,7 +104,7 @@ create table support_thread_messages(
     recipient_id bigint /*can be null*/ references users(id),
     message text not null
     );
-alter sequence support_thread_messages_id_seq restart with 1000;
+alter sequence support_thread_messages_id_seq restart with 100000;
 create trigger on_insert before insert on support_thread_messages for each row execute procedure on_insert();
 create trigger on_update before update on support_thread_messages for each row execute procedure on_update();
 
@@ -112,6 +112,10 @@ create trigger on_update before update on support_thread_messages for each row e
 create table foobar(id bigserial, foo text);
 
 /* -------------------------------------------------------------------
+
+
+select * from foobar
+
 
 select * from users
 select * from support_threads
@@ -193,5 +197,6 @@ drop table if exists support_threads;
 drop table if exists user_tokens;
 drop table if exists user_roles;
 drop table if exists users;
+drop table if exists foobar;
 
 */

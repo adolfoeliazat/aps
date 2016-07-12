@@ -4,10 +4,16 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-export const testdata = {}
+export const testdata = {users: {ua: {}}}
 
-testdata.users = [
-    {id: 100, kind: 'admin', first_name: 'Тодд', last_name: 'Суппортод', email: 'todd@test.shit.ua', state: 'cool', lang: 'ua', password_hash: '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6',},
+testdata.users.ua.admin = [
+    {
+        user: {id: 100, kind: 'admin', first_name: 'Тодд', last_name: 'Суппортод', email: 'todd@test.shit.ua', state: 'cool', lang: 'ua', password_hash: '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6',},
+        roles: ['support'],
+    },
+]
+
+testdata.users__ = [
     {id: 201, kind: 'writer', first_name: 'Франц', last_name: 'Кафка', email: 'kafka@test.shit.ua', state: 'cool', lang: 'ua', password_hash: '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6',},
     {id: 202, kind: 'writer', first_name: 'Лев', last_name: 'Толстой', email: 'leo@test.shit.ua', state: 'cool', lang: 'ua', password_hash: '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6',},
     {id: 203, kind: 'writer', first_name: 'Николай', last_name: 'Гоголь', email: 'gogol@test.shit.ua', state: 'cool', lang: 'ua', password_hash: '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6',},
