@@ -1,5 +1,5 @@
 try {
-    const res = await handle({msg: {fun: 'danger_shitIntoDatabase', DANGEROUS_TOKEN: process.env.APS_DANGEROUS_TOKEN, CLIENT_KIND: 'debug'}})
+    const res = await handle({fun: 'danger_shitIntoDatabase', DANGEROUS_TOKEN: process.env.APS_DANGEROUS_TOKEN, CLIENT_KIND: 'debug'})
     if (res.fatal) {
         relog(res.fatal.split('\n').slice(0, 1).join('\n'))
         section('Handle stack'); relog(res.stack)
@@ -9,7 +9,8 @@ try {
     ;
     relog(res)
     section('Users')
-    relog(await testQuery(q`select * from users`))
+    // relog(await testQuery(q`select * from users`))
+    relog(await testQuery(q`select * from support_threads`))
 } catch (e) {
     section('My stack'); relog(e.stack)
     section('My stack before await'); relog(stackBeforeAwait)
@@ -18,6 +19,9 @@ try {
 function section(title) {
     relog(`\n-------------- ${title} ----------------\n`)
 }
+
+
+relog(testdata.ua.messages.filter(x => x.length > 300))
 
 
 relog(findConflict(testdata.ua.supportThreads))
@@ -47,48 +51,41 @@ function findConflict(items) {
     }
 }
 
+await testQuery(`insert into foobar (foo) values ('aaaaaaa'); insert into foobar (foo) values ('bbbbbbb');`)
+relog(await testQuery('select * from foobar'))
 
 relog(run(function gen1() {
     const random = new Random(Random.engines.mt19937().seed(123123))
+    const ids = {}
+    const stampFormat = 'YYYY-MM-DD HH:mm:ss'
+    let nextMoment = moment('2014-03-31 18:15:41', stampFormat)
     ;
-    const newUniqueID = uniqueGenerator(_=> random.integer(100, 100000 - 1))
-    const newUniqueStamp = uniqueGenerator(_=> testdata.randomStamp(random))
+    //range(30).forEach(_=> relog(nextStamp()))
+    //return
     ;
-    const threads = cloneDeep(testdata.ua.supportThreads)
-    let res = ''
-    for (const item of threads) {
-        const thread = item.thread
-        if (!thread.id) {
-            thread.id = newUniqueID(threads, 'thread.id')
-        }
-        if (!thread.inserted_at) {
-            thread.inserted_at = thread.updated_at = newUniqueStamp(threads, 'thread.inserted_at', 'thread.updated_at')
-        }
-        orderKeys(thread, ['id', 'topic', 'inserted_at', 'updated_at'])
-        res += JSON.stringify(item) + ',\n'
-    }
-    return res
     ;
-    function uniqueGenerator(f) {
-        return function(items, ...paths) {
-            const existing = flatMap(items, x => at(x, paths))
-            for (;;) {
-                const generated = f()
-                if (!existing.includes(generated)) return generated
-            }
+    let sql = ''
+    range(3).forEach(function generateEvent() {
+        const eventType = randomItem(random, ['newSupportThread', 'newSupportThreadMessage'])
+        if (eventType === 'newSupportThread') {
+            sql += `insert into support_threads(id, inserted_at, updated_at, topic, supportee_id, supporter_id);`
+        } else if (eventType === 'newSupportThreadMessage') {
+            
         }
+    })
+    return sql
+    ;
+    ;
+    function nextID(name) {
+        if (!ids[name]) {
+            ids[name] = 100
+        }
+        return ++ids[name]
     }
     ;
-    function orderKeys(o, orderedKeys) {
-//        const diff1 = difference(keys(o), orderedKeys)
-//        if (diff1.length) raise(`Unwanted key difference: ${diff1}`)
-//        const diff2 = difference(orderedKeys, keys(o))
-//        if (diff2.length) raise(`Unwanted key difference: ${diff2}`)
-        for (const key of orderedKeys) {
-            const value = o[key]
-            delete o[key]
-            o[key] = value
-        }
+    function nextStamp() {
+        nextMoment.add(random.integer(5 * 60, 5 * 24 * 60 * 60), 'seconds')
+        return nextMoment.format(stampFormat)
     }
 }))
 

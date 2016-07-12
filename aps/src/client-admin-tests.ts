@@ -12,7 +12,7 @@ module.exports = function({sim}) {
     return {
         async 'UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c'() {
             #hawait drpc({fun: 'danger_clearSentEmails'})
-            #hawait drpc({fun: 'danger_shitIntoDatabase'})
+            // #hawait drpc({fun: 'danger_shitIntoDatabase'})
             
             sim.selectBrowser('todd')
             
@@ -43,14 +43,14 @@ module.exports = function({sim}) {
                 pageData: 
                  { 'topNavItem.admin-my-tasks.title': `Мои задачи`,
                    'topNavItem.admin-heap.title': `Куча`,
-                   'topNavItem.admin-heap.badge': `50` } 
+                   } 
             }})
             
             // Action
-            #hawait testGlobal.topNavbarLinks['admin-heap'].click()
-            #hawait art.uiStateAfterLiveStatusPolling({$tag: '52167671-bd47-4997-9a9d-742951263fa4', expected: {
-
-            }})
+//            #hawait testGlobal.topNavbarLinks['admin-heap'].click()
+//            #hawait art.uiStateAfterLiveStatusPolling({$tag: '52167671-bd47-4997-9a9d-742951263fa4', expected: {
+//
+//            }})
 
         },
     }

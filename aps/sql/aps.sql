@@ -51,9 +51,9 @@ alter sequence users_id_seq restart with 100000;
 create trigger on_insert before insert on users for each row execute procedure on_insert();
 create trigger on_update before update on users for each row execute procedure on_update();
 
-insert into users (id, email, kind, lang, first_name, last_name, state, password_hash) values (10, 'root', 'root', 'ua', 'Vladimir', 'Grechka', 'cool', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1uZBXiW84OMzcoTvY559e8azTcXcK');
-insert into users (id, email, kind, lang, first_name, last_name, state, password_hash) values (11, 'toor', 'toor', 'ua', 'Evil', 'Twin', 'cool', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
-insert into users (id, email, kind, lang, first_name, last_name, state, password_hash) values (12, 'dasja@test.shit.ua', 'admin', 'ua', 'Даша', 'Босс', 'cool', '$2a$10$Dt.OhdqCtSoF9chaj4uPZOi84AUfjSF6kQHaBLsrbG/XpEjELuEuK');
+-- insert into users (id, email, kind, lang, first_name, last_name, state, password_hash) values (10, 'root', 'root', 'ua', 'Vladimir', 'Grechka', 'cool', '$2a$10$bWP5kkNWANH3S2C4c0hgbuhR1uZBXiW84OMzcoTvY559e8azTcXcK');
+-- insert into users (id, email, kind, lang, first_name, last_name, state, password_hash) values (11, 'toor', 'toor', 'ua', 'Evil', 'Twin', 'cool', '$2a$10$PE7xDOFE6./Mg81x62g61eAXXfHxMryMLXWq77Vm.XpEuLHMPRica');
+-- insert into users (id, email, kind, lang, first_name, last_name, state, password_hash) values (12, 'dasja@test.shit.ua', 'admin', 'ua', 'Даша', 'Босс', 'cool', '$2a$10$Dt.OhdqCtSoF9chaj4uPZOi84AUfjSF6kQHaBLsrbG/XpEjELuEuK');
 
 create table user_roles(
     id bigserial primary key,
@@ -118,7 +118,9 @@ select * from foobar
 
 
 select * from users
+select * from user_tokens
 select * from support_threads
+select * from support_thread_messages
 
 
 select * from users where id in (2, 78)
@@ -189,6 +191,10 @@ select version()
 select * from foobar
 
 insert into foobar(id, foo) values(null, 'qqqqqqq')
+
+insert into foobar (foo) values ('qweqwe')
+
+delete from support_threads
 
 -- Drop all shit
 

@@ -2,5 +2,7 @@
 127.0.0.1    aps-ua-customer.local
 127.0.0.1    aps-ua-writer.local
 127.0.0.1    aps-ua-admin.local
+127.0.0.1    aps-ua-writer-dasja.local
+127.0.0.1    aps-ua-writer-root.local
 127.0.0.1    aps-en-customer.local
 127.0.0.1    aps-en-writer.local

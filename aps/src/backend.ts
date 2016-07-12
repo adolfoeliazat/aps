@@ -18,7 +18,7 @@ let testGlobalCounter = 0
 
 const app = newExpress()
 let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp,
-    imposedNextID
+    imposedNextIDs = []
 
 require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
     return s
@@ -26,11 +26,17 @@ require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
 
 app.post('/rpc', (req, res) => {
     // dlog({body: req.body, headers: req.headers})
-    handle().then(message => {
+    handle(req.body).then(message => {
         res.json(message)
     })
     
-    async function handle({msg=req.body}={}) {
+    async function simulateRequest(msg) {
+        const res = await handle(msg)
+        if (!res.hunky) raise(`Unhunky response from myself’s ${msg.fun}: ${deepInspect(res)}`)
+        return res
+    }
+    
+    async function handle(msg) {
         let requestTimestamp = moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS')
         if (imposedRequestTimestamp) {
             requestTimestamp = imposedRequestTimestamp
@@ -144,7 +150,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'danger_imposeNextID') {
-                    imposedNextID = msg.id
+                    imposedNextIDs = [msg.id]
                     return hunkyDory()
                 }
                 
@@ -171,7 +177,14 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'danger_shitIntoDatabase') {
+                    const random = new Random(Random.engines.mt19937().seed(123123))
+                    const eventRandom = new Random(Random.engines.mt19937().seed(234234))
                     const password_hash = '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6' // secret
+                    const stampFormat = 'YYYY-MM-DD HH:mm:ss'
+                    let nextMoment = moment('2014-03-31 18:15:41', stampFormat)
+                    const nextIDs = {}
+                    let nextSupportThreadTopicIndex = 0
+                    let nextMessageIndex = 0
                         
                     #await testQuery(q`delete from support_thread_messages where sender_id >= 100 and sender_id < 100000`)
                     #await testQuery(q`delete from support_threads where supportee_id >= 100 and supportee_id < 100000`)
@@ -183,16 +196,116 @@ app.post('/rpc', (req, res) => {
                         #await testInsertInto({table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
                         for (const role of u.roles) {
                             #await testInsertInto({table: 'user_roles', values: {user_id: u.user.id, role}})
+                            #await testInsertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
                         }
                     }
                     for (const u of testdata.ua.users.writer) {
                         #await testInsertInto({table: 'users', values: asn({kind: 'writer', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                        #await testInsertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
                     }
                     for (const u of testdata.ua.users.customer) {
                         #await testInsertInto({table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                        #await testInsertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
                     }
+                    
+                    testQuery('commit') // So that requests simulated below see test users
+                    
+                    dlog('------- begin events -------')
+                    for (let eventIndex = 0; eventIndex < 100; ++eventIndex) {
+                        const events = [
+                            async function newSupportThread() {
+                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
+                                const topic = testdata.ua.supportThreadTopics[nextSupportThreadTopicIndex++]
+                                const message = nextMessage()
+                                imposedNextIDs = [nextID('support_threads'), nextID('support_thread_messages')]
+                                const user = randomCustomerOrWriter()
+                                const res = #await simulateRequest({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
+                                    fun: 'private_createSupportThread', topic, message})
+                            },
+                            
+                            async function adminAssignedToSupportThread() {
+                                const threads = #await testQuery(`select * from support_threads where id < 100000 and supporter_id is null`)
+                                if (!threads.length) return dlog('Skipping event cause there’s no threads needing assignment')
+                                const thread = randomItem(random, threads)
+                                const user = randomSupporter()
+                                const res = #await simulateRequest({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
+                                    fun: 'private_takeSupportThread', id: thread.id})
+                            },
+                            
+                            async function newSupportThreadMessage() {
+                                const threads = #await testQuery(`select * from support_threads where id < 100000 and supporter_id is null`)
+                                if (!threads.length) return dlog('Skipping event cause there’s no threads yet')
+                                const thread = randomItem(random, threads)
+                                const message = nextMessage()
+                                imposedNextIDs = [nextID('support_thread_messages')]
+                                const userOptions = [userFromID(thread.supportee_id)]
+                                if (thread.supporter_id) {
+                                    userOptions.push(userFromID(thread.supporter_id))
+                                }
+                                const {clientKind, token} = randomItem(random, userOptions)
+                                const res = #await simulateRequest({LANG: 'ua', CLIENT_KIND: clientKind, token,
+                                    fun: 'private_createSupportThreadMessage', message, containerID: thread.id})
+                            }
+                        ]
+                        
+                        imposedRequestTimestamp = nextStamp()
+                        const event = randomItem(eventRandom, events)
+                        dlog(`Event ${eventIndex + 1}: ${event.name}`)
+                        await event()
+                    }
+                    dlog('------ end events -------')
+                    
+                    #await testQuery(q`delete from user_tokens where user_id >= 100 and user_id < 100000`)
                 
                     return hunkyDory()
+                    
+                    
+                    function nextMessage() {
+                        if (nextMessageIndex > testdata.ua.messages.length - 1) raise('Out of messages')
+                        return testdata.ua.messages[nextMessageIndex++]
+                    }
+                    
+                    function nextStamp() {
+                        nextMoment.add(random.integer(30 * 60, 5 * 24 * 60 * 60), 'seconds')
+                        return nextMoment.format(stampFormat)
+                    }
+                    
+                    function randomCustomer() {
+                        return userFromID(randomItem(random, testdata.ua.users.customer).user.id)
+                    }
+                    
+                    function randomWriter() {
+                        return userFromID(randomItem(random, testdata.ua.users.writer).user.id)
+                    }
+                    
+                    function randomCustomerOrWriter() {
+                        if (random.integer(0, 1) === 0) return randomCustomer()
+                        else return randomWriter()
+                    }
+                    
+                    function randomSupporter() {
+                        const admins = testdata.ua.users.admin
+                        const supporters = admins.filter(x => x.roles.includes('support'))
+                        return userFromID(randomItem(random, supporters).user.id)
+                    }
+                    
+                    function userFromID(id) {
+                        id = parseInt(id, 10)
+                        let clientKind
+                        if (id >= 100 && id < 300) clientKind = 'writer'
+                        else if (id >= 300 && id < 400) clientKind = 'customer'
+                        else raise(`Weird ID for a test user: ${id}`)
+                        return {clientKind, token: 'temp-' + id}
+                    }
+                    
+                    function nextID(table) {
+                        if (!nextIDs[table]) {
+                            nextIDs[table] = 101
+                        }
+                        const id = nextIDs[table]++
+                        if (id >= 100000) raise(`Out of IDs for table ${table}`)
+                        return id
+                    }
                 }
                 
                 else if (msg.fun === 'danger_fixNextGeneratedPassword') {
@@ -424,14 +537,14 @@ app.post('/rpc', (req, res) => {
                     
                     const entities = #await tx.query({$tag: 'f13a4eda-ab97-496d-b037-8b8f2b2599e1'}, q`
                         select * from support_threads
-                                 where id = ${msg.entityID}
+                                 where id = ${msg.id}
                     `)
                     // TODO:vgrechka Handle request for non-existing entity
                     const entity = entities[0]
 
                     const items = #await tx.query({$tag: 'b40d63d7-2cd2-4326-9f08-db3892522d7f'}, q`
                         select * from support_thread_messages
-                                 where thread_id = ${msg.entityID}
+                                 where thread_id = ${msg.id}
                                  order by inserted_at desc
                     `)
                     #await fillForeigns(items, 'users', ['sender', 'recipient'])
@@ -493,12 +606,11 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_createSupportThreadMessage') {
-                    // TODO:vgrechka Security
                     loadField({key: 'message', kind: 'message', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
                         #await insertInto({$tag: 'a370d299-23e8-43d0-ae77-adf5c4b599fc'}, {table: 'support_thread_messages', values: {
-                            thread_id: msg.entityID,
+                            thread_id: msg.containerID,
                             sender_id: user.id,
                             message: fields.message,
                         }})
@@ -506,6 +618,13 @@ app.post('/rpc', (req, res) => {
                         return hunkyDory({})
                     }
                     return youFixErrors()
+                }
+                
+                else if (msg.fun === 'private_takeSupportThread') {
+                    // TODO:vgrechka Handle mid-air collisions
+                    #await tx.query({$tag: 'ea3ae40d-c285-49b0-9219-415203925257'}, q`
+                        update support_threads set supporter_id = ${user.id} where id = ${msg.id}`)
+                    return hunkyDory()
                 }
                 
                 const situation = `WTF is the RPC function ${msg.fun}?`
@@ -536,6 +655,7 @@ app.post('/rpc', (req, res) => {
                     let id
                     for (const rowValues of rows) {
                         rowValues = cloneDeep(rowValues)
+                        const imposedNextID = imposedNextIDs.shift()
                         if (imposedNextID) {
                             rowValues.id = imposedNextID
                             imposedNextID = undefined
