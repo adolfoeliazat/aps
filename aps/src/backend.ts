@@ -58,6 +58,9 @@ app.post('/rpc', (req, res) => {
                 const clientToken = msg.DANGEROUS_TOKEN
                 if (clientToken !== serverToken) raise('Fuck you, mister hacker')
             }
+            
+            if (msg.DB && MODE !== 'debug') raise('DB is only allowed for debug mode')
+            const DB = msg.DB || 'dev'
         
             const [clientDomain, clientPortSuffix] = {
                 ua_customer: [DOMAIN_UA_CUSTOMER, PORT_SUFFIX_UA_CUSTOMER],
@@ -67,7 +70,7 @@ app.post('/rpc', (req, res) => {
             }[msg.LANG + '_' + msg.CLIENT_KIND] || [undefined, undefined]
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv' && msg.CLIENT_KIND !== 'debug') raise('WTF is the clientKind?')
             
-            return await pgTransaction(async function(tx) {
+            return await pgTransaction({DB}, async function(tx) {
                 const fieldErrors = {}, fields = {}
                 let user
             
@@ -881,16 +884,25 @@ app.listen(port, _=> {
     clog(`Backend is spinning on 127.0.0.1:${port}`)
 })
 
-let pgPool
+const pgPools = {}
 
-function pgTransaction(doInTransaction) {
+function pgTransaction({DB}, doInTransaction) {
+    let pgPool = pgPools[DB]
     if (!pgPool) {
-        pgPool = new (require('pg').Pool)({
-            database: 'aps',
-            port: 5432,
-            user: 'aps',
-            password: 'apssecret',
-        })
+        const configs = {
+            dev: {
+                database: 'aps',
+                port: 5432,
+                user: 'aps',
+                password: 'apssecret',
+            },
+            test: {
+                database: 'aps-test',
+                port: 5433,
+                user: 'postgres',
+            },
+        }
+        pgPool = pgPools[DB] = new (require('pg').Pool)(configs[DB])
     }
     
     return new Promise((resolvePgTransaction, rejectPgTransaction) => {

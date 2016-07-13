@@ -21,6 +21,11 @@ function section(title) {
 }
 
 
+await testQuery('commit')
+await testQuery('create database foobar1')
+relog('ok')
+
+
 relog(testdata.ua.messages.filter(x => x.length > 300))
 
 
