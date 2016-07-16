@@ -14,7 +14,7 @@ require('source-map-support').install()
 import * as fs from 'fs'
 import static 'into-u ./stuff ./test-stuff'
 
-let testGlobalCounter = 0
+let testGlobalCounter = 0, simulateRequest
 
 const app = newExpress()
 let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp,
@@ -30,7 +30,7 @@ app.post('/rpc', (req, res) => {
         res.json(message)
     })
     
-    async function simulateRequest(msg) {
+    simulateRequest = async function(msg) {
         const res = await handle(msg)
         if (!res.hunky) raise(`Unhunky response from myself’s ${msg.fun}: ${deepInspect(res)}`)
         return res
@@ -193,163 +193,6 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_shitIntoDatabase') {
-                    const random = new Random(Random.engines.mt19937().seed(123123))
-                    const eventRandom = new Random(Random.engines.mt19937().seed(234234))
-                    const password_hash = '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6' // secret
-                    const stampFormat = 'YYYY-MM-DD HH:mm:ss'
-                    let nextMoment = moment('2014-03-31 18:15:41', stampFormat)
-                    const nextIDs = {}
-                    let nextSupportThreadTopicIndex = 0
-                    let nextMessageIndex = 0
-                    
-                    dlog('Dropping shit')
-                    #await testQuery(fs.readFileSync(`${__dirname}/../sql/aps-drop.sql`, 'utf8'))
-                    dlog('Creating schema')
-                    #await testQuery(fs.readFileSync(`${__dirname}/../sql/aps.sql`, 'utf8').replace(/^NO WAY/m, '-- NO WAY'))
-                        
-//                    #await testQuery(q`delete from support_thread_messages where sender_id >= 100 and sender_id < 100000`)
-//                    #await testQuery(q`delete from support_threads where supportee_id >= 100 and supportee_id < 100000`)
-//                    #await testQuery(q`delete from user_tokens where user_id >= 100 and user_id < 100000`)
-//                    #await testQuery(q`delete from user_roles where user_id >= 100 and user_id < 100000`)
-//                    #await testQuery(q`delete from users where id >= 100 and id < 100000`)
-                        
-                    let mt
-                    mt = measureTime('Creating users')
-                    for (const u of testdata.ua.users.admin) {
-                        #await testInsertInto({table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                        for (const role of u.roles) {
-                            #await testInsertInto({table: 'user_roles', values: {user_id: u.user.id, role}})
-                            #await testInsertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
-                        }
-                    }
-                    for (const u of testdata.ua.users.writer) {
-                        #await testInsertInto({table: 'users', values: asn({kind: 'writer', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                        #await testInsertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
-                    }
-                    for (const u of testdata.ua.users.customer) {
-                        #await testInsertInto({table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                        #await testInsertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
-                    }
-                    mt.dlog('END')
-                    
-                    testQuery('commit') // So that requests simulated below see test users
-                    
-                    dlog('------- begin events -------')
-                    mt = measureTime('Events')
-                    for (let eventIndex = 0; eventIndex < 1000; ++eventIndex) {
-                        const events = [
-                            async function newSupportThread() {
-//                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
-                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) {
-                                    nextSupportThreadTopicIndex = 0
-                                }
-                                const topic = testdata.ua.supportThreadTopics[nextSupportThreadTopicIndex++]
-                                const message = nextMessage()
-                                imposedNextIDs = [nextID('support_threads'), nextID('support_thread_messages')]
-                                const user = randomCustomerOrWriter()
-                                
-                                const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
-                                    fun: 'private_createSupportThread', topic, message})
-                                
-                                const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
-                                    fun: 'private_createSupportThread', topic, message})
-                                
-                            },
-                            
-                            async function adminAssignedToSupportThread() {
-                                const threads = #await testQuery(`select * from support_threads where id < 100000 and supporter_id is null`)
-                                if (!threads.length) return dlog('Skipping event cause there’s no threads needing assignment')
-                                const thread = randomItem(random, threads)
-                                const user = randomSupporter()
-                                const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
-                                    fun: 'private_takeSupportThread', id: thread.id})
-                            },
-                            
-                            async function newSupportThreadMessage() {
-                                const threads = #await testQuery(`select * from support_threads where id < 100000 and supporter_id is null`)
-                                if (!threads.length) return dlog('Skipping event cause there’s no threads yet')
-                                const thread = randomItem(random, threads)
-                                const message = nextMessage()
-                                imposedNextIDs = [nextID('support_thread_messages')]
-                                const userOptions = [userFromID(thread.supportee_id)]
-                                if (thread.supporter_id) {
-                                    userOptions.push(userFromID(thread.supporter_id))
-                                }
-                                const {clientKind, token} = randomItem(random, userOptions)
-                                const res = #await req({LANG: 'ua', CLIENT_KIND: clientKind, token,
-                                    fun: 'private_createSupportThreadMessage', message, containerID: thread.id})
-                            }
-                        ]
-                        
-                        imposedRequestTimestamp = nextStamp()
-                        const event = randomItem(eventRandom, events)
-                        // dlog(`Event ${eventIndex + 1}: ${event.name}`)
-                        await event()
-                    }
-                    mt.dlog('END')
-                    dlog('------ end events -------')
-                    
-                    #await testQuery(q`delete from user_tokens where user_id >= 100 and user_id < 100000`)
-                
-                    return hunkyDory()
-                    
-                    
-                    async function req(msg) {
-                        return await simulateRequest(asn({DB, LANG: 'ua'}, msg))
-                    }
-                    
-                    function nextMessage() {
-//                        if (nextMessageIndex > testdata.ua.messages.length - 1) raise('Out of messages')
-                        if (nextMessageIndex > testdata.ua.messages.length - 1) {
-                            nextMessageIndex = 0
-                        }
-                        return testdata.ua.messages[nextMessageIndex++]
-                    }
-                    
-                    function nextStamp() {
-                        nextMoment.add(random.integer(30 * 60, 5 * 24 * 60 * 60), 'seconds')
-                        return nextMoment.format(stampFormat)
-                    }
-                    
-                    function randomCustomer() {
-                        return userFromID(randomItem(random, testdata.ua.users.customer).user.id)
-                    }
-                    
-                    function randomWriter() {
-                        return userFromID(randomItem(random, testdata.ua.users.writer).user.id)
-                    }
-                    
-                    function randomCustomerOrWriter() {
-                        if (random.integer(0, 1) === 0) return randomCustomer()
-                        else return randomWriter()
-                    }
-                    
-                    function randomSupporter() {
-                        const admins = testdata.ua.users.admin
-                        const supporters = admins.filter(x => x.roles.includes('support'))
-                        return userFromID(randomItem(random, supporters).user.id)
-                    }
-                    
-                    function userFromID(id) {
-                        id = parseInt(id, 10)
-                        let clientKind
-                        if (id >= 100 && id < 300) clientKind = 'writer'
-                        else if (id >= 300 && id < 400) clientKind = 'customer'
-                        else raise(`Weird ID for a test user: ${id}`)
-                        return {clientKind, token: 'temp-' + id}
-                    }
-                    
-                    function nextID(table) {
-                        if (!nextIDs[table]) {
-                            nextIDs[table] = 101
-                        }
-                        const id = nextIDs[table]++
-                        if (id >= 100000) raise(`Out of IDs for table ${table}`)
-                        return id
-                    }
-                }
-                
                 else if (msg.fun === 'danger_fixNextGeneratedPassword') {
                     fixedNextGeneratedPassword = msg.password
                     return hunkyDory()
@@ -432,6 +275,16 @@ app.post('/rpc', (req, res) => {
                 else if (msg.fun === 'danger_getQueries') {
                     let last = msg.last || 1
                     return queryLogForUI.slice(queryLogForUI.length - last)
+                }
+                
+                else if (msg.fun === 'danger_resetTestDatabase') {
+                    await shutDownPool('test')
+                    await shutDownPool('test-template')
+                    await pgConnection({db: 'test-postgres'}, async function(db) {
+                        await db.query({$tag: '8dcb544c-1337-4298-8970-21466bad7c4c'}, `drop database if exists "aps-test"`)
+                        await db.query({$tag: '9b569e3e-53b7-4296-97d2-d1ce2a1684b4'}, `create database "aps-test" template = "aps-test-template"`)
+                    })
+                    return hunkyDory()
                 }
                 
                 
@@ -681,53 +534,6 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 
-                async function insertInto(meta, {table, rows, values}) {
-                    if (!rows) {
-                        rows = [values]
-                    }
-                    if (!rows.length) return
-                    
-                    const columnNames = keys(rows[0])
-                    const expectedColumnConfiguration = columnNames.join(', ')
-                    rows.forEach((row, i) => {
-                        const actualColumnConfiguration = keys(row).join(', ')
-                        if (actualColumnConfiguration !== expectedColumnConfiguration) raise(`Inconsistent column configuration in row ${i}`)
-                    })
-                    
-                    let id
-                    for (const rowValues of rows) {
-                        rowValues = cloneDeep(rowValues)
-                        const imposedNextID = imposedNextIDs.shift()
-                        if (imposedNextID) {
-                            rowValues.id = imposedNextID
-                            imposedNextID = undefined
-                        }
-                        
-                        let sql = `insert into "${table}"(`
-                        const args = []
-                        if (!columnNames.includes('inserted_at')) {
-                            sql += 'inserted_at, '
-                            args.push(requestTimestamp)
-                        }
-                        if (!columnNames.includes('updated_at')) {
-                            sql += 'updated_at, '
-                            args.push(requestTimestamp)
-                        }
-                        for (const [k, v] of toPairs(rowValues)) {
-                            sql += `"${k}", `
-                            args.push(v)
-                        }
-                        sql = sql.slice(0, sql.length - ', '.length)
-                        sql += ') values(' + range(args.length).map(x => '$' + (x + 1)).join(', ') + ') returning id'
-                        const rows = await tx.query(meta, {q: {sql, args}})
-                        if (id === undefined) {
-                            id = rows[0].id
-                        }
-                    }
-                    
-                    return id
-                }
-                
                 function youFixErrors() {
                     return {
                         error: t('Please fix errors below', 'Пожалуйста, исправьте ошибки ниже'),
@@ -895,17 +701,13 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                async function testQuery(opts) {
-                    return await tx.query({$tag: 'test--efaaf077-e713-492a-833c-61b3395c0c21'}, opts)
-                }
-                
-                async function testInsertInto(opts) {
-                    return await insertInto({$tag: 'test--8db55c55-84c2-48cf-b49d-8fbea1b1aa86'}, opts)
+                async function insertInto(meta, opts) {
+                    return await tx.insertInto(meta, asn({requestTimestamp}, opts))
                 }
             }
             
         } catch (fucked) {
-            const situation = `/rpc handle() is fucked up: ${fucked.stack}`
+            const situation = `/rpc handle() for ${msg.fun} is fucked up: ${fucked.stack}`
             clog(situation)
             if (stackBeforeAwait) {
                 clog(`Stack before await: ${stackBeforeAwait}`)
@@ -935,103 +737,20 @@ async function shutDownPool(db) {
 }
 
 async function pgTransaction(opts, doInTransaction) {
-    return await pgConnection(opts)
-    
-    return new Promise((resolvePgTransaction, rejectPgTransaction) => {
-        pgPool.connect(async function(conerr, con, doneWithConnection) {
-            if (conerr) {
-                clog('PG connection failed', conerr)
-                doneWithConnection(conerr)
-                return rejectPgTransaction(conerr)
-            }
-            
-            const api = {
-                query({$tag, shouldLogForUI=true}, ...xs) {
-                    if (!$tag) raise('I want all queries to be tagged')
-                    
-                    let sql, args
-                    if (typeof xs[0] === 'object' && xs[0].q) {
-                        ;({sql, args} = xs[0].q)
-                    } else {
-                        ;[sql, args] = xs
-                        if (typeof sql !== 'string') raise('Query should be string or q-thing')
-                    }
-                    
-                    if (MODE !== 'debug') {
-                        shouldLogForUI = false
-                    }
-                    
-                    // If args is bad, con.query fails without telling us
-                    invariant(args === undefined || isArray(args), 'tx.query wants args to be array or undefined')
-                    
-                    return new Promise((resolveQuery, rejectQuery) => {
-                        let queryLogRecordForUI
-                        if (shouldLogForUI) {
-                            queryLogRecordForUI = {sql, args, $tag}
-                            queryLogForUI.push(queryLogRecordForUI)
-                        }
-                        
-                        con.query(sql, args, (qerr, qres) => {
-                            if (qerr) {
-                                clog('PG query failed', {sql, args, qerr})
-                                if (shouldLogForUI) {
-                                    queryLogRecordForUI.err = qerr
-                                }
-                                
-                                return rejectQuery(qerr)
-                            }
-                            
-                            if (shouldLogForUI) {
-                                const prepres = cloneDeep(qres)
-                                for (const k of keys(prepres)) {
-                                    if (k.startsWith('_')) {
-                                        delete prepres[k]
-                                    }
-                                }
-                                const maxRows = 10
-                                if (isArray(prepres.rows) && prepres.rows.length > maxRows) {
-                                    prepres[`FIRST_${maxRows}_ROWS`] = prepres.rows.slice(0, maxRows)
-                                    delete prepres.rows
-                                }
-                                queryLogRecordForUI.res = prepres
-                            }
-                            
-                            resolveQuery(qres.rows)
-                        })
-                    })
-                }
-            }
-            
+    return await pgConnection(opts, async function(db) {
+        try {
+            await db._query('start transaction isolation level read committed')
+            const ditres = await doInTransaction(db)
+            await db._query('commit')
+            return ditres
+        } catch (diterr) {
             try {
-                await _query('start transaction isolation level read committed')
-                const ditres = await doInTransaction(api)
-                await _query('commit')
-                doneWithConnection()
-                resolvePgTransaction(ditres)
-            } catch (diterr) {
-                try {
-                    await _query('rollback')
-                } catch (e) {
-                    clog('PG fuckup, cannot rollback', e.stack)
-                }
-                doneWithConnection()
-                rejectPgTransaction(diterr)
+                await db._query('rollback')
+            } catch (e) {
+                clog('PG fuckup, cannot rollback', e.stack)
             }
-            
-            
-            function _query(sql, args) {
-                return new Promise((resolveQuery, rejectQuery) => {
-                    con.query(sql, args, (qerr, qres) => {
-                        if (qerr) {
-                            clog('PG query failed', {sql, args, qerr})
-                            return rejectQuery(qerr)
-                        }
-                        
-                        resolveQuery(qres.rows)
-                    })
-                })
-            }
-        })
+            throw diterr
+        }
     })
 }
 
@@ -1043,23 +762,13 @@ async function pgTransaction(opts, doInTransaction) {
             raise('TODO get prod DB config from environment')
         } else {
             config = lookup(db, {
-                dev: {
-                    database: 'aps-dev',
-                    port: 5432,
-                    user: 'postgres',
-                },
-                test: {
-                    database: 'aps-test',
-                    port: 5433,
-                    user: 'postgres',
-                },
-                'test-postgres': {
-                    database: 'postgres',
-                    port: 5433,
-                    user: 'postgres',
-                },
+                dev: {database: 'aps-dev', port: 5432, user: 'postgres'},
+                test: {database: 'aps-test', port: 5433, user: 'postgres'},
+                'test-template': {database: 'aps-test-template', port: 5433, user: 'postgres'},
+                'test-postgres': {database: 'postgres', port: 5433, user: 'postgres'},
             })
         }
+        if (!config) raise(`No database config for ${db}`)
         pgPool = pgPools[db] = new (require('pg').Pool)(config)
     }
     
@@ -1072,9 +781,7 @@ async function pgTransaction(opts, doInTransaction) {
             }
             
             const api = {
-                query({$tag, shouldLogForUI=true}, ...xs) {
-                    if (!$tag) raise('I want all queries to be tagged')
-                    
+                /*async*/ _query(...xs) {
                     let sql, args
                     if (typeof xs[0] === 'object' && xs[0].q) {
                         ;({sql, args} = xs[0].q)
@@ -1083,49 +790,112 @@ async function pgTransaction(opts, doInTransaction) {
                         if (typeof sql !== 'string') raise('Query should be string or q-thing')
                     }
                     
-                    if (MODE !== 'debug') {
-                        shouldLogForUI = false
-                    }
-                    
                     // If args is bad, con.query fails without telling us
                     invariant(args === undefined || isArray(args), 'tx.query wants args to be array or undefined')
                     
                     return new Promise((resolveQuery, rejectQuery) => {
-                        let queryLogRecordForUI
-                        if (shouldLogForUI) {
-                            queryLogRecordForUI = {sql, args, $tag}
-                            queryLogForUI.push(queryLogRecordForUI)
-                        }
-                        
                         con.query(sql, args, (qerr, qres) => {
                             if (qerr) {
                                 clog('PG query failed', {sql, args, qerr})
-                                if (shouldLogForUI) {
-                                    queryLogRecordForUI.err = qerr
-                                }
-                                
                                 return rejectQuery(qerr)
                             }
                             
-                            if (shouldLogForUI) {
-                                const prepres = cloneDeep(qres)
-                                for (const k of keys(prepres)) {
-                                    if (k.startsWith('_')) {
-                                        delete prepres[k]
-                                    }
-                                }
-                                const maxRows = 10
-                                if (isArray(prepres.rows) && prepres.rows.length > maxRows) {
-                                    prepres[`FIRST_${maxRows}_ROWS`] = prepres.rows.slice(0, maxRows)
-                                    delete prepres.rows
-                                }
-                                queryLogRecordForUI.res = prepres
-                            }
-                            
-                            resolveQuery(qres.rows)
+                            resolveQuery(qres)
                         })
                     })
+                },
+                
+                async query({$tag, shouldLogForUI=true}, ...xs) {
+                    arguments // XXX This fixes TS bug with ...rest params in async functions
+                    if (!$tag) raise('I want all queries to be tagged')
+                    
+                    if (MODE !== 'debug') {
+                        shouldLogForUI = false
+                    }
+                    
+                    let queryLogRecordForUI
+                    if (shouldLogForUI) {
+                        queryLogRecordForUI = {$tag, arguments: xs}
+                        queryLogForUI.push(queryLogRecordForUI)
+                    }
+                    
+                    try {
+                        const qres = await api._query(...xs)
+                        
+                        if (shouldLogForUI) {
+                            const prepres = cloneDeep(qres)
+                            for (const k of keys(prepres)) {
+                                if (k.startsWith('_')) {
+                                    delete prepres[k]
+                                }
+                            }
+                            const maxRows = 10
+                            if (isArray(prepres.rows) && prepres.rows.length > maxRows) {
+                                prepres[`FIRST_${maxRows}_ROWS`] = prepres.rows.slice(0, maxRows)
+                                delete prepres.rows
+                            }
+                            queryLogRecordForUI.res = prepres
+                        }
+                        
+                        return qres.rows
+                    } catch (qerr) {
+                        if (shouldLogForUI) {
+                            queryLogRecordForUI.err = qerr
+                        }
+                        
+                        throw qerr
+                    }
+                },
+                
+                async insertInto(meta, {table, rows, values, requestTimestamp}) {
+                    if (!rows) {
+                        rows = [values]
+                    }
+                    if (!rows.length) return
+                    
+                    const columnNames = keys(rows[0])
+                    const expectedColumnConfiguration = columnNames.join(', ')
+                    rows.forEach((row, i) => {
+                        const actualColumnConfiguration = keys(row).join(', ')
+                        if (actualColumnConfiguration !== expectedColumnConfiguration) raise(`Inconsistent column configuration in row ${i}`)
+                    })
+                    
+                    let id
+                    for (const rowValues of rows) {
+                        rowValues = cloneDeep(rowValues)
+                        const imposedNextID = imposedNextIDs.shift()
+                        if (imposedNextID) {
+                            rowValues.id = imposedNextID
+                            imposedNextID = undefined
+                        }
+                        
+                        let sql = `insert into "${table}"(`
+                        const args = []
+                        if (requestTimestamp) {
+                            if (!columnNames.includes('inserted_at')) {
+                                sql += 'inserted_at, '
+                                args.push(requestTimestamp)
+                            }
+                            if (!columnNames.includes('updated_at')) {
+                                sql += 'updated_at, '
+                                args.push(requestTimestamp)
+                            }
+                        }
+                        for (const [k, v] of toPairs(rowValues)) {
+                            sql += `"${k}", `
+                            args.push(v)
+                        }
+                        sql = sql.slice(0, sql.length - ', '.length)
+                        sql += ') values(' + range(args.length).map(x => '$' + (x + 1)).join(', ') + ') returning id'
+                        const rows = await api.query(meta, {q: {sql, args}})
+                        if (id === undefined) {
+                            id = rows[0].id
+                        }
+                    }
+                    
+                    return id
                 }
+                
             }
             
             try {
@@ -1170,20 +940,278 @@ function heyBackend_sayHelloToMe({askerName}) {
 }
 
 async function createDB(newdb) {
+    let condb
+    if (newdb.startsWith('test-')) condb = 'test-postgres'
+    else raise(`Can’t figure out condb for ${newdb}`)
+    
     await shutDownPool(newdb)
-    await pgConnection({db: newdb + '-postgres'}, async function(db) {
+    await pgConnection({db: condb}, async function(db) {
         await db.query({$tag: 'eba1bdcf-9657-405d-9716-1dbc3c01a65b'}, `drop database if exists "aps-${newdb}"`)
         await db.query({$tag: 'f31f0e3c-ef04-4391-b5a1-dc489fa4fa9b'}, `create database "aps-${newdb}"`)
     })
     await pgConnection({db: newdb}, async function(db) {
-        const testrows = await db.query({$tag: '86b182d2-7560-4302-875e-6290ffd719d0'}, `
-            create table foobar(id bigserial, foo text, bar text);
-            create table bazqux(id bigserial, baz text, qux text);
-            insert into foobar (foo, bar) values ('alice', 'bob'), ('craig', 'david');
-            insert into bazqux (baz, qux) values ('evan', 'fred'), ('gary', 'helen');
-            select * from foobar, bazqux;
+        await db.query({$tag: 'd891345e-3287-43b0-b6fc-7174fb9d2cd3'}, `
+            create function on_insert()
+            returns trigger as $$
+            begin
+                new.deleted = false;
+                if new.inserted_at is null then
+                    new.inserted_at = now() at time zone 'utc';
+                end if;
+                if new.updated_at is null then
+                    new.updated_at = new.inserted_at;
+                end if;
+                return new;	
+            end;
+            $$ language 'plpgsql';
+                        
+            create function on_update()
+            returns trigger as $$
+            begin
+                if new.updated_at is null then
+                    new.updated_at = now() at time zone 'utc';
+                end if;
+                return new;	
+            end;
+            $$ language 'plpgsql';
+                        
+            create table users(
+                id bigserial primary key,
+                deleted boolean not null,
+                inserted_at timestamp not null,
+                updated_at timestamp not null,
+                profile_updated_at timestamp,
+                kind text not null,
+                lang text not null,
+                email text unique not null,
+                password_hash text not null,
+                state text not null,
+                first_name text not null,
+                last_name text not null,
+                phone text /*can be null*/);
+            alter sequence users_id_seq restart with 100000;
+            create trigger on_insert before insert on users for each row execute procedure on_insert();
+            create trigger on_update before update on users for each row execute procedure on_update();
+            
+            create table user_roles(
+                id bigserial primary key,
+                deleted boolean not null,
+                inserted_at timestamp not null,
+                updated_at timestamp not null,
+                user_id bigint not null references users(id),
+                role text not null
+            );
+            create trigger on_insert before insert on user_roles for each row execute procedure on_insert();
+            create trigger on_update before update on user_roles for each row execute procedure on_update();
+            alter table user_roles add constraint unique_user_id_role unique (user_id, role);
+            
+            create table user_tokens(
+                id bigserial primary key,
+                deleted boolean,
+                inserted_at timestamp,
+                updated_at timestamp,
+                user_id bigint references users(id),
+                token text
+                );
+            create trigger on_insert before insert on user_tokens for each row execute procedure on_insert();
+            create trigger on_update before update on user_tokens for each row execute procedure on_update();
+            
+            create table support_threads(
+                id bigserial primary key,
+                deleted boolean not null,
+                inserted_at timestamp not null,
+                updated_at timestamp not null,
+                topic text not null,
+                supportee_id bigint not null references users(id),
+                supporter_id bigint /*can be null*/ references users(id)
+                );
+            alter sequence support_threads_id_seq restart with 100000;    
+            create trigger on_insert before insert on support_threads for each row execute procedure on_insert();
+            create trigger on_update before update on support_threads for each row execute procedure on_update();
+            
+            create table support_thread_messages(
+                id bigserial primary key,
+                deleted boolean not null,
+                inserted_at timestamp not null,
+                updated_at timestamp not null,
+                thread_id bigint not null references support_threads(id),
+                sender_id bigint not null references users(id),
+                recipient_id bigint /*can be null*/ references users(id),
+                message text not null
+                );
+            alter sequence support_thread_messages_id_seq restart with 100000;
+            create trigger on_insert before insert on support_thread_messages for each row execute procedure on_insert();
+            create trigger on_update before update on support_thread_messages for each row execute procedure on_update();
+            
         `)
-        dlog({testrows})
+        
+//        const testrows = await db.query({$tag: '86b182d2-7560-4302-875e-6290ffd719d0'}, `
+//            create table foobar(id bigserial, foo text, bar text);
+//            create table bazqux(id bigserial, baz text, qux text);
+//            insert into foobar (foo, bar) values ('alice', 'bob'), ('craig', 'david');
+//            insert into bazqux (baz, qux) values ('evan', 'fred'), ('gary', 'helen');
+//            select * from foobar, bazqux;
+//        `)
+//        dlog({testrows})
+    })
+}
+
+async function createTestTemplateDB() {
+    await createDB('test-template')
+    await pgConnection({db: 'test-template'}, async function(db) {
+        let stackBeforeAwait
+        try {
+            const random = new Random(Random.engines.mt19937().seed(123123))
+            const eventRandom = new Random(Random.engines.mt19937().seed(234234))
+            const password_hash = '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6' // secret
+            const stampFormat = 'YYYY-MM-DD HH:mm:ss'
+            let nextMoment = moment('2014-03-31 18:15:41', stampFormat)
+            const nextIDs = {}
+            let nextSupportThreadTopicIndex = 0
+            let nextMessageIndex = 0
+            
+            let mt
+            mt = measureTime('Creating users')
+            for (const u of testdata.ua.users.admin) {
+                #await insertInto({table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                for (const role of u.roles) {
+                    #await insertInto({table: 'user_roles', values: {user_id: u.user.id, role}})
+                    #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                }
+            }
+            for (const u of testdata.ua.users.writer) {
+                #await insertInto({table: 'users', values: asn({kind: 'writer', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+            }
+            for (const u of testdata.ua.users.customer) {
+                #await insertInto({table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+            }
+            mt.dlog('END')
+            
+            dlog('------- begin events -------')
+            mt = measureTime('Events')
+            for (let eventIndex = 0; eventIndex < 1000; ++eventIndex) {
+                const events = [
+                    async function newSupportThread() {
+    //                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
+                        if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) {
+                            nextSupportThreadTopicIndex = 0
+                        }
+                        const topic = testdata.ua.supportThreadTopics[nextSupportThreadTopicIndex++]
+                        const message = nextMessage()
+                        imposedNextIDs = [nextID('support_threads'), nextID('support_thread_messages')]
+                        const user = randomCustomerOrWriter()
+                        
+                        const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
+                            fun: 'private_createSupportThread', topic, message})
+                        
+                        const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
+                            fun: 'private_createSupportThread', topic, message})
+                        
+                    },
+                    
+                    async function adminAssignedToSupportThread() {
+                        const threads = #await query(`select * from support_threads where id < 100000 and supporter_id is null`)
+                        if (!threads.length) return dlog('Skipping event cause there’s no threads needing assignment')
+                        const thread = randomItem(random, threads)
+                        const user = randomSupporter()
+                        const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
+                            fun: 'private_takeSupportThread', id: thread.id})
+                    },
+                    
+                    async function newSupportThreadMessage() {
+                        const threads = #await query(`select * from support_threads where id < 100000 and supporter_id is null`)
+                        if (!threads.length) return dlog('Skipping event cause there’s no threads yet')
+                        const thread = randomItem(random, threads)
+                        const message = nextMessage()
+                        imposedNextIDs = [nextID('support_thread_messages')]
+                        const userOptions = [userFromID(thread.supportee_id)]
+                        if (thread.supporter_id) {
+                            userOptions.push(userFromID(thread.supporter_id))
+                        }
+                        const {clientKind, token} = randomItem(random, userOptions)
+                        const res = #await req({LANG: 'ua', CLIENT_KIND: clientKind, token,
+                            fun: 'private_createSupportThreadMessage', message, containerID: thread.id})
+                    }
+                ]
+                
+                imposedRequestTimestamp = nextStamp()
+                const event = randomItem(eventRandom, events)
+                // dlog(`Event ${eventIndex + 1}: ${event.name}`)
+                await event()
+            }
+            mt.dlog('END')
+            dlog('------ end events -------')
+            
+            #await query(q`delete from user_tokens`)
+            
+            
+            async function query(opts) {
+                return await db.query({$tag: 'd0aa115c-dd8c-46c8-ae47-bff3f5906512'}, opts)
+            }
+            
+            async function insertInto(opts) {
+                return await db.insertInto({$tag: '6eb80cdd-8b9f-4857-937a-f5828dd6ed71'}, opts)
+            }
+            
+            async function req(msg) {
+                return await simulateRequest(asn({db: 'test-template', LANG: 'ua'}, msg))
+            }
+            
+            function nextMessage() {
+    //                        if (nextMessageIndex > testdata.ua.messages.length - 1) raise('Out of messages')
+                if (nextMessageIndex > testdata.ua.messages.length - 1) {
+                    nextMessageIndex = 0
+                }
+                return testdata.ua.messages[nextMessageIndex++]
+            }
+            
+            function nextStamp() {
+                nextMoment.add(random.integer(30 * 60, 5 * 24 * 60 * 60), 'seconds')
+                return nextMoment.format(stampFormat)
+            }
+            
+            function randomCustomer() {
+                return userFromID(randomItem(random, testdata.ua.users.customer).user.id)
+            }
+            
+            function randomWriter() {
+                return userFromID(randomItem(random, testdata.ua.users.writer).user.id)
+            }
+            
+            function randomCustomerOrWriter() {
+                if (random.integer(0, 1) === 0) return randomCustomer()
+                else return randomWriter()
+            }
+            
+            function randomSupporter() {
+                const admins = testdata.ua.users.admin
+                const supporters = admins.filter(x => x.roles.includes('support'))
+                return userFromID(randomItem(random, supporters).user.id)
+            }
+            
+            function userFromID(id) {
+                id = parseInt(id, 10)
+                let clientKind
+                if (id >= 100 && id < 300) clientKind = 'writer'
+                else if (id >= 300 && id < 400) clientKind = 'customer'
+                else raise(`Weird ID for a test user: ${id}`)
+                return {clientKind, token: 'temp-' + id}
+            }
+            
+            function nextID(table) {
+                if (!nextIDs[table]) {
+                    nextIDs[table] = 101
+                }
+                const id = nextIDs[table]++
+                if (id >= 100000) raise(`Out of IDs for table ${table}`)
+                return id
+            }
+        } catch (e) {
+            e.stackBeforeAwait = stackBeforeAwait
+            throw e
+        }
     })
 }
 

@@ -1,4 +1,4 @@
-await createDB('test')
+await createTestTemplateDB()
 relog('ok')
 
 
