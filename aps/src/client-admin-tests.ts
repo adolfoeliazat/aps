@@ -44,14 +44,14 @@ module.exports = function({sim}) {
                     pageData: 
                      { 'topNavItem.admin-my-tasks.title': `Мои задачи`,
                        'topNavItem.admin-heap.title': `Куча`,
-                       } 
+                       'topNavItem.admin-heap.badge': `30` } 
                 }})
                 
                 // Action
-    //            #hawait testGlobal.topNavbarLinks['admin-heap'].click()
-    //            #hawait art.uiStateAfterLiveStatusPolling({$tag: '52167671-bd47-4997-9a9d-742951263fa4', expected: {
-    //
-    //            }})
+                #hawait testGlobal.topNavbarLinks['admin-heap'].click()
+                #hawait art.uiStateAfterLiveStatusPolling({$tag: '1c3a4a15-4bc4-46f6-afd9-d23433c6d839', expected: {
+
+                }})
 
             },
         }

@@ -419,10 +419,15 @@ app.post('/rpc', (req, res) => {
                 
                 else if (msg.fun === 'private_getUnassignedSupportThreads') {
                     const items = #await tx.query({$tag: 'f360d4da-d3ad-4bed-990f-c4f0c4a66176'}, q`
-                        select * from support_threads
-                                 where supporter_id is null
-                                 order by inserted_at asc
-                    `)
+                        select * from support_threads where supporter_id is null order by inserted_at asc`)
+                    for (const item of items) {
+                        const firstMessageID = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6'}, q`
+                            select id from support_thread_messages
+                            where thread_id = ${item.id}
+                            order by inserted_at
+                            fetch first row only`)[0].id
+                        item.firstMessage = #await loadSupportThreadMessage(firstMessageID)
+                    }
                     return hunkyDory({items})
                 }
                 
@@ -704,6 +709,24 @@ app.post('/rpc', (req, res) => {
                 async function insertInto(meta, opts) {
                     return await tx.insertInto(meta, asn({requestTimestamp}, opts))
                 }
+                        
+                async function loadSupportThreadMessage(id) {
+                    const message = #await tx.query({$tag: '20211f46-dae4-4b94-a4aa-bb19b4100280'}, q`
+                        select * from support_thread_messages
+                        where id = ${id}`)[0]
+                    message.sender = #await loadUser(message.sender_id)
+                    if (message.recipient_id) {
+                        message.recipient = #await loadUser(message.recipient_id)
+                    }
+                    return message
+                }
+                
+                async function loadUser(id) {
+                    const user = #await tx.query({$tag: 'd206c4b6-84fb-4036-af29-af69f490a51f'}, q`
+                        select * from users
+                        where id = ${id}`)[0]
+                    return user
+                }
             }
             
         } catch (fucked) {
@@ -974,6 +997,8 @@ async function createDB(newdb) {
                 return new;	
             end;
             $$ language 'plpgsql';
+            
+            -- @ctx tables
                         
             create table users(
                 id bigserial primary key,
@@ -1094,10 +1119,7 @@ async function createTestTemplateDB1() {
             for (let eventIndex = 0; eventIndex < 100; ++eventIndex) {
                 const events = [
                     async function newSupportThread() {
-    //                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
-                        if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) {
-                            nextSupportThreadTopicIndex = 0
-                        }
+                        if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
                         const topic = testdata.ua.supportThreadTopics[nextSupportThreadTopicIndex++]
                         const message = nextMessage()
                         imposedNextIDs = [nextID('support_threads'), nextID('support_thread_messages')]
@@ -1160,10 +1182,7 @@ async function createTestTemplateDB1() {
             }
             
             function nextMessage() {
-    //                        if (nextMessageIndex > testdata.ua.messages.length - 1) raise('Out of messages')
-                if (nextMessageIndex > testdata.ua.messages.length - 1) {
-                    nextMessageIndex = 0
-                }
+                if (nextMessageIndex > testdata.ua.messages.length - 1) raise('Out of messages')
                 return testdata.ua.messages[nextMessageIndex++]
             }
             

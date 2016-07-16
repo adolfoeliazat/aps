@@ -19,3 +19,5 @@ aps-ua-writer.local:3022/test.html?testScenario=UA Writer :: Sign Up :: 1 b583c0
 A1 NR
 aps-ua-writer.local:3022/test.html?testScenario=UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c&scrollToBottom=no&revealException=no
 
+A1 R
+http://aps-ua-writer.local:3022/test.html?testScenario=UA%20Admin%20::%20Misc%20::%201%20839c4909-e1d1-447a-9401-d1599d19598c&scrollToBottom=no&revealException=yes

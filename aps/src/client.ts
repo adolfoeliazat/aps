@@ -49,8 +49,9 @@ global.igniteShit = makeUIShitIgniter({
                                     title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({dataFieldName: 'heapTabs.supportBadge', liveStatusFieldName: 'unassignedSupportThreadCount'})),
                                     content: diva({},
                                         dataArray('supportThreads', _=> {
-                                            return res.items.map(renderSupportThreadItem)
-                                        })),
+                                            return div(...res.items.map(renderSupportThreadItem))
+                                        })
+                                        ),
                                 },
                                 newOrders: {
                                     title: t(`TOTE`, `Новые заказы`),
@@ -79,20 +80,25 @@ global.igniteShit = makeUIShitIgniter({
                                 lineColor = WHITE
                             }
                             
-                            return dataItemObject('supportThreadMessage', _=> diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
-                                diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
-                                    diva({}, spana({style: {fontWeight: 'bold'}},
-                                        t(`TOTE`, `От: `)),
-                                        dataField('from', item.firstMessage.sender.first_name + ' ' + item.firstMessage.sender.last_name)),
-                                    diva({}, spana({style: {fontWeight: 'bold'}},
-                                        t(`TOTE`, `Кому: `)),
-                                        dataField('to', item.firstMessage.recipient ? (item.firstMessage.recipient.first_name + ' ' + item.firstMessage.recipient.last_name)
-                                                                       : t(`TOTE`, `В рельсу`))),
-                                    diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.firstMessage.inserted_at)))
-                                ),
-                                diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
-                                    dataField('message', item.firstMessage.message))
-                                ))
+                            return dataItemObject('supportThreadItem', _=> 
+                                div(
+                                    diva({}, item.topic),
+                                    diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
+                                        diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
+                                            diva({}, spana({style: {fontWeight: 'bold'}},
+                                                t(`TOTE`, `От: `)),
+                                                dataField('from', item.firstMessage.sender.first_name + ' ' + item.firstMessage.sender.last_name)),
+                                            diva({}, spana({style: {fontWeight: 'bold'}},
+                                                t(`TOTE`, `Кому: `)),
+                                                dataField('to', item.firstMessage.recipient ? (item.firstMessage.recipient.first_name + ' ' + item.firstMessage.recipient.last_name)
+                                                                               : t(`TOTE`, `В рельсу`))),
+                                            diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.firstMessage.inserted_at)))
+                                        ),
+                                        diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
+                                            dataField('message', item.firstMessage.message))
+                                    ),
+                                )
+                                )
                         }
                     },
                     
@@ -507,9 +513,9 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                             const testActionHand = showTestActionHand(byid(id))
                             await delay(DEBUG_ACTION_HAND_DELAY)
                             testActionHand.delete()
-                            onClick()
+                            await onClick()
                         } else {
-                            onClick()
+                            await onClick()
                         }
                     }
                 }
