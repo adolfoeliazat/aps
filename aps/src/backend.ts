@@ -279,10 +279,10 @@ app.post('/rpc', (req, res) => {
                 
                 else if (msg.fun === 'danger_resetTestDatabase') {
                     await shutDownPool('test')
-                    await shutDownPool('test-template')
+                    await shutDownPool(msg.templateDB)
                     await pgConnection({db: 'test-postgres'}, async function(db) {
                         await db.query({$tag: '8dcb544c-1337-4298-8970-21466bad7c4c'}, `drop database if exists "aps-test"`)
-                        await db.query({$tag: '9b569e3e-53b7-4296-97d2-d1ce2a1684b4'}, `create database "aps-test" template = "aps-test-template"`)
+                        await db.query({$tag: '9b569e3e-53b7-4296-97d2-d1ce2a1684b4'}, `create database "aps-test" template = "aps-${msg.templateDB}"`)
                     })
                     return hunkyDory()
                 }
@@ -764,7 +764,7 @@ async function pgTransaction(opts, doInTransaction) {
             config = lookup(db, {
                 dev: {database: 'aps-dev', port: 5432, user: 'postgres'},
                 test: {database: 'aps-test', port: 5433, user: 'postgres'},
-                'test-template': {database: 'aps-test-template', port: 5433, user: 'postgres'},
+                'test-template-1': {database: 'aps-test-template-1', port: 5433, user: 'postgres'},
                 'test-postgres': {database: 'postgres', port: 5433, user: 'postgres'},
             })
         }
@@ -1056,9 +1056,9 @@ async function createDB(newdb) {
     })
 }
 
-async function createTestTemplateDB() {
-    await createDB('test-template')
-    await pgConnection({db: 'test-template'}, async function(db) {
+async function createTestTemplateDB1() {
+    await createDB('test-template-1')
+    await pgConnection({db: 'test-template-1'}, async function(db) {
         let stackBeforeAwait
         try {
             const random = new Random(Random.engines.mt19937().seed(123123))
@@ -1091,7 +1091,7 @@ async function createTestTemplateDB() {
             
             dlog('------- begin events -------')
             mt = measureTime('Events')
-            for (let eventIndex = 0; eventIndex < 1000; ++eventIndex) {
+            for (let eventIndex = 0; eventIndex < 100; ++eventIndex) {
                 const events = [
                     async function newSupportThread() {
     //                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
@@ -1156,7 +1156,7 @@ async function createTestTemplateDB() {
             }
             
             async function req(msg) {
-                return await simulateRequest(asn({db: 'test-template', LANG: 'ua'}, msg))
+                return await simulateRequest(asn({db: 'test-template-1', LANG: 'ua'}, msg))
             }
             
             function nextMessage() {

@@ -1,11 +1,8 @@
-await createTestTemplateDB()
+await createTestTemplateDB1()
 relog('ok')
 
 
-relog(await testdb.query(q`drop table foobar;
-               create table foobar (id serial, foo text, bar numeric);
-               insert into foobar (foo, bar) values ('hello', 123123);
-               select 'woooow ' || now();`))
+relog(await testdb.query(q`select * from users`))
 relog('ok')
                
 await shutDownPool('test')
