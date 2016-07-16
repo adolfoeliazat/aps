@@ -12,6 +12,7 @@ module.exports = function({sim}) {
     return {
         async 'UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c'() {
             #hawait drpc({fun: 'danger_clearSentEmails'})
+            #hawait drpc({fun: 'danger_resetAndUseTestDatabase'})
             // #hawait drpc({fun: 'danger_shitIntoDatabase'})
             
             sim.selectBrowser('todd')

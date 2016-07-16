@@ -1,5 +1,24 @@
+await createDB('test')
+relog('ok')
+
+
+relog(await testdb.query(q`drop table foobar;
+               create table foobar (id serial, foo text, bar numeric);
+               insert into foobar (foo, bar) values ('hello', 123123);
+               select 'woooow ' || now();`))
+relog('ok')
+               
+await shutDownPool('test')
+               
+relog(2 + 3)
+
+await pgTransaction({DB: 'test'}, async function(tx) {
+    relog(await tx.query({$tag: 'f97c636a-7c94-40b6-8ba6-7f6f3a2616ac'}, `select now()`))
+})
+
+
 try {
-    const res = await handle({fun: 'danger_shitIntoDatabase', DANGEROUS_TOKEN: process.env.APS_DANGEROUS_TOKEN, CLIENT_KIND: 'debug'})
+    const res = await handle({fun: 'danger_shitIntoDatabase', DB: 'test', DANGEROUS_TOKEN: process.env.APS_DANGEROUS_TOKEN, CLIENT_KIND: 'debug'})
     if (res.fatal) {
         relog(res.fatal.split('\n').slice(0, 1).join('\n'))
         section('Handle stack'); relog(res.stack)
@@ -10,7 +29,7 @@ try {
     relog(res)
     section('Users')
     // relog(await testQuery(q`select * from users`))
-    relog(await testQuery(q`select * from support_threads`))
+    // relog(await testQuery(q`select * from support_threads`))
 } catch (e) {
     section('My stack'); relog(e.stack)
     section('My stack before await'); relog(stackBeforeAwait)
@@ -23,6 +42,12 @@ function section(title) {
 
 await testQuery('commit')
 await testQuery('create database foobar1')
+relog('ok')
+
+const random = new Random(Random.engines.mt19937().seed(123123))
+for (let i = 0; i < 10000; ++i) {
+    random.integer(0, 100)
+}
 relog('ok')
 
 

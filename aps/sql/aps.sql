@@ -1,4 +1,4 @@
-﻿/*
+/*
  * APS
  * 
  * (C) Copyright 2015-2016 Vladimir Grechka
@@ -113,9 +113,10 @@ create table foobar(id bigserial, foo text);
 
 /* -------------------------------------------------------------------
 
+SELECT * FROM pg_stat_activity
+
 
 select * from foobar
-
 
 select * from users
 select * from user_tokens
@@ -192,7 +193,7 @@ select * from foobar
 
 insert into foobar(id, foo) values(null, 'qqqqqqq')
 
-insert into foobar (foo) values ('qweqwe')
+insert into foobar (foo) values ('qwuqwu')
 
 delete from support_threads
 

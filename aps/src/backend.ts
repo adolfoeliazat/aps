@@ -59,9 +59,17 @@ app.post('/rpc', (req, res) => {
                 if (clientToken !== serverToken) raise('Fuck you, mister hacker')
             }
             
-            if (msg.DB && MODE !== 'debug') raise('DB is only allowed for debug mode')
-            const DB = msg.DB || 'dev'
-        
+            // - Application can be exercised automatically againts test datbase
+            // - Application can be exercised manually againts test datbase
+            //   (after test finished, user can continue to do stuff in that tab)
+            // - Application can be exercised manually againts dev datbase
+            //   (if no tests were executed after browser refresh)
+            // - Application can run against production database configured in APS_DB_xxx variables
+            //   (if backend's MODE is 'prod')
+            // - Backend does not necessarily connect to database for all requests,
+            //   e.g. danger_eval might not need it. For those requests where connection is necessary
+            //   everything should always be wrapped in start transaction/commit/rollback.
+            
             const [clientDomain, clientPortSuffix] = {
                 ua_customer: [DOMAIN_UA_CUSTOMER, PORT_SUFFIX_UA_CUSTOMER],
                 ua_writer: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
@@ -70,7 +78,13 @@ app.post('/rpc', (req, res) => {
             }[msg.LANG + '_' + msg.CLIENT_KIND] || [undefined, undefined]
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv' && msg.CLIENT_KIND !== 'debug') raise('WTF is the clientKind?')
             
-            return await pgTransaction({DB}, async function(tx) {
+            if (msg.db) {
+                return await pgTransaction({db: msg.db}, doStuff)
+            } else {
+                return await doStuff()
+            }
+            
+            async function doStuff(tx) {
                 const fieldErrors = {}, fields = {}
                 let user
             
@@ -188,13 +202,20 @@ app.post('/rpc', (req, res) => {
                     const nextIDs = {}
                     let nextSupportThreadTopicIndex = 0
                     let nextMessageIndex = 0
+                    
+                    dlog('Dropping shit')
+                    #await testQuery(fs.readFileSync(`${__dirname}/../sql/aps-drop.sql`, 'utf8'))
+                    dlog('Creating schema')
+                    #await testQuery(fs.readFileSync(`${__dirname}/../sql/aps.sql`, 'utf8').replace(/^NO WAY/m, '-- NO WAY'))
                         
-                    #await testQuery(q`delete from support_thread_messages where sender_id >= 100 and sender_id < 100000`)
-                    #await testQuery(q`delete from support_threads where supportee_id >= 100 and supportee_id < 100000`)
-                    #await testQuery(q`delete from user_tokens where user_id >= 100 and user_id < 100000`)
-                    #await testQuery(q`delete from user_roles where user_id >= 100 and user_id < 100000`)
-                    #await testQuery(q`delete from users where id >= 100 and id < 100000`)
+//                    #await testQuery(q`delete from support_thread_messages where sender_id >= 100 and sender_id < 100000`)
+//                    #await testQuery(q`delete from support_threads where supportee_id >= 100 and supportee_id < 100000`)
+//                    #await testQuery(q`delete from user_tokens where user_id >= 100 and user_id < 100000`)
+//                    #await testQuery(q`delete from user_roles where user_id >= 100 and user_id < 100000`)
+//                    #await testQuery(q`delete from users where id >= 100 and id < 100000`)
                         
+                    let mt
+                    mt = measureTime('Creating users')
                     for (const u of testdata.ua.users.admin) {
                         #await testInsertInto({table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
                         for (const role of u.roles) {
@@ -210,20 +231,30 @@ app.post('/rpc', (req, res) => {
                         #await testInsertInto({table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
                         #await testInsertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
                     }
+                    mt.dlog('END')
                     
                     testQuery('commit') // So that requests simulated below see test users
                     
                     dlog('------- begin events -------')
-                    for (let eventIndex = 0; eventIndex < 100; ++eventIndex) {
+                    mt = measureTime('Events')
+                    for (let eventIndex = 0; eventIndex < 1000; ++eventIndex) {
                         const events = [
                             async function newSupportThread() {
-                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
+//                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
+                                if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) {
+                                    nextSupportThreadTopicIndex = 0
+                                }
                                 const topic = testdata.ua.supportThreadTopics[nextSupportThreadTopicIndex++]
                                 const message = nextMessage()
                                 imposedNextIDs = [nextID('support_threads'), nextID('support_thread_messages')]
                                 const user = randomCustomerOrWriter()
-                                const res = #await simulateRequest({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
+                                
+                                const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
                                     fun: 'private_createSupportThread', topic, message})
+                                
+                                const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
+                                    fun: 'private_createSupportThread', topic, message})
+                                
                             },
                             
                             async function adminAssignedToSupportThread() {
@@ -231,7 +262,7 @@ app.post('/rpc', (req, res) => {
                                 if (!threads.length) return dlog('Skipping event cause there’s no threads needing assignment')
                                 const thread = randomItem(random, threads)
                                 const user = randomSupporter()
-                                const res = #await simulateRequest({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
+                                const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
                                     fun: 'private_takeSupportThread', id: thread.id})
                             },
                             
@@ -246,16 +277,17 @@ app.post('/rpc', (req, res) => {
                                     userOptions.push(userFromID(thread.supporter_id))
                                 }
                                 const {clientKind, token} = randomItem(random, userOptions)
-                                const res = #await simulateRequest({LANG: 'ua', CLIENT_KIND: clientKind, token,
+                                const res = #await req({LANG: 'ua', CLIENT_KIND: clientKind, token,
                                     fun: 'private_createSupportThreadMessage', message, containerID: thread.id})
                             }
                         ]
                         
                         imposedRequestTimestamp = nextStamp()
                         const event = randomItem(eventRandom, events)
-                        dlog(`Event ${eventIndex + 1}: ${event.name}`)
+                        // dlog(`Event ${eventIndex + 1}: ${event.name}`)
                         await event()
                     }
+                    mt.dlog('END')
                     dlog('------ end events -------')
                     
                     #await testQuery(q`delete from user_tokens where user_id >= 100 and user_id < 100000`)
@@ -263,8 +295,15 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                     
                     
+                    async function req(msg) {
+                        return await simulateRequest(asn({DB, LANG: 'ua'}, msg))
+                    }
+                    
                     function nextMessage() {
-                        if (nextMessageIndex > testdata.ua.messages.length - 1) raise('Out of messages')
+//                        if (nextMessageIndex > testdata.ua.messages.length - 1) raise('Out of messages')
+                        if (nextMessageIndex > testdata.ua.messages.length - 1) {
+                            nextMessageIndex = 0
+                        }
                         return testdata.ua.messages[nextMessageIndex++]
                     }
                     
@@ -863,7 +902,7 @@ app.post('/rpc', (req, res) => {
                 async function testInsertInto(opts) {
                     return await insertInto({$tag: 'test--8db55c55-84c2-48cf-b49d-8fbea1b1aa86'}, opts)
                 }
-            })
+            }
             
         } catch (fucked) {
             const situation = `/rpc handle() is fucked up: ${fucked.stack}`
@@ -884,26 +923,19 @@ app.listen(port, _=> {
     clog(`Backend is spinning on 127.0.0.1:${port}`)
 })
 
+
 const pgPools = {}
 
-function pgTransaction({DB}, doInTransaction) {
-    let pgPool = pgPools[DB]
-    if (!pgPool) {
-        const configs = {
-            dev: {
-                database: 'aps',
-                port: 5432,
-                user: 'aps',
-                password: 'apssecret',
-            },
-            test: {
-                database: 'aps-test',
-                port: 5433,
-                user: 'postgres',
-            },
-        }
-        pgPool = pgPools[DB] = new (require('pg').Pool)(configs[DB])
+async function shutDownPool(db) {
+    const pool = pgPools[db]
+    if (pool) {
+        await pool.end()
+        delete pgPools[db]
     }
+}
+
+async function pgTransaction(opts, doInTransaction) {
+    return await pgConnection(opts)
     
     return new Promise((resolvePgTransaction, rejectPgTransaction) => {
         pgPool.connect(async function(conerr, con, doneWithConnection) {
@@ -999,18 +1031,125 @@ function pgTransaction({DB}, doInTransaction) {
                     })
                 })
             }
-            
-//            doInTransaction(api)
-//                .then(ditres => {
-//                    doneWithConnection()
-//                    resolvePgTransaction(ditres)
-//                })
-//                .catch(diterr => {
-//                    doneWithConnection()
-//                    rejectPgTransaction(diterr)
-//                })
         })
     })
+}
+
+/*async*/ function pgConnection({db}, doWithConnection) {
+    let pgPool = pgPools[db]
+    if (!pgPool) {
+        let config
+        if (db === 'prod') {
+            raise('TODO get prod DB config from environment')
+        } else {
+            config = lookup(db, {
+                dev: {
+                    database: 'aps-dev',
+                    port: 5432,
+                    user: 'postgres',
+                },
+                test: {
+                    database: 'aps-test',
+                    port: 5433,
+                    user: 'postgres',
+                },
+                'test-postgres': {
+                    database: 'postgres',
+                    port: 5433,
+                    user: 'postgres',
+                },
+            })
+        }
+        pgPool = pgPools[db] = new (require('pg').Pool)(config)
+    }
+    
+    return new Promise((resolvePgConnection, rejectPgConnection) => {
+        pgPool.connect(async function(conerr, con, doneWithConnection) {
+            if (conerr) {
+                clog('PG connection failed', conerr)
+                doneWithConnection(conerr)
+                return rejectPgConnection(conerr)
+            }
+            
+            const api = {
+                query({$tag, shouldLogForUI=true}, ...xs) {
+                    if (!$tag) raise('I want all queries to be tagged')
+                    
+                    let sql, args
+                    if (typeof xs[0] === 'object' && xs[0].q) {
+                        ;({sql, args} = xs[0].q)
+                    } else {
+                        ;[sql, args] = xs
+                        if (typeof sql !== 'string') raise('Query should be string or q-thing')
+                    }
+                    
+                    if (MODE !== 'debug') {
+                        shouldLogForUI = false
+                    }
+                    
+                    // If args is bad, con.query fails without telling us
+                    invariant(args === undefined || isArray(args), 'tx.query wants args to be array or undefined')
+                    
+                    return new Promise((resolveQuery, rejectQuery) => {
+                        let queryLogRecordForUI
+                        if (shouldLogForUI) {
+                            queryLogRecordForUI = {sql, args, $tag}
+                            queryLogForUI.push(queryLogRecordForUI)
+                        }
+                        
+                        con.query(sql, args, (qerr, qres) => {
+                            if (qerr) {
+                                clog('PG query failed', {sql, args, qerr})
+                                if (shouldLogForUI) {
+                                    queryLogRecordForUI.err = qerr
+                                }
+                                
+                                return rejectQuery(qerr)
+                            }
+                            
+                            if (shouldLogForUI) {
+                                const prepres = cloneDeep(qres)
+                                for (const k of keys(prepres)) {
+                                    if (k.startsWith('_')) {
+                                        delete prepres[k]
+                                    }
+                                }
+                                const maxRows = 10
+                                if (isArray(prepres.rows) && prepres.rows.length > maxRows) {
+                                    prepres[`FIRST_${maxRows}_ROWS`] = prepres.rows.slice(0, maxRows)
+                                    delete prepres.rows
+                                }
+                                queryLogRecordForUI.res = prepres
+                            }
+                            
+                            resolveQuery(qres.rows)
+                        })
+                    })
+                }
+            }
+            
+            try {
+                const dwcres = await doWithConnection(api)
+                doneWithConnection()
+                resolvePgConnection(dwcres)
+            } catch (dwcerr) {
+                doneWithConnection()
+                rejectPgConnection(dwcerr)
+            }
+        })
+    })
+}
+
+const testdb = DBFiddler({db: 'test'})
+
+function DBFiddler({db}) {
+    return {
+        async query(q) {
+            return await pgConnection({db}, async function(con) {
+                return await con.query({$tag: '9fbde601-86dd-4d69-bce2-05bdcb7fb4be'}, q)
+            })
+        },
+    }
 }
 
 function q(ss, ...substs) {
@@ -1030,15 +1169,24 @@ function heyBackend_sayHelloToMe({askerName}) {
     return `Hello, ${askerName}`
 }
 
-let kindOfState
-
-function heyBackend_changeYourStateTo(state) {
-    kindOfState = state
+async function createDB(newdb) {
+    await shutDownPool(newdb)
+    await pgConnection({db: newdb + '-postgres'}, async function(db) {
+        await db.query({$tag: 'eba1bdcf-9657-405d-9716-1dbc3c01a65b'}, `drop database if exists "aps-${newdb}"`)
+        await db.query({$tag: 'f31f0e3c-ef04-4391-b5a1-dc489fa4fa9b'}, `create database "aps-${newdb}"`)
+    })
+    await pgConnection({db: newdb}, async function(db) {
+        const testrows = await db.query({$tag: '86b182d2-7560-4302-875e-6290ffd719d0'}, `
+            create table foobar(id bigserial, foo text, bar text);
+            create table bazqux(id bigserial, baz text, qux text);
+            insert into foobar (foo, bar) values ('alice', 'bob'), ('craig', 'david');
+            insert into bazqux (baz, qux) values ('evan', 'fred'), ('gary', 'helen');
+            select * from foobar, bazqux;
+        `)
+        dlog({testrows})
+    })
 }
 
-function heyBackend_whatsYourState() {
-    return kindOfState
-}
 
 
 

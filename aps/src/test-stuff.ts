@@ -35,6 +35,7 @@ testdata.ua.users.customer = [
 ]
 
 testdata.ua.supportThreadTopics = [
+    'Ниче не работает',
     'Вы с ума сошли!',
     'Не очень?',
     'Мне можно сесть?',

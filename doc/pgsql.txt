@@ -5,7 +5,12 @@ C:\opt\pgsql-9.6.0-beta2\bin\initdb -D r:\pgsql
 C:\opt\pgsql-9.6.0-beta2\bin\pg_ctl start -w -D r:\pgsql -o "-F -p 5433"
 
 
-# https://www.postgresql.org/docs/9.6/static/app-pg-ctl.html
-# https://www.postgresql.org/docs/9.6/static/app-postgres.html
-# https://www.postgresql.org/docs/current/static/non-durability.html
-# C:\opt\pgsql-9.6.0-beta2\bin\pg_ctl -D r:\pgsql -l logfile start
+https://www.postgresql.org/docs/9.6/static/app-pg-ctl.html
+https://www.postgresql.org/docs/9.6/static/app-postgres.html
+https://www.postgresql.org/docs/current/static/non-durability.html
+
+C:\opt\pgsql-9.6.0-beta2\bin\pg_ctl -D r:\pgsql -l logfile start
+
+
+SELECT * FROM pg_stat_activity
+
