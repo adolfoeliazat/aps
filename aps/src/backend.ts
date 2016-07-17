@@ -12,29 +12,29 @@ MAX_NAME = 50
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
 import * as fs from 'fs'
-import static 'into-u ./stuff ./test-stuff'
+import static 'into-u ./stuff'
 
 let testGlobalCounter = 0, simulateRequest
 
 const app = newExpress()
 let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp,
-    imposedNextIDs = []
+    imposedNextIDs = [], requestTimeLoggingDisabled
 
 require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
     return s
 })
 
 app.post('/rpc', (req, res) => {
-    // dlog({body: req.body, headers: req.headers})
-    handle(req.body).then(message => {
-        res.json(message)
-    })
-    
     simulateRequest = async function(msg) {
         const res = await handle(msg)
         if (!res.hunky) raise(`Unhunky response from myself’s ${msg.fun}: ${deepInspect(res)}`)
         return res
     }
+    
+    // dlog({body: req.body, headers: req.headers})
+    handle(req.body).then(message => {
+        res.json(message)
+    })
     
     async function handle(msg) {
         let requestTimestamp = moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS')
@@ -737,8 +737,10 @@ app.post('/rpc', (req, res) => {
             }
             return {fatal: situation, stack: fucked.stack, stackBeforeAwait} // TODO:vgrechka Send stack only if debug mode
         } finally {
-            const elapsed = Date.now() - t0
-            dlog(`${msg.fun}: ${elapsed}ms`)
+            if (!requestTimeLoggingDisabled && msg.fun !== 'private_getLiveStatus') {
+                const elapsed = Date.now() - t0
+                dlog(`${msg.fun}: ${elapsed}ms`)
+            }
         }
     }
 })
@@ -787,7 +789,7 @@ async function pgTransaction(opts, doInTransaction) {
             config = lookup(db, {
                 dev: {database: 'aps-dev', port: 5432, user: 'postgres'},
                 test: {database: 'aps-test', port: 5433, user: 'postgres'},
-                'test-template-1': {database: 'aps-test-template-1', port: 5433, user: 'postgres'},
+                'test-template-ua-1': {database: 'aps-test-template-ua-1', port: 5433, user: 'postgres'},
                 'test-postgres': {database: 'postgres', port: 5433, user: 'postgres'},
             })
         }
@@ -933,7 +935,8 @@ async function pgTransaction(opts, doInTransaction) {
     })
 }
 
-const testdb = DBFiddler({db: 'test'})
+const testDB = DBFiddler({db: 'test'})
+const testTemplateUA1DB = DBFiddler({db: 'test-template-ua-1'})
 
 function DBFiddler({db}) {
     return {
@@ -1069,173 +1072,16 @@ async function createDB(newdb) {
             create trigger on_update before update on support_thread_messages for each row execute procedure on_update();
             
         `)
-        
-//        const testrows = await db.query({$tag: '86b182d2-7560-4302-875e-6290ffd719d0'}, `
-//            create table foobar(id bigserial, foo text, bar text);
-//            create table bazqux(id bigserial, baz text, qux text);
-//            insert into foobar (foo, bar) values ('alice', 'bob'), ('craig', 'david');
-//            insert into bazqux (baz, qux) values ('evan', 'fred'), ('gary', 'helen');
-//            select * from foobar, bazqux;
-//        `)
-//        dlog({testrows})
     })
 }
 
-async function createTestTemplateDB1() {
-    await createDB('test-template-1')
-    await pgConnection({db: 'test-template-1'}, async function(db) {
-        let stackBeforeAwait
-        try {
-            const random = new Random(Random.engines.mt19937().seed(123123))
-            const eventRandom = new Random(Random.engines.mt19937().seed(234234))
-            const password_hash = '$2a$10$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6' // secret
-            const stampFormat = 'YYYY-MM-DD HH:mm:ss'
-            let nextMoment = moment('2014-03-31 18:15:41', stampFormat)
-            const nextIDs = {}
-            let nextSupportThreadTopicIndex = 0
-            let nextMessageIndex = 0
-            
-            let mt
-            mt = measureTime('Creating users')
-            for (const u of testdata.ua.users.admin) {
-                #await insertInto({table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                for (const role of u.roles) {
-                    #await insertInto({table: 'user_roles', values: {user_id: u.user.id, role}})
-                    #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
-                }
-            }
-            for (const u of testdata.ua.users.writer) {
-                #await insertInto({table: 'users', values: asn({kind: 'writer', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
-            }
-            for (const u of testdata.ua.users.customer) {
-                #await insertInto({table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
-            }
-            mt.dlog('END')
-            
-            dlog('------- begin events -------')
-            mt = measureTime('Events')
-            for (let eventIndex = 0; eventIndex < 100; ++eventIndex) {
-                const events = [
-                    async function newSupportThread() {
-                        if (nextSupportThreadTopicIndex > testdata.ua.supportThreadTopics.length - 1) raise('Out of support thread topics')
-                        const topic = testdata.ua.supportThreadTopics[nextSupportThreadTopicIndex++]
-                        const message = nextMessage()
-                        imposedNextIDs = [nextID('support_threads'), nextID('support_thread_messages')]
-                        const user = randomCustomerOrWriter()
-                        
-                        const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
-                            fun: 'private_createSupportThread', topic, message})
-                        
-                        const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
-                            fun: 'private_createSupportThread', topic, message})
-                        
-                    },
-                    
-                    async function adminAssignedToSupportThread() {
-                        const threads = #await query(`select * from support_threads where id < 100000 and supporter_id is null`)
-                        if (!threads.length) return dlog('Skipping event cause there’s no threads needing assignment')
-                        const thread = randomItem(random, threads)
-                        const user = randomSupporter()
-                        const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
-                            fun: 'private_takeSupportThread', id: thread.id})
-                    },
-                    
-                    async function newSupportThreadMessage() {
-                        const threads = #await query(`select * from support_threads where id < 100000 and supporter_id is null`)
-                        if (!threads.length) return dlog('Skipping event cause there’s no threads yet')
-                        const thread = randomItem(random, threads)
-                        const message = nextMessage()
-                        imposedNextIDs = [nextID('support_thread_messages')]
-                        const userOptions = [userFromID(thread.supportee_id)]
-                        if (thread.supporter_id) {
-                            userOptions.push(userFromID(thread.supporter_id))
-                        }
-                        const {clientKind, token} = randomItem(random, userOptions)
-                        const res = #await req({LANG: 'ua', CLIENT_KIND: clientKind, token,
-                            fun: 'private_createSupportThreadMessage', message, containerID: thread.id})
-                    }
-                ]
-                
-                imposedRequestTimestamp = nextStamp()
-                const event = randomItem(eventRandom, events)
-                // dlog(`Event ${eventIndex + 1}: ${event.name}`)
-                await event()
-            }
-            mt.dlog('END')
-            dlog('------ end events -------')
-            
-            #await query(q`delete from user_tokens`)
-            
-            
-            async function query(opts) {
-                return await db.query({$tag: 'd0aa115c-dd8c-46c8-ae47-bff3f5906512'}, opts)
-            }
-            
-            async function insertInto(opts) {
-                return await db.insertInto({$tag: '6eb80cdd-8b9f-4857-937a-f5828dd6ed71'}, opts)
-            }
-            
-            async function req(msg) {
-                return await simulateRequest(asn({db: 'test-template-1', LANG: 'ua'}, msg))
-            }
-            
-            function nextMessage() {
-                if (nextMessageIndex > testdata.ua.messages.length - 1) raise('Out of messages')
-                return testdata.ua.messages[nextMessageIndex++]
-            }
-            
-            function nextStamp() {
-                nextMoment.add(random.integer(30 * 60, 5 * 24 * 60 * 60), 'seconds')
-                return nextMoment.format(stampFormat)
-            }
-            
-            function randomCustomer() {
-                return userFromID(randomItem(random, testdata.ua.users.customer).user.id)
-            }
-            
-            function randomWriter() {
-                return userFromID(randomItem(random, testdata.ua.users.writer).user.id)
-            }
-            
-            function randomCustomerOrWriter() {
-                if (random.integer(0, 1) === 0) return randomCustomer()
-                else return randomWriter()
-            }
-            
-            function randomSupporter() {
-                const admins = testdata.ua.users.admin
-                const supporters = admins.filter(x => x.roles.includes('support'))
-                return userFromID(randomItem(random, supporters).user.id)
-            }
-            
-            function userFromID(id) {
-                id = parseInt(id, 10)
-                let clientKind
-                if (id >= 100 && id < 300) clientKind = 'writer'
-                else if (id >= 300 && id < 400) clientKind = 'customer'
-                else raise(`Weird ID for a test user: ${id}`)
-                return {clientKind, token: 'temp-' + id}
-            }
-            
-            function nextID(table) {
-                if (!nextIDs[table]) {
-                    nextIDs[table] = 101
-                }
-                const id = nextIDs[table]++
-                if (id >= 100000) raise(`Out of IDs for table ${table}`)
-                return id
-            }
-        } catch (e) {
-            e.stackBeforeAwait = stackBeforeAwait
-            throw e
-        }
-    })
+function imposeNextIDs(x) {
+    imposedNextIDs = x
 }
 
-
-
+function imposeRequestTimestamp(x) {
+    imposedRequestTimestamp = x
+}
 
 
 

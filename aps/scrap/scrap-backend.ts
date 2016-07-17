@@ -1,5 +1,34 @@
-await createTestTemplateDB1()
+//
+// Create and populate test-template-ua-1 database
+//
+const ts = require('./test-shit-ua')
+ts.setScrapContext({relog})
+ts.setBackendContext({createDB, pgConnection, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp})
+await ts.createTestTemplateUA1DB()
 relog('ok')
+
+
+//
+// Extract sentences from kafka-trial-ru.txt
+//
+const ts = require('./test-shit-ua')
+ts.setScrapContext({relog})
+ts.extractSentences({fromFile: 'testdata/kafka-trial-ru.txt', toFile: 'testdata/kafka-trial-ru.gen.json'})
+relog('ok')
+
+
+//
+// Fiddle with testDB
+//
+relog(await testDB.query('select * from user_tokens'))
+
+
+testdata.extractSentences({fromFile: 'testdata/kafka-trial-ru.txt', toFile: 'testdata/sents-kafka-trial-ru.txt'})
+relog('ok')
+
+relog(testdata.ua.g1())
+
+relog(testdata.generateStampsInRange({count: 45, fromStamp: '2014-03-31 18:15:41', toStamp: '2016-07-15 20:21:22'}))
 
 
 relog(await testdb.query(q`select * from users`))

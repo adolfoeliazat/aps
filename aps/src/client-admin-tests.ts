@@ -4,14 +4,14 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-import static 'into-u/utils-client into-u/ui ./stuff ./test-stuff'
+import static 'into-u/utils-client into-u/ui ./stuff'
 
 module.exports = function({sim}) {
     const drpc = getDebugRPC()
         
     return {
         'UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c': {
-            templateDB: 'test-template-1',
+            templateDB: 'test-template-ua-1',
             async run() {
                 #hawait drpc({fun: 'danger_clearSentEmails'})
                 
