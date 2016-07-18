@@ -81,9 +81,9 @@ global.igniteShit = makeUIShitIgniter({
                             }
                             
                             return dataItemObject('supportThreadItem', _=> 
-                                div(
-                                    diva({}, item.topic),
-                                    diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
+                                diva({style: {backgroundColor: rowBackground}},
+                                    diva({style: {marginTop: 10, fontWeight: 'bold',  marginBottom: 5}}, item.topic),
+                                    diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
                                         diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
                                             diva({}, spana({style: {fontWeight: 'bold'}},
                                                 t(`TOTE`, `От: `)),
