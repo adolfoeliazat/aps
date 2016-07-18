@@ -278,6 +278,16 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'danger_resetTestDatabase') {
+                    if (msg.alsoRecreateTemplate) {
+                        if (msg.templateDB === 'test-template-ua-1') {
+                            const ts = require('./test-shit-ua')
+                            ts.setBackendContext({createDB, pgConnection, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp, resetImposed})
+                            await ts.createTestTemplateUA1DB()
+                        } else {
+                            raise(`I don’t know how to recreate test template DB for ${msg.templateDB}`)
+                        }
+                    }
+                    
                     await shutDownPool('test')
                     await shutDownPool(msg.templateDB)
                     await pgConnection({db: 'test-postgres'}, async function(db) {
