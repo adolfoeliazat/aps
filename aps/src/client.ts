@@ -81,9 +81,10 @@ global.igniteShit = makeUIShitIgniter({
                             }
                             
                             return dataItemObject('supportThreadItem', _=> 
-                                diva({style: {backgroundColor: rowBackground}},
-                                    diva({style: {marginTop: 10, fontWeight: 'bold',  marginBottom: 5}}, item.topic),
-                                    diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
+                                diva({style: {backgroundColor: rowBackground, position: 'relative'}},
+                                    diva({style: {marginTop: 10, fontWeight: 'bold',  marginBottom: 5}},
+                                        item.topic),
+                                    diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0, position: 'relative'}},
                                         diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
                                             diva({}, spana({style: {fontWeight: 'bold'}},
                                                 t(`TOTE`, `От: `)),
@@ -94,11 +95,17 @@ global.igniteShit = makeUIShitIgniter({
                                                                                : t(`TOTE`, `В рельсу`))),
                                             diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.firstMessage.inserted_at)))
                                         ),
-                                        diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap'}},
+                                        diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
+                                            item.unreadMessageCount && brightBadgea({style: {position: 'absolute', left: -12, top: 20}}, dataField('unreadMessageCount', t('' + item.unreadMessageCount))),
                                             dataField('message', item.firstMessage.message))
                                     ),
                                 )
                                 )
+                                
+                            function brightBadgea(def, content) {
+                                #extract {style} from def
+                                return spana({className: 'badge', style: asn({paddingRight: 8, backgroundColor: BLUE_GRAY_400}, style)}, content) 
+                            }
                         }
                     },
                     

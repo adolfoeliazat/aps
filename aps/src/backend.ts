@@ -437,6 +437,7 @@ app.post('/rpc', (req, res) => {
                             order by inserted_at
                             fetch first row only`)[0].id
                         item.firstMessage = #await loadSupportThreadMessage(firstMessageID)
+                        item.unreadMessageCount = 1
                     }
                     return hunkyDory({items})
                 }
