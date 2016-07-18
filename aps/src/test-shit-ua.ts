@@ -258,7 +258,7 @@ export async function createTestTemplateUA1DB() {
                 topic: dedent(`Ничего  не  поделаешь`),
                 message: dedent(`Его за мной прислал следователь, мне с вами идти никак нельзя, этот маленький уродец, - тут  она провела  рукой  по лицу студента, этот маленький уродец меня не отпустит.`)})
             
-            #await simNewSupportThread({stamp: '2014-08-15 10:32:42', upon: 'luke',
+            #await simNewSupportThread({stamp: '2014-08-15 10:32:42', upon: 'varso',
                 topic: dedent(`Оба  исчезли за поворотом`),
                 message: dedent(`К. все еще стоял в дверях. Он должен был признаться, что женщина не только обманула его, но и солгала, что ее несут к следователю. Не станет  же  следователь сидеть  на  чердаке  и  дожидаться  ее.`)})
             
@@ -266,7 +266,7 @@ export async function createTestTemplateUA1DB() {
                 topic: dedent(`Вот видите!`),
                 message: dedent(`Вечно  ее  от  меня уносят.  Сегодня воскресенье, работать я не обязан, а мне вдруг дают совершенно ненужные  поручения,  лишь  бы  услать  отсюда.`)})
             
-            #await simNewSupportThread({stamp: '2014-10-23 15:10:13', upon: 'sand',
+            #await simNewSupportThread({stamp: '2014-10-23 15:10:13', upon: 'xeno',
                 topic: dedent(`А разве другого выхода нет?`),
                 message: dedent(`
                     - Другого не вижу, - сказал  служитель.  -  И  главное,  с

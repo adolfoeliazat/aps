@@ -267,6 +267,9 @@ relog(moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS'))
 relog(range(5).map(x => '$' + (x + 1)).join(', '))
 
 
+relog(last)
+
+
 
 
 

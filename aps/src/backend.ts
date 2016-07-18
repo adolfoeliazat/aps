@@ -8,7 +8,7 @@
 
 MODE = 'debug'
 MAX_NAME = 50
-MORE_CHUNK = 3 + 1
+MORE_CHUNK = 10 + 1
 
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
@@ -16,6 +16,10 @@ import * as fs from 'fs'
 import static 'into-u ./stuff'
 
 let testGlobalCounter = 0, simulateRequest
+
+// TODO:vgrechka @ugly Find a better way to make TS aware of `#imported static` names
+// that collide with something in the file
+let last
 
 const app = newExpress()
 let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp,
@@ -436,9 +440,9 @@ app.post('/rpc', (req, res) => {
                         where id >= ${fromID} and supporter_id is null
                         order by id asc
                         fetch first MORE_CHUNK rows only`)
-                    let hasMore
+                    let moreFromID
                     if (items.length === MORE_CHUNK) {
-                        hasMore = true
+                        moreFromID = last(items).id
                         items = items.slice(0, MORE_CHUNK - 1)
                     }
                         
@@ -451,7 +455,7 @@ app.post('/rpc', (req, res) => {
                         item.firstMessage = #await loadSupportThreadMessage(firstMessageID)
                         item.unreadMessageCount = 1
                     }
-                    return hunkyDory({items, hasMore})
+                    return hunkyDory({items, moreFromID})
                 }
                 
                 else if (msg.fun === 'private_getSupportThreadMessages') {

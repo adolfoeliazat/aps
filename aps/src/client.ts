@@ -48,10 +48,7 @@ global.igniteShit = makeUIShitIgniter({
                                 support: {
                                     title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({dataFieldName: 'heapTabs.supportBadge', liveStatusFieldName: 'unassignedSupportThreadCount'})),
                                     content: diva({},
-                                        dataArray('supportThreads', _=> {
-                                            return ui.renderMoreable({res, renderItem: renderSupportThreadItem})
-                                        })
-                                        ),
+                                        ui.renderMoreable({res, renderItem: renderSupportThreadItem, itemsFun, dataArrayName: 'supportThreads'})),
                                 },
                                 newOrders: {
                                     title: t(`TOTE`, `Новые заказы`),
