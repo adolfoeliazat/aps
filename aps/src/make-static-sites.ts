@@ -1218,6 +1218,8 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 <link href="bootstrap-master/css/bootstrap.min.css" rel="stylesheet">
                 <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
                 <style>
+                    /* @ctx css */
+        
                     button:disabled {
                         cursor: default !important;
                     }
@@ -1395,6 +1397,14 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                       }
                     }
                    
+                    .hoverPointerUnderline {
+                        cursor: pointer;
+                    }
+        
+                    .hoverPointerUnderline:hover {
+                        cursor: pointer;
+                        text-decoration: underline;
+                    }
         
                 </style>
         
