@@ -94,7 +94,7 @@ global.igniteShit = makeUIShitIgniter({
                                                                                : t(`TOTE`, `В рельсу`))),
                                             diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.firstMessage.inserted_at)))
                                         ),
-                                        diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
+                                        diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap'}},
                                             dataField('message', item.firstMessage.message))
                                     ),
                                 )
