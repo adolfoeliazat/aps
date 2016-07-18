@@ -8,6 +8,7 @@
 
 MODE = 'debug'
 MAX_NAME = 50
+MORE_CHUNK = 3 + 1
 
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
@@ -428,8 +429,19 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getUnassignedSupportThreads') {
-                    const items = #await tx.query({$tag: 'f360d4da-d3ad-4bed-990f-c4f0c4a66176'}, q`
-                        select * from support_threads where supporter_id is null order by inserted_at asc`)
+                    let fromID = msg.fromID
+                    if (fromID === undefined) fromID = 0
+                    let items = #await tx.query({$tag: 'f360d4da-d3ad-4bed-990f-c4f0c4a66176'}, q`
+                        select * from support_threads
+                        where id >= ${fromID} and supporter_id is null
+                        order by id asc
+                        fetch first MORE_CHUNK rows only`)
+                    let hasMore
+                    if (items.length === MORE_CHUNK) {
+                        hasMore = true
+                        items = items.slice(0, MORE_CHUNK - 1)
+                    }
+                        
                     for (const item of items) {
                         const firstMessageID = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6'}, q`
                             select id from support_thread_messages
@@ -439,7 +451,7 @@ app.post('/rpc', (req, res) => {
                         item.firstMessage = #await loadSupportThreadMessage(firstMessageID)
                         item.unreadMessageCount = 1
                     }
-                    return hunkyDory({items})
+                    return hunkyDory({items, hasMore})
                 }
                 
                 else if (msg.fun === 'private_getSupportThreadMessages') {
@@ -972,6 +984,7 @@ function q(ss, ...substs) {
         args.push(subst)
     })
     sql += ss[substs.length]
+    sql = sql.replace(/MORE_CHUNK/g, MORE_CHUNK)
     return {q: {sql, args}}
     // return {ss, substs}
 }

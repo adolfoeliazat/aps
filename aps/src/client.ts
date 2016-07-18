@@ -41,7 +41,7 @@ global.igniteShit = makeUIShitIgniter({
                                 pageBody: div(errorBanner(res.error))
                             })
                         }
-                        
+                       
                         const tabs = Tabs({
                             activeTab,
                             tabs: {
@@ -49,7 +49,7 @@ global.igniteShit = makeUIShitIgniter({
                                     title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({dataFieldName: 'heapTabs.supportBadge', liveStatusFieldName: 'unassignedSupportThreadCount'})),
                                     content: diva({},
                                         dataArray('supportThreads', _=> {
-                                            return div(...res.items.map(renderSupportThreadItem))
+                                            return ui.renderMoreable({res, renderItem: renderSupportThreadItem})
                                         })
                                         ),
                                 },

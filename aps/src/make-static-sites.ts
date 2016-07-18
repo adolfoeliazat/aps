@@ -1406,6 +1406,10 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                         text-decoration: underline;
                     }
         
+                    .btn-default:focus {border-color: #ccc; outline-color: transparent;}
+                    .btn-default:active {border-color: #ccc; outline-color: transparent;}
+                    .btn-default:focus:active {border-color: #8c8c8c; outline-color: transparent;}
+        
                 </style>
         
                 <script>
