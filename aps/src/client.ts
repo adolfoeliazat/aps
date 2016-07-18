@@ -88,7 +88,7 @@ global.igniteShit = makeUIShitIgniter({
                                         diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
                                             diva({}, spana({style: {fontWeight: 'bold'}},
                                                 t(`TOTE`, `От: `)),
-                                                dataField('from', item.firstMessage.sender.first_name + ' ' + item.firstMessage.sender.last_name)),
+                                                userLabel({user: item.firstMessage.sender, dataFieldName: 'from'})),
                                             diva({}, spana({style: {fontWeight: 'bold'}},
                                                 t(`TOTE`, `Кому: `)),
                                                 dataField('to', item.firstMessage.recipient ? (item.firstMessage.recipient.first_name + ' ' + item.firstMessage.recipient.last_name)
@@ -102,10 +102,6 @@ global.igniteShit = makeUIShitIgniter({
                                 )
                                 )
                                 
-                            function brightBadgea(def, content) {
-                                #extract {style} from def
-                                return spana({className: 'badge', style: asn({paddingRight: 8, backgroundColor: BLUE_GRAY_400}, style)}, content) 
-                            }
                         }
                     },
                     
@@ -368,6 +364,25 @@ global.igniteShit = makeUIShitIgniter({
                 return renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem, t, ui})
             },
         }
+        
+        
+        // @ctx aps ui utils
+
+        function userLabel({user, dataFieldName, $sourceLocation}) {
+            dlog(user)
+            const glyphName = lookup(user.kind, {
+                customer: 'user',
+                writer: 'pencil',
+                admin: 'cog',
+            })
+            const glyph = ia({className: `fa fa-${glyphName}`, style: {marginLeft: 5, marginRight: 5}})
+            return spana_({$sourceLocation, $revealableType: 'userLabel'}, glyph, span(user.first_name + ' ' + user.last_name))
+        }
+
+        function brightBadgea(def, content) {
+            #extract {style} from def
+            return spana({className: 'badge', style: asn({paddingRight: 8, backgroundColor: BLUE_GRAY_400}, style)}, content) 
+        }
     },
     
     isTestScenarioNameOK(name) {
@@ -381,6 +396,7 @@ global.igniteShit = makeUIShitIgniter({
             require('./client-admin-tests')({sim}),)
     },
 })
+
 
 function isDynamicPage(name) {
     if (CLIENT_KIND === 'customer') return ~customerDynamicPageNames().indexOf(name)
