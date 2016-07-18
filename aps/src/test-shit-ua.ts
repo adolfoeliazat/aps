@@ -8,8 +8,9 @@ import * as fs from 'fs'
 import * as path from 'path'
 #import static 'into-u/utils'
 
-let createDB, pgConnection, Random, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp,
-    relog
+let createDB, pgConnection, Random, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp, resetImposed,
+    relog,
+    random
     
 const users = {
     admin: [
@@ -61,7 +62,7 @@ const users = {
 }
 
 export function setBackendContext(ctx) {
-    ;({createDB, pgConnection, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp} = ctx)
+    ;({createDB, pgConnection, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp, resetImposed} = ctx)
 }
 
 export function setScrapContext(ctx) {
@@ -123,6 +124,7 @@ export function extractSentences({fromFile, toFile}) {
 }
 
 export function generateStampsInRange({count, fromStamp, toStamp, minDiffSeconds}) {
+    resetRandom()
     const stampFormat = 'YYYY-MM-DD HH:mm:ss'
     const unixStampFrom = moment(fromStamp, stampFormat)
     const unixStampTo = moment(toStamp, stampFormat)
@@ -142,28 +144,30 @@ export function generateStampsInRange({count, fromStamp, toStamp, minDiffSeconds
     return unixStamps.map(unixStamp => moment(unixStamp).format(stampFormat))
 }
 
-
-export function g1() {
-    resetRandom()
-    const count = 45
-    const stamps = testdata.generateStampsInRange({count, fromStamp: '2014-03-31 18:15:41', toStamp: '2016-05-15 20:21:22'})
-    const users = testdata.ua.generateRandomCustomersOrWriters({count})
-    const topics = shuffle(random, testdata.ua.supportThreadTopics.slice(0, count))
-    const messages = shuffle(random, testdata.ua.supportThreadMessages.slice(0, count))
-    return zip(stamps, users, topics, messages)
-          .map(([stamp, user, topic, message]) => ({stamp, user, topic, message}))
-          .map(x => `newSupportThreadEvent(${JSON.stringify(x)}),`).join('\n')
+function resetRandom() {
+    random = new Random(Random.engines.mt19937().seed(54511))
 }
 
 export function generateRandomCustomersOrWriters({count}) {
-    const users = testdata.ua.users.customer.concat(testdata.ua.users.writer)
+    const random = new Random(Random.engines.mt19937().seed(54512))
+    
+    const items = [].concat(users.customer, users.writer)
     return times(count, _=> {
-        const user = randomItem(random, users).user
-        return user.email.slice(0, user.email.indexOf('@'))
+        const item = randomItem(random, items)
+        return item.user.email.slice(0, item.user.email.indexOf('@'))
     })
 }
 
+export function toUponLines(items) {
+    let lines = items.map(x => `upon: '${x}'`)
+    let maxLen = max(lines.map(x => x.length))
+    lines = lines.map(x => pad(x, maxLen - x.length) + ',')
+    return lines.join('\n')
+}
+
+
 export async function createTestTemplateUA1DB() {
+    resetImposed()
     await createDB('test-template-ua-1')
     await pgConnection({db: 'test-template-ua-1'}, async function(db) {
         let stackBeforeAwait
@@ -181,9 +185,9 @@ export async function createTestTemplateUA1DB() {
             mt = measureTime('Creating users')
             for (const u of users.admin) {
                 #await insertInto({table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
                 for (const role of u.roles) {
                     #await insertInto({table: 'user_roles', values: {user_id: u.user.id, role}})
-                    #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
                 }
             }
             for (const u of users.writer) {
@@ -199,55 +203,66 @@ export async function createTestTemplateUA1DB() {
             const mtEvents = measureTime('Events')
             
             //---------- Support threads and messages ----------
-            #await simNewSupportThread({stamp: '2014-05-06 07:08:09', upon: 'pisya', topic: 'Some topic', message: 'Some message'})
+            let threadID
+            #await simNewSupportThread({stamp: '2014-04-10 13:44:55', upon: 'luke', topic: 'И это называется следственной документацией!', message: 'Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.'})
+            #await simNewSupportThread({stamp: '2014-05-06 14:33:34', upon: 'perma', topic: 'В   углу   комнаты   стояли  трое  молодых  людей  -  они разглядывали фотографии фройляйн Бюрстнер, воткнутые в плетеную циновку на стене. На ручке открытого окна висела белая  блузка.', message: 'В  окно  напротив уже высунулись те же старики, но зрителей там прибавилось:  за  их  спинами  возвышался  огромный  мужчина  в раскрытой  на  груди  рубахе, который все время крутил и вертел свою рыжеватую бородку. - Йозеф К.? - спросил инспектор, должно быть,  только  для того, чтобы обратить на себя рассеянный взгляд К.'})
             
+//            #await simNewSupportThread({stamp: '2014-05-16 23:33:15', upon: 'kafka', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-05-21 07:11:59', upon: 'jane', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-05-26 07:51:24', upon: 'sand', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-06-13 11:19:32', upon: 'terkin', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-07-16 05:24:17', upon: 'luke', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-07-17 07:33:08', upon: 'telo', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-08-06 01:33:37', upon: 'fedor', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-08-15 10:32:42', upon: 'luke', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-10-11 05:15:11', upon: 'fedor', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-10-23 15:10:13', upon: 'sand', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-11-25 03:39:53', upon: 'fedor', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-12-13 06:52:03', upon: 'varso', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-12-18 05:55:41', upon: 'miguel', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2014-12-28 05:48:46', upon: 'zibrov', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-01-01 22:28:49', upon: 'hegel', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-01-04 05:42:21', upon: 'francoise', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-01-26 07:25:44', upon: 'miguel', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-02-24 13:39:50', upon: 'blava', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-03-04 01:10:51', upon: 'jane', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-04-23 05:24:50', upon: 'kant', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-05-20 10:13:30', upon: 'regina', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-05-24 22:32:28', upon: 'perma', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-06-03 22:25:52', upon: 'kant', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-06-29 11:21:13', upon: 'miguel', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-07-01 06:30:24', upon: 'varso', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-07-03 17:41:52', upon: 'carlos', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-07-13 03:40:40', upon: 'blava', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-08-05 20:02:57', upon: 'perma', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-08-07 04:57:37', upon: 'terkin', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-08-08 02:31:35', upon: 'regina', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-08-17 20:42:27', upon: 'varso', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-09-19 12:12:19', upon: 'archie', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-09-27 17:25:54', upon: 'mary', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-10-19 17:39:21', upon: 'paul', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-10-30 18:39:37', upon: 'varso', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-12-01 20:05:53', upon: 'francoise', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-12-05 18:25:20', upon: 'archie', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-12-07 03:10:09', upon: 'telo', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-12-17 17:36:39', upon: 'ivo', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2015-12-31 19:35:03', upon: 'varso', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2016-02-17 08:05:43', upon: 'leo', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2016-03-01 09:22:47', upon: 'hegel', topic: '', message: ''})
+//            #await simNewSupportThread({stamp: '2016-04-13 18:28:06', upon: 'kant', topic: '', message: ''})
+
             mtEvents.dlog('END')
             
             #await query(q`delete from user_tokens`)
             
             
-            
             async function simNewSupportThread({stamp, upon, topic, message}) {
                 imposeRequestTimestamp(stamp)
-                imposeNextIDs([nextID('support_threads'), nextID('support_thread_messages')])
+                threadID = nextID('support_threads')
+                imposeNextIDs([threadID, nextID('support_thread_messages')])
                 const user = userFromPon(upon)
                 #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token, fun: 'private_createSupportThread', topic, message})
             }
-            
-//            raise('nooooooooooo')
-//            for (let eventIndex = 0; eventIndex < 100; ++eventIndex) {
-//                const events = [
-//                    
-//                    async function adminAssignedToSupportThread() {
-//                        const threads = #await query(`select * from support_threads where id < 100000 and supporter_id is null`)
-//                        if (!threads.length) return dlog('Skipping event cause there’s no threads needing assignment')
-//                        const thread = randomItem(random, threads)
-//                        const user = randomSupporter()
-//                        const res = #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token,
-//                            fun: 'private_takeSupportThread', id: thread.id})
-//                    },
-//                    
-//                    async function newSupportThreadMessage() {
-//                        const threads = #await query(`select * from support_threads where id < 100000 and supporter_id is null`)
-//                        if (!threads.length) return dlog('Skipping event cause there’s no threads yet')
-//                        const thread = randomItem(random, threads)
-//                        const message = nextMessage()
-//                        imposeNextIDs([nextID('support_thread_messages')])
-//                        const userOptions = [userFromID(thread.supportee_id)]
-//                        if (thread.supporter_id) {
-//                            userOptions.push(userFromID(thread.supporter_id))
-//                        }
-//                        const {clientKind, token} = randomItem(random, userOptions)
-//                        const res = #await req({LANG: 'ua', CLIENT_KIND: clientKind, token,
-//                            fun: 'private_createSupportThreadMessage', message, containerID: thread.id})
-//                    }
-//                ]
-//                
-//                imposeRequestTimestamp(nextStamp())
-//                const event = randomItem(eventRandom, events)
-//                await event()
-//            }
-            
             
             async function query(opts) {
                 return await db.query({$tag: 'd0aa115c-dd8c-46c8-ae47-bff3f5906512'}, opts)

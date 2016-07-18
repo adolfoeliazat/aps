@@ -3,7 +3,7 @@
 //
 const ts = require('./test-shit-ua')
 ts.setScrapContext({relog})
-ts.setBackendContext({createDB, pgConnection, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp})
+ts.setBackendContext({createDB, pgConnection, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp, resetImposed})
 await ts.createTestTemplateUA1DB()
 relog('ok')
 
@@ -21,6 +21,20 @@ relog('ok')
 // Fiddle with testDB
 //
 relog(await testDB.query('select * from user_tokens'))
+
+
+//
+// Fiddle with testTemplateUA1DB
+//
+relog(await testTemplateUA1DB.query('select * from support_threads'))
+
+
+const ts = require('./test-shit-ua')
+relog(ts.toUponLines(ts.generateRandomCustomersOrWriters({count: 45})))
+
+
+const ts = require('./test-shit-ua')
+relog(ts.generateStampsInRange({count: 45, fromStamp: '2014-03-31 15:10:34', toStamp: '2016-05-07 23:40:15', minDiffSeconds: 60*60}))
 
 
 testdata.extractSentences({fromFile: 'testdata/kafka-trial-ru.txt', toFile: 'testdata/sents-kafka-trial-ru.txt'})

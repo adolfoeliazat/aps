@@ -34,18 +34,18 @@ module.exports = function({sim}) {
                 // Action
                 #hawait testGlobal.buttons.primary.click()
                 #hawait art.shitSpinsForMax({$tag: '271f3603-1982-4804-b064-b718ee444160', max: 2000})
-                #hawait art.uiStateAfterLiveStatusPolling({$tag: '866bef17-2783-40a5-860d-0d2f69966664', expected: {
-                    url: `http://aps-ua-writer.local:3022/dashboard.html`,
-                    pageHeader: `Панель`,
-                    inputs: {},
-                    errorLabels: {},
-                    errorBanner: undefined,
-                    displayLabels: {},
-                    pageData: 
-                     { 'topNavItem.admin-my-tasks.title': `Мои задачи`,
-                       'topNavItem.admin-heap.title': `Куча`,
-                       'topNavItem.admin-heap.badge': `30` } 
-                }})
+//                #hawait art.uiStateAfterLiveStatusPolling({$tag: '866bef17-2783-40a5-860d-0d2f69966664', expected: {
+//                    url: `http://aps-ua-writer.local:3022/dashboard.html`,
+//                    pageHeader: `Панель`,
+//                    inputs: {},
+//                    errorLabels: {},
+//                    errorBanner: undefined,
+//                    displayLabels: {},
+//                    pageData: 
+//                     { 'topNavItem.admin-my-tasks.title': `Мои задачи`,
+//                       'topNavItem.admin-heap.title': `Куча`,
+//                       'topNavItem.admin-heap.badge': `30` } 
+//                }})
                 
                 // Action
                 #hawait testGlobal.topNavbarLinks['admin-heap'].click()

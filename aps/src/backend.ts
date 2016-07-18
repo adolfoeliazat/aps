@@ -19,7 +19,7 @@ let testGlobalCounter = 0, simulateRequest
 const app = newExpress()
 let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp,
     imposedNextIDs = [], requestTimeLoggingDisabled
-
+    
 require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
     return s
 })
@@ -614,7 +614,7 @@ app.post('/rpc', (req, res) => {
                             lastName: 50,
                             phone: 20,
                             topic: 300,
-                            message: 300,
+                            message: 1000,
                         }[kind]
                         if (!maxlen) raise(`WTF, define maxlen for ${kind}`)
                         if (value.length > maxlen) error(t('TOTE', `Не более ${maxlen} символов`))
@@ -752,6 +752,11 @@ app.listen(port, _=> {
 
 
 const pgPools = {}
+
+function resetImposed() {
+    imposedRequestTimestamp = undefined
+    imposedNextIDs = []
+}
 
 async function shutDownPool(db) {
     const pool = pgPools[db]
