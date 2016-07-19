@@ -6,11 +6,15 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
+import {pgConnection, q, imposeNextIDs, imposeRequestTimestamp, resetImposed} from './backend'
+import {createDB as createUADB} from './schema-ua'
 #import static 'into-u/utils'
 
-let createDB, pgConnection, Random, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp, resetImposed,
-    relog,
-    random
+let simulateRequest, random
+
+export function setBackendContext(ctx) {
+    ;({simulateRequest} = ctx)
+}
     
 const users = {
     admin: [
@@ -61,15 +65,9 @@ const users = {
     ],
 }
 
-export function setBackendContext(ctx) {
-    ;({createDB, pgConnection, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp, resetImposed} = ctx)
-}
-
-export function setScrapContext(ctx) {
-    ;({relog} = ctx)
-}
-
 export function extractSentences({fromFile, toFile}) {
+    raise('I should be killed, don’t use me')
+    
     const random = new Random(Random.engines.mt19937().seed(545644))
     
     const sents = []
@@ -119,7 +117,6 @@ export function extractSentences({fromFile, toFile}) {
     }
     
     const outs = JSON.stringify(out).replace(/,"/g, '\n,"')
-    // relog(outs.slice(0, 300))
     fs.writeFileSync(`${path.dirname(__dirname)}/src/${toFile}`, outs)
 }
 
@@ -168,7 +165,7 @@ export function toUponLines(items) {
 
 export async function createTestTemplateUA1DB() {
     resetImposed()
-    await createDB('test-template-ua-1')
+    await createUADB('test-template-ua-1')
     await pgConnection({db: 'test-template-ua-1'}, async function(db) {
         let stackBeforeAwait
         try {
@@ -227,6 +224,12 @@ export async function createTestTemplateUA1DB() {
             #await simNewSupportThread({stamp: '2014-05-16 23:33:15', upon: 'kafka',
                 topic: `В пустом зале заседаний. Студент. Канцелярии`,
                 message: `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`})
+//            #await simNewSupportThreadMessage({stamp: '2014-05-16 23:35:27', upon: 'kafka',
+//                message: dedent(`
+//                    Еще хотел бы добавить вот что.
+//                    
+//                    - Сегодня заседания нет, - сказала женщина.
+//                    - Как это - нет заседания? - спросил он, не поверив.`)})
             
             #await simNewSupportThread({stamp: '2014-05-21 07:11:59', upon: 'jane',
                 topic: dedent(`Видно,  собираетесь  навести  здесь  порядок?`),
@@ -284,103 +287,6 @@ export async function createTestTemplateUA1DB() {
                     какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я
                     арестован! Хорошо, я не буду звонить!`)})
             
-//            #await simNewSupportThread({stamp: '2014-12-13 06:52:03', upon: 'varso',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2014-12-18 05:55:41', upon: 'miguel',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2014-12-28 05:48:46', upon: 'zibrov',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-01-01 22:28:49', upon: 'hegel',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-01-04 05:42:21', upon: 'francoise',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-01-26 07:25:44', upon: 'miguel',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-02-24 13:39:50', upon: 'blava',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-03-04 01:10:51', upon: 'jane',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-04-23 05:24:50', upon: 'kant',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-05-20 10:13:30', upon: 'regina',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-05-24 22:32:28', upon: 'perma',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-06-03 22:25:52', upon: 'kant',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-06-29 11:21:13', upon: 'miguel',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-07-01 06:30:24', upon: 'varso',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-07-03 17:41:52', upon: 'carlos',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-07-13 03:40:40', upon: 'blava',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-08-05 20:02:57', upon: 'perma',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-08-07 04:57:37', upon: 'terkin',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-08-08 02:31:35', upon: 'regina',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-08-17 20:42:27', upon: 'varso',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-09-19 12:12:19', upon: 'archie',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-09-27 17:25:54', upon: 'mary',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-10-19 17:39:21', upon: 'paul',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-10-30 18:39:37', upon: 'varso',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-12-01 20:05:53', upon: 'francoise',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-12-05 18:25:20', upon: 'archie',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-12-07 03:10:09', upon: 'telo',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-12-17 17:36:39', upon: 'ivo',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2015-12-31 19:35:03', upon: 'varso',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2016-02-17 08:05:43', upon: 'leo',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2016-03-01 09:22:47', upon: 'hegel',
-//                topic: dedent(``),
-//                message: dedent(``)})
-//            #await simNewSupportThread({stamp: '2016-04-13 18:28:06', upon: 'kant',
-//                topic: dedent(``),
-//                message: dedent(``)})
-
             mtEvents.dlog('END')
             
             #await query(q`delete from user_tokens`)
