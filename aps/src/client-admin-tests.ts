@@ -47,6 +47,10 @@ module.exports = function({sim}) {
                        'topNavItem.admin-heap.badge': `13` } 
                 }})
                 
+                testGlobal.topNavbarLinks['admin-heap'].showHand()
+                #hawait art.pausePoint({title: 'There is some unassigned work, let’s take a look...', $tag: '20f801f5-657b-4176-bd1a-fb78f5af1811'})
+                testGlobal.topNavbarLinks['admin-heap'].hideHand()
+                
                 // Action
                 #hawait testGlobal.topNavbarLinks['admin-heap'].click()
                 #hawait art.uiStateAfterLiveStatusPolling({$tag: '1c3a4a15-4bc4-46f6-afd9-d23433c6d839', expected: {
@@ -177,13 +181,12 @@ module.exports = function({sim}) {
                        'heapTabs.supportBadge': `13`,
                        'topNavItem.admin-heap.badge': `13` } 
                 }})
-                setTestSpeed('slow')
-                #hawait art.pausePoint({title: 'A lot of stuff, let’s do some scrolling...', $tag: 'a86e6b75-0140-4347-a961-bf9886937806', top: 0, right: 0, width: '50%', borders: 'left bottom'})
+                #hawait art.pausePoint({title: 'A lot of stuff, let’s do some scrolling...', $tag: 'a86e6b75-0140-4347-a961-bf9886937806', locus: 'top-right'})
                 #hawait art.scroll({origY: 0, destY: 'bottom'})
-                #hawait art.pausePoint({title: 'Before clicking "Show More" button', $tag: 'dcf633b6-0cd6-43bc-81f8-5920ff60a795', top: 0, right: 0, width: '50%', borders: 'left bottom'})
+                #hawait art.pausePoint({title: 'Before clicking "Show More" button', $tag: 'dcf633b6-0cd6-43bc-81f8-5920ff60a795', locus: 'top-right'})
                 
                 // Action
-                #hawait testGlobal.buttons.showMore.click()
+                #hawait testGlobal.buttons.showMore.click({testActionHandOpts: {pointingFrom: 'top'}})
                 #hawait art.shitBlinksForMax({$tag: 'fe9920f9-8479-452f-afde-5fbab869b0c8', kind: 'button', name: 'showMore', max: 2000})
                 #hawait art.uiStateAfterLiveStatusPolling({$tag: 'edb9fdc5-841b-4232-baa2-dfdc39d8d02d', expected: {
                     url: `http://aps-ua-writer.local:3022/admin-heap.html`,
@@ -348,12 +351,22 @@ module.exports = function({sim}) {
                        'topNavItem.admin-heap.badge': `13` } 
                 }})
                 
+                #hawait art.scroll({origY: 'current', destY: 'bottom'})
+                #hawait art.pausePoint({title: 'Now admin chooses a thread to take', $tag: '3045e8f4-3b18-4681-91e4-bfaa2961f40d', locus: 'top-right'})
+                #hawait art.scroll({origY: 'current', destY: 320})
+                
                 // Action
                 #hawait testGlobal.buttons['takeAndReply-308'].click()
                 #hawait art.shitBlinksForMax({$tag: 'f146dce3-e5dc-4846-bb65-868c8083b859', kind: 'button', name: 'takeAndReply-308', max: 2000})
+                
+                testGlobal.topNavbarLinks['admin-heap'].showHand()
+                #hawait art.pausePoint({title: 'Number of work in heap decreased, since we’ve just taken one piece from it', $tag: '3ebb103e-7f0a-4669-9a29-2cbb2bbed460'})
+                testGlobal.topNavbarLinks['admin-heap'].hideHand()
                 #hawait art.uiStateAfterLiveStatusPolling({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: {
 
                 }})
+                
+                // setTestSpeed('slow'); art.respectArtPauses = true
             },
         }
     }

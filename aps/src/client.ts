@@ -90,7 +90,7 @@ global.igniteShit = makeUIShitIgniter({
                                     diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
                                         ui.busyButton({name: `takeAndReply-${item.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
                                             await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
-                                            makeNextRPCNotLaggingInTests()
+                                            makeNextRPCNotLaggingInTests(2)
                                             await ui.pushNavigate(`support.html?thread=${item.id}`)
                                         }})),
                                     
@@ -574,17 +574,24 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                 //
                 //     https://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#under-the-hood-autobinding-and-event-delegation
                 
-                testGlobal.topNavbarLinks[name] = {
+                let me, testActionHand
+                testGlobal.topNavbarLinks[name] = me = {
                     async click() {
                         if (getTestSpeed() === 'slow') {
-                            const testActionHand = showTestActionHand(byid(id))
+                            me.showHand()
                             await delay(DEBUG_ACTION_HAND_DELAY)
-                            testActionHand.delete()
+                            me.hideHand()
                             await onClick()
                         } else {
                             await onClick()
                         }
-                    }
+                    },
+                    showHand() {
+                        testActionHand = showTestActionHand(byid(id))
+                    },
+                    hideHand() {
+                        testActionHand.delete()
+                    },
                 }
                 
                 byid(id).on('click', onClick)
