@@ -81,23 +81,29 @@ global.igniteShit = makeUIShitIgniter({
                                 diva({style: {backgroundColor: rowBackground, position: 'relative'}},
                                     diva({className: '', style: {marginTop: 10, fontWeight: 'bold',  marginBottom: 5}},
                                         ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT}})),
-                                    diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0, position: 'relative'}},
+                                        
+                                    ...item.messages.map((message, messageIndex) => diva({className: 'row',
+                                        style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0, position: 'relative'},
+                                               messageIndex > 0 && {borderTop: `3px dotted ${lineColor}`})},
+                                               
                                         diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
-                                            diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
-                                                t(`TOTE`, `От: `)),
-                                                userLabel({user: item.firstMessage.sender, dataFieldName: 'from'})),
-                                            diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
-                                                t(`TOTE`, `Кому: `)),
-                                                dataField('to', item.firstMessage.recipient ? (item.firstMessage.recipient.first_name + ' ' + item.firstMessage.recipient.last_name)
-                                                                               : t(`TOTE`, `В рельсу`))),
-                                            diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.firstMessage.inserted_at)))
+                                            messageIndex === 0
+                                                ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+                                                          t(`TOTE`, `От: `)),
+                                                          userLabel({user: message.sender, dataFieldName: 'from'})),
+                                                      diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+                                                          t(`TOTE`, `Кому: `)),
+                                                          dataField('to', message.recipient ? (message.recipient.first_name + ' ' + message.recipient.last_name)
+                                                                                            : t(`TOTE`, `В рельсу`))))
+                                                : diva({style: {fontWeight: 'bold'}}, t(`TOTE`, `В догонку`)),
+                                                                               
+                                            diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(message.inserted_at)))
                                         ),
                                         diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
                                             item.unreadMessageCount && brightBadgea({style: {position: 'absolute', left: -12, top: 20}}, dataField('unreadMessageCount', t('' + item.unreadMessageCount))),
-                                            dataField('message', item.firstMessage.message))
-                                    ),
-                                )
-                                )
+                                            dataField('message', message.message))
+                                    ))
+                                ))
                                 
                         }
                     },

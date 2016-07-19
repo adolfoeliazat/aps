@@ -446,13 +446,15 @@ app.post('/rpc', (req, res) => {
                     }
                         
                     for (const item of items) {
-                        const firstMessageID = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6'}, q`
-                            select id from support_thread_messages
+                        item.messages = []
+                        const messages = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6'}, q`
+                            select * from support_thread_messages
                             where thread_id = ${item.id}
-                            order by inserted_at
-                            fetch first row only`)[0].id
-                        item.firstMessage = #await loadSupportThreadMessage(firstMessageID)
-                        item.unreadMessageCount = 1
+                            order by id asc`)
+                        for (const message of messages) {
+                            item.messages.push(#await loadSupportThreadMessage(message))
+                        }
+                        // item.unreadMessageCount = 1
                     }
                     return hunkyDory({items, moreFromID})
                 }
@@ -536,7 +538,7 @@ app.post('/rpc', (req, res) => {
 
                     if (isEmpty(fieldErrors)) {
                         #await insertInto({$tag: 'a370d299-23e8-43d0-ae77-adf5c4b599fc'}, {table: 'support_thread_messages', values: {
-                            thread_id: msg.containerID,
+                            thread_id: msg.threadID,
                             sender_id: user.id,
                             message: fields.message,
                         }})
@@ -736,10 +738,10 @@ app.post('/rpc', (req, res) => {
                     return await tx.insertInto(meta, asn({requestTimestamp}, opts))
                 }
                         
-                async function loadSupportThreadMessage(id) {
-                    const message = #await tx.query({$tag: '20211f46-dae4-4b94-a4aa-bb19b4100280'}, q`
-                        select * from support_thread_messages
-                        where id = ${id}`)[0]
+                async function loadSupportThreadMessage(message) {
+//                    const message = #await tx.query({$tag: '20211f46-dae4-4b94-a4aa-bb19b4100280'}, q`
+//                        select * from support_thread_messages
+//                        where id = ${id}`)[0]
                     message.sender = #await loadUser(message.sender_id)
                     if (message.recipient_id) {
                         message.recipient = #await loadUser(message.recipient_id)
