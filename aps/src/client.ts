@@ -15,6 +15,8 @@ BACKEND_URL = 'http://localhost:3100'
 require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as I don't want to support old browsers anyway
 
 import static 'into-u/utils-client into-u/ui ./stuff'
+    
+COLOR_1_DARK = BLUE_GRAY_600
 
 global.igniteShit = makeUIShitIgniter({
     Impl({ui}) {
@@ -77,34 +79,49 @@ global.igniteShit = makeUIShitIgniter({
                                 lineColor = WHITE
                             }
                             
-                            return dataItemObject('supportThreadItem', _=> 
-                                diva({style: {backgroundColor: rowBackground, position: 'relative'}},
-                                    diva({className: '', style: {marginTop: 10, fontWeight: 'bold',  marginBottom: 5}},
-                                        ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT}})),
-                                        
-                                    ...item.messages.map((message, messageIndex) => diva({className: 'row',
-                                        style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0, position: 'relative'},
-                                               messageIndex > 0 && {borderTop: `3px dotted ${lineColor}`})},
-                                               
-                                        diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
-                                            messageIndex === 0
-                                                ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
-                                                          t(`TOTE`, `От: `)),
-                                                          userLabel({user: message.sender, dataFieldName: 'from'})),
-                                                      diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
-                                                          t(`TOTE`, `Кому: `)),
-                                                          dataField('to', message.recipient ? (message.recipient.first_name + ' ' + message.recipient.last_name)
-                                                                                            : t(`TOTE`, `В рельсу`))))
-                                                : diva({style: {fontWeight: 'bold'}}, t(`TOTE`, `В догонку`)),
-                                                                               
-                                            diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(message.inserted_at)))
-                                        ),
-                                        diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
-                                            item.unreadMessageCount && brightBadgea({style: {position: 'absolute', left: -12, top: 20}}, dataField('unreadMessageCount', t('' + item.unreadMessageCount))),
-                                            dataField('message', message.message))
-                                    ))
-                                ))
+                            return dataItemObject('supportThread', _=> {
+                                let topicElement
+                                const topicIsLink = false
+                                if (topicIsLink) {
+                                    // TODO:vgrechka dataField
+                                    topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                                } else {
+                                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, dataField('topic', item.topic))
+                                }
                                 
+                                return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
+                                    diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
+                                        ui.busyButton({icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+                                            await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
+                                            makeNextRPCNotLaggingInTests()
+                                            await ui.pushNavigate(`support.html?thread=${item.id}`)
+                                        }})),
+                                    
+                                    diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
+                                        topicElement),
+                                        
+                                    dataArray('messages', _=> div(...item.messages.map((message, messageIndex) =>
+                                        dataItemObject('supportThreadMessage', _=> diva({className: 'row',
+                                            style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, paddingRight: 45, marginLeft: 0, marginRight: 0, position: 'relative'},
+                                                   messageIndex > 0 && {borderTop: `3px dotted ${lineColor}`})},
+                                                   
+                                            diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
+                                                messageIndex === 0
+                                                    ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+                                                              t(`TOTE`, `От: `)),
+                                                              userLabel({user: message.sender, dataFieldName: 'from'})),
+                                                          diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+                                                              t(`TOTE`, `Кому: `)),
+                                                              dataField('to', message.recipient ? (message.recipient.first_name + ' ' + message.recipient.last_name)
+                                                                                                : t(`TOTE`, `В рельсу`))))
+                                                    : diva({style: {fontWeight: 'bold'}}, dataField('continuation', t(`TOTE`, `В догонку`))),
+                                                                                   
+                                                diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(message.inserted_at)))
+                                            ),
+                                            diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
+                                                item.unreadMessageCount && brightBadgea({style: {position: 'absolute', left: -12, top: 20}}, dataField('unreadMessageCount', t('' + item.unreadMessageCount))),
+                                                dataField('message', message.message))))))))
+                            })
                         }
                     },
                     

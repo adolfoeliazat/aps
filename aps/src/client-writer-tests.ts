@@ -35,7 +35,7 @@ module.exports = function({sim}) {
             
             #hawait art.pausePoint({title: 'Before clicking "Create account" link', $tag: 'ee90e201-9429-4577-aea9-0277e66979ad'})
             #hawait testGlobal.links.createAccount.click()
-            #hawait art.linkBlinksForMax({$tag: '67abf17a-ab93-4891-a844-54b6baa0c387', name: 'createAccount', max: 2000})
+            #hawait art.shitBlinksForMax({$tag: '67abf17a-ab93-4891-a844-54b6baa0c387', name: 'createAccount', max: 2000})
             art.uiState({$tag: 'b1a53c66-21db-42e5-8b0b-4d430b7b4ea6', expected: {
                 url: `http://aps-ua-writer.local:3022/sign-up.html`,
                 pageHeader: `Регистрация`,
@@ -167,7 +167,7 @@ module.exports = function({sim}) {
             #hawait art.pausePoint({title: 'Before clicking "Support" link', $tag: 'c7d7eed5-df24-4db3-a361-9da4470c4bd1'})
             // Action
             #hawait testGlobal.links.support.click()
-            #hawait art.linkBlinksForMax({$tag: 'eceeb886-f96e-4baa-a0c1-e75cc79d4e84', name: 'support', max: 2000})
+            #hawait art.shitBlinksForMax({$tag: 'eceeb886-f96e-4baa-a0c1-e75cc79d4e84', name: 'support', max: 2000})
             art.textSomewhere({$tag: '35738e20-16f0-4657-bdc1-60ba524d011b', expected: 'Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.'})
             art.uiState({$tag: '0f630ccd-9936-4d27-ac1c-4d391a184e79', expected: {
                 url: `http://aps-ua-writer.local:3022/support.html`,
@@ -360,7 +360,7 @@ module.exports = function({sim}) {
             // Action
             art.preventRestoringURLAfterTest()
             #hawait testGlobal.topNavbarLinks['admin-heap'].click()
-            #hawait art.linkBlinksForMax({$tag: '1a2c9122-6a9f-49fc-8565-659cd221eef0', kind: 'topNavbarLink', name: 'admin-heap', max: 2000})
+            #hawait art.shitBlinksForMax({$tag: '1a2c9122-6a9f-49fc-8565-659cd221eef0', kind: 'topNavbarLink', name: 'admin-heap', max: 2000})
             #hawait art.uiStateAfterLiveStatusPolling({$tag: '4f2775bf-bd29-48b0-baea-a730fdbe4d49', expected: {
 
             }})

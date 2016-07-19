@@ -549,7 +549,6 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_takeSupportThread') {
-                    // TODO:vgrechka Handle mid-air collisions
                     #await tx.query({$tag: 'ea3ae40d-c285-49b0-9219-415203925257'}, q`
                         update support_threads set supporter_id = ${user.id} where id = ${msg.id}`)
                     return hunkyDory()
