@@ -17,6 +17,8 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 import static 'into-u/utils-client into-u/ui ./stuff'
     
 COLOR_1_DARK = BLUE_GRAY_600
+COLOR_ZEBRA_LIGHT = WHITE
+COLOR_ZEBRA_DARK = BLUE_GRAY_50
 
 global.igniteShit = makeUIShitIgniter({
     Impl({ui}) {
@@ -70,14 +72,7 @@ global.igniteShit = makeUIShitIgniter({
                         
                         
                         function renderSupportThreadItem(item, i) {
-                            let rowBackground, lineColor
-                            if (i % 2 === 0) {
-                                rowBackground = WHITE
-                                lineColor = BLUE_GRAY_50
-                            } else {
-                                rowBackground = BLUE_GRAY_50
-                                lineColor = WHITE
-                            }
+                            const {rowBackground, lineColor} = zebraRowColors(i)
                             
                             return dataItemObject('supportThread', _=> {
                                 let topicElement
@@ -89,9 +84,11 @@ global.igniteShit = makeUIShitIgniter({
                                     topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, dataField('topic', item.topic))
                                 }
                                 
+                                const renderSupportThreadMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms: true})
+                                
                                 return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
                                     diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
-                                        ui.busyButton({icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+                                        ui.busyButton({name: `takeAndReply-${item.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
                                             await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
                                             makeNextRPCNotLaggingInTests()
                                             await ui.pushNavigate(`support.html?thread=${item.id}`)
@@ -100,27 +97,7 @@ global.igniteShit = makeUIShitIgniter({
                                     diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
                                         topicElement),
                                         
-                                    dataArray('messages', _=> div(...item.messages.map((message, messageIndex) =>
-                                        dataItemObject('supportThreadMessage', _=> diva({className: 'row',
-                                            style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, paddingRight: 45, marginLeft: 0, marginRight: 0, position: 'relative'},
-                                                   messageIndex > 0 && {borderTop: `3px dotted ${lineColor}`})},
-                                                   
-                                            diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
-                                                messageIndex === 0
-                                                    ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
-                                                              t(`TOTE`, `От: `)),
-                                                              userLabel({user: message.sender, dataFieldName: 'from'})),
-                                                          diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
-                                                              t(`TOTE`, `Кому: `)),
-                                                              dataField('to', message.recipient ? (message.recipient.first_name + ' ' + message.recipient.last_name)
-                                                                                                : t(`TOTE`, `В рельсу`))))
-                                                    : diva({style: {fontWeight: 'bold'}}, dataField('continuation', t(`TOTE`, `В догонку`))),
-                                                                                   
-                                                diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(message.inserted_at)))
-                                            ),
-                                            diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
-                                                item.unreadMessageCount && brightBadgea({style: {position: 'absolute', left: -12, top: 20}}, dataField('unreadMessageCount', t('' + item.unreadMessageCount))),
-                                                dataField('message', message.message))))))))
+                                    dataArray('messages', _=> div(...item.messages.map(renderSupportThreadMessage))))
                             })
                         }
                     },
@@ -136,13 +113,17 @@ global.igniteShit = makeUIShitIgniter({
                     async support() {
                         if (ui.urlQuery.thread) {
                             await lala({
+                                entityFun: 'private_getSupportThread',
                                 itemsFun: 'private_getSupportThreadMessages',
                                 entityID: ui.urlQuery.thread,
-                                pageTitle: res => t(`TOTE`, `Запрос в поддержку № ${res.entity.id}`),
+                                pageTitle: entityRes => {
+                                    if (entityRes.error) return t(`TOTE`, `Облом`)
+                                    return t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`)
+                                },
                                 emptyMessage: t(`TOTE`, `Странно, здесь ничего нет. А должно что-то быть...`),
-                                aboveItems(res) {
+                                aboveItems(entityRes) {
                                     return div(
-                                        blockquotea({}, res.entity.topic))
+                                        blockquotea({}, entityRes.entity.topic))
                                 },
                                 dataArrayName: 'supportThreadMessages',
                                 renderItem(item, i) {
@@ -230,41 +211,39 @@ global.igniteShit = makeUIShitIgniter({
                 }[name]
                 
                 
-                async function lala({pageTitle, entityID, itemsFun, emptyMessage, plusGlyph='plus', plusForm, aboveItems, dataArrayName, renderItem}) {
-                    const res = await ui.rpcSoft({fun: itemsFun, entityID, fromID: 0})
-                    pageTitle = fov(pageTitle, res)
-                    if (res.error) {
-                        return ui.setPage({
-                            pageTitle,
-                            pageBody: div(errorBanner(res.error))
-                        })
-                    }
+                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusForm, aboveItems, dataArrayName, renderItem}) {
+                    const entityRes = await ui.rpcSoft({fun: entityFun, entityID})
+                    if (entityRes.error) return showBadResponse(entityRes)
+                    
+                    const itemsRes = await ui.rpcSoft({fun: itemsFun, entityID, fromID: 0})
+                    if (itemsRes.error) return showBadResponse(itemsRes)
                     
                     let items, showEmptyLabel = true, form, plusButtonVisible = true, plusButtonClass, formClass
                     
                     ui.setPage({
-                        pageTitle,
+                        pageTitle: fov(pageTitle, entityRes),
                         pageBody: _=> div(
                             form && diva({className: formClass, style: {marginBottom: 15}}, form),
-                            fov(aboveItems, res),
+                            fov(aboveItems, entityRes),
                             run(function renderItems() {
-                                if (!res.items.length) {
+                                if (!itemsRes.items.length) {
                                     if (showEmptyLabel) {
                                         return div(emptyMessage)
                                     }
                                     return ''
                                 }
-                                
-                                return dataArray(dataArrayName, _=> div(...res.items.map((item, i) => {
-                                    return renderItem(item, i)
-                                })))
+                                return ui.renderMoreable({res: itemsRes, itemsFun, dataArrayName: 'supportThreadMessages', renderItem(message, i) {
+                                    const {rowBackground, lineColor} = zebraRowColors(i)
+                                    return diva({style: {background: rowBackground}},
+                                        makeSupportThreadMessageRenderer({lineColor})(message, i))
+                                }})
                             }),
                         ),
                         headerControls: _=> diva({style: {display: 'flex'}},
                             diva({style: {marginRight: 10, marginTop: 8}}, t('Filter here')),
                             plusButtonVisible && button.primary[plusGlyph]({name: 'plus', className: plusButtonClass}, _=> {
                                 showEmptyLabel = false
-                                plusButtonClass = 'aniMinimize'
+                                plusButtonClass = undefined
                                 formClass = 'aniFadeIn'
                                 
                                 form = ui.Form({
@@ -272,29 +251,39 @@ global.igniteShit = makeUIShitIgniter({
                                     cancelButtonTitle: plusForm.cancelButtonTitle,
                                     fields: plusForm.fields,
                                     rpcFun: plusForm.rpcFun,
-                                    onCancel() {
-                                        plusButtonVisible = true
-                                        plusButtonClass = 'aniFadeIn'
-                                        form = undefined
-                                        ui.updatePage()
-                                            
-                                        timeoutSet(500, _=> {
-                                            plusButtonClass = undefined
-                                            ui.updatePage()
-                                        })
-                                    },
+                                    onCancel: cancelForm,
                                     onSuccess: plusForm.onSuccess,
                                 })
                                 
+                                plusButtonVisible = false
                                 ui.updatePage()
-                                
-                                timeoutSet(250, _=> {
-                                    plusButtonVisible = false
-                                    formClass = undefined
-                                    ui.updatePageHeader()
-                                })
-                        }))
+                        })),
+                        
+                        onKeyDown(e) {
+                            if (e.keyCode === 27) {
+                                cancelForm()
+                            }
+                        }
                     })
+                    
+                    function cancelForm() {
+                        plusButtonVisible = true
+                        plusButtonClass = 'aniFadeIn'
+                        form = undefined
+                        ui.updatePage()
+                            
+                        timeoutSet(500, _=> {
+                            plusButtonClass = undefined
+                            ui.updatePage()
+                        })
+                    }
+                    
+                    function showBadResponse(res) {
+                        return ui.setPage({
+                            pageTitle: fov(pageTitle, res),
+                            pageBody: div(errorBanner(res.error))
+                        })
+                    }
                 }
                 
                 
@@ -386,7 +375,45 @@ global.igniteShit = makeUIShitIgniter({
         }
         
         
-        // @ctx aps ui utils
+        // @ctx client functions
+        
+        function zebraRowColors(i) {
+            let rowBackground, lineColor
+            if (i % 2 === 0) {
+                rowBackground = COLOR_ZEBRA_LIGHT
+                lineColor = COLOR_ZEBRA_DARK
+            } else {
+                rowBackground = COLOR_ZEBRA_DARK
+                lineColor = COLOR_ZEBRA_LIGHT
+            }
+            
+            return {rowBackground, lineColor}
+        }
+        
+        function makeSupportThreadMessageRenderer({lineColor, dottedLines, dryFroms}) {
+            return function renderSupportThreadMessage(message, messageIndex) {
+                return dataItemObject('supportThreadMessage', _=> diva({className: 'row',
+                    style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, paddingRight: 45, marginLeft: 0, marginRight: 0, position: 'relative'},
+                           messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
+                           
+                    diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
+                        messageIndex === 0 || !dryFroms
+                            ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+                                      t(`TOTE`, `От: `)),
+                                      userLabel({user: message.sender, dataFieldName: 'from'})),
+                                  diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+                                      t(`TOTE`, `Кому: `)),
+                                      dataField('to', message.recipient ? (message.recipient.first_name + ' ' + message.recipient.last_name)
+                                                                        : t(`TOTE`, `В рельсу`))))
+                            : diva({style: {fontWeight: 'bold'}}, dataField('continuation', t(`TOTE`, `В догонку`))),
+                                                           
+                        diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(message.inserted_at)))
+                    ),
+                    diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
+                        // message.unreadMessageCount && brightBadgea({style: {position: 'absolute', left: -12, top: 20}}, dataField('unreadMessageCount', t('' + message.unreadMessageCount))),
+                        dataField('message', message.message))))
+            }
+        }
 
         function userLabel({user, dataFieldName, $sourceLocation}) {
             const glyphName = lookup(user.kind, {customer: 'user', writer: 'pencil', admin: 'cog'})

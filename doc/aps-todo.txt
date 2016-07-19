@@ -1,6 +1,14 @@
+// TODO:vgrechka Auto-generate this file from sources :)
+
+
 - private_takeSupportThread
     - Access control
     - Attempt to take already taken one (mid-air collision)
 
 - Handle RPC error in "Show more" button. c2688a10-de16-4876-a25e-933bf85c0aba
+
+// TODO:vgrechka Think about limiting number of messages in an unassigned support thread    497d0498-2a2a-41e8-b7b3-245b99a08f3b
+// TODO:vgrechka Secure private_getSupportThread    ef81af52-f9fd-4b21-8919-1681f8466d64 
+// TODO:vgrechka Secure private_getSupportThreadMessages    c99bc54a-121a-4b3a-b210-a25fa47a43da 
+
 

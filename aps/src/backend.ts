@@ -322,7 +322,7 @@ app.post('/rpc', (req, res) => {
                         insert into user_tokens(user_id, token) values(${user.id}, ${token})`)
 
                     #await loadUserData()
-                    return hunkyDory({user: pickFromUser(), token})
+                    return hunkyDory({user: pickFromUser(user), token})
                     
                     
                     function logFailure(reason) {
@@ -335,7 +335,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getUserInfo') {
-                    return hunkyDory({user: pickFromUser()})
+                    return hunkyDory({user: pickFromUser(user)})
                 }
                 
                 else if (msg.fun === 'private_getLiveStatus') {
@@ -417,7 +417,7 @@ app.post('/rpc', (req, res) => {
                                              state = 'profile-approval-pending'
                                    where id = ${user.id}`)
                         #await loadUserForToken()
-                        return hunkyDory({newUser: pickFromUser()})
+                        return hunkyDory({newUser: pickFromUser(user)})
                     }
                     return youFixErrors()
                 }
@@ -432,8 +432,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getUnassignedSupportThreads') {
-                    let fromID = msg.fromID
-                    if (fromID === undefined) fromID = 0
+                    const fromID = msg.fromID || 0
                     let items = #await tx.query({$tag: 'f360d4da-d3ad-4bed-990f-c4f0c4a66176'}, q`
                         select * from support_threads
                         where id >= ${fromID} and supporter_id is null
@@ -447,6 +446,7 @@ app.post('/rpc', (req, res) => {
                         
                     for (const item of items) {
                         item.messages = []
+                        // TODO:vgrechka Think about limiting number of messages in an unassigned support thread    497d0498-2a2a-41e8-b7b3-245b99a08f3b
                         const messages = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6'}, q`
                             select * from support_thread_messages
                             where thread_id = ${item.id}
@@ -459,57 +459,37 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory({items, moreFromID})
                 }
                 
+                else if (msg.fun === 'private_getSupportThread') {
+                    const entity = #await tx.query({$tag: 'f13a4eda-ab97-496d-b037-8b8f2b2599e1'}, q`
+                        select * from support_threads where id = ${msg.entityID}
+                    `)[0]
+                    if (!entity) return {error: t(`TOTE`, `Запроса в поддержку с таким номером не существует: ${msg.entityID}`)}
+                    // TODO:vgrechka Secure private_getSupportThread    ef81af52-f9fd-4b21-8919-1681f8466d64 
+                    
+                    entity.supportee = #await loadUser(entity.supportee_id)
+                    entity.supporter = #await loadUser(entity.supporter_id)
+                    
+                    return hunkyDory({entity})
+                }
+                
                 else if (msg.fun === 'private_getSupportThreadMessages') {
-                    // TODO:vgrechka Reject bogus params
-                    // TODO:vgrechka Check access
-                    
-                    const entities = #await tx.query({$tag: 'f13a4eda-ab97-496d-b037-8b8f2b2599e1'}, q`
-                        select * from support_threads
-                                 where id = ${msg.id}
-                    `)
-                    // TODO:vgrechka Handle request for non-existing entity
-                    const entity = entities[0]
-
-                    const items = #await tx.query({$tag: 'b40d63d7-2cd2-4326-9f08-db3892522d7f'}, q`
+                    // TODO:vgrechka Secure private_getSupportThreadMessages    c99bc54a-121a-4b3a-b210-a25fa47a43da 
+                    const fromID = msg.fromID || 0
+                    let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305'}, q`
                         select * from support_thread_messages
-                                 where thread_id = ${msg.id}
-                                 order by inserted_at desc
-                    `)
-                    #await fillForeigns(items, 'users', ['sender', 'recipient'])
-                    // dlogs({items})
-                    return hunkyDory({entity, items})
-                    
-                    async function fillForeigns(rows, table, columns) {
-                        const ids = []
-                        for (const row of rows) {
-                            for (const column of columns) {
-                                const id = row[column + '_id']
-                                if (id !== undefined && id !== null) {
-                                    ids.push(id)
-                                }
-                            }
-                        }
-                        if (!ids.length) return
-                        
-                        const placeholders = range(ids.length).map(x => '$' + (x + 1)).join(', ')
-                        const foreignRows = #await tx.query({$tag: '0afa1c4f-885b-42f0-b102-ba9e862fa3d2'}, {q: {
-                            sql: `select * from users where id in (${placeholders})`,
-                            args: ids}})
-                            
-                        for (const row of rows) {
-                            for (const column of columns) {
-                                let entity
-                                for (const fr of foreignRows) {
-                                    if (fr.id === row[column + '_id']) {
-                                        entity = fr
-                                        delete entity.password_hash
-                                        break
-                                    }
-                                }
-                                row[column] = entity
-                            }
-                        }
+                        where thread_id = ${msg.entityID} and id >= ${fromID}
+                        order by id desc
+                        fetch first MORE_CHUNK rows only`)
+                    let moreFromID
+                    if (items.length === MORE_CHUNK) {
+                        moreFromID = last(items).id
+                        items = items.slice(0, MORE_CHUNK - 1)
                     }
+                    for (const item of items) {
+                        #await loadSupportThreadMessage(item)
+                    }
+
+                    return hunkyDory({items, moreFromID})
                 }
                 
                 else if (msg.fun === 'private_createSupportThread') {
@@ -560,7 +540,7 @@ app.post('/rpc', (req, res) => {
                 
                 // @ctx handle helpers
                 
-                function pickFromUser() {
+                function pickFromUser(user) {
                     return pick(user, 'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at',
                                       'profile_updated_at', 'phone', 'kind', 'roles')
                 }
@@ -738,9 +718,6 @@ app.post('/rpc', (req, res) => {
                 }
                         
                 async function loadSupportThreadMessage(message) {
-//                    const message = #await tx.query({$tag: '20211f46-dae4-4b94-a4aa-bb19b4100280'}, q`
-//                        select * from support_thread_messages
-//                        where id = ${id}`)[0]
                     message.sender = #await loadUser(message.sender_id)
                     if (message.recipient_id) {
                         message.recipient = #await loadUser(message.recipient_id)
@@ -749,10 +726,10 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 async function loadUser(id) {
+                    if (nil(id)) return undefined
                     const user = #await tx.query({$tag: 'd206c4b6-84fb-4036-af29-af69f490a51f'}, q`
-                        select * from users
-                        where id = ${id}`)[0]
-                    return user
+                        select * from users where id = ${id}`)[0]
+                    return pickFromUser(user)
                 }
             }
             

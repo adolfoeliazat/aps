@@ -177,6 +177,10 @@ module.exports = function({sim}) {
                        'heapTabs.supportBadge': `13`,
                        'topNavItem.admin-heap.badge': `13` } 
                 }})
+                setTestSpeed('slow')
+                #hawait art.pausePoint({title: 'A lot of stuff, let’s do some scrolling...', $tag: 'a86e6b75-0140-4347-a961-bf9886937806', top: 0, right: 0, width: '50%', borders: 'left bottom'})
+                #hawait art.scroll({origY: 0, destY: 'bottom'})
+                #hawait art.pausePoint({title: 'Before clicking "Show More" button', $tag: 'dcf633b6-0cd6-43bc-81f8-5920ff60a795', top: 0, right: 0, width: '50%', borders: 'left bottom'})
                 
                 // Action
                 #hawait testGlobal.buttons.showMore.click()
@@ -343,7 +347,13 @@ module.exports = function({sim}) {
                        'heapTabs.supportBadge': `13`,
                        'topNavItem.admin-heap.badge': `13` } 
                 }})
+                
+                // Action
+                #hawait testGlobal.buttons['takeAndReply-308'].click()
+                #hawait art.shitBlinksForMax({$tag: 'f146dce3-e5dc-4846-bb65-868c8083b859', kind: 'button', name: 'takeAndReply-308', max: 2000})
+                #hawait art.uiStateAfterLiveStatusPolling({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: {
 
+                }})
             },
         }
     }
