@@ -485,7 +485,7 @@ app.post('/rpc', (req, res) => {
                     // TODO:vgrechka Secure private_getSupportThreadMessages    c99bc54a-121a-4b3a-b210-a25fa47a43da 
                     
                     const fromID = msg.fromID || 0
-                    let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305'}, q`
+                    let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305', trace}, q`
                         select * from support_thread_messages
                         where thread_id = ${msg.entityID} and id >= ${fromID}
                         order by id ${{inline: getOrderingParam({defaultValue: 'desc'})}}
@@ -876,7 +876,7 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     })
                 },
                 
-                async query({$tag, shouldLogForUI=true}, ...xs) {
+                async query({$tag, shouldLogForUI=true, trace}, ...xs) {
                     arguments // XXX This fixes TS bug with ...rest params in async functions
                     if (!$tag) raise('I want all queries to be tagged')
                     
@@ -888,6 +888,10 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     if (shouldLogForUI) {
                         queryLogRecordForUI = {$tag, arguments: xs}
                         queryLogForUI.push(queryLogRecordForUI)
+                        if (trace) {
+                            const sql = xs[0].q ? xs[0].q.sql : xs[0]
+                            trace.push(asn({event: `Query: ${trim(sql).split(/\s+/)[0].toUpperCase()}`}, queryLogRecordForUI))
+                        }
                     }
                     
                     try {
@@ -1010,7 +1014,6 @@ export function q(ss, ...substs) {
     sql += ss[substs.length]
     sql = sql.replace(/MORE_CHUNK/g, MORE_CHUNK)
     return {q: {sql, args}}
-    // return {ss, substs}
 }
 
 function heyBackend_sayHelloToMe({askerName}) {

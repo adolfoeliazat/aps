@@ -8,7 +8,7 @@
 
 MODE = 'debug'
 DEBUG_SIMULATE_SLOW_NETWORK = true
-DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 1000
+DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 250
 BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
@@ -25,6 +25,20 @@ global.igniteShit = makeUIShitIgniter({
     Impl({ui}) {
         return {
             isDynamicPage,
+            
+            css() {
+                return `
+                    .form-control:focus {border-color: #b0bec5; box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(176,190,197,.6);}
+
+                    .btn-primary {background-color: #78909c; border-color: #546e7a;}
+                    .btn-primary:hover {background-color: #546e7a; border-color: #37474f;}
+                    .btn-primary:focus {background-color: #455a64; border-color: #263238; outline-color: #b0bec5;}
+                    .btn-primary:focus:hover {background-color: #455a64; border-color: #263238;}
+                    .btn-primary:active {background-color: #455a64; border-color: #263238;}
+                    .btn-primary:active:focus {background-color: #455a64; border-color: #263238; outline-color: #b0bec5;}
+                    .btn-primary:active:hover {background-color: #455a64; border-color: #263238;}
+                `
+            },
             
             privatePageLoader(name) {
                 return {
@@ -218,7 +232,7 @@ global.igniteShit = makeUIShitIgniter({
                         
                     if (hasPlusButton) {
                         renderPlusButton = function() {
-                            return button.primary[plusGlyph]({name: 'plus', disabled: headerControlsDisabled, style: {background: COLOR_1_MEDIUM}}, _=> {
+                            return button({name: 'plus', level: 'primary', icon: plusGlyph, disabled: headerControlsDisabled}, _=> {
                                 showEmptyLabel = false
                                 setHeaderControlsDisappearing()
                                 plusFormClass = 'aniFadeIn'
