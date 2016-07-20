@@ -762,13 +762,13 @@ app.post('/rpc', (req, res) => {
             }
             
             if (shouldLogRequestForUI && trace.length) {
-                requestLogForUI.push({title: msg.fun, trace})
+                requestLogForUI.push({title: msg.fun, trace, $clientSourceLocation: msg.$sourceLocation})
             }
         }
         
         
         function traceBeginHandler(data) {
-            trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omit(msg, 'fun', 'token')}, data))
+            trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omit(msg, 'fun', 'token', '$sourceLocation')}, data))
         }
         
         function traceEndHandler(data) {
