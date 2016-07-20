@@ -488,7 +488,7 @@ app.post('/rpc', (req, res) => {
                     let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305'}, q`
                         select * from support_thread_messages
                         where thread_id = ${msg.entityID} and id >= ${fromID}
-                        order by id desc
+                        order by id ${{inline: getOrderingParam({defaultValue: 'desc'})}}
                         fetch first MORE_CHUNK rows only`)
                     let moreFromID
                     if (items.length === MORE_CHUNK) {
@@ -548,13 +548,20 @@ app.post('/rpc', (req, res) => {
                 clog(situation)
                 return {fatal: situation}
                 
-                // @ctx handle helpers
+                // @ctx helpers
+                
+                function getOrderingParam({param='ordering', defaultValue='asc'}={}) {
+                    let value = msg[param]
+                    if (!['asc', 'desc'].includes(value)) {
+                        value = defaultValue
+                    }
+                    return value
+                }
                 
                 function pickFromUser(user) {
                     return pick(user, 'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at',
                                       'profile_updated_at', 'phone', 'kind', 'roles')
                 }
-                
                 
                 function youFixErrors() {
                     return {
@@ -990,9 +997,15 @@ function DBFiddler({db}) {
 export function q(ss, ...substs) {
     let sql = ''
     const args = []
+    let argIndex = 1
     substs.forEach((subst, i) => {
-        sql += ss[i] + '$' + (i + 1)
-        args.push(subst)
+        sql += ss[i]
+        if (typeof subst === 'object' && subst.inline) {
+            sql += subst.inline
+        } else {
+            sql += '$' + argIndex++
+            args.push(subst)
+        }
     })
     sql += ss[substs.length]
     sql = sql.replace(/MORE_CHUNK/g, MORE_CHUNK)
