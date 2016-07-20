@@ -22,7 +22,7 @@ let testGlobalCounter = 0, simulateRequest
 let last
 
 const app = newExpress()
-let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], imposedRequestTimestamp,
+let mailTransport, sentEmails = [], fixedNextGeneratedPassword, queryLogForUI = [], requestLogForUI = [], imposedRequestTimestamp,
     imposedNextIDs = [], requestTimeLoggingDisabled
     
 require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
@@ -42,6 +42,8 @@ app.post('/rpc', (req, res) => {
     })
     
     async function handle(msg) {
+        const trace = []
+        
         let requestTimestamp = moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS')
         if (imposedRequestTimestamp) {
             requestTimestamp = imposedRequestTimestamp
@@ -277,6 +279,11 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
+                else if (msg.fun === 'danger_getRequests') {
+                    let last = msg.last || 1
+                    return requestLogForUI.slice(requestLogForUI.length - last)
+                }
+                
                 else if (msg.fun === 'danger_getQueries') {
                     let last = msg.last || 1
                     return queryLogForUI.slice(queryLogForUI.length - last)
@@ -473,7 +480,10 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getSupportThreadMessages') {
+                    traceBeginHandler({$tag: 'bc68b6dc-9d72-41d8-9b96-dbf27149455d'})
+                    
                     // TODO:vgrechka Secure private_getSupportThreadMessages    c99bc54a-121a-4b3a-b210-a25fa47a43da 
+                    
                     const fromID = msg.fromID || 0
                     let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305'}, q`
                         select * from support_thread_messages
@@ -489,7 +499,7 @@ app.post('/rpc', (req, res) => {
                         #await loadSupportThreadMessage(item)
                     }
 
-                    return hunkyDory({items, moreFromID})
+                    return traceEndHandler({ret: hunkyDory({items, moreFromID}), $tag: 'c77946ec-f009-4c36-8a68-e427d23778c0'})
                 }
                 
                 else if (msg.fun === 'private_createSupportThread') {
@@ -745,6 +755,26 @@ app.post('/rpc', (req, res) => {
                 const elapsed = Date.now() - t0
                 dlog(`${msg.fun}: ${elapsed}ms`)
             }
+            
+            let shouldLogRequestForUI
+            if (MODE === 'debug') {
+                shouldLogRequestForUI = true
+            }
+            
+            if (shouldLogRequestForUI && trace.length) {
+                requestLogForUI.push({title: msg.fun, trace})
+            }
+        }
+        
+        
+        function traceBeginHandler(data) {
+            trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omit(msg, 'fun', 'token')}, data))
+        }
+        
+        function traceEndHandler(data) {
+            invariant(data.ret, 'I want data.ret in traceEndHandler')
+            trace.push(asn({event: `End handling ${msg.fun}`}, data))
+            return data.ret
         }
     }
 })

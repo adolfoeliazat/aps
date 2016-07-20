@@ -186,7 +186,7 @@ global.igniteShit = makeUIShitIgniter({
                 }[name]
                 
                 
-                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusFormDef, aboveItems, dataArrayName, renderItem, defaultOrdering='desc', hasPlusButton=true}) {
+                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusFormDef, aboveItems, dataArrayName, renderItem, defaultOrdering='desc', hasPlusButton=true, hasOrderingSelect=true}) {
                     const entityRes = await ui.rpcSoft({fun: entityFun, entityID})
                     if (entityRes.error) return showBadResponse(entityRes)
                     
@@ -197,20 +197,28 @@ global.igniteShit = makeUIShitIgniter({
                     if (itemsRes.error) return showBadResponse(itemsRes)
                     
                     let items, showEmptyLabel = true,
-                        headerControlsVisible = true, headerControlsClass,
+                        headerControlsVisible = true, headerControlsClass, headerControlsDisabled,
                         orderingSelect,
                         renderPlusButton, renderPlusForm, plusForm, plusFormClass, cancelPlusForm
                     
-                    orderingSelect = Select({name: 'order', style: {width: 160, marginRight: 8},
-                        values: [['desc', t(`TOTE`, `Сначала новые`)], ['asc', t(`TOTE`, `Сначала старые`)]],
-                        initialValue: ordering,
-                        async onChange() {
-                            await ui.pushNavigate(`support.html?thread=${entityID}&ordering=${orderingSelect.getValue()}`)
-                        }})
+                    if (hasOrderingSelect) {
+                        orderingSelect = Select({name: 'order', style: {width: 160, marginRight: 8},
+                            values: [['desc', t(`TOTE`, `Сначала новые`)], ['asc', t(`TOTE`, `Сначала старые`)]],
+                            initialValue: ordering,
+                            disabled: _=> headerControlsDisabled,
+                            async onChange() {
+                                setHeaderControlsDisabled(true)
+                                orderingSelect.setBlinking(true)
+                                await ui.pushNavigate(`support.html?thread=${entityID}&ordering=${orderingSelect.getValue()}`)
+                                setHeaderControlsDisabled(false)
+                                orderingSelect.setBlinking(false)
+                            }
+                        })
+                    }
                         
                     if (hasPlusButton) {
                         renderPlusButton = function() {
-                            return button.primary[plusGlyph]({name: 'plus', style: {background: COLOR_1_MEDIUM}}, _=> {
+                            return button.primary[plusGlyph]({name: 'plus', disabled: headerControlsDisabled, style: {background: COLOR_1_MEDIUM}}, _=> {
                                 showEmptyLabel = false
                                 setHeaderControlsDisappearing()
                                 plusFormClass = 'aniFadeIn'
@@ -234,7 +242,7 @@ global.igniteShit = makeUIShitIgniter({
                             ui.updatePage()
                         }
                         
-                        function renderPlusForm() {
+                        renderPlusForm = function() {
                             return plusForm && diva({className: plusFormClass, style: {marginBottom: 15}}, plusForm)
                         }
                     }
@@ -278,7 +286,16 @@ global.igniteShit = makeUIShitIgniter({
                     function setHeaderControlsAppearing() {
                         headerControlsVisible = true
                         headerControlsClass = 'aniFadeIn'
+                        timeoutSet(500, _=> {
+                            headerControlsClass = undefined
+                            ui.updatePage()
+                        })
                     }
+                    
+                    function setHeaderControlsDisabled(b) {
+                        headerControlsDisabled = b
+                        ui.updatePage()
+                    } 
                     
                     function showBadResponse(res) {
                         return ui.setPage({
