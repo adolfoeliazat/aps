@@ -586,8 +586,8 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                             await onClick()
                         }
                     },
-                    showHand() {
-                        testActionHand = showTestActionHand(byid(id))
+                    showHand({testActionHandOpts}={}) {
+                        testActionHand = showTestActionHand(byid(id), testActionHandOpts)
                     },
                     hideHand() {
                         testActionHand.delete()

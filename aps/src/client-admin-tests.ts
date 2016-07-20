@@ -47,7 +47,7 @@ module.exports = function({sim}) {
                        'topNavItem.admin-heap.badge': `13` } 
                 }})
                 
-                testGlobal.topNavbarLinks['admin-heap'].showHand()
+                testGlobal.topNavbarLinks['admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15}})
                 #hawait art.pausePoint({title: 'There is some unassigned work, let’s take a look...', $tag: '20f801f5-657b-4176-bd1a-fb78f5af1811'})
                 testGlobal.topNavbarLinks['admin-heap'].hideHand()
                 
@@ -359,14 +359,14 @@ module.exports = function({sim}) {
                 #hawait testGlobal.buttons['takeAndReply-308'].click()
                 #hawait art.shitBlinksForMax({$tag: 'f146dce3-e5dc-4846-bb65-868c8083b859', kind: 'button', name: 'takeAndReply-308', max: 2000})
                 
-                testGlobal.topNavbarLinks['admin-heap'].showHand()
+                testGlobal.topNavbarLinks['admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15}})
                 #hawait art.pausePoint({title: 'Number of work in heap decreased, since we’ve just taken one piece from it', $tag: '3ebb103e-7f0a-4669-9a29-2cbb2bbed460'})
                 testGlobal.topNavbarLinks['admin-heap'].hideHand()
                 #hawait art.uiStateAfterLiveStatusPolling({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: {
 
                 }})
                 
-                // setTestSpeed('slow'); art.respectArtPauses = true
+                // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
             },
         }
     }
