@@ -127,7 +127,7 @@ global.igniteShit = makeUIShitIgniter({
                                 },
                                 dataArrayName: 'supportThreadMessages',
                                 plusGlyph: 'comment',
-                                plusForm: {
+                                plusFormDef: {
                                     primaryButtonTitle: t(`TOTE`, `Запостить`),
                                     cancelButtonTitle: t(`TOTE`, `Передумал`),
                                     fields: {
@@ -157,7 +157,7 @@ global.igniteShit = makeUIShitIgniter({
                                     return t('todo render item')
                                 },
                                 plusGlyph: 'plus',
-                                plusForm: {
+                                plusFormDef: {
                                     primaryButtonTitle: t(`TOTE`, `Запостить`),
                                     cancelButtonTitle: t(`TOTE`, `Не стоит`),
                                     fields: {
@@ -186,7 +186,7 @@ global.igniteShit = makeUIShitIgniter({
                 }[name]
                 
                 
-                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusForm, aboveItems, dataArrayName, renderItem, defaultOrdering='desc'}) {
+                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusFormDef, aboveItems, dataArrayName, renderItem, defaultOrdering='desc', hasPlusButton=true}) {
                     const entityRes = await ui.rpcSoft({fun: entityFun, entityID})
                     if (entityRes.error) return showBadResponse(entityRes)
                     
@@ -196,19 +196,53 @@ global.igniteShit = makeUIShitIgniter({
                     const itemsRes = await ui.rpcSoft({fun: itemsFun, entityID, fromID: 0, ordering})
                     if (itemsRes.error) return showBadResponse(itemsRes)
                     
-                    let items, showEmptyLabel = true, form, plusButtonVisible = true, plusButtonClass, formClass
+                    let items, showEmptyLabel = true,
+                        headerControlsVisible = true, headerControlsClass,
+                        orderingSelect,
+                        renderPlusButton, renderPlusForm, plusForm, plusFormClass, cancelPlusForm
                     
-                    const orderingSelect = Select({name: 'order', style: {width: 160, marginRight: 10},
+                    orderingSelect = Select({name: 'order', style: {width: 160, marginRight: 8},
                         values: [['desc', t(`TOTE`, `Сначала новые`)], ['asc', t(`TOTE`, `Сначала старые`)]],
                         initialValue: ordering,
                         async onChange() {
                             await ui.pushNavigate(`support.html?thread=${entityID}&ordering=${orderingSelect.getValue()}`)
                         }})
+                        
+                    if (hasPlusButton) {
+                        renderPlusButton = function() {
+                            return button.primary[plusGlyph]({name: 'plus', style: {background: COLOR_1_MEDIUM}}, _=> {
+                                showEmptyLabel = false
+                                setHeaderControlsDisappearing()
+                                plusFormClass = 'aniFadeIn'
+                                
+                                plusForm = ui.Form({
+                                    primaryButtonTitle: plusFormDef.primaryButtonTitle,
+                                    cancelButtonTitle: plusFormDef.cancelButtonTitle,
+                                    fields: plusFormDef.fields,
+                                    rpcFun: plusFormDef.rpcFun,
+                                    onCancel: cancelPlusForm,
+                                    onSuccess: plusFormDef.onSuccess,
+                                })
+                                
+                                ui.updatePage()
+                            })
+                        }
+                        
+                        cancelPlusForm = function() {
+                            setHeaderControlsAppearing()
+                            plusForm = undefined
+                            ui.updatePage()
+                        }
+                        
+                        function renderPlusForm() {
+                            return plusForm && diva({className: plusFormClass, style: {marginBottom: 15}}, plusForm)
+                        }
+                    }
                     
                     ui.setPage({
                         pageTitle: fov(pageTitle, entityRes),
                         pageBody: _=> div(
-                            form && diva({className: formClass, style: {marginBottom: 15}}, form),
+                            renderPlusForm,
                             fov(aboveItems, entityRes),
                             run(function renderItems() {
                                 if (!itemsRes.items.length) {
@@ -224,43 +258,26 @@ global.igniteShit = makeUIShitIgniter({
                                 }})
                             }),
                         ),
-                        headerControls: _=> diva({style: {display: 'flex'}},
-                            diva({style: {}}, orderingSelect),
-                            plusButtonVisible && button.primary[plusGlyph]({name: 'plus', className: plusButtonClass, style: {background: COLOR_1_MEDIUM}}, _=> {
-                                showEmptyLabel = false
-                                plusButtonClass = undefined
-                                formClass = 'aniFadeIn'
-                                
-                                form = ui.Form({
-                                    primaryButtonTitle: plusForm.primaryButtonTitle,
-                                    cancelButtonTitle: plusForm.cancelButtonTitle,
-                                    fields: plusForm.fields,
-                                    rpcFun: plusForm.rpcFun,
-                                    onCancel: cancelForm,
-                                    onSuccess: plusForm.onSuccess,
-                                })
-                                
-                                plusButtonVisible = false
-                                ui.updatePage()
-                        })),
+                        headerControls: _=> headerControlsVisible && diva({style: {display: 'flex'}, className: headerControlsClass},
+                            orderingSelect,
+                            renderPlusButton),
                         
                         onKeyDown(e) {
                             if (e.keyCode === 27) {
-                                cancelForm()
+                                fov(cancelPlusForm)
                             }
                         }
                     })
                     
-                    function cancelForm() {
-                        plusButtonVisible = true
-                        plusButtonClass = 'aniFadeIn'
-                        form = undefined
-                        ui.updatePage()
-                            
-                        timeoutSet(500, _=> {
-                            plusButtonClass = undefined
-                            ui.updatePage()
-                        })
+                    
+                    function setHeaderControlsDisappearing() {
+                        headerControlsVisible = false
+                        headerControlsClass = undefined
+                    }
+                    
+                    function setHeaderControlsAppearing() {
+                        headerControlsVisible = true
+                        headerControlsClass = 'aniFadeIn'
                     }
                     
                     function showBadResponse(res) {
