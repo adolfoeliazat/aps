@@ -16,6 +16,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 import static 'into-u/utils-client into-u/ui ./stuff'
     
+COLOR_1_MEDIUM = BLUE_GRAY_400
 COLOR_1_DARK = BLUE_GRAY_600
 COLOR_ZEBRA_LIGHT = WHITE
 COLOR_ZEBRA_DARK = BLUE_GRAY_50
@@ -122,35 +123,9 @@ global.igniteShit = makeUIShitIgniter({
                                 },
                                 emptyMessage: t(`TOTE`, `Странно, здесь ничего нет. А должно что-то быть...`),
                                 aboveItems(entityRes) {
-                                    return div(
-                                        blockquotea({}, entityRes.entity.topic))
+                                    return pageTopBlockQuote(entityRes.entity.topic)
                                 },
                                 dataArrayName: 'supportThreadMessages',
-                                renderItem(item, i) {
-                                    let rowBackground, lineColor
-                                    if (item.sender.kind === 'customer' || item.sender.kind === 'writer') {
-                                        rowBackground = WHITE
-                                        lineColor = BLUE_GRAY_50
-                                    } else {
-                                        rowBackground = BLUE_GRAY_50
-                                        lineColor = WHITE
-                                    }
-                                    
-                                    return dataItemObject('supportThreadMessage', _=> diva({className: 'row', style: {display: 'flex', flexWrap: 'wrap', backgroundColor: rowBackground, paddingTop: 5, paddingBottom: 5, marginLeft: 0, marginRight: 0}},
-                                        diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
-                                            diva({}, spana({style: {fontWeight: 'bold'}},
-                                                t(`TOTE`, `От: `)),
-                                                dataField('from', item.sender.first_name + ' ' + item.sender.last_name)),
-                                            diva({}, spana({style: {fontWeight: 'bold'}},
-                                                t(`TOTE`, `Кому: `)),
-                                                dataField('to', item.recipient ? (item.recipient.first_name + ' ' + item.recipient.last_name)
-                                                                               : t(`TOTE`, `В рельсу`))),
-                                            diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(item.inserted_at)))
-                                        ),
-                                        diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5}},
-                                            dataField('message', item.message))
-                                        ))
-                                },
                                 plusGlyph: 'comment',
                                 plusForm: {
                                     primaryButtonTitle: t(`TOTE`, `Запостить`),
@@ -211,14 +186,24 @@ global.igniteShit = makeUIShitIgniter({
                 }[name]
                 
                 
-                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusForm, aboveItems, dataArrayName, renderItem}) {
+                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusForm, aboveItems, dataArrayName, renderItem, defaultOrdering='desc'}) {
                     const entityRes = await ui.rpcSoft({fun: entityFun, entityID})
                     if (entityRes.error) return showBadResponse(entityRes)
                     
-                    const itemsRes = await ui.rpcSoft({fun: itemsFun, entityID, fromID: 0})
+                    let ordering = ui.urlQuery.ordering
+                    if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
+
+                    const itemsRes = await ui.rpcSoft({fun: itemsFun, entityID, fromID: 0, ordering})
                     if (itemsRes.error) return showBadResponse(itemsRes)
                     
                     let items, showEmptyLabel = true, form, plusButtonVisible = true, plusButtonClass, formClass
+                    
+                    const orderingSelect = Select({name: 'order', style: {width: 160, marginRight: 10},
+                        values: [['desc', t(`TOTE`, `Сначала новые`)], ['asc', t(`TOTE`, `Сначала старые`)]],
+                        initialValue: ordering,
+                        async onChange() {
+                            await ui.pushNavigate(`support.html?thread=${entityID}&ordering=${orderingSelect.getValue()}`)
+                        }})
                     
                     ui.setPage({
                         pageTitle: fov(pageTitle, entityRes),
@@ -240,8 +225,8 @@ global.igniteShit = makeUIShitIgniter({
                             }),
                         ),
                         headerControls: _=> diva({style: {display: 'flex'}},
-                            diva({style: {marginRight: 10, marginTop: 8}}, t('Filter here')),
-                            plusButtonVisible && button.primary[plusGlyph]({name: 'plus', className: plusButtonClass}, _=> {
+                            diva({style: {}}, orderingSelect),
+                            plusButtonVisible && button.primary[plusGlyph]({name: 'plus', className: plusButtonClass, style: {background: COLOR_1_MEDIUM}}, _=> {
                                 showEmptyLabel = false
                                 plusButtonClass = undefined
                                 formClass = 'aniFadeIn'
@@ -392,8 +377,9 @@ global.igniteShit = makeUIShitIgniter({
         
         function makeSupportThreadMessageRenderer({lineColor, dottedLines, dryFroms}) {
             return function renderSupportThreadMessage(message, messageIndex) {
+
                 return dataItemObject('supportThreadMessage', _=> diva({className: 'row',
-                    style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: 5, paddingBottom: 5, paddingRight: 45, marginLeft: 0, marginRight: 0, position: 'relative'},
+                    style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight: 45, marginLeft: 0, marginRight: 0, position: 'relative'},
                            messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
                            
                     diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
