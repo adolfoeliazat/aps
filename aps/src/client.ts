@@ -392,12 +392,12 @@ global.igniteShit = makeUIShitIgniter({
                     let pageBody
                     const userState = ui.getUser().state
                     if (userState === 'profile-pending') {
-                        pageBody = div(preludeWithOrangeTriangle(t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), {center: 720}),
+                        pageBody = div(preludeWithOrangeTriangle({content: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
                                        form)
                     } else if (userState === 'profile-approval-pending') {
-                        pageBody = div(preludeWithHourglass(span(t('TOTE', 'Админ проверяет профиль, жди извещения почтой. Если есть вопросы, можно написать в '),
+                        pageBody = div(preludeWithHourglass({content: span(t('TOTE', 'Админ проверяет профиль, жди извещения почтой. Если есть вопросы, можно написать в '),
                                                                  ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
-                                                                 t('.'))),
+                                                                 t('.'))}),
                                        userDisplayForm(ui.getUser()))
                     }
                     
@@ -657,20 +657,13 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                         return
                     }
                     
-                    effects.blinkOn(byid(id).parent(), {fixed: true, dleft, dwidth})
+                    effects.blinkOn({target: byid(id).parent(), fixed: true, dleft, dwidth})
                     testGlobal['topNavbarLink_' + name + '_blinks'] = true
                     
                     if ((!isDynamicPage(name) || ~['sign-in', 'sign-up'].indexOf(name)) && !(isInTestScenario() && getTestSpeed() === 'fast')) {
                         await delay(ACTION_DELAY_FOR_FANCINESS)
                     }
                     await ui.pushNavigate(href)
-                    
-// TODO:vgrechka @kill
-//                    history.pushState(null, '', href)
-//                    if (DEBUG_SIMULATE_SLOW_NETWORK) {
-//                        await delay(1000)
-//                    }
-//                    await ui.loadPageForURL()
                     
                     setTimeout(_=> {
                         effects.blinkOff()
@@ -718,12 +711,6 @@ function userDisplayForm(user) {
                     labela({}, t(`TOTE`, `Телефон`)),
                     diva({}, displayLabel({name: 'phone', content: user.phone})))),
         ),
-//        diva({className: 'row'},
-//            diva({className: 'col-sm-4'},
-//                diva({className: 'form-group'},
-//                    labela({}, t(`TOTE`, `Телефон`)),
-//                    diva({}, displayLabel({name: 'phone', content: user.phone})))),
-//        ),
         diva({className: 'row'},
             diva({className: 'col-sm-3'},
                 diva({className: 'form-group'},
@@ -740,158 +727,4 @@ function userDisplayForm(user) {
 clog('Client code is kind of loaded')
 
 
-
-//------------------------------ SHIT BEGINS HERE ------------------------------
-
-
-//async function zzzzznormalInit() {
-//    
-//    if (MODE === 'debug' && !debugShitInitialized) {
-//        window.addEventListener('keydown', e => {
-//            if (e.ctrlKey && e.altKey && e.key === 'k') return captureState()
-//            if (e.ctrlKey && e.altKey && e.key === 'i') return captureInputs()
-//            if (e.ctrlKey && e.altKey && e.key === 'a') return art.uiState({$tag: 'just-showing-actual', expected: undefined})
-//        })
-//        
-//        
-//        
-//        debugShitInitialized = true
-//    }
-//    
-//    
-//    
-//    if (false) { // TODO:vgrechka @kill
-//        spaifyNavbar()
-//        
-//        window.onpopstate = function(e) {
-//            loadPageForURL()
-//        }
-//        
-//        const userJSON = localStorage.getItem('user') // TODO:vgrechka This can throw (according to MDN), should handle
-//        if (userJSON) {
-//            user = JSON.parse(userJSON)
-//        }
-//    }
-//    
-//    if (testScenarioToRun) {
-//        
-//        window.locationProxy = {
-//            set href(x) {
-//                history.replaceState(null, '', x)
-//            }
-//        }
-//        
-//        
-//    } else {
-//    }
-//    
-//    
-//    function showProfile() {
-//    }
-//    
-//    function showSupport() {
-//    }
-//    
-//    function showOrders() {
-//    }
-//    
-//    function showDashboard() {
-//    }
-//    
-//    
-//    
-//    
-//    
-//    
-//    function assertLinkWithTextSomewhere({$tag, expected}) {
-//        for (const a of $('a')) {
-//            if (a.text === expected) return
-//        }
-//        uiAssert(false, `I want a link with following text somewhere: [${expected}]`, jumpToShitDetailsUI($tag))
-//    }
-//    
-//    function assertHref({$tag, expected}) {
-//        uiAssert(document.location.href === expected, `I want to be at following URL: [${expected}]`, jumpToShitDetailsUI($tag))
-//    }
-//            
-//    
-//    function failForJumping(message, $tag) {
-//        uiAssert(false, message, jumpToShitDetailsUI($tag))
-//    }
-//    
-//
-//    
-//    
-//
-//    function assertErrorBanner(expected) {
-//        uiAssert(testGlobal.errorBanner === expected, `I want error banner [${expected}]`)
-//    }
-//
-//    function assertNoErrorBanner() {
-//        uiAssert(testGlobal.errorBanner === undefined, `I don't want an error banner hanging here`)
-//    }
-//
-//
-//    function assertNoErrorLabels() {
-//        uiAssert(isEmpty(testGlobal.errorLabels), `I don't want any error labels here`)
-//    }
-//
-//    function assertErrorLabelTitlesExactly(...expected) {
-//        const actual = values(testGlobal.errorLabels).map(x => x.title)
-//        const expectedDescr = expected.map(x => `[${x}]`).join(', ')
-//        uiAssert(deepEquals(sortBy(expected), sortBy(actual)), `I want exactly following error labels: ${expectedDescr}`)
-//    }
-//
-//
-//    function assertErrorLabelTitle(expectedTitle) {
-//        uiAssert(ofind(testGlobal.errorLabels, x => x.title === expectedTitle), `I want error label [${expectedTitle}] on screen`)
-//    }
-//
-//    function assertFail() {
-//        uiAssert(false, 'Just failing here, OK?')
-//    }
-//    
-//
-//
-//    function assertShitSpins({$tag}) {
-//        assertSpins({name: 'shit'})
-//    }
-//    
-////    async function assertHeaderShitSpinsForMax({$tag, max}) {
-////        await assertSpinsForMax({$tag, name: 'headerShit', max})
-////    }
-////
-////    function assertHeaderShitSpins() {
-////        assertSpins({name: 'headerShit'})
-////    }
-//    
-//    function uiFail(errorMessage) {
-//        uiAssert(false, errorMessage)
-//    }
-//    
-//
-//    function simulatePopulateFields(data) {
-//        for (const [name, value] of toPairs(data)) {
-//            const functionName = 'simulate_setControlValue_' + name
-//            const setValue = window[functionName]
-//            if (!setValue) raise('I want function ' + functionName)
-//            setValue(value)
-//        }
-//    }
-//
-//    // TODO:vgrechka Use testGlobal.buttons[...].click()
-//    function simulateClick(name) {
-//        const functionName = 'simulate_click_' + name
-//        const click = window[functionName]
-//        if (!click) raise('I want function ' + functionName)
-//        click()
-//    }
-//
-//
-//}
-
-        
-//                    spana({className: 'fa-stack fa-lg'},
-//                        el('i', {className: 'fa fa-circle fa-stack-2x', style: {color: LIGHT_GREEN_700}}),
-//                        el('i', {className: 'fa fa-check fa-stack-1x fa-inverse'})),
 

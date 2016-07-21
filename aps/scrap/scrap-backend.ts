@@ -270,8 +270,7 @@ relog(range(5).map(x => '$' + (x + 1)).join(', '))
 relog(last)
 
 
-relog(isEmpty([12]))
-
+relog(defaults({foo: 10}, {bar: 20, baz: 30}))
 
 
 

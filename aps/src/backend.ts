@@ -310,16 +310,18 @@ app.post('/rpc', (req, res) => {
                 
                 
                 else if (msg.fun === 'signInWithPassword') {
+                    traceBeginHandler({$tag: '29f48649-bea3-4777-a2cc-e40a98590804'})
                     const rows = #await tx.query({$tag: '4281bc8b-7f86-4a7a-86e6-bb4d7587b654'}, q`
                         select * from users where email = ${msg.email}`)
+                    const invalidEmailOrPasswordRet = {error: t('Invalid email or password', 'Неверная почта или пароль')}
                     if (!rows.length) {
-                        logFailure('Non-existing email')
-                        return invalidEmailOrPasswordMessage()
+                        clog('Sign-in failed: non-existing email')
+                        return traceEndHandler({ret: invalidEmailOrPasswordRet, $tag: '486b5752-1005-412a-8616-1fbb2e7fadfb'})
                     }
                     user = rows[0]
                     if (!(await comparePassword(msg.password, user.password_hash))) {
-                        logFailure('Invalid password for existing email')
-                        return invalidEmailOrPasswordMessage()
+                        clog('Sign-in failed: Invalid password for existing email')
+                        return traceEndHandler({ret: invalidEmailOrPasswordRet, $tag: 'cb9f9ad6-dfc3-4b7b-b405-2b43703464cc'})
                     }
                     
                     failOnClientUserMismatch()
@@ -329,16 +331,7 @@ app.post('/rpc', (req, res) => {
                         insert into user_tokens(user_id, token) values(${user.id}, ${token})`)
 
                     #await loadUserData()
-                    return hunkyDory({user: pickFromUser(user), token})
-                    
-                    
-                    function logFailure(reason) {
-                        clog('Sign-in failed: ' + reason)
-                    }
-                    
-                    function invalidEmailOrPasswordMessage() {
-                        return {error: t('Invalid email or password', 'Неверная почта или пароль')}
-                    }
+                    return traceEndHandler({ret: hunkyDory({user: pickFromUser(user), token}), $tag: '8f0148c4-1020-4ce5-b0c9-4f71777bdd6f'})
                 }
                 
                 else if (msg.fun === 'private_getUserInfo') {

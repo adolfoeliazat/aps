@@ -6,4 +6,5 @@ art.respectArtPauses
 implementTestFacilities
 getRPCLagForAutomatedTests
 globalizeStuff
+debugFuns (little buttons in bottom-right corner)
 

@@ -21,20 +21,20 @@ module.exports = function({sim}) {
                 
                 art.uiState({$tag: 'c70e18eb-516b-41cb-bf7a-bdf748595ad2', expected: {
                     url: `http://aps-ua-writer.local:3022/sign-in.html`,
+                    'Input-email': ``,
+                    'link-createAccount': { title: `Срочно создать!` },
                     pageHeader: `Вход`,
-                    inputs: { email: { value: `` }, password: { value: `` } },
-                    errorLabels: {},
-                    errorBanner: undefined,
-                    displayLabels: {} 
+                    'button-primary': { title: `Войти` },
+                    'Input-password': `` 
                 }})                
                 
                 // Inputs
-                #hawait testGlobal.inputs.email.setValue('todd@test.shit.ua')
-                #hawait testGlobal.inputs.password.setValue('secret')
+                #hawait testGlobal.controls['Input-email'].setValue('todd@test.shit.ua')
+                #hawait testGlobal.controls['Input-password'].setValue('secret')
                 // Action
-                #hawait testGlobal.buttons.primary.click()
-                #hawait art.shitSpinsForMax({$tag: '271f3603-1982-4804-b064-b718ee444160', max: 2000})
-                #hawait art.uiStateAfterLiveStatusPolling({$tag: '866bef17-2783-40a5-860d-0d2f69966664', expected: {
+                #hawait testGlobal.controls['button-primary'].click()
+                // #hawait art.shitSpinsForMax({$tag: '271f3603-1982-4804-b064-b718ee444160', max: 2000})
+                #hawait art.uiState({$tag: '866bef17-2783-40a5-860d-0d2f69966664', expected: {
                     url: `http://aps-ua-writer.local:3022/dashboard.html`,
                     pageHeader: `Панель`,
                     inputs: {},
@@ -399,7 +399,7 @@ module.exports = function({sim}) {
                 
                 #hawait art.pausePoint({title: 'Changing ordering to show old messages first', $tag: '1e77736a-3498-4b5d-8b1e-94c0f7dd6c56'})
                 // Action
-                #hawait testGlobal.controls['ordering'].setValue('asc', {testActionHandOpts: {pointingFrom: 'left', dtop: 38}})
+                #hawait testGlobal.controls['ordering'].setValue({value: 'asc', testActionHandOpts: {pointingFrom: 'left', dtop: 38}})
                 #hawait art.uiStateAfterLiveStatusPolling({$tag: '73952bab-8024-4351-8656-0966860aa31b', expected: {
                     url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=asc`,
                         pageHeader: `Запрос в поддержку № 308`,
@@ -436,7 +436,7 @@ module.exports = function({sim}) {
                 
                 #hawait art.pausePoint({title: 'Changing it back to conveniently show new stuff first', $tag: '79a2d7fc-5509-41fc-b606-b82bdccd5d68'})
                 // Action
-                #hawait testGlobal.controls['ordering'].setValue('desc', {testActionHandOpts: {pointingFrom: 'left', dtop: 18}})
+                #hawait testGlobal.controls['ordering'].setValue({value: 'desc', testActionHandOpts: {pointingFrom: 'left', dtop: 18}})
                 #hawait art.uiStateAfterLiveStatusPolling({$tag: '1920f57c-db76-40ff-9f85-8ebdd8faf2f3', expected: {
                     url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=desc`,
                         pageHeader: `Запрос в поддержку № 308`,
