@@ -397,7 +397,6 @@ module.exports = function({sim}) {
                 #hawait art.pausePoint({title: 'Amount of work in heap decreased, since we’ve just taken one piece from it', $tag: '3ebb103e-7f0a-4669-9a29-2cbb2bbed460'})
                 testGlobal.topNavbarLinks['admin-heap'].hideHand()
                 
-                /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
                 #hawait art.pausePoint({title: 'Changing ordering to show old messages first', $tag: '1e77736a-3498-4b5d-8b1e-94c0f7dd6c56'})
                 // Action
                 #hawait testGlobal.controls['ordering'].setValue('asc', {testActionHandOpts: {pointingFrom: 'left', dtop: 38}})
@@ -472,6 +471,12 @@ module.exports = function({sim}) {
                            'topNavItem.admin-heap.badge': `12` } 
                 }})
                 
+                // Action
+                #hawait testGlobal.buttons['plus'].click()
+                art.uiStateChange({$tag: 'bd47917a-b212-4d03-8910-5af36b2f7ebc', expected: {
+                    inputs: { message: { value: '' } },
+                }})
+
                 
                 // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
             },
