@@ -270,6 +270,7 @@ relog(range(5).map(x => '$' + (x + 1)).join(', '))
 relog(last)
 
 
+relog(isEmpty([12]))
 
 
 

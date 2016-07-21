@@ -1,7 +1,9 @@
 showTestActionHand
 haltTheWorld
 .aniBlinkingFast
-makeNextRPCNotLaggingInTests
 setTestSpeed
 art.respectArtPauses
 implementTestFacilities
+getRPCLagForAutomatedTests
+globalizeStuff
+

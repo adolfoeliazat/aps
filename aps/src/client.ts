@@ -8,7 +8,7 @@
 
 MODE = 'debug'
 DEBUG_SIMULATE_SLOW_NETWORK = true
-DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 250
+DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 500
 BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
@@ -45,76 +45,80 @@ global.igniteShit = makeUIShitIgniter({
                     orders: ordersPageLoader,
                     
                     async 'admin-heap'() {
-                        const pageTitle = t(`TOTE`, `Куча работы`)
-                        const activeTab = ui.urlQuery.tab || 'support'
-                        
-                        const itemsFun
-                        if (activeTab === 'support') {
-                            itemsFun = 'private_getUnassignedSupportThreads'
-                        }
-                        
-                        const res = await ui.rpcSoft({fun: itemsFun, fromID: 0})
-                        if (res.error) {
-                            return ui.setPage({
-                                pageTitle,
-                                pageBody: div(errorBanner(res.error))
-                            })
-                        }
-                       
-                        const tabs = Tabs({
-                            activeTab,
-                            tabs: {
-                                support: {
-                                    title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({dataFieldName: 'heapTabs.supportBadge', liveStatusFieldName: 'unassignedSupportThreadCount'})),
-                                    content: diva({},
-                                        ui.renderMoreable({res, renderItem: renderSupportThreadItem, itemsFun, dataArrayName: 'supportThreads'})),
-                                },
-                                newOrders: {
-                                    title: t(`TOTE`, `Новые заказы`),
-                                    content: diva({}, t(`TOTE`, `todo new orders tab`)),
-                                },
-                                existingOrders: {
-                                    title: t(`TOTE`, `Существующие заказы`),
-                                    content: diva({}, t(`TOTE`, `todo existing orders tab`)),
-                                },
-                            }
-                        })
-                        
-                        ui.setPage({
-                            pageTitle,
-                            pageBody: div(tabs)
-                        })
-                        
-                        
-                        function renderSupportThreadItem(item, i) {
-                            const {rowBackground, lineColor} = zebraRowColors(i)
+                        beginTrain({name: 'Load page admin-heap'}); try {
+                            const pageTitle = t(`TOTE`, `Куча работы`)
+                            const activeTab = ui.urlQuery.tab || 'support'
                             
-                            return dataItemObject('supportThread', _=> {
-                                let topicElement
-                                const topicIsLink = false
-                                if (topicIsLink) {
-                                    // TODO:vgrechka dataField
-                                    topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
-                                } else {
-                                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, dataField('topic', item.topic))
+                            const itemsFun
+                            if (activeTab === 'support') {
+                                itemsFun = 'private_getUnassignedSupportThreads'
+                            }
+                            
+                            const res = await ui.rpcSoft({fun: itemsFun, fromID: 0})
+                            if (res.error) {
+                                return ui.setPage({
+                                    pageTitle,
+                                    pageBody: div(errorBanner(res.error))
+                                })
+                            }
+                           
+                            const tabs = Tabs({
+                                activeTab,
+                                tabs: {
+                                    support: {
+                                        title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({dataFieldName: 'heapTabs.supportBadge', liveStatusFieldName: 'unassignedSupportThreadCount'})),
+                                        content: diva({},
+                                            ui.renderMoreable({res, renderItem: renderSupportThreadItem, itemsFun, dataArrayName: 'supportThreads'})),
+                                    },
+                                    newOrders: {
+                                        title: t(`TOTE`, `Новые заказы`),
+                                        content: diva({}, t(`TOTE`, `todo new orders tab`)),
+                                    },
+                                    existingOrders: {
+                                        title: t(`TOTE`, `Существующие заказы`),
+                                        content: diva({}, t(`TOTE`, `todo existing orders tab`)),
+                                    },
                                 }
-                                
-                                const renderSupportThreadMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms: true})
-                                
-                                return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
-                                    diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
-                                        ui.busyButton({name: `takeAndReply-${item.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
-                                            await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
-                                            makeNextRPCNotLaggingInTests(2)
-                                            await ui.pushNavigate(`support.html?thread=${item.id}`)
-                                        }})),
-                                    
-                                    diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
-                                        topicElement),
-                                        
-                                    dataArray('messages', _=> div(...item.messages.map(renderSupportThreadMessage))))
                             })
-                        }
+                            
+                            ui.setPage({
+                                pageTitle,
+                                pageBody: div(tabs)
+                            })
+                            
+                            
+                            function renderSupportThreadItem(item, i) {
+                                const {rowBackground, lineColor} = zebraRowColors(i)
+                                
+                                return dataItemObject('supportThread', _=> {
+                                    let topicElement
+                                    const topicIsLink = false
+                                    if (topicIsLink) {
+                                        // TODO:vgrechka dataField
+                                        topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                                    } else {
+                                        topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, dataField('topic', item.topic))
+                                    }
+                                    
+                                    const renderSupportThreadMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms: true})
+                                    
+                                    return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
+                                        diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
+                                            ui.busyButton({name: `takeAndReply-${item.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+                                                beginTrain({name: 'Take support thread and reply'}); try {
+                                                    await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
+                                                    // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
+                                                    await ui.pushNavigate(`support.html?thread=${item.id}`)
+                                                } finally { endTrain() }
+                                            }})),
+                                        
+                                        diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
+                                            topicElement),
+                                            
+                                        dataArray('messages', _=> div(...item.messages.map(renderSupportThreadMessage))))
+                                })
+                            }
+                        } finally { endTrain() }
                     },
                     
                     async 'admin-my-tasks'() {
@@ -127,71 +131,73 @@ global.igniteShit = makeUIShitIgniter({
                     
                     async support() {
                         if (ui.urlQuery.thread) {
-                            await lala({
-                                entityFun: 'private_getSupportThread',
-                                itemsFun: 'private_getSupportThreadMessages',
-                                entityID: ui.urlQuery.thread,
-                                pageTitle: entityRes => {
-                                    if (entityRes.error) return t(`TOTE`, `Облом`)
-                                    return t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`)
-                                },
-                                emptyMessage: t(`TOTE`, `Странно, здесь ничего нет. А должно что-то быть...`),
-                                aboveItems(entityRes) {
-                                    return pageTopBlockQuote(entityRes.entity.topic)
-                                },
-                                dataArrayName: 'supportThreadMessages',
-                                plusGlyph: 'comment',
-                                plusFormDef: {
-                                    primaryButtonTitle: t(`TOTE`, `Запостить`),
-                                    cancelButtonTitle: t(`TOTE`, `Передумал`),
-                                    fields: {
-                                        entityID: {
-                                            type: 'hidden',
-                                            value: ui.urlQuery.thread,
+                            beginTrain({name: 'Load support page with thread param', orJoin: true}); try {
+                                await lala({
+                                    entityFun: 'private_getSupportThread',
+                                    itemsFun: 'private_getSupportThreadMessages',
+                                    entityID: ui.urlQuery.thread,
+                                    pageTitle: entityRes => {
+                                        if (entityRes.error) return t(`TOTE`, `Облом`)
+                                        return t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`)
+                                    },
+                                    emptyMessage: t(`TOTE`, `Странно, здесь ничего нет. А должно что-то быть...`),
+                                    aboveItems(entityRes) {
+                                        return pageTopBlockQuote(entityRes.entity.topic)
+                                    },
+                                    dataArrayName: 'supportThreadMessages',
+                                    plusGlyph: 'comment',
+                                    plusFormDef: {
+                                        primaryButtonTitle: t(`TOTE`, `Запостить`),
+                                        cancelButtonTitle: t(`TOTE`, `Передумал`),
+                                        fields: {
+                                            entityID: {
+                                                type: 'hidden',
+                                                value: ui.urlQuery.thread,
+                                            },
+                                            message: {
+                                                title: t(`TOTE`, `Сообщение`),
+                                                type: 'textarea',
+                                                autoFocus: true,
+                                            },
                                         },
-                                        message: {
-                                            title: t(`TOTE`, `Сообщение`),
-                                            type: 'textarea',
-                                            autoFocus: true,
+                                        rpcFun: 'private_createSupportThreadMessage',
+                                        async onSuccess(res) {
+                                            await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
                                         },
                                     },
-                                    rpcFun: 'private_createSupportThreadMessage',
-                                    async onSuccess(res) {
-                                        makeNextRPCNotLaggingInTests()
-                                        await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
-                                    },
-                                },
-                            })
+                                })
+                            } finally { endTrain() }
                         } else if (!ui.urlQuery.thread) {
-                            await lala({
-                                pageTitle: t('Support', 'Поддержка'),
-                                itemsFun: 'private_getSupportThreads',
-                                emptyMessage: t(`TOTE`, `Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.`),
-                                renderItem(item, i) {
-                                    return t('todo render item')
-                                },
-                                plusGlyph: 'plus',
-                                plusFormDef: {
-                                    primaryButtonTitle: t(`TOTE`, `Запостить`),
-                                    cancelButtonTitle: t(`TOTE`, `Не стоит`),
-                                    fields: {
-                                        topic: {
-                                            title: t(`TOTE`, `Тема`),
-                                            type: 'text',
-                                            autoFocus: true,
+                            beginTrain({name: 'Load support page without thread param'}); try {
+                                await lala({
+                                    pageTitle: t('Support', 'Поддержка'),
+                                    itemsFun: 'private_getSupportThreads',
+                                    emptyMessage: t(`TOTE`, `Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.`),
+                                    renderItem(item, i) {
+                                        return t('todo render item')
+                                    },
+                                    plusGlyph: 'plus',
+                                    plusFormDef: {
+                                        primaryButtonTitle: t(`TOTE`, `Запостить`),
+                                        cancelButtonTitle: t(`TOTE`, `Не стоит`),
+                                        fields: {
+                                            topic: {
+                                                title: t(`TOTE`, `Тема`),
+                                                type: 'text',
+                                                autoFocus: true,
+                                            },
+                                            message: {
+                                                title: t(`TOTE`, `Сообщение`),
+                                                type: 'textarea',
+                                            },
                                         },
-                                        message: {
-                                            title: t(`TOTE`, `Сообщение`),
-                                            type: 'textarea',
+                                        rpcFun: 'private_createSupportThread',
+                                        async onSuccess(res) {
+                                            await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
                                         },
                                     },
-                                    rpcFun: 'private_createSupportThread',
-                                    async onSuccess(res) {
-                                        makeNextRPCNotLaggingInTests()
-                                        await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
-                                    },
-                                },
-                            })
+                                })
+                            } finally { endTrain() }
                         }
                     },
                 
