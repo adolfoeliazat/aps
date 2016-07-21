@@ -216,7 +216,7 @@ global.igniteShit = makeUIShitIgniter({
                         renderPlusButton, renderPlusForm, plusForm, plusFormClass, cancelPlusForm
                     
                     if (hasOrderingSelect) {
-                        orderingSelect = Select({name: 'order', style: {width: 160, marginRight: 8},
+                        orderingSelect = Select({name: 'ordering', isAction: true, style: {width: 160, marginRight: 8},
                             values: [['desc', t(`TOTE`, `Сначала новые`)], ['asc', t(`TOTE`, `Сначала старые`)]],
                             initialValue: ordering,
                             disabled: _=> headerControlsDisabled,

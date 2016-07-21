@@ -359,12 +359,119 @@ module.exports = function({sim}) {
                 #hawait testGlobal.buttons['takeAndReply-308'].click()
                 #hawait art.shitBlinksForMax({$tag: 'f146dce3-e5dc-4846-bb65-868c8083b859', kind: 'button', name: 'takeAndReply-308', max: 2000})
                 
-                testGlobal.topNavbarLinks['admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15}})
-                #hawait art.pausePoint({title: 'Number of work in heap decreased, since we’ve just taken one piece from it', $tag: '3ebb103e-7f0a-4669-9a29-2cbb2bbed460'})
-                testGlobal.topNavbarLinks['admin-heap'].hideHand()
                 #hawait art.uiStateAfterLiveStatusPolling({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: {
-
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=308`,
+                        pageHeader: `Запрос в поддержку № 308`,
+                        inputs: {},
+                        errorLabels: {},
+                        errorBanner: undefined,
+                        displayLabels: {},
+                        pageData: 
+                         { 'Select-ordering': `desc`,
+                           'supportThreadMessages-0': 
+                            [ { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:36:02`,
+                                message: `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.` },
+                              { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:35:27`,
+                                message: dedent(`
+                              Еще хотел бы добавить вот что.
+                              
+                              - Сегодня заседания нет, - сказала женщина.
+                              - Как это - нет заседания? - спросил он, не поверив.`) },
+                              { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:33:15`,
+                                message: `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.` } ],
+                           'topNavItem.admin-my-tasks.title': `Мои задачи`,
+                           'topNavItem.admin-heap.title': `Куча`,
+                           'topNavItem.admin-heap.badge': `12` } 
                 }})
+                
+                testGlobal.topNavbarLinks['admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15}})
+                #hawait art.pausePoint({title: 'Amount of work in heap decreased, since we’ve just taken one piece from it', $tag: '3ebb103e-7f0a-4669-9a29-2cbb2bbed460'})
+                testGlobal.topNavbarLinks['admin-heap'].hideHand()
+                
+                /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+                #hawait art.pausePoint({title: 'Changing ordering to show old messages first', $tag: '1e77736a-3498-4b5d-8b1e-94c0f7dd6c56'})
+                // Action
+                #hawait testGlobal.controls['ordering'].setValue('asc', {testActionHandOpts: {pointingFrom: 'left', dtop: 38}})
+                #hawait art.uiStateAfterLiveStatusPolling({$tag: '73952bab-8024-4351-8656-0966860aa31b', expected: {
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=asc`,
+                        pageHeader: `Запрос в поддержку № 308`,
+                        inputs: {},
+                        errorLabels: {},
+                        errorBanner: undefined,
+                        displayLabels: {},
+                        pageData: 
+                         { 'topNavItem.admin-my-tasks.title': `Мои задачи`,
+                           'topNavItem.admin-heap.title': `Куча`,
+                           'Select-ordering': `asc`,
+                           'supportThreadMessages-0': 
+                            [ { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:33:15`,
+                                message: `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.` },
+                              { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:35:27`,
+                                message: dedent(`
+                              Еще хотел бы добавить вот что.
+                              
+                              - Сегодня заседания нет, - сказала женщина.
+                              - Как это - нет заседания? - спросил он, не поверив.`) },
+                              { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:36:02`,
+                                message: `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.` } ],
+                           'topNavItem.admin-heap.badge': `12` } 
+                }})
+                
+                #hawait art.pausePoint({title: 'Changing it back to conveniently show new stuff first', $tag: '79a2d7fc-5509-41fc-b606-b82bdccd5d68'})
+                // Action
+                #hawait testGlobal.controls['ordering'].setValue('desc', {testActionHandOpts: {pointingFrom: 'left', dtop: 18}})
+                #hawait art.uiStateAfterLiveStatusPolling({$tag: '1920f57c-db76-40ff-9f85-8ebdd8faf2f3', expected: {
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=desc`,
+                        pageHeader: `Запрос в поддержку № 308`,
+                        inputs: {},
+                        errorLabels: {},
+                        errorBanner: undefined,
+                        displayLabels: {},
+                        pageData: 
+                         { 'topNavItem.admin-my-tasks.title': `Мои задачи`,
+                           'topNavItem.admin-heap.title': `Куча`,
+                           'Select-ordering': `desc`,
+                           'supportThreadMessages-0': 
+                            [ { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:36:02`,
+                                message: `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.` },
+                              { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:35:27`,
+                                message: dedent(`
+                              Еще хотел бы добавить вот что.
+                              
+                              - Сегодня заседания нет, - сказала женщина.
+                              - Как это - нет заседания? - спросил он, не поверив.`) },
+                              { '$$type': `supportThreadMessage`,
+                                from: `Франц Кафка`,
+                                to: `В рельсу`,
+                                timestamp: `17/05/2014 02:33:15`,
+                                message: `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.` } ],
+                           'topNavItem.admin-heap.badge': `12` } 
+                }})
+                
                 
                 // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
             },
