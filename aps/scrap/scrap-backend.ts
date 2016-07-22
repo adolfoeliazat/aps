@@ -272,6 +272,7 @@ relog(last)
 
 relog(defaults({foo: 10}, {bar: 20, baz: 30}))
 
+relog(capitalize('fooBarBaz'))
 
 
 

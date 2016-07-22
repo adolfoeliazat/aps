@@ -11,10 +11,7 @@
 // TODO:vgrechka Secure private_getSupportThread    ef81af52-f9fd-4b21-8919-1681f8466d64 
 // TODO:vgrechka Secure private_getSupportThreadMessages    c99bc54a-121a-4b3a-b210-a25fa47a43da 
 
-- Do ui.pollLiveStatus() right after page is loaded, not waiting several seconds for that
-- In addition to periodic ui.pollLiveStatus() also do it right after user's action
-  when it's clearly known that that action affects what's in status.
-
 // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
   
-  
+- In compile.js check that UUIDs are not duplicated (when they are not meant to, like in $tag)
+

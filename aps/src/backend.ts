@@ -232,6 +232,7 @@ app.post('/rpc', (req, res) => {
                         file = {
                             'aps/src/client.ts': 'E:/work/aps/aps/src/client.ts',
                             'client.ts': 'E:/work/aps/aps/src/client.ts',
+                            'client-admin-tests.ts': 'E:/work/aps/aps/src/client-admin-tests.ts',
                             'aps/src/backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'ui.ts': 'E:/work/foundation/u/src/ui.ts',

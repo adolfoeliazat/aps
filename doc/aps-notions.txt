@@ -8,3 +8,6 @@ getRPCLagForAutomatedTests
 globalizeStuff
 debugFuns (little buttons in bottom-right corner)
 
+uiStateScope
+uispan
+

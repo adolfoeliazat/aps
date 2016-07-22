@@ -66,9 +66,9 @@ global.igniteShit = makeUIShitIgniter({
                                 activeTab,
                                 tabs: {
                                     support: {
-                                        title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({dataFieldName: 'heapTabs.supportBadge', liveStatusFieldName: 'unassignedSupportThreadCount'})),
+                                        title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({name: 'supportTab', liveStatusFieldName: 'unassignedSupportThreadCount'})),
                                         content: diva({},
-                                            ui.renderMoreable({res, renderItem: renderSupportThreadItem, itemsFun, dataArrayName: 'supportThreads'})),
+                                            ui.renderMoreable({res, renderItem: renderSupportThreadItem, itemsFun})),
                                     },
                                     newOrders: {
                                         title: t(`TOTE`, `Новые заказы`),
@@ -90,21 +90,20 @@ global.igniteShit = makeUIShitIgniter({
                             function renderSupportThreadItem(item, i) {
                                 const {rowBackground, lineColor} = zebraRowColors(i)
                                 
-                                return dataItemObject('supportThread', _=> {
+                                return uiStateScope({name: `supportThread-${item.id}`, render() {
                                     let topicElement
                                     const topicIsLink = false
                                     if (topicIsLink) {
-                                        // TODO:vgrechka dataField
                                         topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
                                     } else {
-                                        topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, dataField('topic', item.topic))
+                                        topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({name: 'topic', content: item.topic}))
                                     }
                                     
                                     const renderSupportThreadMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms: true})
                                     
                                     return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
                                         diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
-                                            ui.busyButton({name: `takeAndReply-${item.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+                                            ui.busyButton({name: `takeAndReply`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
                                                 beginTrain({name: 'Take support thread and reply'}); try {
                                                     await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
                                                     // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
@@ -115,8 +114,8 @@ global.igniteShit = makeUIShitIgniter({
                                         diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
                                             topicElement),
                                             
-                                        dataArray('messages', _=> div(...item.messages.map(renderSupportThreadMessage))))
-                                })
+                                        div(...item.messages.map(renderSupportThreadMessage)))
+                                }})
                             }
                         } finally { endTrain() }
                     },
@@ -144,22 +143,22 @@ global.igniteShit = makeUIShitIgniter({
                                     aboveItems(entityRes) {
                                         return pageTopBlockQuote(entityRes.entity.topic)
                                     },
-                                    dataArrayName: 'supportThreadMessages',
                                     plusGlyph: 'comment',
                                     plusFormDef: {
                                         primaryButtonTitle: t(`TOTE`, `Запостить`),
                                         cancelButtonTitle: t(`TOTE`, `Передумал`),
-                                        fields: {
-                                            entityID: {
-                                                type: 'hidden',
+                                        autoFocus: 'message',
+                                        fields: [
+                                            ui.HiddenField({
+                                                name: 'entityID',
                                                 value: ui.urlQuery.thread,
-                                            },
-                                            message: {
+                                            }),
+                                            ui.TextField({
+                                                name: 'message',
+                                                kind: 'textarea',
                                                 title: t(`TOTE`, `Сообщение`),
-                                                type: 'textarea',
-                                                autoFocus: true,
-                                            },
-                                        },
+                                            }),
+                                        ],
                                         rpcFun: 'private_createSupportThreadMessage',
                                         async onSuccess(res) {
                                             await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
@@ -180,17 +179,18 @@ global.igniteShit = makeUIShitIgniter({
                                     plusFormDef: {
                                         primaryButtonTitle: t(`TOTE`, `Запостить`),
                                         cancelButtonTitle: t(`TOTE`, `Не стоит`),
-                                        fields: {
-                                            topic: {
+                                        autoFocus: 'topic',
+                                        fields: [
+                                            ui.TextField({
+                                                name: 'topic',
                                                 title: t(`TOTE`, `Тема`),
-                                                type: 'text',
-                                                autoFocus: true,
-                                            },
-                                            message: {
+                                            }),
+                                            ui.TextField({
+                                                name: 'message',
+                                                kind: 'textarea',
                                                 title: t(`TOTE`, `Сообщение`),
-                                                type: 'textarea',
-                                            },
-                                        },
+                                            })
+                                        ],
                                         rpcFun: 'private_createSupportThread',
                                         async onSuccess(res) {
                                             await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
@@ -206,7 +206,7 @@ global.igniteShit = makeUIShitIgniter({
                 }[name]
                 
                 
-                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusFormDef, aboveItems, dataArrayName, renderItem, defaultOrdering='desc', hasPlusButton=true, hasOrderingSelect=true}) {
+                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusFormDef, aboveItems, renderItem, defaultOrdering='desc', hasPlusButton=true, hasOrderingSelect=true}) {
                     const entityRes = await ui.rpcSoft({fun: entityFun, entityID})
                     if (entityRes.error) return showBadResponse(entityRes)
                     
@@ -222,7 +222,7 @@ global.igniteShit = makeUIShitIgniter({
                         renderPlusButton, renderPlusForm, plusForm, plusFormClass, cancelPlusForm
                     
                     if (hasOrderingSelect) {
-                        orderingSelect = Select({name: 'ordering', isAction: true, style: {width: 160, marginRight: 8},
+                        orderingSelect = Select({name: 'ordering', style: {width: 160, marginRight: 8},
                             values: [['desc', t(`TOTE`, `Сначала новые`)], ['asc', t(`TOTE`, `Сначала старые`)]],
                             initialValue: ordering,
                             disabled: _=> headerControlsDisabled,
@@ -235,25 +235,21 @@ global.igniteShit = makeUIShitIgniter({
                             }
                         })
                     }
+                    
                         
                     if (hasPlusButton) {
                         renderPlusButton = function() {
-                            return button({name: 'plus', level: 'primary', icon: plusGlyph, disabled: headerControlsDisabled}, _=> {
+                            return button({name: 'plus', level: 'primary', icon: plusGlyph, disabled: headerControlsDisabled, onClick() {
                                 showEmptyLabel = false
                                 setHeaderControlsDisappearing()
                                 plusFormClass = 'aniFadeIn'
                                 
-                                plusForm = ui.Form({
-                                    primaryButtonTitle: plusFormDef.primaryButtonTitle,
-                                    cancelButtonTitle: plusFormDef.cancelButtonTitle,
-                                    fields: plusFormDef.fields,
-                                    rpcFun: plusFormDef.rpcFun,
+                                plusForm = ui.Form(asn(plusFormDef, {
                                     onCancel: cancelPlusForm,
-                                    onSuccess: plusFormDef.onSuccess,
-                                })
+                                }))
                                 
                                 ui.updatePage()
-                            })
+                            }})
                         }
                         
                         cancelPlusForm = function() {
@@ -279,7 +275,7 @@ global.igniteShit = makeUIShitIgniter({
                                     }
                                     return ''
                                 }
-                                return ui.renderMoreable({res: itemsRes, itemsFun, dataArrayName: 'supportThreadMessages', renderItem(message, i) {
+                                return ui.renderMoreable({res: itemsRes, itemsFun, renderItem(message, i) {
                                     const {rowBackground, lineColor} = zebraRowColors(i)
                                     return diva({style: {background: rowBackground}},
                                         makeSupportThreadMessageRenderer({lineColor})(message, i))
@@ -343,12 +339,20 @@ global.igniteShit = makeUIShitIgniter({
                                 diva({className: 'col-sm-6'},
                                     sectionTitle(t('Account', 'Аккаунт')),
                                     sectionLinks(
-                                        [t('Sign out', 'Выйти прочь'), _=> {
-                                            ui.signOut()
-                                        }],
-                                        [t('Change password', 'Сменить пароль'), _=> {
-                                            dlog('implement change password')
-                                        }]
+                                        {
+                                            name: 'signOut',
+                                            title: t('Sign out', 'Выйти прочь'),
+                                            onClick() {
+                                                ui.signOut()
+                                            }
+                                        },
+                                        {
+                                            name: 'changePassword',
+                                            title: t('Change password', 'Сменить пароль'),
+                                            onClick() {
+                                                dlog('implement change password')
+                                            }
+                                        },
                                     )))
                             )
                     })
@@ -360,10 +364,10 @@ global.igniteShit = makeUIShitIgniter({
                     
                     function sectionLinks(...items) {
                         return ula({className: 'fa-ul', style: {marginLeft: 20}},
-                                   ...items.map(([itemTitle, action]) =>
+                                   ...items.map(item =>
                                        lia({style: {marginBottom: 5}},
                                            ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
-                                           link(itemTitle, {style: {color: '#333'}}, action))))
+                                           link({name: item.name, title: item.title, style: {color: '#333'}, onClick: item.onClick}))))
                     }
                 }
                 
@@ -374,18 +378,18 @@ global.igniteShit = makeUIShitIgniter({
                     
                     const form = ui.Form({
                         primaryButtonTitle,
-                        fields: {
-                            phone: {
+                        autoFocus: 'phone',
+                        fields: [
+                            ui.TextField({
+                                name: 'phone',
                                 title: t('Phone', 'Телефон'),
-                                type: 'text',
-                                attrs: {autoFocus: true},
-                            },
-                        },
+                            }),
+                        ],
                         rpcFun: 'private_updateProfile',
-                        onSuccess(res) {
+                        async onSuccess(res) {
                             // ui.getUser().state = 'profile-approval-pending'
                             ui.setUser(res.newUser)
-                            ui.replaceNavigate('profile.html')
+                            await ui.replaceNavigate('profile.html')
                         },
                     })
                     
@@ -432,7 +436,7 @@ global.igniteShit = makeUIShitIgniter({
         function makeSupportThreadMessageRenderer({lineColor, dottedLines, dryFroms}) {
             return function renderSupportThreadMessage(message, messageIndex) {
 
-                return dataItemObject('supportThreadMessage', _=> diva({className: 'row',
+                return uiStateScope({name: `message-${message.id}`, render: _=> diva({className: 'row',
                     style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight: 45, marginLeft: 0, marginRight: 0, position: 'relative'},
                            messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
                            
@@ -440,27 +444,35 @@ global.igniteShit = makeUIShitIgniter({
                         messageIndex === 0 || !dryFroms
                             ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
                                       t(`TOTE`, `От: `)),
-                                      userLabel({user: message.sender, dataFieldName: 'from'})),
+                                      userLabel({name: 'from', user: message.sender})),
                                   diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
                                       t(`TOTE`, `Кому: `)),
-                                      dataField('to', message.recipient ? (message.recipient.first_name + ' ' + message.recipient.last_name)
-                                                                        : t(`TOTE`, `В рельсу`))))
-                            : diva({style: {fontWeight: 'bold'}}, dataField('continuation', t(`TOTE`, `В догонку`))),
+                                      message.recipient ? userLabel({name: 'to', user: message.recipient})
+                                                        : spanc({name: 'to', content: t(`TOTE`, `В рельсу`)})))
+                            : diva({style: {fontWeight: 'bold'}}, spanc({name: 'continuation', content: t(`TOTE`, `В догонку`)})),
                                                            
-                        diva({style: {marginTop: 10}}, dataField('timestamp', timestampString(message.inserted_at)))
+                        diva({style: {marginTop: 10}}, spanc({name: 'timestamp', content: timestampString(message.inserted_at)}))
                     ),
                     diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
-                        // message.unreadMessageCount && brightBadgea({style: {position: 'absolute', left: -12, top: 20}}, dataField('unreadMessageCount', t('' + message.unreadMessageCount))),
-                        dataField('message', message.message))))
+                        spanc({name: 'message', content: message.message})))})
             }
         }
 
-        function userLabel({user, dataFieldName, $sourceLocation}) {
+        function userLabel(def) {
+            #extract {user} from def
+            
             const glyphName = lookup(user.kind, {customer: 'user', writer: 'pencil', admin: 'cog'})
             const glyph = ia({className: `fa fa-${glyphName}`, style: {marginLeft: 5, marginRight: 5}})
-            return spana_({$sourceLocation, $revealableType: 'userLabel'},
-                glyph,
-                maybeDataField(dataFieldName, user.first_name + ' ' + user.last_name))
+            
+            const me = {
+                render() {
+                    return spana(def, glyph, me.getValue())
+                },
+                getValue() { return user.first_name + ' ' + user.last_name },
+            }
+            
+            implementControlTestFacilities({me, def, controlTypeName: 'userLabel'})
+            return elcl(me)
         }
 
         function brightBadgea(def, content) {
@@ -497,19 +509,19 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
     let proseItems
     if (clientKind === 'customer') {
         proseItems = [
-            ['why', t(`Why Us?`, `Почему мы?`)],
-            ['prices', t(`Prices`, `Цены`)],
-            ['samples', t(`Samples`, `Примеры`)],
-            ['faq', t(`FAQ`, `ЧаВо`)],
-            ['contact', t(`Contact Us`, `Связь`)],
-            ['blog', t(`Blog`, `Блог`)],
+            {name: 'why', title: t(`Why Us?`, `Почему мы?`)},
+            {name: 'prices', title: t(`Prices`, `Цены`)},
+            {name: 'samples', title: t(`Samples`, `Примеры`)},
+            {name: 'faq', title: t(`FAQ`, `ЧаВо`)},
+            {name: 'contact', title: t(`Contact Us`, `Связь`)},
+            {name: 'blog', title: t(`Blog`, `Блог`)},
         ]
     } else {
         if (!user || user.kind !== 'admin') {
             proseItems = [
-                ['why', t(`Why Us?`, `Почему мы?`)],
-                ['prices', t(`Prices`, `Цены`)],
-                ['faq', t(`FAQ`, `ЧаВо`)],
+                {name: 'why', title: t(`Why Us?`, `Почему мы?`)},
+                {name: 'prices', title: t(`Prices`, `Цены`)},
+                {name: 'faq', title: t(`FAQ`, `ЧаВо`)},
             ]
         }
     }
@@ -518,26 +530,27 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
     if (user) {
         if (clientKind === 'customer') {
             privateItems = [
-                ['orders', span(dataField('topNavItem.myOrders.title', t(`My Orders`, `Мои заказы`)))],
-                ['support', span(dataField('topNavItem.support.title', t(`Support`, `Поддержка`)))],
+                {name: 'orders', title: t(`My Orders`, `Мои заказы`)},
+                {name: 'support', title: t(`Support`, `Поддержка`)},
             ]
         } else {
             if (user.kind !== 'admin') {
                 privateItems = compact([
-                    user.state === 'cool' && ['orders', span(dataField('topNavItem.myOrders.title', t(`My Orders`, `Мои заказы`)))],
-                    user.state === 'cool' && ['store', span(dataField('topNavItem.store.title', t(`Store`, `Аукцион`)))],
-                    ['profile', span(dataField('topNavItem.profile.title', t(`Profile`, `Профиль`)))],
-                    ['support', span(dataField('topNavItem.support.title', t(`Support`, `Поддержка`)))]
+                    user.state === 'cool' && {name: 'orders', title: t(`My Orders`, `Мои заказы`)},
+                    user.state === 'cool' && {name: 'store', title: t(`Store`, `Аукцион`)},
+                    {name: 'profile', title: t(`Profile`, `Профиль`)},
+                    {name: 'support', title: t(`Support`, `Поддержка`)}
                 ])
             } else {
                 privateItems = []
                 if (user.roles.support) {
-                    privateItems.push(['admin-my-tasks', span(dataField('topNavItem.admin-my-tasks.title', t(`TOTE`, `Мои задачи`)))])
+                    privateItems.push({name: 'admin-my-tasks', title: t(`TOTE`, `Мои задачи`)})
                     
-                    privateItems.push(['admin-heap',
-                        span(dataField('topNavItem.admin-heap.title', t(`TOTE`, `Куча`)),
-                        ui.liveBadge({dataFieldName: 'topNavItem.admin-heap.badge', liveStatusFieldName: 'heapSize'})
-                        )])
+                    privateItems.push({
+                        name: 'admin-heap',
+                        title: t(`TOTE`, `Куча`),
+                        liveStatusFieldName: 'heapSize'
+                    })
                 }
             }
         }
@@ -559,10 +572,10 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                         ...proseItems.map(itemToLia))))
         }
         leftNavbarItems.push(...privateItems.map(itemToLia))
-        rightNavbarItem = itemToLia(['dashboard', t(user.first_name)])
+        rightNavbarItem = itemToLia({name: 'dashboard', title: t(user.first_name)})
     } else {
         leftNavbarItems = proseItems.map(itemToLia)
-        rightNavbarItem = itemToLia(['sign-in', t(`Sign In`, `Вход`)])
+        rightNavbarItem = itemToLia({name: 'sign-in', title: t(`Sign In`, `Вход`)})
     }
     
     let brand
@@ -587,9 +600,14 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                            rightNavbarItem))))
                            
     
-    function itemToLia([name, title]) {
+    function itemToLia({name, title, liveStatusFieldName}) {
+        return TopNavItem({ui, name, title, liveStatusFieldName, active: highlightedItem === name})
+        
+        const testName = `topNavItem-${name}`
+        const id = puid()
         return lia({className: highlightedItem === name ? 'active' : ''},
-            makeLink(name, title))
+                    makeLink(name, span(spanc({name: testName, content: title}),
+                                        liveStatusFieldName && ui.liveBadge({name: testName, liveStatusFieldName}))))
     }
                            
     function makeLink(name, title, className) {
@@ -627,7 +645,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                         }
                     },
                     showHand({testActionHandOpts}={}) {
-                        testActionHand = showTestActionHand(byid(id), testActionHandOpts)
+                        testActionHand = showTestActionHand(asn({target: byid(id)}, testActionHandOpts))
                     },
                     hideHand() {
                         testActionHand.delete()
