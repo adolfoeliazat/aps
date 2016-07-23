@@ -37,6 +37,19 @@ global.igniteShit = makeUIShitIgniter({
                     .btn-primary:active {background-color: #455a64; border-color: #263238;}
                     .btn-primary:active:focus {background-color: #455a64; border-color: #263238; outline-color: #b0bec5;}
                     .btn-primary:active:hover {background-color: #455a64; border-color: #263238;}
+                
+                    .btn-primary.disabled.focus,
+                    .btn-primary.disabled:focus,
+                    .btn-primary.disabled:hover,
+                    .btn-primary[disabled].focus,
+                    .btn-primary[disabled]:focus,
+                    .btn-primary[disabled]:hover,
+                    fieldset[disabled] .btn-primary.focus,
+                    fieldset[disabled] .btn-primary:focus,
+                    fieldset[disabled] .btn-primary:hover {
+                        background-color: #78909c;
+                        border-color: #546e7a;
+                    }      
                 `
             },
             

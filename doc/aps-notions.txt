@@ -11,3 +11,7 @@ debugFuns (little buttons in bottom-right corner)
 uiStateScope
 uispan
 
+traceBeginHandler
+traceEndHandler
+
+

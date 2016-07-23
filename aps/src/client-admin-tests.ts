@@ -13,7 +13,6 @@ module.exports = function({sim}) {
         'UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c': {
             templateDB: 'test-template-ua-1',
             async run() {
-                /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
                 #hawait drpc({fun: 'danger_clearSentEmails'})
                 
                 sim.selectBrowser('todd')
@@ -293,6 +292,8 @@ module.exports = function({sim}) {
                         'button-plus': { icon: `comment` } 
                 }})
                 
+                // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+                #hawait art.pausePoint({title: 'Will respond...', $tag: '3687412d-c52a-4bdf-bc8e-1c588df5da22'})
                 // Action
                 #hawait testGlobal.controls['button-plus'].click()
                 art.uiStateChange({$tag: 'bd47917a-b212-4d03-8910-5af36b2f7ebc', expected: {
@@ -301,6 +302,13 @@ module.exports = function({sim}) {
                     'Input-message': '',
                     'button-primary': { title: 'Запостить' },
                     'button-cancel': { title: 'Передумал' }
+                }})
+
+                // Inputs
+                #hawait testGlobal.controls['Input-message'].setValue({value: 'Та я понял, что ты писатель... В чем дело-то?'})
+                // Action
+                #hawait testGlobal.controls['button-primary'].click()
+                art.uiState({$tag: '0bb446ca-4e6e-4bcf-b9c9-687f1f3a2f29', expected: {
                 }})
 
                 

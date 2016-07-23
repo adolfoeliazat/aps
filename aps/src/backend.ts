@@ -518,6 +518,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_createSupportThreadMessage') {
+                    traceBeginHandler({$tag: 'f32672d7-d67f-49b1-ad40-36477e4c9ba7'})
                     loadField({key: 'message', kind: 'message', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
@@ -527,9 +528,10 @@ app.post('/rpc', (req, res) => {
                             message: fields.message,
                         }})
                         
-                        return hunkyDory({})
+                        return traceEndHandler({ret: hunkyDory({}), $tag: '8cd70dbd-8bc7-46ac-8636-04eb1a9d0814'})
                     }
-                    return youFixErrors()
+                    
+                    return traceEndHandler({ret: youFixErrors(), $tag: 'e43bd7b1-bd4c-4866-b2a3-944473187487'})
                 }
                 
                 else if (msg.fun === 'private_takeSupportThread') {
