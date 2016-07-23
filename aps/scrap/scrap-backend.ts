@@ -28,6 +28,18 @@ relog(await testDB.query('select * from user_tokens'))
 //
 relog(await testTemplateUA1DB.query('select * from support_threads'))
 
+//
+// seenBy
+//
+await testTemplateUA1DB.query(`update support_thread_messages set data = '{"seenBy": {"302": "some time"}}' where id = 432`)
+relog(await testTemplateUA1DB.query(`select * from support_threads where id = 12`))
+relog(await testTemplateUA1DB.query(`select * from support_thread_messages where id = 432`))
+relog(await testTemplateUA1DB.query(`select count(*) from support_thread_messages where sender_id = 302`))
+//
+relog('---')
+const user = {id: '302'}
+relog(await testTemplateUA1DB.query(q`select count(*) from support_thread_messages where sender_id = ${user.id} and data->'seenBy'->${user.id} is null`))
+
 
 const ts = require('./test-shit-ua')
 relog(ts.toUponLines(ts.generateRandomCustomersOrWriters({count: 45})))

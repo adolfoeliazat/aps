@@ -552,7 +552,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                     user.state === 'cool' && {name: 'orders', title: t(`My Orders`, `Мои заказы`)},
                     user.state === 'cool' && {name: 'store', title: t(`Store`, `Аукцион`)},
                     {name: 'profile', title: t(`Profile`, `Профиль`)},
-                    {name: 'support', title: t(`Support`, `Поддержка`)}
+                    {name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'unseenSupportThreadMessageCount'}
                 ])
             } else {
                 privateItems = []
@@ -616,6 +616,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
     function itemToLia({name, title, liveStatusFieldName}) {
         return TopNavItem({ui, name, title, liveStatusFieldName, active: highlightedItem === name})
         
+        // TODO:vgrechka @refactor Kill renderTopNavbar::makeLink    47924ff3-db76-463f-9a3e-1099586d6219 
         const testName = `topNavItem-${name}`
         const id = puid()
         return lia({className: highlightedItem === name ? 'active' : ''},
@@ -623,6 +624,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                                         liveStatusFieldName && ui.liveBadge({name: testName, liveStatusFieldName}))))
     }
                            
+    // TODO:vgrechka @refactor Kill renderTopNavbar::makeLink    47924ff3-db76-463f-9a3e-1099586d6219 
     function makeLink(name, title, className) {
         const id = puid()
         const href = name === 'home' ? '/' : `${name}.html`

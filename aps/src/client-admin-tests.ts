@@ -15,6 +15,8 @@ module.exports = function({sim}) {
             async run() {
                 #hawait drpc({fun: 'danger_clearSentEmails'})
                 
+                //------------------------------ Todd ------------------------------
+                
                 sim.selectBrowser('todd')
                 
                 #hawait sim.navigate('dashboard.html')
@@ -338,6 +340,43 @@ module.exports = function({sim}) {
                         'TopNavItem-admin-heap': { title: `Куча` },
                         'TopNavItem-dashboard': { title: `Тодд` },
                         'liveBadge-topNavItem-admin-heap': `12` 
+                }})
+                
+                //------------------------------ Kafka ------------------------------
+
+                sim.selectBrowser('kafka')
+                #hawait sim.navigate('dashboard.html')
+                art.uiState({$tag: '4e992916-7cb7-40d3-bbcd-0e9b1a961412', expected: {
+                    url: `http://aps-ua-writer.local:3022/sign-in.html`,
+                    'Input-email': ``,
+                    'Input-password': ``,
+                    'link-createAccount': { title: `Срочно создать!` },
+                    pageHeader: `Вход`,
+                    'button-primary': { title: `Войти` },
+                    'TopNavItem-why': { title: `Почему мы?` },
+                    'TopNavItem-prices': { title: `Цены` },
+                    'TopNavItem-faq': { title: `ЧаВо` },
+                    'TopNavItem-sign-in': { title: `Вход` } 
+                }})
+                
+                // Inputs
+                #hawait testGlobal.controls['Input-email'].setValue({value: 'kafka@test.shit.ua'})
+                #hawait testGlobal.controls['Input-password'].setValue({value: 'secret'})
+                // Action
+                #hawait testGlobal.controls['button-primary'].click()
+                art.uiState({$tag: '2fcf578d-3b0d-4f70-b3a1-7d4d892ecd91', expected: {
+                    url: `http://aps-ua-writer.local:3022/dashboard.html`,
+                    'link-signOut': { title: `Выйти прочь` },
+                    'link-changePassword': { title: `Сменить пароль` },
+                    pageHeader: `Панель`,
+                    'TopNavItem-why': { title: `Почему мы?` },
+                    'TopNavItem-prices': { title: `Цены` },
+                    'TopNavItem-faq': { title: `ЧаВо` },
+                    'TopNavItem-orders': { title: `Мои заказы` },
+                    'TopNavItem-store': { title: `Аукцион` },
+                    'TopNavItem-profile': { title: `Профиль` },
+                    'TopNavItem-support': { title: `Поддержка` },
+                    'TopNavItem-dashboard': { title: `Франц` } 
                 }})
 
                 

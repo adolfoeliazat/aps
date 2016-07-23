@@ -107,11 +107,13 @@ export async function createDB(newdb) {
                 thread_id bigint not null references support_threads(id),
                 sender_id bigint not null references users(id),
                 recipient_id bigint /*can be null*/ references users(id),
-                message text not null
+                message text not null,
+                data jsonb not null
                 );
             alter sequence support_thread_messages_id_seq restart with 100000;
             create trigger on_insert before insert on support_thread_messages for each row execute procedure on_insert();
             create trigger on_update before update on support_thread_messages for each row execute procedure on_update();
+            
             
         `)
     })

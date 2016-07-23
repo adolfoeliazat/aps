@@ -340,12 +340,21 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getLiveStatus') {
-                    let heapSize = 0
-                    const unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259'}, q`
-                        select count(*) as value from support_threads where supporter_id is null`)[0].value, 10)
-                    heapSize += unassignedSupportThreadCount
+                    const res = {}
+                    
+                    if (user.kind === 'admin') {
+                        res.heapSize = 0
+                        res.unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259'}, q`
+                            select count(*) from support_threads where supporter_id is null`)[0].count, 10)
+                        res.heapSize += res.unassignedSupportThreadCount
+                    }
+                    
+                    res.unseenSupportThreadMessageCount = parseInt(#await tx.query({$tag: '8e067168-bd27-42db-8a49-840bbba8a21c'}, q`
+                        select count(*) from support_thread_messages
+                        where recipient_id = ${user.id} and data->'seenBy'->${user.id} is null`)[0].count, 10)
+                                        
                         
-                    return hunkyDory({heapSize, unassignedSupportThreadCount})
+                    return hunkyDory(res)
                 }
                 
                 else if (msg.fun === 'signUp') {
@@ -510,6 +519,7 @@ app.post('/rpc', (req, res) => {
                             thread_id,
                             sender_id: user.id,
                             message: fields.message,
+                            data: {seenBy: {}},
                         }})
                         
                         return hunkyDory({entity: {id: thread_id}})
@@ -534,6 +544,7 @@ app.post('/rpc', (req, res) => {
                         sender_id: user.id,
                         recipient_id,
                         message: fields.message,
+                        data: {seenBy: {}},
                     }})
                     
                     return traceEndHandler({ret: hunkyDory({}), $tag: '8cd70dbd-8bc7-46ac-8636-04eb1a9d0814'})
