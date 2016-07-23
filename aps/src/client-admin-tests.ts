@@ -307,8 +307,37 @@ module.exports = function({sim}) {
                 // Inputs
                 #hawait testGlobal.controls['Input-message'].setValue({value: 'Та я понял, что ты писатель... В чем дело-то?'})
                 // Action
+                #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/23 13:56:26'})
                 #hawait testGlobal.controls['button-primary'].click()
                 art.uiState({$tag: '0bb446ca-4e6e-4bcf-b9c9-687f1f3a2f29', expected: {
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=308`,
+                        'Select-ordering': `desc`,
+                        'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
+                        'chunk-0.message-0.userLabel-to': `Франц Кафка`,
+                        'chunk-0.message-0.timestamp': `23/07/2016 16:56:26`,
+                        'chunk-0.message-0.message': `Та я понял, что ты писатель... В чем дело-то?`,
+                        'chunk-0.message-1.userLabel-from': `Франц Кафка`,
+                        'chunk-0.message-1.to': `В рельсу`,
+                        'chunk-0.message-1.timestamp': `17/05/2014 02:36:02`,
+                        'chunk-0.message-1.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
+                        'chunk-0.message-2.userLabel-from': `Франц Кафка`,
+                        'chunk-0.message-2.to': `В рельсу`,
+                        'chunk-0.message-2.timestamp': `17/05/2014 02:35:27`,
+                        'chunk-0.message-2.message': dedent(`
+                              Еще хотел бы добавить вот что.
+                              
+                              - Сегодня заседания нет, - сказала женщина.
+                              - Как это - нет заседания? - спросил он, не поверив.`),
+                        'chunk-0.message-3.userLabel-from': `Франц Кафка`,
+                        'chunk-0.message-3.to': `В рельсу`,
+                        'chunk-0.message-3.timestamp': `17/05/2014 02:33:15`,
+                        'chunk-0.message-3.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
+                        pageHeader: `Запрос в поддержку № 308`,
+                        'button-plus': { icon: `comment` },
+                        'TopNavItem-admin-my-tasks': { title: `Мои задачи` },
+                        'TopNavItem-admin-heap': { title: `Куча` },
+                        'TopNavItem-dashboard': { title: `Тодд` },
+                        'liveBadge-topNavItem-admin-heap': `12` 
                 }})
 
                 
