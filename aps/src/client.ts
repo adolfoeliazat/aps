@@ -103,7 +103,7 @@ global.igniteShit = makeUIShitIgniter({
                             function renderSupportThreadItem(item, i) {
                                 const {rowBackground, lineColor} = zebraRowColors(i)
                                 
-                                return uiStateScope({name: `supportThread-${item.id}`, render() {
+                                return uiStateScope({name: `thread-${i}`, render() {
                                     let topicElement
                                     const topicIsLink = false
                                     if (topicIsLink) {
@@ -163,7 +163,7 @@ global.igniteShit = makeUIShitIgniter({
                                         autoFocus: 'message',
                                         fields: [
                                             ui.HiddenField({
-                                                name: 'entityID',
+                                                name: 'threadID',
                                                 value: ui.urlQuery.thread,
                                             }),
                                             ui.TextField({
@@ -449,7 +449,7 @@ global.igniteShit = makeUIShitIgniter({
         function makeSupportThreadMessageRenderer({lineColor, dottedLines, dryFroms}) {
             return function renderSupportThreadMessage(message, messageIndex) {
 
-                return uiStateScope({name: `message-${message.id}`, render: _=> diva({className: 'row',
+                return uiStateScope({name: `message-${messageIndex}`, render: _=> diva({className: 'row',
                     style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight: 45, marginLeft: 0, marginRight: 0, position: 'relative'},
                            messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
                            
