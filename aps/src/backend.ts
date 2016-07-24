@@ -8,6 +8,7 @@
 
 MODE = 'debug'
 MORE_CHUNK = 10 + 1
+MAX_DISPLAYED_NEW_MESSAGES_IN_UPDATED_SUPPORT_THREAD = 2
 
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
@@ -444,19 +445,34 @@ app.post('/rpc', (req, res) => {
                 else if (msg.fun === 'private_getUpdatedSupportThreads') {
                     return #await handleChunkedSelect({table: 'support_threads', loadItem,
                         appendToWhere(qb) {
-                            qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})`)
+                            qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})
+                                        and exists (select 1 from support_thread_messages
+                                           where thread_id = support_threads.id
+                                               and recipient_id = ${user.id}
+                                               and data->'seenBy'->${user.id} is null
+                                          )`)
                         },
                     })
                     
                     async function loadItem(item) {
-                        item.messages = []
-                        // TODO:vgrechka Think about limiting number of messages in an updated support thread    879bb913-a3a4-4f39-bbc6-25488612797f 
-                        const messages = #await tx.query({$tag: '3ea1637a-4f8f-43e7-8e83-146d5f0586b2'}, q`
-                            select * from support_thread_messages
-                            where thread_id = ${item.id} and recipient_id = ${user.id} and data->'seenBy'->${user.id} is null
-                            order by id desc`)
-                        for (const message of messages) {
-                            item.messages.push(#await loadSupportThreadMessage(message))
+                        item.newMessages = #await load({seenByUserPred: 'is null', max: MAX_DISPLAYED_NEW_MESSAGES_IN_UPDATED_SUPPORT_THREAD})
+                        item.oldMessages = #await load({seenByUserPred: 'is not null', max: 1})
+                        
+                        async function load({seenByUserPred, max}) {
+                            const total = #await tx.query({$tag: 'aab1ae48-366f-480c-aeb8-3bb7a3bd3e28'}, q`
+                                select count(*) from support_thread_messages
+                                where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}`)
+                            
+                            const top = #await tx.query({$tag: '3ea1637a-4f8f-43e7-8e83-146d5f0586b2'}, q`
+                                select * from support_thread_messages
+                                where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}
+                                order by id desc
+                                fetch first ${{inline: max}} rows only`)
+                                
+                            for (const message of top) {
+                                #await loadSupportThreadMessage(message)
+                            }
+                            return {total, top}
                         }
                     }
                 }
@@ -469,15 +485,17 @@ app.post('/rpc', (req, res) => {
                     })
                     
                     async function loadItem(item) {
-                        item.messages = []
                         // TODO:vgrechka Think about limiting number of messages in an unassigned support thread    497d0498-2a2a-41e8-b7b3-245b99a08f3b
                         const messages = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6'}, q`
                             select * from support_thread_messages
                             where thread_id = ${item.id}
                             order by id asc`)
                         for (const message of messages) {
-                            item.messages.push(#await loadSupportThreadMessage(message))
+                            #await loadSupportThreadMessage(message)
                         }
+                        
+                        item.newMessages = {total: messages.length, top: messages}
+                        item.oldMessages = {total: 0, top: []}
                     }
                 }
                 
@@ -517,7 +535,7 @@ app.post('/rpc', (req, res) => {
                             thread_id,
                             sender_id: user.id,
                             message: fields.message,
-                            data: {seenBy: {}},
+                            data: {seenBy: {[user.id]: requestTimestamp}},
                         }})
                         
                         return hunkyDory({entity: {id: thread_id}})
@@ -542,7 +560,7 @@ app.post('/rpc', (req, res) => {
                         sender_id: user.id,
                         recipient_id,
                         message: fields.message,
-                        data: {seenBy: {}},
+                        data: {seenBy: {[user.id]: requestTimestamp}},
                     }})
                     
                     return traceEndHandler({ret: hunkyDory({}), $tag: '8cd70dbd-8bc7-46ac-8636-04eb1a9d0814'})
@@ -560,12 +578,14 @@ app.post('/rpc', (req, res) => {
                 
                 // @ctx helpers
                     
-                async function handleChunkedSelect({table, appendToWhere, loadItem, defaultOrdering='desc'}) {
+                async function handleChunkedSelect({table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'}) {
                     traceBeginHandler({$tag: 'bc68b6dc-9d72-41d8-9b96-dbf27149455d',})
                     
                     const fromID = msg.fromID || 0
                     const qb = QueryBuilder()
-                    qb.append(q`select * from ${{inline: table}} where true `)
+                    qb.append(q`select *`)
+                    appendToSelect(qb)
+                    qb.append(q`from ${{inline: table}} where true `)
                     appendToWhere(qb)
                     qb.append(q`and id >= ${fromID}`)
                     qb.append(q`order by id ${{inline: getOrderingParam({defaultValue: defaultOrdering})}}`)

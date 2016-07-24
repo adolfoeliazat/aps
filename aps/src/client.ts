@@ -82,7 +82,7 @@ global.igniteShit = makeUIShitIgniter({
                                     support: {
                                         title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({name: 'supportTab', liveStatusFieldName: 'unassignedSupportThreadCount'})),
                                         content: diva({},
-                                            ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThreadItem({topicIsLink: false, hasTakeAndReplyButton: true})})),
+                                            ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})),
                                     },
                                     newOrders: {
                                         title: t(`TOTE`, `Новые заказы`),
@@ -168,10 +168,10 @@ global.igniteShit = makeUIShitIgniter({
                                     activeTab,
                                     tabs: {
                                         updated: {
-                                            title: span(t(`Updated`, `Обновленные`)),
+                                            title: span(t(`New`, `Новые`)),
                                             content() {
                                                 return diva({},
-                                                    ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThreadItem({topicIsLink: true, hasTakeAndReplyButton: false})}))
+                                                    ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}))
                                             },
                                         },
                                     }
@@ -439,19 +439,24 @@ global.igniteShit = makeUIShitIgniter({
         
         // @ctx client helpers
         
-        function makeRenderSupportThreadItem({topicIsLink, hasTakeAndReplyButton}) {
-            return function renderSupportThreadItem(item, i) {
+        function makeRenderSupportThread({topicIsLink, hasTakeAndReplyButton, showMessageNewLabel, dryFroms}) {
+            return function renderSupportThread(item, i) {
                 const {rowBackground, lineColor} = zebraRowColors(i)
                 
                 return uiStateScope({name: `thread-${i}`, render() {
                     let topicElement
                     if (topicIsLink) {
-                        topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                        topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `topic`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
                     } else {
                         topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({name: 'topic', content: item.topic}))
                     }
                     
-                    const renderSupportThreadMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms: true})
+                    const paddingRight = hasTakeAndReplyButton ? 45 : 0
+                    const renderSupportThreadNewMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms, isNew: showMessageNewLabel, paddingRight})
+                    const renderSupportThreadOldMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms, isNew: false, paddingRight})
+                    
+                    const moreNewMessages = item.newMessages.total - item.newMessages.top.length
+                    const moreOldMessages = item.oldMessages.total - item.oldMessages.top.length
                     
                     return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
                         diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
@@ -467,7 +472,28 @@ global.igniteShit = makeUIShitIgniter({
                         diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
                             topicElement),
                             
-                        div(...item.messages.map(renderSupportThreadMessage)))
+                        uiStateScope({name: 'newMessages', render: _=> div(
+                            div(...item.newMessages.top.map(renderSupportThreadNewMessage)),
+                            moreNewMessages > 0 &&
+                                diva({}, t(
+                                    `TOTE`,
+                                    moreNewMessages === 1 ? `... И еще одно новое сообщение ...`
+                                                          : `... И еще ${moreNewMessages} новых сообщений ...`)),
+                        )}),
+                        
+                        item.newMessages.top.length > 0 && item.oldMessages.top.length > 0 &&
+                            diva({style: {borderTop: `3px dotted ${lineColor}`, paddingTop: 5}}),
+                                                      
+                        uiStateScope({name: 'oldMessages', render: _=> div(
+                            div(...item.oldMessages.top.map(renderSupportThreadOldMessage)),
+                            moreOldMessages > 0 &&
+                                diva({}, t(
+                                    `TOTE`,
+                                    moreOldMessages === 1 ? `... И еще одно новое сообщение ...`
+                                                          : `... И еще ${moreOldMessages} новых сообщений ...`))
+                        )}),
+                        
+                    )
                 }})
             }
         }
@@ -485,11 +511,11 @@ global.igniteShit = makeUIShitIgniter({
             return {rowBackground, lineColor}
         }
         
-        function makeSupportThreadMessageRenderer({lineColor, dottedLines, dryFroms}) {
+        function makeSupportThreadMessageRenderer({lineColor, dottedLines, dryFroms, isNew, paddingRight=0}) {
             return function renderSupportThreadMessage(message, messageIndex) {
 
-                return uiStateScope({name: `message-${messageIndex}`, render: _=> diva({className: 'row',
-                    style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight: 45, marginLeft: 0, marginRight: 0, position: 'relative'},
+                return uiStateScope({name: `message-${messageIndex}`, render: _=>
+                diva({className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
                            messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
                            
                     diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
@@ -503,10 +529,14 @@ global.igniteShit = makeUIShitIgniter({
                                                         : spanc({name: 'to', content: t(`TOTE`, `В рельсу`)})))
                             : diva({style: {fontWeight: 'bold'}}, spanc({name: 'continuation', content: t(`TOTE`, `В догонку`)})),
                                                            
-                        diva({style: {marginTop: 10}}, spanc({name: 'timestamp', content: timestampString(message.inserted_at)}))
+                        diva({style: {marginTop: 10}},
+                            spanc({name: 'timestamp', content: timestampString(message.inserted_at)}),
+                        )
                     ),
                     diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
-                        spanc({name: 'message', content: message.message})))})
+                        spanc({name: 'message', content: message.message}),
+                        isNew && spanc({name: 'newLabel', className: 'label label-primary', style: {position: 'absolute', top: 0, right: 0}, content: t(`New`, `Новое`)})
+                    ))})
             }
         }
 
