@@ -241,7 +241,7 @@ global.igniteShit = makeUIShitIgniter({
                         renderPlusButton, renderPlusForm, plusForm, plusFormClass, cancelPlusForm
                     
                     if (hasOrderingSelect) {
-                        orderingSelect = Select({name: 'ordering', style: {width: 160, marginRight: 8},
+                        orderingSelect = Select({name: 'ordering', isAction: true, style: {width: 160, marginRight: 8},
                             values: [['desc', t(`TOTE`, `Сначала новые`)], ['asc', t(`TOTE`, `Сначала старые`)]],
                             initialValue: ordering,
                             disabled: _=> headerControlsDisabled,
@@ -297,7 +297,7 @@ global.igniteShit = makeUIShitIgniter({
                                 return ui.renderMoreable({itemsRes, itemsReq, renderItem(message, i) {
                                     const {rowBackground, lineColor} = zebraRowColors(i)
                                     return diva({style: {background: rowBackground}},
-                                        makeSupportThreadMessageRenderer({lineColor})(message, i))
+                                        makeRenderSupportThreadMessage({lineColor, showMessageNewLabel: true})(message, i))
                                 }})
                             }),
                         ),
@@ -443,17 +443,19 @@ global.igniteShit = makeUIShitIgniter({
             return function renderSupportThread(item, i) {
                 const {rowBackground, lineColor} = zebraRowColors(i)
                 
+                const linkDef = {url: `support.html?thread=${item.id}`, name: `topic`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}}
+                
                 return uiStateScope({name: `thread-${i}`, render() {
                     let topicElement
                     if (topicIsLink) {
-                        topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `topic`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                        topicElement = ui.pageLink(asn(linkDef, {title: item.topic}))
                     } else {
                         topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({name: 'topic', content: item.topic}))
                     }
                     
                     const paddingRight = hasTakeAndReplyButton ? 45 : 0
-                    const renderSupportThreadNewMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms, isNew: showMessageNewLabel, paddingRight})
-                    const renderSupportThreadOldMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms, isNew: false, paddingRight})
+                    const renderSupportThreadNewMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
+                    const renderSupportThreadOldMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
                     
                     const moreNewMessages = item.newMessages.total - item.newMessages.top.length
                     const moreOldMessages = item.oldMessages.total - item.oldMessages.top.length
@@ -474,11 +476,7 @@ global.igniteShit = makeUIShitIgniter({
                             
                         uiStateScope({name: 'newMessages', render: _=> div(
                             div(...item.newMessages.top.map(renderSupportThreadNewMessage)),
-                            moreNewMessages > 0 &&
-                                diva({}, t(
-                                    `TOTE`,
-                                    moreNewMessages === 1 ? `... И еще одно новое сообщение ...`
-                                                          : `... И еще ${moreNewMessages} новых сообщений ...`)),
+                            moreMessagesDiv({count: moreNewMessages, kind: 'new'}),
                         )}),
                         
                         item.newMessages.top.length > 0 && item.oldMessages.top.length > 0 &&
@@ -486,14 +484,33 @@ global.igniteShit = makeUIShitIgniter({
                                                       
                         uiStateScope({name: 'oldMessages', render: _=> div(
                             div(...item.oldMessages.top.map(renderSupportThreadOldMessage)),
-                            moreOldMessages > 0 &&
-                                diva({}, t(
-                                    `TOTE`,
-                                    moreOldMessages === 1 ? `... И еще одно новое сообщение ...`
-                                                          : `... И еще ${moreOldMessages} новых сообщений ...`))
+                            moreMessagesDiv({count: moreOldMessages, kind: 'old'})
                         )}),
                         
                     )
+                    
+                    function moreMessagesDiv({count, kind}) {
+                        if (count > 0) {
+                            let title
+                            if (LANG === 'en') {
+                                raise('Implement en moreMessagesDiv')
+                            } else if (LANG === 'ua') {
+                                if (count === 1) {
+                                    title = `...и еще одно`
+                                    if (kind === 'new') title += ` новое сообщение`
+                                    else if (kind === 'old') title += ` старое сообщение`
+                                } else {
+                                    title = `...и еще ${count}`
+                                    if (kind === 'new') title += ` новых`
+                                    else if (kind === 'old') title += ` старых`
+                                        
+                                    if (count >=2 && count <= 4) title += ` сообщения`
+                                    else title += ` сообщений`
+                                }
+                            }
+                            return diva({style: {textAlign: 'right'}}, ui.pageLink(asn(linkDef, {title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}})))
+                        }
+                    }
                 }})
             }
         }
@@ -511,7 +528,7 @@ global.igniteShit = makeUIShitIgniter({
             return {rowBackground, lineColor}
         }
         
-        function makeSupportThreadMessageRenderer({lineColor, dottedLines, dryFroms, isNew, paddingRight=0}) {
+        function makeRenderSupportThreadMessage({lineColor, dottedLines, dryFroms, showMessageNewLabel, paddingRight=0}) {
             return function renderSupportThreadMessage(message, messageIndex) {
 
                 return uiStateScope({name: `message-${messageIndex}`, render: _=>
@@ -534,8 +551,11 @@ global.igniteShit = makeUIShitIgniter({
                         )
                     ),
                     diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
-                        spanc({name: 'message', content: message.message}),
-                        isNew && spanc({name: 'newLabel', className: 'label label-primary', style: {position: 'absolute', top: 0, right: 0}, content: t(`New`, `Новое`)})
+                        div(
+                            showMessageNewLabel && !message.data.seenBy[ui.getUser().id] && spanc({name: 'newLabel', className: 'label label-primary', style: {float: 'right'}, content: t(`New`, `Новое`)}),
+                            spanc({name: 'message', content: message.message}),
+                            ),
+                        
                     ))})
             }
         }
@@ -616,23 +636,18 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                 {name: 'support', title: t(`Support`, `Поддержка`)},
             ]
         } else {
-            if (user.kind !== 'admin') {
+            if (user.kind === 'writer') {
                 privateItems = compact([
                     user.state === 'cool' && {name: 'orders', title: t(`My Orders`, `Мои заказы`)},
                     user.state === 'cool' && {name: 'store', title: t(`Store`, `Аукцион`)},
                     {name: 'profile', title: t(`Profile`, `Профиль`)},
                     {name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'unseenSupportThreadMessageCount'}
                 ])
-            } else {
+            } else if (user.kind === 'admin') {
                 privateItems = []
+                privateItems.push({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize'})
                 if (user.roles.support) {
-                    privateItems.push({name: 'admin-my-tasks', title: t(`TOTE`, `Мои задачи`)})
-                    
-                    privateItems.push({
-                        name: 'admin-heap',
-                        title: t(`TOTE`, `Куча`),
-                        liveStatusFieldName: 'heapSize'
-                    })
+                    privateItems.push({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'unseenSupportThreadMessageCount'})
                 }
             }
         }

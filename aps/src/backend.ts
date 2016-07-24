@@ -351,9 +351,15 @@ app.post('/rpc', (req, res) => {
                         res.heapSize += res.unassignedSupportThreadCount
                     }
                     
-                    res.unseenSupportThreadMessageCount = parseInt(#await tx.query({$tag: '8e067168-bd27-42db-8a49-840bbba8a21c'}, q`
-                        select count(*) from support_thread_messages
-                        where recipient_id = ${user.id} and data->'seenBy'->${user.id} is null`)[0].count, 10)
+                    res.unseenSupportThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18'}, q`
+                        select count(*) from support_thread_messages m, support_threads t
+                        where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
+                              and m.thread_id = t.id
+                              and m.data->'seenBy'->${user.id} is null`)[0].count, 10)
+                    
+//                    res.unseenSupportThreadMessageCount = parseInt(#await tx.query({$tag: '8e067168-bd27-42db-8a49-840bbba8a21c'}, q`
+//                        select count(*) from support_thread_messages
+//                        where recipient_id = ${user.id} and data->'seenBy'->${user.id} is null`)[0].count, 10)
                                         
                         
                     return hunkyDory(res)
@@ -435,7 +441,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getSupportThreads') {
-                    return #await handleChunkedSelect({table: 'support_threads', loadItem: loadSupportThread,
+                    return #await handleChunkedSelect({$tag: '1f6ec4d1-cdcb-43c8-aef8-e7af23923a3d', table: 'support_threads', loadItem: loadSupportThread,
                         appendToWhere(qb) {
                             qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})`)
                         }
@@ -443,12 +449,11 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getUpdatedSupportThreads') {
-                    return #await handleChunkedSelect({table: 'support_threads', loadItem,
+                    return #await handleChunkedSelect({$tag: 'd5dd71a2-4449-46b6-baaf-8040b65d61b7', table: 'support_threads', loadItem,
                         appendToWhere(qb) {
                             qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})
                                         and exists (select 1 from support_thread_messages
                                            where thread_id = support_threads.id
-                                               and recipient_id = ${user.id}
                                                and data->'seenBy'->${user.id} is null
                                           )`)
                         },
@@ -461,7 +466,7 @@ app.post('/rpc', (req, res) => {
                         async function load({seenByUserPred, max}) {
                             const total = #await tx.query({$tag: 'aab1ae48-366f-480c-aeb8-3bb7a3bd3e28'}, q`
                                 select count(*) from support_thread_messages
-                                where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}`)
+                                where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}`)[0].count
                             
                             const top = #await tx.query({$tag: '3ea1637a-4f8f-43e7-8e83-146d5f0586b2'}, q`
                                 select * from support_thread_messages
@@ -478,7 +483,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getUnassignedSupportThreads') {
-                    return #await handleChunkedSelect({table: 'support_threads', loadItem, defaultOrdering: 'asc',
+                    return #await handleChunkedSelect({$tag: 'b1897c92-90fb-4a04-96c6-02e15620fd4d', table: 'support_threads', loadItem, defaultOrdering: 'asc',
                         appendToWhere(qb) {
                             qb.append(q`and supporter_id is null`)
                         },
@@ -514,7 +519,7 @@ app.post('/rpc', (req, res) => {
                 
                 else if (msg.fun === 'private_getSupportThreadMessages') {
                     // TODO:vgrechka Secure private_getSupportThreadMessages    c99bc54a-121a-4b3a-b210-a25fa47a43da 
-                    return #await handleChunkedSelect({table: 'support_thread_messages', loadItem: loadSupportThreadMessage,
+                    return #await handleChunkedSelect({$tag: 'b234f100-78f9-47a0-bafb-ef853b38538b', table: 'support_thread_messages', loadItem: loadSupportThreadMessage,
                         appendToWhere(qb) {
                             qb.append(q`and thread_id = ${msg.entityID}`)
                         }
@@ -578,8 +583,8 @@ app.post('/rpc', (req, res) => {
                 
                 // @ctx helpers
                     
-                async function handleChunkedSelect({table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'}) {
-                    traceBeginHandler({$tag: 'bc68b6dc-9d72-41d8-9b96-dbf27149455d',})
+                async function handleChunkedSelect({$tag, table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'}) {
+                    traceBeginHandler({$tag})
                     
                     const fromID = msg.fromID || 0
                     const qb = QueryBuilder()
