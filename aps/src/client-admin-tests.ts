@@ -50,7 +50,7 @@ module.exports = function({sim}) {
                     'liveBadge-topNavItem-admin-heap': `13` 
                 }})
                 
-                testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15}})
+                testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
                 #hawait art.pausePoint({title: 'There is some unassigned work, let’s take a look...', $tag: '20f801f5-657b-4176-bd1a-fb78f5af1811'})
                 testGlobal.controls['TopNavItem-admin-heap'].hideHand()
                 
@@ -230,7 +230,7 @@ module.exports = function({sim}) {
                         'liveBadge-topNavItem-admin-heap': `12` 
                 }})
                 
-                testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15}})
+                testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
                 #hawait art.pausePoint({title: 'Amount of work in heap decreased, since we’ve just taken one piece from it', $tag: '3ebb103e-7f0a-4669-9a29-2cbb2bbed460'})
                 testGlobal.controls['TopNavItem-admin-heap'].hideHand()
                 
@@ -376,7 +376,18 @@ module.exports = function({sim}) {
                     'TopNavItem-store': { title: `Аукцион` },
                     'TopNavItem-profile': { title: `Профиль` },
                     'TopNavItem-support': { title: `Поддержка` },
-                    'TopNavItem-dashboard': { title: `Франц` } 
+                    'TopNavItem-dashboard': { title: `Франц` },
+                    'liveBadge-topNavItem-support': '1'
+                }})
+                
+                // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+                testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
+                #hawait art.pausePoint({title: 'We have an unread message', $tag: 'ea6d6e4a-c4d6-489c-97c9-9adb34b284d7'})
+                testGlobal.controls['TopNavItem-support'].hideHand()
+                
+                // Action
+                #hawait testGlobal.controls['TopNavItem-support'].click()
+                art.uiState({$tag: 'e03093b1-3834-45e9-9f7c-724536571ecc', expected: {
                 }})
 
                 

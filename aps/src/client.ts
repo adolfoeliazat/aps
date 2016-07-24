@@ -67,11 +67,12 @@ global.igniteShit = makeUIShitIgniter({
                                 itemsFun = 'private_getUnassignedSupportThreads'
                             }
                             
-                            const res = await ui.rpcSoft({fun: itemsFun, fromID: 0})
-                            if (res.error) {
+                            const itemsReq = {fun: itemsFun}
+                            const itemsRes = await ui.rpcSoft(itemsReq)
+                            if (itemsRes.error) {
                                 return ui.setPage({
                                     pageTitle,
-                                    pageBody: div(errorBanner(res.error))
+                                    pageBody: div(errorBanner(itemsRes.error))
                                 })
                             }
                            
@@ -81,7 +82,7 @@ global.igniteShit = makeUIShitIgniter({
                                     support: {
                                         title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({name: 'supportTab', liveStatusFieldName: 'unassignedSupportThreadCount'})),
                                         content: diva({},
-                                            ui.renderMoreable({res, renderItem: renderSupportThreadItem, itemsFun})),
+                                            ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThreadItem({topicIsLink: false, hasTakeAndReplyButton: true})})),
                                     },
                                     newOrders: {
                                         title: t(`TOTE`, `Новые заказы`),
@@ -99,37 +100,6 @@ global.igniteShit = makeUIShitIgniter({
                                 pageBody: div(tabs)
                             })
                             
-                            
-                            function renderSupportThreadItem(item, i) {
-                                const {rowBackground, lineColor} = zebraRowColors(i)
-                                
-                                return uiStateScope({name: `thread-${i}`, render() {
-                                    let topicElement
-                                    const topicIsLink = false
-                                    if (topicIsLink) {
-                                        topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
-                                    } else {
-                                        topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({name: 'topic', content: item.topic}))
-                                    }
-                                    
-                                    const renderSupportThreadMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms: true})
-                                    
-                                    return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
-                                        diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
-                                            ui.busyButton({name: `takeAndReply`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
-                                                beginTrain({name: 'Take support thread and reply'}); try {
-                                                    await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
-                                                    // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
-                                                    await ui.pushNavigate(`support.html?thread=${item.id}`)
-                                                } finally { endTrain() }
-                                            }})),
-                                        
-                                        diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
-                                            topicElement),
-                                            
-                                        div(...item.messages.map(renderSupportThreadMessage)))
-                                }})
-                            }
                         } finally { endTrain() }
                     },
                     
@@ -143,7 +113,7 @@ global.igniteShit = makeUIShitIgniter({
                     
                     async support() {
                         if (ui.urlQuery.thread) {
-                            beginTrain({name: 'Load support page with thread param', orJoin: true}); try {
+                            beginTrain({name: 'Load support page with thread param'}); try {
                                 await lala({
                                     entityFun: 'private_getSupportThread',
                                     itemsFun: 'private_getSupportThreadMessages',
@@ -181,6 +151,38 @@ global.igniteShit = makeUIShitIgniter({
                             } finally { endTrain() }
                         } else if (!ui.urlQuery.thread) {
                             beginTrain({name: 'Load support page without thread param'}); try {
+                                const activeTab = ui.urlQuery.tab || 'updated'
+                                
+//                                const itemsFun
+//                                if (activeTab === 'support') {
+//                                    itemsFun = 'private_getUnassignedSupportThreads'
+//                                }
+//                                
+//                                const res = await ui.rpcSoft({fun: itemsFun, fromID: 0})
+                                
+                                const itemsReq = {fun: 'private_getUpdatedSupportThreads'}
+                                const itemsRes = await ui.rpcSoft(itemsReq)
+                                if (itemsRes.error) return ui.setToughLuckPage({res: itemsRes})
+                               
+                                const tabs = Tabs({
+                                    activeTab,
+                                    tabs: {
+                                        updated: {
+                                            title: span(t(`Updated`, `Обновленные`)),
+                                            content() {
+                                                return diva({},
+                                                    ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThreadItem({topicIsLink: true, hasTakeAndReplyButton: false})}))
+                                            },
+                                        },
+                                    }
+                                })
+                                
+                                ui.setPage({
+                                    pageTitle: t(`Support`, `Поддержка`),
+                                    pageBody: div(tabs)
+                                })
+                                
+                                return
                                 await lala({
                                     pageTitle: t('Support', 'Поддержка'),
                                     itemsFun: 'private_getSupportThreads',
@@ -220,13 +222,17 @@ global.igniteShit = makeUIShitIgniter({
                 
                 
                 async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusFormDef, aboveItems, renderItem, defaultOrdering='desc', hasPlusButton=true, hasOrderingSelect=true}) {
-                    const entityRes = await ui.rpcSoft({fun: entityFun, entityID})
-                    if (entityRes.error) return showBadResponse(entityRes)
+                    let entityRes
+                    if (entityFun) {
+                        entityRes = await ui.rpcSoft({fun: entityFun, entityID})
+                        if (entityRes.error) return showBadResponse(entityRes)
+                    }
                     
                     let ordering = ui.urlQuery.ordering
                     if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
 
-                    const itemsRes = await ui.rpcSoft({fun: itemsFun, entityID, fromID: 0, ordering})
+                    const itemsReq = {fun: itemsFun, entityID, ordering}
+                    const itemsRes = await ui.rpcSoft(itemsReq)
                     if (itemsRes.error) return showBadResponse(itemsRes)
                     
                     let items, showEmptyLabel = true,
@@ -288,7 +294,7 @@ global.igniteShit = makeUIShitIgniter({
                                     }
                                     return ''
                                 }
-                                return ui.renderMoreable({res: itemsRes, itemsFun, renderItem(message, i) {
+                                return ui.renderMoreable({itemsRes, itemsReq, renderItem(message, i) {
                                     const {rowBackground, lineColor} = zebraRowColors(i)
                                     return diva({style: {background: rowBackground}},
                                         makeSupportThreadMessageRenderer({lineColor})(message, i))
@@ -431,7 +437,40 @@ global.igniteShit = makeUIShitIgniter({
         }
         
         
-        // @ctx client functions
+        // @ctx client helpers
+        
+        function makeRenderSupportThreadItem({topicIsLink, hasTakeAndReplyButton}) {
+            return function renderSupportThreadItem(item, i) {
+                const {rowBackground, lineColor} = zebraRowColors(i)
+                
+                return uiStateScope({name: `thread-${i}`, render() {
+                    let topicElement
+                    if (topicIsLink) {
+                        topicElement = ui.pageLink({title: item.topic, url: `support-thread.html?id=${item.id}`, name: `thread-${item.id}`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                    } else {
+                        topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({name: 'topic', content: item.topic}))
+                    }
+                    
+                    const renderSupportThreadMessage = makeSupportThreadMessageRenderer({lineColor, dottedLines: true, dryFroms: true})
+                    
+                    return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
+                        diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
+                            hasTakeAndReplyButton && ui.busyButton({name: `takeAndReply`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+                                beginTrain({name: 'Take support thread and reply'}); try {
+                                    await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
+                                    // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
+                                    await ui.pushNavigate(`support.html?thread=${item.id}`)
+                                } finally { endTrain() }
+                            }}),
+                            ),
+                        
+                        diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
+                            topicElement),
+                            
+                        div(...item.messages.map(renderSupportThreadMessage)))
+                }})
+            }
+        }
         
         function zebraRowColors(i) {
             let rowBackground, lineColor

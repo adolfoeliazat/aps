@@ -59,6 +59,7 @@ app.post('/rpc', (req, res) => {
         
         const t0 = Date.now()
         try {
+            // dlog('mmm', msg)
             if (msg.fun.startsWith('danger_')) {
                 const serverToken = process.env.APS_DANGEROUS_TOKEN
                 if (!serverToken) raise('I want APS_DANGEROUS_TOKEN configured on server')
@@ -433,28 +434,41 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getSupportThreads') {
-                    const items = #await tx.query({$tag: 'e6dd4dfa-8118-4e25-9f71-13665dada843'}, q`
-                        select * from support_threads
-                                 where supportee_id = ${user.id}
-                                 order by inserted_at desc
-                    `)
-                    return hunkyDory({items})
+                    return #await handleChunkedSelect({table: 'support_threads', loadItem: loadSupportThread,
+                        appendToWhere(qb) {
+                            qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})`)
+                        }
+                    })
+                }
+                
+                else if (msg.fun === 'private_getUpdatedSupportThreads') {
+                    return #await handleChunkedSelect({table: 'support_threads', loadItem,
+                        appendToWhere(qb) {
+                            qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})`)
+                        },
+                    })
+                    
+                    async function loadItem(item) {
+                        item.messages = []
+                        // TODO:vgrechka Think about limiting number of messages in an updated support thread    879bb913-a3a4-4f39-bbc6-25488612797f 
+                        const messages = #await tx.query({$tag: '3ea1637a-4f8f-43e7-8e83-146d5f0586b2'}, q`
+                            select * from support_thread_messages
+                            where thread_id = ${item.id} and recipient_id = ${user.id} and data->'seenBy'->${user.id} is null
+                            order by id desc`)
+                        for (const message of messages) {
+                            item.messages.push(#await loadSupportThreadMessage(message))
+                        }
+                    }
                 }
                 
                 else if (msg.fun === 'private_getUnassignedSupportThreads') {
-                    const fromID = msg.fromID || 0
-                    let items = #await tx.query({$tag: 'f360d4da-d3ad-4bed-990f-c4f0c4a66176'}, q`
-                        select * from support_threads
-                        where id >= ${fromID} and supporter_id is null
-                        order by id asc
-                        fetch first MORE_CHUNK rows only`)
-                    let moreFromID
-                    if (items.length === MORE_CHUNK) {
-                        moreFromID = last(items).id
-                        items = items.slice(0, MORE_CHUNK - 1)
-                    }
-                        
-                    for (const item of items) {
+                    return #await handleChunkedSelect({table: 'support_threads', loadItem, defaultOrdering: 'asc',
+                        appendToWhere(qb) {
+                            qb.append(q`and supporter_id is null`)
+                        },
+                    })
+                    
+                    async function loadItem(item) {
                         item.messages = []
                         // TODO:vgrechka Think about limiting number of messages in an unassigned support thread    497d0498-2a2a-41e8-b7b3-245b99a08f3b
                         const messages = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6'}, q`
@@ -464,9 +478,7 @@ app.post('/rpc', (req, res) => {
                         for (const message of messages) {
                             item.messages.push(#await loadSupportThreadMessage(message))
                         }
-                        // item.unreadMessageCount = 1
                     }
-                    return hunkyDory({items, moreFromID})
                 }
                 
                 else if (msg.fun === 'private_getSupportThread') {
@@ -483,26 +495,12 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getSupportThreadMessages') {
-                    traceBeginHandler({$tag: 'bc68b6dc-9d72-41d8-9b96-dbf27149455d'})
-                    
                     // TODO:vgrechka Secure private_getSupportThreadMessages    c99bc54a-121a-4b3a-b210-a25fa47a43da 
-                    
-                    const fromID = msg.fromID || 0
-                    let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305', trace}, q`
-                        select * from support_thread_messages
-                        where thread_id = ${msg.entityID} and id >= ${fromID}
-                        order by id ${{inline: getOrderingParam({defaultValue: 'desc'})}}
-                        fetch first MORE_CHUNK rows only`)
-                    let moreFromID
-                    if (items.length === MORE_CHUNK) {
-                        moreFromID = last(items).id
-                        items = items.slice(0, MORE_CHUNK - 1)
-                    }
-                    for (const item of items) {
-                        #await loadSupportThreadMessage(item)
-                    }
-
-                    return traceEndHandler({ret: hunkyDory({items, moreFromID}), $tag: 'c77946ec-f009-4c36-8a68-e427d23778c0'})
+                    return #await handleChunkedSelect({table: 'support_thread_messages', loadItem: loadSupportThreadMessage,
+                        appendToWhere(qb) {
+                            qb.append(q`and thread_id = ${msg.entityID}`)
+                        }
+                    })
                 }
                 
                 else if (msg.fun === 'private_createSupportThread') {
@@ -561,6 +559,30 @@ app.post('/rpc', (req, res) => {
                 return {fatal: situation}
                 
                 // @ctx helpers
+                    
+                async function handleChunkedSelect({table, appendToWhere, loadItem, defaultOrdering='desc'}) {
+                    traceBeginHandler({$tag: 'bc68b6dc-9d72-41d8-9b96-dbf27149455d',})
+                    
+                    const fromID = msg.fromID || 0
+                    const qb = QueryBuilder()
+                    qb.append(q`select * from ${{inline: table}} where true `)
+                    appendToWhere(qb)
+                    qb.append(q`and id >= ${fromID}`)
+                    qb.append(q`order by id ${{inline: getOrderingParam({defaultValue: defaultOrdering})}}`)
+                    qb.append(q`fetch first MORE_CHUNK rows only`)
+                    
+                    let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305', trace}, qb.toQ())
+                    let moreFromID
+                    if (items.length === MORE_CHUNK) {
+                        moreFromID = last(items).id
+                        items = items.slice(0, MORE_CHUNK - 1)
+                    }
+                    for (const item of items) {
+                        #await loadItem(item)
+                    }
+
+                    return traceEndHandler({ret: hunkyDory({items, moreFromID}), $tag: 'c77946ec-f009-4c36-8a68-e427d23778c0'})
+                }
                 
                 function getOrderingParam({param='ordering', defaultValue='asc'}={}) {
                     let value = msg[param]
@@ -744,6 +766,14 @@ app.post('/rpc', (req, res) => {
                 
                 async function insertInto(meta, opts) {
                     return await tx.insertInto(meta, asn({requestTimestamp}, opts))
+                }
+                
+                async function loadSupportThread(thread) {
+                    thread.supportee = #await loadUser(thread.supportee)
+                    if (thread.supporter_id) {
+                        thread.supporter = #await loadUser(thread.supporter_id)
+                    }
+                    return thread
                 }
                         
                 async function loadSupportThreadMessage(message) {
@@ -1011,21 +1041,45 @@ function DBFiddler({db}) {
 }
 
 export function q(ss, ...substs) {
-    let sql = ''
-    const args = []
     let argIndex = 1
-    substs.forEach((subst, i) => {
-        sql += ss[i]
-        if (typeof subst === 'object' && subst.inline) {
-            sql += subst.inline
-        } else {
-            sql += '$' + argIndex++
-            args.push(subst)
-        }
-    })
-    sql += ss[substs.length]
-    sql = sql.replace(/MORE_CHUNK/g, MORE_CHUNK)
-    return {q: {sql, args}}
+    const resWithIndexPlaceholders = it(_=> '$' + argIndex++)
+    const resWithARGPlaceHolders = it(_=> 'ARG')
+    resWithIndexPlaceholders.q.sqlWithARGPlaceholders = resWithARGPlaceHolders.q.sql
+    return resWithIndexPlaceholders
+    
+    function it(makePlaceholder) {
+        let sql = ''
+        const args = []
+        substs.forEach((subst, i) => {
+            sql += ss[i]
+            if (typeof subst === 'object' && subst.inline) {
+                sql += subst.inline
+            } else {
+                sql += makePlaceholder()
+                args.push(subst)
+            }
+        })
+        sql += ss[substs.length]
+        sql = sql.replace(/MORE_CHUNK/g, MORE_CHUNK)
+        return {q: {sql, args}}
+    }
+}
+
+function QueryBuilder() {
+    const queries = []
+
+    return {
+        toQ() {
+            let argCount = 0
+            const sql = queries.map(x => x.q.sqlWithARGPlaceholders).join(' ').replace(/\bARG\b/g, _=> '$' + ++argCount)
+            const args = [].concat(...queries.map(x => x.q.args))
+            return {q: {sql, args}}
+        },
+        
+        append(query) {
+            queries.push(query)
+        },
+    }
 }
 
 function heyBackend_sayHelloToMe({askerName}) {
