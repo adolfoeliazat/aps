@@ -122,6 +122,7 @@ global.igniteShit = makeUIShitIgniter({
                                         return pageTopBlockQuote(entityRes.entity.topic)
                                     },
                                     plusGlyph: 'comment',
+                                    
                                     plusFormDef: {
                                         primaryButtonTitle: t(`TOTE`, `Запостить`),
                                         cancelButtonTitle: t(`TOTE`, `Передумал`),
@@ -141,6 +142,12 @@ global.igniteShit = makeUIShitIgniter({
                                         async onSuccess(res) {
                                             await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
                                         },
+                                    },
+                                    
+                                    renderItem(message, i) {
+                                        const {rowBackground, lineColor} = zebraRowColors(i)
+                                        return diva({style: {background: rowBackground}},
+                                            makeRenderSupportThreadMessage({lineColor, showMessageNewLabel: true})(message, i))
                                     },
                                 })
                             } finally { endTrain() }
@@ -288,11 +295,7 @@ global.igniteShit = makeUIShitIgniter({
                                     }
                                     return ''
                                 }
-                                return ui.renderMoreable({itemsRes, itemsReq, renderItem(message, i) {
-                                    const {rowBackground, lineColor} = zebraRowColors(i)
-                                    return diva({style: {background: rowBackground}},
-                                        makeRenderSupportThreadMessage({lineColor, showMessageNewLabel: true})(message, i))
-                                }})
+                                return ui.renderMoreable({itemsRes, itemsReq, renderItem,})
                             }),
                         ),
                         headerControls: _=> headerControlsVisible && diva({style: {display: 'flex'}, className: headerControlsClass},
@@ -526,7 +529,7 @@ global.igniteShit = makeUIShitIgniter({
             return function renderSupportThreadMessage(message, messageIndex) {
 
                 return uiStateScope({name: `message-${messageIndex}`, render: _=>
-                diva({className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
+                diva({$model: message, className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
                            messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
                            
                     diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},

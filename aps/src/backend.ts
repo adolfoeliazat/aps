@@ -584,6 +584,14 @@ app.post('/rpc', (req, res) => {
                         data: {seenBy: {[user.id]: requestTimestamp}},
                     }})
                     
+                    if (user.kind === 'admin') {
+                        #await tx.query(s{y: q`
+                            update support_thread_messages
+                            set data = data || jsonb_build_object('seenBy', data->'seenBy' || ${{[user.id]: requestTimestamp}})
+                            where thread_id = ${msg.threadID}
+                                  and data->'seenBy'->${user.id} is null`})
+                    }
+                    
                     return traceEndHandler({ret: hunkyDory({}), $tag: '8cd70dbd-8bc7-46ac-8636-04eb1a9d0814'})
                 }
                 
@@ -620,6 +628,7 @@ app.post('/rpc', (req, res) => {
                     }
                     for (const item of items) {
                         #await loadItem(item)
+                        item.zzz = 'aaaa'
                     }
 
                     return traceEndHandler({ret: hunkyDory({items, moreFromID}), $tag: 'c77946ec-f009-4c36-8a68-e427d23778c0'})
@@ -867,7 +876,7 @@ app.post('/rpc', (req, res) => {
         function traceEndHandler(data) {
             invariant(data.ret, 'I want data.ret in traceEndHandler')
             trace.push(asn({event: `End handling ${msg.fun}`}, data))
-            return data.ret
+            return asn({$trace: trace}, data.ret)
         }
     }
 })
@@ -998,7 +1007,12 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                             queryLogRecordForUI.res = prepres
                         }
                         
-                        return qres.rows
+                        const res = qres.rows
+                        if (trace) {
+                            // res.$trace = cloneDeep(trace)
+                        }
+                        
+                        return res
                     } catch (qerr) {
                         if (shouldLogForUI) {
                             queryLogRecordForUI.err = qerr
@@ -1009,7 +1023,6 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                 },
                 
                 async insertInto({$tag, $sourceLocation, shouldLogForUI=true, trace, table, rows, values, requestTimestamp}) {
-                    dlog('iiiiiiiii', arguments)
                     if (!rows) {
                         rows = [values]
                     }
@@ -1077,9 +1090,9 @@ const testTemplateUA1DB = DBFiddler({db: 'test-template-ua-1'})
 
 function DBFiddler({db}) {
     return {
-        async query(q) {
+        async query({y}) {
             return await pgConnection({db}, async function(con) {
-                return await con.query({$tag: '9fbde601-86dd-4d69-bce2-05bdcb7fb4be'}, q)
+                return await con.query({$tag: 'ac9ec6e5-beb8-4b7f-aa07-4d8f70ceb08b', y})
             })
         },
     }

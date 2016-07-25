@@ -20,8 +20,9 @@ relog('ok')
 //
 // Fiddle with testDB
 //
-relog(await testDB.query('select * from user_tokens'))
-
+//relog(await testDB.query('select * from user_tokens'))
+//
+relog(await testDB.query({y: 'select * from support_thread_messages where thread_id = 308'})) // В пустом зале заседаний. Студент. Канцелярии
 
 //
 // Fiddle with testTemplateUA1DB
@@ -294,6 +295,9 @@ relog(second)
 sortKeys(first); relog(first)
 sortKeys(second); relog(second)
 
+const x = [10, 20, 30]
+const y = cloneDeep(x)
+relog('x', x, 'y', y, x === y)
 
 
 
