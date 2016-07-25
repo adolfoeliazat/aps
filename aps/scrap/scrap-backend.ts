@@ -287,6 +287,12 @@ relog(defaults({foo: 10}, {bar: 20, baz: 30}))
 relog(capitalize('fooBarBaz'))
 
 
+const first = {a: 10, c: 30, b: 20}
+const second = {c: 30, a: 10, b: 20}
+relog(first)
+relog(second)
+sortKeys(first); relog(first)
+sortKeys(second); relog(second)
 
 
 

@@ -76,28 +76,23 @@ global.igniteShit = makeUIShitIgniter({
                                 })
                             }
                            
-                            const tabs = Tabs({
-                                activeTab,
-                                tabs: {
-                                    support: {
-                                        title: span(t(`TOTE`, `Поддержка`), ui.liveBadge({name: 'supportTab', liveStatusFieldName: 'unassignedSupportThreadCount'})),
-                                        content: diva({},
-                                            ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})),
-                                    },
-                                    newOrders: {
-                                        title: t(`TOTE`, `Новые заказы`),
-                                        content: diva({}, t(`TOTE`, `todo new orders tab`)),
-                                    },
-                                    existingOrders: {
-                                        title: t(`TOTE`, `Существующие заказы`),
-                                        content: diva({}, t(`TOTE`, `todo existing orders tab`)),
-                                    },
-                                }
-                            })
-                            
                             ui.setPage({
                                 pageTitle,
-                                pageBody: div(tabs)
+                                pageBody: div(tabs({
+                                    name: 'main',
+                                    activeTab,
+                                    tabs: {
+                                        support: {
+                                            title: _=> span(spanc({name: 'title', content: t(`TOTE`, `Поддержка`)}), ui.liveBadge({name: 'supportTab', liveStatusFieldName: 'unassignedSupportThreadCount'})),
+                                            content: _=> diva({},
+                                                ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})),
+                                        },
+//                                        orders: {
+//                                            title: _=> spanc({name: 'title', content: t(`TOTE`, `Заказы`)}),
+//                                            content: _=> diva({}, t(`TOTE`, `todo new orders tab`)),
+//                                        },
+                                    }
+                                }))
                             })
                             
                         } finally { endTrain() }
@@ -164,22 +159,21 @@ global.igniteShit = makeUIShitIgniter({
                                 const itemsRes = await ui.rpcSoft(itemsReq)
                                 if (itemsRes.error) return ui.setToughLuckPage({res: itemsRes})
                                
-                                const tabs = Tabs({
-                                    activeTab,
-                                    tabs: {
-                                        updated: {
-                                            title: span(t(`New`, `Новые`)),
-                                            content() {
-                                                return diva({},
-                                                    ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}))
-                                            },
-                                        },
-                                    }
-                                })
-                                
                                 ui.setPage({
                                     pageTitle: t(`Support`, `Поддержка`),
-                                    pageBody: div(tabs)
+                                    pageBody: div(tabs({
+                                        name: 'main',
+                                        activeTab,
+                                        tabs: {
+                                            updated: {
+                                                title: _=> spanc({name: 'title', content: t(`New`, `Новые`)}),
+                                                content() {
+                                                    return diva({},
+                                                        ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}))
+                                                },
+                                            },
+                                        }
+                                    }))
                                 })
                                 
                                 return
@@ -443,12 +437,12 @@ global.igniteShit = makeUIShitIgniter({
             return function renderSupportThread(item, i) {
                 const {rowBackground, lineColor} = zebraRowColors(i)
                 
-                const linkDef = {url: `support.html?thread=${item.id}`, name: `topic`, delayActionForFanciness: true, style: {color: BLACK_BOOT, fontWeight: 'bold'}}
+                const url = `support.html?thread=${item.id}`
                 
                 return uiStateScope({name: `thread-${i}`, render() {
                     let topicElement
                     if (topicIsLink) {
-                        topicElement = ui.pageLink(asn(linkDef, {title: item.topic}))
+                        topicElement = ui.pageLink({url, name: `topic`, title: item.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
                     } else {
                         topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({name: 'topic', content: item.topic}))
                     }
@@ -508,7 +502,7 @@ global.igniteShit = makeUIShitIgniter({
                                     else title += ` сообщений`
                                 }
                             }
-                            return diva({style: {textAlign: 'right'}}, ui.pageLink(asn(linkDef, {title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}})))
+                            return diva({style: {textAlign: 'right'}}, ui.pageLink({name: 'andMore', url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
                         }
                     }
                 }})
@@ -641,13 +635,13 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                     user.state === 'cool' && {name: 'orders', title: t(`My Orders`, `Мои заказы`)},
                     user.state === 'cool' && {name: 'store', title: t(`Store`, `Аукцион`)},
                     {name: 'profile', title: t(`Profile`, `Профиль`)},
-                    {name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'unseenSupportThreadMessageCount'}
+                    {name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'}
                 ])
             } else if (user.kind === 'admin') {
                 privateItems = []
                 privateItems.push({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize'})
                 if (user.roles.support) {
-                    privateItems.push({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'unseenSupportThreadMessageCount'})
+                    privateItems.push({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'})
                 }
             }
         }

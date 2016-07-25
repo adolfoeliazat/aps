@@ -351,17 +351,26 @@ app.post('/rpc', (req, res) => {
                         res.heapSize += res.unassignedSupportThreadCount
                     }
                     
-                    res.unseenSupportThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18'}, q`
+                    const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18'}, q`
                         select count(*) from support_thread_messages m, support_threads t
                         where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
                               and m.thread_id = t.id
                               and m.data->'seenBy'->${user.id} is null`)[0].count, 10)
+                              
+                    if (unseenThreadMessageCount) {
+                        if (user.kind === 'admin') {
+                            const unseenThreadCount = parseInt(#await tx.query({$tag: '2404edb2-34b4-4da1-9a7e-9b4af3c0419b'}, q`
+                                select count(*) from support_threads t
+                                where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
+                                      and exists (select 1 from support_thread_messages m
+                                                  where m.thread_id = t.id
+                                                        and m.data->'seenBy'->${user.id} is null)`)[0].count, 10)
+                            res.supportMenuBadge = `${unseenThreadMessageCount}/${unseenThreadCount}`
+                        } else {
+                            res.supportMenuBadge = unseenThreadMessageCount
+                        }
+                    }
                     
-//                    res.unseenSupportThreadMessageCount = parseInt(#await tx.query({$tag: '8e067168-bd27-42db-8a49-840bbba8a21c'}, q`
-//                        select count(*) from support_thread_messages
-//                        where recipient_id = ${user.id} and data->'seenBy'->${user.id} is null`)[0].count, 10)
-                                        
-                        
                     return hunkyDory(res)
                 }
                 
