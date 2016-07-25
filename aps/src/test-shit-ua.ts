@@ -168,6 +168,7 @@ export async function createTestTemplateUA1DB() {
     await createUADB('test-template-ua-1')
     await pgConnection({db: 'test-template-ua-1'}, async function(db) {
         let stackBeforeAwait
+        const trace = []
         try {
             const random = new Random(Random.engines.mt19937().seed(123123))
             const eventRandom = new Random(Random.engines.mt19937().seed(234234))
@@ -180,19 +181,19 @@ export async function createTestTemplateUA1DB() {
             
             const mtCreateUsers = measureTime('Creating users')
             for (const u of users.admin) {
-                #await insertInto({table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                #await db.insertInto(s{table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
                 for (const role of u.roles) {
-                    #await insertInto({table: 'user_roles', values: {user_id: u.user.id, role}})
+                    #await db.insertInto(s{table: 'user_roles', values: {user_id: u.user.id, role}})
                 }
             }
             for (const u of users.writer) {
-                #await insertInto({table: 'users', values: asn({kind: 'writer', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                #await db.insertInto(s{table: 'users', values: asn({kind: 'writer', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
             }
             for (const u of users.customer) {
-                #await insertInto({table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                #await insertInto({table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                #await db.insertInto(s{table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
             }
             mtCreateUsers.dlog('END')
             
@@ -291,7 +292,7 @@ export async function createTestTemplateUA1DB() {
             
             mtEvents.dlog('END')
             
-            #await query(q`delete from user_tokens`)
+            #await db.query(s{y: q`delete from user_tokens`})
             
             
             async function simNewSupportThread({threadID, messageID, stamp, upon, topic, message}) {
@@ -306,14 +307,6 @@ export async function createTestTemplateUA1DB() {
                 imposeNextIDs([messageID])
                 const user = userFromPon(upon)
                 #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token, fun: 'private_createSupportThreadMessage', threadID, message})
-            }
-            
-            async function query(opts) {
-                return await db.query({$tag: 'd0aa115c-dd8c-46c8-ae47-bff3f5906512'}, opts)
-            }
-            
-            async function insertInto(opts) {
-                return await db.insertInto({$tag: '6eb80cdd-8b9f-4857-937a-f5828dd6ed71'}, opts)
             }
             
             async function req(msg) {

@@ -190,15 +190,15 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'danger_killSupportThreads') {
-                    #await tx.query({$tag: '0b66e201-0353-4d93-9d68-58932de199ca'}, q`
-                        delete from support_thread_messages`)
-                    #await tx.query({$tag: '4aa830b9-a217-4515-bff7-353baa0eba62'}, q`
-                        delete from support_threads`)
+                    #await tx.query({$tag: '0b66e201-0353-4d93-9d68-58932de199ca', y: q`
+                        delete from support_thread_messages`})
+                    #await tx.query({$tag: '4aa830b9-a217-4515-bff7-353baa0eba62', y: q`
+                        delete from support_threads`})
                     return hunkyDory()
                 }
                 
                 else if (msg.fun === 'danger_insert') {
-                    #await insertInto({$tag: '1454b421-bc76-4abd-8eea-0ec8e8ecf0a3'}, {table: msg.table, rows: msg.rows})
+                    #await insertInto({$tag: '1454b421-bc76-4abd-8eea-0ec8e8ecf0a3', table: msg.table, rows: msg.rows})
                     return hunkyDory()
                 }
                 
@@ -239,6 +239,7 @@ app.post('/rpc', (req, res) => {
                             'backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'ui.ts': 'E:/work/foundation/u/src/ui.ts',
                             'u/src/ui.ts': 'E:/work/foundation/u/src/ui.ts',
+                            'test-shit-ua.ts': 'E:/work/aps/aps/src/test-shit-ua.ts',
                         }[filePart]
                         if (!file) return {error: `Weird file in source location: [${filePart}]`}
                         if (~openBracket && ~closingBracket) {
@@ -296,26 +297,29 @@ app.post('/rpc', (req, res) => {
                     if (msg.alsoRecreateTemplate) {
                         if (msg.templateDB === 'test-template-ua-1') {
                             testShitUA.setBackendContext({simulateRequest})
-                            await testShitUA.createTestTemplateUA1DB()
+                            #await testShitUA.createTestTemplateUA1DB()
                         } else {
                             raise(`I don’t know how to recreate test template DB for ${msg.templateDB}`)
                         }
                     }
                     
-                    await shutDownPool('test')
-                    await shutDownPool(msg.templateDB)
-                    await pgConnection({db: 'test-postgres'}, async function(db) {
-                        await db.query({$tag: '8dcb544c-1337-4298-8970-21466bad7c4c'}, `drop database if exists "aps-test"`)
-                        await db.query({$tag: '9b569e3e-53b7-4296-97d2-d1ce2a1684b4'}, `create database "aps-test" template = "aps-${msg.templateDB}"`)
-                    })
+                    #await shutDownPool('test')
+                    #await shutDownPool(msg.templateDB)
+                    await pgConnection({db: 'test-postgres'}, doInTestDB)
+                    
+                    async function doInTestDB(db) {
+                        #await db.query({$tag: '8dcb544c-1337-4298-8970-21466bad7c4c', y: `drop database if exists "aps-test"`})
+                        #await db.query({$tag: '9b569e3e-53b7-4296-97d2-d1ce2a1684b4', y: `create database "aps-test" template = "aps-${msg.templateDB}"`})
+                    }
+                    
                     return hunkyDory()
                 }
                 
                 
                 else if (msg.fun === 'signInWithPassword') {
                     traceBeginHandler({$tag: '29f48649-bea3-4777-a2cc-e40a98590804'})
-                    const rows = #await tx.query({$tag: '4281bc8b-7f86-4a7a-86e6-bb4d7587b654'}, q`
-                        select * from users where email = ${msg.email}`)
+                    const rows = #await tx.query({$tag: '4281bc8b-7f86-4a7a-86e6-bb4d7587b654', y: q`
+                        select * from users where email = ${msg.email}`})
                     const invalidEmailOrPasswordRet = {error: t('Invalid email or password', 'Неверная почта или пароль')}
                     if (!rows.length) {
                         clog('Sign-in failed: non-existing email')
@@ -330,8 +334,8 @@ app.post('/rpc', (req, res) => {
                     failOnClientUserMismatch()
                     
                     const token = uuid()
-                    #await tx.query({$tag: 'e8ccf032-2c17-4a98-8666-cd18f82326c7'}, q`
-                        insert into user_tokens(user_id, token) values(${user.id}, ${token})`)
+                    #await tx.query({$tag: 'e8ccf032-2c17-4a98-8666-cd18f82326c7', y: q`
+                        insert into user_tokens(user_id, token) values(${user.id}, ${token})`})
 
                     #await loadUserData()
                     return traceEndHandler({ret: hunkyDory({user: pickFromUser(user), token}), $tag: '8f0148c4-1020-4ce5-b0c9-4f71777bdd6f'})
@@ -346,28 +350,28 @@ app.post('/rpc', (req, res) => {
                     
                     if (user.kind === 'admin') {
                         let heapSize = 0
-                        let unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259'}, q`
-                            select count(*) from support_threads where supporter_id is null`)[0].count, 10)
+                        let unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259', y: q`
+                            select count(*) from support_threads where supporter_id is null`})[0].count, 10)
                         heapSize += unassignedSupportThreadCount
                         
                         if (unassignedSupportThreadCount) res.unassignedSupportThreadCount = t(''+unassignedSupportThreadCount)
                         if (heapSize) res.heapSize = t(''+heapSize)
                     }
                     
-                    const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18'}, q`
+                    const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18', y: q`
                         select count(*) from support_thread_messages m, support_threads t
                         where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
                               and m.thread_id = t.id
-                              and m.data->'seenBy'->${user.id} is null`)[0].count, 10)
+                              and m.data->'seenBy'->${user.id} is null`})[0].count, 10)
                               
                     if (unseenThreadMessageCount) {
                         if (user.kind === 'admin') {
-                            const unseenThreadCount = parseInt(#await tx.query({$tag: '2404edb2-34b4-4da1-9a7e-9b4af3c0419b'}, q`
+                            const unseenThreadCount = parseInt(#await tx.query({$tag: '2404edb2-34b4-4da1-9a7e-9b4af3c0419b', y: q`
                                 select count(*) from support_threads t
                                 where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
                                       and exists (select 1 from support_thread_messages m
                                                   where m.thread_id = t.id
-                                                        and m.data->'seenBy'->${user.id} is null)`)[0].count, 10)
+                                                        and m.data->'seenBy'->${user.id} is null)`})[0].count, 10)
                             res.supportMenuBadge = t(`${unseenThreadMessageCount}/${unseenThreadCount}`)
                         } else {
                             res.supportMenuBadge = t(''+unseenThreadMessageCount)
@@ -395,9 +399,9 @@ app.post('/rpc', (req, res) => {
                                 fixedNextGeneratedPassword = undefined
                             }
                     
-                            #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb'}, q`
+                            #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb', y: q`
                                 insert into users (inserted_at,         updated_at,          email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
-                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`)
+                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`})
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
@@ -441,11 +445,11 @@ app.post('/rpc', (req, res) => {
                     loadField({key: 'phone', kind: 'phone', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
-                        #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8'}, q`
+                        #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8', y: q`
                             update users set profile_updated_at = ${requestTimestamp},
                                              phone = ${fields.phone},
                                              state = 'profile-approval-pending'
-                                   where id = ${user.id}`)
+                                   where id = ${user.id}`})
                         #await loadUserForToken()
                         return hunkyDory({newUser: pickFromUser(user)})
                     }
@@ -476,15 +480,15 @@ app.post('/rpc', (req, res) => {
                         item.oldMessages = #await load({seenByUserPred: 'is not null', max: 1})
                         
                         async function load({seenByUserPred, max}) {
-                            const total = #await tx.query({$tag: 'aab1ae48-366f-480c-aeb8-3bb7a3bd3e28'}, q`
+                            const total = #await tx.query({$tag: 'aab1ae48-366f-480c-aeb8-3bb7a3bd3e28', y: q`
                                 select count(*) from support_thread_messages
-                                where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}`)[0].count
+                                where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}`})[0].count
                             
-                            const top = #await tx.query({$tag: '3ea1637a-4f8f-43e7-8e83-146d5f0586b2'}, q`
+                            const top = #await tx.query({$tag: '3ea1637a-4f8f-43e7-8e83-146d5f0586b2', y: q`
                                 select * from support_thread_messages
                                 where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}
                                 order by id desc
-                                fetch first ${{inline: max}} rows only`)
+                                fetch first ${{inline: max}} rows only`})
                                 
                             for (const message of top) {
                                 #await loadSupportThreadMessage(message)
@@ -503,10 +507,10 @@ app.post('/rpc', (req, res) => {
                     
                     async function loadItem(item) {
                         // TODO:vgrechka Think about limiting number of messages in an unassigned support thread    497d0498-2a2a-41e8-b7b3-245b99a08f3b
-                        const messages = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6'}, q`
+                        const messages = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6', y: q`
                             select * from support_thread_messages
                             where thread_id = ${item.id}
-                            order by id asc`)
+                            order by id asc`})
                         for (const message of messages) {
                             #await loadSupportThreadMessage(message)
                         }
@@ -517,9 +521,9 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_getSupportThread') {
-                    const entity = #await tx.query({$tag: 'f13a4eda-ab97-496d-b037-8b8f2b2599e1'}, q`
+                    const entity = #await tx.query({$tag: 'f13a4eda-ab97-496d-b037-8b8f2b2599e1', y: q`
                         select * from support_threads where id = ${msg.entityID}
-                    `)[0]
+                    `})[0]
                     if (!entity) return {error: t(`TOTE`, `Запроса в поддержку с таким номером не существует: ${msg.entityID}`)}
                     // TODO:vgrechka Secure private_getSupportThread    ef81af52-f9fd-4b21-8919-1681f8466d64 
                     
@@ -543,12 +547,12 @@ app.post('/rpc', (req, res) => {
                     loadField({key: 'message', kind: 'message', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
-                        const thread_id = #await insertInto({$tag: 'c8a54fb2-4a92-4c95-a13d-7ae145c7ebe9'}, {table: 'support_threads', values: {
+                        const thread_id = #await insertInto({$tag: 'c8a54fb2-4a92-4c95-a13d-7ae145c7ebe9', table: 'support_threads', values: {
                             topic: fields.topic,
                             supportee_id: user.id,
                         }})
                         
-                        #await insertInto({$tag: '44178859-236b-411b-b3df-247ffb47e89e'}, {table: 'support_thread_messages', values: {
+                        #await insertInto({$tag: '44178859-236b-411b-b3df-247ffb47e89e', table: 'support_thread_messages', values: {
                             thread_id,
                             sender_id: user.id,
                             message: fields.message,
@@ -565,14 +569,14 @@ app.post('/rpc', (req, res) => {
                     loadField({key: 'message', kind: 'message', mandatory: true})
                     if (!isEmpty(fieldErrors)) traceEndHandler({ret: youFixErrors(), $tag: 'e43bd7b1-bd4c-4866-b2a3-944473187487'})
 
-                    const thread = #await tx.query(s{$tag: 'cfdc3877-f575-4b11-b862-09194528aaea'}, q`
-                        select * from support_threads where id = ${msg.threadID}`)[0]
+                    const thread = #await tx.query(s{$tag: 'cfdc3877-f575-4b11-b862-09194528aaea', y: q`
+                        select * from support_threads where id = ${msg.threadID}`})[0]
                     let recipient_id
                     if (user.id === thread.supporter_id) recipient_id = thread.supportee_id
                     else if (user.id === thread.supportee_id) recipient_id = thread.supporter_id
                     else return traceEndHandler({res: {error: 'User is not allowed to post into the thread'}, $tag: '157c2563-493a-44cb-b0a6-1e18c73cf0fd'})
                     
-                    #await insertInto(s{$tag: 'a370d299-23e8-43d0-ae77-adf5c4b599fc'}, {table: 'support_thread_messages', values: {
+                    #await insertInto(s{$tag: 'a370d299-23e8-43d0-ae77-adf5c4b599fc', table: 'support_thread_messages', values: {
                         thread_id: msg.threadID,
                         sender_id: user.id,
                         recipient_id,
@@ -584,8 +588,8 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 else if (msg.fun === 'private_takeSupportThread') {
-                    #await tx.query({$tag: 'ea3ae40d-c285-49b0-9219-415203925257'}, q`
-                        update support_threads set supporter_id = ${user.id} where id = ${msg.id}`)
+                    #await tx.query({$tag: 'ea3ae40d-c285-49b0-9219-415203925257', y: q`
+                        update support_threads set supporter_id = ${user.id} where id = ${msg.id}`})
                     return hunkyDory()
                 }
                 
@@ -608,7 +612,7 @@ app.post('/rpc', (req, res) => {
                     qb.append(q`order by id ${{inline: getOrderingParam({defaultValue: defaultOrdering})}}`)
                     qb.append(q`fetch first MORE_CHUNK rows only`)
                     
-                    let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305', trace}, qb.toQ())
+                    let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305', trace, y: qb.toQ()})
                     let moreFromID
                     if (items.length === MORE_CHUNK) {
                         moreFromID = last(items).id
@@ -756,9 +760,9 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 async function loadUserForToken() {
-                    const rows = #await tx.query({$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false}, q`
+                    const rows = #await tx.query({$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false, y: q`
                         select users.* from users, user_tokens
-                        where user_tokens.token = ${msg.token} and users.id = user_tokens.user_id`)
+                        where user_tokens.token = ${msg.token} and users.id = user_tokens.user_id`})
                     if (!rows.length) {
                         raise('Invalid token')
                     }
@@ -769,40 +773,40 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 async function dangerouslyKillUser({email}) {
-                    const u = #await tx.query({$tag: '8adf924e-47f3-4098-abf9-e5ceee5c7832'}, q`
-                        select * from users where email = ${email}`)[0]
+                    const u = #await tx.query({$tag: '8adf924e-47f3-4098-abf9-e5ceee5c7832', y: q`
+                        select * from users where email = ${email}`})[0]
                     if (!u) return
                         
-                    #await tx.query({$tag: 'e9622700-e408-4bf9-a3cd-434ddf6fb11b'}, q`
-                        delete from user_tokens where user_id = ${u.id}`)
+                    #await tx.query({$tag: 'e9622700-e408-4bf9-a3cd-434ddf6fb11b', y: q`
+                        delete from user_tokens where user_id = ${u.id}`})
                         
-                    const supportThreads = #await tx.query({$tag: 'b0477a7a-68af-4553-94bc-65dad3db6f18'}, q`
-                        select * from support_threads where supportee_id = ${u.id}`)
+                    const supportThreads = #await tx.query({$tag: 'b0477a7a-68af-4553-94bc-65dad3db6f18', y: q`
+                        select * from support_threads where supportee_id = ${u.id}`})
                     for (const thread of supportThreads) {
-                        #await tx.query({$tag: '96facfd5-9ee6-4ff9-83c8-fef391908c0c'}, q`
-                            delete from support_thread_messages where thread_id = ${thread.id}`)
-                        #await tx.query({$tag: 'bf0f5d43-2258-4ad5-842e-388e205ccb98'}, q`
-                            delete from support_threads where id = ${thread.id}`)
+                        #await tx.query({$tag: '96facfd5-9ee6-4ff9-83c8-fef391908c0c', y: q`
+                            delete from support_thread_messages where thread_id = ${thread.id}`})
+                        #await tx.query({$tag: 'bf0f5d43-2258-4ad5-842e-388e205ccb98', y: q`
+                            delete from support_threads where id = ${thread.id}`})
                     }
                     
-                    #await tx.query({$tag: 'ac9a127e-39a0-4ca2-8e91-2be461fe4a9c'}, q`
-                        delete from user_roles where user_id = ${u.id}`)
+                    #await tx.query({$tag: 'ac9a127e-39a0-4ca2-8e91-2be461fe4a9c', y: q`
+                        delete from user_roles where user_id = ${u.id}`})
                         
-                    #await tx.query({$tag: 'c3cf9e53-2a4e-4423-8869-09a8c7078257'}, q`
-                        delete from users where email = ${email}`)
+                    #await tx.query({$tag: 'c3cf9e53-2a4e-4423-8869-09a8c7078257', y: q`
+                        delete from users where email = ${email}`})
                 }
                 
                 async function loadUserData() {
                     user.roles = {}
-                    const rows = #await tx.query({$tag: 'aea627a2-a69a-4715-ad03-761537ada2fc'}, q`
-                        select * from user_roles where user_id = ${user.id}`)
+                    const rows = #await tx.query({$tag: 'aea627a2-a69a-4715-ad03-761537ada2fc', y: q`
+                        select * from user_roles where user_id = ${user.id}`})
                     for (const row of rows) {
                         user.roles[row.role] = true
                     }
                 }
                 
-                async function insertInto(meta, opts) {
-                    return await tx.insertInto(meta, asn({requestTimestamp}, opts))
+                async function insertInto(opts) {
+                    return await tx.insertInto(asn({requestTimestamp}, opts))
                 }
                 
                 async function loadSupportThread(thread) {
@@ -823,8 +827,8 @@ app.post('/rpc', (req, res) => {
                 
                 async function loadUser(id) {
                     if (nil(id)) return undefined
-                    const user = #await tx.query({$tag: 'd206c4b6-84fb-4036-af29-af69f490a51f'}, q`
-                        select * from users where id = ${id}`)[0]
+                    const user = #await tx.query({$tag: 'd206c4b6-84fb-4036-af29-af69f490a51f', y: q`
+                        select * from users where id = ${id}`})[0]
                     return pickFromUser(user)
                 }
             }
@@ -835,7 +839,10 @@ app.post('/rpc', (req, res) => {
             if (stackBeforeAwait) {
                 clog(`Stack before await: ${stackBeforeAwait}`)
             }
-            return {fatal: situation, stack: fucked.stack, stackBeforeAwait} // TODO:vgrechka Send stack only if debug mode
+            if (fucked.stackBeforeAwait) {
+                clog(`Fucked stack before await: ${fucked.stackBeforeAwait}`)
+            }
+            return {fatal: situation, stack: fucked.stack, stackBeforeAwait, fuckedStackBeforeAwait: fucked.stackBeforeAwait} // TODO:vgrechka Send stack only if debug mode
         } finally {
             if (!requestTimeLoggingDisabled && msg.fun !== 'private_getLiveStatus') {
                 const elapsed = Date.now() - t0
@@ -931,17 +938,17 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
             }
             
             const api = {
-                /*async*/ _query(...xs) {
+                /*async*/ _query(y) {
                     let sql, args
-                    if (typeof xs[0] === 'object' && xs[0].q) {
-                        ;({sql, args} = xs[0].q)
+                    if (typeof y === 'string') {
+                        sql = y
+                        args = []
+                    } else if (y.sql && y.args) {
+                        ;({sql, args} = y)
                     } else {
-                        ;[sql, args] = xs
-                        if (typeof sql !== 'string') raise('Query should be string or q-thing')
+                        dlog('Bad query type', y)
+                        raise('Query should be string or q-thing')
                     }
-                    
-                    // If args is bad, con.query fails without telling us
-                    invariant(args === undefined || isArray(args), 'tx.query wants args to be array or undefined')
                     
                     return new Promise((resolveQuery, rejectQuery) => {
                         con.query(sql, args, (qerr, qres) => {
@@ -955,9 +962,9 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     })
                 },
                 
-                async query({$tag, shouldLogForUI=true, trace}, ...xs) {
+                async query({$tag, $sourceLocation, shouldLogForUI=true, trace, y}) {
                     arguments // XXX This fixes TS bug with ...rest params in async functions
-                    if (!$tag) raise('I want all queries to be tagged')
+                    if (!$tag && !$sourceLocation) raise('I want all queries to be tagged')
                     
                     if (MODE !== 'debug') {
                         shouldLogForUI = false
@@ -965,16 +972,16 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     
                     let queryLogRecordForUI
                     if (shouldLogForUI) {
-                        queryLogRecordForUI = {$tag, arguments: xs}
+                        queryLogRecordForUI = {$tag, $sourceLocation, y}
                         queryLogForUI.push(queryLogRecordForUI)
                         if (trace) {
-                            const sql = xs[0].q ? xs[0].q.sql : xs[0]
+                            const sql = y.sql ? y.sql : y
                             trace.push(asn({event: `Query: ${trim(sql).split(/\s+/)[0].toUpperCase()}`}, queryLogRecordForUI))
                         }
                     }
                     
                     try {
-                        const qres = await api._query(...xs)
+                        const qres = await api._query(y)
                         
                         if (shouldLogForUI) {
                             const prepres = cloneDeep(qres)
@@ -1001,7 +1008,8 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     }
                 },
                 
-                async insertInto(meta, {table, rows, values, requestTimestamp}) {
+                async insertInto({$tag, $sourceLocation, shouldLogForUI=true, trace, table, rows, values, requestTimestamp}) {
+                    dlog('iiiiiiiii', arguments)
                     if (!rows) {
                         rows = [values]
                     }
@@ -1041,7 +1049,7 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                         }
                         sql = sql.slice(0, sql.length - ', '.length)
                         sql += ') values(' + range(args.length).map(x => '$' + (x + 1)).join(', ') + ') returning id'
-                        const rows = await api.query(meta, {q: {sql, args}})
+                        const rows = await api.query({$tag, $sourceLocation, shouldLogForUI, trace, y: {sql, args}})
                         if (id === undefined) {
                             id = rows[0].id
                         }
@@ -1081,7 +1089,7 @@ export function q(ss, ...substs) {
     let argIndex = 1
     const resWithIndexPlaceholders = it(_=> '$' + argIndex++)
     const resWithARGPlaceHolders = it(_=> 'ARG')
-    resWithIndexPlaceholders.q.sqlWithARGPlaceholders = resWithARGPlaceHolders.q.sql
+    resWithIndexPlaceholders.sqlWithARGPlaceholders = resWithARGPlaceHolders.sql
     return resWithIndexPlaceholders
     
     function it(makePlaceholder) {
@@ -1098,7 +1106,7 @@ export function q(ss, ...substs) {
         })
         sql += ss[substs.length]
         sql = sql.replace(/MORE_CHUNK/g, MORE_CHUNK)
-        return {q: {sql, args}}
+        return {sql, args}
     }
 }
 
@@ -1108,9 +1116,9 @@ function QueryBuilder() {
     return {
         toQ() {
             let argCount = 0
-            const sql = queries.map(x => x.q.sqlWithARGPlaceholders).join(' ').replace(/\bARG\b/g, _=> '$' + ++argCount)
-            const args = [].concat(...queries.map(x => x.q.args))
-            return {q: {sql, args}}
+            const sql = queries.map(x => x.sqlWithARGPlaceholders).join(' ').replace(/\bARG\b/g, _=> '$' + ++argCount)
+            const args = [].concat(...queries.map(x => x.args))
+            return {sql, args}
         },
         
         append(query) {
