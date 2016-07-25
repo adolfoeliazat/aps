@@ -692,7 +692,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                            
                            
     function TopNavItem(def) {
-        const res = TopNavItem_(asn(def, {ui, active: highlightedItem === name}))
+        const res = TopNavItem_(asn(def, {ui, active: highlightedItem === def.name}))
         res.name = def.name
         return res
     }

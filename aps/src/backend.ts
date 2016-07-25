@@ -370,7 +370,7 @@ app.post('/rpc', (req, res) => {
                                                         and m.data->'seenBy'->${user.id} is null)`)[0].count, 10)
                             res.supportMenuBadge = t(`${unseenThreadMessageCount}/${unseenThreadCount}`)
                         } else {
-                            res.supportMenuBadge = unseenThreadMessageCount
+                            res.supportMenuBadge = t(''+unseenThreadMessageCount)
                         }
                     }
                     
@@ -565,14 +565,14 @@ app.post('/rpc', (req, res) => {
                     loadField({key: 'message', kind: 'message', mandatory: true})
                     if (!isEmpty(fieldErrors)) traceEndHandler({ret: youFixErrors(), $tag: 'e43bd7b1-bd4c-4866-b2a3-944473187487'})
 
-                    const thread = #await tx.query({$tag: 'cfdc3877-f575-4b11-b862-09194528aaea'}, q`
+                    const thread = #await tx.query(s{$tag: 'cfdc3877-f575-4b11-b862-09194528aaea'}, q`
                         select * from support_threads where id = ${msg.threadID}`)[0]
                     let recipient_id
                     if (user.id === thread.supporter_id) recipient_id = thread.supportee_id
                     else if (user.id === thread.supportee_id) recipient_id = thread.supporter_id
                     else return traceEndHandler({res: {error: 'User is not allowed to post into the thread'}, $tag: '157c2563-493a-44cb-b0a6-1e18c73cf0fd'})
                     
-                    #await insertInto({$tag: 'a370d299-23e8-43d0-ae77-adf5c4b599fc'}, {table: 'support_thread_messages', values: {
+                    #await insertInto(s{$tag: 'a370d299-23e8-43d0-ae77-adf5c4b599fc'}, {table: 'support_thread_messages', values: {
                         thread_id: msg.threadID,
                         sender_id: user.id,
                         recipient_id,
