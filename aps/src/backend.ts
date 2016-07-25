@@ -345,10 +345,13 @@ app.post('/rpc', (req, res) => {
                     const res = {}
                     
                     if (user.kind === 'admin') {
-                        res.heapSize = 0
-                        res.unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259'}, q`
+                        let heapSize = 0
+                        let unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259'}, q`
                             select count(*) from support_threads where supporter_id is null`)[0].count, 10)
-                        res.heapSize += res.unassignedSupportThreadCount
+                        heapSize += unassignedSupportThreadCount
+                        
+                        if (unassignedSupportThreadCount) res.unassignedSupportThreadCount = t(''+unassignedSupportThreadCount)
+                        if (heapSize) res.heapSize = t(''+heapSize)
                     }
                     
                     const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18'}, q`
@@ -365,7 +368,7 @@ app.post('/rpc', (req, res) => {
                                       and exists (select 1 from support_thread_messages m
                                                   where m.thread_id = t.id
                                                         and m.data->'seenBy'->${user.id} is null)`)[0].count, 10)
-                            res.supportMenuBadge = `${unseenThreadMessageCount}/${unseenThreadCount}`
+                            res.supportMenuBadge = t(`${unseenThreadMessageCount}/${unseenThreadCount}`)
                         } else {
                             res.supportMenuBadge = unseenThreadMessageCount
                         }
