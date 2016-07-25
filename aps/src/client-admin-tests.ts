@@ -503,6 +503,7 @@ module.exports = function({sim}) {
                     url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=desc` 
                 }})
                 
+                // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
                 #hawait art.pausePoint({title: 'Will respond...', $tag: '3687412d-c52a-4bdf-bc8e-1c588df5da22'})
                 // Action
                 #hawait testGlobal.controls['button-plus'].click()
@@ -513,42 +514,51 @@ module.exports = function({sim}) {
                     'button-primary': { title: 'Запостить' },
                     'button-cancel': { title: 'Передумал' }
                 }})
-
+                
                 // Inputs
                 #hawait testGlobal.controls['Input-message'].setValue({value: 'Та я понял, что ты писатель... В чем дело-то?'})
                 // Action
                 #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/23 13:56:26'})
                 #hawait testGlobal.controls['button-primary'].click()
                 art.uiState({$tag: '0bb446ca-4e6e-4bcf-b9c9-687f1f3a2f29', expected: {
-                    url: `http://aps-ua-writer.local:3022/support.html?thread=308`,
-                        'Select-ordering': `desc`,
-                        'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
-                        'chunk-0.message-0.userLabel-to': `Франц Кафка`,
-                        'chunk-0.message-0.timestamp': `23/07/2016 16:56:26`,
-                        'chunk-0.message-0.message': `Та я понял, что ты писатель... В чем дело-то?`,
-                        'chunk-0.message-1.userLabel-from': `Франц Кафка`,
-                        'chunk-0.message-1.to': `В рельсу`,
-                        'chunk-0.message-1.timestamp': `17/05/2014 02:36:02`,
-                        'chunk-0.message-1.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
-                        'chunk-0.message-2.userLabel-from': `Франц Кафка`,
-                        'chunk-0.message-2.to': `В рельсу`,
-                        'chunk-0.message-2.timestamp': `17/05/2014 02:35:27`,
-                        'chunk-0.message-2.message': dedent(`
-                              Еще хотел бы добавить вот что.
-                              
-                              - Сегодня заседания нет, - сказала женщина.
-                              - Как это - нет заседания? - спросил он, не поверив.`),
-                        'chunk-0.message-3.userLabel-from': `Франц Кафка`,
-                        'chunk-0.message-3.to': `В рельсу`,
-                        'chunk-0.message-3.timestamp': `17/05/2014 02:33:15`,
-                        'chunk-0.message-3.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
-                        pageHeader: `Запрос в поддержку № 308`,
-                        'button-plus': { icon: `comment` },
-                        'TopNavItem-admin-my-tasks': { title: `Мои задачи` },
-                        'TopNavItem-admin-heap': { title: `Куча` },
-                        'TopNavItem-dashboard': { title: `Тодд` },
-                        'liveBadge-topNavItem-admin-heap': `12` 
+                    'Select-ordering': { title: `Сначала новые` },
+                    'TopNavItem-admin-heap': { title: `Куча` },
+                    'TopNavItem-dashboard': { title: `Тодд` },
+                    'TopNavItem-support': { title: `Поддержка` },
+                    'button-plus': { icon: `comment` },
+                    'chunk-0.message-0.message': `Та я понял, что ты писатель... В чем дело-то?`,
+                    'chunk-0.message-0.timestamp': `23/07/2016 16:56:26`,
+                    'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
+                    'chunk-0.message-0.userLabel-to': `Франц Кафка`,
+                    'chunk-0.message-1.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
+                    'chunk-0.message-1.newLabel': `Новое`,
+                    'chunk-0.message-1.timestamp': `17/05/2014 02:36:02`,
+                    'chunk-0.message-1.to': `В рельсу`,
+                    'chunk-0.message-1.userLabel-from': `Франц Кафка`,
+                    'chunk-0.message-2.message': dedent(`
+                          Еще хотел бы добавить вот что.
+                          
+                          - Сегодня заседания нет, - сказала женщина.
+                          - Как это - нет заседания? - спросил он, не поверив.`),
+                    'chunk-0.message-2.newLabel': `Новое`,
+                    'chunk-0.message-2.timestamp': `17/05/2014 02:35:27`,
+                    'chunk-0.message-2.to': `В рельсу`,
+                    'chunk-0.message-2.userLabel-from': `Франц Кафка`,
+                    'chunk-0.message-3.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
+                    'chunk-0.message-3.newLabel': `Новое`,
+                    'chunk-0.message-3.timestamp': `17/05/2014 02:33:15`,
+                    'chunk-0.message-3.to': `В рельсу`,
+                    'chunk-0.message-3.userLabel-from': `Франц Кафка`,
+                    'liveBadge-topNavItem-admin-heap': `11`,
+                    'liveBadge-topNavItem-support': `1/1`,
+                    pageHeader: `Запрос в поддержку № 308`,
+                    url: `http://aps-ua-writer.local:3022/support.html?thread=308` 
                 }})
+                
+                testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
+                #hawait art.pausePoint({title: 'Admin replied, so "New" labels faded away and number of support items to address decreased', $tag: 'c5f3e1ee-0621-4d66-beb9-287847a95444'})
+                testGlobal.controls['TopNavItem-support'].hideHand()
+                
                 
                 //------------------------------ Kafka ------------------------------
 

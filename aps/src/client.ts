@@ -50,6 +50,39 @@ global.igniteShit = makeUIShitIgniter({
                         background-color: #78909c;
                         border-color: #546e7a;
                     }      
+                
+                    .aniFadeOutDelayed {
+                        animation-name: aniFadeOutDelayed;
+                        animation-delay: 0.5s;
+                        animation-duration: 500ms;
+                        animation-iteration-count: 1;
+                        animation-fill-mode: forwards;
+                    }
+                    @keyframes aniFadeOutDelayed {
+                        0% {
+                            opacity: 1;
+                        }
+                        
+                        100% {
+                            opacity: 0;
+                        }
+                    }
+                
+                    .aniFadeOutAfterSomeBlinking {
+                        animation-name: aniFadeOutAfterSomeBlinking;
+                        animation-delay: 0;
+                        animation-duration: 500ms;
+                        animation-iteration-count: 3;
+                        animation-fill-mode: forwards;
+                    }
+                    @keyframes aniFadeOutAfterSomeBlinking {
+                        0% {
+                            opacity: 1;
+                        }
+                        100% {
+                            opacity: 0;
+                        }
+                    }
                 `
             },
             
@@ -549,7 +582,18 @@ global.igniteShit = makeUIShitIgniter({
                     ),
                     diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
                         div(
-                            showMessageNewLabel && !message.data.seenBy[ui.getUser().id] && spanc({name: 'newLabel', className: 'label label-primary', style: {float: 'right'}, content: t(`New`, `Новое`)}),
+                            run(function renderLabels() {
+                                if (showMessageNewLabel) {
+                                    const seen = message.data.seenBy[ui.getUser().id]
+                                    const justBecameSeen = seen && ui.prevPageStuff[`supportThreadMessageNewLabelWasRendered-${message.id}`]
+                                    if (!seen) {
+                                        ui.currentPageStuff[`supportThreadMessageNewLabelWasRendered-${message.id}`] = true
+                                    }
+                                    if (!seen || justBecameSeen) {
+                                        return spanc({name: 'newLabel', className: `label label-primary ${justBecameSeen ? 'aniFadeOutDelayed' : ''}`, style: {float: 'right'}, content: t(`New`, `Новое`)})
+                                    }
+                                }
+                            }),
                             spanc({name: 'message', content: message.message}),
                             ),
                         
