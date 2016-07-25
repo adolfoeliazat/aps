@@ -605,19 +605,19 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
     let proseItems
     if (clientKind === 'customer') {
         proseItems = [
-            {name: 'why', title: t(`Why Us?`, `Почему мы?`)},
-            {name: 'prices', title: t(`Prices`, `Цены`)},
-            {name: 'samples', title: t(`Samples`, `Примеры`)},
-            {name: 'faq', title: t(`FAQ`, `ЧаВо`)},
-            {name: 'contact', title: t(`Contact Us`, `Связь`)},
-            {name: 'blog', title: t(`Blog`, `Блог`)},
+            TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`)}),
+            TopNavItem({name: 'prices', title: t(`Prices`, `Цены`)}),
+            TopNavItem({name: 'samples', title: t(`Samples`, `Примеры`)}),
+            TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`)}),
+            TopNavItem({name: 'contact', title: t(`Contact Us`, `Связь`)}),
+            TopNavItem({name: 'blog', title: t(`Blog`, `Блог`)}),
         ]
     } else {
         if (!user || user.kind !== 'admin') {
             proseItems = [
-                {name: 'why', title: t(`Why Us?`, `Почему мы?`)},
-                {name: 'prices', title: t(`Prices`, `Цены`)},
-                {name: 'faq', title: t(`FAQ`, `ЧаВо`)},
+                TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`)}),
+                TopNavItem({name: 'prices', title: t(`Prices`, `Цены`)}),
+                TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`)}),
             ]
         }
     }
@@ -626,22 +626,22 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
     if (user) {
         if (clientKind === 'customer') {
             privateItems = [
-                {name: 'orders', title: t(`My Orders`, `Мои заказы`)},
-                {name: 'support', title: t(`Support`, `Поддержка`)},
+                TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`)}),
+                TopNavItem({name: 'support', title: t(`Support`, `Поддержка`)}),
             ]
         } else {
             if (user.kind === 'writer') {
                 privateItems = compact([
-                    user.state === 'cool' && {name: 'orders', title: t(`My Orders`, `Мои заказы`)},
-                    user.state === 'cool' && {name: 'store', title: t(`Store`, `Аукцион`)},
-                    {name: 'profile', title: t(`Profile`, `Профиль`)},
-                    {name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'}
+                    user.state === 'cool' && TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`)}),
+                    user.state === 'cool' && TopNavItem({name: 'store', title: t(`Store`, `Аукцион`)}),
+                    TopNavItem({name: 'profile', title: t(`Profile`, `Профиль`)}),
+                    TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'})
                 ])
             } else if (user.kind === 'admin') {
                 privateItems = []
-                privateItems.push({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize'})
+                privateItems.push(TopNavItem({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize'}))
                 if (user.roles.support) {
-                    privateItems.push({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'})
+                    privateItems.push(TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'}))
                 }
             }
         }
@@ -653,20 +653,20 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
         leftNavbarItems = []
         if (user.kind !== 'admin') {
             let dropdownAStyle
-            if (proseItems.some(x => x[0] === highlightedItem)) {
+            if (proseItems.some(x => x.name === highlightedItem)) {
                 dropdownAStyle = {backgroundColor: '#e7e7e7'}
             }
             leftNavbarItems.push(
                 lia({className: 'dropdown'},
                     aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
                     ula({className: 'dropdown-menu'},
-                        ...proseItems.map(itemToLia))))
+                        ...proseItems)))
         }
-        leftNavbarItems.push(...privateItems.map(itemToLia))
-        rightNavbarItem = itemToLia({name: 'dashboard', title: t(user.first_name)})
+        leftNavbarItems.push(...privateItems)
+        rightNavbarItem = TopNavItem({name: 'dashboard', title: t(user.first_name)})
     } else {
-        leftNavbarItems = proseItems.map(itemToLia)
-        rightNavbarItem = itemToLia({name: 'sign-in', title: t(`Sign In`, `Вход`)})
+        leftNavbarItems = proseItems
+        rightNavbarItem = TopNavItem({name: 'sign-in', title: t(`Sign In`, `Вход`)})
     }
     
     let brand
@@ -690,8 +690,14 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                        ula({id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
                            rightNavbarItem))))
                            
+                           
+    function TopNavItem(def) {
+        const res = TopNavItem_(asn(def, {ui, active: highlightedItem === name}))
+        res.name = def.name
+        return res
+    }
     
-    function itemToLia({name, title, liveStatusFieldName}) {
+    function killme_itemToLia({name, title, liveStatusFieldName}) {
         return TopNavItem({ui, name, title, liveStatusFieldName, active: highlightedItem === name})
         
         // TODO:vgrechka @refactor Kill renderTopNavbar::makeLink    47924ff3-db76-463f-9a3e-1099586d6219 
