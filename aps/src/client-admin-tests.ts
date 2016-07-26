@@ -437,7 +437,7 @@ module.exports = function({sim}) {
                 // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
                 #hawait art.pausePoint({title: 'Changing ordering to show old messages first...', $tag: '1e77736a-3498-4b5d-8b1e-94c0f7dd6c56'})
                 // Action
-                #hawait testGlobal.controls['Select-ordering'].setValue({value: 'asc', testActionHandOpts: {pointingFrom: 'left', dtop: 38}})
+                #hawait testGlobal.controls['Select-ordering'].setValue({value: 'asc', testActionHandOpts: {pointingFrom: 'left', dtop: 48}})
                 art.uiState({$tag: '73952bab-8024-4351-8656-0966860aa31b', expected: {
                      'Select-ordering': { title: `Сначала старые` },
                       'TopNavItem-admin-heap': { title: `Куча` },
@@ -471,7 +471,7 @@ module.exports = function({sim}) {
                 
                 #hawait art.pausePoint({title: 'Changing it back to conveniently show new stuff first', $tag: '79a2d7fc-5509-41fc-b606-b82bdccd5d68'})
                 // Action
-                #hawait testGlobal.controls['Select-ordering'].setValue({value: 'desc', testActionHandOpts: {pointingFrom: 'left', dtop: 18}})
+                #hawait testGlobal.controls['Select-ordering'].setValue({value: 'desc', testActionHandOpts: {pointingFrom: 'left', dtop: 30}})
                 art.uiState({$tag: '1920f57c-db76-40ff-9f85-8ebdd8faf2f3', expected: {
                      'Select-ordering': { title: `Сначала новые` },
                       'TopNavItem-admin-heap': { title: `Куча` },
@@ -631,15 +631,57 @@ module.exports = function({sim}) {
                       url: `http://aps-ua-writer.local:3022/support.html`
                 }})
                 
+                // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+                testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].showHand({testActionHandOpts: {pointingFrom: 'left', dleft: -5, dtop: 2}})
+                #hawait art.pausePoint({title: 'Let’s look at whole thread...', $tag: 'c36ed08f-1a1d-4307-b53b-bb93d503d535'})
+                testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].hideHand()
+                
                 // Action
                 #hawait testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].click()
                 art.uiState({$tag: '627276cd-3bfe-4932-9e2f-e2845f6015f5', expected: {
+                     'Select-ordering': { title: `Сначала новые` },
+                      'TopNavItem-dashboard': { title: `Франц` },
+                      'TopNavItem-faq': { title: `ЧаВо` },
+                      'TopNavItem-orders': { title: `Мои заказы` },
+                      'TopNavItem-prices': { title: `Цены` },
+                      'TopNavItem-profile': { title: `Профиль` },
+                      'TopNavItem-store': { title: `Аукцион` },
+                      'TopNavItem-support': { active: true, title: `Поддержка` },
+                      'TopNavItem-why': { title: `Почему мы?` },
+                      'button-plus': { icon: `comment` },
+                      'chunk-0.message-0.message': `Та я понял, что ты писатель... В чем дело-то?`,
+                      'chunk-0.message-0.newLabel': `Новое`,
+                      'chunk-0.message-0.timestamp': `23/07/2016 16:56:26`,
+                      'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
+                      'chunk-0.message-0.userLabel-to': `Франц Кафка`,
+                      'chunk-0.message-1.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
+                      'chunk-0.message-1.timestamp': `17/05/2014 02:36:02`,
+                      'chunk-0.message-1.to': `В рельсу`,
+                      'chunk-0.message-1.userLabel-from': `Франц Кафка`,
+                      'chunk-0.message-2.message': dedent(`
+                            Еще хотел бы добавить вот что.
+                            
+                            - Сегодня заседания нет, - сказала женщина.
+                            - Как это - нет заседания? - спросил он, не поверив.`),
+                      'chunk-0.message-2.timestamp': `17/05/2014 02:35:27`,
+                      'chunk-0.message-2.to': `В рельсу`,
+                      'chunk-0.message-2.userLabel-from': `Франц Кафка`,
+                      'chunk-0.message-3.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
+                      'chunk-0.message-3.timestamp': `17/05/2014 02:33:15`,
+                      'chunk-0.message-3.to': `В рельсу`,
+                      'chunk-0.message-3.userLabel-from': `Франц Кафка`,
+                      'liveBadge-topNavItem-support': `1`,
+                      pageHeader: `Запрос в поддержку № 308`,
+                      url: `http://aps-ua-writer.local:3022/support.html?thread=308`
                 }})
 
-                
-                // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+                // END OF SCENARIO
             },
         }
     }
     
 }
+
+
+// /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+
