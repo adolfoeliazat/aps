@@ -622,13 +622,11 @@ app.post('/rpc', (req, res) => {
                         data: {seenBy: {[user.id]: requestTimestamp}},
                     }})
                     
-                    if (user.kind === 'admin') {
-                        #await tx.query(s{y: q`
-                            update support_thread_messages
-                            set data = data || jsonb_build_object('seenBy', data->'seenBy' || ${{[user.id]: requestTimestamp}})
-                            where thread_id = ${msg.threadID}
-                                  and data->'seenBy'->${user.id} is null`})
-                    }
+                    #await tx.query(s{y: q`
+                        update support_thread_messages
+                        set data = data || jsonb_build_object('seenBy', data->'seenBy' || ${{[user.id]: requestTimestamp}})
+                        where thread_id = ${msg.threadID}
+                              and data->'seenBy'->${user.id} is null`})
                     
                     return traceEndHandler({ret: hunkyDory({}), $tag: '8cd70dbd-8bc7-46ac-8636-04eb1a9d0814'})
                 }
