@@ -13,6 +13,7 @@ MAX_DISPLAYED_NEW_MESSAGES_IN_UPDATED_SUPPORT_THREAD = 2
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
 import * as fs from 'fs'
+import * as path from 'path'
 import * as testShitUA from './test-shit-ua'
 #import static 'into-u ./stuff'
 
@@ -147,21 +148,33 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                else if (msg.fun === 'danger_updateExpectation') {
-                    const genfile = 'E:/work/aps/aps/gen/client-expectations.js'
-                    const code = fs.readFileSync(genfile, 'utf8')
-                    const newLineOfCode = `EXPECTATIONS['${msg.aid}'] = ${deepInspect(msg.actual).replace(/\r|\n/g, ' ')}`
-                    const lines = code.split('\n')
-                    const updated = lines.some((s, i) => {
-                        if (~s.indexOf(msg.aid)) {
-                            lines[i] = newLineOfCode
-                            return true
-                        }
-                    })
-                    if (!updated) {
-                        lines.push(newLineOfCode)
+                else if (msg.fun === 'danger_updateAssertionCode') {
+                    const ft = findTagInSourceCode(msg.assertionTag)
+                    if (!ft) return {error: 'Tag is not found in code'}
+                    
+                    const bakFile = `c:/tmp/${path.basename(ft.file)}.bak-${moment().format('YYYYMMDD-HHmmss')}`
+                    fs.writeFileSync(bakFile, ft.code)
+                    
+                    const beginningLineContent = `art.uiState({$tag: '${msg.assertionTag}', expected: {` // }})
+                    const beginningLineContentIndex = ft.code.indexOf(beginningLineContent)
+                    if (!~beginningLineContentIndex) return {error: 'Cannot find beginningLineContentIndex'}
+                    
+                    let indent = 0, i = beginningLineContentIndex - 1
+                    while (ft.code[i] === ' ') {
+                        ++indent
+                        --i
                     }
-                    fs.writeFileSync(genfile, lines.join('\n'))
+                    
+                    /*({{*/ let endingLineContentIndex = ft.code.slice(beginningLineContentIndex).search(/\s*\}\}\)/)
+                    if (!~endingLineContentIndex) return {error: 'Cannot find endingLineContentIndex'}
+                    endingLineContentIndex += beginningLineContentIndex
+                    const newCode = ft.code.slice(0, beginningLineContentIndex + beginningLineContent.length)
+                                  + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
+                                  + repeat(' ', indent) + trimStart(ft.code.slice(endingLineContentIndex))
+                    
+                    // fs.writeFileSync('c:/tmp/shit.txt', newCode)
+                    fs.writeFileSync(ft.file, newCode)
+                        
                     return hunkyDory()
                 }
                 
@@ -210,12 +223,9 @@ app.post('/rpc', (req, res) => {
                 else if (msg.fun === 'danger_openSourceCode') {
                     let file, offset
                     if (msg.$tag) {
-                        for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/backend.ts',
-                                      'E:/work/aps/aps/src/client-writer-tests.ts', 'E:/work/aps/aps/src/client-admin-tests.ts']) {
-                            const code = fs.readFileSync(file, 'utf8')
-                            if (~(offset = code.indexOf(msg.$tag))) break
-                        }
-                        if (!~offset) return {error: 'Tag is not found in code'}
+                        const ft = findTagInSourceCode(msg.$tag)
+                        if (!ft) return {error: 'Tag is not found in code'}
+                        ;({file, offset} = ft)
                     } else if (msg.$sourceLocation) {
                         // Source location example: aps/src/backend.ts[7556]:181:35
                         const openBracket = msg.$sourceLocation.indexOf('[' /*]*/)
@@ -606,6 +616,15 @@ app.post('/rpc', (req, res) => {
                 return {fatal: situation}
                 
                 // @ctx helpers
+                
+                function findTagInSourceCode(tag) {
+                    for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/backend.ts',
+                                  'E:/work/aps/aps/src/client-writer-tests.ts', 'E:/work/aps/aps/src/client-admin-tests.ts']) {
+                        const code = fs.readFileSync(file, 'utf8')
+                        const offset = code.indexOf(tag)
+                        if (~offset) return {file, code, offset}
+                    }
+                }
                     
                 async function handleChunkedSelect({$tag, table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'}) {
                     traceBeginHandler({$tag})

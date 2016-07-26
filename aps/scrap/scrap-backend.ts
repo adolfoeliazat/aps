@@ -299,6 +299,8 @@ const x = [10, 20, 30]
 const y = cloneDeep(x)
 relog('x', x, 'y', y, x === y)
 
+relog('foo' + '\x0a' + 'bar')
+
 
 
 
