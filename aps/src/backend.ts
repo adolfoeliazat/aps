@@ -178,6 +178,34 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
+                else if (msg.fun === 'danger_insertTestActionCode') {
+                    const ft = findTagInSourceCode(msg.placeholderTag)
+                    if (!ft) return {error: 'Tag is not found in code'}
+                    
+                    const bakFile = `c:/tmp/${path.basename(ft.file)}.bak-${moment().format('YYYYMMDD-HHmmss')}`
+                    fs.writeFileSync(bakFile, ft.code)
+                    
+                    const beginningLineContent = `art.actionPlaceholder({$tag: '${msg.placeholderTag}'})`
+                    const beginningLineContentIndex = ft.code.indexOf(beginningLineContent)
+                    if (!~beginningLineContentIndex) return {error: 'Cannot find beginningLineContentIndex'}
+                    
+                    let indent = 0, i = beginningLineContentIndex - 1
+                    while (ft.code[i] === ' ') {
+                        ++indent
+                        --i
+                    }
+                    
+                    const newCode = ft.code.slice(0, beginningLineContentIndex)
+                                  + trimStart(('\n' + trimEnd(msg.code)).replace(/\n/g, '\n' + repeat(' ', indent))) + '\n'
+                                  + '\n' + repeat(' ', indent) + beginningLineContent
+                                  + ft.code.slice(beginningLineContentIndex + beginningLineContent.length)
+                    
+                    // fs.writeFileSync('c:/tmp/shit.txt', newCode)
+                    fs.writeFileSync(ft.file, newCode)
+                        
+                    return hunkyDory()
+                }
+                
                 else if (msg.fun === 'danger_clearSentEmails') {
                     sentEmails = []
                     return hunkyDory()

@@ -675,7 +675,47 @@ module.exports = function({sim}) {
                       url: `http://aps-ua-writer.local:3022/support.html?thread=308`
                 }})
 
-                // END OF SCENARIO
+                // Action
+                #hawait testGlobal.controls['button-plus'].click()
+                art.uiState({$tag: '3e196890-8de2-4003-8dc7-c34fbec270b2', expected: {
+                     'Input-message': ``,
+                      'TopNavItem-dashboard': { title: `Франц` },
+                      'TopNavItem-faq': { title: `ЧаВо` },
+                      'TopNavItem-orders': { title: `Мои заказы` },
+                      'TopNavItem-prices': { title: `Цены` },
+                      'TopNavItem-profile': { title: `Профиль` },
+                      'TopNavItem-store': { title: `Аукцион` },
+                      'TopNavItem-support': { active: true, title: `Поддержка` },
+                      'TopNavItem-why': { title: `Почему мы?` },
+                      'button-cancel': { title: `Передумал` },
+                      'button-primary': { title: `Запостить` },
+                      'chunk-0.message-0.message': `Та я понял, что ты писатель... В чем дело-то?`,
+                      'chunk-0.message-0.newLabel': `Новое`,
+                      'chunk-0.message-0.timestamp': `23/07/2016 16:56:26`,
+                      'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
+                      'chunk-0.message-0.userLabel-to': `Франц Кафка`,
+                      'chunk-0.message-1.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
+                      'chunk-0.message-1.timestamp': `17/05/2014 02:36:02`,
+                      'chunk-0.message-1.to': `В рельсу`,
+                      'chunk-0.message-1.userLabel-from': `Франц Кафка`,
+                      'chunk-0.message-2.message': dedent(`
+                            Еще хотел бы добавить вот что.
+                            
+                            - Сегодня заседания нет, - сказала женщина.
+                            - Как это - нет заседания? - спросил он, не поверив.`),
+                      'chunk-0.message-2.timestamp': `17/05/2014 02:35:27`,
+                      'chunk-0.message-2.to': `В рельсу`,
+                      'chunk-0.message-2.userLabel-from': `Франц Кафка`,
+                      'chunk-0.message-3.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
+                      'chunk-0.message-3.timestamp': `17/05/2014 02:33:15`,
+                      'chunk-0.message-3.to': `В рельсу`,
+                      'chunk-0.message-3.userLabel-from': `Франц Кафка`,
+                      'liveBadge-topNavItem-support': `1`,
+                      pageHeader: `Запрос в поддержку № 308`,
+                      url: `http://aps-ua-writer.local:3022/support.html?thread=308`
+                }})
+
+                art.actionPlaceholder({$tag: 'ce417c62-f167-4a0d-aecc-8193057b138c'})
             },
         }
     }
