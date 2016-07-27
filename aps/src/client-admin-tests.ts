@@ -730,14 +730,21 @@ module.exports = function({sim}) {
                 async function todd2() {
                     #hawait selectBrowserAndSignIn({browserName: 'todd2', email: 'todd@test.shit.ua'})
                     art.uiState({$tag: 'b8690567-c212-4877-aa44-8e45313187da', expected: {
-                        
+                         'TopNavItem-admin-heap': { title: `Куча` },
+                          'TopNavItem-dashboard': { active: true, title: `Тодд` },
+                          'TopNavItem-support': { title: `Поддержка` },
+                          'link-changePassword': { title: `Сменить пароль` },
+                          'link-signOut': { title: `Выйти прочь` },
+                          'liveBadge-topNavItem-admin-heap': `11`,
+                          'liveBadge-topNavItem-support': `2/2`,
+                          pageHeader: `Панель`,
+                          url: `http://aps-ua-writer.local:3022/dashboard.html`
                     }})
                     
-                    //                /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    //                testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: 0, dtop: 0}})
-                    //                #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'e8c9d374-ea05-413e-adf8-41c050d8468c'})
-                    //                testGlobal.controls['TopNavItem-support'].hideHand()
-                    
+                    /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+                    testGlobal.controls['TopNavItem-support'].showHand({"testActionHandOpts":{"pointingFrom":"right","dleft":-12,"dtop":1}})
+                    #hawait art.pausePoint({title: 'Two messages in two threads.\nOne was just added by Kafka. Second is old one we took but didnt’t bother to answer.', $tag: '27d35540-e345-4bd7-8c32-61e57b82c252'})
+                    testGlobal.controls['TopNavItem-support'].hideHand()
 
                     art.actionPlaceholder({$tag: 'ce417c62-f167-4a0d-aecc-8193057b138c'})
                 }

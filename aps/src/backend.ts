@@ -88,8 +88,6 @@ app.post('/rpc', (req, res) => {
             }[msg.LANG + '_' + msg.CLIENT_KIND] || [undefined, undefined]
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv' && msg.CLIENT_KIND !== 'debug') raise('WTF is the clientKind?')
             
-            if (msg.fun === 'private_getLiveStatus') { dlog('Skipping private_getLiveStatus request'); return {hunky: 'dory'} }
-            
             if (msg.db) {
                 dlog(`Begin transaction: fun=${msg.fun} db=${msg.db}`)
                 const res = await pgTransaction({db: msg.db}, doStuff)

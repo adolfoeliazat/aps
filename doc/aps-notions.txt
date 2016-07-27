@@ -6,6 +6,7 @@ art.respectArtPauses
 implementTestFacilities
 getRPCLagForAutomatedTests
 globalizeStuff
+debugStatusBar
 debugFuns (little buttons in bottom-right corner)
 
 uiStateScope
@@ -17,5 +18,6 @@ traceEndHandler
 q() {inline: ...}
 
 openDebugConsole()
+'Hand pause'
 
 
