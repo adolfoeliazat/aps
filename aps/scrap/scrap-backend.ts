@@ -303,6 +303,9 @@ relog('foo' + '\x0a' + 'bar')
 
 relog(blank('    '))
 
+const m = moment.tz('UTC')
+relog(m.format('YYYY/MM/DD HH:mm:ss'))
+//ts = m.tz('Europe/Kiev').format('DD/MM/YYYY HH:mm:ss')
 
 
 
