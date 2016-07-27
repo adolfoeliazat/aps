@@ -88,8 +88,13 @@ app.post('/rpc', (req, res) => {
             }[msg.LANG + '_' + msg.CLIENT_KIND] || [undefined, undefined]
             if (!clientDomain && msg.CLIENT_KIND !== 'devenv' && msg.CLIENT_KIND !== 'debug') raise('WTF is the clientKind?')
             
+            if (msg.fun === 'private_getLiveStatus') { dlog('Skipping private_getLiveStatus request'); return {hunky: 'dory'} }
+            
             if (msg.db) {
-                return await pgTransaction({db: msg.db}, doStuff)
+                dlog(`Begin transaction: fun=${msg.fun} db=${msg.db}`)
+                const res = await pgTransaction({db: msg.db}, doStuff)
+                dlog(`End transaction: fun=${msg.fun} db=${msg.db}`)
+                return res
             } else {
                 return await doStuff()
             }
@@ -355,7 +360,7 @@ app.post('/rpc', (req, res) => {
                         }
                     }
                     
-                    #await shutDownPool('test')
+                    #await shutDownPool('aps-test')
                     #await shutDownPool(msg.templateDB)
                     await pgConnection({db: 'test-postgres'}, doInTestDB)
                     
@@ -956,9 +961,9 @@ export function resetImposed() {
 export async function shutDownPool(db) {
     const pool = pgPools[db]
     if (pool) {
-        dlog('yyyyyyeeeeeesssssss ', db)
+        dlog(`Ending pool ${db}...`)
         await pool.end()
-        dlog('doooooooone')
+        dlog(`Ended pool ${db}`)
         delete pgPools[db]
     }
 }
@@ -996,6 +1001,7 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
             })
         }
         if (!config) raise(`No database config for ${db}`)
+        clog(`Creating PG pool ${db}`)
         pgPool = pgPools[db] = new (require('pg').Pool)(config)
     }
     
