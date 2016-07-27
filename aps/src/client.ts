@@ -154,7 +154,7 @@ global.igniteShit = makeUIShitIgniter({
                                     aboveItems(entityRes) {
                                         return pageTopBlockQuote(entityRes.entity.topic)
                                     },
-                                    plusGlyph: 'comment',
+                                    plusIcon: 'comment',
                                     
                                     plusFormDef: {
                                         primaryButtonTitle: t(`TOTE`, `Запостить`),
@@ -176,6 +176,37 @@ global.igniteShit = makeUIShitIgniter({
                                             await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
                                         },
                                     },
+                                    
+                                    editFormDef: run(_=> {
+                                        const fields = [
+                                            ui.HiddenField({
+                                                name: 'threadID',
+                                                value: ui.urlQuery.thread,
+                                            }),
+                                        ]
+                                        
+                                        if (ui.getUser().kind !== 'admin') {
+                                            fields.push(ui.SelectField({
+                                                name: 'status',
+                                                title: t(`TOTE`, `Статус`),
+                                                values: [
+                                                    {value: 'resolved', title: t(`TOTE`, `Решено`)}]
+                                            }))
+                                        } else {
+                                            raise('Implement editFormDef for admin')
+                                        }
+                                        
+                                        return {
+                                            primaryButtonTitle: t(`TOTE`, `Сохранить`),
+                                            cancelButtonTitle: t(`TOTE`, `Не стоит`),
+                                            // autoFocus: 'resolution',
+                                            fields,
+                                            rpcFun: 'private_updateSupportThreadMessage',
+                                            async onSuccess(res) {
+                                                await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
+                                            },
+                                        }
+                                    }),
                                     
                                     renderItem(message, i) {
                                         const {rowBackground, lineColor} = zebraRowColors(i)
@@ -224,7 +255,7 @@ global.igniteShit = makeUIShitIgniter({
                                     renderItem(item, i) {
                                         return t('todo render item')
                                     },
-                                    plusGlyph: 'plus',
+                                    plusIcon: 'plus',
                                     plusFormDef: {
                                         primaryButtonTitle: t(`TOTE`, `Запостить`),
                                         cancelButtonTitle: t(`TOTE`, `Не стоит`),
@@ -255,7 +286,7 @@ global.igniteShit = makeUIShitIgniter({
                 }[name]
                 
                 
-                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusGlyph='plus', plusFormDef, aboveItems, renderItem, defaultOrdering='desc', hasPlusButton=true, hasOrderingSelect=true}) {
+                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef, aboveItems, renderItem, defaultOrdering='desc', hasOrderingSelect=true}) {
                     let entityRes
                     if (entityFun) {
                         entityRes = await ui.rpcSoft({fun: entityFun, entityID})
@@ -272,11 +303,12 @@ global.igniteShit = makeUIShitIgniter({
                     let items, showEmptyLabel = true,
                         headerControlsVisible = true, headerControlsClass, headerControlsDisabled,
                         orderingSelect,
-                        renderPlusButton, renderPlusForm, plusForm, plusFormClass, cancelPlusForm
+                        cancelForm,
+                        plusShit, editShit
                     
                     if (hasOrderingSelect) {
-                        orderingSelect = Select({name: 'ordering', isAction: true, style: {width: 160, marginRight: 8},
-                            values: [['desc', t(`TOTE`, `Сначала новые`)], ['asc', t(`TOTE`, `Сначала старые`)]],
+                        orderingSelect = Select({name: 'ordering', isAction: true, style: {width: 160},
+                            values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
                             initialValue: ordering,
                             disabled: _=> headerControlsDisabled,
                             async onChange() {
@@ -289,37 +321,48 @@ global.igniteShit = makeUIShitIgniter({
                         })
                     }
                     
+                    if (plusFormDef) {
+                        plusShit = makeButtonFormShit({name: 'plus', level: 'primary', icon: plusIcon, formDef: plusFormDef})
+                    }
+                    if (editFormDef) {
+                        editShit = makeButtonFormShit({name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
+                    }
                         
-                    if (hasPlusButton) {
-                        renderPlusButton = function() {
-                            return button({name: 'plus', level: 'primary', icon: plusGlyph, disabled: headerControlsDisabled, onClick() {
-                                showEmptyLabel = false
-                                setHeaderControlsDisappearing()
-                                plusFormClass = 'aniFadeIn'
-                                
-                                plusForm = ui.Form(asn(plusFormDef, {
-                                    onCancel: cancelPlusForm,
-                                }))
-                                
-                                ui.updatePage()
-                            }})
-                        }
+                    function makeButtonFormShit({name, level, icon, formDef}) {
+                        let form, formClass
                         
-                        cancelPlusForm = function() {
-                            setHeaderControlsAppearing()
-                            plusForm = undefined
-                            ui.updatePage()
-                        }
-                        
-                        renderPlusForm = function() {
-                            return plusForm && diva({className: plusFormClass, style: {marginBottom: 15}}, plusForm)
+                        return {
+                            button() {
+                                return button({style: {marginLeft: 8}, name, level, icon, disabled: headerControlsDisabled, onClick() {
+                                    showEmptyLabel = false
+                                    setHeaderControlsDisappearing()
+                                    formClass = 'aniFadeIn'
+                                        
+                                    cancelForm = function() {
+                                        setHeaderControlsAppearing()
+                                        form = undefined
+                                        ui.updatePage()
+                                    }
+                                    
+                                    form = ui.Form(asn(formDef, {
+                                        onCancel: cancelForm,
+                                    }))
+                                    
+                                    ui.updatePage()
+                                }})
+                            },
+                            
+                            form() {
+                                return form && diva({className: formClass, style: {marginBottom: 15}}, form)
+                            },
                         }
                     }
                     
                     ui.setPage({
                         pageTitle: fov(pageTitle, entityRes),
                         pageBody: _=> div(
-                            renderPlusForm,
+                            editShit && editShit.form,
+                            plusShit && plusShit.form,
                             fov(aboveItems, entityRes),
                             run(function renderItems() {
                                 if (!itemsRes.items.length) {
@@ -333,11 +376,13 @@ global.igniteShit = makeUIShitIgniter({
                         ),
                         headerControls: _=> headerControlsVisible && diva({style: {display: 'flex'}, className: headerControlsClass},
                             orderingSelect,
-                            renderPlusButton),
+                            editShit && editShit.button,
+                            plusShit && plusShit.button,
+                        ),
                         
                         onKeyDown(e) {
                             if (e.keyCode === 27) {
-                                fov(cancelPlusForm)
+                                fov(cancelForm)
                             }
                         }
                     })
@@ -674,7 +719,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
         if (clientKind === 'customer') {
             privateItems = [
                 TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`)}),
-                TopNavItem({name: 'support', title: t(`Support`, `Поддержка`)}),
+                TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'}),
             ]
         } else {
             if (user.kind === 'writer') {

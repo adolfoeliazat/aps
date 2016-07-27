@@ -12,24 +12,27 @@ module.exports = function({sim}) {
     return {
         'UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c': {
             async run() {
-                const fullRun = false, slowly = false
+                // const runKind = 'first'
+                const runKind = 'last'
+                const slowly = false
                 
                 if (slowly) { setTestSpeed('slow'); art.respectArtPauses = true }
-                if (fullRun) {
+                if (runKind === 'first' || runKind === 'all') {
                     await art.resetTestDatabase({templateDB: 'test-template-ua-1', alsoRecreateTemplate: true})
                 } else {
                     await art.resetTestDatabase({templateDB: 'test-template-didi'})
                 }
                 
-                if (fullRun) {
+                if (runKind === 'first' || runKind === 'all') {
                     #hawait todd1()
                     #hawait kafka1()
                     #hawait todd2()
                 }
+                if (runKind === 'last' || runKind === 'all') {
+                    #hawait luke1()
+                }
                 
-                #hawait luke1()
-                
-                if (fullRun) {
+                if (runKind === 'first' || runKind === 'all') {
                     openDebugConsole({runFunction: 'captureTestDB'})
                 }
                 
@@ -1030,8 +1033,64 @@ module.exports = function({sim}) {
                 async function luke1() {
                     #hawait selectBrowserAndSignIn({$tag: '10d399b1-6ac3-43dd-b21c-22f40fd11c48', clientKind: 'customer', browserName: 'luke1', email: 'luke@test.shit.ua', pausePointTitle: 'Now it’s Luke’s turn...'})
                     art.uiState({$tag: '0f95a4f1-b8c5-4e33-b1dd-81204d94f2d8', expected: {
+                         'TopNavItem-blog': { title: `Блог` },
+                          'TopNavItem-contact': { title: `Связь` },
+                          'TopNavItem-dashboard': { active: true, title: `Люк` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-samples': { title: `Примеры` },
+                          'TopNavItem-support': { title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'link-changePassword': { title: `Сменить пароль` },
+                          'link-signOut': { title: `Выйти прочь` },
+                          'liveBadge-topNavItem-support': `1`,
+                          pageHeader: `Панель`,
+                          url: `http://aps-ua-writer.local:3022/dashboard.html`
                     }})
                     
+                    // Action
+                    // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '8089a90c-16e6-40ad-a668-ec4527614efd'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 19:16:05'})
+                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    art.uiState({$tag: '10b64318-d180-4a84-9b2f-0a37e61b3d4b', expected: {
+                         'TopNavItem-blog': { title: `Блог` },
+                          'TopNavItem-contact': { title: `Связь` },
+                          'TopNavItem-dashboard': { title: `Люк` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-samples': { title: `Примеры` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'chunk-0.thread-0.link-topic': { title: `И это называется следственной документацией!` },
+                          'chunk-0.thread-0.newMessages.message-0.message': dedent(`
+                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
+                                
+                                (In other words, fuck you :))`),
+                          'chunk-0.thread-0.newMessages.message-0.newLabel': `Новое`,
+                          'chunk-0.thread-0.newMessages.message-0.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-0.thread-0.newMessages.message-0.userLabel-from': `Тодд Суппортод`,
+                          'chunk-0.thread-0.newMessages.message-0.userLabel-to': `Люк Хуюк`,
+                          'chunk-0.thread-0.oldMessages.message-0.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
+                          'chunk-0.thread-0.oldMessages.message-0.timestamp': `10/04/2014 16:44:55`,
+                          'chunk-0.thread-0.oldMessages.message-0.to': `В рельсу`,
+                          'chunk-0.thread-0.oldMessages.message-0.userLabel-from': `Люк Хуюк`,
+                          'liveBadge-topNavItem-support': `1`,
+                          pageHeader: `Поддержка`,
+                          'tabs-main.updated:active.title': `Новые`,
+                          url: `http://aps-ua-writer.local:3022/support.html`
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '7b4d2b2e-202b-4188-afa8-a8136d5f2bd6'})
+
+                    // Action
+                    // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5aa09ff4-7e41-4fab-bc4f-bf3a1f3cd7e2'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 19:45:25'})
+                    #hawait testGlobal.controls['chunk-0.thread-0.link-topic'].click()
+                    art.uiState({$tag: 'c0950b79-938e-4bc0-b133-42d8a27d005f', expected: {
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'd6984756-b1ae-447d-bff2-08be7bf99d60'})
+
                     art.actionPlaceholder({$tag: 'ce417c62-f167-4a0d-aecc-8193057b138c'})
                 }
             },
