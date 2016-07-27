@@ -85,13 +85,13 @@ app.post('/rpc', (req, res) => {
                 ua_writer: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
                 en_customer: [DOMAIN_EN_CUSTOMER, PORT_SUFFIX_EN_CUSTOMER],
                 en_writer: [DOMAIN_EN_WRITER, PORT_SUFFIX_EN_WRITER],
-            }[msg.LANG + '_' + msg.CLIENT_KIND] || [undefined, undefined]
-            if (!clientDomain && msg.CLIENT_KIND !== 'devenv' && msg.CLIENT_KIND !== 'debug') raise('WTF is the clientKind?')
+            }[msg.LANG + '_' + msg.clientKind] || [undefined, undefined]
+            if (!clientDomain && msg.clientKind !== 'devenv' && msg.clientKind !== 'debug') raise('WTF is the clientKind?')
             
             if (msg.db) {
-                dlog(`Begin transaction: fun=${msg.fun} db=${msg.db}`)
+                // dlog(`Begin transaction: fun=${msg.fun} db=${msg.db}`)
                 const res = await pgTransaction({db: msg.db}, doStuff)
-                dlog(`End transaction: fun=${msg.fun} db=${msg.db}`)
+                // dlog(`End transaction: fun=${msg.fun} db=${msg.db}`)
                 return res
             } else {
                 return await doStuff()
@@ -456,14 +456,14 @@ app.post('/rpc', (req, res) => {
                     
                             #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb', y: q`
                                 insert into users (inserted_at,         updated_at,          email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
-                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.CLIENT_KIND}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`})
+                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.clientKind}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`})
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
                             let subject
-                            if (msg.LANG === 'ua' && msg.CLIENT_KIND === 'customer') {
+                            if (msg.LANG === 'ua' && msg.clientKind === 'customer') {
                                 subject = 'Пароль для APS'
-                            } else if (msg.LANG === 'ua' && msg.CLIENT_KIND === 'writer') {
+                            } else if (msg.LANG === 'ua' && msg.clientKind === 'writer') {
                                 subject = 'Пароль для Writer UA'
                             }
                             if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
@@ -756,12 +756,12 @@ app.post('/rpc', (req, res) => {
                 
                 function failOnClientUserMismatch() {
                     if (user.lang !== msg.LANG) raise('Client/user language mismatch')
-                    if (msg.CLIENT_KIND === 'writer' && (user.kind === 'admin' || user.kind === 'root' || user.kind === 'toor')) return
-                    if (user.kind !== msg.CLIENT_KIND) raise('Client/user kind mismatch')
+                    if (msg.clientKind === 'writer' && (user.kind === 'admin' || user.kind === 'root' || user.kind === 'toor')) return
+                    if (user.kind !== msg.clientKind) raise('Client/user kind mismatch')
                 }
                 
                 function clientKindDescr() {
-                    return `client ${msg.LANG} ${msg.CLIENT_KIND}`
+                    return `client ${msg.LANG} ${msg.clientKind}`
                 }
                 
                 function loadField({key, kind, mandatory}) {

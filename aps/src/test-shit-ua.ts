@@ -299,14 +299,14 @@ export async function createTestTemplateUA1DB() {
                 imposeRequestTimestamp(stamp)
                 imposeNextIDs([threadID, messageID])
                 const user = userFromPon(upon)
-                #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token, fun: 'private_createSupportThread', topic, message})
+                #await req({LANG: 'ua', clientKind: user.clientKind, token: user.token, fun: 'private_createSupportThread', topic, message})
             }
             
             async function simNewSupportThreadMessage({threadID, messageID, stamp, upon, message}) {
                 imposeRequestTimestamp(stamp)
                 imposeNextIDs([messageID])
                 const user = userFromPon(upon)
-                #await req({LANG: 'ua', CLIENT_KIND: user.clientKind, token: user.token, fun: 'private_createSupportThreadMessage', threadID, message})
+                #await req({LANG: 'ua', clientKind: user.clientKind, token: user.token, fun: 'private_createSupportThreadMessage', threadID, message})
             }
             
             async function req(msg) {

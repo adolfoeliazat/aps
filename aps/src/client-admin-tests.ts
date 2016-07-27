@@ -12,19 +12,32 @@ module.exports = function({sim}) {
     return {
         'UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c': {
             async run() {
-                // await art.resetTestDatabase({templateDB: 'test-template-ua-1', alsoRecreateTemplate: true})
-                await art.resetTestDatabase({templateDB: 'test-template-didi'})
+                const fullRun = false, slowly = false
                 
-                // #hawait todd1()
-                // #hawait kafka1()
-                // openDebugConsole({runFunction: 'captureTestDB'}); return
-                #hawait todd2()
+                if (slowly) { setTestSpeed('slow'); art.respectArtPauses = true }
+                if (fullRun) {
+                    await art.resetTestDatabase({templateDB: 'test-template-ua-1', alsoRecreateTemplate: true})
+                } else {
+                    await art.resetTestDatabase({templateDB: 'test-template-didi'})
+                }
+                
+                if (fullRun) {
+                    #hawait todd1()
+                    #hawait kafka1()
+                    #hawait todd2()
+                }
+                
+                #hawait luke1()
+                
+                if (fullRun) {
+                    openDebugConsole({runFunction: 'captureTestDB'})
+                }
                 
                 
                 async function todd1() {
                     #hawait drpc({fun: 'danger_clearSentEmails'})
                     
-                    #hawait selectBrowserAndSignIn({browserName: 'todd1', email: 'todd@test.shit.ua'})
+                    #hawait selectBrowserAndSignIn({$tag: '2855b4f4-63f0-4325-ad8a-f36fdf4e2f5a', clientKind: 'writer', browserName: 'todd1', email: 'todd@test.shit.ua', pausePointTitle: 'Todd, a support admin, comes to his workplace...'})
                     art.uiState({$tag: '866bef17-2783-40a5-860d-0d2f69966664', expected: {
                           'TopNavItem-admin-heap': { title: `Куча` },
                            'TopNavItem-dashboard': { active: true, title: `Тодд` },
@@ -36,7 +49,7 @@ module.exports = function({sim}) {
                            url: `http://aps-ua-writer.local:3022/dashboard.html`
                     }})
                     
-                    testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
+                    testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'There is some unassigned work, let’s take a look...', $tag: '20f801f5-657b-4176-bd1a-fb78f5af1811'})
                     testGlobal.controls['TopNavItem-admin-heap'].hideHand()
                     
@@ -145,7 +158,7 @@ module.exports = function({sim}) {
                     }})
                     #hawait art.pausePoint({title: 'A lot of stuff, let’s do some scrolling...', $tag: 'a86e6b75-0140-4347-a961-bf9886937806', locus: 'top-right'})
                     #hawait art.scroll({origY: 0, destY: 'bottom'})
-                    #hawait art.pausePoint({title: 'Before clicking "Show More" button', $tag: 'dcf633b6-0cd6-43bc-81f8-5920ff60a795', locus: 'top-right'})
+                    #hawait art.pausePoint({title: 'Clicking "Show More" button at the bottom...', $tag: 'dcf633b6-0cd6-43bc-81f8-5920ff60a795', locus: 'top-right'})
                     
                     // Action
                     #hawait testGlobal.controls['button-showMore'].click({testActionHandOpts: {pointingFrom: 'top'}})
@@ -221,10 +234,10 @@ module.exports = function({sim}) {
                     }})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
+                    testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'Amount of work in heap decreased, since we’ve just taken one piece from it', $tag: '3ebb103e-7f0a-4669-9a29-2cbb2bbed460'})
                     testGlobal.controls['TopNavItem-admin-heap'].hideHand()
-                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
+                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'We have three new messages contained in one thread to deal with. This badge will be hanging there until we address it by replying.\nBut first let’s go back to heap and take one more task...', $tag: '348c92fd-d749-4fad-8c4e-eef3754548cf'})
                     testGlobal.controls['TopNavItem-support'].hideHand()
                     
@@ -343,7 +356,7 @@ module.exports = function({sim}) {
                     }})
 
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
+                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'Numbers changed again. Now we have to deal with 4 support messages contained in 2 threads.\nBy clicking on Support menu we’ll see what those threads are...', $tag: '182c9720-f9ed-4afe-8c46-5b45c482e9a9'})
                     testGlobal.controls['TopNavItem-support'].hideHand()
                     
@@ -382,7 +395,7 @@ module.exports = function({sim}) {
                           url: `http://aps-ua-writer.local:3022/support.html`
                     }})
                     
-                    testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].showHand({testActionHandOpts: {pointingFrom: 'left', dleft: -2, dtop: -18}})
+                    testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].showHand({testActionHandOpts: {pointingFrom: 'left', dleft: -4, dtop: 2}})
                     #hawait art.pausePoint({title: 'To keep the list succinct, maximum two (most recent) new messages are showed per thread.\nIn order to see everything, simply switch to a particular thread. One way of doing which is via this link...', $tag: '27ba7948-693a-4c93-a054-16a534090567'})
                     testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].hideHand()
                     
@@ -541,13 +554,13 @@ module.exports = function({sim}) {
                           url: `http://aps-ua-writer.local:3022/support.html?thread=308`
                     }})
                     
-                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
+                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'Admin replied, so "New" labels faded away and number of support items to address decreased', $tag: 'c5f3e1ee-0621-4d66-beb9-287847a95444'})
                     testGlobal.controls['TopNavItem-support'].hideHand()
                 }
                 
                 async function kafka1() {
-                    #hawait selectBrowserAndSignIn({browserName: 'kafka1', email: 'kafka@test.shit.ua'})
+                    #hawait selectBrowserAndSignIn({$tag: '24cb9937-d5eb-4b10-a8b0-19428e9db3ef', clientKind: 'writer', browserName: 'kafka1', email: 'kafka@test.shit.ua', pausePointTitle: 'Another user, Franz Kafka, who is a writer, comes into play...'})
                     art.uiState({$tag: '2fcf578d-3b0d-4f70-b3a1-7d4d892ecd91', expected: {
                          'TopNavItem-dashboard': { active: true, title: `Франц` },
                           'TopNavItem-faq': { title: `ЧаВо` },
@@ -565,7 +578,7 @@ module.exports = function({sim}) {
                     }})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: -2}})
+                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'We have an unread message', $tag: 'ea6d6e4a-c4d6-489c-97c9-9adb34b284d7'})
                     testGlobal.controls['TopNavItem-support'].hideHand()
                     
@@ -640,6 +653,8 @@ module.exports = function({sim}) {
                           pageHeader: `Запрос в поддержку № 308`,
                           url: `http://aps-ua-writer.local:3022/support.html?thread=308`
                     }})
+                    
+                    #hawait art.pausePoint({title: 'Will reply...', $tag: 'ae5e858c-baea-4321-a024-4f07629c19c1'})
 
                     // Action
                     #hawait testGlobal.controls['button-plus'].click()
@@ -728,7 +743,7 @@ module.exports = function({sim}) {
                 }
                 
                 async function todd2() {
-                    #hawait selectBrowserAndSignIn({browserName: 'todd2', email: 'todd@test.shit.ua'})
+                    #hawait selectBrowserAndSignIn({$tag: 'dbfba9fb-790e-4598-a04e-9b2b6041c1bc', clientKind: 'writer', browserName: 'todd2', email: 'todd@test.shit.ua', pausePointTitle: 'Todd comes back to check stuff...'})
                     art.uiState({$tag: 'b8690567-c212-4877-aa44-8e45313187da', expected: {
                          'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { active: true, title: `Тодд` },
@@ -821,7 +836,7 @@ module.exports = function({sim}) {
 
 
                     // Inputs
-                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Take it easy, Luke. We hear your pane and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))'})
+                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))'})
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '8ba7f289-a636-43d6-818e-59ebc6ec4f5c'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 15:52:46'})
@@ -833,7 +848,7 @@ module.exports = function({sim}) {
                           'TopNavItem-support': { active: true, title: `Поддержка` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': dedent(`
-                                Take it easy, Luke. We hear your pane and are working hard to find a solution to your problem.
+                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
                                 
                                 (In other words, fuck you :))`),
                           'chunk-0.message-0.timestamp': `27/07/2016 18:52:46`,
@@ -1010,6 +1025,13 @@ module.exports = function({sim}) {
                     }})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'bfacb25b-1acd-40c0-856b-c0162647568c'})
 
+                }
+                
+                async function luke1() {
+                    #hawait selectBrowserAndSignIn({$tag: '10d399b1-6ac3-43dd-b21c-22f40fd11c48', clientKind: 'customer', browserName: 'luke1', email: 'luke@test.shit.ua', pausePointTitle: 'Now it’s Luke’s turn...'})
+                    art.uiState({$tag: '0f95a4f1-b8c5-4e33-b1dd-81204d94f2d8', expected: {
+                    }})
+                    
                     art.actionPlaceholder({$tag: 'ce417c62-f167-4a0d-aecc-8193057b138c'})
                 }
             },
@@ -1017,22 +1039,47 @@ module.exports = function({sim}) {
     }
     
     
-    async function selectBrowserAndSignIn({browserName, email}) {
+    async function selectBrowserAndSignIn({$tag, pausePointTitle, browserName, email, clientKind}) {
+        CLIENT_KIND = clientKind
         sim.selectBrowser(browserName)
         #hawait sim.navigate('dashboard.html')
         
-        art.uiState({$tag: 'c70e18eb-516b-41cb-bf7a-bdf748595ad2', expected: {
-             'Input-email': ``,
-              'Input-password': ``,
-              'TopNavItem-faq': { title: `ЧаВо` },
-              'TopNavItem-prices': { title: `Цены` },
-              'TopNavItem-sign-in': { active: true, title: `Вход` },
-              'TopNavItem-why': { title: `Почему мы?` },
-              'button-primary': { title: `Войти` },
-              'link-createAccount': { title: `Срочно создать!` },
-              pageHeader: `Вход`,
-              url: `http://aps-ua-writer.local:3022/sign-in.html`
-        }})                
+        if (pausePointTitle) {
+            #hawait art.pausePoint({title: pausePointTitle, theme: 'blue', $tag})
+        }
+        
+        if (clientKind === 'writer') {
+            art.uiState({$tag: 'c70e18eb-516b-41cb-bf7a-bdf748595ad2', expected: {
+                 'Input-email': ``,
+                  'Input-password': ``,
+                  'TopNavItem-faq': { title: `ЧаВо` },
+                  'TopNavItem-prices': { title: `Цены` },
+                  'TopNavItem-sign-in': { active: true, title: `Вход` },
+                  'TopNavItem-why': { title: `Почему мы?` },
+                  'button-primary': { title: `Войти` },
+                  'link-createAccount': { title: `Срочно создать!` },
+                  pageHeader: `Вход`,
+                  url: `http://aps-ua-writer.local:3022/sign-in.html`
+            }})                
+        } else if (clientKind === 'customer') {
+            art.uiState({$tag: '0bd97815-b9b1-4900-80b1-e6f683c41926', expected: {
+                 'Input-email': ``,
+                  'Input-password': ``,
+                  'TopNavItem-blog': { title: `Блог` },
+                  'TopNavItem-contact': { title: `Связь` },
+                  'TopNavItem-faq': { title: `ЧаВо` },
+                  'TopNavItem-prices': { title: `Цены` },
+                  'TopNavItem-samples': { title: `Примеры` },
+                  'TopNavItem-sign-in': { active: true, title: `Вход` },
+                  'TopNavItem-why': { title: `Почему мы?` },
+                  'button-primary': { title: `Войти` },
+                  'link-createAccount': { title: `Срочно создать!` },
+                  pageHeader: `Вход`,
+                  url: `http://aps-ua-writer.local:3022/sign-in.html`
+            }})                
+        } else {
+            raise('WTF is the clientKind')
+        }
         
         // Inputs
         #hawait testGlobal.controls['Input-email'].setValue({value: email})
