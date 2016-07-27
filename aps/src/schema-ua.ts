@@ -14,8 +14,8 @@ export async function createDB(newdb) {
     
     await shutDownPool(newdb)
     await pgConnection({db: condb}, async function(db) {
-        await db.query({$tag: 'eba1bdcf-9657-405d-9716-1dbc3c01a65b', y: `drop database if exists "aps-${newdb}"`})
-        await db.query({$tag: 'f31f0e3c-ef04-4391-b5a1-dc489fa4fa9b', y: `create database "aps-${newdb}"`})
+        await db.query({$tag: '67023702-2946-4c09-869c-a2cd49e0c857', y: `drop database if exists "${newdb}"`})
+        await db.query({$tag: '50efc291-72eb-4b06-b132-8270e1180b20', y: `create database "${newdb}"`})
     })
     await pgConnection({db: newdb}, async function(db) {
         await db.query({$tag: 'd891345e-3287-43b0-b6fc-7174fb9d2cd3', y: `

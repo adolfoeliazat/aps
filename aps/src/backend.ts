@@ -148,6 +148,20 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
+                else if (msg.fun == 'danger_captureTestDB') {
+                    const condb = 'test-postgres'
+                    const sourceDBName = 'aps-test'
+                    
+                    await shutDownPool(sourceDBName)
+                    await shutDownPool(msg.newTemplateDBName)
+                    await pgConnection({db: condb}, async function(db) {
+                        await db.query({$tag: 'eba1bdcf-9657-405d-9716-1dbc3c01a65b', y: `drop database if exists "${msg.newTemplateDBName}"`})
+                        await db.query({$tag: 'f31f0e3c-ef04-4391-b5a1-dc489fa4fa9b', y: `create database "${msg.newTemplateDBName}" template = "${sourceDBName}"`})
+                    })
+                    
+                    return hunkyDory({shortMessage: `Captured as ${msg.newTemplateDBName}`})
+                }
+                
                 else if (msg.fun === 'danger_updateAssertionCode') {
                     const ft = findTagInSourceCode(msg.assertionTag)
                     if (!ft) return {error: 'Tag is not found in code'}
@@ -347,7 +361,7 @@ app.post('/rpc', (req, res) => {
                     
                     async function doInTestDB(db) {
                         #await db.query({$tag: '8dcb544c-1337-4298-8970-21466bad7c4c', y: `drop database if exists "aps-test"`})
-                        #await db.query({$tag: '9b569e3e-53b7-4296-97d2-d1ce2a1684b4', y: `create database "aps-test" template = "aps-${msg.templateDB}"`})
+                        #await db.query({$tag: '9b569e3e-53b7-4296-97d2-d1ce2a1684b4', y: `create database "aps-test" template = "${msg.templateDB}"`})
                     }
                     
                     return hunkyDory()
@@ -942,7 +956,9 @@ export function resetImposed() {
 export async function shutDownPool(db) {
     const pool = pgPools[db]
     if (pool) {
+        dlog('yyyyyyeeeeeesssssss ', db)
         await pool.end()
+        dlog('doooooooone')
         delete pgPools[db]
     }
 }
@@ -973,9 +989,9 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
             raise('TODO get prod DB config from environment')
         } else {
             config = lookup(db, {
-                dev: {database: 'aps-dev', port: 5432, user: 'postgres'},
-                test: {database: 'aps-test', port: 5433, user: 'postgres'},
-                'test-template-ua-1': {database: 'aps-test-template-ua-1', port: 5433, user: 'postgres'},
+                'aps-dev': {database: 'aps-dev', port: 5432, user: 'postgres'},
+                'aps-test': {database: 'aps-test', port: 5433, user: 'postgres'},
+                'test-template-ua-1': {database: 'test-template-ua-1', port: 5433, user: 'postgres'},
                 'test-postgres': {database: 'postgres', port: 5433, user: 'postgres'},
             })
         }

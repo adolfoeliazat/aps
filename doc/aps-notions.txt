@@ -16,5 +16,6 @@ traceEndHandler
 
 q() {inline: ...}
 
+openDebugConsole()
 
 

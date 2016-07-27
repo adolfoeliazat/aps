@@ -301,6 +301,7 @@ relog('x', x, 'y', y, x === y)
 
 relog('foo' + '\x0a' + 'bar')
 
+relog(blank('    '))
 
 
 
