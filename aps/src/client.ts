@@ -185,16 +185,16 @@ global.igniteShit = makeUIShitIgniter({
                                             }),
                                         ]
                                         
-                                        if (ui.getUser().kind !== 'admin') {
-                                            fields.push(ui.SelectField({
-                                                name: 'status',
-                                                title: t(`TOTE`, `Статус`),
-                                                values: [
-                                                    {value: 'resolved', title: t(`TOTE`, `Решено`)}]
-                                            }))
-                                        } else {
-                                            raise('Implement editFormDef for admin')
+                                        const statusValues = []
+                                        if (ui.getUser().kind === 'admin') {
+                                            statusValues.push({value: 'open', title: t(`TOTE`, `Открыт`)})
                                         }
+                                        statusValues.push({value: 'resolved', title: t(`TOTE`, `Решен`)})
+                                        fields.push(ui.SelectField({
+                                            name: 'status',
+                                            title: t(`TOTE`, `Статус`),
+                                            values: statusValues
+                                        }))
                                         
                                         return {
                                             primaryButtonTitle: t(`TOTE`, `Сохранить`),

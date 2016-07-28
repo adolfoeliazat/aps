@@ -210,6 +210,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
                           'chunk-0.message-0.newLabel': `Новое`,
@@ -346,6 +347,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
                           'chunk-0.message-0.newLabel': `Новое`,
@@ -409,6 +411,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
                           'chunk-0.message-0.newLabel': `Новое`,
@@ -445,6 +448,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
                           'chunk-0.message-0.newLabel': `Новое`,
@@ -479,6 +483,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
                           'chunk-0.message-0.newLabel': `Новое`,
@@ -509,12 +514,36 @@ module.exports = function({sim}) {
                     #hawait art.pausePoint({title: 'Will respond...', $tag: '3687412d-c52a-4bdf-bc8e-1c588df5da22'})
                     // Action
                     #hawait testGlobal.controls['button-plus'].click()
-                    art.uiStateChange({$tag: 'bd47917a-b212-4d03-8910-5af36b2f7ebc', expected: {
-                        $$deleted: ['Select-ordering', 'button-plus'],
-                        
-                        'Input-message': '',
-                        'button-primary': { title: 'Запостить' },
-                        'button-cancel': { title: 'Передумал' }
+                    art.uiState({$tag: 'bd47917a-b212-4d03-8910-5af36b2f7ebc', expected: {
+                         'Input-message': ``,
+                          'TopNavItem-admin-heap': { title: `Куча` },
+                          'TopNavItem-dashboard': { title: `Тодд` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-cancel': { title: `Передумал` },
+                          'button-primary': { title: `Запостить` },
+                          'chunk-0.message-0.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
+                          'chunk-0.message-0.newLabel': `Новое`,
+                          'chunk-0.message-0.timestamp': `17/05/2014 02:36:02`,
+                          'chunk-0.message-0.to': `В рельсу`,
+                          'chunk-0.message-0.userLabel-from': `Франц Кафка`,
+                          'chunk-0.message-1.message': dedent(`
+                                Еще хотел бы добавить вот что.
+                                
+                                - Сегодня заседания нет, - сказала женщина.
+                                - Как это - нет заседания? - спросил он, не поверив.`),
+                          'chunk-0.message-1.newLabel': `Новое`,
+                          'chunk-0.message-1.timestamp': `17/05/2014 02:35:27`,
+                          'chunk-0.message-1.to': `В рельсу`,
+                          'chunk-0.message-1.userLabel-from': `Франц Кафка`,
+                          'chunk-0.message-2.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
+                          'chunk-0.message-2.newLabel': `Новое`,
+                          'chunk-0.message-2.timestamp': `17/05/2014 02:33:15`,
+                          'chunk-0.message-2.to': `В рельсу`,
+                          'chunk-0.message-2.userLabel-from': `Франц Кафка`,
+                          'liveBadge-topNavItem-admin-heap': `11`,
+                          'liveBadge-topNavItem-support': `4/2`,
+                          pageHeader: `Запрос в поддержку № 308`,
+                          url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=desc`
                     }})
                     
                     // Inputs
@@ -527,6 +556,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `Та я понял, что ты писатель... В чем дело-то?`,
                           'chunk-0.message-0.timestamp': `23/07/2016 16:56:26`,
@@ -630,6 +660,7 @@ module.exports = function({sim}) {
                           'TopNavItem-store': { title: `Аукцион` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
                           'TopNavItem-why': { title: `Почему мы?` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `Та я понял, что ты писатель... В чем дело-то?`,
                           'chunk-0.message-0.newLabel': `Новое`,
@@ -714,6 +745,7 @@ module.exports = function({sim}) {
                           'TopNavItem-store': { title: `Аукцион` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
                           'TopNavItem-why': { title: `Почему мы?` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `Ни в чем. Просто пописать. Я ж писатель, ага.`,
                           'chunk-0.message-0.timestamp': `23/07/2016 17:08:11`,
@@ -802,6 +834,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
                           'chunk-0.message-0.newLabel': `Новое`,
@@ -849,6 +882,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': dedent(`
                                 Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
@@ -905,6 +939,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `Ни в чем. Просто пописать. Я ж писатель, ага.`,
                           'chunk-0.message-0.newLabel': `Новое`,
@@ -992,6 +1027,7 @@ module.exports = function({sim}) {
                           'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { title: `Тодд` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
                           'chunk-0.message-0.message': `Ладно, тогда пиши себе. Я отвечать не буду. Но если, сцуко, слишком сильно наспамишь, то будем тебя банить, учти.`,
                           'chunk-0.message-0.timestamp': `27/07/2016 19:02:27`,
@@ -1088,8 +1124,80 @@ module.exports = function({sim}) {
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 19:45:25'})
                     #hawait testGlobal.controls['chunk-0.thread-0.link-topic'].click()
                     art.uiState({$tag: 'c0950b79-938e-4bc0-b133-42d8a27d005f', expected: {
+                         'Select-ordering': { title: `Сначала новые` },
+                          'TopNavItem-blog': { title: `Блог` },
+                          'TopNavItem-contact': { title: `Связь` },
+                          'TopNavItem-dashboard': { title: `Люк` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-samples': { title: `Примеры` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'button-edit': { icon: `edit` },
+                          'button-plus': { icon: `comment` },
+                          'chunk-0.message-0.message': dedent(`
+                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
+                                
+                                (In other words, fuck you :))`),
+                          'chunk-0.message-0.newLabel': `Новое`,
+                          'chunk-0.message-0.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
+                          'chunk-0.message-0.userLabel-to': `Люк Хуюк`,
+                          'chunk-0.message-1.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
+                          'chunk-0.message-1.timestamp': `10/04/2014 16:44:55`,
+                          'chunk-0.message-1.to': `В рельсу`,
+                          'chunk-0.message-1.userLabel-from': `Люк Хуюк`,
+                          'liveBadge-topNavItem-support': `1`,
+                          pageHeader: `Запрос в поддержку № 12`,
+                          url: `http://aps-ua-writer.local:3022/support.html?thread=12`
                     }})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'd6984756-b1ae-447d-bff2-08be7bf99d60'})
+
+                    // Action
+                    // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5e57ddc5-f3ce-48e4-aff8-d319b806c95d'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:41:50'})
+                    #hawait testGlobal.controls['button-edit'].click()
+                    art.uiState({$tag: '4c776fc8-f555-47e2-a7e7-3b4a5216e8a6', expected: {
+                         'Select-status': { title: `Решено` },
+                          'TopNavItem-blog': { title: `Блог` },
+                          'TopNavItem-contact': { title: `Связь` },
+                          'TopNavItem-dashboard': { title: `Люк` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-samples': { title: `Примеры` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'button-cancel': { title: `Не стоит` },
+                          'button-primary': { title: `Сохранить` },
+                          'chunk-0.message-0.message': dedent(`
+                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
+                                
+                                (In other words, fuck you :))`),
+                          'chunk-0.message-0.newLabel': `Новое`,
+                          'chunk-0.message-0.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
+                          'chunk-0.message-0.userLabel-to': `Люк Хуюк`,
+                          'chunk-0.message-1.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
+                          'chunk-0.message-1.timestamp': `10/04/2014 16:44:55`,
+                          'chunk-0.message-1.to': `В рельсу`,
+                          'chunk-0.message-1.userLabel-from': `Люк Хуюк`,
+                          'liveBadge-topNavItem-support': `1`,
+                          pageHeader: `Запрос в поддержку № 12`,
+                          url: `http://aps-ua-writer.local:3022/support.html?thread=12`
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '49577eb3-936c-43e3-a4c4-7ed6a54a7ff9'})
+
+                    // Inputs
+                    #hawait testGlobal.controls['Select-status'].setValue({value: 'resolved'})
+                    // Action
+                    #hawait art.pausePoint({title: 'Luke discovers he’s fucked and submissively decides to mark the request as resolved', $tag: '4fabecfa-27a8-4b45-a745-ceac79c74464'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:42:54'})
+                    #hawait testGlobal.controls['button-primary'].click()
+                    art.uiState({$tag: '99798601-7dca-4e9c-8136-5052756c685e', expected: {
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '010ed3fa-bbc9-4e45-922e-c76de43bcbe2'})
 
                     art.actionPlaceholder({$tag: 'ce417c62-f167-4a0d-aecc-8193057b138c'})
                 }

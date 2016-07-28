@@ -93,7 +93,8 @@ export async function createDB(newdb) {
                 updated_at timestamp not null,
                 topic text not null,
                 supportee_id bigint not null references users(id),
-                supporter_id bigint /*can be null*/ references users(id)
+                supporter_id bigint /*can be null*/ references users(id),
+                status text not null
                 );
             alter sequence support_threads_id_seq restart with 100000;    
             create trigger on_insert before insert on support_threads for each row execute procedure on_insert();

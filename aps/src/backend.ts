@@ -486,14 +486,14 @@ app.post('/rpc', (req, res) => {
                         } catch (e) {
                             if (e.code === '23505') {
                                 fieldErrors.email = t('This email is already registered', 'Такая почта уже зарегистрирована')
-                                return youFixErrors()
+                                return fixErrorsResult()
                             } else {
                                 throw e
                             }
                         }
                     }
                     
-                    return youFixErrors()
+                    return fixErrorsResult()
                 }
                 
                 else if (msg.fun === 'private_updateProfile') {
@@ -508,7 +508,7 @@ app.post('/rpc', (req, res) => {
                         #await loadUserForToken()
                         return hunkyDory({newUser: pickFromUser(user)})
                     }
-                    return youFixErrors()
+                    return fixErrorsResult()
                 }
                 
                 else if (msg.fun === 'private_getSupportThreads') {
@@ -605,6 +605,7 @@ app.post('/rpc', (req, res) => {
                         const thread_id = #await insertInto({$tag: 'c8a54fb2-4a92-4c95-a13d-7ae145c7ebe9', table: 'support_threads', values: {
                             topic: fields.topic,
                             supportee_id: user.id,
+                            status: 'open',
                         }})
                         
                         #await insertInto({$tag: '44178859-236b-411b-b3df-247ffb47e89e', table: 'support_thread_messages', values: {
@@ -616,13 +617,13 @@ app.post('/rpc', (req, res) => {
                         
                         return hunkyDory({entity: {id: thread_id}})
                     }
-                    return youFixErrors()
+                    return fixErrorsResult()
                 }
                 
                 else if (msg.fun === 'private_createSupportThreadMessage') {
                     traceBeginHandler({$tag: 'f32672d7-d67f-49b1-ad40-36477e4c9ba7'})
                     loadField({key: 'message', kind: 'message', mandatory: true})
-                    if (!isEmpty(fieldErrors)) traceEndHandler({ret: youFixErrors(), $tag: 'e43bd7b1-bd4c-4866-b2a3-944473187487'})
+                    if (!isEmpty(fieldErrors)) return traceEndHandler({ret: fixErrorsResult(), $tag: 'e43bd7b1-bd4c-4866-b2a3-944473187487'})
 
                     const thread = #await tx.query(s{$tag: 'cfdc3877-f575-4b11-b862-09194528aaea', y: q`
                         select * from support_threads where id = ${msg.threadID}`})[0]
@@ -648,6 +649,28 @@ app.post('/rpc', (req, res) => {
                     return traceEndHandler({ret: hunkyDory({}), $tag: '8cd70dbd-8bc7-46ac-8636-04eb1a9d0814'})
                 }
                 
+                else if (msg.fun === 'private_updateSupportThreadMessage') {
+                    traceBeginHandler(s{})
+                    
+                    const thread = #await tx.query(s{y: q`
+                        select * from support_threads where id = ${msg.threadID}`})[0]
+                    if (!thread || thread.deleted) return traceEndHandler(s{ret: notFoundResult()})
+                    if (user.kind === 'admin') {
+                        raise('implement me')
+                    } else {
+                        if (thread.supportee_id !== user.id) return traceEndHandler(s{ret: forbiddenResult()})
+                        if (thread.status !== 'open') return traceEndHandler(s{ret: forbiddenResult()})
+                    }
+                    
+                    const validStatuses = ['open', 'resolved']
+                    if (!validStatuses.includes(msg.status)) return traceEndHandler(s{ret: fuckYouResult()})
+                    
+                    #await tx.query(s{y: q`
+                        update support_threads set status = ${msg.status} where id = ${msg.threadID}`})
+                        
+                    return traceEndHandler(s{ret: hunkyDory()})
+                }
+                
                 else if (msg.fun === 'private_takeSupportThread') {
                     #await tx.query({$tag: 'ea3ae40d-c285-49b0-9219-415203925257', y: q`
                         update support_threads set supporter_id = ${user.id} where id = ${msg.id}`})
@@ -659,6 +682,26 @@ app.post('/rpc', (req, res) => {
                 return {fatal: situation}
                 
                 // @ctx helpers
+                
+                function fuckYouResult() {
+                    return {error: t('Fuck you, mister hacker', 'Иди в жопу, хацкер-хуяцкер')}
+                }
+                
+                function forbiddenResult() {
+                    return {error: t('Forbidden', 'Низя')}
+                }
+                
+                function notFoundResult() {
+                    return {error: t('Requested thing is not found', 'Запрошенная штука не найдена')}
+                }
+                
+                function fixErrorsResult() {
+                    return {error: t('Please fix errors below', 'Пожалуйста, исправьте ошибки ниже'), fieldErrors}
+                }
+                
+                function hunkyDory(res) {
+                    return asn({hunky: 'dory'}, res)
+                }
                 
                 function findTagInSourceCode(tag) {
                     for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/backend.ts',
@@ -709,16 +752,6 @@ app.post('/rpc', (req, res) => {
                                       'profile_updated_at', 'phone', 'kind', 'roles')
                 }
                 
-                function youFixErrors() {
-                    return {
-                        error: t('Please fix errors below', 'Пожалуйста, исправьте ошибки ниже'),
-                        fieldErrors
-                    }
-                }
-                
-                function hunkyDory(res) {
-                    return asn({hunky: 'dory'}, res)
-                }
                 
                 async function sendEmail(it) { // TODO:vgrechka @refactor Extract to foundation/utils-server
                     if (MODE === 'debug') {
@@ -938,7 +971,8 @@ app.post('/rpc', (req, res) => {
         function traceEndHandler(data) {
             invariant(data.ret, 'I want data.ret in traceEndHandler')
             trace.push(asn({event: `End handling ${msg.fun}`}, data))
-            return asn({$trace: trace}, data.ret)
+            return data.ret
+            // return asn({$trace: trace}, data.ret)
         }
     }
 })
