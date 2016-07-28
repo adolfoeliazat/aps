@@ -104,14 +104,14 @@ global.igniteShit = makeUIShitIgniter({
                             const itemsRes = await ui.rpcSoft(itemsReq)
                             if (itemsRes.error) {
                                 return ui.setPage({
-                                    pageTitle,
-                                    pageBody: div(errorBanner(itemsRes.error))
+                                    header: pageHeader({title: pageTitle}),
+                                    body: div(errorBanner(itemsRes.error))
                                 })
                             }
                            
                             ui.setPage({
-                                pageTitle,
-                                pageBody: div(tabs({
+                                header: pageHeader({title: pageTitle}),
+                                body: div(tabs({
                                     name: 'main',
                                     activeTab,
                                     tabs: {
@@ -133,8 +133,8 @@ global.igniteShit = makeUIShitIgniter({
                     
                     async 'admin-my-tasks'() {
                         ui.setPage({
-                            pageTitle: 'qweqwe',
-                            pageBody: div(
+                            header: pageHeader({title: 'qweqwe'}),
+                            body: div(
                                 t(`TOTE`, `foooooooooo`), aa({href: '#', onClick() { dlog('cliiiiick') }}, t('qqqqqqqqqqq')))
                         })
                     },
@@ -146,9 +146,16 @@ global.igniteShit = makeUIShitIgniter({
                                     entityFun: 'private_getSupportThread',
                                     itemsFun: 'private_getSupportThreadMessages',
                                     entityID: ui.urlQuery.thread,
-                                    pageTitle: entityRes => {
-                                        if (entityRes.error) return t(`TOTE`, `Облом`)
-                                        return t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`)
+                                    header: entityRes => {
+                                        let labels
+                                        if (entityRes.entity.status === 'resolved') {
+                                            labels = [{level: 'success', title: t(`TOTE`, `Решён`)}]
+                                        }
+                                        return pageHeader({title: t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`), labels})
+                                    },
+                                    hasHeaderControls: entityRes => {
+                                        if (ui.getUser().kind === 'admin') return true
+                                        return entityRes.entity.status === 'open'
                                     },
                                     emptyMessage: t(`TOTE`, `Странно, здесь ничего нет. А должно что-то быть...`),
                                     aboveItems(entityRes) {
@@ -189,7 +196,7 @@ global.igniteShit = makeUIShitIgniter({
                                         if (ui.getUser().kind === 'admin') {
                                             statusValues.push({value: 'open', title: t(`TOTE`, `Открыт`)})
                                         }
-                                        statusValues.push({value: 'resolved', title: t(`TOTE`, `Решен`)})
+                                        statusValues.push({value: 'resolved', title: t(`TOTE`, `Решён`)})
                                         fields.push(ui.SelectField({
                                             name: 'status',
                                             title: t(`TOTE`, `Статус`),
@@ -231,8 +238,8 @@ global.igniteShit = makeUIShitIgniter({
                                 if (itemsRes.error) return ui.setToughLuckPage({res: itemsRes})
                                
                                 ui.setPage({
-                                    pageTitle: t(`Support`, `Поддержка`),
-                                    pageBody: div(tabs({
+                                    header: pageHeader({title: t(`Support`, `Поддержка`)}),
+                                    body: div(tabs({
                                         name: 'main',
                                         activeTab,
                                         tabs: {
@@ -247,7 +254,7 @@ global.igniteShit = makeUIShitIgniter({
                                     }))
                                 })
                                 
-                                return
+                                return // --- cut here ---
                                 await lala({
                                     pageTitle: t('Support', 'Поддержка'),
                                     itemsFun: 'private_getSupportThreads',
@@ -286,7 +293,7 @@ global.igniteShit = makeUIShitIgniter({
                 }[name]
                 
                 
-                async function lala({pageTitle, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef, aboveItems, renderItem, defaultOrdering='desc', hasOrderingSelect=true}) {
+                async function lala({header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef, aboveItems, renderItem, defaultOrdering='desc', hasOrderingSelect=true, hasHeaderControls=true}) {
                     let entityRes
                     if (entityFun) {
                         entityRes = await ui.rpcSoft({fun: entityFun, entityID})
@@ -359,8 +366,8 @@ global.igniteShit = makeUIShitIgniter({
                     }
                     
                     ui.setPage({
-                        pageTitle: fov(pageTitle, entityRes),
-                        pageBody: _=> div(
+                        header: fov(header, entityRes),
+                        body: _=> div(
                             editShit && editShit.form,
                             plusShit && plusShit.form,
                             fov(aboveItems, entityRes),
@@ -374,7 +381,7 @@ global.igniteShit = makeUIShitIgniter({
                                 return ui.renderMoreable({itemsRes, itemsReq, renderItem,})
                             }),
                         ),
-                        headerControls: _=> headerControlsVisible && diva({style: {display: 'flex'}, className: headerControlsClass},
+                        headerControls: _=> fov(hasHeaderControls, entityRes) && headerControlsVisible && diva({style: {display: 'flex'}, className: headerControlsClass},
                             orderingSelect,
                             editShit && editShit.button,
                             plusShit && plusShit.button,
@@ -409,8 +416,8 @@ global.igniteShit = makeUIShitIgniter({
                     
                     function showBadResponse(res) {
                         return ui.setPage({
-                            pageTitle: fov(pageTitle, res),
-                            pageBody: div(errorBanner(res.error))
+                            header: pageHeader({title: t(`TOTE`, `Облом`)}),
+                            body: div(errorBanner(res.error))
                         })
                     }
                 }
@@ -418,8 +425,8 @@ global.igniteShit = makeUIShitIgniter({
                 
                 function ordersPageLoader() {
                     ui.setPage({
-                        pageTitle: t('My Orders', 'Мои заказы'),
-                        pageBody: div(
+                        header: pageHeader({title: t('My Orders', 'Мои заказы')}),
+                        body: div(
                             )
                     })
                 }
@@ -427,8 +434,8 @@ global.igniteShit = makeUIShitIgniter({
                 
                 function dashboardPageLoader() {
                     ui.setPage({
-                        pageTitle: t('Dashboard', 'Панель'),
-                        pageBody: div(
+                        header: pageHeader({title: t('Dashboard', 'Панель')}),
+                        body: div(
                             diva({className: 'row'},
                                 diva({className: 'col-sm-6'},
                                     sectionTitle(t('Account', 'Аккаунт')),
@@ -500,8 +507,8 @@ global.igniteShit = makeUIShitIgniter({
                     }
                     
                     ui.setPage({
-                        pageTitle: t('Profile', 'Профиль'),
-                        pageBody
+                        header: pageHeader({title: t('Profile', 'Профиль')}),
+                        body: pageBody
                     })
                 }
             },

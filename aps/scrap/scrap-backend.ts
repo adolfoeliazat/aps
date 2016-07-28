@@ -307,6 +307,15 @@ const m = moment.tz('UTC')
 relog(m.format('YYYY/MM/DD HH:mm:ss'))
 //ts = m.tz('Europe/Kiev').format('DD/MM/YYYY HH:mm:ss')
 
+relog(isObject([10, 20]))
+relog(isObject({a: 10, b: 20}))
+relog(keys([10, 20, 30]))
+
+const u = require('into-u/ui')
+const o = [{foo: 10, bar: {meta: 'aaa', meat: 'AAA'}}]
+relog(u.textMeatDeep(o))
+relog(o)
+
 
 
 

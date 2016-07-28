@@ -1124,7 +1124,9 @@ module.exports = function({sim}) {
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 19:45:25'})
                     #hawait testGlobal.controls['chunk-0.thread-0.link-topic'].click()
                     art.uiState({$tag: 'c0950b79-938e-4bc0-b133-42d8a27d005f', expected: {
-                         'Select-ordering': { title: `Сначала новые` },
+                         'Select-ordering': 
+                           { title: `Сначала новые`,
+                             titles: [ `Сначала новые`, `Сначала старые` ] },
                           'TopNavItem-blog': { title: `Блог` },
                           'TopNavItem-contact': { title: `Связь` },
                           'TopNavItem-dashboard': { title: `Люк` },
@@ -1159,7 +1161,7 @@ module.exports = function({sim}) {
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:41:50'})
                     #hawait testGlobal.controls['button-edit'].click()
                     art.uiState({$tag: '4c776fc8-f555-47e2-a7e7-3b4a5216e8a6', expected: {
-                         'Select-status': { title: `Решено` },
+                         'Select-status': { title: `Решён`, titles: [ `Решён` ] },
                           'TopNavItem-blog': { title: `Блог` },
                           'TopNavItem-contact': { title: `Связь` },
                           'TopNavItem-dashboard': { title: `Люк` },
@@ -1196,6 +1198,30 @@ module.exports = function({sim}) {
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:42:54'})
                     #hawait testGlobal.controls['button-primary'].click()
                     art.uiState({$tag: '99798601-7dca-4e9c-8136-5052756c685e', expected: {
+                         'TopNavItem-blog': { title: `Блог` },
+                          'TopNavItem-contact': { title: `Связь` },
+                          'TopNavItem-dashboard': { title: `Люк` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-samples': { title: `Примеры` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'chunk-0.message-0.message': dedent(`
+                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
+                                
+                                (In other words, fuck you :))`),
+                          'chunk-0.message-0.newLabel:aniFadeOutDelayed': `Новое`,
+                          'chunk-0.message-0.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
+                          'chunk-0.message-0.userLabel-to': `Люк Хуюк`,
+                          'chunk-0.message-1.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
+                          'chunk-0.message-1.timestamp': `10/04/2014 16:44:55`,
+                          'chunk-0.message-1.to': `В рельсу`,
+                          'chunk-0.message-1.userLabel-from': `Люк Хуюк`,
+                          pageHeader: `Запрос в поддержку № 12`,
+                          'pageHeaderLabel-0:success': `Решён`,
+                          url: `http://aps-ua-writer.local:3022/support.html?thread=12`
                     }})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '010ed3fa-bbc9-4e45-922e-c76de43bcbe2'})
 

@@ -640,11 +640,7 @@ app.post('/rpc', (req, res) => {
                         data: {seenBy: {[user.id]: requestTimestamp}},
                     }})
                     
-                    #await tx.query(s{y: q`
-                        update support_thread_messages
-                        set data = data || jsonb_build_object('seenBy', data->'seenBy' || ${{[user.id]: requestTimestamp}})
-                        where thread_id = ${msg.threadID}
-                              and data->'seenBy'->${user.id} is null`})
+                    #await updateSupportThreadMessagesSetSeenByUser(msg.threadID)
                     
                     return traceEndHandler({ret: hunkyDory({}), $tag: '8cd70dbd-8bc7-46ac-8636-04eb1a9d0814'})
                 }
@@ -668,6 +664,12 @@ app.post('/rpc', (req, res) => {
                     #await tx.query(s{y: q`
                         update support_threads set status = ${msg.status} where id = ${msg.threadID}`})
                         
+                    if (msg.status === 'resolved') {
+                        #await updateSupportThreadMessagesSetSeenByUser(msg.threadID)
+                    } else {
+                        raise('TODO:vgrechka Decide when to mark support thread messages as seen    fb2877c6-0957-4e30-bd35-669f1b46ba0a')
+                    }
+                        
                     return traceEndHandler(s{ret: hunkyDory()})
                 }
                 
@@ -682,6 +684,14 @@ app.post('/rpc', (req, res) => {
                 return {fatal: situation}
                 
                 // @ctx helpers
+                    
+                async function updateSupportThreadMessagesSetSeenByUser(threadID) {
+                    await tx.query(s{y: q`
+                        update support_thread_messages
+                        set data = data || jsonb_build_object('seenBy', data->'seenBy' || ${{[user.id]: requestTimestamp}})
+                        where thread_id = ${msg.threadID}
+                              and data->'seenBy'->${user.id} is null`})
+                }
                 
                 function fuckYouResult() {
                     return {error: t('Fuck you, mister hacker', 'Иди в жопу, хацкер-хуяцкер')}
@@ -965,12 +975,12 @@ app.post('/rpc', (req, res) => {
         
         
         function traceBeginHandler(data) {
-            trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omit(msg, 'fun', 'token', '$sourceLocation')}, data))
+            trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omit(msg, 'fun', 'token', '$sourceLocation')}, omit(data, 'trace')))
         }
         
         function traceEndHandler(data) {
             invariant(data.ret, 'I want data.ret in traceEndHandler')
-            trace.push(asn({event: `End handling ${msg.fun}`}, data))
+            trace.push(asn({event: `End handling ${msg.fun}`}, omit(data, 'trace')))
             return data.ret
             // return asn({$trace: trace}, data.ret)
         }
