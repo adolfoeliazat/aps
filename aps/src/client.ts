@@ -224,65 +224,26 @@ global.igniteShit = makeUIShitIgniter({
                             } finally { endTrain() }
                         } else if (!ui.urlQuery.thread) {
                             beginTrain({name: 'Load support page without thread param'}); try {
-                                const activeTab = ui.urlQuery.tab || 'updated'
-                                
-//                                const itemsFun
-//                                if (activeTab === 'support') {
-//                                    itemsFun = 'private_getUnassignedSupportThreads'
-//                                }
-//                                
-//                                const res = await ui.rpcSoft({fun: itemsFun, fromID: 0})
-                                
-                                const itemsReq = {fun: 'private_getUpdatedSupportThreads'}
+                                const itemsReq = {fun: 'private_getSupportThreads', filter: ui.urlQuery.filter || 'updatedOrAll'}
                                 const itemsRes = await ui.rpcSoft(itemsReq)
                                 if (itemsRes.error) return ui.setToughLuckPage({res: itemsRes})
+                                
+                                const filter = itemsRes.filter
+                                
+                                const tabDefs = itemsRes.availableFilters.map(name => ({name, title: lookup(name, {
+                                    updated: t(`TOTE`, `Обновленные`),
+                                    all: t(`TOTE`, `Все`)
+                                })}))
                                
                                 ui.setPage({
-                                    header: pageHeader({title: t(`Support`, `Поддержка`)}),
-                                    body: div(tabs({
-                                        name: 'main',
-                                        activeTab,
-                                        tabs: {
-                                            updated: {
-                                                title: _=> spanc({name: 'title', content: t(`New`, `Новые`)}),
-                                                content() {
-                                                    return diva({},
-                                                        ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}))
-                                                },
-                                            },
-                                        }
-                                    }))
-                                })
-                                
-                                return // --- cut here ---
-                                await lala({
-                                    pageTitle: t('Support', 'Поддержка'),
-                                    itemsFun: 'private_getSupportThreads',
-                                    emptyMessage: t(`TOTE`, `Запросов в поддержку не было. Чтобы добавить, нажми плюсик вверху.`),
-                                    renderItem(item, i) {
-                                        return t('todo render item')
-                                    },
-                                    plusIcon: 'plus',
-                                    plusFormDef: {
-                                        primaryButtonTitle: t(`TOTE`, `Запостить`),
-                                        cancelButtonTitle: t(`TOTE`, `Не стоит`),
-                                        autoFocus: 'topic',
-                                        fields: [
-                                            ui.TextField({
-                                                name: 'topic',
-                                                title: t(`TOTE`, `Тема`),
-                                            }),
-                                            ui.TextField({
-                                                name: 'message',
-                                                kind: 'textarea',
-                                                title: t(`TOTE`, `Сообщение`),
-                                            })
-                                        ],
-                                        rpcFun: 'private_createSupportThread',
-                                        async onSuccess(res) {
-                                            await ui.pushNavigate(`support.html?thread=${res.entity.id}`)
-                                        },
-                                    },
+                                    header: pageHeader({title: t(`TOTE`, `Поддержка`)}),
+                                    body: div(
+                                        tabs({name: 'main', tabDefs, active: filter, makeLinkForTab({tab}) {
+                                            // TODO:vgrechka Disable link on active tab?    44807234-7aa8-4d31-9704-5989c116a6f7 
+                                            return ui.pageLink({name: `it`, title: tab.title, url: `support.html?filter=${tab.name}`, blinkOpts: {dleft: 0, dtop: 0, dwidth: -2}})
+                                        }}),
+                                        ui.renderMoreable({itemsRes, itemsReq: {fun: 'private_getSupportThreadsChunk', filter}, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}),
+                                    )
                                 })
                             } finally { endTrain() }
                         }

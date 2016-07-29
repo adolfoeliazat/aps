@@ -30,6 +30,7 @@ module.exports = function({sim}) {
                 }
                 if (runKind === 'last' || runKind === 'all') {
                     #hawait luke1()
+                    #hawait todd3()
                 }
                 
                 if (runKind === 'first' || runKind === 'all') {
@@ -1114,7 +1115,8 @@ module.exports = function({sim}) {
                           'chunk-0.thread-0.oldMessages.message-0.userLabel-from': `Люк Хуюк`,
                           'liveBadge-topNavItem-support': `1`,
                           pageHeader: `Поддержка`,
-                          'tabs-main.updated:active.title': `Новые`,
+                          'tab-main-0:active.link-it': { title: `Обновленные` },
+                          'tab-main-1.link-it': { title: `Все` },
                           url: `http://aps-ua-writer.local:3022/support.html`
                     }})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '7b4d2b2e-202b-4188-afa8-a8136d5f2bd6'})
@@ -1224,6 +1226,34 @@ module.exports = function({sim}) {
                           url: `http://aps-ua-writer.local:3022/support.html?thread=12`
                     }})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '010ed3fa-bbc9-4e45-922e-c76de43bcbe2'})
+
+                }
+                
+                async function todd3() {
+                    #hawait selectBrowserAndSignIn({$tag: 'f118942e-2bef-4121-a27c-fe4f98eadcd4', clientKind: 'writer', browserName: 'todd3', email: 'todd@test.shit.ua', pausePointTitle: 'Todd Supportod should now see that Luke resolved that support request...'})
+                    art.uiState({$tag: '8246a80c-8a31-4f80-bba0-b404c26a4c94', expected: {
+                         'TopNavItem-admin-heap': { title: `Куча` },
+                          'TopNavItem-dashboard': { active: true, title: `Тодд` },
+                          'TopNavItem-support': { title: `Поддержка` },
+                          'link-changePassword': { title: `Сменить пароль` },
+                          'link-signOut': { title: `Выйти прочь` },
+                          'liveBadge-topNavItem-admin-heap': `11`,
+                          pageHeader: `Панель`,
+                          url: `http://aps-ua-writer.local:3022/dashboard.html`
+                    }})
+                    
+                    // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+                    testGlobal.controls['TopNavItem-support'].showHand({"testActionHandOpts":{"pointingFrom":"right","dleft":-14,"dtop":0}})
+                    #hawait art.pausePoint({title: 'No badges here because all messages were addressed, either resolved or replied to', $tag: '02ee56a4-66ee-46e1-b5f1-aead1300d5bd'})
+                    testGlobal.controls['TopNavItem-support'].hideHand()
+
+                    // Action
+                    // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '7cf28c38-0748-4b2e-8ec2-c74db0de70e8'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/28 16:20:31'})
+                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    art.uiState({$tag: 'fcc1f0b2-63b8-4b57-bf11-a27a1aa65415', expected: {
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '5dc62ff5-4881-4538-9616-51be5200f4ee'})
 
                     art.actionPlaceholder({$tag: 'ce417c62-f167-4a0d-aecc-8193057b138c'})
                 }

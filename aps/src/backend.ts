@@ -151,7 +151,7 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                else if (msg.fun == 'danger_captureTestDB') {
+                if (msg.fun == 'danger_captureTestDB') {
                     const condb = 'test-postgres'
                     const sourceDBName = 'aps-test'
                     
@@ -165,7 +165,7 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory({shortMessage: `Captured as ${msg.newTemplateDBName}`})
                 }
                 
-                else if (msg.fun === 'danger_updateAssertionCode') {
+                if (msg.fun === 'danger_updateAssertionCode') {
                     const ft = findTagInSourceCode(msg.assertionTag)
                     if (!ft) return {error: 'Tag is not found in code'}
                     
@@ -195,7 +195,7 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_insertTestActionCode') {
+                if (msg.fun === 'danger_insertTestActionCode') {
                     const ft = findTagInSourceCode(msg.placeholderTag)
                     if (!ft) return {error: 'Tag is not found in code'}
                     
@@ -223,31 +223,31 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_clearSentEmails') {
+                if (msg.fun === 'danger_clearSentEmails') {
                     sentEmails = []
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_imposeNextRequestTimestamp') {
+                if (msg.fun === 'danger_imposeNextRequestTimestamp') {
                     imposedRequestTimestamp = msg.timestamp
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_imposeNextID') {
+                if (msg.fun === 'danger_imposeNextID') {
                     imposedNextIDs = [msg.id]
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_getSentEmails') {
+                if (msg.fun === 'danger_getSentEmails') {
                     return sentEmails
                 }
                 
-                else if (msg.fun === 'danger_killUser') {
+                if (msg.fun === 'danger_killUser') {
                     #await dangerouslyKillUser({email: msg.email})
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_killSupportThreads') {
+                if (msg.fun === 'danger_killSupportThreads') {
                     #await tx.query({$tag: '0b66e201-0353-4d93-9d68-58932de199ca', y: q`
                         delete from support_thread_messages`})
                     #await tx.query({$tag: '4aa830b9-a217-4515-bff7-353baa0eba62', y: q`
@@ -255,17 +255,17 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_insert') {
+                if (msg.fun === 'danger_insert') {
                     #await insertInto({$tag: '1454b421-bc76-4abd-8eea-0ec8e8ecf0a3', table: msg.table, rows: msg.rows})
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_fixNextGeneratedPassword') {
+                if (msg.fun === 'danger_fixNextGeneratedPassword') {
                     fixedNextGeneratedPassword = msg.password
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_openSourceCode') {
+                if (msg.fun === 'danger_openSourceCode') {
                     let file, offset
                     if (msg.$tag) {
                         const ft = findTagInSourceCode(msg.$tag)
@@ -338,17 +338,17 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
-                else if (msg.fun === 'danger_getRequests') {
+                if (msg.fun === 'danger_getRequests') {
                     let last = msg.last || 1
                     return requestLogForUI.slice(requestLogForUI.length - last)
                 }
                 
-                else if (msg.fun === 'danger_getQueries') {
+                if (msg.fun === 'danger_getQueries') {
                     let last = msg.last || 1
                     return queryLogForUI.slice(queryLogForUI.length - last)
                 }
                 
-                else if (msg.fun === 'danger_resetTestDatabase') {
+                if (msg.fun === 'danger_resetTestDatabase') {
                     if (msg.alsoRecreateTemplate) {
                         if (msg.templateDB === 'test-template-ua-1') {
                             testShitUA.setBackendContext({simulateRequest})
@@ -371,7 +371,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 
-                else if (msg.fun === 'signInWithPassword') {
+                if (msg.fun === 'signInWithPassword') {
                     traceBeginHandler({$tag: '29f48649-bea3-4777-a2cc-e40a98590804'})
                     const rows = #await tx.query({$tag: '4281bc8b-7f86-4a7a-86e6-bb4d7587b654', y: q`
                         select * from users where email = ${msg.email}`})
@@ -396,11 +396,11 @@ app.post('/rpc', (req, res) => {
                     return traceEndHandler({ret: hunkyDory({user: pickFromUser(user), token}), $tag: '8f0148c4-1020-4ce5-b0c9-4f71777bdd6f'})
                 }
                 
-                else if (msg.fun === 'private_getUserInfo') {
+                if (msg.fun === 'private_getUserInfo') {
                     return hunkyDory({user: pickFromUser(user)})
                 }
                 
-                else if (msg.fun === 'private_getLiveStatus') {
+                if (msg.fun === 'private_getLiveStatus') {
                     const res = {}
                     
                     if (user.kind === 'admin') {
@@ -436,7 +436,7 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory(res)
                 }
                 
-                else if (msg.fun === 'signUp') {
+                if (msg.fun === 'signUp') {
                     if (!msg.agreeTerms) {
                         fieldErrors.agreeTerms = t('You have to agree with terms and conditions', 'Необходимо принять соглашение')
                     }
@@ -496,7 +496,7 @@ app.post('/rpc', (req, res) => {
                     return fixErrorsResult()
                 }
                 
-                else if (msg.fun === 'private_updateProfile') {
+                if (msg.fun === 'private_updateProfile') {
                     loadField({key: 'phone', kind: 'phone', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
@@ -511,22 +511,56 @@ app.post('/rpc', (req, res) => {
                     return fixErrorsResult()
                 }
                 
-                else if (msg.fun === 'private_getSupportThreads') {
-                    return #await handleChunkedSelect({$tag: '1f6ec4d1-cdcb-43c8-aef8-e7af23923a3d', table: 'support_threads', loadItem: loadSupportThread,
-                        appendToWhere(qb) {
-                            qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})`)
-                        }
-                    })
+                if (msg.fun === 'private_getSupportThreadsChunk') {
+                    traceBeginHandler(s{})
+                    const chunk = #await selectSupportThreadsChunk({filter: msg.filter})
+                    return traceEndHandler(s{ret: hunkyDory(chunk)})
                 }
                 
-                else if (msg.fun === 'private_getUpdatedSupportThreads') {
-                    return #await handleChunkedSelect({$tag: 'd5dd71a2-4449-46b6-baaf-8040b65d61b7', table: 'support_threads', loadItem,
+                if (msg.fun === 'private_getSupportThreads') {
+                    traceBeginHandler(s{})
+                    const hasUpdated = #await hasUpdatedSupportThreads()
+                    const availableFilters = []
+                    let filter = msg.filter
+                    if (!['updatedOrAll', 'updated', 'all'].includes(filter)) filter = 'all'
+                    if (hasUpdated || filter === 'updated') { // If user explicitly requests "updated", we show it even with no items
+                        availableFilters.push('updated')
+                    }
+                    availableFilters.push('all')
+                    if (filter === 'updatedOrAll') {
+                        filter = hasUpdated ? 'updated' : 'all'
+                    }
+                    const chunk = #await selectSupportThreadsChunk({filter})
+                    return traceEndHandler(s{ret: hunkyDory(asn({availableFilters, filter}, chunk))})
+                }
+                
+                async function hasUpdatedSupportThreads() {
+                    const qb = QueryBuilder()
+                    qb.append(q`select 1 from support_threads where true`)
+                    appendWhereSupportThreadIsRelatedToUser(qb)
+                    appendWhereSupportThreadHasUnseenMessages(qb)
+                    const rows = #await tx.query(s{y: qb.toy()})
+                    return rows.length
+                }
+                
+                function appendWhereSupportThreadIsRelatedToUser(qb) {
+                    qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})`)
+                }
+                
+                function appendWhereSupportThreadHasUnseenMessages(qb) {
+                    qb.append(q`and exists (select 1 from support_thread_messages
+                       where thread_id = support_threads.id
+                           and data->'seenBy'->${user.id} is null
+                      )`)
+                }
+                
+                async function selectSupportThreadsChunk({filter}) {
+                    return #await selectChunk(s{table: 'support_threads', loadItem,
                         appendToWhere(qb) {
-                            qb.append(q`and (supportee_id = ${user.id} or supporter_id = ${user.id})
-                                        and exists (select 1 from support_thread_messages
-                                           where thread_id = support_threads.id
-                                               and data->'seenBy'->${user.id} is null
-                                          )`)
+                            appendWhereSupportThreadIsRelatedToUser(qb)
+                            if (filter === 'updated') {
+                                appendWhereSupportThreadHasUnseenMessages(qb)
+                            }
                         },
                     })
                     
@@ -553,7 +587,7 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                else if (msg.fun === 'private_getUnassignedSupportThreads') {
+                if (msg.fun === 'private_getUnassignedSupportThreads') {
                     return #await handleChunkedSelect({$tag: 'b1897c92-90fb-4a04-96c6-02e15620fd4d', table: 'support_threads', loadItem, defaultOrdering: 'asc',
                         appendToWhere(qb) {
                             qb.append(q`and supporter_id is null`)
@@ -575,7 +609,7 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                else if (msg.fun === 'private_getSupportThread') {
+                if (msg.fun === 'private_getSupportThread') {
                     const entity = #await tx.query({$tag: 'f13a4eda-ab97-496d-b037-8b8f2b2599e1', y: q`
                         select * from support_threads where id = ${msg.entityID}
                     `})[0]
@@ -588,7 +622,7 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory({entity})
                 }
                 
-                else if (msg.fun === 'private_getSupportThreadMessages') {
+                if (msg.fun === 'private_getSupportThreadMessages') {
                     // TODO:vgrechka Secure private_getSupportThreadMessages    c99bc54a-121a-4b3a-b210-a25fa47a43da 
                     return #await handleChunkedSelect({$tag: 'b234f100-78f9-47a0-bafb-ef853b38538b', table: 'support_thread_messages', loadItem: loadSupportThreadMessage,
                         appendToWhere(qb) {
@@ -597,7 +631,7 @@ app.post('/rpc', (req, res) => {
                     })
                 }
                 
-                else if (msg.fun === 'private_createSupportThread') {
+                if (msg.fun === 'private_createSupportThread') {
                     loadField({key: 'topic', kind: 'topic', mandatory: true})
                     loadField({key: 'message', kind: 'message', mandatory: true})
 
@@ -620,7 +654,7 @@ app.post('/rpc', (req, res) => {
                     return fixErrorsResult()
                 }
                 
-                else if (msg.fun === 'private_createSupportThreadMessage') {
+                if (msg.fun === 'private_createSupportThreadMessage') {
                     traceBeginHandler({$tag: 'f32672d7-d67f-49b1-ad40-36477e4c9ba7'})
                     loadField({key: 'message', kind: 'message', mandatory: true})
                     if (!isEmpty(fieldErrors)) return traceEndHandler({ret: fixErrorsResult(), $tag: 'e43bd7b1-bd4c-4866-b2a3-944473187487'})
@@ -645,7 +679,7 @@ app.post('/rpc', (req, res) => {
                     return traceEndHandler({ret: hunkyDory({}), $tag: '8cd70dbd-8bc7-46ac-8636-04eb1a9d0814'})
                 }
                 
-                else if (msg.fun === 'private_updateSupportThreadMessage') {
+                if (msg.fun === 'private_updateSupportThreadMessage') {
                     traceBeginHandler(s{})
                     
                     const thread = #await tx.query(s{y: q`
@@ -673,7 +707,7 @@ app.post('/rpc', (req, res) => {
                     return traceEndHandler(s{ret: hunkyDory()})
                 }
                 
-                else if (msg.fun === 'private_takeSupportThread') {
+                if (msg.fun === 'private_takeSupportThread') {
                     #await tx.query({$tag: 'ea3ae40d-c285-49b0-9219-415203925257', y: q`
                         update support_threads set supporter_id = ${user.id} where id = ${msg.id}`})
                     return hunkyDory()
@@ -721,10 +755,8 @@ app.post('/rpc', (req, res) => {
                         if (~offset) return {file, code, offset}
                     }
                 }
-                    
-                async function handleChunkedSelect({$tag, table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'}) {
-                    traceBeginHandler({$tag})
-                    
+                
+                async function selectChunk({table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'}) {
                     const fromID = msg.fromID || 0
                     const qb = QueryBuilder()
                     qb.append(q`select *`)
@@ -735,7 +767,7 @@ app.post('/rpc', (req, res) => {
                     qb.append(q`order by id ${{inline: getOrderingParam({defaultValue: defaultOrdering})}}`)
                     qb.append(q`fetch first MORE_CHUNK rows only`)
                     
-                    let items = #await tx.query({$tag: '685e6ce9-0761-4573-9217-de3a010de305', trace, y: qb.toQ()})
+                    let items = #await tx.query(s{y: qb.toy()})
                     let moreFromID
                     if (items.length === MORE_CHUNK) {
                         moreFromID = last(items).id
@@ -743,10 +775,14 @@ app.post('/rpc', (req, res) => {
                     }
                     for (const item of items) {
                         #await loadItem(item)
-                        item.zzz = 'aaaa'
                     }
-
-                    return traceEndHandler({ret: hunkyDory({items, moreFromID}), $tag: 'c77946ec-f009-4c36-8a68-e427d23778c0'})
+                    return {items, moreFromID}
+                }
+                    
+                async function handleChunkedSelect(opts) {
+                    traceBeginHandler({$tag: opts.$tag, $sourceLocation: opts.$sourceLocation})
+                    const res = #await selectChunk(opts)
+                    return traceEndHandler(s{ret: hunkyDory(res)})
                 }
                 
                 function getOrderingParam({param='ordering', defaultValue='asc'}={}) {
@@ -1013,7 +1049,7 @@ export async function shutDownPool(db) {
 async function pgTransaction(opts, doInTransaction) {
     return await pgConnection(opts, async function(db) {
         try {
-            await db._query('start transaction isolation level read committed')
+            await db._query('begin isolation level repeatable read')
             const ditres = await doInTransaction(db)
             await db._query('commit')
             return ditres
@@ -1236,7 +1272,7 @@ function QueryBuilder() {
     const queries = []
 
     return {
-        toQ() {
+        toy() {
             let argCount = 0
             const sql = queries.map(x => x.sqlWithARGPlaceholders).join(' ').replace(/\bARG\b/g, _=> '$' + ++argCount)
             const args = [].concat(...queries.map(x => x.args))
