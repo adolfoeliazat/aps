@@ -488,7 +488,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 const url = `support.html?thread=${item.id}`
                 
-                return uiStateScope({name: `thread-${i}`, render() {
+                return uiStateScope({name: `thread${sufindex(i)}`, render() {
                     let topicElement
                     if (topicIsLink) {
                         topicElement = ui.pageLink({url, name: `topic`, title: item.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
@@ -574,7 +574,7 @@ global.igniteShit = makeUIShitIgniter({
         function makeRenderSupportThreadMessage({lineColor, dottedLines, dryFroms, showMessageNewLabel, paddingRight=0}) {
             return function renderSupportThreadMessage(message, messageIndex) {
 
-                return uiStateScope({name: `message-${messageIndex}`, render: _=>
+                return uiStateScope({name: `message${sufindex(messageIndex)}`, render: _=>
                 diva({$model: message, className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
                            messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
                            

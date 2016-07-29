@@ -31,6 +31,7 @@ module.exports = function({sim}) {
                 if (runKind === 'last' || runKind === 'all') {
                     #hawait luke1()
                     #hawait todd3()
+                    #hawait kafka2()
                 }
                 
                 if (runKind === 'first' || runKind === 'all') {
@@ -1091,6 +1092,7 @@ module.exports = function({sim}) {
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 19:16:05'})
                     #hawait testGlobal.controls['TopNavItem-support'].click()
                     art.uiState({$tag: '10b64318-d180-4a84-9b2f-0a37e61b3d4b', expected: {
+                        
                          'TopNavItem-blog': { title: `Блог` },
                           'TopNavItem-contact': { title: `Связь` },
                           'TopNavItem-dashboard': { title: `Люк` },
@@ -1100,23 +1102,20 @@ module.exports = function({sim}) {
                           'TopNavItem-samples': { title: `Примеры` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
                           'TopNavItem-why': { title: `Почему мы?` },
-                          'chunk-0.thread-0.link-topic': { title: `И это называется следственной документацией!` },
-                          'chunk-0.thread-0.newMessages.message-0.message': dedent(`
-                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
-                                
-                                (In other words, fuck you :))`),
-                          'chunk-0.thread-0.newMessages.message-0.newLabel': `Новое`,
-                          'chunk-0.thread-0.newMessages.message-0.timestamp': `27/07/2016 18:52:46`,
-                          'chunk-0.thread-0.newMessages.message-0.userLabel-from': `Тодд Суппортод`,
-                          'chunk-0.thread-0.newMessages.message-0.userLabel-to': `Люк Хуюк`,
-                          'chunk-0.thread-0.oldMessages.message-0.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
-                          'chunk-0.thread-0.oldMessages.message-0.timestamp': `10/04/2014 16:44:55`,
-                          'chunk-0.thread-0.oldMessages.message-0.to': `В рельсу`,
-                          'chunk-0.thread-0.oldMessages.message-0.userLabel-from': `Люк Хуюк`,
+                          'chunk-i000.thread-i000.link-topic': { title: `И это называется следственной документацией!` },
+                          'chunk-i000.thread-i000.newMessages.message-i000.message': `Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))`,
+                          'chunk-i000.thread-i000.newMessages.message-i000.newLabel': `Новое`,
+                          'chunk-i000.thread-i000.newMessages.message-i000.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-i000.thread-i000.newMessages.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.thread-i000.newMessages.message-i000.userLabel-to': `Люк Хуюк`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.timestamp': `10/04/2014 16:44:55`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.to': `В рельсу`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.userLabel-from': `Люк Хуюк`,
                           'liveBadge-topNavItem-support': `1`,
                           pageHeader: `Поддержка`,
-                          'tab-main-0:active.link-it': { title: `Обновленные` },
-                          'tab-main-1.link-it': { title: `Все` },
+                          'tab-main-i000:active.link-it': { title: `Обновленные` },
+                          'tab-main-i001.link-it': { title: `Все` },
                           url: `http://aps-ua-writer.local:3022/support.html`
                     }})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '7b4d2b2e-202b-4188-afa8-a8136d5f2bd6'})
@@ -1124,8 +1123,9 @@ module.exports = function({sim}) {
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5aa09ff4-7e41-4fab-bc4f-bf3a1f3cd7e2'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 19:45:25'})
-                    #hawait testGlobal.controls['chunk-0.thread-0.link-topic'].click()
+                    #hawait testGlobal.controls['chunk-i000.thread-i000.link-topic'].click()
                     art.uiState({$tag: 'c0950b79-938e-4bc0-b133-42d8a27d005f', expected: {
+                        
                          'Select-ordering': 
                            { title: `Сначала новые`,
                              titles: [ `Сначала новые`, `Сначала старые` ] },
@@ -1140,18 +1140,15 @@ module.exports = function({sim}) {
                           'TopNavItem-why': { title: `Почему мы?` },
                           'button-edit': { icon: `edit` },
                           'button-plus': { icon: `comment` },
-                          'chunk-0.message-0.message': dedent(`
-                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
-                                
-                                (In other words, fuck you :))`),
-                          'chunk-0.message-0.newLabel': `Новое`,
-                          'chunk-0.message-0.timestamp': `27/07/2016 18:52:46`,
-                          'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
-                          'chunk-0.message-0.userLabel-to': `Люк Хуюк`,
-                          'chunk-0.message-1.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
-                          'chunk-0.message-1.timestamp': `10/04/2014 16:44:55`,
-                          'chunk-0.message-1.to': `В рельсу`,
-                          'chunk-0.message-1.userLabel-from': `Люк Хуюк`,
+                          'chunk-i000.message-i000.message': `Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))`,
+                          'chunk-i000.message-i000.newLabel': `Новое`,
+                          'chunk-i000.message-i000.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-i000.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i000.userLabel-to': `Люк Хуюк`,
+                          'chunk-i000.message-i001.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
+                          'chunk-i000.message-i001.timestamp': `10/04/2014 16:44:55`,
+                          'chunk-i000.message-i001.to': `В рельсу`,
+                          'chunk-i000.message-i001.userLabel-from': `Люк Хуюк`,
                           'liveBadge-topNavItem-support': `1`,
                           pageHeader: `Запрос в поддержку № 12`,
                           url: `http://aps-ua-writer.local:3022/support.html?thread=12`
@@ -1163,6 +1160,7 @@ module.exports = function({sim}) {
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:41:50'})
                     #hawait testGlobal.controls['button-edit'].click()
                     art.uiState({$tag: '4c776fc8-f555-47e2-a7e7-3b4a5216e8a6', expected: {
+                        
                          'Select-status': { title: `Решён`, titles: [ `Решён` ] },
                           'TopNavItem-blog': { title: `Блог` },
                           'TopNavItem-contact': { title: `Связь` },
@@ -1175,18 +1173,15 @@ module.exports = function({sim}) {
                           'TopNavItem-why': { title: `Почему мы?` },
                           'button-cancel': { title: `Не стоит` },
                           'button-primary': { title: `Сохранить` },
-                          'chunk-0.message-0.message': dedent(`
-                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
-                                
-                                (In other words, fuck you :))`),
-                          'chunk-0.message-0.newLabel': `Новое`,
-                          'chunk-0.message-0.timestamp': `27/07/2016 18:52:46`,
-                          'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
-                          'chunk-0.message-0.userLabel-to': `Люк Хуюк`,
-                          'chunk-0.message-1.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
-                          'chunk-0.message-1.timestamp': `10/04/2014 16:44:55`,
-                          'chunk-0.message-1.to': `В рельсу`,
-                          'chunk-0.message-1.userLabel-from': `Люк Хуюк`,
+                          'chunk-i000.message-i000.message': `Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))`,
+                          'chunk-i000.message-i000.newLabel': `Новое`,
+                          'chunk-i000.message-i000.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-i000.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i000.userLabel-to': `Люк Хуюк`,
+                          'chunk-i000.message-i001.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
+                          'chunk-i000.message-i001.timestamp': `10/04/2014 16:44:55`,
+                          'chunk-i000.message-i001.to': `В рельсу`,
+                          'chunk-i000.message-i001.userLabel-from': `Люк Хуюк`,
                           'liveBadge-topNavItem-support': `1`,
                           pageHeader: `Запрос в поддержку № 12`,
                           url: `http://aps-ua-writer.local:3022/support.html?thread=12`
@@ -1200,6 +1195,7 @@ module.exports = function({sim}) {
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:42:54'})
                     #hawait testGlobal.controls['button-primary'].click()
                     art.uiState({$tag: '99798601-7dca-4e9c-8136-5052756c685e', expected: {
+                        
                          'TopNavItem-blog': { title: `Блог` },
                           'TopNavItem-contact': { title: `Связь` },
                           'TopNavItem-dashboard': { title: `Люк` },
@@ -1209,18 +1205,15 @@ module.exports = function({sim}) {
                           'TopNavItem-samples': { title: `Примеры` },
                           'TopNavItem-support': { active: true, title: `Поддержка` },
                           'TopNavItem-why': { title: `Почему мы?` },
-                          'chunk-0.message-0.message': dedent(`
-                                Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.
-                                
-                                (In other words, fuck you :))`),
-                          'chunk-0.message-0.newLabel:aniFadeOutDelayed': `Новое`,
-                          'chunk-0.message-0.timestamp': `27/07/2016 18:52:46`,
-                          'chunk-0.message-0.userLabel-from': `Тодд Суппортод`,
-                          'chunk-0.message-0.userLabel-to': `Люк Хуюк`,
-                          'chunk-0.message-1.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
-                          'chunk-0.message-1.timestamp': `10/04/2014 16:44:55`,
-                          'chunk-0.message-1.to': `В рельсу`,
-                          'chunk-0.message-1.userLabel-from': `Люк Хуюк`,
+                          'chunk-i000.message-i000.message': `Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))`,
+                          'chunk-i000.message-i000.newLabel:aniFadeOutDelayed': `Новое`,
+                          'chunk-i000.message-i000.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-i000.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i000.userLabel-to': `Люк Хуюк`,
+                          'chunk-i000.message-i001.message': `Нужно было бы еще многое вам сказать. Пришлось изложить только вкратце. Но я надеюсь, что вы меня поняли.`,
+                          'chunk-i000.message-i001.timestamp': `10/04/2014 16:44:55`,
+                          'chunk-i000.message-i001.to': `В рельсу`,
+                          'chunk-i000.message-i001.userLabel-from': `Люк Хуюк`,
                           pageHeader: `Запрос в поддержку № 12`,
                           'pageHeaderLabel-0:success': `Решён`,
                           url: `http://aps-ua-writer.local:3022/support.html?thread=12`
@@ -1230,7 +1223,8 @@ module.exports = function({sim}) {
                 }
                 
                 async function todd3() {
-                    #hawait selectBrowserAndSignIn({$tag: 'f118942e-2bef-4121-a27c-fe4f98eadcd4', clientKind: 'writer', browserName: 'todd3', email: 'todd@test.shit.ua', pausePointTitle: 'Todd Supportod should now see that Luke resolved that support request...'})
+                    // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+                    #hawait selectBrowserAndSignIn({$tag: 'f118942e-2bef-4121-a27c-fe4f98eadcd4', clientKind: 'writer', browserName: 'todd3', email: 'todd@test.shit.ua', pausePointTitle: 'Todd Supportod should now see that Luke resolved his support request...'})
                     art.uiState({$tag: '8246a80c-8a31-4f80-bba0-b404c26a4c94', expected: {
                          'TopNavItem-admin-heap': { title: `Куча` },
                           'TopNavItem-dashboard': { active: true, title: `Тодд` },
@@ -1252,8 +1246,234 @@ module.exports = function({sim}) {
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/28 16:20:31'})
                     #hawait testGlobal.controls['TopNavItem-support'].click()
                     art.uiState({$tag: 'fcc1f0b2-63b8-4b57-bf11-a27a1aa65415', expected: {
+                        
+                         'TopNavItem-admin-heap': { title: `Куча` },
+                          'TopNavItem-dashboard': { title: `Тодд` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'chunk-i000.thread-i000.link-topic': { title: `В пустом зале заседаний. Студент. Канцелярии` },
+                          'chunk-i000.thread-i000.oldMessages.link-andMore': { title: `...и еще 5 старых сообщений` },
+                          'chunk-i000.thread-i000.oldMessages.message-i000.message': `Ладно, тогда пиши себе. Я отвечать не буду. Но если, сцуко, слишком сильно наспамишь, то будем тебя банить, учти.`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.timestamp': `27/07/2016 19:02:27`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.userLabel-to': `Франц Кафка`,
+                          'chunk-i000.thread-i001.link-topic': { title: `И это называется следственной документацией!` },
+                          'chunk-i000.thread-i001.oldMessages.link-andMore': { title: `...и еще одно старое сообщение` },
+                          'chunk-i000.thread-i001.oldMessages.message-i000.message': `Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))`,
+                          'chunk-i000.thread-i001.oldMessages.message-i000.timestamp': `27/07/2016 18:52:46`,
+                          'chunk-i000.thread-i001.oldMessages.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.thread-i001.oldMessages.message-i000.userLabel-to': `Люк Хуюк`,
+                          'liveBadge-topNavItem-admin-heap': `11`,
+                          pageHeader: `Поддержка`,
+                          'tab-main-i000:active.link-it': { title: `Все` },
+                          url: `http://aps-ua-writer.local:3022/support.html`
                     }})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '5dc62ff5-4881-4538-9616-51be5200f4ee'})
+
+                }
+                
+                async function kafka2() {
+                    #hawait selectBrowserAndSignIn({$tag: 'c389d860-b30c-438e-bd79-c5223fffd794', clientKind: 'writer', browserName: 'kafka2', email: 'kafka@test.shit.ua', pausePointTitle: 'Kafka decides to introduce some spamming...'})
+                    art.uiState({$tag: '7de769ba-dc47-4f82-acb8-84dd7bd18567', expected: {
+                         'TopNavItem-dashboard': { active: true, title: `Франц` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-profile': { title: `Профиль` },
+                          'TopNavItem-store': { title: `Аукцион` },
+                          'TopNavItem-support': { title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'link-changePassword': { title: `Сменить пароль` },
+                          'link-signOut': { title: `Выйти прочь` },
+                          'liveBadge-topNavItem-support': `1`,
+                          pageHeader: `Панель`,
+                          url: `http://aps-ua-writer.local:3022/dashboard.html`
+                    }})
+                    
+                    // Action
+                    // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: 'c8ff4699-58c8-400d-a9f3-68e20a61ae93'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 15:44:39'})
+                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    art.uiState({$tag: '7ffac211-0ffd-45c7-983d-a7da73a0824e', expected: {
+                        
+                         'TopNavItem-dashboard': { title: `Франц` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-profile': { title: `Профиль` },
+                          'TopNavItem-store': { title: `Аукцион` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'chunk-i000.thread-i000.link-topic': { title: `В пустом зале заседаний. Студент. Канцелярии` },
+                          'chunk-i000.thread-i000.newMessages.message-i000.message': `Ладно, тогда пиши себе. Я отвечать не буду. Но если, сцуко, слишком сильно наспамишь, то будем тебя банить, учти.`,
+                          'chunk-i000.thread-i000.newMessages.message-i000.newLabel': `Новое`,
+                          'chunk-i000.thread-i000.newMessages.message-i000.timestamp': `27/07/2016 19:02:27`,
+                          'chunk-i000.thread-i000.newMessages.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.thread-i000.newMessages.message-i000.userLabel-to': `Франц Кафка`,
+                          'chunk-i000.thread-i000.oldMessages.link-andMore': { title: `...и еще 4 старых сообщения` },
+                          'chunk-i000.thread-i000.oldMessages.message-i000.message': `Ни в чем. Просто пописать. Я ж писатель, ага.`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.timestamp': `23/07/2016 17:08:11`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.thread-i000.oldMessages.message-i000.userLabel-to': `Тодд Суппортод`,
+                          'liveBadge-topNavItem-support': `1`,
+                          pageHeader: `Поддержка`,
+                          'tab-main-i000:active.link-it': { title: `Обновленные` },
+                          'tab-main-i001.link-it': { title: `Все` },
+                          url: `http://aps-ua-writer.local:3022/support.html`
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '7151ff9e-5eab-4ca0-b472-cc6a8f910c96'})
+
+                    // Action
+                    // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '6bf785d2-fc23-4212-931e-9f0e30d3f076'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 16:40:44'})
+                    #hawait testGlobal.controls['chunk-i000.thread-i000.link-topic'].click()
+                    art.uiState({$tag: 'c4fe7232-a724-4251-9ee0-ddd33ed7d0ba', expected: {
+                        
+                         'Select-ordering': 
+                           { title: `Сначала новые`,
+                             titles: [ `Сначала новые`, `Сначала старые` ] },
+                          'TopNavItem-dashboard': { title: `Франц` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-profile': { title: `Профиль` },
+                          'TopNavItem-store': { title: `Аукцион` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'button-edit': { icon: `edit` },
+                          'button-plus': { icon: `comment` },
+                          'chunk-i000.message-i000.message': `Ладно, тогда пиши себе. Я отвечать не буду. Но если, сцуко, слишком сильно наспамишь, то будем тебя банить, учти.`,
+                          'chunk-i000.message-i000.newLabel': `Новое`,
+                          'chunk-i000.message-i000.timestamp': `27/07/2016 19:02:27`,
+                          'chunk-i000.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i000.userLabel-to': `Франц Кафка`,
+                          'chunk-i000.message-i001.message': `Ни в чем. Просто пописать. Я ж писатель, ага.`,
+                          'chunk-i000.message-i001.timestamp': `23/07/2016 17:08:11`,
+                          'chunk-i000.message-i001.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i001.userLabel-to': `Тодд Суппортод`,
+                          'chunk-i000.message-i002.message': `Та я понял, что ты писатель... В чем дело-то?`,
+                          'chunk-i000.message-i002.timestamp': `23/07/2016 16:56:26`,
+                          'chunk-i000.message-i002.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i002.userLabel-to': `Франц Кафка`,
+                          'chunk-i000.message-i003.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
+                          'chunk-i000.message-i003.timestamp': `17/05/2014 02:36:02`,
+                          'chunk-i000.message-i003.to': `В рельсу`,
+                          'chunk-i000.message-i003.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i004.message': `Еще хотел бы добавить вот что.\n\n- Сегодня заседания нет, - сказала женщина.\n- Как это - нет заседания? - спросил он, не поверив.`,
+                          'chunk-i000.message-i004.timestamp': `17/05/2014 02:35:27`,
+                          'chunk-i000.message-i004.to': `В рельсу`,
+                          'chunk-i000.message-i004.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i005.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
+                          'chunk-i000.message-i005.timestamp': `17/05/2014 02:33:15`,
+                          'chunk-i000.message-i005.to': `В рельсу`,
+                          'chunk-i000.message-i005.userLabel-from': `Франц Кафка`,
+                          'liveBadge-topNavItem-support': `1`,
+                          pageHeader: `Запрос в поддержку № 308`,
+                          url: `http://aps-ua-writer.local:3022/support.html?thread=308`
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '0abc8d04-3ea6-450f-9800-34df01418d2f'})
+
+                    // Action
+                    // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5a7399f9-9bd9-472a-8159-14faf4b72d8a'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 16:51:36'})
+                    #hawait testGlobal.controls['button-plus'].click()
+                    art.uiState({$tag: 'b668806f-2f5b-4594-a364-49494b60cc7e', expected: {
+                        
+                         'Input-message': ``,
+                          'TopNavItem-dashboard': { title: `Франц` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-profile': { title: `Профиль` },
+                          'TopNavItem-store': { title: `Аукцион` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'button-cancel': { title: `Передумал` },
+                          'button-primary': { title: `Запостить` },
+                          'chunk-i000.message-i000.message': `Ладно, тогда пиши себе. Я отвечать не буду. Но если, сцуко, слишком сильно наспамишь, то будем тебя банить, учти.`,
+                          'chunk-i000.message-i000.newLabel': `Новое`,
+                          'chunk-i000.message-i000.timestamp': `27/07/2016 19:02:27`,
+                          'chunk-i000.message-i000.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i000.userLabel-to': `Франц Кафка`,
+                          'chunk-i000.message-i001.message': `Ни в чем. Просто пописать. Я ж писатель, ага.`,
+                          'chunk-i000.message-i001.timestamp': `23/07/2016 17:08:11`,
+                          'chunk-i000.message-i001.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i001.userLabel-to': `Тодд Суппортод`,
+                          'chunk-i000.message-i002.message': `Та я понял, что ты писатель... В чем дело-то?`,
+                          'chunk-i000.message-i002.timestamp': `23/07/2016 16:56:26`,
+                          'chunk-i000.message-i002.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i002.userLabel-to': `Франц Кафка`,
+                          'chunk-i000.message-i003.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
+                          'chunk-i000.message-i003.timestamp': `17/05/2014 02:36:02`,
+                          'chunk-i000.message-i003.to': `В рельсу`,
+                          'chunk-i000.message-i003.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i004.message': `Еще хотел бы добавить вот что.\n\n- Сегодня заседания нет, - сказала женщина.\n- Как это - нет заседания? - спросил он, не поверив.`,
+                          'chunk-i000.message-i004.timestamp': `17/05/2014 02:35:27`,
+                          'chunk-i000.message-i004.to': `В рельсу`,
+                          'chunk-i000.message-i004.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i005.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
+                          'chunk-i000.message-i005.timestamp': `17/05/2014 02:33:15`,
+                          'chunk-i000.message-i005.to': `В рельсу`,
+                          'chunk-i000.message-i005.userLabel-from': `Франц Кафка`,
+                          'liveBadge-topNavItem-support': `1`,
+                          pageHeader: `Запрос в поддержку № 308`,
+                          url: `http://aps-ua-writer.local:3022/support.html?thread=308`
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'c064ab71-4e8c-4072-800c-6f120a33554d'})
+
+                    // Inputs
+                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Тупо спамлю 1'})
+                    // Action
+                    // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5ad115fb-9574-47c1-b275-056c8d696799'})
+                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 16:52:40'})
+                    #hawait testGlobal.controls['button-primary'].click()
+                    art.uiState({$tag: '2ee05f7a-7384-4d7f-b9b0-60ceef5e240b', expected: {
+                        
+                         'Select-ordering': 
+                           { title: `Сначала новые`,
+                             titles: [ `Сначала новые`, `Сначала старые` ] },
+                          'TopNavItem-dashboard': { title: `Франц` },
+                          'TopNavItem-faq': { title: `ЧаВо` },
+                          'TopNavItem-orders': { title: `Мои заказы` },
+                          'TopNavItem-prices': { title: `Цены` },
+                          'TopNavItem-profile': { title: `Профиль` },
+                          'TopNavItem-store': { title: `Аукцион` },
+                          'TopNavItem-support': { active: true, title: `Поддержка` },
+                          'TopNavItem-why': { title: `Почему мы?` },
+                          'button-edit': { icon: `edit` },
+                          'button-plus': { icon: `comment` },
+                          'chunk-i000.message-i000.message': `Тупо спамлю 1`,
+                          'chunk-i000.message-i000.timestamp': `29/07/2016 19:52:40`,
+                          'chunk-i000.message-i000.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i000.userLabel-to': `Тодд Суппортод`,
+                          'chunk-i000.message-i001.message': `Ладно, тогда пиши себе. Я отвечать не буду. Но если, сцуко, слишком сильно наспамишь, то будем тебя банить, учти.`,
+                          'chunk-i000.message-i001.newLabel:aniFadeOutDelayed': `Новое`,
+                          'chunk-i000.message-i001.timestamp': `27/07/2016 19:02:27`,
+                          'chunk-i000.message-i001.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i001.userLabel-to': `Франц Кафка`,
+                          'chunk-i000.message-i002.message': `Ни в чем. Просто пописать. Я ж писатель, ага.`,
+                          'chunk-i000.message-i002.timestamp': `23/07/2016 17:08:11`,
+                          'chunk-i000.message-i002.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i002.userLabel-to': `Тодд Суппортод`,
+                          'chunk-i000.message-i003.message': `Та я понял, что ты писатель... В чем дело-то?`,
+                          'chunk-i000.message-i003.timestamp': `23/07/2016 16:56:26`,
+                          'chunk-i000.message-i003.userLabel-from': `Тодд Суппортод`,
+                          'chunk-i000.message-i003.userLabel-to': `Франц Кафка`,
+                          'chunk-i000.message-i004.message': `И еще немного... Чтобы  убедить  его,  женщина  отворила  дверь  в соседнее помещение.`,
+                          'chunk-i000.message-i004.timestamp': `17/05/2014 02:36:02`,
+                          'chunk-i000.message-i004.to': `В рельсу`,
+                          'chunk-i000.message-i004.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i005.message': `Еще хотел бы добавить вот что.\n\n- Сегодня заседания нет, - сказала женщина.\n- Как это - нет заседания? - спросил он, не поверив.`,
+                          'chunk-i000.message-i005.timestamp': `17/05/2014 02:35:27`,
+                          'chunk-i000.message-i005.to': `В рельсу`,
+                          'chunk-i000.message-i005.userLabel-from': `Франц Кафка`,
+                          'chunk-i000.message-i006.message': `Всю следующую неделю К.  изо  дня  в  день  ожидал  нового вызова,  он  не  мог  поверить,  что его отказ от допроса будет принят буквально, а когда ожидаемый вызов до субботы так  и  не пришел, К. усмотрел в этом молчании приглашение в тот же дом на тот  же  час.  Поэтому в воскресенье он снова отправился туда и прямо прошел по этажам и коридорам  наверх;  некоторые  жильцы, запомнившие его, здоровались с ним у дверей, но ему не пришлось никого  спрашивать,  и  он  сам подошел к нужной двери. На стук открыли сразу, и,  не  оглядываясь  на  уже  знакомую  женщину, остановившуюся у дверей, он хотел пройти в следующую комнату.`,
+                          'chunk-i000.message-i006.timestamp': `17/05/2014 02:33:15`,
+                          'chunk-i000.message-i006.to': `В рельсу`,
+                          'chunk-i000.message-i006.userLabel-from': `Франц Кафка`,
+                          pageHeader: `Запрос в поддержку № 308`,
+                          url: `http://aps-ua-writer.local:3022/support.html?thread=308`
+                    }})
+                    // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '96f1236d-23cd-4698-b8c3-0a80dc142860'})
 
                     art.actionPlaceholder({$tag: 'ce417c62-f167-4a0d-aecc-8193057b138c'})
                 }
