@@ -108,24 +108,22 @@ global.igniteShit = makeUIShitIgniter({
                                     body: div(errorBanner(itemsRes.error))
                                 })
                             }
-                           
+                            
                             ui.setPage({
                                 header: pageHeader({title: pageTitle}),
-                                body: div(tabs({
-                                    name: 'main',
-                                    activeTab,
-                                    tabs: {
-                                        support: {
-                                            title: _=> span(spanc({name: 'title', content: t(`TOTE`, `Поддержка`)}), ui.liveBadge({name: 'supportTab', liveStatusFieldName: 'unassignedSupportThreadCount'})),
-                                            content: _=> diva({},
-                                                ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})),
+                                body: div(
+                                    tabs({name: 'main', active: activeTab, tabDefs: [
+                                        {
+                                            name: 'support',
+                                            content: ui.taby({
+                                                title: t(`TOTE`, `Поддержка`),
+                                                liveStatusFieldName: 'unassignedSupportThreadCount',
+                                                url: 'admin-heap.html?tab=support',
+                                            })
                                         },
-//                                        orders: {
-//                                            title: _=> spanc({name: 'title', content: t(`TOTE`, `Заказы`)}),
-//                                            content: _=> diva({}, t(`TOTE`, `todo new orders tab`)),
-//                                        },
-                                    }
-                                }))
+                                    ]}),
+                                    ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})
+                                )
                             })
                             
                         } finally { endTrain() }
@@ -230,18 +228,20 @@ global.igniteShit = makeUIShitIgniter({
                                 
                                 const filter = itemsRes.filter
                                 
-                                const tabDefs = itemsRes.availableFilters.map(name => ({name, title: lookup(name, {
-                                    updated: t(`TOTE`, `Обновленные`),
-                                    all: t(`TOTE`, `Все`)
-                                })}))
-                               
+                                const tabDefs = itemsRes.availableFilters.map(name => ({
+                                    name,
+                                    content: ui.taby({
+                                        title: lookup(name, {
+                                            updated: t(`TOTE`, `Обновленные`),
+                                            all: t(`TOTE`, `Все`)
+                                        }),
+                                        url: `support.html?filter=${tab.name}`
+                                    })}))
+                                
                                 ui.setPage({
                                     header: pageHeader({title: t(`TOTE`, `Поддержка`)}),
                                     body: div(
-                                        tabs({name: 'main', tabDefs, active: filter, makeLinkForTab({tab}) {
-                                            // TODO:vgrechka Disable link on active tab?    44807234-7aa8-4d31-9704-5989c116a6f7 
-                                            return ui.pageLink({name: `it`, title: tab.title, url: `support.html?filter=${tab.name}`, blinkOpts: {dleft: 0, dtop: 0, dwidth: -2}})
-                                        }}),
+                                        tabs({name: 'main', tabDefs, active: filter}),
                                         ui.renderMoreable({itemsRes, itemsReq: {fun: 'private_getSupportThreadsChunk', filter}, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}),
                                     )
                                 })
@@ -397,6 +397,41 @@ global.igniteShit = makeUIShitIgniter({
                     ui.setPage({
                         header: pageHeader({title: t('Dashboard', 'Панель')}),
                         body: div(
+// @killme
+//                            elcl({
+//                                render() {
+//                                    dlog('rendering aaa')
+//                                    return div(
+//                                        elcl({
+//                                            render() {
+//                                                dlog('rendering bbb')
+//                                                return div('bbb')
+//                                            },
+//                                            componentDidMount() {
+//                                                dlog('mounted bbb')
+//                                            },
+//                                            componentWillMount() {
+//                                                dlog('will mount bbb')
+//                                            }
+//                                        }),
+//                                        'aaa',
+//                                        elcl({
+//                                            render() {
+//                                                return div('ccc')
+//                                            },
+//                                            componentDidMount() {
+//                                                dlog('mounted ccc')
+//                                            }
+//                                        }),
+//                                        )
+//                                },
+//                                componentDidMount() {
+//                                    dlog('mounted aaa')
+//                                },
+//                                componentWillMount() {
+//                                    dlog('will mount aaa')
+//                                }
+//                            }),
                             diva({className: 'row'},
                                 diva({className: 'col-sm-6'},
                                     sectionTitle(t('Account', 'Аккаунт')),

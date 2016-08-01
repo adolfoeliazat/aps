@@ -316,6 +316,26 @@ const o = [{foo: 10, bar: {meta: 'aaa', meat: 'AAA'}}]
 relog(u.textMeatDeep(o))
 relog(o)
 
+relog(omit({a: 10, b: 20, c: 30}, 'b', 'c'))
+relog(omit({a: 10, b: 20, c: 30}, ['b', 'c']))
+relog(pick({a: 10, b: 20, c: 30}, 'b', 'c'))
+
+relog('foo'.startsWith('fo'))
+
+const set = new Set()
+set.add(f)
+set.add(g)
+relog(set)
+set.delete(g)
+relog(set)
+//
+function f() {}
+function g() {}
+
+const f = eval(`(function() {})`)
+relog(f)
+
+
 
 
 

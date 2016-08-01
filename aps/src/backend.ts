@@ -17,6 +17,7 @@ import * as path from 'path'
 import * as testShitUA from './test-shit-ua'
 #import static 'into-u ./stuff'
 
+const backendInstanceID = uuid()
 let testGlobalCounter = 0, simulateRequest
 
 // TODO:vgrechka @ugly Find a better way to make TS aware of `#imported static` names
@@ -151,7 +152,26 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                if (msg.fun == 'danger_captureTestDB') {
+                if (msg.fun === 'danger_getBackendInstanceID') {
+                    return hunkyDory({backendInstanceID})
+                }
+                
+                if (msg.fun === 'danger_getPieceOfCodeBetweenTags') {
+                    if (!msg.tag) raise('Gimme tag')
+                    
+                    const fname = 'E:/work/foundation/u/lib/ui.js'
+                    const code = fs.readFileSync(fname, 'utf8')
+                    const beginMarker = `'begin-${msg.tag}'`
+                    const beginIndex = code.indexOf(beginMarker)
+                    const endIndex = code.indexOf(`'end-${msg.tag}'`)
+                    if (!(~beginIndex && ~endIndex)) return hunkyDory({})
+                    
+                    let piece = code.slice(beginIndex, endIndex)
+                    piece = piece.slice(piece.indexOf('function'), /*{*/ piece.lastIndexOf('}') + 1)
+                    return hunkyDory({piece})
+                }
+                
+                if (msg.fun === 'danger_captureTestDB') {
                     const condb = 'test-postgres'
                     const sourceDBName = 'aps-test'
                     
@@ -172,27 +192,79 @@ app.post('/rpc', (req, res) => {
                     const bakFile = `c:/tmp/${path.basename(ft.file)}.bak-${moment().format('YYYYMMDD-HHmmss')}`
                     fs.writeFileSync(bakFile, ft.code)
                     
-                    const beginningLineContent = `art.uiState({$tag: '${msg.assertionTag}', expected: {` // }})
-                    const beginningLineContentIndex = ft.code.indexOf(beginningLineContent)
-                    if (!~beginningLineContentIndex) return {error: 'Cannot find beginningLineContentIndex'}
-                    
-                    let indent = 0, i = beginningLineContentIndex - 1
-                    while (ft.code[i] === ' ') {
-                        ++indent
-                        --i
+                    const beginningLineOfInlineContent = `art.uiState({$tag: '${msg.assertionTag}', expected: {` // }})
+                    const beginningLineOfInlineContentIndex = ft.code.indexOf(beginningLineOfInlineContent)
+                    if (~beginningLineOfInlineContentIndex) {
+                        let indent = 0, i = beginningLineOfInlineContentIndex - 1
+                        while (ft.code[i] === ' ') {
+                            ++indent
+                            --i
+                        }
+                        
+                        /*({{*/ let endingLineContentIndex = ft.code.slice(beginningLineOfInlineContentIndex).search(/\s*\}\}\)/)
+                        if (!~endingLineContentIndex) return {error: 'Cannot find endingLineContentIndex'}
+                        endingLineContentIndex += beginningLineOfInlineContentIndex
+                        const newCode = ft.code.slice(0, beginningLineOfInlineContentIndex + beginningLineOfInlineContent.length)
+                                      + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
+                                      + repeat(' ', indent) + trimStart(ft.code.slice(endingLineContentIndex))
+                        
+                        // fs.writeFileSync('c:/tmp/shit.txt', newCode)
+                        fs.writeFileSync(ft.file, newCode)
+                        
+                        return hunkyDory()
                     }
                     
-                    /*({{*/ let endingLineContentIndex = ft.code.slice(beginningLineContentIndex).search(/\s*\}\}\)/)
-                    if (!~endingLineContentIndex) return {error: 'Cannot find endingLineContentIndex'}
-                    endingLineContentIndex += beginningLineContentIndex
-                    const newCode = ft.code.slice(0, beginningLineContentIndex + beginningLineContent.length)
-                                  + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
-                                  + repeat(' ', indent) + trimStart(ft.code.slice(endingLineContentIndex))
-                    
-                    // fs.writeFileSync('c:/tmp/shit.txt', newCode)
-                    fs.writeFileSync(ft.file, newCode)
+                    const lineOfExternalContentReference = `art.uiState({$tag: '${msg.assertionTag}', expected: '---generated-shit---'})`
+                    const lineOfExternalContentReferenceIndex = ft.code.indexOf(lineOfExternalContentReference)
+                    if (~lineOfExternalContentReferenceIndex) {
+                        const generatedShitFile = 'E:/work/aps/aps/src/generated-shit.ts'
+                        const generatedShitCode = fs.readFileSync(generatedShitFile, 'utf8')
                         
-                    return hunkyDory()
+                        const beginningLineOfExternalContent = `'${msg.assertionTag}': {` // }
+                        const beginningLineOfExternalContentIndex = generatedShitCode.indexOf(beginningLineOfExternalContent)
+                        if (~beginningLineOfExternalContentIndex) {
+                            let indent = 0, i = beginningLineOfExternalContentIndex - 1
+                            while (generatedShitCode[i] === ' ') {
+                                ++indent
+                                --i
+                            }
+                            
+                            /*{*/ let endingLineOfExternalContentIndex = generatedShitCode.slice(beginningLineOfExternalContentIndex).search(/\}, \/\/ end of generated piece of shit/)
+                            if (!~endingLineOfExternalContentIndex) return {error: 'Cannot find endingLineOfExternalContentIndex'}
+                            endingLineOfExternalContentIndex += beginningLineOfExternalContentIndex
+                            const newCode = generatedShitCode.slice(0, beginningLineOfExternalContentIndex + beginningLineOfExternalContent.length)
+                                          + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
+                                          + repeat(' ', indent) + trimStart(generatedShitCode.slice(endingLineOfExternalContentIndex))
+                            
+                            // fs.writeFileSync('c:/tmp/shit.txt', newCode)
+                            fs.writeFileSync(generatedShitFile, newCode)
+                            
+                            return hunkyDory()
+                        } else {
+                            const placeToInsertNewGeneratedShitLine = `// place to insert new generated piece of shit`
+                            const placeToInsertNewGeneratedShitLineIndex = generatedShitCode.indexOf(placeToInsertNewGeneratedShitLine)
+                            if (!~placeToInsertNewGeneratedShitLineIndex) return {error: 'Cannot find placeToInsertNewGeneratedShitLineIndex'}
+                            let indent = 0, i = placeToInsertNewGeneratedShitLineIndex - 1
+                            while (generatedShitCode[i] === ' ') {
+                                ++indent
+                                --i
+                            }
+                            
+                            const newCode = generatedShitCode.slice(0, placeToInsertNewGeneratedShitLineIndex)
+                                          + `'${msg.assertionTag}': {` // }
+                                          + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
+                                          + repeat(' ', indent) + /*{*/ '}, // end of generated piece of shit'
+                                          + '\n\n' + repeat(' ', indent) + placeToInsertNewGeneratedShitLine + '\n'
+                                          + generatedShitCode.slice(placeToInsertNewGeneratedShitLineIndex + placeToInsertNewGeneratedShitLine.length)
+                            
+                            // fs.writeFileSync('c:/tmp/shit.txt', newCode)
+                            fs.writeFileSync(generatedShitFile, newCode)
+                            
+                            return hunkyDory()
+                        }
+                    }
+                    
+                    return {error: 'Cannot figure out where is assertion code (danger_updateAssertionCode)'}
                 }
                 
                 if (msg.fun === 'danger_insertTestActionCode') {
