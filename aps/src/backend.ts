@@ -158,12 +158,13 @@ app.post('/rpc', (req, res) => {
                 
                 if (msg.fun === 'danger_getPieceOfCodeBetweenTags') {
                     if (!msg.tag) raise('Gimme tag')
+                    if (!msg.tagPrefix) raise('Gimme tagPrefix')
                     
                     const fname = 'E:/work/foundation/u/lib/ui.js'
                     const code = fs.readFileSync(fname, 'utf8')
-                    const beginMarker = `'begin-${msg.tag}'`
+                    const beginMarker = `'${msg.tagPrefix}begin-${msg.tag}'`
                     const beginIndex = code.indexOf(beginMarker)
-                    const endIndex = code.indexOf(`'end-${msg.tag}'`)
+                    const endIndex = code.indexOf(`'${msg.tagPrefix}end-${msg.tag}'`)
                     if (!(~beginIndex && ~endIndex)) return hunkyDory({})
                     
                     let piece = code.slice(beginIndex, endIndex)

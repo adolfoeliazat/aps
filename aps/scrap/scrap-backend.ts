@@ -335,6 +335,10 @@ function g() {}
 const f = eval(`(function() {})`)
 relog(f)
 
+relog('qwe')
+
+relog(testTratra({relog}))
+
 
 
 
