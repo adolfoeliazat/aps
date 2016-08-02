@@ -212,9 +212,9 @@ function makeWriterSite({lang}) {
                         } 
                     },
                 ].map(section => 
-                    divsa({},
-                        divsa({}, h3Smaller(t(section.title))),
-                        divsa({}, markdown(dedent(t(section.content))))))
+                    diva({},
+                        diva({}, h3Smaller(t(section.title))),
+                        diva({}, markdown(dedent(t(section.content))))))
             )
         )
     })
@@ -394,9 +394,9 @@ function makeWriterSite({lang}) {
                         }
                     },
                 ].map(section => 
-                    divsa({},
-                        divsa({}, markdownPiece('> ' + t(section.title))),
-                        divsa({marginBottom: 20, marginTop: -5}, markdown(dedent(t(section.content))))))
+                    diva({},
+                        diva({}, markdownPiece('> ' + t(section.title))),
+                        diva({style: {marginBottom: 20, marginTop: -5}}, markdown(dedent(t(section.content))))))
             )
         )
     })
@@ -618,9 +618,9 @@ function makeCustomerSite({lang}) {
                         } 
                     },
                 ].map(section => 
-                    divsa({},
-                        divsa({}, h3Smaller(t(section.title))),
-                        divsa({}, markdown(dedent(t(section.content))))))
+                    diva({},
+                        diva({}, h3Smaller(t(section.title))),
+                        diva({}, markdown(dedent(t(section.content))))))
             )
         )
     })
@@ -842,9 +842,9 @@ function makeCustomerSite({lang}) {
                         }
                     },
                 ].map(section => 
-                    divsa({},
-                        divsa({}, markdownPiece('> ' + t(section.title))),
-                        divsa({marginBottom: 20, marginTop: -5}, markdown(dedent(t(section.content))))))
+                    diva({},
+                        diva({}, markdownPiece('> ' + t(section.title))),
+                        diva({style: {marginBottom: 20, marginTop: -5}}, markdown(dedent(t(section.content))))))
             )
         )
     })
@@ -862,8 +862,8 @@ function makeCustomerSite({lang}) {
                     `
                 }),
                 
-                divsa({marginBottom: 10}, t({en: 'AcademicPaperServed headquarter:', ua: 'AcademicPaperServed headquarter:'})),
-                divsa({whiteSpace: 'pre', fontFamily: 'monospace'}, tdedent({
+                diva({style: {marginBottom: 10}}, t({en: 'AcademicPaperServed headquarter:', ua: 'AcademicPaperServed headquarter:'})),
+                diva({style: {whiteSpace: 'pre', fontFamily: 'monospace'}}, tdedent({
                     en: `
                         DP World Inc
                         624 W Kristina Ln
@@ -1676,7 +1676,7 @@ function renderTestimonials(clientKind) {
                                 h4a({className: 'media-heading'}, t(item.name)),
                                 span(t(item.says))))))),
                                 
-            divsa({display: 'flex', alignItems: 'center', position: 'absolute', width: 20, right: 0, top: 0, height: '100%'},
+            diva({style: {display: 'flex', alignItems: 'center', position: 'absolute', width: 20, right: 0, top: 0, height: '100%'}},
                 glyph('chevron-right', {id: 'testimonials-right', className: 'fa-2x'}))),
                 
         rawHtml(``),
@@ -1684,12 +1684,12 @@ function renderTestimonials(clientKind) {
 }
 
 function h3Smaller(it) {
-    return h3(spansa({fontSize: '80%'}, it))
+    return h3(spana({style: {fontSize: '80%'}}, it))
 }
 
 function bullets(items) {
     return ula({className: 'fa-ul', style: {marginLeft: 22}}, ...items.map(item =>
-               lisa({marginBottom: 10}, glyph('star', {className: 'fa-li', style: {color: BLUE_GRAY_600}}), item)))
+               lia({style: {marginBottom: 10}}, glyph('star', {className: 'fa-li', style: {color: BLUE_GRAY_600}}), item)))
 }
 
 function locBullets(items) {
@@ -1715,8 +1715,8 @@ function horizBulletsRow(items, {horizContentMargin=0}={}) {
     const colSize = 12 / items.length
     return diva({className: 'row', style: {marginBottom: 20}}, ...items.map(x =>
                diva({className: 'col-md-' + colSize},
-                   divsa({textAlign: 'center', marginBottom: 10}, glyph(x.glyph, {className: 'fa-2x', style: {color: BLUE_GRAY_600}})),
-                   divsa({textAlign: 'center', margin: `0 ${horizContentMargin}px`}, t(x)))))
+                   diva({style: {textAlign: 'center', marginBottom: 10}}, glyph(x.glyph, {className: 'fa-2x', style: {color: BLUE_GRAY_600}})),
+                   diva({style: {textAlign: 'center', margin: `0 ${horizContentMargin}px`}}, t(x)))))
 }
 
 function crashForDebuggingSake_randomly() {

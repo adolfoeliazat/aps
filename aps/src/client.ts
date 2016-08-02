@@ -28,6 +28,8 @@ global.igniteShit = makeUIShitIgniter({
             
             css() {
                 return `
+                    body {overflow-x: hidden;}
+                
                     .form-control:focus {border-color: #b0bec5; box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(176,190,197,.6);}
 
                     .btn-primary {background-color: #78909c; border-color: #546e7a;}
