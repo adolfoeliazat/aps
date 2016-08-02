@@ -531,7 +531,7 @@ global.igniteShit = makeUIShitIgniter({
                     if (topicIsLink) {
                         topicElement = ui.pageLink({url, name: `topic`, title: item.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
                     } else {
-                        topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({name: 'topic', content: item.topic}))
+                        topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: item.topic}))
                     }
                     
                     const paddingRight = hasTakeAndReplyButton ? 45 : 0
@@ -624,11 +624,11 @@ global.igniteShit = makeUIShitIgniter({
                                   diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
                                       t(`TOTE`, `Кому: `)),
                                       message.recipient ? userLabel({name: 'to', user: message.recipient})
-                                                        : spanc({name: 'to', content: t(`TOTE`, `В рельсу`)})))
-                            : diva({style: {fontWeight: 'bold'}}, spanc({name: 'continuation', content: t(`TOTE`, `В догонку`)})),
+                                                        : spanc({tame: 'to', content: t(`TOTE`, `В рельсу`)})))
+                            : diva({style: {fontWeight: 'bold'}}, spanc({tame: 'continuation', content: t(`TOTE`, `В догонку`)})),
                                                            
                         diva({style: {marginTop: 10}},
-                            spanc({name: 'timestamp', content: timestampString(message.inserted_at)}),
+                            spanc({tame: 'timestamp', content: timestampString(message.inserted_at)}),
                         )
                     ),
                     diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
@@ -641,11 +641,11 @@ global.igniteShit = makeUIShitIgniter({
                                         ui.currentPageStuff[`supportThreadMessageNewLabelWasRendered-${message.id}`] = true
                                     }
                                     if (!seen || justBecameSeen) {
-                                        return spanc({name: 'newLabel', className: `label label-primary ${justBecameSeen ? 'aniFadeOutDelayed' : ''}`, style: {float: 'right'}, content: t(`New`, `Новое`)})
+                                        return spanc({tame: 'newLabel', className: `label label-primary ${justBecameSeen ? 'aniFadeOutDelayed' : ''}`, style: {float: 'right'}, content: t(`New`, `Новое`)})
                                     }
                                 }
                             }),
-                            spanc({name: 'message', content: message.message}),
+                            spanc({tame: 'message', content: message.message}),
                             ),
                         
                     ))})
@@ -802,7 +802,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
         const testName = `topNavItem-${name}`
         const id = puid()
         return lia({className: highlightedItem === name ? 'active' : ''},
-                    makeLink(name, span(spanc({name: testName, content: title}),
+                    makeLink(name, span(spanc({tame: testName, content: title}),
                                         liveStatusFieldName && ui.liveBadge({name: testName, liveStatusFieldName}))))
     }
                            
