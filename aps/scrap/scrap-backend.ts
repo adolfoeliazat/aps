@@ -339,6 +339,15 @@ relog('qwe')
 
 relog(testTratra({relog}))
 
+const arr = [{id: 10, name: 'foo'}, {id: 20, name: 'bar'}, {id: 30, name: 'baz'}]
+relog(arr)
+arrayDeleteFirstThat(arr, x => x.id === 20)
+relog(arr)
+
+const arr = [10, 20, 30]
+relog(arr.slice().reverse())
+relog(arr)
+
 
 
 

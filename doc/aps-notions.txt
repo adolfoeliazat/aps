@@ -27,4 +27,7 @@ bakeHotFunction
 CORS headers
 newExpress()
 
+makeRPC()
+
+
 

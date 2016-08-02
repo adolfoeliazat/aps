@@ -86,6 +86,7 @@ global.igniteShit = makeUIShitIgniter({
                 `
             },
             
+            
             privatePageLoader(name) {
                 return {
                     orders: ordersPageLoader,

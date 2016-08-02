@@ -407,7 +407,8 @@ app.post('/rpc', (req, res) => {
                         raise('Weird source location descriptor')
                     }
                     
-                    await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, offset})
+                    const res = await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, offset})
+                    // dlog('openEditor res', res)
                     return hunkyDory()
                 }
                 
@@ -1067,7 +1068,7 @@ app.post('/rpc', (req, res) => {
             }
             return {fatal: situation, stack: fucked.stack, stackBeforeAwait, fuckedStackBeforeAwait: fucked.stackBeforeAwait} // TODO:vgrechka Send stack only if debug mode
         } finally {
-            if (!requestTimeLoggingDisabled && msg.fun !== 'private_getLiveStatus') {
+            if (!requestTimeLoggingDisabled && msg.fun !== 'private_getLiveStatus' && msg.fun !== 'danger_getBackendInstanceID') {
                 const elapsed = Date.now() - t0
                 dlog(`${msg.fun}: ${elapsed}ms`)
             }
