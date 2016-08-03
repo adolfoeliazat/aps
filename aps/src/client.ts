@@ -467,7 +467,7 @@ global.igniteShit = makeUIShitIgniter({
                                    ...items.map(item =>
                                        lia({style: {marginBottom: 5}},
                                            ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
-                                           link({name: item.name, title: item.title, style: {color: '#333'}, onClick: item.onClick}))))
+                                           link2({tamy: item.name, title: item.title, style: {color: '#333'}, onClick: item.onClick}))))
                     }
                 }
                 
