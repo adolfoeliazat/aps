@@ -699,45 +699,47 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
     }
     
     let proseItems
+    const proseCounter = [0]
     if (clientKind === 'customer') {
         proseItems = [
-            TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`)}),
-            TopNavItem({name: 'prices', title: t(`Prices`, `Цены`)}),
-            TopNavItem({name: 'samples', title: t(`Samples`, `Примеры`)}),
-            TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`)}),
-            TopNavItem({name: 'contact', title: t(`Contact Us`, `Связь`)}),
-            TopNavItem({name: 'blog', title: t(`Blog`, `Блог`)}),
+            TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`), counter: proseCounter}),
+            TopNavItem({name: 'prices', title: t(`Prices`, `Цены`), counter: proseCounter}),
+            TopNavItem({name: 'samples', title: t(`Samples`, `Примеры`), counter: proseCounter}),
+            TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`), counter: proseCounter}),
+            TopNavItem({name: 'contact', title: t(`Contact Us`, `Связь`), counter: proseCounter}),
+            TopNavItem({name: 'blog', title: t(`Blog`, `Блог`), counter: proseCounter}),
         ]
     } else {
         if (!user || user.kind !== 'admin') {
             proseItems = [
-                TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`)}),
-                TopNavItem({name: 'prices', title: t(`Prices`, `Цены`)}),
-                TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`)}),
+                TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`), counter: proseCounter}),
+                TopNavItem({name: 'prices', title: t(`Prices`, `Цены`), counter: proseCounter}),
+                TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`), counter: proseCounter}),
             ]
         }
     }
     
     let privateItems
+    const privateCounter = [0]
     if (user) {
         if (clientKind === 'customer') {
             privateItems = [
-                TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`)}),
-                TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'}),
+                TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`), counter: privateCounter}),
+                TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}),
             ]
         } else {
             if (user.kind === 'writer') {
                 privateItems = compact([
-                    user.state === 'cool' && TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`)}),
-                    user.state === 'cool' && TopNavItem({name: 'store', title: t(`Store`, `Аукцион`)}),
-                    TopNavItem({name: 'profile', title: t(`Profile`, `Профиль`)}),
-                    TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'})
+                    user.state === 'cool' && TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`), counter: privateCounter}),
+                    user.state === 'cool' && TopNavItem({name: 'store', title: t(`Store`, `Аукцион`), counter: privateCounter}),
+                    TopNavItem({name: 'profile', title: t(`Profile`, `Профиль`), counter: privateCounter}),
+                    TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter})
                 ])
             } else if (user.kind === 'admin') {
                 privateItems = []
-                privateItems.push(TopNavItem({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize'}))
+                privateItems.push(TopNavItem({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize', counter: privateCounter}))
                 if (user.roles.support) {
-                    privateItems.push(TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge'}))
+                    privateItems.push(TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}))
                 }
             }
         }
@@ -753,16 +755,16 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                 dropdownAStyle = {backgroundColor: '#e7e7e7'}
             }
             leftNavbarItems.push(
-                lia({className: 'dropdown'},
+                lia({tame: 'prose', className: 'dropdown'},
                     aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
                     ula({className: 'dropdown-menu'},
                         ...proseItems)))
         }
         leftNavbarItems.push(...privateItems)
-        rightNavbarItem = TopNavItem({name: 'dashboard', title: t(user.first_name)})
+        rightNavbarItem = TopNavItem({name: 'dashboard', title: t(user.first_name), counter: [0]})
     } else {
         leftNavbarItems = proseItems
-        rightNavbarItem = TopNavItem({name: 'sign-in', title: t(`Sign In`, `Вход`)})
+        rightNavbarItem = TopNavItem({name: 'sign-in', title: t(`Sign In`, `Вход`), counter: [0]})
     }
     
     let brand
@@ -781,14 +783,21 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                        makeLink('home', brand, 'navbar-brand')),
                        
                    diva({style: {textAlign: 'left'}},
-                       ula({id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
+                       ula({tame: 'topNavLeft', id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
                            ...leftNavbarItems),
-                       ula({id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
+                       ula({tame: 'topNavRight', id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
                            rightNavbarItem))))
                            
                            
     function TopNavItem(def) {
-        const res = TopNavItem_(asn(def, {ui, active: highlightedItem === def.name}))
+        #extract {counter} from def
+        
+        const active = highlightedItem === def.name
+        const res = TopNavItem_(asn(def, {
+            tame: `TopNavItem${sufindex(counter[0]++)}`,
+            tattrs: {active: active || undefined},
+            ui,
+            active}))
         res.name = def.name
         return res
     }
