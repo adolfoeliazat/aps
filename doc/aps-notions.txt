@@ -29,7 +29,7 @@ newExpress()
 
 makeRPC()
 
-tame tamy getTamePath
+tame tamy getTamePath came
 sufindex
 
 

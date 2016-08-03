@@ -361,15 +361,17 @@ module.exports = function({sim}) {
         
         if (clientKind === 'writer') {
             art.uiState({$tag: 'c70e18eb-516b-41cb-bf7a-bdf748595ad2', expected: {
+                
                  'Input-email': ``,
                   'Input-password': ``,
-                  'TopNavItem-faq': { title: `ЧаВо` },
-                  'TopNavItem-prices': { title: `Цены` },
-                  'TopNavItem-sign-in': { active: true, title: `Вход` },
-                  'TopNavItem-why': { title: `Почему мы?` },
-                  'button-primary': { title: `Войти` },
-                  'link-createAccount': { title: `Срочно создать!` },
-                  pageHeader: `Вход`,
+                  'button-primary.title': `Войти`,
+                  'link-createAccount.title': `Срочно создать!`,
+                  'pageHeader.title': `Вход`,
+                  'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
+                  'topNavLeft.TopNavItem-i001.title': `Цены`,
+                  'topNavLeft.TopNavItem-i002.title': `ЧаВо`,
+                  'topNavRight.TopNavItem-i000.active': true,
+                  'topNavRight.TopNavItem-i000.title': `Вход`,
                   url: `http://aps-ua-writer.local:3022/sign-in.html`
             }})                
         } else if (clientKind === 'customer') {
