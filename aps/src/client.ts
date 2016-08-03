@@ -525,74 +525,72 @@ global.igniteShit = makeUIShitIgniter({
                 const {rowBackground, lineColor} = zebraRowColors(i)
                 
                 const url = `support.html?thread=${item.id}`
+                    
+                let topicElement
+                if (topicIsLink) {
+                    topicElement = ui.pageLink({url, name: `topic`, title: item.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                } else {
+                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: item.topic}))
+                }
                 
-                return uiStateScope({name: `thread${sufindex(i)}`, render() {
-                    let topicElement
-                    if (topicIsLink) {
-                        topicElement = ui.pageLink({url, name: `topic`, title: item.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
-                    } else {
-                        topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: item.topic}))
-                    }
+                const paddingRight = hasTakeAndReplyButton ? 45 : 0
+                const renderSupportThreadNewMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
+                const renderSupportThreadOldMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
+                
+                const moreNewMessages = item.newMessages.total - item.newMessages.top.length
+                const moreOldMessages = item.oldMessages.total - item.oldMessages.top.length
+                
+                return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
+                    diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
+                        hasTakeAndReplyButton && ui.busyButton({name: `takeAndReply`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+                            beginTrain({name: 'Take support thread and reply'}); try {
+                                await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
+                                // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
+                                await ui.pushNavigate(`support.html?thread=${item.id}`)
+                            } finally { endTrain() }
+                        }}),
+                        ),
                     
-                    const paddingRight = hasTakeAndReplyButton ? 45 : 0
-                    const renderSupportThreadNewMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
-                    const renderSupportThreadOldMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
-                    
-                    const moreNewMessages = item.newMessages.total - item.newMessages.top.length
-                    const moreOldMessages = item.oldMessages.total - item.oldMessages.top.length
-                    
-                    return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
-                        diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
-                            hasTakeAndReplyButton && ui.busyButton({name: `takeAndReply`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
-                                beginTrain({name: 'Take support thread and reply'}); try {
-                                    await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
-                                    // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
-                                    await ui.pushNavigate(`support.html?thread=${item.id}`)
-                                } finally { endTrain() }
-                            }}),
-                            ),
+                    diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
+                        topicElement),
                         
-                        diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
-                            topicElement),
-                            
-                        uiStateScope({name: 'newMessages', render: _=> div(
-                            div(...item.newMessages.top.map(renderSupportThreadNewMessage)),
-                            moreMessagesDiv({count: moreNewMessages, kind: 'new'}),
-                        )}),
-                        
-                        item.newMessages.top.length > 0 && item.oldMessages.top.length > 0 &&
-                            diva({style: {borderTop: `3px dotted ${lineColor}`, paddingTop: 5}}),
-                                                      
-                        uiStateScope({name: 'oldMessages', render: _=> div(
-                            div(...item.oldMessages.top.map(renderSupportThreadOldMessage)),
-                            moreMessagesDiv({count: moreOldMessages, kind: 'old'})
-                        )}),
-                        
-                    )
+                    uiStateScope({name: 'newMessages', render: _=> div(
+                        div(...item.newMessages.top.map(renderSupportThreadNewMessage)),
+                        moreMessagesDiv({count: moreNewMessages, kind: 'new'}),
+                    )}),
                     
-                    function moreMessagesDiv({count, kind}) {
-                        if (count > 0) {
-                            let title
-                            if (LANG === 'en') {
-                                raise('Implement en moreMessagesDiv')
-                            } else if (LANG === 'ua') {
-                                if (count === 1) {
-                                    title = `...и еще одно`
-                                    if (kind === 'new') title += ` новое сообщение`
-                                    else if (kind === 'old') title += ` старое сообщение`
-                                } else {
-                                    title = `...и еще ${count}`
-                                    if (kind === 'new') title += ` новых`
-                                    else if (kind === 'old') title += ` старых`
-                                        
-                                    if (count >=2 && count <= 4) title += ` сообщения`
-                                    else title += ` сообщений`
-                                }
+                    item.newMessages.top.length > 0 && item.oldMessages.top.length > 0 &&
+                        diva({style: {borderTop: `3px dotted ${lineColor}`, paddingTop: 5}}),
+                                                  
+                    uiStateScope({name: 'oldMessages', render: _=> div(
+                        div(...item.oldMessages.top.map(renderSupportThreadOldMessage)),
+                        moreMessagesDiv({count: moreOldMessages, kind: 'old'})
+                    )}),
+                    
+                )
+                
+                function moreMessagesDiv({count, kind}) {
+                    if (count > 0) {
+                        let title
+                        if (LANG === 'en') {
+                            raise('Implement en moreMessagesDiv')
+                        } else if (LANG === 'ua') {
+                            if (count === 1) {
+                                title = `...и еще одно`
+                                if (kind === 'new') title += ` новое сообщение`
+                                else if (kind === 'old') title += ` старое сообщение`
+                            } else {
+                                title = `...и еще ${count}`
+                                if (kind === 'new') title += ` новых`
+                                else if (kind === 'old') title += ` старых`
+                                    
+                                if (count >=2 && count <= 4) title += ` сообщения`
+                                else title += ` сообщений`
                             }
-                            return diva({style: {textAlign: 'right'}}, ui.pageLink({name: 'andMore', url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
                         }
+                        return diva({style: {textAlign: 'right'}}, ui.pageLink({name: 'andMore', url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
                     }
-                }})
+                }
             }
         }
         
@@ -943,3 +941,34 @@ clog('Client code is kind of loaded')
 
 
 
+
+
+
+
+
+
+
+function compiler$getRegExpForAddingSourceLocationTo() {
+    return /((\s|\(|\[)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle)\(\{)/g /*})*/
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

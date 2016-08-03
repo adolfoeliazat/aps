@@ -29,5 +29,27 @@ newExpress()
 
 makeRPC()
 
+tame tamy getTamePath
+sufindex
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

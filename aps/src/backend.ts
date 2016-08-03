@@ -45,7 +45,7 @@ app.post('/rpc', (req, res) => {
     })
     
     async function handle(msg) {
-        const trace = []
+        const $trace = []
         
         let requestTimestamp = moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS')
         if (imposedRequestTimestamp) {
@@ -1078,21 +1078,20 @@ app.post('/rpc', (req, res) => {
                 shouldLogRequestForUI = true
             }
             
-            if (shouldLogRequestForUI && trace.length) {
-                requestLogForUI.push({title: msg.fun, trace, $clientSourceLocation: msg.$sourceLocation})
+            if (shouldLogRequestForUI && $trace.length) {
+                requestLogForUI.push({title: msg.fun, $trace, $clientSourceLocation: msg.$sourceLocation})
             }
         }
         
         
         function traceBeginHandler(data) {
-            trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omit(msg, 'fun', 'token', '$sourceLocation')}, omit(data, 'trace')))
+            $trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omit(msg, 'fun', 'token', '$sourceLocation')}, omit(data, '$trace')))
         }
         
         function traceEndHandler(data) {
             invariant(data.ret, 'I want data.ret in traceEndHandler')
-            trace.push(asn({event: `End handling ${msg.fun}`}, omit(data, 'trace')))
+            $trace.push(asn({event: `End handling ${msg.fun}`}, omit(data, '$trace')))
             return data.ret
-            // return asn({$trace: trace}, data.ret)
         }
     }
 })
@@ -1190,7 +1189,7 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     })
                 },
                 
-                async query({$tag, $sourceLocation, shouldLogForUI=true, trace, y}) {
+                async query({$tag, $sourceLocation, shouldLogForUI=true, $trace, y}) {
                     arguments // XXX This fixes TS bug with ...rest params in async functions
                     if (!$tag && !$sourceLocation) raise('I want all queries to be tagged')
                     
@@ -1202,9 +1201,9 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     if (shouldLogForUI) {
                         queryLogRecordForUI = {$tag, $sourceLocation, y}
                         queryLogForUI.push(queryLogRecordForUI)
-                        if (trace) {
+                        if ($trace) {
                             const sql = y.sql ? y.sql : y
-                            trace.push(asn({event: `Query: ${trim(sql).split(/\s+/)[0].toUpperCase()}`}, queryLogRecordForUI))
+                            $trace.push(asn({event: `Query: ${trim(sql).split(/\s+/)[0].toUpperCase()}`}, queryLogRecordForUI))
                         }
                     }
                     
@@ -1227,9 +1226,6 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                         }
                         
                         const res = qres.rows
-                        if (trace) {
-                            // res.$trace = cloneDeep(trace)
-                        }
                         
                         return res
                     } catch (qerr) {
@@ -1241,7 +1237,7 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     }
                 },
                 
-                async insertInto({$tag, $sourceLocation, shouldLogForUI=true, trace, table, rows, values, requestTimestamp}) {
+                async insertInto({$tag, $sourceLocation, shouldLogForUI=true, $trace, table, rows, values, requestTimestamp}) {
                     if (!rows) {
                         rows = [values]
                     }
@@ -1281,7 +1277,7 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                         }
                         sql = sql.slice(0, sql.length - ', '.length)
                         sql += ') values(' + range(args.length).map(x => '$' + (x + 1)).join(', ') + ') returning id'
-                        const rows = await api.query({$tag, $sourceLocation, shouldLogForUI, trace, y: {sql, args}})
+                        const rows = await api.query({$tag, $sourceLocation, shouldLogForUI, $trace, y: {sql, args}})
                         if (id === undefined) {
                             id = rows[0].id
                         }

@@ -348,6 +348,14 @@ const arr = [10, 20, 30]
 relog(arr.slice().reverse())
 relog(arr)
 
+const tail = undefined
+relog([10, 20, ...tail])
+
+try {
+    raise(`foo\nbar\nbaz`)
+} catch (e) {
+    relog(e)
+}
 
 
 
