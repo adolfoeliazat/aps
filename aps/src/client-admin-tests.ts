@@ -48,9 +48,9 @@ module.exports = function({sim}) {
                     #hawait selectBrowserAndSignIn({$tag: '2855b4f4-63f0-4325-ad8a-f36fdf4e2f5a', clientKind: 'writer', browserName: 'todd1', email: 'todd@test.shit.ua', pausePointTitle: 'Todd, a support admin, comes to his workplace...'})
                     art.uiState({$tag: '866bef17-2783-40a5-860d-0d2f69966664', expected: '---generated-shit---'})
                     
-                    testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
+                    testGlobal.controls['TopNavItem-admin-heap'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'There is some unassigned work, let’s take a look...', $tag: '20f801f5-657b-4176-bd1a-fb78f5af1811'})
-                    testGlobal.controls['TopNavItem-admin-heap'].hideHand()
+                    testGlobal.controls['TopNavItem-admin-heap'].testHideHand()
                     
                     // Action
                     #hawait testGlobal.controls['TopNavItem-admin-heap'].click()
@@ -73,12 +73,12 @@ module.exports = function({sim}) {
                     art.uiState({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    testGlobal.controls['TopNavItem-admin-heap'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
+                    testGlobal.controls['TopNavItem-admin-heap'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'Amount of work in heap decreased, since we’ve just taken one piece from it', $tag: '3ebb103e-7f0a-4669-9a29-2cbb2bbed460'})
-                    testGlobal.controls['TopNavItem-admin-heap'].hideHand()
-                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
+                    testGlobal.controls['TopNavItem-admin-heap'].testHideHand()
+                    testGlobal.controls['TopNavItem-support'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'We have three new messages contained in one thread to deal with. This badge will be hanging there until we address it by replying.\nBut first let’s go back to heap and take one more task...', $tag: '348c92fd-d749-4fad-8c4e-eef3754548cf'})
-                    testGlobal.controls['TopNavItem-support'].hideHand()
+                    testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
                     #hawait testGlobal.controls['TopNavItem-admin-heap'].click()
@@ -89,17 +89,17 @@ module.exports = function({sim}) {
                     art.uiState({$tag: '9dde55d6-0488-4ec6-9443-a96370c7fd4b', expected: '---generated-shit---'})
 
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
+                    testGlobal.controls['TopNavItem-support'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'Numbers changed again. Now we have to deal with 4 support messages contained in 2 threads.\nBy clicking on Support menu we’ll see what those threads are...', $tag: '182c9720-f9ed-4afe-8c46-5b45c482e9a9'})
-                    testGlobal.controls['TopNavItem-support'].hideHand()
+                    testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
                     #hawait testGlobal.controls['TopNavItem-support'].click()
                     art.uiState({$tag: '0020d0bf-5a2c-4287-a4b6-f1eca4c36ca3', expected: '---generated-shit---'})
                     
-                    testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].showHand({testActionHandOpts: {pointingFrom: 'left', dleft: -4, dtop: 2}})
+                    testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].testShowHand({testActionHandOpts: {pointingFrom: 'left', dleft: -4, dtop: 2}})
                     #hawait art.pausePoint({title: 'To keep the list succinct, maximum two (most recent) new messages are showed per thread.\nIn order to see everything, simply switch to a particular thread. One way of doing which is via this link...', $tag: '27ba7948-693a-4c93-a054-16a534090567'})
-                    testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].hideHand()
+                    testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].testHideHand()
                     
                     // Action
                     #hawait testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].click()
@@ -109,12 +109,12 @@ module.exports = function({sim}) {
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
                     #hawait art.pausePoint({title: 'Changing ordering to show old messages first...', $tag: '1e77736a-3498-4b5d-8b1e-94c0f7dd6c56'})
                     // Action
-                    #hawait testGlobal.controls['Select-ordering'].setValue({value: 'asc', testActionHandOpts: {pointingFrom: 'left', dtop: 48}})
+                    #hawait testGlobal.controls['Select-ordering'].testSetValue({value: 'asc', testActionHandOpts: {pointingFrom: 'left', dtop: 48}})
                     art.uiState({$tag: '73952bab-8024-4351-8656-0966860aa31b', expected: '---generated-shit---'})
                     
                     #hawait art.pausePoint({title: 'Changing it back to conveniently show new stuff first', $tag: '79a2d7fc-5509-41fc-b606-b82bdccd5d68'})
                     // Action
-                    #hawait testGlobal.controls['Select-ordering'].setValue({value: 'desc', testActionHandOpts: {pointingFrom: 'left', dtop: 30}})
+                    #hawait testGlobal.controls['Select-ordering'].testSetValue({value: 'desc', testActionHandOpts: {pointingFrom: 'left', dtop: 30}})
                     art.uiState({$tag: '1920f57c-db76-40ff-9f85-8ebdd8faf2f3', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
@@ -124,15 +124,15 @@ module.exports = function({sim}) {
                     art.uiState({$tag: 'bd47917a-b212-4d03-8910-5af36b2f7ebc', expected: '---generated-shit---'})
                     
                     // Inputs
-                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Та я понял, что ты писатель... В чем дело-то?'})
+                    #hawait testGlobal.controls['Input-message'].testSetValue({value: 'Та я понял, что ты писатель... В чем дело-то?'})
                     // Action
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/23 13:56:26'})
                     #hawait testGlobal.controls['button-primary'].click()
                     art.uiState({$tag: '0bb446ca-4e6e-4bcf-b9c9-687f1f3a2f29', expected: '---generated-shit---'})
                     
-                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
+                    testGlobal.controls['TopNavItem-support'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'Admin replied, so "New" labels faded away and number of support items to address decreased', $tag: 'c5f3e1ee-0621-4d66-beb9-287847a95444'})
-                    testGlobal.controls['TopNavItem-support'].hideHand()
+                    testGlobal.controls['TopNavItem-support'].testHideHand()
                 }
                 
                 async function kafka1() {
@@ -140,18 +140,18 @@ module.exports = function({sim}) {
                     art.uiState({$tag: '2fcf578d-3b0d-4f70-b3a1-7d4d892ecd91', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    testGlobal.controls['TopNavItem-support'].showHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
+                    testGlobal.controls['TopNavItem-support'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
                     #hawait art.pausePoint({title: 'We have an unread message', $tag: 'ea6d6e4a-c4d6-489c-97c9-9adb34b284d7'})
-                    testGlobal.controls['TopNavItem-support'].hideHand()
+                    testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
                     #hawait testGlobal.controls['TopNavItem-support'].click()
                     art.uiState({$tag: 'e03093b1-3834-45e9-9f7c-724536571ecc', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].showHand({testActionHandOpts: {pointingFrom: 'left', dleft: -5, dtop: 2}})
+                    testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].testShowHand({testActionHandOpts: {pointingFrom: 'left', dleft: -5, dtop: 2}})
                     #hawait art.pausePoint({title: 'Let’s look at whole thread...', $tag: 'c36ed08f-1a1d-4307-b53b-bb93d503d535'})
-                    testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].hideHand()
+                    testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].testHideHand()
                     
                     // Action
                     #hawait testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].click()
@@ -164,7 +164,7 @@ module.exports = function({sim}) {
                     art.uiState({$tag: '3e196890-8de2-4003-8dc7-c34fbec270b2', expected: '---generated-shit---'})
 
                     // Inputs
-                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Ни в чем. Просто пописать. Я ж писатель, ага.'})
+                    #hawait testGlobal.controls['Input-message'].testSetValue({value: 'Ни в чем. Просто пописать. Я ж писатель, ага.'})
                     // Action
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/23 14:08:11'})
                     #hawait testGlobal.controls['button-primary'].click()
@@ -175,9 +175,9 @@ module.exports = function({sim}) {
                     #hawait selectBrowserAndSignIn({$tag: 'dbfba9fb-790e-4598-a04e-9b2b6041c1bc', clientKind: 'writer', browserName: 'todd2', email: 'todd@test.shit.ua', pausePointTitle: 'Todd comes back to check stuff...'})
                     art.uiState({$tag: 'b8690567-c212-4877-aa44-8e45313187da', expected: '---generated-shit---'})
                     
-                    testGlobal.controls['TopNavItem-support'].showHand({"testActionHandOpts":{"pointingFrom":"right","dleft":-12,"dtop":1}})
+                    testGlobal.controls['TopNavItem-support'].testShowHand({"testActionHandOpts":{"pointingFrom":"right","dleft":-12,"dtop":1}})
                     #hawait art.pausePoint({title: 'Two messages in two threads.\nOne was just added by Kafka. Second is old one we took but didnt’t bother to answer.', $tag: '27d35540-e345-4bd7-8c32-61e57b82c252'})
-                    testGlobal.controls['TopNavItem-support'].hideHand()
+                    testGlobal.controls['TopNavItem-support'].testHideHand()
 
                     // Action
                     #hawait testGlobal.controls['TopNavItem-support'].click()
@@ -198,7 +198,7 @@ module.exports = function({sim}) {
 
 
                     // Inputs
-                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))'})
+                    #hawait testGlobal.controls['Input-message'].testSetValue({value: 'Take it easy, Luke. We hear your pain and are working hard to find a solution to your problem.\n\n(In other words, fuck you :))'})
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '8ba7f289-a636-43d6-818e-59ebc6ec4f5c'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 15:52:46'})
@@ -228,7 +228,7 @@ module.exports = function({sim}) {
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'fc3ce032-7279-46b8-b123-0253c5f5ebc6'})
 
                     // Inputs
-                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Ладно, тогда пиши себе. Я отвечать не буду. Но если, сцуко, слишком сильно наспамишь, то будем тебя банить, учти.'})
+                    #hawait testGlobal.controls['Input-message'].testSetValue({value: 'Ладно, тогда пиши себе. Я отвечать не буду. Но если, сцуко, слишком сильно наспамишь, то будем тебя банить, учти.'})
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '115ce0cb-63e8-45d9-a128-986780c4c181'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 16:02:27'})
@@ -264,7 +264,7 @@ module.exports = function({sim}) {
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '49577eb3-936c-43e3-a4c4-7ed6a54a7ff9'})
 
                     // Inputs
-                    #hawait testGlobal.controls['Select-status'].setValue({value: 'resolved'})
+                    #hawait testGlobal.controls['Select-status'].testSetValue({value: 'resolved'})
                     // Action
                     #hawait art.pausePoint({title: 'Luke discovers he’s fucked and submissively decides to mark the request as resolved', $tag: '4fabecfa-27a8-4b45-a745-ceac79c74464'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:42:54'})
@@ -280,9 +280,9 @@ module.exports = function({sim}) {
                     art.uiState({$tag: '8246a80c-8a31-4f80-bba0-b404c26a4c94', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    testGlobal.controls['TopNavItem-support'].showHand({"testActionHandOpts":{"pointingFrom":"right","dleft":-14,"dtop":0}})
+                    testGlobal.controls['TopNavItem-support'].testShowHand({"testActionHandOpts":{"pointingFrom":"right","dleft":-14,"dtop":0}})
                     #hawait art.pausePoint({title: 'No badges here because all messages were addressed, either resolved or replied to', $tag: '02ee56a4-66ee-46e1-b5f1-aead1300d5bd'})
-                    testGlobal.controls['TopNavItem-support'].hideHand()
+                    testGlobal.controls['TopNavItem-support'].testHideHand()
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '7cf28c38-0748-4b2e-8ec2-c74db0de70e8'})
@@ -319,7 +319,7 @@ module.exports = function({sim}) {
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'c064ab71-4e8c-4072-800c-6f120a33554d'})
 
                     // Inputs
-                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Тупо спамлю 1'})
+                    #hawait testGlobal.controls['Input-message'].testSetValue({value: 'Тупо спамлю 1'})
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5ad115fb-9574-47c1-b275-056c8d696799'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 16:52:40'})
@@ -335,7 +335,7 @@ module.exports = function({sim}) {
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '41540466-20e7-484c-87cf-6dc862d04105'})
 
                     // Inputs
-                    #hawait testGlobal.controls['Input-message'].setValue({value: 'Тупо спамлю 2'})
+                    #hawait testGlobal.controls['Input-message'].testSetValue({value: 'Тупо спамлю 2'})
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: 'a550629d-2762-42bf-9d3e-495faae2a91c'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 17:50:55'})
@@ -361,16 +361,19 @@ module.exports = function({sim}) {
         
         if (clientKind === 'writer') {
             art.uiState({$tag: 'c70e18eb-516b-41cb-bf7a-bdf748595ad2', expected: {
-                
-                 'Input-email': ``,
+                'Input-email': ``,
                   'Input-password': ``,
                   'button-primary.title': `Войти`,
                   'link-createAccount.title': `Срочно создать!`,
                   'pageHeader.title': `Вход`,
+                  'topNavLeft.TopNavItem-i000.shame': `TopNavItem-why`,
                   'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
+                  'topNavLeft.TopNavItem-i001.shame': `TopNavItem-prices`,
                   'topNavLeft.TopNavItem-i001.title': `Цены`,
+                  'topNavLeft.TopNavItem-i002.shame': `TopNavItem-faq`,
                   'topNavLeft.TopNavItem-i002.title': `ЧаВо`,
                   'topNavRight.TopNavItem-i000.active': true,
+                  'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
                   'topNavRight.TopNavItem-i000.title': `Вход`,
                   url: `http://aps-ua-writer.local:3022/sign-in.html`
             }})                
@@ -395,10 +398,10 @@ module.exports = function({sim}) {
         }
         
         // Inputs
-        #hawait testGlobal.controls['Input-email'].setValue({value: email})
-        #hawait testGlobal.controls['Input-password'].setValue({value: 'secret'})
+        #hawait testGlobal.controls['Input-email'].testSetValue({value: email})
+        #hawait testGlobal.controls['Input-password'].testSetValue({value: 'secret'})
         // Action
-        #hawait testGlobal.controls['button-primary'].click()
+        #hawait testGlobal.controls['button-primary'].testClick()
     }
     
 }

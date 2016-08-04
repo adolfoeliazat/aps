@@ -32,7 +32,7 @@ makeRPC()
 tame tamy getTamePath came
 sufindex
 
-
+revealTestGlobalControls
 
 
 

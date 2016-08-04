@@ -794,6 +794,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
         
         const active = highlightedItem === def.name
         const res = TopNavItem_(asn(def, {
+            shame: `TopNavItem-${def.name}`,
             tame: `TopNavItem${sufindex(counter[0]++)}`,
             tattrs: {active: active || undefined},
             ui,

@@ -80,14 +80,17 @@ module.exports = {
     }, // end of generated piece of shit
 
     '866bef17-2783-40a5-860d-0d2f69966664': {
-        
-         'TopNavItem-admin-heap': { title: `Куча` },
-          'TopNavItem-dashboard': { active: true, title: `Тодд` },
-          'TopNavItem-support': { title: `Поддержка` },
-          'link-changePassword': { title: `Сменить пароль` },
-          'link-signOut': { title: `Выйти прочь` },
-          'liveBadge-topNavItem-admin-heap': `13`,
-          pageHeader: `Панель`,
+        'link-changePassword.title': `Сменить пароль`,
+          'link-signOut.title': `Выйти прочь`,
+          'pageHeader.title': `Панель`,
+          'topNavLeft.TopNavItem-i000.badge': `13`,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-admin-heap`,
+          'topNavLeft.TopNavItem-i000.title': `Куча`,
+          'topNavLeft.TopNavItem-i001.shame': `TopNavItem-support`,
+          'topNavLeft.TopNavItem-i001.title': `Поддержка`,
+          'topNavRight.TopNavItem-i000.active': true,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
+          'topNavRight.TopNavItem-i000.title': `Тодд`,
           url: `http://aps-ua-writer.local:3022/dashboard.html`
     }, // end of generated piece of shit
 
