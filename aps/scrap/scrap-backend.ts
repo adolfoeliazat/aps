@@ -357,6 +357,9 @@ try {
     relog(e)
 }
 
+relog(gif({foo: 10}, 'foo'))
+relog(gif({foo: 10}, 'bar'))
+relog(gif(undefined, 'bar'))
 
 
 

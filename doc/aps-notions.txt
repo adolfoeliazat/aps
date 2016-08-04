@@ -34,6 +34,7 @@ sufindex
 
 revealTestGlobalControls
 
+handleExceptionInRender
 
 
 

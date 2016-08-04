@@ -21,6 +21,8 @@ COLOR_1_DARK = BLUE_GRAY_600
 COLOR_ZEBRA_LIGHT = WHITE
 COLOR_ZEBRA_DARK = BLUE_GRAY_50
 
+Error.stackTraceLimit = Infinity
+
 global.igniteShit = makeUIShitIgniter({
     Impl({ui}) {
         return {
