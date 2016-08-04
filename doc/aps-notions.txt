@@ -35,7 +35,10 @@ sufindex
 revealTestGlobalControls
 
 handleExceptionInRender
+errorToMappedClientStackString
+renderStacks
 
+childrenContributeStateOnlyIfIAmTamed
 
 
 
