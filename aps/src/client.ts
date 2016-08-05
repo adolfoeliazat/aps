@@ -543,7 +543,7 @@ global.igniteShit = makeUIShitIgniter({
                 const moreNewMessages = item.newMessages.total - item.newMessages.top.length
                 const moreOldMessages = item.oldMessages.total - item.oldMessages.top.length
                 
-                return diva({style: {backgroundColor: rowBackground, position: 'relative'}},
+                return diva({controlTypeName: 'renderSupportThread', tame: `thread${sufindex(i)}`, style: {backgroundColor: rowBackground, position: 'relative'}},
                     diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
                         hasTakeAndReplyButton && ui.busyButton({name: `takeAndReply`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
                             beginTrain({name: 'Take support thread and reply'}); try {
@@ -612,9 +612,7 @@ global.igniteShit = makeUIShitIgniter({
         
         function makeRenderSupportThreadMessage({lineColor, dottedLines, dryFroms, showMessageNewLabel, paddingRight=0}) {
             return function renderSupportThreadMessage(message, messageIndex) {
-
-                return uiStateScope({name: `message${sufindex(messageIndex)}`, render: _=>
-                diva({$model: message, className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
+                return diva({controlTypeName: 'renderSupportThreadMessage', tame: `message${sufindex(messageIndex)}`, className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
                            messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
                            
                     diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
@@ -649,7 +647,8 @@ global.igniteShit = makeUIShitIgniter({
                             spanc({tame: 'message', content: message.message}),
                             ),
                         
-                    ))})
+                    )
+                )
             }
         }
 
@@ -662,7 +661,7 @@ global.igniteShit = makeUIShitIgniter({
             
             const me = {
                 render() {
-                    return spana(def, glyph, title)
+                    return spana({id: me.elementID}, glyph, title)
                 },
                 contributeTestState(state) {
                     state.put(s{key: me.getTamePath(), value: title})
@@ -966,7 +965,7 @@ clog('Client code is kind of loaded')
 
 
 function compiler$getRegExpForAddingSourceLocationTo() {
-    return /((\s|\(|\[)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle)\(\{)/g /*})*/
+    return /((\s|\(|\[)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|horizontala|hor1|hor2)\(\{)/g /*})*/
 }
     
     
