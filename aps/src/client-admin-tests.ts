@@ -53,7 +53,7 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-admin-heap'].testHideHand()
                     
                     // Action
-                    #hawait testGlobal.controls['TopNavItem-admin-heap'].click()
+                    #hawait testGlobal.controls['TopNavItem-admin-heap'].testClick()
                     art.uiState({$tag: '1c3a4a15-4bc4-46f6-afd9-d23433c6d839', expected: '---generated-shit---'})
                     #hawait art.pausePoint({title: 'A lot of stuff, let’s do some scrolling...', $tag: 'a86e6b75-0140-4347-a961-bf9886937806', locus: 'top-right'})
                     #hawait art.scroll({origY: 0, destY: 'bottom'})
@@ -362,7 +362,10 @@ module.exports = function({sim}) {
         if (clientKind === 'writer') {
             art.uiState({$tag: 'c70e18eb-516b-41cb-bf7a-bdf748595ad2', expected: {
                 'Input-email': ``,
+                  'Input-email.shame': `Input-email`,
                   'Input-password': ``,
+                  'Input-password.shame': `Input-password`,
+                  'button-primary.shame': `button-primary`,
                   'button-primary.title': `Войти`,
                   'link-createAccount.title': `Срочно создать!`,
                   'pageHeader.title': `Вход`,

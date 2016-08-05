@@ -1,3 +1,7 @@
+ui.ts:2444 Debug panes should be independent. debugPanes.set() rerenders all existing panes, which causes all sorts of problems.
+
+
+
 // TODO:vgrechka Auto-generate this file from sources :)
 
 

@@ -621,10 +621,10 @@ global.igniteShit = makeUIShitIgniter({
                         messageIndex === 0 || !dryFroms
                             ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
                                       t(`TOTE`, `От: `)),
-                                      userLabel({name: 'from', user: message.sender})),
+                                      userLabel({tamy: 'from', user: message.sender})),
                                   diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
                                       t(`TOTE`, `Кому: `)),
-                                      message.recipient ? userLabel({name: 'to', user: message.recipient})
+                                      message.recipient ? userLabel({tamy: 'to', user: message.recipient})
                                                         : spanc({tame: 'to', content: t(`TOTE`, `В рельсу`)})))
                             : diva({style: {fontWeight: 'bold'}}, spanc({tame: 'continuation', content: t(`TOTE`, `В догонку`)})),
                                                            
@@ -656,17 +656,21 @@ global.igniteShit = makeUIShitIgniter({
         function userLabel(def) {
             #extract {user} from def
             
+            const title = user.first_name + ' ' + user.last_name
             const glyphName = lookup(user.kind, {customer: 'user', writer: 'pencil', admin: 'cog'})
             const glyph = ia({className: `fa fa-${glyphName}`, style: {marginLeft: 5, marginRight: 5}})
             
             const me = {
                 render() {
-                    return spana(def, glyph, me.getValue())
+                    return spana(def, glyph, title)
                 },
-                getValue() { return user.first_name + ' ' + user.last_name },
+                contributeTestState(state) {
+                    state.put(s{key: me.getTamePath(), value: title})
+                },
             }
             
-            implementControlTestFacilities({me, def, controlTypeName: 'userLabel'})
+            me.controlTypeName = 'userLabel'
+            implementControlShit({me, def})
             return elcl(me)
         }
 

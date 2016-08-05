@@ -361,8 +361,9 @@ relog(gif({foo: 10}, 'foo'))
 relog(gif({foo: 10}, 'bar'))
 relog(gif(undefined, 'bar'))
 
-relog(captureStack())
-
+relog(ocompact({a: 10, b: null, c: 20}))
+relog(isEmpty({a: 10}))
+relog(isEmpty({}))
 
 
 

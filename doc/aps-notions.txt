@@ -41,6 +41,8 @@ renderStacks
 childrenContributeStateOnlyIfIAmTamed
 beginLogTime
 
+tame shame tamy shamy tamyShamy
+
 
 
 
