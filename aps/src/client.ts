@@ -664,7 +664,7 @@ global.igniteShit = makeUIShitIgniter({
                     return spana({id: me.elementID}, glyph, title)
                 },
                 contributeTestState(state) {
-                    state.put(s{key: me.getTamePath(), value: title})
+                    state.put(s{control: me, key: me.getTamePath(), value: title})
                 },
             }
             
