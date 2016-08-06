@@ -34,7 +34,7 @@ handleExceptionInRender
 errorToMappedClientStackString
 renderStacks
 
-childrenContributeStateOnlyIfIAmTamed
+childrenContributeStateOnlyIfMyElementIsTamed 
 beginLogTime
 
 tame shame tamy shamy tamyShamy

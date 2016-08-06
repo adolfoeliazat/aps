@@ -116,19 +116,25 @@ global.igniteShit = makeUIShitIgniter({
                                 })
                             }
                             
+                            function tabydef(def) {
+                                #extract {name} from def
+                                
+                                return {
+                                    name,
+                                    content: ui.taby({}.asn1(def))
+                                }
+                            }
+                            
                             ui.setPage({
                                 header: pageHeader({title: pageTitle}),
                                 body: div(
-                                    tabs({name: 'main', active: activeTab, tabDefs: [
-                                        {
+                                    ui.tabs({name: 'main', active: activeTab, tabDefs: [
+                                        tabydef({
                                             name: 'support',
-                                            content: ui.taby({
-                                                // shame: 'tab-support',
-                                                title: t(`TOTE`, `Поддержка211`),
-                                                liveStatusFieldName: 'unassignedSupportThreadCount',
-                                                url: 'admin-heap.html?tab=support',
-                                            })
-                                        },
+                                            title: t(`TOTE`, `Поддержка2110`),
+                                            liveStatusFieldName: 'unassignedSupportThreadCount',
+                                            url: 'admin-heap.html?tab=support',
+                                        }),
                                     ]}),
                                     ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})
                                 )
@@ -249,7 +255,7 @@ global.igniteShit = makeUIShitIgniter({
                                 ui.setPage({
                                     header: pageHeader({title: t(`TOTE`, `Поддержка`)}),
                                     body: div(
-                                        tabs({name: 'main', tabDefs, active: filter}),
+                                        ui.tabs({name: 'main', tabDefs, active: filter}),
                                         ui.renderMoreable({itemsRes, itemsReq: {fun: 'private_getSupportThreadsChunk', filter}, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}),
                                     )
                                 })
