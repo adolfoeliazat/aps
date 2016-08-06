@@ -124,7 +124,7 @@ global.igniteShit = makeUIShitIgniter({
                                             name: 'support',
                                             content: ui.taby({
                                                 // shame: 'tab-support',
-                                                title: t(`TOTE`, `Поддержка115673`),
+                                                title: t(`TOTE`, `Поддержка11512`),
                                                 liveStatusFieldName: 'unassignedSupportThreadCount',
                                                 url: 'admin-heap.html?tab=support',
                                             })

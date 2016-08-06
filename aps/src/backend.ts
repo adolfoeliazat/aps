@@ -156,6 +156,28 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory({backendInstanceID})
                 }
                 
+                if (msg.fun === 'danger_getHotShitCodeEntries') {
+                    const items = []
+                    
+                    for (const fname of ['E:/work/foundation/u/lib/ui.js', 'E:/work/aps/aps/lib/client.js']) {
+                        const fileCode = fs.readFileSync(fname, 'utf8')
+                        const beginRe = /'\$\$\$hot-shit-begin-(.*?)'/g
+                        let match
+                        while (match = beginRe.exec(fileCode)) {
+                            const hotShitTag = match[1]
+                            const beginIndex = match.index
+                            const endIndex = fileCode.indexOf(`'$$$hot-shit-end-${hotShitTag}'`)
+                            if (!~endIndex) raise(`No hot shit ending marker found for tag [${hotShitTag}]`)
+                            
+                            let code = fileCode.slice(beginIndex, endIndex)
+                            code = code.slice(code.indexOf('function'), /*{*/ code.lastIndexOf('}') + 1)
+                            items.push({hotShitTag, code})
+                        }
+                    }
+                    
+                    return hunkyDory({items})
+                }
+                
                 if (msg.fun === 'danger_getPieceOfCodeBetweenTags') {
                     if (!msg.tag) raise('Gimme tag')
                     if (!msg.tagPrefix) raise('Gimme tagPrefix')

@@ -20,10 +20,6 @@ q() {inline: ...}
 openDebugConsole()
 'Hand pause'
 
-runHotCodeUpdateStuff
-addHotCodeArrivedListener
-bakeHotFunction
-
 CORS headers
 newExpress()
 
@@ -47,7 +43,13 @@ callDebugRPWithProgress
 
 initDebugFunctions
 
+runHotCodeUpdateStuff
+addHotCodeArrivedListener
+bakeHotFunction
 dlog(`Hot-refreshed Impl`)
+danger_getPieceOfCodeBetweenTags
+
+
 
 
 
