@@ -25,7 +25,8 @@ Error.stackTraceLimit = Infinity
 
 
 global.igniteShit = makeUIShitIgniter({
-    Impl({ui}) {
+    Impl: function hot$ImplForShitIgniter({ui}) {
+        dlog('---------- Constructing Impl')
         return {
             isDynamicPage,
             
@@ -122,7 +123,8 @@ global.igniteShit = makeUIShitIgniter({
                                         {
                                             name: 'support',
                                             content: ui.taby({
-                                                title: t(`TOTE`, `Поддержка`),
+                                                // shame: 'tab-support',
+                                                title: t(`TOTE`, `Поддержка115673`),
                                                 liveStatusFieldName: 'unassignedSupportThreadCount',
                                                 url: 'admin-heap.html?tab=support',
                                             })

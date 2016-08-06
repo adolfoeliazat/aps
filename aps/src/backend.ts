@@ -160,11 +160,15 @@ app.post('/rpc', (req, res) => {
                     if (!msg.tag) raise('Gimme tag')
                     if (!msg.tagPrefix) raise('Gimme tagPrefix')
                     
-                    const fname = 'E:/work/foundation/u/lib/ui.js'
-                    const code = fs.readFileSync(fname, 'utf8')
-                    const beginMarker = `'${msg.tagPrefix}begin-${msg.tag}'`
-                    const beginIndex = code.indexOf(beginMarker)
-                    const endIndex = code.indexOf(`'${msg.tagPrefix}end-${msg.tag}'`)
+                    let code, beginIndex, endIndex
+                    const fnames = ['E:/work/foundation/u/lib/ui.js', 'E:/work/aps/aps/lib/client.js']
+                    for (const fname of fnames) {
+                        code = fs.readFileSync(fname, 'utf8')
+                        const beginMarker = `'${msg.tagPrefix}begin-${msg.tag}'`
+                        beginIndex = code.indexOf(beginMarker)
+                        endIndex = code.indexOf(`'${msg.tagPrefix}end-${msg.tag}'`)
+                        if (~beginIndex && ~endIndex) break
+                    }
                     if (!(~beginIndex && ~endIndex)) return hunkyDory({})
                     
                     let piece = code.slice(beginIndex, endIndex)
