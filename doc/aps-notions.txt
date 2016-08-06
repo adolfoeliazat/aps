@@ -44,9 +44,9 @@ callDebugRPWithProgress
 initDebugFunctions
 
 runHotCodeUpdateStuff
-addHotCodeArrivedListener
-bakeHotFunction
 dlog(`Hot-refreshed Impl`)
+applyHotCode
+danger_getHotShitCodeEntries
 danger_getPieceOfCodeBetweenTags
 
 
