@@ -972,6 +972,7 @@ clog('Client code is kind of loaded')
 
 
 
+
 function compiler$getRegExpForAddingSourceLocationTo() {
     return /((\s|\(|\[)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|horizontala|hor1|hor2)\(\{)/g /*})*/
 }
