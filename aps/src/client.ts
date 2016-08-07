@@ -12,10 +12,15 @@ DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 500
 BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
-require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as I don't want to support old browsers anyway
-
-import static 'into-u/utils-client into-u/ui ./stuff'
     
+require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as I don't want to support old browsers anyway    090d9d02-b286-4b1e-a062-b2312855e2f1 
+
+#import static 'into-u/utils-client ./stuff'
+
+import {faIcon} from 'into-u/ui'
+#import static 'into-u/ui'
+    
+
 COLOR_1_MEDIUM = BLUE_GRAY_400
 COLOR_1_DARK = BLUE_GRAY_600
 COLOR_ZEBRA_LIGHT = WHITE
@@ -24,9 +29,9 @@ COLOR_ZEBRA_DARK = BLUE_GRAY_50
 Error.stackTraceLimit = Infinity
 
 
+
 global.igniteShit = makeUIShitIgniter({
     Impl: function hot$ImplForShitIgniter({ui}) {
-        dlog('---------- Constructing Impl')
         return {
             isDynamicPage,
             
@@ -131,7 +136,7 @@ global.igniteShit = makeUIShitIgniter({
                                     ui.tabs({name: 'main', active: activeTab, tabDefs: [
                                         tabydef({
                                             name: 'support',
-                                            title: t(`TOTE`, `Поддержка2110`),
+                                            title: t(`TOTE`, `Поддержка`),
                                             liveStatusFieldName: 'unassignedSupportThreadCount',
                                             url: 'admin-heap.html?tab=support',
                                         }),
@@ -664,12 +669,15 @@ global.igniteShit = makeUIShitIgniter({
             #extract {user} from def
             
             const title = user.first_name + ' ' + user.last_name
-            const glyphName = lookup(user.kind, {customer: 'user', writer: 'pencil', admin: 'cog'})
-            const glyph = ia({className: `fa fa-${glyphName}`, style: {marginLeft: 5, marginRight: 5}})
+//            const glyphName = lookup(user.kind, {customer: 'user', writer: 'pencil', admin: 'cog'})
+//            const glyph = ia({className: `fa fa-${glyphName}`, style: {marginLeft: 5, marginRight: 5}})
             
             const me = {
                 render() {
-                    return spana({id: me.elementID}, glyph, title)
+                    return spana({id: me.elementID},
+                        faIcon({tame: 'icon', style: {marginLeft: 5, marginRight: 5}, icon: lookup(user.kind, {
+                            customer: 'user', writer: 'pencil', admin: 'cog'})}),
+                        spancTitle({title}))
                 },
                 contributeTestState(state) {
                     state.put(s{control: me, key: me.getTamePath(), value: title})
@@ -973,8 +981,9 @@ clog('Client code is kind of loaded')
 
 
 
+
 function compiler$getRegExpForAddingSourceLocationTo() {
-    return /((\s|\(|\[)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|horizontala|hor1|hor2)\(\{)/g /*})*/
+    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon)\(\{)/g /*})*/
 }
     
     
