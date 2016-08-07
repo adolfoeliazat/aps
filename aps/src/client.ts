@@ -94,6 +94,9 @@ global.igniteShit = makeUIShitIgniter({
                             opacity: 0;
                         }
                     }
+                
+                    .showOnParentHovered {display: none;}
+                    .showOnParentHovered-parent:hover .showOnParentHovered {display: initial;}
                 `
             },
             
@@ -669,8 +672,6 @@ global.igniteShit = makeUIShitIgniter({
             #extract {user} from def
             
             const title = user.first_name + ' ' + user.last_name
-//            const glyphName = lookup(user.kind, {customer: 'user', writer: 'pencil', admin: 'cog'})
-//            const glyph = ia({className: `fa fa-${glyphName}`, style: {marginLeft: 5, marginRight: 5}})
             
             const me = {
                 render() {
@@ -679,9 +680,9 @@ global.igniteShit = makeUIShitIgniter({
                             customer: 'user', writer: 'pencil', admin: 'cog'})}),
                         spancTitle({title}))
                 },
-                contributeTestState(state) {
-                    state.put(s{control: me, key: me.getTamePath(), value: title})
-                },
+//                contributeTestState(state) {
+//                    state.put(s{control: me, key: me.getTamePath(), value: title})
+//                },
             }
             
             me.controlTypeName = 'userLabel'
