@@ -365,8 +365,7 @@ relog(ocompact({a: 10, b: null, c: 20}))
 relog(isEmpty({a: 10}))
 relog(isEmpty({}))
 
-
-
+relog(isObject(undefined))
 
 
 

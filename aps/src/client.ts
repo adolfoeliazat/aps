@@ -17,7 +17,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 #import static 'into-u/utils-client ./stuff'
 
-import {link2, faIcon, Select} from 'into-u/ui'
+import {link2, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
@@ -27,7 +27,6 @@ COLOR_ZEBRA_LIGHT = WHITE
 COLOR_ZEBRA_DARK = BLUE_GRAY_50
 
 Error.stackTraceLimit = Infinity
-
 
 
 global.igniteShit = makeUIShitIgniter({
@@ -159,10 +158,11 @@ global.igniteShit = makeUIShitIgniter({
                         })
                     },
                     
+                    
                     async support() {
                         if (ui.urlQuery.thread) {
                             beginTrain({name: 'Load support page with thread param'}); try {
-                                await lala({
+                                await lala(s{
                                     entityFun: 'private_getSupportThread',
                                     itemsFun: 'private_getSupportThreadMessages',
                                     entityID: ui.urlQuery.thread,
@@ -276,7 +276,9 @@ global.igniteShit = makeUIShitIgniter({
                 }[name]
                 
                 
-                async function lala({header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef, aboveItems, renderItem, defaultOrdering='desc', hasOrderingSelect=true, hasHeaderControls=true}) {
+                async function lala(def) {
+                    #extract {header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef, aboveItems, renderItem, defaultOrdering='desc', hasOrderingSelect=true, hasHeaderControls=true} from def
+                    
                     let entityRes
                     if (entityFun) {
                         entityRes = await ui.rpcSoft({fun: entityFun, entityID})
@@ -312,13 +314,15 @@ global.igniteShit = makeUIShitIgniter({
                     }
                     
                     if (plusFormDef) {
-                        plusShit = makeButtonFormShit({name: 'plus', level: 'primary', icon: plusIcon, formDef: plusFormDef})
+                        plusShit = makeButtonFormShit(s{name: 'plus', level: 'primary', icon: plusIcon, formDef: plusFormDef})
                     }
                     if (editFormDef) {
-                        editShit = makeButtonFormShit({name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
+                        editShit = makeButtonFormShit(s{name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
                     }
                         
-                    function makeButtonFormShit({name, level, icon, formDef}) {
+                    function makeButtonFormShit(def) {
+                        #extract {name, level, icon, formDef} from def
+                        
                         let form, formClass
                         
                         return {
@@ -657,7 +661,11 @@ global.igniteShit = makeUIShitIgniter({
                                         ui.currentPageStuff[`supportThreadMessageNewLabelWasRendered-${message.id}`] = true
                                     }
                                     if (!seen || justBecameSeen) {
-                                        return spanc({tame: 'newLabel', className: `label label-primary ${justBecameSeen ? 'aniFadeOutDelayed' : ''}`, style: {float: 'right'}, content: t(`New`, `Новое`)})
+                                        return spanc({
+                                            tame: 'newLabel',
+                                            className: `label label-primary ${justBecameSeen ? 'aniFadeOutDelayed' : ''}`,
+                                            style: {float: 'right'},
+                                            content: t(`New`, `Новое`)})
                                     }
                                 }
                             }),
@@ -985,7 +993,7 @@ clog('Client code is kind of loaded')
 
 
 function compiler$getRegExpForAddingSourceLocationTo() {
-    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink)\(\{)/g /*})*/
+    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink|CollapsibleShit)\(\{)/g /*})*/
 }
     
     
