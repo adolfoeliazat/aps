@@ -49,7 +49,8 @@ applyHotCode
 danger_getHotShitCodeEntries
 danger_getPieceOfCodeBetweenTags
 
-
+exclude element from testing
+noStateContributions
 
 
 
