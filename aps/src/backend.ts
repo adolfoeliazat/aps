@@ -281,7 +281,7 @@ app.post('/rpc', (req, res) => {
                                           + `'${msg.assertionTag}': {` // }
                                           + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
                                           + repeat(' ', indent) + /*{*/ '}, // end of generated piece of shit'
-                                          + '\n\n' + repeat(' ', indent) + placeToInsertNewGeneratedShitLine + '\n'
+                                          + '\n\n' + repeat(' ', indent) + placeToInsertNewGeneratedShitLine
                                           + generatedShitCode.slice(placeToInsertNewGeneratedShitLineIndex + placeToInsertNewGeneratedShitLine.length)
                             
                             // fs.writeFileSync('c:/tmp/shit.txt', newCode)

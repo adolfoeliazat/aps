@@ -60,15 +60,15 @@ module.exports = function({sim}) {
                     #hawait art.pausePoint({title: 'Clicking "Show More" button at the bottom...', $tag: 'dcf633b6-0cd6-43bc-81f8-5920ff60a795', locus: 'top-right'})
                     
                     // Action
-                    #hawait testGlobal.controls['button-showMore'].click({testActionHandOpts: {pointingFrom: 'top'}})
-                    #hawait art.uiStateChange({$tag: 'edb9fdc5-841b-4232-baa2-dfdc39d8d02d', expected: '---generated-shit---'})
+                    #hawait testGlobal.controls['button-showMore'].testClick({testActionHandOpts: {pointingFrom: 'top'}})
+                    #hawait art.uiState({$tag: 'edb9fdc5-841b-4232-baa2-dfdc39d8d02d', expected: '---generated-shit---'})
                     
                     #hawait art.scroll({origY: 'current', destY: 'bottom'})
                     #hawait art.pausePoint({title: 'Now admin chooses a thread to take', $tag: '3045e8f4-3b18-4681-91e4-bfaa2961f40d', locus: 'top-right'})
                     #hawait art.scroll({origY: 'current', destY: 320})
                     
                     // Action
-                    #hawait testGlobal.controls['chunk-0.thread-2.button-takeAndReply'].click()
+                    #hawait testGlobal.controls['takeAndReply-308'].testClick()
                     
                     art.uiState({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: '---generated-shit---'})
                     
@@ -81,11 +81,11 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
-                    #hawait testGlobal.controls['TopNavItem-admin-heap'].click()
+                    #hawait testGlobal.controls['TopNavItem-admin-heap'].testClick()
                     art.uiState({$tag: '8fc8247d-2b0a-492b-a495-ee782f56eeb4', expected: '---generated-shit---'})
                     
                     // Action
-                    #hawait testGlobal.controls['chunk-0.thread-0.button-takeAndReply'].click()
+                    #hawait testGlobal.controls['chunk-0.thread-0.button-takeAndReply'].testClick()
                     art.uiState({$tag: '9dde55d6-0488-4ec6-9443-a96370c7fd4b', expected: '---generated-shit---'})
 
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
@@ -94,7 +94,7 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
-                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    #hawait testGlobal.controls['TopNavItem-support'].testClick()
                     art.uiState({$tag: '0020d0bf-5a2c-4287-a4b6-f1eca4c36ca3', expected: '---generated-shit---'})
                     
                     testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].testShowHand({testActionHandOpts: {pointingFrom: 'left', dleft: -4, dtop: 2}})
@@ -102,7 +102,7 @@ module.exports = function({sim}) {
                     testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].testHideHand()
                     
                     // Action
-                    #hawait testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].click()
+                    #hawait testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].testClick()
                     art.uiState({$tag: 'b82ede90-f409-4dee-b1d6-e66b56e51152', expected: '---generated-shit---'})
 
 
@@ -120,14 +120,14 @@ module.exports = function({sim}) {
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
                     #hawait art.pausePoint({title: 'Will respond...', $tag: '3687412d-c52a-4bdf-bc8e-1c588df5da22'})
                     // Action
-                    #hawait testGlobal.controls['button-plus'].click()
+                    #hawait testGlobal.controls['button-plus'].testClick()
                     art.uiState({$tag: 'bd47917a-b212-4d03-8910-5af36b2f7ebc', expected: '---generated-shit---'})
                     
                     // Inputs
                     #hawait testGlobal.controls['Input-message'].testSetValue({value: 'Та я понял, что ты писатель... В чем дело-то?'})
                     // Action
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/23 13:56:26'})
-                    #hawait testGlobal.controls['button-primary'].click()
+                    #hawait testGlobal.controls['button-primary'].testClick()
                     art.uiState({$tag: '0bb446ca-4e6e-4bcf-b9c9-687f1f3a2f29', expected: '---generated-shit---'})
                     
                     testGlobal.controls['TopNavItem-support'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
@@ -145,7 +145,7 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
-                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    #hawait testGlobal.controls['TopNavItem-support'].testClick()
                     art.uiState({$tag: 'e03093b1-3834-45e9-9f7c-724536571ecc', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
@@ -154,20 +154,20 @@ module.exports = function({sim}) {
                     testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].testHideHand()
                     
                     // Action
-                    #hawait testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].click()
+                    #hawait testGlobal.controls['chunk-0.thread-0.oldMessages.link-andMore'].testClick()
                     art.uiState({$tag: '627276cd-3bfe-4932-9e2f-e2845f6015f5', expected: '---generated-shit---'})
                     
                     #hawait art.pausePoint({title: 'Will reply...', $tag: 'ae5e858c-baea-4321-a024-4f07629c19c1'})
 
                     // Action
-                    #hawait testGlobal.controls['button-plus'].click()
+                    #hawait testGlobal.controls['button-plus'].testClick()
                     art.uiState({$tag: '3e196890-8de2-4003-8dc7-c34fbec270b2', expected: '---generated-shit---'})
 
                     // Inputs
                     #hawait testGlobal.controls['Input-message'].testSetValue({value: 'Ни в чем. Просто пописать. Я ж писатель, ага.'})
                     // Action
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/23 14:08:11'})
-                    #hawait testGlobal.controls['button-primary'].click()
+                    #hawait testGlobal.controls['button-primary'].testClick()
                     art.uiState({$tag: '2afc55df-9079-4112-a7c0-da91803923c6', expected: '---generated-shit---'})
                 }
                 
@@ -180,19 +180,19 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-support'].testHideHand()
 
                     // Action
-                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    #hawait testGlobal.controls['TopNavItem-support'].testClick()
                     art.uiState({$tag: 'c2c7686c-7658-475a-9068-7ad00e47e5d3', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
                     #hawait art.pausePoint({title: 'First let’s calm down Luke...', $tag: 'e51fe87e-f66b-4411-8028-a166d6c7e3d6'})
                     // Action
-                    #hawait testGlobal.controls['chunk-0.thread-1.link-topic'].click()
+                    #hawait testGlobal.controls['chunk-0.thread-1.link-topic'].testClick()
                     art.uiState({$tag: '7010e87f-efb6-46cd-ab36-0c8f8537f9ea', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '9c5e6974-bd3f-4278-ad9f-776cfccd040d'})
 
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '599e8c7c-30a9-45b4-a22c-c60ae7a4a21b'})
                     // Action
-                    #hawait testGlobal.controls['button-plus'].click()
+                    #hawait testGlobal.controls['button-plus'].testClick()
                     art.uiState({$tag: '116f0222-746e-4c95-a81d-d3b88325c2a3', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '36751d38-a5bf-4d68-93ba-8ac1e794e686'})
 
@@ -202,28 +202,28 @@ module.exports = function({sim}) {
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '8ba7f289-a636-43d6-818e-59ebc6ec4f5c'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 15:52:46'})
-                    #hawait testGlobal.controls['button-primary'].click()
+                    #hawait testGlobal.controls['button-primary'].testClick()
                     art.uiState({$tag: '81d0cc52-74e1-4eb8-921b-e72969b577eb', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '58d87ddc-5a4d-43b2-a52d-864ab5679b5a'})
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '4e9bd6bf-3026-4212-bebb-017edeab476d'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 15:55:43'})
-                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    #hawait testGlobal.controls['TopNavItem-support'].testClick()
                     art.uiState({$tag: '907d4ca6-763a-455f-90fa-e42e28b9b906', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '4bfc7ec4-5464-4f38-9fc8-74a67dd6562d'})
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: 'ba4cacfd-bab8-4851-995c-a28e4d5113a5'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 15:57:57'})
-                    #hawait testGlobal.controls['chunk-0.thread-0.link-topic'].click()
+                    #hawait testGlobal.controls['chunk-0.thread-0.link-topic'].testClick()
                     art.uiState({$tag: '684e0bd4-57fc-4f61-a545-0e04c14e67de', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '3e980295-4582-4efe-86d0-8ff79c64e18c'})
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '34c7086c-bfdf-41a7-902f-477e75e9ad44'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 15:59:47'})
-                    #hawait testGlobal.controls['button-plus'].click()
+                    #hawait testGlobal.controls['button-plus'].testClick()
                     art.uiState({$tag: 'd51ea6a7-dac7-49f4-88d4-731a77d17b61', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'fc3ce032-7279-46b8-b123-0253c5f5ebc6'})
 
@@ -232,7 +232,7 @@ module.exports = function({sim}) {
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '115ce0cb-63e8-45d9-a128-986780c4c181'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 16:02:27'})
-                    #hawait testGlobal.controls['button-primary'].click()
+                    #hawait testGlobal.controls['button-primary'].testClick()
                     art.uiState({$tag: '08e9ecdd-0424-45f0-b39a-644c4621c4af', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'bfacb25b-1acd-40c0-856b-c0162647568c'})
 
@@ -245,21 +245,21 @@ module.exports = function({sim}) {
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '8089a90c-16e6-40ad-a668-ec4527614efd'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 19:16:05'})
-                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    #hawait testGlobal.controls['TopNavItem-support'].testClick()
                     art.uiState({$tag: '10b64318-d180-4a84-9b2f-0a37e61b3d4b', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '7b4d2b2e-202b-4188-afa8-a8136d5f2bd6'})
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5aa09ff4-7e41-4fab-bc4f-bf3a1f3cd7e2'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 19:45:25'})
-                    #hawait testGlobal.controls['chunk-i000.thread-i000.link-topic'].click()
+                    #hawait testGlobal.controls['chunk-i000.thread-i000.link-topic'].testClick()
                     art.uiState({$tag: 'c0950b79-938e-4bc0-b133-42d8a27d005f', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'd6984756-b1ae-447d-bff2-08be7bf99d60'})
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5e57ddc5-f3ce-48e4-aff8-d319b806c95d'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:41:50'})
-                    #hawait testGlobal.controls['button-edit'].click()
+                    #hawait testGlobal.controls['button-edit'].testClick()
                     art.uiState({$tag: '4c776fc8-f555-47e2-a7e7-3b4a5216e8a6', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '49577eb3-936c-43e3-a4c4-7ed6a54a7ff9'})
 
@@ -268,7 +268,7 @@ module.exports = function({sim}) {
                     // Action
                     #hawait art.pausePoint({title: 'Luke discovers he’s fucked and submissively decides to mark the request as resolved', $tag: '4fabecfa-27a8-4b45-a745-ceac79c74464'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/27 21:42:54'})
-                    #hawait testGlobal.controls['button-primary'].click()
+                    #hawait testGlobal.controls['button-primary'].testClick()
                     art.uiState({$tag: '99798601-7dca-4e9c-8136-5052756c685e', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '010ed3fa-bbc9-4e45-922e-c76de43bcbe2'})
 
@@ -287,7 +287,7 @@ module.exports = function({sim}) {
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '7cf28c38-0748-4b2e-8ec2-c74db0de70e8'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/28 16:20:31'})
-                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    #hawait testGlobal.controls['TopNavItem-support'].testClick()
                     art.uiState({$tag: 'fcc1f0b2-63b8-4b57-bf11-a27a1aa65415', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '5dc62ff5-4881-4538-9616-51be5200f4ee'})
 
@@ -300,21 +300,21 @@ module.exports = function({sim}) {
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: 'c8ff4699-58c8-400d-a9f3-68e20a61ae93'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 15:44:39'})
-                    #hawait testGlobal.controls['TopNavItem-support'].click()
+                    #hawait testGlobal.controls['TopNavItem-support'].testClick()
                     art.uiState({$tag: '7ffac211-0ffd-45c7-983d-a7da73a0824e', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '7151ff9e-5eab-4ca0-b472-cc6a8f910c96'})
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '6bf785d2-fc23-4212-931e-9f0e30d3f076'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 16:40:44'})
-                    #hawait testGlobal.controls['chunk-i000.thread-i000.link-topic'].click()
+                    #hawait testGlobal.controls['chunk-i000.thread-i000.link-topic'].testClick()
                     art.uiState({$tag: 'c4fe7232-a724-4251-9ee0-ddd33ed7d0ba', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '0abc8d04-3ea6-450f-9800-34df01418d2f'})
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5a7399f9-9bd9-472a-8159-14faf4b72d8a'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 16:51:36'})
-                    #hawait testGlobal.controls['button-plus'].click()
+                    #hawait testGlobal.controls['button-plus'].testClick()
                     art.uiState({$tag: 'b668806f-2f5b-4594-a364-49494b60cc7e', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: 'c064ab71-4e8c-4072-800c-6f120a33554d'})
 
@@ -323,14 +323,14 @@ module.exports = function({sim}) {
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: '5ad115fb-9574-47c1-b275-056c8d696799'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 16:52:40'})
-                    #hawait testGlobal.controls['button-primary'].click()
+                    #hawait testGlobal.controls['button-primary'].testClick()
                     art.uiState({$tag: '2ee05f7a-7384-4d7f-b9b0-60ceef5e240b', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '96f1236d-23cd-4698-b8c3-0a80dc142860'})
 
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: 'c45122ec-99c9-480e-960c-764afd9c347d'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 17:49:09'})
-                    #hawait testGlobal.controls['button-plus'].click()
+                    #hawait testGlobal.controls['button-plus'].testClick()
                     art.uiState({$tag: 'f6093fda-6e89-4c9d-8a6f-c63fe09c85cb', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '41540466-20e7-484c-87cf-6dc862d04105'})
 
@@ -339,7 +339,7 @@ module.exports = function({sim}) {
                     // Action
                     // #hawait art.pausePoint({title: 'TODO: Describe action', $tag: 'a550629d-2762-42bf-9d3e-495faae2a91c'})
                     #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/07/29 17:50:55'})
-                    #hawait testGlobal.controls['button-primary'].click()
+                    #hawait testGlobal.controls['button-primary'].testClick()
                     art.uiState({$tag: 'c186f51e-f387-400b-95e0-3e41b3ec73ab', expected: '---generated-shit---'})
                     // #hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '1895952e-ed3c-4577-a339-cc7c4ef5a74d'})
 

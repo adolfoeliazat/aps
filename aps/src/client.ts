@@ -17,7 +17,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 #import static 'into-u/utils-client ./stuff'
 
-import {faIcon} from 'into-u/ui'
+import {link2, faIcon, Select} from 'into-u/ui'
 #import static 'into-u/ui'
     
 

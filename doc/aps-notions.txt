@@ -52,6 +52,11 @@ danger_getPieceOfCodeBetweenTags
 exclude element from testing
 noStateContributions
 
+openDebugPane
+open debug pane
+show debug pane
+with red close icon
+with red close button
 
 
 
