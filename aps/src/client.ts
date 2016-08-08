@@ -646,6 +646,7 @@ global.igniteShit = makeUIShitIgniter({
                             spanc({tame: 'timestamp', content: timestampString(message.inserted_at)}),
                         )
                     ),
+                    
                     diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
                         div(
                             run(function renderLabels() {
