@@ -320,6 +320,7 @@ global.igniteShit = makeUIShitIgniter({
                         editShit = makeButtonFormShit(s{name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
                     }
                         
+                    
                     function makeButtonFormShit(def) {
                         #extract {name, level, icon, formDef} from def
                         
@@ -327,7 +328,7 @@ global.igniteShit = makeUIShitIgniter({
                         
                         return {
                             button() {
-                                return button({style: {marginLeft: 8}, name, level, icon, disabled: headerControlsDisabled, onClick() {
+                                return button({bum: 'bam', style: {marginLeft: 8}, name, level, icon, disabled: headerControlsDisabled, onClick() {
                                     showEmptyLabel = false
                                     setHeaderControlsDisappearing()
                                     formClass = 'aniFadeIn'

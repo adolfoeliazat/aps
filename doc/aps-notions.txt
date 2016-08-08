@@ -58,6 +58,7 @@ show debug pane
 with red close icon
 with red close button
 
+compiler compile.js captuta
 
 
 
