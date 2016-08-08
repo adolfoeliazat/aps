@@ -561,7 +561,7 @@ global.igniteShit = makeUIShitIgniter({
                 
                 return diva({controlTypeName: 'renderSupportThread', tame: `thread${sufindex(i)}`, style: {backgroundColor: rowBackground, position: 'relative'}},
                     diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
-                        hasTakeAndReplyButton && ui.busyButton({tamy: `takeAndReply`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+                        hasTakeAndReplyButton && ui.busyButton({tamy: `takeAndReply`, shame: `takeAndReply-${item.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
                             beginTrain({name: 'Take support thread and reply'}); try {
                                 await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
                                 // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
@@ -640,7 +640,7 @@ global.igniteShit = makeUIShitIgniter({
                                       t(`TOTE`, `Кому: `)),
                                       message.recipient ? userLabel({tamy: 'to', user: message.recipient})
                                                         : spanc({tame: 'to', content: t(`TOTE`, `В рельсу`)})))
-                            : diva({style: {fontWeight: 'bold'}}, spanc({tame: 'continuation', content: t(`TOTE`, `В догонку`)})),
+                            : diva({style: {fontWeight: 'bold'}}, spanc({tame: 'continuation', content: t(`TOTE`, `Вдогонку`)})),
                                                            
                         diva({style: {marginTop: 10}},
                             spanc({tame: 'timestamp', content: timestampString(message.inserted_at)}),
