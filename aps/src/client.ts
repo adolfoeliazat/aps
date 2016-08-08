@@ -17,7 +17,8 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 #import static 'into-u/utils-client ./stuff'
 
-import {link2, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit} from 'into-u/ui'
+import {link2, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
+        button} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
@@ -299,7 +300,7 @@ global.igniteShit = makeUIShitIgniter({
                         plusShit, editShit
                     
                     if (hasOrderingSelect) {
-                        orderingSelect = Select({name: 'ordering', isAction: true, style: {width: 160},
+                        orderingSelect = Select({tamy: 'ordering', isAction: true, style: {width: 160},
                             values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
                             initialValue: ordering,
                             disabled: _=> headerControlsDisabled,
@@ -328,7 +329,7 @@ global.igniteShit = makeUIShitIgniter({
                         
                         return {
                             button() {
-                                return button({bum: 'bam', style: {marginLeft: 8}, name, level, icon, disabled: headerControlsDisabled, onClick() {
+                                return button({tamyShamy: name, style: {marginLeft: 8}, level, icon, disabled: headerControlsDisabled, onClick() {
                                     showEmptyLabel = false
                                     setHeaderControlsDisappearing()
                                     formClass = 'aniFadeIn'
