@@ -83,9 +83,10 @@ module.exports = function({sim}) {
                     // Action
                     #hawait testGlobal.controls['TopNavItem-admin-heap'].testClick()
                     art.uiState({$tag: '8fc8247d-2b0a-492b-a495-ee782f56eeb4', expected: '---generated-shit---'})
+                    // raise('boom')
                     
                     // Action
-                    #hawait testGlobal.controls['chunk-0.thread-0.button-takeAndReply'].testClick()
+                    #hawait testGlobal.controls['takeAndReply-12'].testClick()
                     art.uiState({$tag: '9dde55d6-0488-4ec6-9443-a96370c7fd4b', expected: '---generated-shit---'})
 
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true

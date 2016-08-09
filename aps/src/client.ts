@@ -18,7 +18,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 #import static 'into-u/utils-client ./stuff'
 
 import {link2, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
-        button} from 'into-u/ui'
+        button, pageTopBlockQuote} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
@@ -137,7 +137,7 @@ global.igniteShit = makeUIShitIgniter({
                                 header: pageHeader({title: pageTitle}),
                                 body: div(
                                     ui.tabs({name: 'main', active: activeTab, tabDefs: [
-                                        tabydef({
+                                        tabydef(s{
                                             name: 'support',
                                             title: t(`TOTE`, `Поддержка`),
                                             liveStatusFieldName: 'unassignedSupportThreadCount',
@@ -180,7 +180,7 @@ global.igniteShit = makeUIShitIgniter({
                                     },
                                     emptyMessage: t(`TOTE`, `Странно, здесь ничего нет. А должно что-то быть...`),
                                     aboveItems(entityRes) {
-                                        return pageTopBlockQuote(entityRes.entity.topic)
+                                        return pageTopBlockQuote({content: entityRes.entity.topic})
                                     },
                                     plusIcon: 'comment',
                                     
@@ -258,7 +258,7 @@ global.igniteShit = makeUIShitIgniter({
                                             updated: t(`TOTE`, `Обновленные`),
                                             all: t(`TOTE`, `Все`)
                                         }),
-                                        url: `support.html?filter=${tab.name}`
+                                        url: `support.html?filter=${name}`
                                     })}))
                                 
                                 ui.setPage({
@@ -553,7 +553,7 @@ global.igniteShit = makeUIShitIgniter({
                     
                 let topicElement
                 if (topicIsLink) {
-                    topicElement = ui.pageLink({url, name: `topic`, title: item.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                    topicElement = ui.urlLink({url, tamy: `topic`, title: item.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
                 } else {
                     topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: item.topic}))
                 }
@@ -613,7 +613,7 @@ global.igniteShit = makeUIShitIgniter({
                                 else title += ` сообщений`
                             }
                         }
-                        return diva({style: {textAlign: 'right'}}, ui.pageLink({name: 'andMore', url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
+                        return diva({style: {textAlign: 'right'}}, ui.urlLink({tamy: 'andMore', url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
                     }
                 }
             }
@@ -996,7 +996,7 @@ clog('Client code is kind of loaded')
 
 
 function compiler$getRegExpForAddingSourceLocationTo() {
-    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink|CollapsibleShit)\(\{)/g /*})*/
+    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink|CollapsibleShit|blockquotea|pageTopBlockQuote)\(\{)/g /*})*/
 }
     
     
