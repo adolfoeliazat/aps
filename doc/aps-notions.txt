@@ -45,6 +45,7 @@ callDebugRPWithProgress
 
 initDebugFunctions
 
+hot shit
 runHotCodeUpdateStuff
 dlog(`Hot-refreshed Impl`)
 applyHotCode
@@ -67,7 +68,13 @@ taby tabydef
 implementTestClick: {onClick: ...}
 
 
+ctx running test scenario
 
+Q: Why revealing a part of revealer doesn't show nearby elements (parents, siblings, etc.)?
+A: Because revealing a part of revealer means vanishing old revealer, so that elements no longer exist.
+
+Renderers:
+renderDefinitionStackStrip
 
 
 

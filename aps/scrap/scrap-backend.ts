@@ -377,6 +377,7 @@ try {
 }
 relog({bundleCtime})
 
+relog(capitalize('foobar'))
 
 
 

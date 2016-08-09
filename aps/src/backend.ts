@@ -400,6 +400,7 @@ app.post('/rpc', (req, res) => {
                         file = {
                             'aps/src/client.ts': 'E:/work/aps/aps/src/client.ts',
                             'client.ts': 'E:/work/aps/aps/src/client.ts',
+                            'aps/src/client-admin-tests.ts': 'E:/work/aps/aps/src/client-admin-tests.ts',
                             'client-admin-tests.ts': 'E:/work/aps/aps/src/client-admin-tests.ts',
                             'aps/src/backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'backend.ts': 'E:/work/aps/aps/src/backend.ts',
@@ -693,6 +694,8 @@ app.post('/rpc', (req, res) => {
                                 
                             for (const message of top) {
                                 #await loadSupportThreadMessage(message)
+                                const qux = s{$origin: 'backend'}
+                                message.message = {meta: qux, meat: message.message}
                             }
                             return {total, top}
                         }
@@ -714,6 +717,7 @@ app.post('/rpc', (req, res) => {
                             order by id asc`})
                         for (const message of messages) {
                             #await loadSupportThreadMessage(message)
+                            message.message = {meta: {$sourceLocation: 'qweqwe'}, meat: message.message}
                         }
                         
                         item.newMessages = {total: messages.length, top: messages}
@@ -888,6 +892,7 @@ app.post('/rpc', (req, res) => {
                     for (const item of items) {
                         #await loadItem(item)
                     }
+                    
                     return {items, moreFromID}
                 }
                     
@@ -1112,7 +1117,7 @@ app.post('/rpc', (req, res) => {
             }
             
             let shouldLogRequestForUI
-            if (MODE === 'debug') {
+            if (MODE === 'debug' && !msg.fun.startsWith('danger_') && msg.fun !== 'private_getLiveStatus') {
                 shouldLogRequestForUI = true
             }
             
@@ -1123,7 +1128,11 @@ app.post('/rpc', (req, res) => {
         
         
         function traceBeginHandler(data) {
-            $trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omit(msg, 'fun', 'token', '$sourceLocation')}, omit(data, '$trace')))
+            $trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omitMetaShit(omit(msg, 'fun', 'token'))}, omit(data, '$trace')))
+        }
+        
+        function omitMetaShit(o) {
+            return omit(o, '$sourceLocation', '$trace', '$$$captuta', '$definitionStack', '$callStack')
         }
         
         function traceEndHandler(data) {

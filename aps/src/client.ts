@@ -18,7 +18,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 #import static 'into-u/utils-client ./stuff'
 
 import {link2, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
-        button, pageTopBlockQuote} from 'into-u/ui'
+        button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
@@ -247,7 +247,7 @@ global.igniteShit = makeUIShitIgniter({
                             } finally { endTrain() }
                         } else if (!ui.urlQuery.thread) {
                             beginTrain({name: 'Load support page without thread param'}); try {
-                                const itemsReq = {fun: 'private_getSupportThreads', filter: ui.urlQuery.filter || 'updatedOrAll'}
+                                const itemsReq = s{fun: 'private_getSupportThreads', filter: ui.urlQuery.filter || 'updatedOrAll'}
                                 const itemsRes = await ui.rpcSoft(itemsReq)
                                 if (itemsRes.error) return ui.setToughLuckPage({res: itemsRes})
                                 
@@ -557,9 +557,9 @@ global.igniteShit = makeUIShitIgniter({
                     
                 let topicElement
                 if (topicIsLink) {
-                    topicElement = ui.urlLink({url, tamy: `topic`, shame: `link-threadTopic-${thread.id}`, title: thread.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                    topicElement = ui.urlLink({url, tamy: `topic`, shame: `link-threadTopic-${thread.id}`, title: nostring(thread.id) + ' ' + thread.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
                 } else {
-                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: thread.topic}))
+                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: nostring(thread.id) + ' ' + thread.topic}))
                 }
                 
                 const paddingRight = hasTakeAndReplyButton ? 45 : 0

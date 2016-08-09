@@ -64,7 +64,9 @@ module.exports = function({sim}) {
                     #hawait art.pausePoint({title: 'Clicking "Show More" button at the bottom...', $tag: 'dcf633b6-0cd6-43bc-81f8-5920ff60a795', locus: 'top-right'})
                     
                     // Action
+                    art.pushStepDescription(s{long: t('Support admin clicks on "Show More" button')})
                     #hawait testGlobal.controls['button-showMore'].testClick({testActionHandOpts: {pointingFrom: 'top'}})
+                    art.pushStepDescription(s{long: t('A few more threads appeared at the bottom. There’s no "Show More" button this time, cause all items are displayed.')})
                     #hawait art.uiState({$tag: 'edb9fdc5-841b-4232-baa2-dfdc39d8d02d', expected: '---generated-shit---'})
                     
                     #hawait art.scroll({origY: 'current', destY: 'bottom'})
@@ -72,8 +74,12 @@ module.exports = function({sim}) {
                     #hawait art.scroll({origY: 'current', destY: 320})
                     
                     // Action
+                    art.pushStepDescription(s{long: t('Support admin clicks on "Take" button for thread #308')})
                     #hawait testGlobal.controls['button-takeAndReply-308'].testClick()
                     
+                    art.pushStepDescription(s{long: t(`
+                        Three messages was posted (by a person who requested support) to this thread before admin (we) took it.
+                        "New" labels will remain hanging there until we address them by replying.`)})
                     art.uiState({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
@@ -85,12 +91,15 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
+                    art.pushStepDescription(s{long: t(`But first let’s go back to heap and take one more task...`)})
                     #hawait testGlobal.controls['TopNavItem-admin-heap'].testClick()
+                    art.pushStepDescription(s{long: t(`Task we took (#308) is not in heap anymore`)})
                     art.uiState({$tag: '8fc8247d-2b0a-492b-a495-ee782f56eeb4', expected: '---generated-shit---'})
-                    // raise('boom')
                     
                     // Action
+                    art.pushStepDescription(s{kind: 'action', long: t(`This time we take task number 12`)})
                     #hawait testGlobal.controls['button-takeAndReply-12'].testClick()
+                    art.pushStepDescription(s{kind: 'state', long: t(`Got support task #12`)})
                     art.uiState({$tag: '9dde55d6-0488-4ec6-9443-a96370c7fd4b', expected: '---generated-shit---'})
 
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
@@ -99,8 +108,11 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
+                    art.pushStepDescription(s{kind: 'action', long: t(`Clicking "Support" in top navbar to see all support tasks we took`)})
                     #hawait testGlobal.controls['TopNavItem-support'].testClick()
+                    art.pushStepDescription(s{kind: 'state', long: t(`Here are our two tasks: #308 and #12.`)})
                     art.uiState({$tag: '0020d0bf-5a2c-4287-a4b6-f1eca4c36ca3', expected: '---generated-shit---'})
+                    #hawait art.uiState({$tag: 'boom 225d5f70-2cfa-45a2-a8e8-f92cca179ddc', expected: {}})
                     
                     testGlobal.controls['link-andMore-308'].testShowHand({testActionHandOpts: {pointingFrom: 'left', dleft: -4, dtop: 2}})
                     #hawait art.pausePoint({title: 'To keep the list succinct, maximum two (most recent) new messages are showed per thread.\nIn order to see everything, simply switch to a particular thread. One way of doing which is via this link...', $tag: '27ba7948-693a-4c93-a054-16a534090567'})

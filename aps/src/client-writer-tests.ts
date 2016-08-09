@@ -79,7 +79,7 @@ module.exports = function({sim}) {
                 errorBanner: undefined,
                 displayLabels: {} 
             }})            
-            art.textSomewhere({$tag: 'bad7019b-a1d3-432c-a376-a872f5b27506', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
+            art.textSomewhere({$tag: '88bc4333-0698-4a77-a857-1ee30b7d2fe6', expected: 'Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.'})
 
             #hawait art.pausePoint({title: 'Before entering password received by email', $tag: '51076622-8afd-45f5-9fda-a55b98380410'})
             // Inputs
@@ -372,8 +372,6 @@ module.exports = function({sim}) {
             // sim.selectBrowser('fred')
             
             
-            //art.boom('1fbfe070-6d05-4fdf-9bf1-f250cfb7089a')
-
             // @ctx test
             
             // @ctx templates
