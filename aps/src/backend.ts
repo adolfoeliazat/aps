@@ -48,9 +48,12 @@ app.post('/rpc', (req, res) => {
         const $trace = []
         
         let requestTimestamp = moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS')
-        if (imposedRequestTimestamp) {
+        if (imposedRequestTimestamp && shouldUseImposedRequestTimestamp()) {
             requestTimestamp = imposedRequestTimestamp
             imposedRequestTimestamp = undefined
+        }
+        function shouldUseImposedRequestTimestamp() {
+            return !msg.fun.startsWith('danger_')
         }
         
         const _t = makeT(msg.LANG)

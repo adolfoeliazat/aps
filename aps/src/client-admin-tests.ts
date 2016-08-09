@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+#pragma instrument-ui-rendering
+
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 GENERATED_SHIT = require('./generated-shit')
@@ -53,7 +55,9 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-admin-heap'].testHideHand()
                     
                     // Action
+                    art.pushStepDescription(s{long: t('Support admin clicks on "Heap" in top navbar')})
                     #hawait testGlobal.controls['TopNavItem-admin-heap'].testClick()
+                    art.pushStepDescription(s{long: t('Support admin sees a whole lot of unassigned support threads')})
                     art.uiState({$tag: '1c3a4a15-4bc4-46f6-afd9-d23433c6d839', expected: '---generated-shit---'})
                     #hawait art.pausePoint({title: 'A lot of stuff, let’s do some scrolling...', $tag: 'a86e6b75-0140-4347-a961-bf9886937806', locus: 'top-right'})
                     #hawait art.scroll({origY: 0, destY: 'bottom'})
@@ -98,12 +102,12 @@ module.exports = function({sim}) {
                     #hawait testGlobal.controls['TopNavItem-support'].testClick()
                     art.uiState({$tag: '0020d0bf-5a2c-4287-a4b6-f1eca4c36ca3', expected: '---generated-shit---'})
                     
-                    testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].testShowHand({testActionHandOpts: {pointingFrom: 'left', dleft: -4, dtop: 2}})
+                    testGlobal.controls['link-andMore-308'].testShowHand({testActionHandOpts: {pointingFrom: 'left', dleft: -4, dtop: 2}})
                     #hawait art.pausePoint({title: 'To keep the list succinct, maximum two (most recent) new messages are showed per thread.\nIn order to see everything, simply switch to a particular thread. One way of doing which is via this link...', $tag: '27ba7948-693a-4c93-a054-16a534090567'})
-                    testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].testHideHand()
+                    testGlobal.controls['link-andMore-308'].testHideHand()
                     
                     // Action
-                    #hawait testGlobal.controls['chunk-0.thread-0.newMessages.link-andMore'].testClick()
+                    #hawait testGlobal.controls['link-andMore-308'].testClick()
                     art.uiState({$tag: 'b82ede90-f409-4dee-b1d6-e66b56e51152', expected: '---generated-shit---'})
 
 
@@ -363,10 +367,7 @@ module.exports = function({sim}) {
         if (clientKind === 'writer') {
             art.uiState({$tag: 'c70e18eb-516b-41cb-bf7a-bdf748595ad2', expected: {
                 'Input-email': ``,
-                  'Input-email.shame': `Input-email`,
                   'Input-password': ``,
-                  'Input-password.shame': `Input-password`,
-                  'button-primary.shame': `button-primary`,
                   'button-primary.title': `Войти`,
                   'link-createAccount.title': `Срочно создать!`,
                   'pageHeader.title': `Вход`,

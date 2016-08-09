@@ -144,7 +144,7 @@ global.igniteShit = makeUIShitIgniter({
                                             url: 'admin-heap.html?tab=support',
                                         }),
                                     ]}),
-                                    ui.renderMoreable({itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})
+                                    ui.renderMoreable(s{itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})
                                 )
                             })
                             
@@ -236,10 +236,12 @@ global.igniteShit = makeUIShitIgniter({
                                         }
                                     }),
                                     
-                                    renderItem(message, i) {
-                                        const {rowBackground, lineColor} = zebraRowColors(i)
-                                        return diva({style: {background: rowBackground}},
-                                            makeRenderSupportThreadMessage({lineColor, showMessageNewLabel: true})(message, i))
+                                    renderItem(def) {
+                                        #extract {item: message, index} from def
+                                        
+                                        const {rowBackground, lineColor} = zebraRowColors(index)
+                                        return diva({controlTypeName: 'renderItem-leila', style: {background: rowBackground}},
+                                            makeRenderSupportThreadMessage({lineColor, showMessageNewLabel: true})(s{message, index}))
                                     },
                                 })
                             } finally { endTrain() }
@@ -265,7 +267,7 @@ global.igniteShit = makeUIShitIgniter({
                                     header: pageHeader({title: t(`TOTE`, `Поддержка`)}),
                                     body: div(
                                         ui.tabs({name: 'main', tabDefs, active: filter}),
-                                        ui.renderMoreable({itemsRes, itemsReq: {fun: 'private_getSupportThreadsChunk', filter}, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}),
+                                        ui.renderMoreable(s{itemsRes, itemsReq: {fun: 'private_getSupportThreadsChunk', filter}, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}),
                                     )
                                 })
                             } finally { endTrain() }
@@ -300,7 +302,7 @@ global.igniteShit = makeUIShitIgniter({
                         plusShit, editShit
                     
                     if (hasOrderingSelect) {
-                        orderingSelect = Select({tamy: 'ordering', isAction: true, style: {width: 160},
+                        orderingSelect = Select({tamyShamy: 'ordering', isAction: true, style: {width: 160},
                             values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
                             initialValue: ordering,
                             disabled: _=> headerControlsDisabled,
@@ -367,7 +369,7 @@ global.igniteShit = makeUIShitIgniter({
                                     }
                                     return ''
                                 }
-                                return ui.renderMoreable({itemsRes, itemsReq, renderItem,})
+                                return ui.renderMoreable(s{itemsRes, itemsReq, renderItem,})
                             }),
                         ),
                         headerControls: _=> fov(hasHeaderControls, entityRes) && headerControlsVisible && diva({style: {display: 'flex'}, className: headerControlsClass},
@@ -546,32 +548,34 @@ global.igniteShit = makeUIShitIgniter({
         // @ctx client helpers
         
         function makeRenderSupportThread({topicIsLink, hasTakeAndReplyButton, showMessageNewLabel, dryFroms}) {
-            return function renderSupportThread(item, i) {
-                const {rowBackground, lineColor} = zebraRowColors(i)
+            return function renderSupportThread(def) {
+                #extract {item: thread, index} from def
                 
-                const url = `support.html?thread=${item.id}`
+                const {rowBackground, lineColor} = zebraRowColors(index)
+                
+                const url = `support.html?thread=${thread.id}`
                     
                 let topicElement
                 if (topicIsLink) {
-                    topicElement = ui.urlLink({url, tamy: `topic`, shame: `link-threadTopic-${item.id}`, title: item.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                    topicElement = ui.urlLink({url, tamy: `topic`, shame: `link-threadTopic-${thread.id}`, title: thread.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
                 } else {
-                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: item.topic}))
+                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: thread.topic}))
                 }
                 
                 const paddingRight = hasTakeAndReplyButton ? 45 : 0
                 const renderSupportThreadNewMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
                 const renderSupportThreadOldMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
                 
-                const moreNewMessages = item.newMessages.total - item.newMessages.top.length
-                const moreOldMessages = item.oldMessages.total - item.oldMessages.top.length
+                const moreNewMessages = thread.newMessages.total - thread.newMessages.top.length
+                const moreOldMessages = thread.oldMessages.total - thread.oldMessages.top.length
                 
-                return diva({controlTypeName: 'renderSupportThread', tame: `thread${sufindex(i)}`, style: {backgroundColor: rowBackground, position: 'relative'}},
+                return diva({controlTypeName: 'renderSupportThread', tame: `thread${sufindex(index)}`, style: {backgroundColor: rowBackground, position: 'relative'}},
                     diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
-                        hasTakeAndReplyButton && ui.busyButton({tamy: `takeAndReply`, shame: `button-takeAndReply-${item.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+                        hasTakeAndReplyButton && ui.busyButton({tamy: `takeAndReply`, shame: `button-takeAndReply-${thread.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
                             beginTrain({name: 'Take support thread and reply'}); try {
-                                await ui.rpc({fun: 'private_takeSupportThread', id: item.id})
+                                await ui.rpc({fun: 'private_takeSupportThread', id: thread.id})
                                 // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
-                                await ui.pushNavigate(`support.html?thread=${item.id}`)
+                                await ui.pushNavigate(`support.html?thread=${thread.id}`)
                             } finally { endTrain() }
                         }}),
                         ),
@@ -579,19 +583,18 @@ global.igniteShit = makeUIShitIgniter({
                     diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
                         topicElement),
                         
-                    uiStateScope({name: 'newMessages', render: _=> div(
-                        div(...item.newMessages.top.map(renderSupportThreadNewMessage)),
+                    diva({tame: 'newMessages'},
+                        diva({}, ...thread.newMessages.top.map((message, index) => renderSupportThreadNewMessage(s{message, index}))),
                         moreMessagesDiv({count: moreNewMessages, kind: 'new'}),
-                    )}),
+                    ),
                     
-                    item.newMessages.top.length > 0 && item.oldMessages.top.length > 0 &&
+                    thread.newMessages.top.length > 0 && thread.oldMessages.top.length > 0 &&
                         diva({style: {borderTop: `3px dotted ${lineColor}`, paddingTop: 5}}),
                                                   
-                    uiStateScope({name: 'oldMessages', render: _=> div(
-                        div(...item.oldMessages.top.map(renderSupportThreadOldMessage)),
+                    diva({tame: 'oldMessages'},
+                        div(...thread.oldMessages.top.map((message, index) => renderSupportThreadOldMessage(s{message, index}))),
                         moreMessagesDiv({count: moreOldMessages, kind: 'old'})
-                    )}),
-                    
+                    ),
                 )
                 
                 function moreMessagesDiv({count, kind}) {
@@ -613,7 +616,7 @@ global.igniteShit = makeUIShitIgniter({
                                 else title += ` сообщений`
                             }
                         }
-                        return diva({style: {textAlign: 'right'}}, ui.urlLink({tamy: 'andMore', url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
+                        return diva({style: {textAlign: 'right'}}, ui.urlLink({tamy: 'andMore', shame: `link-andMore-${thread.id}`, url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
                     }
                 }
             }
@@ -633,12 +636,14 @@ global.igniteShit = makeUIShitIgniter({
         }
         
         function makeRenderSupportThreadMessage({lineColor, dottedLines, dryFroms, showMessageNewLabel, paddingRight=0}) {
-            return function renderSupportThreadMessage(message, messageIndex) {
-                return diva({controlTypeName: 'renderSupportThreadMessage', tame: `message${sufindex(messageIndex)}`, className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: messageIndex > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
-                           messageIndex > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
+            return function renderSupportThreadMessage(def) {
+                #extract {message, index} from def
+                
+                return diva({controlTypeName: 'renderSupportThreadMessage', tame: `message${sufindex(index)}`, className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: index > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
+                           index > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
                            
                     diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
-                        messageIndex === 0 || !dryFroms
+                        index === 0 || !dryFroms
                             ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
                                       t(`TOTE`, `От: `)),
                                       userLabel({tamy: 'from', user: message.sender})),

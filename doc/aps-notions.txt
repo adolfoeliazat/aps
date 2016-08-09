@@ -64,6 +64,7 @@ compiler compile.js captuta
 
 taby tabydef
 
+implementTestClick: {onClick: ...}
 
 
 
