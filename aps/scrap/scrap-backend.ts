@@ -367,6 +367,15 @@ relog(isEmpty({}))
 
 relog(isObject(undefined))
 
+const bundleFile = 'E:/work/aps/aps/built/ua-writer/bundle.js'
+let bundleCtime
+try {
+    const st = fs.statSync(bundleFile)
+    bundleCtime = st.ctime.getTime()
+} catch (e) {
+    // Won't include bundleCtime in response
+}
+relog({bundleCtime})
 
 
 

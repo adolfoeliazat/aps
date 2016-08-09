@@ -68,7 +68,7 @@ module.exports = function({sim}) {
                     #hawait art.scroll({origY: 'current', destY: 320})
                     
                     // Action
-                    #hawait testGlobal.controls['takeAndReply-308'].testClick()
+                    #hawait testGlobal.controls['button-takeAndReply-308'].testClick()
                     
                     art.uiState({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: '---generated-shit---'})
                     
@@ -86,7 +86,7 @@ module.exports = function({sim}) {
                     // raise('boom')
                     
                     // Action
-                    #hawait testGlobal.controls['takeAndReply-12'].testClick()
+                    #hawait testGlobal.controls['button-takeAndReply-12'].testClick()
                     art.uiState({$tag: '9dde55d6-0488-4ec6-9443-a96370c7fd4b', expected: '---generated-shit---'})
 
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true

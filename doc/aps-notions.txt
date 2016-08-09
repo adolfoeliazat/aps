@@ -1,3 +1,5 @@
+building make-config.ts
+
 showTestActionHand
 haltTheWorld
 .aniBlinkingFast

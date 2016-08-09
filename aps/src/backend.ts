@@ -152,8 +152,17 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                if (msg.fun === 'danger_getBackendInstanceID') {
-                    return hunkyDory({backendInstanceID})
+                if (msg.fun === 'danger_getSoftwareVersion') {
+                    const bundleFile = 'E:/work/aps/aps/built/ua-writer/bundle.js'
+                    let bundleCtime
+                    try {
+                        const st = fs.statSync(bundleFile)
+                        bundleCtime = st.ctime.getTime()
+                    } catch (e) {
+                        // Won't include bundleCtime in response
+                    }
+                    
+                    return hunkyDory({backendInstanceID, bundleCtime})
                 }
                 
                 if (msg.fun === 'danger_getHotShitCodeEntries') {
@@ -1094,7 +1103,7 @@ app.post('/rpc', (req, res) => {
             }
             return {fatal: situation, stack: fucked.stack, stackBeforeAwait, fuckedStackBeforeAwait: fucked.stackBeforeAwait} // TODO:vgrechka Send stack only if debug mode
         } finally {
-            if (!requestTimeLoggingDisabled && msg.fun !== 'private_getLiveStatus' && msg.fun !== 'danger_getBackendInstanceID') {
+            if (!requestTimeLoggingDisabled && msg.fun !== 'private_getLiveStatus' && msg.fun !== 'danger_getSoftwareVersion') {
                 const elapsed = Date.now() - t0
                 dlog(`${msg.fun}: ${elapsed}ms`)
             }
