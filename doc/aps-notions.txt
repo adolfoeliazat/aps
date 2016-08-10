@@ -76,8 +76,7 @@ A: Because revealing a part of revealer means vanishing old revealer, so that el
 Renderers:
 renderDefinitionStackStrip
 
-
-
+Tiffany
 
 
 

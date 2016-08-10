@@ -895,7 +895,9 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                async function selectChunk({table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'}) {
+                async function selectChunk(def) {
+                    #extract {table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'} from def
+                    
                     const fromID = msg.fromID || 0
                     const qb = QueryBuilder()
                     qb.append(q`select *`)
@@ -915,7 +917,7 @@ app.post('/rpc', (req, res) => {
                     
                     const loadedItems = []
                     for (const item of items) {
-                        loadedItems.push(#await loadItem({item}))
+                        loadedItems.push(#await loadItem(s{item}))
                     }
                     
                     return {items: loadedItems, moreFromID}
