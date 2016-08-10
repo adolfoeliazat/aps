@@ -55,18 +55,18 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-admin-heap'].testHideHand()
                     
                     // Action
-                    art.pushStepDescription(s{long: t('Support admin clicks on "Heap" in top navbar')})
+                    art.pushStepDescription(s{kind: 'navigation', long: t('Support admin clicks on "Heap" in top navbar')})
                     #hawait testGlobal.controls['TopNavItem-admin-heap'].testClick()
-                    art.pushStepDescription(s{long: t('Support admin sees a whole lot of unassigned support threads')})
+                    art.pushStepDescription(s{kind: 'state', long: t('Support admin sees a whole lot of unassigned support threads')})
                     art.uiState({$tag: '1c3a4a15-4bc4-46f6-afd9-d23433c6d839', expected: '---generated-shit---'})
                     #hawait art.pausePoint({title: 'A lot of stuff, let’s do some scrolling...', $tag: 'a86e6b75-0140-4347-a961-bf9886937806', locus: 'top-right'})
                     #hawait art.scroll({origY: 0, destY: 'bottom'})
                     #hawait art.pausePoint({title: 'Clicking "Show More" button at the bottom...', $tag: 'dcf633b6-0cd6-43bc-81f8-5920ff60a795', locus: 'top-right'})
                     
                     // Action
-                    art.pushStepDescription(s{long: t('Support admin clicks on "Show More" button')})
+                    art.pushStepDescription(s{kind: 'action', long: t('Support admin clicks on "Show More" button')})
                     #hawait testGlobal.controls['button-showMore'].testClick({testActionHandOpts: {pointingFrom: 'top'}})
-                    art.pushStepDescription(s{long: t('A few more threads appeared at the bottom. There’s no "Show More" button this time, cause all items are displayed.')})
+                    art.pushStepDescription(s{kind: 'state', long: t('A few more threads appeared at the bottom. There’s no "Show More" button this time, cause all items are displayed.')})
                     #hawait art.uiState({$tag: 'edb9fdc5-841b-4232-baa2-dfdc39d8d02d', expected: '---generated-shit---'})
                     
                     #hawait art.scroll({origY: 'current', destY: 'bottom'})
@@ -74,13 +74,14 @@ module.exports = function({sim}) {
                     #hawait art.scroll({origY: 'current', destY: 320})
                     
                     // Action
-                    art.pushStepDescription(s{long: t('Support admin clicks on "Take" button for thread #308')})
+                    art.pushStepDescription(s{kind: 'action', long: t('Support admin clicks on "Take" button for thread #308')})
                     #hawait testGlobal.controls['button-takeAndReply-308'].testClick()
                     
-                    art.pushStepDescription(s{long: t(`
+                    art.pushStepDescription(s{kind: 'state', long: t(`
                         Three messages was posted (by a person who requested support) to this thread before admin (we) took it.
                         "New" labels will remain hanging there until we address them by replying.`)})
                     art.uiState({$tag: '404c23b9-e496-41b5-a105-71ae5c44ed5f', expected: '---generated-shit---'})
+                    #hawait art.uiState({$tag: 'boom ff205e75-3b2a-442e-a059-c5feb76859c5', expected: {}})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
                     testGlobal.controls['TopNavItem-admin-heap'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
@@ -91,9 +92,9 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
-                    art.pushStepDescription(s{long: t(`But first let’s go back to heap and take one more task...`)})
+                    art.pushStepDescription(s{kind: 'navigation', long: t(`But first let’s go back to heap and take one more task...`)})
                     #hawait testGlobal.controls['TopNavItem-admin-heap'].testClick()
-                    art.pushStepDescription(s{long: t(`Task we took (#308) is not in heap anymore`)})
+                    art.pushStepDescription(s{kind: 'state', long: t(`Task we took (#308) is not in heap anymore`)})
                     art.uiState({$tag: '8fc8247d-2b0a-492b-a495-ee782f56eeb4', expected: '---generated-shit---'})
                     
                     // Action
@@ -108,11 +109,15 @@ module.exports = function({sim}) {
                     testGlobal.controls['TopNavItem-support'].testHideHand()
                     
                     // Action
-                    art.pushStepDescription(s{kind: 'action', long: t(`Clicking "Support" in top navbar to see all support tasks we took`)})
+                    art.pushStepDescription(s{kind: 'navigation', long: t(`Clicking "Support" in top navbar to see all support tasks we took`)})
                     #hawait testGlobal.controls['TopNavItem-support'].testClick()
-                    art.pushStepDescription(s{kind: 'state', long: t(`Here are our two tasks: #308 and #12.`)})
+                    art.pushStepDescription(s{kind: 'state', long: t(`Here is our two tasks: #308 and #12.`)})
                     art.uiState({$tag: '0020d0bf-5a2c-4287-a4b6-f1eca4c36ca3', expected: '---generated-shit---'})
-                    #hawait art.uiState({$tag: 'boom 225d5f70-2cfa-45a2-a8e8-f92cca179ddc', expected: {}})
+//                    #hawait art.uiState({$tag: 'boom 225d5f70-2cfa-45a2-a8e8-f92cca179ddc', expected: {}})
+                    
+                    
+                    
+                    
                     
                     testGlobal.controls['link-andMore-308'].testShowHand({testActionHandOpts: {pointingFrom: 'left', dleft: -4, dtop: 2}})
                     #hawait art.pausePoint({title: 'To keep the list succinct, maximum two (most recent) new messages are showed per thread.\nIn order to see everything, simply switch to a particular thread. One way of doing which is via this link...', $tag: '27ba7948-693a-4c93-a054-16a534090567'})

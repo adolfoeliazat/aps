@@ -633,7 +633,7 @@ app.post('/rpc', (req, res) => {
                 
                 if (msg.fun === 'private_getSupportThreadsChunk') {
                     traceBeginHandler(s{})
-                    const chunk = #await selectSupportThreadsChunk({filter: msg.filter})
+                    const chunk = #await selectSupportThreadsChunk(s{filter: msg.filter})
                     return traceEndHandler(s{ret: hunkyDory(chunk)})
                 }
                 
@@ -650,7 +650,7 @@ app.post('/rpc', (req, res) => {
                     if (filter === 'updatedOrAll') {
                         filter = hasUpdated ? 'updated' : 'all'
                     }
-                    const chunk = #await selectSupportThreadsChunk({filter})
+                    const chunk = #await selectSupportThreadsChunk(s{filter})
 //                    for (const item of chunk.items) {
 //                        for (const message of item.newMessages.top) {
 //                            dlogs('dssssss', message.$meta.$definitionStack)
@@ -682,7 +682,9 @@ app.post('/rpc', (req, res) => {
                       )`)
                 }
                 
-                async function selectSupportThreadsChunk({filter}) {
+                async function selectSupportThreadsChunk(def) {
+                    #extract {filter} from def
+                    
                     return #await selectChunk(s{table: 'support_threads', loadItem,
                         appendToWhere(qb) {
                             appendWhereSupportThreadIsRelatedToUser(qb)
@@ -722,7 +724,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 if (msg.fun === 'private_getUnassignedSupportThreads') {
-                    return #await handleChunkedSelect({$tag: 'b1897c92-90fb-4a04-96c6-02e15620fd4d', table: 'support_threads', loadItem, defaultOrdering: 'asc',
+                    return #await handleChunkedSelect(s{$tag: 'b1897c92-90fb-4a04-96c6-02e15620fd4d', table: 'support_threads', loadItem, defaultOrdering: 'asc',
                         appendToWhere(qb) {
                             qb.append(q`and supporter_id is null`)
                         },
@@ -741,10 +743,11 @@ app.post('/rpc', (req, res) => {
                             loadedMessages.push(#await loadSupportThreadMessage({item: message}))
                         }
                         
-                        return asn({}, item, {
-                            newMessages: {total: loadedMessages.length, top: loadedMessages},
-                            oldMessages: {total: 0, top: []},
-                        })
+                        const res = asn({}, item)
+                        res.topicWithID = nostring({no: item.id, LANG: msg.LANG}) + ' ' + item.topic
+                        res.newMessages = {total: loadedMessages.length, top: loadedMessages}
+                        res.oldMessages = {total: 0, top: []}
+                        return res
                     }
                 }
                 
@@ -923,9 +926,9 @@ app.post('/rpc', (req, res) => {
                     return {items: loadedItems, moreFromID}
                 }
                     
-                async function handleChunkedSelect(opts) {
-                    traceBeginHandler({$tag: opts.$tag, $sourceLocation: opts.$sourceLocation})
-                    const res = #await selectChunk(opts)
+                async function handleChunkedSelect(def) {
+                    traceBeginHandler({$tag: def.$tag, $sourceLocation: def.$sourceLocation})
+                    const res = #await selectChunk(s{}.asn1(def))
                     return traceEndHandler(s{ret: hunkyDory(res)})
                 }
                 

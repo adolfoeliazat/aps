@@ -106,6 +106,82 @@ global.igniteShit = makeUIShitIgniter({
                     orders: ordersPageLoader,
                     
                     async 'admin-heap'() {
+                        // @wip admin-heap.html
+                        await melinda(s{
+                            urlPath: 'admin-heap.html',
+                            trainName: 'Load admin-heap page',
+                            itemsFun({activeTab}) {
+                                if (activeTab === 'support') return 'private_getUnassignedSupportThreads'
+                                raise('Weird active tab')
+                            },
+                            entityID: ui.urlQuery.thread,
+                            header: pageHeader({title: t(`TOTE`, `Куча работы`)}),
+                            defaultActiveTab: 'support',
+                            tabDefs: [
+                                {
+                                    name: 'support',
+                                    content: ui.taby({
+                                        title: t(`TOTE`, `Поддержка`),
+                                        liveStatusFieldName: 'unassignedSupportThreadCount',
+                                        url: 'admin-heap.html?tab=support',
+                                    })
+                                },
+                            ],
+                            renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true}),
+                        })
+                        
+                        
+                        
+                        return
+                        
+                        // @wip old admin-heap.html
+                        
+                        beginTrain({name: 'Load page admin-heap'}); try {
+                            const pageTitle = t(`TOTE`, `Куча работы`)
+                            const activeTab = ui.urlQuery.tab || 'support'
+                            
+                            const itemsFun
+                            if (activeTab === 'support') {
+                                itemsFun = 'private_getUnassignedSupportThreads'
+                            }
+                            
+                            const itemsReq = {fun: itemsFun}
+                            const itemsRes = await ui.rpcSoft(itemsReq)
+                            if (itemsRes.error) {
+                                return ui.setPage({
+                                    header: pageHeader({title: pageTitle}),
+                                    body: div(errorBanner(itemsRes.error))
+                                })
+                            }
+                            
+                            function tabydef(def) {
+                                #extract {name} from def
+                                
+                                return {
+                                    name,
+                                    content: ui.taby({}.asn1(def))
+                                }
+                            }
+                            
+                            ui.setPage({
+                                header: pageHeader({title: pageTitle}),
+                                body: div(
+                                    ui.tabs({name: 'main', active: activeTab, tabDefs: [
+                                        tabydef(s{
+                                            name: 'support',
+                                            title: t(`TOTE`, `Поддержка`),
+                                            liveStatusFieldName: 'unassignedSupportThreadCount',
+                                            url: 'admin-heap.html?tab=support',
+                                        }),
+                                    ]}),
+                                    ui.renderMoreable(s{itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})
+                                )
+                            })
+                            
+                        } finally { endTrain() }
+                    },
+                    
+                    async 'admin-heap-bak'() {
                         beginTrain({name: 'Load page admin-heap'}); try {
                             const pageTitle = t(`TOTE`, `Куча работы`)
                             const activeTab = ui.urlQuery.tab || 'support'
@@ -162,89 +238,89 @@ global.igniteShit = makeUIShitIgniter({
                     
                     async support() {
                         if (ui.urlQuery.thread) {
-                            beginTrain({name: 'Load support page with thread param'}); try {
-                                await lala(s{
-                                    entityFun: 'private_getSupportThread',
-                                    itemsFun: 'private_getSupportThreadMessages',
-                                    entityID: ui.urlQuery.thread,
-                                    header: entityRes => {
-                                        let labels
-                                        if (entityRes.entity.status === 'resolved') {
-                                            labels = [{level: 'success', title: t(`TOTE`, `Решён`)}]
-                                        }
-                                        return pageHeader({title: t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`), labels})
+                            // @wip support.html
+                            await melinda(s{
+                                urlPath: 'support.html', urlEntityParamName: 'thread',
+                                trainName: 'Load support page with thread param',
+                                entityFun: 'private_getSupportThread',
+                                itemsFun: 'private_getSupportThreadMessages',
+                                entityID: ui.urlQuery.thread,
+                                header: entityRes => {
+                                    let labels
+                                    if (entityRes.entity.status === 'resolved') {
+                                        labels = [{level: 'success', title: t(`TOTE`, `Решён`)}]
+                                    }
+                                    return pageHeader({title: t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`), labels})
+                                },
+                                hasHeaderControls: entityRes => {
+                                    if (ui.getUser().kind === 'admin') return true
+                                    return entityRes.entity.status === 'open'
+                                },
+                                aboveItems(entityRes) {
+                                    return pageTopBlockQuote({content: entityRes.entity.topic})
+                                },
+                                plusIcon: 'comment',
+                                
+                                plusFormDef: {
+                                    primaryButtonTitle: t(`TOTE`, `Запостить`),
+                                    cancelButtonTitle: t(`TOTE`, `Передумал`),
+                                    autoFocus: 'message',
+                                    fields: [
+                                        ui.HiddenField({
+                                            name: 'threadID',
+                                            value: ui.urlQuery.thread,
+                                        }),
+                                        ui.TextField({
+                                            name: 'message',
+                                            kind: 'textarea',
+                                            title: t(`TOTE`, `Сообщение`),
+                                        }),
+                                    ],
+                                    rpcFun: 'private_createSupportThreadMessage',
+                                    async onSuccess(res) {
+                                        await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
                                     },
-                                    hasHeaderControls: entityRes => {
-                                        if (ui.getUser().kind === 'admin') return true
-                                        return entityRes.entity.status === 'open'
-                                    },
-                                    emptyMessage: t(`TOTE`, `Странно, здесь ничего нет. А должно что-то быть...`),
-                                    aboveItems(entityRes) {
-                                        return pageTopBlockQuote({content: entityRes.entity.topic})
-                                    },
-                                    plusIcon: 'comment',
+                                },
+                                
+                                editFormDef: run(_=> {
+                                    const fields = [
+                                        ui.HiddenField({
+                                            name: 'threadID',
+                                            value: ui.urlQuery.thread,
+                                        }),
+                                    ]
                                     
-                                    plusFormDef: {
-                                        primaryButtonTitle: t(`TOTE`, `Запостить`),
-                                        cancelButtonTitle: t(`TOTE`, `Передумал`),
-                                        autoFocus: 'message',
-                                        fields: [
-                                            ui.HiddenField({
-                                                name: 'threadID',
-                                                value: ui.urlQuery.thread,
-                                            }),
-                                            ui.TextField({
-                                                name: 'message',
-                                                kind: 'textarea',
-                                                title: t(`TOTE`, `Сообщение`),
-                                            }),
-                                        ],
-                                        rpcFun: 'private_createSupportThreadMessage',
+                                    const statusValues = []
+                                    if (ui.getUser().kind === 'admin') {
+                                        statusValues.push({value: 'open', title: t(`TOTE`, `Открыт`)})
+                                    }
+                                    statusValues.push({value: 'resolved', title: t(`TOTE`, `Решён`)})
+                                    fields.push(ui.SelectField({
+                                        name: 'status',
+                                        title: t(`TOTE`, `Статус`),
+                                        values: statusValues
+                                    }))
+                                    
+                                    return {
+                                        primaryButtonTitle: t(`TOTE`, `Сохранить`),
+                                        cancelButtonTitle: t(`TOTE`, `Не стоит`),
+                                        // autoFocus: 'resolution',
+                                        fields,
+                                        rpcFun: 'private_updateSupportThreadMessage',
                                         async onSuccess(res) {
                                             await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
                                         },
-                                    },
+                                    }
+                                }),
+                                
+                                renderItem(def) {
+                                    #extract {item: message, index} from def
                                     
-                                    editFormDef: run(_=> {
-                                        const fields = [
-                                            ui.HiddenField({
-                                                name: 'threadID',
-                                                value: ui.urlQuery.thread,
-                                            }),
-                                        ]
-                                        
-                                        const statusValues = []
-                                        if (ui.getUser().kind === 'admin') {
-                                            statusValues.push({value: 'open', title: t(`TOTE`, `Открыт`)})
-                                        }
-                                        statusValues.push({value: 'resolved', title: t(`TOTE`, `Решён`)})
-                                        fields.push(ui.SelectField({
-                                            name: 'status',
-                                            title: t(`TOTE`, `Статус`),
-                                            values: statusValues
-                                        }))
-                                        
-                                        return {
-                                            primaryButtonTitle: t(`TOTE`, `Сохранить`),
-                                            cancelButtonTitle: t(`TOTE`, `Не стоит`),
-                                            // autoFocus: 'resolution',
-                                            fields,
-                                            rpcFun: 'private_updateSupportThreadMessage',
-                                            async onSuccess(res) {
-                                                await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
-                                            },
-                                        }
-                                    }),
-                                    
-                                    renderItem(def) {
-                                        #extract {item: message, index} from def
-                                        
-                                        const {rowBackground, lineColor} = zebraRowColors(index)
-                                        return diva({controlTypeName: 'renderItem-leila', style: {background: rowBackground}},
-                                            makeRenderSupportThreadMessage({lineColor, showMessageNewLabel: true})(s{message, index}))
-                                    },
-                                })
-                            } finally { endTrain() }
+                                    const {rowBackground, lineColor} = zebraRowColors(index)
+                                    return diva({controlTypeName: 'renderItem-leila', style: {background: rowBackground}},
+                                        makeRenderSupportThreadMessage({lineColor, showMessageNewLabel: true})(s{message, index}))
+                                },
+                            })
                         } else if (!ui.urlQuery.thread) {
                             beginTrain({name: 'Load support page without thread param'}); try {
                                 const itemsReq = s{fun: 'private_getSupportThreads', filter: ui.urlQuery.filter || 'updatedOrAll'}
@@ -278,139 +354,162 @@ global.igniteShit = makeUIShitIgniter({
                     profile: profilePageLoader,
                 }[name]
                 
-                
-                async function lala(def) {
-                    #extract {header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef, aboveItems, renderItem, defaultOrdering='desc', hasOrderingSelect=true, hasHeaderControls=true} from def
+                // @wip melinda
+                async function melinda(def) {
+                    #extract {
+                        trainName, urlPath, urlEntityParamName, tabDefs, defaultActiveTab,
+                        header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef,
+                        aboveItems, renderItem, defaultOrdering='desc', hasOrderingSelect=true, hasHeaderControls=true
+                    } from def
                     
-                    let entityRes
-                    if (entityFun) {
-                        entityRes = await ui.rpcSoft({fun: entityFun, entityID})
-                        if (entityRes.error) return showBadResponse(entityRes)
-                    }
-                    
-                    let ordering = ui.urlQuery.ordering
-                    if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
+                    beginTrain({name: trainName}); try {
+                        let entityRes
+                        if (entityFun) {
+                            entityRes = await ui.rpcSoft({fun: entityFun, entityID})
+                            if (entityRes.error) return showBadResponse(entityRes)
+                        }
+                        
+                        let ordering = ui.urlQuery.ordering
+                        if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
+                        
+                        let tabs, activeTab
+                        if (tabDefs) {
+                            activeTab = ui.urlQuery.tab || defaultActiveTab
+                            tabs = ui.tabs({name: 'main', active: activeTab, tabDefs})
+                        }
 
-                    const itemsReq = {fun: itemsFun, entityID, ordering}
-                    const itemsRes = await ui.rpcSoft(itemsReq)
-                    if (itemsRes.error) return showBadResponse(itemsRes)
-                    
-                    let items, showEmptyLabel = true,
-                        headerControlsVisible = true, headerControlsClass, headerControlsDisabled,
-                        orderingSelect,
-                        cancelForm,
-                        plusShit, editShit
-                    
-                    if (hasOrderingSelect) {
-                        orderingSelect = Select({tamyShamy: 'ordering', isAction: true, style: {width: 160},
-                            values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
-                            initialValue: ordering,
-                            disabled: _=> headerControlsDisabled,
-                            async onChange() {
-                                setHeaderControlsDisabled(true)
-                                orderingSelect.setBlinking(true)
-                                await ui.pushNavigate(`support.html?thread=${entityID}&ordering=${orderingSelect.getValue()}`)
-                                setHeaderControlsDisabled(false)
-                                orderingSelect.setBlinking(false)
-                            }
-                        })
-                    }
-                    
-                    if (plusFormDef) {
-                        plusShit = makeButtonFormShit(s{name: 'plus', level: 'primary', icon: plusIcon, formDef: plusFormDef})
-                    }
-                    if (editFormDef) {
-                        editShit = makeButtonFormShit(s{name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
-                    }
+                        const itemsReq = {fun: fov(itemsFun, {activeTab}), entityID, ordering}
+                        const itemsRes = await ui.rpcSoft(itemsReq)
+                        if (itemsRes.error) return showBadResponse(itemsRes)
                         
-                    
-                    function makeButtonFormShit(def) {
-                        #extract {name, level, icon, formDef} from def
-                        
-                        let form, formClass
-                        
-                        return {
-                            button() {
-                                return button({tamyShamy: name, style: {marginLeft: 8}, level, icon, disabled: headerControlsDisabled, onClick() {
-                                    showEmptyLabel = false
-                                    setHeaderControlsDisappearing()
-                                    formClass = 'aniFadeIn'
-                                        
-                                    cancelForm = function() {
-                                        setHeaderControlsAppearing()
-                                        form = undefined
-                                        ui.updatePage()
-                                    }
-                                    
-                                    form = ui.Form(asn(formDef, {
-                                        onCancel: cancelForm,
-                                    }))
-                                    
-                                    ui.updatePage()
-                                }})
-                            },
-                            
-                            form() {
-                                return form && diva({className: formClass, style: {marginBottom: 15}}, form)
-                            },
-                        }
-                    }
-                    
-                    ui.setPage({
-                        header: fov(header, entityRes),
-                        body: _=> div(
-                            editShit && editShit.form,
-                            plusShit && plusShit.form,
-                            fov(aboveItems, entityRes),
-                            run(function renderItems() {
-                                if (!itemsRes.items.length) {
-                                    if (showEmptyLabel) {
-                                        return div(emptyMessage)
-                                    }
-                                    return ''
-                                }
-                                return ui.renderMoreable(s{itemsRes, itemsReq, renderItem,})
-                            }),
-                        ),
-                        headerControls: _=> fov(hasHeaderControls, entityRes) && headerControlsVisible && diva({style: {display: 'flex'}, className: headerControlsClass},
+                        let items, showEmptyLabel = true,
+                            headerControlsVisible = true, headerControlsClass, headerControlsDisabled,
                             orderingSelect,
-                            editShit && editShit.button,
-                            plusShit && plusShit.button,
-                        ),
+                            cancelForm,
+                            plusShit, editShit
                         
-                        onKeyDown(e) {
-                            if (e.keyCode === 27) {
-                                fov(cancelForm)
+                        if (hasOrderingSelect) {
+                            orderingSelect = Select({tamyShamy: 'ordering', isAction: true, style: {width: 160},
+                                values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
+                                initialValue: ordering,
+                                disabled: _=> headerControlsDisabled,
+                                async onChange() {
+                                    setHeaderControlsDisabled(true)
+                                    orderingSelect.setBlinking(true)
+                                    const urlParamParts = []
+                                    if (urlEntityParamName) {
+                                        urlParamParts.push(`${urlEntityParamName}=${entityID}`)
+                                    }
+                                    urlParamParts.push(`ordering=${orderingSelect.getValue()}`)
+                                    const url = `${urlPath}?${urlParamParts.join('&')}`
+                                    await ui.pushNavigate(url)
+//                                    await ui.pushNavigate(`support.html?thread=${entityID}&ordering=${orderingSelect.getValue()}`)
+                                    setHeaderControlsDisabled(false)
+                                    orderingSelect.setBlinking(false)
+                                }
+                            })
+                        }
+                        
+                        if (plusFormDef) {
+                            plusShit = makeButtonFormShit(s{name: 'plus', level: 'primary', icon: plusIcon, formDef: plusFormDef})
+                        }
+                        if (editFormDef) {
+                            editShit = makeButtonFormShit(s{name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
+                        }
+                            
+                        
+                        function makeButtonFormShit(def) {
+                            #extract {name, level, icon, formDef} from def
+                            
+                            let form, formClass
+                            
+                            return {
+                                button() {
+                                    return button({tamyShamy: name, style: {marginLeft: 8}, level, icon, disabled: headerControlsDisabled, onClick() {
+                                        showEmptyLabel = false
+                                        setHeaderControlsDisappearing()
+                                        formClass = 'aniFadeIn'
+                                            
+                                        cancelForm = function() {
+                                            setHeaderControlsAppearing()
+                                            form = undefined
+                                            ui.updatePage()
+                                        }
+                                        
+                                        form = ui.Form(asn(formDef, {
+                                            onCancel: cancelForm,
+                                        }))
+                                        
+                                        ui.updatePage()
+                                    }})
+                                },
+                                
+                                form() {
+                                    return form && diva({className: formClass, style: {marginBottom: 15}}, form)
+                                },
                             }
                         }
-                    })
-                    
-                    
-                    function setHeaderControlsDisappearing() {
-                        headerControlsVisible = false
-                        headerControlsClass = undefined
-                    }
-                    
-                    function setHeaderControlsAppearing() {
-                        headerControlsVisible = true
-                        headerControlsClass = 'aniFadeIn'
-                        timeoutSet(500, _=> {
+                        
+                        ui.setPage({
+                            header: fov(header, entityRes),
+                            body: _=> div(
+                                tabs,
+                                editShit && editShit.form,
+                                plusShit && plusShit.form,
+                                fov(aboveItems, entityRes),
+                                run(function renderItems() {
+                                    if (!itemsRes.items.length) {
+                                        if (showEmptyLabel) {
+                                            return diva({style: {marginTop: 10}}, emptyMessage || t(`TOTE`, `Странно, здесь ничего нет...`))
+                                        }
+                                        return ''
+                                    }
+                                    return ui.renderMoreable(s{itemsRes, itemsReq, renderItem,})
+                                }),
+                            ),
+                            headerControls: _=> fov(hasHeaderControls, entityRes) && headerControlsVisible && diva({
+                                style: {display: 'flex', marginTop: tabDefs ? 55 : 0},
+                                className: headerControlsClass},
+                                
+                                orderingSelect,
+                                editShit && editShit.button,
+                                plusShit && plusShit.button,
+                            ),
+                            
+                            onKeyDown(e) {
+                                if (e.keyCode === 27) {
+                                    fov(cancelForm)
+                                }
+                            }
+                        })
+                        
+                        
+                        function setHeaderControlsDisappearing() {
+                            headerControlsVisible = false
                             headerControlsClass = undefined
+                        }
+                        
+                        function setHeaderControlsAppearing() {
+                            headerControlsVisible = true
+                            headerControlsClass = 'aniFadeIn'
+                            timeoutSet(500, _=> {
+                                headerControlsClass = undefined
+                                ui.updatePage()
+                            })
+                        }
+                        
+                        function setHeaderControlsDisabled(b) {
+                            headerControlsDisabled = b
                             ui.updatePage()
-                        })
-                    }
-                    
-                    function setHeaderControlsDisabled(b) {
-                        headerControlsDisabled = b
-                        ui.updatePage()
-                    } 
-                    
-                    function showBadResponse(res) {
-                        return ui.setPage({
-                            header: pageHeader({title: t(`TOTE`, `Облом`)}),
-                            body: div(errorBanner(res.error))
-                        })
-                    }
+                        } 
+                        
+                        function showBadResponse(res) {
+                            return ui.setPage({
+                                header: pageHeader({title: t(`TOTE`, `Облом`)}),
+                                body: div(errorBanner(res.error))
+                            })
+                        }
+                    } finally { endTrain() }
                 }
                 
                 
@@ -557,9 +656,9 @@ global.igniteShit = makeUIShitIgniter({
                     
                 let topicElement
                 if (topicIsLink) {
-                    topicElement = ui.urlLink({url, tamy: `topic`, shame: `link-threadTopic-${thread.id}`, title: nostring(thread.id) + ' ' + thread.topic, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+                    topicElement = ui.urlLink({url, tamy: `topic`, shame: `link-threadTopic-${thread.id}`, title: {mopy: {model: thread, prop: 'topicWithID'}}, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
                 } else {
-                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: nostring(thread.id) + ' ' + thread.topic}))
+                    topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: {mopy: {model: thread, prop: 'topicWithID'}}}))
                 }
                 
                 const paddingRight = hasTakeAndReplyButton ? 45 : 0
@@ -676,9 +775,7 @@ global.igniteShit = makeUIShitIgniter({
                                     }
                                 }
                             }),
-                            // @wip
                             spanc({tame: 'message', content: {mopy: {model: message, prop: 'message'}}}),
-//                            spanc({tame: 'message', content: message.message}),
                             ),
                         
                     )
