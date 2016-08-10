@@ -379,6 +379,10 @@ relog({bundleCtime})
 
 relog(capitalize('foobar'))
 
+const x = {a: 10, b: 20}
+x.c = {d: 30, x}
+relog(getCircularJSON().stringify(x))
+
 
 
 

@@ -41,7 +41,14 @@ app.post('/rpc', (req, res) => {
     
     // dlog({body: req.body, headers: req.headers})
     handle(req.body).then(message => {
+//        circulify(message)
         res.json(message)
+        
+//        function circulify(o) {
+//            for (const key of keys(o)) {
+//                
+//            }
+//        }
     })
     
     async function handle(msg) {
@@ -644,6 +651,14 @@ app.post('/rpc', (req, res) => {
                         filter = hasUpdated ? 'updated' : 'all'
                     }
                     const chunk = #await selectSupportThreadsChunk({filter})
+//                    for (const item of chunk.items) {
+//                        for (const message of item.newMessages.top) {
+//                            dlogs('dssssss', message.$meta.$definitionStack)
+//                            delete message.$meta.$definitionStack
+//                        }
+////                        item.newMessages = []
+////                        item.oldMessages = []
+//                    }
                     return traceEndHandler(s{ret: hunkyDory(asn({availableFilters, filter}, chunk))})
                 }
                 
@@ -677,27 +692,31 @@ app.post('/rpc', (req, res) => {
                         },
                     })
                     
-                    async function loadItem(item) {
-                        item.newMessages = #await load({seenByUserPred: 'is null', max: MAX_DISPLAYED_NEW_MESSAGES_IN_UPDATED_SUPPORT_THREAD})
-                        item.oldMessages = #await load({seenByUserPred: 'is not null', max: 1})
+                    async function loadItem(def) {
+                        #extract {item} from def
+                        
+                        return asn({}, item, {
+                            newMessages: #await load({seenByUserPred: 'is null', max: MAX_DISPLAYED_NEW_MESSAGES_IN_UPDATED_SUPPORT_THREAD}),
+                            oldMessages: #await load({seenByUserPred: 'is not null', max: 1}),
+                        })
                         
                         async function load({seenByUserPred, max}) {
                             const total = #await tx.query({$tag: 'aab1ae48-366f-480c-aeb8-3bb7a3bd3e28', y: q`
                                 select count(*) from support_thread_messages
                                 where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}`})[0].count
                             
-                            const top = #await tx.query({$tag: '3ea1637a-4f8f-43e7-8e83-146d5f0586b2', y: q`
+                            // @wip
+                            const top = #await tx.query(s{y: q`
                                 select * from support_thread_messages
                                 where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}
                                 order by id desc
                                 fetch first ${{inline: max}} rows only`})
                                 
+                            const loadedTop = []
                             for (const message of top) {
-                                #await loadSupportThreadMessage(message)
-                                const qux = s{$origin: 'backend'}
-                                message.message = {meta: qux, meat: message.message}
+                                loadedTop.push(#await loadSupportThreadMessage({item: message}))
                             }
-                            return {total, top}
+                            return {total, top: loadedTop}
                         }
                     }
                 }
@@ -709,19 +728,23 @@ app.post('/rpc', (req, res) => {
                         },
                     })
                     
-                    async function loadItem(item) {
+                    async function loadItem(def) {
+                        #extract {item} from def
+                        
                         // TODO:vgrechka Think about limiting number of messages in an unassigned support thread    497d0498-2a2a-41e8-b7b3-245b99a08f3b
-                        const messages = #await tx.query({$tag: '336d0f95-f1f7-4615-ab35-c47025eb63b6', y: q`
+                        const messages = #await tx.query(s{y: q`
                             select * from support_thread_messages
                             where thread_id = ${item.id}
                             order by id asc`})
+                        const loadedMessages = []
                         for (const message of messages) {
-                            #await loadSupportThreadMessage(message)
-                            message.message = {meta: {$sourceLocation: 'qweqwe'}, meat: message.message}
+                            loadedMessages.push(#await loadSupportThreadMessage({item: message}))
                         }
                         
-                        item.newMessages = {total: messages.length, top: messages}
-                        item.oldMessages = {total: 0, top: []}
+                        return asn({}, item, {
+                            newMessages: {total: loadedMessages.length, top: loadedMessages},
+                            oldMessages: {total: 0, top: []},
+                        })
                     }
                 }
                 
@@ -889,11 +912,13 @@ app.post('/rpc', (req, res) => {
                         moreFromID = last(items).id
                         items = items.slice(0, MORE_CHUNK - 1)
                     }
+                    
+                    const loadedItems = []
                     for (const item of items) {
-                        #await loadItem(item)
+                        loadedItems.push(#await loadItem({item}))
                     }
                     
-                    return {items, moreFromID}
+                    return {items: loadedItems, moreFromID}
                 }
                     
                 async function handleChunkedSelect(opts) {
@@ -1084,12 +1109,15 @@ app.post('/rpc', (req, res) => {
                     return thread
                 }
                         
-                async function loadSupportThreadMessage(message) {
-                    message.sender = #await loadUser(message.sender_id)
-                    if (message.recipient_id) {
-                        message.recipient = #await loadUser(message.recipient_id)
+                async function loadSupportThreadMessage(def) {
+                    #extract {item} from def
+                    
+                    const res = asn({}, item)
+                    res.sender = #await loadUser(res.sender_id)
+                    if (res.recipient_id) {
+                        res.recipient = #await loadUser(res.recipient_id)
                     }
-                    return message
+                    return res
                 }
                 
                 async function loadUser(id) {
@@ -1138,6 +1166,11 @@ app.post('/rpc', (req, res) => {
         function traceEndHandler(data) {
             invariant(data.ret, 'I want data.ret in traceEndHandler')
             $trace.push(asn({event: `End handling ${msg.fun}`}, omit(data, '$trace')))
+            
+//            if (msg.fun !== 'danger_getSoftwareVersion') {
+//                dlogs(`------- ret of ${msg.fun}`, data.ret)
+//            }
+            
             return data.ret
         }
     }
@@ -1236,9 +1269,10 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     })
                 },
                 
-                async query({$tag, $sourceLocation, shouldLogForUI=true, $trace, y}) {
-                    arguments // XXX This fixes TS bug with ...rest params in async functions
-                    if (!$tag && !$sourceLocation) raise('I want all queries to be tagged')
+                async query(def) { // @ctx function query
+                    #extract {shouldLogForUI=true, y} from def
+                    
+                    if (!def.$tag && !def.$sourceLocation) raise('I want all queries to be tagged')
                     
                     if (MODE !== 'debug') {
                         shouldLogForUI = false
@@ -1246,11 +1280,11 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     
                     let queryLogRecordForUI
                     if (shouldLogForUI) {
-                        queryLogRecordForUI = {$tag, $sourceLocation, y}
+                        queryLogRecordForUI = {meta: def, y}
                         queryLogForUI.push(queryLogRecordForUI)
-                        if ($trace) {
+                        if (def.$trace) {
                             const sql = y.sql ? y.sql : y
-                            $trace.push(asn({event: `Query: ${trim(sql).split(/\s+/)[0].toUpperCase()}`}, queryLogRecordForUI))
+                            def.$trace.push(asn({event: `Query: ${trim(sql).split(/\s+/)[0].toUpperCase()}`}, queryLogRecordForUI))
                         }
                     }
                     
@@ -1274,6 +1308,11 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                         
                         const res = qres.rows
                         
+                        for (const row of res) {
+                            row.$meta = def
+                        }
+                        
+                        // @wip
                         return res
                     } catch (qerr) {
                         if (shouldLogForUI) {

@@ -676,7 +676,9 @@ global.igniteShit = makeUIShitIgniter({
                                     }
                                 }
                             }),
-                            spanc({tame: 'message', content: message.message}),
+                            // @wip
+                            spanc({tame: 'message', content: {mopy: {model: message, prop: 'message'}}}),
+//                            spanc({tame: 'message', content: message.message}),
                             ),
                         
                     )
