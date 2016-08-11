@@ -10,6 +10,8 @@ MODE = 'debug'
 MORE_CHUNK = 10 + 1
 MAX_DISPLAYED_NEW_MESSAGES_IN_UPDATED_SUPPORT_THREAD = 2
 
+PG_MAX_BIGINT = '9223372036854775807'
+
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
 import * as fs from 'fs'
@@ -41,20 +43,20 @@ app.post('/rpc', (req, res) => {
     
     // dlog({body: req.body, headers: req.headers})
     handle(req.body).then(message => {
-        circularize(message)
+//        circularize(message)
         res.json(message)
         
-        function circularize(o) {
-            for (const [key, value] of toPairs(o)) {
-                if (key === '$trace' || key === '$meta') {
-                    o[key] = getCircularJSON().stringify(value)
-                } else {
-                    if (isObject(value)) {
-                        circularize(value)
-                    }
-                }
-            }
-        }
+//        function circularize(o) {
+//            for (const [key, value] of toPairs(o)) {
+//                if (key === '$trace' || key === '$meta') {
+//                    o[key] = getCircularJSON().stringify(value)
+//                } else {
+//                    if (isObject(value)) {
+//                        circularize(value)
+//                    }
+//                }
+//            }
+//        }
     })
     
     async function handle(msg) {
@@ -739,8 +741,8 @@ app.post('/rpc', (req, res) => {
                     async function loadItem(def) {
                         #extract {item} from def
                         
-                        // TODO:vgrechka Think about limiting number of messages in an unassigned support thread    497d0498-2a2a-41e8-b7b3-245b99a08f3b
-                        const messages = #await tx.query(s{y: q`
+                        // TODO:vgrechka Limit number of messages fetched for an unassigned support thread    497d0498-2a2a-41e8-b7b3-245b99a08f3b
+                        const messages = #await tx.query(s{descr: `Select messages for thread ${item.id}`, y: q`
                             select * from support_thread_messages
                             where thread_id = ${item.id}
                             order by id asc`})
@@ -908,17 +910,19 @@ app.post('/rpc', (req, res) => {
                 async function selectChunk(def) {
                     #extract {table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'} from def
                     
-                    const fromID = msg.fromID || 0
+                    const ordering = getOrderingParam({defaultValue: defaultOrdering})
+                    
+                    const fromID = msg.fromID || (ordering === 'asc' ? 0 : PG_MAX_BIGINT)
                     const qb = QueryBuilder()
                     qb.append(q`select *`)
                     appendToSelect(qb)
                     qb.append(q`from ${{inline: table}} where true `)
                     appendToWhere(qb)
-                    qb.append(q`and id >= ${fromID}`)
-                    qb.append(q`order by id ${{inline: getOrderingParam({defaultValue: defaultOrdering})}}`)
+                    qb.append(q`and id ${{inline: ordering === 'asc' ? '>=' : '<='}} ${fromID}`)
+                    qb.append(q`order by id ${{inline: ordering}}`)
                     qb.append(q`fetch first MORE_CHUNK rows only`)
                     
-                    let items = #await tx.query(s{y: qb.toy()})
+                    let items = #await tx.query(s{descr: `Select chunk from ${table}`, y: qb.toy()})
                     let moreFromID
                     if (items.length === MORE_CHUNK) {
                         moreFromID = last(items).id
@@ -1162,7 +1166,7 @@ app.post('/rpc', (req, res) => {
             }
             
             if (shouldLogRequestForUI && $trace.length) {
-                requestLogForUI.push({title: msg.fun, $trace, $clientSourceLocation: msg.$sourceLocation})
+                requestLogForUI.push({title: msg.fun, $trace: getCircularJSON().stringify($trace), $clientSourceLocation: msg.$sourceLocation})
             }
         }
         
@@ -1283,7 +1287,7 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                 },
                 
                 async query(def) { // @ctx function query
-                    #extract {$trace, shouldLogForUI=true, y} from def
+                    #extract {$trace, shouldLogForUI=true, y, descr} from def
                     
                     if (!def.$tag && !def.$sourceLocation) raise('I want all queries to be tagged')
                     
@@ -1297,8 +1301,10 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                         // queryLogForUI.push(queryLogRecordForUI)
                         if ($trace) {
                             const sql = y.sql ? y.sql : y
-                            const queryType = trim(sql).split(/\s+/)[0].toUpperCase()
-                            $trace.push(asn({event: `Query: ${queryType}`}, queryLogRecordForUI))
+                            if (!descr) {
+                                descr = trim(sql).split(/\s+/)[0].toUpperCase()
+                            }
+                            $trace.push(asn({event: `Query: ${descr}`}, queryLogRecordForUI))
                         }
                     }
                     
