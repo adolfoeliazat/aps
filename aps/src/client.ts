@@ -18,7 +18,8 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 #import static 'into-u/utils-client ./stuff'
 
 import {link2, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
-        button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle} from 'into-u/ui'
+        button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
+        Input, input, preventAndStop} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
@@ -116,6 +117,7 @@ global.igniteShit = makeUIShitIgniter({
                             },
                             entityID: ui.urlQuery.thread,
                             header: pageHeader({title: t(`TOTE`, `Куча работы`)}),
+                            defaultOrdering: 'asc',
                             defaultActiveTab: 'support',
                             tabDefs: [
                                 {
@@ -229,7 +231,7 @@ global.igniteShit = makeUIShitIgniter({
                     
                     async 'admin-my-tasks'() {
                         ui.setPage({
-                            header: pageHeader({title: 'qweqwe'}),
+                            header: pageHeader({title: 'rtrtyyt'}),
                             body: div(
                                 t(`TOTE`, `foooooooooo`), aa({href: '#', onClick() { dlog('cliiiiick') }}, t('qqqqqqqqqqq')))
                         })
@@ -359,7 +361,7 @@ global.igniteShit = makeUIShitIgniter({
                     #extract {
                         trainName, urlPath, urlEntityParamName, tabDefs, defaultActiveTab,
                         header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef,
-                        aboveItems, renderItem, defaultOrdering='desc', hasOrderingSelect=true, hasHeaderControls=true
+                        aboveItems, renderItem, defaultOrdering='desc', hasSearchBox=true, hasOrderingSelect=true, hasHeaderControls=true
                     } from def
                     
                     beginTrain({name: trainName}); try {
@@ -368,6 +370,8 @@ global.igniteShit = makeUIShitIgniter({
                             entityRes = await ui.rpcSoft({fun: entityFun, entityID})
                             if (entityRes.error) return showBadResponse(entityRes)
                         }
+                        
+                        const searchString = ui.urlQuery.search
                         
                         let ordering = ui.urlQuery.ordering
                         if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
@@ -378,36 +382,65 @@ global.igniteShit = makeUIShitIgniter({
                             tabs = ui.tabs({name: 'main', active: activeTab, tabDefs})
                         }
 
-                        const itemsReq = {fun: fov(itemsFun, {activeTab}), entityID, ordering}
+                        const itemsReq = {fun: fov(itemsFun, {activeTab}), entityID, ordering, searchString}
                         const itemsRes = await ui.rpcSoft(itemsReq)
                         if (itemsRes.error) return showBadResponse(itemsRes)
                         
                         let items, showEmptyLabel = true,
                             headerControlsVisible = true, headerControlsClass, headerControlsDisabled,
-                            orderingSelect,
                             cancelForm,
                             plusShit, editShit
+                            
+                        let searchBox, searchBoxInput
+                        if (hasSearchBox) {
+                            searchBoxInput = Input({
+                                style: {paddingLeft: 30, width: 160},
+                                placeholder: t(`TOTE`, `Поиск...`),
+                                disabled: _=> headerControlsDisabled,
+                                async onKeyDown(e) {
+                                    if (e.keyCode === 13) {
+                                        preventAndStop(e)
+                                        await applyHeaderControls({controlToBlink: searchBoxInput})
+                                    }
+                                }
+                            })
+                            searchBoxInput.setValue(itemsRes.searchString)
+                                
+                            searchBox = diva({style: {position: 'relative'}},
+                                searchBoxInput,
+                                faIcon({icon: 'search', style: {position: 'absolute', left: 10, top: 10, color: GRAY_500}}),
+                            )
+                        }
                         
+                        let orderingSelect
                         if (hasOrderingSelect) {
-                            orderingSelect = Select({tamyShamy: 'ordering', isAction: true, style: {width: 160},
+                            orderingSelect = Select({
+                                tamyShamy: 'ordering', isAction: true, style: {width: 160},
                                 values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
                                 initialValue: ordering,
                                 disabled: _=> headerControlsDisabled,
                                 async onChange() {
-                                    setHeaderControlsDisabled(true)
-                                    orderingSelect.setBlinking(true)
-                                    const urlParamParts = []
-                                    if (urlEntityParamName) {
-                                        urlParamParts.push(`${urlEntityParamName}=${entityID}`)
-                                    }
-                                    urlParamParts.push(`ordering=${orderingSelect.getValue()}`)
-                                    const url = `${urlPath}?${urlParamParts.join('&')}`
-                                    await ui.pushNavigate(url)
-//                                    await ui.pushNavigate(`support.html?thread=${entityID}&ordering=${orderingSelect.getValue()}`)
-                                    setHeaderControlsDisabled(false)
-                                    orderingSelect.setBlinking(false)
-                                }
+                                    await applyHeaderControls({controlToBlink: orderingSelect})
+                                },
                             })
+                        }
+                        
+                        async function applyHeaderControls({controlToBlink}) {
+                            setHeaderControlsDisabled(true)
+                            controlToBlink.setBlinking(true)
+                            const urlParamParts = []
+                            if (urlEntityParamName) {
+                                urlParamParts.push(`${urlEntityParamName}=${entityID}`)
+                            }
+                            urlParamParts.push(`ordering=${orderingSelect.getValue()}`)
+                            const searchString = searchBoxInput.getValue().trim()
+                            if (searchString) {
+                                urlParamParts.push(`search=${searchString}`)
+                            }
+                            const url = `${urlPath}?${urlParamParts.join('&')}`
+                            await ui.pushNavigate(url)
+                            setHeaderControlsDisabled(false)
+                            controlToBlink.setBlinking(false)
                         }
                         
                         if (plusFormDef) {
@@ -450,6 +483,8 @@ global.igniteShit = makeUIShitIgniter({
                             }
                         }
                         
+                        let updateHeaderControls
+                        
                         ui.setPage({
                             header: fov(header, entityRes),
                             body: _=> div(
@@ -467,14 +502,20 @@ global.igniteShit = makeUIShitIgniter({
                                     return ui.renderMoreable(s{itemsRes, itemsReq, renderItem,})
                                 }),
                             ),
-                            headerControls: _=> fov(hasHeaderControls, entityRes) && headerControlsVisible && diva({
-                                style: {display: 'flex', marginTop: tabDefs ? 55 : 0},
-                                className: headerControlsClass},
+                            headerControls: _=> updatableElement(update => {
+                                updateHeaderControls = update
+                                if (!fov(hasHeaderControls, entityRes) || !headerControlsVisible) return
                                 
-                                orderingSelect,
-                                editShit && editShit.button,
-                                plusShit && plusShit.button,
-                            ),
+                                return _=> hor2({
+                                    style: {display: 'flex', marginTop: tabDefs ? 55 : 0},
+                                    className: headerControlsClass},
+                                    
+                                    searchBox,
+                                    orderingSelect,
+                                    editShit && editShit.button,
+                                    plusShit && plusShit.button,
+                                )
+                            }),
                             
                             onKeyDown(e) {
                                 if (e.keyCode === 27) {
@@ -500,7 +541,7 @@ global.igniteShit = makeUIShitIgniter({
                         
                         function setHeaderControlsDisabled(b) {
                             headerControlsDisabled = b
-                            ui.updatePage()
+                            updateHeaderControls()
                         } 
                         
                         function showBadResponse(res) {
@@ -813,7 +854,10 @@ global.igniteShit = makeUIShitIgniter({
     
     isTestScenarioNameOK(name) {
         if (LANG == 'ua' && CLIENT_KIND === 'customer' && name.startsWith('UA Customer :: ')) return true
-        if (LANG == 'ua' && CLIENT_KIND === 'writer' && (name.startsWith('UA Writer :: ') || name.startsWith('UA Admin :: '))) return true
+        if (LANG == 'ua' && CLIENT_KIND === 'writer'
+            && (name.startsWith('UA Writer :: ')
+                || name.startsWith('UA Admin :: ')
+                || name.startsWith('UA Bits :: '))) return true
     },
     
     testScenarios({sim}) {

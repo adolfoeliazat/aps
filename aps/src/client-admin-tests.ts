@@ -14,6 +14,24 @@ module.exports = function({sim}) {
     const drpc = getDebugRPC()
         
     return {
+        'UA Bits :: Search box :: 1 798d111a-62d5-4021-9abe-58b1b0d8316f': {
+            async run() {
+                const slowly = false
+                
+                if (slowly) { setTestSpeed('slow'); art.respectArtPauses = true }
+                await art.resetTestDatabase({templateDB: 'test-template-ua-1', alsoRecreateTemplate: true})
+                
+                #hawait selectBrowserAndSignIn({$tag: 'f4e1903c-9c78-4e2a-b6ba-e0323913c10b', clientKind: 'writer', browserName: 'todd1', email: 'todd@test.shit.ua', pausePointTitle: 'Todd, a support admin, comes to his workplace...'})
+                art.uiState({$tag: 'd2bc344c-93f0-4729-adda-09e0c58fd26b', expected: '---generated-shit---'})
+                
+                // Action
+                art.pushStepDescription(s{kind: 'navigation', long: t('Support admin clicks on "Heap" in top navbar')})
+                #hawait testGlobal.controls['TopNavItem-admin-heap'].testClick()
+                art.pushStepDescription(s{kind: 'state', long: t('Support admin sees a whole lot of unassigned support threads')})
+                art.uiState({$tag: 'ba691685-8a45-4c33-b06f-6987cece9d41', expected: '---generated-shit---'})
+            }
+        },
+        
         'UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c': {
             async run() {
                 const runKind = 'all'

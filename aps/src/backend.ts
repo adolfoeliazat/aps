@@ -910,6 +910,8 @@ app.post('/rpc', (req, res) => {
                 async function selectChunk(def) {
                     #extract {table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'} from def
                     
+                    const searchString = getSearchStringParam()
+                    dlog('---------', searchString)
                     const ordering = getOrderingParam({defaultValue: defaultOrdering})
                     
                     const fromID = msg.fromID || (ordering === 'asc' ? 0 : PG_MAX_BIGINT)
@@ -934,7 +936,7 @@ app.post('/rpc', (req, res) => {
                         loadedItems.push(#await loadItem(s{item}))
                     }
                     
-                    return {items: loadedItems, moreFromID}
+                    return {items: loadedItems, moreFromID, searchString}
                 }
                     
                 async function handleChunkedSelect(def) {
@@ -942,6 +944,12 @@ app.post('/rpc', (req, res) => {
                     const res = #await selectChunk(s{}.asn1(def))
                     return traceEndHandler(s{ret: hunkyDory(res)})
                 }
+                
+                function getSearchStringParam() {
+                    // TODO:vgrechka Validate searchString?    a0d147b8-c0fc-48e5-a429-2bf46c7e3d99 
+                    return (msg.searchString || '').trim()
+                }
+                    
                 
                 function getOrderingParam({param='ordering', defaultValue='asc'}={}) {
                     let value = msg[param]
@@ -1171,9 +1179,10 @@ app.post('/rpc', (req, res) => {
         }
         
         
-        function traceBeginHandler(data) {
+        function traceBeginHandler(def) {
             const preparedMsg = omitMetaShit(omit(msg, 'fun', 'token'))
-            $trace.push(asn({event: `Begin handling ${msg.fun}`, msg: preparedMsg}, omit(data, '$trace')))
+            $trace.push({event: `Begin handling ${msg.fun}`, msg: preparedMsg, $tag: def.$tag, $sourceLocation: def.$sourceLocation})
+//            $trace.push(asn({event: `Begin handling ${msg.fun}`, msg: preparedMsg}, omit(data, '$trace')))
         }
         
         function omitMetaShit(o) {

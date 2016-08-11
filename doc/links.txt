@@ -31,3 +31,8 @@ aps-ua-writer.local:3022/test.html?testScenario=UA Admin :: Misc :: 1 839c4909-e
 A1 NSRSP
 aps-ua-writer.local:3022/test.html?testScenario=UA Admin :: Misc :: 1 839c4909-e1d1-447a-9401-d1599d19598c&scrollToBottom=no&revealException=yes&respectArtPauses=yes&testSpeed=slow
 
+
+Search Box 1 (R)
+aps-ua-writer.local:3022/test.html?testScenario=UA Bits :: Search box :: 1 798d111a-62d5-4021-9abe-58b1b0d8316f&scrollToBottom=failure&revealException=yes
+
+
