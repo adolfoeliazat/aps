@@ -41,14 +41,20 @@ app.post('/rpc', (req, res) => {
     
     // dlog({body: req.body, headers: req.headers})
     handle(req.body).then(message => {
-//        circulify(message)
+        circularize(message)
         res.json(message)
         
-//        function circulify(o) {
-//            for (const key of keys(o)) {
-//                
-//            }
-//        }
+        function circularize(o) {
+            for (const [key, value] of toPairs(o)) {
+                if (key === '$trace' || key === '$meta') {
+                    o[key] = getCircularJSON().stringify(value)
+                } else {
+                    if (isObject(value)) {
+                        circularize(value)
+                    }
+                }
+            }
+        }
     })
     
     async function handle(msg) {
@@ -898,6 +904,7 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
+                
                 async function selectChunk(def) {
                     #extract {table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'} from def
                     
@@ -1161,7 +1168,8 @@ app.post('/rpc', (req, res) => {
         
         
         function traceBeginHandler(data) {
-            $trace.push(asn({event: `Begin handling ${msg.fun}`, msg: omitMetaShit(omit(msg, 'fun', 'token'))}, omit(data, '$trace')))
+            const preparedMsg = omitMetaShit(omit(msg, 'fun', 'token'))
+            $trace.push(asn({event: `Begin handling ${msg.fun}`, msg: preparedMsg}, omit(data, '$trace')))
         }
         
         function omitMetaShit(o) {
@@ -1275,7 +1283,7 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                 },
                 
                 async query(def) { // @ctx function query
-                    #extract {shouldLogForUI=true, y} from def
+                    #extract {$trace, shouldLogForUI=true, y} from def
                     
                     if (!def.$tag && !def.$sourceLocation) raise('I want all queries to be tagged')
                     
@@ -1285,11 +1293,12 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                     
                     let queryLogRecordForUI
                     if (shouldLogForUI) {
-                        queryLogRecordForUI = {meta: def, y}
-                        queryLogForUI.push(queryLogRecordForUI)
-                        if (def.$trace) {
+                        queryLogRecordForUI = def.asnn({y})
+                        // queryLogForUI.push(queryLogRecordForUI)
+                        if ($trace) {
                             const sql = y.sql ? y.sql : y
-                            def.$trace.push(asn({event: `Query: ${trim(sql).split(/\s+/)[0].toUpperCase()}`}, queryLogRecordForUI))
+                            const queryType = trim(sql).split(/\s+/)[0].toUpperCase()
+                            $trace.push(asn({event: `Query: ${queryType}`}, queryLogRecordForUI))
                         }
                     }
                     
@@ -1314,10 +1323,9 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                         const res = qres.rows
                         
                         for (const row of res) {
-                            row.$meta = def
+                            row.$meta = getCircularJSON().stringify(def)
                         }
                         
-                        // @wip
                         return res
                     } catch (qerr) {
                         if (shouldLogForUI) {
