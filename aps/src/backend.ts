@@ -786,13 +786,15 @@ app.post('/rpc', (req, res) => {
                     loadField({key: 'message', kind: 'message', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
-                        const thread_id = #await insertInto({$tag: 'c8a54fb2-4a92-4c95-a13d-7ae145c7ebe9', table: 'support_threads', values: {
+                        const thread_id = #await insertInto(s{table: 'support_threads', values: {
+                            tslang: getTSLang(),
                             topic: fields.topic,
                             supportee_id: user.id,
                             status: 'open',
                         }})
                         
-                        #await insertInto({$tag: '44178859-236b-411b-b3df-247ffb47e89e', table: 'support_thread_messages', values: {
+                        #await insertInto(s{table: 'support_thread_messages', values: {
+                            tslang: getTSLang(),
                             thread_id,
                             sender_id: user.id,
                             message: fields.message,
@@ -817,6 +819,7 @@ app.post('/rpc', (req, res) => {
                     else return traceEndHandler({res: {error: 'User is not allowed to post into the thread'}, $tag: '157c2563-493a-44cb-b0a6-1e18c73cf0fd'})
                     
                     #await insertInto(s{$tag: 'a370d299-23e8-43d0-ae77-adf5c4b599fc', table: 'support_thread_messages', values: {
+                        tslang: getTSLang(),
                         thread_id: msg.threadID,
                         sender_id: user.id,
                         recipient_id,
@@ -868,6 +871,11 @@ app.post('/rpc', (req, res) => {
                 return {fatal: situation}
                 
                 // @ctx helpers
+                
+                function getTSLang() {
+                    if (msg.LANG === 'ua') return 'russian'
+                    return 'english'
+                }
                     
                 async function updateSupportThreadMessagesSetSeenByUser(threadID) {
                     await tx.query(s{y: q`
@@ -911,7 +919,6 @@ app.post('/rpc', (req, res) => {
                     #extract {table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'} from def
                     
                     const searchString = getSearchStringParam()
-                    dlog('---------', searchString)
                     const ordering = getOrderingParam({defaultValue: defaultOrdering})
                     
                     const fromID = msg.fromID || (ordering === 'asc' ? 0 : PG_MAX_BIGINT)

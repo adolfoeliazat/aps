@@ -19,14 +19,12 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 import {link2, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
-        Input, input, preventAndStop} from 'into-u/ui'
+        Input, input, preventAndStop, renderLangLabel} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
 COLOR_1_MEDIUM = BLUE_GRAY_400
 COLOR_1_DARK = BLUE_GRAY_600
-COLOR_ZEBRA_LIGHT = WHITE
-COLOR_ZEBRA_DARK = BLUE_GRAY_50
 
 Error.stackTraceLimit = Infinity
 
@@ -37,7 +35,10 @@ global.igniteShit = makeUIShitIgniter({
             isDynamicPage,
             
             css() {
-                return `
+                const zebraLight = WHITE
+                const zebraDark = BLUE_GRAY_50
+                
+                let res = `
                     body {overflow-x: hidden;}
                 
                     .form-control:focus {border-color: #b0bec5; box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(176,190,197,.6);}
@@ -98,7 +99,18 @@ global.igniteShit = makeUIShitIgniter({
                 
                     .showOnParentHovered {display: none;}
                     .showOnParentHovered-parent:hover .showOnParentHovered {display: initial;}
+                    
+                    .zebra-0 {background: ${zebraLight};}
+                    .zebra-0 .borderTopColoredOnZebra {border-top-color: ${zebraDark};}
+                    .zebra-0 .borderRightColoredOnZebra {border-right-color: ${zebraDark};}
+                    .label1 {background-color: ${TEAL_50};}
+                
+                    .zebra-1 {background: ${zebraDark};}
+                    .zebra-1 .borderTopColoredOnZebra {border-top-color: ${zebraLight};}
+                    .zebra-1 .borderRightColoredOnZebra {border-right-color: ${zebraLight};}
+                    .zebra-1 .label1 {background-color: ${TEAL_100};}
                 `
+                return res
             },
             
             
@@ -318,9 +330,8 @@ global.igniteShit = makeUIShitIgniter({
                                 renderItem(def) {
                                     #extract {item: message, index} from def
                                     
-                                    const {rowBackground, lineColor} = zebraRowColors(index)
-                                    return diva({controlTypeName: 'renderItem-leila', style: {background: rowBackground}},
-                                        makeRenderSupportThreadMessage({lineColor, showMessageNewLabel: true})(s{message, index}))
+                                    return diva({controlTypeName: 'renderItem-leila', className: `zebra-${index % 2}`, style: {}},
+                                        makeRenderSupportThreadMessage({showMessageNewLabel: true})(s{message, index}))
                                 },
                             })
                         } else if (!ui.urlQuery.thread) {
@@ -684,14 +695,11 @@ global.igniteShit = makeUIShitIgniter({
             },
         }
         
-        
         // @ctx client helpers
         
         function makeRenderSupportThread({topicIsLink, hasTakeAndReplyButton, showMessageNewLabel, dryFroms}) {
             return function renderSupportThread(def) {
                 #extract {item: thread, index} from def
-                
-                const {rowBackground, lineColor} = zebraRowColors(index)
                 
                 const url = `support.html?thread=${thread.id}`
                     
@@ -703,13 +711,13 @@ global.igniteShit = makeUIShitIgniter({
                 }
                 
                 const paddingRight = hasTakeAndReplyButton ? 45 : 0
-                const renderSupportThreadNewMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
-                const renderSupportThreadOldMessage = makeRenderSupportThreadMessage({lineColor, dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
+                const renderSupportThreadNewMessage = makeRenderSupportThreadMessage({dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
+                const renderSupportThreadOldMessage = makeRenderSupportThreadMessage({dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
                 
                 const moreNewMessages = thread.newMessages.total - thread.newMessages.top.length
                 const moreOldMessages = thread.oldMessages.total - thread.oldMessages.top.length
                 
-                return diva({controlTypeName: 'renderSupportThread', tame: `thread${sufindex(index)}`, style: {backgroundColor: rowBackground, position: 'relative'}},
+                return diva({controlTypeName: 'renderSupportThread', tame: `thread${sufindex(index)}`, className: `zebra-${index % 2}`, style: {position: 'relative'}},
                     diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
                         hasTakeAndReplyButton && ui.busyButton({tamy: `takeAndReply`, shame: `button-takeAndReply-${thread.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
                             beginTrain({name: 'Take support thread and reply'}); try {
@@ -721,7 +729,9 @@ global.igniteShit = makeUIShitIgniter({
                         ),
                     
                     diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
-                        topicElement),
+                        topicElement,
+                        // renderLangLabel(s{style: {marginLeft: 8, fontWeight: 'bold'}, content: {mopy: {model: thread, prop: 'tslang'}}})
+                        ),
                         
                     diva({tame: 'newMessages'},
                         diva({}, ...thread.newMessages.top.map((message, index) => renderSupportThreadNewMessage(s{message, index}))),
@@ -729,7 +739,7 @@ global.igniteShit = makeUIShitIgniter({
                     ),
                     
                     thread.newMessages.top.length > 0 && thread.oldMessages.top.length > 0 &&
-                        diva({style: {borderTop: `3px dotted ${lineColor}`, paddingTop: 5}}),
+                        diva({className: 'borderTopColoredOnZebra', style: {borderTopWidth: '3px', borderTopStyle: 'dotted', paddingTop: 5}}),
                                                   
                     diva({tame: 'oldMessages'},
                         div(...thread.oldMessages.top.map((message, index) => renderSupportThreadOldMessage(s{message, index}))),
@@ -762,27 +772,14 @@ global.igniteShit = makeUIShitIgniter({
             }
         }
         
-        function zebraRowColors(i) {
-            let rowBackground, lineColor
-            if (i % 2 === 0) {
-                rowBackground = COLOR_ZEBRA_LIGHT
-                lineColor = COLOR_ZEBRA_DARK
-            } else {
-                rowBackground = COLOR_ZEBRA_DARK
-                lineColor = COLOR_ZEBRA_LIGHT
-            }
-            
-            return {rowBackground, lineColor}
-        }
-        
-        function makeRenderSupportThreadMessage({lineColor, dottedLines, dryFroms, showMessageNewLabel, paddingRight=0}) {
+        function makeRenderSupportThreadMessage({dottedLines, dryFroms, showMessageNewLabel, paddingRight=0}) {
             return function renderSupportThreadMessage(def) {
                 #extract {message, index} from def
                 
-                return diva({controlTypeName: 'renderSupportThreadMessage', tame: `message${sufindex(index)}`, className: 'row', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: index > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
-                           index > 0 && dottedLines && {borderTop: `3px dotted ${lineColor}`})},
+                return diva({controlTypeName: 'renderSupportThreadMessage', tame: `message${sufindex(index)}`, className: 'row borderTopColoredOnZebra', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: index > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
+                           index > 0 && dottedLines && {borderTopStyle: 'dotted', borderTopWidth: '3px'})},
                            
-                    diva({className: 'col-sm-3', style: {display: 'flex', flexDirection: 'column', borderRight: `3px solid ${lineColor}`, paddingLeft: 0}},
+                    diva({className: 'col-sm-3 borderRightColoredOnZebra', style: {display: 'flex', flexDirection: 'column', borderRightWidth: '3px', borderRightStyle: 'solid', paddingLeft: 0}},
                         index === 0 || !dryFroms
                             ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
                                       t(`TOTE`, `От: `)),
