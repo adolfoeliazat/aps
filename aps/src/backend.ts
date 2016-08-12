@@ -415,8 +415,10 @@ app.post('/rpc', (req, res) => {
                         file = {
                             'aps/src/client.ts': 'E:/work/aps/aps/src/client.ts',
                             'client.ts': 'E:/work/aps/aps/src/client.ts',
-                            'aps/src/client-admin-tests.ts': 'E:/work/aps/aps/src/client-admin-tests.ts',
-                            'client-admin-tests.ts': 'E:/work/aps/aps/src/client-admin-tests.ts',
+                            'aps/src/test-admin-ua.ts': 'E:/work/aps/aps/src/test-admin-ua.ts',
+                            'test-admin-ua.ts': 'E:/work/aps/aps/src/test-admin-ua.ts',
+                            'aps/src/test-writer-ua.ts': 'E:/work/aps/aps/src/test-writer-ua.ts',
+                            'test-writer-ua.ts': 'E:/work/aps/aps/src/test-writer-ua.ts',
                             'aps/src/backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'backend.ts': 'E:/work/aps/aps/src/backend.ts',
                             'ui.ts': 'E:/work/foundation/u/src/ui.ts',
@@ -907,7 +909,7 @@ app.post('/rpc', (req, res) => {
                 
                 function findTagInSourceCode(tag) {
                     for (file of ['E:/work/aps/aps/src/client.ts', 'E:/work/aps/aps/src/backend.ts',
-                                  'E:/work/aps/aps/src/client-writer-tests.ts', 'E:/work/aps/aps/src/client-admin-tests.ts']) {
+                                  'E:/work/aps/aps/src/test-writer-ua.ts', 'E:/work/aps/aps/src/test-admin-ua.ts']) {
                         const code = fs.readFileSync(file, 'utf8')
                         const offset = code.indexOf(tag)
                         if (~offset) return {file, code, offset}

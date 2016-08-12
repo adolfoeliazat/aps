@@ -859,8 +859,8 @@ global.igniteShit = makeUIShitIgniter({
     
     testScenarios({sim}) {
         return asn({},
-            require('./client-writer-tests')({sim}),
-            require('./client-admin-tests')({sim}),)
+            require('./test-writer-ua')({sim}),
+            require('./test-admin-ua')({sim}),)
     },
 })
 

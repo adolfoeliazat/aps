@@ -6,13 +6,16 @@
 
 #pragma instrument-ui-rendering
 
+import {TestCommon} from './test-common'
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 GENERATED_SHIT = require('./generated-shit')
 
 module.exports = function({sim}) {
     const drpc = getDebugRPC()
-        
+    
+    const common = TestCommon({sim})
+    
     return {
         'UA Bits :: Search box :: 1 798d111a-62d5-4021-9abe-58b1b0d8316f': {
             async run() {
@@ -21,7 +24,7 @@ module.exports = function({sim}) {
                 if (slowly) { setTestSpeed('slow'); art.respectArtPauses = true }
                 await art.resetTestDatabase({templateDB: 'test-template-ua-1', alsoRecreateTemplate: true})
                 
-                #hawait selectBrowserAndSignIn({$tag: 'f4e1903c-9c78-4e2a-b6ba-e0323913c10b', clientKind: 'writer', browserName: 'todd1', email: 'todd@test.shit.ua', pausePointTitle: 'Todd, a support admin, comes to his workplace...'})
+                #hawait common.selectBrowserAndSignIn({$tag: 'f4e1903c-9c78-4e2a-b6ba-e0323913c10b', clientKind: 'writer', browserName: 'todd1', email: 'todd@test.shit.ua', pausePointTitle: 'Todd, a support admin, comes to his workplace...'})
                 art.uiState({$tag: 'd2bc344c-93f0-4729-adda-09e0c58fd26b', expected: '---generated-shit---'})
                 
                 // Action
@@ -65,7 +68,7 @@ module.exports = function({sim}) {
                 async function todd1() {
                     #hawait drpc({fun: 'danger_clearSentEmails'})
                     
-                    #hawait selectBrowserAndSignIn({$tag: '2855b4f4-63f0-4325-ad8a-f36fdf4e2f5a', clientKind: 'writer', browserName: 'todd1', email: 'todd@test.shit.ua', pausePointTitle: 'Todd, a support admin, comes to his workplace...'})
+                    #hawait common.selectBrowserAndSignIn({$tag: '2855b4f4-63f0-4325-ad8a-f36fdf4e2f5a', clientKind: 'writer', browserName: 'todd1', email: 'todd@test.shit.ua', pausePointTitle: 'Todd, a support admin, comes to his workplace...'})
                     art.uiState({$tag: '866bef17-2783-40a5-860d-0d2f69966664', expected: '---generated-shit---'})
                     
                     testGlobal.controls['TopNavItem-admin-heap'].testShowHand({testActionHandOpts: {pointingFrom: 'right', dleft: -15, dtop: 0}})
@@ -176,7 +179,7 @@ module.exports = function({sim}) {
                 }
                 
                 async function kafka1() {
-                    #hawait selectBrowserAndSignIn({$tag: '24cb9937-d5eb-4b10-a8b0-19428e9db3ef', clientKind: 'writer', browserName: 'kafka1', email: 'kafka@test.shit.ua', pausePointTitle: 'Another user, Franz Kafka, who is a writer, comes into play...'})
+                    #hawait common.selectBrowserAndSignIn({$tag: '24cb9937-d5eb-4b10-a8b0-19428e9db3ef', clientKind: 'writer', browserName: 'kafka1', email: 'kafka@test.shit.ua', pausePointTitle: 'Another user, Franz Kafka, who is a writer, comes into play...'})
                     art.uiState({$tag: '2fcf578d-3b0d-4f70-b3a1-7d4d892ecd91', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
@@ -212,7 +215,7 @@ module.exports = function({sim}) {
                 }
                 
                 async function todd2() {
-                    #hawait selectBrowserAndSignIn({$tag: 'dbfba9fb-790e-4598-a04e-9b2b6041c1bc', clientKind: 'writer', browserName: 'todd2', email: 'todd@test.shit.ua', pausePointTitle: 'Todd comes back to check stuff...'})
+                    #hawait common.selectBrowserAndSignIn({$tag: 'dbfba9fb-790e-4598-a04e-9b2b6041c1bc', clientKind: 'writer', browserName: 'todd2', email: 'todd@test.shit.ua', pausePointTitle: 'Todd comes back to check stuff...'})
                     art.uiState({$tag: 'b8690567-c212-4877-aa44-8e45313187da', expected: '---generated-shit---'})
                     
                     testGlobal.controls['TopNavItem-support'].testShowHand({"testActionHandOpts":{"pointingFrom":"right","dleft":-12,"dtop":1}})
@@ -279,7 +282,7 @@ module.exports = function({sim}) {
                 }
                 
                 async function luke1() {
-                    #hawait selectBrowserAndSignIn({$tag: '10d399b1-6ac3-43dd-b21c-22f40fd11c48', clientKind: 'customer', browserName: 'luke1', email: 'luke@test.shit.ua', pausePointTitle: 'Now it’s Luke’s turn...'})
+                    #hawait common.selectBrowserAndSignIn({$tag: '10d399b1-6ac3-43dd-b21c-22f40fd11c48', clientKind: 'customer', browserName: 'luke1', email: 'luke@test.shit.ua', pausePointTitle: 'Now it’s Luke’s turn...'})
                     art.uiState({$tag: '0f95a4f1-b8c5-4e33-b1dd-81204d94f2d8', expected: '---generated-shit---'})
                     
                     // Action
@@ -316,7 +319,7 @@ module.exports = function({sim}) {
                 
                 async function todd3() {
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-                    #hawait selectBrowserAndSignIn({$tag: 'f118942e-2bef-4121-a27c-fe4f98eadcd4', clientKind: 'writer', browserName: 'todd3', email: 'todd@test.shit.ua', pausePointTitle: 'Todd Supportod should now see that Luke resolved his support request...'})
+                    #hawait common.selectBrowserAndSignIn({$tag: 'f118942e-2bef-4121-a27c-fe4f98eadcd4', clientKind: 'writer', browserName: 'todd3', email: 'todd@test.shit.ua', pausePointTitle: 'Todd Supportod should now see that Luke resolved his support request...'})
                     art.uiState({$tag: '8246a80c-8a31-4f80-bba0-b404c26a4c94', expected: '---generated-shit---'})
                     
                     // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
@@ -334,7 +337,7 @@ module.exports = function({sim}) {
                 }
                 
                 async function kafka2() {
-                    #hawait selectBrowserAndSignIn({$tag: 'c389d860-b30c-438e-bd79-c5223fffd794', clientKind: 'writer', browserName: 'kafka2', email: 'kafka@test.shit.ua', pausePointTitle: 'Kafka decides to introduce some spamming...'})
+                    #hawait common.selectBrowserAndSignIn({$tag: 'c389d860-b30c-438e-bd79-c5223fffd794', clientKind: 'writer', browserName: 'kafka2', email: 'kafka@test.shit.ua', pausePointTitle: 'Kafka decides to introduce some spamming...'})
                     art.uiState({$tag: '7de769ba-dc47-4f82-acb8-84dd7bd18567', expected: '---generated-shit---'})
                     
                     // Action
@@ -390,59 +393,6 @@ module.exports = function({sim}) {
     }
     
     
-    async function selectBrowserAndSignIn({$tag, pausePointTitle, browserName, email, clientKind}) {
-        CLIENT_KIND = clientKind
-        sim.selectBrowser(browserName)
-        #hawait sim.navigate('dashboard.html')
-        
-        if (pausePointTitle) {
-            #hawait art.pausePoint({title: pausePointTitle, theme: 'blue', $tag})
-        }
-        
-        if (clientKind === 'writer') {
-            art.uiState({$tag: 'c70e18eb-516b-41cb-bf7a-bdf748595ad2', expected: {
-                'Input-email': ``,
-                  'Input-password': ``,
-                  'button-primary.title': `Войти`,
-                  'link-createAccount.title': `Срочно создать!`,
-                  'pageHeader.title': `Вход`,
-                  'topNavLeft.TopNavItem-i000.shame': `TopNavItem-why`,
-                  'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
-                  'topNavLeft.TopNavItem-i001.shame': `TopNavItem-prices`,
-                  'topNavLeft.TopNavItem-i001.title': `Цены`,
-                  'topNavLeft.TopNavItem-i002.shame': `TopNavItem-faq`,
-                  'topNavLeft.TopNavItem-i002.title': `ЧаВо`,
-                  'topNavRight.TopNavItem-i000.active': true,
-                  'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
-                  'topNavRight.TopNavItem-i000.title': `Вход`,
-                  url: `http://aps-ua-writer.local:3022/sign-in.html`
-            }})                
-        } else if (clientKind === 'customer') {
-            art.uiState({$tag: '0bd97815-b9b1-4900-80b1-e6f683c41926', expected: {
-                 'Input-email': ``,
-                  'Input-password': ``,
-                  'TopNavItem-blog': { title: `Блог` },
-                  'TopNavItem-contact': { title: `Связь` },
-                  'TopNavItem-faq': { title: `ЧаВо` },
-                  'TopNavItem-prices': { title: `Цены` },
-                  'TopNavItem-samples': { title: `Примеры` },
-                  'TopNavItem-sign-in': { active: true, title: `Вход` },
-                  'TopNavItem-why': { title: `Почему мы?` },
-                  'button-primary': { title: `Войти` },
-                  'link-createAccount': { title: `Срочно создать!` },
-                  pageHeader: `Вход`,
-                  url: `http://aps-ua-writer.local:3022/sign-in.html`
-            }})                
-        } else {
-            raise('WTF is the clientKind')
-        }
-        
-        // Inputs
-        #hawait testGlobal.controls['Input-email'].testSetValue({value: email})
-        #hawait testGlobal.controls['Input-password'].testSetValue({value: 'secret'})
-        // Action
-        #hawait testGlobal.controls['button-primary'].testClick()
-    }
     
 }
 
