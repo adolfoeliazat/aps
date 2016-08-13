@@ -925,8 +925,11 @@ module.exports = {
     }, // end of generated piece of shit
 
     '1a543472-b429-4add-88e8-799598607ad3': {
-        'Input-email': `vovchok@test.shit.ua`,
-          'Input-password': `something`,
+        'TextField-email.Input': `vovchok@test.shit.ua`,
+          'TextField-email.label': `Почта`,
+          'TextField-password.Input': `something`,
+          'TextField-password.Input.type': `password`,
+          'TextField-password.label': `Пароль`,
           'button-primary.title': `Войти`,
           errorBanner: `Неверная почта или пароль`,
           'link-createAccount.title': `Срочно создать!`,

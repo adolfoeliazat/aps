@@ -241,12 +241,13 @@ app.post('/rpc', (req, res) => {
                 
                 if (msg.fun === 'danger_updateAssertionCode') {
                     const ft = findTagInSourceCode(msg.assertionTag)
-                    if (!ft) return {error: 'Tag is not found in code'}
+                    if (!ft) return {error: t('Tag is not found in code')}
                     
                     const bakFile = `c:/tmp/${path.basename(ft.file)}.bak-${moment().format('YYYYMMDD-HHmmss')}`
                     fs.writeFileSync(bakFile, ft.code)
                     
-                    const beginningLineOfInlineContent = `art.uiState({$tag: '${msg.assertionTag}', expected: {` // }})
+                    const beginningLineOfInlineContent = `${'s'}{assert: {$tag: '${msg.assertionTag}', expected: {` // }}}
+//                    const beginningLineOfInlineContent = `art.uiState({$tag: '${msg.assertionTag}', expected: {` // }})
                     const beginningLineOfInlineContentIndex = ft.code.indexOf(beginningLineOfInlineContent)
                     if (~beginningLineOfInlineContentIndex) {
                         let indent = 0, i = beginningLineOfInlineContentIndex - 1
@@ -255,8 +256,8 @@ app.post('/rpc', (req, res) => {
                             --i
                         }
                         
-                        /*({{*/ let endingLineContentIndex = ft.code.slice(beginningLineOfInlineContentIndex).search(/\s*\}\}\)/)
-                        if (!~endingLineContentIndex) return {error: 'Cannot find endingLineContentIndex'}
+                        /*{{{*/ let endingLineContentIndex = ft.code.slice(beginningLineOfInlineContentIndex).search(/\s*\}\}\},/)
+                        if (!~endingLineContentIndex) return {error: t('Cannot find endingLineContentIndex')}
                         endingLineContentIndex += beginningLineOfInlineContentIndex
                         const newCode = ft.code.slice(0, beginningLineOfInlineContentIndex + beginningLineOfInlineContent.length)
                                       + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
@@ -268,8 +269,8 @@ app.post('/rpc', (req, res) => {
                         return hunkyDory()
                     }
                     
-//                    const lineOfExternalContentReference = `art.uiState({$tag: '${msg.assertionTag}', expected: '---generated-shit---'})`
                     const lineOfExternalContentReference = `${'s'}{assert: {$tag: '${msg.assertionTag}', expected: '---generated-shit---'}}`
+//                    const lineOfExternalContentReference = `art.uiState({$tag: '${msg.assertionTag}', expected: '---generated-shit---'})`
                     dlogs({lineOfExternalContentReference})
                     const lineOfExternalContentReferenceIndex = ft.code.indexOf(lineOfExternalContentReference)
                     if (!~lineOfExternalContentReferenceIndex) return {error: t('No lineOfExternalContentReferenceIndex')} 
@@ -287,7 +288,7 @@ app.post('/rpc', (req, res) => {
                         }
                         
                         /*{*/ let endingLineOfExternalContentIndex = generatedShitCode.slice(beginningLineOfExternalContentIndex).search(/\}, \/\/ end of generated piece of shit/)
-                        if (!~endingLineOfExternalContentIndex) return {error: 'Cannot find endingLineOfExternalContentIndex'}
+                        if (!~endingLineOfExternalContentIndex) return {error: t('Cannot find endingLineOfExternalContentIndex')}
                         endingLineOfExternalContentIndex += beginningLineOfExternalContentIndex
                         const newCode = generatedShitCode.slice(0, beginningLineOfExternalContentIndex + beginningLineOfExternalContent.length)
                                       + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
@@ -300,7 +301,7 @@ app.post('/rpc', (req, res) => {
                     } else {
                         const placeToInsertNewGeneratedShitLine = `// place to insert new generated piece of shit`
                         const placeToInsertNewGeneratedShitLineIndex = generatedShitCode.indexOf(placeToInsertNewGeneratedShitLine)
-                        if (!~placeToInsertNewGeneratedShitLineIndex) return {error: 'Cannot find placeToInsertNewGeneratedShitLineIndex'}
+                        if (!~placeToInsertNewGeneratedShitLineIndex) return {error: t('Cannot find placeToInsertNewGeneratedShitLineIndex')}
                         let indent = 0, i = placeToInsertNewGeneratedShitLineIndex - 1
                         while (generatedShitCode[i] === ' ') {
                             ++indent

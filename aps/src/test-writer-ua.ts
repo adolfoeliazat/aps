@@ -41,8 +41,8 @@ module.exports = function({sim}) {
                         s{step: {kind: 'state', long: t('Of course it failed')}},
                         s{assert: {$tag: '1a543472-b429-4add-88e8-799598607ad3', expected: '---generated-shit---'}},
                         
-                        s{setValue: {shame: 'Input-email', value: 'vovchok@test.shit.ua'}},
-                        s{setValue: {shame: 'Input-password', value: 'something'}},
+                        s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
+                        s{setValue: {shame: 'TextField-password.Input', value: 'something'}},
                         s{step: {kind: 'action', long: t('Clicking "Sign Up" link')}},
                         s{click: {shame: 'link-createAccount', timestamp: '2016/08/12 20:40:58'}},
                         s{step: {kind: 'state', long: t('Got registration form')}},
@@ -69,8 +69,11 @@ module.exports = function({sim}) {
                     if (clientKind === 'writer') {
                         res.push(...[
                             s{assert: {$tag: '42816503-1dc0-4e43-aaa4-a8b11a680501', expected: {
-                                'Input-email': ``,
-                                  'Input-password': ``,
+                                'TextField-email.Input': ``,
+                                  'TextField-email.label': `Почта`,
+                                  'TextField-password.Input': ``,
+                                  'TextField-password.Input.type': `password`,
+                                  'TextField-password.label': `Пароль`,
                                   'button-primary.title': `Войти`,
                                   'link-createAccount.title': `Срочно создать!`,
                                   'pageHeader.title': `Вход`,
@@ -84,7 +87,7 @@ module.exports = function({sim}) {
                                   'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
                                   'topNavRight.TopNavItem-i000.title': `Вход`,
                                   url: `http://aps-ua-writer.local:3022/sign-in.html`
-                            }}}                
+                            }}},
                         ])
                     } else if (clientKind === 'customer') {
                         res.push(...[
@@ -115,8 +118,8 @@ module.exports = function({sim}) {
                     #extract {email, password='secret'} from def
                     
                     return [
-                        s{setValue: {shame: 'Input-email', value: email}},
-                        s{setValue: {shame: 'Input-password', value: password}},
+                        s{setValue: {shame: 'TextField-email.Input', value: email}},
+                        s{setValue: {shame: 'TextField-password.Input', value: password}},
                         s{click: {shame: 'button-primary'}},
                     ]
                 }
