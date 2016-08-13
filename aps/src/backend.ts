@@ -43,20 +43,20 @@ app.post('/rpc', (req, res) => {
     
     // dlog({body: req.body, headers: req.headers})
     handle(req.body).then(message => {
-//        circularize(message)
+        circularize(message)
         res.json(message)
         
-//        function circularize(o) {
-//            for (const [key, value] of toPairs(o)) {
-//                if (key === '$trace' || key === '$meta') {
-//                    o[key] = getCircularJSON().stringify(value)
-//                } else {
-//                    if (isObject(value)) {
-//                        circularize(value)
-//                    }
-//                }
-//            }
-//        }
+        function circularize(o) {
+            for (const [key, value] of toPairs(o)) {
+                if (key === '$trace' || key === '$meta') {
+                    o[key] = getCircularJSON().stringify(value)
+                } else {
+                    if (isObject(value)) {
+                        circularize(value)
+                    }
+                }
+            }
+        }
     })
     
     async function handle(msg) {
@@ -72,8 +72,8 @@ app.post('/rpc', (req, res) => {
         }
         
         const _t = makeT(msg.LANG)
-        function t(meta, ...args) {
-            return {meta, meat: _t(...args)}
+        function t($meta, ...args) {
+            return {$meta, meat: _t(...args)}
         }
         
         let stackBeforeAwait, awaitRes
@@ -268,57 +268,59 @@ app.post('/rpc', (req, res) => {
                         return hunkyDory()
                     }
                     
-                    const lineOfExternalContentReference = `art.uiState({$tag: '${msg.assertionTag}', expected: '---generated-shit---'})`
+//                    const lineOfExternalContentReference = `art.uiState({$tag: '${msg.assertionTag}', expected: '---generated-shit---'})`
+                    const lineOfExternalContentReference = `${'s'}{assert: {$tag: '${msg.assertionTag}', expected: '---generated-shit---'}}`
+                    dlogs({lineOfExternalContentReference})
                     const lineOfExternalContentReferenceIndex = ft.code.indexOf(lineOfExternalContentReference)
-                    if (~lineOfExternalContentReferenceIndex) {
-                        const generatedShitFile = 'E:/work/aps/aps/src/generated-shit.ts'
-                        const generatedShitCode = fs.readFileSync(generatedShitFile, 'utf8')
-                        
-                        const beginningLineOfExternalContent = `'${msg.assertionTag}': {` // }
-                        const beginningLineOfExternalContentIndex = generatedShitCode.indexOf(beginningLineOfExternalContent)
-                        if (~beginningLineOfExternalContentIndex) {
-                            let indent = 0, i = beginningLineOfExternalContentIndex - 1
-                            while (generatedShitCode[i] === ' ') {
-                                ++indent
-                                --i
-                            }
-                            
-                            /*{*/ let endingLineOfExternalContentIndex = generatedShitCode.slice(beginningLineOfExternalContentIndex).search(/\}, \/\/ end of generated piece of shit/)
-                            if (!~endingLineOfExternalContentIndex) return {error: 'Cannot find endingLineOfExternalContentIndex'}
-                            endingLineOfExternalContentIndex += beginningLineOfExternalContentIndex
-                            const newCode = generatedShitCode.slice(0, beginningLineOfExternalContentIndex + beginningLineOfExternalContent.length)
-                                          + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
-                                          + repeat(' ', indent) + trimStart(generatedShitCode.slice(endingLineOfExternalContentIndex))
-                            
-                            // fs.writeFileSync('c:/tmp/shit.txt', newCode)
-                            fs.writeFileSync(generatedShitFile, newCode)
-                            
-                            return hunkyDory()
-                        } else {
-                            const placeToInsertNewGeneratedShitLine = `// place to insert new generated piece of shit`
-                            const placeToInsertNewGeneratedShitLineIndex = generatedShitCode.indexOf(placeToInsertNewGeneratedShitLine)
-                            if (!~placeToInsertNewGeneratedShitLineIndex) return {error: 'Cannot find placeToInsertNewGeneratedShitLineIndex'}
-                            let indent = 0, i = placeToInsertNewGeneratedShitLineIndex - 1
-                            while (generatedShitCode[i] === ' ') {
-                                ++indent
-                                --i
-                            }
-                            
-                            const newCode = generatedShitCode.slice(0, placeToInsertNewGeneratedShitLineIndex)
-                                          + `'${msg.assertionTag}': {` // }
-                                          + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
-                                          + repeat(' ', indent) + /*{*/ '}, // end of generated piece of shit'
-                                          + '\n\n' + repeat(' ', indent) + placeToInsertNewGeneratedShitLine
-                                          + generatedShitCode.slice(placeToInsertNewGeneratedShitLineIndex + placeToInsertNewGeneratedShitLine.length)
-                            
-                            // fs.writeFileSync('c:/tmp/shit.txt', newCode)
-                            fs.writeFileSync(generatedShitFile, newCode)
-                            
-                            return hunkyDory()
-                        }
-                    }
+                    if (!~lineOfExternalContentReferenceIndex) return {error: t('No lineOfExternalContentReferenceIndex')} 
                     
-                    return {error: 'Cannot figure out where is assertion code (danger_updateAssertionCode)'}
+                    const generatedShitFile = 'E:/work/aps/aps/src/generated-shit.ts'
+                    const generatedShitCode = fs.readFileSync(generatedShitFile, 'utf8')
+                    
+                    const beginningLineOfExternalContent = `'${msg.assertionTag}': {` // }
+                    const beginningLineOfExternalContentIndex = generatedShitCode.indexOf(beginningLineOfExternalContent)
+                    if (~beginningLineOfExternalContentIndex) {
+                        let indent = 0, i = beginningLineOfExternalContentIndex - 1
+                        while (generatedShitCode[i] === ' ') {
+                            ++indent
+                            --i
+                        }
+                        
+                        /*{*/ let endingLineOfExternalContentIndex = generatedShitCode.slice(beginningLineOfExternalContentIndex).search(/\}, \/\/ end of generated piece of shit/)
+                        if (!~endingLineOfExternalContentIndex) return {error: 'Cannot find endingLineOfExternalContentIndex'}
+                        endingLineOfExternalContentIndex += beginningLineOfExternalContentIndex
+                        const newCode = generatedShitCode.slice(0, beginningLineOfExternalContentIndex + beginningLineOfExternalContent.length)
+                                      + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
+                                      + repeat(' ', indent) + trimStart(generatedShitCode.slice(endingLineOfExternalContentIndex))
+                        
+                        // fs.writeFileSync('c:/tmp/shit.txt', newCode)
+                        fs.writeFileSync(generatedShitFile, newCode)
+                        
+                        return hunkyDory()
+                    } else {
+                        const placeToInsertNewGeneratedShitLine = `// place to insert new generated piece of shit`
+                        const placeToInsertNewGeneratedShitLineIndex = generatedShitCode.indexOf(placeToInsertNewGeneratedShitLine)
+                        if (!~placeToInsertNewGeneratedShitLineIndex) return {error: 'Cannot find placeToInsertNewGeneratedShitLineIndex'}
+                        let indent = 0, i = placeToInsertNewGeneratedShitLineIndex - 1
+                        while (generatedShitCode[i] === ' ') {
+                            ++indent
+                            --i
+                        }
+                        
+                        const newCode = generatedShitCode.slice(0, placeToInsertNewGeneratedShitLineIndex)
+                                      + `'${msg.assertionTag}': {` // }
+                                      + ('\n' + trimEnd(msg.actualStringForPasting)).replace(/\n/g, '\n' + repeat(' ', indent + 4)) + '\n'
+                                      + repeat(' ', indent) + /*{*/ '}, // end of generated piece of shit'
+                                      + '\n\n' + repeat(' ', indent) + placeToInsertNewGeneratedShitLine
+                                      + generatedShitCode.slice(placeToInsertNewGeneratedShitLineIndex + placeToInsertNewGeneratedShitLine.length)
+                        
+                        // fs.writeFileSync('c:/tmp/shit.txt', newCode)
+                        fs.writeFileSync(generatedShitFile, newCode)
+                        
+                        return hunkyDory()
+                    }
+                
+                    return {error: t('WTF I’ve reached here')}
                 }
                 
                 if (msg.fun === 'danger_insertTestActionCode') {
@@ -1206,6 +1208,7 @@ app.post('/rpc', (req, res) => {
 //                dlogs(`------- ret of ${msg.fun}`, data.ret)
 //            }
             
+            dlog(data.ret)
             return data.ret
         }
     }

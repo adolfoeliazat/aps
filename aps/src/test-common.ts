@@ -61,10 +61,10 @@ export function TestCommon({sim}) {
             }
         },
         
-        async signIn({email}) {
+        async signIn({email, password='secret'}) {
             // Inputs
             #hawait testGlobal.controls['Input-email'].testSetValue({value: email})
-            #hawait testGlobal.controls['Input-password'].testSetValue({value: 'secret'})
+            #hawait testGlobal.controls['Input-password'].testSetValue({value: password})
             // Action
             #hawait testGlobal.controls['button-primary'].testClick()
         },

@@ -17,9 +17,9 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 #import static 'into-u/utils-client ./stuff'
 
-import {link2, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
+import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
-        Input, input, preventAndStop, renderLangLabel} from 'into-u/ui'
+        Input, input, preventAndStop, renderLangLabel, spancTitle} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
@@ -645,7 +645,7 @@ global.igniteShit = makeUIShitIgniter({
                                    ...items.map(item =>
                                        lia({style: {marginBottom: 5}},
                                            ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
-                                           link2({tamy: item.name, title: item.title, style: {color: '#333'}, onClick: item.onClick}))))
+                                           link({tamy: item.name, title: item.title, style: {color: '#333'}, onClick: item.onClick}))))
                     }
                 }
                 
@@ -1141,7 +1141,7 @@ clog('Client code is kind of loaded')
 
 
 function compiler$getRegExpForAddingSourceLocationTo() {
-    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|link2|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink|CollapsibleShit|blockquotea|pageTopBlockQuote)\(\{)/g /*})*/
+    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.TextField|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink|CollapsibleShit|blockquotea|pageTopBlockQuote)\(\{)/g /*})*/
 }
     
     

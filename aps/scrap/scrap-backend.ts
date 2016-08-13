@@ -383,7 +383,9 @@ const x = {a: 10, b: 20}
 x.c = {d: 30, x}
 relog(getCircularJSON().stringify(x))
 
-relog(range(2))
+relog(indexOfToLeft('foo bar baz', 'ba', 10))
+relog(indexOfToLeft('foo bar baz', 'ba', 7))
+relog(indexOfToLeft('foo bar baz', 'ba', 3))
 
 
 

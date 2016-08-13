@@ -905,6 +905,44 @@ module.exports = {
           url: `http://aps-ua-writer.local:3022/admin-heap.html`
     }, // end of generated piece of shit
 
+    'e44a44a7-fe84-42a6-ac80-a6aee4ac87ac': {
+        'Input-email': `vovchok@test.shit.ua`,
+          'Input-password': `something`,
+          'button-primary.title': `Войти`,
+          errorBanner: `Неверная почта или пароль`,
+          'link-createAccount.title': `Срочно создать!`,
+          'pageHeader.title': `Вход`,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.active': true,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
+          'topNavRight.TopNavItem-i000.title': `Вход`,
+          url: `http://aps-ua-writer.local:3022/sign-in.html`
+    }, // end of generated piece of shit
+
+    '1a543472-b429-4add-88e8-799598607ad3': {
+        'Input-email': `vovchok@test.shit.ua`,
+          'Input-password': `something`,
+          'button-primary.title': `Войти`,
+          errorBanner: `Неверная почта или пароль`,
+          'link-createAccount.title': `Срочно создать!`,
+          'pageHeader.title': `Вход`,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.active': true,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
+          'topNavRight.TopNavItem-i000.title': `Вход`,
+          url: `http://aps-ua-writer.local:3022/sign-in.html`
+    }, // end of generated piece of shit
+
     // place to insert new generated piece of shit
 
 }
