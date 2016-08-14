@@ -85,8 +85,9 @@ module.exports = function({sim}) {
                         s{setValue: {shame: 'TextField-firstName.Input', value: 'Марко'}},
                         s{setValue: {shame: 'TextField-lastName.Input', value: 'Вовчок'}},
                         s{setValue: {shame: 'AgreeTermsField.Checkbox', value: true}},
+                        s{click: {shame: 'button-primary', timestamp: '2016/08/14 17:48:51'}},
                         s{step: {kind: 'state', long: t('TODO State description')}},
-                        s{assert: {$tag: 'c9e720c3-cf22-47f0-b270-ac173077803c', expected: '---generated-shit---'}},
+                        s{assert: {$tag: 'c96fea50-121d-475b-99ca-788ac42f0f8f', expected: '---generated-shit---'}},
 
                         s{actionPlaceholder: {$tag: '6bcd180a-9701-4e84-babe-99253f49e44b'}},
                         

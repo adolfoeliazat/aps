@@ -78,6 +78,9 @@ renderDefinitionStackStrip
 
 Tiffany
 
+control
+    noStateContributions
+
 css
     showOnParentHovered
     showOnParentHovered-parent

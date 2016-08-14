@@ -571,6 +571,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 if (msg.fun === 'signUp') {
+                    traceBeginHandler(s{})
                     if (!msg.agreeTerms) {
                         fieldErrors.agreeTerms = t('You have to agree with terms and conditions', 'Необходимо принять соглашение')
                     }
@@ -616,18 +617,18 @@ app.post('/rpc', (req, res) => {
                                         <a href="${signInURL}">${signInURL}</a>
                                     `
                                 }))})
-                            return hunkyDory()
+                            return traceEndHandler(s{ret: hunkyDory()})
                         } catch (e) {
                             if (e.code === '23505') {
                                 fieldErrors.email = t('This email is already registered', 'Такая почта уже зарегистрирована')
-                                return fixErrorsResult()
+                                return traceEndHandler(s{ret: fixErrorsResult()})
                             } else {
                                 throw e
                             }
                         }
                     }
                     
-                    return fixErrorsResult()
+                    return traceEndHandler(s{ret: fixErrorsResult()})
                 }
                 
                 if (msg.fun === 'private_updateProfile') {
@@ -1187,7 +1188,7 @@ app.post('/rpc', (req, res) => {
             }
             
             if (shouldLogRequestForUI && $trace.length) {
-                requestLogForUI.push({title: msg.fun, $trace, $clientSourceLocation: msg.$sourceLocation})
+                requestLogForUI.push({title: msg.fun, $trace, $clientSourceLocation: msg.$sourceLocation, msg})
 //                requestLogForUI.push({title: msg.fun, $trace: getCircularJSON().stringify($trace), $clientSourceLocation: msg.$sourceLocation})
             }
         }
