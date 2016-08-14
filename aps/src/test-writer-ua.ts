@@ -48,6 +48,48 @@ module.exports = function({sim}) {
                         s{step: {kind: 'state', long: t('Got registration form')}},
                         s{assert: {$tag: '877a3f2f-ad7d-41c7-af4b-9665526fc27f', expected: '---generated-shit---'}},
                         
+                        s{step: {kind: 'action', long: t('Trying to submit empty form')}},
+                        s{setValue: {shame: 'TextField-email.Input', value: ''}},
+                        s{setValue: {shame: 'TextField-firstName.Input', value: ''}},
+                        s{setValue: {shame: 'TextField-lastName.Input', value: ''}},
+                        s{click: {shame: 'button-primary', timestamp: '2016/08/14 12:55:19'}},
+                        s{step: {kind: 'state', long: t('Got a bunch of errors')}},
+                        s{assert: {$tag: '9b0cad6b-c396-4b8a-b731-57905900a80a', expected: '---generated-shit---'}},
+
+                        s{step: {kind: 'action', long: t('TODO Action description')}},
+                        s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
+                        s{setValue: {shame: 'TextField-firstName.Input', value: ''}},
+                        s{setValue: {shame: 'TextField-lastName.Input', value: ''}},
+                        s{click: {shame: 'button-primary', timestamp: '2016/08/14 14:22:04'}},
+                        s{step: {kind: 'state', long: t('TODO State description')}},
+                        s{assert: {$tag: '0b7e96bf-4f42-41dc-b658-7b60e863356e', expected: '---generated-shit---'}},
+
+                        s{step: {kind: 'action', long: t('TODO Action description')}},
+                        s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
+                        s{setValue: {shame: 'TextField-firstName.Input', value: 'Марко'}},
+                        s{setValue: {shame: 'TextField-lastName.Input', value: ''}},
+                        s{click: {shame: 'button-primary', timestamp: '2016/08/14 14:23:51'}},
+                        s{step: {kind: 'state', long: t('TODO State description')}},
+                        s{assert: {$tag: 'ac403942-31f7-45a3-b42c-e37f6c1b83a2', expected: '---generated-shit---'}},
+
+                        s{step: {kind: 'action', long: t('TODO Action description')}},
+                        s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
+                        s{setValue: {shame: 'TextField-firstName.Input', value: 'Марко'}},
+                        s{setValue: {shame: 'TextField-lastName.Input', value: 'Вовчок'}},
+                        s{click: {shame: 'button-primary', timestamp: '2016/08/14 14:25:32'}},
+                        s{step: {kind: 'state', long: t('TODO State description')}},
+                        s{assert: {$tag: 'f866c286-58f4-4785-a2da-bad213bd4567', expected: '---generated-shit---'}},
+
+                        s{step: {kind: 'action', long: t('TODO Action description')}},
+                        s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
+                        s{setValue: {shame: 'TextField-firstName.Input', value: 'Марко'}},
+                        s{setValue: {shame: 'TextField-lastName.Input', value: 'Вовчок'}},
+                        s{setValue: {shame: 'AgreeTermsField.Checkbox', value: true}},
+                        s{step: {kind: 'state', long: t('TODO State description')}},
+                        s{assert: {$tag: 'c9e720c3-cf22-47f0-b270-ac173077803c', expected: '---generated-shit---'}},
+
+                        s{actionPlaceholder: {$tag: '6bcd180a-9701-4e84-babe-99253f49e44b'}},
+                        
                         // s{assert: {$tag: 'Just fail d5a4ca4b-cf53-4ec8-bdd4-79ca7d10d4c3', expected: {}}},
                     ]
                 }

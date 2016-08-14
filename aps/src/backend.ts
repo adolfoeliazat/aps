@@ -48,7 +48,7 @@ app.post('/rpc', (req, res) => {
         
         function circularize(o) {
             for (const [key, value] of toPairs(o)) {
-                if (key === '$trace' || key === '$meta') {
+                if ((key === '$trace' || key === '$meta') && typeof value === 'object') { // Check type to not stringify string on subsequent requests
                     o[key] = getCircularJSON().stringify(value)
                 } else {
                     if (isObject(value)) {
@@ -243,7 +243,7 @@ app.post('/rpc', (req, res) => {
                     const ft = findTagInSourceCode(msg.assertionTag)
                     if (!ft) return {error: t('Tag is not found in code')}
                     
-                    const bakFile = `c:/tmp/${path.basename(ft.file)}.bak-${moment().format('YYYYMMDD-HHmmss')}`
+                    const bakFile = `c:/tmp/aps-bak/${path.basename(ft.file)}.bak-${moment().format('YYYYMMDD-HHmmss')}`
                     fs.writeFileSync(bakFile, ft.code)
                     
                     const beginningLineOfInlineContent = `${'s'}{assert: {$tag: '${msg.assertionTag}', expected: {` // }}}
@@ -328,10 +328,11 @@ app.post('/rpc', (req, res) => {
                     const ft = findTagInSourceCode(msg.placeholderTag)
                     if (!ft) return {error: 'Tag is not found in code'}
                     
-                    const bakFile = `c:/tmp/${path.basename(ft.file)}.bak-${moment().format('YYYYMMDD-HHmmss')}`
+                    const bakFile = `c:/tmp/aps-bak/${path.basename(ft.file)}.bak-${moment().format('YYYYMMDD-HHmmss')}`
                     fs.writeFileSync(bakFile, ft.code)
                     
-                    const beginningLineContent = `art.actionPlaceholder({$tag: '${msg.placeholderTag}'})`
+                    const beginningLineContent = `${'s'}{actionPlaceholder: {$tag: '${msg.placeholderTag}'}},`
+//                    const beginningLineContent = `art.actionPlaceholder({$tag: '${msg.placeholderTag}'})`
                     const beginningLineContentIndex = ft.code.indexOf(beginningLineContent)
                     if (!~beginningLineContentIndex) return {error: 'Cannot find beginningLineContentIndex'}
                     
@@ -1186,7 +1187,8 @@ app.post('/rpc', (req, res) => {
             }
             
             if (shouldLogRequestForUI && $trace.length) {
-                requestLogForUI.push({title: msg.fun, $trace: getCircularJSON().stringify($trace), $clientSourceLocation: msg.$sourceLocation})
+                requestLogForUI.push({title: msg.fun, $trace, $clientSourceLocation: msg.$sourceLocation})
+//                requestLogForUI.push({title: msg.fun, $trace: getCircularJSON().stringify($trace), $clientSourceLocation: msg.$sourceLocation})
             }
         }
         

@@ -19,7 +19,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
-        Input, input, preventAndStop, renderLangLabel, spancTitle} from 'into-u/ui'
+        Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
