@@ -946,6 +946,31 @@ module.exports = {
           url: `http://aps-ua-writer.local:3022/sign-in.html`
     }, // end of generated piece of shit
 
+    '877a3f2f-ad7d-41c7-af4b-9665526fc27f': {
+        'AgreeTermsField.link.title': `соглашение`,
+          'AgreeTermsField.prose': `Я прочитал и принял `,
+          'TextField-email.Input': ``,
+          'TextField-email.label': `Почта`,
+          'TextField-firstName.Input': ``,
+          'TextField-firstName.label': `Имя`,
+          'TextField-lastName.Input': ``,
+          'TextField-lastName.label': `Фамилия`,
+          'button-primary.title': `Вперед`,
+          'pageHeader.title': `Регистрация`,
+          'signInSuggestion.link.title': `входим сюда`,
+          'signInSuggestion.prose': `Уже есть аккаунт? Тогда `,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.active': true,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
+          'topNavRight.TopNavItem-i000.title': `Вход`,
+          url: `http://aps-ua-writer.local:3022/sign-up.html`
+    }, // end of generated piece of shit
+
     // place to insert new generated piece of shit
 
 }

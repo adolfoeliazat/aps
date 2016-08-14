@@ -47,6 +47,8 @@ module.exports = function({sim}) {
                         s{click: {shame: 'link-createAccount', timestamp: '2016/08/12 20:40:58'}},
                         s{step: {kind: 'state', long: t('Got registration form')}},
                         s{assert: {$tag: '877a3f2f-ad7d-41c7-af4b-9665526fc27f', expected: '---generated-shit---'}},
+                        
+                        // s{assert: {$tag: 'Just fail d5a4ca4b-cf53-4ec8-bdd4-79ca7d10d4c3', expected: {}}},
                     ]
                 }
                 
@@ -125,39 +127,6 @@ module.exports = function({sim}) {
                 }
             }
             
-//            async run_bak() {
-//                const slowly = false
-//                
-//                if (slowly) { setTestSpeed('slow'); art.respectArtPauses = true }
-//                await art.resetTestDatabase({templateDB: 'test-template-ua-1', alsoRecreateTemplate: true})
-//                
-//                #hawait vovchok1()
-//                
-//                async function vovchok1() {
-//                    #hawait common.selectBrowser({$tag: '6152786a-7a29-41d0-bf96-8e35ac4e2773',
-//                        clientKind: 'writer', browserName: 'vovchok1',
-//                        stateDescription: t('Marko Vovchok, an eager writer wannabe, comes to our site')})
-//                        
-//                    art.pushStepDescription(s{kind: 'action', long: t('Trying to sign in (to non-existing account)')})
-//                    #hawait common.signIn({$tag: '80b40f65-9e49-48df-b1e4-cf34e5a0fc99', email: 'vovchok@test.shit.ua', password: 'something'})
-//                    art.pushStepDescription(s{kind: 'state', long: t('Of course it failed')})
-//                    art.uiState({$tag: 'e44a44a7-fe84-42a6-ac80-a6aee4ac87ac', expected: '---generated-shit---'})
-//                    
-//                    // Inputs
-//                    #hawait testGlobal.controls['Input-email'].testSetValue({value: 'vovchok@test.shit.ua'})
-//                    #hawait testGlobal.controls['Input-password'].testSetValue({value: 'something'})
-//                    // Action
-//                    art.pushStepDescription(s{kind: 'action', long: t('Clicking "Sign Up" link')})
-//                    // #hawait art.pausePoint(s{title: '$fromLastStepDescription'})
-//                    #hawait drpc({fun: 'danger_imposeNextRequestTimestamp', timestamp: '2016/08/12 20:40:58'})
-//                    #hawait testGlobal.controls['link-createAccount'].testClick()
-//                    art.pushStepDescription(s{kind: 'state', long: t('Got registration form')})
-//                    art.uiState({$tag: 'da9f7f21-34fe-415f-952a-d8f34e3fe1cb', expected: '---generated-shit---'})
-//                    // #hawait art.pausePoint({title: '$fromLastStepDescription'})
-//
-//                    art.actionPlaceholder({$tag: 'e84d7a46-7320-4629-a0ac-25232d64dc0a'})
-//                }
-//            }
         },
     }
 }
