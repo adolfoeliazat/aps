@@ -1004,23 +1004,14 @@ module.exports = {
     }, // end of generated piece of shit
 
     '0b7e96bf-4f42-41dc-b658-7b60e863356e': {
-        'AgreeTermsField.Checkbox': false,
-          'AgreeTermsField.errorLabel': `Необходимо принять соглашение`,
-          'AgreeTermsField.link.title': `соглашение`,
-          'AgreeTermsField.prose': `Я прочитал и принял `,
-          'TextField-email.Input': `vovchok@test.shit.ua`,
+        'TextField-email.Input': ``,
           'TextField-email.label': `Почта`,
-          'TextField-firstName.Input': ``,
-          'TextField-firstName.errorLabel': `Имя обязательно`,
-          'TextField-firstName.label': `Имя`,
-          'TextField-lastName.Input': ``,
-          'TextField-lastName.errorLabel': `Фамилия обязательна`,
-          'TextField-lastName.label': `Фамилия`,
-          'button-primary.title': `Вперед`,
-          errorBanner: `Пожалуйста, исправьте ошибки ниже`,
-          'pageHeader.title': `Регистрация`,
-          'signInSuggestion.link.title': `входим сюда`,
-          'signInSuggestion.prose': `Уже есть аккаунт? Тогда `,
+          'TextField-password.Input': ``,
+          'TextField-password.Input.type': `password`,
+          'TextField-password.label': `Пароль`,
+          'button-primary.title': `Войти`,
+          'pageHeader.title': `Вход`,
+          'preludeWithGreenCheck.title': `Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.`,
           'topNavLeft.TopNavItem-i000.shame': `TopNavItem-why`,
           'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
           'topNavLeft.TopNavItem-i001.shame': `TopNavItem-prices`,
@@ -1030,7 +1021,7 @@ module.exports = {
           'topNavRight.TopNavItem-i000.active': true,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
           'topNavRight.TopNavItem-i000.title': `Вход`,
-          url: `http://aps-ua-writer.local:3022/sign-up.html`
+          url: `http://aps-ua-writer.local:3022/sign-in.html`
     }, // end of generated piece of shit
 
     'ac403942-31f7-45a3-b42c-e37f6c1b83a2': {
