@@ -19,7 +19,8 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
-        Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, RequestBuilder} from 'into-u/ui'
+        Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, RequestBuilder,
+        preludeWithCheck} from 'into-u/ui'
 #import static 'into-u/ui'
     
 
@@ -513,7 +514,7 @@ global.igniteShit = makeUIShitIgniter({
                                     return ui.renderMoreable(s{itemsRes, itemsReq, renderItem,})
                                 }),
                             ),
-                            headerControls: _=> updatableElement(update => {
+                            headerControls: _=> updatableElement(s{}, update => {
                                 updateHeaderControls = update
                                 if (!fov(hasHeaderControls, entityRes) || !headerControlsVisible) return
                                 
@@ -1141,7 +1142,7 @@ clog('Client code is kind of loaded')
 
 
 function compiler$getRegExpForAddingSourceLocationTo() {
-    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink|CollapsibleShit|blockquotea|pageTopBlockQuote)\(\{)/g /*})*/
+    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|ia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink|CollapsibleShit|blockquotea|pageTopBlockQuote)\(\{)/g /*})*/
 }
     
     

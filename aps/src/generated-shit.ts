@@ -1034,8 +1034,36 @@ module.exports = {
     }, // end of generated piece of shit
 
     'ac403942-31f7-45a3-b42c-e37f6c1b83a2': {
-        'AgreeTermsField.Checkbox': false,
-          'AgreeTermsField.errorLabel': `Необходимо принять соглашение`,
+        'AgreeTermsField.Checkbox': true,
+          'AgreeTermsField.link.title': `соглашение`,
+          'AgreeTermsField.prose': `Я прочитал и принял `,
+          'TextField-email.Input': `vovchok@test.shit.ua`,
+          'TextField-email.label': `Почта`,
+          'TextField-firstName.Input': ``,
+          'TextField-firstName.errorLabel': `Имя обязательно`,
+          'TextField-firstName.label': `Имя`,
+          'TextField-lastName.Input': ``,
+          'TextField-lastName.errorLabel': `Фамилия обязательна`,
+          'TextField-lastName.label': `Фамилия`,
+          'button-primary.title': `Вперед`,
+          errorBanner: `Пожалуйста, исправьте ошибки ниже`,
+          'pageHeader.title': `Регистрация`,
+          'signInSuggestion.link.title': `входим сюда`,
+          'signInSuggestion.prose': `Уже есть аккаунт? Тогда `,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.active': true,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
+          'topNavRight.TopNavItem-i000.title': `Вход`,
+          url: `http://aps-ua-writer.local:3022/sign-up.html`
+    }, // end of generated piece of shit
+
+    'f866c286-58f4-4785-a2da-bad213bd4567': {
+        'AgreeTermsField.Checkbox': true,
           'AgreeTermsField.link.title': `соглашение`,
           'AgreeTermsField.prose': `Я прочитал и принял `,
           'TextField-email.Input': `vovchok@test.shit.ua`,
@@ -1062,16 +1090,18 @@ module.exports = {
           url: `http://aps-ua-writer.local:3022/sign-up.html`
     }, // end of generated piece of shit
 
-    'f866c286-58f4-4785-a2da-bad213bd4567': {
-        'AgreeTermsField.Checkbox': false,
-          'AgreeTermsField.errorLabel': `Необходимо принять соглашение`,
+    '7dbefeef-84f6-47e2-8635-d67ddcbb153d': {
+        'AgreeTermsField.Checkbox': true,
           'AgreeTermsField.link.title': `соглашение`,
           'AgreeTermsField.prose': `Я прочитал и принял `,
-          'TextField-email.Input': `vovchok@test.shit.ua`,
+          'TextField-email.Input': ``,
+          'TextField-email.errorLabel': `Почта обязательна`,
           'TextField-email.label': `Почта`,
-          'TextField-firstName.Input': `Марко`,
+          'TextField-firstName.Input': ``,
+          'TextField-firstName.errorLabel': `Имя обязательно`,
           'TextField-firstName.label': `Имя`,
-          'TextField-lastName.Input': `Вовчок`,
+          'TextField-lastName.Input': ``,
+          'TextField-lastName.errorLabel': `Фамилия обязательна`,
           'TextField-lastName.label': `Фамилия`,
           'button-primary.title': `Вперед`,
           errorBanner: `Пожалуйста, исправьте ошибки ниже`,
