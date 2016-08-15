@@ -387,7 +387,7 @@ relog(indexOfToLeft('foo bar baz', 'ba', 10))
 relog(indexOfToLeft('foo bar baz', 'ba', 7))
 relog(indexOfToLeft('foo bar baz', 'ba', 3))
 
-relog(typeof null)
+relog(range(3))
 
 
 
