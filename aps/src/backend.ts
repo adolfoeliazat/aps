@@ -390,7 +390,7 @@ app.post('/rpc', (req, res) => {
                     return hunkyDory()
                 }
                 
-                if (msg.fun === 'danger_fixNextGeneratedPassword') {
+                if (msg.fun === 'danger_imposeNextGeneratedPassword') {
                     fixedNextGeneratedPassword = msg.password
                     return hunkyDory()
                 }

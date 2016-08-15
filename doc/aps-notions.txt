@@ -19,6 +19,7 @@ Controls
     renderRedExclamationTriangleLabel
     renderDefinitionStackStrip
     preludeWithGreenCheck
+    pira
 
 CSS
     showOnParentHovered

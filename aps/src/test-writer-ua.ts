@@ -19,6 +19,8 @@ module.exports = function({sim}) {
     return {
         'UA Writer :: Sign Up :: 1 cca87b63-eedd-407d-a681-814f128b1822': {
             async run() {
+                const drpc = getDebugRPC()
+                
                 const slowly = false
                 
                 if (slowly) { setTestSpeed('slow'); art.respectArtPauses = true }
@@ -35,6 +37,8 @@ module.exports = function({sim}) {
                         ...selectBrowser(s{
                             clientKind: 'writer', browserName: 'vovchok1',
                             stateDescription: t('Marko Vovchok, an eager writer wannabe, comes to our site')}),
+                            
+                        s{do: {async action() { await drpc({fun: 'danger_imposeNextGeneratedPassword', password: 'fucking-big-generated-secret'}) }}},
                             
                         s{step: {kind: 'action', long: t('Trying to sign in (to non-existing account)')}},
                         ...signIn(s{email: 'vovchok@test.shit.ua', password: 'something'}),
