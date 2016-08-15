@@ -927,7 +927,7 @@ module.exports = {
     '1a543472-b429-4add-88e8-799598607ad3': {
         'TextField-email.Input': `vovchok@test.shit.ua`,
           'TextField-email.label': `Почта`,
-          'TextField-password.Input': `something`,
+          'TextField-password.Input': ``,
           'TextField-password.Input.type': `password`,
           'TextField-password.label': `Пароль`,
           'button-primary.title': `Войти`,
@@ -1114,6 +1114,76 @@ module.exports = {
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
           'topNavRight.TopNavItem-i000.title': `Вход`,
           url: `http://aps-ua-writer.local:3022/sign-up.html`
+    }, // end of generated piece of shit
+
+    '51815ec8-62e9-4c25-aad5-fa97f30d6cff': {
+        'TextField-email.Input': `vovchok@test.shit.ua`,
+          'TextField-email.label': `Почта`,
+          'TextField-password.Input': ``,
+          'TextField-password.Input.type': `password`,
+          'TextField-password.label': `Пароль`,
+          'button-primary.title': `Войти`,
+          errorBanner: `Неверная почта или пароль`,
+          'pageHeader.title': `Вход`,
+          'preludeWithGreenCheck.title': `Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.`,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.active': true,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-sign-in`,
+          'topNavRight.TopNavItem-i000.title': `Вход`,
+          url: `http://aps-ua-writer.local:3022/sign-in.html`
+    }, // end of generated piece of shit
+
+    '00997d56-f00a-4b6a-bffd-595ba4c23806': {
+        'TextField-aboutMe.Input': ``,
+          'TextField-aboutMe.Input.kind': `textarea`,
+          'TextField-aboutMe.label': `Пара ласковых о себе`,
+          'TextField-phone.Input': ``,
+          'TextField-phone.label': `Телефон`,
+          'button-primary.title': `Отправить на проверку`,
+          'pageHeader.title': `Профиль`,
+          'preludeWithOrangeTriangle.title': `Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.`,
+          'topNavLeft.TopNavItem-i000.active': true,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-profile`,
+          'topNavLeft.TopNavItem-i000.title': `Профиль`,
+          'topNavLeft.prose.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.prose.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.prose.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.prose.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.prose.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.prose.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
+          'topNavRight.TopNavItem-i000.title': `Марко`,
+          url: `http://aps-ua-writer.local:3022/profile.html`
+    }, // end of generated piece of shit
+
+    '4fc3f3d3-2806-4c99-9769-6d046cd7a985': {
+        'TextField-aboutMe.Input': ``,
+          'TextField-aboutMe.Input.kind': `textarea`,
+          'TextField-aboutMe.label': `Пара ласковых о себе`,
+          'TextField-phone.Input': ``,
+          'TextField-phone.errorLabel': `Телефон обязателен`,
+          'TextField-phone.label': `Телефон`,
+          'button-primary.title': `Отправить на проверку`,
+          errorBanner: `Пожалуйста, исправьте ошибки ниже`,
+          'pageHeader.title': `Профиль`,
+          'preludeWithOrangeTriangle.title': `Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.`,
+          'topNavLeft.TopNavItem-i000.active': true,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-profile`,
+          'topNavLeft.TopNavItem-i000.title': `Профиль`,
+          'topNavLeft.prose.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.prose.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.prose.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.prose.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.prose.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.prose.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
+          'topNavRight.TopNavItem-i000.title': `Марко`,
+          url: `http://aps-ua-writer.local:3022/profile.html`
     }, // end of generated piece of shit
 
     // place to insert new generated piece of shit

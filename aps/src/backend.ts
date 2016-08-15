@@ -632,7 +632,8 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 if (msg.fun === 'private_updateProfile') {
-                    loadField({key: 'phone', kind: 'phone', mandatory: true})
+                    traceBeginHandler(s{})
+                    loadField(s{key: 'phone', kind: 'phone', mandatory: true})
 
                     if (isEmpty(fieldErrors)) {
                         #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8', y: q`
@@ -641,9 +642,9 @@ app.post('/rpc', (req, res) => {
                                              state = 'profile-approval-pending'
                                    where id = ${user.id}`})
                         #await loadUserForToken()
-                        return hunkyDory({newUser: pickFromUser(user)})
+                        return traceEndHandler(s{ret: hunkyDory({newUser: pickFromUser(user)})})
                     }
-                    return fixErrorsResult()
+                    return traceEndHandler(s{ret: fixErrorsResult()})
                 }
                 
                 if (msg.fun === 'private_getSupportThreadsChunk') {
@@ -1023,7 +1024,11 @@ app.post('/rpc', (req, res) => {
                     return `client ${msg.LANG} ${msg.clientKind}`
                 }
                 
-                function loadField({key, kind, mandatory}) {
+                function loadField(def) {
+                    #extract {key, kind, mandatory} from def
+                    
+                    $trace.push({event: `Loading field ${key}`}.asnn(def))
+                    
                     try {
                         let value = msg[key]
                         if (typeof value !== 'string') raise('Fuck you with you hacky request')

@@ -26,11 +26,15 @@ module.exports = function({sim}) {
                 if (slowly) { setTestSpeed('slow'); art.respectArtPauses = true }
                 await art.resetTestDatabase({templateDB: 'test-template-ua-1', alsoRecreateTemplate: true})
                 
-                await art.run(s{
-                    instructions: [
-                        ...vovchok1(),
-                    ]
-                })
+                try {
+                    await art.run(s{
+                        instructions: [
+                            ...vovchok1(),
+                        ]
+                    })
+                } finally {
+                    testGlobal.adhoc_showLastRequest()
+                }
                 
                 function vovchok1() {
                     return [
@@ -84,12 +88,34 @@ module.exports = function({sim}) {
                         s{endSection: {}},
                         
                         s{beginSection: {long: t('Submitting sign-in form')}},
-                            s{step: {kind: 'action', long: t('TODO Action description')}},
+                            s{step: {kind: 'action', long: t('First try with wrong password')}},
                             s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
                             s{setValue: {shame: 'TextField-password.Input', value: 'dead-wrong-shit'}},
                             s{click: {shame: 'button-primary', timestamp: '2016/08/15 19:26:34'}},
-                            s{step: {kind: 'state', long: t('TODO State description')}},
+                            s{step: {kind: 'state', long: t('No way')}},
                             s{assert: {$tag: '51815ec8-62e9-4c25-aad5-fa97f30d6cff', expected: '---generated-shit---'}},
+
+                            s{step: {kind: 'action', long: t('Now with password from received email')}},
+                            s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
+                            s{setValue: {shame: 'TextField-password.Input', value: 'fucking-big-generated-secret'}},
+                            s{click: {shame: 'button-primary', timestamp: '2016/08/15 19:48:57'}},
+                            s{step: {kind: 'state', long: t('Got page asking to fill profile')}},
+                            s{assert: {$tag: '00997d56-f00a-4b6a-bffd-595ba4c23806', expected: '---generated-shit---'}},
+                        s{endSection: {}},
+
+                        s{beginSection: {long: t('Submitting profile')}},
+                            s{step: {kind: 'action', long: t('Trying to send empty profile')}},
+                            s{setValue: {shame: 'TextField-phone.Input', value: ''}},
+                            s{setValue: {shame: 'TextField-aboutMe.Input', value: ''}},
+                            s{click: {shame: 'button-primary', timestamp: '2016/08/15 20:12:37'}},
+                            s{step: {kind: 'state', long: t('Bunch of errors')}},
+                            s{assert: {$tag: '4fc3f3d3-2806-4c99-9769-6d046cd7a985', expected: '---generated-shit---'}},
+
+                            s{step: {kind: 'action', long: t('Entering junk phone')}},
+                            s{setValue: {shame: 'TextField-phone.Input', value: 'qwerty'}},
+                            s{click: {shame: 'button-primary', timestamp: '2016/08/15 20:16:20'}},
+                            s{step: {kind: 'state', long: t('No way')}},
+                            s{assert: {$tag: '243f5834-48a4-496b-8770-371ac0c94b19', expected: '---generated-shit---'}},
 
                             s{actionPlaceholder: {$tag: '6bcd180a-9701-4e84-babe-99253f49e44b'}},
                         s{endSection: {}},

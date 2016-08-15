@@ -20,7 +20,8 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, RequestBuilder,
-        preludeWithGreenCheck} from 'into-u/ui'
+        preludeWithGreenCheck, preludeWithOrangeTriangle} from 'into-u/ui'
+        
 #import static 'into-u/ui'
     
 
@@ -659,9 +660,14 @@ global.igniteShit = makeUIShitIgniter({
                         primaryButtonTitle,
                         autoFocus: 'phone',
                         fields: [
-                            ui.TextField({
+                            ui.TextField(s{
                                 name: 'phone',
-                                title: t('Phone', 'Телефон'),
+                                title: t('TOTE', 'Телефон'),
+                            }),
+                            ui.TextField(s{
+                                name: 'aboutMe',
+                                kind: 'textarea',
+                                title: t('TOTE', 'Пара ласковых о себе'),
                             }),
                         ],
                         rpcFun: 'private_updateProfile',
@@ -675,7 +681,7 @@ global.igniteShit = makeUIShitIgniter({
                     let pageBody
                     const userState = ui.getUser().state
                     if (userState === 'profile-pending') {
-                        pageBody = div(preludeWithOrangeTriangle({content: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
+                        pageBody = div(preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
                                        form)
                     } else if (userState === 'profile-approval-pending') {
                         pageBody = div(preludeWithHourglass({content: span(t('TOTE', 'Админ проверяет профиль, жди извещения почтой. Если есть вопросы, можно написать в '),
@@ -913,7 +919,8 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                     user.state === 'cool' && TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`), counter: privateCounter}),
                     user.state === 'cool' && TopNavItem({name: 'store', title: t(`Store`, `Аукцион`), counter: privateCounter}),
                     TopNavItem({name: 'profile', title: t(`Profile`, `Профиль`), counter: privateCounter}),
-                    TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter})
+                    // TODO:vgrechka Reenable Support navitem...    11a150ac-97fd-48ce-8ba6-67d0559a2768 
+                    // TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter})
                 ])
             } else if (user.kind === 'admin') {
                 privateItems = []
