@@ -1,20 +1,28 @@
-exceptions
+Ideas to Think About
+
+    - Organizing related steps of test scenarios into groups (and subgroups, thus making hierarchy)
+      Example:
+          Submitting some form multiple times with different combinations of erroneous fields to make sure all
+          kinds of shit are handled properly. Then going to another form and doing similar thing.
+          Scenario steps will be hard to distinguish.
+
+Exceptions
     raiseWithMeta
     revealStack({exception}) or revealStack({stack})
 
-control development
+Control Development
     noStateContributions
-
-css
-    showOnParentHovered
-    showOnParentHovered-parent
     
-controls
+Controls
     renderExceptionTriangle
     renderExceptionTriangleAndRevealStack
     renderRedExclamationTriangleLabel
     renderDefinitionStackStrip
     preludeWithGreenCheck
+
+CSS
+    showOnParentHovered
+    showOnParentHovered-parent
     
     
 ----------------

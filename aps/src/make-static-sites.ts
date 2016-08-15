@@ -1431,7 +1431,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                     ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar({clientKind, highlightedItem, t}))}
                 </div>
             
-                <div id="root">
+                <div id="root" style="min-height: calc(100vh - 28px - 50px);">
                     <div id="staticShit" style="display: none;">
                         <!-- BEGIN CONTENT -->
                         ${ReactDOMServer.renderToStaticMarkup(comp)}
@@ -1449,16 +1449,20 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                         }
                     </script>
                 </div>
-                                    
-                <div id="footer" style="background-color: #f8f8f8; border: 1px solid #e7e7e7; position: absolute; left: 0px; bottom: 0px; width: 100%; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 5px 15px; height: 28px;">
-                    ${run(_=> {
-                         if (clientKind === 'customer') return `
-                            © Copyright 2015-2016 AcademicPaperServed. All rights reserved
-                         `
-                    else if (clientKind === 'writer') return `
-                            © Copyright 2015-2016 Writer UA. All rights reserved
-                         `
-                    })}
+        
+                <div id="footer" style="">
+                    <div style="background-color: #f8f8f8; border: 1px solid #e7e7e7; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 5px 15px; height: 28px;">
+                        ${run(_=> {
+                             if (clientKind === 'customer') return `
+                                © Copyright 2015-2016 AcademicPaperServed. All rights reserved
+                             `
+                        else if (clientKind === 'writer') return `
+                                © Copyright 2015-2016 Writer UA. All rights reserved
+                             `
+                        })}
+                    </div>
+                    <div id="underFooter">
+                    </div>
                 </div>
 
                 <script src="jquery.min.js"></script>
