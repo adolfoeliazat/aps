@@ -1081,7 +1081,7 @@ app.post('/rpc', (req, res) => {
                         else if (kind === 'phone') {
                             let digitCount = 0
                             for (const c of value.split('')) {
-                                if (!/\d| |-|\(|\)/.test(c)) error(t('TOTE', 'Странный телефон какой-то'))
+                                if (!/(\d| |-|\+|\(|\))+/.test(c)) error(t('TOTE', 'Странный телефон какой-то'))
                                 if (/\d/.test(c)) {
                                     ++digitCount
                                 }

@@ -33,7 +33,7 @@ module.exports = function({sim}) {
                         ]
                     })
                 } finally {
-                    testGlobal.adhoc_showLastRequest()
+                    // testGlobal.adhoc_showLastRequest()
                 }
                 
                 function vovchok1() {
@@ -116,6 +116,24 @@ module.exports = function({sim}) {
                             s{click: {shame: 'button-primary', timestamp: '2016/08/15 20:16:20'}},
                             s{step: {kind: 'state', long: t('No way')}},
                             s{assert: {$tag: '243f5834-48a4-496b-8770-371ac0c94b19', expected: '---generated-shit---'}},
+
+                            s{step: {kind: 'action', long: t('Entering long phone')}},
+                            s{setValue: {shame: 'TextField-phone.Input', value: '012345678901234567890'}},
+                            s{click: {shame: 'button-primary', timestamp: '2016/08/16 11:56:01'}},
+                            s{step: {kind: 'state', long: t('No way')}},
+                            s{assert: {$tag: 'a07d90e4-60a6-45c1-a5c6-cd217a01a933', expected: '---generated-shit---'}},
+                            
+                            s{step: {kind: 'action', long: t('Entering too-few-digits phone')}},
+                            s{setValue: {shame: 'TextField-phone.Input', value: '--3234--++--'}},
+                            s{click: {shame: 'button-primary', timestamp: '2016/08/16 11:56:05'}},
+                            s{step: {kind: 'state', long: t('No way')}},
+                            s{assert: {$tag: '3f290096-9162-419b-835d-ec2b02f8f5ca', expected: '---generated-shit---'}},
+
+                            s{step: {kind: 'action', long: t('Entering sane phone')}},
+                            s{setValue: {shame: 'TextField-phone.Input', value: '+38 (068) 9110032'}},
+                            s{click: {shame: 'button-primary', timestamp: '2016/08/16 12:02:30'}},
+                            s{step: {kind: 'state', long: t('-1 error')}},
+                            s{assert: {$tag: 'd072d3c4-38c9-481a-9fec-0ecd9c5601a2', expected: '---generated-shit---'}},
 
                             s{actionPlaceholder: {$tag: '6bcd180a-9701-4e84-babe-99253f49e44b'}},
                         s{endSection: {}},
