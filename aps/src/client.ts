@@ -651,7 +651,7 @@ global.igniteShit = makeUIShitIgniter({
                     }
                 }
                 
-                function profilePageLoader() {
+                function profilePageLoader() { // @ctx page profile
                     let primaryButtonTitle
                     if (ui.getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
                     else primaryButtonTitle = t('WTF')

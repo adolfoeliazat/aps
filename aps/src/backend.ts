@@ -524,7 +524,7 @@ app.post('/rpc', (req, res) => {
                     failOnClientUserMismatch()
                     
                     const token = uuid()
-                    #await tx.query({$tag: 'e8ccf032-2c17-4a98-8666-cd18f82326c7', y: q`
+                    #await tx.query(s{$tag: 'e8ccf032-2c17-4a98-8666-cd18f82326c7', y: q`
                         insert into user_tokens(user_id, token) values(${user.id}, ${token})`})
 
                     #await loadUserData()
@@ -634,7 +634,6 @@ app.post('/rpc', (req, res) => {
                 
                 if (msg.fun === 'private_updateProfile') {
                     traceBeginHandler(s{})
-                    // @wip
                     traceBeginSection(s{name: 'Load fields'})
                         loadField(s{key: 'phone', kind: 'phone', mandatory: true})
                         loadField(s{key: 'aboutMe', mandatory: true, maxlen: 300})
@@ -979,7 +978,7 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 function pickFromUser(user) {
-                    return pick(user, 'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at',
+                    return pick(user, '$meta', 'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at',
                                       'profile_updated_at', 'phone', 'kind', 'roles')
                 }
                 
@@ -1028,7 +1027,6 @@ app.post('/rpc', (req, res) => {
                     return `client ${msg.LANG} ${msg.clientKind}`
                 }
                 
-                // @wip
                 function loadField(def) {
                     #extract {key, kind, mandatory, mandatoryErrorMessage, maxlen, minlen} from def
                     
@@ -1110,16 +1108,15 @@ app.post('/rpc', (req, res) => {
                 }
                 
                 async function loadUserForToken() {
-                    const rows = #await tx.query({$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false, y: q`
+                    const rows = #await tx.query(s{$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false, y: q`
                         select users.* from users, user_tokens
                         where user_tokens.token = ${msg.token} and users.id = user_tokens.user_id`})
                     if (!rows.length) {
                         raise('Invalid token')
                     }
                     user = rows[0]
-                    // user.id = user.user_id // To tell users.id from user_tokens.id it's selected additionaly as `user_id`
                     failOnClientUserMismatch()
-                    #await loadUserData()
+                    #await loadUserData(s{})
                 }
                 
                 async function dangerouslyKillUser({email}) {
@@ -1146,7 +1143,9 @@ app.post('/rpc', (req, res) => {
                         delete from users where email = ${email}`})
                 }
                 
-                async function loadUserData() {
+                async function loadUserData(def) {
+                    user.$meta.trace.push(s{event: 'Loading freaking user data'})
+                    
                     user.roles = {}
                     const rows = #await tx.query({$tag: 'aea627a2-a69a-4715-ad03-761537ada2fc', y: q`
                         select * from user_roles where user_id = ${user.id}`})
@@ -1389,7 +1388,8 @@ export /*async*/ function pgConnection({db}, doWithConnection) {
                         const res = qres.rows
                         
                         for (const row of res) {
-                            row.$meta = getCircularJSON().stringify(def)
+                            row.$meta = def
+                            row.$meta.trace = []
                         }
                         
                         return res
