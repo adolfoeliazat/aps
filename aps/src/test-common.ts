@@ -9,7 +9,19 @@
 import static 'into-u/utils-client into-u/ui ./stuff'
 
 export function TestCommon({sim}) {
+    
+    function makeLongShit({len}) {
+        let res = ''
+        while (res.length < len) {
+            res += 'iamlongshit'
+        }
+        res = res.slice(0, len)
+        return res
+    }
+    
     const me = {
+        LONG_SHIT_301: makeLongShit({len: 301}),
+        
         async selectBrowser({$tag, stateDescription, browserName, clientKind}) {
             CLIENT_KIND = clientKind
             sim.selectBrowser(browserName)

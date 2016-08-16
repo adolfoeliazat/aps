@@ -135,6 +135,18 @@ module.exports = function({sim}) {
                             s{step: {kind: 'state', long: t('-1 error')}},
                             s{assert: {$tag: 'd072d3c4-38c9-481a-9fec-0ecd9c5601a2', expected: '---generated-shit---'}},
 
+                            s{step: {kind: 'action', long: t('Entering long about')}},
+                            s{setValue: {shame: 'TextField-aboutMe.Input', value: common.LONG_SHIT_301}},
+                            s{click: {shame: 'button-primary', timestamp: '2016/08/16 14:01:33'}},
+                            s{step: {kind: 'state', long: t('TODO State description')}},
+                            s{assert: {$tag: 'e3c1c929-27af-4742-850c-1c1b7cb2ff51', expected: '---generated-shit---'}},
+
+                            s{step: {kind: 'action', long: t('Entering aboutMe: sane')}},
+                            s{setValue: {shame: 'TextField-aboutMe.Input', value: 'I am a fucking bitch. No, really. Wanna one for the team?'}},
+                            s{click: {shame: 'button-primary', timestamp: '2016/08/16 14:55:45'}},
+                            s{step: {kind: 'state', long: t('TODO State description')}},
+                            s{assert: {$tag: '9219ded3-54e4-4d6b-bf1b-63615cf8a56e', expected: '---generated-shit---'}},
+
                             s{actionPlaceholder: {$tag: '6bcd180a-9701-4e84-babe-99253f49e44b'}},
                         s{endSection: {}},
                         

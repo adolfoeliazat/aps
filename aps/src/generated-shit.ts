@@ -1290,6 +1290,31 @@ module.exports = {
           url: `http://aps-ua-writer.local:3022/profile.html`
     }, // end of generated piece of shit
 
+    'e3c1c929-27af-4742-850c-1c1b7cb2ff51': {
+        'TextField-aboutMe.Input': `iamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiamlongshitiaml`,
+          'TextField-aboutMe.Input.kind': `textarea`,
+          'TextField-aboutMe.errorLabel': `Не более 300 символов`,
+          'TextField-aboutMe.label': `Пара ласковых о себе`,
+          'TextField-phone.Input': `+38 (068) 9110032`,
+          'TextField-phone.label': `Телефон`,
+          'button-primary.title': `Отправить на проверку`,
+          errorBanner: `Пожалуйста, исправьте ошибки ниже`,
+          'pageHeader.title': `Профиль`,
+          'preludeWithOrangeTriangle.title': `Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.`,
+          'topNavLeft.TopNavItem-i000.active': true,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-profile`,
+          'topNavLeft.TopNavItem-i000.title': `Профиль`,
+          'topNavLeft.prose.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.prose.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.prose.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.prose.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.prose.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.prose.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
+          'topNavRight.TopNavItem-i000.title': `Марко`,
+          url: `http://aps-ua-writer.local:3022/profile.html`
+    }, // end of generated piece of shit
+
     // place to insert new generated piece of shit
 
 }

@@ -20,7 +20,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, RequestBuilder,
-        preludeWithGreenCheck, preludeWithOrangeTriangle} from 'into-u/ui'
+        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo} from 'into-u/ui'
         
 #import static 'into-u/ui'
     
@@ -126,7 +126,6 @@ global.igniteShit = makeUIShitIgniter({
                     orders: ordersPageLoader,
                     
                     async 'admin-heap'() {
-                        // @wip admin-heap.html
                         await melinda(s{
                             urlPath: 'admin-heap.html',
                             trainName: 'Load admin-heap page',
@@ -154,8 +153,6 @@ global.igniteShit = makeUIShitIgniter({
                         
                         
                         return
-                        
-                        // @wip old admin-heap.html
                         
                         beginTrain({name: 'Load page admin-heap'}); try {
                             const pageTitle = t(`TOTE`, `Куча работы`)
@@ -259,7 +256,6 @@ global.igniteShit = makeUIShitIgniter({
                     
                     async support() {
                         if (ui.urlQuery.thread) {
-                            // @wip support.html
                             await melinda(s{
                                 urlPath: 'support.html', urlEntityParamName: 'thread',
                                 trainName: 'Load support page with thread param',
@@ -374,7 +370,6 @@ global.igniteShit = makeUIShitIgniter({
                     profile: profilePageLoader,
                 }[name]
                 
-                // @wip melinda
                 async function melinda(def) {
                     #extract {
                         trainName, urlPath, urlEntityParamName, tabDefs, defaultActiveTab,
@@ -689,10 +684,14 @@ global.igniteShit = makeUIShitIgniter({
                         pageBody = div(preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
                                        form)
                     } else if (userState === 'profile-approval-pending') {
-                        pageBody = div(preludeWithHourglass({content: span(t('TOTE', 'Админ проверяет профиль, жди извещения почтой. Если есть вопросы, можно написать в '),
-                                                                 ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
-                                                                 t('.'))}),
-                                       userDisplayForm(ui.getUser()))
+                        pageBody = diva({},
+                            preludeWithHourglass({content: spana({},
+                                t('TOTE', 'Админ проверяет профиль, жди извещения почтой'),
+                                // ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
+                                // t('.')
+                            )}),
+                            renderProfile(s{user: ui.getUser()}),
+                        )
                     }
                     
                     ui.setPage({
@@ -708,6 +707,28 @@ global.igniteShit = makeUIShitIgniter({
         }
         
         // @ctx client helpers
+        
+        // @wip
+        function renderProfile(def) {
+            #extract {user} from def
+            
+            const model = user
+            
+            return diva({tame: 'profile'},
+                diva({className: 'row'},
+                    limpopo(s{colsm: 3, model, prop: 'first_name', label: t(`TOTE`, `Имя`)}),
+                    limpopo(s{colsm: 3, model, prop: 'last_name', label: t(`TOTE`, `Фамилия`)}),
+                    limpopo(s{colsm: 3, model, prop: 'email', label: t(`TOTE`, `Почта`)}),
+                    limpopo(s{colsm: 3, model, prop: 'phone', label: t(`TOTE`, `Телефон`)}),
+                ),
+                diva({className: 'row'},
+                    limpopo(s{colsm: 3, model, prop: 'inserted_at', label: t(`TOTE`, `Аккаунт создан`), transform: x =>
+                        timestampString(user.inserted_at, {includeTZ: true})}),
+                    limpopo(s{colsm: 3, model, prop: 'profile_updated_at', label: t(`TOTE`, `Профиль изменен`), transform: x =>
+                        timestampString(user.profile_updated_at, {includeTZ: true})}),
+                ),
+            )
+        }
         
         function makeRenderSupportThread({topicIsLink, hasTakeAndReplyButton, showMessageNewLabel, dryFroms}) {
             return function renderSupportThread(def) {
@@ -1106,38 +1127,6 @@ export function writerDynamicPageNames() {
     return tokens('test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap')
 }
 
-function userDisplayForm(user) {
-    return diva({},
-        diva({className: 'row'},
-            diva({className: 'col-sm-3'},
-                diva({className: 'form-group'},
-                    labela({}, t(`TOTE`, `Имя`)),
-                    diva({}, displayLabel({name: 'first_name', content: user.first_name})))),
-            diva({className: 'col-sm-3'},
-                diva({className: 'form-group'},
-                    labela({}, t(`TOTE`, `Фамилия`)),
-                    diva({}, displayLabel({name: 'last_name', content: user.last_name})))),
-            diva({className: 'col-sm-3'},
-                diva({className: 'form-group'},
-                    labela({}, t(`TOTE`, `Почта`)),
-                    diva({}, displayLabel({name: 'email', content: user.email})))),
-            diva({className: 'col-sm-3'},
-                diva({className: 'form-group'},
-                    labela({}, t(`TOTE`, `Телефон`)),
-                    diva({}, displayLabel({name: 'phone', content: user.phone})))),
-        ),
-        diva({className: 'row'},
-            diva({className: 'col-sm-3'},
-                diva({className: 'form-group'},
-                    labela({}, t(`TOTE`, `Аккаунт создан`)),
-                    diva({}, displayLabel({name: 'inserted_at', content: timestampString(user.inserted_at, {includeTZ: true})})))),
-            diva({className: 'col-sm-3'},
-                diva({className: 'form-group'},
-                    labela({}, t(`TOTE`, `Профиль изменен`)),
-                    diva({}, displayLabel({name: 'profile_updated_at', content: timestampString(user.profile_updated_at, {includeTZ: true})})))),
-        ),
-    )
-}
 
 clog('Client code is kind of loaded')
 
