@@ -388,7 +388,7 @@ relog(indexOfToLeft('foo bar baz', 'ba', 7))
 relog(indexOfToLeft('foo bar baz', 'ba', 3))
 
 const f = identity
-relog(f('qweqwe'))
+relog(cloneDeep([10, 20]))
 
 
 

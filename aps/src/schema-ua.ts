@@ -58,7 +58,9 @@ export async function createDB(newdb) {
                 state text not null,
                 first_name text not null,
                 last_name text not null,
-                phone text /*can be null*/);
+                phone text, /*can be null*/
+                about_me text /*can be null*/
+            );
             alter sequence users_id_seq restart with 100000;
             create trigger on_insert before insert on users for each row execute procedure on_insert();
             create trigger on_update before update on users for each row execute procedure on_update();

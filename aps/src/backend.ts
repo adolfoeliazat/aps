@@ -122,7 +122,7 @@ app.post('/rpc', (req, res) => {
                 let user
             
                 if (msg.fun.startsWith('private_')) {
-                    #await loadUserForToken()
+                    #await loadUserForToken(s{})
                 }
                 
                 if (msg.fun === 'danger_eval') {
@@ -528,11 +528,11 @@ app.post('/rpc', (req, res) => {
                         insert into user_tokens(user_id, token) values(${user.id}, ${token})`})
 
                     #await loadUserData()
-                    return traceEndHandler({ret: hunkyDory({user: pickFromUser(user), token}), $tag: '8f0148c4-1020-4ce5-b0c9-4f71777bdd6f'})
+                    return traceEndHandler({ret: hunkyDory({user: pickFromUser(s{user}), token}), $tag: '8f0148c4-1020-4ce5-b0c9-4f71777bdd6f'})
                 }
                 
                 if (msg.fun === 'private_getUserInfo') {
-                    return hunkyDory({user: pickFromUser(user)})
+                    return hunkyDory({user: pickFromUser(s{user})})
                 }
                 
                 if (msg.fun === 'private_getLiveStatus') {
@@ -640,13 +640,14 @@ app.post('/rpc', (req, res) => {
                     traceEndSection(s{})
 
                     if (isEmpty(fieldErrors)) {
-                        #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8', y: q`
+                        #await tx.query(s{y: q`
                             update users set profile_updated_at = ${requestTimestamp},
                                              phone = ${fields.phone},
+                                             about_me = ${fields.aboutMe},
                                              state = 'profile-approval-pending'
                                    where id = ${user.id}`})
-                        #await loadUserForToken()
-                        return traceEndHandler(s{ret: hunkyDory({newUser: pickFromUser(user)})})
+                        #await loadUserForToken(s{})
+                        return traceEndHandler(s{ret: hunkyDory({newUser: pickFromUser(s{user})})})
                     }
                     return traceEndHandler(s{ret: fixErrorsResult()})
                 }
@@ -977,9 +978,16 @@ app.post('/rpc', (req, res) => {
                     return value
                 }
                 
-                function pickFromUser(user) {
-                    return pick(user, '$meta', 'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at',
-                                      'profile_updated_at', 'phone', 'kind', 'roles')
+                function pickFromUser(def) {
+                    #extract {user} from def
+                    
+                    const strippedUser = pick(user,
+                        'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at',
+                        'profile_updated_at', 'kind', 'roles', 'phone', 'about_me')
+                    strippedUser.$meta = cloneDeep(user.$meta)
+                    strippedUser.$meta.trace.push(s{event: 'pickFromUser()'})
+                        
+                    return strippedUser
                 }
                 
                 
@@ -1107,8 +1115,8 @@ app.post('/rpc', (req, res) => {
                     }
                 }
                 
-                async function loadUserForToken() {
-                    const rows = #await tx.query(s{$tag: 'cb833ae1-19da-459e-a638-da4c9e7266cc', shouldLogForUI: false, y: q`
+                async function loadUserForToken(def) {
+                    const rows = #await tx.query(s{shouldLogForUI: false, y: q`
                         select users.* from users, user_tokens
                         where user_tokens.token = ${msg.token} and users.id = user_tokens.user_id`})
                     if (!rows.length) {
@@ -1181,7 +1189,7 @@ app.post('/rpc', (req, res) => {
                     if (nil(id)) return undefined
                     const user = #await tx.query({$tag: 'd206c4b6-84fb-4036-af29-af69f490a51f', y: q`
                         select * from users where id = ${id}`})[0]
-                    return pickFromUser(user)
+                    return pickFromUser(s{user})
                 }
             }
             

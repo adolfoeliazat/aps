@@ -656,34 +656,35 @@ global.igniteShit = makeUIShitIgniter({
                     if (ui.getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
                     else primaryButtonTitle = t('WTF')
                     
-                    const form = ui.Form({
-                        primaryButtonTitle,
-                        autoFocus: 'phone',
-                        fields: [
-                            ui.TextField(s{
-                                name: 'phone',
-                                title: t('TOTE', 'Телефон'),
-                            }),
-                            ui.TextField(s{
-                                name: 'aboutMe',
-                                kind: 'textarea',
-                                title: t('TOTE', 'Пара ласковых о себе'),
-                            }),
-                        ],
-                        rpcFun: 'private_updateProfile',
-                        async onSuccess(res) {
-                            // ui.getUser().state = 'profile-approval-pending'
-                            ui.setUser(res.newUser)
-                            await ui.replaceNavigate('profile.html')
-                        },
-                    })
-                    
                     let pageBody
                     const userState = ui.getUser().state
                     if (userState === 'profile-pending') {
-                        pageBody = div(preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
-                                       form)
-                    } else if (userState === 'profile-approval-pending') {
+                        pageBody = diva({},
+                            preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
+                            ui.Form({
+                                primaryButtonTitle,
+                                autoFocus: 'phone',
+                                fields: [
+                                    ui.TextField(s{
+                                        name: 'phone',
+                                        title: t('TOTE', 'Телефон'),
+                                    }),
+                                    ui.TextField(s{
+                                        name: 'aboutMe',
+                                        kind: 'textarea',
+                                        title: t('TOTE', 'Пара ласковых о себе'),
+                                    }),
+                                ],
+                                rpcFun: 'private_updateProfile',
+                                async onSuccess(res) {
+                                    // ui.getUser().state = 'profile-approval-pending'
+                                    ui.setUser(res.newUser)
+                                    await ui.replaceNavigate('profile.html')
+                                },
+                            }),
+                        )
+                    }
+                    else if (userState === 'profile-approval-pending') {
                         pageBody = diva({},
                             preludeWithHourglass({content: spana({},
                                 t('TOTE', 'Админ проверяет профиль, жди извещения почтой'),
@@ -727,6 +728,8 @@ global.igniteShit = makeUIShitIgniter({
                     limpopo(s{colsm: 3, model, prop: 'profile_updated_at', label: t(`TOTE`, `Профиль изменен`), transform: x =>
                         timestampString(user.profile_updated_at, {includeTZ: true})}),
                 ),
+                diva({className: 'row'},
+                    limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`)})),
             )
         }
         

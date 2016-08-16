@@ -142,7 +142,7 @@ module.exports = function({sim}) {
                             s{assert: {$tag: 'e3c1c929-27af-4742-850c-1c1b7cb2ff51', expected: '---generated-shit---'}},
 
                             s{step: {kind: 'action', long: t('Entering aboutMe: sane')}},
-                            s{setValue: {shame: 'TextField-aboutMe.Input', value: 'I am a fucking bitch. No, really. Wanna one for the team?'}},
+                            s{setValue: {shame: 'TextField-aboutMe.Input', value: 'I am a fucking bitch. No, really. Wanna have one for the team?'}},
                             s{click: {shame: 'button-primary', timestamp: '2016/08/16 14:55:45'}},
                             s{step: {kind: 'state', long: t('TODO State description')}},
                             s{assert: {$tag: '9219ded3-54e4-4d6b-bf1b-63615cf8a56e', expected: '---generated-shit---'}},

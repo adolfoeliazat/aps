@@ -1315,6 +1315,36 @@ module.exports = {
           url: `http://aps-ua-writer.local:3022/profile.html`
     }, // end of generated piece of shit
 
+    '9219ded3-54e4-4d6b-bf1b-63615cf8a56e': {
+        'pageHeader.title': `Профиль`,
+          'profile.about_me.label': `Набрехано о себе`,
+          'profile.about_me.value': `I am a fucking bitch. No, really. Wanna have one for the team?`,
+          'profile.email.label': `Почта`,
+          'profile.email.value': `vovchok@test.shit.ua`,
+          'profile.first_name.label': `Имя`,
+          'profile.first_name.value': `Марко`,
+          'profile.inserted_at.label': `Аккаунт создан`,
+          'profile.inserted_at.value': `14/08/2016 20:48:51 (Киев)`,
+          'profile.last_name.label': `Фамилия`,
+          'profile.last_name.value': `Вовчок`,
+          'profile.phone.label': `Телефон`,
+          'profile.phone.value': `+38 (068) 9110032`,
+          'profile.profile_updated_at.label': `Профиль изменен`,
+          'profile.profile_updated_at.value': `16/08/2016 17:55:45 (Киев)`,
+          'topNavLeft.TopNavItem-i000.active': true,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-profile`,
+          'topNavLeft.TopNavItem-i000.title': `Профиль`,
+          'topNavLeft.prose.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.prose.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.prose.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.prose.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.prose.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.prose.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
+          'topNavRight.TopNavItem-i000.title': `Марко`,
+          url: `http://aps-ua-writer.local:3022/profile.html`
+    }, // end of generated piece of shit
+
     // place to insert new generated piece of shit
 
 }
