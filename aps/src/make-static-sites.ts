@@ -1220,16 +1220,6 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 <style>
                     /* @ctx css */
         
-                    button:disabled {
-                        cursor: default !important;
-                    }
-                    input:disabled {
-                        cursor: default !important;
-                    }
-                    select:disabled {
-                        cursor: default !important;
-                    }
-        
                     .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a {
                         background: none;
                     }

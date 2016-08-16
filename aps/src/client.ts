@@ -42,6 +42,11 @@ global.igniteShit = makeUIShitIgniter({
                 
                 let res = `
                     body {overflow-x: hidden;}
+                    
+                    button:disabled {cursor: default !important;}
+                    input:disabled {cursor: default !important;}
+                    textarea:disabled {cursor: default !important;}
+                    select:disabled {cursor: default !important;}
                 
                     .form-control:focus {border-color: #b0bec5; box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(176,190,197,.6);}
 

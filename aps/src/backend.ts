@@ -60,6 +60,7 @@ app.post('/rpc', (req, res) => {
     })
     
     async function handle(msg) {
+        const $traceStack = []
         const $trace = []
         
         let requestTimestamp = moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.SSSSSS')
@@ -633,7 +634,11 @@ app.post('/rpc', (req, res) => {
                 
                 if (msg.fun === 'private_updateProfile') {
                     traceBeginHandler(s{})
-                    loadField(s{key: 'phone', kind: 'phone', mandatory: true})
+                    // @wip
+                    traceBeginSection(s{name: 'Load fields'})
+                        loadField(s{key: 'phone', kind: 'phone', mandatory: true})
+                        loadField(s{key: 'aboutMe', mandatory: true, maxlen: 300})
+                    traceEndSection(s{})
 
                     if (isEmpty(fieldErrors)) {
                         #await tx.query({$tag: '492b9099-44c3-497b-a403-09abd2090be8', y: q`
@@ -723,7 +728,6 @@ app.post('/rpc', (req, res) => {
                                 select count(*) from support_thread_messages
                                 where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}`})[0].count
                             
-                            // @wip
                             const top = #await tx.query(s{y: q`
                                 select * from support_thread_messages
                                 where thread_id = ${item.id} and data->'seenBy'->${user.id} ${{inline: seenByUserPred}}
@@ -985,7 +989,7 @@ app.post('/rpc', (req, res) => {
                         sentEmails.push(it)
                     }
                     
-                    return
+                    return // --- cut here ---
                     
                     if (!mailTransport) {
                         const nodemailer = require('nodemailer')
@@ -1024,45 +1028,57 @@ app.post('/rpc', (req, res) => {
                     return `client ${msg.LANG} ${msg.clientKind}`
                 }
                 
+                // @wip
                 function loadField(def) {
-                    #extract {key, kind, mandatory} from def
+                    #extract {key, kind, mandatory, mandatoryErrorMessage, maxlen, minlen} from def
                     
-                    $trace.push({event: `Loading field ${key}`}.asnn(def))
+                    $trace.push(s{event: `Loading field ${key}`})
                     
                     try {
                         let value = msg[key]
                         if (typeof value !== 'string') raise('Fuck you with you hacky request')
                         value = value.trim()
                         
-                        if (mandatory && isBlank(value)) errorByKind({
-                            email: t('TOTE', 'Почта обязательна'),
-                            firstName: t('TOTE', 'Имя обязательно'),
-                            lastName: t('TOTE', 'Фамилия обязательна'),
-                            phone: t('TOTE', 'Телефон обязателен'),
-                            _default: t('TOTE', 'Поле обязательно'),
-                        })
+                        if (mandatory && isBlank(value)) {
+                            if (mandatoryErrorMessage) {
+                                error(mandatoryErrorMessage)
+                            } else {
+                                errorByKind({
+                                    _default: t('TOTE', 'Поле обязательно'),
+                                    email: t('TOTE', 'Почта обязательна'),
+                                    firstName: t('TOTE', 'Имя обязательно'),
+                                    lastName: t('TOTE', 'Фамилия обязательна'),
+                                    phone: t('TOTE', 'Телефон обязателен'),
+                                })
+                            }
+                        }
                         
-                        const maxlen = {
-                            email: 50,
-                            firstName: 50,
-                            lastName: 50,
-                            phone: 20,
-                            topic: 300,
-                            message: 1000,
-                        }[kind]
-                        if (!maxlen) raise(`WTF, define maxlen for ${kind}`)
+                        if (!maxlen) {
+                            maxlen = {
+                                email: 50,
+                                firstName: 50,
+                                lastName: 50,
+                                phone: 20,
+                                topic: 300,
+                                message: 1000,
+                            }[kind]
+                            if (!maxlen) raise(`WTF, define maxlen for ${kind}`)
+                        }
                         if (value.length > maxlen) error(t('TOTE', `Не более ${maxlen} символов`))
                         
-                        const minlen = {
-                            email: 3,
-                        }[kind]
+                        if (minlen === undefined) {
+                            minlen = {
+                                email: 3,
+                            }[kind]
+                        }
                         if (minlen) {
                             if (value.length < minlen) error(t('TOTE', `Не менее ${minlen} символов`))
                         }
                         
                         if (kind === 'email') {
                             if (!isValidEmail(value)) error(t('TOTE', 'Странная почта какая-то'))
-                        } else if (kind === 'phone') {
+                        }
+                        else if (kind === 'phone') {
                             let digitCount = 0
                             for (const c of value.split('')) {
                                 if (!/\d| |-|\(|\)/.test(c)) error(t('TOTE', 'Странный телефон какой-то'))
@@ -1073,7 +1089,6 @@ app.post('/rpc', (req, res) => {
                             const minDigitCount = 6
                             if (digitCount < minDigitCount) error(t('TOTE', `Не менее ${minDigitCount} цифр`))
                         }
-
                         
                         fields[key] = value
                     } catch (e) {
@@ -1198,6 +1213,21 @@ app.post('/rpc', (req, res) => {
             }
         }
         
+        function traceBeginSection(def) {
+            #extract {name} from def
+            const items = []
+            $trace.push({section: {name, items}}.asnn(def))
+
+            $traceStack.push($trace)
+            $trace = items
+        }
+        
+        function traceEndSection(def) {
+            $trace.push({event: 'End section'}.asnn(def))
+            
+            if (!$traceStack.length) raise('Stack underflow in traceEndSection')
+            $trace = $traceStack.pop()
+        }
         
         function traceBeginHandler(def) {
             const preparedMsg = omitMetaShit(omit(msg, 'fun', 'token'))
