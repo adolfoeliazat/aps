@@ -387,8 +387,10 @@ relog(indexOfToLeft('foo bar baz', 'ba', 10))
 relog(indexOfToLeft('foo bar baz', 'ba', 7))
 relog(indexOfToLeft('foo bar baz', 'ba', 3))
 
-const f = identity
-relog(cloneDeep([10, 20]))
+const x = {a: 10, $foo: 20, b: 30}
+const y = {$foo: 1000, b: 500}
+const z = x.asnno$(y)
+relog({x, y, z})
 
 
 

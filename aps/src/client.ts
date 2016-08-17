@@ -20,7 +20,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, RequestBuilder,
-        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo} from 'into-u/ui'
+        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink} from 'into-u/ui'
         
 #import static 'into-u/ui'
     
@@ -575,79 +575,41 @@ global.igniteShit = makeUIShitIgniter({
                     })
                 }
                 
-                
+                // @wip
                 function dashboardPageLoader() {
                     ui.setPage({
                         header: pageHeader({title: t('Dashboard', 'Панель')}),
-                        body: div(
-// @killme
-//                            elcl({
-//                                render() {
-//                                    dlog('rendering aaa')
-//                                    return div(
-//                                        elcl({
-//                                            render() {
-//                                                dlog('rendering bbb')
-//                                                return div('bbb')
-//                                            },
-//                                            componentDidMount() {
-//                                                dlog('mounted bbb')
-//                                            },
-//                                            componentWillMount() {
-//                                                dlog('will mount bbb')
-//                                            }
-//                                        }),
-//                                        'aaa',
-//                                        elcl({
-//                                            render() {
-//                                                return div('ccc')
-//                                            },
-//                                            componentDidMount() {
-//                                                dlog('mounted ccc')
-//                                            }
-//                                        }),
-//                                        )
-//                                },
-//                                componentDidMount() {
-//                                    dlog('mounted aaa')
-//                                },
-//                                componentWillMount() {
-//                                    dlog('will mount aaa')
-//                                }
-//                            }),
+                        body: diva({},
                             diva({className: 'row'},
                                 diva({className: 'col-sm-6'},
-                                    sectionTitle(t('Account', 'Аккаунт')),
-                                    sectionLinks(
-                                        {
-                                            name: 'signOut',
-                                            title: t('Sign out', 'Выйти прочь'),
-                                            onClick() {
+                                    section(s{
+                                        name: 'account',
+                                        title: t(`TOTE`, `Аккаунт`),
+                                        items: [
+                                            darkLink(s{tamy: 'signOut', title: t(`TOTE`, `Выйти прочь`), async onClick() {
                                                 ui.signOut()
-                                            }
-                                        },
-                                        {
-                                            name: 'changePassword',
-                                            title: t('Change password', 'Сменить пароль'),
-                                            onClick() {
+                                            }}),
+                                            darkLink(s{tamy: 'signOut', title: t(`TOTE`, `Выйти прочь`), async onClick() {
                                                 dlog('implement change password')
-                                            }
-                                        },
-                                    )))
+                                            }}),
+                                        ]
+                                    }),
+                                )
                             )
+                        )
                     })
                     
-                    
-                    function sectionTitle(title) {
-                        return diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title)
-                    }
-                    
-                    function sectionLinks(...items) {
-                        return ula({className: 'fa-ul', style: {marginLeft: 20}},
-                                   ...items.map(item =>
-                                       lia({style: {marginBottom: 5}},
-                                           ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
-                                           link({tamy: item.name, title: item.title, style: {color: '#333'}, onClick: item.onClick}))))
+                    function section(def) {
+                        #extract {name, title, items} from def
+                        
+                        return diva({tame: `section-${name}`, style: {}},
+                            diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title),
+                            ula({className: 'fa-ul', style: {marginLeft: 20}},
+                                ...items.map(item =>
+                                    lia({style: {marginBottom: 5}},
+                                        ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
+                                        item)))
+                        )
                     }
                 }
                 
@@ -955,7 +917,8 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
                 privateItems = []
                 privateItems.push(TopNavItem({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize', counter: privateCounter}))
                 if (user.roles.support) {
-                    privateItems.push(TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}))
+                    // TODO:vgrechka Reenable Support navitem...    9c49cfeb-86c1-4d86-85ed-6430e14946d8 
+                    // privateItems.push(TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}))
                 }
             }
         }
