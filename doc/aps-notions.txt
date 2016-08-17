@@ -6,6 +6,9 @@ Ideas to Think About
           kinds of shit are handled properly. Then going to another form and doing similar thing.
           Scenario steps will be hard to distinguish.
           
+    - Make separation between client-side and server-side usage of ui.ts cleaner.
+      Remove `typeof window` checks scattered throughout the file.
+          
 Funny Names
     Betsy
     melinda

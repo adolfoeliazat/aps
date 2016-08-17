@@ -589,8 +589,8 @@ global.igniteShit = makeUIShitIgniter({
                                             darkLink(s{tamy: 'signOut', title: t(`TOTE`, `Выйти прочь`), async onClick() {
                                                 ui.signOut()
                                             }}),
-                                            darkLink(s{tamy: 'signOut', title: t(`TOTE`, `Выйти прочь`), async onClick() {
-                                                dlog('implement change password')
+                                            darkLink(s{tamy: 'changePassword', title: t(`TOTE`, `Сменить пароль`), async onClick() {
+                                                console.warn('// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a')
                                             }}),
                                         ]
                                     }),
