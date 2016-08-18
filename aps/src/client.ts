@@ -33,7 +33,7 @@ Error.stackTraceLimit = Infinity
 
 global.igniteShit = makeUIShitIgniter({
     Impl: function hot$ImplForShitIgniter({ui}) {
-        return {
+        const impl = {
             isDynamicPage,
             
             css() {
@@ -366,10 +366,10 @@ global.igniteShit = makeUIShitIgniter({
                         }
                     },
                 
-// @wip
-dashboard: async function dashboard() { // @ctx page dashboard
+dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboard
     beginTrain({name: 'Load dashboard page'}); try {
-        const thePage = {
+        const myPage = {
+            id: puid(),
             header: pageHeader({title: t('Dashboard', 'Панель')}),
             body: diva({},
                 diva({className: 'row'},
@@ -388,13 +388,13 @@ dashboard: async function dashboard() { // @ctx page dashboard
                                 }
                                 
                                 addMetric({metric: 'profilesToApprove', url: 'fuck.html', title: t(`TOTE`, `Профилей зааппрувить`)})
-                                addMetric({metric: 'suka', url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
+                                addMetric({metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
                                 return items
                                 
-                                function addMetric({metric, url, title}) {
+                                function addMetric({metric, url, title, noStateContributions}) {
                                     const model = res[metric]
                                     if (model.count !== '0') {
-                                        items.push(diva({tame: metric, style: {position: 'relative', overflow: 'hidden'}},
+                                        items.push(diva({tame: metric, noStateContributions, style: {position: 'relative', overflow: 'hidden'}},
                                             diva({style: {position: 'absolute', zIndex: -1, left: 0, top: 0}}, repeat('.', 210)),
                                             ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT},
                                                 title, url, delayActionForFanciness: true}),
@@ -404,22 +404,6 @@ dashboard: async function dashboard() { // @ctx page dashboard
                                         ))
                                     }
                                 }
-
-                                // --- cut here ---
-                                return res.items.map(item => {
-                                    const lolo = lookup(item.name, {
-                                        profilesToApprove: {title: t(`TOTE`, `Профилей зааппрувить`), url: 'fuck.html'},
-                                    })
-                                    return diva({tame: item.name, style: {position: 'relative'}},
-                                        diva({style: {position: 'absolute', zIndex: -1, left: 0, top: 0}}, repeat('.', 110)),
-                                        // TODO:vgrechka Use urlLink
-                                        ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT},
-                                            title: lolo.title, url: lolo.url, delayActionForFanciness: true}),
-                                        diva({style: {float: 'right', paddingLeft: 8, background: WHITE}},
-                                            spana({className: `badge`, style: {float: 'right', backgroundColor: BLUE_GRAY_400}},
-                                                spanc({tame: 'badge', content: item.count}))),
-                                    )
-                                })
                             }),
                             emptyItemsText: t(`TOTE`, `Сюшай, савсэм нэт работы...`),
                         }),
@@ -443,15 +427,21 @@ dashboard: async function dashboard() { // @ctx page dashboard
             )
         }
         
-        ui.setPage(thePage)
+        const scrollTop = $(document).scrollTop()
+        ui.setPage(myPage)
+        if (preserveScroll) {
+            $(document).scrollTop(scrollTop)
+        }
         
+        // @wip
         !function scheduleUpdate() {
             timeoutSet(5000, async function() {
-                if (ui.currentPage === thePage) {
-                    dlog('Updating dashboard page')
-                    await dashboard()
-                    scheduleUpdate()
-                }
+                if (impl.stale) return
+                if (myPage !== ui.currentPage) return
+                
+                // dlog(`currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}`)
+                dlog('Updating dashboard page')
+                await dashboard({preserveScroll: true})
             })
         }()
         
@@ -736,6 +726,8 @@ dashboard: async function dashboard() { // @ctx page dashboard
                 return renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem, t, ui})
             },
         }
+        
+        return impl
         
         // @ctx client helpers
         
