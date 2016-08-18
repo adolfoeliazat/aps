@@ -1,4 +1,4 @@
-Ideas to Think About
+Things to Consider
 
     - [DONE] Organizing related steps of test scenarios into groups (and subgroups, thus making hierarchy)
       Example:
@@ -9,10 +9,11 @@ Ideas to Think About
     - Make separation between client-side and server-side usage of ui.ts cleaner.
       Remove `typeof window` checks scattered throughout the file.
           
-Funny Names
+Funny Function Names
     Betsy
     melinda
     makeHrundels
+    limpopo
 
 Exceptions
     raiseWithMeta
@@ -36,7 +37,11 @@ CSS
 Contexts
      // @ctx backend meta
      // @ctx db template
-    
+     // @ctx page ...
+     // @ctx fiddle with aps-test db 
+     // @ctx fiddle with requests
+     // @ctx domains
+     
     
 ----------------
 

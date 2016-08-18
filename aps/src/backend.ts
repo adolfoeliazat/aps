@@ -546,6 +546,11 @@ app.post('/rpc', (req, res) => {
                         
                         if (unassignedSupportThreadCount) res.unassignedSupportThreadCount = t(''+unassignedSupportThreadCount)
                         if (heapSize) res.heapSize = t(''+heapSize)
+                        
+                        // @wip
+                        res.suka = 'blia'
+                        res.profilesToApprove = (#await tx.query(s{y: q`
+                            select count(*) from users where state = 'profile-approval-pending'`}))[0]
                     }
                     
                     const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18', y: q`
@@ -1254,7 +1259,6 @@ app.post('/rpc', (req, res) => {
 //                dlogs(`------- ret of ${msg.fun}`, data.ret)
 //            }
             
-            dlog(data.ret)
             return data.ret
         }
     }
@@ -1542,6 +1546,21 @@ export function imposeRequestTimestamp(x) {
 }
 
 
+
+
+
+
+
+
+
+
+
+function __domains() { // @ctx domains
+    const userStates = [
+        'cool',
+        'profile-approval-pending',
+    ]
+}
 
 
 

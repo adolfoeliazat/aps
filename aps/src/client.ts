@@ -366,8 +366,153 @@ global.igniteShit = makeUIShitIgniter({
                         }
                     },
                 
-                    dashboard: dashboardPageLoader,
-                    profile: profilePageLoader,
+// @wip
+async dashboard() { // @ctx page dashboard
+    beginTrain({name: 'Load dashboard page'}); try {
+        ui.setPage({
+            header: pageHeader({title: t('Dashboard', 'Панель')}),
+            body: diva({},
+                diva({className: 'row'},
+                    diva({className: 'col-sm-6'},
+                        section(s{
+                            name: 'workPending',
+                            title: t(`TOTE`, `Работенка`),
+                            items: await runa(async function() {
+                                const items = []
+                                
+                                const res = await ui.rpcSoft({fun: 'private_getLiveStatus'})
+                                if (res.error) {
+                                    // TODO:vgrechka Handle RPC error while updating dashboard    8e69deec-39ba-48d7-8112-57e2bdf91228
+                                    console.warn('RPC error: ' + textMeat(res.error))
+                                    return []
+                                }
+                                
+                                {
+                                    const url = 'fuck.html'
+                                    const title = t(`TOTE`, `Профилей зааппрувить`)
+                                        
+                                    const metric = 'profilesToApprove'
+                                    const model = res[metric]
+                                    if (model.count !== '0') {
+                                        items.push(diva({tame: metric, style: {position: 'relative', overflow: 'hidden'}},
+                                            diva({style: {position: 'absolute', zIndex: -1, left: 0, top: 0}}, repeat('.', 210)),
+                                            ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT},
+                                                title, url, delayActionForFanciness: true}),
+                                            diva({style: {float: 'right', paddingLeft: 8, background: WHITE}},
+                                                spana({className: `badge`, style: {float: 'right', backgroundColor: BLUE_GRAY_400}},
+                                                    spanc({tame: 'badge', content: {mopy: {model, prop: 'count'}}}))),
+                                        ))
+                                    }
+                                }
+                                
+                                return items
+
+                                // --- cut here ---
+                                return res.items.map(item => {
+                                    const lolo = lookup(item.name, {
+                                        profilesToApprove: {title: t(`TOTE`, `Профилей зааппрувить`), url: 'fuck.html'},
+                                    })
+                                    return diva({tame: item.name, style: {position: 'relative'}},
+                                        diva({style: {position: 'absolute', zIndex: -1, left: 0, top: 0}}, repeat('.', 110)),
+                                        // TODO:vgrechka Use urlLink
+                                        ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT},
+                                            title: lolo.title, url: lolo.url, delayActionForFanciness: true}),
+                                        diva({style: {float: 'right', paddingLeft: 8, background: WHITE}},
+                                            spana({className: `badge`, style: {float: 'right', backgroundColor: BLUE_GRAY_400}},
+                                                spanc({tame: 'badge', content: item.count}))),
+                                    )
+                                })
+                            }),
+                            emptyItemsText: t(`TOTE`, `Сюшай, савсэм нэт работы...`),
+                        }),
+                    ),
+                    
+                    diva({className: 'col-sm-6'},
+                        section(s{
+                            name: 'account',
+                            title: t(`TOTE`, `Аккаунт`),
+                            items: [
+                                darkLink(s{tamy: 'signOut', title: t(`TOTE`, `Выйти прочь`), async onClick() {
+                                    ui.signOut()
+                                }}),
+                                darkLink(s{tamy: 'changePassword', title: t(`TOTE`, `Сменить пароль`), async onClick() {
+                                    console.warn('// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a')
+                                }}),
+                            ]
+                        }),
+                    ),
+                )
+            )
+        })
+        
+        function section(def) {
+            #extract {name, title, items, emptyItemsText} from def
+            
+            return diva({tame: `section-${name}`, style: {}},
+                diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title),
+                run(_=> {
+                    if (!items.length) return emptyItemsText || diva({style: {}}, t(`TOTE`, `Савсэм пусто здэсь...`))
+                    return ula({className: 'fa-ul', style: {marginLeft: 20}},
+                        ...items.map(item =>
+                            lia({style: {marginBottom: 5}},
+                                ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
+                                item)))
+                }),
+            )
+        }
+    } finally { endTrain() }
+},
+                    
+                    async profile() { // @ctx page profile
+                        let primaryButtonTitle
+                        if (ui.getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
+                        else primaryButtonTitle = t('WTF')
+                        
+                        let pageBody
+                        const userState = ui.getUser().state
+                        if (userState === 'profile-pending') {
+                            pageBody = diva({},
+                                preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
+                                ui.Form({
+                                    primaryButtonTitle,
+                                    autoFocus: 'phone',
+                                    fields: [
+                                        ui.TextField(s{
+                                            name: 'phone',
+                                            title: t('TOTE', 'Телефон'),
+                                        }),
+                                        ui.TextField(s{
+                                            name: 'aboutMe',
+                                            kind: 'textarea',
+                                            title: t('TOTE', 'Пара ласковых о себе'),
+                                        }),
+                                    ],
+                                    rpcFun: 'private_updateProfile',
+                                    async onSuccess(res) {
+                                        // ui.getUser().state = 'profile-approval-pending'
+                                        ui.setUser(res.newUser)
+                                        await ui.replaceNavigate('profile.html')
+                                    },
+                                }),
+                            )
+                        }
+                        else if (userState === 'profile-approval-pending') {
+                            pageBody = diva({},
+                                preludeWithHourglass({content: spana({},
+                                    t('TOTE', 'Админ проверяет профиль, жди извещения почтой'),
+                                    // ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
+                                    // t('.')
+                                )}),
+                                renderProfile(s{user: ui.getUser()}),
+                            )
+                        }
+                        
+                        ui.setPage({
+                            header: pageHeader({title: t('Profile', 'Профиль')}),
+                            body: pageBody
+                        })
+                    },
+                    
                 }[name]
                 
                 async function melinda(def) {
@@ -575,93 +720,6 @@ global.igniteShit = makeUIShitIgniter({
                     })
                 }
                 
-                // @wip
-                function dashboardPageLoader() {
-                    ui.setPage({
-                        header: pageHeader({title: t('Dashboard', 'Панель')}),
-                        body: diva({},
-                            diva({className: 'row'},
-                                diva({className: 'col-sm-6'},
-                                    section(s{
-                                        name: 'account',
-                                        title: t(`TOTE`, `Аккаунт`),
-                                        items: [
-                                            darkLink(s{tamy: 'signOut', title: t(`TOTE`, `Выйти прочь`), async onClick() {
-                                                ui.signOut()
-                                            }}),
-                                            darkLink(s{tamy: 'changePassword', title: t(`TOTE`, `Сменить пароль`), async onClick() {
-                                                console.warn('// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a')
-                                            }}),
-                                        ]
-                                    }),
-                                )
-                            )
-                        )
-                    })
-                    
-                    function section(def) {
-                        #extract {name, title, items} from def
-                        
-                        return diva({tame: `section-${name}`, style: {}},
-                            diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title),
-                            ula({className: 'fa-ul', style: {marginLeft: 20}},
-                                ...items.map(item =>
-                                    lia({style: {marginBottom: 5}},
-                                        ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
-                                        item)))
-                        )
-                    }
-                }
-                
-                function profilePageLoader() { // @ctx page profile
-                    let primaryButtonTitle
-                    if (ui.getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
-                    else primaryButtonTitle = t('WTF')
-                    
-                    let pageBody
-                    const userState = ui.getUser().state
-                    if (userState === 'profile-pending') {
-                        pageBody = diva({},
-                            preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
-                            ui.Form({
-                                primaryButtonTitle,
-                                autoFocus: 'phone',
-                                fields: [
-                                    ui.TextField(s{
-                                        name: 'phone',
-                                        title: t('TOTE', 'Телефон'),
-                                    }),
-                                    ui.TextField(s{
-                                        name: 'aboutMe',
-                                        kind: 'textarea',
-                                        title: t('TOTE', 'Пара ласковых о себе'),
-                                    }),
-                                ],
-                                rpcFun: 'private_updateProfile',
-                                async onSuccess(res) {
-                                    // ui.getUser().state = 'profile-approval-pending'
-                                    ui.setUser(res.newUser)
-                                    await ui.replaceNavigate('profile.html')
-                                },
-                            }),
-                        )
-                    }
-                    else if (userState === 'profile-approval-pending') {
-                        pageBody = diva({},
-                            preludeWithHourglass({content: spana({},
-                                t('TOTE', 'Админ проверяет профиль, жди извещения почтой'),
-                                // ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
-                                // t('.')
-                            )}),
-                            renderProfile(s{user: ui.getUser()}),
-                        )
-                    }
-                    
-                    ui.setPage({
-                        header: pageHeader({title: t('Profile', 'Профиль')}),
-                        body: pageBody
-                    })
-                }
             },
             
             renderTopNavbar({highlightedItem}) {
@@ -671,7 +729,6 @@ global.igniteShit = makeUIShitIgniter({
         
         // @ctx client helpers
         
-        // @wip
         function renderProfile(def) {
             #extract {user} from def
             

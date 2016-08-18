@@ -1,4 +1,56 @@
 //
+// @ctx fiddle with aps-test db
+//
+await pgTransaction({db: 'aps-test'}, async function(tx) {
+    const rows = await tx.query(s{y: q`
+        select first_name from users
+        -- select * from users where state <> 'cool'
+    `})
+    for (const row of rows) {
+        relog(deepInspect(omit(row, '$meta')))
+        relog()
+    }
+})
+
+//
+// @ctx fiddle with requests
+//
+let token
+{
+    const res = await handle({db: 'aps-test', LANG: 'ua', clientKind: 'writer', fun: 'signInWithPassword', email: 'todd@test.shit.ua', password: 'secret'})
+    token = res.token
+    relog(token)
+}
+{
+    const res = await handle({db: 'aps-test', LANG: 'ua', clientKind: 'writer', token, fun: 'private_getLiveStatus'})
+    relog(res)
+    // relog(unmeta(res))
+}
+;
+function unmeta(o) {
+    delete o.$meta
+    for (const value of values(o)) {
+        if (isObject(value)) {
+            unmeta(value)
+        }
+    }
+    return o
+}
+
+
+await pgTransaction({db: 'aps-test'}, async function(tx) {
+    const rows = await tx.query(s{y: q`
+        select count(*) from users where state = 'profile-approval-pending'
+    `})
+    for (const row of rows) {
+        relog(deepInspect(omit(row, '$meta')))
+        relog()
+    }
+})
+
+
+
+//
 // Create and populate test-template-ua-1 database
 //
 const ts = require('./test-shit-ua')
@@ -16,13 +68,27 @@ ts.setScrapContext({relog})
 ts.extractSentences({fromFile: 'testdata/kafka-trial-ru.txt', toFile: 'testdata/kafka-trial-ru.gen.json'})
 relog('ok')
 
+await pgTransaction({db: 'aps-test'}, async function(tx) {
+    const rows = await tx.query(s{y: q`select * from users`})
+    for (const row of rows) {
+        relog(deepInspect(omit(row, '$meta')))
+        relog()
+    }
+})
+
 
 //
-// Fiddle with testDB
+// @ctx fiddle with aps-test db
 //
-//relog(await testDB.query('select * from user_tokens'))
-//
-relog(await testDB.query({y: 'select * from support_thread_messages where thread_id = 308'})) // В пустом зале заседаний. Студент. Канцелярии
+await pgTransaction({db: 'aps-test'}, async function(tx) {
+    const rows = await tx.query(s{y: q`select * from users`})
+    for (const row of rows) {
+        relog(deepInspect(omit(row, '$meta')))
+        relog()
+    }
+})
+
+relog(await testDB.query({y: `select 2 + 3`}))
 
 //
 // Fiddle with testTemplateUA1DB
