@@ -8,6 +8,13 @@ Things to Consider
           
     - Make separation between client-side and server-side usage of ui.ts cleaner.
       Remove `typeof window` checks scattered throughout the file.
+      
+      
+Forget-Me-Nots
+
+    - Interaction between page auto-refresh, hot code reloading, and navigation to other pages.
+      As implemented in dashboard. // @ctx forgetmenot-1-x
+      
           
 Funny Function Names
     Betsy

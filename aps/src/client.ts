@@ -435,7 +435,7 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
         
         // @wip
         !function scheduleUpdate() {
-            timeoutSet(5000, async function() {
+            timeoutSet(5000, async function() { // @ctx forgetmenot-1-1
                 if (impl.stale) return
                 if (myPage !== ui.currentPage) return
                 
