@@ -548,7 +548,7 @@ app.post('/rpc', (req, res) => {
                         if (heapSize) res.heapSize = t(''+heapSize)
                         
                         // @wip
-                        res.suka = 'blia'
+                        res.suka = {count: 'blia-' + puid()}
                         res.profilesToApprove = (#await tx.query(s{y: q`
                             select count(*) from users where state = 'profile-approval-pending'`}))[0]
                     }

@@ -367,9 +367,9 @@ global.igniteShit = makeUIShitIgniter({
                     },
                 
 // @wip
-async dashboard() { // @ctx page dashboard
+dashboard: async function dashboard() { // @ctx page dashboard
     beginTrain({name: 'Load dashboard page'}); try {
-        ui.setPage({
+        const thePage = {
             header: pageHeader({title: t('Dashboard', 'Панель')}),
             body: diva({},
                 diva({className: 'row'},
@@ -387,11 +387,11 @@ async dashboard() { // @ctx page dashboard
                                     return []
                                 }
                                 
-                                {
-                                    const url = 'fuck.html'
-                                    const title = t(`TOTE`, `Профилей зааппрувить`)
-                                        
-                                    const metric = 'profilesToApprove'
+                                addMetric({metric: 'profilesToApprove', url: 'fuck.html', title: t(`TOTE`, `Профилей зааппрувить`)})
+                                addMetric({metric: 'suka', url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
+                                return items
+                                
+                                function addMetric({metric, url, title}) {
                                     const model = res[metric]
                                     if (model.count !== '0') {
                                         items.push(diva({tame: metric, style: {position: 'relative', overflow: 'hidden'}},
@@ -404,8 +404,6 @@ async dashboard() { // @ctx page dashboard
                                         ))
                                     }
                                 }
-                                
-                                return items
 
                                 // --- cut here ---
                                 return res.items.map(item => {
@@ -443,7 +441,19 @@ async dashboard() { // @ctx page dashboard
                     ),
                 )
             )
-        })
+        }
+        
+        ui.setPage(thePage)
+        
+        !function scheduleUpdate() {
+            timeoutSet(5000, async function() {
+                if (ui.currentPage === thePage) {
+                    dlog('Updating dashboard page')
+                    await dashboard()
+                    scheduleUpdate()
+                }
+            })
+        }()
         
         function section(def) {
             #extract {name, title, items, emptyItemsText} from def
