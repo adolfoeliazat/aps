@@ -35,10 +35,14 @@ require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
     return s
 })
 
-const idToMeta = {}
+//const idToMeta = {}
 
 const redis = run(_=> {
     const client = require('redis').createClient()
+    
+    client.on('error', err => {
+        logPizdets({title: 'Redis shitted something at us...', message: err})
+    })
     
     return {
         /*async*/ get(key) {
@@ -52,9 +56,22 @@ const redis = run(_=> {
                 })
             })
         },
+        
+        /*async*/ set(...args) {
+            return new Promise((resolve, reject) => {
+                client.set(...args, (err, res) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(res)
+                    }
+                })
+            })
+        },
     }
 })
 
+                    
 app.post('/rpc', async function(req, res) {
     try {
         
@@ -65,7 +82,7 @@ app.post('/rpc', async function(req, res) {
     }
     
     // dlog({body: req.body, headers: req.headers})
-    const mt = measureTime({name: `/rpc ${req.body.fun}`, log: typeof req.body.fun === 'string' && !req.body.fun.startsWith('danger_')})
+    const mt = measureTime({name: `/rpc ${req.body.fun}`, log: false && typeof req.body.fun === 'string' && !req.body.fun.startsWith('danger_')})
     const message = await handle(req.body)
     mt.point({name: 'handle'})
     ripOffMeta(message)
@@ -74,8 +91,10 @@ app.post('/rpc', async function(req, res) {
 //    circularize(message) ///
 //    mt.point({name: 'circularize'})
     res.json(message)
-    mt.point({name: 'END'})
-    
+    const mtend = mt.point({name: 'done'})
+    if (typeof req.body.fun === 'string' && !req.body.fun.startsWith('danger_') && req.body.fun !== 'private_getLiveStatus') {
+        dlog(`${req.body.fun}: ${mtend.sinceStart}ms`)
+    }
     
     function ripOffMeta(o, path='ROOT') {
         for (const [key, value] of toPairs(o)) {
@@ -86,11 +105,15 @@ app.post('/rpc', async function(req, res) {
             else if (key === '$meta') {
                 if (typeof o.$meta === 'object') {
                     const id = uuid()
-                    idToMeta[id] = o.$meta
+                    // idToMeta[id] = getCircularJSON().stringify(o.$meta)
+                    
+                    const cjson = getCircularJSON().stringify(o.$meta)
+                    /*don't await*/ redis.set(`$meta:${id}`, cjson, 'ex', 60*10)
+                    
                     delete o.$meta
                     o.$metaID = id
                 } else {
-                    raise('Shit 82adf78f-894b-4b5f-b047-1d72fb124490')
+                    raise('Shit happened 82adf78f-894b-4b5f-b047-1d72fb124490')
                 }
             }
             
@@ -135,7 +158,6 @@ app.post('/rpc', async function(req, res) {
         
         let stackBeforeAwait, awaitRes
         
-        const t0 = Date.now()
         try {
             if (!msg.fun) raise('Gimme msg.fun, please, fuck you')
         
@@ -230,16 +252,15 @@ app.post('/rpc', async function(req, res) {
                 }
                 
                 if (msg.fun === 'danger_getMetaByID') {
-                    // const meta = idToMeta[msg.id]
-                    const meta = {cool: 'beans'}
-                    if (!meta) return {error: t(`No meta for ID ${msg.id}`)}
+//                    let cjson
+//                    if (typeof meta === 'string') {
+//                        cjson = meta
+//                    } else {
+//                        cjson = idToMeta[msg.id] = getCircularJSON().stringify(meta)
+//                    }
                     
-                    let cjson
-                    if (typeof meta === 'string') {
-                        cjson = meta
-                    } else {
-                        cjson = idToMeta[msg.id] = getCircularJSON().stringify(meta)
-                    }
+                    const cjson = await redis.get(`$meta:${msg.id}`)
+                    if (!cjson) return {error: t(`No meta for ID ${msg.id}`)}
                     return hunkyDory({cjson})
                 }
                 
@@ -1312,11 +1333,6 @@ app.post('/rpc', async function(req, res) {
             }
             return {fatal: situation, stack: fucked.stack, stackBeforeAwait, fuckedStackBeforeAwait: fucked.stackBeforeAwait} // TODO:vgrechka Send stack only if debug mode
         } finally {
-            if (!requestTimeLoggingDisabled && msg.fun !== 'private_getLiveStatus' && msg.fun !== 'danger_getSoftwareVersion') {
-                const elapsed = Date.now() - t0
-                dlog(`${msg.fun}: ${elapsed}ms`)
-            }
-            
             let shouldLogRequestForUI
             if (MODE === 'debug' && msg.fun && !msg.fun.startsWith('danger_') && msg.fun !== 'private_getLiveStatus') {
                 shouldLogRequestForUI = true
@@ -1367,13 +1383,7 @@ app.post('/rpc', async function(req, res) {
     }
     
     } catch (pizdets) {
-        clog()
-        clog('--8<---------------------------------------------------8<--')
-        clog('OK, we’ve got some big hairy pizdets here...')
-        clog()
-        clog(pizdets.stack)
-        clog('--8<---------------------------------------------------8<--')
-        clog()
+        logPizdets({title: 'OK, we’ve got some big hairy pizdets here...', message: pizdets.stack})
     }
 })
 
@@ -1381,6 +1391,16 @@ const port = 3100
 app.listen(port, _=> {
     clog(`Backend is spinning on 127.0.0.1:${port}`)
 })
+
+function logPizdets({title, message}) {
+    clog()
+    clog('--8<---------------------------------------------------8<--')
+    clog(title)
+    clog()
+    clog(message)
+    clog('--8<---------------------------------------------------8<--')
+    clog()
+}
 
 
 const pgPools = {}
