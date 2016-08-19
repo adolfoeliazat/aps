@@ -37,6 +37,24 @@ require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
 
 const idToMeta = {}
 
+const redis = run(_=> {
+    const client = require('redis').createClient()
+    
+    return {
+        /*async*/ get(key) {
+            return new Promise((resolve, reject) => {
+                client.get(key, (err, res) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(res)
+                    }
+                })
+            })
+        },
+    }
+})
+
 app.post('/rpc', async function(req, res) {
     try {
         

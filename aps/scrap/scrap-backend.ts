@@ -461,6 +461,7 @@ relog({x, y, z})
 const x = {meta: {foo: 10, bar: 20, baz: 30}}
 relog(pick(x.meta, 'foo', 'baz'))
 
+relog(await redis.get('foo'))
 
 
 
