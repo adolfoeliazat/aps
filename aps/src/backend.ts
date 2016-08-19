@@ -9,6 +9,7 @@
 MODE = 'debug'
 MORE_CHUNK = 10 + 1
 MAX_DISPLAYED_NEW_MESSAGES_IN_UPDATED_SUPPORT_THREAD = 2
+THE_ADMIN_ID = 101
 
 PG_MAX_BIGINT = '9223372036854775807'
 
@@ -34,7 +35,11 @@ require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
     return s
 })
 
-app.post('/rpc', (req, res) => {
+const idToMeta = {}
+
+app.post('/rpc', async function(req, res) {
+    try {
+        
     simulateRequest = async function(msg) {
         const res = await handle(msg)
         if (!res.hunky) raise(`Unhunky response from myself’s ${msg.fun}: ${deepInspect(res)}`)
@@ -42,22 +47,55 @@ app.post('/rpc', (req, res) => {
     }
     
     // dlog({body: req.body, headers: req.headers})
-    handle(req.body).then(message => {
-        circularize(message)
-        res.json(message)
-        
-        function circularize(o) {
-            for (const [key, value] of toPairs(o)) {
-                if ((key === '$trace' || key === '$meta') && typeof value === 'object') { // Check type to not stringify string on subsequent requests
-                    o[key] = getCircularJSON().stringify(value)
+    const mt = measureTime({name: `/rpc ${req.body.fun}`, log: typeof req.body.fun === 'string' && !req.body.fun.startsWith('danger_')})
+    const message = await handle(req.body)
+    mt.point({name: 'handle'})
+    ripOffMeta(message)
+    mt.point({name: 'ripOffMeta'})
+    
+//    circularize(message)
+//    mt.point({name: 'circularize'})
+    res.json(message)
+    mt.point({name: 'END'})
+    
+    
+    function ripOffMeta(o, path='ROOT') {
+        for (const [key, value] of toPairs(o)) {
+            if (key === '$trace') {
+                raise('Fuck $trace: ' + path + '.' + key)
+            }
+            
+            else if (key === '$meta') {
+                if (typeof o.$meta === 'object') {
+                    const id = '' + puid()
+                    idToMeta[id] = o.$meta
+                    delete o.$meta
+                    o.$metaID = id
                 } else {
-                    if (isObject(value)) {
-                        circularize(value)
-                    }
+                    dlog('-------- strange')
+                }
+            }
+            
+            else {
+                if (isObject(value)) {
+                    ripOffMeta(value, path + '.' + key)
                 }
             }
         }
-    })
+    }
+    
+    function circularize(o) {
+        raise('do not use me')
+        for (const [key, value] of toPairs(o)) {
+            if ((key === '$trace' || key === '$meta') && typeof value === 'object') { // Check type to not stringify string on subsequent requests
+                o[key] = getCircularJSON().stringify(value)
+            } else {
+                if (isObject(value)) {
+                    circularize(value)
+                }
+            }
+        }
+    }
     
     async function handle(msg) {
         const $traceStack = []
@@ -81,6 +119,8 @@ app.post('/rpc', (req, res) => {
         
         const t0 = Date.now()
         try {
+            if (!msg.fun) raise('Gimme msg.fun, please, fuck you')
+        
             // dlog('mmm', msg)
             if (msg.fun.startsWith('danger_')) {
                 const serverToken = process.env.APS_DANGEROUS_TOKEN
@@ -169,6 +209,20 @@ app.post('/rpc', (req, res) => {
                     } catch (e) {
                         return {fatal: e.stack}
                     }
+                }
+                
+                if (msg.fun === 'danger_getMetaByID') {
+                    //
+                    const meta = idToMeta[msg.id]
+                    if (!meta) return {error: t(`No meta for ID ${msg.id}`)}
+                    
+                    let cjson
+                    if (typeof meta === 'string') {
+                        cjson = meta
+                    } else {
+                        cjson = idToMeta[msg.id] = getCircularJSON().stringify(meta)
+                    }
+                    return hunkyDory({cjson})
                 }
                 
                 if (msg.fun === 'danger_getSoftwareVersion') {
@@ -547,10 +601,10 @@ app.post('/rpc', (req, res) => {
                         if (unassignedSupportThreadCount) res.unassignedSupportThreadCount = t(''+unassignedSupportThreadCount)
                         if (heapSize) res.heapSize = t(''+heapSize)
                         
-                        // @wip
                         res.suka = {count: 'blia-' + puid()}
                         res.profilesToApprove = (#await tx.query(s{y: q`
-                            select count(*) from users where state = 'profile-approval-pending'`}))[0]
+                            select count(*) from users where state = 'profile-approval-pending'
+                                                             and assigned_to = ${user.id}`}))[0]
                     }
                     
                     const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18', y: q`
@@ -649,7 +703,8 @@ app.post('/rpc', (req, res) => {
                             update users set profile_updated_at = ${requestTimestamp},
                                              phone = ${fields.phone},
                                              about_me = ${fields.aboutMe},
-                                             state = 'profile-approval-pending'
+                                             state = 'profile-approval-pending',
+                                             assigned_to = ${THE_ADMIN_ID}
                                    where id = ${user.id}`})
                         #await loadUserForToken(s{})
                         return traceEndHandler(s{ret: hunkyDory({newUser: pickFromUser(s{user})})})
@@ -661,6 +716,31 @@ app.post('/rpc', (req, res) => {
                     traceBeginHandler(s{})
                     const chunk = #await selectSupportThreadsChunk(s{filter: msg.filter})
                     return traceEndHandler(s{ret: hunkyDory(chunk)})
+                }
+                
+                // @wip
+                if (msg.fun === 'private_getUsers') {
+                    traceBeginHandler(s{})
+                    let filter = msg.filter
+                    if (!['all', '2approve'].includes(filter)) filter = 'all'
+                    const chunk = #await selectUsersChunk(s{filter})
+                    return traceEndHandler(s{ret: hunkyDory(asn({filter}, chunk))})
+                    
+                    
+                    async function selectUsersChunk(def) {
+                        #extract {filter} from def
+                        
+                        return #await selectChunk(s{table: 'users', loadItem,
+                            appendToWhere(qb) {
+                            },
+                        })
+                        
+                        async function loadItem(def) {
+                            #extract {item} from def
+                            
+                            return asn({}, item)
+                        }
+                    }
                 }
                 
                 if (msg.fun === 'private_getSupportThreads') {
@@ -677,14 +757,6 @@ app.post('/rpc', (req, res) => {
                         filter = hasUpdated ? 'updated' : 'all'
                     }
                     const chunk = #await selectSupportThreadsChunk(s{filter})
-//                    for (const item of chunk.items) {
-//                        for (const message of item.newMessages.top) {
-//                            dlogs('dssssss', message.$meta.$definitionStack)
-//                            delete message.$meta.$definitionStack
-//                        }
-////                        item.newMessages = []
-////                        item.oldMessages = []
-//                    }
                     return traceEndHandler(s{ret: hunkyDory(asn({availableFilters, filter}, chunk))})
                 }
                 
@@ -1215,7 +1287,7 @@ app.post('/rpc', (req, res) => {
             }
             
             let shouldLogRequestForUI
-            if (MODE === 'debug' && !msg.fun.startsWith('danger_') && msg.fun !== 'private_getLiveStatus') {
+            if (MODE === 'debug' && msg.fun && !msg.fun.startsWith('danger_') && msg.fun !== 'private_getLiveStatus') {
                 shouldLogRequestForUI = true
             }
             
@@ -1261,6 +1333,16 @@ app.post('/rpc', (req, res) => {
             
             return data.ret
         }
+    }
+    
+    } catch (pizdets) {
+        clog()
+        clog('--8<---------------------------------------------------8<--')
+        clog('OK, we’ve got some big hairy pizdets here...')
+        clog()
+        clog(pizdets.stack)
+        clog('--8<---------------------------------------------------8<--')
+        clog()
     }
 })
 

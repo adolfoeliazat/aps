@@ -18,11 +18,13 @@ export function setBackendContext(ctx) {
     
 const users = {
     admin: [
-        {user: {id: 101, kind: 'admin', first_name: 'Тодд', last_name: 'Суппортод', email: 'todd@test.shit.ua',},
+        {user: {id: 101, kind: 'admin', first_name: 'Дася', last_name: 'Админовна', email: 'dasja@test.shit.ua',},
          roles: ['support']},
-        {user: {id: 102, kind: 'admin', first_name: 'Алиса', last_name: 'Планктоновна', email: 'alice@test.shit.ua',},
+        {user: {id: 102, kind: 'admin', first_name: 'Тодд', last_name: 'Суппортод', email: 'todd@test.shit.ua',},
          roles: ['support']},
-        {user: {id: 103, kind: 'admin', first_name: 'Элеанора', last_name: 'Суконская', email: 'eleanor@test.shit.ua',},
+        {user: {id: 103, kind: 'admin', first_name: 'Алиса', last_name: 'Планктоновна', email: 'alice@test.shit.ua',},
+         roles: ['support']},
+        {user: {id: 104, kind: 'admin', first_name: 'Элеанора', last_name: 'Суконская', email: 'eleanor@test.shit.ua',},
          roles: ['support']},
     ],
     
@@ -179,7 +181,7 @@ export async function createTestTemplateUA1DB() { // @ctx db template
             let nextSupportThreadTopicIndex = 0
             let nextMessageIndex = 0
             
-            const mtCreateUsers = measureTime('Creating users')
+            const mtCreateUsers = measureTime({name: 'Creating users', log: true})
             for (const u of users.admin) {
                 #await db.insertInto(s{table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
                 #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
@@ -195,9 +197,9 @@ export async function createTestTemplateUA1DB() { // @ctx db template
                 #await db.insertInto(s{table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
                 #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
             }
-            mtCreateUsers.dlog('END')
+            mtCreateUsers.point({name: 'END'})
             
-            const mtEvents = measureTime('Events')
+            const mtEvents = measureTime({name: 'Events', log: true})
             
             if (!'create support threads and messages') {
                 #await simNewSupportThread({threadID: 12, messageID: 432, stamp: '2014-04-10 13:44:55', upon: 'luke',
@@ -291,7 +293,7 @@ export async function createTestTemplateUA1DB() { // @ctx db template
             
             }
             
-            mtEvents.dlog('END')
+            mtEvents.point({name: 'END'})
             
             #await db.query(s{y: q`delete from user_tokens`})
             

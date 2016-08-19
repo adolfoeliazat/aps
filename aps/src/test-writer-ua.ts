@@ -17,7 +17,7 @@ module.exports = function({sim}) {
     const common = TestCommon({sim})
     
     return {
-        'UA Writer :: Sign Up :: 1 cca87b63-eedd-407d-a681-814f128b1822': {
+        'UA Writer :: Sign Up :: 1': {
             async run() {
                 const drpc = getDebugRPC()
                 
@@ -30,7 +30,7 @@ module.exports = function({sim}) {
                     await art.run(s{
                         instructions: [
                             ...vovchok1(),
-                            ...todd1(),
+                            ...dasja1(),
                         ]
                     })
                 } finally {
@@ -155,19 +155,24 @@ module.exports = function({sim}) {
                     ]
                 }
                 
-                function todd1() {
+                function dasja1() {
                     return [
-                        s{beginSection: {long: t('Todd Supportod accepts shit')}},
+                        s{beginSection: {long: t('Dasja accepts that shitty profile')}},
                             ...selectBrowser(s{
-                                clientKind: 'writer', browserName: 'todd1',
-                                stateDescription: t('Todd, a support admin, comes into play')}),
+                                clientKind: 'writer', browserName: 'dasja1',
+                                stateDescription: t('Dasja, a support admin, comes into play')}),
                                 
                             s{step: {kind: 'action', long: t('Normal sign in')}},
-                            ...signIn(s{email: 'todd@test.shit.ua', password: 'secret'}),
+                            ...signIn(s{email: 'dasja@test.shit.ua', password: 'secret'}),
                             s{assert: {$tag: '659a49bb-8018-4ac1-8c64-0fa31e998a50', expected: '---generated-shit---'}},
                             s{step: {kind: 'state', long: t('TODO')}},
                                 
                             s{beginSection: {long: t('foo')}},
+                                s{step: {kind: 'action', long: t('Click on "Approve Profiles" link')}},
+                                s{click: {shame: 'section-workPending.profilesToApprove.link', timestamp: '2016/08/18 14:58:16'}},
+                                s{step: {kind: 'state', long: t('Got page with profiles to be approved')}},
+                                s{assert: {$tag: 'dd32f775-d45f-4a86-b815-c8897fa01fe3', expected: '---generated-shit---'}},
+
                                 s{actionPlaceholder: {$tag: '7b29b964-c9b3-406d-bfeb-3a1091e57e5d'}},
                             s{endSection: {}},
                         s{endSection: {}},

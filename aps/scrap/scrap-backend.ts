@@ -458,7 +458,8 @@ const y = {$foo: 1000, b: 500}
 const z = x.asnno$(y)
 relog({x, y, z})
 
-
+const x = {meta: {foo: 10, bar: 20, baz: 30}}
+relog(pick(x.meta, 'foo', 'baz'))
 
 
 

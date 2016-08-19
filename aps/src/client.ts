@@ -20,7 +20,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, RequestBuilder,
-        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink} from 'into-u/ui'
+        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer} from 'into-u/ui'
         
 #import static 'into-u/ui'
     
@@ -387,7 +387,7 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                                     return []
                                 }
                                 
-                                addMetric({metric: 'profilesToApprove', url: 'fuck.html', title: t(`TOTE`, `Профилей зааппрувить`)})
+                                addMetric({metric: 'profilesToApprove', url: 'admin-users.html', title: t(`TOTE`, `Профилей зааппрувить`)})
                                 addMetric({metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
                                 return items
                                 
@@ -396,7 +396,7 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                                     if (model.count !== '0') {
                                         items.push(diva({tame: metric, noStateContributions, style: {position: 'relative', overflow: 'hidden'}},
                                             diva({style: {position: 'absolute', zIndex: -1, left: 0, top: 0}}, repeat('.', 210)),
-                                            ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT},
+                                            ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT}, blinkOpts: {dwidth: -8},
                                                 title, url, delayActionForFanciness: true}),
                                             diva({style: {float: 'right', paddingLeft: 8, background: WHITE}},
                                                 spana({className: `badge`, style: {float: 'right', backgroundColor: BLUE_GRAY_400}},
@@ -433,14 +433,13 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
             $(document).scrollTop(scrollTop)
         }
         
-        // @wip
         !function scheduleUpdate() {
             timeoutSet(5000, async function() { // @ctx forgetmenot-1-1
                 if (impl.stale) return
                 if (myPage !== ui.currentPage) return
                 
                 // dlog(`currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}`)
-                dlog('Updating dashboard page')
+                // dlog('Updating dashboard page')
                 await dashboard({preserveScroll: true})
             })
         }()
@@ -462,6 +461,49 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
         }
     } finally { endTrain() }
 },
+
+// @wip
+async 'admin-users'() { // @ctx page admin-users
+    await melinda(s{
+        urlPath: 'admin-users.html',
+        trainName: 'Load admin-users page',
+        itemsFun: 'private_getUsers',
+        header: entityRes => {
+            return pageHeader({title: t(`TOTE`, `Пользователи`)})
+        },
+        plusIcon: 'plus',
+        
+        plusFormDef: {
+            primaryButtonTitle: t(`TOTE`, `Запостить`),
+            cancelButtonTitle: t(`TOTE`, `Передумал`),
+            autoFocus: 'message',
+            fields: [
+                ui.HiddenField({
+                    name: 'threadID',
+                    value: ui.urlQuery.thread,
+                }),
+                ui.TextField({
+                    name: 'message',
+                    kind: 'textarea',
+                    title: t(`TOTE`, `Сообщение`),
+                }),
+            ],
+            rpcFun: 'private_createSupportThreadMessage',
+            async onSuccess(res) {
+                await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
+            },
+        },
+        
+        renderItem(def) {
+            #extract {item: profile, index} from def
+            
+            return diva({controlTypeName: 'renderItem-admin-users', className: ``, style: {}},
+                spanc({tame: `her-${index}`, content: {mopy: {model: profile, prop: 'first_name'}}}),
+                ObjectViewer(s{object: profile}))
+        },
+    })
+},
+
                     
                     async profile() { // @ctx page profile
                         let primaryButtonTitle
@@ -645,7 +687,7 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                         
                         ui.setPage({
                             header: fov(header, entityRes),
-                            body: _=> div(
+                            body: _=> diva({style: {marginBottom: 15}},
                                 tabs,
                                 editShit && editShit.form,
                                 plusShit && plusShit.form,
@@ -653,7 +695,7 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                                 run(function renderItems() {
                                     if (!itemsRes.items.length) {
                                         if (showEmptyLabel) {
-                                            return diva({style: {marginTop: 10}}, emptyMessage || t(`TOTE`, `Странно, здесь ничего нет...`))
+                                            return diva({style: {marginTop: 10}}, emptyMessage || t(`TOTE`, `Савсэм ничего нэт, да...`))
                                         }
                                         return ''
                                     }
@@ -1149,7 +1191,7 @@ export function customerDynamicPageNames() {
 }
 
 export function writerDynamicPageNames() {
-    return tokens('test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap')
+    return tokens('test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap admin-users')
 }
 
 

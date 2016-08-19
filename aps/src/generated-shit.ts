@@ -1345,6 +1345,20 @@ module.exports = {
           url: `http://aps-ua-writer.local:3022/profile.html`
     }, // end of generated piece of shit
 
+    '659a49bb-8018-4ac1-8c64-0fa31e998a50': {
+        'pageHeader.title': `Панель`,
+          'section-account.link-changePassword.title': `Сменить пароль`,
+          'section-account.link-signOut.title': `Выйти прочь`,
+          'section-workPending.profilesToApprove.badge': `1`,
+          'section-workPending.profilesToApprove.link.title': `Профилей зааппрувить`,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-admin-heap`,
+          'topNavLeft.TopNavItem-i000.title': `Куча`,
+          'topNavRight.TopNavItem-i000.active': true,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
+          'topNavRight.TopNavItem-i000.title': `Дася`,
+          url: `http://aps-ua-writer.local:3022/dashboard.html`
+    }, // end of generated piece of shit
+
     // place to insert new generated piece of shit
 
 }
