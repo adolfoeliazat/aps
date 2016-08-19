@@ -498,6 +498,14 @@ async 'admin-users'() { // @ctx page admin-users
             #extract {item: profile, index} from def
             
             return diva({controlTypeName: 'renderItem-admin-users', className: ``, style: {}},
+                updatableElement({renderCtor(update) {
+                    let content = spana({}, 'Loading shit...')
+                    run(async function() {
+                        const res = await ui.rpcSoft({fun: 'private_getSomeShit'})
+                        update(content = spana({}, res.shit))
+                    })
+                    return _=> content
+                }}),
                 spanc({tame: `her-${index}`, content: {mopy: {model: profile, prop: 'first_name'}}}),
                 ObjectViewer(s{object: profile}))
         },

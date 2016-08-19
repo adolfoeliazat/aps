@@ -53,7 +53,7 @@ app.post('/rpc', async function(req, res) {
     ripOffMeta(message)
     mt.point({name: 'ripOffMeta'})
     
-//    circularize(message)
+//    circularize(message) ///
 //    mt.point({name: 'circularize'})
     res.json(message)
     mt.point({name: 'END'})
@@ -67,12 +67,12 @@ app.post('/rpc', async function(req, res) {
             
             else if (key === '$meta') {
                 if (typeof o.$meta === 'object') {
-                    const id = '' + puid()
+                    const id = uuid()
                     idToMeta[id] = o.$meta
                     delete o.$meta
                     o.$metaID = id
                 } else {
-                    dlog('-------- strange')
+                    raise('Shit 82adf78f-894b-4b5f-b047-1d72fb124490')
                 }
             }
             
@@ -212,8 +212,8 @@ app.post('/rpc', async function(req, res) {
                 }
                 
                 if (msg.fun === 'danger_getMetaByID') {
-                    //
-                    const meta = idToMeta[msg.id]
+                    // const meta = idToMeta[msg.id]
+                    const meta = {cool: 'beans'}
                     if (!meta) return {error: t(`No meta for ID ${msg.id}`)}
                     
                     let cjson
@@ -716,6 +716,19 @@ app.post('/rpc', async function(req, res) {
                     traceBeginHandler(s{})
                     const chunk = #await selectSupportThreadsChunk(s{filter: msg.filter})
                     return traceEndHandler(s{ret: hunkyDory(chunk)})
+                }
+                
+                if (msg.fun === 'private_getSomeShit') {
+                    traceBeginHandler(s{})
+                    return traceEndHandler(s{ret: hunkyDory({shit: doGetShit(s{})})})
+                    
+                    function doGetShit(def) {
+                        return doReallyGetShit(s{})
+                        
+                        function doReallyGetShit(def) {
+                            return t('Here is your real shit')
+                        }
+                    }
                 }
                 
                 // @wip

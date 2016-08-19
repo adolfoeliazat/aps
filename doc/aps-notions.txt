@@ -36,6 +36,7 @@ Controls
     renderTraceBetsy
     preludeWithGreenCheck
     pira
+    makeBackendMetaPanel
 
 CSS
     showOnParentHovered
