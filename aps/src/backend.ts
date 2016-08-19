@@ -788,9 +788,9 @@ app.post('/rpc', async function(req, res) {
                         })
                         
                         async function loadItem(def) {
-                            #extract {item} from def
+                            #extract {item: user} from def
                             
-                            return asn({}, item)
+                            return asn({}, pickFromUser(s{user}))
                         }
                     }
                 }
@@ -1107,14 +1107,14 @@ app.post('/rpc', async function(req, res) {
                     return value
                 }
                 
+                // @wip
                 function pickFromUser(def) {
                     #extract {user} from def
                     
-                    const strippedUser = pick(user,
-                        'id', 'first_name', 'last_name', 'email', 'state', 'inserted_at',
-                        'profile_updated_at', 'kind', 'roles', 'phone', 'about_me')
-                    strippedUser.$meta = cloneDeep(user.$meta)
-                    strippedUser.$meta.trace.push(s{event: 'pickFromUser()'})
+                    const strippedUser = omit(user, 'password_hash')
+                    // strippedUser.$meta = cloneDeep(user.$meta)
+                    // strippedUser.$meta.trace.push(s{event: 'pickFromUser()'})
+                    strippedUser.$meta = s{}
                         
                     return strippedUser
                 }

@@ -116,7 +116,9 @@ global.igniteShit = makeUIShitIgniter({
                     .zebra-1 .borderTopColoredOnZebra {border-top-color: ${zebraLight};}
                     .zebra-1 .borderRightColoredOnZebra {border-right-color: ${zebraLight};}
                     .zebra-1 .label1 {background-color: ${TEAL_100};}
-                `
+                    
+                    .hover-color-BLUE_GRAY_800:hover {color: ${BLUE_GRAY_800};}
+                ` // @ctx css
                 return res
             },
             
@@ -462,7 +464,6 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
     } finally { endTrain() }
 },
 
-// @wip
 async 'admin-users'() { // @ctx page admin-users
     await melinda(s{
         urlPath: 'admin-users.html',
@@ -495,73 +496,94 @@ async 'admin-users'() { // @ctx page admin-users
         },
         
         renderItem(def) {
-            #extract {item: profile, index} from def
+            #extract {item: user, index} from def
+                
+            const headingID = puid()
+            let updateRecordBody
+            let recordBodyContent = diva({}, renderProfile(s{user}))
             
-            return diva({controlTypeName: 'renderItem-admin-users', className: ``, style: {}},
+            // @wip
+            return diva({controlTypeName: 'admin-users::renderItem', tame: `item${sufindex(index)}`},
+                diva({tame: 'heading', id: headingID, style: {marginBottom: 10, background: BLUE_GRAY_50, borderBottom: `1px solid ${BLUE_GRAY_100}`}},
+                    spanc(s{tame: 'title', style: {fontSize: '135%', fontWeight: 'normal'}, content: {movy: {model: user, value:
+                        user.first_name + ' ' + user.last_name}}}),
+                        
+                    hor2(s{style: {float: 'right', marginTop: 4, marginRight: 4, color: BLUE_GRAY_600}, items: [
+                        ia({className: `fa fa-pencil hover-color-BLUE_GRAY_800`, style: {fontSize: '135%', cursor: 'pointer'}, onClick() {
+                            $(document).scrollTop(byid(headingID).offset().top - 50 - 15)
+                            
+                            updateRecordBody(recordBodyContent = diva({style: {marginBottom: 10}}, ui.Form(s{
+                                dontShameButtons: true,
+                                primaryButtonTitle: t(`TOTE`, `Запостить`),
+                                cancelButtonTitle: t(`TOTE`, `Передумал`),
+                                autoFocus: 'message',
+                                fields: [
+//                                    ui.HiddenField({
+//                                        name: 'threadID',
+//                                        value: ui.urlQuery.thread,
+//                                    }),
+                                    
+                                    ...ui.makeSignUpFields(s{}),
+                                    ...makeProfileFields(s{}),
+                                ],
+                                rpcFun: 'private_createSupportThreadMessage',
+                                async onSuccess(res) {
+                                    dlog('implement me')
+                                    // await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
+                                },
+                            })))
+                        }}),
+                    ]})),
+                    
                 updatableElement({renderCtor(update) {
-                    let content = spana({}, 'Loading shit...')
-                    run(async function() {
-                        const res = await ui.rpcSoft({fun: 'private_getSomeShit'})
-                        update(content = spana({}, res.shit))
-                    })
-                    return _=> content
+                    updateRecordBody = update
+                    return _=> recordBodyContent
                 }}),
-                spanc({tame: `her-${index}`, content: {mopy: {model: profile, prop: 'first_name'}}}),
-                ObjectViewer(s{object: profile}))
+                // ObjectViewer(s{object: user}),
+            )
         },
     })
 },
-
                     
-                    async profile() { // @ctx page profile
-                        let primaryButtonTitle
-                        if (ui.getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
-                        else primaryButtonTitle = t('WTF')
-                        
-                        let pageBody
-                        const userState = ui.getUser().state
-                        if (userState === 'profile-pending') {
-                            pageBody = diva({},
-                                preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
-                                ui.Form({
-                                    primaryButtonTitle,
-                                    autoFocus: 'phone',
-                                    fields: [
-                                        ui.TextField(s{
-                                            name: 'phone',
-                                            title: t('TOTE', 'Телефон'),
-                                        }),
-                                        ui.TextField(s{
-                                            name: 'aboutMe',
-                                            kind: 'textarea',
-                                            title: t('TOTE', 'Пара ласковых о себе'),
-                                        }),
-                                    ],
-                                    rpcFun: 'private_updateProfile',
-                                    async onSuccess(res) {
-                                        // ui.getUser().state = 'profile-approval-pending'
-                                        ui.setUser(res.newUser)
-                                        await ui.replaceNavigate('profile.html')
-                                    },
-                                }),
-                            )
-                        }
-                        else if (userState === 'profile-approval-pending') {
-                            pageBody = diva({},
-                                preludeWithHourglass({content: spana({},
-                                    t('TOTE', 'Админ проверяет профиль, жди извещения почтой'),
-                                    // ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
-                                    // t('.')
-                                )}),
-                                renderProfile(s{user: ui.getUser()}),
-                            )
-                        }
-                        
-                        ui.setPage({
-                            header: pageHeader({title: t('Profile', 'Профиль')}),
-                            body: pageBody
-                        })
-                    },
+async profile() { // @ctx page profile
+    let primaryButtonTitle
+    if (ui.getUser().state === 'profile-pending') primaryButtonTitle = t('TOTE', 'Отправить на проверку')
+    else primaryButtonTitle = t('WTF')
+    
+    let pageBody
+    const userState = ui.getUser().state
+    if (userState === 'profile-pending') {
+        pageBody = diva({},
+            preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720}),
+            ui.Form({
+                primaryButtonTitle,
+                autoFocus: 'phone',
+                fields: makeProfileFields(s{}),
+                rpcFun: 'private_updateProfile',
+                async onSuccess(res) {
+                    // ui.getUser().state = 'profile-approval-pending'
+                    ui.setUser(res.newUser)
+                    await ui.replaceNavigate('profile.html')
+                },
+            }),
+        )
+    }
+    else if (userState === 'profile-approval-pending') {
+        pageBody = diva({},
+            preludeWithHourglass({content: spana({},
+                t('TOTE', 'Админ проверяет профиль, жди извещения почтой'),
+                // ui.pageLink({title: t('TOTE', 'поддержку'), url: 'support.html', name: 'support'}),
+                // t('.')
+            )}),
+            renderProfile(s{user: ui.getUser()}),
+        )
+    }
+    
+    ui.setPage({
+        header: pageHeader({title: t('Profile', 'Профиль')}),
+        body: pageBody
+    })
+},
                     
                 }[name]
                 
@@ -779,27 +801,50 @@ async 'admin-users'() { // @ctx page admin-users
         
         return impl
         
-        // @ctx client helpers
+        // @ctx helpers
+        
+        function makeProfileFields(def) {
+            return [
+                ui.TextField(s{
+                    name: 'phone',
+                    title: t('TOTE', 'Телефон'),
+                }),
+                ui.TextField(s{
+                    name: 'aboutMe',
+                    kind: 'textarea',
+                    title: t('TOTE', 'Пара ласковых о себе'),
+                }),
+            ]
+        }
         
         function renderProfile(def) {
-            #extract {user} from def
+            #extract {user: model} from def
             
-            const model = user
+            const profileFilled = model.profile_updated_at
+            
+            let profileUpdatedPiece
+            if (profileFilled) {
+                profileUpdatedPiece = limpopo(s{colsm: 3, model,
+                    prop: 'profile_updated_at', label: t(`TOTE`, `Профиль изменен`),
+                    transform: x => timestampString(model.profile_updated_at, {includeTZ: true})})
+            } else {
+                profileUpdatedPiece = limpopo(s{colsm: 3, model,
+                    prop: 'profile_updated_at', label: t(`TOTE`, `Профиль`), value: t(`TOTE`, `Нифига не заполнялся`)})
+            }
             
             return diva({tame: 'profile'},
                 diva({className: 'row'},
                     limpopo(s{colsm: 3, model, prop: 'first_name', label: t(`TOTE`, `Имя`)}),
                     limpopo(s{colsm: 3, model, prop: 'last_name', label: t(`TOTE`, `Фамилия`)}),
                     limpopo(s{colsm: 3, model, prop: 'email', label: t(`TOTE`, `Почта`)}),
-                    limpopo(s{colsm: 3, model, prop: 'phone', label: t(`TOTE`, `Телефон`)}),
+                    profileFilled && limpopo(s{colsm: 3, model, prop: 'phone', label: t(`TOTE`, `Телефон`)}),
                 ),
                 diva({className: 'row'},
                     limpopo(s{colsm: 3, model, prop: 'inserted_at', label: t(`TOTE`, `Аккаунт создан`), transform: x =>
-                        timestampString(user.inserted_at, {includeTZ: true})}),
-                    limpopo(s{colsm: 3, model, prop: 'profile_updated_at', label: t(`TOTE`, `Профиль изменен`), transform: x =>
-                        timestampString(user.profile_updated_at, {includeTZ: true})}),
+                        timestampString(model.inserted_at, {includeTZ: true})}),
+                    profileUpdatedPiece,
                 ),
-                diva({className: 'row'},
+                profileFilled && diva({className: 'row'},
                     limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`)})),
             )
         }
