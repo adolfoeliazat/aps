@@ -15,55 +15,56 @@ let simulateRequest, random
 export function setBackendContext(ctx) {
     ;({simulateRequest} = ctx)
 }
+
     
 const users = {
     admin: [
-        {user: {id: 101, kind: 'admin', first_name: 'Дася', last_name: 'Админовна', email: 'dasja@test.shit.ua',},
+        {user: {kind: 'admin', first_name: 'Дася', last_name: 'Админовна', email: 'dasja@test.shit.ua', inserted_at: '2016/07/10 13:14:15',},
          roles: ['support']},
-        {user: {id: 102, kind: 'admin', first_name: 'Тодд', last_name: 'Суппортод', email: 'todd@test.shit.ua',},
+        {user: {kind: 'admin', first_name: 'Тодд', last_name: 'Суппортод', email: 'todd@test.shit.ua', inserted_at: '2016-07-13 02:44:05',},
          roles: ['support']},
-        {user: {id: 103, kind: 'admin', first_name: 'Алиса', last_name: 'Планктоновна', email: 'alice@test.shit.ua',},
+        {user: {kind: 'admin', first_name: 'Алиса', last_name: 'Планктоновна', email: 'alice@test.shit.ua', inserted_at: '2016-07-11 20:28:17',},
          roles: ['support']},
-        {user: {id: 104, kind: 'admin', first_name: 'Элеанора', last_name: 'Суконская', email: 'eleanor@test.shit.ua',},
+        {user: {kind: 'admin', first_name: 'Элеанора', last_name: 'Суконская', email: 'eleanor@test.shit.ua', inserted_at: '2016-07-19 08:10:58',},
          roles: ['support']},
     ],
     
     writer: [
-        {user: {id: 201, first_name: 'Франц', last_name: 'Кафка', email: 'kafka@test.shit.ua',}},
-        {user: {id: 202, first_name: 'Лев', last_name: 'Толстой', email: 'leo@test.shit.ua',}},
-        {user: {id: 203, first_name: 'Николай', last_name: 'Гоголь', email: 'gogol@test.shit.ua',}},
-        {user: {id: 204, first_name: 'Федор', last_name: 'Достоевский', email: 'fedor@test.shit.ua',}},
-        {user: {id: 205, first_name: 'Александр', last_name: 'Пушкин', email: 'pushkin@test.shit.ua',}},
-        {user: {id: 206, first_name: 'Георг', last_name: 'Гегель', email: 'hegel@test.shit.ua',}},
-        {user: {id: 207, first_name: 'Иммануил', last_name: 'Кант', email: 'kant@test.shit.ua',}},
-        {user: {id: 208, first_name: 'Мигель', last_name: 'Сервантес', email: 'miguel@test.shit.ua',}},
-        {user: {id: 209, first_name: 'Карлос', last_name: 'Кастанеда', email: 'carlos@test.shit.ua',}},
-        {user: {id: 210, first_name: 'Елена', last_name: 'Блаватская', email: 'blava@test.shit.ua',}},
-        {user: {id: 211, first_name: 'Джейн', last_name: 'Остин', email: 'jane@test.shit.ua',}},
-        {user: {id: 212, first_name: 'Мэри', last_name: 'Шелли', email: 'mary@test.shit.ua',}},
-        {user: {id: 213, first_name: 'Франсуаза', last_name: 'Саган', email: 'francoise@test.shit.ua',}},
-        {user: {id: 214, first_name: 'Жорж', last_name: 'Санд', email: 'sand@test.shit.ua',}},
-        {user: {id: 215, first_name: 'Агата', last_name: 'Кристи', email: 'agatha@test.shit.ua',}},
-        // {user: {id: 20, first_name: '', last_name: '', email: '@test.shit.ua',}},
+        {user: {first_name: 'Франц', last_name: 'Кафка', email: 'kafka@test.shit.ua', inserted_at: '2016-07-11 01:05:30',}},
+        {user: {first_name: 'Лев', last_name: 'Толстой', email: 'leo@test.shit.ua', inserted_at: '2016-07-29 22:54:42',}},
+        {user: {first_name: 'Николай', last_name: 'Гоголь', email: 'gogol@test.shit.ua', inserted_at: '2016-07-13 17:32:27',}},
+        {user: {first_name: 'Федор', last_name: 'Достоевский', email: 'fedor@test.shit.ua', inserted_at: '2016-08-04 14:41:07',}},
+        {user: {first_name: 'Александр', last_name: 'Пушкин', email: 'pushkin@test.shit.ua', inserted_at: '2016-07-19 21:35:30',}},
+        {user: {first_name: 'Георг', last_name: 'Гегель', email: 'hegel@test.shit.ua', inserted_at: '2016-07-22 07:19:47',}},
+        {user: {first_name: 'Иммануил', last_name: 'Кант', email: 'kant@test.shit.ua', inserted_at: '2016-07-13 05:54:20',}},
+        {user: {first_name: 'Мигель', last_name: 'Сервантес', email: 'miguel@test.shit.ua', inserted_at: '2016-07-16 22:25:56',}},
+        {user: {first_name: 'Карлос', last_name: 'Кастанеда', email: 'carlos@test.shit.ua', inserted_at: '2016-07-29 13:39:06',}},
+        {user: {first_name: 'Елена', last_name: 'Блаватская', email: 'blava@test.shit.ua', inserted_at: '2016-07-27 12:06:11',}},
+        {user: {first_name: 'Джейн', last_name: 'Остин', email: 'jane@test.shit.ua', inserted_at: '2016-07-15 15:13:27',}},
+        {user: {first_name: 'Мэри', last_name: 'Шелли', email: 'mary@test.shit.ua', inserted_at: '2016-07-22 01:33:17',}},
+        {user: {first_name: 'Франсуаза', last_name: 'Саган', email: 'francoise@test.shit.ua', inserted_at: '2016-08-08 16:04:53',}},
+        {user: {first_name: 'Жорж', last_name: 'Санд', email: 'sand@test.shit.ua', inserted_at: '2016-07-16 20:47:26',}},
+        {user: {first_name: 'Агата', last_name: 'Кристи', email: 'agatha@test.shit.ua', inserted_at: '2016-08-12 09:59:53',}},
+        // {user: {first_name: '', last_name: '', email: '@test.shit.ua',}},
     ],
     
     customer: [
-        {user: {id: 301, first_name: 'Пися', last_name: 'Камушкин', email: 'pisya@test.shit.ua',}},
-        {user: {id: 302, first_name: 'Люк', last_name: 'Хуюк', email: 'luke@test.shit.ua',}},
-        {user: {id: 303, first_name: 'Павло', last_name: 'Зибров', email: 'zibrov@test.shit.ua',}},
-        {user: {id: 304, first_name: 'Василий', last_name: 'Теркин', email: 'terkin@test.shit.ua',}},
-        {user: {id: 305, first_name: 'Иво', last_name: 'Бобул', email: 'ivo@test.shit.ua',}},
-        {user: {id: 306, first_name: 'Регина', last_name: 'Дубовицкая', email: 'regina@test.shit.ua',}},
-        {user: {id: 307, first_name: 'Евгений', last_name: 'Ваганович', email: 'vaganovich@test.shit.ua',}},
-        {user: {id: 308, first_name: 'Павел', last_name: 'Дристальский', email: 'paul@test.shit.ua',}},
-        {user: {id: 309, first_name: 'Тело', last_name: 'Странное', email: 'telo@test.shit.ua',}},
-        {user: {id: 310, first_name: 'Арчибальд', last_name: 'Нелеподлиннаяфамилияуменя', email: 'archie@test.shit.ua',}},
-        {user: {id: 311, first_name: 'Даздраперма', last_name: 'Дивизионная', email: 'perma@test.shit.ua',}},
-        {user: {id: 312, first_name: 'Уменяреальносамыйдлинный', last_name: 'Ымя', email: 'ymya@test.shit.ua',}},
-        {user: {id: 313, first_name: 'Варсоновий', last_name: 'Оптинский', email: 'varso@test.shit.ua',}},
-        {user: {id: 314, first_name: 'Евстафий', last_name: 'Антиохийский', email: 'anti@test.shit.ua',}},
-        {user: {id: 315, first_name: 'Ксенофонт', last_name: 'Тутанский', email: 'xeno@test.shit.ua',}},
-        // {user: {id: 30, first_name: '', last_name: '', email: '@test.shit.ua',}},
+        {user: {first_name: 'Пися', last_name: 'Камушкин', email: 'pisya@test.shit.ua', inserted_at: '2016-08-02 14:38:15',}},
+        {user: {first_name: 'Люк', last_name: 'Хуюк', email: 'luke@test.shit.ua', inserted_at: '2016-07-14 18:36:35',}},
+        {user: {first_name: 'Павло', last_name: 'Зибров', email: 'zibrov@test.shit.ua', inserted_at: '2016-08-09 11:36:01',}},
+        {user: {first_name: 'Василий', last_name: 'Теркин', email: 'terkin@test.shit.ua', inserted_at: '2016-07-16 18:59:35',}},
+        {user: {first_name: 'Иво', last_name: 'Бобул', email: 'ivo@test.shit.ua', inserted_at: '2016-07-16 22:51:51',}},
+        {user: {first_name: 'Регина', last_name: 'Дубовицкая', email: 'regina@test.shit.ua', inserted_at: '2016-07-12 06:31:58',}},
+        {user: {first_name: 'Евгений', last_name: 'Ваганович', email: 'vaganovich@test.shit.ua', inserted_at: '2016-08-06 03:59:58',}},
+        {user: {first_name: 'Павел', last_name: 'Дристальский', email: 'paul@test.shit.ua', inserted_at: '2016-07-27 07:57:02',}},
+        {user: {first_name: 'Тело', last_name: 'Странное', email: 'telo@test.shit.ua', inserted_at: '2016-07-26 08:50:23',}},
+        {user: {first_name: 'Арчибальд', last_name: 'Нелеподлиннаяфамилияуменя', email: 'archie@test.shit.ua', inserted_at: '2016-08-12 10:26:14',}},
+        {user: {first_name: 'Даздраперма', last_name: 'Дивизионная', email: 'perma@test.shit.ua', inserted_at: '2016-08-11 07:56:00',}},
+        {user: {first_name: 'Уменяреальносамыйдлинный', last_name: 'Ымя', email: 'ymya@test.shit.ua', inserted_at: '2016-08-06 08:23:56',}},
+        {user: {first_name: 'Варсоновий', last_name: 'Оптинский', email: 'varso@test.shit.ua', inserted_at: '2016-08-04 08:29:23',}},
+        {user: {first_name: 'Евстафий', last_name: 'Антиохийский', email: 'anti@test.shit.ua', inserted_at: '2016-08-12 17:38:34',}},
+        {user: {first_name: 'Ксенофонт', last_name: 'Тутанский', email: 'xeno@test.shit.ua', inserted_at: '2016-07-10 17:07:24'}},
+        // {user: {first_name: '', last_name: '', email: '@test.shit.ua',}},
     ],
 }
 
@@ -165,7 +166,12 @@ export function toUponLines(items) {
 }
 
 
-export async function createTestTemplateUA1DB() { // @ctx db template
+export async function createTestTemplateUA1DB({relog}={}) { // @ctx db template
+    function log(...args) {
+        if (relog) relog(...args)
+        dlog(...args)
+    }
+    
     resetImposed()
     await createUADB('test-template-ua-1')
     await pgConnection({db: 'test-template-ua-1'}, async function(db) {
@@ -181,22 +187,47 @@ export async function createTestTemplateUA1DB() { // @ctx db template
             let nextSupportThreadTopicIndex = 0
             let nextMessageIndex = 0
             
+            let actions = [], nextUserID = 101
+            
             const mtCreateUsers = measureTime({name: 'Creating users', log: true})
             for (const u of users.admin) {
-                #await db.insertInto(s{table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
-                for (const role of u.roles) {
-                    #await db.insertInto(s{table: 'user_roles', values: {user_id: u.user.id, role}})
-                }
+                actions.push({stamp: u.user.inserted_at, async do() {
+                    log(`Inserting admin ${u.user.first_name} at ${u.user.inserted_at}`)
+                    
+                    u.user.id = nextUserID++
+                    #await db.insertInto(s{table: 'users', values: asn({kind: 'admin', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                    #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                    for (const role of u.roles) {
+                        #await db.insertInto(s{table: 'user_roles', values: {user_id: u.user.id, role}})
+                    }
+                }})
             }
             for (const u of users.writer) {
-                #await db.insertInto(s{table: 'users', values: asn({kind: 'writer', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                actions.push({stamp: u.user.inserted_at, async do() {
+                    log(`inserting writer ${u.user.first_name} at ${u.user.inserted_at}`)
+                    
+                    u.user.id = nextUserID++
+                    #await db.insertInto(s{table: 'users', values: asn({kind: 'writer', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                    #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                }})
             }
             for (const u of users.customer) {
-                #await db.insertInto(s{table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
-                #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                actions.push({stamp: u.user.inserted_at, async do() {
+                    log(`inserting customer ${u.user.first_name} at ${u.user.inserted_at}`)
+                    
+                    u.user.id = nextUserID++
+                    #await db.insertInto(s{table: 'users', values: asn({kind: 'customer', lang: 'ua', state: 'cool', password_hash}, u.user)})
+                    #await db.insertInto(s{table: 'user_tokens', values: {user_id: u.user.id, token: 'temp-' + u.user.id}})
+                }})
             }
+            
+            actions = sortBy(actions, act => moment(act.stamp, 'YYYY-MM-DD HH:mm:ss'))
+            
+            for (const action of actions) {
+                #await action.do()
+            }
+            
+            
             mtCreateUsers.point({name: 'END'})
             
             const mtEvents = measureTime({name: 'Events', log: true})

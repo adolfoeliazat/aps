@@ -51,14 +51,17 @@ await pgTransaction({db: 'aps-test'}, async function(tx) {
 
 
 //
-// Create and populate test-template-ua-1 database
+// @ctx db create and populate test-template-ua-1 database
 //
 const ts = require('./test-shit-ua')
-ts.setScrapContext({relog})
-ts.setBackendContext({createDB, pgConnection, simulateRequest, q, imposeNextIDs, imposeRequestTimestamp, resetImposed})
-await ts.createTestTemplateUA1DB()
+await ts.createTestTemplateUA1DB({relog})
 relog('ok')
 
+//
+// Parse stamp into unix time
+//
+const unix = moment('016-07-11 20:28:17', 'YYYY-MM-DD HH:mm:ss')
+relog(unix)
 
 //
 // Extract sentences from kafka-trial-ru.txt
@@ -467,9 +470,20 @@ relog(await redis.set('foo', 'tralala', 'ex', 10))
 relog('good')
 
 
-
-
-
+//
+// @ctx scrap generate dates
+//
+const fromStamp = '2016/07/10 13:14:15'
+const toStamp = '2016/08/14 10:11:12'
+const count = 34
+const minDiffSeconds = 60*24*5
+const fieldName = 'inserted_at'
+;
+const ts = require('./test-shit-ua')
+const stamps = ts.generateStampsInRange({count, fromStamp, toStamp, minDiffSeconds})
+for (const stamp of stamps) {
+    relog(`, ${fieldName}: '${stamp}'`)
+}
 
 
 

@@ -33,6 +33,17 @@ Error.stackTraceLimit = Infinity
 
 global.igniteShit = makeUIShitIgniter({
     Impl: function hot$ImplForShitIgniter({ui}) {
+        
+        const apsdata = {
+            userKindTitle(kind) {
+                return lookup(kind, {
+                    customer: 'Заказчик',
+                    writer: 'Писатель',
+                    admin: 'Админ',
+                })
+            },
+        }
+        
         const impl = {
             isDynamicPage,
             
@@ -853,16 +864,18 @@ async profile() { // @ctx page profile
             ]
         }
         
+        // @wip
         function renderProfile(def) {
-            #extract {user: model} from def
+            #extract {user} from def
+            const model = user
             
             const profileFilled = model.profile_updated_at
             
             let profileUpdatedPiece
             if (profileFilled) {
-                profileUpdatedPiece = limpopo(s{colsm: 3, model,
-                    prop: 'profile_updated_at', label: t(`TOTE`, `Профиль изменен`),
-                    transform: x => timestampString(model.profile_updated_at, {includeTZ: true})})
+                profileUpdatedPiece = limpopo(s{colsm: 3, model, prop: 'profile_updated_at',
+                    label: t(`TOTE`, `Профиль залит`),
+                    value: timestampString(model.profile_updated_at, {includeTZ: true})})
             } else {
                 profileUpdatedPiece = limpopo(s{colsm: 3, model,
                     prop: 'profile_updated_at', label: t(`TOTE`, `Профиль`), value: t(`TOTE`, `Нифига не заполнялся`)})
@@ -876,8 +889,14 @@ async profile() { // @ctx page profile
                     profileFilled && limpopo(s{colsm: 3, model, prop: 'phone', label: t(`TOTE`, `Телефон`)}),
                 ),
                 diva({className: 'row'},
-                    limpopo(s{colsm: 3, model, prop: 'inserted_at', label: t(`TOTE`, `Аккаунт создан`), transform: x =>
-                        timestampString(model.inserted_at, {includeTZ: true})}),
+                    limpopo(s{colsm: 3, model, prop: 'kind',
+                        label: t(`TOTE`, `Тип`),
+                        content: diva({style: {}},
+                            userKindIcon(s{user}),
+                            spanc({tame: 'value', content: apsdata.userKindTitle(user.kind)}))}),
+                    limpopo(s{colsm: 3, model, prop: 'inserted_at',
+                        label: t(`TOTE`, `Аккаунт создан`),
+                        value: timestampString(model.inserted_at, {includeTZ: true})}),
                     profileUpdatedPiece,
                 ),
                 profileFilled && diva({className: 'row'},
@@ -1017,8 +1036,7 @@ async profile() { // @ctx page profile
             const me = {
                 render() {
                     return spana({id: me.elementID},
-                        faIcon({tame: 'icon', style: {marginLeft: 5, marginRight: 5}, icon: lookup(user.kind, {
-                            customer: 'user', writer: 'pencil', admin: 'cog'})}),
+                        userKindIcon(s{user}),
                         spancTitle({title}))
                 },
 //                contributeTestState(state) {
@@ -1029,6 +1047,13 @@ async profile() { // @ctx page profile
             me.controlTypeName = 'userLabel'
             implementControlShit({me, def})
             return elcl(me)
+        }
+        
+        function userKindIcon(def) {
+            #extract {user} from def
+            
+            return faIcon({tame: 'icon', style: {marginLeft: 5, marginRight: 5}, icon: lookup(user.kind, {
+                customer: 'user', writer: 'pencil', admin: 'cog'})})
         }
 
         function brightBadgea(def, content) {
