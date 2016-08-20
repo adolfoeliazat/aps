@@ -20,7 +20,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, errorBanner, RequestBuilder,
-        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer} from 'into-u/ui'
+        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer, Placeholder} from 'into-u/ui'
         
 #import static 'into-u/ui'
     
@@ -499,6 +499,92 @@ async 'admin-users'() { // @ctx page admin-users
             #extract {item: user, index} from def
                 
             const headingID = puid()
+            const placeholder = Placeholder()
+            enterDisplayMode()
+            
+            return placeholder
+            
+            
+            // @wip users screen
+            function peggy(def) {
+                #extract {headingActionItems, body} from def
+                
+                placeholder.setContent(diva({controlTypeName: 'admin-users::renderItem', tame: `item${sufindex(index)}`},
+                    diva({tame: 'heading', id: headingID, style: {marginBottom: 10, background: BLUE_GRAY_50, borderBottom: `1px solid ${BLUE_GRAY_100}`}},
+                        spanc(s{tame: 'title', style: {fontSize: '135%', fontWeight: 'normal'}, content: {movy: {model: user, value:
+                            user.first_name + ' ' + user.last_name}}}),
+                            
+                        hor2(s{style: {float: 'right', marginTop: 4, marginRight: 4, color: BLUE_GRAY_600}, items: headingActionItems})),
+                        
+                    body,
+                    
+                    // ObjectViewer(s{object: user}),
+                ))
+            }
+            
+            function enterDisplayMode() {
+                peggy(s{
+                    headingActionItems: [
+                        ia({className: `fa fa-pencil hover-color-BLUE_GRAY_800`, style: {fontSize: '135%', cursor: 'pointer'}, onClick: enterEditMode}),
+                    ],
+                    body: diva({}, renderProfile(s{user}))})
+            }
+            
+            function enterEditMode() {
+                $(document).scrollTop(byid(headingID).offset().top - 50 - 15)
+                
+                const form = ui.Form(s{
+                    dontShameButtons: true,
+                    errorBannerStyle: {marginTop: 15},
+                    primaryButtonTitle: t(`TOTE`, `Сохранить`),
+                    cancelButtonTitle: t(`TOTE`, `Передумал`),
+                    fields: [
+                        ui.HiddenField({
+                            name: 'id',
+                            value: user.id,
+                        }),
+                        ...ui.makeSignUpFields(s{}),
+                        ...makeProfileFields(s{}),
+                    ],
+                    rpcFun: 'private_updateUser',
+                    onCancel() {
+                        placeholder.setPrevContent()
+                    },
+                    async onSuccess(res) {
+                        await refreshRecord()
+                    },
+                })
+                
+                form.getField('email').setValue(user.email)
+                form.getField('firstName').setValue(user.first_name)
+                form.getField('lastName').setValue(user.last_name)
+                form.getField('phone').setValue(user.phone)
+                form.getField('aboutMe').setValue(user.about_me)
+                
+                peggy(s{
+                    headingActionItems: [],
+                    body: diva({style: {marginBottom: 15}}, form)})
+            }
+            
+            async function refreshRecord() {
+                const res = await ui.rpcSoft({fun: 'private_getUser', id: user.id})
+                if (res.error) {
+                    return peggy(s{
+                        headingActionItems: [],
+                        body: errorBanner({content: res.error})})
+                }
+
+                user = res.user
+                enterDisplayMode()
+            }
+            
+            
+        },
+        
+        renderItem_bak(def) {
+            #extract {item: user, index} from def
+                
+            const headingID = puid()
             let updateRecordBody, prevRecordBodyContent
             let recordBodyContent = renderDisplayBody()
             
@@ -516,7 +602,6 @@ async 'admin-users'() { // @ctx page admin-users
                 updateRecordBody(recordBodyContent = renderDisplayBody())
             }
             
-            // @wip users screen
             return diva({controlTypeName: 'admin-users::renderItem', tame: `item${sufindex(index)}`},
                 diva({tame: 'heading', id: headingID, style: {marginBottom: 10, background: BLUE_GRAY_50, borderBottom: `1px solid ${BLUE_GRAY_100}`}},
                     spanc(s{tame: 'title', style: {fontSize: '135%', fontWeight: 'normal'}, content: {movy: {model: user, value:
