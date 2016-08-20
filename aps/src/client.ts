@@ -522,8 +522,9 @@ async 'admin-users'() { // @ctx page admin-users
                 
                 placeholder.setContent(diva({controlTypeName: 'admin-users::renderItem', tame: `item${sufindex(index)}`},
                     diva({tame: 'heading', id: headingID, style: {marginBottom: 10, background: BLUE_GRAY_50, borderBottom: `1px solid ${BLUE_GRAY_100}`}},
-                        spanc(s{tame: 'title', style: {fontSize: '135%', fontWeight: 'normal'}, content: {movy: {model: user, value:
-                            user.first_name + ' ' + user.last_name}}}),
+                        spana({style: {fontWeight: 'normal'}},
+                            spanc({tame: 'title', style: {fontSize: '135%'}, content: {movy: {model: user, value: user.first_name + ' ' + user.last_name}}}),
+                            spanc({tame: 'no', style: {color: GRAY_500, marginLeft: 12}, content: `${nostring({no: user.id})}`})),
                             
                         hor2(s{style: {float: 'right', marginTop: 4, marginRight: 4, color: BLUE_GRAY_600}, items: headingActionItems})),
                         
@@ -542,8 +543,6 @@ async 'admin-users'() { // @ctx page admin-users
             }
             
             function enterEditMode() {
-                $(document).scrollTop(byid(headingID).offset().top - 50 - 15)
-                
                 const form = ui.Form(s{
                     dontShameButtons: true,
                     errorBannerStyle: {marginTop: 15},
@@ -554,8 +553,15 @@ async 'admin-users'() { // @ctx page admin-users
                             name: 'id',
                             value: user.id,
                         }),
+                        
                         ...ui.makeSignUpFields(s{}),
                         ...makeProfileFields(s{}),
+                        
+                        ui.TextField(s{
+                            name: 'adminNotes',
+                            kind: 'textarea',
+                            title: t('TOTE', 'Заметки админа'),
+                        }),
                     ],
                     rpcFun: 'private_updateUser',
                     onCancel() {
@@ -571,10 +577,13 @@ async 'admin-users'() { // @ctx page admin-users
                 form.getField('lastName').setValue(user.last_name)
                 form.getField('phone').setValue(user.phone)
                 form.getField('aboutMe').setValue(user.about_me)
+                form.getField('adminNotes').setValue(user.admin_notes)
                 
                 peggy(s{
                     headingActionItems: [],
                     body: diva({style: {marginBottom: 15}}, form)})
+                    
+                requestAnimationFrame(_=> $(document).scrollTop(byid(headingID).offset().top - 50 - 15))
             }
             
             async function refreshRecord() {
@@ -901,6 +910,8 @@ async profile() { // @ctx page profile
                 ),
                 profileFilled && diva({className: 'row'},
                     limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`)})),
+                ui.getUser().kind === 'admin' && user.admin_notes && diva({className: 'row'},
+                    limpopo(s{colsm: 12, model, prop: 'admin_notes', label: t(`TOTE`, `Заметки админа`)}))
             )
         }
         

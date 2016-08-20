@@ -734,12 +734,17 @@ app.post('/rpc', async function(req, res) {
                     return traceEndHandler(s{ret: fixErrorsResult()})
                 }
                 
+                function loadAdminNotesField(def) {
+                    loadField(s{key: 'adminNotes', mandatory: false, nullIfBlank: true, maxlen: 5000})
+                }
+                
                 // @wip users screen
                 if (msg.fun === 'private_updateUser') {
                     traceBeginHandler(s{})
                     traceBeginSection(s{name: 'Load fields'})
                         loadSignUpFields(s{})
                         loadProfileFields(s{})
+                        loadAdminNotesField(s{})
                     traceEndSection(s{})
 
                     if (isEmpty(fieldErrors)) {
@@ -750,6 +755,7 @@ app.post('/rpc', async function(req, res) {
                                 kind = ${msg.clientKind},
                                 first_name = ${fields.firstName},
                                 last_name = ${fields.lastName},
+                                admin_notes = ${fields.adminNotes},
                                 phone = ${fields.phone},
                                 about_me = ${fields.aboutMe}
                             where id = ${msg.id}`})
@@ -935,7 +941,7 @@ app.post('/rpc', async function(req, res) {
                         }
                         
                         const res = asn({}, item)
-                        res.topicWithID = nostring({no: item.id, LANG: msg.LANG}) + ' ' + item.topic
+                        res.topicWithID = nostring({no: item.id, lang: msg.LANG}) + ' ' + item.topic
                         res.newMessages = {total: loadedMessages.length, top: loadedMessages}
                         res.oldMessages = {total: 0, top: []}
                         return res
@@ -1207,7 +1213,7 @@ app.post('/rpc', async function(req, res) {
                 }
                 
                 function loadField(def) {
-                    #extract {key, kind, mandatory, mandatoryErrorMessage, maxlen, minlen} from def
+                    #extract {key, kind, mandatory, mandatoryErrorMessage, maxlen, minlen, nullIfBlank} from def
                     
                     $trace.push(s{event: `Loading field ${key}`})
                     
@@ -1265,6 +1271,10 @@ app.post('/rpc', async function(req, res) {
                             }
                             const minDigitCount = 6
                             if (digitCount < minDigitCount) error(t('TOTE', `Не менее ${minDigitCount} цифр`))
+                        }
+                        
+                        if (nullIfBlank && isBlank(value)) {
+                            value = null
                         }
                         
                         fields[key] = value
@@ -1677,7 +1687,7 @@ export function q(ss, ...substs) {
         const args = []
         substs.forEach((subst, i) => {
             sql += ss[i]
-            if (typeof subst === 'object' && subst.inline) {
+            if (typeof subst === 'object' && subst !== undefined && subst !== null && subst.inline) {
                 sql += subst.inline
             } else {
                 sql += makePlaceholder()
