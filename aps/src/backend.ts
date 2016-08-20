@@ -669,15 +669,19 @@ app.post('/rpc', async function(req, res) {
                     return hunkyDory(res)
                 }
                 
+                function loadSignUpFields(def) {
+                    loadField(s{key: 'email', kind: 'email', mandatory: true})
+                    loadField(s{key: 'firstName', kind: 'firstName', mandatory: true})
+                    loadField(s{key: 'lastName', kind: 'lastName', mandatory: true})
+                }
+                
                 if (msg.fun === 'signUp') {
                     traceBeginHandler(s{})
                     if (!msg.agreeTerms) {
                         fieldErrors.agreeTerms = t('You have to agree with terms and conditions', 'Необходимо принять соглашение')
                     }
                     
-                    loadField({key: 'email', kind: 'email', mandatory: true})
-                    loadField({key: 'firstName', kind: 'firstName', mandatory: true})
-                    loadField({key: 'lastName', kind: 'lastName', mandatory: true})
+                    loadSignUpFields(s{})
                     
                     if (isEmpty(fieldErrors)) {
                         try {
@@ -730,11 +734,42 @@ app.post('/rpc', async function(req, res) {
                     return traceEndHandler(s{ret: fixErrorsResult()})
                 }
                 
+                // @wip users screen
+                if (msg.fun === 'private_updateUser') {
+                    traceBeginHandler(s{})
+                    traceBeginSection(s{name: 'Load fields'})
+                        loadSignUpFields(s{})
+                        loadProfileFields(s{})
+                    traceEndSection(s{})
+
+                    if (isEmpty(fieldErrors)) {
+                        #await tx.query(s{y: q`
+                            update users set 
+                                updated_at = ${requestTimestamp},
+                                email = ${fields.email},
+                                kind = ${msg.clientKind},
+                                first_name = ${fields.firstName},
+                                last_name = ${fields.lastName},
+                                phone = ${fields.phone},
+                                about_me = ${fields.aboutMe}
+                            where id = ${msg.id}`})
+
+                        #await loadUserForToken(s{})
+                        return traceEndHandler(s{ret: hunkyDory({newUser: pickFromUser(s{user})})})
+                    }
+                    
+                    return traceEndHandler(s{ret: fixErrorsResult()})
+                }
+                
+                function loadProfileFields(def) {
+                    loadField(s{key: 'phone', kind: 'phone', mandatory: true})
+                    loadField(s{key: 'aboutMe', mandatory: true, maxlen: 300})
+                }
+                
                 if (msg.fun === 'private_updateProfile') {
                     traceBeginHandler(s{})
                     traceBeginSection(s{name: 'Load fields'})
-                        loadField(s{key: 'phone', kind: 'phone', mandatory: true})
-                        loadField(s{key: 'aboutMe', mandatory: true, maxlen: 300})
+                        loadProfileFields(s{})
                     traceEndSection(s{})
 
                     if (isEmpty(fieldErrors)) {
@@ -768,6 +803,13 @@ app.post('/rpc', async function(req, res) {
                             return t('Here is your real shit')
                         }
                     }
+                }
+                
+                if (msg.fun === 'private_getUser') {
+                    traceBeginHandler(s{})
+                    const user = #await tx.query(s{y: q`
+                        select * from users where id = ${msg.id}`})[0]
+                    return traceEndHandler(s{ret: hunkyDory({user: pickFromUser(s{user})})})
                 }
                 
                 // @wip
