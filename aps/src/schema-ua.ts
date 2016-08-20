@@ -56,6 +56,7 @@ export async function createDB(newdb) {
                 email text unique not null,
                 password_hash text not null,
                 state text not null,
+                profile_rejection_reason text /*can be null*/,
                 assigned_to bigint /*can be null*/ references users(id),
                 admin_notes text /*can be null*/,
                 first_name text not null,

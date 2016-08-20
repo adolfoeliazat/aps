@@ -12,10 +12,12 @@ DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 500
 BOOTSTRAP_VERSION = 3
 BACKEND_URL = 'http://localhost:3100'
 
-    
 require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as I don't want to support old browsers anyway    090d9d02-b286-4b1e-a062-b2312855e2f1 
 
+// TODO:vgrechka Move stuff from... ./stuff.ts to ./common.ts    3c6e4485-66d2-410e-b298-b9e5f4b4a983 
 #import static 'into-u/utils-client ./stuff'
+
+import {apsdata} from './common'
 
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
@@ -33,16 +35,6 @@ Error.stackTraceLimit = Infinity
 
 global.igniteShit = makeUIShitIgniter({
     Impl: function hot$ImplForShitIgniter({ui}) {
-        
-        const apsdata = {
-            userKindTitle(kind) {
-                return lookup(kind, {
-                    customer: 'Заказчик',
-                    writer: 'Писатель',
-                    admin: 'Админ',
-                })
-            },
-        }
         
         const impl = {
             isDynamicPage,
@@ -516,7 +508,6 @@ async 'admin-users'() { // @ctx page admin-users
             return placeholder
             
             
-            // @wip users screen
             function peggy(def) {
                 #extract {headingActionItems, body} from def
                 
@@ -554,6 +545,17 @@ async 'admin-users'() { // @ctx page admin-users
                             value: user.id,
                         }),
                         
+                        // @wip users screen
+                        ui.SelectField({
+                            name: 'state',
+                            title: t(`TOTE`, `Статус`),
+                            values: [
+                                {value: 'cool', title: apsdata.userStateTitle('cool')},
+                                {value: 'profile-approval-pending', title: apsdata.userStateTitle('profile-approval-pending')},
+                                {value: 'profile-rejected', title: apsdata.userStateTitle('profile-rejected')},
+                            ]
+                        }),
+                        
                         ...ui.makeSignUpFields(s{}),
                         ...makeProfileFields(s{}),
                         
@@ -570,19 +572,27 @@ async 'admin-users'() { // @ctx page admin-users
                     async onSuccess(res) {
                         await refreshRecord()
                     },
+                    onError() {
+                        scrollToHeading()
+                    },
                 })
                 
+                form.getField('state').setValue(user.state)
                 form.getField('email').setValue(user.email)
                 form.getField('firstName').setValue(user.first_name)
                 form.getField('lastName').setValue(user.last_name)
                 form.getField('phone').setValue(user.phone)
                 form.getField('aboutMe').setValue(user.about_me)
-                form.getField('adminNotes').setValue(user.admin_notes)
+                form.getField('adminNotes').setValue(user.admin_notes || '')
                 
                 peggy(s{
                     headingActionItems: [],
                     body: diva({style: {marginBottom: 15}}, form)})
                     
+                scrollToHeading()
+            }
+            
+            function scrollToHeading() {
                 requestAnimationFrame(_=> $(document).scrollTop(byid(headingID).offset().top - 50 - 15))
             }
             
@@ -890,7 +900,9 @@ async profile() { // @ctx page profile
                     prop: 'profile_updated_at', label: t(`TOTE`, `Профиль`), value: t(`TOTE`, `Нифига не заполнялся`)})
             }
             
-            return diva({tame: 'profile'},
+            const adminLooks = ui.getUser().kind === 'admin'
+            
+            return diva({controlTypeName: 'renderProfile', tame: 'profile'},
                 diva({className: 'row'},
                     limpopo(s{colsm: 3, model, prop: 'first_name', label: t(`TOTE`, `Имя`)}),
                     limpopo(s{colsm: 3, model, prop: 'last_name', label: t(`TOTE`, `Фамилия`)}),
@@ -903,6 +915,13 @@ async profile() { // @ctx page profile
                         content: diva({style: {}},
                             userKindIcon(s{user}),
                             spanc({tame: 'value', content: apsdata.userKindTitle(user.kind)}))}),
+                    adminLooks && limpopo(s{colsm: 3, model, prop: 'state',
+                        formGroupStyle: run(_=> {
+                            if (user.state === 'profile-approval-pending') return {background: AMBER_200}
+                            if (user.state === 'profile-rejected') return {background: DEEP_ORANGE_200}
+                            return {}
+                        }),
+                        label: t(`TOTE`, `Статус`), prop: 'state', transform: apsdata.userStateTitle}),
                     limpopo(s{colsm: 3, model, prop: 'inserted_at',
                         label: t(`TOTE`, `Аккаунт создан`),
                         value: timestampString(model.inserted_at, {includeTZ: true})}),
@@ -910,7 +929,7 @@ async profile() { // @ctx page profile
                 ),
                 profileFilled && diva({className: 'row'},
                     limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`)})),
-                ui.getUser().kind === 'admin' && user.admin_notes && diva({className: 'row'},
+                adminLooks && user.admin_notes && diva({className: 'row'},
                     limpopo(s{colsm: 12, model, prop: 'admin_notes', label: t(`TOTE`, `Заметки админа`)}))
             )
         }

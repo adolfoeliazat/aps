@@ -6,6 +6,8 @@ Things to Consider
       Get rid off `if (typeof window === 'object')` checks scattered throughout the file.
       
     - Revisit, clean up, document decisions, etc. for hot code reloading
+    
+    - Show convenient stack trace pane for non-promise exceptions. In same way as it's now implemented for unhandledrejection.
       
       
 Forget-Me-Nots
@@ -55,6 +57,7 @@ Contexts
     // @ctx domains
     // @ctx css
     // @ctx scrap generate dates
+    // @ctx hot shit
     
 Heap
     $metaID

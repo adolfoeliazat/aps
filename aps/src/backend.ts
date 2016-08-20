@@ -19,6 +19,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as testShitUA from './test-shit-ua'
 #import static 'into-u ./stuff'
+import {apsdata, setCommonT} from './common'
 
 const backendInstanceID = uuid()
 let testGlobalCounter = 0, simulateRequest
@@ -35,8 +36,6 @@ require('pg').types.setTypeParser(1114, s => { // timestamp without timezone
     return s
 })
 
-//const idToMeta = {}
-
 const redis = run(_=> {
     const client = require('redis').createClient()
     
@@ -44,10 +43,12 @@ const redis = run(_=> {
         logPizdets({title: 'Redis shitted something at us...', message: err})
     })
     
-    return {
-        /*async*/ get(key) {
+    const me = {}
+    
+    for (const command of tokens('get set lpush ltrim lrange')) {
+        me[command] = /*async*/ function(...args) {
             return new Promise((resolve, reject) => {
-                client.get(key, (err, res) => {
+                client[command](...args, (err, res) => {
                     if (err) {
                         reject(err)
                     } else {
@@ -55,20 +56,10 @@ const redis = run(_=> {
                     }
                 })
             })
-        },
-        
-        /*async*/ set(...args) {
-            return new Promise((resolve, reject) => {
-                client.set(...args, (err, res) => {
-                    if (err) {
-                        reject(err)
-                    } else {
-                        resolve(res)
-                    }
-                })
-            })
-        },
+        }
     }
+    
+    return me
 })
 
                     
@@ -99,7 +90,8 @@ app.post('/rpc', async function(req, res) {
     function ripOffMeta(o, path='ROOT') {
         for (const [key, value] of toPairs(o)) {
             if (key === '$trace') {
-                raise('Fuck $trace: ' + path + '.' + key)
+                o[key] = []
+                // raise('Fuck $trace: ' + path + '.' + key)
             }
             
             else if (key === '$meta') {
@@ -155,6 +147,7 @@ app.post('/rpc', async function(req, res) {
         function t($meta, ...args) {
             return {$meta, meat: _t(...args)}
         }
+        setCommonT(t)
         
         let stackBeforeAwait, awaitRes
         
@@ -280,7 +273,7 @@ app.post('/rpc', async function(req, res) {
                 if (msg.fun === 'danger_getHotShitCodeEntries') {
                     const items = []
                     
-                    for (const fname of ['E:/work/foundation/u/lib/ui.js', 'E:/work/aps/aps/lib/client.js']) {
+                    for (const fname of ['E:/work/foundation/u/lib/ui.js', 'E:/work/aps/aps/lib/client.js', 'E:/work/aps/aps/lib/common.js']) { // @ctx hot shit
                         const fileCode = fs.readFileSync(fname, 'utf8')
                         const beginRe = /'\$\$\$hot-shit-begin-(.*?)'/g
                         let match
@@ -511,6 +504,8 @@ app.post('/rpc', async function(req, res) {
                         }
                         const filePart = msg.$sourceLocation.slice(0, filePartEnd)
                         file = {
+                            'aps/src/common.ts': 'E:/work/aps/aps/src/common.ts',
+                            'common.ts': 'E:/work/aps/aps/src/common.ts',
                             'aps/src/client.ts': 'E:/work/aps/aps/src/client.ts',
                             'client.ts': 'E:/work/aps/aps/src/client.ts',
                             'aps/src/test-admin-ua.ts': 'E:/work/aps/aps/src/test-admin-ua.ts',
@@ -567,8 +562,9 @@ app.post('/rpc', async function(req, res) {
                 }
                 
                 if (msg.fun === 'danger_getRequests') {
-                    let last = msg.last || 1
-                    return requestLogForUI.slice(requestLogForUI.length - last)
+                    let count = msg.count || 1
+                    // @wip trace
+                    return #await redis.lrange('requests', 0, count - 1)
                 }
                 
                 if (msg.fun === 'danger_getQueries') {
@@ -740,17 +736,21 @@ app.post('/rpc', async function(req, res) {
                 
                 // @wip users screen
                 if (msg.fun === 'private_updateUser') {
+                    // TODO:vgrechka Check permissions in private_updateUser    262b8f75-1c3d-479f-b5ca-5b1bdcb9ee98 
+                    
                     traceBeginHandler(s{})
                     traceBeginSection(s{name: 'Load fields'})
                         loadSignUpFields(s{})
                         loadProfileFields(s{})
                         loadAdminNotesField(s{})
+                        loadField(s{key: 'state', mandatory: true, allowedValues: apsdata.userStateValues()})
                     traceEndSection(s{})
 
                     if (isEmpty(fieldErrors)) {
                         #await tx.query(s{y: q`
                             update users set 
                                 updated_at = ${requestTimestamp},
+                                state = ${fields.state},
                                 email = ${fields.email},
                                 kind = ${msg.clientKind},
                                 first_name = ${fields.firstName},
@@ -1213,13 +1213,16 @@ app.post('/rpc', async function(req, res) {
                 }
                 
                 function loadField(def) {
-                    #extract {key, kind, mandatory, mandatoryErrorMessage, maxlen, minlen, nullIfBlank} from def
+                    #extract {key, kind, mandatory, mandatoryErrorMessage, maxlen, minlen, nullIfBlank, allowedValues} from def
                     
                     $trace.push(s{event: `Loading field ${key}`})
                     
                     try {
                         let value = msg[key]
-                        if (typeof value !== 'string') raise('Fuck you with you hacky request')
+                        if (typeof value !== 'string') {
+                            dlog(`Bad value type for field [${key}]: `, value)
+                            raise('Fuck you with you hacky request')
+                        }
                         value = value.trim()
                         
                         if (mandatory && isBlank(value)) {
@@ -1236,41 +1239,47 @@ app.post('/rpc', async function(req, res) {
                             }
                         }
                         
-                        if (!maxlen) {
-                            maxlen = {
-                                email: 50,
-                                firstName: 50,
-                                lastName: 50,
-                                phone: 20,
-                                topic: 300,
-                                message: 1000,
-                            }[kind]
-                            if (!maxlen) raise(`WTF, define maxlen for ${kind}`)
+                        if (allowedValues) {
+                            if (!allowedValues.includes(value)) error(t(`TOTE`, `Плохое значение для поля ${key}`))
                         }
-                        if (value.length > maxlen) error(t('TOTE', `Не более ${maxlen} символов`))
-                        
-                        if (minlen === undefined) {
-                            minlen = {
-                                email: 3,
-                            }[kind]
-                        }
-                        if (minlen) {
-                            if (value.length < minlen) error(t('TOTE', `Не менее ${minlen} символов`))
-                        }
-                        
-                        if (kind === 'email') {
-                            if (!isValidEmail(value)) error(t('TOTE', 'Странная почта какая-то'))
-                        }
-                        else if (kind === 'phone') {
-                            let digitCount = 0
-                            for (const c of value.split('')) {
-                                if (!/(\d| |-|\+|\(|\))+/.test(c)) error(t('TOTE', 'Странный телефон какой-то'))
-                                if (/\d/.test(c)) {
-                                    ++digitCount
-                                }
+                        else {
+                            if (!maxlen) {
+                                maxlen = {
+                                    email: 50,
+                                    firstName: 50,
+                                    lastName: 50,
+                                    phone: 20,
+                                    topic: 300,
+                                    message: 1000,
+                                }[kind]
+                                if (!maxlen) raise(`WTF, define maxlen for ${kind}`)
                             }
-                            const minDigitCount = 6
-                            if (digitCount < minDigitCount) error(t('TOTE', `Не менее ${minDigitCount} цифр`))
+                            
+                            if (value.length > maxlen) error(t('TOTE', `Не более ${maxlen} символов`))
+                            
+                            if (minlen === undefined) {
+                                minlen = {
+                                    email: 3,
+                                }[kind]
+                            }
+                            if (minlen) {
+                                if (value.length < minlen) error(t('TOTE', `Не менее ${minlen} символов`))
+                            }
+                            
+                            if (kind === 'email') {
+                                if (!isValidEmail(value)) error(t('TOTE', 'Странная почта какая-то'))
+                            }
+                            else if (kind === 'phone') {
+                                let digitCount = 0
+                                for (const c of value.split('')) {
+                                    if (!/(\d| |-|\+|\(|\))+/.test(c)) error(t('TOTE', 'Странный телефон какой-то'))
+                                    if (/\d/.test(c)) {
+                                        ++digitCount
+                                    }
+                                }
+                                const minDigitCount = 6
+                                if (digitCount < minDigitCount) error(t('TOTE', `Не менее ${minDigitCount} цифр`))
+                            }
                         }
                         
                         if (nullIfBlank && isBlank(value)) {
@@ -1391,8 +1400,13 @@ app.post('/rpc', async function(req, res) {
             }
             
             if (shouldLogRequestForUI && $trace.length) {
-                requestLogForUI.push({title: msg.fun, $trace, $clientSourceLocation: msg.$sourceLocation, msg})
-//                requestLogForUI.push({title: msg.fun, $trace: getCircularJSON().stringify($trace), $clientSourceLocation: msg.$sourceLocation})
+                // @wip trace
+                /*don't await*/ redis.lpush('requests', getCircularJSON().stringify({
+                    title: msg.fun,
+                    $trace,
+                    $clientSourceLocation: msg.$sourceLocation,
+                    msg}))
+                /*don't await*/ redis.ltrim('requests', 0, 99)
             }
         }
         
@@ -1735,17 +1749,6 @@ export function imposeRequestTimestamp(x) {
 
 
 
-
-
-
-
-
-function __domains() { // @ctx domains
-    const userStates = [
-        'cool',
-        'profile-approval-pending',
-    ]
-}
 
 
 
