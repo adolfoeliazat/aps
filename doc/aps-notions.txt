@@ -1,15 +1,3 @@
-Things to Consider
-
-    - [DONE] Organizing related steps of test scenarios into groups (and subgroups, thus making hierarchy)
-          
-    - Make separation between client-side and server-side usage of ui.ts cleaner.
-      Get rid off `if (typeof window === 'object')` checks scattered throughout the file.
-      
-    - Revisit, clean up, document decisions, etc. for hot code reloading
-    
-    - Show convenient stack trace pane for non-promise exceptions. In same way as it's now implemented for unhandledrejection.
-      
-      
 Forget-Me-Nots
 
     - A tangle of page auto-refresh, hot code reloading, and navigation to other pages.
@@ -42,6 +30,11 @@ Controls
     makeBackendMetaPanel
     renderProfile
     horizontala hor1 hor2
+    
+Debugging
+    debugPanes.set()
+    openDebugPane()
+    debugToggleBetsyTitled()
 
 CSS
     showOnParentHovered
@@ -58,10 +51,26 @@ Contexts
     // @ctx css
     // @ctx scrap generate dates
     // @ctx hot shit
+     
+TODO
+
+    - [DONE] Organizing related steps of test scenarios into groups (and subgroups, thus making hierarchy)
+          
+    - Make separation between client-side and server-side usage of ui.ts cleaner.
+      Get rid off `if (typeof window === 'object')` checks scattered throughout the file.
+      
+    - Revisit, clean up, document decisions, etc. for hot code reloading
+    
+    - Show convenient stack trace pane for non-promise exceptions. In same way as it's now implemented for unhandledrejection.
+    
+    - After updating user, scroll to it
+    
+    - Implement on client something similar to backend traces
+      
     
 Heap
     $metaID
-     
+      
     
 ----------------
 

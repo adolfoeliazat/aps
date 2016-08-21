@@ -545,7 +545,6 @@ async 'admin-users'() { // @ctx page admin-users
                             value: user.id,
                         }),
                         
-                        // @wip users screen
                         ui.SelectField({
                             name: 'state',
                             title: t(`TOTE`, `Статус`),
@@ -571,6 +570,7 @@ async 'admin-users'() { // @ctx page admin-users
                     },
                     async onSuccess(res) {
                         await refreshRecord()
+                        // @wip users screen
                     },
                     onError() {
                         scrollToHeading()
