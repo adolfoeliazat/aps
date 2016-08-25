@@ -30,11 +30,13 @@ Controls
     makeBackendMetaPanel
     renderProfile
     horizontala hor1 hor2
+    renderTrain
     
 Debugging
-    debugPanes.set()
-    openDebugPane()
-    debugToggleBetsyTitled()
+    debugPanes.set
+    openDebugPane
+    debugToggleBetsyTitled
+    
 
 CSS
     showOnParentHovered

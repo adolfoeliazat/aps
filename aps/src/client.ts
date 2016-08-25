@@ -22,10 +22,10 @@ import {apsdata} from './common'
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, errorBanner, RequestBuilder,
-        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer, Placeholder} from 'into-u/ui'
+        preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer, Placeholder,
+        beginTrain, endTrain} from 'into-u/ui'
         
 #import static 'into-u/ui'
-    
 
 COLOR_1_MEDIUM = BLUE_GRAY_400
 COLOR_1_DARK = BLUE_GRAY_600
@@ -1353,12 +1353,9 @@ clog('Client code is kind of loaded')
 
 
 
-function compiler$getRegExpForAddingSourceLocationTo() {
-    return /((\s|\(|\[|exports\.|ui_1\.)(diva|spana|ula|ola|lia|ia|spanc|Input|userLabel|button|ui\.busyButton|Checkbox|Select|ui\.rpcSoft|ui\.liveBadge|ui\.liveBadge2|TopNavItem|link|ui\.pageLink|ui\.urlLink|ui\.taby|spancTitle|pageHeader|horizontala|hor1|hor2|renderStacks|faIcon|OpenSourceCodeLink|CollapsibleShit|blockquotea|pageTopBlockQuote)\(\{)/g /*})*/
-}
     
     
-    
+
     
     
     
