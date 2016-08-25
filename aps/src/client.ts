@@ -471,7 +471,6 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
 async 'admin-users~'() { // @ctx page admin-users
     await melinda(s{
         urlPath: 'admin-users.html',
-        // trainName: 'Load admin-users page',
         itemsFun: 'private_getUsers',
         header: entityRes => {
             return pageHeader({title: t(`TOTE`, `Пользователи`)})
@@ -499,6 +498,7 @@ async 'admin-users~'() { // @ctx page admin-users
             },
         },
         
+        // @wip trains
         renderItem(def) {
             #extract {item: user, index} from def
                 
@@ -569,8 +569,8 @@ async 'admin-users~'() { // @ctx page admin-users
                     onCancel() {
                         placeholder.setPrevContent()
                     },
-                    async onSuccess(res) {
-                        await refreshRecord()
+                    async onSuccess~(res) {
+                        await refreshRecord+()
                         // @wip users screen
                     },
                     onError() {
@@ -597,7 +597,9 @@ async 'admin-users~'() { // @ctx page admin-users
                 requestAnimationFrame(_=> $(document).scrollTop(byid(headingID).offset().top - 50 - 15))
             }
             
-            async function refreshRecord() {
+            
+            // @wip trains
+            async function refreshRecord~() {
                 const res = await ui.rpcSoft({fun: 'private_getUser', id: user.id})
                 if (res.error) {
                     return peggy(s{
