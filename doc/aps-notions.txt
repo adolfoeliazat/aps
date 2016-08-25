@@ -70,9 +70,9 @@ TODO
     
     - Show convenient stack trace pane for non-promise exceptions. In same way as it's now implemented for unhandledrejection.
     
-    - After updating user, scroll to it
+    - [DONE] After updating user, scroll to it
     
-    - Implement on client something similar to backend traces
+    - [DONE] Implement on client something similar to backend traces
       
     
 Heap

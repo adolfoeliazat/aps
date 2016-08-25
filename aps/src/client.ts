@@ -571,6 +571,7 @@ async 'admin-users~'() { // @ctx page admin-users
                     },
                     async onSuccess~(res) {
                         await refreshRecord+()
+                        scrollToHeading()
                         // @wip users screen
                     },
                     onError() {
