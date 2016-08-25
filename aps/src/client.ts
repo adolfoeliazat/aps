@@ -467,10 +467,11 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
     } finally { endTrain() }
 },
 
-async 'admin-users'() { // @ctx page admin-users
+
+async 'admin-users~'() { // @ctx page admin-users
     await melinda(s{
         urlPath: 'admin-users.html',
-        trainName: 'Load admin-users page',
+        // trainName: 'Load admin-users page',
         itemsFun: 'private_getUsers',
         header: entityRes => {
             return pageHeader({title: t(`TOTE`, `Пользователи`)})
@@ -660,7 +661,7 @@ async profile() { // @ctx page profile
                         aboveItems, renderItem, defaultOrdering='desc', hasSearchBox=true, hasOrderingSelect=true, hasHeaderControls=true
                     } from def
                     
-                    beginTrain({name: trainName}); try {
+                    if (trainName) beginTrain({name: trainName}); try {
                         let entityRes
                         if (entityFun) {
                             entityRes = await ui.rpcSoft({fun: entityFun, entityID})
@@ -846,7 +847,7 @@ async profile() { // @ctx page profile
                                 body: div(errorBanner(res.error))
                             })
                         }
-                    } finally { endTrain() }
+                    } finally { if (trainName) endTrain() }
                 }
                 
                 
