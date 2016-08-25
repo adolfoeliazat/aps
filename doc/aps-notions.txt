@@ -57,6 +57,7 @@ Contexts
     // @ctx scrap generate dates
     // @ctx hot shit
     // @ctx exported shit
+    // @ctx debug functions
     'play around with revealTrains'
      
 TODO

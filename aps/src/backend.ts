@@ -821,17 +821,23 @@ app.post('/rpc', async function(req, res) {
                 // @wip
                 if (msg.fun === 'private_getUsers') {
                     traceBeginHandler(s{})
+                    
                     let filter = msg.filter
                     if (!['all', '2approve'].includes(filter)) filter = 'all'
-                    const chunk = #await selectUsersChunk(s{filter})
+                        
+                    let search = msg.search
+                    if (isBlank(search)) search = undefined
+                        
+                    const chunk = #await selectUsersChunk(s{filter, search})
                     return traceEndHandler(s{ret: hunkyDory(asn({filter}, chunk))})
                     
                     
                     async function selectUsersChunk(def) {
-                        #extract {filter} from def
+                        #extract {filter, search} from def
                         
                         return #await selectChunk(s{table: 'users', loadItem,
                             appendToWhere(qb) {
+                                // qb.append(q`and id = 131`)
                             },
                         })
                         
@@ -1457,6 +1463,7 @@ const port = 3100
 app.listen(port, _=> {
     clog(`Backend is spinning on 127.0.0.1:${port}`)
 })
+
 
 function logPizdets({title, message}) {
     clog()

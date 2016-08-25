@@ -23,7 +23,7 @@ import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSou
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, errorBanner, RequestBuilder,
         preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer, Placeholder,
-        beginTrain, endTrain} from 'into-u/ui'
+        beginTrain, endTrain, controlBeingRevealed} from 'into-u/ui'
         
 #import static 'into-u/ui'
 
@@ -392,14 +392,17 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                                     return []
                                 }
                                 
-                                addMetric({metric: 'profilesToApprove', url: 'admin-users.html', title: t(`TOTE`, `Профилей зааппрувить`)})
-                                addMetric({metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
+                                // @wip admin-users
+                                addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html', title: t(`TOTE`, `Профилей зааппрувить`)})
+                                addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
                                 return items
                                 
-                                function addMetric({metric, url, title, noStateContributions}) {
+                                function addMetric(def) {
+                                    #extract {metric, url, title, noStateContributions} from def
+                                    
                                     const model = res[metric]
                                     if (model.count !== '0') {
-                                        items.push(diva({tame: metric, noStateContributions, style: {position: 'relative', overflow: 'hidden'}},
+                                        items.push(diva({controlTypeName: 'addMetric', tame: metric, noStateContributions, style: {position: 'relative', overflow: 'hidden'}},
                                             diva({style: {position: 'absolute', zIndex: -1, left: 0, top: 0}}, repeat('.', 210)),
                                             ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT}, blinkOpts: {dwidth: -8},
                                                 title, url, delayActionForFanciness: true}),
@@ -442,6 +445,10 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
             timeoutSet(5000, async function() { // @ctx forgetmenot-1-1
                 if (impl.stale) return
                 if (myPage !== ui.currentPage) return
+                
+                // Automatic refreshes should be prevented while something is being investigated via revealer,
+                // otherwise elements being looked at might be removed
+                if (controlBeingRevealed) return scheduleUpdate()
                 
                 // dlog(`currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}`)
                 // dlog('Updating dashboard page')
@@ -498,7 +505,6 @@ async 'admin-users~'() { // @ctx page admin-users
             },
         },
         
-        // @wip trains
         renderItem(def) {
             #extract {item: user, index} from def
                 
@@ -566,15 +572,15 @@ async 'admin-users~'() { // @ctx page admin-users
                         }),
                     ],
                     rpcFun: 'private_updateUser',
-                    onCancel() {
+                    onCancel~() {
                         placeholder.setPrevContent()
+                        scrollToHeading()
                     },
                     async onSuccess~(res) {
                         await refreshRecord+()
                         scrollToHeading()
-                        // @wip users screen
                     },
-                    onError() {
+                    onError~() {
                         scrollToHeading()
                     },
                 })
@@ -599,7 +605,6 @@ async 'admin-users~'() { // @ctx page admin-users
             }
             
             
-            // @wip trains
             async function refreshRecord~() {
                 const res = await ui.rpcSoft({fun: 'private_getUser', id: user.id})
                 if (res.error) {
@@ -758,7 +763,7 @@ async profile() { // @ctx page profile
                             
                             return {
                                 button() {
-                                    return button({tamyShamy: name, style: {marginLeft: 8}, level, icon, disabled: headerControlsDisabled, onClick() {
+                                    return button({tamyShamy: name, style: {marginLeft: 0}, level, icon, disabled: headerControlsDisabled, onClick() {
                                         showEmptyLabel = false
                                         setHeaderControlsDisappearing()
                                         formClass = 'aniFadeIn'
@@ -887,7 +892,6 @@ async profile() { // @ctx page profile
             ]
         }
         
-        // @wip
         function renderProfile(def) {
             #extract {user} from def
             const model = user
