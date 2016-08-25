@@ -32,6 +32,9 @@ Controls
     horizontala hor1 hor2
     renderTrain
     
+ui.*
+    async ui.loadPageForURL
+    
 Debugging
     debugPanes.set
     openDebugPane
@@ -53,6 +56,8 @@ Contexts
     // @ctx css
     // @ctx scrap generate dates
     // @ctx hot shit
+    // @ctx exported shit
+    'play around with revealTrains'
      
 TODO
 
