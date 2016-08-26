@@ -392,7 +392,6 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                                     return []
                                 }
                                 
-                                // @wip admin-users
                                 addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html', title: t(`TOTE`, `Профилей зааппрувить`)})
                                 addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
                                 return items
@@ -482,6 +481,12 @@ async 'admin-users~'() { // @ctx page admin-users
         header: entityRes => {
             return pageHeader({title: t(`TOTE`, `Пользователи`)})
         },
+        
+        // @wip
+        hasFilterSelect: true,
+        filterSelectValues: apsdata.userFilters(),
+        defaultFilter: 'all',
+
         plusIcon: 'plus',
         
         plusFormDef: {
@@ -666,7 +671,8 @@ async profile() { // @ctx page profile
                     #extract {
                         trainName, urlPath, urlEntityParamName, tabDefs, defaultActiveTab,
                         header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef,
-                        aboveItems, renderItem, defaultOrdering='desc', hasSearchBox=true, hasOrderingSelect=true, hasHeaderControls=true
+                        aboveItems, renderItem, defaultOrdering='desc', hasSearchBox=true, hasOrderingSelect=true, hasHeaderControls=true,
+                        hasFilterSelect, filterSelectValues, defaultFilter
                     } from def
                     
                     if (trainName) beginTrain({name: trainName}); try {
@@ -678,6 +684,14 @@ async profile() { // @ctx page profile
                         
                         const searchString = ui.urlQuery.search
                         
+                        let filter
+                        if (hasFilterSelect) {
+                            // @wip
+                            filter = ui.urlQuery.filter
+                            const saneFilters = filterSelectValues.map(x => x.value)
+                            if (!saneFilters.includes(filter)) filter = defaultFilter
+                        }
+                        
                         let ordering = ui.urlQuery.ordering
                         if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
                         
@@ -687,7 +701,7 @@ async profile() { // @ctx page profile
                             tabs = ui.tabs({name: 'main', active: activeTab, tabDefs})
                         }
 
-                        const itemsReq = {fun: fov(itemsFun, {activeTab}), entityID, ordering, searchString}
+                        const itemsReq = {fun: fov(itemsFun, {activeTab}), entityID, filter, ordering, searchString}
                         const itemsRes = await ui.rpcSoft(itemsReq)
                         if (itemsRes.error) return showBadResponse(itemsRes)
                         
@@ -709,12 +723,28 @@ async profile() { // @ctx page profile
                                     }
                                 }
                             })
-                            searchBoxInput.setValue(itemsRes.actualSearchString)
+                            searchBoxInput.setValueExt({value: itemsRes.actualSearchString, notify: false})
                                 
                             searchBox = diva({style: {position: 'relative'}},
                                 searchBoxInput,
                                 faIcon({icon: 'search', style: {position: 'absolute', left: 10, top: 10, color: GRAY_500}}),
                             )
+                        }
+                        
+                        // @wip admin-users
+                        let filterSelect
+                        if (hasFilterSelect) {
+                            filterSelect = Select({
+                                tamyShamy: 'filter', isAction: true, style: {width: 160},
+                                values: filterSelectValues,
+                                initialValue: filter,
+                                disabled: _=> headerControlsDisabled,
+                                async onChange() {
+                                    await applyHeaderControls+({controlToBlink: filterSelect})
+                                },
+                            })
+                            
+                            filterSelect.setValueExt({value: itemsRes.actualFilter, notify: false})
                         }
                         
                         let orderingSelect
@@ -728,6 +758,8 @@ async profile() { // @ctx page profile
                                     await applyHeaderControls+({controlToBlink: orderingSelect})
                                 },
                             })
+                            
+                            orderingSelect.setValueExt({value: itemsRes.actualOrdering, notify: false})
                         }
                         
                         async function applyHeaderControls~({controlToBlink}) {
@@ -740,6 +772,7 @@ async profile() { // @ctx page profile
                                 urlParamParts.push(`${urlEntityParamName}=${entityID}`)
                             }
                             
+                            urlParamParts.push(`filter=${filterSelect.getValue()}`)
                             urlParamParts.push(`ordering=${orderingSelect.getValue()}`)
                             
                             const searchString = searchBoxInput.getValue().trim()
@@ -822,6 +855,7 @@ async profile() { // @ctx page profile
                                     className: headerControlsClass},
                                     
                                     searchBox,
+                                    filterSelect,
                                     orderingSelect,
                                     editShit && editShit.button,
                                     plusShit && plusShit.button,

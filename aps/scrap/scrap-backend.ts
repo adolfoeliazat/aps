@@ -37,7 +37,7 @@ await pgTransaction({db: 'aps-test'}, async function(tx) {
 //
 await pgTransaction({db: 'aps-test'}, async function(tx) {
     const rows = await tx.query(s{y: q`
-        select * from users where phone is not null
+        select * from users where state = 'profile-approval-pending'
     `})
     for (const row of rows) {
         relog(deepInspect(omit(row, '$meta', 'tsv')))

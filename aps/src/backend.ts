@@ -15,11 +15,13 @@ PG_MAX_BIGINT = '9223372036854775807'
 
 require('regenerator-runtime/runtime')
 require('source-map-support').install()
+
 import * as fs from 'fs'
 import * as path from 'path'
 import * as testShitUA from './test-shit-ua'
-#import static 'into-u ./stuff'
+
 import {apsdata, setCommonT} from './common'
+#import static 'into-u ./stuff'
 
 const backendInstanceID = uuid()
 let testGlobalCounter = 0, simulateRequest
@@ -820,43 +822,56 @@ app.post('/rpc', async function(req, res) {
                 if (msg.fun === 'private_getUsers') {
                     traceBeginHandler(s{})
                     
-                    let filter = msg.filter
-                    if (!['all', '2approve'].includes(filter)) filter = 'all'
+                    let actualFilter = msg.filter
+                    const saneFilters = apsdata.userFilters().map(x => x.value)
+                    if (!saneFilters.includes(actualFilter)) actualFilter = defaultFilter
                         
                     let actualSearchString = getSearchStringParam()
                     
                     const chunk = #await selectChunk(s{table: 'users', loadItem,
                         appendToWhere(qb) {
-                            if (!actualSearchString) return
+                            !function considerSearchString() {
+                                if (!actualSearchString) return
+                                
+                                if (/^p /.test(actualSearchString)) {
+                                    $trace.push(s{event: '[log] Doing phone search'})
+                                    const coph = compactPhone(actualSearchString)
+                                    return qb.append(q`and compact_phone = ${coph}`)
+                                }
+                                
+                                if (/^\d+$/.test(actualSearchString)) {
+                                    $trace.push(s{event: '[log] Doing ID search'})
+                                    return qb.append(q`and id = ${actualSearchString}`)
+                                }
+                                
+                                $trace.push(s{event: '[log] Doing full-text search'})
+                                // TODO:vgrechka Handle syntax error in tsquery    c9f27a1f-82bc-4d3c-aabc-52ea8ee6bbf7 
+                                
+                                // @wip admin-users
+                                let ftsQueryString
+                                if (/&|!|<->|\|/.test(actualSearchString)) {
+                                    ftsQueryString = actualSearchString
+                                } else {
+                                    actualSearchString = actualSearchString.replace(/\(|\)/g, ' ').trim()
+                                    ftsQueryString = actualSearchString.split(/\s+/).join(' & ')
+                                }
+                                
+                                qb.append(q`and tsv @@ to_tsquery('russian', ${ftsQueryString})`)
+                            }()
                             
-                            if (/^p /.test(actualSearchString)) {
-                                $trace.push(s{event: '[log] Doing phone search'})
-                                const coph = compactPhone(actualSearchString)
-                                return qb.append(q`and compact_phone = ${coph}`)
-                            }
-                            
-                            if (/^\d+$/.test(actualSearchString)) {
-                                $trace.push(s{event: '[log] Doing ID search'})
-                                return qb.append(q`and id = ${actualSearchString}`)
-                            }
-                            
-                            $trace.push(s{event: '[log] Doing full-text search'})
-                            // TODO:vgrechka Handle syntax error in tsquery    c9f27a1f-82bc-4d3c-aabc-52ea8ee6bbf7 
-                            
-                            // @wip admin-users
-                            let ftsQueryString
-                            if (/&|!|<->|\|/.test(actualSearchString)) {
-                                ftsQueryString = actualSearchString
-                            } else {
-                                actualSearchString = actualSearchString.replace(/\(|\)/g, ' ').trim()
-                                ftsQueryString = actualSearchString.split(/\s+/).join(' & ')
-                            }
-                            
-                            qb.append(q`and tsv @@ to_tsquery('russian', ${ftsQueryString})`)
+                            !function considerFilter() {
+                                if (actualFilter === 'all') return
+                                
+                                if (actualFilter === '2approve') {
+                                    return qb.append(q`and state = 'profile-approval-pending'`)
+                                }
+                                
+                                raise(`Weird filter: ${actualFilter}`)
+                            }()
                         },
                     })
                     
-                    return traceEndHandler(s{ret: hunkyDory(asn({filter, actualSearchString}, chunk))})
+                    return traceEndHandler(s{ret: hunkyDory(asn({actualFilter, actualSearchString}, chunk))})
                     
                     async function loadItem(def) {
                         #extract {item: user} from def
@@ -1153,16 +1168,16 @@ app.post('/rpc', async function(req, res) {
                 async function selectChunk(def) {
                     #extract {table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'} from def
                     
-                    const ordering = getOrderingParam({defaultValue: defaultOrdering})
+                    const actualOrdering = getOrderingParam({defaultValue: defaultOrdering})
                     
-                    const fromID = msg.fromID || (ordering === 'asc' ? 0 : PG_MAX_BIGINT)
+                    const fromID = msg.fromID || (actualOrdering === 'asc' ? 0 : PG_MAX_BIGINT)
                     const qb = QueryBuilder()
                     qb.append(q`select *`)
                     appendToSelect(qb)
                     qb.append(q`from ${{inline: table}} where true `)
                     appendToWhere(qb)
-                    qb.append(q`and id ${{inline: ordering === 'asc' ? '>=' : '<='}} ${fromID}`)
-                    qb.append(q`order by id ${{inline: ordering}}`)
+                    qb.append(q`and id ${{inline: actualOrdering === 'asc' ? '>=' : '<='}} ${fromID}`)
+                    qb.append(q`order by id ${{inline: actualOrdering}}`)
                     qb.append(q`fetch first MORE_CHUNK rows only`)
                     
                     let items = #await tx.query(s{descr: `Select chunk from ${table}`, y: qb.toy()})
@@ -1177,7 +1192,7 @@ app.post('/rpc', async function(req, res) {
                         loadedItems.push(#await loadItem(s{item}))
                     }
                     
-                    return {items: loadedItems, moreFromID}
+                    return {items: loadedItems, moreFromID, actualOrdering}
                 }
                     
                 async function handleChunkedSelect(def) {

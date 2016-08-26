@@ -45,6 +45,13 @@ const makeOrRemakeAPSCommonExportedShit = function hot$makeOrRemakeAPSCommonExpo
         userStateTitle(state) {
             return apsdata.userStateValueToTitle()[state]
         },
+        
+        userFilters() {
+            return [
+                {value: 'all', title: t(`TOTE`, `Все`)},
+                {value: '2approve', title: t(`TOTE`, `Ждут аппрува`)},
+            ]
+        }
     }
     
 }
