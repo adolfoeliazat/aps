@@ -39,7 +39,9 @@ Debugging
     debugPanes.set
     openDebugPane
     debugToggleBetsyTitled
-    
+    renderInRevelationPane
+    implementTestClick
+    implementTestKeyDown
 
 CSS
     showOnParentHovered
