@@ -490,12 +490,12 @@ app.post('/rpc', async function(req, res) {
                         const ft = findTagInSourceCode(msg.$tag)
                         if (!ft) return {error: 'Tag is not found in code'}
                         ;({file, offset} = ft)
-                    } else if (msg.$sourceLocation) {
+                    } else if (msg.sourceLocation) {
                         // Source location example: aps/src/backend.ts[7556]:181:35
-                        const openBracket = msg.$sourceLocation.indexOf('[' /*]*/)
-                        const closingBracket = msg.$sourceLocation.indexOf(/*[*/ ']')
-                        const firstColon = msg.$sourceLocation.indexOf(':')
-                        const secondColon = msg.$sourceLocation.indexOf(':', firstColon + 1)
+                        const openBracket = msg.sourceLocation.indexOf('[' /*]*/)
+                        const closingBracket = msg.sourceLocation.indexOf(/*[*/ ']')
+                        const firstColon = msg.sourceLocation.indexOf(':')
+                        const secondColon = msg.sourceLocation.indexOf(':', firstColon + 1)
                         let filePartEnd
                         if (~openBracket && ~closingBracket) {
                             filePartEnd = openBracket
@@ -504,7 +504,7 @@ app.post('/rpc', async function(req, res) {
                         } else {
                             return {error: 'I want either brackets or two colons in source location'}
                         }
-                        const filePart = msg.$sourceLocation.slice(0, filePartEnd)
+                        const filePart = msg.sourceLocation.slice(0, filePartEnd)
                         file = {
                             'aps/src/common.ts': 'E:/work/aps/aps/src/common.ts',
                             'common.ts': 'E:/work/aps/aps/src/common.ts',
@@ -522,10 +522,10 @@ app.post('/rpc', async function(req, res) {
                         }[filePart]
                         if (!file) return {error: `Weird file in source location: [${filePart}]`}
                         if (~openBracket && ~closingBracket) {
-                            offset = parseInt(msg.$sourceLocation.slice(openBracket + 1, closingBracket))
+                            offset = parseInt(msg.sourceLocation.slice(openBracket + 1, closingBracket))
                         } else if (~firstColon && ~secondColon) {
-                            const line = parseInt(msg.$sourceLocation.slice(firstColon + 1, secondColon), 10) - 1
-                            const column = parseInt(msg.$sourceLocation.slice(secondColon + 1), 10) - 1
+                            const line = parseInt(msg.sourceLocation.slice(firstColon + 1, secondColon), 10) - 1
+                            const column = parseInt(msg.sourceLocation.slice(secondColon + 1), 10) - 1
                             const code = fs.readFileSync(file, 'utf8')
                             let currentLine = 0, currentColumn = 0, feasibleLineStartOffset
                             offset = 0
@@ -555,6 +555,7 @@ app.post('/rpc', async function(req, res) {
                             }
                         }
                     } else {
+                        dlog('Message for weird source location descriptor', msg)
                         raise('Weird source location descriptor')
                     }
                     

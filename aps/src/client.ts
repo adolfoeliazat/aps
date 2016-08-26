@@ -701,7 +701,7 @@ async profile() { // @ctx page profile
                             tabs = ui.tabs({name: 'main', active: activeTab, tabDefs})
                         }
 
-                        const itemsReq = {fun: fov(itemsFun, {activeTab}), entityID, filter, ordering, searchString}
+                        const itemsReq = s{fun: fov(itemsFun, {activeTab}), entityID, filter, ordering, searchString}
                         const itemsRes = await ui.rpcSoft(itemsReq)
                         if (itemsRes.error) return showBadResponse(itemsRes)
                         
@@ -976,9 +976,9 @@ async profile() { // @ctx page profile
                     profileUpdatedPiece,
                 ),
                 profileFilled && diva({className: 'row'},
-                    limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`)})),
+                    limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`), contentStyle: {whiteSpace: 'pre-wrap'}})),
                 adminLooks && user.admin_notes && diva({className: 'row'},
-                    limpopo(s{colsm: 12, model, prop: 'admin_notes', label: t(`TOTE`, `Заметки админа`)}))
+                    limpopo(s{colsm: 12, model, prop: 'admin_notes', label: t(`TOTE`, `Заметки админа`), contentStyle: {whiteSpace: 'pre-wrap'}}))
             )
         }
         
