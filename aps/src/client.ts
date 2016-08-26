@@ -392,7 +392,7 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                                     return []
                                 }
                                 
-                                addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html', title: t(`TOTE`, `Профилей зааппрувить`)})
+                                addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html?filter=2approve', title: t(`TOTE`, `Профилей зааппрувить`)})
                                 addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
                                 return items
                                 
@@ -482,7 +482,6 @@ async 'admin-users~'() { // @ctx page admin-users
             return pageHeader({title: t(`TOTE`, `Пользователи`)})
         },
         
-        // @wip
         hasFilterSelect: true,
         filterSelectValues: apsdata.userFilters(),
         defaultFilter: 'all',
@@ -540,7 +539,7 @@ async 'admin-users~'() { // @ctx page admin-users
             function enterDisplayMode() {
                 peggy(s{
                     headingActionItems: [
-                        ia({className: `fa fa-pencil hover-color-BLUE_GRAY_800`, style: {fontSize: '135%', cursor: 'pointer'}, onClick: enterEditMode}),
+                        faIcon({tamy: `edit`, className: 'hover-color-BLUE_GRAY_800', style: {fontSize: '135%', cursor: 'pointer'}, icon: 'pencil', onClick: enterEditMode})
                     ],
                     body: diva({}, renderProfile(s{user}))})
             }
@@ -686,7 +685,6 @@ async profile() { // @ctx page profile
                         
                         let filter
                         if (hasFilterSelect) {
-                            // @wip
                             filter = ui.urlQuery.filter
                             const saneFilters = filterSelectValues.map(x => x.value)
                             if (!saneFilters.includes(filter)) filter = defaultFilter
@@ -713,6 +711,7 @@ async profile() { // @ctx page profile
                         let searchBox, searchBoxInput
                         if (hasSearchBox) {
                             searchBoxInput = Input({
+                                tamyShamy: 'search',
                                 style: {paddingLeft: 30, width: 160},
                                 placeholder: t(`TOTE`, `Поиск...`),
                                 disabled: _=> headerControlsDisabled,
@@ -731,7 +730,6 @@ async profile() { // @ctx page profile
                             )
                         }
                         
-                        // @wip admin-users
                         let filterSelect
                         if (hasFilterSelect) {
                             filterSelect = Select({
@@ -839,7 +837,7 @@ async profile() { // @ctx page profile
                                 run(function renderItems() {
                                     if (!itemsRes.items.length) {
                                         if (showEmptyLabel) {
-                                            return diva({style: {marginTop: 10}}, emptyMessage || t(`TOTE`, `Савсэм ничего нэт, да...`))
+                                            return diva({style: {marginTop: 10}}, emptyMessage || spanc({tame: 'nothingLabel', content: t(`TOTE`, `Савсэм ничего нэт, да...`)}))
                                         }
                                         return ''
                                     }
