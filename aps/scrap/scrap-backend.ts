@@ -524,5 +524,28 @@ relog(Number.MAX_SAFE_INTEGER / 1000 / 1000)
 const ses = 'foo | bar baz'
 relog(/&|!|<->|\|/.test(ses))
 
+relog(pgPools)
+
+relog('Pools:', keys(pgPools))
+relog('Doing...')
+await shutDownPool('aps-test')
+relog('Done')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

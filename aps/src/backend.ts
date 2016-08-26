@@ -132,7 +132,11 @@ app.post('/rpc', async function(req, res) {
         }
     }
     
+    let rejectAllFreakingRequests
+    
     async function handle(msg) {
+        if (rejectAllFreakingRequests) raise('Fuck you. I mean nothing personal, I do this to everyone...')
+        
         const $traceStack = []
         const $trace = []
         
@@ -314,19 +318,54 @@ app.post('/rpc', async function(req, res) {
                     return hunkyDory({piece})
                 }
                 
-                if (msg.fun === 'danger_captureTestDB') {
-                    const condb = 'test-postgres'
-                    const sourceDBName = 'aps-test'
+                if (msg.fun === 'danger_saveWorldPoint' || msg.fun === 'danger_restoreWorldPoint') {
+                    // @wip worldPoint
+                    rejectAllFreakingRequests = true
+                    try {
+//                        await pgConnection({db: 'test-postgres'}, async function(db) {
+//                            await db.query(s{y: q`
+//                                SELECT pg_terminate_backend(pg_stat_activity.pid)
+//                                FROM pg_stat_activity
+//                                WHERE pg_stat_activity.datname = '"aps-test"' AND pid <> pg_backend_pid();
+//                            `})
+//                        })
+                        await shutDownPool('aps-test')
+                        await pgConnection({db: 'test-postgres'}, async function(db) {
+                            const wpdbname = `world point ${msg.wpname}`
+                            let databaseToCreate, databaseToUseAsTemplate
+                            
+                            if (msg.fun === 'danger_saveWorldPoint') {
+                                databaseToCreate = wpdbname
+                                databaseToUseAsTemplate = 'aps-test'
+                            }
+                            else if (msg.fun === 'danger_restoreWorldPoint') {
+                                databaseToCreate = 'aps-test'
+                                databaseToUseAsTemplate = wpdbname
+                            }
+                            
+                            await db.query(s{y: q`drop database if exists "${{inline: databaseToCreate}}"`})
+                            await db.query(s{y: q`create database "${{inline: databaseToCreate}}" template = "${{inline: databaseToUseAsTemplate}}"`})
+                        })
+                    } finally {
+                        rejectAllFreakingRequests = false
+                    }
                     
-                    await shutDownPool(sourceDBName)
-                    await shutDownPool(msg.newTemplateDBName)
-                    await pgConnection({db: condb}, async function(db) {
-                        await db.query({$tag: 'eba1bdcf-9657-405d-9716-1dbc3c01a65b', y: `drop database if exists "${msg.newTemplateDBName}"`})
-                        await db.query({$tag: 'f31f0e3c-ef04-4391-b5a1-dc489fa4fa9b', y: `create database "${msg.newTemplateDBName}" template = "${sourceDBName}"`})
-                    })
-                    
-                    return hunkyDory({shortMessage: `Captured as ${msg.newTemplateDBName}`})
+                    return hunkyDory()
                 }
+                
+//                if (msg.fun === 'danger_captureTestDB_killme') {
+//                    const condb = 'test-postgres'
+//                    const sourceDBName = 'aps-test'
+//                    
+//                    await shutDownPool(sourceDBName)
+//                    await shutDownPool(msg.newTemplateDBName)
+//                    await pgConnection({db: condb}, async function(db) {
+//                        await db.query({$tag: 'eba1bdcf-9657-405d-9716-1dbc3c01a65b', y: `drop database if exists "${msg.newTemplateDBName}"`})
+//                        await db.query({$tag: 'f31f0e3c-ef04-4391-b5a1-dc489fa4fa9b', y: `create database "${msg.newTemplateDBName}" template = "${sourceDBName}"`})
+//                    })
+//                    
+//                    return hunkyDory({shortMessage: `Captured as ${msg.newTemplateDBName}`})
+//                }
                 
                 if (msg.fun === 'danger_updateAssertionCode') {
                     const ft = findTagInSourceCode(msg.assertionTag)

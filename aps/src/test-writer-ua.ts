@@ -30,11 +30,23 @@ module.exports = function({sim}) {
                     await art.run(s{
                         instructions: [
                             ...vovchok1(),
+                            s{worldPoint: {name: '1'}},
                             ...dasja1(),
+                            ...vovchok2(),
                         ]
                     })
                 } finally {
                     // testGlobal.adhoc_showLastRequest()
+                }
+                
+                function vovchok2() {
+                    return [
+                        s{beginSection: {long: t('Marko Vovchok again')}},
+                            ...selectBrowser(s{
+                                clientKind: 'writer', browserName: 'vovchok2',
+                                stateDescription: t('Marko Vovchok, aka The Bitch, comes again some time later')}),
+                        s{endSection: {}},
+                    ]
                 }
                 
                 function vovchok1() {
@@ -200,7 +212,7 @@ module.exports = function({sim}) {
                                 s{setValue: {shame: 'Select-filter', value: 'all'}},
                                 s{step: {kind: 'state', long: t('Got all shit. That bitch is cool')}},
                                 s{assert: {$tag: '88b14624-383f-4edf-8b3e-a9c413d87f27', expected: '---generated-shit---'}},
-
+                                
                                 s{actionPlaceholder: {$tag: '7b29b964-c9b3-406d-bfeb-3a1091e57e5d'}},
                             s{endSection: {}},
                         s{endSection: {}},
