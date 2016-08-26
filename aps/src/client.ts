@@ -173,7 +173,7 @@ global.igniteShit = makeUIShitIgniter({
                             if (itemsRes.error) {
                                 return ui.setPage({
                                     header: pageHeader({title: pageTitle}),
-                                    body: div(errorBanner(itemsRes.error))
+                                    body: diva({}, errorBanner(s{content: itemsRes.error}))
                                 })
                             }
                             
@@ -219,7 +219,7 @@ global.igniteShit = makeUIShitIgniter({
                             if (itemsRes.error) {
                                 return ui.setPage({
                                     header: pageHeader({title: pageTitle}),
-                                    body: div(errorBanner(itemsRes.error))
+                                    body: diva({}, errorBanner(s{content: itemsRes.error}))
                                 })
                             }
                             
@@ -610,7 +610,7 @@ async 'admin-users~'() { // @ctx page admin-users
                 if (res.error) {
                     return peggy(s{
                         headingActionItems: [],
-                        body: errorBanner({content: res.error})})
+                        body: errorBanner(s{content: res.error})})
                 }
 
                 user = res.user
@@ -705,11 +705,11 @@ async profile() { // @ctx page profile
                                 async onKeyDown(e) {
                                     if (e.keyCode === 13) {
                                         preventAndStop(e)
-                                        await applyHeaderControls({controlToBlink: searchBoxInput})
+                                        await applyHeaderControls+({controlToBlink: searchBoxInput})
                                     }
                                 }
                             })
-                            searchBoxInput.setValue(itemsRes.searchString)
+                            searchBoxInput.setValue(itemsRes.actualSearchString)
                                 
                             searchBox = diva({style: {position: 'relative'}},
                                 searchBoxInput,
@@ -725,25 +725,31 @@ async profile() { // @ctx page profile
                                 initialValue: ordering,
                                 disabled: _=> headerControlsDisabled,
                                 async onChange() {
-                                    await applyHeaderControls({controlToBlink: orderingSelect})
+                                    await applyHeaderControls+({controlToBlink: orderingSelect})
                                 },
                             })
                         }
                         
-                        async function applyHeaderControls({controlToBlink}) {
+                        async function applyHeaderControls~({controlToBlink}) {
                             setHeaderControlsDisabled(true)
                             controlToBlink.setBlinking(true)
+                            
                             const urlParamParts = []
+                            
                             if (urlEntityParamName) {
                                 urlParamParts.push(`${urlEntityParamName}=${entityID}`)
                             }
+                            
                             urlParamParts.push(`ordering=${orderingSelect.getValue()}`)
+                            
                             const searchString = searchBoxInput.getValue().trim()
                             if (searchString) {
-                                urlParamParts.push(`search=${searchString}`)
+                                urlParamParts.push(`search=${encodeURIComponent(searchString)}`)
                             }
+                            
                             const url = `${urlPath}?${urlParamParts.join('&')}`
                             await ui.pushNavigate(url)
+                            
                             setHeaderControlsDisabled(false)
                             controlToBlink.setBlinking(false)
                         }
@@ -852,7 +858,7 @@ async profile() { // @ctx page profile
                         function showBadResponse(res) {
                             return ui.setPage({
                                 header: pageHeader({title: t(`TOTE`, `Облом`)}),
-                                body: div(errorBanner(res.error))
+                                body: diva({}, errorBanner(s{content: res.error}))
                             })
                         }
                     } finally { if (trainName) endTrain() }

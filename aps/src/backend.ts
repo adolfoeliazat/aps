@@ -563,7 +563,6 @@ app.post('/rpc', async function(req, res) {
                 
                 if (msg.fun === 'danger_getRequests') {
                     let count = msg.count || 1
-                    // @wip trace
                     return #await redis.lrange('requests', 0, count - 1)
                 }
                 
@@ -734,7 +733,6 @@ app.post('/rpc', async function(req, res) {
                     loadField(s{key: 'adminNotes', mandatory: false, nullIfBlank: true, maxlen: 5000})
                 }
                 
-                // @wip users screen
                 if (msg.fun === 'private_updateUser') {
                     // TODO:vgrechka Check permissions in private_updateUser    262b8f75-1c3d-479f-b5ca-5b1bdcb9ee98 
                     
@@ -782,6 +780,7 @@ app.post('/rpc', async function(req, res) {
                         #await tx.query(s{y: q`
                             update users set profile_updated_at = ${requestTimestamp},
                                              phone = ${fields.phone},
+                                             compact_phone = ${compactPhone(fields.phone)},
                                              about_me = ${fields.aboutMe},
                                              state = 'profile-approval-pending',
                                              assigned_to = ${THE_ADMIN_ID}
@@ -818,35 +817,72 @@ app.post('/rpc', async function(req, res) {
                     return traceEndHandler(s{ret: hunkyDory({user: pickFromUser(s{user})})})
                 }
                 
-                // @wip
                 if (msg.fun === 'private_getUsers') {
                     traceBeginHandler(s{})
                     
                     let filter = msg.filter
                     if (!['all', '2approve'].includes(filter)) filter = 'all'
                         
-                    let search = msg.search
-                    if (isBlank(search)) search = undefined
-                        
-                    const chunk = #await selectUsersChunk(s{filter, search})
-                    return traceEndHandler(s{ret: hunkyDory(asn({filter}, chunk))})
+                    let actualSearchString = getSearchStringParam()
                     
-                    
-                    async function selectUsersChunk(def) {
-                        #extract {filter, search} from def
-                        
-                        return #await selectChunk(s{table: 'users', loadItem,
-                            appendToWhere(qb) {
-                                // qb.append(q`and id = 131`)
-                            },
-                        })
-                        
-                        async function loadItem(def) {
-                            #extract {item: user} from def
+                    const chunk = #await selectChunk(s{table: 'users', loadItem,
+                        appendToWhere(qb) {
+                            if (!actualSearchString) return
                             
-                            return asn({}, pickFromUser(s{user}))
-                        }
+                            if (/^p /.test(actualSearchString)) {
+                                $trace.push(s{event: '[log] Doing phone search'})
+                                const coph = compactPhone(actualSearchString)
+                                return qb.append(q`and compact_phone = ${coph}`)
+                            }
+                            
+                            if (/^\d+$/.test(actualSearchString)) {
+                                $trace.push(s{event: '[log] Doing ID search'})
+                                return qb.append(q`and id = ${actualSearchString}`)
+                            }
+                            
+                            $trace.push(s{event: '[log] Doing full-text search'})
+                            // TODO:vgrechka Handle syntax error in tsquery    c9f27a1f-82bc-4d3c-aabc-52ea8ee6bbf7 
+                            
+                            // @wip admin-users
+                            let ftsQueryString
+                            if (/&|!|<->|\|/.test(actualSearchString)) {
+                                ftsQueryString = actualSearchString
+                            } else {
+                                actualSearchString = actualSearchString.replace(/\(|\)/g, ' ').trim()
+                                ftsQueryString = actualSearchString.split(/\s+/).join(' & ')
+                            }
+                            
+                            qb.append(q`and tsv @@ to_tsquery('russian', ${ftsQueryString})`)
+                        },
+                    })
+                    
+                    return traceEndHandler(s{ret: hunkyDory(asn({filter, actualSearchString}, chunk))})
+                    
+                    async function loadItem(def) {
+                        #extract {item: user} from def
+                        
+                        return asn({}, pickFromUser(s{user}))
                     }
+                    
+//                    async function selectUsersChunk(def) {
+//                        #extract {filter, search} from def
+//                        
+//                        return #await selectChunk(s{table: 'users', loadItem,
+//                            appendToWhere(qb) {
+//                                const ses = getSearchStringParam()
+//                                const isIDSearch = /\d+/.test(ses)
+//                                if (isIDSearch) {
+//                                    qb.append(q`and id = ${ses}`)
+//                                }
+//                            },
+//                        })
+//                        
+//                        async function loadItem(def) {
+//                            #extract {item: user} from def
+//                            
+//                            return asn({}, pickFromUser(s{user}))
+//                        }
+//                    }
                 }
                 
                 if (msg.fun === 'private_getSupportThreads') {
@@ -1067,6 +1103,10 @@ app.post('/rpc', async function(req, res) {
                 
                 // @ctx helpers
                 
+                function compactPhone(s) {
+                    return s.replace(/[^0-9]/g, '')
+                }
+                
                 function getTSLang() {
                     if (msg.LANG === 'ua') return 'russian'
                     return 'english'
@@ -1113,7 +1153,6 @@ app.post('/rpc', async function(req, res) {
                 async function selectChunk(def) {
                     #extract {table, appendToSelect=noop, appendToWhere=noop, loadItem, defaultOrdering='desc'} from def
                     
-                    const searchString = getSearchStringParam()
                     const ordering = getOrderingParam({defaultValue: defaultOrdering})
                     
                     const fromID = msg.fromID || (ordering === 'asc' ? 0 : PG_MAX_BIGINT)
@@ -1138,7 +1177,7 @@ app.post('/rpc', async function(req, res) {
                         loadedItems.push(#await loadItem(s{item}))
                     }
                     
-                    return {items: loadedItems, moreFromID, searchString}
+                    return {items: loadedItems, moreFromID}
                 }
                     
                 async function handleChunkedSelect(def) {
@@ -1161,7 +1200,6 @@ app.post('/rpc', async function(req, res) {
                     return value
                 }
                 
-                // @wip
                 function pickFromUser(def) {
                     #extract {user} from def
                     
@@ -1406,7 +1444,6 @@ app.post('/rpc', async function(req, res) {
             }
             
             if (shouldLogRequestForUI && $trace.length) {
-                // @wip trace
                 /*don't await*/ redis.lpush('requests', getCircularJSON().stringify({
                     title: msg.fun,
                     $trace,

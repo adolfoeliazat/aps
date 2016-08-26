@@ -46,27 +46,58 @@ export async function createDB(newdb) {
             -- @ctx tables
                         
             create table users(
-                id bigserial primary key,
-                deleted boolean not null,
-                inserted_at timestamp not null,
-                updated_at timestamp not null,
-                profile_updated_at timestamp,
-                kind text not null,
-                lang text not null,
-                email text unique not null,
-                password_hash text not null,
-                state text not null,
-                profile_rejection_reason text /*can be null*/,
-                assigned_to bigint /*can be null*/ references users(id),
-                admin_notes text /*can be null*/,
-                first_name text not null,
-                last_name text not null,
-                phone text, /*can be null*/
-                about_me text /*can be null*/
+                id bigserial primary key
+                , deleted boolean not null
+                , inserted_at timestamp not null
+                , updated_at timestamp not null
+                , profile_updated_at timestamp
+                , tsv tsvector not null
+                , kind text not null
+                , lang text not null
+                , email text unique not null
+                , password_hash text not null
+                , state text not null
+                , profile_rejection_reason text /*can be null*/
+                , assigned_to bigint /*can be null*/ references users(id)
+                , admin_notes text /*can be null*/
+                , first_name text not null
+                , last_name text not null
+                , phone text /*can be null*/
+                , compact_phone text /*can be null*/
+                , about_me text /*can be null*/
             );
+            
             alter sequence users_id_seq restart with 100000;
             create trigger on_insert before insert on users for each row execute procedure on_insert();
             create trigger on_update before update on users for each row execute procedure on_update();
+            create index tsv_idx on users using gin (tsv);
+            
+            create function users_tsv_trigger() returns trigger as $$
+            begin
+              new.tsv :=
+                 setweight(to_tsvector('pg_catalog.russian', ' '
+                     ||' '|| coalesce(new.email,'')
+                     ||' '|| coalesce(new.first_name,'')
+                     ||' '|| coalesce(new.last_name,'')
+                     ),'A')
+                 ||
+                 setweight(to_tsvector('pg_catalog.russian', ' '
+                     ||' '|| coalesce(new.admin_notes,'')
+                     ),'B')
+                 ||
+                 setweight(to_tsvector('pg_catalog.russian', ' '
+                     ||' '|| coalesce(new.phone,'')
+                     ||' '|| coalesce(new.about_me,'')
+                     ),'D')
+              ;
+              return new;
+            end
+            $$ language plpgsql;
+
+            create trigger users_tsvectorupdate before insert or update
+                on users for each row execute procedure users_tsv_trigger();
+            
+            
             
             create table user_roles(
                 id bigserial primary key,

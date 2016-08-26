@@ -1,13 +1,46 @@
 //
+// Simple expressions
+// 
 // @ctx fiddle with aps-test db
 //
 await pgTransaction({db: 'aps-test'}, async function(tx) {
     const rows = await tx.query(s{y: q`
-        select first_name from users
-        -- select * from users where state <> 'cool'
+        select to_tsquery('russian', ${'123(4)'})
     `})
     for (const row of rows) {
         relog(deepInspect(omit(row, '$meta')))
+        relog()
+    }
+})
+
+relog(compactPhone('p +380 (45) 231234'))
+
+
+//
+// Full-text search
+// 
+// @ctx fiddle with aps-test db
+//
+await pgTransaction({db: 'aps-test'}, async function(tx) {
+    const rows = await tx.query(s{y: q`
+        select * from users where tsv @@ to_tsquery('russian', ${'123(4)'})
+    `})
+    for (const row of rows) {
+        relog(deepInspect(omit(row, '$meta', 'tsv')))
+        relog()
+    }
+})
+
+
+//
+// @ctx fiddle with aps-test db
+//
+await pgTransaction({db: 'aps-test'}, async function(tx) {
+    const rows = await tx.query(s{y: q`
+        select * from users where phone is not null
+    `})
+    for (const row of rows) {
+        relog(deepInspect(omit(row, '$meta', 'tsv')))
         relog()
     }
 })
@@ -488,8 +521,8 @@ for (const stamp of stamps) {
 
 relog(Number.MAX_SAFE_INTEGER / 1000 / 1000)
 
-
-
+const ses = 'foo | bar baz'
+relog(/&|!|<->|\|/.test(ses))
 
 
 
