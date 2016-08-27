@@ -49,7 +49,9 @@ const makeOrRemakeAPSCommonExportedShit = function hot$makeOrRemakeAPSCommonExpo
         userFilters() {
             return [
                 {value: 'all', title: t(`TOTE`, `Все`)},
+                {value: 'cool', title: t(`TOTE`, `Прохладные`)},
                 {value: '2approve', title: t(`TOTE`, `Ждут аппрува`)},
+                {value: 'banned', title: t(`TOTE`, `Завернутые`)},
             ]
         }
     }

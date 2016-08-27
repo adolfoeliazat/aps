@@ -907,10 +907,9 @@ app.post('/rpc', async function(req, res) {
                             
                             !function considerFilter() {
                                 if (actualFilter === 'all') return
-                                
-                                if (actualFilter === '2approve') {
-                                    return qb.append(q`and state = 'profile-approval-pending'`)
-                                }
+                                if (actualFilter === 'cool') return qb.append(q`and state = 'cool'`)
+                                if (actualFilter === '2approve') return qb.append(q`and state = 'profile-approval-pending'`)
+                                if (actualFilter === 'banned') return qb.append(q`and state = 'profile-rejected'`)
                                 
                                 raise(`Weird filter: ${actualFilter}`)
                             }()

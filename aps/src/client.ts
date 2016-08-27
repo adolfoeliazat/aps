@@ -23,7 +23,7 @@ import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSou
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, errorBanner, RequestBuilder,
         preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer, Placeholder,
-        beginTrain, endTrain, controlBeingRevealed} from 'into-u/ui'
+        beginTrain, endTrain, controlBeingRevealed, getCurrentTestBrowser, isInTestScenario, isOrWasInTestScenario} from 'into-u/ui'
         
 #import static 'into-u/ui'
 
@@ -317,7 +317,7 @@ global.igniteShit = makeUIShitIgniter({
                                         statusValues.push({value: 'open', title: t(`TOTE`, `Открыт`)})
                                     }
                                     statusValues.push({value: 'resolved', title: t(`TOTE`, `Решён`)})
-                                    fields.push(ui.SelectField({
+                                    fields.push(ui.SelectField(s{
                                         name: 'status',
                                         title: t(`TOTE`, `Статус`),
                                         values: statusValues
@@ -458,8 +458,10 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                 // otherwise elements being looked at might be removed
                 if (controlBeingRevealed) return scheduleUpdate()
                 
+                if (isOrWasInTestScenario() && getCurrentTestBrowser().ui !== ui) return scheduleUpdate()
+                
                 // dlog(`currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}`)
-                // dlog('Updating dashboard page')
+                dlog('Updating dashboard page')
                 await dashboard({preserveScroll: true})
             })
         }()
@@ -565,7 +567,7 @@ async 'admin-users~'() { // @ctx page admin-users
                             value: user.id,
                         }),
                         
-                        ui.SelectField({
+                        ui.SelectField(s{
                             name: 'state',
                             title: t(`TOTE`, `Статус`),
                             values: [
@@ -1216,6 +1218,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
             } else if (user.kind === 'admin') {
                 privateItems = []
                 privateItems.push(TopNavItem({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize', counter: privateCounter}))
+                privateItems.push(TopNavItem({name: 'admin-users', title: t(`Users`, `Юзеры`), counter: privateCounter}))
                 if (user.roles.support) {
                     // TODO:vgrechka Reenable Support navitem...    9c49cfeb-86c1-4d86-85ed-6430e14946d8 
                     // privateItems.push(TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}))
