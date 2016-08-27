@@ -32,6 +32,7 @@ module.exports = function({sim}) {
                             ...vovchok1(),
                             s{worldPoint: {name: '1'}},
                             ...dasja1(),
+                            s{worldPoint: {name: '2'}},
                             ...vovchok2(),
                         ]
                     })
@@ -45,6 +46,15 @@ module.exports = function({sim}) {
                             ...selectBrowser(s{
                                 clientKind: 'writer', browserName: 'vovchok2',
                                 stateDescription: t('Marko Vovchok, aka The Bitch, comes again some time later')}),
+                                
+                                s{step: {kind: 'action', long: t('Sign in')}},
+                                s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
+                                s{setValue: {shame: 'TextField-password.Input', value: 'fucking-big-generated-secret'}},
+                                s{click: {shame: 'button-primary', timestamp: '2016/08/27 12:11:34'}},
+                                s{step: {kind: 'state', long: t('Got something')}},
+                                s{assert: {$tag: '86e56915-a334-4209-85c9-8d2c53cd9f0a', expected: '---generated-shit---'}},
+                                
+                                s{actionPlaceholder: {$tag: '8791b24d-fce2-4079-81ec-789332ac1863'}},
                         s{endSection: {}},
                     ]
                 }

@@ -76,6 +76,16 @@ TODO
     - [DONE] After updating user, scroll to it
     
     - [DONE] Implement on client something similar to backend traces
+    
+    - Embrace visual testing. Things to look at:
+          http://phantomjs.org/
+          http://casperjs.org/
+          https://github.com/Huddle/PhantomCSS
+          https://github.com/facebookarchive/huxley
+          https://github.com/bslatkin/dpxdt
+          http://stackoverflow.com/questions/4912092/using-html5-canvas-javascript-to-take-screenshots/6678156#6678156
+          https://developer.chrome.com/extensions/api_index
+          https://github.com/AminaG/OpenScreenshot
       
     
 Heap

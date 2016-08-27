@@ -392,8 +392,17 @@ dashboard: async function dashboard({preserveScroll}={}) { // @ctx page dashboar
                                     return []
                                 }
                                 
-                                addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html?filter=2approve', title: t(`TOTE`, `Профилей зааппрувить`)})
-                                addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
+                                if (ui.getUser().kind === 'admin') {
+                                    addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html?filter=2approve', title: t(`TOTE`, `Профилей зааппрувить`)})
+                                    addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
+                                }
+                                else if (ui.getUser().kind === 'writer') {
+                                    addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
+                                }
+                                else if (ui.getUser().kind === 'customer') {
+                                    raise('implement me')
+                                }
+                                
                                 return items
                                 
                                 function addMetric(def) {

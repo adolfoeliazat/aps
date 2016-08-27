@@ -1738,6 +1738,28 @@ module.exports = {
           url: `http://aps-ua-writer.local:3022/admin-users.html?filter=all&ordering=desc`
     }, // end of generated piece of shit
 
+    '86e56915-a334-4209-85c9-8d2c53cd9f0a': {
+        'pageHeader.title': `Панель`,
+          'section-account.link-changePassword.title': `Сменить пароль`,
+          'section-account.link-signOut.title': `Выйти прочь`,
+          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-orders`,
+          'topNavLeft.TopNavItem-i000.title': `Мои заказы`,
+          'topNavLeft.TopNavItem-i001.shame': `TopNavItem-store`,
+          'topNavLeft.TopNavItem-i001.title': `Аукцион`,
+          'topNavLeft.TopNavItem-i002.shame': `TopNavItem-profile`,
+          'topNavLeft.TopNavItem-i002.title': `Профиль`,
+          'topNavLeft.prose.TopNavItem-i000.shame': `TopNavItem-why`,
+          'topNavLeft.prose.TopNavItem-i000.title': `Почему мы?`,
+          'topNavLeft.prose.TopNavItem-i001.shame': `TopNavItem-prices`,
+          'topNavLeft.prose.TopNavItem-i001.title': `Цены`,
+          'topNavLeft.prose.TopNavItem-i002.shame': `TopNavItem-faq`,
+          'topNavLeft.prose.TopNavItem-i002.title': `ЧаВо`,
+          'topNavRight.TopNavItem-i000.active': true,
+          'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
+          'topNavRight.TopNavItem-i000.title': `Маркожопик`,
+          url: `http://aps-ua-writer.local:3022/dashboard.html`
+    }, // end of generated piece of shit
+
     // place to insert new generated piece of shit
 
 }

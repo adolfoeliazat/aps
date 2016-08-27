@@ -682,6 +682,12 @@ app.post('/rpc', async function(req, res) {
                             select count(*) from users where state = 'profile-approval-pending'
                                                              and assigned_to = ${user.id}`}))[0]
                     }
+                    else if (user.kind === 'writer') {
+                        res.suka = {count: 'blia-' + puid()}
+                    }
+                    else if (user.kind === 'customer') {
+                        res.suka = {count: 'blia-' + puid()}
+                    }
                     
                     const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18', y: q`
                         select count(*) from support_thread_messages m, support_threads t
