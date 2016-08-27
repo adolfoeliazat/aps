@@ -87,6 +87,11 @@ TODO
           http://stackoverflow.com/questions/4912092/using-html5-canvas-javascript-to-take-screenshots/6678156#6678156
           https://developer.chrome.com/extensions/api_index
           https://github.com/AminaG/OpenScreenshot
+          
+    - Integrate semantic/semi-visual integration tests with Travis CI, so _all_ slow shit runs on each Git push.
+      Things to investigate:
+          - PhantomJS on Travis CI?
+          - PostgreSQL?
       
     
 Heap
