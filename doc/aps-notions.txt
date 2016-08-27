@@ -92,6 +92,9 @@ TODO
       Things to investigate:
           - PhantomJS on Travis CI?
           - PostgreSQL?
+          - Also deploy static sites to GitHub Pages on each push, and then test against that?
+          - CORS requests from static site to shit running on Travis CI virtual machine?
+          - Can I spawn backend.js process on Travis?
       
     
 Heap
