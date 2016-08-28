@@ -37,6 +37,8 @@ module.exports = function({sim}) {
                             ...dasja2(),
                             s{worldPoint: {name: '3'}},
                             ...vovchok3(),
+                            ...dasja3(),
+                            ...vovchok4(),
                         ]
                     })
                 } finally {
@@ -339,7 +341,70 @@ module.exports = function({sim}) {
                                 s{step: {kind: 'state', long: t('Oh, they rejected me')}},
                                 s{assert: {$tag: 'f80aea79-7308-444b-acd3-fe81cee46eff', expected: '---generated-shit---'}},
                                 
+                                s{step: {kind: 'action', long: t('Improve "About Me" section')}},
+                                s{setValue: {shame: 'TextField-aboutMe.Input', value: 'Пишу тексты за еду. Любые стили и направления.'}},
+                                s{click: {shame: 'button-primary', timestamp: '2016/08/28 01:19:00'}},
+                                s{step: {kind: 'state', long: t('Got waiting screen')}},
+                                s{assert: {$tag: '35a2c077-01b2-407c-beba-4debb789d07d', expected: '---generated-shit---'}},
+
                                 s{actionPlaceholder: {$tag: '80c8c508-ef39-4e07-8be3-3e8a964e984c'}},
+                        s{endSection: {}},
+                    ]
+                }
+                
+                function dasja3() {
+                    return [
+                        s{beginSection: {long: t('Dasja accepts improved profile')}},
+                            ...selectBrowser(s{
+                                clientKind: 'writer', browserName: 'dasja3',
+                                stateDescription: t('Dasja comes to do some work')}),
+                                
+                            s{step: {kind: 'action', long: t('Normal sign in')}},
+                            ...signIn(s{email: 'dasja@test.shit.ua', password: 'secret'}),
+                            s{assert: {$tag: 'e72560ca-3f35-423a-8d8b-e65006eb26f0', expected: '---generated-shit---'}},
+                            s{step: {kind: 'state', long: t('Got dashboard')}},
+
+                            s{step: {kind: 'action', long: t('Click on "Profiles to approve"')}},
+                            s{click: {shame: 'section-workPending.profilesToApprove.link', timestamp: '2016/08/28 01:33:48'}},
+                            s{step: {kind: 'state', long: t('Bitch somewhat improved her profile')}},
+                            s{assert: {$tag: '48b2f0d2-a1f0-446d-8c10-550b9abfd3e3', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
+
+                            s{step: {kind: 'action', long: t('Click on pencil')}},
+                            s{click: {shame: 'chunk-i000.item-i000.heading.icon-edit', timestamp: '2016/08/28 01:56:33'}},
+                            s{step: {kind: 'state', long: t('Edit form opens')}},
+                            s{assert: {$tag: '18f8286c-ea61-4820-95c0-9ce3a129edfb', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
+
+                            s{step: {kind: 'action', long: t('Accept now')}},
+                            
+                            s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'cool'}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.TextField-adminNotes.Input', value: 'Free workforce. Good. We\'ll exploit her to death. U-ha-ha-ha...'}},
+                            s{click: {shame: 'chunk-i000.item-i000.button-primary', timestamp: '2016/08/28 01:59:30'}},
+                            s{step: {kind: 'state', long: t('She is cool now')}},
+                            s{assert: {$tag: '5d82460a-268f-43d8-bd00-e04dd671029c', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
+
+                            s{actionPlaceholder: {$tag: '70d0bad3-5670-41db-87cb-c6fbb04b5954'}},
+                        s{endSection: {}},
+                    ]
+                }
+                
+                function vovchok4() {
+                    return [
+                        s{beginSection: {long: t('Marko Vovchok can finally enter')}},
+                            ...selectBrowser(s{
+                                clientKind: 'writer', browserName: 'vovchok4',
+                                stateDescription: t('The Bitch opens browser')}),
+                                
+                                s{step: {kind: 'action', long: t('Sign in')}},
+                                s{setValue: {shame: 'TextField-email.Input', value: 'vovkulaka@test.shit.ua'}},
+                                s{setValue: {shame: 'TextField-password.Input', value: 'fucking-big-generated-secret'}},
+                                s{click: {shame: 'button-primary', timestamp: '2016/08/28 02:04:24'}},
+                                s{step: {kind: 'state', long: t('Great, they accepted my profile')}},
+                                s{assert: {$tag: '5c4d0c0c-8e1f-4dfc-898d-dec7c3e6bbf7', expected: '---generated-shit---'}},
+                                
+                                s{actionPlaceholder: {$tag: '0d1b694c-a300-4505-ae34-3b829e2655dd'}},
                         s{endSection: {}},
                     ]
                 }
