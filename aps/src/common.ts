@@ -51,7 +51,8 @@ const makeOrRemakeAPSCommonExportedShit = function hot$makeOrRemakeAPSCommonExpo
                 {value: 'all', title: t(`TOTE`, `Все`)},
                 {value: 'cool', title: t(`TOTE`, `Прохладные`)},
                 {value: '2approve', title: t(`TOTE`, `Ждут аппрува`)},
-                {value: 'banned', title: t(`TOTE`, `Завернутые`)},
+                {value: 'rejected', title: t(`TOTE`, `Завернутые`)},
+                {value: 'banned', title: t(`TOTE`, `Забаненые`)},
             ]
         }
     }

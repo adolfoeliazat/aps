@@ -397,7 +397,7 @@ app.post('/rpc', async function(req, res) {
                         return hunkyDory()
                     }
                     
-                    const lineOfExternalContentReference = `${'s'}{assert: {$tag: '${msg.assertionTag}', expected: '---generated-shit---'}}`
+                    const lineOfExternalContentReference = `${'s'}{assert: {$tag: '${msg.assertionTag}', expected: '---generated-shit---'` /*}}*/
 //                    const lineOfExternalContentReference = `art.uiState({$tag: '${msg.assertionTag}', expected: '---generated-shit---'})`
                     dlogs({lineOfExternalContentReference})
                     const lineOfExternalContentReferenceIndex = ft.code.indexOf(lineOfExternalContentReference)
@@ -790,6 +790,7 @@ app.post('/rpc', async function(req, res) {
                         loadProfileFields(s{})
                         loadAdminNotesField(s{})
                         loadField(s{key: 'state', mandatory: true, allowedValues: apsdata.userStateValues()})
+                        loadRejectionReasonField(s{key: 'profileRejectionReason', shouldBePresentIfKeys: 'state', valueEquals: 'profile-rejected'})
                     traceEndSection(s{})
 
                     if (isEmpty(fieldErrors)) {
@@ -797,6 +798,7 @@ app.post('/rpc', async function(req, res) {
                             update users set 
                                 updated_at = ${requestTimestamp},
                                 state = ${fields.state},
+                                profile_rejection_reason = ${fields.state === 'profile-rejected' ? fields.profileRejectionReason : null},
                                 email = ${fields.email},
                                 kind = ${msg.clientKind},
                                 first_name = ${fields.firstName},
@@ -909,7 +911,8 @@ app.post('/rpc', async function(req, res) {
                                 if (actualFilter === 'all') return
                                 if (actualFilter === 'cool') return qb.append(q`and state = 'cool'`)
                                 if (actualFilter === '2approve') return qb.append(q`and state = 'profile-approval-pending'`)
-                                if (actualFilter === 'banned') return qb.append(q`and state = 'profile-rejected'`)
+                                if (actualFilter === 'rejected') return qb.append(q`and state = 'profile-rejected'`)
+                                if (actualFilter === 'banned') return qb.append(q`and state = 'banned'`)
                                 
                                 raise(`Weird filter: ${actualFilter}`)
                             }()
@@ -1315,6 +1318,16 @@ app.post('/rpc', async function(req, res) {
                 function clientKindDescr() {
                     return `client ${msg.LANG} ${msg.clientKind}`
                 }
+                
+                function loadRejectionReasonField(def) {
+                    #extract {key, shouldBePresentIfKeys, valueEquals} from def
+                    
+                    if (msg[shouldBePresentIfKeys] === valueEquals) {
+                        loadField(s{key, mandatory: true, maxlen: 5000})
+                    } else {
+                        if (msg[key] !== undefined) raise(`[${key}] should be undefined when [${shouldBePresentIfKeys} is not [${valueEquals}]`)
+                    }
+                } 
                 
                 function loadField(def) {
                     #extract {key, kind, mandatory, mandatoryErrorMessage, maxlen, minlen, nullIfBlank, allowedValues} from def

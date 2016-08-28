@@ -531,6 +531,11 @@ relog('Doing...')
 await shutDownPool('aps-test')
 relog('Done')
 
+const a = [10, 20, 30]
+const b = clone(a)
+relog(a)
+relog(b)
+relog(a === b)
 
 
 

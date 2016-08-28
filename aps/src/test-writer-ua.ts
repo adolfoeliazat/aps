@@ -35,6 +35,8 @@ module.exports = function({sim}) {
                             s{worldPoint: {name: '2'}},
                             ...vovchok2(),
                             ...dasja2(),
+                            s{worldPoint: {name: '3'}},
+                            ...vovchok3(),
                         ]
                     })
                 } finally {
@@ -174,12 +176,14 @@ module.exports = function({sim}) {
                             s{step: {kind: 'action', long: t('Click on "Approve Profiles" link')}},
                             s{click: {shame: 'section-workPending.profilesToApprove.link', timestamp: '2016/08/18 14:58:16'}},
                             s{step: {kind: 'state', long: t('Got page with profiles to be approved')}},
-                            s{assert: {$tag: 'dd32f775-d45f-4a86-b815-c8897fa01fe3', expected: '---generated-shit---'}},
+                            s{assert: {$tag: 'dd32f775-d45f-4a86-b815-c8897fa01fe3', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
 
                             s{step: {kind: 'action', long: t('Click on edit icon')}},
                             s{click: {shame: 'chunk-i000.item-i000.heading.icon-edit', timestamp: '2016/08/26 13:56:04'}},
                             s{step: {kind: 'state', long: t('Got form')}},
-                            s{assert: {$tag: 'ba17b066-b272-48eb-901c-d22b5b1f803b', expected: '---generated-shit---'}},
+                            s{assert: {$tag: 'ba17b066-b272-48eb-901c-d22b5b1f803b', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
                             
                             s{step: {kind: 'action', long: t('Make some changes and approve')}},
                             s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'cool'}},
@@ -191,18 +195,21 @@ module.exports = function({sim}) {
                             s{setValue: {shame: 'chunk-i000.item-i000.TextField-adminNotes.Input', value: 'And she really is...'}},
                             s{click: {shame: 'chunk-i000.item-i000.button-primary', timestamp: '2016/08/26 14:14:26'}},
                             s{step: {kind: 'state', long: t('That bitch is now cool')}},
-                            s{assert: {$tag: '59308ccf-67b9-4fab-a13d-154c96e8bd63', expected: '---generated-shit---'}},
+                            s{assert: {$tag: '59308ccf-67b9-4fab-a13d-154c96e8bd63', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
 
                             s{step: {kind: 'action', long: t('Press enter in search box to refresh shit')}},
                             s{keyDown: {shame: 'Input-search', keyCode: 13}},
                             s{step: {kind: 'state', long: t('Now we get nothing, cause there’s no shit to approve')}},
-                            s{assert: {$tag: 'ffd89ee7-31b5-4742-b15a-196876ebec6f', expected: '---generated-shit---'}},
+                            s{assert: {$tag: 'ffd89ee7-31b5-4742-b15a-196876ebec6f', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
 
 
                             s{step: {kind: 'action', long: t('Choose "All" to see all shit')}},
                             s{setValue: {shame: 'Select-filter', value: 'all'}},
                             s{step: {kind: 'state', long: t('Got all shit. That bitch is cool')}},
-                            s{assert: {$tag: '88b14624-383f-4edf-8b3e-a9c413d87f27', expected: '---generated-shit---'}},
+                            s{assert: {$tag: '88b14624-383f-4edf-8b3e-a9c413d87f27', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
                             
                             s{actionPlaceholder: {$tag: '7b29b964-c9b3-406d-bfeb-3a1091e57e5d'}},
                         s{endSection: {}},
@@ -230,10 +237,10 @@ module.exports = function({sim}) {
                 
                 function dasja2() {
                     return [
-                        s{beginSection: {long: t('Dasja bans the bitch')}},
+                        s{beginSection: {long: t('Dasja rejects the bitch')}},
                             ...selectBrowser(s{
                                 clientKind: 'writer', browserName: 'dasja2',
-                                stateDescription: t('Dasja decides to ban the bitch for whatever reasons')}),
+                                stateDescription: t('Dasja decides to reject the bitch for whatever reasons')}),
                                 
                             s{step: {kind: 'action', long: t('Normal sign in')}},
                             ...signIn(s{email: 'dasja@test.shit.ua', password: 'secret'}),
@@ -243,38 +250,96 @@ module.exports = function({sim}) {
                             s{step: {kind: 'action', long: t('Select "Users" in top navbar')}},
                             s{click: {shame: 'TopNavItem-admin-users', timestamp: '2016/08/27 13:17:16'}},
                             s{step: {kind: 'state', long: t('Got users')}},
-                            s{assert: {$tag: '6fbd591f-f62c-4a37-a6ae-0958ef6c81f7', expected: '---generated-shit---'}},
+                            s{assert: {$tag: '6fbd591f-f62c-4a37-a6ae-0958ef6c81f7', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
 
                             s{step: {kind: 'action', long: t('Click on edit icon for the bitch')}},
                             s{click: {shame: 'chunk-i000.item-i000.heading.icon-edit', timestamp: '2016/08/27 13:20:58'}},
                             s{step: {kind: 'state', long: t('TODO State description')}},
-                            s{assert: {$tag: 'b138801b-9fec-43b3-94d6-f135318b2a22', expected: '---generated-shit---'}},
+                            s{assert: {$tag: 'b138801b-9fec-43b3-94d6-f135318b2a22', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                            
+                            // @wip rejection
+                            s{step: {kind: 'action', long: t('Choose "Rejected" status')}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'profile-rejected'}},
+                            s{step: {kind: 'state', long: t('Rejection reason field appears')}},
+                            s{assert: {$tag: 'fcdac58b-e864-4a21-b3a2-47f29a1fbba9', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                            
+                            s{step: {kind: 'action', long: t('Enter something into rejection reason, then change "Rejected" to something else')}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.TextField-profileRejectionReason.Input', value: 'Well... er...'}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'cool'}},
+                            s{step: {kind: 'state', long: t('Rejection reason field disappears')}},
+                            s{assert: {$tag: 'a81d2f49-aa12-45ea-92a2-fc6bf4ad0cf6', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                            
+                            s{step: {kind: 'action', long: t('Select "Rejected" again')}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'profile-rejected'}},
+                            s{step: {kind: 'state', long: t('Rejection reason is kept')}},
+                            s{assert: {$tag: '2e650433-d5f6-4c94-ba5a-b3ff07e15865', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                            
+                            s{step: {kind: 'action', long: t('Try to reject without reason')}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.TextField-profileRejectionReason.Input', value: ''}},
+                            s{click: {shame: 'chunk-i000.item-i000.button-primary', timestamp: '2016/08/27 13:23:05'}},
+                            s{step: {kind: 'state', long: t('No way')}},
+                            s{assert: {$tag: 'c2f5de3e-ff25-4c38-80dc-e09d89e0944f', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
 
                             s{step: {kind: 'action', long: t('Reject motherfucker along with changing name and email')}},
-                            s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'profile-rejected'}},
                             s{setValue: {shame: 'chunk-i000.item-i000.TextField-email.Input', value: 'vovkulaka@test.shit.ua'}},
                             s{setValue: {shame: 'chunk-i000.item-i000.TextField-firstName.Input', value: 'Мокрожопик'}},
-                            s{setValue: {shame: 'chunk-i000.item-i000.TextField-adminNotes.Input', value: 'Why I do this? Cause I can! I\'m the admin! U-ha-ha-ha...'}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.TextField-profileRejectionReason.Input', value: 'Why I do this? Cause I can! I\'m the admin! U-ha-ha-ha...'}},
                             s{click: {shame: 'chunk-i000.item-i000.button-primary', timestamp: '2016/08/27 13:23:07'}},
-                            s{step: {kind: 'state', long: t('TODO State description')}},
-                            s{assert: {$tag: '0d4d388f-a0ad-4824-9a37-36e7e74365ae', expected: '---generated-shit---'}},
+                            s{step: {kind: 'state', long: t('The motherfucker is now reddish')}},
+                            s{assert: {$tag: '0d4d388f-a0ad-4824-9a37-36e7e74365ae', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
 
                             s{step: {kind: 'action', long: t('Choose to see only cool users')}},
                             s{setValue: {shame: 'Select-filter', value: 'cool'}},
                             s{step: {kind: 'state', long: t('No bitch in the list')}},
-                            s{assert: {$tag: 'c9219504-6a67-4863-b09c-c6eafa80bc26', expected: '---generated-shit---'}},
+                            s{assert: {$tag: 'c9219504-6a67-4863-b09c-c6eafa80bc26', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'cool', ordering: 'desc'})}},
 
                             s{step: {kind: 'action', long: t('Choose to see only rejected users')}},
-                            s{setValue: {shame: 'Select-filter', value: 'banned'}},
+                            s{setValue: {shame: 'Select-filter', value: 'rejected'}},
                             s{step: {kind: 'state', long: t('Only bitch is in the list')}},
-                            s{assert: {$tag: 'd21b167c-3064-41b7-a3d3-d8a7c5f91b92', expected: '---generated-shit---'}},
+                            s{assert: {$tag: 'd21b167c-3064-41b7-a3d3-d8a7c5f91b92', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'rejected', ordering: 'desc'})}},
 
                             s{step: {kind: 'action', long: t('Choose to see all')}},
                             s{setValue: {shame: 'Select-filter', value: 'all'}},
                             s{step: {kind: 'state', long: t('Bitch and others are in the list')}},
-                            s{assert: {$tag: 'd72124f6-0ad2-4f50-ba0e-7bedff1e6a79', expected: '---generated-shit---'}},
+                            s{assert: {$tag: 'd72124f6-0ad2-4f50-ba0e-7bedff1e6a79', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
 
                             s{actionPlaceholder: {$tag: 'cd903ec5-a126-407a-92d6-a724b818054f'}},
+                        s{endSection: {}},
+                    ]
+                }
+                
+                function vovchok3() {
+                    return [
+                        s{beginSection: {long: t('Marko Vovchok faces she’s rejected')}},
+                            ...selectBrowser(s{
+                                clientKind: 'writer', browserName: 'vovchok3',
+                                stateDescription: t('The Bitch opens browser')}),
+                                
+                                s{step: {kind: 'action', long: t('Try to sign in with old email')}},
+                                s{setValue: {shame: 'TextField-email.Input', value: 'vovchok@test.shit.ua'}},
+                                s{setValue: {shame: 'TextField-password.Input', value: 'fucking-big-generated-secret'}},
+                                s{click: {shame: 'button-primary', timestamp: '2016/08/27 14:53:22'}},
+                                s{step: {kind: 'state', long: t('No way, cause admin have changed her email to "vovkulaka..."')}},
+                                s{assert: {$tag: 'eeb4fc2a-0e24-4fc0-9e66-6ecccd932d8e', expected: '---generated-shit---'}},
+                                
+                                s{step: {kind: 'action', long: t('Sign in with new email')}},
+                                s{setValue: {shame: 'TextField-email.Input', value: 'vovkulaka@test.shit.ua'}},
+                                s{setValue: {shame: 'TextField-password.Input', value: 'fucking-big-generated-secret'}},
+                                s{click: {shame: 'button-primary', timestamp: '2016/08/27 14:54:22'}},
+                                s{step: {kind: 'state', long: t('Oh, they rejected me')}},
+                                s{assert: {$tag: 'f80aea79-7308-444b-acd3-fe81cee46eff', expected: '---generated-shit---'}},
+                                
+                                s{actionPlaceholder: {$tag: '80c8c508-ef39-4e07-8be3-3e8a964e984c'}},
                         s{endSection: {}},
                     ]
                 }
@@ -351,6 +416,83 @@ module.exports = function({sim}) {
                         s{click: {shame: 'button-primary'}},
                     ]
                 }
+                
+                function expectHeaderControls({search='', filter, ordering}) {
+                    return function({expected}) {
+                        asn(expected, {
+                            'Input-search': search,
+                            
+                            'Select-filter.item-i000.title': `Все`,
+                            'Select-filter.item-i000.value': `all`,
+                            'Select-filter.item-i001.title': `Прохладные`,
+                            'Select-filter.item-i001.value': `cool`,
+                            'Select-filter.item-i002.title': `Ждут аппрува`,
+                            'Select-filter.item-i002.value': `2approve`,
+                            'Select-filter.item-i003.title': `Завернутые`,
+                            'Select-filter.item-i003.value': `rejected`,
+                            'Select-filter.item-i004.title': `Забаненые`,
+                            'Select-filter.item-i004.value': `banned`,
+                            
+                            'Select-ordering.item-i000.title': `Сначала новые`,
+                            'Select-ordering.item-i000.value': `desc`,
+                            'Select-ordering.item-i001.title': `Сначала старые`,
+                            'Select-ordering.item-i001.value': `asc`,
+                            'Select-ordering.selected.title': `Сначала новые`,
+                            'Select-ordering.selected.value': `desc`,
+                        })
+                        
+                        if (filter === 'all') {
+                            asn(expected, {
+                                'Select-filter.selected.title': `Все`,
+                                'Select-filter.selected.value': `all`,
+                            })
+                        }
+                        else if (filter === 'cool') {
+                            asn(expected, {
+                                'Select-filter.selected.title': `Прохладные`,
+                                'Select-filter.selected.value': `cool`,
+                            })
+                        }
+                        else if (filter === '2approve') {
+                            asn(expected, {
+                                'Select-filter.selected.title': `Ждут аппрува`,
+                                'Select-filter.selected.value': `2approve`,
+                            })
+                        }
+                        else if (filter === 'rejected') {
+                            asn(expected, {
+                                'Select-filter.selected.title': `Завернутые`,
+                                'Select-filter.selected.value': `rejected`,
+                            })
+                        }
+                        else if (filter === 'banned') {
+                            asn(expected, {
+                                'Select-filter.selected.title': `Забаненые`,
+                                'Select-filter.selected.value': `banned`,
+                            })
+                        }
+                        else {
+                            raise(`Weird filter: ${filter}`)
+                        }
+                        
+                        if (ordering === 'asc') {
+                            asn(expected, {
+                                'Select-ordering.selected.title': `Сначала старые`,
+                                'Select-ordering.selected.value': `asc`,
+                            })
+                        }
+                        else if (ordering === 'desc') {
+                            asn(expected, {
+                                'Select-ordering.selected.title': `Сначала новые`,
+                                'Select-ordering.selected.value': `desc`,
+                            })
+                        }
+                        else {
+                            raise(`Weird ordering: ${ordering}`)
+                        }
+                    }
+                }
+                
             }
             
         },

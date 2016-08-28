@@ -18,6 +18,7 @@ Exceptions
 Control Development
     noStateContributions
     ignoreDebugCtrlShiftClick
+    renderInRevelationPane 
     
 Controls
     renderExceptionTriangle
@@ -95,6 +96,8 @@ TODO
           - Also deploy static sites to GitHub Pages on each push, and then test against that?
           - CORS requests from static site to shit running on Travis CI virtual machine?
           - Can I spawn backend.js process on Travis?
+          
+    - Speed up gertrude() rendering. It gets annoyingly slow on pages with lots of state contributions
       
     
 Heap
