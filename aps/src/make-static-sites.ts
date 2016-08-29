@@ -1459,6 +1459,9 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 <!-- <script src="jquery-hack.js"></script> -->
                 <script src="bootstrap-hack.js"></script>
                 <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->
+                                
+                <script src="kotlin/out/production/aps-kotlin/lib/kotlin.js"></script>
+                <script src="kotlin/out/production/aps-kotlin/aps-kotlin.js"></script>
                             
                 <script>
                     var testimonials

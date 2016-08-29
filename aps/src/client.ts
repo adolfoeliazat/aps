@@ -698,6 +698,18 @@ async 'debug-perf-render'() { // @ctx page debug-perf-render
     msms.log()
 },
 
+async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
+    // @wip kotlin
+    
+    const kot = Kotlin.modules['aps-kotlin']
+    global.kot = kot
+    
+    ui.setPage(s{
+        header: pageHeader({title: t('debug-kotlin-playground')}),
+        body: diva({}, kot.renderSwearBox())
+    })
+},
+
 })
                 
 async function melinda(def) {
@@ -1417,7 +1429,7 @@ export function customerDynamicPageNames() {
 export function writerDynamicPageNames() {
     return tokens(`
         test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap admin-users
-        debug-perf-render`)
+        debug-perf-render debug-kotlin-playground`)
 }
 
 
