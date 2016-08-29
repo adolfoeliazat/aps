@@ -24,7 +24,7 @@ import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSou
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, errorBanner, RequestBuilder,
         preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer, Placeholder,
         beginTrain, endTrain, controlBeingRevealed, getCurrentTestBrowser, isInTestScenario, isOrWasInTestScenario,
-        preludeWithHourglass, preludeWithVeryBadNews, preludeWithBadNews} from 'into-u/ui'
+        preludeWithHourglass, preludeWithVeryBadNews, preludeWithBadNews, dom} from 'into-u/ui'
         
 #import static 'into-u/ui'
 
@@ -172,7 +172,7 @@ async 'admin-heap'() {
         const itemsReq = {fun: itemsFun}
         const itemsRes = await ui.rpcSoft(itemsReq)
         if (itemsRes.error) {
-            return ui.setPage({
+            return ui.setPage(s{
                 header: pageHeader({title: pageTitle}),
                 body: diva({}, errorBanner(s{content: itemsRes.error}))
             })
@@ -187,7 +187,7 @@ async 'admin-heap'() {
             }
         }
         
-        ui.setPage({
+        ui.setPage(s{
             header: pageHeader({title: pageTitle}),
             body: div(
                 ui.tabs({name: 'main', active: activeTab, tabDefs: [
@@ -207,7 +207,7 @@ async 'admin-heap'() {
                     
 async 'admin-my-tasks'() {
     raise('implement me')
-    ui.setPage({
+    ui.setPage(s{
         header: pageHeader({title: 'rtrtyyt'}),
         body: div(
             t(`TOTE`, `foooooooooo`), aa({href: '#', onClick() { dlog('cliiiiick') }}, t('qqqqqqqqqqq')))
@@ -316,7 +316,7 @@ async support() {
                     url: `support.html?filter=${name}`
                 })}))
             
-            ui.setPage({
+            ui.setPage(s{
                 header: pageHeader({title: t(`TOTE`, `Поддержка`)}),
                 body: div(
                     ui.tabs({name: 'main', tabDefs, active: filter}),
@@ -517,10 +517,16 @@ async 'admin-users~'() { // @ctx page admin-users
                     cancelButtonTitle: t(`TOTE`, `Передумал`),
                     
                     getInvisibleFieldNames() {
-                        let invisible = ['profileRejectionReason']
-                        if (form.getField('state').getValue() === 'profile-rejected') {
+                        let invisible = ['profileRejectionReason', 'banReason']
+                        
+                        const state = form.getField('state').getValue()
+                        if (state === 'profile-rejected') {
                             invisible = without(invisible, 'profileRejectionReason')
                         }
+                        else if (state === 'banned') {
+                            invisible = without(invisible, 'banReason')
+                        }
+                        
                         return invisible
                     },
                     
@@ -533,18 +539,19 @@ async 'admin-users~'() { // @ctx page admin-users
                         ui.SelectField(s{
                             name: 'state',
                             title: t(`TOTE`, `Статус`),
-                            values: [
-                                {value: 'cool', title: apsdata.userStateTitle('cool')},
-                                {value: 'profile-approval-pending', title: apsdata.userStateTitle('profile-approval-pending')},
-                                {value: 'profile-rejected', title: apsdata.userStateTitle('profile-rejected')},
-                            ]
+                            values: apsdata.userStates(),
                         }),
                         
-                        // @wip rejection
                         ui.TextField(s{
                             name: 'profileRejectionReason',
                             kind: 'textarea',
                             title: t('TOTE', 'Причина отказа'),
+                        }),
+                        
+                        ui.TextField(s{
+                            name: 'banReason',
+                            kind: 'textarea',
+                            title: t('TOTE', 'Причина бана'),
                         }),
                         
                         ...ui.makeSignUpFields(s{}),
@@ -656,12 +663,41 @@ async profile~() { // @ctx page profile
         raise(`Weird user state: ${userState}`)
     }
     
-    ui.setPage({
+    ui.setPage(s{
         header: pageHeader({title: t('Profile', 'Профиль')}),
         body: pageBody
     })
 },
-                    
+
+async 'debug-perf-render'() { // @ctx page debug-perf-render
+    // @wip perf
+    const msms = Measurements()
+    const msm_debug_perf_render = msms.begin({name: 'debug-perf-render'})
+    
+    const cucu = React.createClass({
+        render() {
+            return React.createElement('div', {}, ...this.children)
+        }
+    })
+
+    //////
+    const shit = diva({}, ...range(1000).map(index => {
+        return diva({fast: true}, `Item ${index}`)
+        return React.createElement(cucu, {}, `Item ${index}`)
+        return React.createElement('div', {}, `Item ${index}`)
+        return dom['diva']({}, `Item ${index}`)
+        return el('div', {}, `Item ${index}`)
+    }))
+    
+    ui.setPage(s{
+        header: pageHeader({title: t('debug-perf-render')}),
+        body: diva({}, shit)
+    })
+    
+    msm_debug_perf_render.end()
+    msms.log()
+},
+
 })
                 
 async function melinda(def) {
@@ -825,7 +861,7 @@ async function melinda(def) {
         
         let updateHeaderControls
         
-        ui.setPage({
+        ui.setPage(s{
             header: fov(header, entityRes),
             body: _=> diva({style: {marginBottom: 15}},
                 tabs,
@@ -886,7 +922,7 @@ async function melinda(def) {
         } 
         
         function showBadResponse(res) {
-            return ui.setPage({
+            return ui.setPage(s{
                 header: pageHeader({title: t(`TOTE`, `Облом`)}),
                 body: diva({}, errorBanner(s{content: res.error}))
             })
@@ -954,6 +990,7 @@ function renderProfile(def) {
                 formGroupStyle: run(_=> {
                     if (user.state === 'profile-approval-pending') return {background: AMBER_200}
                     if (user.state === 'profile-rejected') return {background: DEEP_ORANGE_200}
+                    if (user.state === 'banned') return {background: RED_200}
                     return {}
                 }),
                 label: t(`TOTE`, `Статус`), prop: 'state', transform: apsdata.userStateTitle}),
@@ -964,6 +1001,8 @@ function renderProfile(def) {
         ),
         user.state === 'profile-rejected' && diva({className: 'row'},
             limpopo(s{colsm: 12, model, prop: 'profile_rejection_reason', label: t(`TOTE`, `Причина отказа`), contentStyle: {whiteSpace: 'pre-wrap'}})),
+        user.state === 'banned' && diva({className: 'row'},
+            limpopo(s{colsm: 12, model, prop: 'ban_reason', label: t(`TOTE`, `Причина бана`), contentStyle: {whiteSpace: 'pre-wrap'}})),
         profileFilled && diva({className: 'row'},
             limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`), contentStyle: {whiteSpace: 'pre-wrap'}})),
         adminLooks && user.admin_notes && diva({className: 'row'},
@@ -1376,7 +1415,9 @@ export function customerDynamicPageNames() {
 }
 
 export function writerDynamicPageNames() {
-    return tokens('test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap admin-users')
+    return tokens(`
+        test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap admin-users
+        debug-perf-render`)
 }
 
 

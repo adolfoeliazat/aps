@@ -790,7 +790,8 @@ app.post('/rpc', async function(req, res) {
                         loadProfileFields(s{})
                         loadAdminNotesField(s{})
                         loadField(s{key: 'state', mandatory: true, allowedValues: apsdata.userStateValues()})
-                        loadRejectionReasonField(s{key: 'profileRejectionReason', shouldBePresentIfKeys: 'state', valueEquals: 'profile-rejected'})
+                        loadReasonField(s{key: 'profileRejectionReason', shouldBePresentIfKeys: 'state', valueEquals: 'profile-rejected'})
+                        loadReasonField(s{key: 'banReason', shouldBePresentIfKeys: 'state', valueEquals: 'banned'})
                     traceEndSection(s{})
 
                     if (isEmpty(fieldErrors)) {
@@ -799,6 +800,7 @@ app.post('/rpc', async function(req, res) {
                                 updated_at = ${requestTimestamp},
                                 state = ${fields.state},
                                 profile_rejection_reason = ${fields.state === 'profile-rejected' ? fields.profileRejectionReason : null},
+                                ban_reason = ${fields.state === 'banned' ? fields.banReason : null},
                                 email = ${fields.email},
                                 kind = ${msg.clientKind},
                                 first_name = ${fields.firstName},
@@ -1319,7 +1321,7 @@ app.post('/rpc', async function(req, res) {
                     return `client ${msg.LANG} ${msg.clientKind}`
                 }
                 
-                function loadRejectionReasonField(def) {
+                function loadReasonField(def) {
                     #extract {key, shouldBePresentIfKeys, valueEquals} from def
                     
                     if (msg[shouldBePresentIfKeys] === valueEquals) {

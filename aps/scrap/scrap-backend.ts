@@ -537,6 +537,8 @@ relog(a)
 relog(b)
 relog(a === b)
 
+relog(range(3))
+
 
 
 

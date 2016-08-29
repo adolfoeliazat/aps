@@ -30,20 +30,22 @@ const makeOrRemakeAPSCommonExportedShit = function hot$makeOrRemakeAPSCommonExpo
             })
         },
         
-        userStateValueToTitle() {
-            return {
-                'cool': t(`TOTE`, `Прохладный`),
-                'profile-approval-pending': t(`TOTE`, `Ждет аппрува профиля`),
-                'profile-rejected': t(`TOTE`, `Профиль завернут`),
-            }
-        },
+//        userStateValueToTitle() {
+//            return {
+//                'cool': t(`TOTE`, `Прохладный`),
+//                'profile-approval-pending': t(`TOTE`, `Ждет аппрува профиля`),
+//                'profile-rejected': t(`TOTE`, `Профиль завернут`),
+//            }
+//        },
         
         userStateValues() {
-            return keys(apsdata.userStateValueToTitle())
+            return apsdata.userStates().map(x => x.value)
+//            return keys(apsdata.userStateValueToTitle())
         },
         
         userStateTitle(state) {
-            return apsdata.userStateValueToTitle()[state]
+            return apsdata.userStates().find(x => x.value === state).title
+//            return apsdata.userStateValueToTitle()[state]
         },
         
         userFilters() {
@@ -54,7 +56,16 @@ const makeOrRemakeAPSCommonExportedShit = function hot$makeOrRemakeAPSCommonExpo
                 {value: 'rejected', title: t(`TOTE`, `Завернутые`)},
                 {value: 'banned', title: t(`TOTE`, `Забаненые`)},
             ]
-        }
+        },
+        
+        userStates() {
+            return [
+                {value: 'cool', title: t(`TOTE`, `Прохладный`)},
+                {value: 'profile-approval-pending', title: t(`TOTE`, `Ждет аппрува профиля`)},
+                {value: 'profile-rejected', title: t(`TOTE`, `Профиль завернут`)},
+                {value: 'banned', title: t(`TOTE`, `Забанен`)},
+            ]
+        },
     }
     
 }

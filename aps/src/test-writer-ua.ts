@@ -39,6 +39,8 @@ module.exports = function({sim}) {
                             ...vovchok3(),
                             ...dasja3(),
                             ...vovchok4(),
+                            s{worldPoint: {name: '4'}},
+                            ...dasja4(),
                         ]
                     })
                 } finally {
@@ -185,7 +187,9 @@ module.exports = function({sim}) {
                             s{click: {shame: 'chunk-i000.item-i000.heading.icon-edit', timestamp: '2016/08/26 13:56:04'}},
                             s{step: {kind: 'state', long: t('Got form')}},
                             s{assert: {$tag: 'ba17b066-b272-48eb-901c-d22b5b1f803b', expected: '---generated-shit---', expectedExtender:
-                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
+                                expectAll(
+                                    expectHeaderControls({filter: '2approve', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'profile-approval-pending'}))}},
                             
                             s{step: {kind: 'action', long: t('Make some changes and approve')}},
                             s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'cool'}},
@@ -259,34 +263,44 @@ module.exports = function({sim}) {
                             s{click: {shame: 'chunk-i000.item-i000.heading.icon-edit', timestamp: '2016/08/27 13:20:58'}},
                             s{step: {kind: 'state', long: t('TODO State description')}},
                             s{assert: {$tag: 'b138801b-9fec-43b3-94d6-f135318b2a22', expected: '---generated-shit---', expectedExtender:
-                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'cool'}))}},
                             
                             // @wip rejection
                             s{step: {kind: 'action', long: t('Choose "Rejected" status')}},
                             s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'profile-rejected'}},
                             s{step: {kind: 'state', long: t('Rejection reason field appears')}},
                             s{assert: {$tag: 'fcdac58b-e864-4a21-b3a2-47f29a1fbba9', expected: '---generated-shit---', expectedExtender:
-                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'profile-rejected'}))}},
                             
                             s{step: {kind: 'action', long: t('Enter something into rejection reason, then change "Rejected" to something else')}},
                             s{setValue: {shame: 'chunk-i000.item-i000.TextField-profileRejectionReason.Input', value: 'Well... er...'}},
                             s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'cool'}},
                             s{step: {kind: 'state', long: t('Rejection reason field disappears')}},
                             s{assert: {$tag: 'a81d2f49-aa12-45ea-92a2-fc6bf4ad0cf6', expected: '---generated-shit---', expectedExtender:
-                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'cool'}))}},
                             
                             s{step: {kind: 'action', long: t('Select "Rejected" again')}},
                             s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'profile-rejected'}},
                             s{step: {kind: 'state', long: t('Rejection reason is kept')}},
                             s{assert: {$tag: '2e650433-d5f6-4c94-ba5a-b3ff07e15865', expected: '---generated-shit---', expectedExtender:
-                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'profile-rejected'}))}},
                             
                             s{step: {kind: 'action', long: t('Try to reject without reason')}},
                             s{setValue: {shame: 'chunk-i000.item-i000.TextField-profileRejectionReason.Input', value: ''}},
                             s{click: {shame: 'chunk-i000.item-i000.button-primary', timestamp: '2016/08/27 13:23:05'}},
                             s{step: {kind: 'state', long: t('No way')}},
                             s{assert: {$tag: 'c2f5de3e-ff25-4c38-80dc-e09d89e0944f', expected: '---generated-shit---', expectedExtender:
-                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'profile-rejected'}))}},
 
                             s{step: {kind: 'action', long: t('Reject motherfucker along with changing name and email')}},
                             s{setValue: {shame: 'chunk-i000.item-i000.TextField-email.Input', value: 'vovkulaka@test.shit.ua'}},
@@ -374,7 +388,9 @@ module.exports = function({sim}) {
                             s{click: {shame: 'chunk-i000.item-i000.heading.icon-edit', timestamp: '2016/08/28 01:56:33'}},
                             s{step: {kind: 'state', long: t('Edit form opens')}},
                             s{assert: {$tag: '18f8286c-ea61-4820-95c0-9ce3a129edfb', expected: '---generated-shit---', expectedExtender:
-                                expectHeaderControls({filter: '2approve', ordering: 'desc'})}},
+                                expectAll(
+                                    expectHeaderControls({filter: '2approve', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'profile-approval-pending'}))}},
 
                             s{step: {kind: 'action', long: t('Accept now')}},
                             
@@ -405,6 +421,76 @@ module.exports = function({sim}) {
                                 s{assert: {$tag: '5c4d0c0c-8e1f-4dfc-898d-dec7c3e6bbf7', expected: '---generated-shit---'}},
                                 
                                 s{actionPlaceholder: {$tag: '0d1b694c-a300-4505-ae34-3b829e2655dd'}},
+                        s{endSection: {}},
+                    ]
+                }
+                
+                function dasja4() {
+                    return [
+                        s{beginSection: {long: t('Dasja bans bitch')}},
+                            ...selectBrowser(s{
+                                clientKind: 'writer', browserName: 'dasja4',
+                                stateDescription: t('Dasja comes to ban that bitch')}),
+                                
+                            s{step: {kind: 'action', long: t('Normal sign in')}},
+                            ...signIn(s{email: 'dasja@test.shit.ua', password: 'secret'}),
+                            s{assert: {$tag: '6bd7cea2-b181-4978-b278-31a86086606f', expected: '---generated-shit---'}},
+                            s{step: {kind: 'state', long: t('Got dashboard')}},
+                            
+                            s{step: {kind: 'action', long: t('Click on "Users"')}},
+                            s{click: {shame: 'TopNavItem-admin-users', timestamp: '2016/08/28 08:36:33'}},
+                            s{step: {kind: 'state', long: t('Got users, bitch is here')}},
+                            s{assert: {$tag: '4c7fa9d2-c993-4fdf-91e6-fc7e45d49e3b', expected: '---generated-shit---', expectedExtender:
+                                expectHeaderControls({filter: 'all', ordering: 'desc'})}},
+                            
+                            s{step: {kind: 'action', long: t('Click on pencil to edit bitch')}},
+                            s{click: {shame: 'chunk-i000.item-i000.heading.icon-edit', timestamp: '2016/08/28 08:38:01'}},
+                            s{step: {kind: 'state', long: t('Got editing form')}},
+                            s{assert: {$tag: '4290992b-9d2b-4ab2-97e6-e32c87e9ea0c', expected: '---generated-shit---', expectedExtender:
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'cool'}))}},
+                            
+                            s{step: {kind: 'action', long: t('Choose "Banned" from the state list')}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.SelectField-state.Select', value: 'banned'}},
+                            s{step: {kind: 'state', long: t('Ban reason field appears')}},
+                            s{assert: {$tag: 'fa31639d-adae-4ba5-8b47-a58b75f6e17a', expected: '---generated-shit---', expectedExtender:
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'banned'}))}},
+
+                            s{step: {kind: 'action', long: t('Try to submit without giving a reason')}},
+                            s{click: {shame: 'chunk-i000.item-i000.button-primary', timestamp: '2016/08/28 10:00:48'}},
+                            s{step: {kind: 'state', long: t('No way')}},
+                            s{assert: {$tag: '4ec74b0c-df11-4228-a327-92b4a3c1ac64', expected: '---generated-shit---', expectedExtender:
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}),
+                                    expectItemEditorFormControls({state: 'banned'}))}},
+
+                            s{step: {kind: 'action', long: t('Give some reason')}},
+                            s{setValue: {shame: 'chunk-i000.item-i000.TextField-banReason.Input', value: 'Мы тебя больше не хотим'}},
+                            s{click: {shame: 'chunk-i000.item-i000.button-primary', timestamp: '2016/08/28 10:01:48'}},
+                            s{step: {kind: 'state', long: t('She is very red now')}},
+                            s{assert: {$tag: '06325345-e660-4f6c-989c-aafdbac35d55', expected: '---generated-shit---', expectedExtender:
+                                expectAll(
+                                    expectHeaderControls({filter: 'all', ordering: 'desc'}))}},
+
+                            s{step: {kind: 'action', long: t('Show only "Cool"')}},
+                            s{setValue: {shame: 'Select-filter', value: 'cool'}},
+                            s{step: {kind: 'state', long: t('Got no bitch')}},
+                            s{assert: {$tag: '0213b214-02e0-41ce-9596-a4aa4d50389e', expected: '---generated-shit---', expectedExtender:
+                                expectAll(
+                                    expectHeaderControls({filter: 'cool', ordering: 'desc'}))}},
+
+                            s{step: {kind: 'action', long: t('Show only "Banned"')}},
+                            s{setValue: {shame: 'Select-filter', value: 'banned'}},
+                            s{step: {kind: 'state', long: t('Got bitch')}},
+                            s{assert: {$tag: 'ae6f3952-0a58-4542-8c48-68c6654e6626', expected: '---generated-shit---', expectedExtender:
+                                expectAll(
+                                    expectHeaderControls({filter: 'banned', ordering: 'desc'}))}},
+
+
+                            s{actionPlaceholder: {$tag: 'de41a9d0-c319-455c-8c6d-a2f0cf894721'}},
                         s{endSection: {}},
                     ]
                 }
@@ -480,6 +566,58 @@ module.exports = function({sim}) {
                         s{setValue: {shame: 'TextField-password.Input', value: password}},
                         s{click: {shame: 'button-primary'}},
                     ]
+                }
+                
+                function expectAll(...funs) {
+                    return function({expected}) {
+                        for (const fun of funs) {
+                            fun({expected})
+                        }
+                    }
+                }
+                
+                function expectItemEditorFormControls({chunkIndex='000', itemIndex='000', state}) {
+                    return function({expected}) {
+                        asn(expected, {
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i000.title`]: `Прохладный`,
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i000.value`]: `cool`,
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.title`]: `Ждет аппрува профиля`,
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.value`]: `profile-approval-pending`,
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.title`]: `Профиль завернут`,
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.value`]: `profile-rejected`,
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.title`]: `Забанен`,
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.value`]: `banned`,
+                            [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.label`]: `Статус`,
+                        })
+                        
+                        if (state === 'cool') {
+                            asn(expected, {
+                                [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title`]: `Прохладный`,
+                                [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value`]: `cool`,
+                            })
+                        }
+                        else if (state === 'profile-approval-pending') {
+                            asn(expected, {
+                                [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title`]: `Ждет аппрува профиля`,
+                                [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value`]: `profile-approval-pending`,
+                            })
+                        }
+                        else if (state === 'profile-rejected') {
+                            asn(expected, {
+                                [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title`]: `Профиль завернут`,
+                                [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value`]: `profile-rejected`,
+                            })
+                        }
+                        else if (state === 'banned') {
+                            asn(expected, {
+                                [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title`]: `Забанен`,
+                                [`chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value`]: `banned`,
+                            })
+                        }
+                        else {
+                            raise(`Weird state: ${state}`)
+                        }
+                    }
                 }
                 
                 function expectHeaderControls({search='', filter, ordering}) {

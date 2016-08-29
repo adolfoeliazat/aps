@@ -34,7 +34,7 @@ function makeWriterSite({lang}) {
     
     const vendor = `${__dirname}/../vendor`
     sh.cp(`${vendor}/jquery-2.2.4/jquery.min.js`, root)
-    sh.cp('-r', `${vendor}/bootstrap-master`, root)
+    sh.cp('-r', `${vendor}/bootstrap-3.3.6`, root)
     sh.cp('-r', `${vendor}/font-awesome-4.6.3`, root)
     sh.cp(`${__dirname}/../asset/*`, root)
     sh.cp(`${__dirname}/../lib/bundle.js`, root)
@@ -440,7 +440,7 @@ function makeCustomerSite({lang}) {
     
     const vendor = `${__dirname}/../vendor`
     sh.cp(`${vendor}/jquery-2.2.4/jquery.min.js`, root)
-    sh.cp('-r', `${vendor}/bootstrap-master`, root)
+    sh.cp('-r', `${vendor}/bootstrap-3.3.6`, root)
     sh.cp('-r', `${vendor}/font-awesome-4.6.3`, root)
     sh.cp(`${__dirname}/../asset/*`, root)
     sh.cp(`${__dirname}/../lib/bundle.js`, root)
@@ -1215,7 +1215,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 
                 ${ReactDOMServer.renderToStaticMarkup(React.createElement('title', {}, tabTitle))}
                 
-                <link href="bootstrap-master/css/bootstrap.min.css" rel="stylesheet">
+                <link href="bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet">
                 <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
                 <style>
                     /* @ctx css */
@@ -1458,7 +1458,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 <script src="jquery.min.js"></script>
                 <!-- <script src="jquery-hack.js"></script> -->
                 <script src="bootstrap-hack.js"></script>
-                <!-- <script src="bootstrap-master/js/bootstrap.min.js"></script> -->
+                <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->
                             
                 <script>
                     var testimonials
