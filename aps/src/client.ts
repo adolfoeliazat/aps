@@ -701,13 +701,33 @@ async 'debug-perf-render'() { // @ctx page debug-perf-render
 async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
     // @wip kotlin
     
-    const kot = Kotlin.modules['aps-kotlin']
+    const kot = kotlin.modules['aps-kotlin']
     global.kot = kot
+    
+    // const swearBox = {element: React.createElement('div', {}, 'fuck you')}
+    // const swearBox = new kot.SwearBox()
+    
+    kot.uit = require('into-u/ui')
+    const testShit = kot.makeTestShit()
     
     ui.setPage(s{
         header: pageHeader({title: t('debug-kotlin-playground')}),
-        body: diva({}, kot.renderSwearBox())
+        body: diva({},
+            ts('shit1'),
+            ts('shit2'),
+            ts('shit3'),
+            ts('swearBox1'),
+            ts('swearBox2'),
+            ts('swearBox3'),
+            ts('swearBox4'),
+        )
     })
+    
+    function ts(name) {
+        return diva({},
+            diva({style: {fontWeight: 'bold', background: GRAY_200, marginTop: 10, marginBottom: 10, fontSize: '125%'}}, name),
+            testShit[name])
+    }
 },
 
 })
