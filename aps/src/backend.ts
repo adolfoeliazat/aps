@@ -18,8 +18,15 @@ require('source-map-support').install()
 
 import * as fs from 'fs'
 import * as path from 'path'
-import * as testShitUA from './test-shit-ua'
 
+// @wip kotlin
+//global.kotlin = require('E:/work/aps/aps/built/ua-writer/kotlin/out/production/aps-kotlin/lib/kotlin.js')
+//require('E:/work/aps/aps/built/ua-writer/kotlin/out/production/aps-kotlin/aps-kotlin.js')
+
+// @wip scala
+// require('E:/work/aps/aps/built/ua-writer/kotlin/out/production/aps-kotlin/aps-kotlin.js')
+
+import * as testShitUA from './test-shit-ua'
 import {apsdata, setCommonT} from './common'
 #import static 'into-u ./stuff'
 

@@ -700,26 +700,12 @@ async 'debug-perf-render'() { // @ctx page debug-perf-render
 
 async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
     // @wip kotlin
-    
-    const kot = kotlin.modules['aps-kotlin']
-    global.kot = kot
-    
-    // const swearBox = {element: React.createElement('div', {}, 'fuck you')}
-    // const swearBox = new kot.SwearBox()
-    
-    kot.uit = require('into-u/ui')
-    const testShit = kot.makeTestShit()
+    // const testShit = kot.makeTestShit()
     
     ui.setPage(s{
         header: pageHeader({title: t('debug-kotlin-playground')}),
         body: diva({},
-            ts('shit1'),
-            ts('shit2'),
-            ts('shit3'),
-            ts('swearBox1'),
-            ts('swearBox2'),
-            ts('swearBox3'),
-            ts('swearBox4'),
+            ...keys(testShit).map(key => ts(key))
         )
     })
     
@@ -1451,7 +1437,6 @@ export function writerDynamicPageNames() {
         test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap admin-users
         debug-perf-render debug-kotlin-playground`)
 }
-
 
 clog('Client code is kind of loaded')
 
