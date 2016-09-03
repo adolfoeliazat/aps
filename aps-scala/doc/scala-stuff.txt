@@ -1,0 +1,2 @@
+> set scalacOptions in ThisBuild ++= Seq("-feature")
+
