@@ -1,0 +1,8 @@
+<classpath>
+  <classpathentry kind="src" path="src\main\scala"/>
+  <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
+  <classpathentry sourcepath="C:\Users\Vladimir\.ivy2\cache\org.scala-js\scalajs-library_2.11\srcs\scalajs-library_2.11-0.6.12-sources.jar" kind="lib" path="C:\Users\Vladimir\.ivy2\cache\org.scala-js\scalajs-library_2.11\jars\scalajs-library_2.11-0.6.12.jar"/>
+  <classpathentry sourcepath="C:\Users\Vladimir\.ivy2\cache\org.scala-js\scalajs-test-interface_2.11\srcs\scalajs-test-interface_2.11-0.6.12-sources.jar" kind="lib" path="C:\Users\Vladimir\.ivy2\cache\org.scala-js\scalajs-test-interface_2.11\jars\scalajs-test-interface_2.11-0.6.12.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="output" path="bin"/>
+</classpath>

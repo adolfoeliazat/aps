@@ -1,2 +1,4 @@
 /target/
 /.build.sbt.swp
+/target-idea/
+/bin/
