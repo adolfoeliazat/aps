@@ -39,17 +39,17 @@ private fun keys(@Suppress("UNUSED_PARAMETER") obj: dynamic): dynamic {
     return js("Object.keys(obj)")
 }
 
-fun diva(@Suppress("UNUSED_PARAMETER") vararg args: dynamic) {
+fun diva(@Suppress("UNUSED_PARAMETER") vararg args: dynamic): IReactElement {
     @Suppress("UNUSED_VARIABLE") val shit = jshit
     return js("shit.diva.apply(null, args)")
 }
 
-fun hor2(@Suppress("UNUSED_PARAMETER") vararg args: dynamic) {
+fun hor2(@Suppress("UNUSED_PARAMETER") vararg args: dynamic): IReactElement {
     @Suppress("UNUSED_VARIABLE") val shit = jshit
     return js("shit.hor2.apply(null, args)")
 }
 
-private fun fuckingDiv(): dynamic {
+private fun fuckingDiv(): IReactElement {
     return jshit.diva(json(), "Fucking Divius")
 }
 
@@ -103,7 +103,7 @@ fun openTestPassedPane(def: dynamic) {
         "element" to jshit.spana(json(), testPassedPane.element)))
 }
 
-fun renderStepDescriptions() {
+fun renderStepDescriptions(): IReactElement {
     val testInstructions = jshit.art.getTestInstructions()
     val els = mutableListOf<IReactElement>()
 
@@ -113,12 +113,12 @@ fun renderStepDescriptions() {
         val opcode = keys(instrdef).find {x: dynamic -> x[0] != "$" } // TODO
         val instr = instrdef[opcode]
 
-        fun addLine(stepRowStyle: dynamic = null, rulerContent: dynamic = null, lineContent: dynamic = null, actions: Collection<IReactElement> = listOf(), indent: dynamic = null) {
+        fun addLine(indent: Int, stepRowStyle: dynamic = null, rulerContent: dynamic = null, lineContent: dynamic = null, actions: Collection<IReactElement> = listOf()) {
             els.add(jshit.diva(json("style" to json("marginTop" to 5, "display" to "flex")),
                 diva(json("style" to json("fontWeight" to "bold", "width" to 40)), rulerContent),
                 // XXX This `width: 100%` is for fucking flexbox to not change `width: 40` above... http://stackoverflow.com/questions/7985021/css-flexbox-issue-why-is-the-width-of-my-flexchildren-affected-by-their-content
                 diva(json("className" to "showOnParentHovered-parent", "style" to json("width" to "100%", "display" to "flex").asDynamic().asnn(stepRowStyle)),
-                    *(jshit.range(indent).map { diva(json("style" to json("width" to 20, "borderLeft" to "2px dotted ${jshit.GRAY_500}"))) }),
+                    *((1..indent).map { diva(json("style" to json("width" to 20, "borderLeft" to "2px dotted ${jshit.GRAY_500}"))) }.toTypedArray()),
                 lineContent,
                 diva(json("className" to "showOnParentHovered"),
                     hor2(json("style" to json("marginLeft" to 8, "paddingLeft" to 8, "borderLeft" to "2px solid ${jshit.GRAY_500}")),
@@ -136,7 +136,7 @@ fun renderStepDescriptions() {
             val untilParamValue = if (instrIndex == jshit.art.stepDescriptions.length - 1) "infinity" else instrIndex
 
             addLine(
-                indent = indent, stepRowStyle = stepRowStyle,
+                indent, stepRowStyle = stepRowStyle,
                 rulerContent = "#" + (stepIndex++ + 1),
                 lineContent = diva(json("style" to json("display" to "flex")),
                     when (instr.kind) {
@@ -148,7 +148,7 @@ fun renderStepDescriptions() {
                     jshit.spana(json("style" to json()), instr.long)
                 ),
                 actions = listOf(
-                    // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae
+                    // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 1
                     link(json("title" to t("Run until ") + untilParamValue, "onClick" to {
                         var href = window.location.href
                         href = href.replace(Regex("&from[^&]*"), "")
@@ -160,7 +160,7 @@ fun renderStepDescriptions() {
             )
         }
         else if (opcode == "beginSection") {
-            addLine(indent = indent, lineContent = diva(json("style" to json("fontWeight" to "bold")), instr.long))
+            addLine(indent, lineContent = diva(json("style" to json("fontWeight" to "bold")), instr.long))
             ++indent
         }
         else if (opcode == "endSection") {
@@ -168,13 +168,13 @@ fun renderStepDescriptions() {
         }
         else if (opcode == "worldPoint") {
             addLine(
-                indent = indent,
+                indent,
                 lineContent = diva(json("style" to json("fontWeight" to "normal", "fontStyle" to "italic")), "World point: " + instr.name),
                 rulerContent = diva(json("style" to json("position" to "relative")),
                     jshit.ia(json("className" to "fa fa-circle", "style" to json("color" to jshit.GRAY_500))),
                     diva(json("style" to json("width" to 38, "position" to "absolute", "left" to 0, "top" to 9, "borderTop" to "2px dotted ${jshit.GRAY_500}")))
                 ),
-                // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae
+                // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 2
                 actions = listOf(
                     link(json("title" to t("Run from"), "onClick" to {
                         var href = window.location.href
