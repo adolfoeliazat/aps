@@ -20,8 +20,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 
 // @wip kotlin
-//global.kotlin = require('E:/work/aps/aps/built/ua-writer/kotlin/out/production/aps-kotlin/lib/kotlin.js')
-//require('E:/work/aps/aps/built/ua-writer/kotlin/out/production/aps-kotlin/aps-kotlin.js')
+global.kotlin = require('E:/work/aps/aps/built/ua-writer/kotlin/lib/kotlin.js')
+require('E:/work/aps/aps/built/ua-writer/kotlin/front.js')
 
 // @wip scala
 // require('E:/work/aps/aps/built/ua-writer/kotlin/out/production/aps-kotlin/aps-kotlin.js')

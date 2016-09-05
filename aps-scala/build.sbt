@@ -12,3 +12,4 @@ crossTarget in fastOptJS := new java.io.File("E:/work/aps/aps/built/ua-writer")
 
 EclipseKeys.withSource := true
 
+libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value

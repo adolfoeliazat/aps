@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id="aps-scala" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../target-idea/scala-2.11/classes" />
-    <output-test url="file://$MODULE_DIR$/../../target-idea/scala-2.11/test-classes" />
+    <output url="file://$MODULE_DIR$/../../target/scala-2.11/classes" />
+    <output-test url="file://$MODULE_DIR$/../../target/scala-2.11/test-classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../..">
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
@@ -20,19 +20,11 @@
       <excludeFolder url="file://$MODULE_DIR$/../../target" />
       <excludeFolder url="file://$MODULE_DIR$/../../target-idea" />
     </content>
-    <content url="file://$MODULE_DIR$/../../../../foundation">
-      <excludeFolder url="file://$MODULE_DIR$/../../../../foundation/buh/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../foundation/devui/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../foundation/mail/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../foundation/maker/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../foundation/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../foundation/u/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../foundation/water/node_modules" />
-    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="SBT: org.scala-js:scalajs-library_2.11:0.6.12:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.11.8:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.11.8:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="SBT: org.scala-js:scalajs-test-interface_2.11:0.6.12:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.11.8:jar" level="project" />
   </component>
 </module>

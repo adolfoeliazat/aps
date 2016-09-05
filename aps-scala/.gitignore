@@ -2,3 +2,5 @@
 /.build.sbt.swp
 /target-idea/
 /bin/
+/.worksheet/
+/.cache-main

@@ -106,18 +106,28 @@ object APSApp extends JSApp {
                   lineContent: Dynamic = null,
                   actions: Seq[Dynamic] = Seq()) {
 
+//        def div(build: => Unit): ReactElement = {
+//          val attrs = mutable.Map()
+//          jsuit.divaArray(attrs, shit.toJSArray)
+//        }
+//
+//        div {
+//          println("world")
+//        }
+
+
         els.append(diva(dli(style = dli(marginTop = 5, display = "flex")),
           diva(dli(style = dli(fontWeight = "bold", width = 40)), rulerContent),
           // XXX This `width = 100%` is for fucking flexbox to not change `width = 40` above... http://stackoverflow.com/questions/7985021/css-flexbox-issue-why-is-the-width-of-my-flexchildren-affected-by-their-content
+
           jsuit.divaArray(dli(className = "showOnParentHovered-parent", style = dli(width = "100%", display = "flex").asnn(stepRowStyle)),
-            {(1 to indent map {_=> diva(dli(style = dli(width = 20, borderLeft = s"2px dotted ${jsuit.GRAY_500}")))}) ++
+            ( (1 to indent map {_=> diva(dli(style = dli(width = 20, borderLeft = s"2px dotted ${jsuit.GRAY_500}")))})
+              ++
               Seq(lineContent,
                 diva(dli(className = "showOnParentHovered"),
                   jsuit.hor2Array(dli(style = dli(marginLeft = 8, paddingLeft = 8, borderLeft = s"2px solid ${jsuit.GRAY_500}")),
-                    (actions ++ Seq(jsuit.OpenSourceCodeLink(dli(where = instrdef, style = dli(marginLeft = 20))))).toJSArray
-                  )
-                  )
-              )}.toJSArray)))
+                    (actions ++ Seq(jsuit.OpenSourceCodeLink(dli(where = instrdef, style = dli(marginLeft = 20))))).toJSArray ) )
+              )).toJSArray)))
       }
 
       Object.keys(instrdef.asInstanceOf[Object]).find(x => x(0) != '$') match {
