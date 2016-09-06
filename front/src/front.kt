@@ -87,12 +87,12 @@ fun openTestPassedPane(def: dynamic) {
     val scenario = def.scenario
 
     val testPassedPane = jshit.statefulElement(json("ctor" to { update: dynamic ->
-        var scenarioName = scenario.name
+        var scenarioName: String = scenario.name
         val links = mutableListOf<ReactElement>()
 
         val m = global.RegExp("\\s+([0-9a-z]{8})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{12})$").exec(scenarioName)
         if (m != undefined) {
-            scenarioName = scenarioName.slice(0, m.index)
+            scenarioName = scenarioName.substring(0, m.index)
             links.add(jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to jshit.WHITE))))
         }
         if (jshit.art.actionPlaceholderTag != undefined) {
@@ -108,21 +108,20 @@ fun openTestPassedPane(def: dynamic) {
             "render" to {
                 when {
                     scenarioName == undefined -> null
+                    else -> div {
+                        noStateContributions = true
+                        style {
+                            backgroundColor = Color.GREEN_700; color = Color.WHITE
+                            marginTop(10); padding = "10px 10px"; textAlign = "center"; fontWeight = "bold"
+                        }
 
-                    else -> jshit.diva(json(
-                        "noStateContributions" to true,
-                        "style" to json(
-                            "backgroundColor" to jshit.GREEN_700, "color" to jshit.WHITE,
-                            "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "center", "fontWeight" to "bold")),
+                        - div { style { paddingBottom(10) }
+                            - scenarioName
+                            - div { style { display = "flex"; justifyContent = "center" }
+                                + links } }
 
-                        jshit.diva(json("style" to json("paddingBottom" to 10)),
-                            scenarioName,
-                            diva(json("style" to json("display" to "flex", "justifyContent" to "center")), *links.toTypedArray())
-                        ),
-
-                        jshit.diva(json("style" to json("background" to jshit.WHITE, "color" to jshit.BLACK_BOOT, "fontWeight" to "normal", "textAlign" to "left", "padding" to 5)),
-                            jshit.art.renderStepDescriptions())
-                    )
+                        - div { style { backgroundColor = Color.WHITE; color = Color.BLACK_BOOT; fontWeight = "normal"; textAlign = "left"; padding(5) }
+                            - jshit.art.renderStepDescriptions() } }
                 }
             })
     }))
@@ -132,12 +131,6 @@ fun openTestPassedPane(def: dynamic) {
         "parentJqel" to jshit.byid("underFooter"),
         "element" to jshit.spana(json(), testPassedPane.element)))
 }
-
-//fun renderStepDescriptions(): ReactElement {
-//    return div {
-//        - "pizda"
-//    }
-//}
 
 fun renderStepDescriptions(): ReactElement {
     val testInstructions = jshit.art.getTestInstructions()
@@ -298,6 +291,8 @@ open class FlowElementBuilder(val tag: String) {
     protected val children = mutableListOf<ReactElement>()
     private val styleBuilder = StyleBuilder()
 
+    var noStateContributions: Boolean = false
+
     var className: String? = null; set(value) { if (value == null) attrs.remove("className") else attrs["className"] = value }
 
     fun style(doInsideBuilder: StyleBuilder.() -> Unit) {
@@ -374,6 +369,8 @@ class StyleBuilder {
     var color: Color? = null; set(value) { if (value == null) attrs.remove("color") else attrs["color"] = value.string }
     var backgroundColor: Color? = null; set(value) { if (value == null) attrs.remove("backgroundColor") else attrs["backgroundColor"] = value.string }
     var opacity: Double? = null; set(value) { if (value == null) attrs.remove("opacity") else attrs["opacity"] = "" + value }
+    var textAlign: String? = null; set(value) { if (value == null) attrs.remove("textAlign") else attrs["textAlign"] = value }
+    var justifyContent: String? = null; set(value) { if (value == null) attrs.remove("justifyContent") else attrs["justifyContent"] = value }
 
     var marginTop: String? = null; set(value) { if (value == null) attrs.remove("marginTop") else attrs["marginTop"] = value }
     fun marginTop(value: Int) { marginTop = "${value}px" }

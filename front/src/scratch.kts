@@ -1,4 +1,10 @@
-generateStyleBuilderShit()
+strings1()
+
+fun strings1() {
+    //       012345678
+    val s = "foobarbaz"
+    println(s.substring(0, 3))
+}
 
 fun generateStyleBuilderShit() {
     for (propName in arrayOf(
