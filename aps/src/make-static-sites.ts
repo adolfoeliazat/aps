@@ -1461,9 +1461,7 @@ function genericWritePage({name, comp, css='', js='', highlightedItem, root, tab
                 <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->
                                 
                 <script src="kotlin/lib/kotlin.js"></script>
-                <div id="reloadableScripts">
-                    <script src="kotlin/front.js"></script>
-                </div>
+                <script src="kotlin/front.js"></script>
                                 
                 <!-- <script src="aps-scala-fastopt.js"></script> -->
                             

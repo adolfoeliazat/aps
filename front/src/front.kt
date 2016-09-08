@@ -229,6 +229,7 @@ fun renderStepDescriptions(): ReactElement {
         }
     }
 
+
     val boxes = object : StatefulElement() {
         private var shitVisible: Boolean = true
 
@@ -316,6 +317,21 @@ class SimpleEventHandlerBuilder {
     }
 }
 
+class diva(build: FlowElementBuilder.() -> Unit) : StatefulElement() {
+    private val element: ReactElement
+
+    init {
+        val builder = FlowElementBuilder("div")
+        builder {
+            id = elementID
+        }
+        builder.build()
+        element = builder.toElement()
+    }
+
+    override fun render(): ReactElement = element
+}
+
 class PromiseAsyncSwearBox(build: PromiseAsyncSwearBox.() -> Unit) : StatefulElement() {
     val adjectives = arrayOf("Big", "Little")
     val mainWords = arrayOf("Shit", "Fuck", "Bitch")
@@ -338,7 +354,7 @@ class PromiseAsyncSwearBox(build: PromiseAsyncSwearBox.() -> Unit) : StatefulEle
     override fun render() = div {id = elementID; style {add(myStyle)}
         -hor2 {
             if (phrase == null)
-                -div {style {color = ROSYBROWN}; -"Kittens"}
+                -diva {style {color = ROSYBROWN}; -"Kittens"}
             else
                 -div {
                     -span {style {fontWeight = "bold"}; -"Back to earth:"}
@@ -424,90 +440,7 @@ fun preventAndStop(e: ReactEvent) {
     e.stopPropagation()
 }
 
-fun revealControl(control: StatefulElement) {
-    console.warn("Implement revealControl, fuck you")
-}
-
-//fun sample_linkUsage() {
-//    link {title = "Click me"; style {color = ROSYBROWN} onClick {
-//        println("fuck")
-//    }}
-//
-//    link {title = "Click me"; style {color = ROSYBROWN}
-//        onClick {
-//            println("fuck")
-//        }
-//
-//        onMouseEnter {
-//            println("shit")
-//        }
-//    }
-//}
-//
-//open class Control {
-//    abstract protected fun render(): ReactElement
-//
-//    val elementID = puid()
-//}
-
 typealias ReactEventHandler = (ReactEvent) -> Unit
-
-//class link(build: link.() -> Unit) : Control() {
-//    var className: String = ""
-//    val styleBuilder = StyleBuilder()
-//    var _onMouseEnter: ReactEventHandler? = null
-//    var _onMouseLeave: ReactEventHandler? = null
-//
-//    init {
-//        build()
-//    }
-//
-//    fun style(doInsideBuilder: StyleBuilder.() -> Unit) {
-//        styleBuilder.doInsideBuilder()
-//    }
-//
-//    fun onMouseEnter(handler: ReactEventHandler) { _onMouseEnter = handler }
-//    fun onMouseLeave(handler: ReactEventHandler) { _onMouseLeave = handler }
-//
-//    override fun render(): ReactElement {
-//        return React.createElement("a", json(
-//            "id" to elementID, "className" to className, "style" to styleBuilder.toJSObject(), "href" to "#",
-//            "onMouseEnter" to _onMouseEnter, "onMouseLeave" to _onMouseLeave
-//        ), content)
-//    }
-//}
-
-//fun link() {
-//    #extract {content, title, className='', style, onClick, onMouseEnter, onMouseLeave} from def
-//
-//    invariant(!(content && title), 'It should be either content or title')
-//
-//    if (title) {
-//        content = spancTitle({title})
-//        // content = span(title)
-//    }
-//
-//    const me = {
-//        render() {
-//            return aa(s{id: me.elementID, className, style, href: '#', onMouseEnter, onMouseLeave}, content)
-//        },
-//
-//        async onRootClick(e) {
-//            e.preventDefault()
-//            e.stopPropagation()
-//            await fova(onClick)
-//        },
-//    }
-//
-//    me.controlTypeName = 'link'
-//    me.tamyPrefix = 'link'
-//    implementControlShit({me, def, implementTestClick: {onClick: me.onRootClick}})
-//    return elcl(me)
-//}
-
-abstract class StatefulElementBuilder {
-
-}
 
 abstract class StatefulElement() : ToReactElementable {
     abstract fun render(): ReactElement
@@ -544,7 +477,7 @@ abstract class StatefulElement() : ToReactElementable {
                 // @wip sourceLocation
                 var lines = stackString.lines()
                 lines = lines.slice(firstSignificantStackLine..lines.lastIndex)
-                lines.take(5).forEachIndexed { i, s -> println("$i) $s")}
+                /// println("Liiines"); lines.take(5).forEachIndexed { i, s -> println("$i) $s")}
 
                 val jsArray = js("[]")
                 lines.forEach {line ->
@@ -554,7 +487,6 @@ abstract class StatefulElement() : ToReactElementable {
                         ))
                     }
                 }
-                // console.log("Resolving to", jsArray)
                 resolve(jsArray)
             }
         })
@@ -727,8 +659,6 @@ abstract class StatefulElement() : ToReactElementable {
                     return captureAction()
                 }
 
-                // @wip stuff
-                println("qqqqqqqqqqqq")
                 preventAndStop(e)
                 return jshit.revealControl(this)
             }
@@ -807,30 +737,11 @@ private fun asReactElement(x: Any?): ReactElement {
     return didi
 }
 
-//class diva(doInsideBuilder: FlowElementBuilder.() -> Unit) : StatefulElement() {
-//    val element: ReactElement
-//
-//    init {
-//        element = div(doInsideBuilder)
-//    }
-//
-//    override fun render(): ReactElement {
-//        println("rendering diva")
-//        return element
-//    }
-//}
-
 fun div(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
-    // @wip sourceLocation
-//    val stack = (js("Error().stack") as String).split("\n")
-//    println(stack[3])
-
     val builder = FlowElementBuilder("div")
     builder.doInsideBuilder()
     return builder.toElement()
 }
-
-
 
 fun horizontala(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
     val builder = HorizontalaBuilder()
@@ -874,6 +785,10 @@ open class FlowElementBuilder(val tag: String) {
 
     var className: String? = null; set(value) { if (value == null) attrs.remove("className") else attrs["className"] = value }
     var id: String? = null; set(value) { if (value == null) attrs.remove("id") else attrs["id"] = value }
+
+    operator fun invoke(insideMe: FlowElementBuilder.() -> Unit) {
+        insideMe()
+    }
 
     operator fun Iterable<ReactElement>.unaryPlus() {
         for (child in this) add(child)
