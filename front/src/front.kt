@@ -126,9 +126,9 @@ fun gertrude(def: dynamic) {
     val keyToDefinitionStack = js("({})"); val keyToCallStack = js("({})"); val keyToControl = js("({})")
     for (key in jsArrayToIterable(global.Object.keys(actual))) {
         val value = actual[key]
-        if (value && value.definitionStack) {
+        if (value && value.`$definitionStack`) {
             actual[key] = value.value
-            keyToDefinitionStack[key] = value.definitionStack
+            keyToDefinitionStack[key] = value.`$definitionStack`
         }
         if (value && value.`$callStack`) {
             actual[key] = value.value
@@ -207,7 +207,7 @@ fun gertrude(def: dynamic) {
                 jshit.sortKeys(actual) // Order of keys sent over the wire is mangled
                 jshit.sortKeys(expected)
 
-                val definitionStacks = js("[]"); val callStacks = js("[]"); val controls = js("[]"); val origKeys =js("[]")
+                val definitionStacks = js("[]"); val callStacks = js("[]"); val controls = js("[]"); val origKeys = js("[]")
                 for (key in jsArrayToIterable(global.Object.keys(actual))) {
                     definitionStacks.push(keyToDefinitionStack[key])
                     callStacks.push(keyToCallStack[key])
@@ -266,9 +266,11 @@ fun gertrude(def: dynamic) {
                                         {
                                             jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)),
                                                 jshit.spana(json("className" to "fa fa-caret-${if (open) "up" else "down"}", "style" to json("cursor" to "pointer"), "onClick" to {e: dynamic ->
-                                                    update(open = !open)
+                                                    open = !open
+                                                    update()
                                                 })),
-                                                open && jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)), jshit.renderStacks(json("definitionStack" to definitionStack, "callStack" to callStack))))
+                                                open && jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)),
+                                                    jshit.renderStacks(json("definitionStack" to definitionStack, "callStack" to callStack))))
                                         }
                                     })
                                 }
@@ -314,17 +316,19 @@ fun gertrude(def: dynamic) {
                                         }
 
                                         return@updatableElement {
-                                            jshit.diva(json("id" to lineDivID, "className" to "showOnParentHovered-parent", "style" to style),
+                                            div {
+                                                id = "" + lineDivID; className = "showOnParentHovered-parent"
+                                                styleKludge = style
+
                                                 if (isExtValueLine(valueLine))
-                                                    jshit.spana(json("style" to json("marginRight" to 5, "padding" to 3, "background" to jshit.ORANGE_200, "fontSize" to "75%")), t("ext"))
-                                                else
-                                                    undefined,
+                                                    -span {styleKludge = json("marginRight" to 5, "padding" to 3, "background" to jshit.ORANGE_200, "fontSize" to "75%")
+                                                        -"ext" }
+                                                -div {styleKludge = json("display" to "inline-block", "verticalAlign" to "top")
+                                                    -valueLine }
 
-                                                jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top")), valueLine),
-
-                                                metaBox,
-                                                gotoIcon
-                                            )
+                                                -metaBox
+                                                -gotoIcon
+                                            }
                                         }
                                     })
                                 else undefined
@@ -1195,6 +1199,7 @@ open class FlowElementBuilder(val tag: String) {
     private val attrs = mutableMapOf<String, Any>()
     protected val children = mutableListOf<ReactElement>()
     val style = StyleBuilder()
+    var styleKludge: dynamic = undefined
 
     var noStateContributions: Boolean = false
 
@@ -1241,7 +1246,8 @@ open class FlowElementBuilder(val tag: String) {
     }
 
     fun toElement(): ReactElement {
-        val allAttrs = (attrs + ("style" to style.toJSObject())).toJSObject()
+        val theStyle = if (styleKludge != undefined) styleKludge else style.toJSObject()
+        val allAttrs = (attrs + ("style" to theStyle)).toJSObject()
         // console.log("allAttrs", allAttrs)
         return React.createElement(tag, allAttrs, *children.toTypedArray())
     }
