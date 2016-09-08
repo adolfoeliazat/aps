@@ -18,6 +18,7 @@ require('source-map-support').install()
 
 import * as fs from 'fs'
 import * as path from 'path'
+import sh = require('shelljs')
 
 // @wip kotlin
 global.kotlin = require('E:/work/aps/aps/built/ua-writer/kotlin/lib/kotlin.js')
@@ -531,13 +532,15 @@ app.post('/rpc', async function(req, res) {
                 }
                 
                 if (msg.fun === 'danger_openSourceCode') {
-                    let file, offset
-                    if (msg.$tag) {
-                        const ft = findTagInSourceCode(msg.$tag)
+                    let file, line, column, offset, ide
+                    if (msg.tag) {
+                        const ft = findTagInSourceCode(msg.tag)
                         if (!ft) return {error: 'Tag is not found in code'}
                         ;({file, offset} = ft)
                     } else if (msg.sourceLocation) {
                         // Source location example: aps/src/backend.ts[7556]:181:35
+                        dlog(1111111, msg.sourceLocation)
+                        
                         const openBracket = msg.sourceLocation.indexOf('[' /*]*/)
                         const closingBracket = msg.sourceLocation.indexOf(/*[*/ ']')
                         const firstColon = msg.sourceLocation.indexOf(':')
@@ -565,39 +568,52 @@ app.post('/rpc', async function(req, res) {
                             'ui.ts': 'E:/work/foundation/u/src/ui.ts',
                             'u/src/ui.ts': 'E:/work/foundation/u/src/ui.ts',
                             'test-shit-ua.ts': 'E:/work/aps/aps/src/test-shit-ua.ts',
+                            'front.kt': 'E:\\work\\aps\\front\\src\\front.kt',
                         }[filePart]
                         if (!file) return {error: `Weird file in source location: [${filePart}]`}
-                        if (~openBracket && ~closingBracket) {
-                            offset = parseInt(msg.sourceLocation.slice(openBracket + 1, closingBracket))
-                        } else if (~firstColon && ~secondColon) {
-                            const line = parseInt(msg.sourceLocation.slice(firstColon + 1, secondColon), 10) - 1
-                            const column = parseInt(msg.sourceLocation.slice(secondColon + 1), 10) - 1
-                            const code = fs.readFileSync(file, 'utf8')
-                            let currentLine = 0, currentColumn = 0, feasibleLineStartOffset
-                            offset = 0
-                            while (offset < code.length) {
-                                if (currentLine === line) {
-                                    if (feasibleLineStartOffset === undefined) {
-                                        feasibleLineStartOffset = offset
+                        
+                        if (~filePart.indexOf('.kt')) ide = 'idea'
+                        else ide = 'eclipse'
+                        
+                        if (ide === 'idea') {
+                            line = parseInt(msg.sourceLocation.slice(firstColon + 1, secondColon), 10)
+                            column = parseInt(msg.sourceLocation.slice(secondColon + 1), 10)
+                        }
+                        else if (ide === 'eclipse') {
+                            if (~openBracket && ~closingBracket) {
+                                offset = parseInt(msg.sourceLocation.slice(openBracket + 1, closingBracket))
+                            } else if (~firstColon && ~secondColon) {
+                                line = parseInt(msg.sourceLocation.slice(firstColon + 1, secondColon), 10) - 1
+                                column = parseInt(msg.sourceLocation.slice(secondColon + 1), 10) - 1
+                                const code = fs.readFileSync(file, 'utf8')
+                                let currentLine = 0, currentColumn = 0, feasibleLineStartOffset
+                                offset = 0
+                                while (offset < code.length) {
+                                    if (currentLine === line) {
+                                        if (feasibleLineStartOffset === undefined) {
+                                            feasibleLineStartOffset = offset
+                                        }
+                                        if (currentColumn === column) break
                                     }
-                                    if (currentColumn === column) break
-                                }
-                                if (code[offset] === '\r' && code[offset + 1] === '\n') {
-                                    if (feasibleLineStartOffset !== undefined) { // Likely, column was mangled by code generation
-                                        offset = feasibleLineStartOffset
-                                        break
+                                    if (code[offset] === '\r' && code[offset + 1] === '\n') {
+                                        if (feasibleLineStartOffset !== undefined) { // Likely, column was mangled by code generation
+                                            offset = feasibleLineStartOffset
+                                            break
+                                        }
+                                        offset += 2
+                                        currentLine += 1
+                                        currentColumn = 0
+                                    } else if (code[offset] === '\n') {
+                                        offset += 1
+                                        currentLine += 1
+                                        currentColumn = 0
+                                    } else {
+                                        offset += 1
+                                        currentColumn += 1
                                     }
-                                    offset += 2
-                                    currentLine += 1
-                                    currentColumn = 0
-                                } else if (code[offset] === '\n') {
-                                    offset += 1
-                                    currentLine += 1
-                                    currentColumn = 0
-                                } else {
-                                    offset += 1
-                                    currentColumn += 1
                                 }
+                            } else {
+                                raise('Weird line/column/offset')
                             }
                         }
                     } else {
@@ -605,8 +621,19 @@ app.post('/rpc', async function(req, res) {
                         raise('Weird source location descriptor')
                     }
                     
-                    const res = await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, offset})
-                    // dlog('openEditor res', res)
+                    if (ide === 'idea') {
+                        const command = `C:\\opt\\idea-ce\\bin\\idea64.exe e:\\work\\aps --line ${line} ${file}`
+                        dlog('Executing external command', command)
+                        const child = sh.exec(command, {silent: false}, code => {
+                            dlog('External command finished with code', code)
+                        })
+                    }
+                    else if (ide === 'eclipse') {
+                        const res = await RPCClient({url: 'http://127.0.0.1:4001/rpc'}).call({fun: 'openEditor', file, offset})
+                    }
+                    else {
+                        raise('WTF is IDE')
+                    }
                     return hunkyDory()
                 }
                 

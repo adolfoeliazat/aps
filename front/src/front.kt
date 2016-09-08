@@ -7,6 +7,7 @@
 import kotlin.browser.document
 import kotlin.browser.window
 import Color.*
+import kotlin.test.assertFailsWith
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette
@@ -68,7 +69,7 @@ private fun dynamicKeys(obj: dynamic): dynamic {
 }
 
 @Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE")
-fun diva(vararg args: dynamic): ReactElement {
+fun jdiva(vararg args: dynamic): ReactElement {
     val shit = jshit
     return js("shit.diva.apply(null, args)")
 }
@@ -79,8 +80,8 @@ fun hor2(vararg args: dynamic): ReactElement {
     return js("shit.hor2.apply(null, args)")
 }
 
-private fun fuckingDiv(): ReactElement {
-    return jshit.diva(json(), "Fucking Diviarius")
+private fun fuckingDiviarius(): ReactElement {
+    return jshit.jdiva(json(), "Fucking Diviarius")
 }
 
 fun openTestPassedPane(def: dynamic) {
@@ -112,15 +113,14 @@ fun openTestPassedPane(def: dynamic) {
                         noStateContributions = true
                         style {
                             backgroundColor = Color.GREEN_700; color = Color.WHITE
-                            marginTop(10); padding = "10px 10px"; textAlign = "center"; fontWeight = "bold"
-                        }
+                            marginTop(10); padding = "10px 10px"; textAlign = "center"; fontWeight = "bold" }
 
-                        - div { style { paddingBottom(10) }
+                        -div { style { paddingBottom(10) }
                             - scenarioName
-                            - div { style { display = "flex"; justifyContent = "center" }
+                            -div { style { display = "flex"; justifyContent = "center" }
                                 + links } }
 
-                        - div { style { backgroundColor = Color.WHITE; color = Color.BLACK_BOOT; fontWeight = "normal"; textAlign = "left"; padding(5) }
+                        -div { style { backgroundColor = Color.WHITE; color = Color.BLACK_BOOT; fontWeight = "normal"; textAlign = "left"; padding(5) }
                             - jshit.art.renderStepDescriptions() } }
                 }
             })
@@ -130,6 +130,10 @@ fun openTestPassedPane(def: dynamic) {
         "name" to "openTestPassedPane",
         "parentJqel" to jshit.byid("underFooter"),
         "element" to jshit.spana(json(), testPassedPane.element)))
+}
+
+fun <T> ifornull(cond: Boolean, f: () -> T): T? {
+    return if (cond) f() else null
 }
 
 fun renderStepDescriptions(): ReactElement {
@@ -144,9 +148,9 @@ fun renderStepDescriptions(): ReactElement {
 
         fun addLine(indent: Int, stepRowStyle: dynamic = null, rulerContent: dynamic = null, lineContent: ReactElement? = null, actions: Collection<ReactElement> = listOf()) {
             els.add(div { style { marginTop(5); display = "flex" }
-                - div { style { fontWeight = "bold"; width(40) }; - rulerContent }
+                -div { style { fontWeight = "bold"; width(40) }; - rulerContent }
                 // XXX This `width: 100%` is for fucking flexbox to not change `width: 40` above... http://stackoverflow.com/questions/7985021/css-flexbox-issue-why-is-the-width-of-my-flexchildren-affected-by-their-content
-                - div { className = "showOnParentHovered-parent"
+                -div { className = "showOnParentHovered-parent"
                     style {
                         width = "100%"; display = "flex"
                         add(stepRowStyle)
@@ -154,7 +158,7 @@ fun renderStepDescriptions(): ReactElement {
 
                     + (1..indent).map { div { style { width(20); borderLeft = "2px dotted ${Color.GRAY_500}" } } }
                     - lineContent
-                    - div { className = "showOnParentHovered"
+                    -div { className = "showOnParentHovered"
                         - hor2 { style { marginLeft(8); paddingLeft(8); borderLeft = "2px solid ${Color.GRAY_500}" }
                             + actions
                             - jshit.OpenSourceCodeLink(json("where" to instrdef, "style" to json("marginLeft" to 20)))
@@ -207,9 +211,9 @@ fun renderStepDescriptions(): ReactElement {
             addLine(
                 indent,
                 lineContent = div { style { fontWeight = "normal"; fontStyle = "italic" }; - "World point: ${instr.name}" },
-                rulerContent = diva(json("style" to json("position" to "relative")),
+                rulerContent = jdiva(json("style" to json("position" to "relative")),
                     jshit.ia(json("className" to "fa fa-circle", "style" to json("color" to jshit.GRAY_500))),
-                    diva(json("style" to json("width" to 38, "position" to "absolute", "left" to 0, "top" to 9, "borderTop" to "2px dotted ${jshit.GRAY_500}")))
+                    jdiva(json("style" to json("width" to 38, "position" to "absolute", "left" to 0, "top" to 9, "borderTop" to "2px dotted ${jshit.GRAY_500}")))
                 ),
                 // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 2
                 actions = listOf(
@@ -225,18 +229,574 @@ fun renderStepDescriptions(): ReactElement {
         }
     }
 
-    return diva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), diva(json("style" to json("background" to jshit.GRAY_200, "fontWeight" to "bold")), t("Steps")),
+    val boxes = object : StatefulElement() {
+        private var shitVisible: Boolean = true
+
+        // @wip sourceLocation
+        val swearBox1 = PromiseAsyncSwearBox {controlTypeName = "bobobox"; style {width = "100%"}
+            onChange {
+                println("Box 1 changed")
+            }
+        }
+
+        val swearBox2 = PromiseAsyncSwearBox {style {width = "100%"}
+            onChange {
+                println("Box 2 changed")
+            }
+        }
+
+        override fun render() = div {
+            -div {
+                -dom.button(if (shitVisible) "Hide Shit" else "Show Shit") {
+                    shitVisible = !shitVisible; update()
+                }
+
+                ifornull(shitVisible) {-div {
+                    -div {style {display = "flex"}
+                        -swearBox1
+                        -dom.button("Reset") {
+                            swearBox1.reset()
+                        }
+                    }
+
+                    -div {style {display = "flex"}
+                        -swearBox2
+                        -dom.button("Reset") {
+                            swearBox2.reset()
+                        }
+                    }
+
+                    -div {style {height(500)}}
+                }}
+            }
+        }
+    }
+
+    return boxes.toReactElement()
+
+    return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to jshit.GRAY_200, "fontWeight" to "bold")), t("Steps")),
         *els.toTypedArray())
 }
 
-fun raise(msg: String) {
-    jshit.raise(msg)
+@native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
+    fun <U> then(cb: (T) -> Any?): Promise<U>
+}
+
+class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit) {
+    val promise: Promise<Unit>
+
+    init {
+        promise = Promise<Unit> {resolve, reject ->
+            f({ resolve(Unit) }, reject)
+        }
+    }
+
+    fun then(cb: () -> Unit) {
+        promise.then<Nothing> { cb() }
+    }
+}
+
+fun promiseUnit(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit): Promise<Unit> {
+    return Promise {resolve, reject ->
+        f({ resolve(Unit) }, reject)
+    }
+}
+
+typealias Voidy = () -> Unit
+
+class SimpleEventHandlerBuilder {
+    var handler: Voidy? = null
+
+    operator fun invoke(_handler: Voidy) {
+        handler = _handler
+    }
+
+    fun notify() {
+        handler?.invoke()
+    }
+}
+
+class PromiseAsyncSwearBox(build: PromiseAsyncSwearBox.() -> Unit) : StatefulElement() {
+    val adjectives = arrayOf("Big", "Little")
+    val mainWords = arrayOf("Shit", "Fuck", "Bitch")
+    var adjectiveIndex = -1
+    var mainWordIndex = -1
+    var progressStatus: String? = null
+    var phrase: String? = null
+    val myStyle = StyleBuilder(); val style = myStyle
+    val onChange = SimpleEventHandlerBuilder()
+
+    init {
+        controlTypeName = "PromiseAsyncSwearBox"
+
+        // @wip sourceLocation
+
+        build()
+    }
+
+    // @wip stuff
+    override fun render() = div {id = elementID; style {add(myStyle)}
+        -hor2 {
+            if (phrase == null)
+                -div {style {color = ROSYBROWN}; -"Kittens"}
+            else
+                -div {
+                    -span {style {fontWeight = "bold"}; -"Back to earth:"}
+                    -div {-phrase}
+                }
+
+            if (progressStatus != null)
+                -div {style {fontStyle = "italic"}; -progressStatus}
+        }
+
+        -dom.button("More") {
+            var adjective: String? = null
+
+            generateAdjective()
+            .then<String> {_adjective ->
+                adjective = _adjective
+                generateMainWord()
+            }.then<Nothing> {mainWord ->
+                phrase = "$adjective $mainWord"
+                update()
+                onChange.notify()
+            }
+        }
+    }
+
+    fun generateAdjective(): Promise<String> {
+        progressStatus = "Thinking adjective..."; update()
+        return Promise {resolve, reject ->
+            timeoutSet(300) {
+                progressStatus = null; update()
+                if (++adjectiveIndex > adjectives.lastIndex) adjectiveIndex = 0
+                resolve(adjectives[adjectiveIndex])
+            }
+        }
+    }
+
+    fun generateMainWord(): Promise<String> {
+        progressStatus = "Thinking main word..."; update()
+        return Promise {resolve, reject ->
+            timeoutSet(300) {
+                progressStatus = null; update()
+                if (++mainWordIndex > mainWords.lastIndex) mainWordIndex = 0
+                resolve(mainWords[mainWordIndex])
+            }
+        }
+    }
+
+    fun reset() {
+        phrase = null; update()
+    }
+
+}
+
+fun timeoutSet(ms: Int, cb: () -> Unit) {
+    window.setTimeout(cb, ms)
+}
+
+object dom {
+    @Suppress("UNUSED_PARAMETER")
+    fun button(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement {
+        val attrs = js("({onClick: onClick})")
+        return React.createElement("button", attrs, title)
+    }
+}
+
+
+@native interface ReactEvent {
+    val ctrlKey: Boolean
+    val shiftKey: Boolean
+
+    fun preventDefault()
+    fun stopPropagation()
+}
+
+fun puid(): Long {
+    return jshit.puid()
+}
+
+@native val MODE: String
+
+fun preventAndStop(e: ReactEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+}
+
+fun revealControl(control: StatefulElement) {
+    console.warn("Implement revealControl, fuck you")
+}
+
+//fun sample_linkUsage() {
+//    link {title = "Click me"; style {color = ROSYBROWN} onClick {
+//        println("fuck")
+//    }}
+//
+//    link {title = "Click me"; style {color = ROSYBROWN}
+//        onClick {
+//            println("fuck")
+//        }
+//
+//        onMouseEnter {
+//            println("shit")
+//        }
+//    }
+//}
+//
+//open class Control {
+//    abstract protected fun render(): ReactElement
+//
+//    val elementID = puid()
+//}
+
+typealias ReactEventHandler = (ReactEvent) -> Unit
+
+//class link(build: link.() -> Unit) : Control() {
+//    var className: String = ""
+//    val styleBuilder = StyleBuilder()
+//    var _onMouseEnter: ReactEventHandler? = null
+//    var _onMouseLeave: ReactEventHandler? = null
+//
+//    init {
+//        build()
+//    }
+//
+//    fun style(doInsideBuilder: StyleBuilder.() -> Unit) {
+//        styleBuilder.doInsideBuilder()
+//    }
+//
+//    fun onMouseEnter(handler: ReactEventHandler) { _onMouseEnter = handler }
+//    fun onMouseLeave(handler: ReactEventHandler) { _onMouseLeave = handler }
+//
+//    override fun render(): ReactElement {
+//        return React.createElement("a", json(
+//            "id" to elementID, "className" to className, "style" to styleBuilder.toJSObject(), "href" to "#",
+//            "onMouseEnter" to _onMouseEnter, "onMouseLeave" to _onMouseLeave
+//        ), content)
+//    }
+//}
+
+//fun link() {
+//    #extract {content, title, className='', style, onClick, onMouseEnter, onMouseLeave} from def
+//
+//    invariant(!(content && title), 'It should be either content or title')
+//
+//    if (title) {
+//        content = spancTitle({title})
+//        // content = span(title)
+//    }
+//
+//    const me = {
+//        render() {
+//            return aa(s{id: me.elementID, className, style, href: '#', onMouseEnter, onMouseLeave}, content)
+//        },
+//
+//        async onRootClick(e) {
+//            e.preventDefault()
+//            e.stopPropagation()
+//            await fova(onClick)
+//        },
+//    }
+//
+//    me.controlTypeName = 'link'
+//    me.tamyPrefix = 'link'
+//    implementControlShit({me, def, implementTestClick: {onClick: me.onRootClick}})
+//    return elcl(me)
+//}
+
+abstract class StatefulElementBuilder {
+
+}
+
+abstract class StatefulElement() : ToReactElementable {
+    abstract fun render(): ReactElement
+
+    open fun componentWillMount() {}
+    open fun componentDidMount() {}
+    open fun componentWillUpdate() {}
+    open fun componentDidUpdate() {}
+    open fun componentWillUnmount() {}
+
+    protected open fun onRootClick(e: ReactEvent) = UnitPromise {resolve, reject ->}
+    protected open fun contributeTestState(state: dynamic) {}
+
+    protected open fun getLongRevelationTitle(): String = "// TODO:vgrechka Implement getLongRevelationTitle"
+
+    val id = puid()
+    val elementID: String = "" + puid()
+    var ignoreDebugCtrlShiftClick: Boolean = false
+
+    val constructionStackAsError: dynamic = js("Error()")
+    open val firstSignificantStackLine: Int = 2
+
+    val `$sourceLocation`: Promise<String?> by lazy {
+        Promise<String?>({resolve, reject ->
+            `$definitionStack`.then<Nothing> {jsArray ->
+                resolve(if (jsArray[0]) jsArray[0].loc else null)
+            }
+        })
+    }
+
+    val `$definitionStack`: Promise<dynamic> by lazy {
+        Promise<dynamic>({resolve, reject ->
+            jshit.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then {stackString: String ->
+                // @wip sourceLocation
+                var lines = stackString.lines()
+                lines = lines.slice(firstSignificantStackLine..lines.lastIndex)
+                lines.take(5).forEachIndexed { i, s -> println("$i) $s")}
+
+                val jsArray = js("[]")
+                lines.forEach {line ->
+                    Regex("\\((.*?\\.kt:\\d+:\\d+)\\)").find(line)?.let {
+                        jsArray.push(json(
+                            "loc" to it.groupValues[1]
+                        ))
+                    }
+                }
+                // console.log("Resolving to", jsArray)
+                resolve(jsArray)
+            }
+        })
+    }
+
+
+    val tattrs = mutableMapOf<String, String>() // TODO
+    val noStateContributions: Boolean = false
+
+    private val element: ReactElement
+    private var elementThis: dynamic = null
+
+//    fun accessTame(): String {
+//        return if (tame != null) tame
+//        else "nope"
+//    }
+
+//    val debugDisplayName: String by lazy {when{
+//        tame != null -> tame
+//        else -> "dunno"
+////        tame != null -> tame
+////        controlTypeName != null -> controlTypeName
+////        else -> "dunno"
+//    }}
+
+//    val tame: String? by lazy {when{
+//        simpleTamy -> tamyPrefix ?: controlTypeName
+//        tamy != null -> (tamyPrefix ?: controlTypeName) + "-" + tamy
+//        else -> explicitTame
+//    }}
+
+//    fun tame(value: String) {
+//        explicitTame = value
+//    }
+
+    var explicitTame: String? = null
+    var tamy: String? = null
+    var tamyPrefix: String? = null
+    var simpleTamy: Boolean = false
+    var controlTypeName: String = "gimme-name"
+    var shame: String? = null
+    var hasTestManipulationFunctions: Boolean = false
+
+    val effectiveShame: String? = "// TODO:vgrechka Implement effectiveShame"
+    val debugDisplayName: String? = "// TODO:vgrechka Implement debugDisplayName"
+    val tame: String? = "// TODO:vgrechka Implement tame"
+
+//    val effectiveShame: String? by lazy {when{
+//        shame != null -> shame
+//        tame != null && hasTestManipulationFunctions -> getTamePath()
+//        else -> null
+//    }}
+
+    init {
+        val def = js("({})")
+
+        def.componentWillMount = {
+            elementThis = js("this")
+
+            var elementControls = jshit.elementIDToControls[elementID]
+            if (!elementControls) {
+                elementControls = js("[]")
+                jshit.elementIDToControls[elementID] = elementControls
+            }
+
+            if (tame != null) {
+                for (another in jsArrayToIterable(elementControls)) {
+                    if (another.tame) raise("Control ${debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed", json(
+                        "\$render" to {
+                            "TODO: Implement ce3ace61-41ee-4c31-ac9c-209748b5cc99"
+                        }
+                    ))
+                }
+            }
+
+            elementControls.unshift(this)
+
+            componentWillMount()
+        }
+
+        def.componentDidMount = {
+            addEventListeners()
+
+            jshit.art.uiStateContributions[id] = {state: dynamic ->
+                var shouldContribute = !noStateContributions
+
+                if (shouldContribute) {
+                    jshit.byid(elementID).parents().each {
+                        val parentControls = jshit.elementIDToControls[js("this").id]
+                        if (!parentControls) undefined
+                        else {
+                            for (parentControl in jsArrayToIterable(parentControls)) {
+                                if (parentControl.noStateContributions) {
+                                    shouldContribute = false
+                                    return@each false // break
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (shouldContribute) {
+                    contributeTestState(state)
+                }
+
+                for ((key, value) in tattrs) {
+                    if (value != null) {
+                        state.put(json("control" to this, "key" to getTamePath() + "." + key, "value" to value)) // TODO Capture source location
+                    }
+                }
+
+//                if (effectiveShame != null) {
+//                    val tp = getTamePath()
+//                    if (tp != effectiveShame) {
+//                        state.put(json("control" to this, "key" to tp + ".shame", "value" to this.effectiveShame)) // TODO Capture source location
+//                    }
+//                }
+            }
+
+            if (effectiveShame != null) {
+                val myEffectiveShame = effectiveShame
+                val already = js("Object.keys(testGlobal.controls).includes(myEffectiveShame)")
+                if (already) {
+                    stickException(global.Error("testGlobal.controls already contains thing shamed ${effectiveShame}"))
+                }
+                global.testGlobal.controls[effectiveShame] = this
+            }
+
+            componentDidMount()
+        }
+
+        def.componentWillUpdate = {
+            removeEventListeners()
+            componentWillUpdate()
+        }
+
+        def.componentDidUpdate = {
+            addEventListeners()
+            componentDidUpdate()
+        }
+
+        def.componentWillUnmount = { componentWillUnmount() }
+        def.render = { render() }
+
+        val clazz = React.createClass(def)
+        element = React.createElement(clazz, js("({})"))
+    }
+
+    private fun stickException(error: dynamic) {
+        console.error("// TODO:vgrechka Implement stickException    034294e5-6488-4c1c-8d82-49c310862cfe")
+    }
+
+
+    private fun captureAction() {
+        console.warn("Implement captureAction, fuck you")
+    }
+
+    private fun addEventListeners() {
+        fun onClick(e: ReactEvent) {
+            if (MODE == "debug" && e.ctrlKey) {
+                if (e.shiftKey) {
+                    if (ignoreDebugCtrlShiftClick) return
+
+                    preventAndStop(e)
+
+                    if (effectiveShame == null) {
+                        jshit.raiseWithMeta(json("message" to "Put some shame on me", "meta" to this)) // TODO:vgrechka meta: me
+                    }
+
+                    return captureAction()
+                }
+
+                // @wip stuff
+                println("qqqqqqqqqqqq")
+                preventAndStop(e)
+                return jshit.revealControl(this)
+            }
+
+            onRootClick(e)
+        }
+
+        removeEventListeners() // Several controls can be on same element, and we don't want to handle click several times
+        jshit.byid(elementID).on("click", ::onClick)
+    }
+
+    private fun removeEventListeners() {
+        jshit.byid(elementID).off()
+    }
+
+    protected fun update() {
+        elementThis.forceUpdate()
+    }
+
+    override fun toReactElement() = element
+
+    fun getTamePath(): String? {
+        invariant(tame, "getTamePath can only be called on tamed control", json("\$definitionStack" to getDefinitionStackForJS()))
+
+        var res = tame
+        val parents = jshit.byid(elementID).parents()
+        parents.each {
+            val parentControls = jshit.elementIDToControls[js("this").id]
+            if (!parentControls) undefined
+            else {
+                for (parentControl in jsArrayToIterable(js("parentControls.slice().reverse()"))) {
+                    if (parentControl.tame) {
+                        res = parentControl.tame + "." + res
+                    }
+                }
+            }
+        }
+
+        return res
+    }
+
+    private fun getDefinitionStackForJS(): Any? {
+        console.error("// TODO:vgrechka Implement getDefinitionStackForJS    eb76b0f9-9924-4bc1-bff3-611466da85d5")
+        return null
+    }
+
+}
+
+fun invariant(cond: dynamic, msg: String, props: dynamic = null) {
+    jshit.invariant(cond, msg, props)
+}
+
+fun jsArrayToIterable(arr: dynamic): Iterable<dynamic> {
+    val list = mutableListOf<dynamic>()
+    for (i in 0 until arr.length)
+        list.add(arr[i])
+    return list
+}
+
+fun raise(msg: String, props: dynamic = null) {
+    jshit.raise(msg, props)
 }
 
 @native val React: IReact = noImpl
 
 @native interface IReact {
     fun createElement(tag: dynamic, attrs: dynamic, vararg children: dynamic): ReactElement
+    fun createClass(def: dynamic): dynamic
 }
 
 @native interface ReactElement {
@@ -247,11 +807,30 @@ private fun asReactElement(x: Any?): ReactElement {
     return didi
 }
 
+//class diva(doInsideBuilder: FlowElementBuilder.() -> Unit) : StatefulElement() {
+//    val element: ReactElement
+//
+//    init {
+//        element = div(doInsideBuilder)
+//    }
+//
+//    override fun render(): ReactElement {
+//        println("rendering diva")
+//        return element
+//    }
+//}
+
 fun div(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
+    // @wip sourceLocation
+//    val stack = (js("Error().stack") as String).split("\n")
+//    println(stack[3])
+
     val builder = FlowElementBuilder("div")
     builder.doInsideBuilder()
     return builder.toElement()
 }
+
+
 
 fun horizontala(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
     val builder = HorizontalaBuilder()
@@ -289,15 +868,12 @@ fun span(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
 open class FlowElementBuilder(val tag: String) {
     private val attrs = mutableMapOf<String, Any>()
     protected val children = mutableListOf<ReactElement>()
-    private val styleBuilder = StyleBuilder()
+    val style = StyleBuilder()
 
     var noStateContributions: Boolean = false
 
     var className: String? = null; set(value) { if (value == null) attrs.remove("className") else attrs["className"] = value }
-
-    fun style(doInsideBuilder: StyleBuilder.() -> Unit) {
-        styleBuilder.doInsideBuilder()
-    }
+    var id: String? = null; set(value) { if (value == null) attrs.remove("id") else attrs["id"] = value }
 
     operator fun Iterable<ReactElement>.unaryPlus() {
         for (child in this) add(child)
@@ -307,7 +883,15 @@ open class FlowElementBuilder(val tag: String) {
         if (child != null) children.add(transformChildBeforeAddition(child))
     }
 
+    fun add(child: ToReactElementable?) {
+        add(child?.toReactElement())
+    }
+
     operator fun ReactElement?.unaryMinus() {
+        add(this)
+    }
+
+    operator fun ToReactElementable?.unaryMinus() {
         add(this)
     }
 
@@ -327,12 +911,16 @@ open class FlowElementBuilder(val tag: String) {
     }
 
     fun toElement(): ReactElement {
-        val allAttrs = (attrs + ("style" to styleBuilder.toJSObject())).toJSObject()
+        val allAttrs = (attrs + ("style" to style.toJSObject())).toJSObject()
         // console.log("allAttrs", allAttrs)
         return React.createElement(tag, allAttrs, *children.toTypedArray())
     }
 
     open fun transformChildBeforeAddition(child: ReactElement) = child
+}
+
+interface ToReactElementable {
+    fun toReactElement(): ReactElement
 }
 
 @native val console: NativeConsole
@@ -409,6 +997,7 @@ class StyleBuilder {
     var padding: String? = null; set(value) { if (value == null) attrs.remove("padding") else attrs["padding"] = value }
     fun padding(value: Int) { padding = "${value}px" }
 }
+
 
 
 
