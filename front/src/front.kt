@@ -48,8 +48,9 @@ object KotlinShit : IKotlinShit {
     override fun ignite(_global: dynamic, _jshit: dynamic) {
         println("----- Igniting front Kotlin shit -----")
         global = _global; jshit = _jshit
-        jshit.art.openTestPassedPane = ::openTestPassedPane
         jshit.art.renderStepDescriptions = ::renderStepDescriptions
+        jshit.art.openTestPassedPane = ::openTestPassedPane
+        jshit.art.gertrude = ::gertrude
     }
 }
 
@@ -80,9 +81,417 @@ fun hor2(vararg args: dynamic): ReactElement {
     return js("shit.hor2.apply(null, args)")
 }
 
-private fun fuckingDiviarius(): ReactElement {
-    return jshit.jdiva(json(), "Fucking Diviarius")
+fun fuckingDiviarius(): ReactElement {
+    return jshit.diva(js("({})"), "Fucking Diviarius")
 }
+
+fun fuckingSpantus(): ReactElement {
+    return jshit.spana(js("({})"), "Fucking Spantus")
+}
+
+fun gertrude(def: dynamic) {
+    // {descr='Describe me', $tag, $definitionStack, actual, expected, expectedExtender, scrollThere=true, thisIsReassertion}
+
+    val tag: String = def.`$tag`; val definitionStack = def.`$definitionStack`; val actual = def.actual
+    var expected = def.expected; val expectedExtender = def.expectedExtender
+    val thisIsReassertion: Boolean = def.thisIsReassertion
+    val descr: String = if (def.descr == undefined) "Describe me" else def.descr
+    val scrollThere: Boolean = if (def.scrollThere == undefined) true else def.scrollThere
+
+    jshit.setLastSeenTag(tag)
+    if (expected == undefined) {
+        raise("WTF")
+    }
+    if (expected == "---generated-shit---") {
+        expected = global.GENERATED_SHIT[tag]
+        if (expected == undefined) expected = js("({})")
+    }
+
+    var extenderKeys = js("[]")
+    if (expectedExtender) {
+        expectedExtender(json("expected" to expected))
+
+        val fromExtender = js("({})")
+        expectedExtender(json("expected" to fromExtender))
+        extenderKeys = global.Object.keys(fromExtender)
+
+        for (k in jsArrayToIterable(extenderKeys)) {
+            val komega = k.replace(js("/-i\\d\\d\\d/g"), "-ω")
+            if (!extenderKeys.includes(komega)) {
+                extenderKeys.push(komega)
+            }
+        }
+    }
+
+    val keyToDefinitionStack = js("({})"); val keyToCallStack = js("({})"); val keyToControl = js("({})")
+    for (key in jsArrayToIterable(global.Object.keys(actual))) {
+        val value = actual[key]
+        if (value && value.definitionStack) {
+            actual[key] = value.value
+            keyToDefinitionStack[key] = value.definitionStack
+        }
+        if (value && value.`$callStack`) {
+            actual[key] = value.value
+            keyToCallStack[key] = value.`$callStack`
+        }
+        if (value && value.control) {
+            actual[key] = value.value
+            keyToControl[key] = value.control
+        }
+    }
+
+    if (jshit.deepEquals(actual, expected)) {
+        if (thisIsReassertion) {
+            console.warn("// TODO:vgrechka If reassertion after hot reload passed, make it clear in UI    e5d48597-62d4-4740-b915-04f6934c2bc0 ")
+        }
+        jshit.setArtLastSuccessfulExpected(expected)
+        return
+    }
+
+    var detailsUI: dynamic = null
+    if (jshit.getURLQueryBeforeRunningTest().minimalGertrude == "yes" || global.testGlobal.minimalGertrude) {
+        detailsUI = jshit.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
+    } else {
+        detailsUI = jshit.updatableElement(js("({})"), wholeShitCtor@ {updateWholeShit ->
+            var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
+            var paneControls: dynamic = null; var lineHideFilter = jshit.noop
+            var highlightedKeys = js("({})"); var pileOfShit = js("({})")
+            val progressPlaceholder = jshit.Placeholder()
+            var unifyIndicesCheck: dynamic = null; var hideKeyRepetitionsCheck: dynamic = null
+
+            fun makeFuckingTabs() {
+                fun repr(it: dynamic, opts: dynamic = js("({})")): dynamic {
+                    // {stripIndices}={}
+                    val stripIndices: Boolean = opts.stripIndices
+
+                    var s = jshit.deepInspect(it)
+                    // s = s.replace(/\\n/g, "\n")
+
+                    if (stripIndices) {
+                        s = s.replace(js("/-i\\d\\d\\d/g"), "-ω") // omega
+                    }
+
+                    if (s[0] == "{") s = s[0] + "\n " + s.slice(1)
+                    if (s[s.length - 1] == "}") s = s.slice(0, s.length - 1) + "\n" + s[s.length - 1]
+
+                    s = s
+                        .split("\n")
+                        .map({x: dynamic ->
+                            var res = x
+                            res = res.trim()
+                            if (res == "{" || res == "}" || jshit.isBlank(res)) return@map res
+                            if (!res.endsWith(",")) res += ","
+                            return@map res
+                        })
+                    .join("\n")
+
+                    return s
+                }
+
+                fun isExtValueLine(valueLine: dynamic): Boolean {
+                    if (valueLine == "{" || valueLine == "}") return false
+                    if (jshit.isBlank(valueLine)) return false
+
+                    val colonIndex = valueLine.indexOf(":")
+                    invariant(colonIndex != -1, "Expecting colon: ${valueLine}")
+                    val key = jshit.trim(valueLine.slice(0, colonIndex).replace(js("/'/g"), ""))
+                    if (extenderKeys.includes(key)) {
+                        return true
+                    }
+                    return false
+                }
+
+
+                val pileOfShit = js("({})")
+
+                jshit.sortKeys(actual) // Order of keys sent over the wire is mangled
+                jshit.sortKeys(expected)
+
+                val definitionStacks = js("[]"); val callStacks = js("[]"); val controls = js("[]"); val origKeys =js("[]")
+                for (key in jsArrayToIterable(global.Object.keys(actual))) {
+                    definitionStacks.push(keyToDefinitionStack[key])
+                    callStacks.push(keyToCallStack[key])
+                    controls.push(keyToControl[key])
+                    origKeys.push(key)
+                }
+
+                val actualString = repr(actual, json("stripIndices" to stripFuckingIndices))
+                val actualStringOrig = repr(actual, json("stripIndices" to false))
+                val expectedString = repr(expected, json("stripIndices" to stripFuckingIndices))
+                val lastExpectedString = if(jshit.getArtLastSuccessfulExpected()) repr(jshit.getArtLastSuccessfulExpected(), json("stripIndices" to stripFuckingIndices)) else "--- Nothing ---"
+                val diffDivs = js("[]"); val diffLastDivs = js("[]")
+
+                var lineIndex = 0; var actualLineIndex = 0
+
+                fun fillDiffDivs(arg: dynamic) {
+                    // {divs, string1, string2, greenTitle}
+                    val divs = arg.divs; val string1 = arg.string1; val string2 = arg.string2; var greenTitle = arg.greenTitle
+
+                    if (!greenTitle) greenTitle = t("Expected")
+                    var prevLabel: dynamic = undefined
+                    val diffLineItems = jshit.diff.diffLines(string1, string2)
+                    for (item in jsArrayToIterable(diffLineItems)) {
+                        var backgroundColor: dynamic = undefined
+                        var label: dynamic = undefined
+                        if (item.added) {
+                            backgroundColor = RED_100.string
+                            label = t("Actual")
+                        } else if (item.removed) {
+                            backgroundColor = GREEN_100.string
+                            label = greenTitle
+                        } else {
+                            backgroundColor = WHITE.string
+                            label = undefined
+                        }
+                        if (label && label != prevLabel) {
+                            divs.push(jshit.diva(json("style" to json("backgroundColor" to backgroundColor, "fontWeight" to "bold")), label))
+                        }
+                        prevLabel = label
+
+                        item.value = item.value.replace(js("/\\n*\$/"), "")
+                        val valueLines = item.value.split("\n")
+                        val keysAdded = js("({})")
+                        for (valueLine in jsArrayToIterable(valueLines)) {
+                            var shouldBeHiddenCuaseItsFuckingKeyRepetition: dynamic = undefined
+                            var shouldBeHighlighted: dynamic = undefined
+
+                            val lineDivID = puid()
+                            var gotoIcon: dynamic = undefined; var metaBox: dynamic = undefined
+                            if (valueLine != "{" && valueLine != "}" && !item.removed) {
+                                val definitionStack = definitionStacks[actualLineIndex] || js("[]")
+                                var callStack = callStacks[actualLineIndex] || js("[]")
+                                if (definitionStack || callStack) {
+                                    var open = false
+                                    metaBox = jshit.updatableElement(js("({})"), {update: dynamic ->
+                                        {
+                                            jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)),
+                                                jshit.spana(json("className" to "fa fa-caret-${if (open) "up" else "down"}", "style" to json("cursor" to "pointer"), "onClick" to {e: dynamic ->
+                                                    update(open = !open)
+                                                })),
+                                                open && jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)), jshit.renderStacks(json("definitionStack" to definitionStack, "callStack" to callStack))))
+                                        }
+                                    })
+                                }
+
+                                val control = controls[actualLineIndex]
+                                if (control) {
+                                    gotoIcon = jshit.diva(json("className" to "showOnParentHovered"),
+                                        jshit.spana(json("className" to "fa fa-search", "style" to json("cursor" to "pointer", "marginLeft" to 10), "onClick" to {e: dynamic ->
+                                            jshit.revealControl(control, json("scrollToTarget" to true))
+                                        })))
+                                }
+
+                                val colonIndex = valueLine.indexOf(":")
+                                if (colonIndex != -1) {
+                                    var key = valueLine.slice(0, colonIndex).trim()
+                                    if (key.startsWith("\"") && key.endsWith("'")) {
+                                        key = key.slice(1, key.length - 1)
+                                    }
+                                    shouldBeHiddenCuaseItsFuckingKeyRepetition = hideFuckingKeyRepetitions && keysAdded[key]
+                                    keysAdded[key] = true
+
+                                    val origKey = origKeys[actualLineIndex]
+                                    shouldBeHighlighted = highlightedKeys[origKey]
+                                    pileOfShit["scrollToDivForKey-${origKey}"] = {
+                                        global.requestAnimationFrame { jshit.jQuery(document).scrollTop(jshit.byid(lineDivID).offset().top - 50 - 20) }
+                                    }
+                                } else {
+                                    console.warn("WTF colonIndex is -1")
+                                }
+
+                                ++actualLineIndex
+                            }
+
+                            divs.push({
+                                if (!lineHideFilter(valueLine) && !shouldBeHiddenCuaseItsFuckingKeyRepetition)
+                                    jshit.updatableElement(js("({})"), {update: dynamic ->
+                                        val style = json("backgroundColor" to backgroundColor, "position" to "relative")
+                                        if (shouldBeHighlighted) {
+                                            global.Object.assign(style, json(
+                                                "borderLeft" to "5px solid black",
+                                                "paddingLeft" to 5,
+                                                "background" to ORANGE_100))
+                                        }
+
+                                        return@updatableElement {
+                                            jshit.diva(json("id" to lineDivID, "className" to "showOnParentHovered-parent", "style" to style),
+                                                if (isExtValueLine(valueLine))
+                                                    jshit.spana(json("style" to json("marginRight" to 5, "padding" to 3, "background" to jshit.ORANGE_200, "fontSize" to "75%")), t("ext"))
+                                                else
+                                                    undefined,
+
+                                                jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top")), valueLine),
+
+                                                metaBox,
+                                                gotoIcon
+                                            )
+                                        }
+                                    })
+                                else undefined
+                            })
+
+                            ++lineIndex
+                        }
+                    }
+                }
+
+                fillDiffDivs(json("divs" to diffDivs, "string1" to expectedString, "string2" to actualString))
+                lineIndex = 0; actualLineIndex = 0
+                fillDiffDivs(json("divs" to diffLastDivs, "string1" to lastExpectedString, "string2" to actualString, "greenTitle" to t("Last")))
+
+                val my = js("({})")
+
+                var actualStringForPasting = actualStringOrig.trim()
+                if (actualStringForPasting[0] == "{" || actualStringForPasting[0] == "[") {
+                    actualStringForPasting = jshit.trimStart(actualStringForPasting.slice(1, actualStringForPasting.length - 1))
+                }
+                val chars = actualStringForPasting.split("")
+
+                val slash = "\\"
+                for (i in 0 until chars.length) {
+                    if (chars[i] == "'" && (i == 0 || chars[i - 1] != slash)) {
+                        chars[i] = "`"
+                    }
+                }
+                actualStringForPasting = chars.join("")
+                actualStringForPasting = actualStringForPasting.replace(js("/`((\\w|\\d\\|_|-|\\$|\\.|:)*?)`: /g"), "'$1': ")
+                var replacements = js("[]")
+                var backtickIndex: dynamic = undefined; var from = 0; var btis = js("[]")
+                while (true) {
+                    backtickIndex = actualStringForPasting.indexOf("`", from)
+                    if (backtickIndex == -1) break
+                    btis.push(backtickIndex)
+                    if (btis.length == 2) {
+                        var literal = actualStringForPasting.slice(btis[0], btis[1] + 1)
+                        if (js("/\\r|\\n/").test(literal)) {
+                            literal = literal[0] + "\n" + literal.slice(1)
+                            literal = literal.replace(js("/(\\r?\\n)/g"), "$1        ")
+                            literal = "dedent(${literal})"
+                            replacements.push(json("from" to btis[0], "oldStringLength" to btis[1] - btis[0] + 1, "newString" to literal))
+                        }
+                        btis = js("[]")
+                    }
+                    from = backtickIndex + 1
+                }
+                replacements = jshit.sortBy(replacements, "from")
+                var newActualStringForPasting = ""; from = 0
+                for (replacement in jsArrayToIterable(replacements)) {
+                    newActualStringForPasting += actualStringForPasting.slice(from, replacement.from) + replacement.newString
+                    from = replacement.from + replacement.oldStringLength
+                }
+                newActualStringForPasting += actualStringForPasting.slice(from)
+                actualStringForPasting = newActualStringForPasting
+                actualStringForPasting = actualStringForPasting + "\n"
+
+                val actualStringForPastingPlusExt = actualStringForPasting
+
+                actualStringForPasting = actualStringForPasting
+                        .split("\n")
+                        .filter({line -> !isExtValueLine(line)})
+                        .join("\n")
+
+                tabs = jshit.Tabs(json(
+                    "activeTab" to if (jshit.isEmpty(expected)) "diffLast" else "diff",
+                    "tabs" to json(
+                        "diff" to json(
+                            "title" to t("Diff"),
+                            "content" to run {
+                                var args = js("[]")
+                                args.push(json("style" to json("whiteSpace" to "pre-wrap")))
+                                args = args.concat(diffDivs)
+                                jshit.diva.apply(null, args)
+                            }),
+                        "diffLast" to json(
+                            "title" to t("Diff Last"),
+                            "content" to run {
+                                var args = js("[]")
+                                args.push(json("style" to json("whiteSpace" to "pre-wrap")))
+                                args = args.concat(diffLastDivs)
+                                jshit.diva.apply(null, args)
+                            }),
+                            "actual" to json(
+                                "title" to t("Actual"),
+                                "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")), actualString)),
+                            "expected" to json(
+                                "title" to t("Expected"),
+                                "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")), expectedString)),
+                            "actualPaste" to json(
+                                "title" to t("Actual Paste"),
+                                "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")),
+                                    jshit.Input(json("initialValue" to actualStringForPasting, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true)))),
+                            "actualPasteWithExt" to json(
+                                "title" to t("Actual Paste + ext"),
+                                "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")),
+                                    jshit.Input(json("initialValue" to actualStringForPastingPlusExt, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true))))
+                    )
+                ))
+
+                paneControls = jshit.diva(js("({})"),
+                    jshit.hor2(js("({})"),
+                        jshit.hor1(js("({})"), unifyIndicesCheck, t("Unify indices")),
+                        jshit.hor1(js("({})"), hideKeyRepetitionsCheck, t("Hide key repetitions")),
+                        jshit.button(json("level" to "primary", "icon" to "pencil", "title" to t("Update Assertion Code"), "onClick" to {
+                            global.testGlobal.minimalGertrude = true
+                            jshit.callDebugRPWithProgress(json("msg" to json("fun" to "danger_updateAssertionCode", "assertionTag" to tag, "actualStringForPasting" to actualStringForPasting), "progressPlaceholder" to progressPlaceholder, "progressTitle" to "Updating assertion code"))
+                        }, "untested" to true))),
+                    jshit.div(progressPlaceholder))
+            }
+
+            unifyIndicesCheck = jshit.Checkbox(json("initialValue" to stripFuckingIndices, "onChange" to {
+                stripFuckingIndices = unifyIndicesCheck.getValue()
+                makeFuckingTabs()
+                updateWholeShit()
+            }))
+            hideKeyRepetitionsCheck = jshit.Checkbox(json("initialValue" to hideFuckingKeyRepetitions, "onChange" to {
+                hideFuckingKeyRepetitions = hideKeyRepetitionsCheck.getValue()
+                makeFuckingTabs()
+                updateWholeShit()
+            }))
+
+
+            makeFuckingTabs()
+
+            global.assertionPane = json(
+                "setLineHideFilter" to {f: dynamic ->
+                    lineHideFilter = f
+                    updateWholeShit()
+                },
+
+                "highlightStuff" to {arg: dynamic ->
+                    // ({keys, scrollThere})
+                    val keys = arg.keys; val scrollThere = arg.scrollThere
+                    highlightedKeys = js("({})")
+                    for (k in jsArrayToIterable(keys)) {
+                        highlightedKeys[k] = true
+                    }
+
+                    makeFuckingTabs()
+                    updateWholeShit()
+
+                    if (scrollThere && keys.length) {
+                        jshit.fov(pileOfShit["scrollToDivForKey-${keys[0]}"])
+                    }
+                }
+            )
+
+            return@wholeShitCtor {
+                jshit.art.assertionDetailsWithSourceLink(json("\$tag" to tag, "details" to tabs, "controls" to paneControls,
+                    "collapsedDetails" to jshit.updatableElement(js("({})"), {update ->
+                        return@updatableElement {
+                            jshit.diva(js("({})"),
+                                definitionStack && jshit.diva(json("style" to json("marginBottom" to 8)), jshit.renderDefinitionStackStrip(json("stack" to definitionStack))),
+                                jshit.art.renderStepDescriptions())
+                        }
+                    })
+                ))
+            }
+
+        })
+    }
+
+    jshit.art.assert(false, descr, json("scrollThere" to scrollThere, "detailsUI" to detailsUI))
+}
+
 
 fun openTestPassedPane(def: dynamic) {
     val scenario = def.scenario
@@ -229,18 +638,25 @@ fun renderStepDescriptions(): ReactElement {
         }
     }
 
+//    return makeSwearBoxes().toReactElement()
 
-    val boxes = object : StatefulElement() {
+    return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to jshit.GRAY_200, "fontWeight" to "bold")), t("Steps")),
+        *els.toTypedArray())
+}
+
+private fun makeSwearBoxes(): StatefulElement {
+    return object : StatefulElement() {
         private var shitVisible: Boolean = true
 
-        // @wip sourceLocation
-        val swearBox1 = PromiseAsyncSwearBox {controlTypeName = "bobobox"; style {width = "100%"}
+        val swearBox1 = PromiseAsyncSwearBox {
+            controlTypeName = "bobobox"; style { width = "100%" }
             onChange {
                 println("Box 1 changed")
             }
         }
 
-        val swearBox2 = PromiseAsyncSwearBox {style {width = "100%"}
+        val swearBox2 = PromiseAsyncSwearBox {
+            style { width = "100%" }
             onChange {
                 println("Box 2 changed")
             }
@@ -252,31 +668,30 @@ fun renderStepDescriptions(): ReactElement {
                     shitVisible = !shitVisible; update()
                 }
 
-                ifornull(shitVisible) {-div {
-                    -div {style {display = "flex"}
-                        -swearBox1
-                        -dom.button("Reset") {
-                            swearBox1.reset()
+                ifornull(shitVisible) {
+                    -div {
+                        -div {
+                            style { display = "flex" }
+                            -swearBox1
+                            -dom.button("Reset") {
+                                swearBox1.reset()
+                            }
                         }
-                    }
 
-                    -div {style {display = "flex"}
-                        -swearBox2
-                        -dom.button("Reset") {
-                            swearBox2.reset()
+                        -div {
+                            style { display = "flex" }
+                            -swearBox2
+                            -dom.button("Reset") {
+                                swearBox2.reset()
+                            }
                         }
-                    }
 
-                    -div {style {height(500)}}
-                }}
+                        -div { style { height(500) } }
+                    }
+                }
             }
         }
     }
-
-    return boxes.toReactElement()
-
-    return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to jshit.GRAY_200, "fontWeight" to "bold")), t("Steps")),
-        *els.toTypedArray())
 }
 
 @native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
