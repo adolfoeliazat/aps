@@ -60,10 +60,6 @@ fun link(vararg args: dynamic): ReactElement {
     return js("shit.link.apply(null, args)")
 }
 
-private fun t(s: String): dynamic {
-    return s
-}
-
 @Suppress("UNUSED_PARAMETER")
 private fun dynamicKeys(obj: dynamic): dynamic {
     return js("Object.keys(obj)")
@@ -150,7 +146,8 @@ fun gertrude(def: dynamic) {
 
     var detailsUI: dynamic = null
     if (jshit.getURLQueryBeforeRunningTest().minimalGertrude == "yes" || global.testGlobal.minimalGertrude) {
-        detailsUI = jshit.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
+        detailsUI = div {styleKludge = json("background" to jshit.WHITE); -"I am minimal because of minimalGertrude"}
+//        detailsUI = jshit.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
     } else {
         detailsUI = jshit.updatableElement(js("({})"), wholeShitCtor@ {updateWholeShit ->
             var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
@@ -227,7 +224,7 @@ fun gertrude(def: dynamic) {
                     // {divs, string1, string2, greenTitle}
                     val divs = arg.divs; val string1 = arg.string1; val string2 = arg.string2; var greenTitle = arg.greenTitle
 
-                    if (!greenTitle) greenTitle = t("Expected")
+                    if (!greenTitle) greenTitle = "Expected"
                     var prevLabel: dynamic = undefined
                     val diffLineItems = jshit.diff.diffLines(string1, string2)
                     for (item in jsArrayToIterable(diffLineItems)) {
@@ -235,7 +232,7 @@ fun gertrude(def: dynamic) {
                         var label: dynamic = undefined
                         if (item.added) {
                             backgroundColor = RED_100.string
-                            label = t("Actual")
+                            label = "Actual"
                         } else if (item.removed) {
                             backgroundColor = GREEN_100.string
                             label = greenTitle
@@ -244,7 +241,8 @@ fun gertrude(def: dynamic) {
                             label = undefined
                         }
                         if (label && label != prevLabel) {
-                            divs.push(jshit.diva(json("style" to json("backgroundColor" to backgroundColor, "fontWeight" to "bold")), label))
+                            divs.push(div { styleKludge = json("backgroundColor" to backgroundColor, "fontWeight" to "bold")
+                                label })
                         }
                         prevLabel = label
 
@@ -264,23 +262,32 @@ fun gertrude(def: dynamic) {
                                     var open = false
                                     metaBox = jshit.updatableElement(js("({})"), {update: dynamic ->
                                         {
-                                            jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)),
-                                                jshit.spana(json("className" to "fa fa-caret-${if (open) "up" else "down"}", "style" to json("cursor" to "pointer"), "onClick" to {e: dynamic ->
-                                                    open = !open
-                                                    update()
-                                                })),
-                                                open && jshit.diva(json("style" to json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)),
-                                                    jshit.renderStacks(json("definitionStack" to definitionStack, "callStack" to callStack))))
+                                            div { styleKludge = json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)
+                                                -span { className = "fa fa-caret-${if (open) "up" else "down"}"; styleKludge = json("cursor" to "pointer")
+                                                    onClick {
+                                                        open = !open
+                                                        update()
+                                                    }
+                                                }
+
+                                                if (open)
+                                                    -div { styleKludge = json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)
+                                                        -jshit.renderStacks(json("definitionStack" to definitionStack, "callStack" to callStack))
+                                                    }
+                                            }
                                         }
                                     })
                                 }
 
                                 val control = controls[actualLineIndex]
                                 if (control) {
-                                    gotoIcon = jshit.diva(json("className" to "showOnParentHovered"),
-                                        jshit.spana(json("className" to "fa fa-search", "style" to json("cursor" to "pointer", "marginLeft" to 10), "onClick" to {e: dynamic ->
-                                            jshit.revealControl(control, json("scrollToTarget" to true))
-                                        })))
+                                    gotoIcon = div { className = "showOnParentHovered"
+                                        -span { className = "fa fa-search"; styleKludge = json("cursor" to "pointer", "marginLeft" to 10)
+                                            onClick {
+                                                jshit.revealControl(control, json("scrollToTarget" to true))
+                                            }
+                                        }
+                                    }
                                 }
 
                                 val colonIndex = valueLine.indexOf(":")
@@ -341,7 +348,7 @@ fun gertrude(def: dynamic) {
 
                 fillDiffDivs(json("divs" to diffDivs, "string1" to expectedString, "string2" to actualString))
                 lineIndex = 0; actualLineIndex = 0
-                fillDiffDivs(json("divs" to diffLastDivs, "string1" to lastExpectedString, "string2" to actualString, "greenTitle" to t("Last")))
+                fillDiffDivs(json("divs" to diffLastDivs, "string1" to lastExpectedString, "string2" to actualString, "greenTitle" to "Last"))
 
                 val my = js("({})")
 
@@ -398,7 +405,7 @@ fun gertrude(def: dynamic) {
                     "activeTab" to if (jshit.isEmpty(expected)) "diffLast" else "diff",
                     "tabs" to json(
                         "diff" to json(
-                            "title" to t("Diff"),
+                            "title" to "Diff",
                             "content" to run {
                                 var args = js("[]")
                                 args.push(json("style" to json("whiteSpace" to "pre-wrap")))
@@ -406,7 +413,7 @@ fun gertrude(def: dynamic) {
                                 jshit.diva.apply(null, args)
                             }),
                         "diffLast" to json(
-                            "title" to t("Diff Last"),
+                            "title" to "Diff Last",
                             "content" to run {
                                 var args = js("[]")
                                 args.push(json("style" to json("whiteSpace" to "pre-wrap")))
@@ -414,31 +421,33 @@ fun gertrude(def: dynamic) {
                                 jshit.diva.apply(null, args)
                             }),
                             "actual" to json(
-                                "title" to t("Actual"),
+                                "title" to "Actual",
                                 "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")), actualString)),
                             "expected" to json(
-                                "title" to t("Expected"),
+                                "title" to "Expected",
                                 "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")), expectedString)),
                             "actualPaste" to json(
-                                "title" to t("Actual Paste"),
+                                "title" to "Actual Paste",
                                 "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")),
                                     jshit.Input(json("initialValue" to actualStringForPasting, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true)))),
                             "actualPasteWithExt" to json(
-                                "title" to t("Actual Paste + ext"),
+                                "title" to "Actual Paste + ext",
                                 "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")),
                                     jshit.Input(json("initialValue" to actualStringForPastingPlusExt, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true))))
                     )
                 ))
 
-                paneControls = jshit.diva(js("({})"),
-                    jshit.hor2(js("({})"),
-                        jshit.hor1(js("({})"), unifyIndicesCheck, t("Unify indices")),
-                        jshit.hor1(js("({})"), hideKeyRepetitionsCheck, t("Hide key repetitions")),
-                        jshit.button(json("level" to "primary", "icon" to "pencil", "title" to t("Update Assertion Code"), "onClick" to {
+                paneControls = div {
+                    -hor2 {
+                        -hor1 { -unifyIndicesCheck; -"Unify indices" }
+                        -hor1 { -hideKeyRepetitionsCheck; -"Hide key repetitions" }
+                        -button {level = "primary"; title = t("Update Assertion Code"); icon = "pencil"; onClick {
                             global.testGlobal.minimalGertrude = true
                             jshit.callDebugRPWithProgress(json("msg" to json("fun" to "danger_updateAssertionCode", "assertionTag" to tag, "actualStringForPasting" to actualStringForPasting), "progressPlaceholder" to progressPlaceholder, "progressTitle" to "Updating assertion code"))
-                        }, "untested" to true))),
-                    jshit.div(progressPlaceholder))
+                        }}
+                    }
+                    -progressPlaceholder
+                }
             }
 
             unifyIndicesCheck = jshit.Checkbox(json("initialValue" to stripFuckingIndices, "onChange" to {
@@ -593,9 +602,9 @@ fun renderStepDescriptions(): ReactElement {
 
                 lineContent = div { style { display = "flex" }
                     - when (instr.kind) {
-                        "action" -> span { style { marginRight(5); padding(3); backgroundColor = GREEN_100; fontSize = "75%" }; -t("Action") }
-                        "state" -> span { style { marginRight(5); padding(3); backgroundColor = LIGHT_BLUE_100; fontSize = "75%" }; -t("State") }
-                        "navigation" -> span { style { marginRight(5); padding(3); backgroundColor = BROWN_50; fontSize = "75%" }; -t("Navigation") }
+                        "action" -> span { style { marginRight(5); padding(3); backgroundColor = GREEN_100; fontSize = "75%" }; -"Action" }
+                        "state" -> span { style { marginRight(5); padding(3); backgroundColor = LIGHT_BLUE_100; fontSize = "75%" }; -"State" }
+                        "navigation" -> span { style { marginRight(5); padding(3); backgroundColor = BROWN_50; fontSize = "75%" }; -"Navigation" }
                         else -> raise("WTF is instr.kind")
                     }
                     - title
@@ -603,7 +612,7 @@ fun renderStepDescriptions(): ReactElement {
 
                 actions = listOf(
                     // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 1
-                    link(json("title" to t("Run until ") + untilParamValue, "onClick" to {
+                    link(json("title" to "Run until " + untilParamValue, "onClick" to {
                         var href = window.location.href
                         href = href.replace(Regex("&from[^&]*"), "")
                         href = href.replace(Regex("&until[^&]*"), "")
@@ -630,7 +639,7 @@ fun renderStepDescriptions(): ReactElement {
                 ),
                 // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 2
                 actions = listOf(
-                    link(json("title" to t("Run from"), "onClick" to {
+                    link(json("title" to "Run from", "onClick" to {
                         var href = window.location.href
                         href = href.replace(Regex("&from[^&]*"), "")
                         href = href.replace(Regex("&until[^&]*"), "")
@@ -644,7 +653,7 @@ fun renderStepDescriptions(): ReactElement {
 
 //    return makeSwearBoxes().toReactElement()
 
-    return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to jshit.GRAY_200, "fontWeight" to "bold")), t("Steps")),
+    return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to jshit.GRAY_200, "fontWeight" to "bold")), "Steps"),
         *els.toTypedArray())
 }
 
@@ -668,7 +677,7 @@ private fun makeSwearBoxes(): StatefulElement {
 
         override fun render() = div {
             -div {
-                -dom.button(if (shitVisible) "Hide Shit" else "Show Shit") {
+                -simpleButton(if (shitVisible) "Hide Shit" else "Show Shit") {
                     shitVisible = !shitVisible; update()
                 }
 
@@ -677,7 +686,7 @@ private fun makeSwearBoxes(): StatefulElement {
                         -div {
                             style { display = "flex" }
                             -swearBox1
-                            -dom.button("Reset") {
+                            -simpleButton("Reset") {
                                 swearBox1.reset()
                             }
                         }
@@ -685,7 +694,7 @@ private fun makeSwearBoxes(): StatefulElement {
                         -div {
                             style { display = "flex" }
                             -swearBox2
-                            -dom.button("Reset") {
+                            -simpleButton("Reset") {
                                 swearBox2.reset()
                             }
                         }
@@ -784,7 +793,7 @@ class PromiseAsyncSwearBox(build: PromiseAsyncSwearBox.() -> Unit) : StatefulEle
                 -div {style {fontStyle = "italic"}; -progressStatus}
         }
 
-        -dom.button("More") {
+        -simpleButton("More") {
             var adjective: String? = null
 
             generateAdjective()
@@ -831,14 +840,56 @@ fun timeoutSet(ms: Int, cb: () -> Unit) {
     window.setTimeout(cb, ms)
 }
 
-object dom {
-    @Suppress("UNUSED_PARAMETER")
-    fun button(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement {
-        val attrs = js("({onClick: onClick})")
-        return React.createElement("button", attrs, title)
-    }
+@Suppress("UNUSED_PARAMETER")
+fun simpleButton(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement {
+    val attrs = js("({onClick: onClick})")
+    return React.createElement("button", attrs, title)
 }
 
+class ManagedString(val en: String, val ru: String) {
+    val meat: String get() = ru // TODO:vgrechka Implement ManagedString.meat    09c55c82-faa1-4734-a45c-5454b755eeab
+}
+
+fun t(en: String, ru: String) = ManagedString(en, ru)
+fun t(en: String) = ManagedString(en, en)
+
+val nbsp: String = js("String.fromCharCode(0xa0)")
+
+class button(build: button.() -> Unit) : StatefulElement() {
+    var icon: String? = null
+    var title: ManagedString? = null
+    var className = ""
+    var level = "default"
+    val style = StyleBuilder()
+    val iconStyle = StyleBuilder()
+    var hint: ManagedString? = null
+    var onClick: ReactEventHandler? = null
+
+    fun onClick(handler: ReactEventHandler) {
+        onClick = handler
+    }
+
+    init {
+        build()
+    }
+
+    override fun render(): ReactElement = element
+
+    private val element: ReactElement by lazy {
+        val attrs = js("({})")
+        attrs.id = elementID
+        attrs.className = "btn btn-${level} ${className}"
+        attrs.style = style.toJSObject()
+        attrs.title = hint?.meat
+        attrs.onClick = onClick
+
+        React.createElement("button", attrs,
+            icon?.let { jshit.glyph(it, json("style" to iconStyle.toJSObject())) },
+            if (icon != null && title != null) nbsp else null,
+            title?.meat
+        )
+    }
+}
 
 @native interface ReactEvent {
     val ctrlKey: Boolean
@@ -1137,7 +1188,7 @@ fun jsArrayToIterable(arr: dynamic): Iterable<dynamic> {
     return list
 }
 
-fun raise(msg: String, props: dynamic = null) {
+fun raise(msg: String, props: dynamic = undefined) {
     jshit.raise(msg, props)
 }
 
@@ -1171,6 +1222,13 @@ fun horizontala(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
 fun hor2(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
     return horizontala {
         spacing = 8
+        doInsideBuilder()
+    }
+}
+
+fun hor1(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
+    return horizontala {
+        spacing = 4
         doInsideBuilder()
     }
 }
@@ -1210,6 +1268,10 @@ open class FlowElementBuilder(val tag: String) {
         insideMe()
     }
 
+    fun onClick(handler: ReactEventHandler) {
+        attrs["onClick"] = handler
+    }
+
     operator fun Iterable<ReactElement>.unaryPlus() {
         for (child in this) add(child)
     }
@@ -1241,6 +1303,7 @@ open class FlowElementBuilder(val tag: String) {
             this is String -> - (this as String)
             this.`$meta` != null -> - this.meat
             this.`$$typeof` == js("Symbol['for']('react.element')") -> - asReactElement(this)
+            this.element && this.element.`$$typeof` == js("Symbol['for']('react.element')") -> - asReactElement(this.element)
             else -> raise("Weird shit in FlowElementBuilder child")
         }
     }
@@ -1270,6 +1333,10 @@ fun Map<String, Any?>.toJSObject(): dynamic {
     val obj = js("({})")
     for ((k, v) in this) obj[k] = v
     return obj
+}
+
+fun melinda(foo: String) {
+
 }
 
 class StyleBuilder {
