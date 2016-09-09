@@ -7,7 +7,6 @@
 import kotlin.browser.document
 import kotlin.browser.window
 import Color.*
-import kotlin.test.assertFailsWith
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette
@@ -51,7 +50,11 @@ object KotlinShit : IKotlinShit {
         jshit.art.renderStepDescriptions = ::renderStepDescriptions
         jshit.art.openTestPassedPane = ::openTestPassedPane
         jshit.art.gertrude = ::gertrude
+
+        global.testAsyncShit = ::testAsyncShit
     }
+
+    val kot_melinda = ::melinda
 }
 
 @Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE")
@@ -708,7 +711,7 @@ private fun makeSwearBoxes(): StatefulElement {
 }
 
 @native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
-    fun <U> then(cb: (T) -> Any?): Promise<U>
+    fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
 }
 
 class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit) {
@@ -903,7 +906,7 @@ fun puid(): Long {
     return jshit.puid()
 }
 
-@native val MODE: String
+@native val MODE: String = noImpl
 
 fun preventAndStop(e: ReactEvent) {
     e.preventDefault()
@@ -1335,9 +1338,246 @@ fun Map<String, Any?>.toJSObject(): dynamic {
     return obj
 }
 
-fun melinda(foo: String) {
 
+
+fun melinda() {
 }
+
+//fun melinda(def: dynamic) {
+//    val trainName: dynamic = def.trainName; val urlPath: dynamic = def.urlPath; val urlEntityParamName: dynamic = def.urlEntityParamName;
+//    val tabDefs: dynamic = def.tabDefs; val defaultActiveTab: dynamic = def.defaultActiveTab; val header: dynamic = def.header;
+//    val entityID: dynamic = def.entityID;val entityFun: dynamic = def.entityFun; val itemsFun: dynamic = def.itemsFun;
+//    val emptyMessage: dynamic = def.emptyMessage; val plusFormDef: dynamic = def.plusFormDef; val editFormDef: dynamic = def.editFormDef;
+//    val aboveItems: dynamic = def.aboveItems; val renderItem: dynamic = def.renderItem; val hasFilterSelect: dynamic = def.hasFilterSelect;
+//    val filterSelectValues: dynamic = def.filterSelectValues; val defaultFilter: dynamic = def.defaultFilter
+//
+//    val plusIcon: dynamic = if (def.plusIcon != undefined) def.plusIcon else "plus"
+//    val defaultOrdering: dynamic = if (def.defaultOrdering != undefined) def.defaultOrdering else "desc"
+//    val hasSearchBox: dynamic = if (def.hasSearchBox != undefined) def.hasSearchBox else true
+//    val hasOrderingSelect: dynamic = if (def.hasOrderingSelect != undefined) def.hasOrderingSelect else true
+//    val hasHeaderControls: dynamic = if (def.hasHeaderControls != undefined) def.hasHeaderControls else true
+//
+//    if (trainName) jshit.beginTrain(json("name" to trainName)); try {
+//        var entityRes: dynamic = undefined
+//        if (entityFun) {
+//            entityRes = await ui.rpcSoft({fun: entityFun, entityID})
+//            if (entityRes.error) return showBadResponse(entityRes)
+//        }
+//
+//        val searchString = ui.urlQuery.search
+//
+//            var filter
+//            if (hasFilterSelect) {
+//                filter = ui.urlQuery.filter
+//                val saneFilters = filterSelectValues.map(x => x.value)
+//                if (!saneFilters.includes(filter)) filter = defaultFilter
+//            }
+//
+//        var ordering = ui.urlQuery.ordering
+//            if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
+//
+//        var tabs, activeTab
+//        if (tabDefs) {
+//            activeTab = ui.urlQuery.tab || defaultActiveTab
+//            tabs = ui.tabs({name: 'main', active: activeTab, tabDefs})
+//        }
+//
+//        val itemsReq = s{fun: fov(itemsFun, {activeTab}), entityID, filter, ordering, searchString}
+//        val itemsRes = await ui.rpcSoft(itemsReq)
+//        if (itemsRes.error) return showBadResponse(itemsRes)
+//
+//        var items, showEmptyLabel = true,
+//        headerControlsVisible = true, headerControlsClass, headerControlsDisabled,
+//        cancelForm,
+//        plusShit, editShit
+//
+//        var searchBox, searchBoxInput
+//        if (hasSearchBox) {
+//            searchBoxInput = Input({
+//                tamyShamy: 'search',
+//                style: {paddingLeft: 30, width: 160},
+//                placeholder: t(`TOTE`, `Поиск...`),
+//                disabled: _=> headerControlsDisabled,
+//                async onKeyDown(e) {
+//                    if (e.keyCode === 13) {
+//                        preventAndStop(e)
+//                        await applyHeaderControls+({controlToBlink: searchBoxInput})
+//                    }
+//                }
+//            })
+//            searchBoxInput.setValueExt({value: itemsRes.actualSearchString, notify: false})
+//
+//            searchBox = diva({style: {position: 'relative'}},
+//                searchBoxInput,
+//                faIcon({icon: 'search', style: {position: 'absolute', left: 10, top: 10, color: GRAY_500}}),
+//                )
+//        }
+//
+//        var filterSelect
+//            if (hasFilterSelect) {
+//                filterSelect = Select({
+//                    tamyShamy: 'filter', isAction: true, style: {width: 160},
+//                    values: filterSelectValues,
+//                    initialValue: filter,
+//                    disabled: _=> headerControlsDisabled,
+//                    async onChange() {
+//                        await applyHeaderControls+({controlToBlink: filterSelect})
+//                    },
+//                })
+//
+//                filterSelect.setValueExt({value: itemsRes.actualFilter, notify: false})
+//            }
+//
+//        var orderingSelect
+//            if (hasOrderingSelect) {
+//                orderingSelect = Select({
+//                    tamyShamy: 'ordering', isAction: true, style: {width: 160},
+//                    values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
+//                    initialValue: ordering,
+//                    disabled: _=> headerControlsDisabled,
+//                    async onChange() {
+//                        await applyHeaderControls+({controlToBlink: orderingSelect})
+//                    },
+//                })
+//
+//                orderingSelect.setValueExt({value: itemsRes.actualOrdering, notify: false})
+//            }
+//
+//        async function applyHeaderControls~({controlToBlink}) {
+//            setHeaderControlsDisabled(true)
+//            controlToBlink.setBlinking(true)
+//
+//            val urlParamParts = []
+//
+//            if (urlEntityParamName) {
+//                urlParamParts.push(`${urlEntityParamName}=${entityID}`)
+//            }
+//
+//            urlParamParts.push(`filter=${filterSelect.getValue()}`)
+//            urlParamParts.push(`ordering=${orderingSelect.getValue()}`)
+//
+//            val searchString = searchBoxInput.getValue().trim()
+//            if (searchString) {
+//                urlParamParts.push(`search=${encodeURIComponent(searchString)}`)
+//            }
+//
+//            val url = `${urlPath}?${urlParamParts.join('&')}`
+//                await ui.pushNavigate(url)
+//
+//            setHeaderControlsDisabled(false)
+//            controlToBlink.setBlinking(false)
+//        }
+//
+//        if (plusFormDef) {
+//            plusShit = makeButtonFormShit(s{name: 'plus', level: 'primary', icon: plusIcon, formDef: plusFormDef})
+//        }
+//        if (editFormDef) {
+//            editShit = makeButtonFormShit(s{name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
+//        }
+//
+//
+//        function makeButtonFormShit(def) {
+//            #extract {name, level, icon, formDef} from def
+//
+//            var form, formClass
+//
+//            return {
+//                button() {
+//                    return button({tamyShamy: name, style: {marginLeft: 0}, level, icon, disabled: headerControlsDisabled, onClick() {
+//                        showEmptyLabel = false
+//                        setHeaderControlsDisappearing()
+//                        formClass = 'aniFadeIn'
+//
+//                        cancelForm = function() {
+//                            setHeaderControlsAppearing()
+//                            form = undefined
+//                            ui.updatePage()
+//                        }
+//
+//                        form = ui.Form(asn(formDef, {
+//                            onCancel: cancelForm,
+//                        }))
+//
+//                        ui.updatePage()
+//                    }})
+//                },
+//
+//                form() {
+//                    return form && diva({className: formClass, style: {marginBottom: 15}}, form)
+//                },
+//            }
+//        }
+//
+//        var updateHeaderControls
+//
+//            ui.setPage(s{
+//                header: fov(header, entityRes),
+//                body: _=> diva({style: {marginBottom: 15}},
+//                tabs,
+//                editShit && editShit.form,
+//                plusShit && plusShit.form,
+//                fov(aboveItems, entityRes),
+//                run(function renderItems() {
+//                    if (!itemsRes.items.length) {
+//                        if (showEmptyLabel) {
+//                            return diva({style: {marginTop: 10}}, emptyMessage || spanc({tame: 'nothingLabel', content: t(`TOTE`, `Савсэм ничего нэт, да...`)}))
+//                        }
+//                        return ''
+//                    }
+//                    return ui.renderMoreable(s{itemsRes, itemsReq, renderItem,})
+//                }),
+//                ),
+//                headerControls: _=> updatableElement(s{}, update => {
+//                updateHeaderControls = update
+//                if (!fov(hasHeaderControls, entityRes) || !headerControlsVisible) return
+//
+//                return _=> hor2({
+//                style: {display: 'flex', marginTop: tabDefs ? 55 : 0},
+//                className: headerControlsClass},
+//
+//                searchBox,
+//                filterSelect,
+//                orderingSelect,
+//                editShit && editShit.button,
+//                plusShit && plusShit.button,
+//                )
+//            }),
+//
+//                onKeyDown(e) {
+//                    if (e.keyCode === 27) {
+//                        fov(cancelForm)
+//                    }
+//                }
+//            })
+//
+//
+//        function setHeaderControlsDisappearing() {
+//            headerControlsVisible = false
+//            headerControlsClass = undefined
+//        }
+//
+//        function setHeaderControlsAppearing() {
+//            headerControlsVisible = true
+//            headerControlsClass = 'aniFadeIn'
+//            timeoutSet(500, _=> {
+//                headerControlsClass = undefined
+//                ui.updatePage()
+//            })
+//        }
+//
+//        function setHeaderControlsDisabled(b) {
+//            headerControlsDisabled = b
+//            updateHeaderControls()
+//        }
+//
+//        function showBadResponse(res) {
+//            return ui.setPage(s{
+//                header: pageHeader({title: t(`TOTE`, `Облом`)}),
+//                body: diva({}, errorBanner(s{content: res.error}))
+//            })
+//        }
+//    } finally { if (trainName) endTrain() }
+//}
 
 class StyleBuilder {
     private val attrs = mutableMapOf<String, String>()
@@ -1407,7 +1647,75 @@ class StyleBuilder {
 
 
 
+// ------------------------- Async Playground -------------------------
 
+@native fun <T> __await(x: Promise<T>): T = noImpl
+@native fun <T> __asyncResult(x: T): Promise<T> = noImpl
+
+fun testAsyncShit() {"__async"
+    println("Begin testAsyncShit")
+
+    val methodRes: Int = __await(SomeClass().someAsyncShit_method())
+    println("Async method result: $methodRes")
+
+    val topLevelRes: Int = __await(someAsyncShit_topLevel())
+    println("Top-level function result: $topLevelRes")
+
+    someAsyncShit_localContainer()
+
+    println("End testAsyncShit")
+}
+
+fun promise10(): Promise<Int> {
+    return Promise {resolve, reject ->
+        timeoutSet(500) {
+            resolve(10)
+        }
+    }
+}
+
+fun promise20(): Promise<Int> {
+    return Promise {resolve, reject ->
+        timeoutSet(1000) {
+            resolve(20)
+        }
+    }
+}
+
+class SomeClass {
+    fun someAsyncShit_method(): Promise<Int> {"__async"
+        println("Begin someAsyncShit_method")
+        val a = __await(promise10())
+        println("Got someAsyncShit_method a: $a")
+        val b = __await(promise20())
+        println("Got someAsyncShit_method b: $b")
+        return __asyncResult(a + b)
+    }
+}
+
+fun someAsyncShit_topLevel(): Promise<Int> {"__async"
+    println("Begin someAsyncShit_topLevel")
+    val a = __await(promise10())
+    println("Got someAsyncShit_topLevel a: $a")
+    val b = __await(promise20())
+    println("Got someAsyncShit_topLevel b: $b")
+    return __asyncResult(a + b)
+}
+
+fun someAsyncShit_localContainer() {
+    fun someAsyncShit_local(): Promise<Int> {"__async"
+        println("Begin someAsyncShit_local")
+        val a = __await(promise10())
+        println("Got someAsyncShit_local a: $a")
+        val b = __await(promise20())
+        println("Got someAsyncShit_local b: $b")
+        return __asyncResult(a + b)
+    }
+
+    someAsyncShit_local().then<Nothing> {res: Int ->
+        println("Got result in `then`: $res")
+    }
+}
 
 
 

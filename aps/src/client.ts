@@ -132,7 +132,7 @@ privatePageLoader(name) {
 return lookup(name, {
     
 async 'admin-heap'() {
-    await melinda(s{
+    await kot.KotlinShit.kot_melinda(s{
         urlPath: 'admin-heap.html',
         trainName: 'Load admin-heap page',
         itemsFun({activeTab}) {
@@ -217,7 +217,7 @@ async 'admin-my-tasks'() {
 async support() {
     raise('reimplement me')
     if (ui.urlQuery.thread) {
-        await melinda(s{
+        await kot.KotlinShit.kot_melinda(s{
             urlPath: 'support.html', urlEntityParamName: 'thread',
             trainName: 'Load support page with thread param',
             entityFun: 'private_getSupportThread',
@@ -440,7 +440,7 @@ async dashboard~({preserveScroll}={}) { // @ctx page dashboard
 
 
 async 'admin-users~'() { // @ctx page admin-users
-    await melinda(s{
+    await kot.KotlinShit.kot_melinda(s{
         urlPath: 'admin-users.html',
         itemsFun: 'private_getUsers',
         header: entityRes => {
@@ -717,8 +717,8 @@ async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
 },
 
 })
-                
-async function melinda(def) {
+
+async function deprecated_melinda(def) {
     #extract {
         trainName, urlPath, urlEntityParamName, tabDefs, defaultActiveTab,
         header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef,
@@ -1437,6 +1437,20 @@ export function writerDynamicPageNames() {
         test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap admin-users
         debug-perf-render debug-kotlin-playground`)
 }
+
+
+function test_awaitGeneratedByTypeScript() {
+    async function someAsyncShit() {
+        const a = await aPromise()
+        const b = await bPromise()
+        return a + b
+    }
+}
+
+
+
+
+
 
 clog('Client code is kind of loaded')
 
