@@ -132,7 +132,8 @@ privatePageLoader(name) {
 return lookup(name, {
     
 async 'admin-heap'() {
-    await kot.KotlinShit.kot_melinda(s{
+    await kot.KotlinShit.kot_melinda({
+        ui,
         urlPath: 'admin-heap.html',
         trainName: 'Load admin-heap page',
         itemsFun({activeTab}) {
@@ -217,7 +218,8 @@ async 'admin-my-tasks'() {
 async support() {
     raise('reimplement me')
     if (ui.urlQuery.thread) {
-        await kot.KotlinShit.kot_melinda(s{
+        await kot.KotlinShit.kot_melinda({
+            ui,
             urlPath: 'support.html', urlEntityParamName: 'thread',
             trainName: 'Load support page with thread param',
             entityFun: 'private_getSupportThread',
@@ -440,7 +442,8 @@ async dashboard~({preserveScroll}={}) { // @ctx page dashboard
 
 
 async 'admin-users~'() { // @ctx page admin-users
-    await kot.KotlinShit.kot_melinda(s{
+    await kot.KotlinShit.kot_melinda({
+        ui,
         urlPath: 'admin-users.html',
         itemsFun: 'private_getUsers',
         header: entityRes => {

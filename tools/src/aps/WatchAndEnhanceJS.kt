@@ -197,20 +197,26 @@ fun doStuff(jsFileEntry: Entry, mapFileEntry: Entry) {
         append(origSourceCode.substring(pos))
     }
 
+    var emittedCount = 0
+
+    fun logEmitted(f: File) {
+        println("${++emittedCount}) Emitted $f")
+    }
+
     if (DEBUG_OUT_FILE) {
         val debugOutJSFile = File("c:/tmp/out-" + inJSFile.name)
-        // println("Emitted $debugOutJSFile")
+        // logEmitted(debugOutJSFile)
         debugOutJSFile.writeText(newSourceCode)
     }
 
     val inMapFile = File(mapFileEntry.pathString)
     val outMapFile = File("E:/work/aps/aps/built/ua-writer/kotlin/" + inMapFile.name)
     inMapFile.copyTo(outMapFile, overwrite = true)
-    // println("Emitted $outMapFile")
+    // logEmitted(outMapFile)
 
     val outJSFile = File("E:/work/aps/aps/built/ua-writer/kotlin/" + inJSFile.name)
     outJSFile.writeText(newSourceCode)
-    println("Emitted $outJSFile")
+    logEmitted(outJSFile)
 }
 
 fun flattenJS(input: String): String {
