@@ -48,10 +48,21 @@ object KotlinShit : IKotlinShit {
         println("----- Igniting front Kotlin shit -----")
         global = _global; jshit = _jshit
 
+        jshit.elcl = ::jsFacing_elcl
         jshit.diva = ::jsFacing_diva
         jshit.spana = ::jsFacing_spana
+        jshit.ula = ::jsFacing_ula
+        jshit.lia = ::jsFacing_lia
+        jshit.forma = ::jsFacing_forma
+        jshit.labela = ::jsFacing_labela
+        jshit.nava = ::jsFacing_nava
+        jshit.aa = ::jsFacing_aa
+        jshit.ia = ::jsFacing_ia
+        jshit.h3a = ::jsFacing_h3a
+        jshit.blockquotea = ::jsFacing_blockquotea
         jshit.dom.spana = ::jsFacing_dom_spana
 
+        jshit.art = js("({uiStateContributions: {}, stateContributionsByControl: new Map(), stepDescriptions: []})")
         jshit.art.renderStepDescriptions = ::renderStepDescriptions
         jshit.art.openTestPassedPane = ::openTestPassedPane
         jshit.art.gertrude = ::gertrude
@@ -73,6 +84,32 @@ object KotlinShit : IKotlinShit {
     }
 }
 
+fun jsFacing_elcl(def: dynamic): dynamic {
+    val origRender = def.render
+    return React.createElement(React.createClass(global.Object.assign(def, json(
+        "render" to render@{
+            fun hrendus(e: dynamic) {
+                if (js("typeof window") == "object") {
+                    return jshit.renderExceptionTriangleAndRevealStack(json("exception" to e))
+                } else {
+                    throw e
+                }
+            }
+
+            if (def.exception) {
+                return@render hrendus(def.exception)
+            }
+
+            try {
+                return@render origRender()
+            } catch (e: Throwable) {
+                return@render hrendus(e)
+            }
+        }
+    ))), js("({})"))
+}
+
+
 fun jsFacing_diva(vararg ignored: dynamic): dynamic {
     val attrs = js("arguments[0]")
     val children = js("Array.prototype.slice.call(arguments, 1)")
@@ -83,6 +120,60 @@ fun jsFacing_spana(vararg ignored: dynamic): dynamic {
     val attrs = js("arguments[0]")
     val children = js("Array.prototype.slice.call(arguments, 1)")
     return killme_basicTag("span", attrs, children)
+}
+
+fun jsFacing_ula(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("ul", attrs, children)
+}
+
+fun jsFacing_lia(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("li", attrs, children)
+}
+
+fun jsFacing_forma(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("form", attrs, children)
+}
+
+fun jsFacing_labela(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("label", attrs, children)
+}
+
+fun jsFacing_nava(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("nav", attrs, children)
+}
+
+fun jsFacing_aa(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("a", attrs, children)
+}
+
+fun jsFacing_ia(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("i", attrs, children)
+}
+
+fun jsFacing_h3a(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("h3", attrs, children)
+}
+
+fun jsFacing_blockquotea(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("blockquote", attrs, children)
 }
 
 fun jsFacing_dom_spana(vararg ignored: dynamic): dynamic {

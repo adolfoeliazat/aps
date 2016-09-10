@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="1148" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="1246" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="1239" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="1337" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="86" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
@@ -42,12 +43,12 @@
       <file leaf-file-name="front.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/front.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
-              <caret line="90" column="47" selection-start-line="90" selection-start-column="47" selection-end-line="90" selection-end-column="47" />
+            <state relative-caret-position="536">
+              <caret line="175" column="37" selection-start-line="175" selection-start-column="37" selection-end-line="175" selection-end-column="37" />
               <folding>
                 <element signature="e#0#60#0" expanded="true" />
                 <element signature="e#62#136#0" expanded="true" />
-                <marker date="1473507546877" expanded="true" signature="61569:61902" ph="..." />
+                <marker date="1473512301662" expanded="true" signature="64697:65030" ph="..." />
               </folding>
             </state>
           </provider>
@@ -555,7 +556,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23122318" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23122318" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -638,7 +639,7 @@
           <folding>
             <element signature="e#0#60#0" expanded="true" />
             <element signature="e#62#136#0" expanded="true" />
-            <marker date="1473507546877" expanded="true" signature="61569:61902" ph="..." />
+            <marker date="1473512301662" expanded="true" signature="64697:65030" ph="..." />
           </folding>
         </state>
       </provider>
@@ -993,12 +994,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/front.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="90" column="47" selection-start-line="90" selection-start-column="47" selection-end-line="90" selection-end-column="47" />
+        <state relative-caret-position="536">
+          <caret line="175" column="37" selection-start-line="175" selection-start-column="37" selection-end-line="175" selection-end-column="37" />
           <folding>
             <element signature="e#0#60#0" expanded="true" />
             <element signature="e#62#136#0" expanded="true" />
-            <marker date="1473507546877" expanded="true" signature="61569:61902" ph="..." />
+            <marker date="1473512301662" expanded="true" signature="64697:65030" ph="..." />
           </folding>
         </state>
       </provider>

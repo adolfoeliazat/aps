@@ -24,7 +24,9 @@ import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSou
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, errorBanner, RequestBuilder,
         preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer, Placeholder,
         beginTrain, endTrain, controlBeingRevealed, getCurrentTestBrowser, isInTestScenario, isOrWasInTestScenario,
-        preludeWithHourglass, preludeWithVeryBadNews, preludeWithBadNews, dom, diva, spana} from 'into-u/ui'
+        preludeWithHourglass, preludeWithVeryBadNews, preludeWithBadNews, dom,
+        diva, spana, labela, h1a, h2a, h3a, h4a, h5a, tablea, theada, tbodya, tra, tda, tha, ula, ola, lia, forma, aa, ia, nava, pa, blockquotea
+        } from 'into-u/ui'
         
 #import static 'into-u/ui'
 
