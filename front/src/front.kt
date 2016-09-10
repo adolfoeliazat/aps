@@ -4,9 +4,11 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+package aps
+
 import kotlin.browser.document
 import kotlin.browser.window
-import Color.*
+import aps.Color.*
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette
@@ -37,13 +39,19 @@ enum class Color(val string: String) {
 
 @native interface IKotlinShit {
     fun ignite(_global: dynamic, _jshit: dynamic)
-    fun loadDebugKotlinPlaygroundPage(ui: dynamic)
+    fun loadDebugKotlinPlaygroundPage()
+    fun loadAdminUsersPage(): Promise<Unit>
+    fun renderProfile(def: dynamic): dynamic
+    fun userKindIcon(def: dynamic): dynamic
+    fun makeProfileFields(def: dynamic): dynamic
 }
 
 var global: dynamic = null
 var jshit: dynamic = null
 
 object KotlinShit : IKotlinShit {
+    var ui: dynamic = null
+
     override fun ignite(_global: dynamic, _jshit: dynamic) {
         println("----- Igniting front Kotlin shit -----")
         global = _global; jshit = _jshit
@@ -61,6 +69,7 @@ object KotlinShit : IKotlinShit {
         jshit.h3a = ::jsFacing_h3a
         jshit.blockquotea = ::jsFacing_blockquotea
         jshit.dom.spana = ::jsFacing_dom_spana
+//        jshit.faIcon = ::jsFacing_faIcon
 
         jshit.art = js("({uiStateContributions: {}, stateContributionsByControl: new Map(), stepDescriptions: []})")
         jshit.art.renderStepDescriptions = ::renderStepDescriptions
@@ -72,17 +81,315 @@ object KotlinShit : IKotlinShit {
         initTestShit()
     }
 
-    val kot_melinda = ::melinda
+    val kot_melinda = ::jsFacing_melinda
 
-    override fun loadDebugKotlinPlaygroundPage(ui: dynamic) {
+    override fun makeProfileFields(def: dynamic): dynamic {
+        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
+
+        return jsArrayOf(
+            ui.TextField(json(
+                "name" to "phone",
+                "title" to t("TOTE", "Телефон")
+            )),
+            ui.TextField(json(
+                "name" to "aboutMe",
+                "kind" to "textarea",
+                "title" to t("TOTE", "Пара ласковых о себе")
+            ))
+        )
+    }
+
+    override fun userKindIcon(def: dynamic): dynamic {
+        // #extract {user} from def
+        val user = def.user
+
+        return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5), "icon" to jshit.lookup(user.kind, json(
+            "customer" to "user", "writer" to "pencil", "admin" to "cog"))))
+    }
+
+    override fun renderProfile(def: dynamic): dynamic {
+        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
+
+        // #extract {user} from def
+        val user = def.user
+
+        val model = user
+
+        val profileFilled = model.profile_updated_at
+
+        var profileUpdatedPiece: dynamic = undefined
+        if (profileFilled) {
+            profileUpdatedPiece = jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "profile_updated_at",
+                "label" to t("TOTE", "Профиль залит"),
+                "value" to jshit.timestampString(model.profile_updated_at, json("includeTZ" to true))))
+        } else {
+            profileUpdatedPiece = jshit.limpopo(json("colsm" to 3, "model" to model,
+                "prop" to "profile_updated_at", "label" to t("TOTE", "Профиль"), "value" to t("TOTE", "Нифига не заполнялся")))
+        }
+
+        val adminLooks = ui.getUser().kind == "admin"
+
+        return jshit.diva(json("controlTypeName" to "renderProfile", "tame" to "profile"),
+            jshit.diva(json("className" to "row"),
+                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "first_name", "label" to t("TOTE", "Имя"))),
+                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "last_name", "label" to t("TOTE", "Фамилия"))),
+                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "email", "label" to t("TOTE", "Почта"))),
+                profileFilled && jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "phone", "label" to t("TOTE", "Телефон")))
+                ),
+            jshit.diva(json("className" to "row"),
+                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "kind",
+                    "label" to t("TOTE", "Тип"),
+                    "content" to jshit.diva(json("style" to js("({})")),
+                    userKindIcon(json("user" to user)),
+                    jshit.spanc(json("tame" to "value", "content" to global.apsdata.userKindTitle(user.kind)))))),
+                adminLooks && jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "state",
+                    "formGroupStyle" to
+                        if (user.state == "profile-approval-pending") json("background" to jshit.AMBER_200)
+                        else if (user.state == "profile-rejected") json("background" to jshit.DEEP_ORANGE_200)
+                        else if (user.state == "banned") json("background" to jshit.RED_200)
+                        else js("({})"),
+                    "label" to t("TOTE", "Статус"), "prop" to "state", "transform" to global.apsdata.userStateTitle)),
+                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "inserted_at",
+                    "label" to t("TOTE", "Аккаунт создан"),
+                    "value" to jshit.timestampString(model.inserted_at, json("includeTZ" to true)))),
+                profileUpdatedPiece
+                ),
+            user.state == "profile-rejected" && jshit.diva(json("className" to "row"),
+                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "profile_rejection_reason", "label" to t("TOTE", "Причина отказа"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
+            user.state == "banned" && jshit.diva(json("className" to "row"),
+                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "ban_reason", "label" to t("TOTE", "Причина бана"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
+            profileFilled && jshit.diva(json("className" to "row"),
+                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "about_me", "label" to t("TOTE", "Набрехано о себе"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
+            adminLooks && user.admin_notes && jshit.diva(json("className" to "row"),
+                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "admin_notes", "label" to t("TOTE", "Заметки админа"), "contentStyle" to json("whiteSpace" to "pre-wrap"))))
+        )
+    }
+
+    override fun loadDebugKotlinPlaygroundPage() {
         ui.setPage(json(
             "header" to jshit.pageHeader(json("title" to "debug-kotlin-playground")),
-            "body" to div {
-                // spanc {tame = "foo"; content = "bar"}
-            }
+            "body" to jshit.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5")
         ))
     }
+
+    override fun loadAdminUsersPage(): Promise<Unit> {"__async"
+        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
+
+        __await(jsFacing_melinda(json(
+            "ui" to ui,
+            "urlPath" to "admin-users.html",
+            "itemsFun" to "private_getUsers",
+            "header" to { entityRes: dynamic ->
+                jshit.pageHeader(json("title" to t("TOTE", "Пользователи")))
+            },
+
+            "hasFilterSelect" to true,
+            "filterSelectValues" to global.apsdata.userFilters(),
+            "defaultFilter" to "all",
+
+            "plusIcon" to "plus",
+
+            "plusFormDef" to json(
+                "primaryButtonTitle" to t("TOTE", "Запостить"),
+                "cancelButtonTitle" to t("TOTE", "Передумал"),
+                "autoFocus" to "message",
+                "fields" to jsArrayOf(
+                    ui.HiddenField(json(
+                        "name" to "threadID",
+                        "value" to ui.urlQuery.thread
+                    )),
+                    ui.TextField(json(
+                        "name" to "message",
+                        "kind" to "textarea",
+                        "title" to t("TOTE", "Сообщение")
+                    ))
+                ),
+                "rpcFun" to "private_createSupportThreadMessage",
+                "onSuccess" to {res: dynamic -> "__async"
+                    __await<dynamic>(ui.pushNavigate("support.html?thread=${ui.urlQuery.thread}"))
+                }
+            ),
+
+            "renderItem" to renderItem@{def: dynamic ->
+                // #extract {item: user, index} from def
+                var user = def.item; val index = def.index
+
+                object {
+                    val headingID = jshit.puid()
+                    val placeholder = jshit.Placeholder()
+
+                    init {
+                        enterDisplayMode()
+                    }
+
+                    fun enterDisplayMode() {
+                        peggy(json(
+                            "headingActionItems" to jsArrayOf(
+                                jshit.faIcon(json("tamy" to "edit", "className" to "hover-color-BLUE_GRAY_800", "style" to json("fontSize" to "135%", "cursor" to "pointer"), "icon" to "pencil",
+                                    "onClick" to { enterEditMode() }))),
+                            "body" to jshit.diva(js("({})"), renderProfile(json("user" to user)))))
+                    }
+
+                    fun enterEditMode() {
+                        var form: dynamic = null // @workaround
+                        form = ui.Form(json(
+                            "dontShameButtons" to true,
+                            "errorBannerStyle" to json("marginTop" to 15),
+                            "primaryButtonTitle" to t("TOTE", "Сохранить"),
+                            "cancelButtonTitle" to t("TOTE", "Передумал"),
+
+                            "getInvisibleFieldNames" to getInvisibleFieldNames@{
+                                var invisible = jsArrayOf("profileRejectionReason", "banReason")
+
+                                val state = form.getField("state").getValue()
+                                if (state == "profile-rejected") {
+                                    invisible = jshit.without(invisible, "profileRejectionReason")
+                                }
+                                else if (state == "banned") {
+                                    invisible = jshit.without(invisible, "banReason")
+                                }
+
+                                return@getInvisibleFieldNames invisible
+                            },
+
+                            "fields" to js("[]").concat(
+                                jsArrayOf(
+                                    ui.HiddenField(json(
+                                        "name" to "id",
+                                        "value" to user.id
+                                    )),
+
+                                    ui.SelectField(json(
+                                        "name" to "state",
+                                        "title" to t("TOTE", "Статус"),
+                                        "values" to global.apsdata.userStates()
+                                    )),
+
+                                    ui.TextField(json(
+                                        "name" to "profileRejectionReason",
+                                        "kind" to "textarea",
+                                        "title" to t("TOTE", "Причина отказа")
+                                    )),
+
+                                    ui.TextField(json(
+                                        "name" to "banReason",
+                                        "kind" to "textarea",
+                                        "title" to t("TOTE", "Причина бана")
+                                    ))
+                                ),
+
+                                ui.makeSignUpFields(js("({})")),
+                                makeProfileFields(js("({})")),
+
+                                jsArrayOf(
+                                    ui.TextField(json(
+                                        "name" to "adminNotes",
+                                        "kind" to "textarea",
+                                        "title" to t("TOTE", "Заметки админа")
+                                        ))
+                                )
+                            ),
+
+                            "rpcFun" to "private_updateUser",
+                            "onCancel" to {
+                                placeholder.setPrevContent()
+                                scrollToHeading()
+                            },
+                            "onSuccess" to {res: dynamic -> "__async"
+                                __await<dynamic>(refreshRecord())
+                                scrollToHeading()
+                            },
+                            "onError" to {
+                                scrollToHeading()
+                            }
+                        ))
+
+                        form.getField("state").setValue(user.state)
+                        form.getField("email").setValue(user.email)
+                        form.getField("firstName").setValue(user.first_name)
+                        form.getField("lastName").setValue(user.last_name)
+                        form.getField("phone").setValue(user.phone)
+                        form.getField("aboutMe").setValue(user.about_me)
+                        form.getField("profileRejectionReason").setValue(user.profile_rejection_reason || js("''"))
+                        form.getField("adminNotes").setValue(user.admin_notes || js("''"))
+
+                        peggy(json(
+                            "headingActionItems" to jsArrayOf(),
+                            "body" to jshit.diva(json("style" to json("marginBottom" to 15)), form)))
+
+                        scrollToHeading()
+                    }
+
+                    fun peggy(def: dynamic) {
+                        // #extract {headingActionItems, body} from def
+                        val headingActionItems = def.headingActionItems; val body = def.body
+
+                        placeholder.setContent(jshit.diva(json("controlTypeName" to "admin-users::renderItem", "tame" to "item${jshit.sufindex(index)}"),
+                            jshit.diva(json("tame" to "heading", "id" to headingID, "style" to json("marginBottom" to 10, "background" to jshit.BLUE_GRAY_50, "borderBottom" to "1px solid ${jshit.BLUE_GRAY_100}")),
+                                jshit.spana(json("style" to json("fontWeight" to "normal")),
+                                    jshit.spanc(json("tame" to "title", "style" to json("fontSize" to "135%"), "content" to json("movy" to json("model" to user, "value" to user.first_name + " " + user.last_name)))),
+                                    jshit.spanc(json("tame" to "no", "style" to json("color" to jshit.GRAY_500, "marginLeft" to 12), "content" to "${jshit.nostring(json("no" to user.id))}"))),
+
+                                jshit.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to BLUE_GRAY_600), "items" to headingActionItems))),
+
+                            body
+                            // ObjectViewer(s{object: user})
+                        ))
+                    }
+
+                    fun scrollToHeading() {
+                        global.requestAnimationFrame { jshit.jQuery(document).scrollTop(jshit.byid(headingID).offset().top - 50 - 15) }
+                    }
+
+
+                    fun refreshRecord(): Promise<Unit> {"__async"
+                        val res = __await<dynamic>(ui.rpcSoft(json("fun" to "private_getUser", "id" to user.id)))
+                        if (res.error) {
+                            peggy(json(
+                                "headingActionItems" to jsArrayOf(),
+                                "body" to jshit.errorBanner(json("content" to res.error))))
+                        } else {
+                            user = res.user
+                            enterDisplayMode()
+                        }
+
+                        return __asyncResult(Unit) // @workaround
+                    }
+
+                }.placeholder
+            }
+        )))
+
+        return __asyncResult(Unit)
+    }
 }
+
+fun jsFacing_faIcon(def: dynamic): dynamic {
+    // #extract {icon, style, className='', onClick} from def
+    val icon = def.icon; val style = def.style; val onClick = def.onClick
+    val className = if (def.className) def.className else ""
+
+    var me: dynamic = undefined // @workaround
+    me = json(
+        "render" to {
+            jshit.ia(json("id" to me.elementID, "className" to "fa fa-${icon} ${className}", "style" to style, "onClick" to {
+                if (onClick) onClick()
+            }))
+        },
+        "contributeTestState" to {state: dynamic ->
+            if (me.tame) {
+                state.put(json("control" to me, "key" to me.getTamePath(), "value" to icon))
+            }
+        }
+    )
+
+    def.`$definitionStack` = promiseDefinitionStack(js("Error()"), 1)
+
+    me.controlTypeName = "icon"
+    jshit.implementControlShit(json("me" to me, "def" to def, "implementTestClick" to json("onClick" to onClick)))
+    return jshit.elcl(me)
+}
+
 
 fun jsFacing_elcl(def: dynamic): dynamic {
     val origRender = def.render
@@ -209,7 +516,9 @@ fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: dynamic): dy
                     }
                 })
 
-                return@render killme_veryBasicTag(tag, global.Object.assign(attrs, json("id" to me.elementID)), *childrenAsJSArray)
+                attrs.id = me.elementID
+                return@render killme_veryBasicTag(tag, attrs, *childrenAsJSArray)
+//                return@render killme_veryBasicTag(tag, global.Object.assign(attrs, json("id" to me.elementID)), *childrenAsJSArray)
             } catch (e: Throwable) {
                 throw global.Object.assign(e, json("\$definitionStack" to attrs.`$definitionStack`))
             }
@@ -303,6 +612,23 @@ class JSError(message: String) : Throwable(message) {
 }
 
 
+
+//class spanc : StatefulElement() {
+//
+//    override fun render(): ReactElement {
+////            var renderThing = content
+////            if (isMovy) {
+////                renderThing = content.movy.value
+////            } else if (isMopy) {
+////                renderThing = content.mopy.model[content.mopy.prop]
+////            }
+//
+//        return jshit.spana(json("id" to elementID, "className" to className, "style" to style), renderThing)
+//    }
+//
+//}
+
+
 fun jsFacing_spanc(def: dynamic): dynamic {
     // #extract {content, className='', style={}} from def
     val content = def.content
@@ -386,19 +712,12 @@ fun jsFacing_spanc(def: dynamic): dynamic {
     return jshit.elcl(me)
 }
 
-//fun spanc(def: dynamic): ReactElement {
-//
-//}
-
-
 fun renderRedExclamationTriangleLabel(title: String): ReactElement {
     return span {style {color = RED_700}
         -span {className = "fa fa-exclamation-triangle"}
         -span {style { marginLeft(10) }; -title}
     }
 }
-
-
 
 fun jsFacing_renderExceptionTriangle(def: dynamic): dynamic {
     var exception = def.exception
@@ -1357,24 +1676,7 @@ abstract class StatefulElement() : ToReactElementable {
     }
 
     val `$definitionStack`: Promise<dynamic> by lazy {
-        Promise<dynamic>({resolve, reject ->
-            jshit.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then {stackString: String ->
-                // @wip sourceLocation
-                var lines = stackString.lines()
-                lines = lines.slice(firstSignificantStackLine..lines.lastIndex)
-                /// println("Liiines"); lines.take(5).forEachIndexed { i, s -> println("$i) $s")}
-
-                val jsArray = js("[]")
-                lines.forEach {line ->
-                    Regex("\\((.*?\\.kt:\\d+:\\d+)\\)").find(line)?.let {
-                        jsArray.push(json(
-                            "loc" to it.groupValues[1]
-                        ))
-                    }
-                }
-                resolve(jsArray)
-            }
-        })
+        promiseDefinitionStack(constructionStackAsError, firstSignificantStackLine)
     }
 
 
@@ -1592,6 +1894,27 @@ abstract class StatefulElement() : ToReactElementable {
 
 }
 
+private fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
+    return Promise<dynamic>({ resolve, reject ->
+        jshit.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
+            // @wip sourceLocation
+            var lines = stackString.lines()
+            lines = lines.slice(firstSignificantStackLine..lines.lastIndex)
+            /// println("Liiines"); lines.take(5).forEachIndexed { i, s -> println("$i) $s")}
+
+            val jsArray = js("[]")
+            lines.forEach { line ->
+                Regex("\\((.*?\\.kt:\\d+:\\d+)\\)").find(line)?.let {
+                    jsArray.push(json(
+                        "loc" to it.groupValues[1]
+                    ))
+                }
+            }
+            resolve(jsArray)
+        }
+    })
+}
+
 fun invariant(cond: dynamic, msg: String, props: dynamic = null) {
     jshit.invariant(cond, msg, props)
 }
@@ -1750,7 +2073,7 @@ fun Map<String, Any?>.toJSObject(): dynamic {
     return obj
 }
 
-fun melinda(def: dynamic) {"__async"
+fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
     fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack    592fa0de-0414-46fe-a3a6-a05dcb54b5ed
 
     val ui: dynamic = def.ui
@@ -1768,7 +2091,6 @@ fun melinda(def: dynamic) {"__async"
     val hasHeaderControls: dynamic = if (def.hasHeaderControls != undefined) def.hasHeaderControls else true
 
     if (trainName) jshit.beginTrain(json("name" to trainName)); try {
-
         var items: dynamic = undefined; var showEmptyLabel = true; var headerControlsVisible = true
         var headerControlsClass: dynamic = undefined; var headerControlsDisabled = false
         var cancelForm: dynamic = undefined; var plusShit: dynamic = undefined; var editShit: dynamic = undefined
@@ -1871,7 +2193,7 @@ fun melinda(def: dynamic) {"__async"
         var entityRes: dynamic = undefined
         if (entityFun) {
             entityRes = __await(ui.rpcSoft(json("fun" to entityFun, "entityID" to entityID)))
-            if (entityRes.error) return showBadResponse(entityRes)
+            if (entityRes.error) return __asyncResult(showBadResponse(entityRes))
         }
 
         val searchString = ui.urlQuery.search
@@ -1896,7 +2218,7 @@ fun melinda(def: dynamic) {"__async"
             "fun" to jshit.fov(itemsFun, json("activeTab" to activeTab)),
             "entityID" to entityID, "filter" to filter, "ordering" to ordering, "searchString" to searchString)
         val itemsRes = __await<dynamic>(ui.rpcSoft(itemsReq))
-        if (itemsRes.error) return showBadResponse(itemsRes)
+        if (itemsRes.error) return __asyncResult(showBadResponse(itemsRes))
 
         if (hasSearchBox) {
             searchBoxInput = jshit.Input(json(
@@ -2006,6 +2328,7 @@ fun melinda(def: dynamic) {"__async"
             }
         ))
     } finally { if (trainName) jshit.endTrain() }
+    return __asyncResult(Unit)
 }
 
 

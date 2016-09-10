@@ -18,6 +18,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 #import static 'into-u/utils-client ./stuff'
 
 import {apsdata} from './common'
+global.apsdata = apsdata // TODO:vgrechka @unhack    28879d4e-6b58-4b37-933e-ccdfc42f4be4 
 
 import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,
         button, pageTopBlockQuote, nostring, openDebugPane, debugSectionTitle, horizontala, hor1, hor2,
@@ -39,6 +40,9 @@ Error.stackTraceLimit = Infinity
 global.igniteShit = makeUIShitIgniter({
     
 Impl: function hot$ImplForShitIgniter({ui}) {
+    
+kot.aps.KotlinShit.ui = ui
+    
 const impl = {
 
 isDynamicPage,
@@ -134,7 +138,7 @@ privatePageLoader(name) {
 return lookup(name, {
     
 async 'admin-heap'() {
-    await kot.KotlinShit.kot_melinda({
+    await kot.aps.KotlinShit.kot_melinda({
         ui,
         urlPath: 'admin-heap.html',
         trainName: 'Load admin-heap page',
@@ -220,7 +224,7 @@ async 'admin-my-tasks'() {
 async support() {
     raise('reimplement me')
     if (ui.urlQuery.thread) {
-        await kot.KotlinShit.kot_melinda({
+        await kot.aps.KotlinShit.kot_melinda({
             ui,
             urlPath: 'support.html', urlEntityParamName: 'thread',
             trainName: 'Load support page with thread param',
@@ -442,181 +446,186 @@ async dashboard~({preserveScroll}={}) { // @ctx page dashboard
     }
 },
 
-
-async 'admin-users~'() { // @ctx page admin-users
-    await kot.KotlinShit.kot_melinda({
-        ui,
-        urlPath: 'admin-users.html',
-        itemsFun: 'private_getUsers',
-        header: entityRes => {
-            return pageHeader({title: t(`TOTE`, `Пользователи`)})
-        },
-        
-        hasFilterSelect: true,
-        filterSelectValues: apsdata.userFilters(),
-        defaultFilter: 'all',
-
-        plusIcon: 'plus',
-        
-        plusFormDef: {
-            primaryButtonTitle: t(`TOTE`, `Запостить`),
-            cancelButtonTitle: t(`TOTE`, `Передумал`),
-            autoFocus: 'message',
-            fields: [
-                ui.HiddenField({
-                    name: 'threadID',
-                    value: ui.urlQuery.thread,
-                }),
-                ui.TextField({
-                    name: 'message',
-                    kind: 'textarea',
-                    title: t(`TOTE`, `Сообщение`),
-                }),
-            ],
-            rpcFun: 'private_createSupportThreadMessage',
-            async onSuccess~(res) {
-                await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
-            },
-        },
-        
-        renderItem(def) {
-            #extract {item: user, index} from def
-                
-            const headingID = puid()
-            const placeholder = Placeholder()
-            enterDisplayMode()
-            
-            return placeholder
-            
-            
-            function peggy(def) {
-                #extract {headingActionItems, body} from def
-                
-                placeholder.setContent(diva({controlTypeName: 'admin-users::renderItem', tame: `item${sufindex(index)}`},
-                    diva({tame: 'heading', id: headingID, style: {marginBottom: 10, background: BLUE_GRAY_50, borderBottom: `1px solid ${BLUE_GRAY_100}`}},
-                        spana({style: {fontWeight: 'normal'}},
-                            spanc({tame: 'title', style: {fontSize: '135%'}, content: {movy: {model: user, value: user.first_name + ' ' + user.last_name}}}),
-                            spanc({tame: 'no', style: {color: GRAY_500, marginLeft: 12}, content: `${nostring({no: user.id})}`})),
-                            
-                        hor2(s{style: {float: 'right', marginTop: 4, marginRight: 4, color: BLUE_GRAY_600}, items: headingActionItems})),
-                        
-                    body,
-                    
-                    // ObjectViewer(s{object: user}),
-                ))
-            }
-            
-            function enterDisplayMode() {
-                peggy(s{
-                    headingActionItems: [
-                        faIcon({tamy: `edit`, className: 'hover-color-BLUE_GRAY_800', style: {fontSize: '135%', cursor: 'pointer'}, icon: 'pencil', onClick: enterEditMode})
-                    ],
-                    body: diva({}, renderProfile(s{user}))})
-            }
-            
-            function enterEditMode~() {
-                const form = ui.Form(s{
-                    dontShameButtons: true,
-                    errorBannerStyle: {marginTop: 15},
-                    primaryButtonTitle: t(`TOTE`, `Сохранить`),
-                    cancelButtonTitle: t(`TOTE`, `Передумал`),
-                    
-                    getInvisibleFieldNames() {
-                        let invisible = ['profileRejectionReason', 'banReason']
-                        
-                        const state = form.getField('state').getValue()
-                        if (state === 'profile-rejected') {
-                            invisible = without(invisible, 'profileRejectionReason')
-                        }
-                        else if (state === 'banned') {
-                            invisible = without(invisible, 'banReason')
-                        }
-                        
-                        return invisible
-                    },
-                    
-                    fields: [
-                        ui.HiddenField({
-                            name: 'id',
-                            value: user.id,
-                        }),
-                        
-                        ui.SelectField(s{
-                            name: 'state',
-                            title: t(`TOTE`, `Статус`),
-                            values: apsdata.userStates(),
-                        }),
-                        
-                        ui.TextField(s{
-                            name: 'profileRejectionReason',
-                            kind: 'textarea',
-                            title: t('TOTE', 'Причина отказа'),
-                        }),
-                        
-                        ui.TextField(s{
-                            name: 'banReason',
-                            kind: 'textarea',
-                            title: t('TOTE', 'Причина бана'),
-                        }),
-                        
-                        ...ui.makeSignUpFields(s{}),
-                        ...makeProfileFields(s{}),
-                        
-                        ui.TextField(s{
-                            name: 'adminNotes',
-                            kind: 'textarea',
-                            title: t('TOTE', 'Заметки админа'),
-                        }),
-                    ],
-                    rpcFun: 'private_updateUser',
-                    onCancel~() {
-                        placeholder.setPrevContent()
-                        scrollToHeading()
-                    },
-                    async onSuccess~(res) {
-                        await refreshRecord+()
-                        scrollToHeading()
-                    },
-                    onError~() {
-                        scrollToHeading()
-                    },
-                })
-                
-                form.getField('state').setValue(user.state)
-                form.getField('email').setValue(user.email)
-                form.getField('firstName').setValue(user.first_name)
-                form.getField('lastName').setValue(user.last_name)
-                form.getField('phone').setValue(user.phone)
-                form.getField('aboutMe').setValue(user.about_me)
-                form.getField('profileRejectionReason').setValue(user.profile_rejection_reason || '')
-                form.getField('adminNotes').setValue(user.admin_notes || '')
-                
-                peggy(s{
-                    headingActionItems: [],
-                    body: diva({style: {marginBottom: 15}}, form)})
-                    
-                scrollToHeading()
-            }
-            
-            function scrollToHeading() {
-                requestAnimationFrame(_=> $(document).scrollTop(byid(headingID).offset().top - 50 - 15))
-            }
-            
-            
-            async function refreshRecord~() {
-                const res = await ui.rpcSoft({fun: 'private_getUser', id: user.id})
-                if (res.error) {
-                    return peggy(s{
-                        headingActionItems: [],
-                        body: errorBanner(s{content: res.error})})
-                }
-
-                user = res.user
-                enterDisplayMode()
-            }
-        },
-    })
+async 'admin-users'() { // @ctx page admin-users
+    await kot.aps.KotlinShit.loadAdminUsersPage(ui)
 },
+
+// @ported-to-kotlin
+//
+//async 'admin-users~'() { // @ctx page admin-users
+//    await kot.aps.KotlinShit.kot_melinda({
+//        ui,
+//        urlPath: 'admin-users.html',
+//        itemsFun: 'private_getUsers',
+//        header: entityRes => {
+//            return pageHeader({title: t(`TOTE`, `Пользователи`)})
+//        },
+//        
+//        hasFilterSelect: true,
+//        filterSelectValues: apsdata.userFilters(),
+//        defaultFilter: 'all',
+//
+//        plusIcon: 'plus',
+//        
+//        plusFormDef: {
+//            primaryButtonTitle: t(`TOTE`, `Запостить`),
+//            cancelButtonTitle: t(`TOTE`, `Передумал`),
+//            autoFocus: 'message',
+//            fields: [
+//                ui.HiddenField({
+//                    name: 'threadID',
+//                    value: ui.urlQuery.thread,
+//                }),
+//                ui.TextField({
+//                    name: 'message',
+//                    kind: 'textarea',
+//                    title: t(`TOTE`, `Сообщение`),
+//                }),
+//            ],
+//            rpcFun: 'private_createSupportThreadMessage',
+//            async onSuccess~(res) {
+//                await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
+//            },
+//        },
+//        
+//        renderItem(def) {
+//            #extract {item: user, index} from def
+//                
+//            const headingID = puid()
+//            const placeholder = Placeholder()
+//            enterDisplayMode()
+//            
+//            return placeholder
+//            
+//            
+//            function peggy(def) {
+//                #extract {headingActionItems, body} from def
+//                
+//                placeholder.setContent(diva({controlTypeName: 'admin-users::renderItem', tame: `item${sufindex(index)}`},
+//                    diva({tame: 'heading', id: headingID, style: {marginBottom: 10, background: BLUE_GRAY_50, borderBottom: `1px solid ${BLUE_GRAY_100}`}},
+//                        spana({style: {fontWeight: 'normal'}},
+//                            spanc({tame: 'title', style: {fontSize: '135%'}, content: {movy: {model: user, value: user.first_name + ' ' + user.last_name}}}),
+//                            spanc({tame: 'no', style: {color: GRAY_500, marginLeft: 12}, content: `${nostring({no: user.id})}`})),
+//                            
+//                        hor2(s{style: {float: 'right', marginTop: 4, marginRight: 4, color: BLUE_GRAY_600}, items: headingActionItems})),
+//                        
+//                    body,
+//                    
+//                    // ObjectViewer(s{object: user}),
+//                ))
+//            }
+//            
+//            function enterDisplayMode() {
+//                peggy(s{
+//                    headingActionItems: [
+//                        faIcon({tamy: `edit`, className: 'hover-color-BLUE_GRAY_800', style: {fontSize: '135%', cursor: 'pointer'}, icon: 'pencil', onClick: enterEditMode})
+//                    ],
+//                    body: diva({}, renderProfile(s{user}))})
+//            }
+//            
+//            function enterEditMode~() {
+//                const form = ui.Form(s{
+//                    dontShameButtons: true,
+//                    errorBannerStyle: {marginTop: 15},
+//                    primaryButtonTitle: t(`TOTE`, `Сохранить`),
+//                    cancelButtonTitle: t(`TOTE`, `Передумал`),
+//                    
+//                    getInvisibleFieldNames() {
+//                        let invisible = ['profileRejectionReason', 'banReason']
+//                        
+//                        const state = form.getField('state').getValue()
+//                        if (state === 'profile-rejected') {
+//                            invisible = without(invisible, 'profileRejectionReason')
+//                        }
+//                        else if (state === 'banned') {
+//                            invisible = without(invisible, 'banReason')
+//                        }
+//                        
+//                        return invisible
+//                    },
+//                    
+//                    fields: [
+//                        ui.HiddenField({
+//                            name: 'id',
+//                            value: user.id,
+//                        }),
+//                        
+//                        ui.SelectField(s{
+//                            name: 'state',
+//                            title: t(`TOTE`, `Статус`),
+//                            values: apsdata.userStates(),
+//                        }),
+//                        
+//                        ui.TextField(s{
+//                            name: 'profileRejectionReason',
+//                            kind: 'textarea',
+//                            title: t('TOTE', 'Причина отказа'),
+//                        }),
+//                        
+//                        ui.TextField(s{
+//                            name: 'banReason',
+//                            kind: 'textarea',
+//                            title: t('TOTE', 'Причина бана'),
+//                        }),
+//                        
+//                        ...ui.makeSignUpFields(s{}),
+//                        ...makeProfileFields(s{}),
+//                        
+//                        ui.TextField(s{
+//                            name: 'adminNotes',
+//                            kind: 'textarea',
+//                            title: t('TOTE', 'Заметки админа'),
+//                        }),
+//                    ],
+//                    rpcFun: 'private_updateUser',
+//                    onCancel~() {
+//                        placeholder.setPrevContent()
+//                        scrollToHeading()
+//                    },
+//                    async onSuccess~(res) {
+//                        await refreshRecord+()
+//                        scrollToHeading()
+//                    },
+//                    onError~() {
+//                        scrollToHeading()
+//                    },
+//                })
+//                
+//                form.getField('state').setValue(user.state)
+//                form.getField('email').setValue(user.email)
+//                form.getField('firstName').setValue(user.first_name)
+//                form.getField('lastName').setValue(user.last_name)
+//                form.getField('phone').setValue(user.phone)
+//                form.getField('aboutMe').setValue(user.about_me)
+//                form.getField('profileRejectionReason').setValue(user.profile_rejection_reason || '')
+//                form.getField('adminNotes').setValue(user.admin_notes || '')
+//                
+//                peggy(s{
+//                    headingActionItems: [],
+//                    body: diva({style: {marginBottom: 15}}, form)})
+//                    
+//                scrollToHeading()
+//            }
+//            
+//            function scrollToHeading() {
+//                requestAnimationFrame(_=> $(document).scrollTop(byid(headingID).offset().top - 50 - 15))
+//            }
+//            
+//            
+//            async function refreshRecord~() {
+//                const res = await ui.rpcSoft({fun: 'private_getUser', id: user.id})
+//                if (res.error) {
+//                    return peggy(s{
+//                        headingActionItems: [],
+//                        body: errorBanner(s{content: res.error})})
+//                }
+//
+//                user = res.user
+//                enterDisplayMode()
+//            }
+//        },
+//    })
+//},
                     
 async profile~() { // @ctx page profile
     const primaryButtonTitle = t('TOTE', 'Отправить на проверку')
@@ -639,7 +648,7 @@ async profile~() { // @ctx page profile
         const form = ui.Form({
             primaryButtonTitle,
             autoFocus: 'phone',
-            fields: makeProfileFields(s{}),
+            fields: kot.aps.KotlinShit.makeProfileFields(s{}),
             rpcFun: 'private_updateProfile',
             async onSuccess~(res) {
                 ui.setUser(res.newUser)
@@ -655,13 +664,13 @@ async profile~() { // @ctx page profile
     else if (userState === 'profile-approval-pending') {
         pageBody = diva({},
             preludeWithHourglass(s{content: spancTitle({title: t('TOTE', 'Админ проверяет профиль, жди извещения почтой')})}),
-            renderProfile(s{user: user}),
+            kot.aps.KotlinShit.renderProfile(s{user: user}),
         )
     }
     else if (userState === 'banned') {
         pageBody = diva({},
             preludeWithVeryBadNews(s{content: spancTitle({title: t('TOTE', 'Тебя тупо забанили, ОК? Кина не будет.')})}),
-            renderProfile(s{user: user}),
+            kot.aps.KotlinShit.renderProfile(s{user: user}),
         )
     }
     else {
@@ -704,11 +713,13 @@ async 'debug-perf-render'() { // @ctx page debug-perf-render
 },
 
 async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
-    kot.KotlinShit.loadDebugKotlinPlaygroundPage(ui)
+    kot.aps.KotlinShit.loadDebugKotlinPlaygroundPage(ui)
 },
 
 })
 
+// @ported-to-kotlin
+//
 //async function deprecated_melinda(def) {
 //    #extract {
 //        trainName, urlPath, urlEntityParamName, tabDefs, defaultActiveTab,
@@ -950,74 +961,78 @@ return impl
         
 // @ctx helpers
 
-function makeProfileFields(def) {
-    return [
-        ui.TextField(s{
-            name: 'phone',
-            title: t('TOTE', 'Телефон'),
-        }),
-        ui.TextField(s{
-            name: 'aboutMe',
-            kind: 'textarea',
-            title: t('TOTE', 'Пара ласковых о себе'),
-        }),
-    ]
-}
+// @ported-to-kotlin
+//
+//function makeProfileFields(def) {
+//    return [
+//        ui.TextField(s{
+//            name: 'phone',
+//            title: t('TOTE', 'Телефон'),
+//        }),
+//        ui.TextField(s{
+//            name: 'aboutMe',
+//            kind: 'textarea',
+//            title: t('TOTE', 'Пара ласковых о себе'),
+//        }),
+//    ]
+//}
         
-function renderProfile(def) {
-    #extract {user} from def
-    const model = user
-    
-    const profileFilled = model.profile_updated_at
-    
-    let profileUpdatedPiece
-    if (profileFilled) {
-        profileUpdatedPiece = limpopo(s{colsm: 3, model, prop: 'profile_updated_at',
-            label: t(`TOTE`, `Профиль залит`),
-            value: timestampString(model.profile_updated_at, {includeTZ: true})})
-    } else {
-        profileUpdatedPiece = limpopo(s{colsm: 3, model,
-            prop: 'profile_updated_at', label: t(`TOTE`, `Профиль`), value: t(`TOTE`, `Нифига не заполнялся`)})
-    }
-    
-    const adminLooks = ui.getUser().kind === 'admin'
-    
-    return diva({controlTypeName: 'renderProfile', tame: 'profile'},
-        diva({className: 'row'},
-            limpopo(s{colsm: 3, model, prop: 'first_name', label: t(`TOTE`, `Имя`)}),
-            limpopo(s{colsm: 3, model, prop: 'last_name', label: t(`TOTE`, `Фамилия`)}),
-            limpopo(s{colsm: 3, model, prop: 'email', label: t(`TOTE`, `Почта`)}),
-            profileFilled && limpopo(s{colsm: 3, model, prop: 'phone', label: t(`TOTE`, `Телефон`)}),
-        ),
-        diva({className: 'row'},
-            limpopo(s{colsm: 3, model, prop: 'kind',
-                label: t(`TOTE`, `Тип`),
-                content: diva({style: {}},
-                    userKindIcon(s{user}),
-                    spanc({tame: 'value', content: apsdata.userKindTitle(user.kind)}))}),
-            adminLooks && limpopo(s{colsm: 3, model, prop: 'state',
-                formGroupStyle: run(_=> {
-                    if (user.state === 'profile-approval-pending') return {background: AMBER_200}
-                    if (user.state === 'profile-rejected') return {background: DEEP_ORANGE_200}
-                    if (user.state === 'banned') return {background: RED_200}
-                    return {}
-                }),
-                label: t(`TOTE`, `Статус`), prop: 'state', transform: apsdata.userStateTitle}),
-            limpopo(s{colsm: 3, model, prop: 'inserted_at',
-                label: t(`TOTE`, `Аккаунт создан`),
-                value: timestampString(model.inserted_at, {includeTZ: true})}),
-            profileUpdatedPiece,
-        ),
-        user.state === 'profile-rejected' && diva({className: 'row'},
-            limpopo(s{colsm: 12, model, prop: 'profile_rejection_reason', label: t(`TOTE`, `Причина отказа`), contentStyle: {whiteSpace: 'pre-wrap'}})),
-        user.state === 'banned' && diva({className: 'row'},
-            limpopo(s{colsm: 12, model, prop: 'ban_reason', label: t(`TOTE`, `Причина бана`), contentStyle: {whiteSpace: 'pre-wrap'}})),
-        profileFilled && diva({className: 'row'},
-            limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`), contentStyle: {whiteSpace: 'pre-wrap'}})),
-        adminLooks && user.admin_notes && diva({className: 'row'},
-            limpopo(s{colsm: 12, model, prop: 'admin_notes', label: t(`TOTE`, `Заметки админа`), contentStyle: {whiteSpace: 'pre-wrap'}}))
-    )
-}
+// @ported-to-kotlin
+//
+//function renderProfile(def) {
+//    #extract {user} from def
+//    const model = user
+//    
+//    const profileFilled = model.profile_updated_at
+//    
+//    let profileUpdatedPiece
+//    if (profileFilled) {
+//        profileUpdatedPiece = limpopo(s{colsm: 3, model, prop: 'profile_updated_at',
+//            label: t(`TOTE`, `Профиль залит`),
+//            value: timestampString(model.profile_updated_at, {includeTZ: true})})
+//    } else {
+//        profileUpdatedPiece = limpopo(s{colsm: 3, model,
+//            prop: 'profile_updated_at', label: t(`TOTE`, `Профиль`), value: t(`TOTE`, `Нифига не заполнялся`)})
+//    }
+//    
+//    const adminLooks = ui.getUser().kind === 'admin'
+//    
+//    return diva({controlTypeName: 'renderProfile', tame: 'profile'},
+//        diva({className: 'row'},
+//            limpopo(s{colsm: 3, model, prop: 'first_name', label: t(`TOTE`, `Имя`)}),
+//            limpopo(s{colsm: 3, model, prop: 'last_name', label: t(`TOTE`, `Фамилия`)}),
+//            limpopo(s{colsm: 3, model, prop: 'email', label: t(`TOTE`, `Почта`)}),
+//            profileFilled && limpopo(s{colsm: 3, model, prop: 'phone', label: t(`TOTE`, `Телефон`)}),
+//        ),
+//        diva({className: 'row'},
+//            limpopo(s{colsm: 3, model, prop: 'kind',
+//                label: t(`TOTE`, `Тип`),
+//                content: diva({style: {}},
+//                    userKindIcon(s{user}),
+//                    spanc({tame: 'value', content: apsdata.userKindTitle(user.kind)}))}),
+//            adminLooks && limpopo(s{colsm: 3, model, prop: 'state',
+//                formGroupStyle: run(_=> {
+//                    if (user.state === 'profile-approval-pending') return {background: AMBER_200}
+//                    if (user.state === 'profile-rejected') return {background: DEEP_ORANGE_200}
+//                    if (user.state === 'banned') return {background: RED_200}
+//                    return {}
+//                }),
+//                label: t(`TOTE`, `Статус`), prop: 'state', transform: apsdata.userStateTitle}),
+//            limpopo(s{colsm: 3, model, prop: 'inserted_at',
+//                label: t(`TOTE`, `Аккаунт создан`),
+//                value: timestampString(model.inserted_at, {includeTZ: true})}),
+//            profileUpdatedPiece,
+//        ),
+//        user.state === 'profile-rejected' && diva({className: 'row'},
+//            limpopo(s{colsm: 12, model, prop: 'profile_rejection_reason', label: t(`TOTE`, `Причина отказа`), contentStyle: {whiteSpace: 'pre-wrap'}})),
+//        user.state === 'banned' && diva({className: 'row'},
+//            limpopo(s{colsm: 12, model, prop: 'ban_reason', label: t(`TOTE`, `Причина бана`), contentStyle: {whiteSpace: 'pre-wrap'}})),
+//        profileFilled && diva({className: 'row'},
+//            limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`), contentStyle: {whiteSpace: 'pre-wrap'}})),
+//        adminLooks && user.admin_notes && diva({className: 'row'},
+//            limpopo(s{colsm: 12, model, prop: 'admin_notes', label: t(`TOTE`, `Заметки админа`), contentStyle: {whiteSpace: 'pre-wrap'}}))
+//    )
+//}
         
 function makeRenderSupportThread({topicIsLink, hasTakeAndReplyButton, showMessageNewLabel, dryFroms}) {
     return function renderSupportThread(def) {
@@ -1151,7 +1166,7 @@ function userLabel(def) {
     const me = {
         render() {
             return spana({id: me.elementID},
-                userKindIcon(s{user}),
+                kot.aps.KotlinShit.userKindIcon(s{user}),
                 spancTitle({title}))
         },
     }
@@ -1161,12 +1176,14 @@ function userLabel(def) {
     return elcl(me)
 }
         
-function userKindIcon(def) {
-    #extract {user} from def
-    
-    return faIcon({tame: 'icon', style: {marginLeft: 5, marginRight: 5}, icon: lookup(user.kind, {
-        customer: 'user', writer: 'pencil', admin: 'cog'})})
-}
+// @ported-to-kotlin
+//
+//function userKindIcon(def) {
+//    #extract {user} from def
+//    
+//    return faIcon({tame: 'icon', style: {marginLeft: 5, marginRight: 5}, icon: lookup(user.kind, {
+//        customer: 'user', writer: 'pencil', admin: 'cog'})})
+//}
 
 function brightBadgea(def, content) {
     #extract {style} from def

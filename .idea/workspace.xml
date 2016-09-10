@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="1239" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="1337" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="86" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="388" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="327" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/front.kt" line="520" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
@@ -43,13 +43,23 @@
       <file leaf-file-name="front.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/front.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="536">
-              <caret line="175" column="37" selection-start-line="175" selection-start-column="37" selection-end-line="175" selection-end-column="37" />
+            <state relative-caret-position="455">
+              <caret line="356" column="24" selection-start-line="356" selection-start-column="24" selection-end-line="356" selection-end-column="24" />
               <folding>
-                <element signature="e#0#60#0" expanded="true" />
-                <element signature="e#62#136#0" expanded="true" />
-                <marker date="1473512301662" expanded="true" signature="64697:65030" ph="..." />
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#75#153#0" expanded="true" />
+                <marker date="1473550299192" expanded="true" signature="79998:80331" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scratch.kts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/scratch.kts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -135,16 +145,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_Collections.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/generated/_Collections.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21654">
-              <caret line="805" column="56" selection-start-line="805" selection-start-column="56" selection-end-line="805" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="TextPackage.kjsm" pinned="false" current-in-tab="false">
         <entry file="jar://$PROJECT_DIR$/lib/kotlin-jslib.jar!/kotlin/kotlin/text/TextPackage.kjsm">
           <provider selected="true" editor-type-id="text-editor">
@@ -178,11 +178,11 @@
       <list>
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.kt" />
         <option value="$PROJECT_DIR$/front/src/scratch.kt" />
-        <option value="$PROJECT_DIR$/front/src/scratch.kts" />
         <option value="$PROJECT_DIR$/tools/WatchAndEnhanceJS.cmd" />
         <option value="$PROJECT_DIR$/tools/src/WatchAndEnhanceJS.kt" />
         <option value="C:/opt/jdk1.8.0_72/jre/lib/ext/nashorn.jar!/jdk/nashorn/internal/runtime/Source.class" />
         <option value="$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt" />
+        <option value="$PROJECT_DIR$/front/src/scratch.kts" />
         <option value="$PROJECT_DIR$/front/src/front.kt" />
       </list>
     </option>
@@ -211,7 +211,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -224,7 +224,14 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane />
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -240,7 +247,7 @@
       <recent name="E:\work\aps\tools\src\aps" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.aps.WatchAndEnhanceJSKt">
+  <component name="RunManager" selected="Kotlin script.scratch.kts">
     <configuration default="false" name="aps.WatchAndEnhanceJSKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="aps.WatchAndEnhanceJSKt" />
@@ -561,7 +568,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26775956" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26695842" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32822758" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -637,9 +644,9 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#60#0" expanded="true" />
-            <element signature="e#62#136#0" expanded="true" />
-            <marker date="1473512301662" expanded="true" signature="64697:65030" ph="..." />
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#75#153#0" expanded="true" />
+            <marker date="1473550299192" expanded="true" signature="79998:80331" ph="..." />
           </folding>
         </state>
       </provider>
@@ -775,14 +782,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
           <caret line="175" column="15" selection-start-line="175" selection-start-column="15" selection-end-line="175" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/scratch.kts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -992,14 +991,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/scratch.kts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/front.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="175" column="37" selection-start-line="175" selection-start-column="37" selection-end-line="175" selection-end-column="37" />
+        <state relative-caret-position="455">
+          <caret line="356" column="24" selection-start-line="356" selection-start-column="24" selection-end-line="356" selection-end-column="24" />
           <folding>
-            <element signature="e#0#60#0" expanded="true" />
-            <element signature="e#62#136#0" expanded="true" />
-            <marker date="1473512301662" expanded="true" signature="64697:65030" ph="..." />
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#75#153#0" expanded="true" />
+            <marker date="1473550299192" expanded="true" signature="79998:80331" ph="..." />
           </folding>
         </state>
       </provider>

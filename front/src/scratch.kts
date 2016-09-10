@@ -1,4 +1,7 @@
-strings1()
+tralala1()
+
+fun tralala1() {
+}
 
 fun strings1() {
     //       012345678
