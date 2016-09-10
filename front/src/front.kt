@@ -10,8 +10,7 @@ import Color.*
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette
-    BLACK("#000000"),
-    BLACK_BOOT("#333333"), WHITE("#ffffff"),
+    BLACK("#000000"), BLACK_BOOT("#333333"), WHITE("#ffffff"),
     RED_50("#ffebee"), RED_100("#ffcdd2"), RED_200("#ef9a9a"), RED_300("#e57373"), RED_400("#ef5350"), RED_500("#f44336"), RED_600("#e53935"), RED_700("#d32f2f"), RED_800("#c62828"), RED_900("#b71c1c"), RED_A100("#ff8a80"), RED_A200("#ff5252"), RED_A400("#ff1744"), RED_A700("#d50000"),
     PINK_50("#fce4ec"), PINK_100("#f8bbd0"), PINK_200("#f48fb1"), PINK_300("#f06292"), PINK_400("#ec407a"), PINK_500("#e91e63"), PINK_600("#d81b60"), PINK_700("#c2185b"), PINK_800("#ad1457"), PINK_900("#880e4f"), PINK_A100("#ff80ab"), PINK_A200("#ff4081"), PINK_A400("#f50057"), PINK_A700("#c51162"),
     PURPLE_50("#f3e5f5"), PURPLE_100("#e1bee7"), PURPLE_200("#ce93d8"), PURPLE_300("#ba68c8"), PURPLE_400("#ab47bc"), PURPLE_500("#9c27b0"), PURPLE_600("#8e24aa"), PURPLE_700("#7b1fa2"), PURPLE_800("#6a1b9a"), PURPLE_900("#4a148c"), PURPLE_A100("#ea80fc"), PURPLE_A200("#e040fb"), PURPLE_A400("#d500f9"), PURPLE_A700("#aa00ff"),
@@ -38,6 +37,7 @@ enum class Color(val string: String) {
 
 @native interface IKotlinShit {
     fun ignite(_global: dynamic, _jshit: dynamic)
+    fun loadDebugKotlinPlaygroundPage(ui: dynamic)
 }
 
 var global: dynamic = null
@@ -47,18 +47,306 @@ object KotlinShit : IKotlinShit {
     override fun ignite(_global: dynamic, _jshit: dynamic) {
         println("----- Igniting front Kotlin shit -----")
         global = _global; jshit = _jshit
+
+        jshit.diva = ::jsFacing_diva
+        jshit.spana = ::jsFacing_spana
+        jshit.dom.spana = ::jsFacing_dom_spana
+
         jshit.art.renderStepDescriptions = ::renderStepDescriptions
         jshit.art.openTestPassedPane = ::openTestPassedPane
         jshit.art.gertrude = ::gertrude
+        jshit.renderExceptionTriangle = ::jsFacing_renderExceptionTriangle
+        jshit.spanc = ::jsFacing_spanc
 
-        global.testAsyncShit = ::testAsyncShit
+        initTestShit()
     }
 
     val kot_melinda = ::melinda
+
+    override fun loadDebugKotlinPlaygroundPage(ui: dynamic) {
+        ui.setPage(json(
+            "header" to jshit.pageHeader(json("title" to "debug-kotlin-playground")),
+            "body" to div {
+                // spanc {tame = "foo"; content = "bar"}
+            }
+        ))
+    }
 }
 
+fun jsFacing_diva(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("div", attrs, children)
+}
+
+fun jsFacing_spana(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("span", attrs, children)
+}
+
+fun jsFacing_dom_spana(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_veryBasicTag("span", attrs, *children)
+}
+
+fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: dynamic): dynamic {
+    var me: dynamic = undefined // @workaround
+    me = json(
+        "render" to render@{
+            try {
+                childrenAsJSArray.forEach({ child: dynamic, idx: dynamic ->
+                    if (!jshit.isObject(child)) return@forEach Unit
+                    else {
+                        if (js("typeof child") == "function") return@forEach Unit
+                        if (child.`$$typeof` == js("Symbol['for']('react.element')")) return@forEach Unit
+                        if (child.element) return@forEach Unit
+
+                        if (child.`$meta` || child.`$metaID`) {
+                            val meat = child.meat
+                            if (js("typeof meat") != "string") {
+                                // TODO:vgrechka Why not throw here?
+                                console.log("Only string meat, please, fuck you")
+                                return@forEach Unit
+                            }
+                            return@forEach Unit
+                        }
+
+                        console.log("Bad-boy child at index ${idx}", child)
+                        jshit.raiseWithMeta(json("message" to "Bad-boy child at index ${idx}", "meta" to attrs))
+                    }
+                })
+
+                return@render killme_veryBasicTag(tag, global.Object.assign(attrs, json("id" to me.elementID)), *childrenAsJSArray)
+            } catch (e: Throwable) {
+                throw global.Object.assign(e, json("\$definitionStack" to attrs.`$definitionStack`))
+            }
+        }
+    )
+    me.controlTypeName = tag + "a"
+    me.ignoreDebugCtrlShiftClick = true
+    jshit.implementControlShit(json("me" to me, "def" to attrs))
+    return jshit.elcl(me)
+}
+
+fun jsArrayOrArrayLikeObjectToArray(obj: dynamic): Array<Any?> {
+    val list = mutableListOf<dynamic>()
+    global.Object.keys(obj).forEach { k -> list.add(obj[k]) }
+    return list.toTypedArray()
+}
+
+fun killme_veryBasicTag(tag: String, attrs: dynamic, vararg _items: dynamic): dynamic {
+    val items = if (attrs.items) jsArrayOrArrayLikeObjectToArray(attrs.items) else _items
+
+    fun enhanceChild(element: dynamic, key: dynamic): dynamic {
+        if (jshit.isArray(element)) jshit.raise("I don't want arrays as ${tag}’s children (key=${key})")
+        val typeofElement = js("typeof element")
+
+        if (typeofElement != "object" && typeofElement != "string") raise("I don't want to deal with ${typeofElement} element children (key=${key})")
+
+        val element2 =
+            if (element.element)
+                element.element
+            else
+                element
+
+        val element3 =
+            if (js("typeof element2") == "string") {
+                element2
+            } else if (element2.`$meta` || element2.`$metaID`) {
+                val meat = element2.meat
+                if (js("typeof meat") != "string") raise("Only string meat, please, fuck you")
+
+                var me: dynamic = undefined
+                me = json(
+                    "render" to {
+                        React.createElement("span", json("id" to me.elementID), meat)
+                    }
+                )
+                if (element2.`$meta`) {
+                    me.controlTypeName = "t()"
+                    global.Object.assign(me, jshit.pick(element2.`$meta`, "\$sourceLocation", "\$definitionStack"))
+                } else {
+                    me.controlTypeName = "backend-t()"
+                    me.`$metaID` = element2.`$metaID`
+                }
+                me.ignoreDebugCtrlShiftClick = true
+                jshit.implementControlShit(json("me" to me, "def" to js("({})")))
+
+                jshit.elcl(me)
+            } else {
+                element2
+            }
+
+        return element3
+    }
+
+
+    var children: dynamic = undefined
+    if (!attrs.dangerouslySetInnerHTML) {
+        children = js("[]")
+        for (i in 0 until items.size) {
+            val captureItemInJS = items[i]
+            var item = captureItemInJS
+            if (js("typeof captureItemInJS") == "function") {
+                item = item()
+            }
+            if (item) {
+                val enhanced = enhanceChild(item, i)
+                children.push(enhanced)
+            }
+        }
+    }
+
+    return global.React.createElement.apply(global.React, js("[]").concat(tag, attrs, children))
+}
+
+class JSError(message: String) : Throwable(message) {
+    init {
+        // @hack
+        val msg = message
+        val jsError = js("Error(msg)")
+        throw jsError
+    }
+}
+
+
+fun jsFacing_spanc(def: dynamic): dynamic {
+    // #extract {content, className='', style={}} from def
+    val content = def.content
+    val className = if (def.className != undefined) def.className else ""
+    val style = if (def.style != undefined) def.style else js("({})")
+
+    if (!def.tame) jshit.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
+
+    val isString = js("typeof content") == "string"
+    val isMovy = js("typeof content") == "object" && js("typeof content.movy") == "object"
+    val isMopy = js("typeof content") == "object" && js("typeof content.mopy") == "object"
+    val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
+    jshit.invariant(jshit.nil(content) || isString || isMovy || isMopy || isMeaty, "Bad content for spanc (keys: ${global.Object.keys(content)})")
+
+    var me: dynamic = undefined // Workaround for Kotlin
+    me = json(
+        "render" to {
+            var renderThing = content
+            if (isMovy) {
+                renderThing = content.movy.value
+            } else if (isMopy) {
+                renderThing = content.mopy.model[content.mopy.prop]
+            }
+
+            jshit.spana(json("id" to me.elementID, "className" to className, "style" to style), renderThing)
+        },
+
+        "contributeTestState" to {state: dynamic ->
+            var stateThing = content
+                if (isMovy) {
+                    stateThing = content.movy.value
+                } else if (isMopy) {
+                    stateThing = content.mopy.model[content.mopy.prop]
+                } else if (isMeaty) {
+                    stateThing = content
+                }
+
+            state.put(json("control" to me, "key" to me.getTamePath(), "value" to jshit.textMeat(stateThing)))
+        },
+
+        "getLongRevelationTitle" to {
+            var revelationTitleThing = content
+            if (isMovy) {
+                revelationTitleThing = content.movy.value
+            } else if (isMopy) {
+                revelationTitleThing = content.mopy.model[content.mopy.prop]
+            } else if (isMeaty) {
+                revelationTitleThing = content
+            }
+
+            me.debugDisplayName + ": " + jshit.textMeat(revelationTitleThing)
+        },
+
+        "contributeRevelationSection" to {
+            val els = js("[]")
+
+            var model: dynamic = undefined
+            if (isMovy) model = content.movy.model
+            else if (isMopy) model = content.mopy.model
+
+            if (model) {
+                els.push(jshit.Betsy(json(
+                    "title" to t("Model"),
+                    "details" to jshit.ObjectViewer(json("object" to model))
+                )))
+            }
+
+            var metaID: dynamic = undefined
+            if (isMovy) metaID = content.movy.model.`$metaID`
+            else if (isMopy) metaID = content.mopy.model.`$metaID`
+
+            els.push(jshit.makeBackendMetaPanel(json("metaID" to metaID)))
+
+            jshit.diva.apply(null, js("[]").concat(js("({})"), els))
+        }
+    )
+
+    me.controlTypeName = "spanc"
+    me.ignoreDebugCtrlShiftClick = true
+    jshit.implementControlShit(json("me" to me, "def" to def))
+    return jshit.elcl(me)
+}
+
+//fun spanc(def: dynamic): ReactElement {
+//
+//}
+
+
+fun renderRedExclamationTriangleLabel(title: String): ReactElement {
+    return span {style {color = RED_700}
+        -span {className = "fa fa-exclamation-triangle"}
+        -span {style { marginLeft(10) }; -title}
+    }
+}
+
+
+
+fun jsFacing_renderExceptionTriangle(def: dynamic): dynamic {
+    var exception = def.exception
+
+    return span {
+        -span {style {cursor = "pointer"}
+            onClick { println("zzzzzzz") }
+            -renderRedExclamationTriangleLabel("It fucking throwed: ${exception.message}")
+        }
+
+        -span {style {marginLeft(10) }; -"("}
+        -"Reveal"
+//        -link("Reveal") {
+//            jshit.revealStack(json("exception" to exception))
+//        }
+        -")"
+    }
+
+//    try {
+//        return jshit.spana(json("noStateContributions" to true, "controlTypeName" to "renderExceptionTriangle"),
+//            jshit.spana(json("style" to json("cursor" to "pointer"),
+//                "onClick" to { jshit.revealStack(json("exception" to exception)) }),
+//                jshit.renderRedExclamationTriangleLabel(json("title" to t("It fucking throwed: ${exception.message}")))
+//            ),
+//
+//            jshit.spana(json("style" to json("marginLeft" to 10)), "("),
+//            jshit.link(json("title" to t("Reveal"), "onClick" to { jshit.revealStack(json("exception" to exception)) })),
+//            ")"
+//        )
+//    } catch(e: Throwable) {
+//        val msg = "We are in deep shit, man. Cannot renderExceptionTriangle()"
+//        global.console.error(msg)
+//        return null
+//    }
+}
+
+
 @Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE")
-fun link(vararg args: dynamic): ReactElement {
+fun jsLink(vararg args: dynamic): ReactElement {
     val shit = jshit
     return js("shit.link.apply(null, args)")
 }
@@ -615,7 +903,7 @@ fun renderStepDescriptions(): ReactElement {
 
                 actions = listOf(
                     // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 1
-                    link(json("title" to "Run until " + untilParamValue, "onClick" to {
+                    jsLink(json("title" to "Run until " + untilParamValue, "onClick" to {
                         var href = window.location.href
                         href = href.replace(Regex("&from[^&]*"), "")
                         href = href.replace(Regex("&until[^&]*"), "")
@@ -642,7 +930,7 @@ fun renderStepDescriptions(): ReactElement {
                 ),
                 // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 2
                 actions = listOf(
-                    link(json("title" to "Run from", "onClick" to {
+                    jsLink(json("title" to "Run from", "onClick" to {
                         var href = window.location.href
                         href = href.replace(Regex("&from[^&]*"), "")
                         href = href.replace(Regex("&until[^&]*"), "")
@@ -770,7 +1058,7 @@ class PromiseAsyncSwearBox(build: PromiseAsyncSwearBox.() -> Unit) : StatefulEle
     var mainWordIndex = -1
     var progressStatus: String? = null
     var phrase: String? = null
-    val myStyle = StyleBuilder(); val style = myStyle
+    val myStyle = StyleBuilder(); // val style = myStyle
     val onChange = SimpleEventHandlerBuilder()
 
     init {
@@ -858,19 +1146,39 @@ fun t(en: String) = ManagedString(en, en)
 
 val nbsp: String = js("String.fromCharCode(0xa0)")
 
+//class link(build: link.() -> Unit) : StatefulElement() {
+//    var content: ReactElement? = null
+//
+//    init {
+//        build()
+//    }
+//
+//    fun title(title: ManagedString) {
+//        content = spancTitle(title)
+//    }
+//
+//    override fun render(): ReactElement = element
+//
+//    private val element: ReactElement by lazy {
+//        React.createElement("a", json(
+//            "id" to elementID,
+//            "href" to "#",
+//            "className" to className,
+//            "style" to style.toJSObject(),
+//            "onClick" to onClick,
+//            "onMouseEnter" to onMouseEnter,
+//            "onMouseLeave" to onMouseLeave
+//        ), content)
+//    }
+//}
+
+
 class button(build: button.() -> Unit) : StatefulElement() {
     var icon: String? = null
     var title: ManagedString? = null
-    var className = ""
     var level = "default"
-    val style = StyleBuilder()
     val iconStyle = StyleBuilder()
     var hint: ManagedString? = null
-    var onClick: ReactEventHandler? = null
-
-    fun onClick(handler: ReactEventHandler) {
-        onClick = handler
-    }
 
     init {
         build()
@@ -935,6 +1243,19 @@ abstract class StatefulElement() : ToReactElementable {
 
     val constructionStackAsError: dynamic = js("Error()")
     open val firstSignificantStackLine: Int = 2
+
+    var onClick: ReactEventHandler? = null
+    fun onClick(handler: ReactEventHandler) { onClick = handler }
+
+    var onMouseEnter: ReactEventHandler? = null
+    fun onMouseEnter(handler: ReactEventHandler) { onMouseEnter = handler }
+
+    var onMouseLeave: ReactEventHandler? = null
+    fun onMouseLeave(handler: ReactEventHandler) { onMouseLeave = handler }
+
+    var className = ""
+    val style = StyleBuilder()
+
 
     val `$sourceLocation`: Promise<String?> by lazy {
         Promise<String?>({resolve, reject ->
@@ -1339,6 +1660,8 @@ fun Map<String, Any?>.toJSObject(): dynamic {
 }
 
 fun melinda(def: dynamic) {"__async"
+    fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack    592fa0de-0414-46fe-a3a6-a05dcb54b5ed
+
     val ui: dynamic = def.ui
     val trainName: dynamic = def.trainName; val urlPath: dynamic = def.urlPath; val urlEntityParamName: dynamic = def.urlEntityParamName;
     val tabDefs: dynamic = def.tabDefs; val defaultActiveTab: dynamic = def.defaultActiveTab; val header: dynamic = def.header;
@@ -1492,7 +1815,7 @@ fun melinda(def: dynamic) {"__async"
                 "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
                 // TODO:vgrechka Check if async below is enhanced correctly
                 "onKeyDown" to {e: dynamic -> "__async"
-                    if (e.keyCode === 13) {
+                    if (e.keyCode == 13) {
                         preventAndStop(e)
                         __await(applyHeaderControls(json("controlToBlink" to searchBoxInput)))
                     }
@@ -1586,7 +1909,7 @@ fun melinda(def: dynamic) {"__async"
             },
 
             "onKeyDown" to {e: dynamic ->
-                if (e.keyCode === 27) {
+                if (e.keyCode == 27) {
                     jshit.fov(cancelForm)
                 }
             }
@@ -1617,6 +1940,7 @@ class StyleBuilder {
     }
 
     var display: String? = null; set(value) { if (value == null) attrs.remove("display") else attrs["display"] = value }
+    var cursor: String? = null; set(value) { if (value == null) attrs.remove("cursor") else attrs["cursor"] = value }
     var fontWeight: String? = null; set(value) { if (value == null) attrs.remove("fontWeight") else attrs["fontWeight"] = value }
     var fontStyle: String? = null; set(value) { if (value == null) attrs.remove("fontStyle") else attrs["fontStyle"] = value }
     var color: Color? = null; set(value) { if (value == null) attrs.remove("color") else attrs["color"] = value.string }
@@ -1749,6 +2073,14 @@ fun someAsyncShit_localContainer() {
     someAsyncShit_local().then<Nothing> {res: Int ->
         println("Got result in `then`: $res")
     }
+}
+
+fun initTestShit() {
+    fun testDynamicVarargs() {
+    }
+
+    global.testAsyncShit = ::testAsyncShit
+    global.testDynamicVarargs = ::testDynamicVarargs
 }
 
 

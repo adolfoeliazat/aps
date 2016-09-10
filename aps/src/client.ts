@@ -24,7 +24,7 @@ import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSou
         Input, input, preventAndStop, renderLangLabel, spancTitle, Checkbox, errorLabel, errorBanner, RequestBuilder,
         preludeWithGreenCheck, preludeWithOrangeTriangle, labe, limpopo, darkLink, effects, ObjectViewer, Placeholder,
         beginTrain, endTrain, controlBeingRevealed, getCurrentTestBrowser, isInTestScenario, isOrWasInTestScenario,
-        preludeWithHourglass, preludeWithVeryBadNews, preludeWithBadNews, dom} from 'into-u/ui'
+        preludeWithHourglass, preludeWithVeryBadNews, preludeWithBadNews, dom, diva, spana} from 'into-u/ui'
         
 #import static 'into-u/ui'
 
@@ -190,7 +190,7 @@ async 'admin-heap'() {
         
         ui.setPage(s{
             header: pageHeader({title: pageTitle}),
-            body: div(
+            body: diva({},
                 ui.tabs({name: 'main', active: activeTab, tabDefs: [
                     tabydef(s{
                         name: 'support',
@@ -210,7 +210,7 @@ async 'admin-my-tasks'() {
     raise('implement me')
     ui.setPage(s{
         header: pageHeader({title: 'rtrtyyt'}),
-        body: div(
+        body: diva({},
             t(`TOTE`, `foooooooooo`), aa({href: '#', onClick() { dlog('cliiiiick') }}, t('qqqqqqqqqqq')))
     })
 },
@@ -320,7 +320,7 @@ async support() {
             
             ui.setPage(s{
                 header: pageHeader({title: t(`TOTE`, `Поддержка`)}),
-                body: div(
+                body: diva({},
                     ui.tabs({name: 'main', tabDefs, active: filter}),
                     ui.renderMoreable(s{itemsRes, itemsReq: {fun: 'private_getSupportThreadsChunk', filter}, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}),
                 )
@@ -702,254 +702,240 @@ async 'debug-perf-render'() { // @ctx page debug-perf-render
 },
 
 async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
-    // @wip kotlin
-    // const testShit = kot.makeTestShit()
-    
-    ui.setPage(s{
-        header: pageHeader({title: t('debug-kotlin-playground')}),
-        body: diva({},
-            ...keys(testShit).map(key => ts(key))
-        )
-    })
-    
-    function ts(name) {
-        return diva({},
-            diva({style: {fontWeight: 'bold', background: GRAY_200, marginTop: 10, marginBottom: 10, fontSize: '125%'}}, name),
-            testShit[name])
-    }
+    kot.KotlinShit.loadDebugKotlinPlaygroundPage(ui)
 },
 
 })
 
-async function deprecated_melinda(def) {
-    #extract {
-        trainName, urlPath, urlEntityParamName, tabDefs, defaultActiveTab,
-        header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef,
-        aboveItems, renderItem, defaultOrdering='desc', hasSearchBox=true, hasOrderingSelect=true, hasHeaderControls=true,
-        hasFilterSelect, filterSelectValues, defaultFilter
-    } from def
-    
-    if (trainName) beginTrain({name: trainName}); try {
-        let entityRes
-        if (entityFun) {
-            entityRes = await ui.rpcSoft({fun: entityFun, entityID})
-            if (entityRes.error) return showBadResponse(entityRes)
-        }
-        
-        const searchString = ui.urlQuery.search
-        
-        let filter
-        if (hasFilterSelect) {
-            filter = ui.urlQuery.filter
-            const saneFilters = filterSelectValues.map(x => x.value)
-            if (!saneFilters.includes(filter)) filter = defaultFilter
-        }
-        
-        let ordering = ui.urlQuery.ordering
-        if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
-        
-        let tabs, activeTab
-        if (tabDefs) {
-            activeTab = ui.urlQuery.tab || defaultActiveTab
-            tabs = ui.tabs({name: 'main', active: activeTab, tabDefs})
-        }
-
-        const itemsReq = s{fun: fov(itemsFun, {activeTab}), entityID, filter, ordering, searchString}
-        const itemsRes = await ui.rpcSoft(itemsReq)
-        if (itemsRes.error) return showBadResponse(itemsRes)
-        
-        let items, showEmptyLabel = true,
-            headerControlsVisible = true, headerControlsClass, headerControlsDisabled,
-            cancelForm,
-            plusShit, editShit
-            
-        let searchBox, searchBoxInput
-        if (hasSearchBox) {
-            searchBoxInput = Input({
-                tamyShamy: 'search',
-                style: {paddingLeft: 30, width: 160},
-                placeholder: t(`TOTE`, `Поиск...`),
-                disabled: _=> headerControlsDisabled,
-                async onKeyDown(e) {
-                    if (e.keyCode === 13) {
-                        preventAndStop(e)
-                        await applyHeaderControls+({controlToBlink: searchBoxInput})
-                    }
-                }
-            })
-            searchBoxInput.setValueExt({value: itemsRes.actualSearchString, notify: false})
-                
-            searchBox = diva({style: {position: 'relative'}},
-                searchBoxInput,
-                faIcon({icon: 'search', style: {position: 'absolute', left: 10, top: 10, color: GRAY_500}}),
-            )
-        }
-        
-        let filterSelect
-        if (hasFilterSelect) {
-            filterSelect = Select({
-                tamyShamy: 'filter', isAction: true, style: {width: 160},
-                values: filterSelectValues,
-                initialValue: filter,
-                disabled: _=> headerControlsDisabled,
-                async onChange() {
-                    await applyHeaderControls+({controlToBlink: filterSelect})
-                },
-            })
-            
-            filterSelect.setValueExt({value: itemsRes.actualFilter, notify: false})
-        }
-        
-        let orderingSelect
-        if (hasOrderingSelect) {
-            orderingSelect = Select({
-                tamyShamy: 'ordering', isAction: true, style: {width: 160},
-                values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
-                initialValue: ordering,
-                disabled: _=> headerControlsDisabled,
-                async onChange() {
-                    await applyHeaderControls+({controlToBlink: orderingSelect})
-                },
-            })
-            
-            orderingSelect.setValueExt({value: itemsRes.actualOrdering, notify: false})
-        }
-        
-        async function applyHeaderControls~({controlToBlink}) {
-            setHeaderControlsDisabled(true)
-            controlToBlink.setBlinking(true)
-            
-            const urlParamParts = []
-            
-            if (urlEntityParamName) {
-                urlParamParts.push(`${urlEntityParamName}=${entityID}`)
-            }
-            
-            urlParamParts.push(`filter=${filterSelect.getValue()}`)
-            urlParamParts.push(`ordering=${orderingSelect.getValue()}`)
-            
-            const searchString = searchBoxInput.getValue().trim()
-            if (searchString) {
-                urlParamParts.push(`search=${encodeURIComponent(searchString)}`)
-            }
-            
-            const url = `${urlPath}?${urlParamParts.join('&')}`
-            await ui.pushNavigate(url)
-            
-            setHeaderControlsDisabled(false)
-            controlToBlink.setBlinking(false)
-        }
-        
-        if (plusFormDef) {
-            plusShit = makeButtonFormShit(s{name: 'plus', level: 'primary', icon: plusIcon, formDef: plusFormDef})
-        }
-        if (editFormDef) {
-            editShit = makeButtonFormShit(s{name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
-        }
-            
-        
-        function makeButtonFormShit(def) {
-            #extract {name, level, icon, formDef} from def
-            
-            let form, formClass
-            
-            return {
-                button() {
-                    return button({tamyShamy: name, style: {marginLeft: 0}, level, icon, disabled: headerControlsDisabled, onClick() {
-                        showEmptyLabel = false
-                        setHeaderControlsDisappearing()
-                        formClass = 'aniFadeIn'
-                            
-                        cancelForm = function() {
-                            setHeaderControlsAppearing()
-                            form = undefined
-                            ui.updatePage()
-                        }
-                        
-                        form = ui.Form(asn(formDef, {
-                            onCancel: cancelForm,
-                        }))
-                        
-                        ui.updatePage()
-                    }})
-                },
-                
-                form() {
-                    return form && diva({className: formClass, style: {marginBottom: 15}}, form)
-                },
-            }
-        }
-        
-        let updateHeaderControls
-        
-        ui.setPage(s{
-            header: fov(header, entityRes),
-            body: _=> diva({style: {marginBottom: 15}},
-                tabs,
-                editShit && editShit.form,
-                plusShit && plusShit.form,
-                fov(aboveItems, entityRes),
-                run(function renderItems() {
-                    if (!itemsRes.items.length) {
-                        if (showEmptyLabel) {
-                            return diva({style: {marginTop: 10}}, emptyMessage || spanc({tame: 'nothingLabel', content: t(`TOTE`, `Савсэм ничего нэт, да...`)}))
-                        }
-                        return ''
-                    }
-                    return ui.renderMoreable(s{itemsRes, itemsReq, renderItem,})
-                }),
-            ),
-            headerControls: _=> updatableElement(s{}, update => {
-                updateHeaderControls = update
-                if (!fov(hasHeaderControls, entityRes) || !headerControlsVisible) return
-                
-                return _=> hor2({
-                    style: {display: 'flex', marginTop: tabDefs ? 55 : 0},
-                    className: headerControlsClass},
-                    
-                    searchBox,
-                    filterSelect,
-                    orderingSelect,
-                    editShit && editShit.button,
-                    plusShit && plusShit.button,
-                )
-            }),
-            
-            onKeyDown(e) {
-                if (e.keyCode === 27) {
-                    fov(cancelForm)
-                }
-            }
-        })
-        
-        
-        function setHeaderControlsDisappearing() {
-            headerControlsVisible = false
-            headerControlsClass = undefined
-        }
-        
-        function setHeaderControlsAppearing() {
-            headerControlsVisible = true
-            headerControlsClass = 'aniFadeIn'
-            timeoutSet(500, _=> {
-                headerControlsClass = undefined
-                ui.updatePage()
-            })
-        }
-        
-        function setHeaderControlsDisabled(b) {
-            headerControlsDisabled = b
-            updateHeaderControls()
-        } 
-        
-        function showBadResponse(res) {
-            return ui.setPage(s{
-                header: pageHeader({title: t(`TOTE`, `Облом`)}),
-                body: diva({}, errorBanner(s{content: res.error}))
-            })
-        }
-    } finally { if (trainName) endTrain() }
-}
+//async function deprecated_melinda(def) {
+//    #extract {
+//        trainName, urlPath, urlEntityParamName, tabDefs, defaultActiveTab,
+//        header, entityID, entityFun, itemsFun, emptyMessage, plusIcon='plus', plusFormDef, editFormDef,
+//        aboveItems, renderItem, defaultOrdering='desc', hasSearchBox=true, hasOrderingSelect=true, hasHeaderControls=true,
+//        hasFilterSelect, filterSelectValues, defaultFilter
+//    } from def
+//    
+//    if (trainName) beginTrain({name: trainName}); try {
+//        let entityRes
+//        if (entityFun) {
+//            entityRes = await ui.rpcSoft({fun: entityFun, entityID})
+//            if (entityRes.error) return showBadResponse(entityRes)
+//        }
+//        
+//        const searchString = ui.urlQuery.search
+//        
+//        let filter
+//        if (hasFilterSelect) {
+//            filter = ui.urlQuery.filter
+//            const saneFilters = filterSelectValues.map(x => x.value)
+//            if (!saneFilters.includes(filter)) filter = defaultFilter
+//        }
+//        
+//        let ordering = ui.urlQuery.ordering
+//        if (!['asc', 'desc'].includes(ordering)) ordering = defaultOrdering
+//        
+//        let tabs, activeTab
+//        if (tabDefs) {
+//            activeTab = ui.urlQuery.tab || defaultActiveTab
+//            tabs = ui.tabs({name: 'main', active: activeTab, tabDefs})
+//        }
+//
+//        const itemsReq = s{fun: fov(itemsFun, {activeTab}), entityID, filter, ordering, searchString}
+//        const itemsRes = await ui.rpcSoft(itemsReq)
+//        if (itemsRes.error) return showBadResponse(itemsRes)
+//        
+//        let items, showEmptyLabel = true,
+//            headerControlsVisible = true, headerControlsClass, headerControlsDisabled,
+//            cancelForm,
+//            plusShit, editShit
+//            
+//        let searchBox, searchBoxInput
+//        if (hasSearchBox) {
+//            searchBoxInput = Input({
+//                tamyShamy: 'search',
+//                style: {paddingLeft: 30, width: 160},
+//                placeholder: t(`TOTE`, `Поиск...`),
+//                disabled: _=> headerControlsDisabled,
+//                async onKeyDown(e) {
+//                    if (e.keyCode === 13) {
+//                        preventAndStop(e)
+//                        await applyHeaderControls+({controlToBlink: searchBoxInput})
+//                    }
+//                }
+//            })
+//            searchBoxInput.setValueExt({value: itemsRes.actualSearchString, notify: false})
+//                
+//            searchBox = diva({style: {position: 'relative'}},
+//                searchBoxInput,
+//                faIcon({icon: 'search', style: {position: 'absolute', left: 10, top: 10, color: GRAY_500}}),
+//            )
+//        }
+//        
+//        let filterSelect
+//        if (hasFilterSelect) {
+//            filterSelect = Select({
+//                tamyShamy: 'filter', isAction: true, style: {width: 160},
+//                values: filterSelectValues,
+//                initialValue: filter,
+//                disabled: _=> headerControlsDisabled,
+//                async onChange() {
+//                    await applyHeaderControls+({controlToBlink: filterSelect})
+//                },
+//            })
+//            
+//            filterSelect.setValueExt({value: itemsRes.actualFilter, notify: false})
+//        }
+//        
+//        let orderingSelect
+//        if (hasOrderingSelect) {
+//            orderingSelect = Select({
+//                tamyShamy: 'ordering', isAction: true, style: {width: 160},
+//                values: [{value: 'desc', title: t(`TOTE`, `Сначала новые`)}, {value: 'asc', title: t(`TOTE`, `Сначала старые`)}],
+//                initialValue: ordering,
+//                disabled: _=> headerControlsDisabled,
+//                async onChange() {
+//                    await applyHeaderControls+({controlToBlink: orderingSelect})
+//                },
+//            })
+//            
+//            orderingSelect.setValueExt({value: itemsRes.actualOrdering, notify: false})
+//        }
+//        
+//        async function applyHeaderControls~({controlToBlink}) {
+//            setHeaderControlsDisabled(true)
+//            controlToBlink.setBlinking(true)
+//            
+//            const urlParamParts = []
+//            
+//            if (urlEntityParamName) {
+//                urlParamParts.push(`${urlEntityParamName}=${entityID}`)
+//            }
+//            
+//            urlParamParts.push(`filter=${filterSelect.getValue()}`)
+//            urlParamParts.push(`ordering=${orderingSelect.getValue()}`)
+//            
+//            const searchString = searchBoxInput.getValue().trim()
+//            if (searchString) {
+//                urlParamParts.push(`search=${encodeURIComponent(searchString)}`)
+//            }
+//            
+//            const url = `${urlPath}?${urlParamParts.join('&')}`
+//            await ui.pushNavigate(url)
+//            
+//            setHeaderControlsDisabled(false)
+//            controlToBlink.setBlinking(false)
+//        }
+//        
+//        if (plusFormDef) {
+//            plusShit = makeButtonFormShit(s{name: 'plus', level: 'primary', icon: plusIcon, formDef: plusFormDef})
+//        }
+//        if (editFormDef) {
+//            editShit = makeButtonFormShit(s{name: 'edit', level: 'default', icon: 'edit', formDef: editFormDef})
+//        }
+//            
+//        
+//        function makeButtonFormShit(def) {
+//            #extract {name, level, icon, formDef} from def
+//            
+//            let form, formClass
+//            
+//            return {
+//                button() {
+//                    return button({tamyShamy: name, style: {marginLeft: 0}, level, icon, disabled: headerControlsDisabled, onClick() {
+//                        showEmptyLabel = false
+//                        setHeaderControlsDisappearing()
+//                        formClass = 'aniFadeIn'
+//                            
+//                        cancelForm = function() {
+//                            setHeaderControlsAppearing()
+//                            form = undefined
+//                            ui.updatePage()
+//                        }
+//                        
+//                        form = ui.Form(asn(formDef, {
+//                            onCancel: cancelForm,
+//                        }))
+//                        
+//                        ui.updatePage()
+//                    }})
+//                },
+//                
+//                form() {
+//                    return form && diva({className: formClass, style: {marginBottom: 15}}, form)
+//                },
+//            }
+//        }
+//        
+//        let updateHeaderControls
+//        
+//        ui.setPage(s{
+//            header: fov(header, entityRes),
+//            body: _=> diva({style: {marginBottom: 15}},
+//                tabs,
+//                editShit && editShit.form,
+//                plusShit && plusShit.form,
+//                fov(aboveItems, entityRes),
+//                run(function renderItems() {
+//                    if (!itemsRes.items.length) {
+//                        if (showEmptyLabel) {
+//                            return diva({style: {marginTop: 10}}, emptyMessage || spanc({tame: 'nothingLabel', content: t(`TOTE`, `Савсэм ничего нэт, да...`)}))
+//                        }
+//                        return ''
+//                    }
+//                    return ui.renderMoreable(s{itemsRes, itemsReq, renderItem,})
+//                }),
+//            ),
+//            headerControls: _=> updatableElement(s{}, update => {
+//                updateHeaderControls = update
+//                if (!fov(hasHeaderControls, entityRes) || !headerControlsVisible) return
+//                
+//                return _=> hor2({
+//                    style: {display: 'flex', marginTop: tabDefs ? 55 : 0},
+//                    className: headerControlsClass},
+//                    
+//                    searchBox,
+//                    filterSelect,
+//                    orderingSelect,
+//                    editShit && editShit.button,
+//                    plusShit && plusShit.button,
+//                )
+//            }),
+//            
+//            onKeyDown(e) {
+//                if (e.keyCode === 27) {
+//                    fov(cancelForm)
+//                }
+//            }
+//        })
+//        
+//        
+//        function setHeaderControlsDisappearing() {
+//            headerControlsVisible = false
+//            headerControlsClass = undefined
+//        }
+//        
+//        function setHeaderControlsAppearing() {
+//            headerControlsVisible = true
+//            headerControlsClass = 'aniFadeIn'
+//            timeoutSet(500, _=> {
+//                headerControlsClass = undefined
+//                ui.updatePage()
+//            })
+//        }
+//        
+//        function setHeaderControlsDisabled(b) {
+//            headerControlsDisabled = b
+//            updateHeaderControls()
+//        } 
+//        
+//        function showBadResponse(res) {
+//            return ui.setPage(s{
+//                header: pageHeader({title: t(`TOTE`, `Облом`)}),
+//                body: diva({}, errorBanner(s{content: res.error}))
+//            })
+//        }
+//    } finally { if (trainName) endTrain() }
+//}
                 
 }, // End of privatePageLoader
             
@@ -1076,7 +1062,7 @@ function makeRenderSupportThread({topicIsLink, hasTakeAndReplyButton, showMessag
                 diva({className: 'borderTopColoredOnZebra', style: {borderTopWidth: '3px', borderTopStyle: 'dotted', paddingTop: 5}}),
                                           
             diva({tame: 'oldMessages'},
-                div(...thread.oldMessages.top.map((message, index) => renderSupportThreadOldMessage(s{message, index}))),
+                diva({}, ...thread.oldMessages.top.map((message, index) => renderSupportThreadOldMessage(s{message, index}))),
                 moreMessagesDiv({count: moreOldMessages, kind: 'old'})
             ),
         )
@@ -1115,7 +1101,7 @@ function makeRenderSupportThreadMessage({dottedLines, dryFroms, showMessageNewLa
                    
             diva({className: 'col-sm-3 borderRightColoredOnZebra', style: {display: 'flex', flexDirection: 'column', borderRightWidth: '3px', borderRightStyle: 'solid', paddingLeft: 0}},
                 index === 0 || !dryFroms
-                    ? div(diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+                    ? diva({}, diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
                               t(`TOTE`, `От: `)),
                               userLabel({tamy: 'from', user: message.sender})),
                           diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
@@ -1130,7 +1116,7 @@ function makeRenderSupportThreadMessage({dottedLines, dryFroms, showMessageNewLa
             ),
             
             diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
-                div(
+                diva({},
                     run(function renderLabels() {
                         if (showMessageNewLabel) {
                             const seen = message.data.seenBy[ui.getUser().id]
@@ -1335,7 +1321,7 @@ export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
         const testName = `topNavItem-${name}`
         const id = puid()
         return lia({className: highlightedItem === name ? 'active' : ''},
-                    makeLink(name, span(spanc({tame: testName, content: title}),
+                    makeLink(name, spana({}, spanc({tame: testName, content: title}),
                                         liveStatusFieldName && ui.liveBadge({name: testName, liveStatusFieldName}))))
     }
                            

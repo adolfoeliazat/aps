@@ -1448,17 +1448,6 @@ module.exports = {
           url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve`
     }, // end of generated piece of shit
 
-    'ffd89ee7-31b5-4742-b15a-196876ebec6f': {
-          'button-plus.icon': `plus`,
-          nothingLabel: `Савсэм ничего нэт, да...`,
-          'pageHeader.title': `Пользователи`,
-          'topNavLeft.TopNavItem-i000.active': true,
-          'topNavLeft.TopNavItem-i000.shame': `TopNavItem-admin-users`,
-          'topNavLeft.TopNavItem-i000.title': `Юзеры`,
-          'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
-          'topNavRight.TopNavItem-i000.title': `Дася`,
-          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve&ordering=desc`
-    }, // end of generated piece of shit
 
     '88b14624-383f-4edf-8b3e-a9c413d87f27': {
           'button-plus.icon': `plus`,
@@ -4885,6 +4874,18 @@ module.exports = {
         'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
         'topNavRight.TopNavItem-i000.title': `Дася`,
         url: `http://aps-ua-writer.local:3022/admin-users.html?filter=cool&ordering=desc`,
+    }, // end of generated piece of shit
+
+    'ffd89ee7-31b5-4742-b15a-196876ebec6f': {
+        'button-plus.icon': `plus`,
+        nothingLabel: `Савсэм ничего нэт, да...`,
+        'pageHeader.title': `Пользователи`,
+        'topNavLeft.TopNavItem-i000.active': true,
+        'topNavLeft.TopNavItem-i000.shame': `TopNavItem-admin-users`,
+        'topNavLeft.TopNavItem-i000.title': `Юзеры`,
+        'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
+        'topNavRight.TopNavItem-i000.title': `Дася`,
+        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve&ordering=desc`,
     }, // end of generated piece of shit
 
     // place to insert new generated piece of shit

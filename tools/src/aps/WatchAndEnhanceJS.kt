@@ -22,6 +22,7 @@ import jdk.nashorn.internal.runtime.options.Options;
 val MODE = "watch"
 val DEBUG_OUT_FILE = true
 
+var emittedShitCount = 0
 
 fun main(args: Array<String>) {
     when (MODE) {
@@ -197,10 +198,8 @@ fun doStuff(jsFileEntry: Entry, mapFileEntry: Entry) {
         append(origSourceCode.substring(pos))
     }
 
-    var emittedCount = 0
-
     fun logEmitted(f: File) {
-        println("${++emittedCount}) Emitted $f")
+        println("${++emittedShitCount}) Emitted $f")
     }
 
     if (DEBUG_OUT_FILE) {
