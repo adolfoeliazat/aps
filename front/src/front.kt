@@ -41,6 +41,7 @@ enum class Color(val string: String) {
     fun ignite(_global: dynamic, _jshit: dynamic)
     fun loadDebugKotlinPlaygroundPage()
     fun loadAdminUsersPage(): Promise<Unit>
+    fun loadDashboardPage(def: dynamic): Promise<Unit>
     fun renderProfile(def: dynamic): dynamic
     fun userKindIcon(def: dynamic): dynamic
     fun makeProfileFields(def: dynamic): dynamic
@@ -51,6 +52,7 @@ var jshit: dynamic = null
 
 object KotlinShit : IKotlinShit {
     var ui: dynamic = null
+    var clientImpl: dynamic = null
 
     override fun ignite(_global: dynamic, _jshit: dynamic) {
         println("----- Igniting front Kotlin shit -----")
@@ -77,6 +79,7 @@ object KotlinShit : IKotlinShit {
         jshit.art.gertrude = ::gertrude
         jshit.renderExceptionTriangle = ::jsFacing_renderExceptionTriangle
         jshit.spanc = ::jsFacing_spanc
+        jshit.limpopo = ::jsFacing_limpopo
 
         initTestShit()
     }
@@ -171,6 +174,131 @@ object KotlinShit : IKotlinShit {
             "body" to jshit.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5")
         ))
     }
+
+    override fun loadDashboardPage(_def: dynamic): Promise<Unit> {"__async"
+        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
+
+        // {preserveScroll}={}
+        val def = if (_def) _def else js("({})")
+        val preserveScroll = if (def.preserveScroll) def.preserveScroll else js("({})")
+
+        fun section(def: dynamic): dynamic {
+            // #extract {name, title, items, emptyItemsText} from def
+            val name = def.name; val title = def.title; val items = def.items; val emptyItemsText = def.emptyItemsText
+
+            return jshit.diva(json("tame" to "section-${name}", "style" to js("({})")),
+                jshit.diva(json("style" to json("backgroundColor" to jshit.BLUE_GRAY_50, "fontWeight" to "bold", "padding" to "2px 5px", "marginBottom" to 10)),
+                    title),
+                run outta@{
+                    if (!items.length) return@outta emptyItemsText || jshit.diva(json("style" to js("({})")), t("TOTE", "Савсэм пусто здэсь..."))
+                    return@outta jshit.ula.apply(null, js("[]").concat(json("className" to "fa-ul", "style" to json("marginLeft" to 20)),
+                        items.map({item: dynamic ->
+                            jshit.lia(json("style" to json("marginBottom" to 5)),
+                                jshit.ia(json("className" to "fa fa-li fa-chevron-right", "style" to json("color" to jshit.BLUE_GRAY_600))),
+                                item)})))
+                }
+            )
+        }
+
+        val myPage = json(
+            "id" to jshit.puid(),
+            "header" to jshit.pageHeader(json("title" to t("Dashboard", "Панель"))),
+            "body" to jshit.diva(json(),
+                jshit.diva(json("className" to "row"),
+                    jshit.diva(json("className" to "col-sm-6"),
+                        section(json(
+                            "name" to "workPending",
+                            "title" to t("TOTE", "Работенка"),
+                            "emptyItemsText" to t("TOTE", "Сюшай, савсэм нэт работы..."),
+
+                            "items" to __await<dynamic>(jshit.runa({"__async"
+                                val items = js("[]")
+                                val res = __await<dynamic>(ui.rpcSoft(json("fun" to "private_getLiveStatus")))
+
+                                fun addMetric(def: dynamic) {
+                                    // #extract {metric, url, title, noStateContributions} from def
+                                    val metric = def.metric; val url = def.url; val title = def.title; val noStateContributions = def.noStateContributions
+
+                                    val model = res[metric]
+                                    if (model.count != "0") {
+                                        items.push(jshit.diva(json("controlTypeName" to "addMetric", "tame" to metric, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden")),
+                                            jshit.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), jshit.repeat(".", 210)),
+                                            ui.urlLink(json("tamy" to true, "style" to json("background" to WHITE, "paddingRight" to 8, "color" to jshit.BLACK_BOOT), "blinkOpts" to json("dwidth" to -8),
+                                                "title" to title, "url" to url, "delayActionForFanciness" to true)),
+                                            jshit.diva(json("style" to json("float" to "right", "paddingLeft" to 8, "background" to jshit.WHITE)),
+                                                jshit.spana(json("className" to "badge", "style" to json("float" to "right", "backgroundColor" to jshit.BLUE_GRAY_400)),
+                                                    jshit.spanc(json("tame" to "badge", "content" to model.count))))
+                                            ))
+                                    }
+                                }
+
+                                if (res.error) {
+                                    // TODO:vgrechka Handle RPC error while updating dashboard    8e69deec-39ba-48d7-8112-57e2bdf91228
+                                    console.warn("RPC error: " + jshit.textMeat(res.error))
+                                    return@runa __asyncResult(js("[]"))
+                                }
+
+                                if (ui.getUser().kind == "admin") {
+                                    addMetric(json("metric" to "profilesToApprove", "url" to "admin-users.html?filter=2approve", "title" to t("TOTE", "Профилей зааппрувить")))
+                                    addMetric(json("metric" to "suka", "noStateContributions" to true, "url" to "suka.html", "title" to t("TOTE", "Сцуко-метрика")))
+                                }
+                                else if (ui.getUser().kind == "writer") {
+                                    addMetric(json("metric" to "suka", "noStateContributions" to true, "url" to "suka.html", "title" to t("TOTE", "Сцуко-метрика")))
+                                }
+                                else if (ui.getUser().kind == "customer") {
+                                    raise("implement me")
+                                }
+
+                                return@runa __asyncResult(items)
+                            }))
+                        ))
+                    ),
+
+                    jshit.diva(json("className" to "col-sm-6"),
+                        section(json(
+                            "name" to "account",
+                            "title" to t("TOTE", "Аккаунт"),
+                            "items" to jsArrayOf(
+                                jshit.darkLink(json("tamy" to "signOut", "title" to t("TOTE", "Выйти прочь"), "onClick" to {"__async"
+                                    ui.signOut()
+                                })),
+                                jshit.darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {"__async"
+                                    console.warn("// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a")
+                                }))
+                            )
+                        ))
+                    )
+                )
+            )
+        )
+
+        val scrollTop = jshit.jQuery(document).scrollTop()
+        ui.setPage(myPage)
+        if (preserveScroll) {
+            jshit.jQuery(document).scrollTop(scrollTop)
+        }
+
+        fun scheduleUpdate() {
+            jshit.timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
+                if (clientImpl.stale) return@outta Unit
+                if (myPage != ui.currentPage) return@outta Unit
+
+                // Automatic refreshes should be prevented while something is being investigated via revealer,
+                // otherwise elements being looked at might be removed
+                if (jshit.controlBeingRevealed) { scheduleUpdate(); return@outta Unit }
+
+                if (jshit.isOrWasInTestScenario() && jshit.getCurrentTestBrowser().ui != ui) { scheduleUpdate(); return@outta Unit }
+
+                // dlog("currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}")
+                jshit.dlog("Updating dashboard page")
+                __await(loadDashboardPage(json("preserveScroll" to true)))
+            })
+        }
+        scheduleUpdate()
+
+        return __asyncResult(Unit)
+    }
+
 
     override fun loadAdminUsersPage(): Promise<Unit> {"__async"
         fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
@@ -327,7 +455,8 @@ object KotlinShit : IKotlinShit {
                         placeholder.setContent(jshit.diva(json("controlTypeName" to "admin-users::renderItem", "tame" to "item${jshit.sufindex(index)}"),
                             jshit.diva(json("tame" to "heading", "id" to headingID, "style" to json("marginBottom" to 10, "background" to jshit.BLUE_GRAY_50, "borderBottom" to "1px solid ${jshit.BLUE_GRAY_100}")),
                                 jshit.spana(json("style" to json("fontWeight" to "normal")),
-                                    jshit.spanc(json("tame" to "title", "style" to json("fontSize" to "135%"), "content" to json("movy" to json("model" to user, "value" to user.first_name + " " + user.last_name)))),
+                                    jshit.spanc(json("tame" to "title", "style" to json("fontSize" to "135%"),
+                                        "content" to user.first_name + " " + user.last_name)),
                                     jshit.spanc(json("tame" to "no", "style" to json("color" to jshit.GRAY_500, "marginLeft" to 12), "content" to "${jshit.nostring(json("no" to user.id))}"))),
 
                                 jshit.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to BLUE_GRAY_600), "items" to headingActionItems))),
@@ -363,6 +492,31 @@ object KotlinShit : IKotlinShit {
         return __asyncResult(Unit)
     }
 }
+
+fun jsFacing_limpopo(def: dynamic): dynamic {
+    // #extract {model, content, value, prop, label, transform=identity, colsm, formGroupStyle={}, contentStyle={}} from def
+    val model = def.model; var content = def.content; val value = def.value; val prop = def.prop; val label = def.label; val colsm = def.colsm
+    val transform = if (def.transform) def.transform else jshit.identity
+    val formGroupStyle = if (def.formGroupStyle) def.formGroupStyle else js("({})")
+    val contentStyle = if (def.contentStyle) def.contentStyle else js("({})")
+
+    if (!content) {
+        content = jshit.spanc(json("tame" to "value", "style" to contentStyle,
+            "content" to
+                if (value != undefined)
+                    value
+                else transform(model[prop])))
+    }
+
+    var res = jshit.diva(json("controlTypeName" to "limpopo", "tame" to prop, "className" to "form-group", "style" to formGroupStyle),
+    jshit.labe(json("content" to label)),
+    jshit.diva(js("({})"), content))
+    if (colsm) {
+        res = jshit.diva(json("className" to "col-sm-${colsm}"), res)
+    }
+    return res
+}
+
 
 fun jsFacing_faIcon(def: dynamic): dynamic {
     // #extract {icon, style, className='', onClick} from def
@@ -613,22 +767,6 @@ class JSError(message: String) : Throwable(message) {
 
 
 
-//class spanc : StatefulElement() {
-//
-//    override fun render(): ReactElement {
-////            var renderThing = content
-////            if (isMovy) {
-////                renderThing = content.movy.value
-////            } else if (isMopy) {
-////                renderThing = content.mopy.model[content.mopy.prop]
-////            }
-//
-//        return jshit.spana(json("id" to elementID, "className" to className, "style" to style), renderThing)
-//    }
-//
-//}
-
-
 fun jsFacing_spanc(def: dynamic): dynamic {
     // #extract {content, className='', style={}} from def
     val content = def.content
@@ -638,71 +776,24 @@ fun jsFacing_spanc(def: dynamic): dynamic {
     if (!def.tame) jshit.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
 
     val isString = js("typeof content") == "string"
-    val isMovy = js("typeof content") == "object" && js("typeof content.movy") == "object"
-    val isMopy = js("typeof content") == "object" && js("typeof content.mopy") == "object"
     val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
-    jshit.invariant(jshit.nil(content) || isString || isMovy || isMopy || isMeaty, "Bad content for spanc (keys: ${global.Object.keys(content)})")
+    jshit.invariant(jshit.nil(content) || isString || isMeaty, "Bad content for spanc (keys: ${global.Object.keys(content)})")
 
     var me: dynamic = undefined // Workaround for Kotlin
     me = json(
         "render" to {
             var renderThing = content
-            if (isMovy) {
-                renderThing = content.movy.value
-            } else if (isMopy) {
-                renderThing = content.mopy.model[content.mopy.prop]
-            }
-
             jshit.spana(json("id" to me.elementID, "className" to className, "style" to style), renderThing)
         },
 
         "contributeTestState" to {state: dynamic ->
             var stateThing = content
-                if (isMovy) {
-                    stateThing = content.movy.value
-                } else if (isMopy) {
-                    stateThing = content.mopy.model[content.mopy.prop]
-                } else if (isMeaty) {
-                    stateThing = content
-                }
-
             state.put(json("control" to me, "key" to me.getTamePath(), "value" to jshit.textMeat(stateThing)))
         },
 
         "getLongRevelationTitle" to {
             var revelationTitleThing = content
-            if (isMovy) {
-                revelationTitleThing = content.movy.value
-            } else if (isMopy) {
-                revelationTitleThing = content.mopy.model[content.mopy.prop]
-            } else if (isMeaty) {
-                revelationTitleThing = content
-            }
-
             me.debugDisplayName + ": " + jshit.textMeat(revelationTitleThing)
-        },
-
-        "contributeRevelationSection" to {
-            val els = js("[]")
-
-            var model: dynamic = undefined
-            if (isMovy) model = content.movy.model
-            else if (isMopy) model = content.mopy.model
-
-            if (model) {
-                els.push(jshit.Betsy(json(
-                    "title" to t("Model"),
-                    "details" to jshit.ObjectViewer(json("object" to model))
-                )))
-            }
-
-            var metaID: dynamic = undefined
-            if (isMovy) metaID = content.movy.model.`$metaID`
-            else if (isMopy) metaID = content.mopy.model.`$metaID`
-
-            els.push(jshit.makeBackendMetaPanel(json("metaID" to metaID)))
-
-            jshit.diva.apply(null, js("[]").concat(js("({})"), els))
         }
     )
 

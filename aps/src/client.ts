@@ -41,8 +41,6 @@ global.igniteShit = makeUIShitIgniter({
     
 Impl: function hot$ImplForShitIgniter({ui}) {
     
-kot.aps.KotlinShit.ui = ui
-    
 const impl = {
 
 isDynamicPage,
@@ -334,117 +332,123 @@ async support() {
         } finally { endTrain() }
     }
 },
-                
-async dashboard~({preserveScroll}={}) { // @ctx page dashboard
-    const myPage = {
-        id: puid(),
-        header: pageHeader({title: t('Dashboard', 'Панель')}),
-        body: diva({},
-            diva({className: 'row'},
-                diva({className: 'col-sm-6'},
-                    section(s{
-                        name: 'workPending',
-                        title: t(`TOTE`, `Работенка`),
-                        items: await runa(async function() {
-                            const items = []
-                            
-                            const res = await ui.rpcSoft({fun: 'private_getLiveStatus'})
-                            if (res.error) {
-                                // TODO:vgrechka Handle RPC error while updating dashboard    8e69deec-39ba-48d7-8112-57e2bdf91228
-                                console.warn('RPC error: ' + textMeat(res.error))
-                                return []
-                            }
-                            
-                            if (ui.getUser().kind === 'admin') {
-                                addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html?filter=2approve', title: t(`TOTE`, `Профилей зааппрувить`)})
-                                addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
-                            }
-                            else if (ui.getUser().kind === 'writer') {
-                                addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
-                            }
-                            else if (ui.getUser().kind === 'customer') {
-                                raise('implement me')
-                            }
-                            
-                            return items
-                            
-                            function addMetric(def) {
-                                #extract {metric, url, title, noStateContributions} from def
-                                
-                                const model = res[metric]
-                                if (model.count !== '0') {
-                                    items.push(diva({controlTypeName: 'addMetric', tame: metric, noStateContributions, style: {position: 'relative', overflow: 'hidden'}},
-                                        diva({style: {position: 'absolute', zIndex: -1, left: 0, top: 0}}, repeat('.', 210)),
-                                        ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT}, blinkOpts: {dwidth: -8},
-                                            title, url, delayActionForFanciness: true}),
-                                        diva({style: {float: 'right', paddingLeft: 8, background: WHITE}},
-                                            spana({className: `badge`, style: {float: 'right', backgroundColor: BLUE_GRAY_400}},
-                                                spanc({tame: 'badge', content: {mopy: {model, prop: 'count'}}}))),
-                                    ))
-                                }
-                            }
-                        }),
-                        emptyItemsText: t(`TOTE`, `Сюшай, савсэм нэт работы...`),
-                    }),
-                ),
-                
-                diva({className: 'col-sm-6'},
-                    section(s{
-                        name: 'account',
-                        title: t(`TOTE`, `Аккаунт`),
-                        items: [
-                            darkLink(s{tamy: 'signOut', title: t(`TOTE`, `Выйти прочь`), async onClick() {
-                                ui.signOut()
-                            }}),
-                            darkLink(s{tamy: 'changePassword', title: t(`TOTE`, `Сменить пароль`), async onClick() {
-                                console.warn('// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a')
-                            }}),
-                        ]
-                    }),
-                ),
-            )
-        )
-    }
-    
-    const scrollTop = $(document).scrollTop()
-    ui.setPage(myPage)
-    if (preserveScroll) {
-        $(document).scrollTop(scrollTop)
-    }
-    
-    !function scheduleUpdate() {
-        timeoutSet(5000, async function() { // @ctx forgetmenot-1-1
-            if (impl.stale) return
-            if (myPage !== ui.currentPage) return
-            
-            // Automatic refreshes should be prevented while something is being investigated via revealer,
-            // otherwise elements being looked at might be removed
-            if (controlBeingRevealed) return scheduleUpdate()
-            
-            if (isOrWasInTestScenario() && getCurrentTestBrowser().ui !== ui) return scheduleUpdate()
-            
-            // dlog(`currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}`)
-            dlog('Updating dashboard page')
-            await dashboard({preserveScroll: true})
-        })
-    }()
-    
-    function section(def) {
-        #extract {name, title, items, emptyItemsText} from def
-        
-        return diva({tame: `section-${name}`, style: {}},
-            diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title),
-            run(_=> {
-                if (!items.length) return emptyItemsText || diva({style: {}}, t(`TOTE`, `Савсэм пусто здэсь...`))
-                return ula({className: 'fa-ul', style: {marginLeft: 20}},
-                    ...items.map(item =>
-                        lia({style: {marginBottom: 5}},
-                            ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
-                            item)))
-            }),
-        )
-    }
+
+async dashboard(def) { // @ctx page dashboard
+    await kot.aps.KotlinShit.loadDashboardPage(def)
 },
+                
+// @ported-to-kotlin
+//
+//async dashboard~({preserveScroll}={}) { // @ctx page dashboard
+//    const myPage = {
+//        id: puid(),
+//        header: pageHeader({title: t('Dashboard', 'Панель')}),
+//        body: diva({},
+//            diva({className: 'row'},
+//                diva({className: 'col-sm-6'},
+//                    section(s{
+//                        name: 'workPending',
+//                        title: t(`TOTE`, `Работенка`),
+//                        items: await runa(async function() {
+//                            const items = []
+//                            
+//                            const res = await ui.rpcSoft({fun: 'private_getLiveStatus'})
+//                            if (res.error) {
+//                                // TODO:vgrechka Handle RPC error while updating dashboard    8e69deec-39ba-48d7-8112-57e2bdf91228
+//                                console.warn('RPC error: ' + textMeat(res.error))
+//                                return []
+//                            }
+//                            
+//                            if (ui.getUser().kind === 'admin') {
+//                                addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html?filter=2approve', title: t(`TOTE`, `Профилей зааппрувить`)})
+//                                addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
+//                            }
+//                            else if (ui.getUser().kind === 'writer') {
+//                                addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
+//                            }
+//                            else if (ui.getUser().kind === 'customer') {
+//                                raise('implement me')
+//                            }
+//                            
+//                            return items
+//                            
+//                            function addMetric(def) {
+//                                #extract {metric, url, title, noStateContributions} from def
+//                                
+//                                const model = res[metric]
+//                                if (model.count !== '0') {
+//                                    items.push(diva({controlTypeName: 'addMetric', tame: metric, noStateContributions, style: {position: 'relative', overflow: 'hidden'}},
+//                                        diva({style: {position: 'absolute', zIndex: -1, left: 0, top: 0}}, repeat('.', 210)),
+//                                        ui.urlLink({tamy: true, style: {background: WHITE, paddingRight: 8, color: BLACK_BOOT}, blinkOpts: {dwidth: -8},
+//                                            title, url, delayActionForFanciness: true}),
+//                                        diva({style: {float: 'right', paddingLeft: 8, background: WHITE}},
+//                                            spana({className: `badge`, style: {float: 'right', backgroundColor: BLUE_GRAY_400}},
+//                                                spanc({tame: 'badge', content: {mopy: {model, prop: 'count'}}}))),
+//                                    ))
+//                                }
+//                            }
+//                        }),
+//                        emptyItemsText: t(`TOTE`, `Сюшай, савсэм нэт работы...`),
+//                    }),
+//                ),
+//                
+//                diva({className: 'col-sm-6'},
+//                    section(s{
+//                        name: 'account',
+//                        title: t(`TOTE`, `Аккаунт`),
+//                        items: [
+//                            darkLink(s{tamy: 'signOut', title: t(`TOTE`, `Выйти прочь`), async onClick() {
+//                                ui.signOut()
+//                            }}),
+//                            darkLink(s{tamy: 'changePassword', title: t(`TOTE`, `Сменить пароль`), async onClick() {
+//                                console.warn('// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a')
+//                            }}),
+//                        ]
+//                    }),
+//                ),
+//            )
+//        )
+//    }
+//    
+//    const scrollTop = $(document).scrollTop()
+//    ui.setPage(myPage)
+//    if (preserveScroll) {
+//        $(document).scrollTop(scrollTop)
+//    }
+//    
+//    !function scheduleUpdate() {
+//        timeoutSet(5000, async function() { // @ctx forgetmenot-1-1
+//            if (impl.stale) return
+//            if (myPage !== ui.currentPage) return
+//            
+//            // Automatic refreshes should be prevented while something is being investigated via revealer,
+//            // otherwise elements being looked at might be removed
+//            if (controlBeingRevealed) return scheduleUpdate()
+//            
+//            if (isOrWasInTestScenario() && getCurrentTestBrowser().ui !== ui) return scheduleUpdate()
+//            
+//            // dlog(`currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}`)
+//            dlog('Updating dashboard page')
+//            await dashboard({preserveScroll: true})
+//        })
+//    }()
+//    
+//    function section(def) {
+//        #extract {name, title, items, emptyItemsText} from def
+//        
+//        return diva({tame: `section-${name}`, style: {}},
+//            diva({style: {backgroundColor: BLUE_GRAY_50, fontWeight: 'bold', padding: '2px 5px', marginBottom: 10}}, title),
+//            run(_=> {
+//                if (!items.length) return emptyItemsText || diva({style: {}}, t(`TOTE`, `Савсэм пусто здэсь...`))
+//                return ula({className: 'fa-ul', style: {marginLeft: 20}},
+//                    ...items.map(item =>
+//                        lia({style: {marginBottom: 5}},
+//                            ia({className: 'fa fa-li fa-chevron-right', style: {color: BLUE_GRAY_600}}),
+//                            item)))
+//            }),
+//        )
+//    }
+//},
 
 async 'admin-users'() { // @ctx page admin-users
     await kot.aps.KotlinShit.loadAdminUsersPage(ui)
@@ -957,6 +961,9 @@ renderTopNavbar({highlightedItem}) {
 },
 
 } // End of `impl =`
+
+kot.aps.KotlinShit.ui = ui
+kot.aps.KotlinShit.clientImpl = impl
 return impl
         
 // @ctx helpers
