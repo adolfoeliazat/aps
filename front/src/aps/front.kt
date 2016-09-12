@@ -58,6 +58,10 @@ object KotlinShit : IKotlinShit {
         println("----- Igniting front Kotlin shit -----")
         global = _global; jshit = _jshit
 
+        js("""
+            global.__asyncResult = function(x) { return x }
+        """)
+
         jshit.elcl = ::jsFacing_elcl
         jshit.diva = ::jsFacing_diva
         jshit.spana = ::jsFacing_spana
@@ -765,13 +769,14 @@ class JSError(message: String) : Throwable(message) {
     }
 }
 
-
+interface BasicElementBuilder {
+    var className: String
+    val style: StyleBuilder
+}
 
 fun jsFacing_spanc(def: dynamic): dynamic {
     // #extract {content, className='', style={}} from def
     val content = def.content
-    val className = if (def.className != undefined) def.className else ""
-    val style = if (def.style != undefined) def.style else js("({})")
 
     if (!def.tame) jshit.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
 
@@ -779,29 +784,47 @@ fun jsFacing_spanc(def: dynamic): dynamic {
     val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
     jshit.invariant(jshit.nil(content) || isString || isMeaty, "Bad content for spanc (keys: ${global.Object.keys(content)})")
 
-    var me: dynamic = undefined // Workaround for Kotlin
-    me = json(
-        "render" to {
-            var renderThing = content
-            jshit.spana(json("id" to me.elementID, "className" to className, "style" to style), renderThing)
-        },
-
-        "contributeTestState" to {state: dynamic ->
-            var stateThing = content
-            state.put(json("control" to me, "key" to me.getTamePath(), "value" to jshit.textMeat(stateThing)))
-        },
-
-        "getLongRevelationTitle" to {
-            var revelationTitleThing = content
-            me.debugDisplayName + ": " + jshit.textMeat(revelationTitleThing)
-        }
-    )
-
-    me.controlTypeName = "spanc"
-    me.ignoreDebugCtrlShiftClick = true
-    jshit.implementControlShit(json("me" to me, "def" to def))
-    return jshit.elcl(me)
+    return spanc(def.tame, if (isString) content else content.meat) {
+        className = if (def.className != undefined) def.className else ""
+        style { addFromJSObject(if (def.style != undefined) def.style else js("({})")) }
+    }.toReactElement()
 }
+
+//fun bak_jsFacing_spanc(def: dynamic): dynamic {
+//    // #extract {content, className='', style={}} from def
+//    val content = def.content
+//    val className = if (def.className != undefined) def.className else ""
+//    val style = if (def.style != undefined) def.style else js("({})")
+//
+//    if (!def.tame) jshit.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
+//
+//    val isString = js("typeof content") == "string"
+//    val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
+//    jshit.invariant(jshit.nil(content) || isString || isMeaty, "Bad content for spanc (keys: ${global.Object.keys(content)})")
+//
+//    var me: dynamic = undefined // Workaround for Kotlin
+//    me = json(
+//        "render" to {
+//            var renderThing = content
+//            jshit.spana(json("id" to me.elementID, "className" to className, "style" to style), renderThing)
+//        },
+//
+//        "contributeTestState" to {state: dynamic ->
+//            var stateThing = content
+//            state.put(json("control" to me, "key" to me.getTamePath(), "value" to jshit.textMeat(stateThing)))
+//        },
+//
+//        "getLongRevelationTitle" to {
+//            var revelationTitleThing = content
+//            me.debugDisplayName + ": " + jshit.textMeat(revelationTitleThing)
+//        }
+//    )
+//
+//    me.controlTypeName = "spanc"
+//    me.ignoreDebugCtrlShiftClick = true
+//    jshit.implementControlShit(json("me" to me, "def" to def))
+//    return jshit.elcl(me)
+//}
 
 fun renderRedExclamationTriangleLabel(title: String): ReactElement {
     return span {style {color = RED_700}
@@ -1450,11 +1473,12 @@ fun renderStepDescriptions(): ReactElement {
 }
 
 private fun makeSwearBoxes(): StatefulElement {
-    return object : StatefulElement() {
+    return object : StatefulElement(null) {
+        override val controlTypeName: String get() = "makeSwearBoxes"
         private var shitVisible: Boolean = true
 
-        val swearBox1 = PromiseAsyncSwearBox {
-            controlTypeName = "bobobox"; style { width = "100%" }
+        val swearBox1 = PromiseAsyncSwearBox(controlTypeName = "bobobox") {
+            style { width = "100%" }
             onChange {
                 println("Box 1 changed")
             }
@@ -1537,7 +1561,7 @@ class SimpleEventHandlerBuilder {
     }
 }
 
-class diva(build: FlowElementBuilder.() -> Unit) : StatefulElement() {
+class diva(override val controlTypeName: String = "diva", build: FlowElementBuilder.() -> Unit) : StatefulElement(null) {
     private val element: ReactElement
 
     init {
@@ -1552,7 +1576,7 @@ class diva(build: FlowElementBuilder.() -> Unit) : StatefulElement() {
     override fun render(): ReactElement = element
 }
 
-class PromiseAsyncSwearBox(build: PromiseAsyncSwearBox.() -> Unit) : StatefulElement() {
+class PromiseAsyncSwearBox(override val controlTypeName: String = "PromiseAsyncSwearBox", build: PromiseAsyncSwearBox.() -> Unit) : StatefulElement(null) {
     val adjectives = arrayOf("Big", "Little")
     val mainWords = arrayOf("Shit", "Fuck", "Bitch")
     var adjectiveIndex = -1
@@ -1563,8 +1587,6 @@ class PromiseAsyncSwearBox(build: PromiseAsyncSwearBox.() -> Unit) : StatefulEle
     val onChange = SimpleEventHandlerBuilder()
 
     init {
-        controlTypeName = "PromiseAsyncSwearBox"
-
         // @wip sourceLocation
 
         build()
@@ -1674,7 +1696,9 @@ val nbsp: String = js("String.fromCharCode(0xa0)")
 //}
 
 
-class button(build: button.() -> Unit) : StatefulElement() {
+class button(build: button.() -> Unit) : StatefulElement(null) {
+    override val controlTypeName: String get() = "button"
+
     var icon: String? = null
     var title: ManagedString? = null
     var level = "default"
@@ -1722,270 +1746,14 @@ fun preventAndStop(e: ReactEvent) {
     e.stopPropagation()
 }
 
-typealias ReactEventHandler = (ReactEvent) -> Unit
-
-abstract class StatefulElement() : ToReactElementable {
-    abstract fun render(): ReactElement
-
-    open fun componentWillMount() {}
-    open fun componentDidMount() {}
-    open fun componentWillUpdate() {}
-    open fun componentDidUpdate() {}
-    open fun componentWillUnmount() {}
-
-    protected open fun onRootClick(e: ReactEvent) = UnitPromise {resolve, reject ->}
-    protected open fun contributeTestState(state: dynamic) {}
-
-    protected open fun getLongRevelationTitle(): String = "// TODO:vgrechka Implement getLongRevelationTitle"
-
-    val id = puid()
-    val elementID: String = "" + puid()
-    var ignoreDebugCtrlShiftClick: Boolean = false
-
-    val constructionStackAsError: dynamic = js("Error()")
-    open val firstSignificantStackLine: Int = 2
-
-    var onClick: ReactEventHandler? = null
-    fun onClick(handler: ReactEventHandler) { onClick = handler }
-
-    var onMouseEnter: ReactEventHandler? = null
-    fun onMouseEnter(handler: ReactEventHandler) { onMouseEnter = handler }
-
-    var onMouseLeave: ReactEventHandler? = null
-    fun onMouseLeave(handler: ReactEventHandler) { onMouseLeave = handler }
-
-    var className = ""
-    val style = StyleBuilder()
-
-
-    val `$sourceLocation`: Promise<String?> by lazy {
-        Promise<String?>({resolve, reject ->
-            `$definitionStack`.then<Nothing> {jsArray ->
-                resolve(if (jsArray[0]) jsArray[0].loc else null)
-            }
-        })
-    }
-
-    val `$definitionStack`: Promise<dynamic> by lazy {
-        promiseDefinitionStack(constructionStackAsError, firstSignificantStackLine)
-    }
-
-
-    val tattrs = mutableMapOf<String, String>() // TODO
-    val noStateContributions: Boolean = false
-
-    private val element: ReactElement
-    private var elementThis: dynamic = null
-
-//    fun accessTame(): String {
-//        return if (tame != null) tame
-//        else "nope"
-//    }
-
-//    val debugDisplayName: String by lazy {when{
-//        tame != null -> tame
-//        else -> "dunno"
-////        tame != null -> tame
-////        controlTypeName != null -> controlTypeName
-////        else -> "dunno"
-//    }}
-
-//    val tame: String? by lazy {when{
-//        simpleTamy -> tamyPrefix ?: controlTypeName
-//        tamy != null -> (tamyPrefix ?: controlTypeName) + "-" + tamy
-//        else -> explicitTame
-//    }}
-
-//    fun tame(value: String) {
-//        explicitTame = value
-//    }
-
-    var explicitTame: String? = null
-    var tamy: String? = null
-    var tamyPrefix: String? = null
-    var simpleTamy: Boolean = false
-    var controlTypeName: String = "gimme-name"
-    var shame: String? = null
-    var hasTestManipulationFunctions: Boolean = false
-
-    val effectiveShame: String? = "// TODO:vgrechka Implement effectiveShame"
-    val debugDisplayName: String? = "// TODO:vgrechka Implement debugDisplayName"
-    val tame: String? = "// TODO:vgrechka Implement tame"
-
-//    val effectiveShame: String? by lazy {when{
-//        shame != null -> shame
-//        tame != null && hasTestManipulationFunctions -> getTamePath()
-//        else -> null
-//    }}
-
-    init {
-        val def = js("({})")
-
-        def.componentWillMount = {
-            elementThis = js("this")
-
-            var elementControls = jshit.elementIDToControls[elementID]
-            if (!elementControls) {
-                elementControls = js("[]")
-                jshit.elementIDToControls[elementID] = elementControls
-            }
-
-            if (tame != null) {
-                for (another in jsArrayToIterable(elementControls)) {
-                    if (another.tame) raise("Control ${debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed", json(
-                        "\$render" to {
-                            "TODO: Implement ce3ace61-41ee-4c31-ac9c-209748b5cc99"
-                        }
-                    ))
-                }
-            }
-
-            elementControls.unshift(this)
-
-            componentWillMount()
-        }
-
-        def.componentDidMount = {
-            addEventListeners()
-
-            jshit.art.uiStateContributions[id] = {state: dynamic ->
-                var shouldContribute = !noStateContributions
-
-                if (shouldContribute) {
-                    jshit.byid(elementID).parents().each {
-                        val parentControls = jshit.elementIDToControls[js("this").id]
-                        if (!parentControls) undefined
-                        else {
-                            for (parentControl in jsArrayToIterable(parentControls)) {
-                                if (parentControl.noStateContributions) {
-                                    shouldContribute = false
-                                    return@each false // break
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (shouldContribute) {
-                    contributeTestState(state)
-                }
-
-                for ((key, value) in tattrs) {
-                    if (value != null) {
-                        state.put(json("control" to this, "key" to getTamePath() + "." + key, "value" to value)) // TODO Capture source location
-                    }
-                }
-
-//                if (effectiveShame != null) {
-//                    val tp = getTamePath()
-//                    if (tp != effectiveShame) {
-//                        state.put(json("control" to this, "key" to tp + ".shame", "value" to this.effectiveShame)) // TODO Capture source location
-//                    }
-//                }
-            }
-
-            if (effectiveShame != null) {
-                val myEffectiveShame = effectiveShame
-                val already = js("Object.keys(testGlobal.controls).includes(myEffectiveShame)")
-                if (already) {
-                    stickException(global.Error("testGlobal.controls already contains thing shamed ${effectiveShame}"))
-                }
-                global.testGlobal.controls[effectiveShame] = this
-            }
-
-            componentDidMount()
-        }
-
-        def.componentWillUpdate = {
-            removeEventListeners()
-            componentWillUpdate()
-        }
-
-        def.componentDidUpdate = {
-            addEventListeners()
-            componentDidUpdate()
-        }
-
-        def.componentWillUnmount = { componentWillUnmount() }
-        def.render = { render() }
-
-        val clazz = React.createClass(def)
-        element = React.createElement(clazz, js("({})"))
-    }
-
-    private fun stickException(error: dynamic) {
-        console.error("// TODO:vgrechka Implement stickException    034294e5-6488-4c1c-8d82-49c310862cfe")
-    }
-
-
-    private fun captureAction() {
-        console.warn("Implement captureAction, fuck you")
-    }
-
-    private fun addEventListeners() {
-        fun onClick(e: ReactEvent) {
-            if (MODE == "debug" && e.ctrlKey) {
-                if (e.shiftKey) {
-                    if (ignoreDebugCtrlShiftClick) return
-
-                    preventAndStop(e)
-
-                    if (effectiveShame == null) {
-                        jshit.raiseWithMeta(json("message" to "Put some shame on me", "meta" to this)) // TODO:vgrechka meta: me
-                    }
-
-                    return captureAction()
-                }
-
-                preventAndStop(e)
-                return jshit.revealControl(this)
-            }
-
-            onRootClick(e)
-        }
-
-        removeEventListeners() // Several controls can be on same element, and we don't want to handle click several times
-        jshit.byid(elementID).on("click", ::onClick)
-    }
-
-    private fun removeEventListeners() {
-        jshit.byid(elementID).off()
-    }
-
-    protected fun update() {
-        elementThis.forceUpdate()
-    }
-
-    override fun toReactElement() = element
-
-    fun getTamePath(): String? {
-        invariant(tame, "getTamePath can only be called on tamed control", json("\$definitionStack" to getDefinitionStackForJS()))
-
-        var res = tame
-        val parents = jshit.byid(elementID).parents()
-        parents.each {
-            val parentControls = jshit.elementIDToControls[js("this").id]
-            if (!parentControls) undefined
-            else {
-                for (parentControl in jsArrayToIterable(js("parentControls.slice().reverse()"))) {
-                    if (parentControl.tame) {
-                        res = parentControl.tame + "." + res
-                    }
-                }
-            }
-        }
-
-        return res
-    }
-
-    private fun getDefinitionStackForJS(): Any? {
-        console.error("// TODO:vgrechka Implement getDefinitionStackForJS    eb76b0f9-9924-4bc1-bff3-611466da85d5")
-        return null
-    }
-
+fun <R> runni(f: () -> R): R {
+    return f()
 }
 
-private fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
+typealias ReactEventHandler = (ReactEvent) -> Unit
+
+
+fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
     return Promise<dynamic>({ resolve, reject ->
         jshit.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
             // @wip sourceLocation
@@ -1995,7 +1763,7 @@ private fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignific
 
             val jsArray = js("[]")
             lines.forEach { line ->
-                Regex("\\((.*?\\.kt:\\d+:\\d+)\\)").find(line)?.let {
+                Regex("\\((.*?\\.(ts|kt):\\d+:\\d+)\\)").find(line)?.let {
                     jsArray.push(json(
                         "loc" to it.groupValues[1]
                     ))
@@ -2442,6 +2210,31 @@ class StyleBuilder {
 
     fun add(other: StyleBuilder?) {
         if (other != null) attrs.putAll(other.attrs)
+    }
+
+    fun addFromJSObject(jso: dynamic) {
+        for (key: String in jsArrayToIterable(global.Object.keys(jso))) {
+            val value = jso[key]
+            if (!value) continue
+
+            val jsType = js("typeof value")
+            val stringValue = when (jsType) {
+                "number" -> when {
+                    setOf("width", "height",
+                          "padding", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+                          "margin", "marginTop", "marginRight", "marginBottom", "marginLeft").contains(key)
+                        -> "${value}px"
+                    setOf("opacity").contains(key)
+                        -> "${value}"
+                    else
+                        -> throw JSError("Style property $key cannot be number, fuck you")
+                }
+                "string" -> "" + value
+                else -> "Style property $key cannot be $jsType, fuck you"
+            }
+
+            attrs[key] = value
+        }
     }
 
     var display: String? = null; set(value) { if (value == null) attrs.remove("display") else attrs["display"] = value }

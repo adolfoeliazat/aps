@@ -568,8 +568,10 @@ app.post('/rpc', async function(req, res) {
                             'ui.ts': 'E:/work/foundation/u/src/ui.ts',
                             'u/src/ui.ts': 'E:/work/foundation/u/src/ui.ts',
                             'test-shit-ua.ts': 'E:/work/aps/aps/src/test-shit-ua.ts',
-                            'front.kt': 'E:\\work\\aps\\front\\src\\front.kt',
                         }[filePart]
+                        if (!file && filePart.startsWith('APS/')) {
+                            file = 'E:/work/aps/' + filePart.slice('APS/'.length)
+                        }
                         if (!file) return {error: `Weird file in source location: [${filePart}]`}
                         
                         if (~filePart.indexOf('.kt')) ide = 'idea'

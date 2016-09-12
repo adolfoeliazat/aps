@@ -1,6 +1,8 @@
 tralala1()
 
 fun tralala1() {
+    val s: String? = "qwe"
+    println(s + "wwwwwwwwwwwwwwwwwwwwwwwwww")
 }
 
 fun strings1() {
