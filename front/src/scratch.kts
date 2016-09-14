@@ -1,4 +1,65 @@
-tralala1()
+test6()
+
+fun test6() {
+    abstract class A {
+        abstract val something: String
+
+        init {
+            println(something.toUpperCase())
+        }
+    }
+
+    class B : A() {
+        override val something: String = "i am something"
+    }
+
+    B()
+}
+
+fun test5() {
+    class Arg {
+        val foo = "foooooo"
+    }
+
+    abstract class Foo(val arg: Arg) {
+        init {
+        }
+
+        val foo = when {
+            true -> arg.foo
+            else -> "asd"
+        }
+
+    }
+
+    val arg = Arg()
+
+    val foo = object : Foo(arg) {
+    }
+
+    println(foo.foo)
+}
+
+fun testInit() {
+    fun makeX(): String {
+        println(2)
+        return ""
+    }
+
+    class Foo {
+        init {
+            println(1)
+        }
+
+        val x = makeX()
+
+        init {
+            println(3)
+        }
+    }
+
+    Foo()
+}
 
 fun tralala1() {
     val s: String? = "qwe"

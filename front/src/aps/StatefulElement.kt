@@ -6,13 +6,17 @@
 
 package aps
 
+import aps.Color.*
+
 object js {
     val Object = js("Object")
     val Error = js("Error")
 }
 
-abstract class StatefulElement(val tame: String? = null) : BasicElementBuilder, ToReactElementable {
-    abstract val controlTypeName: String
+abstract class StatefulElement(val tame: String? = null, val elementID: String = "" + puid()) : ToReactElementable {
+    abstract val defaultControlTypeName: String
+
+    var controlTypeName: String = defaultControlTypeName
     abstract fun render(): ReactElement
 
     open fun componentWillMount() {}
@@ -26,25 +30,12 @@ abstract class StatefulElement(val tame: String? = null) : BasicElementBuilder, 
 
     protected open fun getLongRevelationTitle(): String = "// TODO:vgrechka Implement getLongRevelationTitle"
 
-    val id = puid()
-    val elementID: String = "" + puid()
+    val controlID = puid()
+
     var ignoreDebugCtrlShiftClick: Boolean = false
 
     val constructionStackAsError: dynamic = js("Error()")
     open val firstSignificantStackLine: Int = 2
-
-    var onClick: ReactEventHandler? = null
-    fun onClick(handler: ReactEventHandler) { onClick = handler }
-
-    var onMouseEnter: ReactEventHandler? = null
-    fun onMouseEnter(handler: ReactEventHandler) { onMouseEnter = handler }
-
-    var onMouseLeave: ReactEventHandler? = null
-    fun onMouseLeave(handler: ReactEventHandler) { onMouseLeave = handler }
-
-    override var className = ""
-    override val style = StyleBuilder()
-
 
     val `$sourceLocation`: Promise<String?> by lazy {
         Promise<String?>({resolve, reject ->
@@ -174,7 +165,7 @@ abstract class StatefulElement(val tame: String? = null) : BasicElementBuilder, 
         def.componentDidMount = {
             addEventListeners()
 
-            jshit.art.uiStateContributions[id] = {state: dynamic ->
+            jshit.art.uiStateContributions[controlID] = {state: dynamic ->
                 var shouldContribute = !noStateContributions
 
                 if (shouldContribute) {
@@ -226,8 +217,8 @@ abstract class StatefulElement(val tame: String? = null) : BasicElementBuilder, 
             componentWillUnmount()
 
             removeEventListeners()
-            jshit.arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x -> x.id == id })
-            jshit.deleteKey(jshit.art.uiStateContributions, id)
+            jshit.arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x -> x.id == controlID })
+            jshit.deleteKey(jshit.art.uiStateContributions, controlID)
 
             if (effectiveShame != null) {
                 jshit.deleteKey(global.testGlobal.controls, effectiveShame)
@@ -323,23 +314,261 @@ abstract class StatefulElement(val tame: String? = null) : BasicElementBuilder, 
 
 }
 
-class spanc(tame: String, val content: String, build:  BasicElementBuilder.() -> Unit) : StatefulElement(tame = tame) {
-    override val controlTypeName: String get() = "spanc"
 
-    init {
-        build()
-    }
+//fun sampleUsage_diva() {
+//    val el: ReactElement =  diva {
+//        elementID = "something-explicit"
+//        tame = "something"
+//
+//        style {color = ROSYBROWN; fontWeight = "bold"}
+//
+//        onClick {e ->
+//            preventAndStop(e)
+//            println("I'm responding")
+//        }
+//
+//        onClicka {e -> "__async"
+//            fun fetchSomeAsyncShit(): Promise<String> {
+//                throw js.Error("No way")
+//            }
+//
+//            preventAndStop(e)
+//            val shit: String = __await(fetchSomeAsyncShit())
+//            println("Here... I've got some async shit for you: $shit")
+//            __asyncResult(Unit)
+//        }
+//
+//        - "Some text content"
+//        - diva {
+//            - "Some nested shit"
+//            onClick {
+//                println("Nested shit reacts too")
+//            }
+//        }
+//        - "More text"
+//    }.toReactElement()
+//}
 
-    override fun render(): ReactElement {
-        return jshit.spana(json("id" to elementID, "className" to className, "style" to style.toJSObject()), content)
-    }
+//fun makeBasicHTMLControlCtor(tag: String): ((BasicHTMLControlBuilder.() -> Unit) -> Control) {
+//    return {build ->
+//        val builder = BasicHTMLControlBuilder(tag)
+//        builder.build()
+//        Control(builder)
+//    }
+//}
 
-    override fun contributeTestState(state: dynamic) {
-        getTamePath()?.let {
-            state.put(json("control" to this, "key" to it, "value" to content))
-        }
-    }
+val noopAsyncReactEventHandler = {e: ReactEvent -> "__async"; __asyncResult(Unit)}
+
+fun or(vararg xs: String): String {
+    return xs.find { it != "" } ?: ""
+}
+
+fun puids(): String {
+    return "" + puid()
 }
 
 
+class ImplementControlShitSpec {
+
+}
+
+class ControlShit {
+
+}
+
+fun implementControlShit(): ControlShit {
+    throw js.Error()
+}
+
+fun elcl(spec: IReactClassSpec): ReactElement {
+    val clazz = React.createClass(json(
+
+    ))
+    return React.createElement(clazz, js("({})"))
+}
+
+typealias MaybeFun = (() -> Unit)?
+
+interface IReactClassSpec {
+    val render: () -> ReactElement
+    val componentWillMount: MaybeFun
+    val componentDidMount: MaybeFun
+    val componentWillUpdate: MaybeFun
+    val componentDidUpdate: MaybeFun
+    val componentWillUnmount: MaybeFun
+}
+
+
+typealias ReactEventHandler = (ReactEvent) -> Unit
+typealias AsyncReactEventHandler = (ReactEvent) -> Promise<Unit>
+
+//open class ControlSpec {
+//    var elementID: String? = null
+//    var tame: String? = null
+//    var firstSignificantStackLine: Int = 2
+//
+//    var onRootClick: AsyncReactEventHandler = { __asyncResult(Unit) }
+//    var contributeTestState: (state: dynamic) -> Unit = {}
+////    var getLongRevelationTitle(): String = "// TODO:vgrechka Implement getLongRevelationTitle"
+//
+//    var componentWillMount: () -> Unit = {}
+//    var componentDidMount: () -> Unit = {}
+//    var componentWillUpdate: () -> Unit = {}
+//    var componentDidUpdate: () -> Unit = {}
+//    var componentWillUnmount: () -> Unit = {}
+//}
+
+//class BasicHTMLControlBuilder(val tag: String): ControlSpec() {
+//    private val attrs = mutableMapOf<String, Any>()
+//    protected val children = mutableListOf<ReactElement>()
+//    val style = StyleBuilder()
+//    var styleKludge: dynamic = undefined
+//
+//    var noStateContributions: Boolean = false
+//
+//    var className: String? = null; set(value) { if (value == null) attrs.remove("className") else attrs["className"] = value }
+//    var id: String? = null; set(value) { if (value == null) attrs.remove("id") else attrs["id"] = value }
+//
+//    operator fun invoke(insideMe: FlowElementBuilder.() -> Unit) {
+//        insideMe()
+//    }
+//
+//    fun onClick(handler: ReactEventHandler) {
+//        attrs["onClick"] = handler
+//    }
+//
+//    operator fun Iterable<ReactElement>.unaryPlus() {
+//        for (child in this) add(child)
+//    }
+//
+//    fun add(child: ReactElement?) {
+//        if (child != null) children.add(transformChildBeforeAddition(child))
+//    }
+//
+//    fun add(child: ToReactElementable?) {
+//        add(child?.toReactElement())
+//    }
+//
+//    operator fun ReactElement?.unaryMinus() {
+//        add(this)
+//    }
+//
+//    operator fun ToReactElementable?.unaryMinus() {
+//        add(this)
+//    }
+//
+//    operator fun String?.unaryMinus() {
+//        if (this != null) add(asReactElement(this))
+//    }
+//
+////    @Suppress("USELESS_CAST")
+////    operator fun dynamic.unaryMinus() {
+////        when {
+////            this == null -> {}
+////            this is String -> - (this as String)
+////            this.`$meta` != null -> - this.meat
+////            this.`$$typeof` == js("Symbol['for']('react.element')") -> -asReactElement(this)
+////            this.element && this.element.`$$typeof` == js("Symbol['for']('react.element')") -> -asReactElement(this.element)
+////            else -> raise("Weird shit in FlowElementBuilder child")
+////        }
+////    }
+//
+//    fun toElement(): ReactElement {
+//        val theStyle = if (styleKludge != undefined) styleKludge else style.toJSObject()
+//        val allAttrs = (attrs + ("style" to theStyle)).toJSObject()
+//        // console.log("allAttrs", allAttrs)
+//        return React.createElement(tag, allAttrs, *children.toTypedArray())
+//    }
+//
+//    open fun transformChildBeforeAddition(child: ReactElement) = child
+//}
+
+
+
+
+//class diva(build: diva.() -> Unit) : StatefulElement() {
+//    private val element: ReactElement
+//
+//    override val defaultControlTypeName = "diva"
+//
+//    init {
+////        val builder = FlowElementBuilder("div")
+////        builder {
+////            id = elementID
+////        }
+////        builder.build()
+////        element = builder.toElement()
+//    }
+//
+//    override fun render(): ReactElement = element
+//}
+
+fun sufindex(prefix: String, index: Int): String {
+    return prefix + jshit.sufindex(index)
+}
+
+open class FlowElementBuilder(val tag: String) {
+    private val attrs = mutableMapOf<String, Any>()
+    protected val children = mutableListOf<ReactElement>()
+    val style = StyleBuilder()
+    var styleKludge: dynamic = undefined
+
+    var noStateContributions: Boolean = false
+
+    var className: String? = null; set(value) { if (value == null) attrs.remove("className") else attrs["className"] = value }
+    var id: String? = null; set(value) { if (value == null) attrs.remove("id") else attrs["id"] = value }
+
+//    operator fun invoke(insideMe: FlowElementBuilder.() -> Unit) {
+//        insideMe()
+//    }
+
+    fun onClick(handler: ReactEventHandler) {
+        attrs["onClick"] = handler
+    }
+
+    operator fun Iterable<ReactElement>.unaryPlus() {
+        for (child in this) add(child)
+    }
+
+    fun add(child: ReactElement?) {
+        if (child != null) children.add(transformChildBeforeAddition(child))
+    }
+
+    fun add(child: ToReactElementable?) {
+        add(child?.toReactElement())
+    }
+
+    operator fun ReactElement?.unaryMinus() {
+        add(this)
+    }
+
+    operator fun ToReactElementable?.unaryMinus() {
+        add(this)
+    }
+
+    operator fun String?.unaryMinus() {
+        if (this != null) add(asReactElement(this))
+    }
+
+    @Suppress("USELESS_CAST")
+    operator fun dynamic.unaryMinus() {
+        when {
+            this == null -> {}
+            this is String -> - (this as String)
+            this.`$meta` != null -> - this.meat
+            this.`$$typeof` == js("Symbol['for']('react.element')") -> -asReactElement(this)
+            this.element && this.element.`$$typeof` == js("Symbol['for']('react.element')") -> -asReactElement(this.element)
+            else -> raise("Weird shit in FlowElementBuilder child")
+        }
+    }
+
+    fun toElement(): ReactElement {
+        val theStyle = if (styleKludge != undefined) styleKludge else style.toJSObject()
+        val allAttrs = (attrs + ("style" to theStyle)).toJSObject()
+        // console.log("allAttrs", allAttrs)
+        return React.createElement(tag, allAttrs, *children.toTypedArray())
+    }
+
+    open fun transformChildBeforeAddition(child: ReactElement) = child
+}
 

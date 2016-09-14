@@ -81,11 +81,16 @@ object KotlinShit : IKotlinShit {
         jshit.art.renderStepDescriptions = ::renderStepDescriptions
         jshit.art.openTestPassedPane = ::openTestPassedPane
         jshit.art.gertrude = ::gertrude
-        jshit.renderExceptionTriangle = ::jsFacing_renderExceptionTriangle
+        jshit.art.invokeStateContributions = ::jsFacing_invokeStateContributions
+//        jshit.renderExceptionTriangle = ::jsFacing_renderExceptionTriangle
         jshit.spanc = ::jsFacing_spanc
         jshit.limpopo = ::jsFacing_limpopo
 
         initTestShit()
+    }
+
+    override fun loadAdminUsersPage(): Promise<Unit> {"__async"
+        return __asyncResult(__await(AdminUsersPage(ui).load()))
     }
 
     val kot_melinda = ::jsFacing_melinda
@@ -304,198 +309,8 @@ object KotlinShit : IKotlinShit {
     }
 
 
-    override fun loadAdminUsersPage(): Promise<Unit> {"__async"
-        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
-
-        __await(jsFacing_melinda(json(
-            "ui" to ui,
-            "urlPath" to "admin-users.html",
-            "itemsFun" to "private_getUsers",
-            "header" to { entityRes: dynamic ->
-                jshit.pageHeader(json("title" to t("TOTE", "Пользователи")))
-            },
-
-            "hasFilterSelect" to true,
-            "filterSelectValues" to global.apsdata.userFilters(),
-            "defaultFilter" to "all",
-
-            "plusIcon" to "plus",
-
-            "plusFormDef" to json(
-                "primaryButtonTitle" to t("TOTE", "Запостить"),
-                "cancelButtonTitle" to t("TOTE", "Передумал"),
-                "autoFocus" to "message",
-                "fields" to jsArrayOf(
-                    ui.HiddenField(json(
-                        "name" to "threadID",
-                        "value" to ui.urlQuery.thread
-                    )),
-                    ui.TextField(json(
-                        "name" to "message",
-                        "kind" to "textarea",
-                        "title" to t("TOTE", "Сообщение")
-                    ))
-                ),
-                "rpcFun" to "private_createSupportThreadMessage",
-                "onSuccess" to {res: dynamic -> "__async"
-                    __await<dynamic>(ui.pushNavigate("support.html?thread=${ui.urlQuery.thread}"))
-                }
-            ),
-
-            "renderItem" to renderItem@{def: dynamic ->
-                // #extract {item: user, index} from def
-                var user = def.item; val index = def.index
-
-                object {
-                    val headingID = jshit.puid()
-                    val placeholder = jshit.Placeholder()
-
-                    init {
-                        enterDisplayMode()
-                    }
-
-                    fun enterDisplayMode() {
-                        peggy(json(
-                            "headingActionItems" to jsArrayOf(
-                                jshit.faIcon(json("tamy" to "edit", "className" to "hover-color-BLUE_GRAY_800", "style" to json("fontSize" to "135%", "cursor" to "pointer"), "icon" to "pencil",
-                                    "onClick" to { enterEditMode() }))),
-                            "body" to jshit.diva(js("({})"), renderProfile(json("user" to user)))))
-                    }
-
-                    fun enterEditMode() {
-                        var form: dynamic = null // @workaround
-                        form = ui.Form(json(
-                            "dontShameButtons" to true,
-                            "errorBannerStyle" to json("marginTop" to 15),
-                            "primaryButtonTitle" to t("TOTE", "Сохранить"),
-                            "cancelButtonTitle" to t("TOTE", "Передумал"),
-
-                            "getInvisibleFieldNames" to getInvisibleFieldNames@{
-                                var invisible = jsArrayOf("profileRejectionReason", "banReason")
-
-                                val state = form.getField("state").getValue()
-                                if (state == "profile-rejected") {
-                                    invisible = jshit.without(invisible, "profileRejectionReason")
-                                }
-                                else if (state == "banned") {
-                                    invisible = jshit.without(invisible, "banReason")
-                                }
-
-                                return@getInvisibleFieldNames invisible
-                            },
-
-                            "fields" to js("[]").concat(
-                                jsArrayOf(
-                                    ui.HiddenField(json(
-                                        "name" to "id",
-                                        "value" to user.id
-                                    )),
-
-                                    ui.SelectField(json(
-                                        "name" to "state",
-                                        "title" to t("TOTE", "Статус"),
-                                        "values" to global.apsdata.userStates()
-                                    )),
-
-                                    ui.TextField(json(
-                                        "name" to "profileRejectionReason",
-                                        "kind" to "textarea",
-                                        "title" to t("TOTE", "Причина отказа")
-                                    )),
-
-                                    ui.TextField(json(
-                                        "name" to "banReason",
-                                        "kind" to "textarea",
-                                        "title" to t("TOTE", "Причина бана")
-                                    ))
-                                ),
-
-                                ui.makeSignUpFields(js("({})")),
-                                makeProfileFields(js("({})")),
-
-                                jsArrayOf(
-                                    ui.TextField(json(
-                                        "name" to "adminNotes",
-                                        "kind" to "textarea",
-                                        "title" to t("TOTE", "Заметки админа")
-                                        ))
-                                )
-                            ),
-
-                            "rpcFun" to "private_updateUser",
-                            "onCancel" to {
-                                placeholder.setPrevContent()
-                                scrollToHeading()
-                            },
-                            "onSuccess" to {res: dynamic -> "__async"
-                                __await<dynamic>(refreshRecord())
-                                scrollToHeading()
-                            },
-                            "onError" to {
-                                scrollToHeading()
-                            }
-                        ))
-
-                        form.getField("state").setValue(user.state)
-                        form.getField("email").setValue(user.email)
-                        form.getField("firstName").setValue(user.first_name)
-                        form.getField("lastName").setValue(user.last_name)
-                        form.getField("phone").setValue(user.phone)
-                        form.getField("aboutMe").setValue(user.about_me)
-                        form.getField("profileRejectionReason").setValue(user.profile_rejection_reason || js("''"))
-                        form.getField("adminNotes").setValue(user.admin_notes || js("''"))
-
-                        peggy(json(
-                            "headingActionItems" to jsArrayOf(),
-                            "body" to jshit.diva(json("style" to json("marginBottom" to 15)), form)))
-
-                        scrollToHeading()
-                    }
-
-                    fun peggy(def: dynamic) {
-                        // #extract {headingActionItems, body} from def
-                        val headingActionItems = def.headingActionItems; val body = def.body
-
-                        placeholder.setContent(jshit.diva(json("controlTypeName" to "admin-users::renderItem", "tame" to "item${jshit.sufindex(index)}"),
-                            jshit.diva(json("tame" to "heading", "id" to headingID, "style" to json("marginBottom" to 10, "background" to jshit.BLUE_GRAY_50, "borderBottom" to "1px solid ${jshit.BLUE_GRAY_100}")),
-                                jshit.spana(json("style" to json("fontWeight" to "normal")),
-                                    jshit.spanc(json("tame" to "title", "style" to json("fontSize" to "135%"),
-                                        "content" to user.first_name + " " + user.last_name)),
-                                    jshit.spanc(json("tame" to "no", "style" to json("color" to jshit.GRAY_500, "marginLeft" to 12), "content" to "${jshit.nostring(json("no" to user.id))}"))),
-
-                                jshit.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to BLUE_GRAY_600), "items" to headingActionItems))),
-
-                            body
-                            // ObjectViewer(s{object: user})
-                        ))
-                    }
-
-                    fun scrollToHeading() {
-                        global.requestAnimationFrame { jshit.jQuery(document).scrollTop(jshit.byid(headingID).offset().top - 50 - 15) }
-                    }
-
-
-                    fun refreshRecord(): Promise<Unit> {"__async"
-                        val res = __await<dynamic>(ui.rpcSoft(json("fun" to "private_getUser", "id" to user.id)))
-                        if (res.error) {
-                            peggy(json(
-                                "headingActionItems" to jsArrayOf(),
-                                "body" to jshit.errorBanner(json("content" to res.error))))
-                        } else {
-                            user = res.user
-                            enterDisplayMode()
-                        }
-
-                        return __asyncResult(Unit) // @workaround
-                    }
-
-                }.placeholder
-            }
-        )))
-
-        return __asyncResult(Unit)
-    }
 }
+
 
 fun jsFacing_limpopo(def: dynamic): dynamic {
     // #extract {model, content, value, prop, label, transform=identity, colsm, formGroupStyle={}, contentStyle={}} from def
@@ -769,11 +584,6 @@ class JSError(message: String) : Throwable(message) {
     }
 }
 
-interface BasicElementBuilder {
-    var className: String
-    val style: StyleBuilder
-}
-
 fun jsFacing_spanc(def: dynamic): dynamic {
     // #extract {content, className='', style={}} from def
     val content = def.content
@@ -828,45 +638,45 @@ fun jsFacing_spanc(def: dynamic): dynamic {
 
 fun renderRedExclamationTriangleLabel(title: String): ReactElement {
     return span {style {color = RED_700}
-        -span {className = "fa fa-exclamation-triangle"}
-        -span {style { marginLeft(10) }; -title}
+        - span {className = "fa fa-exclamation-triangle"}
+        - span {style { marginLeft(10) }; - title}
     }
 }
 
-fun jsFacing_renderExceptionTriangle(def: dynamic): dynamic {
-    var exception = def.exception
-
-    return span {
-        -span {style {cursor = "pointer"}
-            onClick { println("zzzzzzz") }
-            -renderRedExclamationTriangleLabel("It fucking throwed: ${exception.message}")
-        }
-
-        -span {style {marginLeft(10) }; -"("}
-        -"Reveal"
-//        -link("Reveal") {
-//            jshit.revealStack(json("exception" to exception))
-//        }
-        -")"
-    }
-
-//    try {
-//        return jshit.spana(json("noStateContributions" to true, "controlTypeName" to "renderExceptionTriangle"),
-//            jshit.spana(json("style" to json("cursor" to "pointer"),
-//                "onClick" to { jshit.revealStack(json("exception" to exception)) }),
-//                jshit.renderRedExclamationTriangleLabel(json("title" to t("It fucking throwed: ${exception.message}")))
-//            ),
+//fun jsFacing_renderExceptionTriangle(def: dynamic): dynamic {
+//    var exception = def.exception
 //
-//            jshit.spana(json("style" to json("marginLeft" to 10)), "("),
-//            jshit.link(json("title" to t("Reveal"), "onClick" to { jshit.revealStack(json("exception" to exception)) })),
-//            ")"
-//        )
-//    } catch(e: Throwable) {
-//        val msg = "We are in deep shit, man. Cannot renderExceptionTriangle()"
-//        global.console.error(msg)
-//        return null
+//    return span {
+//        -span {style {cursor = "pointer"}
+//            onClick { println("zzzzzzz") }
+//            -renderRedExclamationTriangleLabel("It fucking throwed: ${exception.message}")
+//        }
+//
+//        -span {style {marginLeft(10) }; -"("}
+//        -"Reveal"
+////        -link("Reveal") {
+////            jshit.revealStack(json("exception" to exception))
+////        }
+//        -")"
 //    }
-}
+//
+////    try {
+////        return jshit.spana(json("noStateContributions" to true, "controlTypeName" to "renderExceptionTriangle"),
+////            jshit.spana(json("style" to json("cursor" to "pointer"),
+////                "onClick" to { jshit.revealStack(json("exception" to exception)) }),
+////                jshit.renderRedExclamationTriangleLabel(json("title" to t("It fucking throwed: ${exception.message}")))
+////            ),
+////
+////            jshit.spana(json("style" to json("marginLeft" to 10)), "("),
+////            jshit.link(json("title" to t("Reveal"), "onClick" to { jshit.revealStack(json("exception" to exception)) })),
+////            ")"
+////        )
+////    } catch(e: Throwable) {
+////        val msg = "We are in deep shit, man. Cannot renderExceptionTriangle()"
+////        global.console.error(msg)
+////        return null
+////    }
+//}
 
 
 @Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE")
@@ -1139,7 +949,8 @@ fun gertrude(def: dynamic) {
 
                                         return@updatableElement {
                                             div {
-                                                id = "" + lineDivID; className = "showOnParentHovered-parent"
+                                                id = "" + lineDivID
+                                                className = "showOnParentHovered-parent"
                                                 styleKludge = style
 
                                                 if (isExtValueLine(valueLine))
@@ -1256,7 +1067,7 @@ fun gertrude(def: dynamic) {
                     -hor2 {
                         -hor1 { -unifyIndicesCheck; -"Unify indices" }
                         -hor1 { -hideKeyRepetitionsCheck; -"Hide key repetitions" }
-                        -button {level = "primary"; title = t("Update Assertion Code"); icon = "pencil"; onClick {
+                        -button {level = "primary"; title = "Update Assertion Code"; icon = "pencil"; onClickp {
                             global.testGlobal.minimalGertrude = true
                             jshit.callDebugRPWithProgress(json("msg" to json("fun" to "danger_updateAssertionCode", "assertionTag" to tag, "actualStringForPasting" to actualStringForPasting), "progressPlaceholder" to progressPlaceholder, "progressTitle" to "Updating assertion code"))
                         }}
@@ -1472,56 +1283,56 @@ fun renderStepDescriptions(): ReactElement {
         *els.toTypedArray())
 }
 
-private fun makeSwearBoxes(): StatefulElement {
-    return object : StatefulElement(null) {
-        override val controlTypeName: String get() = "makeSwearBoxes"
-        private var shitVisible: Boolean = true
-
-        val swearBox1 = PromiseAsyncSwearBox(controlTypeName = "bobobox") {
-            style { width = "100%" }
-            onChange {
-                println("Box 1 changed")
-            }
-        }
-
-        val swearBox2 = PromiseAsyncSwearBox {
-            style { width = "100%" }
-            onChange {
-                println("Box 2 changed")
-            }
-        }
-
-        override fun render() = div {
-            -div {
-                -simpleButton(if (shitVisible) "Hide Shit" else "Show Shit") {
-                    shitVisible = !shitVisible; update()
-                }
-
-                ifornull(shitVisible) {
-                    -div {
-                        -div {
-                            style { display = "flex" }
-                            -swearBox1
-                            -simpleButton("Reset") {
-                                swearBox1.reset()
-                            }
-                        }
-
-                        -div {
-                            style { display = "flex" }
-                            -swearBox2
-                            -simpleButton("Reset") {
-                                swearBox2.reset()
-                            }
-                        }
-
-                        -div { style { height(500) } }
-                    }
-                }
-            }
-        }
-    }
-}
+//private fun makeSwearBoxes(): StatefulElement {
+//    return object : StatefulElement(null) {
+//        override val controlTypeName: String get() = "makeSwearBoxes"
+//        private var shitVisible: Boolean = true
+//
+//        val swearBox1 = PromiseAsyncSwearBox(controlTypeName = "bobobox") {
+//            style { width = "100%" }
+//            onChange {
+//                println("Box 1 changed")
+//            }
+//        }
+//
+//        val swearBox2 = PromiseAsyncSwearBox {
+//            style { width = "100%" }
+//            onChange {
+//                println("Box 2 changed")
+//            }
+//        }
+//
+//        override fun render() = div {
+//            -div {
+//                -simpleButton(if (shitVisible) "Hide Shit" else "Show Shit") {
+//                    shitVisible = !shitVisible; update()
+//                }
+//
+//                ifornull(shitVisible) {
+//                    -div {
+//                        -div {
+//                            style { display = "flex" }
+//                            -swearBox1
+//                            -simpleButton("Reset") {
+//                                swearBox1.reset()
+//                            }
+//                        }
+//
+//                        -div {
+//                            style { display = "flex" }
+//                            -swearBox2
+//                            -simpleButton("Reset") {
+//                                swearBox2.reset()
+//                            }
+//                        }
+//
+//                        -div { style { height(500) } }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 @native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
     fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
@@ -1561,94 +1372,79 @@ class SimpleEventHandlerBuilder {
     }
 }
 
-class diva(override val controlTypeName: String = "diva", build: FlowElementBuilder.() -> Unit) : StatefulElement(null) {
-    private val element: ReactElement
-
-    init {
-        val builder = FlowElementBuilder("div")
-        builder {
-            id = elementID
-        }
-        builder.build()
-        element = builder.toElement()
-    }
-
-    override fun render(): ReactElement = element
-}
-
-class PromiseAsyncSwearBox(override val controlTypeName: String = "PromiseAsyncSwearBox", build: PromiseAsyncSwearBox.() -> Unit) : StatefulElement(null) {
-    val adjectives = arrayOf("Big", "Little")
-    val mainWords = arrayOf("Shit", "Fuck", "Bitch")
-    var adjectiveIndex = -1
-    var mainWordIndex = -1
-    var progressStatus: String? = null
-    var phrase: String? = null
-    val myStyle = StyleBuilder(); // val style = myStyle
-    val onChange = SimpleEventHandlerBuilder()
-
-    init {
-        // @wip sourceLocation
-
-        build()
-    }
-
-    // @wip stuff
-    override fun render() = div {id = elementID; style {add(myStyle)}
-        -hor2 {
-            if (phrase == null)
-                -diva {style {color = ROSYBROWN}; -"Kittens"}
-            else
-                -div {
-                    -span {style {fontWeight = "bold"}; -"Back to earth:"}
-                    -div {-phrase}
-                }
-
-            if (progressStatus != null)
-                -div {style {fontStyle = "italic"}; -progressStatus}
-        }
-
-        -simpleButton("More") {
-            var adjective: String? = null
-
-            generateAdjective()
-            .then<String> {_adjective ->
-                adjective = _adjective
-                generateMainWord()
-            }.then<Nothing> {mainWord ->
-                phrase = "$adjective $mainWord"
-                update()
-                onChange.notify()
-            }
-        }
-    }
-
-    fun generateAdjective(): Promise<String> {
-        progressStatus = "Thinking adjective..."; update()
-        return Promise {resolve, reject ->
-            timeoutSet(300) {
-                progressStatus = null; update()
-                if (++adjectiveIndex > adjectives.lastIndex) adjectiveIndex = 0
-                resolve(adjectives[adjectiveIndex])
-            }
-        }
-    }
-
-    fun generateMainWord(): Promise<String> {
-        progressStatus = "Thinking main word..."; update()
-        return Promise {resolve, reject ->
-            timeoutSet(300) {
-                progressStatus = null; update()
-                if (++mainWordIndex > mainWords.lastIndex) mainWordIndex = 0
-                resolve(mainWords[mainWordIndex])
-            }
-        }
-    }
-
-    fun reset() {
-        phrase = null; update()
-    }
-
-}
+//class PromiseAsyncSwearBox(override val controlTypeName: String = "PromiseAsyncSwearBox", build: PromiseAsyncSwearBox.() -> Unit) : StatefulElement(null) {
+//    val adjectives = arrayOf("Big", "Little")
+//    val mainWords = arrayOf("Shit", "Fuck", "Bitch")
+//    var adjectiveIndex = -1
+//    var mainWordIndex = -1
+//    var progressStatus: String? = null
+//    var phrase: String? = null
+//    val myStyle = StyleBuilder(); // val style = myStyle
+//    val onChange = SimpleEventHandlerBuilder()
+//
+//    init {
+//        // @wip sourceLocation
+//
+//        build()
+//    }
+//
+//    // @wip stuff
+//    override fun render() = div {id = elementID; style {add(myStyle)}
+//        -hor2 {
+//            if (phrase == null)
+//                -diva {style {color = ROSYBROWN}; -"Kittens"}
+//            else
+//                -div {
+//                    -span {style {fontWeight = "bold"}; -"Back to earth:"}
+//                    -div {-phrase}
+//                }
+//
+//            if (progressStatus != null)
+//                -div {style {fontStyle = "italic"}; -progressStatus}
+//        }
+//
+//        -simpleButton("More") {
+//            var adjective: String? = null
+//
+//            generateAdjective()
+//            .then<String> {_adjective ->
+//                adjective = _adjective
+//                generateMainWord()
+//            }.then<Nothing> {mainWord ->
+//                phrase = "$adjective $mainWord"
+//                update()
+//                onChange.notify()
+//            }
+//        }
+//    }
+//
+//    fun generateAdjective(): Promise<String> {
+//        progressStatus = "Thinking adjective..."; update()
+//        return Promise {resolve, reject ->
+//            timeoutSet(300) {
+//                progressStatus = null; update()
+//                if (++adjectiveIndex > adjectives.lastIndex) adjectiveIndex = 0
+//                resolve(adjectives[adjectiveIndex])
+//            }
+//        }
+//    }
+//
+//    fun generateMainWord(): Promise<String> {
+//        progressStatus = "Thinking main word..."; update()
+//        return Promise {resolve, reject ->
+//            timeoutSet(300) {
+//                progressStatus = null; update()
+//                if (++mainWordIndex > mainWords.lastIndex) mainWordIndex = 0
+//                resolve(mainWords[mainWordIndex])
+//            }
+//        }
+//    }
+//
+//    fun reset() {
+//        phrase = null; update()
+//    }
+//
+//}
 
 fun timeoutSet(ms: Int, cb: () -> Unit) {
     window.setTimeout(cb, ms)
@@ -1696,36 +1492,36 @@ val nbsp: String = js("String.fromCharCode(0xa0)")
 //}
 
 
-class button(build: button.() -> Unit) : StatefulElement(null) {
-    override val controlTypeName: String get() = "button"
-
-    var icon: String? = null
-    var title: ManagedString? = null
-    var level = "default"
-    val iconStyle = StyleBuilder()
-    var hint: ManagedString? = null
-
-    init {
-        build()
-    }
-
-    override fun render(): ReactElement = element
-
-    private val element: ReactElement by lazy {
-        val attrs = js("({})")
-        attrs.id = elementID
-        attrs.className = "btn btn-${level} ${className}"
-        attrs.style = style.toJSObject()
-        attrs.title = hint?.meat
-        attrs.onClick = onClick
-
-        React.createElement("button", attrs,
-            icon?.let { jshit.glyph(it, json("style" to iconStyle.toJSObject())) },
-            if (icon != null && title != null) nbsp else null,
-            title?.meat
-        )
-    }
-}
+//class oldButton(build: oldButton.() -> Unit) : StatefulElement(null) {
+//    override val controlTypeName: String get() = "button"
+//
+//    var icon: String? = null
+//    var title: ManagedString? = null
+//    var level = "default"
+//    val iconStyle = StyleBuilder()
+//    var hint: ManagedString? = null
+//
+//    init {
+//        build()
+//    }
+//
+//    override fun render(): ReactElement = element
+//
+//    private val element: ReactElement by lazy {
+//        val attrs = js("({})")
+//        attrs.id = elementID
+//        attrs.className = "btn btn-${level} ${className}"
+//        attrs.style = style.toJSObject()
+//        attrs.title = hint?.meat
+//        attrs.onClick = onClick
+//
+//        React.createElement("button", attrs,
+//            icon?.let { jshit.glyph(it, json("style" to iconStyle.toJSObject())) },
+//            if (icon != null && title != null) nbsp else null,
+//            title?.meat
+//        )
+//    }
+//}
 
 @native interface ReactEvent {
     val ctrlKey: Boolean
@@ -1749,8 +1545,6 @@ fun preventAndStop(e: ReactEvent) {
 fun <R> runni(f: () -> R): R {
     return f()
 }
-
-typealias ReactEventHandler = (ReactEvent) -> Unit
 
 
 fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
@@ -1799,7 +1593,7 @@ fun raise(msg: String, props: dynamic = undefined) {
 @native interface ReactElement {
 }
 
-private fun asReactElement(x: Any?): ReactElement {
+fun asReactElement(x: Any?): ReactElement {
     val didi: dynamic = x
     return didi
 }
@@ -1850,70 +1644,6 @@ fun span(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
     return builder.toElement()
 }
 
-open class FlowElementBuilder(val tag: String) {
-    private val attrs = mutableMapOf<String, Any>()
-    protected val children = mutableListOf<ReactElement>()
-    val style = StyleBuilder()
-    var styleKludge: dynamic = undefined
-
-    var noStateContributions: Boolean = false
-
-    var className: String? = null; set(value) { if (value == null) attrs.remove("className") else attrs["className"] = value }
-    var id: String? = null; set(value) { if (value == null) attrs.remove("id") else attrs["id"] = value }
-
-    operator fun invoke(insideMe: FlowElementBuilder.() -> Unit) {
-        insideMe()
-    }
-
-    fun onClick(handler: ReactEventHandler) {
-        attrs["onClick"] = handler
-    }
-
-    operator fun Iterable<ReactElement>.unaryPlus() {
-        for (child in this) add(child)
-    }
-
-    fun add(child: ReactElement?) {
-        if (child != null) children.add(transformChildBeforeAddition(child))
-    }
-
-    fun add(child: ToReactElementable?) {
-        add(child?.toReactElement())
-    }
-
-    operator fun ReactElement?.unaryMinus() {
-        add(this)
-    }
-
-    operator fun ToReactElementable?.unaryMinus() {
-        add(this)
-    }
-
-    operator fun String?.unaryMinus() {
-        if (this != null) add(asReactElement(this))
-    }
-
-    @Suppress("USELESS_CAST")
-    operator fun dynamic.unaryMinus() {
-        when {
-            this == null -> {}
-            this is String -> - (this as String)
-            this.`$meta` != null -> - this.meat
-            this.`$$typeof` == js("Symbol['for']('react.element')") -> - asReactElement(this)
-            this.element && this.element.`$$typeof` == js("Symbol['for']('react.element')") -> - asReactElement(this.element)
-            else -> raise("Weird shit in FlowElementBuilder child")
-        }
-    }
-
-    fun toElement(): ReactElement {
-        val theStyle = if (styleKludge != undefined) styleKludge else style.toJSObject()
-        val allAttrs = (attrs + ("style" to theStyle)).toJSObject()
-        // console.log("allAttrs", allAttrs)
-        return React.createElement(tag, allAttrs, *children.toTypedArray())
-    }
-
-    open fun transformChildBeforeAddition(child: ReactElement) = child
-}
 
 interface ToReactElementable {
     fun toReactElement(): ReactElement
@@ -2294,6 +2024,7 @@ class StyleBuilder {
 // ------------------------- Async Playground -------------------------
 
 @native fun <T> __await(x: Promise<T>): T = noImpl
+@native fun <T> no__await(x: Promise<T>): T = noImpl
 @native fun <T> __asyncResult(x: T): Promise<T> = noImpl
 
 fun testAsyncShit() {"__async"

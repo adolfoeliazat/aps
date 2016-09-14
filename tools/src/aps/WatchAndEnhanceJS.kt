@@ -3,6 +3,7 @@
  *
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
+
 package aps
 
 import jdk.nashorn.internal.ir.*
@@ -20,6 +21,7 @@ import jdk.nashorn.internal.runtime.options.Options;
 
 
 val MODE = "watch"
+//val MODE = "test"
 val DEBUG_OUT_FILE = true
 
 var emittedShitCount = 0
@@ -158,14 +160,17 @@ fun doStuff(jsFileEntry: Entry, mapFileEntry: Entry) {
             // println("functionNode: ${functionNode.name} @ ${functionNode.position()}")
             val statements = functionNode.body.statements
             if (statements.size > 0) {
-                val firstStatement = statements[0]
-                if (firstStatement.isTokenType(TokenType.STRING)) {
-                    val firstString = firstStatement.toString()
-                    // println("First string: [${firstString}]")
-                    if (firstString == "\"__async\"") {
-                        // println("Transforming __async function ${functionNode.name} @ line ${functionNode.lineNumber}")
-                        changes.add(Change(functionNode.start + 1, 0, "return __awaiter(this, void 0, void 0, function* () {"))
-                        changes.add(Change(functionNode.finish - 1, 0, "});"))
+                for (statement in statements) {
+                    if (statement.isTokenType(TokenType.STRING)) {
+                        val firstString = statement.toString()
+                        // println("First string: [${firstString}]")
+                        if (firstString == "\"__async\"") {
+                            // println("Transforming __async function ${functionNode.name} @ line ${functionNode.lineNumber}")
+                            changes.add(Change(functionNode.start + 1, 0, "return __awaiter(this, void 0, void 0, function* () {"))
+                            changes.add(Change(functionNode.finish - 1, 0, "});"))
+                        }
+
+                        break
                     }
                 }
             }
