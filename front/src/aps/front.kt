@@ -92,7 +92,8 @@ object KotlinShit : IKotlinShit {
     }
 
     val shittyShit = json(
-        "pieceOfTest100" to ::jsFacing_pieceOfTest100
+        "pieceOfTest100" to ::jsFacing_pieceOfTest100,
+        "test_UA_Writer_SignUp_1_vovchok1" to ::jsFacing_test_UA_Writer_SignUp_1_vovchok1
     )
 
     override fun loadAdminUsersPage(): Promise<Unit> {"__async"
