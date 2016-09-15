@@ -91,10 +91,11 @@ object KotlinShit : IKotlinShit {
         initTestShit()
     }
 
-    val shittyShit = json(
-        "pieceOfTest100" to ::jsFacing_pieceOfTest100,
-        "test_UA_Writer_SignUp_1_vovchok1" to ::jsFacing_test_UA_Writer_SignUp_1_vovchok1
-    )
+    val testScenarios = ::jsFacing_testScenarios
+
+//    val shittyShit = json(
+//        "tests_UA_Writer" to ::jsFacing_tests_UA_Writer
+//    )
 
     override fun loadAdminUsersPage(): Promise<Unit> {"__async"
         return __asyncResult(__await(AdminUsersPage(ui).load()))

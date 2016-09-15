@@ -1206,12 +1206,17 @@ isTestScenarioNameOK(name) {
             || name.startsWith('UA Admin :: ')
             || name.startsWith('UA Bits :: '))) return true
 },
-    
+
 testScenarios({sim}) {
-    return asn({},
-        require('./test-writer-ua')({sim}),
-        require('./test-admin-ua')({sim}),)
+    GENERATED_SHIT = require('./generated-shit')
+    return kot.aps.KotlinShit.testScenarios(sim)
 },
+    
+//testScenarios({sim}) {
+//    return asn({},
+//        require('./test-writer-ua')({sim}),
+//        require('./test-admin-ua')({sim}),)
+//},
     
 }) // End of makeUIShitIgniter argument
 

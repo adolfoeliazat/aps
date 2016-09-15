@@ -1,4 +1,32 @@
-test6()
+testCustomControlStructures()
+
+interface ShitReceiver {
+    infix fun shit(alternate: () -> Any?)
+}
+
+fun fuck(test: Boolean, consequent: () -> Any?): ShitReceiver {
+    if (test) consequent()
+
+    return object: ShitReceiver {
+        override fun shit(alternate: () -> Any?) {
+            if (!test) alternate()
+        }
+    }
+}
+
+fun testCustomControlStructures() {
+    fuck (10 > 5) {
+        println("10 > 5: fuck")
+    } shit {
+        println("10 > 5: shit")
+    }
+
+    fuck (10 < 5) {
+        println("10 < 5: fuck")
+    } shit {
+        println("10 < 5: shit")
+    }
+}
 
 fun test6() {
     abstract class A {
