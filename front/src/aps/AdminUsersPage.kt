@@ -11,8 +11,6 @@ import aps.Color.*
 
 class AdminUsersPage(val ui: dynamic) {
     fun load(): Promise<Unit> {"__async"
-        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
-
         __await(jsFacing_melinda(json(
             "ui" to ui,
             "urlPath" to "admin-users.html",
@@ -53,7 +51,7 @@ class AdminUsersPage(val ui: dynamic) {
                 var user = def.item; val index = def.index
 
                 object {
-                    val headingID = jshit.puid()
+                    val headingID = "hehe-" + jshit.puid()
                     val placeholder = jshit.Placeholder()
 
                     init {
@@ -177,7 +175,8 @@ class AdminUsersPage(val ui: dynamic) {
                     }
 
                     fun scrollToHeading() {
-                        global.requestAnimationFrame { jshit.jQuery(document).scrollTop(jshit.byid(headingID).offset().top - 50 - 15) }
+                        val top = jshit.byid(headingID).offset().top - 50 - 15
+                        global.requestAnimationFrame { jshit.jQuery(document).scrollTop(top) }
                     }
 
 

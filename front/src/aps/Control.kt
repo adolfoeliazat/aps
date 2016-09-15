@@ -497,6 +497,15 @@ fun makeBasicContainerControlCtor(tag: String): (BasicContainerControlBuilder.()
     return ::ctor
 }
 
+//class ManagedString(val en: String, val ru: String) {
+//    val meat: String get() = ru // TODO:vgrechka Implement ManagedString.meat    09c55c82-faa1-4734-a45c-5454b755eeab
+//}
+
+fun t(en: String) = t(en, en)
+
+fun t(en: String, ru: String): String {
+    return ru
+}
 
 
 

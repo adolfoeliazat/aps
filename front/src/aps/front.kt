@@ -85,9 +85,15 @@ object KotlinShit : IKotlinShit {
 //        jshit.renderExceptionTriangle = ::jsFacing_renderExceptionTriangle
         jshit.spanc = ::jsFacing_spanc
         jshit.limpopo = ::jsFacing_limpopo
+//        jshit.pageHeader = ::jsFacing_pageHeader
+
 
         initTestShit()
     }
+
+    val shittyShit = json(
+        "pieceOfTest100" to ::jsFacing_pieceOfTest100
+    )
 
     override fun loadAdminUsersPage(): Promise<Unit> {"__async"
         return __asyncResult(__await(AdminUsersPage(ui).load()))
@@ -1456,12 +1462,6 @@ fun simpleButton(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement
     return React.createElement("button", attrs, title)
 }
 
-class ManagedString(val en: String, val ru: String) {
-    val meat: String get() = ru // TODO:vgrechka Implement ManagedString.meat    09c55c82-faa1-4734-a45c-5454b755eeab
-}
-
-fun t(en: String, ru: String) = ManagedString(en, ru)
-fun t(en: String) = ManagedString(en, en)
 
 val nbsp: String = js("String.fromCharCode(0xa0)")
 
