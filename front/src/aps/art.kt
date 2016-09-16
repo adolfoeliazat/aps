@@ -8,9 +8,20 @@ package aps
 
 import kotlin.browser.window
 import aps.Color.*
+import kotlin.reflect.KProperty
+
+class HotReloadSurvivingShit(val nameInGlobalScope: String) {
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): dynamic {
+        return global[nameInGlobalScope]
+    }
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: dynamic) {
+        global[nameInGlobalScope] = value
+    }
+}
 
 object art {
-    var testInstructions: dynamic = undefined
+    var testInstructions: dynamic by HotReloadSurvivingShit("art_testInstructions")
 
     fun run(spec: dynamic): Promise<Unit> {"__async"
         // #extract {instructions} from def
