@@ -623,7 +623,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
 
                 __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
 
-                __await<dynamic>(jshit.art.run(json(
+                __await<dynamic>(art.run(json(
                     "instructions" to js("[]").concat(
                         vovchok1(),
                         json("worldPoint" to json("name" to "1")),

@@ -1193,7 +1193,7 @@ fun <T> ifornull(cond: Boolean, f: () -> T): T? {
 }
 
 fun renderStepDescriptions(): ReactElement {
-    val testInstructions = jshit.art.getTestInstructions()
+    val testInstructions = art.testInstructions
     val els = mutableListOf<ReactElement>()
 
     var stepIndex = 0; var indent = 0

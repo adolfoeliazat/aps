@@ -4,6 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front.kt" line="604" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/Control.kt" line="480" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/Control.kt" line="505" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/art.kt" line="85" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
@@ -40,15 +41,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="front.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="front.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="52" column="32" selection-start-line="52" selection-start-column="32" selection-end-line="52" selection-end-column="32" />
+            <state relative-caret-position="186">
+              <caret line="1195" column="46" selection-start-line="1195" selection-start-column="46" selection-end-line="1195" selection-end-column="46" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#75#153#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="art.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/art.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_Ranges.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/generated/_Ranges.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="828">
+              <caret line="478" column="21" selection-start-line="478" selection-start-column="21" selection-end-line="478" selection-end-column="21" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -63,11 +86,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test-writer-ua.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test-writer-ua.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/test-writer-ua.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state relative-caret-position="243">
+              <caret line="625" column="16" selection-start-line="625" selection-start-column="16" selection-end-line="625" selection-end-column="16" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -97,33 +120,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="json.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jslib-sources.jar!/core/json.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Control.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/Control.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="213">
               <caret line="341" column="12" selection-start-line="341" selection-start-column="12" selection-end-line="341" selection-end-column="12" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PortTests.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tools/src/aps/PortTests.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="54" column="8" selection-start-line="54" selection-start-column="8" selection-end-line="54" selection-end-column="8" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -180,16 +181,16 @@
         <option value="$PROJECT_DIR$/front/src/front.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/page-admin-users.kt" />
         <option value="$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/art.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/AdminUsersPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/Control.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/basic-controls.kt" />
         <option value="$PROJECT_DIR$/tools/src/aps/PortTests.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/StatefulElement.kt" />
         <option value="$PROJECT_DIR$/front/src/scratch.kts" />
-        <option value="$PROJECT_DIR$/front/src/aps/front.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/test-writer-ua.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/TestCommon.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/test-writer-ua.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/art.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front.kt" />
       </list>
     </option>
   </component>
@@ -287,7 +288,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/front/src/scratch.kts" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="scra&#9;FILE&#9;file://E:/work/aps/front/src/scratch.kts&#10;TSB&#9;null&#9;null&#10;Section&#9;null&#9;null&#10;TAB&#9;null&#9;null&#10;tojs&#9;null&#9;null&#10;kshit&#9;null&#9;null&#10;fro&#9;FILE&#9;file://E:/work/aps/front/src/aps/front.kt&#10;control&#9;FILE&#9;file://E:/work/aps/front/src/aps/Control.kt&#10;aup&#9;null&#9;null&#10;asreact&#9;null&#9;null&#10;Control&#9;null&#9;null&#10;spanc&#9;null&#9;null&#10;container&#9;null&#9;null&#10;spana&#9;null&#9;null&#10;watch&#9;FILE&#9;file://E:/work/aps/tools/src/aps/WatchAndEnhanceJS.kt&#10;Cont&#9;null&#9;null&#10;SE&#9;FILE&#9;file://E:/work/aps/front/src/aps/StatefulElement.kt&#10;sc&#9;FILE&#9;file://E:/work/aps/front/src/scratch.kts&#10;IONc&#9;null&#9;null&#10;Com&#9;null&#9;null&#10;co&#9;FILE&#9;file://E:/work/aps/front/src/aps/Control.kt&#10;FEB&#9;null&#9;null&#10;commo&#9;null&#9;null&#10;FE&#9;null&#9;null&#10;con&#9;FILE&#9;file://E:/work/aps/front/src/aps/Control.kt&#10;firstsig&#9;null&#9;null&#10;jsato&#9;null&#9;null&#10;require&#9;null&#9;null&#10;CIS&#9;null&#9;null&#10;stateful&#9;null&#9;null&#10;button&#9;null&#9;null&#10;unitpromise&#9;null&#9;null&#10;unitpromi&#9;null&#9;null&#10;REH&#9;null&#9;null&#10;reactevent&#9;null&#9;null&#10;bh&#9;null&#9;null&#10;feb&#9;null&#9;null&#10;diva&#9;null&#9;null&#10;sta&#9;FILE&#9;file://E:/work/aps/front/src/aps/StatefulElement.kt&#10;state&#9;null&#9;null&#10;renderprofile&#9;null&#9;null&#10;jserror&#9;null&#9;null&#10;ignite&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="jsaof&#9;null&#9;null&#10;art&#9;FILE&#9;file://E:/work/aps/front/src/aps/art.kt&#10;scra&#9;FILE&#9;file://E:/work/aps/front/src/scratch.kts&#10;TSB&#9;null&#9;null&#10;Section&#9;null&#9;null&#10;TAB&#9;null&#9;null&#10;tojs&#9;null&#9;null&#10;kshit&#9;null&#9;null&#10;fro&#9;FILE&#9;file://E:/work/aps/front/src/aps/front.kt&#10;control&#9;FILE&#9;file://E:/work/aps/front/src/aps/Control.kt&#10;aup&#9;null&#9;null&#10;asreact&#9;null&#9;null&#10;Control&#9;null&#9;null&#10;spanc&#9;null&#9;null&#10;container&#9;null&#9;null&#10;spana&#9;null&#9;null&#10;watch&#9;FILE&#9;file://E:/work/aps/tools/src/aps/WatchAndEnhanceJS.kt&#10;Cont&#9;null&#9;null&#10;SE&#9;FILE&#9;file://E:/work/aps/front/src/aps/StatefulElement.kt&#10;sc&#9;FILE&#9;file://E:/work/aps/front/src/scratch.kts&#10;IONc&#9;null&#9;null&#10;Com&#9;null&#9;null&#10;co&#9;FILE&#9;file://E:/work/aps/front/src/aps/Control.kt&#10;FEB&#9;null&#9;null&#10;commo&#9;null&#9;null&#10;FE&#9;null&#9;null&#10;con&#9;FILE&#9;file://E:/work/aps/front/src/aps/Control.kt&#10;firstsig&#9;null&#9;null&#10;jsato&#9;null&#9;null&#10;require&#9;null&#9;null&#10;CIS&#9;null&#9;null&#10;stateful&#9;null&#9;null&#10;button&#9;null&#9;null&#10;unitpromise&#9;null&#9;null&#10;unitpromi&#9;null&#9;null&#10;REH&#9;null&#9;null&#10;reactevent&#9;null&#9;null&#10;bh&#9;null&#9;null&#10;feb&#9;null&#9;null&#10;diva&#9;null&#9;null&#10;sta&#9;FILE&#9;file://E:/work/aps/front/src/aps/StatefulElement.kt&#10;state&#9;null&#9;null&#10;renderprofile&#9;null&#9;null&#10;jserror&#9;null&#9;null&#10;ignite&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -864,13 +865,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/generated/_Ranges.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="828">
-          <caret line="478" column="21" selection-start-line="478" selection-start-column="21" selection-end-line="478" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/kotlin-jslib-sources.jar!/core/core.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
@@ -922,16 +916,6 @@
         <state relative-caret-position="270">
           <caret line="11" column="55" selection-start-line="11" selection-start-column="55" selection-end-line="11" selection-end-column="55" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/art.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="26" column="83" selection-start-line="26" selection-start-column="83" selection-end-line="26" selection-end-column="83" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -987,7 +971,7 @@
         <state relative-caret-position="432">
           <caret line="54" column="8" selection-start-line="54" selection-start-column="8" selection-end-line="54" selection-end-column="8" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1042,17 +1026,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="52" column="32" selection-start-line="52" selection-start-column="32" selection-end-line="52" selection-end-column="32" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#75#153#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/TestCommon.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -1065,10 +1038,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/test-writer-ua.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="243">
+          <caret line="625" column="16" selection-start-line="625" selection-start-column="16" selection-end-line="625" selection-end-column="16" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/generated/_Ranges.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="828">
+          <caret line="478" column="21" selection-start-line="478" selection-start-column="21" selection-end-line="478" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/art.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="1195" column="46" selection-start-line="1195" selection-start-column="46" selection-end-line="1195" selection-end-column="46" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#75#153#0" expanded="true" />
           </folding>
         </state>
       </provider>
