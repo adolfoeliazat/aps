@@ -6,6 +6,9 @@
 
 package aps
 
+import kotlin.browser.window
+import aps.Color.*
+
 object art {
     var testInstructions: dynamic = undefined
 
@@ -122,6 +125,105 @@ object art {
         }
 
         return __asyncResult(Unit)
+    }
+
+    fun renderStepDescriptions(): ReactElement {
+        val testInstructions = art.testInstructions
+        val els = mutableListOf<ReactElement>()
+
+        var stepIndex = 0; var indent = 0
+        for (instrIndex in 0 until testInstructions.length) {
+            val instrdef = testInstructions[instrIndex]
+            val opcode = dynamicKeys(instrdef).find { x: dynamic -> x[0] != "$" }
+            val instr = instrdef[opcode]
+
+            fun addLine(indent: Int, stepRowStyle: dynamic = null, rulerContent: dynamic = null, lineContent: ReactElement? = null, actions: Collection<ReactElement> = listOf()) {
+                els.add(div { style { marginTop(5); display = "flex" }
+                    -div { style { fontWeight = "bold"; width(40) }; - rulerContent }
+                    // XXX This `width: 100%` is for fucking flexbox to not change `width: 40` above... http://stackoverflow.com/questions/7985021/css-flexbox-issue-why-is-the-width-of-my-flexchildren-affected-by-their-content
+                    -div { className = "showOnParentHovered-parent"
+                        style {
+                            width = "100%"; display = "flex"
+                            add(stepRowStyle)
+                        }
+
+                        + (1..indent).map { div { style { width(20); borderLeft = "2px dotted ${Color.GRAY_500}" } } }
+                        - lineContent
+                        -div { className = "showOnParentHovered"
+                            - hor2 { style { marginLeft(8); paddingLeft(8); borderLeft = "2px solid ${Color.GRAY_500}" }
+                                + actions
+                                - jshit.OpenSourceCodeLink(json("where" to instrdef, "style" to json("marginLeft" to 20)))
+                            } } } })
+            }
+
+            if (opcode == "step") {
+                val title: Any? = instr.long
+                val untilParamValue = if (instrIndex == jshit.art.stepDescriptions.length - 1) "infinity" else instrIndex
+
+                val stepRowStyle = StyleBuilder()
+                if (!instr.fulfilled) stepRowStyle {
+                    opacity = 0.3
+                }
+
+                addLine(
+                    indent, stepRowStyle = stepRowStyle,
+                    rulerContent = "#" + (stepIndex++ + 1),
+
+                    lineContent = div { style { display = "flex" }
+                        - when (instr.kind) {
+                            "action" -> span { style { marginRight(5); padding(3); backgroundColor = GREEN_100; fontSize = "75%" }; -"Action" }
+                            "state" -> span { style { marginRight(5); padding(3); backgroundColor = LIGHT_BLUE_100; fontSize = "75%" }; -"State" }
+                            "navigation" -> span { style { marginRight(5); padding(3); backgroundColor = BROWN_50; fontSize = "75%" }; -"Navigation" }
+                            else -> raise("WTF is instr.kind")
+                        }
+                        - title
+                    },
+
+                    actions = listOf(
+                        // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 1
+                        jsLink(json("title" to "Run until " + untilParamValue, "onClick" to {
+                            var href = window.location.href
+                            href = href.replace(Regex("&from[^&]*"), "")
+                            href = href.replace(Regex("&until[^&]*"), "")
+                            href += "&until=" + untilParamValue
+                            window.location.href = href
+                        }))
+                    )
+                )
+            }
+            else if (opcode == "beginSection") {
+                addLine(indent, lineContent = div { style { fontWeight = "bold" }; - instr.long })
+                ++indent
+            }
+            else if (opcode == "endSection") {
+                --indent
+            }
+            else if (opcode == "worldPoint") {
+                addLine(
+                    indent,
+                    lineContent = div { style { fontWeight = "normal"; fontStyle = "italic" }; - "World point: ${instr.name}" },
+                    rulerContent = jdiva(json("style" to json("position" to "relative")),
+                        jshit.ia(json("className" to "fa fa-circle", "style" to json("color" to jshit.GRAY_500))),
+                        jdiva(json("style" to json("width" to 38, "position" to "absolute", "left" to 0, "top" to 9, "borderTop" to "2px dotted ${jshit.GRAY_500}")))
+                    ),
+                    // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 2
+                    actions = listOf(
+                        jsLink(json("title" to "Run from", "onClick" to {
+                            var href = window.location.href
+                            href = href.replace(Regex("&from[^&]*"), "")
+                            href = href.replace(Regex("&until[^&]*"), "")
+                            href += "&from=" + instr.name
+                            window.location.href = href
+                        }))
+                    )
+                )
+            }
+        }
+
+//    return makeSwearBoxes().toReactElement()
+
+        return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to jshit.GRAY_200, "fontWeight" to "bold")), "Steps"),
+            *els.toTypedArray())
     }
 
 }
