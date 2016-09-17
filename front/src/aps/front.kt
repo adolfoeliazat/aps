@@ -1497,10 +1497,6 @@ fun raise(msg: String, props: dynamic = undefined) {
 @native interface ReactElement {
 }
 
-fun asReactElement(x: Any?): ReactElement {
-    val didi: dynamic = x
-    return didi
-}
 
 fun div(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
     val builder = FlowElementBuilder("div")

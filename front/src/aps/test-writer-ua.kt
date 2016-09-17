@@ -10,24 +10,34 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
     val drpc = jshit.getDebugRPC()
     val testCommon = TestCommon(sim)
 
-    fun selectBrowser(clientKind: String, browserName: String, stateDescription: String): Iterable<TestItem> {
+    fun selectBrowser(clientKind: String, browserName: String, stateDescription: String): Iterable<TestInstruction> {
         val res = mutableListOf(
-            jsonTestItem("step" to json("kind" to "navigation", "long" to "Trying to open dashboard page as " + browserName)),
-            jsonTestItem("do" to json(
-                "action" to {"__async"
-                    global.CLIENT_KIND = clientKind
-                    sim.selectBrowser(browserName)
-                    __await<dynamic>(sim.navigate("dashboard.html"))
-                }
-            )),
+            TestInstruction.Step("navigation", "Trying to open dashboard page as " + browserName),
+//            jsonTestItem("step" to json("kind" to "navigation", "long" to "Trying to open dashboard page as " + browserName)),
 
-            jsonTestItem("step" to json("kind" to "state", "long" to stateDescription))
+            TestInstruction.Do({"__async"
+                global.CLIENT_KIND = clientKind
+                sim.selectBrowser(browserName)
+                __await<dynamic>(sim.navigate("dashboard.html"))
+            }),
+
+//            jsonTestItem("do" to json(
+//                "action" to {"__async"
+//                    global.CLIENT_KIND = clientKind
+//                    sim.selectBrowser(browserName)
+//                    __await<dynamic>(sim.navigate("dashboard.html"))
+//                }
+//            )),
+
+            TestInstruction.Step("state", stateDescription)
+
+//            jsonTestItem("step" to json("kind" to "state", "long" to stateDescription))
             // s{pausePoint: {title: stateDescription, theme: "blue"}},
         )
 
         if (clientKind == "writer") {
             res.addAll(listOf(
-                jsonTestItem("assert" to json("\$tag" to "42816503-1dc0-4e43-aaa4-a8b11a680501", "expected" to json(
+                TestInstruction.AssertFuck("42816503-1dc0-4e43-aaa4-a8b11a680501", json(
                     "TextField-email.Input" to "",
                     "TextField-email.label" to "Почта",
                     "TextField-password.Input" to "",
@@ -46,10 +56,32 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                     "topNavRight.TopNavItem-i000.shame" to "TopNavItem-sign-in",
                     "topNavRight.TopNavItem-i000.title" to "Вход",
                     "url" to "http://aps-ua-writer.local:3022/sign-in.html"
-                )))))
+                ))
+
+//                jsonTestItem("assert" to json("\$tag" to "42816503-1dc0-4e43-aaa4-a8b11a680501", "expected" to json(
+//                    "TextField-email.Input" to "",
+//                    "TextField-email.label" to "Почта",
+//                    "TextField-password.Input" to "",
+//                    "TextField-password.Input.type" to "password",
+//                    "TextField-password.label" to "Пароль",
+//                    "button-primary.title" to "Войти",
+//                    "link-createAccount.title" to "Срочно создать!",
+//                    "pageHeader.title" to "Вход",
+//                    "topNavLeft.TopNavItem-i000.shame" to "TopNavItem-why",
+//                    "topNavLeft.TopNavItem-i000.title" to "Почему мы?",
+//                    "topNavLeft.TopNavItem-i001.shame" to "TopNavItem-prices",
+//                    "topNavLeft.TopNavItem-i001.title" to "Цены",
+//                    "topNavLeft.TopNavItem-i002.shame" to "TopNavItem-faq",
+//                    "topNavLeft.TopNavItem-i002.title" to "ЧаВо",
+//                    "topNavRight.TopNavItem-i000.active" to true,
+//                    "topNavRight.TopNavItem-i000.shame" to "TopNavItem-sign-in",
+//                    "topNavRight.TopNavItem-i000.title" to "Вход",
+//                    "url" to "http://aps-ua-writer.local:3022/sign-in.html"
+//                )))
+            ))
         } else if (clientKind == "customer") {
             res.addAll(listOf(
-                jsonTestItem("assert" to json("\$tag" to "4d7bfd1d-d5cd-4b64-a069-a99f85f934da", "expected" to json(
+                TestInstruction.AssertFuck("4d7bfd1d-d5cd-4b64-a069-a99f85f934da", json(
                     "Input-email" to "",
                     "Input-password" to "",
                     "TopNavItem-blog" to json("title" to "Блог"),
@@ -63,7 +95,24 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                     "link-createAccount" to json("title" to "Срочно создать!"),
                     "pageHeader" to "Вход",
                     "url" to "http://aps-ua-writer.local:3022/sign-in.html"
-                )))))
+                ))
+
+//                jsonTestItem("assert" to json("\$tag" to "4d7bfd1d-d5cd-4b64-a069-a99f85f934da", "expected" to json(
+//                    "Input-email" to "",
+//                    "Input-password" to "",
+//                    "TopNavItem-blog" to json("title" to "Блог"),
+//                    "TopNavItem-contact" to json("title" to "Связь"),
+//                    "TopNavItem-faq" to json("title" to "ЧаВо"),
+//                    "TopNavItem-prices" to json("title" to "Цены"),
+//                    "TopNavItem-samples" to json("title" to "Примеры"),
+//                    "TopNavItem-sign-in" to json("active" to true, "title" to "Вход"),
+//                    "TopNavItem-why" to json("title" to "Почему мы?"),
+//                    "button-primary" to json("title" to "Войти"),
+//                    "link-createAccount" to json("title" to "Срочно создать!"),
+//                    "pageHeader" to "Вход",
+//                    "url" to "http://aps-ua-writer.local:3022/sign-in.html"
+//                )))
+            ))
         } else {
             throw js.Error("WTF is the clientKind")
         }
@@ -71,7 +120,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
         return res
     }
 
-    fun vovchok1(): JSArray {
+    fun vovchok1(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Marko Vovchok signs up") {
 
@@ -127,22 +176,30 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
 
                     action("Entering last name") {
                         setValue("TextField-lastName.Input", "Вовчок")
-                        - jsonTestItem("do" to json(
-                            "action" to {"__async"
-                                __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
-                            }
-                        ))
+                        - TestInstruction.Do({"__async"
+                            __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
+                        })
+//                        - jsonTestItem("do" to json(
+//                            "action" to {"__async"
+//                                __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
+//                            }
+//                        ))
+
                         click("button-primary", "2016/08/14 17:48:51")
                     }
                     state("Sign-in form with message that account is created. Got email with password") {
                         assertGen("0b7e96bf-4f42-41dc-b658-7b60e863356e")
                     }
 
-                    - jsonTestItem("do" to json(
-                        "action" to {"__async"
-                            __await<dynamic>(drpc(json("fun" to "danger_clearSentEmails")))
-                        }
-                    ))
+                    - TestInstruction.Do({"__async"
+                        __await<dynamic>(drpc(json("fun" to "danger_clearSentEmails")))
+                    })
+
+//                    - jsonTestItem("do" to json(
+//                        "action" to {"__async"
+//                            __await<dynamic>(drpc(json("fun" to "danger_clearSentEmails")))
+//                        }
+//                    ))
                 }
 
                 section("Submitting sign-in form") {
@@ -229,7 +286,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
         }
     }
 
-    fun dasja1(): JSArray {
+    fun dasja1(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Dasja accepts that shitty profile") {
                 + selectBrowser("writer", "dasja1", "Dasja, a support admin, comes into play")
@@ -294,7 +351,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
         }
     }
 
-    fun vovchok2(): JSArray {
+    fun vovchok2(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Marko Vovchok can use site") {
                 + selectBrowser("writer", "vovchok2", "Marko Vovchok, aka The Bitch, comes again some time later")
@@ -313,7 +370,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
         }
     }
 
-    fun dasja2(): JSArray {
+    fun dasja2(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Dasja rejects the bitch") {
                 + selectBrowser("writer", "dasja2", "Dasja decides to reject the bitch for whatever reasons")
@@ -426,7 +483,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
         }
     }
 
-    fun vovchok3(): JSArray {
+    fun vovchok3(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Marko Vovchok faces she’s rejected") {
                 + selectBrowser("writer", "vovchok3", "The Bitch opens browser")
@@ -462,7 +519,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
         }
     }
 
-    fun dasja3(): JSArray {
+    fun dasja3(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Dasja accepts improved profile") {
                 + selectBrowser("writer", "dasja3", "Dasja comes to do some work")
@@ -507,7 +564,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
         }
     }
 
-    fun vovchok4(): JSArray {
+    fun vovchok4(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Marko Vovchok can finally enter") {
                 + selectBrowser("writer", "vovchok4", "The Bitch opens browser")
@@ -526,7 +583,7 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
         }
     }
 
-    fun dasja4(): JSArray {
+    fun dasja4(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Dasja bans bitch") {
                 + selectBrowser("writer", "dasja4", "Dasja comes to ban that bitch")
@@ -623,20 +680,21 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
 
                 __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
 
-                __await<dynamic>(art.run(json(
-                    "instructions" to js("[]").concat(
-                        vovchok1(),
-                        json("worldPoint" to json("name" to "1")),
-                        dasja1(),
-                        json("worldPoint" to json("name" to "2")),
-                        vovchok2(),
-                        dasja2(),
-                        json("worldPoint" to json("name" to "3")),
-                        vovchok3(),
-                        dasja3(),
-                        vovchok4(),
-                        json("worldPoint" to json("name" to "4")),
-                        dasja4()))))
+                val instructions = mutableListOf<TestInstruction>()
+                instructions.addAll(vovchok1())
+                instructions.add(TestInstruction.WorldPoint("1"))
+                instructions.addAll(dasja1())
+                instructions.add(TestInstruction.WorldPoint("2"))
+                instructions.addAll(vovchok2())
+                instructions.addAll(dasja2())
+                instructions.add(TestInstruction.WorldPoint("3"))
+                instructions.addAll(vovchok3())
+                instructions.addAll(dasja3())
+                instructions.addAll(vovchok4())
+                instructions.add(TestInstruction.WorldPoint("4"))
+                instructions.addAll(dasja4())
+
+                 __await<dynamic>(art.run(instructions))
             }
         )
     )
@@ -652,26 +710,31 @@ fun captureStackAsError(): StackAsError {
     return js("Error()")
 }
 
-fun jsonTestItem(stack: StackAsError, firstStackLine: Int, vararg pairs: Pair<String, Any?>): TestItem {
-    return object : TestItem {
-            override fun toJSObject(): dynamic {
-                val obj: dynamic = json(*pairs)
-                obj.`$definitionStack` = promiseDefinitionStack(stack, firstStackLine)
-                return obj
-            }
-        }
-}
+//fun jsonTestItem(stack: StackAsError, firstStackLine: Int, vararg pairs: Pair<String, Any?>): TestInstruction {
+//    return object : TestInstruction {
+//            override fun toJSObject(): dynamic {
+//                val obj: dynamic = json(*pairs)
+//                obj.promiseDefinitionStack = { promiseDefinitionStack(stack, firstStackLine) }
+////                obj.`$definitionStack` = { promiseDefinitionStack(stack, firstStackLine) }
+//                return obj
+//            }
+//        }
+//}
 
-fun jsonTestItem(vararg pairs: Pair<String, Any?>): TestItem {
-    return jsonTestItem(captureStackAsError(), 2, *pairs)
-}
+//fun jsonTestItem(vararg pairs: Pair<String, Any?>): TestItem {
+//    return jsonTestItem(captureStackAsError(), 2, *pairs)
+//}
 
 
-fun signIn(email: String, password: String): Iterable<TestItem> {
+fun signIn(email: String, password: String): Iterable<TestInstruction> {
     return listOf(
-        jsonTestItem("setValue" to json("shame" to "TextField-email.Input", "value" to email)),
-        jsonTestItem("setValue" to json("shame" to "TextField-password.Input", "value" to password)),
-        jsonTestItem("click" to json("shame" to "button-primary"))
+        TestInstruction.SetValue("TextField-email.Input", email),
+        TestInstruction.SetValue("TextField-password.Input", password),
+        TestInstruction.Click("button-primary")
+
+//        jsonTestItem("setValue" to json("shame" to "TextField-email.Input", "value" to email)),
+//        jsonTestItem("setValue" to json("shame" to "TextField-password.Input", "value" to password)),
+//        jsonTestItem("click" to json("shame" to "button-primary"))
     )
 }
 
@@ -811,71 +874,76 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): Expe
     }
 }
 
-class TestActionBuilder(val items: MutableList<TestItem>) {
+class TestActionBuilder(val items: MutableList<TestInstruction>) {
     fun setValue(shame: String, value: String) {
-        items.add(jsonTestItem("setValue" to json("shame" to shame, "value" to value)))
+        items.add(TestInstruction.SetValue(shame, value))
+//        items.add(jsonTestItem("setValue" to json("shame" to shame, "value" to value)))
     }
 
     fun setValue(shame: String, value: Boolean) {
-        items.add(jsonTestItem("setValue" to json("shame" to shame, "value" to value)))
+        items.add(TestInstruction.SetCheckbox(shame, value))
+//        items.add(jsonTestItem("setValue" to json("shame" to shame, "value" to value)))
     }
 
     fun click(shame: String, timestamp: String) {
-        items.add(jsonTestItem("click" to json("shame" to shame, "timestamp" to timestamp)))
+        items.add(TestInstruction.Click(shame, timestamp))
+//        items.add(jsonTestItem("click" to json("shame" to shame, "timestamp" to timestamp)))
     }
 
     fun keyDown(shame: String, keyCode: Int) {
-        items.add(jsonTestItem("keyDown" to json("shame" to "Input-search", "keyCode" to 13)))
+        items.add(TestInstruction.KeyDown("Input-search", 13))
+//        items.add(jsonTestItem("keyDown" to json("shame" to "Input-search", "keyCode" to 13)))
     }
 }
 
-class TestStateBuilder(val items: MutableList<TestItem>) {
+class TestStateBuilder(val items: MutableList<TestInstruction>) {
     fun assertGen(tag: String, expectedExtender: ExpectationExtender? = null) {
-        items.add(jsonTestItem("assert" to json(
-            "\$tag" to tag,
-            "expected" to "---generated-shit---",
-            "expectedExtender" to expectedExtender)))
+        items.add(TestInstruction.AssertGenerated(tag, "---generated-shit---", expectedExtender))
+//        items.add(jsonTestItem("assert" to json(
+//            "\$tag" to tag,
+//            "expected" to "---generated-shit---",
+//            "expectedExtender" to expectedExtender)))
     }
 }
 
-class TestSectionBuilder(val items: MutableList<TestItem>) {
+class TestSectionBuilder(val items: MutableList<TestInstruction>) {
 
     fun action(long: String, build: TestActionBuilder.() -> Unit) {
-        items.add(jsonTestItem("step" to json("kind" to "action", "long" to long)))
+        items.add(TestInstruction.Step("action", long))
 
         val builder = TestActionBuilder(items)
         builder.build()
     }
 
     fun state(long: String, build: TestStateBuilder.() -> Unit) {
-        items.add(jsonTestItem("step" to json("kind" to "state", "long" to long)))
+        items.add(TestInstruction.Step("state", long))
 
         val builder = TestStateBuilder(items)
         builder.build()
     }
 
-    operator fun Iterable<TestItem>.unaryPlus() {
+    operator fun Iterable<TestInstruction>.unaryPlus() {
         for (item in this) add(item)
     }
 
-    operator fun TestItem.unaryMinus() {
+    operator fun TestInstruction.unaryMinus() {
         add(this)
     }
 
-    fun add(item: TestItem) {
+    fun add(item: TestInstruction) {
         items.add(item)
     }
 
 }
 
-class PieceOfTestBuilder(val items: MutableList<TestItem>) {
+class PieceOfTestBuilder(val items: MutableList<TestInstruction>) {
     fun section(long: String, build: TestSectionBuilder.() -> Unit) {
-        items.add(jsonTestItem("beginSection" to json("long" to long)))
+        items.add(TestInstruction.BeginSection(long))
 
         val builder = TestSectionBuilder(items)
         builder.build()
 
-        items.add(jsonTestItem("endSection" to json()))
+        items.add(TestInstruction.EndSection())
     }
 }
 
@@ -887,16 +955,16 @@ fun <T> Iterable<T>.toJSArray(): JSArray {
     return res
 }
 
-interface TestItem {
-    fun toJSObject(): dynamic
-}
+//interface TestItem {
+//    fun toJSObject(): dynamic
+//}
 
-fun buildPieceOfTest(build: PieceOfTestBuilder.() -> Unit): JSArray {
-    val items = mutableListOf<TestItem>()
+fun buildPieceOfTest(build: PieceOfTestBuilder.() -> Unit): Iterable<TestInstruction> {
+    val items = mutableListOf<TestInstruction>()
     val builder = PieceOfTestBuilder(items)
     builder.build()
 
-    return items.map { it.toJSObject() }.toJSArray()
+    return items
 }
 
 
