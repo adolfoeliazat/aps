@@ -26,13 +26,6 @@ interface ShamedTestInstruction {
 
 val NILS: String = js("new String('NILS')")
 
-abstract class Foo
-class Bar : Foo()
-class Baz : Foo()
-
-fun tetete() {
-}
-
 val String.there: Boolean get() = this !== NILS
 
 abstract class TestInstruction(val opcode: String) : DefinitionStackHolder {

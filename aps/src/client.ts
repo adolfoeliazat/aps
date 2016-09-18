@@ -36,6 +36,7 @@ COLOR_1_DARK = BLUE_GRAY_600
 
 Error.stackTraceLimit = Infinity
 
+GENERATED_SHIT = require('./generated-shit') // TODO:vgrechka @unkludge
 
 global.igniteShit = makeUIShitIgniter({
     
@@ -1207,10 +1208,10 @@ isTestScenarioNameOK(name) {
             || name.startsWith('UA Bits :: '))) return true
 },
 
-testScenarios({sim}) {
-    GENERATED_SHIT = require('./generated-shit')
-    return kot.aps.KotlinShit.testScenarios(sim)
-},
+//getTestScenario(testScenarioToRun, sim) {
+//    GENERATED_SHIT = require('./generated-shit')
+//    return kot.aps.KotlinShit.getTestScenario(testScenarioToRun, sim)
+//},
     
 //testScenarios({sim}) {
 //    return asn({},

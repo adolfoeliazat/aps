@@ -6,118 +6,32 @@
 
 package aps
 
-fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
-    val drpc = jshit.getDebugRPC()
-    val testCommon = TestCommon(sim)
+class TS_UA_Writer_SignUp_1 : TestScenario() {
+    override fun run(): Promise<Unit> {"__async"
+        val slowly = false
 
-    fun selectBrowser(clientKind: String, browserName: String, stateDescription: String): Iterable<TestInstruction> {
-        val res = mutableListOf(
-            TestInstruction.Step("navigation", "Trying to open dashboard page as " + browserName),
-//            jsonTestItem("step" to json("kind" to "navigation", "long" to "Trying to open dashboard page as " + browserName)),
-
-            TestInstruction.Do({"__async"
-                global.CLIENT_KIND = clientKind
-                sim.selectBrowser(browserName)
-                __await<dynamic>(sim.navigate("dashboard.html"))
-            }),
-
-//            jsonTestItem("do" to json(
-//                "action" to {"__async"
-//                    global.CLIENT_KIND = clientKind
-//                    sim.selectBrowser(browserName)
-//                    __await<dynamic>(sim.navigate("dashboard.html"))
-//                }
-//            )),
-
-            TestInstruction.Step("state", stateDescription)
-
-//            jsonTestItem("step" to json("kind" to "state", "long" to stateDescription))
-            // s{pausePoint: {title: stateDescription, theme: "blue"}},
-        )
-
-        if (clientKind == "writer") {
-            res.addAll(listOf(
-                TestInstruction.AssertFuck("42816503-1dc0-4e43-aaa4-a8b11a680501", json(
-                    "TextField-email.Input" to "",
-                    "TextField-email.label" to "Почта",
-                    "TextField-password.Input" to "",
-                    "TextField-password.Input.type" to "password",
-                    "TextField-password.label" to "Пароль",
-                    "button-primary.title" to "Войти",
-                    "link-createAccount.title" to "Срочно создать!",
-                    "pageHeader.title" to "Вход",
-                    "topNavLeft.TopNavItem-i000.shame" to "TopNavItem-why",
-                    "topNavLeft.TopNavItem-i000.title" to "Почему мы?",
-                    "topNavLeft.TopNavItem-i001.shame" to "TopNavItem-prices",
-                    "topNavLeft.TopNavItem-i001.title" to "Цены",
-                    "topNavLeft.TopNavItem-i002.shame" to "TopNavItem-faq",
-                    "topNavLeft.TopNavItem-i002.title" to "ЧаВо",
-                    "topNavRight.TopNavItem-i000.active" to true,
-                    "topNavRight.TopNavItem-i000.shame" to "TopNavItem-sign-in",
-                    "topNavRight.TopNavItem-i000.title" to "Вход",
-                    "url" to "http://aps-ua-writer.local:3022/sign-in.html"
-                ))
-
-//                jsonTestItem("assert" to json("\$tag" to "42816503-1dc0-4e43-aaa4-a8b11a680501", "expected" to json(
-//                    "TextField-email.Input" to "",
-//                    "TextField-email.label" to "Почта",
-//                    "TextField-password.Input" to "",
-//                    "TextField-password.Input.type" to "password",
-//                    "TextField-password.label" to "Пароль",
-//                    "button-primary.title" to "Войти",
-//                    "link-createAccount.title" to "Срочно создать!",
-//                    "pageHeader.title" to "Вход",
-//                    "topNavLeft.TopNavItem-i000.shame" to "TopNavItem-why",
-//                    "topNavLeft.TopNavItem-i000.title" to "Почему мы?",
-//                    "topNavLeft.TopNavItem-i001.shame" to "TopNavItem-prices",
-//                    "topNavLeft.TopNavItem-i001.title" to "Цены",
-//                    "topNavLeft.TopNavItem-i002.shame" to "TopNavItem-faq",
-//                    "topNavLeft.TopNavItem-i002.title" to "ЧаВо",
-//                    "topNavRight.TopNavItem-i000.active" to true,
-//                    "topNavRight.TopNavItem-i000.shame" to "TopNavItem-sign-in",
-//                    "topNavRight.TopNavItem-i000.title" to "Вход",
-//                    "url" to "http://aps-ua-writer.local:3022/sign-in.html"
-//                )))
-            ))
-        } else if (clientKind == "customer") {
-            res.addAll(listOf(
-                TestInstruction.AssertFuck("4d7bfd1d-d5cd-4b64-a069-a99f85f934da", json(
-                    "Input-email" to "",
-                    "Input-password" to "",
-                    "TopNavItem-blog" to json("title" to "Блог"),
-                    "TopNavItem-contact" to json("title" to "Связь"),
-                    "TopNavItem-faq" to json("title" to "ЧаВо"),
-                    "TopNavItem-prices" to json("title" to "Цены"),
-                    "TopNavItem-samples" to json("title" to "Примеры"),
-                    "TopNavItem-sign-in" to json("active" to true, "title" to "Вход"),
-                    "TopNavItem-why" to json("title" to "Почему мы?"),
-                    "button-primary" to json("title" to "Войти"),
-                    "link-createAccount" to json("title" to "Срочно создать!"),
-                    "pageHeader" to "Вход",
-                    "url" to "http://aps-ua-writer.local:3022/sign-in.html"
-                ))
-
-//                jsonTestItem("assert" to json("\$tag" to "4d7bfd1d-d5cd-4b64-a069-a99f85f934da", "expected" to json(
-//                    "Input-email" to "",
-//                    "Input-password" to "",
-//                    "TopNavItem-blog" to json("title" to "Блог"),
-//                    "TopNavItem-contact" to json("title" to "Связь"),
-//                    "TopNavItem-faq" to json("title" to "ЧаВо"),
-//                    "TopNavItem-prices" to json("title" to "Цены"),
-//                    "TopNavItem-samples" to json("title" to "Примеры"),
-//                    "TopNavItem-sign-in" to json("active" to true, "title" to "Вход"),
-//                    "TopNavItem-why" to json("title" to "Почему мы?"),
-//                    "button-primary" to json("title" to "Войти"),
-//                    "link-createAccount" to json("title" to "Срочно создать!"),
-//                    "pageHeader" to "Вход",
-//                    "url" to "http://aps-ua-writer.local:3022/sign-in.html"
-//                )))
-            ))
-        } else {
-            throw js.Error("WTF is the clientKind")
+        if (slowly) {
+            jshit.setTestSpeed("slow")
+            jshit.art.respectArtPauses = true
         }
 
-        return res
+        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
+
+        val instructions = mutableListOf<TestInstruction>()
+        instructions.addAll(vovchok1())
+        instructions.add(TestInstruction.WorldPoint("1"))
+        instructions.addAll(dasja1())
+        instructions.add(TestInstruction.WorldPoint("2"))
+        instructions.addAll(vovchok2())
+        instructions.addAll(dasja2())
+        instructions.add(TestInstruction.WorldPoint("3"))
+        instructions.addAll(vovchok3())
+        instructions.addAll(dasja3())
+        instructions.addAll(vovchok4())
+        instructions.add(TestInstruction.WorldPoint("4"))
+        instructions.addAll(dasja4())
+
+        return __await<dynamic>(art.run(instructions))
     }
 
     fun vovchok1(): Iterable<TestInstruction> {
@@ -179,11 +93,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                         - TestInstruction.Do({"__async"
                             __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
                         })
-//                        - jsonTestItem("do" to json(
-//                            "action" to {"__async"
-//                                __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
-//                            }
-//                        ))
 
                         click("button-primary", "2016/08/14 17:48:51")
                     }
@@ -194,12 +103,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                     - TestInstruction.Do({"__async"
                         __await<dynamic>(drpc(json("fun" to "danger_clearSentEmails")))
                     })
-
-//                    - jsonTestItem("do" to json(
-//                        "action" to {"__async"
-//                            __await<dynamic>(drpc(json("fun" to "danger_clearSentEmails")))
-//                        }
-//                    ))
                 }
 
                 section("Submitting sign-in form") {
@@ -279,8 +182,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                     state("TODO State description") {
                         assertGen("9219ded3-54e4-4d6b-bf1b-63615cf8a56e")
                     }
-
-//                s{actionPlaceholder: {$tag: '6bcd180a-9701-4e84-babe-99253f49e44b'}},
                 }
             }
         }
@@ -345,8 +246,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                     assertGen("88b14624-383f-4edf-8b3e-a9c413d87f27",
                         expectHeaderControls(search="", filter="all", ordering="desc"))
                 }
-
-//            s{actionPlaceholder: {$tag: '7b29b964-c9b3-406d-bfeb-3a1091e57e5d'}},
             }
         }
     }
@@ -364,8 +263,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                 state("Got something") {
                     assertGen("86e56915-a334-4209-85c9-8d2c53cd9f0a")
                 }
-
-//            s{actionPlaceholder: {$tag: '8791b24d-fce2-4079-81ec-789332ac1863'}},
             }
         }
     }
@@ -477,8 +374,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                     assertGen("d72124f6-0ad2-4f50-ba0e-7bedff1e6a79",
                         expectHeaderControls(search="", filter="all", ordering="desc"))
                 }
-
-//            s{actionPlaceholder: {$tag: 'cd903ec5-a126-407a-92d6-a724b818054f'}},
             }
         }
     }
@@ -513,8 +408,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                 state("Got waiting screen") {
                     assertGen("35a2c077-01b2-407c-beba-4debb789d07d")
                 }
-
-//            s{actionPlaceholder: {$tag: '80c8c508-ef39-4e07-8be3-3e8a964e984c'}},
             }
         }
     }
@@ -558,8 +451,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                     assertGen("5d82460a-268f-43d8-bd00-e04dd671029c",
                         expectHeaderControls(search="", filter="2approve", ordering="desc"))
                 }
-
-//            s{actionPlaceholder: {$tag: '70d0bad3-5670-41db-87cb-c6fbb04b5954'}},
             }
         }
     }
@@ -577,8 +468,6 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                 state("Great, they accepted my profile") {
                     assertGen("5c4d0c0c-8e1f-4dfc-898d-dec7c3e6bbf7")
                 }
-
-//        s{actionPlaceholder: {$tag: '0d1b694c-a300-4505-ae34-3b829e2655dd'}},
             }
         }
     }
@@ -660,44 +549,71 @@ fun jsFacing_tests_UA_Writer(sim: dynamic): dynamic {
                         expectAll(
                             expectHeaderControls(search="", filter="banned", ordering="desc")))
                 }
-
-//            s{actionPlaceholder: {$tag: "de41a9d0-c319-455c-8c6d-a2f0cf894721"}},
             }
         }
     }
 
-    return json(
-        "UA Writer :: Sign Up :: 1" to json(
-            "run" to {"__async"
-                val drpc = jshit.getDebugRPC()
+    fun selectBrowser(clientKind: String, browserName: String, stateDescription: String): Iterable<TestInstruction> {
+        val res = mutableListOf(
+            TestInstruction.Step("navigation", "Trying to open dashboard page as " + browserName),
+            //            jsonTestItem("step" to json("kind" to "navigation", "long" to "Trying to open dashboard page as " + browserName)),
 
-                val slowly = false
+            TestInstruction.Do({"__async"
+                global.CLIENT_KIND = clientKind
+                host.selectBrowser(browserName)
+                __await<dynamic>(host.navigate("dashboard.html"))
+            }),
 
-                if (slowly) {
-                    jshit.setTestSpeed("slow")
-                    jshit.art.respectArtPauses = true
-                }
-
-                __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
-
-                val instructions = mutableListOf<TestInstruction>()
-                instructions.addAll(vovchok1())
-                instructions.add(TestInstruction.WorldPoint("1"))
-                instructions.addAll(dasja1())
-                instructions.add(TestInstruction.WorldPoint("2"))
-                instructions.addAll(vovchok2())
-                instructions.addAll(dasja2())
-                instructions.add(TestInstruction.WorldPoint("3"))
-                instructions.addAll(vovchok3())
-                instructions.addAll(dasja3())
-                instructions.addAll(vovchok4())
-                instructions.add(TestInstruction.WorldPoint("4"))
-                instructions.addAll(dasja4())
-
-                 __await<dynamic>(art.run(instructions))
-            }
+            TestInstruction.Step("state", stateDescription)
         )
-    )
+
+        if (clientKind == "writer") {
+            res.addAll(listOf(
+                TestInstruction.AssertFuck("42816503-1dc0-4e43-aaa4-a8b11a680501", json(
+                    "TextField-email.Input" to "",
+                    "TextField-email.label" to "Почта",
+                    "TextField-password.Input" to "",
+                    "TextField-password.Input.type" to "password",
+                    "TextField-password.label" to "Пароль",
+                    "button-primary.title" to "Войти",
+                    "link-createAccount.title" to "Срочно создать!",
+                    "pageHeader.title" to "Вход",
+                    "topNavLeft.TopNavItem-i000.shame" to "TopNavItem-why",
+                    "topNavLeft.TopNavItem-i000.title" to "Почему мы?",
+                    "topNavLeft.TopNavItem-i001.shame" to "TopNavItem-prices",
+                    "topNavLeft.TopNavItem-i001.title" to "Цены",
+                    "topNavLeft.TopNavItem-i002.shame" to "TopNavItem-faq",
+                    "topNavLeft.TopNavItem-i002.title" to "ЧаВо",
+                    "topNavRight.TopNavItem-i000.active" to true,
+                    "topNavRight.TopNavItem-i000.shame" to "TopNavItem-sign-in",
+                    "topNavRight.TopNavItem-i000.title" to "Вход",
+                    "url" to "http://aps-ua-writer.local:3022/sign-in.html"
+                ))
+            ))
+        } else if (clientKind == "customer") {
+            res.addAll(listOf(
+                TestInstruction.AssertFuck("4d7bfd1d-d5cd-4b64-a069-a99f85f934da", json(
+                    "Input-email" to "",
+                    "Input-password" to "",
+                    "TopNavItem-blog" to json("title" to "Блог"),
+                    "TopNavItem-contact" to json("title" to "Связь"),
+                    "TopNavItem-faq" to json("title" to "ЧаВо"),
+                    "TopNavItem-prices" to json("title" to "Цены"),
+                    "TopNavItem-samples" to json("title" to "Примеры"),
+                    "TopNavItem-sign-in" to json("active" to true, "title" to "Вход"),
+                    "TopNavItem-why" to json("title" to "Почему мы?"),
+                    "button-primary" to json("title" to "Войти"),
+                    "link-createAccount" to json("title" to "Срочно создать!"),
+                    "pageHeader" to "Вход",
+                    "url" to "http://aps-ua-writer.local:3022/sign-in.html"
+                ))
+            ))
+        } else {
+            throw js.Error("WTF is the clientKind")
+        }
+
+        return res
+    }
 }
 
 fun dynamicAsString(x: dynamic): String {
@@ -710,37 +626,16 @@ fun captureStackAsError(): StackAsError {
     return js("Error()")
 }
 
-//fun jsonTestItem(stack: StackAsError, firstStackLine: Int, vararg pairs: Pair<String, Any?>): TestInstruction {
-//    return object : TestInstruction {
-//            override fun toJSObject(): dynamic {
-//                val obj: dynamic = json(*pairs)
-//                obj.promiseDefinitionStack = { promiseDefinitionStack(stack, firstStackLine) }
-////                obj.`$definitionStack` = { promiseDefinitionStack(stack, firstStackLine) }
-//                return obj
-//            }
-//        }
-//}
-
-//fun jsonTestItem(vararg pairs: Pair<String, Any?>): TestItem {
-//    return jsonTestItem(captureStackAsError(), 2, *pairs)
-//}
-
-
 fun signIn(email: String, password: String): Iterable<TestInstruction> {
     return listOf(
         TestInstruction.SetValue("TextField-email.Input", email),
         TestInstruction.SetValue("TextField-password.Input", password),
         TestInstruction.Click("button-primary")
-
-//        jsonTestItem("setValue" to json("shame" to "TextField-email.Input", "value" to email)),
-//        jsonTestItem("setValue" to json("shame" to "TextField-password.Input", "value" to password)),
-//        jsonTestItem("click" to json("shame" to "button-primary"))
     )
 }
 
 fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", itemIndex: String = "000"): ExpectationExtender {
     return {arg: dynamic ->
-        // {expected}
         val expected = arg.expected
 
         global.Object.assign(expected, json(
@@ -797,7 +692,6 @@ fun expectAll(vararg fs: ExpectationExtender): ExpectationExtender {
 
 fun expectHeaderControls(search: String, filter: String, ordering: String): ExpectationExtender {
     return {arg: dynamic ->
-        // {expected}
         val expected = arg.expected
 
         global.Object.assign(expected, json(
@@ -877,32 +771,24 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): Expe
 class TestActionBuilder(val items: MutableList<TestInstruction>) {
     fun setValue(shame: String, value: String) {
         items.add(TestInstruction.SetValue(shame, value))
-//        items.add(jsonTestItem("setValue" to json("shame" to shame, "value" to value)))
     }
 
     fun setValue(shame: String, value: Boolean) {
         items.add(TestInstruction.SetCheckbox(shame, value))
-//        items.add(jsonTestItem("setValue" to json("shame" to shame, "value" to value)))
     }
 
     fun click(shame: String, timestamp: String) {
         items.add(TestInstruction.Click(shame, timestamp))
-//        items.add(jsonTestItem("click" to json("shame" to shame, "timestamp" to timestamp)))
     }
 
     fun keyDown(shame: String, keyCode: Int) {
         items.add(TestInstruction.KeyDown("Input-search", 13))
-//        items.add(jsonTestItem("keyDown" to json("shame" to "Input-search", "keyCode" to 13)))
     }
 }
 
 class TestStateBuilder(val items: MutableList<TestInstruction>) {
     fun assertGen(tag: String, expectedExtender: ExpectationExtender? = null) {
         items.add(TestInstruction.AssertGenerated(tag, "---generated-shit---", expectedExtender))
-//        items.add(jsonTestItem("assert" to json(
-//            "\$tag" to tag,
-//            "expected" to "---generated-shit---",
-//            "expectedExtender" to expectedExtender)))
     }
 }
 
@@ -954,10 +840,6 @@ fun <T> Iterable<T>.toJSArray(): JSArray {
     this.forEach { res.push(it) }
     return res
 }
-
-//interface TestItem {
-//    fun toJSObject(): dynamic
-//}
 
 fun buildPieceOfTest(build: PieceOfTestBuilder.() -> Unit): Iterable<TestInstruction> {
     val items = mutableListOf<TestInstruction>()

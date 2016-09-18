@@ -91,7 +91,8 @@ object KotlinShit : IKotlinShit {
         initTestShit()
     }
 
-    val testScenarios = ::jsFacing_testScenarios
+    val igniteTestShit = ::jsFacing_igniteTestShit
+
 
 //    val shittyShit = json(
 //        "tests_UA_Writer" to ::jsFacing_tests_UA_Writer
