@@ -14,9 +14,32 @@ title aps static & node aps/lib/serve-static
 cd /d e:\work\aps\aps
 title aps backend & backend.cmd
 
+cd /d C:\opt\Redis
+title redis-cli & redis-cli
+
+cd /d E:\work\aps\bin\dev\win
+title pg-dev pg-dev-start.cmd
+
+cd /d E:\work\aps\bin\dev\win
+title pg-test pg-test-start.cmd
+
+cd /d E:\work\aps\tools
+title WatchAndEnhanceJS & WatchAndEnhanceJS
+
+cd /d e:\work\aps\back
+title APSBack & back
+
+
+
+
+
+
+
+
 # FUCK IT
 # cd /d C:\opt\selenium
 # title selenium & java -jar selenium-server-standalone-2.53.0.jar
 
-cd /d e:\work\eclipse-newhotness\enh-dll
-title enh-dll & make watch
+# FUCK IT
+# cd /d e:\work\eclipse-newhotness\enh-dll
+# title enh-dll & make watch

@@ -39,6 +39,7 @@ fun runTestScenario(fullName: String) {
 }
 
 fun tetete() {
+    sayHi()
 }
 
 class TestCommon(val sim: dynamic) {
