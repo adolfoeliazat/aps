@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'org.slf4j:slf4j-simple:1.7.21'
+    compile 'co.paralleluniverse:quasar-core:0.7.6:jdk8'
+    compile 'co.paralleluniverse:quasar-core:0.7.6:sources'
+    compile 'org.eclipse.jetty.aggregate:jetty-all:9.3.11.v20160721'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.3'
+}
+
+task copyDeps(type: Copy) {
+    from (configurations.compile + configurations.testCompile) {
+        include "*.jar"
+    }
+    into rootProject.rootDir.getAbsolutePath() + "/lib-gradle"
+}
+

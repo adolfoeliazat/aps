@@ -8,6 +8,7 @@ package aps
 
 import kotlin.browser.window
 import aps.Color.*
+import aps.front.JSException
 import kotlin.reflect.KProperty
 
 class HotReloadSurvivingShit(val nameInGlobalScope: String) {

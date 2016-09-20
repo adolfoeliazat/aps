@@ -18,5 +18,11 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="aps-back_main" target="1.8" />
+      <module name="aps-back_test" target="1.8" />
+      <module name="back_main" target="1.8" />
+      <module name="back_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -89,6 +89,7 @@ object KotlinShit : IKotlinShit {
 
 
         initTestShit()
+        igniteRPCShit()
     }
 
     val igniteTestShit = ::jsFacing_igniteTestShit

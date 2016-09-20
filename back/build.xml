@@ -1,0 +1,5 @@
+<project>
+    <target name="touch-restart-flag">
+        <touch file="restart-flag"/>
+    </target>
+</project>
