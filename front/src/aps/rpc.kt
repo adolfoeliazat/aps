@@ -27,8 +27,6 @@ fun testRPC1() {"__async"
     }
 }
 
-fun rpc(req: HiRequest): Promise<HiResponse> = callRemoteProcedure("hi", req)
-
 fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res> {
     return Promise<Res> {resolve, reject ->
         val modelName = "Hi"
@@ -60,5 +58,8 @@ fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res
         xhr.send(global.JSON.stringify(jsonObject))
     }
 }
+
+
+fun rpc(req: HiRequest): Promise<HiResponse> = callRemoteProcedure("hi", req)
 
 

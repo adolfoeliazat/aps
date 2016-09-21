@@ -8,13 +8,13 @@ package aps.back
 
 import aps.HiRequest
 import aps.HiResponse
+import co.paralleluniverse.fibers.Suspendable
+import co.paralleluniverse.fibers.servlet.FiberHttpServlet
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.handler.AbstractHandler
+import org.eclipse.jetty.servlet.ServletHandler
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import kotlin.comparisons.naturalOrder
 
 val objectMapper = ObjectMapper()
 
@@ -29,18 +29,19 @@ class HiRemoteProcedure {
     }
 }
 
-object TheHandler : AbstractHandler() {
-    override fun handle(target: String, baseRequest: Request, servletRequest: HttpServletRequest, servletResponse: HttpServletResponse) {
+class GodServlet : FiberHttpServlet() {
+    @Suspendable
+    override fun doPost(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse) {
         servletResponse.addHeader("Access-Control-Allow-Origin", "*")
 
         val pathInfo = servletRequest.pathInfo
         when {
-            pathInfo.startsWith("/rpc/") -> handleRPC(baseRequest, servletRequest, servletResponse)
+            pathInfo.startsWith("/rpc/") -> handleRPC(servletRequest, servletResponse)
             else -> bitch("Weird request path: $pathInfo")
         }
     }
 
-    private fun handleRPC(baseRequest: Request, servletRequest: HttpServletRequest, servletResponse: HttpServletResponse) {
+    private fun handleRPC(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse) {
         val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
         val cnamePrefix = procedureName.capitalize()
 
@@ -64,13 +65,17 @@ object TheHandler : AbstractHandler() {
         val json = objectMapper.writeValueAsString(response)
 
         servletResponse.writer.println(json)
-        baseRequest.isHandled = true
     }
+
 }
 
 fun main(args: Array<String>) {
     val server = Server(8080)
-    server.handler = TheHandler
+
+    val handler = ServletHandler()
+    server.handler = handler
+    handler.addServletWithMapping(GodServlet::class.java, "/*")
+
     server.start()
 
     println("APS backend shit is spinning...")
