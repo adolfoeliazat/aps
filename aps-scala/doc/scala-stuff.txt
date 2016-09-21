@@ -1,6 +1,0 @@
-> set scalacOptions in ThisBuild ++= Seq("-feature")
-
-~fastOptJS
-
-http://stackoverflow.com/questions/10472840/how-to-attach-sources-to-sbt-managed-dependencies-in-scala-ide
-
