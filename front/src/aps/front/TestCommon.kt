@@ -4,11 +4,9 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps
+package aps.front
 
-import aps.front.bitch
-import aps.front.die
-import kotlin.reflect.KClass
+import aps.*
 
 // - Run test by full name
 // - Run all tests in given package and subpackages
@@ -133,7 +131,7 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic) {"__async"
         }
     }
 
-    val scenarioClass = eval("kot.aps.$testScenarioToRun") ?: bitch("No test scenario named [${testScenarioToRun}]")
+    val scenarioClass = eval("kot.aps.front.$testScenarioToRun") ?: bitch("No test scenario named [${testScenarioToRun}]")
     val scenario: TestScenario = eval("new scenarioClass()")
     scenario.host = sim
 

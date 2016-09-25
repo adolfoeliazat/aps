@@ -137,7 +137,7 @@ privatePageLoader(name) {
 return lookup(name, {
     
 async 'admin-heap'() {
-    await kot.aps.KotlinShit.kot_melinda({
+    await kot.aps.front.KotlinShit.kot_melinda({
         ui,
         urlPath: 'admin-heap.html',
         trainName: 'Load admin-heap page',
@@ -223,7 +223,7 @@ async 'admin-my-tasks'() {
 async support() {
     raise('reimplement me')
     if (ui.urlQuery.thread) {
-        await kot.aps.KotlinShit.kot_melinda({
+        await kot.aps.front.KotlinShit.kot_melinda({
             ui,
             urlPath: 'support.html', urlEntityParamName: 'thread',
             trainName: 'Load support page with thread param',
@@ -335,7 +335,7 @@ async support() {
 },
 
 async dashboard(def) { // @ctx page dashboard
-    await kot.aps.KotlinShit.loadDashboardPage(def)
+    await kot.aps.front.KotlinShit.loadDashboardPage(def)
 },
                 
 // @ported-to-kotlin
@@ -452,13 +452,13 @@ async dashboard(def) { // @ctx page dashboard
 //},
 
 async 'admin-users'() { // @ctx page admin-users
-    await kot.aps.KotlinShit.loadAdminUsersPage(ui)
+    await kot.aps.front.KotlinShit.loadAdminUsersPage(ui)
 },
 
 // @ported-to-kotlin
 //
 //async 'admin-users~'() { // @ctx page admin-users
-//    await kot.aps.KotlinShit.kot_melinda({
+//    await kot.aps.front.KotlinShit.kot_melinda({
 //        ui,
 //        urlPath: 'admin-users.html',
 //        itemsFun: 'private_getUsers',
@@ -653,7 +653,7 @@ async profile~() { // @ctx page profile
         const form = ui.Form({
             primaryButtonTitle,
             autoFocus: 'phone',
-            fields: kot.aps.KotlinShit.makeProfileFields(s{}),
+            fields: kot.aps.front.KotlinShit.makeProfileFields(s{}),
             rpcFun: 'private_updateProfile',
             async onSuccess~(res) {
                 ui.setUser(res.newUser)
@@ -669,13 +669,13 @@ async profile~() { // @ctx page profile
     else if (userState === 'profile-approval-pending') {
         pageBody = diva({},
             preludeWithHourglass(s{content: spancTitle({title: t('TOTE', 'Админ проверяет профиль, жди извещения почтой')})}),
-            kot.aps.KotlinShit.renderProfile(s{user: user}),
+            kot.aps.front.KotlinShit.renderProfile(s{user: user}),
         )
     }
     else if (userState === 'banned') {
         pageBody = diva({},
             preludeWithVeryBadNews(s{content: spancTitle({title: t('TOTE', 'Тебя тупо забанили, ОК? Кина не будет.')})}),
-            kot.aps.KotlinShit.renderProfile(s{user: user}),
+            kot.aps.front.KotlinShit.renderProfile(s{user: user}),
         )
     }
     else {
@@ -718,7 +718,7 @@ async 'debug-perf-render'() { // @ctx page debug-perf-render
 },
 
 async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
-    kot.aps.KotlinShit.loadDebugKotlinPlaygroundPage(ui)
+    kot.aps.front.KotlinShit.loadDebugKotlinPlaygroundPage(ui)
 },
 
 })
@@ -963,8 +963,8 @@ renderTopNavbar({highlightedItem}) {
 
 } // End of `impl =`
 
-kot.aps.KotlinShit.ui = ui
-kot.aps.KotlinShit.clientImpl = impl
+kot.aps.front.KotlinShit.ui = ui
+kot.aps.front.KotlinShit.clientImpl = impl
 return impl
         
 // @ctx helpers
@@ -1174,7 +1174,7 @@ function userLabel(def) {
     const me = {
         render() {
             return spana({id: me.elementID},
-                kot.aps.KotlinShit.userKindIcon(s{user}),
+                kot.aps.front.KotlinShit.userKindIcon(s{user}),
                 spancTitle({title}))
         },
     }
@@ -1210,7 +1210,7 @@ isTestScenarioNameOK(name) {
 
 //getTestScenario(testScenarioToRun, sim) {
 //    GENERATED_SHIT = require('./generated-shit')
-//    return kot.aps.KotlinShit.getTestScenario(testScenarioToRun, sim)
+//    return kot.aps.front.KotlinShit.getTestScenario(testScenarioToRun, sim)
 //},
     
 //testScenarios({sim}) {

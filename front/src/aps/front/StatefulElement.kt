@@ -4,9 +4,9 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps
+package aps.front
 
-import aps.Color.*
+import aps.front.Color.*
 
 object js {
     val Object = js("Object")

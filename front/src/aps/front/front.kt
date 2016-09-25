@@ -4,13 +4,9 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps
+package aps.front
 
-import kotlin.browser.document
-import kotlin.browser.window
-import aps.Color.*
-import aps.front.jsFacing_loadSignInPageCtor
-import aps.front.jsFacing_makeFormCtor
+import aps.front.Color.*
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette
@@ -40,7 +36,7 @@ enum class Color(val string: String) {
 }
 
 @native interface IKotlinShit {
-    fun ignite(_global: dynamic, _jshit: dynamic)
+    fun ignite(_global: dynamic, _jshit: dynamic, hotIgnition: Boolean)
     fun loadDebugKotlinPlaygroundPage()
     fun loadAdminUsersPage(): Promise<Unit>
     fun loadDashboardPage(def: dynamic): Promise<Unit>
@@ -56,7 +52,7 @@ object KotlinShit : IKotlinShit {
     var ui: dynamic = null
     var clientImpl: dynamic = null
 
-    override fun ignite(_global: dynamic, _jshit: dynamic) {
+    override fun ignite(_global: dynamic, _jshit: dynamic, hotIgnition: Boolean) {
         println("----- Igniting front Kotlin shit -----")
         global = _global
         jshit = _jshit
@@ -151,7 +147,7 @@ object KotlinShit : IKotlinShit {
                 "prop" to "profile_updated_at", "label" to t("TOTE", "Профиль"), "value" to t("TOTE", "Нифига не заполнялся")))
         }
 
-        val adminLooks = ui.getUser().kind == "admin"
+        val adminLooks = KotlinShit.ui.getUser().kind == "admin"
 
         return jshit.diva(json("controlTypeName" to "renderProfile", "tame" to "profile"),
             jshit.diva(json("className" to "row"),
@@ -164,7 +160,7 @@ object KotlinShit : IKotlinShit {
                 jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "kind",
                     "label" to t("TOTE", "Тип"),
                     "content" to jshit.diva(json("style" to js("({})")),
-                    userKindIcon(json("user" to user)),
+                        KotlinShit.userKindIcon(json("user" to user)),
                     jshit.spanc(json("tame" to "value", "content" to global.apsdata.userKindTitle(user.kind)))))),
                 adminLooks && jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "state",
                     "formGroupStyle" to
@@ -190,7 +186,7 @@ object KotlinShit : IKotlinShit {
     }
 
     override fun loadDebugKotlinPlaygroundPage() {
-        ui.setPage(json(
+        KotlinShit.ui.setPage(json(
             "header" to jshit.pageHeader(json("title" to "debug-kotlin-playground")),
             "body" to jshit.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5")
         ))
@@ -230,13 +226,17 @@ object KotlinShit : IKotlinShit {
                             "title" to t("TOTE", "Работенка"),
                             "emptyItemsText" to t("TOTE", "Сюшай, савсэм нэт работы..."),
 
-                            "items" to __await<dynamic>(jshit.utils.runa({"__async"
+                            "items" to __await<dynamic>(jshit.utils.runa({
+                                "__async"
                                 val items = js("[]")
                                 val res = __await<dynamic>(ui.rpcSoft(json("fun" to "private_getLiveStatus")))
 
                                 fun addMetric(def: dynamic) {
                                     // #extract {metric, url, title, noStateContributions} from def
-                                    val metric = def.metric; val url = def.url; val title = def.title; val noStateContributions = def.noStateContributions
+                                    val metric = def.metric;
+                                    val url = def.url;
+                                    val title = def.title;
+                                    val noStateContributions = def.noStateContributions
 
                                     val model = res[metric]
                                     if (model.count != "0") {
@@ -247,7 +247,7 @@ object KotlinShit : IKotlinShit {
                                             jshit.diva(json("style" to json("float" to "right", "paddingLeft" to 8, "background" to jshit.WHITE)),
                                                 jshit.spana(json("className" to "badge", "style" to json("float" to "right", "backgroundColor" to jshit.BLUE_GRAY_400)),
                                                     jshit.spanc(json("tame" to "badge", "content" to model.count))))
-                                            ))
+                                        ))
                                     }
                                 }
 
@@ -260,11 +260,9 @@ object KotlinShit : IKotlinShit {
                                 if (ui.getUser().kind == "admin") {
                                     addMetric(json("metric" to "profilesToApprove", "url" to "admin-users.html?filter=2approve", "title" to t("TOTE", "Профилей зааппрувить")))
                                     addMetric(json("metric" to "suka", "noStateContributions" to true, "url" to "suka.html", "title" to t("TOTE", "Сцуко-метрика")))
-                                }
-                                else if (ui.getUser().kind == "writer") {
+                                } else if (ui.getUser().kind == "writer") {
                                     addMetric(json("metric" to "suka", "noStateContributions" to true, "url" to "suka.html", "title" to t("TOTE", "Сцуко-метрика")))
-                                }
-                                else if (ui.getUser().kind == "customer") {
+                                } else if (ui.getUser().kind == "customer") {
                                     raise("implement me")
                                 }
 
@@ -278,10 +276,12 @@ object KotlinShit : IKotlinShit {
                             "name" to "account",
                             "title" to t("TOTE", "Аккаунт"),
                             "items" to jsArrayOf(
-                                jshit.darkLink(json("tamy" to "signOut", "title" to t("TOTE", "Выйти прочь"), "onClick" to {"__async"
+                                jshit.darkLink(json("tamy" to "signOut", "title" to t("TOTE", "Выйти прочь"), "onClick" to {
+                                    "__async"
                                     ui.signOut()
                                 })),
-                                jshit.darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {"__async"
+                                jshit.darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {
+                                    "__async"
                                     console.warn("// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a")
                                 }))
                             )
@@ -291,22 +291,22 @@ object KotlinShit : IKotlinShit {
             )
         )
 
-        val scrollTop = jshit.utils.jQuery(document).scrollTop()
-        ui.setPage(myPage)
+        val scrollTop = jshit.utils.jQuery(kotlin.browser.document).scrollTop()
+        KotlinShit.ui.setPage(myPage)
         if (preserveScroll) {
-            jshit.utils.jQuery(document).scrollTop(scrollTop)
+            jshit.utils.jQuery(kotlin.browser.document).scrollTop(scrollTop)
         }
 
         fun scheduleUpdate() {
             jshit.utils.timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
-                if (clientImpl.stale) return@outta Unit
-                if (myPage != ui.currentPage) return@outta Unit
+                if (KotlinShit.clientImpl.stale) return@outta Unit
+                if (myPage != KotlinShit.ui.currentPage) return@outta Unit
 
                 // Automatic refreshes should be prevented while something is being investigated via revealer,
                 // otherwise elements being looked at might be removed
                 if (jshit.controlBeingRevealed) { scheduleUpdate(); return@outta Unit }
 
-                if (jshit.isOrWasInTestScenario() && jshit.getCurrentTestBrowser().ui != ui) { scheduleUpdate(); return@outta Unit }
+                if (jshit.isOrWasInTestScenario() && jshit.getCurrentTestBrowser().ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
 
                 // dlog("currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}")
                 jshit.utils.dlog("Updating dashboard page")
@@ -652,9 +652,10 @@ fun jsFacing_spanc(def: dynamic): dynamic {
 //}
 
 fun renderRedExclamationTriangleLabel(title: String): ReactElement {
-    return span {style {color = RED_700}
-        - span {className = "fa fa-exclamation-triangle"}
-        - span {style { marginLeft(10) }; - title}
+    return span {
+        style { color = RED_700 }
+        -span { className = "fa fa-exclamation-triangle" }
+        -span { style { marginLeft(10) }; -title }
     }
 }
 
@@ -786,10 +787,10 @@ fun gertrude(def: dynamic) {
 
     var detailsUI: dynamic = null
     if (jshit.getURLQueryBeforeRunningTest().minimalGertrude == "yes" || global.testGlobal.minimalGertrude) {
-        detailsUI = div {styleKludge = json("background" to jshit.WHITE); -"I am minimal because of minimalGertrude"}
+        detailsUI = div { styleKludge = json("background" to jshit.WHITE); -"I am minimal because of minimalGertrude" }
 //        detailsUI = jshit.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
     } else {
-        detailsUI = jshit.updatableElement(js("({})"), wholeShitCtor@ {updateWholeShit ->
+        detailsUI = jshit.updatableElement(js("({})"), wholeShitCtor@ { updateWholeShit ->
             var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
             var paneControls: dynamic = null; var lineHideFilter = jshit.utils.noop
             var highlightedKeys = js("({})"); var pileOfShit = js("({})")
@@ -871,18 +872,20 @@ fun gertrude(def: dynamic) {
                         var backgroundColor: dynamic = undefined
                         var label: dynamic = undefined
                         if (item.added) {
-                            backgroundColor = RED_100.string
+                            backgroundColor = Color.RED_100.string
                             label = "Actual"
                         } else if (item.removed) {
-                            backgroundColor = GREEN_100.string
+                            backgroundColor = Color.GREEN_100.string
                             label = greenTitle
                         } else {
-                            backgroundColor = WHITE.string
+                            backgroundColor = Color.WHITE.string
                             label = undefined
                         }
                         if (label && label != prevLabel) {
-                            divs.push(div { styleKludge = json("backgroundColor" to backgroundColor, "fontWeight" to "bold")
-                                label })
+                            divs.push(div {
+                                styleKludge = json("backgroundColor" to backgroundColor, "fontWeight" to "bold")
+                                label
+                            })
                         }
                         prevLabel = label
 
@@ -900,10 +903,12 @@ fun gertrude(def: dynamic) {
                                 var callStack = callStacks[actualLineIndex] || js("[]")
                                 if (definitionStack || callStack) {
                                     var open = false
-                                    metaBox = jshit.updatableElement(js("({})"), {update: dynamic ->
+                                    metaBox = jshit.updatableElement(js("({})"), { update: dynamic ->
                                         {
-                                            div { styleKludge = json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)
-                                                -span { className = "fa fa-caret-${if (open) "up" else "down"}"; styleKludge = json("cursor" to "pointer")
+                                            div {
+                                                styleKludge = json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)
+                                                -span {
+                                                    className = "fa fa-caret-${if (open) "up" else "down"}"; styleKludge = json("cursor" to "pointer")
                                                     onClick {
                                                         open = !open
                                                         update()
@@ -911,7 +916,8 @@ fun gertrude(def: dynamic) {
                                                 }
 
                                                 if (open)
-                                                    -div { styleKludge = json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)
+                                                    -div {
+                                                        styleKludge = json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)
                                                         -jshit.renderStacks(json("definitionStack" to definitionStack, "callStack" to callStack))
                                                     }
                                             }
@@ -921,8 +927,10 @@ fun gertrude(def: dynamic) {
 
                                 val control = controls[actualLineIndex]
                                 if (control) {
-                                    gotoIcon = div { className = "showOnParentHovered"
-                                        -span { className = "fa fa-search"; styleKludge = json("cursor" to "pointer", "marginLeft" to 10)
+                                    gotoIcon = div {
+                                        className = "showOnParentHovered"
+                                        -span {
+                                            className = "fa fa-search"; styleKludge = json("cursor" to "pointer", "marginLeft" to 10)
                                             onClick {
                                                 jshit.revealControl(control, json("scrollToTarget" to true))
                                             }
@@ -942,7 +950,7 @@ fun gertrude(def: dynamic) {
                                     val origKey = origKeys[actualLineIndex]
                                     shouldBeHighlighted = highlightedKeys[origKey]
                                     pileOfShit["scrollToDivForKey-${origKey}"] = {
-                                        global.requestAnimationFrame { jshit.utils.jQuery(document).scrollTop(jshit.byid(lineDivID).offset().top - 50 - 20) }
+                                        global.requestAnimationFrame { jshit.utils.jQuery(kotlin.browser.document).scrollTop(jshit.byid(lineDivID).offset().top - 50 - 20) }
                                     }
                                 } else {
                                     console.warn("WTF colonIndex is -1")
@@ -953,13 +961,13 @@ fun gertrude(def: dynamic) {
 
                             divs.push({
                                 if (!lineHideFilter(valueLine) && !shouldBeHiddenCuaseItsFuckingKeyRepetition)
-                                    jshit.updatableElement(js("({})"), {update: dynamic ->
+                                    jshit.updatableElement(js("({})"), { update: dynamic ->
                                         val style = json("backgroundColor" to backgroundColor, "position" to "relative")
                                         if (shouldBeHighlighted) {
                                             global.Object.assign(style, json(
                                                 "borderLeft" to "5px solid black",
                                                 "paddingLeft" to 5,
-                                                "background" to ORANGE_100))
+                                                "background" to Color.ORANGE_100))
                                         }
 
                                         return@updatableElement {
@@ -969,10 +977,14 @@ fun gertrude(def: dynamic) {
                                                 styleKludge = style
 
                                                 if (isExtValueLine(valueLine))
-                                                    -span {styleKludge = json("marginRight" to 5, "padding" to 3, "background" to jshit.ORANGE_200, "fontSize" to "75%")
-                                                        -"ext" }
-                                                -div {styleKludge = json("display" to "inline-block", "verticalAlign" to "top")
-                                                    -valueLine }
+                                                    -span {
+                                                        styleKludge = json("marginRight" to 5, "padding" to 3, "background" to jshit.ORANGE_200, "fontSize" to "75%")
+                                                        -"ext"
+                                                    }
+                                                -div {
+                                                    styleKludge = json("display" to "inline-block", "verticalAlign" to "top")
+                                                    -valueLine
+                                                }
 
                                                 -metaBox
                                                 -gotoIcon
@@ -1082,10 +1094,12 @@ fun gertrude(def: dynamic) {
                     -hor2 {
                         -hor1 { -unifyIndicesCheck; -"Unify indices" }
                         -hor1 { -hideKeyRepetitionsCheck; -"Hide key repetitions" }
-                        -button {level = "primary"; title = "Update Assertion Code"; icon = "pencil"; onClickp {
+                        -button {
+                            level = "primary"; title = "Update Assertion Code"; icon = "pencil"; onClickp {
                             global.testGlobal.minimalGertrude = true
                             jshit.callDebugRPWithProgress(json("msg" to json("fun" to "danger_updateAssertionCode", "assertionTag" to tag, "actualStringForPasting" to actualStringForPasting), "progressPlaceholder" to progressPlaceholder, "progressTitle" to "Updating assertion code"))
-                        }}
+                        }
+                        }
                     }
                     -progressPlaceholder
                 }
@@ -1130,7 +1144,7 @@ fun gertrude(def: dynamic) {
 
             return@wholeShitCtor {
                 jshit.art.assertionDetailsWithSourceLink(json("\$tag" to tag, "details" to tabs, "controls" to paneControls,
-                    "collapsedDetails" to jshit.updatableElement(js("({})"), {update ->
+                    "collapsedDetails" to jshit.updatableElement(js("({})"), { update ->
                         return@updatableElement {
                             jshit.diva(js("({})"),
                                 definitionStack && jshit.diva(json("style" to json("marginBottom" to 8)), jshit.renderDefinitionStackStrip(json("stack" to definitionStack))),
@@ -1165,7 +1179,7 @@ fun openTestPassedPane(def: dynamic) {
 
         val uq = jshit.getURLQueryBeforeRunningTest()
         if (!uq.scrollToBottom || uq.scrollToBottom == "yes" || uq.scrollToBottom == "success") {
-            window.requestAnimationFrame { document.body?.scrollTop = 99999 }
+            kotlin.browser.window.requestAnimationFrame { kotlin.browser.document.body?.scrollTop = 99999 }
         }
 
         json(
@@ -1176,15 +1190,23 @@ fun openTestPassedPane(def: dynamic) {
                         noStateContributions = true
                         style {
                             backgroundColor = Color.GREEN_700; color = Color.WHITE
-                            marginTop(10); padding = "10px 10px"; textAlign = "center"; fontWeight = "bold" }
+                            marginTop(10); padding = "10px 10px"; textAlign = "center"; fontWeight = "bold"
+                        }
 
-                        -div { style { paddingBottom(10) }
-                            - scenarioName
-                            -div { style { display = "flex"; justifyContent = "center" }
-                                + links } }
+                        -div {
+                            style { paddingBottom(10) }
+                            -scenarioName
+                            -div {
+                                style { display = "flex"; justifyContent = "center" }
+                                +links
+                            }
+                        }
 
-                        -div { style { backgroundColor = Color.WHITE; color = Color.BLACK_BOOT; fontWeight = "normal"; textAlign = "left"; padding(5) }
-                            - jshit.art.renderStepDescriptions() } }
+                        -div {
+                            style { backgroundColor = Color.WHITE; color = Color.BLACK_BOOT; fontWeight = "normal"; textAlign = "left"; padding(5) }
+                            -jshit.art.renderStepDescriptions()
+                        }
+                    }
                 }
             })
     }))
@@ -1259,7 +1281,7 @@ class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit)
     val promise: Promise<Unit>
 
     init {
-        promise = Promise<Unit> {resolve, reject ->
+        promise = Promise<Unit> { resolve, reject ->
             f({ resolve(Unit) }, reject)
         }
     }
@@ -1270,7 +1292,7 @@ class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit)
 }
 
 fun promiseUnit(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit): Promise<Unit> {
-    return Promise {resolve, reject ->
+    return Promise { resolve, reject ->
         f({ resolve(Unit) }, reject)
     }
 }
@@ -1364,7 +1386,7 @@ class SimpleEventHandlerBuilder {
 //}
 
 fun timeoutSet(ms: Int, cb: () -> Unit) {
-    window.setTimeout(cb, ms)
+    kotlin.browser.window.setTimeout(cb, ms)
 }
 
 @Suppress("UNUSED_PARAMETER")
@@ -1539,8 +1561,9 @@ class HorizontalaBuilder() : FlowElementBuilder("div") {
     }
 
     override fun transformChildBeforeAddition(child: ReactElement) =
-        div { style { marginLeft(if (children.isEmpty()) 0 else spacing) }
-            - child
+        div {
+            style { marginLeft(if (children.isEmpty()) 0 else spacing) }
+            -child
         }
 }
 
@@ -1732,7 +1755,7 @@ fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
 
             searchBox = jshit.diva(json("style" to json("position" to "relative")),
                 searchBoxInput,
-                jshit.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to GRAY_500)))
+                jshit.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to Color.GRAY_500)))
             )
         }
 
@@ -1795,7 +1818,7 @@ fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
             },
 
             "headerControls" to {
-                jshit.updatableElement(js("({})"), {update: dynamic ->
+                jshit.updatableElement(js("({})"), { update: dynamic ->
                     updateHeaderControls = update
                     { // Yeah, returning closure
                         if (!jshit.utils.fov(hasHeaderControls, entityRes) || !headerControlsVisible) undefined
@@ -1950,7 +1973,7 @@ fun testAsyncShit() {"__async"
 }
 
 fun promise10(): Promise<Int> {
-    return Promise {resolve, reject ->
+    return Promise { resolve, reject ->
         timeoutSet(500) {
             resolve(10)
         }
@@ -1958,7 +1981,7 @@ fun promise10(): Promise<Int> {
 }
 
 fun promise20(): Promise<Int> {
-    return Promise {resolve, reject ->
+    return Promise { resolve, reject ->
         timeoutSet(1000) {
             resolve(20)
         }

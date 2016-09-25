@@ -6,8 +6,6 @@
 
 package aps.front
 
-import aps.*
-
 object MakeStaticSites {
     val kindaDirname = "e:/work/aps/aps/lib"
     val fs = js("require('fs')")

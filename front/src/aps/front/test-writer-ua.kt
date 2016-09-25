@@ -4,7 +4,7 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps
+package aps.front
 
 class TS_UA_Writer_SignUp_1 : TestScenario() {
     override fun run(): Promise<Unit> {"__async"
@@ -833,13 +833,6 @@ class PieceOfTestBuilder(val items: MutableList<TestInstruction>) {
     }
 }
 
-@native interface JSArray
-
-fun <T> Iterable<T>.toJSArray(): JSArray {
-    val res = js("[]")
-    this.forEach { res.push(it) }
-    return res
-}
 
 fun buildPieceOfTest(build: PieceOfTestBuilder.() -> Unit): Iterable<TestInstruction> {
     val items = mutableListOf<TestInstruction>()

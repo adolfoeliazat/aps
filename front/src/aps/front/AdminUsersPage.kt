@@ -4,10 +4,10 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps
+package aps.front
 
 import kotlin.browser.document
-import aps.Color.*
+import aps.front.Color.*
 
 class AdminUsersPage(val ui: dynamic) {
     fun load(): Promise<Unit> {"__async"

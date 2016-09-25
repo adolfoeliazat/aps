@@ -20,6 +20,7 @@ import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import org.mindrot.jbcrypt.BCrypt
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.sql.Timestamp
@@ -163,14 +164,19 @@ class GodServlet : HttpServlet() {
 
                 pathInfo == "/meta" -> {
                     // {classes: [{name: '', fields: [{name: '', strategy: {type: 'Enum', ...}}]}]}
-
                     fun serializeSerializationStrategy_niceName_huh(t: Type): Map<String, Any?> = when {
-                        t.oneOf(String::class.java, Integer::class.java) -> jsonny(
+                        t.oneOf(String::class.java, Integer::class.java, Boolean::class.java) -> jsonny(
                             "type" to "Simple")
+                        t is ParameterizedType -> {
+                            val rt = t.rawType
+                            when {
+                                rt is Class<*> && rt.isAssignableFrom(List::class.java) -> jsonny(
+                                    "type" to "List",
+                                    "itemStrategy" to serializeSerializationStrategy_niceName_huh(t.actualTypeArguments.first()))
+                                else -> wtf("Parametrized type $t")
+                            }
+                        }
                         t is Class<*> -> when {
-                            t.isAssignableFrom(List::class.java) && t is ParameterizedType -> jsonny(
-                                "type" to "List",
-                                "itemStrategy" to serializeSerializationStrategy_niceName_huh(t.actualTypeArguments.first()))
                             t.isEnum -> jsonny(
                                 "type" to "Enum",
                                 "enumClassName" to t.name)
@@ -182,19 +188,19 @@ class GodServlet : HttpServlet() {
                         else -> wtf("Type $t")
                     }
 
-                    val serializableClasses = listOf(SignInWithPasswordResponse::class)
+                    val serializableClasses = listOf(
+                        SignInWithPasswordResponse::class, UserTO::class, PortableTimestamp::class)
 
                     objectMapper.writeValue(servletResponse.writer, jsonny(
                         "classes" to serializableClasses.map{clazz -> jsonny(
                             "name" to (clazz.qualifiedName ?: wtf("Class without a qualifiedName")),
                             "fields" to clazz.memberProperties.map{prop ->
                                 val getterMethod = clazz.java.getMethod("get${prop.name.capitalize()}")
-                                val pt = getterMethod.genericReturnType as ParameterizedType
                                 val propClass = getterMethod.returnType
-                                log.striking(prop.name + ": " + propClass.name)
+                                // log.striking(prop.name + ": " + propClass.name)
                                 jsonny(
                                     "name" to prop.name,
-                                    "strategy" to serializeSerializationStrategy_niceName_huh(pt)
+                                    "strategy" to serializeSerializationStrategy_niceName_huh(getterMethod.genericReturnType)
                                 )
                             }
                         )}
@@ -218,7 +224,7 @@ class GodServlet : HttpServlet() {
         val responseClass = Class.forName("aps.${cnamePrefix}Response")
 
         val requestJSON = servletRequest.reader.readText()
-        servletRequest.reader.close()
+        log.info("requestJSON: $requestJSON")
         val request = objectMapper.readValue(requestJSON, requestClass)
 
         servletResponse.contentType = "application/json; charset=utf-8"
@@ -262,5 +268,6 @@ fun main(args: Array<String>) {
     println("APS backend shit is spinning...")
     server.join()
 }
+
 
 

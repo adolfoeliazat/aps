@@ -4,13 +4,13 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps
+package aps.front
 
-import aps.front.JSException
-import aps.front.wtf
+import aps.*
 
 fun igniteRPCShit() {
-    println("Igniting RPC shit...")
+    dlog("Igniting RPC shit...")
+    shouldLoadMeta = true
     global.testRPC1 = ::testRPC1
 }
 
@@ -38,7 +38,9 @@ var shouldLoadMeta = true
 val classNameToFieldDeserializationInfos = mutableMapOf<String, Iterable<FieldDeserializationInfo>>()
 
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {"__async"
-    return Promise {resolve, reject ->
+    val stackBeforeXHR: String = js("Error().stack")
+
+    return Promise { resolve, reject ->
         val xhr = js("new XMLHttpRequest()")
         xhr.open("POST", "http://127.0.0.1:8080/$path")
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
@@ -46,11 +48,11 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
         xhr.onreadystatechange = {
             if (xhr.readyState == 4) {
                 if (xhr.status == 200) {
-                    console.log("Got backend response for /$path", xhr.responseText)
                     val jsonObject = global.JSON.parse(xhr.responseText)
+                    // console.log("Got backend response for /$path", global.JSON.stringify(jsonObject, null, 4))
                     resolve(jsonObject)
                 } else {
-                    reject(JSException("Got a shitty backend response: status = ${xhr.status}"))
+                    reject(JSException("Got a shitty backend response: status = ${xhr.status}", stackBeforeXHR))
                 }
             }
         }
@@ -62,7 +64,6 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
 fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res> {"__async"
     if (shouldLoadMeta) {
         // {classes: [{name: '', fields: [{name: '', strategy: {type: 'Enum', ...}}]}]}
-
         fun loadStrategy(jsonObject: dynamic): TypeDeserializationStrategy = when (jsonObject.type) {
             "Simple" -> TypeDeserializationStrategy.Simple()
             "Enum" -> TypeDeserializationStrategy.Enum(jsonObject.enumClassName)
@@ -82,6 +83,7 @@ fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res
             }
             classNameToFieldDeserializationInfos[classJSONObject.name] = fdis
         }
+
         shouldLoadMeta = false
     }
 
@@ -90,9 +92,10 @@ fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res
     for (k in jsArrayToList(global.Object.keys(req))) {
         requestJSONObject[k] = dynamicReq[k]
     }
+    // dlog("requestJSONObject", requestJSONObject)
 
-    val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName"))
-    return __asyncResult(jsonObjectToFuckingObject(responseJSONObject , "aps.${procedureName.capitalize()}Response"))
+    val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
+    return __asyncResult(jsonObjectToFuckingObject(responseJSONObject, "aps.${procedureName.capitalize()}Response"))
 }
 
 fun <T> jsonObjectToFuckingObject(jsonObject: dynamic, className: String): T {
@@ -108,9 +111,9 @@ fun jsonValueToFuckingValue(jsonValue: dynamic, strategy: TypeDeserializationStr
     if (jsonValue == null) null
     else when (strategy) {
         is TypeDeserializationStrategy.Simple -> jsonValue
-        is TypeDeserializationStrategy.Enum -> eval("_.aps.${strategy.enumClassName}.$jsonValue")
+        is TypeDeserializationStrategy.Enum -> eval("_.${strategy.enumClassName}.$jsonValue")
         is TypeDeserializationStrategy.Class -> jsonObjectToFuckingObject(jsonValue, strategy.className)
-        is TypeDeserializationStrategy.List -> jsArrayToList(jsonValue, {jsonValueToFuckingValue(it, strategy.itemStrategy)})
+        is TypeDeserializationStrategy.List -> jsArrayToList(jsonValue, { jsonValueToFuckingValue(it, strategy.itemStrategy) })
     }
 
 

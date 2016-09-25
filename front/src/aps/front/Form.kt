@@ -3,9 +3,11 @@
  *
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
+
 package aps.front
 
 import aps.*
+
 
 abstract class Form(val ui: dynamic, val legacySpec: dynamic) : Control(ControlInstanceSpec()) {
     abstract fun onSuccess(res: dynamic): Promise<Unit>

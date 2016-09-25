@@ -1,3 +1,13 @@
+Stuff to search
+    val serializableClasses
+
+
+
+
+
+
+==================== OLD SHIT ====================
+
 Forget-Me-Nots
 
     - A tangle of page auto-refresh, hot code reloading, and navigation to other pages.

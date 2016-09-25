@@ -95,9 +95,10 @@ fun runJava(entryPoint: String): Process {
     }
     cmd.addAll(sequenceOf(
         "java",
+        "-Dorg.slf4j.simpleLogger.defaultLogLevel=info",
+//        "-javaagent:lib-gradle/quasar-core-0.7.6-jdk8.jar",
 //        "-Dco.paralleluniverse.fibers.verifyInstrumentation=true",
         "-cp", cp,
-//        "-javaagent:lib-gradle/quasar-core-0.7.6-jdk8.jar",
         entryPoint))
     // println("Command: " + cmd.joinToString(" "))
 

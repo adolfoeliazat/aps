@@ -4,12 +4,10 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps
+package aps.front
 
 import kotlin.browser.window
-import aps.Color.*
-import aps.front.JSException
-import aps.front.wtf
+import aps.front.Color.*
 import kotlin.reflect.KProperty
 
 class HotReloadSurvivingShit(val nameInGlobalScope: String) {
