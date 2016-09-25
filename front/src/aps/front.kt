@@ -9,6 +9,8 @@ package aps
 import kotlin.browser.document
 import kotlin.browser.window
 import aps.Color.*
+import aps.front.jsFacing_loadSignInPageCtor
+import aps.front.jsFacing_makeFormCtor
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette
@@ -56,7 +58,8 @@ object KotlinShit : IKotlinShit {
 
     override fun ignite(_global: dynamic, _jshit: dynamic) {
         println("----- Igniting front Kotlin shit -----")
-        global = _global; jshit = _jshit
+        global = _global
+        jshit = _jshit
 
         js("""
             global.__asyncResult = function(x) { return x }
@@ -73,6 +76,7 @@ object KotlinShit : IKotlinShit {
         jshit.aa = ::jsFacing_aa
         jshit.ia = ::jsFacing_ia
         jshit.h3a = ::jsFacing_h3a
+        jshit.h4a = ::jsFacing_h4a
         jshit.blockquotea = ::jsFacing_blockquotea
         jshit.dom.spana = ::jsFacing_dom_spana
 //        jshit.faIcon = ::jsFacing_faIcon
@@ -94,6 +98,8 @@ object KotlinShit : IKotlinShit {
 
     val igniteTestShit = ::jsFacing_igniteTestShit
 
+    val makeFormCtor = ::jsFacing_makeFormCtor
+    val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
 
 //    val shittyShit = json(
 //        "tests_UA_Writer" to ::jsFacing_tests_UA_Writer
@@ -106,8 +112,6 @@ object KotlinShit : IKotlinShit {
     val kot_melinda = ::jsFacing_melinda
 
     override fun makeProfileFields(def: dynamic): dynamic {
-        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
-
         return jsArrayOf(
             ui.TextField(json(
                 "name" to "phone",
@@ -125,13 +129,11 @@ object KotlinShit : IKotlinShit {
         // #extract {user} from def
         val user = def.user
 
-        return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5), "icon" to jshit.lookup(user.kind, json(
+        return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5), "icon" to jshit.utils.lookup(user.kind, json(
             "customer" to "user", "writer" to "pencil", "admin" to "cog"))))
     }
 
     override fun renderProfile(def: dynamic): dynamic {
-        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
-
         // #extract {user} from def
         val user = def.user
 
@@ -195,8 +197,6 @@ object KotlinShit : IKotlinShit {
     }
 
     override fun loadDashboardPage(_def: dynamic): Promise<Unit> {"__async"
-        fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack
-
         // {preserveScroll}={}
         val def = if (_def) _def else js("({})")
         val preserveScroll = if (def.preserveScroll) def.preserveScroll else js("({})")
@@ -220,7 +220,7 @@ object KotlinShit : IKotlinShit {
         }
 
         val myPage = json(
-            "id" to jshit.puid(),
+            "id" to jshit.utils.puid(),
             "header" to jshit.pageHeader(json("title" to t("Dashboard", "Панель"))),
             "body" to jshit.diva(json(),
                 jshit.diva(json("className" to "row"),
@@ -230,7 +230,7 @@ object KotlinShit : IKotlinShit {
                             "title" to t("TOTE", "Работенка"),
                             "emptyItemsText" to t("TOTE", "Сюшай, савсэм нэт работы..."),
 
-                            "items" to __await<dynamic>(jshit.runa({"__async"
+                            "items" to __await<dynamic>(jshit.utils.runa({"__async"
                                 val items = js("[]")
                                 val res = __await<dynamic>(ui.rpcSoft(json("fun" to "private_getLiveStatus")))
 
@@ -241,7 +241,7 @@ object KotlinShit : IKotlinShit {
                                     val model = res[metric]
                                     if (model.count != "0") {
                                         items.push(jshit.diva(json("controlTypeName" to "addMetric", "tame" to metric, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden")),
-                                            jshit.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), jshit.repeat(".", 210)),
+                                            jshit.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), jshit.utils.repeat(".", 210)),
                                             ui.urlLink(json("tamy" to true, "style" to json("background" to WHITE, "paddingRight" to 8, "color" to jshit.BLACK_BOOT), "blinkOpts" to json("dwidth" to -8),
                                                 "title" to title, "url" to url, "delayActionForFanciness" to true)),
                                             jshit.diva(json("style" to json("float" to "right", "paddingLeft" to 8, "background" to jshit.WHITE)),
@@ -291,14 +291,14 @@ object KotlinShit : IKotlinShit {
             )
         )
 
-        val scrollTop = jshit.jQuery(document).scrollTop()
+        val scrollTop = jshit.utils.jQuery(document).scrollTop()
         ui.setPage(myPage)
         if (preserveScroll) {
-            jshit.jQuery(document).scrollTop(scrollTop)
+            jshit.utils.jQuery(document).scrollTop(scrollTop)
         }
 
         fun scheduleUpdate() {
-            jshit.timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
+            jshit.utils.timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
                 if (clientImpl.stale) return@outta Unit
                 if (myPage != ui.currentPage) return@outta Unit
 
@@ -309,7 +309,7 @@ object KotlinShit : IKotlinShit {
                 if (jshit.isOrWasInTestScenario() && jshit.getCurrentTestBrowser().ui != ui) { scheduleUpdate(); return@outta Unit }
 
                 // dlog("currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}")
-                jshit.dlog("Updating dashboard page")
+                jshit.utils.dlog("Updating dashboard page")
                 __await(loadDashboardPage(json("preserveScroll" to true)))
             })
         }
@@ -318,14 +318,13 @@ object KotlinShit : IKotlinShit {
         return __asyncResult(Unit)
     }
 
-
 }
 
 
 fun jsFacing_limpopo(def: dynamic): dynamic {
     // #extract {model, content, value, prop, label, transform=identity, colsm, formGroupStyle={}, contentStyle={}} from def
     val model = def.model; var content = def.content; val value = def.value; val prop = def.prop; val label = def.label; val colsm = def.colsm
-    val transform = if (def.transform) def.transform else jshit.identity
+    val transform = if (def.transform) def.transform else jshit.utils.identity
     val formGroupStyle = if (def.formGroupStyle) def.formGroupStyle else js("({})")
     val contentStyle = if (def.contentStyle) def.contentStyle else js("({})")
 
@@ -460,6 +459,12 @@ fun jsFacing_h3a(vararg ignored: dynamic): dynamic {
     return killme_basicTag("h3", attrs, children)
 }
 
+fun jsFacing_h4a(vararg ignored: dynamic): dynamic {
+    val attrs = js("arguments[0]")
+    val children = js("Array.prototype.slice.call(arguments, 1)")
+    return killme_basicTag("h4", attrs, children)
+}
+
 fun jsFacing_blockquotea(vararg ignored: dynamic): dynamic {
     val attrs = js("arguments[0]")
     val children = js("Array.prototype.slice.call(arguments, 1)")
@@ -478,7 +483,7 @@ fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: dynamic): dy
         "render" to render@{
             try {
                 childrenAsJSArray.forEach({ child: dynamic, idx: dynamic ->
-                    if (!jshit.isObject(child)) return@forEach Unit
+                    if (!jshit.utils.isObject(child)) return@forEach Unit
                     else {
                         if (js("typeof child") == "function") return@forEach Unit
                         if (child.`$$typeof` == js("Symbol['for']('react.element')")) return@forEach Unit
@@ -523,7 +528,7 @@ fun killme_veryBasicTag(tag: String, attrs: dynamic, vararg _items: dynamic): dy
     val items = if (attrs.items) jsArrayOrArrayLikeObjectToArray(attrs.items) else _items
 
     fun enhanceChild(element: dynamic, key: dynamic): dynamic {
-        if (jshit.isArray(element)) jshit.raise("I don't want arrays as ${tag}’s children (key=${key})")
+        if (jshit.utils.isArray(element)) jshit.raise("I don't want arrays as ${tag}’s children (key=${key})")
         val typeofElement = js("typeof element")
 
         if (typeofElement != "object" && typeofElement != "string") raise("I don't want to deal with ${typeofElement} element children (key=${key})")
@@ -549,7 +554,7 @@ fun killme_veryBasicTag(tag: String, attrs: dynamic, vararg _items: dynamic): dy
                 )
                 if (element2.`$meta`) {
                     me.controlTypeName = "t()"
-                    global.Object.assign(me, jshit.pick(element2.`$meta`, "\$sourceLocation", "\$definitionStack"))
+                    global.Object.assign(me, jshit.utils.pick(element2.`$meta`, "\$sourceLocation", "\$definitionStack"))
                 } else {
                     me.controlTypeName = "backend-t()"
                     me.`$metaID` = element2.`$metaID`
@@ -602,9 +607,9 @@ fun jsFacing_spanc(def: dynamic): dynamic {
 
     val isString = js("typeof content") == "string"
     val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
-    jshit.invariant(jshit.nil(content) || isString || isMeaty, "Bad content for spanc (keys: ${global.Object.keys(content)})")
+    jshit.utils.invariant(jshit.utils.nil(content) || isString || isMeaty, "Bad content for spanc (keys: ${if (content == null) "null-like" else global.Object.keys(content)})")
 
-    return spanc(def.tame, if (isString) content else content.meat) {
+    return spanc(def.tame, if (isString || content == null) content else content.meat) {
         className = if (def.className != undefined) def.className else ""
         style { addFromJSObject(if (def.style != undefined) def.style else js("({})")) }
     }.toReactElement()
@@ -620,7 +625,7 @@ fun jsFacing_spanc(def: dynamic): dynamic {
 //
 //    val isString = js("typeof content") == "string"
 //    val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
-//    jshit.invariant(jshit.nil(content) || isString || isMeaty, "Bad content for spanc (keys: ${global.Object.keys(content)})")
+//    jshit.utils.invariant(jshit.utils.nil(content) || isString || isMeaty, "Bad content for spanc (keys: ${global.Object.keys(content)})")
 //
 //    var me: dynamic = undefined // Workaround for Kotlin
 //    me = json(
@@ -746,7 +751,7 @@ fun gertrude(def: dynamic) {
         expectedExtender(json("expected" to fromExtender))
         extenderKeys = global.Object.keys(fromExtender)
 
-        for (k in jsArrayToIterable(extenderKeys)) {
+        for (k in jsArrayToList(extenderKeys)) {
             val komega = k.replace(js("/-i\\d\\d\\d/g"), "-ω")
             if (!extenderKeys.includes(komega)) {
                 extenderKeys.push(komega)
@@ -755,7 +760,7 @@ fun gertrude(def: dynamic) {
     }
 
     val keyToDefinitionStack = js("({})"); val keyToCallStack = js("({})"); val keyToControl = js("({})")
-    for (key in jsArrayToIterable(global.Object.keys(actual))) {
+    for (key in jsArrayToList(global.Object.keys(actual))) {
         val value = actual[key]
         if (value && value.`$definitionStack`) {
             actual[key] = value.value
@@ -771,7 +776,7 @@ fun gertrude(def: dynamic) {
         }
     }
 
-    if (jshit.deepEquals(actual, expected)) {
+    if (jshit.utils.deepEquals(actual, expected)) {
         if (thisIsReassertion) {
             console.warn("// TODO:vgrechka If reassertion after hot reload passed, make it clear in UI    e5d48597-62d4-4740-b915-04f6934c2bc0 ")
         }
@@ -786,7 +791,7 @@ fun gertrude(def: dynamic) {
     } else {
         detailsUI = jshit.updatableElement(js("({})"), wholeShitCtor@ {updateWholeShit ->
             var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
-            var paneControls: dynamic = null; var lineHideFilter = jshit.noop
+            var paneControls: dynamic = null; var lineHideFilter = jshit.utils.noop
             var highlightedKeys = js("({})"); var pileOfShit = js("({})")
             val progressPlaceholder = jshit.Placeholder()
             var unifyIndicesCheck: dynamic = null; var hideKeyRepetitionsCheck: dynamic = null
@@ -796,7 +801,7 @@ fun gertrude(def: dynamic) {
                     // {stripIndices}={}
                     val stripIndices: Boolean = opts.stripIndices
 
-                    var s = jshit.deepInspect(it)
+                    var s = jshit.utils.deepInspect(it)
                     // s = s.replace(/\\n/g, "\n")
 
                     if (stripIndices) {
@@ -811,7 +816,7 @@ fun gertrude(def: dynamic) {
                         .map({x: dynamic ->
                             var res = x
                             res = res.trim()
-                            if (res == "{" || res == "}" || jshit.isBlank(res)) return@map res
+                            if (res == "{" || res == "}" || jshit.utils.isBlank(res)) return@map res
                             if (!res.endsWith(",")) res += ","
                             return@map res
                         })
@@ -822,11 +827,11 @@ fun gertrude(def: dynamic) {
 
                 fun isExtValueLine(valueLine: dynamic): Boolean {
                     if (valueLine == "{" || valueLine == "}") return false
-                    if (jshit.isBlank(valueLine)) return false
+                    if (jshit.utils.isBlank(valueLine)) return false
 
                     val colonIndex = valueLine.indexOf(":")
                     invariant(colonIndex != -1, "Expecting colon: ${valueLine}")
-                    val key = jshit.trim(valueLine.slice(0, colonIndex).replace(js("/'/g"), ""))
+                    val key = jshit.utils.trim(valueLine.slice(0, colonIndex).replace(js("/'/g"), ""))
                     if (extenderKeys.includes(key)) {
                         return true
                     }
@@ -836,11 +841,11 @@ fun gertrude(def: dynamic) {
 
                 val pileOfShit = js("({})")
 
-                jshit.sortKeys(actual) // Order of keys sent over the wire is mangled
-                jshit.sortKeys(expected)
+                jshit.utils.sortKeys(actual) // Order of keys sent over the wire is mangled
+                jshit.utils.sortKeys(expected)
 
                 val definitionStacks = js("[]"); val callStacks = js("[]"); val controls = js("[]"); val origKeys = js("[]")
-                for (key in jsArrayToIterable(global.Object.keys(actual))) {
+                for (key in jsArrayToList(global.Object.keys(actual))) {
                     definitionStacks.push(keyToDefinitionStack[key])
                     callStacks.push(keyToCallStack[key])
                     controls.push(keyToControl[key])
@@ -861,8 +866,8 @@ fun gertrude(def: dynamic) {
 
                     if (!greenTitle) greenTitle = "Expected"
                     var prevLabel: dynamic = undefined
-                    val diffLineItems = jshit.diff.diffLines(string1, string2)
-                    for (item in jsArrayToIterable(diffLineItems)) {
+                    val diffLineItems = jshit.utils.diff.diffLines(string1, string2)
+                    for (item in jsArrayToList(diffLineItems)) {
                         var backgroundColor: dynamic = undefined
                         var label: dynamic = undefined
                         if (item.added) {
@@ -884,7 +889,7 @@ fun gertrude(def: dynamic) {
                         item.value = item.value.replace(js("/\\n*\$/"), "")
                         val valueLines = item.value.split("\n")
                         val keysAdded = js("({})")
-                        for (valueLine in jsArrayToIterable(valueLines)) {
+                        for (valueLine in jsArrayToList(valueLines)) {
                             var shouldBeHiddenCuaseItsFuckingKeyRepetition: dynamic = undefined
                             var shouldBeHighlighted: dynamic = undefined
 
@@ -937,7 +942,7 @@ fun gertrude(def: dynamic) {
                                     val origKey = origKeys[actualLineIndex]
                                     shouldBeHighlighted = highlightedKeys[origKey]
                                     pileOfShit["scrollToDivForKey-${origKey}"] = {
-                                        global.requestAnimationFrame { jshit.jQuery(document).scrollTop(jshit.byid(lineDivID).offset().top - 50 - 20) }
+                                        global.requestAnimationFrame { jshit.utils.jQuery(document).scrollTop(jshit.byid(lineDivID).offset().top - 50 - 20) }
                                     }
                                 } else {
                                     console.warn("WTF colonIndex is -1")
@@ -990,7 +995,7 @@ fun gertrude(def: dynamic) {
 
                 var actualStringForPasting = actualStringOrig.trim()
                 if (actualStringForPasting[0] == "{" || actualStringForPasting[0] == "[") {
-                    actualStringForPasting = jshit.trimStart(actualStringForPasting.slice(1, actualStringForPasting.length - 1))
+                    actualStringForPasting = jshit.utils.trimStart(actualStringForPasting.slice(1, actualStringForPasting.length - 1))
                 }
                 val chars = actualStringForPasting.split("")
 
@@ -1020,9 +1025,9 @@ fun gertrude(def: dynamic) {
                     }
                     from = backtickIndex + 1
                 }
-                replacements = jshit.sortBy(replacements, "from")
+                replacements = jshit.utils.sortBy(replacements, "from")
                 var newActualStringForPasting = ""; from = 0
-                for (replacement in jsArrayToIterable(replacements)) {
+                for (replacement in jsArrayToList(replacements)) {
                     newActualStringForPasting += actualStringForPasting.slice(from, replacement.from) + replacement.newString
                     from = replacement.from + replacement.oldStringLength
                 }
@@ -1038,7 +1043,7 @@ fun gertrude(def: dynamic) {
                         .join("\n")
 
                 tabs = jshit.Tabs(json(
-                    "activeTab" to if (jshit.isEmpty(expected)) "diffLast" else "diff",
+                    "activeTab" to if (jshit.utils.isEmpty(expected)) "diffLast" else "diff",
                     "tabs" to json(
                         "diff" to json(
                             "title" to "Diff",
@@ -1110,7 +1115,7 @@ fun gertrude(def: dynamic) {
                     // ({keys, scrollThere})
                     val keys = arg.keys; val scrollThere = arg.scrollThere
                     highlightedKeys = js("({})")
-                    for (k in jsArrayToIterable(keys)) {
+                    for (k in jsArrayToList(keys)) {
                         highlightedKeys[k] = true
                     }
 
@@ -1118,7 +1123,7 @@ fun gertrude(def: dynamic) {
                     updateWholeShit()
 
                     if (scrollThere && keys.length) {
-                        jshit.fov(pileOfShit["scrollToDivForKey-${keys[0]}"])
+                        jshit.utils.fov(pileOfShit["scrollToDivForKey-${keys[0]}"])
                     }
                 }
             )
@@ -1438,7 +1443,7 @@ val nbsp: String = js("String.fromCharCode(0xa0)")
 }
 
 fun puid(): Long {
-    return jshit.puid()
+    return jshit.utils.puid()
 }
 
 @native val MODE: String = noImpl
@@ -1455,7 +1460,7 @@ fun <R> runni(f: () -> R): R {
 
 fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
     return Promise<dynamic>({ resolve, reject ->
-        jshit.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
+        jshit.utils.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
             // @wip sourceLocation
             var lines = stackString.lines()
             lines = lines.slice(firstSignificantStackLine..lines.lastIndex)
@@ -1475,13 +1480,13 @@ fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStack
 }
 
 fun invariant(cond: dynamic, msg: String, props: dynamic = null) {
-    jshit.invariant(cond, msg, props)
+    jshit.utils.invariant(cond, msg, props)
 }
 
-fun jsArrayToIterable(arr: dynamic): Iterable<dynamic> {
+fun jsArrayToList(arr: dynamic, transform: (dynamic) -> dynamic = {it}): List<dynamic> {
     val list = mutableListOf<dynamic>()
     for (i in 0 until arr.length)
-        list.add(arr[i])
+        list.add(transform(arr[i]))
     return list
 }
 
@@ -1565,8 +1570,6 @@ fun Map<String, Any?>.toJSObject(): dynamic {
 }
 
 fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
-    fun t(en: String, ru: String) = ru // TODO:vgrechka Unhack    592fa0de-0414-46fe-a3a6-a05dcb54b5ed
-
     val ui: dynamic = def.ui
     val trainName: dynamic = def.trainName; val urlPath: dynamic = def.urlPath; val urlEntityParamName: dynamic = def.urlEntityParamName;
     val tabDefs: dynamic = def.tabDefs; val defaultActiveTab: dynamic = def.defaultActiveTab; val header: dynamic = def.header;
@@ -1706,7 +1709,7 @@ fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
         }
 
         val itemsReq = json(
-            "fun" to jshit.fov(itemsFun, json("activeTab" to activeTab)),
+            "fun" to jshit.utils.fov(itemsFun, json("activeTab" to activeTab)),
             "entityID" to entityID, "filter" to filter, "ordering" to ordering, "searchString" to searchString)
         val itemsRes = __await<dynamic>(ui.rpcSoft(itemsReq))
         if (itemsRes.error) return __asyncResult(showBadResponse(itemsRes))
@@ -1771,14 +1774,14 @@ fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
         }
 
         ui.setPage(json(
-            "header" to jshit.fov(header, entityRes),
+            "header" to jshit.utils.fov(header, entityRes),
 
             "body" to {
                 jshit.diva(json("style" to json("marginBottom" to 15)),
                     tabs,
                     if (editShit) editShit.form else null,
                     if (plusShit) plusShit.form else null,
-                    jshit.fov(aboveItems, entityRes),
+                    jshit.utils.fov(aboveItems, entityRes),
                     run { // Render items
                         if (itemsRes.items.length)
                             ui.renderMoreable(json("itemsRes" to itemsRes, "itemsReq" to itemsReq, "renderItem" to renderItem))
@@ -1795,7 +1798,7 @@ fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
                 jshit.updatableElement(js("({})"), {update: dynamic ->
                     updateHeaderControls = update
                     { // Yeah, returning closure
-                        if (!jshit.fov(hasHeaderControls, entityRes) || !headerControlsVisible) undefined
+                        if (!jshit.utils.fov(hasHeaderControls, entityRes) || !headerControlsVisible) undefined
                         else {
                             jshit.hor2(json(
                                 "style" to json("display" to "flex", "marginTop" to if (tabDefs) 55 else 0),
@@ -1814,7 +1817,7 @@ fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
 
             "onKeyDown" to {e: dynamic ->
                 if (e.keyCode == 27) {
-                    jshit.fov(cancelForm)
+                    jshit.utils.fov(cancelForm)
                 }
             }
         ))
@@ -1845,7 +1848,7 @@ class StyleBuilder {
     }
 
     fun addFromJSObject(jso: dynamic) {
-        for (key: String in jsArrayToIterable(global.Object.keys(jso))) {
+        for (key: String in jsArrayToList(global.Object.keys(jso))) {
             val value = jso[key]
             if (!value) continue
 
@@ -2014,7 +2017,8 @@ fun initTestShit() {
     global.testDynamicVarargs = ::testDynamicVarargs
 }
 
-
+fun t(en: String) = t(en, en)
+fun t(en: String, ru: String) = ru
 
 
 

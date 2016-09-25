@@ -9,6 +9,7 @@ package aps
 import kotlin.browser.window
 import aps.Color.*
 import aps.front.JSException
+import aps.front.wtf
 import kotlin.reflect.KProperty
 
 class HotReloadSurvivingShit(val nameInGlobalScope: String) {
@@ -82,7 +83,7 @@ object art {
         var stepIndex = 0
         instructions.forEachIndexed {instrIndex, instr ->
             if (instrIndex == until) {
-                jshit.dlog("Stopping test before instruction ${instrIndex}")
+                jshit.utils.dlog("Stopping test before instruction ${instrIndex}")
                 return __asyncResult(Unit)
             }
 
@@ -90,12 +91,12 @@ object art {
                 val wpname = jshit.getCurrentTestScenarioName() + " -- " + instr.name
                 if (skipping) {
                     if (instr.name == from) {
-                        jshit.dlog("Restoring world point ${wpname}")
+                        jshit.utils.dlog("Restoring world point ${wpname}")
                         __await<dynamic>(debugRPC(json("db" to undefined, "fun" to "danger_restoreWorldPoint", "wpname" to wpname)))
                         skipping = false
                     }
                 } else {
-                    jshit.dlog("Saving world point ${wpname}")
+                    jshit.utils.dlog("Saving world point ${wpname}")
                     __await(debugRPC(json("db" to undefined, "fun" to "danger_saveWorldPoint", "wpname" to wpname)))
                 }
             }
@@ -182,7 +183,7 @@ object art {
         if (skipping) {
             console.warn("WTF, I’ve just skipped all test steps")
         } else {
-            jshit.dlog("Seems test is passed")
+            jshit.utils.dlog("Seems test is passed")
         }
 
         return __asyncResult(Unit)
@@ -213,7 +214,7 @@ object art {
 //            if (!opcode) jshit.raiseWthMeta(json("message" to "Cannot determine opcode for instruction", "meta" to instrdef))
 //
 //            if (instrIndex == until) {
-//                jshit.dlog("Stopping test before instruction ${instrIndex}")
+//                jshit.utils.dlog("Stopping test before instruction ${instrIndex}")
 //                return __asyncResult(Unit)
 //            }
 //
@@ -233,12 +234,12 @@ object art {
 //                val wpname = jshit.getCurrentTestScenarioName() + " -- " + instr.name
 //                if (skipping) {
 //                    if (instr.name == from) {
-//                        jshit.dlog("Restoring world point ${wpname}")
+//                        jshit.utils.dlog("Restoring world point ${wpname}")
 //                        __await<dynamic>(debugRPC(json("db" to undefined, "fun" to "danger_restoreWorldPoint", "wpname" to wpname)))
 //                        skipping = false
 //                    }
 //                } else {
-//                    jshit.dlog("Saving world point ${wpname}")
+//                    jshit.utils.dlog("Saving world point ${wpname}")
 //                    __await(debugRPC(json("db" to undefined, "fun" to "danger_saveWorldPoint", "wpname" to wpname)))
 //                }
 //                continue
@@ -258,7 +259,7 @@ object art {
 //                continue
 //            }
 //            if (opcode == "assert") {
-//                __await<dynamic>(jshit.art.uiState(instr.asnn(jshit.pick(instrdef, "\$definitionStack"))))
+//                __await<dynamic>(jshit.art.uiState(instr.asnn(jshit.utils.pick(instrdef, "\$definitionStack"))))
 //                continue
 //            }
 //            if (opcode == "setValue") {
@@ -297,7 +298,7 @@ object art {
 //        if (skipping) {
 //            console.warn("WTF, I’ve just skipped all test steps")
 //        } else {
-//            jshit.dlog("Seems test is passed")
+//            jshit.utils.dlog("Seems test is passed")
 //        }
 //
 //        return __asyncResult(Unit)
@@ -414,15 +415,15 @@ fun jsFacing_invokeStateContributions(arg: dynamic) {
 
     jshit.art.stateContributionsByControl = js("new Map()")
 
-    for (contribute in jsArrayToIterable(jshit.values(jshit.art.uiStateContributions))) {
+    for (contribute in jsArrayToList(jshit.utils.values(jshit.art.uiStateContributions))) {
         contribute(json(
             "put" to {arg: dynamic ->
                 // {$definitionStack, $callStack, control, key, value}
                 val `$definitionStack` = arg.`$definitionStack`; val `$callStack` = arg.`$callStack`
                 val control = arg.control; val key = arg.key; val value = arg.value
 
-                jshit.invariant(control, "I want control for state.put()")
-                if (jshit.keys(actual).includes(key)) {
+                jshit.utils.invariant(control, "I want control for state.put()")
+                if (jshit.utils.keys(actual).includes(key)) {
                     val message = "uiStateContribution put duplication: key=${key}, value=${value}"
 
                     runni {"__async"

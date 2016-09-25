@@ -7,6 +7,7 @@
 package aps
 
 import aps.front.bitch
+import aps.front.die
 import kotlin.reflect.KClass
 
 // - Run test by full name
@@ -40,8 +41,9 @@ fun runTestScenario(fullName: String) {
 }
 
 fun tetete() {
-    sayHi()
+    val x = UserState.BANNED
 }
+
 
 class TestCommon(val sim: dynamic) {
     val LONG_SHIT_301 = makeLongShit(301)
@@ -59,10 +61,10 @@ class TestCommon(val sim: dynamic) {
 }
 
 fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic) {"__async"
-    val urlObject = jshit.url.parse(global.location.href)
-    val urlQuery = jshit.querystring.parse(urlObject.query)
+    val urlObject = jshit.utils.url.parse(global.location.href)
+    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
 
-    for (name in jsArrayToIterable(jshit.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
+    for (name in jsArrayToList(jshit.utils.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
         if (urlQuery[name] != undefined) {
             global[name] = urlQuery[name]
         }
@@ -86,14 +88,14 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic) {"__async"
 
     val sim = object : TestHost {
         override fun navigate(url: String): Promise<Unit> {"__async"
-            jshit.dlog("Navigating", jshit.browser.name, url)
+            jshit.utils.dlog("Navigating", jshit.browser.name, url)
             global.history.replaceState(null, "", url)
             __await<dynamic>(makeCleanPairAndBoot())
             return __asyncResult(Unit)
         }
 
         override fun selectBrowser(name: String) {
-            jshit.dlog("Selecting browser", name)
+            jshit.utils.dlog("Selecting browser", name)
             jshit.browser = jshit.browsers[name]
             if (!jshit.browser) {
                 var storageLocalItems = js("({})")

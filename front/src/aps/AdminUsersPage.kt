@@ -51,7 +51,7 @@ class AdminUsersPage(val ui: dynamic) {
                 var user = def.item; val index = def.index
 
                 object {
-                    val headingID = "hehe-" + jshit.puid()
+                    val headingID = "hehe-" + jshit.utils.puid()
                     val placeholder = jshit.Placeholder()
 
                     init {
@@ -79,10 +79,10 @@ class AdminUsersPage(val ui: dynamic) {
 
                                 val state = form.getField("state").getValue()
                                 if (state == "profile-rejected") {
-                                    invisible = jshit.without(invisible, "profileRejectionReason")
+                                    invisible = jshit.utils.without(invisible, "profileRejectionReason")
                                 }
                                 else if (state == "banned") {
-                                    invisible = jshit.without(invisible, "banReason")
+                                    invisible = jshit.utils.without(invisible, "banReason")
                                 }
 
                                 return@getInvisibleFieldNames invisible
@@ -176,7 +176,7 @@ class AdminUsersPage(val ui: dynamic) {
 
                     fun scrollToHeading() {
                         val top = jshit.byid(headingID).offset().top - 50 - 15
-                        global.requestAnimationFrame { jshit.jQuery(document).scrollTop(top) }
+                        global.requestAnimationFrame { jshit.utils.jQuery(document).scrollTop(top) }
                     }
 
 

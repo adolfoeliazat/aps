@@ -7,11 +7,7 @@
 package aps
 
 import aps.front.JSException
-
-
-fun imf(what: String = "me"): Nothing = throw JSException("Implement $what, please, fuck you")
-fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw JSException("WTF: $msg")
-fun die(msg: String = "You killed me, motherfucker..."): Nothing = throw JSException(msg)
+import aps.front.wtf
 
 fun asReactElement(x: Any?): ReactElement {
     val didi: dynamic = x

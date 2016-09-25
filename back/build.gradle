@@ -2,6 +2,7 @@ apply plugin: 'java'
 
 repositories {
     mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencies {
@@ -9,12 +10,17 @@ dependencies {
     compile 'org.slf4j:slf4j-simple:1.7.21'
     compile 'co.paralleluniverse:quasar-core:0.7.6:jdk8'
     compile 'co.paralleluniverse:quasar-core:0.7.6:sources'
-    compile 'co.paralleluniverse:comsat-servlet:0.7.0'
+    compile 'co.paralleluniverse:comsat-servlet:0.7.1-SNAPSHOT'
+    compile 'co.paralleluniverse:comsat-jooq:0.7.1-SNAPSHOT'
     compile 'org.eclipse.jetty.aggregate:jetty-all:9.3.11.v20160721'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.3'
+    compile 'org.jooq:jooq:3.8.4'
+    compile 'org.jooq:jooq-meta:3.8.4'
+    compile 'org.jooq:jooq-codegen:3.8.4'
+    compile 'com.zaxxer:HikariCP:2.5.1'
 }
 
-task copyDeps(type: Copy) {
+task importDeps(type: Copy) {
     from (configurations.compile + configurations.testCompile) {
         include "*.jar"
     }

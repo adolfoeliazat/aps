@@ -1,4 +1,3 @@
-testCustomControlStructures()
 
 interface ShitReceiver {
     infix fun shit(alternate: () -> Any?)

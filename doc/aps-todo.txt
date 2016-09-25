@@ -19,3 +19,6 @@ ui.ts:2444 Debug panes should be independent. debugPanes.set() rerenders all exi
   
 - In compile.js check that UUIDs are not duplicated (when they are not meant to, like in $tag)
 
+- In case of deserialization failure, Jackson logs request content, which can contain secrets
+
+

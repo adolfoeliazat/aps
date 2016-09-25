@@ -2,4 +2,12 @@
     <target name="touch-restart-flag">
         <touch file="restart-flag"/>
     </target>
+
+    <target name="make-static-sites">
+        <exec executable="node" dir="../front">
+            <arg value="run.js"/>
+            <arg value="MakeStaticSites"/>
+        </exec>
+    </target>
 </project>
+

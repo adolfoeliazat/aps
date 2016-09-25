@@ -138,7 +138,7 @@ abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
                     if (!parentControls) undefined
                     else {
                         // TODO:vgrechka @unjs    85c906ea-435e-439e-a8bf-3c9f4a3c9798
-                        for (parentControl in jsArrayToIterable(js("parentControls.slice().reverse()"))) {
+                        for (parentControl in jsArrayToList(js("parentControls.slice().reverse()"))) {
                             if (parentControl.tame) {
                                 res = parentControl.tame + "." + res
                             }
@@ -186,7 +186,7 @@ abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
             }
 
             if (tame != null) {
-                for (other in jsArrayToIterable(elementControls)) {
+                for (other in jsArrayToList(elementControls)) {
                     if (other.tame) {
                         runni {"__async"
                             val otherDescription = __await(anyControlDefinitionStackString(other, "  "))
@@ -222,10 +222,10 @@ abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
                 if (n(effectiveTame)) return
                 if (cis.noStateContributions) return
 
-                for (parentElement in jsArrayToIterable(jshit.byid(elementID).parents())) {
+                for (parentElement in jsArrayToList(jshit.byid(elementID).parents())) {
                     val parentControls = jshit.elementIDToControls[parentElement.id]
                     if (parentControls)
-                        for (parentControl in jsArrayToIterable(parentControls))
+                        for (parentControl in jsArrayToList(parentControls))
                             if (parentControl.noStateContributions) return
                 }
 
@@ -257,11 +257,11 @@ abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
             componentWillUnmount()
 
             removeEventListeners()
-            jshit.arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x -> x.controlID == controlID })
-            jshit.deleteKey(jshit.art.uiStateContributions, controlID)
+            jshit.utils.arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x -> x.controlID == controlID })
+            jshit.utils.deleteKey(jshit.art.uiStateContributions, controlID)
 
             if (effectiveShame != "") {
-                jshit.deleteKey(global.testGlobal.controls, effectiveShame)
+                jshit.utils.deleteKey(global.testGlobal.controls, effectiveShame)
             }
         }
 
@@ -286,7 +286,7 @@ abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
 
         if (jshit.getTestSpeed() == "slow") {
             val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(elementID)), testActionHandOpts))
-            __await<dynamic>(jshit.delay(jshit.DEBUG_ACTION_HAND_DELAY))
+            __await<dynamic>(jshit.utils.delay(jshit.utils.DEBUG_ACTION_HAND_DELAY))
             testActionHand.delete()
         }
 
@@ -344,7 +344,7 @@ abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
 
     fun definitionStackString(sep: String): Promise<String> {"__async"
         val jsarray = __await(this.`$definitionStack`)
-        return __asyncResult(jsArrayToIterable(jsarray).joinToString(sep) { it.loc })
+        return __asyncResult(jsArrayToList(jsarray).joinToString(sep) { it.loc })
 
 //        return __asyncResult(buildString {
 //            jsArrayToIterable(jsarray).joinToString(sep) { it.loc }
@@ -412,7 +412,7 @@ class ButtonBuilder : CommonControlInstanceShit() {
     var iconColor: Color? = null
 }
 
-fun spanc(tame: String, content: String, build: CommonControlInstanceShit.() -> Unit): Control {
+fun spanc(tame: String, content: String, build: CommonControlInstanceShit.() -> Unit = {}): Control {
     val cis = CommonControlInstanceShit()
     cis.tame = tame
     cis.build()
@@ -433,6 +433,7 @@ fun spanc(tame: String, content: String, build: CommonControlInstanceShit.() -> 
 val diva = makeBasicContainerControlCtor("div")
 val spana = makeBasicContainerControlCtor("span")
 val forma = makeBasicContainerControlCtor("form")
+val h3a = makeBasicContainerControlCtor("h3")
 
 val NORE: ReactElement = js("({})")
 
@@ -497,15 +498,6 @@ fun makeBasicContainerControlCtor(tag: String): (BasicContainerControlBuilder.()
     return ::ctor
 }
 
-//class ManagedString(val en: String, val ru: String) {
-//    val meat: String get() = ru // TODO:vgrechka Implement ManagedString.meat    09c55c82-faa1-4734-a45c-5454b755eeab
-//}
-
-fun t(en: String) = t(en, en)
-
-fun t(en: String, ru: String): String {
-    return ru
-}
 
 
 

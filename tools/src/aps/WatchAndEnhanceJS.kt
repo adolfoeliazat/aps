@@ -59,7 +59,7 @@ fun watch() {
             // println("kind = $kind; path = ${path}")
 
             val pathString = path.toString()
-            if (!pathString.endsWith(".meta.js") && (pathString.endsWith(".js") || pathString.endsWith(".js.map"))) {
+            if (!pathString.endsWith(".meta.js") && !pathString.contains("-enhanced") && (pathString.endsWith(".js") || pathString.endsWith(".js.map"))) {
                 val entry = pathStringToEntry[pathString]
 
                 if (entry == null) {
@@ -214,13 +214,16 @@ fun doStuff(jsFileEntry: Entry, mapFileEntry: Entry) {
     }
 
     val inMapFile = File(mapFileEntry.pathString)
-    val outMapFile = File("E:/work/aps/aps/built/ua-writer/kotlin/" + inMapFile.name)
-    inMapFile.copyTo(outMapFile, overwrite = true)
-    // logEmitted(outMapFile)
+    inMapFile.copyTo(File("E:/work/aps/aps/built/ua-writer/kotlin/" + inMapFile.name), overwrite = true)
 
-    val outJSFile = File("E:/work/aps/aps/built/ua-writer/kotlin/" + inJSFile.name)
-    outJSFile.writeText(newSourceCode)
-    logEmitted(outJSFile)
+    File("E:/work/aps/aps/built/ua-writer/kotlin/" + inJSFile.name.replace(Regex("\\.js$"), "-enhanced.js")).run{
+        this.writeText(newSourceCode)
+        logEmitted(this)
+    }
+    File(inJSFile.absolutePath.replace(Regex("\\.js$"), "-enhanced.js")).run{
+        this.writeText(newSourceCode)
+        logEmitted(this)
+    }
 }
 
 fun flattenJS(input: String): String {

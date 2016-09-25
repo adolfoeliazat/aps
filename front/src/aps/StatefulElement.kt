@@ -52,7 +52,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
     val definitionStackString: Promise<String> get() {"__async"
         val jsarray = __await(this.`$definitionStack`)
         return __asyncResult(buildString {
-            for (item in jsArrayToIterable(jsarray)) {
+            for (item in jsArrayToList(jsarray)) {
                 append("${item.loc}  ")
             }
         })
@@ -130,7 +130,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
             }
 
             if (tame != null) {
-                for (other in jsArrayToIterable(elementControls)) {
+                for (other in jsArrayToList(elementControls)) {
                     runni {"__async"
                         val otherDescription = if (other is StatefulElement)
                             __await(other.definitionStackString)
@@ -173,7 +173,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
                         val parentControls = jshit.elementIDToControls[js("this").id]
                         if (!parentControls) undefined
                         else {
-                            for (parentControl in jsArrayToIterable(parentControls)) {
+                            for (parentControl in jsArrayToList(parentControls)) {
                                 if (parentControl.noStateContributions) {
                                     shouldContribute = false
                                     return@each false // break
@@ -217,11 +217,11 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
             componentWillUnmount()
 
             removeEventListeners()
-            jshit.arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x -> x.id == controlID })
-            jshit.deleteKey(jshit.art.uiStateContributions, controlID)
+            jshit.utils.arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x -> x.id == controlID })
+            jshit.utils.deleteKey(jshit.art.uiStateContributions, controlID)
 
             if (effectiveShame != null) {
-                jshit.deleteKey(global.testGlobal.controls, effectiveShame)
+                jshit.utils.deleteKey(global.testGlobal.controls, effectiveShame)
             }
         }
 
@@ -301,7 +301,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
             val parentControls = jshit.elementIDToControls[js("this").id]
             if (!parentControls) undefined
             else {
-                for (parentControl in jsArrayToIterable(js("parentControls.slice().reverse()"))) {
+                for (parentControl in jsArrayToList(js("parentControls.slice().reverse()"))) {
                     if (parentControl.tame) {
                         res = parentControl.tame + "." + res
                     }

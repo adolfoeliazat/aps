@@ -10,7 +10,7 @@ import java.io.File
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
 
-class ForeverBack {
+class Forever {
     @Volatile var shouldReactToRestartFlag = false
     @Volatile var shouldRestartOnDeath = false
     lateinit var process: Process
@@ -21,21 +21,8 @@ class ForeverBack {
     }
 
     fun startShit() {
-        val pb = ProcessBuilder()
-        val cmd = pb.command()
-        val cp = buildString {
-            append("out${File.pathSeparator}")
-            for (dir in sequenceOf("lib", "lib-gradle"))
-                for (file in File(dir).list().filter { it.endsWith(".jar") })
-                    append("$dir/$file${File.pathSeparator}")
-        }
-        cmd.addAll(sequenceOf("java", "-cp", cp, "-javaagent:lib-gradle/quasar-core-0.7.6-jdk8.jar", "aps.back.BackKt"))
-        println("Command: " + cmd.joinToString(" "))
-
-        pb.inheritIO()
-
         shouldRestartOnDeath = false
-        process = pb.start()
+        process = runJava("aps.back.BackKt")
         shouldReactToRestartFlag = true
 
         watchProcess()
@@ -97,8 +84,56 @@ class ForeverBack {
 
 }
 
-fun main(args: Array<String>) {
-    ForeverBack()
+fun runJava(entryPoint: String): Process {
+    val pb = ProcessBuilder()
+    val cmd = pb.command()
+    val cp = buildString {
+        append("out${File.pathSeparator}")
+        for (dir in sequenceOf("lib", "lib-gradle"))
+            for (file in File(dir).list().filter { it.endsWith(".jar") })
+                append("$dir/$file${File.pathSeparator}")
+    }
+    cmd.addAll(sequenceOf(
+        "java",
+//        "-Dco.paralleluniverse.fibers.verifyInstrumentation=true",
+        "-cp", cp,
+//        "-javaagent:lib-gradle/quasar-core-0.7.6-jdk8.jar",
+        entryPoint))
+    // println("Command: " + cmd.joinToString(" "))
+
+    pb.inheritIO()
+
+    return pb.start()
 }
+
+
+fun main(args: Array<String>) {
+    if (args.size < 1) bitch("I need a command, motherfucker")
+    val command = args[0]
+
+    when (command) {
+        "make-static-sites" -> runJava("aps.back.MakeStaticSitesKt").waitFor()
+        "jooq" -> runJava("aps.back.GenerateJOOQKt").waitFor()
+        "forever" -> Forever()
+        else -> bitch("Do your [$command] yourself")
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
