@@ -52,7 +52,7 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
                     // dlog("Got backend response for /$path", global.JSON.stringify(jsonObject, null, 4))
                     resolve(jsonObject)
                 } else {
-                    reject(JSException("Got a shitty backend response: status = ${xhr.status}", stackBeforeXHR))
+                    reject(JSException("Got a shitty backend response at /$path: status = ${xhr.status}", stackBeforeXHR))
                 }
             }
         }
