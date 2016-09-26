@@ -6,6 +6,8 @@
 
 package aps.front
 
+import aps.ResetTestDatabaseRequest
+
 class TS_UA_Writer_SignUp_1 : TestScenario() {
     override fun run(): Promise<Unit> {"__async"
         val slowly = false
@@ -15,7 +17,8 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
             jshit.art.respectArtPauses = true
         }
 
-        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
+//        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
+        __await(rpc(ResetTestDatabaseRequest(templateDB = "test-template-ua-1", recreateTemplate = true)))
 
         val instructions = mutableListOf<TestInstruction>()
         instructions.addAll(vovchok1())

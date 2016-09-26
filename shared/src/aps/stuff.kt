@@ -46,33 +46,40 @@ abstract class FormProcedureResponse : RemoteProcedureResponse() {
 
 class SignInWithPasswordResponse : FormProcedureResponse() {
     var token: String? = null
-    var user: UserTO? = null
+    var user: UserRTO? = null
 }
 
-enum class UserKind(val inDB: String) {
-    CUSTOMER("customer"), WRITER("writer"), ADMIN("admin");
-    override fun toString() = inDB
+enum class UserRole {
+    SUPPORT
 }
 
-enum class Language(val inDB: String) {
-    EN("en"), UA("ua");
-    override fun toString() = inDB
+enum class UserKind() {
+    CUSTOMER, WRITER, ADMIN
 }
 
-class PortableTimestamp(val value: String) {
+enum class Language() {
+    EN, UA
 }
 
-enum class UserState(val inDB: String) {
-    COOL("cool"), PROFILE_APPROVAL_PENDING("profile_approval_pending"), PROFILE_REJECTED("profile_rejected"), BANNED("banned");
-    override fun toString() = inDB
+enum class UserState() {
+    COOL, PROFILE_APPROVAL_PENDING, PROFILE_REJECTED, BANNED
 }
 
-class UserTO(
+
+@Target(AnnotationTarget.CLASS)
+annotation class RemoteTransferObject
+
+@RemoteTransferObject
+class TimestampRTO(val value: String) {
+}
+
+@RemoteTransferObject
+class UserRTO(
     val id: String,
     val deleted: Boolean,
-    val insertedAt: PortableTimestamp,
-    val updatedAt: PortableTimestamp,
-    val profileUpdatedAt: PortableTimestamp?,
+    val insertedAt: TimestampRTO,
+    val updatedAt: TimestampRTO,
+    val profileUpdatedAt: TimestampRTO?,
     val kind: UserKind,
     val lang: Language,
     val email: String,
@@ -87,6 +94,11 @@ class UserTO(
     val aboutMe: String?
 )
 
+class ResetTestDatabaseRequest(
+    var templateDB: String = "",
+    var recreateTemplate: Boolean = false) : RemoteProcedureRequest()
+
+class ResetTestDatabaseResponse : RemoteProcedureResponse()
 
 
 

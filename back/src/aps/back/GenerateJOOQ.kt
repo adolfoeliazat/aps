@@ -6,26 +6,25 @@
 
 package aps.back
 
-import aps.build
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.*
 import org.jooq.util.jaxb.Target
 
 fun main(args: Array<String>) {
-    recreateTestDB()
+    DB.apsTestOnTestServer.recreate()
 
-    with (GenerationTool()) {
-        setDataSource(DS.apsTestOnTestServer)
-        run(build(Configuration()) {
-            generator = build(Generator()) {
-                generate = build(Generate()) {
+    with(GenerationTool()) {
+        setDataSource(DB.apsTestOnTestServer.ds)
+        run(Configuration().apply {
+            generator = Generator().apply {
+                generate = Generate().apply {
                     isPojos = true
                 }
-                database = build(Database()) {
+                database = Database().apply {
                     inputSchema = "public"
                     includes = ".*"
                 }
-                target = build(Target()) {
+                target = Target().apply {
                     packageName = "aps.back.generated.jooq"
                     directory = "src-generated"
                 }

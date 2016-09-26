@@ -18,6 +18,10 @@
     <orderEntry type="module-library">
       <library name="aps-gradle-lib">
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/kotlin-runtime.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/postgresql-9.4.1211.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/kotlin-reflect.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/annotations-2.0.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/asm-5.0.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/asm-commons-5.0.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/asm-tree-5.0.1.jar!/" />
@@ -34,6 +38,7 @@
           <root url="jar://$MODULE_DIR$/lib-gradle/jackson-annotations-2.8.0.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/jackson-core-2.8.3.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/jackson-databind-2.8.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/javassist-3.18.2-GA.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/javax-websocket-client-impl-9.3.11.v20160721.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/javax-websocket-server-impl-9.3.11.v20160721.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/javax.activation-1.1.0.v201105071233.jar!/" />
@@ -75,6 +80,7 @@
           <root url="jar://$MODULE_DIR$/lib-gradle/protobuf-java-2.6.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/quasar-core-0.7.6-jdk8.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/reflectasm-1.11.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/reflections-0.9.10.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/slf4j-api-1.7.21.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/slf4j-simple-1.7.21.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/websocket-api-9.3.11.v20160721.jar!/" />
@@ -82,9 +88,6 @@
           <root url="jar://$MODULE_DIR$/lib-gradle/websocket-common-9.3.11.v20160721.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/websocket-server-9.3.11.v20160721.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/websocket-servlet-9.3.11.v20160721.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/kotlin-runtime.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/postgresql-9.4.1211.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/kotlin-reflect.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
@@ -95,6 +98,9 @@
           <root url="jar://$USER_HOME$/.ideaLibSources/HikariCP-2.5.1-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/jooq-3.8.4-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/slf4j-api-1.7.21-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/annotations-2.0.1.jar!/" />
+          <root url="jar://$USER_HOME$/.ideaLibSources/reflections-0.9.10-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ideaLibSources/jetty-server-9.3.11.v20160721-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

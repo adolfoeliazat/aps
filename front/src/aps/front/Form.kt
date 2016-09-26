@@ -124,7 +124,6 @@ abstract class Form(val ui: dynamic, val legacySpec: dynamic) : Control(ControlI
                                             }
 
                                             working = false
-                                            console.log("---------- res", res)
                                             for (field in jsArrayToList(fields)) {
                                                 field.setError(res.fieldErrors[field.getName()])
                                                 field.setDisabled(false)
@@ -195,7 +194,6 @@ fun jsFacing_loadSignInPageCtor(ui: dynamic): dynamic {
 
         )) {
             override fun onSuccess(res: dynamic): Promise<Unit> {"__async"
-                console.log("uuuuuuuuuuuuuuu", res.user)
                 ui.user = res.user
                 ui.startLiveStatusPolling()
                 ui.token = res.token

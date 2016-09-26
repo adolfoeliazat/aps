@@ -6,16 +6,28 @@
 
 package aps
 
+import kotlin.reflect.KProperty
+
 fun sayHi() {
     println("Hi, fuck you")
 }
 
-inline fun <T, R> build(receiver: T, block: T.() -> R): T { receiver.block(); return receiver }
+inline fun <T> T.applet(block: (T) -> Unit): T { block(this); return this }
 
 fun <T> T.oneOf(vararg xs: T) = xs.contains(this)
 
+class relazy<T>(val initializer: () -> T) {
+    private var backing = lazy(initializer)
+
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T = backing.value
+
+    fun reset() {
+        backing = lazy(initializer)
+    }
+}
+
 fun probe(msg: Any?): ProbeLHS {
-    dlog("~~[probe]~~~~~~~~~~~~~~", msg)
+    dlog("--[probe]----------> ", msg)
     return ProbeLHS
 }
 

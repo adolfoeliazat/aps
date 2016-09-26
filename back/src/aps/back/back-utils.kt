@@ -17,6 +17,6 @@ fun <T: Any> T.logger(): Lazy<Logger> {
     return lazy { LoggerFactory.getLogger(this.javaClass) }
 }
 
-val debugLog = LoggerFactory.getLogger("DEBUG")
+val debugLog = LoggerFactory.getLogger("::::: DEBUG :::::")
 
 

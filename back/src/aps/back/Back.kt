@@ -19,8 +19,10 @@ import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import org.mindrot.jbcrypt.BCrypt
+import org.reflections.Reflections
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.sql.Timestamp
@@ -32,6 +34,20 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import kotlin.concurrent.thread
 import kotlin.reflect.memberProperties
+
+
+fun main(args: Array<String>) {
+    Server(8080).apply {
+        handler = ServletHandler().apply {
+            addServletWithMapping(GodServlet::class.java, "/*")
+        }
+
+        start()
+        println("APS backend shit is spinning...")
+        join()
+    }
+}
+
 
 val objectMapper = ObjectMapper()
 
@@ -45,20 +61,20 @@ class ExpectedRPCShit(msg: String) : Throwable(msg)
 
 abstract class RemoteProcedure {
     val req = mutableMapOf<String, String>()
-    lateinit var jooq: DSLContext
+    lateinit var q: DSLContext
 }
 
-fun Timestamp?.toMaybePortable(): PortableTimestamp? = this?.let {it.toPortable()}
+fun Timestamp?.toMaybePortable(): TimestampRTO? = this?.let {it.toPortable()}
 
-fun Timestamp.toPortable(): PortableTimestamp =
-    PortableTimestamp(SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(this))
+fun Timestamp.toPortable(): TimestampRTO =
+    TimestampRTO(SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(this))
 
-fun String.toUserKind(): UserKind = UserKind.values().find{it.inDB == this} ?: wtf("[$this] to UserKind")
-fun String.toLanguage(): Language = Language.values().find{it.inDB == this} ?: wtf("[$this] to Language")
-fun String.toUserState(): UserState = UserState.values().find{it.inDB == this} ?: wtf("[$this] to UserState")
+fun String.toUserKind(): UserKind = UserKind.values().find{it.name == this} ?: wtf("[$this] to UserKind")
+fun String.toLanguage(): Language = Language.values().find{it.name == this} ?: wtf("[$this] to Language")
+fun String.toUserState(): UserState = UserState.values().find{it.name == this} ?: wtf("[$this] to UserState")
 
-fun Users.toTO(): UserTO {
-    return UserTO(
+fun Users.toTO(): UserRTO {
+    return UserRTO(
         id = "" + id,
         deleted = deleted,
         insertedAt = insertedAt.toPortable(),
@@ -88,7 +104,7 @@ class SignInWithPasswordRemoteProcedure : RemoteProcedure() {
 
         val vagueMessage = t("Invalid email or password", "Неверная почта или пароль")
 
-        val users = jooq.select().from(USERS).where(USERS.EMAIL.equal(req.email)).fetch().into(Users::class.java)
+        val users = q.select().from(USERS).where(USERS.EMAIL.equal(req.email)).fetch().into(Users::class.java)
         if (users.isEmpty()) bitchExpectedly(vagueMessage)
 
         val user = users[0]
@@ -97,12 +113,31 @@ class SignInWithPasswordRemoteProcedure : RemoteProcedure() {
         // TODO:vgrechka Prevent things like writer signing into customer-facing site    69781de0-05c4-440f-98ac-6de6e0c31157
 
         res.token = "" + UUID.randomUUID()
-        jooq.insertInto(USER_TOKENS, USER_TOKENS.USER_ID, USER_TOKENS.TOKEN)
+        q.insertInto(USER_TOKENS, USER_TOKENS.USER_ID, USER_TOKENS.TOKEN)
             .values(user.id, res.token)
+            .execute()
 
         // TODO:vgrechka Load related user shit?
 
         res.user = user.toTO()
+    }
+}
+
+class ResetTestDatabaseRemoteProcedure : RemoteProcedure() {
+    // TODO:vgrechka Protect with DANGEROUS_TOKEN    728e129e-c15c-4e40-9a03-d6423e9efc37
+
+    val log by logger()
+
+    @Suspendable
+    fun invoke(req: ResetTestDatabaseRequest, res: ResetTestDatabaseResponse) {
+        if (req.recreateTemplate) {
+            when (req.templateDB) {
+                "test-template-ua-1" -> createTestTemplateUA1DB()
+                else -> wtf("I don't know how to recreate test template DB for ${req.templateDB}")
+            }
+        }
+
+        DB.apsTestOnTestServer.recreate(template = req.templateDB)
     }
 }
 
@@ -188,29 +223,37 @@ class GodServlet : HttpServlet() {
                         else -> wtf("Type $t")
                     }
 
-                    val serializableClasses = listOf(
-                        SignInWithPasswordResponse::class, UserTO::class, PortableTimestamp::class)
+                    val serializableClasses = mutableListOf<Class<*>>()
+                    val reflections = Reflections("aps")
+                    serializableClasses.addAll(reflections
+                        .getTypesAnnotatedWith(RemoteTransferObject::class.java))
+                    serializableClasses.addAll(reflections
+                        .getSubTypesOf(RemoteProcedureResponse::class.java)
+                        .filter {!Modifier.isAbstract(it.modifiers)})
 
                     objectMapper.writeValue(servletResponse.writer, jsonny(
-                        "classes" to serializableClasses.map{clazz -> jsonny(
-                            "name" to (clazz.qualifiedName ?: wtf("Class without a qualifiedName")),
-                            "fields" to clazz.memberProperties.map{prop ->
-                                val getterMethod = clazz.java.getMethod("get${prop.name.capitalize()}")
-                                val propClass = getterMethod.returnType
-                                // log.striking(prop.name + ": " + propClass.name)
-                                jsonny(
-                                    "name" to prop.name,
-                                    "strategy" to serializeSerializationStrategy_niceName_huh(getterMethod.genericReturnType)
-                                )
-                            }
-                        )}
+                        "classes" to serializableClasses.map{clazz ->
+                            val klazz = clazz.kotlin
+                            jsonny(
+                                "name" to (klazz.qualifiedName ?: wtf("Class without a qualifiedName")),
+                                "fields" to klazz.memberProperties.map {prop ->
+                                    val getterMethod = clazz.getMethod("get${prop.name.capitalize()}")
+                                    val propClass = getterMethod.returnType
+                                    // log.striking(prop.name + ": " + propClass.name)
+                                    jsonny(
+                                        "name" to prop.name,
+                                        "strategy" to serializeSerializationStrategy_niceName_huh(getterMethod.genericReturnType)
+                                    )
+                                }
+                            )
+                        }
                     ))
                 }
 
                 else -> bitch("Weird request path: $pathInfo")
             }
-        } catch(e: Throwable) {
-            throw ServletException(e)
+        } catch(hereWeAreReallyFuckedUp: Throwable) {
+            throw ServletException(hereWeAreReallyFuckedUp)
         }
     }
 
@@ -234,21 +277,22 @@ class GodServlet : HttpServlet() {
         val response = responseClass.newInstance() as RemoteProcedureResponse
 
         try {
-            val connection = DS.apsTestOnTestServer.connection
-            try {
-                procedure.jooq = DSL.using(connection, SQLDialect.POSTGRES_9_5)
+            val db = DB.apsTestOnTestServer
+            db.joo{q->
+                // TODO:vgrechka Wrap each RPC in transaction    5928def7-392e-433f-99a8-9decfe959971
+
+                procedure.q = q
 
                 val method = procedure.javaClass.getMethod("invoke", requestClass, responseClass)
                 method.invoke(procedure, request, response)
-            } finally {
-                connection.close()
             }
         } catch (e: ExpectedRPCShit) {
             log.warn("Expected RPC shit: ${e.message}", e)
             response.error = e.message
         } catch (e: Throwable) {
             log.error("RPC fuckup: ${e.message}", e)
-            response.error = t("Service is temporarily fucked up, sorry", "Сервис временно в жопе, просим прощения")
+            throw e
+//            response.error = t("Service is temporarily fucked up, sorry", "Сервис временно в жопе, просим прощения")
         }
 
         val json = objectMapper.writeValueAsString(response)
@@ -258,16 +302,30 @@ class GodServlet : HttpServlet() {
 
 }
 
-fun main(args: Array<String>) {
-    val server = Server(8080)
-    val handler = ServletHandler()
-    server.handler = handler
-    handler.addServletWithMapping(GodServlet::class.java, "/*")
-    server.start()
+var imposedRequestTimestamp: Any? = null
+var imposedNextIDs: Iterable<Long> = listOf()
 
-    println("APS backend shit is spinning...")
-    server.join()
+fun resetImposed() {
+    imposedRequestTimestamp = null
+    imposedNextIDs = listOf()
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -49,7 +49,7 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
             if (xhr.readyState == 4) {
                 if (xhr.status == 200) {
                     val jsonObject = global.JSON.parse(xhr.responseText)
-                    // console.log("Got backend response for /$path", global.JSON.stringify(jsonObject, null, 4))
+                    // dlog("Got backend response for /$path", global.JSON.stringify(jsonObject, null, 4))
                     resolve(jsonObject)
                 } else {
                     reject(JSException("Got a shitty backend response: status = ${xhr.status}", stackBeforeXHR))
@@ -95,6 +95,7 @@ fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res
     // dlog("requestJSONObject", requestJSONObject)
 
     val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
+
     return __asyncResult(jsonObjectToFuckingObject(responseJSONObject, "aps.${procedureName.capitalize()}Response"))
 }
 
@@ -119,5 +120,6 @@ fun jsonValueToFuckingValue(jsonValue: dynamic, strategy: TypeDeserializationStr
 
 fun rpc(req: HiRequest): Promise<HiResponse> = callRemoteProcedure("hi", req)
 fun rpc(req: SignInWithPasswordRequest): Promise<SignInWithPasswordResponse> = callRemoteProcedure("signInWithPassword", req)
+fun rpc(req: ResetTestDatabaseRequest): Promise<ResetTestDatabaseRequest> = callRemoteProcedure("resetTestDatabase", req)
 
 
