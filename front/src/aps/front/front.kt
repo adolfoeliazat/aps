@@ -6,6 +6,8 @@
 
 package aps.front
 
+import aps.React
+import aps.ReactElement
 import aps.front.Color.*
 
 enum class Color(val string: String) {
@@ -40,6 +42,8 @@ enum class Color(val string: String) {
     fun loadDebugKotlinPlaygroundPage()
     fun loadAdminUsersPage(): Promise<Unit>
     fun loadDashboardPage(def: dynamic): Promise<Unit>
+    fun loadProfilePage(): Promise<Unit>
+//    fun loadSignUpPage(): Promise<Unit>
     fun renderProfile(def: dynamic): dynamic
     fun userKindIcon(def: dynamic): dynamic
     fun makeProfileFields(def: dynamic): dynamic
@@ -75,17 +79,14 @@ object KotlinShit : IKotlinShit {
         jshit.h4a = ::jsFacing_h4a
         jshit.blockquotea = ::jsFacing_blockquotea
         jshit.dom.spana = ::jsFacing_dom_spana
-//        jshit.faIcon = ::jsFacing_faIcon
 
         jshit.art = js("({uiStateContributions: {}, stateContributionsByControl: new Map(), stepDescriptions: []})")
         jshit.art.renderStepDescriptions = { art.renderStepDescriptions() }
         jshit.art.openTestPassedPane = ::openTestPassedPane
         jshit.art.gertrude = ::gertrude
         jshit.art.invokeStateContributions = ::jsFacing_invokeStateContributions
-//        jshit.renderExceptionTriangle = ::jsFacing_renderExceptionTriangle
         jshit.spanc = ::jsFacing_spanc
         jshit.limpopo = ::jsFacing_limpopo
-//        jshit.pageHeader = ::jsFacing_pageHeader
 
 
         initTestShit()
@@ -96,13 +97,23 @@ object KotlinShit : IKotlinShit {
 
     val makeFormCtor = ::jsFacing_makeFormCtor
     val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
+    val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
+    val isDynamicPage = ::jsFacing_isDynamicPage
 
 //    val shittyShit = json(
 //        "tests_UA_Writer" to ::jsFacing_tests_UA_Writer
 //    )
 
+//    override fun loadSignUpPage(): Promise<Unit> {"__async"
+//        return __asyncResult(__await(SignUpPage(ui).load()))
+//    }
+
     override fun loadAdminUsersPage(): Promise<Unit> {"__async"
         return __asyncResult(__await(AdminUsersPage(ui).load()))
+    }
+
+    override fun loadProfilePage(): Promise<Unit> {"__async"
+        return __asyncResult(__await(ProfilePage(ui).load()))
     }
 
     val kot_melinda = ::jsFacing_melinda
@@ -126,7 +137,7 @@ object KotlinShit : IKotlinShit {
         val user = def.user
 
         return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5), "icon" to jshit.utils.lookup(user.kind, json(
-            "customer" to "user", "writer" to "pencil", "admin" to "cog"))))
+            "CUSTOMER" to "user", "WRITER" to "pencil", "ADMIN" to "cog"))))
     }
 
     override fun renderProfile(def: dynamic): dynamic {
@@ -147,7 +158,7 @@ object KotlinShit : IKotlinShit {
                 "prop" to "profile_updated_at", "label" to t("TOTE", "Профиль"), "value" to t("TOTE", "Нифига не заполнялся")))
         }
 
-        val adminLooks = KotlinShit.ui.getUser().kind == "admin"
+        val adminLooks = KotlinShit.ui.getUser().kind == "ADMIN"
 
         return jshit.diva(json("controlTypeName" to "renderProfile", "tame" to "profile"),
             jshit.diva(json("className" to "row"),
@@ -164,9 +175,9 @@ object KotlinShit : IKotlinShit {
                     jshit.spanc(json("tame" to "value", "content" to global.apsdata.userKindTitle(user.kind)))))),
                 adminLooks && jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "state",
                     "formGroupStyle" to
-                        if (user.state == "profile-approval-pending") json("background" to jshit.AMBER_200)
-                        else if (user.state == "profile-rejected") json("background" to jshit.DEEP_ORANGE_200)
-                        else if (user.state == "banned") json("background" to jshit.RED_200)
+                        if (user.state == "PROFILE_APPROVAL_PENDING") json("background" to jshit.AMBER_200)
+                        else if (user.state == "PROFILE_REJECTED") json("background" to jshit.DEEP_ORANGE_200)
+                        else if (user.state == "BANNED") json("background" to jshit.RED_200)
                         else js("({})"),
                     "label" to t("TOTE", "Статус"), "prop" to "state", "transform" to global.apsdata.userStateTitle)),
                 jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "inserted_at",
@@ -174,9 +185,9 @@ object KotlinShit : IKotlinShit {
                     "value" to jshit.timestampString(model.inserted_at, json("includeTZ" to true)))),
                 profileUpdatedPiece
                 ),
-            user.state == "profile-rejected" && jshit.diva(json("className" to "row"),
+            user.state == "PROFILE_REJECTED" && jshit.diva(json("className" to "row"),
                 jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "profile_rejection_reason", "label" to t("TOTE", "Причина отказа"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
-            user.state == "banned" && jshit.diva(json("className" to "row"),
+            user.state == "BANNED" && jshit.diva(json("className" to "row"),
                 jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "ban_reason", "label" to t("TOTE", "Причина бана"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
             profileFilled && jshit.diva(json("className" to "row"),
                 jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "about_me", "label" to t("TOTE", "Набрехано о себе"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
@@ -257,12 +268,12 @@ object KotlinShit : IKotlinShit {
                                     return@runa __asyncResult(js("[]"))
                                 }
 
-                                if (ui.getUser().kind == "admin") {
+                                if (ui.getUser().kind == "ADMIN") {
                                     addMetric(json("metric" to "profilesToApprove", "url" to "admin-users.html?filter=2approve", "title" to t("TOTE", "Профилей зааппрувить")))
                                     addMetric(json("metric" to "suka", "noStateContributions" to true, "url" to "suka.html", "title" to t("TOTE", "Сцуко-метрика")))
-                                } else if (ui.getUser().kind == "writer") {
+                                } else if (ui.getUser().kind == "WRITER") {
                                     addMetric(json("metric" to "suka", "noStateContributions" to true, "url" to "suka.html", "title" to t("TOTE", "Сцуко-метрика")))
-                                } else if (ui.getUser().kind == "customer") {
+                                } else if (ui.getUser().kind == "CUSTOMER") {
                                     raise("implement me")
                                 }
 
@@ -1221,58 +1232,6 @@ fun <T> ifornull(cond: Boolean, f: () -> T): T? {
     return if (cond) f() else null
 }
 
-
-//private fun makeSwearBoxes(): StatefulElement {
-//    return object : StatefulElement(null) {
-//        override val controlTypeName: String get() = "makeSwearBoxes"
-//        private var shitVisible: Boolean = true
-//
-//        val swearBox1 = PromiseAsyncSwearBox(controlTypeName = "bobobox") {
-//            style { width = "100%" }
-//            onChange {
-//                println("Box 1 changed")
-//            }
-//        }
-//
-//        val swearBox2 = PromiseAsyncSwearBox {
-//            style { width = "100%" }
-//            onChange {
-//                println("Box 2 changed")
-//            }
-//        }
-//
-//        override fun render() = div {
-//            -div {
-//                -simpleButton(if (shitVisible) "Hide Shit" else "Show Shit") {
-//                    shitVisible = !shitVisible; update()
-//                }
-//
-//                ifornull(shitVisible) {
-//                    -div {
-//                        -div {
-//                            style { display = "flex" }
-//                            -swearBox1
-//                            -simpleButton("Reset") {
-//                                swearBox1.reset()
-//                            }
-//                        }
-//
-//                        -div {
-//                            style { display = "flex" }
-//                            -swearBox2
-//                            -simpleButton("Reset") {
-//                                swearBox2.reset()
-//                            }
-//                        }
-//
-//                        -div { style { height(500) } }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
 @native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
     fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
 }
@@ -1311,79 +1270,6 @@ class SimpleEventHandlerBuilder {
     }
 }
 
-//class PromiseAsyncSwearBox(override val controlTypeName: String = "PromiseAsyncSwearBox", build: PromiseAsyncSwearBox.() -> Unit) : StatefulElement(null) {
-//    val adjectives = arrayOf("Big", "Little")
-//    val mainWords = arrayOf("Shit", "Fuck", "Bitch")
-//    var adjectiveIndex = -1
-//    var mainWordIndex = -1
-//    var progressStatus: String? = null
-//    var phrase: String? = null
-//    val myStyle = StyleBuilder(); // val style = myStyle
-//    val onChange = SimpleEventHandlerBuilder()
-//
-//    init {
-//        // @wip sourceLocation
-//
-//        build()
-//    }
-//
-//    // @wip stuff
-//    override fun render() = div {id = elementID; style {add(myStyle)}
-//        -hor2 {
-//            if (phrase == null)
-//                -diva {style {color = ROSYBROWN}; -"Kittens"}
-//            else
-//                -div {
-//                    -span {style {fontWeight = "bold"}; -"Back to earth:"}
-//                    -div {-phrase}
-//                }
-//
-//            if (progressStatus != null)
-//                -div {style {fontStyle = "italic"}; -progressStatus}
-//        }
-//
-//        -simpleButton("More") {
-//            var adjective: String? = null
-//
-//            generateAdjective()
-//            .then<String> {_adjective ->
-//                adjective = _adjective
-//                generateMainWord()
-//            }.then<Nothing> {mainWord ->
-//                phrase = "$adjective $mainWord"
-//                update()
-//                onChange.notify()
-//            }
-//        }
-//    }
-//
-//    fun generateAdjective(): Promise<String> {
-//        progressStatus = "Thinking adjective..."; update()
-//        return Promise {resolve, reject ->
-//            timeoutSet(300) {
-//                progressStatus = null; update()
-//                if (++adjectiveIndex > adjectives.lastIndex) adjectiveIndex = 0
-//                resolve(adjectives[adjectiveIndex])
-//            }
-//        }
-//    }
-//
-//    fun generateMainWord(): Promise<String> {
-//        progressStatus = "Thinking main word..."; update()
-//        return Promise {resolve, reject ->
-//            timeoutSet(300) {
-//                progressStatus = null; update()
-//                if (++mainWordIndex > mainWords.lastIndex) mainWordIndex = 0
-//                resolve(mainWords[mainWordIndex])
-//            }
-//        }
-//    }
-//
-//    fun reset() {
-//        phrase = null; update()
-//    }
-//
-//}
 
 fun timeoutSet(ms: Int, cb: () -> Unit) {
     kotlin.browser.window.setTimeout(cb, ms)
@@ -1505,26 +1391,10 @@ fun invariant(cond: dynamic, msg: String, props: dynamic = null) {
     jshit.utils.invariant(cond, msg, props)
 }
 
-fun jsArrayToList(arr: dynamic, transform: (dynamic) -> dynamic = {it}): List<dynamic> {
-    val list = mutableListOf<dynamic>()
-    for (i in 0 until arr.length)
-        list.add(transform(arr[i]))
-    return list
-}
-
 fun raise(msg: String, props: dynamic = undefined) {
-    jshit.raise(msg, props)
+    jshit.utils.raise(msg, props)
 }
 
-@native val React: IReact = noImpl
-
-@native interface IReact {
-    fun createElement(tag: dynamic, attrs: dynamic, vararg children: dynamic): ReactElement
-    fun createClass(def: dynamic): dynamic
-}
-
-@native interface ReactElement {
-}
 
 
 fun div(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
@@ -1574,10 +1444,6 @@ fun span(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
     return builder.toElement()
 }
 
-
-interface ToReactElementable {
-    fun toReactElement(): ReactElement
-}
 
 @native val console: NativeConsole
 @native interface NativeConsole {

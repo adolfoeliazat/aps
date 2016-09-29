@@ -18,7 +18,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         }
 
 //        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
-        __await(rpc(ResetTestDatabaseRequest(templateDB = "test-template-ua-1", recreateTemplate = true)))
+        __await(rpc(ResetTestDatabaseRequest{templateDB = "test-template-ua-1"; recreateTemplate = true}))
 
         val instructions = mutableListOf<TestInstruction>()
         instructions.addAll(vovchok1())
@@ -41,7 +41,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         return buildPieceOfTest {
             section("Marko Vovchok signs up") {
 
-                + selectBrowser("writer", "vovchok1", "Marko Vovchok, an eager writer wannabe, comes to our site")
+                + selectBrowser("WRITER", "vovchok1", "Marko Vovchok, an eager writer wannabe, comes to our site")
 
                 action("Trying to sign in (to non-existing account)") {
                     + signIn("vovchok@test.shit.ua", "something")
@@ -99,7 +99,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                         click("button-primary", "2016/08/14 17:48:51")
                     }
-                    state("Sign-in form with message that account is created. Got email with password") {
+                    state("Sign-in form with message saying that account is created. Got email with password") {
                         assertGen("0b7e96bf-4f42-41dc-b658-7b60e863356e")
                     }
 
@@ -193,7 +193,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     fun dasja1(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Dasja accepts that shitty profile") {
-                + selectBrowser("writer", "dasja1", "Dasja, a support admin, comes into play")
+                + selectBrowser("WRITER", "dasja1", "Dasja, a support admin, comes into play")
 
                 action("Normal sign in") {
                     + signIn("dasja@test.shit.ua", "secret")
@@ -207,7 +207,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
                 state("Got page with profiles to be approved") {
                     assertGen("dd32f775-d45f-4a86-b815-c8897fa01fe3",
-                        expectHeaderControls(search="", filter="2approve", ordering="desc"))
+                        expectHeaderControls(search="", filter="2APPROVE", ordering="desc"))
                 }
 
                 action("Click on edit icon") {
@@ -215,12 +215,12 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
                 state("Got form") {
                     assertGen("ba17b066-b272-48eb-901c-d22b5b1f803b", expectAll(
-                        expectHeaderControls(search="", filter="2approve", ordering="desc"),
-                        expectItemEditorFormControls(state="profile-approval-pending")))
+                        expectHeaderControls(search="", filter="2APPROVE", ordering="desc"),
+                        expectItemEditorFormControls(state="PROFILE_APPROVAL_PENDING")))
                 }
 
                 action("Make some changes and approve") {
-                    setValue("chunk-i000.item-i000.SelectField-state.Select", "cool")
+                    setValue("chunk-i000.item-i000.SelectField-state.Select", "COOL")
                     setValue("chunk-i000.item-i000.TextField-email.Input", "vovchok@test.shit.ua")
                     setValue("chunk-i000.item-i000.TextField-firstName.Input", "Маркожопик")
                     setValue("chunk-i000.item-i000.TextField-lastName.Input", "Вовкулака")
@@ -231,7 +231,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
                 state("That bitch is now cool") {
                     assertGen("59308ccf-67b9-4fab-a13d-154c96e8bd63",
-                        expectHeaderControls(search="", filter="2approve", ordering="desc"))
+                        expectHeaderControls(search="", filter="2APPROVE", ordering="desc"))
                 }
 
                 action("Press enter in search box to refresh shit") {
@@ -239,15 +239,15 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
                 state("Now we get nothing, cause there’s no shit to approve") {
                     assertGen("ffd89ee7-31b5-4742-b15a-196876ebec6f",
-                        expectHeaderControls(search="", filter="2approve", ordering="desc"))
+                        expectHeaderControls(search="", filter="2APPROVE", ordering="desc"))
                 }
 
                 action("Choose 'All' to see all shit") {
-                    setValue("Select-filter", "all")
+                    setValue("Select-filter", "ALL")
                 }
                 state("Got all shit. That bitch is cool") {
                     assertGen("88b14624-383f-4edf-8b3e-a9c413d87f27",
-                        expectHeaderControls(search="", filter="all", ordering="desc"))
+                        expectHeaderControls(search="", filter="ALL", ordering="desc"))
                 }
             }
         }
@@ -256,7 +256,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     fun vovchok2(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Marko Vovchok can use site") {
-                + selectBrowser("writer", "vovchok2", "Marko Vovchok, aka The Bitch, comes again some time later")
+                + selectBrowser("WRITER", "vovchok2", "Marko Vovchok, aka The Bitch, comes again some time later")
 
                 action("Sign in") {
                     setValue("TextField-email.Input", "vovchok@test.shit.ua")
@@ -273,7 +273,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     fun dasja2(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Dasja rejects the bitch") {
-                + selectBrowser("writer", "dasja2", "Dasja decides to reject the bitch for whatever reasons")
+                + selectBrowser("WRITER", "dasja2", "Dasja decides to reject the bitch for whatever reasons")
 
                 action("Normal sign in") {
                     + signIn("dasja@test.shit.ua", "secret")
@@ -287,7 +287,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
                 state("Got users") {
                     assertGen("6fbd591f-f62c-4a37-a6ae-0958ef6c81f7",
-                        expectHeaderControls(search="", filter="all", ordering="desc"))
+                        expectHeaderControls(search="", filter="ALL", ordering="desc"))
                 }
 
                 action("Click on edit icon for the bitch") {
@@ -296,40 +296,40 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 state("TODO State description") {
                     assertGen("b138801b-9fec-43b3-94d6-f135318b2a22",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc"),
-                            expectItemEditorFormControls(state="cool")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc"),
+                            expectItemEditorFormControls(state="COOL")))
                 }
 
                 // @wip rejection
                 action("Choose 'Rejected' status") {
-                    setValue("chunk-i000.item-i000.SelectField-state.Select", "profile-rejected")
+                    setValue("chunk-i000.item-i000.SelectField-state.Select", "PROFILE_REJECTED")
                 }
                 state("Rejection reason field appears") {
                     assertGen("fcdac58b-e864-4a21-b3a2-47f29a1fbba9",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc"),
-                            expectItemEditorFormControls(state="profile-rejected")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc"),
+                            expectItemEditorFormControls(state="PROFILE_REJECTED")))
                 }
 
                 action("Enter something into rejection reason, then change 'Rejected' to something else") {
                     setValue("chunk-i000.item-i000.TextField-profileRejectionReason.Input", "Well... er...")
-                    setValue("chunk-i000.item-i000.SelectField-state.Select", "cool")
+                    setValue("chunk-i000.item-i000.SelectField-state.Select", "COOL")
                 }
                 state("Rejection reason field disappears") {
                     assertGen("a81d2f49-aa12-45ea-92a2-fc6bf4ad0cf6",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc"),
-                            expectItemEditorFormControls(state="cool")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc"),
+                            expectItemEditorFormControls(state="COOL")))
                 }
 
                 action("Select 'Rejected' again") {
-                    setValue("chunk-i000.item-i000.SelectField-state.Select", "profile-rejected")
+                    setValue("chunk-i000.item-i000.SelectField-state.Select", "PROFILE_REJECTED")
                 }
                 state("Rejection reason is kept") {
                     assertGen("2e650433-d5f6-4c94-ba5a-b3ff07e15865",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc"),
-                            expectItemEditorFormControls(state="profile-rejected")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc"),
+                            expectItemEditorFormControls(state="PROFILE_REJECTED")))
                 }
 
                 action("Try to reject without reason") {
@@ -339,8 +339,8 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 state("No way") {
                     assertGen("c2f5de3e-ff25-4c38-80dc-e09d89e0944f",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc"),
-                            expectItemEditorFormControls(state="profile-rejected")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc"),
+                            expectItemEditorFormControls(state="PROFILE_REJECTED")))
                 }
 
                 action("Reject motherfucker along with changing name and email") {
@@ -351,31 +351,31 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
                 state("The motherfucker is now reddish") {
                     assertGen("0d4d388f-a0ad-4824-9a37-36e7e74365ae",
-                        expectHeaderControls(search="", filter="all", ordering="desc"))
+                        expectHeaderControls(search="", filter="ALL", ordering="desc"))
                 }
 
                 action("Choose to see only cool users") {
-                    setValue("Select-filter", "cool")
+                    setValue("Select-filter", "COOL")
                 }
                 state("No bitch in the list") {
                     assertGen("c9219504-6a67-4863-b09c-c6eafa80bc26",
-                        expectHeaderControls(search="", filter="cool", ordering="desc"))
+                        expectHeaderControls(search="", filter="COOL", ordering="desc"))
                 }
 
                 action("Choose to see only rejected users") {
-                    setValue("Select-filter", "rejected")
+                    setValue("Select-filter", "REJECTED")
                 }
                 state("Only bitch is in the list") {
                     assertGen("d21b167c-3064-41b7-a3d3-d8a7c5f91b92",
-                        expectHeaderControls(search="", filter="rejected", ordering="desc"))
+                        expectHeaderControls(search="", filter="REJECTED", ordering="desc"))
                 }
 
                 action("Choose to see all") {
-                    setValue("Select-filter", "all")
+                    setValue("Select-filter", "ALL")
                 }
                 state("Bitch and others are in the list") {
                     assertGen("d72124f6-0ad2-4f50-ba0e-7bedff1e6a79",
-                        expectHeaderControls(search="", filter="all", ordering="desc"))
+                        expectHeaderControls(search="", filter="ALL", ordering="desc"))
                 }
             }
         }
@@ -384,7 +384,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     fun vovchok3(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Marko Vovchok faces she’s rejected") {
-                + selectBrowser("writer", "vovchok3", "The Bitch opens browser")
+                + selectBrowser("WRITER", "vovchok3", "The Bitch opens browser")
 
                 action("Try to sign in with old email") {
                     setValue("TextField-email.Input", "vovchok@test.shit.ua")
@@ -418,7 +418,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     fun dasja3(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Dasja accepts improved profile") {
-                + selectBrowser("writer", "dasja3", "Dasja comes to do some work")
+                + selectBrowser("WRITER", "dasja3", "Dasja comes to do some work")
 
                 action("Normal sign in") {
                     + signIn("dasja@test.shit.ua", "secret")
@@ -432,7 +432,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
                 state("Bitch somewhat improved her profile") {
                     assertGen("48b2f0d2-a1f0-446d-8c10-550b9abfd3e3",
-                        expectHeaderControls(search="", filter="2approve", ordering="desc"))
+                        expectHeaderControls(search="", filter="2APPROVE", ordering="desc"))
                 }
 
                 action("Click on pencil") {
@@ -441,18 +441,18 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 state("Edit form opens") {
                     assertGen("18f8286c-ea61-4820-95c0-9ce3a129edfb",
                         expectAll(
-                            expectHeaderControls(search="", filter="2approve", ordering="desc"),
-                            expectItemEditorFormControls(state="profile-approval-pending")))
+                            expectHeaderControls(search="", filter="2APPROVE", ordering="desc"),
+                            expectItemEditorFormControls(state="PROFILE_APPROVAL_PENDING")))
                 }
 
                 action("Accept now") {
-                    setValue("chunk-i000.item-i000.SelectField-state.Select", "cool")
+                    setValue("chunk-i000.item-i000.SelectField-state.Select", "COOL")
                     setValue("chunk-i000.item-i000.TextField-adminNotes.Input", "Free workforce. Good. We'll exploit her to death. U-ha-ha-ha...")
                     click("chunk-i000.item-i000.button-primary", "2016/08/28 01:59:30")
                 }
                 state("She is cool now") {
                     assertGen("5d82460a-268f-43d8-bd00-e04dd671029c",
-                        expectHeaderControls(search="", filter="2approve", ordering="desc"))
+                        expectHeaderControls(search="", filter="2APPROVE", ordering="desc"))
                 }
             }
         }
@@ -461,7 +461,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     fun vovchok4(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Marko Vovchok can finally enter") {
-                + selectBrowser("writer", "vovchok4", "The Bitch opens browser")
+                + selectBrowser("WRITER", "vovchok4", "The Bitch opens browser")
 
                 action("Sign in") {
                     setValue("TextField-email.Input", "vovkulaka@test.shit.ua")
@@ -478,7 +478,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     fun dasja4(): Iterable<TestInstruction> {
         return buildPieceOfTest {
             section("Dasja bans bitch") {
-                + selectBrowser("writer", "dasja4", "Dasja comes to ban that bitch")
+                + selectBrowser("WRITER", "dasja4", "Dasja comes to ban that bitch")
 
                 action("Normal sign in") {
                     + signIn("dasja@test.shit.ua", "secret")
@@ -492,7 +492,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
                 state("Got users, bitch is here") {
                     assertGen("4c7fa9d2-c993-4fdf-91e6-fc7e45d49e3b",
-                        expectHeaderControls(search="", filter="all", ordering="desc"))
+                        expectHeaderControls(search="", filter="ALL", ordering="desc"))
                 }
 
                 action("Click on pencil to edit bitch") {
@@ -501,18 +501,18 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 state("Got editing form") {
                     assertGen("4290992b-9d2b-4ab2-97e6-e32c87e9ea0c",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc"),
-                            expectItemEditorFormControls(state="cool")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc"),
+                            expectItemEditorFormControls(state="COOL")))
                 }
 
                 action("Choose 'Banned' from the state list") {
-                    setValue("chunk-i000.item-i000.SelectField-state.Select", "banned")
+                    setValue("chunk-i000.item-i000.SelectField-state.Select", "BANNED")
                 }
                 state("Ban reason field appears") {
                     assertGen("fa31639d-adae-4ba5-8b47-a58b75f6e17a",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc"),
-                            expectItemEditorFormControls(state="banned")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc"),
+                            expectItemEditorFormControls(state="BANNED")))
                 }
 
                 action("Try to submit without giving a reason") {
@@ -521,8 +521,8 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 state("No way") {
                     assertGen("4ec74b0c-df11-4228-a327-92b4a3c1ac64",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc"),
-                            expectItemEditorFormControls(state="banned")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc"),
+                            expectItemEditorFormControls(state="BANNED")))
                 }
 
                 action("Give some reason") {
@@ -532,25 +532,25 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 state("She is very red now") {
                     assertGen("06325345-e660-4f6c-989c-aafdbac35d55",
                         expectAll(
-                            expectHeaderControls(search="", filter="all", ordering="desc")))
+                            expectHeaderControls(search="", filter="ALL", ordering="desc")))
                 }
 
                 action("Show only 'Cool'") {
-                    setValue("Select-filter", "cool")
+                    setValue("Select-filter", "COOL")
                 }
                 state("Got no bitch") {
                     assertGen("0213b214-02e0-41ce-9596-a4aa4d50389e",
                         expectAll(
-                            expectHeaderControls(search="", filter="cool", ordering="desc")))
+                            expectHeaderControls(search="", filter="COOL", ordering="desc")))
                 }
 
                 action("Show only 'Banned'") {
-                    setValue("Select-filter", "banned")
+                    setValue("Select-filter", "BANNED")
                 }
                 state("Got bitch") {
                     assertGen("ae6f3952-0a58-4542-8c48-68c6654e6626",
                         expectAll(
-                            expectHeaderControls(search="", filter="banned", ordering="desc")))
+                            expectHeaderControls(search="", filter="BANNED", ordering="desc")))
                 }
             }
         }
@@ -570,7 +570,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
             TestInstruction.Step("state", stateDescription)
         )
 
-        if (clientKind == "writer") {
+        if (clientKind == "WRITER") {
             res.addAll(listOf(
                 TestInstruction.AssertFuck("42816503-1dc0-4e43-aaa4-a8b11a680501", json(
                     "TextField-email.Input" to "",
@@ -593,7 +593,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     "url" to "http://aps-ua-writer.local:3022/sign-in.html"
                 ))
             ))
-        } else if (clientKind == "customer") {
+        } else if (clientKind == "CUSTOMER") {
             res.addAll(listOf(
                 TestInstruction.AssertFuck("4d7bfd1d-d5cd-4b64-a069-a99f85f934da", json(
                     "Input-email" to "",
@@ -643,38 +643,38 @@ fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", item
 
         global.Object.assign(expected, json(
             "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i000.title" to "Прохладный",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i000.value" to "cool",
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i000.value" to "COOL",
             "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.title" to "Ждет аппрува профиля",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.value" to "profile-approval-pending",
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.value" to "PROFILE_APPROVAL_PENDING",
             "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.title" to "Профиль завернут",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.value" to "profile-rejected",
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.value" to "PROFILE_REJECTED",
             "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.title" to "Забанен",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.value" to "banned",
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.value" to "BANNED",
             "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.label" to "Статус"
         ))
 
-        if (state === "cool") {
+        if (state === "COOL") {
             global.Object.assign(expected, json(
                 "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title" to "Прохладный",
-                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "cool"
+                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "COOL"
             ))
         }
-        else if (state === "profile-approval-pending") {
+        else if (state === "PROFILE_APPROVAL_PENDING") {
             global.Object.assign(expected, json(
                 "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title" to "Ждет аппрува профиля",
-                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "profile-approval-pending"
+                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "PROFILE_APPROVAL_PENDING"
             ))
         }
-        else if (state === "profile-rejected") {
+        else if (state === "PROFILE_REJECTED") {
             global.Object.assign(expected, json(
                 "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title" to "Профиль завернут",
-                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "profile-rejected"
+                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "PROFILE_REJECTED"
             ))
         }
-        else if (state === "banned") {
+        else if (state === "BANNED") {
             global.Object.assign(expected, json(
                 "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title" to "Забанен",
-                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "banned"
+                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "BANNED"
             ))
         }
         else {
@@ -701,15 +701,15 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): Expe
             "Input-search" to search,
 
             "Select-filter.item-i000.title" to "Все",
-            "Select-filter.item-i000.value" to "all",
+            "Select-filter.item-i000.value" to "ALL",
             "Select-filter.item-i001.title" to "Прохладные",
-            "Select-filter.item-i001.value" to "cool",
+            "Select-filter.item-i001.value" to "COOL",
             "Select-filter.item-i002.title" to "Ждут аппрува",
-            "Select-filter.item-i002.value" to "2approve",
+            "Select-filter.item-i002.value" to "2APPROVE",
             "Select-filter.item-i003.title" to "Завернутые",
-            "Select-filter.item-i003.value" to "rejected",
+            "Select-filter.item-i003.value" to "REJECTED",
             "Select-filter.item-i004.title" to "Забаненые",
-            "Select-filter.item-i004.value" to "banned",
+            "Select-filter.item-i004.value" to "BANNED",
 
             "Select-ordering.item-i000.title" to "Сначала новые",
             "Select-ordering.item-i000.value" to "desc",
@@ -719,34 +719,34 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): Expe
             "Select-ordering.selected.value" to "desc"
         ))
 
-        if (filter == "all") {
+        if (filter == "ALL") {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Все",
-                "Select-filter.selected.value" to "all"
+                "Select-filter.selected.value" to "ALL"
             ))
         }
-        else if (filter == "cool") {
+        else if (filter == "COOL") {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Прохладные",
-                "Select-filter.selected.value" to "cool"
+                "Select-filter.selected.value" to "COOL"
             ))
         }
-        else if (filter == "2approve") {
+        else if (filter == "2APPROVE") {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Ждут аппрува",
-                "Select-filter.selected.value" to "2approve"
+                "Select-filter.selected.value" to "2APPROVE"
             ))
         }
-        else if (filter == "rejected") {
+        else if (filter == "REJECTED") {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Завернутые",
-                "Select-filter.selected.value" to "rejected"
+                "Select-filter.selected.value" to "REJECTED"
             ))
         }
-        else if (filter == "banned") {
+        else if (filter == "BANNED") {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Забаненые",
-                "Select-filter.selected.value" to "banned"
+                "Select-filter.selected.value" to "BANNED"
             ))
         }
         else {

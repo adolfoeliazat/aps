@@ -44,7 +44,7 @@ Impl: function hot$ImplForShitIgniter({ui}) {
     
 const impl = {
 
-isDynamicPage,
+isDynamicPage: kot.aps.front.KotlinShit.isDynamicPage,
 
 css() {
     const zebraLight = WHITE
@@ -238,7 +238,7 @@ async support() {
                 return pageHeader({title: t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`), labels})
             },
             hasHeaderControls: entityRes => {
-                if (ui.getUser().kind === 'admin') return true
+                if (ui.getUser().kind === 'ADMIN') return true
                 return entityRes.entity.status === 'open'
             },
             aboveItems(entityRes) {
@@ -276,7 +276,7 @@ async support() {
                 ]
                 
                 const statusValues = []
-                if (ui.getUser().kind === 'admin') {
+                if (ui.getUser().kind === 'ADMIN') {
                     statusValues.push({value: 'open', title: t(`TOTE`, `Открыт`)})
                 }
                 statusValues.push({value: 'resolved', title: t(`TOTE`, `Решён`)})
@@ -360,14 +360,14 @@ async dashboard(def) { // @ctx page dashboard
 //                                return []
 //                            }
 //                            
-//                            if (ui.getUser().kind === 'admin') {
+//                            if (ui.getUser().kind === 'ADMIN') {
 //                                addMetric(s{metric: 'profilesToApprove', url: 'admin-users.html?filter=2approve', title: t(`TOTE`, `Профилей зааппрувить`)})
 //                                addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
 //                            }
-//                            else if (ui.getUser().kind === 'writer') {
+//                            else if (ui.getUser().kind === 'WRITER') {
 //                                addMetric(s{metric: 'suka', noStateContributions: true, url: 'suka.html', title: t(`TOTE`, `Сцуко-метрика`)})
 //                            }
-//                            else if (ui.getUser().kind === 'customer') {
+//                            else if (ui.getUser().kind === 'CUSTOMER') {
 //                                raise('implement me')
 //                            }
 //                            
@@ -539,10 +539,10 @@ async 'admin-users'() { // @ctx page admin-users
 //                        let invisible = ['profileRejectionReason', 'banReason']
 //                        
 //                        const state = form.getField('state').getValue()
-//                        if (state === 'profile-rejected') {
+//                        if (state === 'PROFILE_REJECTED') {
 //                            invisible = without(invisible, 'profileRejectionReason')
 //                        }
-//                        else if (state === 'banned') {
+//                        else if (state === 'BANNED') {
 //                            invisible = without(invisible, 'banReason')
 //                        }
 //                        
@@ -631,62 +631,68 @@ async 'admin-users'() { // @ctx page admin-users
 //        },
 //    })
 //},
-                    
-async profile~() { // @ctx page profile
-    const primaryButtonTitle = t('TOTE', 'Отправить на проверку')
-    
-    let pageBody
-    const user = ui.getUser()
-    const userState = user.state
-    
-    if (userState === 'profile-pending' || userState === 'profile-rejected') {
-        let prelude
-        if (userState === 'profile-pending') {
-            prelude = preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720})
-        } else if (userState === 'profile-rejected') {
-            // @wip rejection
-            prelude = preludeWithBadNews(s{
-                title: t('TOTE', 'Админ завернул твой профиль'),
-                quote: user.profile_rejection_reason})
-        }
-        
-        const form = ui.Form({
-            primaryButtonTitle,
-            autoFocus: 'phone',
-            fields: kot.aps.front.KotlinShit.makeProfileFields(s{}),
-            rpcFun: 'private_updateProfile',
-            async onSuccess~(res) {
-                ui.setUser(res.newUser)
-                await ui.replaceNavigate('profile.html')
-            },
-        })
-        
-        form.getField('phone').setValue(user.phone || '')
-        form.getField('aboutMe').setValue(user.about_me || '')
-            
-        pageBody = diva({}, prelude, form)
-    }
-    else if (userState === 'profile-approval-pending') {
-        pageBody = diva({},
-            preludeWithHourglass(s{content: spancTitle({title: t('TOTE', 'Админ проверяет профиль, жди извещения почтой')})}),
-            kot.aps.front.KotlinShit.renderProfile(s{user: user}),
-        )
-    }
-    else if (userState === 'banned') {
-        pageBody = diva({},
-            preludeWithVeryBadNews(s{content: spancTitle({title: t('TOTE', 'Тебя тупо забанили, ОК? Кина не будет.')})}),
-            kot.aps.front.KotlinShit.renderProfile(s{user: user}),
-        )
-    }
-    else {
-        raise(`Weird user state: ${userState}`)
-    }
-    
-    ui.setPage(s{
-        header: pageHeader({title: t('Profile', 'Профиль')}),
-        body: pageBody
-    })
+
+async profile() { // @ctx page admin-users
+    await kot.aps.front.KotlinShit.loadProfilePage(ui)
 },
+                    
+// @ported-to-kotlin
+//
+//async profile~() { // @ctx page profile
+//    const primaryButtonTitle = t('TOTE', 'Отправить на проверку')
+//    
+//    let pageBody
+//    const user = ui.getUser()
+//    const userState = user.state
+//    
+//    if (userState === 'PROFILE_PENDING' || userState === 'PROFILE_REJECTED') {
+//        let prelude
+//        if (userState === 'PROFILE_PENDING') {
+//            prelude = preludeWithOrangeTriangle(s{title: t('TOTE', 'Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.'), center: 720})
+//        } else if (userState === 'PROFILE_REJECTED') {
+//            // @wip rejection
+//            prelude = preludeWithBadNews(s{
+//                title: t('TOTE', 'Админ завернул твой профиль'),
+//                quote: user.profile_rejection_reason})
+//        }
+//        
+//        const form = ui.Form({
+//            primaryButtonTitle,
+//            autoFocus: 'phone',
+//            fields: kot.aps.front.KotlinShit.makeProfileFields(s{}),
+//            rpcFun: 'private_updateProfile',
+//            async onSuccess~(res) {
+//                ui.setUser(res.newUser)
+//                await ui.replaceNavigate('profile.html')
+//            },
+//        })
+//        
+//        form.getField('phone').setValue(user.phone || '')
+//        form.getField('aboutMe').setValue(user.about_me || '')
+//            
+//        pageBody = diva({}, prelude, form)
+//    }
+//    else if (userState === 'PROFILE_APPROVAL_PENDING') {
+//        pageBody = diva({},
+//            preludeWithHourglass(s{content: spancTitle({title: t('TOTE', 'Админ проверяет профиль, жди извещения почтой')})}),
+//            kot.aps.front.KotlinShit.renderProfile(s{user: user}),
+//        )
+//    }
+//    else if (userState === 'BANNED') {
+//        pageBody = diva({},
+//            preludeWithVeryBadNews(s{content: spancTitle({title: t('TOTE', 'Тебя тупо забанили, ОК? Кина не будет.')})}),
+//            kot.aps.front.KotlinShit.renderProfile(s{user: user}),
+//        )
+//    }
+//    else {
+//        raise(`Weird user state: ${userState}`)
+//    }
+//    
+//    ui.setPage(s{
+//        header: pageHeader({title: t('Profile', 'Профиль')}),
+//        body: pageBody
+//    })
+//},
 
 async 'debug-perf-render'() { // @ctx page debug-perf-render
     // @wip perf
@@ -956,10 +962,11 @@ async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
 //}
                 
 }, // End of privatePageLoader
-            
-renderTopNavbar({highlightedItem}) {
-    return renderTopNavbar({clientKind: CLIENT_KIND, highlightedItem, t, ui})
+
+renderTopNavbar(arg) {
+    return kot.aps.front.KotlinShit.renderTopNavbar_calledByFuckingUI(ui, arg)
 },
+
 
 } // End of `impl =`
 
@@ -1003,7 +1010,7 @@ return impl
 //            prop: 'profile_updated_at', label: t(`TOTE`, `Профиль`), value: t(`TOTE`, `Нифига не заполнялся`)})
 //    }
 //    
-//    const adminLooks = ui.getUser().kind === 'admin'
+//    const adminLooks = ui.getUser().kind === 'ADMIN'
 //    
 //    return diva({controlTypeName: 'renderProfile', tame: 'profile'},
 //        diva({className: 'row'},
@@ -1020,9 +1027,9 @@ return impl
 //                    spanc({tame: 'value', content: apsdata.userKindTitle(user.kind)}))}),
 //            adminLooks && limpopo(s{colsm: 3, model, prop: 'state',
 //                formGroupStyle: run(_=> {
-//                    if (user.state === 'profile-approval-pending') return {background: AMBER_200}
-//                    if (user.state === 'profile-rejected') return {background: DEEP_ORANGE_200}
-//                    if (user.state === 'banned') return {background: RED_200}
+//                    if (user.state === 'PROFILE_APPROVAL_PENDING') return {background: AMBER_200}
+//                    if (user.state === 'PROFILE_REJECTED') return {background: DEEP_ORANGE_200}
+//                    if (user.state === 'BANNED') return {background: RED_200}
 //                    return {}
 //                }),
 //                label: t(`TOTE`, `Статус`), prop: 'state', transform: apsdata.userStateTitle}),
@@ -1031,9 +1038,9 @@ return impl
 //                value: timestampString(model.inserted_at, {includeTZ: true})}),
 //            profileUpdatedPiece,
 //        ),
-//        user.state === 'profile-rejected' && diva({className: 'row'},
+//        user.state === 'PROFILE_REJECTED' && diva({className: 'row'},
 //            limpopo(s{colsm: 12, model, prop: 'profile_rejection_reason', label: t(`TOTE`, `Причина отказа`), contentStyle: {whiteSpace: 'pre-wrap'}})),
-//        user.state === 'banned' && diva({className: 'row'},
+//        user.state === 'BANNED' && diva({className: 'row'},
 //            limpopo(s{colsm: 12, model, prop: 'ban_reason', label: t(`TOTE`, `Причина бана`), contentStyle: {whiteSpace: 'pre-wrap'}})),
 //        profileFilled && diva({className: 'row'},
 //            limpopo(s{colsm: 12, model, prop: 'about_me', label: t(`TOTE`, `Набрехано о себе`), contentStyle: {whiteSpace: 'pre-wrap'}})),
@@ -1200,13 +1207,13 @@ function brightBadgea(def, content) {
 
 }, // End of hot$ImplForShitIgniter
     
-isTestScenarioNameOK(name) {
-    if (LANG == 'ua' && CLIENT_KIND === 'customer' && name.startsWith('UA Customer :: ')) return true
-    if (LANG == 'ua' && CLIENT_KIND === 'writer'
-        && (name.startsWith('UA Writer :: ')
-            || name.startsWith('UA Admin :: ')
-            || name.startsWith('UA Bits :: '))) return true
-},
+//isTestScenarioNameOK(name) {
+//    if (LANG == 'ua' && CLIENT_KIND === 'CUSTOMER' && name.startsWith('UA Customer :: ')) return true
+//    if (LANG == 'ua' && CLIENT_KIND === 'WRITER'
+//        && (name.startsWith('UA Writer :: ')
+//            || name.startsWith('UA Admin :: ')
+//            || name.startsWith('UA Bits :: '))) return true
+//},
 
 //getTestScenario(testScenarioToRun, sim) {
 //    GENERATED_SHIT = require('./generated-shit')
@@ -1222,242 +1229,228 @@ isTestScenarioNameOK(name) {
 }) // End of makeUIShitIgniter argument
 
 
-function isDynamicPage(name) {
-    if (CLIENT_KIND === 'customer') return ~customerDynamicPageNames().indexOf(name)
-    return ~writerDynamicPageNames().indexOf(name)
-}
+// @ported-to-kotlin
+//
+//export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
+//    let user
+//    if (ui) {
+//        user = ui.getUser()
+//    }
+//    
+//    let proseItems
+//    const proseCounter = [0]
+//    if (clientKind === 'CUSTOMER') {
+//        proseItems = [
+//            TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`), counter: proseCounter}),
+//            TopNavItem({name: 'prices', title: t(`Prices`, `Цены`), counter: proseCounter}),
+//            TopNavItem({name: 'samples', title: t(`Samples`, `Примеры`), counter: proseCounter}),
+//            TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`), counter: proseCounter}),
+//            TopNavItem({name: 'contact', title: t(`Contact Us`, `Связь`), counter: proseCounter}),
+//            TopNavItem({name: 'blog', title: t(`Blog`, `Блог`), counter: proseCounter}),
+//        ]
+//    } else {
+//        if (!user || user.kind !== 'ADMIN') {
+//            proseItems = [
+//                TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`), counter: proseCounter}),
+//                TopNavItem({name: 'prices', title: t(`Prices`, `Цены`), counter: proseCounter}),
+//                TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`), counter: proseCounter}),
+//            ]
+//        }
+//    }
+//    
+//    let privateItems
+//    const privateCounter = [0]
+//    if (user) {
+//        if (clientKind === 'CUSTOMER') {
+//            privateItems = [
+//                TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`), counter: privateCounter}),
+//                TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}),
+//            ]
+//        } else {
+//            if (user.kind === 'WRITER') {
+//                privateItems = compact([
+//                    user.state === 'COOL' && TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`), counter: privateCounter}),
+//                    user.state === 'COOL' && TopNavItem({name: 'store', title: t(`Store`, `Аукцион`), counter: privateCounter}),
+//                    TopNavItem({name: 'profile', title: t(`Profile`, `Профиль`), counter: privateCounter}),
+//                    
+//                    // TODO:vgrechka Reenable Support navitem...    11a150ac-97fd-48ce-8ba6-67d0559a2768 
+//                    // TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter})
+//                ])
+//            } else if (user.kind === 'ADMIN') {
+//                privateItems = []
+//                // privateItems.push(TopNavItem({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize', counter: privateCounter}))
+//                privateItems.push(TopNavItem({name: 'admin-users', title: t(`Users`, `Юзеры`), counter: privateCounter}))
+//                if (user.roles.support) {
+//                    // TODO:vgrechka Reenable Support navitem...    9c49cfeb-86c1-4d86-85ed-6430e14946d8 
+//                    // privateItems.push(TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}))
+//                }
+//            }
+//        }
+//    }
+//    
+//    let leftNavbarItems, rightNavbarItem
+//    if (user) {
+//        const liaid = puid()
+//        leftNavbarItems = []
+//        if (user.kind !== 'ADMIN') {
+//            let dropdownAStyle
+//            if (proseItems.some(x => x.name === highlightedItem)) {
+//                dropdownAStyle = {backgroundColor: '#e7e7e7'}
+//            }
+//            leftNavbarItems.push(
+//                lia({tame: 'prose', className: 'dropdown'},
+//                    aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
+//                    ula({className: 'dropdown-menu'},
+//                        ...proseItems)))
+//        }
+//        leftNavbarItems.push(...privateItems)
+//        // @wip rejection
+//        if (ui.getUser().state === 'COOL') {
+//            rightNavbarItem = TopNavItem({name: 'dashboard', title: t(user.first_name), counter: [0]})
+//        }
+//    } else {
+//        leftNavbarItems = proseItems
+//        rightNavbarItem = TopNavItem({name: 'sign-in', title: t(`Sign In`, `Вход`), counter: [0]})
+//    }
+//    
+//    let brand
+//    if (clientKind === 'CUSTOMER') {
+//        brand = 'APS'
+//    } else {
+//        brand = t('Writer', 'Писец')
+//        if (user && user.kind === 'ADMIN') {
+//            brand = t('Admin', 'Админ')
+//        }
+//    }
+//    
+//    return nava({className: 'navbar navbar-default navbar-fixed-top'},
+//               diva({className: 'container-fluid'},
+//                   diva({className: 'navbar-header'},
+//                       makeLink('home', brand, 'navbar-brand')),
+//                       
+//                   diva({style: {textAlign: 'left'}},
+//                       ula({tame: 'topNavLeft', id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
+//                           ...leftNavbarItems),
+//                       rightNavbarItem && ula({tame: 'topNavRight', id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
+//                           rightNavbarItem))))
+//                           
+//                           
+//    function TopNavItem(def) {
+//        #extract {counter} from def
+//        
+//        const active = highlightedItem === def.name
+//        const res = TopNavItem_(asn(def, s{
+//            shame: `TopNavItem-${def.name}`,
+//            tame: `TopNavItem${sufindex(counter[0]++)}`,
+//            tattrs: {active: active || undefined},
+//            ui,
+//            active}))
+//        res.name = def.name
+//        return res
+//    }
+//    
+//    function killme_itemToLia({name, title, liveStatusFieldName}) {
+//        return TopNavItem({ui, name, title, liveStatusFieldName, active: highlightedItem === name})
+//        
+//        // TODO:vgrechka @refactor Kill renderTopNavbar::makeLink    47924ff3-db76-463f-9a3e-1099586d6219 
+//        const testName = `topNavItem-${name}`
+//        const id = puid()
+//        return lia({className: highlightedItem === name ? 'active' : ''},
+//                    makeLink(name, spana({}, spanc({tame: testName, content: title}),
+//                                        liveStatusFieldName && ui.liveBadge({name: testName, liveStatusFieldName}))))
+//    }
+//                           
+//    // TODO:vgrechka @refactor Kill renderTopNavbar::makeLink    47924ff3-db76-463f-9a3e-1099586d6219 
+//    function makeLink(name, title, className) {
+//        const id = puid()
+//        const href = name === 'home' ? '/' : `${name}.html`
+//        
+//        let dleft = 0, dwidth = 0
+//        if (name === 'home') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
+//            dleft = -15
+//            dwidth = 15
+//        }
+//        
+//        return elcl({
+//            render() {
+//                return aa({id, className, href}, title)
+//            },
+//            
+//            componentDidMount() {
+//                // XXX Have to add event handler in weird way in order to prevent Bootstrap from hiding dropdown.
+//                //     It turned out, React doesn't actually add event handlers on elements, that's why e.stopPropagation()
+//                //     in onClick(e) doesn't cancel non-React handlers on upper-level elements.
+//                //
+//                //     https://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#under-the-hood-autobinding-and-event-delegation
+//                
+//                let me, testActionHand
+//                testGlobal.topNavbarLinks[name] = me = {
+//                    async click() {
+//                        if (getTestSpeed() === 'slow') {
+//                            me.showHand()
+//                            await delay(DEBUG_ACTION_HAND_DELAY)
+//                            me.hideHand()
+//                            await onClick()
+//                        } else {
+//                            await onClick()
+//                        }
+//                    },
+//                    showHand({testActionHandOpts}={}) {
+//                        testActionHand = showTestActionHand(asn({target: byid(id)}, testActionHandOpts))
+//                    },
+//                    hideHand() {
+//                        testActionHand.delete()
+//                    },
+//                }
+//                
+//                byid(id).on('click', onClick)
+//                
+//                
+//                async function onClick(e) {
+//                    if (e) { // Not simulated in test
+//                        if (e.ctrlKey && !e.shiftKey) return // Allow debug revelations
+//                        e.preventDefault()
+//                        e.stopPropagation()
+//                    }
+//                    
+//                    if (MODE === 'debug' && e && e.ctrlKey && e.shiftKey) {
+//                        const cp = getCapturePane()
+//                        cp.show()
+//                        cp.addCode(`                // Action\n`
+//                                 + `                ${'#'}hawait testGlobal.topNavbarLinks['${name}'].click()\n`
+//                                 + `                ${'#'}hawait art.uiStateAfterLiveStatusPolling({$tag: '${uuid()}', expected: {\n`
+//                                 + `\n`
+//                                 + `                }})\n`
+//                                 )
+//                        cp.focusAndSelect()
+//                        return
+//                    }
+//                    
+//                    effects.blinkOn({target: byid(id).parent(), fixed: true, dleft, dwidth})
+//                    testGlobal['topNavbarLink_' + name + '_blinks'] = true
+//                    
+//                    if ((!isDynamicPage(name) || ~['sign-in', 'sign-up'].indexOf(name)) && !(isInTestScenario() && getTestSpeed() === 'fast')) {
+//                        await delay(ACTION_DELAY_FOR_FANCINESS)
+//                    }
+//                    await ui.pushNavigate(href)
+//                    
+//                    setTimeout(_=> {
+//                        effects.blinkOff()
+//                        testGlobal['topNavbarLink_' + name + '_blinks'] = false
+//                        bsClearMenus()
+//                    }, 250)
+//                }
+//            },
+//            
+//            componentWillUnmount() {
+//                delete testGlobal.topNavbarLinks[name]
+//                byid(id).off()
+//            },
+//        })
+//    }
+//}
 
 
-export function renderTopNavbar({clientKind, highlightedItem, t, ui}) {
-    let user
-    if (ui) {
-        user = ui.getUser()
-    }
-    
-    let proseItems
-    const proseCounter = [0]
-    if (clientKind === 'customer') {
-        proseItems = [
-            TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`), counter: proseCounter}),
-            TopNavItem({name: 'prices', title: t(`Prices`, `Цены`), counter: proseCounter}),
-            TopNavItem({name: 'samples', title: t(`Samples`, `Примеры`), counter: proseCounter}),
-            TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`), counter: proseCounter}),
-            TopNavItem({name: 'contact', title: t(`Contact Us`, `Связь`), counter: proseCounter}),
-            TopNavItem({name: 'blog', title: t(`Blog`, `Блог`), counter: proseCounter}),
-        ]
-    } else {
-        if (!user || user.kind !== 'admin') {
-            proseItems = [
-                TopNavItem({name: 'why', title: t(`Why Us?`, `Почему мы?`), counter: proseCounter}),
-                TopNavItem({name: 'prices', title: t(`Prices`, `Цены`), counter: proseCounter}),
-                TopNavItem({name: 'faq', title: t(`FAQ`, `ЧаВо`), counter: proseCounter}),
-            ]
-        }
-    }
-    
-    let privateItems
-    const privateCounter = [0]
-    if (user) {
-        if (clientKind === 'customer') {
-            privateItems = [
-                TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`), counter: privateCounter}),
-                TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}),
-            ]
-        } else {
-            if (user.kind === 'writer') {
-                privateItems = compact([
-                    user.state === 'cool' && TopNavItem({name: 'orders', title: t(`My Orders`, `Мои заказы`), counter: privateCounter}),
-                    user.state === 'cool' && TopNavItem({name: 'store', title: t(`Store`, `Аукцион`), counter: privateCounter}),
-                    TopNavItem({name: 'profile', title: t(`Profile`, `Профиль`), counter: privateCounter}),
-                    
-                    // TODO:vgrechka Reenable Support navitem...    11a150ac-97fd-48ce-8ba6-67d0559a2768 
-                    // TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter})
-                ])
-            } else if (user.kind === 'admin') {
-                privateItems = []
-                // privateItems.push(TopNavItem({name: 'admin-heap', title: t(`TOTE`, `Куча`), liveStatusFieldName: 'heapSize', counter: privateCounter}))
-                privateItems.push(TopNavItem({name: 'admin-users', title: t(`Users`, `Юзеры`), counter: privateCounter}))
-                if (user.roles.support) {
-                    // TODO:vgrechka Reenable Support navitem...    9c49cfeb-86c1-4d86-85ed-6430e14946d8 
-                    // privateItems.push(TopNavItem({name: 'support', title: t(`Support`, `Поддержка`), liveStatusFieldName: 'supportMenuBadge', counter: privateCounter}))
-                }
-            }
-        }
-    }
-    
-    let leftNavbarItems, rightNavbarItem
-    if (user) {
-        const liaid = puid()
-        leftNavbarItems = []
-        if (user.kind !== 'admin') {
-            let dropdownAStyle
-            if (proseItems.some(x => x.name === highlightedItem)) {
-                dropdownAStyle = {backgroundColor: '#e7e7e7'}
-            }
-            leftNavbarItems.push(
-                lia({tame: 'prose', className: 'dropdown'},
-                    aa({href: '#', className: 'dropdown-toggle skipClearMenus', style: dropdownAStyle, 'data-toggle': 'dropdown', role: 'button'}, t(`Prose`, `Проза`), spana({className: 'caret', style: {marginLeft: 5}})),
-                    ula({className: 'dropdown-menu'},
-                        ...proseItems)))
-        }
-        leftNavbarItems.push(...privateItems)
-        // @wip rejection
-        if (ui.getUser().state === 'cool') {
-            rightNavbarItem = TopNavItem({name: 'dashboard', title: t(user.first_name), counter: [0]})
-        }
-    } else {
-        leftNavbarItems = proseItems
-        rightNavbarItem = TopNavItem({name: 'sign-in', title: t(`Sign In`, `Вход`), counter: [0]})
-    }
-    
-    let brand
-    if (clientKind === 'customer') {
-        brand = 'APS'
-    } else {
-        brand = t('Writer', 'Писец')
-        if (user && user.kind === 'admin') {
-            brand = t('Admin', 'Админ')
-        }
-    }
-    
-    return nava({className: 'navbar navbar-default navbar-fixed-top'},
-               diva({className: 'container-fluid'},
-                   diva({className: 'navbar-header'},
-                       makeLink('home', brand, 'navbar-brand')),
-                       
-                   diva({style: {textAlign: 'left'}},
-                       ula({tame: 'topNavLeft', id: 'leftNavbar', className: 'nav navbar-nav', style: {float: 'none', display: 'inline-block', verticalAlign: 'top'}},
-                           ...leftNavbarItems),
-                       rightNavbarItem && ula({tame: 'topNavRight', id: 'rightNavbar', className: 'nav navbar-nav navbar-right'},
-                           rightNavbarItem))))
-                           
-                           
-    function TopNavItem(def) {
-        #extract {counter} from def
-        
-        const active = highlightedItem === def.name
-        const res = TopNavItem_(asn(def, s{
-            shame: `TopNavItem-${def.name}`,
-            tame: `TopNavItem${sufindex(counter[0]++)}`,
-            tattrs: {active: active || undefined},
-            ui,
-            active}))
-        res.name = def.name
-        return res
-    }
-    
-    function killme_itemToLia({name, title, liveStatusFieldName}) {
-        return TopNavItem({ui, name, title, liveStatusFieldName, active: highlightedItem === name})
-        
-        // TODO:vgrechka @refactor Kill renderTopNavbar::makeLink    47924ff3-db76-463f-9a3e-1099586d6219 
-        const testName = `topNavItem-${name}`
-        const id = puid()
-        return lia({className: highlightedItem === name ? 'active' : ''},
-                    makeLink(name, spana({}, spanc({tame: testName, content: title}),
-                                        liveStatusFieldName && ui.liveBadge({name: testName, liveStatusFieldName}))))
-    }
-                           
-    // TODO:vgrechka @refactor Kill renderTopNavbar::makeLink    47924ff3-db76-463f-9a3e-1099586d6219 
-    function makeLink(name, title, className) {
-        const id = puid()
-        const href = name === 'home' ? '/' : `${name}.html`
-        
-        let dleft = 0, dwidth = 0
-        if (name === 'home') { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
-            dleft = -15
-            dwidth = 15
-        }
-        
-        return elcl({
-            render() {
-                return aa({id, className, href}, title)
-            },
-            
-            componentDidMount() {
-                // XXX Have to add event handler in weird way in order to prevent Bootstrap from hiding dropdown.
-                //     It turned out, React doesn't actually add event handlers on elements, that's why e.stopPropagation()
-                //     in onClick(e) doesn't cancel non-React handlers on upper-level elements.
-                //
-                //     https://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html#under-the-hood-autobinding-and-event-delegation
-                
-                let me, testActionHand
-                testGlobal.topNavbarLinks[name] = me = {
-                    async click() {
-                        if (getTestSpeed() === 'slow') {
-                            me.showHand()
-                            await delay(DEBUG_ACTION_HAND_DELAY)
-                            me.hideHand()
-                            await onClick()
-                        } else {
-                            await onClick()
-                        }
-                    },
-                    showHand({testActionHandOpts}={}) {
-                        testActionHand = showTestActionHand(asn({target: byid(id)}, testActionHandOpts))
-                    },
-                    hideHand() {
-                        testActionHand.delete()
-                    },
-                }
-                
-                byid(id).on('click', onClick)
-                
-                
-                async function onClick(e) {
-                    if (e) { // Not simulated in test
-                        if (e.ctrlKey && !e.shiftKey) return // Allow debug revelations
-                        e.preventDefault()
-                        e.stopPropagation()
-                    }
-                    
-                    if (MODE === 'debug' && e && e.ctrlKey && e.shiftKey) {
-                        const cp = getCapturePane()
-                        cp.show()
-                        cp.addCode(`                // Action\n`
-                                 + `                ${'#'}hawait testGlobal.topNavbarLinks['${name}'].click()\n`
-                                 + `                ${'#'}hawait art.uiStateAfterLiveStatusPolling({$tag: '${uuid()}', expected: {\n`
-                                 + `\n`
-                                 + `                }})\n`
-                                 )
-                        cp.focusAndSelect()
-                        return
-                    }
-                    
-                    effects.blinkOn({target: byid(id).parent(), fixed: true, dleft, dwidth})
-                    testGlobal['topNavbarLink_' + name + '_blinks'] = true
-                    
-                    if ((!isDynamicPage(name) || ~['sign-in', 'sign-up'].indexOf(name)) && !(isInTestScenario() && getTestSpeed() === 'fast')) {
-                        await delay(ACTION_DELAY_FOR_FANCINESS)
-                    }
-                    await ui.pushNavigate(href)
-                    
-                    setTimeout(_=> {
-                        effects.blinkOff()
-                        testGlobal['topNavbarLink_' + name + '_blinks'] = false
-                        bsClearMenus()
-                    }, 250)
-                }
-            },
-            
-            componentWillUnmount() {
-                delete testGlobal.topNavbarLinks[name]
-                byid(id).off()
-            },
-        })
-    }
-}
-
-
-
-export function customerDynamicPageNames() {
-    return tokens('test sign-in sign-up dashboard orders support')
-}
-
-export function writerDynamicPageNames() {
-    return tokens(`
-        test sign-in sign-up dashboard orders support store users profile admin-my-tasks admin-heap admin-users
-        debug-perf-render debug-kotlin-playground`)
-}
 
 
 function test_awaitGeneratedByTypeScript() {

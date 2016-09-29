@@ -6,6 +6,9 @@
 
 package aps.front
 
+import aps.React
+import aps.ReactElement
+
 fun button(build: ButtonBuilder.() -> Unit): Control {
     val cis = ButtonBuilder()
     cis.build()
@@ -40,6 +43,139 @@ val NIL_AsyncReactEventHandler: AsyncReactEventHandler = js("({})")
 
 inline fun y(areh: AsyncReactEventHandler) = areh !== NIL_AsyncReactEventHandler
 
+
+inline fun ifs(cond: String, then: () -> String): String = if (cond != "") then() else ""
+
+inline fun y(x: String) = x != ""
+inline fun n(x: String) = x == ""
+
+fun anyControlDefinitionStackString(control: dynamic, sep: String): Promise<String> {"__async"
+    return __asyncResult(
+        if (control is StatefulElement)
+            __await(control.definitionStackString(sep))
+        else if (control is Control)
+            __await(control.definitionStackString(sep))
+        else
+            "Some legacy shit: " + control.`$definitionStack`.map { x -> x.loc }.join(sep)
+    )
+}
+
+
+open class CommonControlInstanceShit: ControlInstanceSpec() {
+    var className: String = ""
+    val style = StyleBuilder()
+    var styleKludge: dynamic = undefined
+
+    val allAttrs: dynamic get() {
+        val res = js("({})")
+        res.style = if (styleKludge != undefined) styleKludge else style.toJSObject()
+        res.className = className
+        if (y(onClick)) res.onClick = onClick
+
+        // console.log("allAttrs", res)
+        return res
+    }
+
+}
+
+class ButtonBuilder : CommonControlInstanceShit() {
+    var title: String? = null
+    var hint: String? = null
+    var level: String = "default"
+    var icon: String? = null
+    var iconColor: Color? = null
+}
+
+fun spanc(tame: String, content: String, build: CommonControlInstanceShit.() -> Unit = {}): Control {
+    val cis = CommonControlInstanceShit()
+    cis.tame = tame
+    cis.build()
+
+    return object : Control(cis) {
+        override fun defaultControlTypeName() = "spanc"
+
+        override fun render(): ReactElement {
+            return jshit.spana(json("id" to elementID, "className" to cis.className, "style" to cis.style.toJSObject()), content)
+        }
+
+        override fun contributeTestState(state: dynamic) {
+            state.put(json("control" to this, "key" to effectiveTame, "value" to content))
+        }
+    }
+}
+
+val diva = makeBasicContainerControlCtor("div")
+val spana = makeBasicContainerControlCtor("span")
+val forma = makeBasicContainerControlCtor("form")
+val h3a = makeBasicContainerControlCtor("h3")
+
+val NORE: ReactElement = js("({})")
+
+open class BasicContainerControlBuilder: CommonControlInstanceShit() {
+    open fun transformChildBeforeAddition(child: ReactElement) = child
+
+    val children = mutableListOf<ReactElement>()
+
+    fun add(child: ReactElement) {
+        if (child !== NORE) {
+            val child2 = transformChildBeforeAddition(child)
+            if (child2 !== NORE)
+                children.add(child2)
+        }
+    }
+
+    operator fun ReactElement.unaryMinus() {
+        add(this)
+    }
+
+    fun add(child: ToReactElementable) {
+        add(child.toReactElement())
+    }
+
+    operator fun ToReactElementable.unaryMinus() {
+        add(this)
+    }
+
+    fun add(s: String) {
+        add(asReactElement(s))
+    }
+
+    operator fun String.unaryMinus() {
+        add(this)
+    }
+
+    operator fun Iterable<ReactElement>.unaryPlus() {
+        for (child in this) add(child)
+    }
+
+    operator fun Iterable<ToReactElementable>.unaryPlus() {
+        for (child in this) add(child)
+    }
+}
+
+fun makeBasicContainerControlCtor(tag: String): (BasicContainerControlBuilder.() -> Unit) -> Control {
+    fun ctor(build: BasicContainerControlBuilder.() -> Unit): Control {
+        val cis = BasicContainerControlBuilder()
+        cis.build()
+
+        return object : Control(cis) {
+            override fun defaultControlTypeName() = tag + "a"
+
+            override fun render(): ReactElement {
+                val attrs = cis.allAttrs
+                attrs.id = elementID
+                return React.createElement(tag, attrs, *cis.children.toTypedArray())
+            }
+        }
+    }
+
+    return ::ctor
+}
+
+interface ToReactElementable {
+    fun toReactElement(): ReactElement
+}
+
 open class ControlInstanceSpec {
     var shame = ""
     var tame = ""
@@ -73,23 +209,7 @@ open class ControlInstanceSpec {
     }
 }
 
-inline fun ifs(cond: String, then: () -> String): String = if (cond != "") then() else ""
-
-inline fun y(x: String) = x != ""
-inline fun n(x: String) = x == ""
-
-fun anyControlDefinitionStackString(control: dynamic, sep: String): Promise<String> {"__async"
-    return __asyncResult(
-        if (control is StatefulElement)
-            __await(control.definitionStackString(sep))
-        else if (control is Control)
-            __await(control.definitionStackString(sep))
-        else
-            "Some legacy shit: " + control.`$definitionStack`.map { x -> x.loc }.join(sep)
-    )
-}
-
-abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
+abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : ToReactElementable {
     abstract fun defaultControlTypeName(): String
     abstract fun render(): ReactElement
     open fun contributeTestState(state: dynamic) {}
@@ -231,7 +351,7 @@ abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
 
                 for ((key, value) in cis.tattrs)
                     if (y(value))
-                        // TODO:vgrechka Capture source location of contributing control    7f25a85a-aed2-4aaf-907f-415b35a74721
+                    // TODO:vgrechka Capture source location of contributing control    7f25a85a-aed2-4aaf-907f-415b35a74721
                         state.put(json("control" to this, "key" to "$effectiveTame.$key", "value" to value))
 
                 if (y(effectiveShame) && effectiveTame != effectiveShame)
@@ -384,119 +504,6 @@ abstract class Control(val cis: ControlInstanceSpec) : ToReactElementable {
 
     fun getLongRevelationTitle(): String = debugDisplayName
 }
-
-open class CommonControlInstanceShit: ControlInstanceSpec() {
-    var className: String = ""
-    val style = StyleBuilder()
-    var styleKludge: dynamic = undefined
-
-    val allAttrs: dynamic get() {
-        val res = js("({})")
-        res.style = if (styleKludge != undefined) styleKludge else style.toJSObject()
-        res.className = className
-        if (y(onClick)) res.onClick = onClick
-
-        // console.log("allAttrs", res)
-        return res
-    }
-
-}
-
-class ButtonBuilder : CommonControlInstanceShit() {
-    var title: String? = null
-    var hint: String? = null
-    var level: String = "default"
-    var icon: String? = null
-    var iconColor: Color? = null
-}
-
-fun spanc(tame: String, content: String, build: CommonControlInstanceShit.() -> Unit = {}): Control {
-    val cis = CommonControlInstanceShit()
-    cis.tame = tame
-    cis.build()
-
-    return object : Control(cis) {
-        override fun defaultControlTypeName() = "spanc"
-
-        override fun render(): ReactElement {
-            return jshit.spana(json("id" to elementID, "className" to cis.className, "style" to cis.style.toJSObject()), content)
-        }
-
-        override fun contributeTestState(state: dynamic) {
-            state.put(json("control" to this, "key" to effectiveTame, "value" to content))
-        }
-    }
-}
-
-val diva = makeBasicContainerControlCtor("div")
-val spana = makeBasicContainerControlCtor("span")
-val forma = makeBasicContainerControlCtor("form")
-val h3a = makeBasicContainerControlCtor("h3")
-
-val NORE: ReactElement = js("({})")
-
-open class BasicContainerControlBuilder: CommonControlInstanceShit() {
-    open fun transformChildBeforeAddition(child: ReactElement) = child
-
-    val children = mutableListOf<ReactElement>()
-
-    fun add(child: ReactElement) {
-        if (child !== NORE) {
-            val child2 = transformChildBeforeAddition(child)
-            if (child2 !== NORE)
-                children.add(child2)
-        }
-    }
-
-    operator fun ReactElement.unaryMinus() {
-        add(this)
-    }
-
-    fun add(child: ToReactElementable) {
-        add(child.toReactElement())
-    }
-
-    operator fun ToReactElementable.unaryMinus() {
-        add(this)
-    }
-
-    fun add(s: String) {
-        add(asReactElement(s))
-    }
-
-    operator fun String.unaryMinus() {
-        add(this)
-    }
-
-    operator fun Iterable<ReactElement>.unaryPlus() {
-        for (child in this) add(child)
-    }
-
-    operator fun Iterable<ToReactElementable>.unaryPlus() {
-        for (child in this) add(child)
-    }
-}
-
-fun makeBasicContainerControlCtor(tag: String): (BasicContainerControlBuilder.() -> Unit) -> Control {
-    fun ctor(build: BasicContainerControlBuilder.() -> Unit): Control {
-        val cis = BasicContainerControlBuilder()
-        cis.build()
-
-        return object : Control(cis) {
-            override fun defaultControlTypeName() = tag + "a"
-
-            override fun render(): ReactElement {
-                val attrs = cis.allAttrs
-                attrs.id = elementID
-                return React.createElement(tag, attrs, *cis.children.toTypedArray())
-            }
-        }
-    }
-
-    return ::ctor
-}
-
-
 
 
 

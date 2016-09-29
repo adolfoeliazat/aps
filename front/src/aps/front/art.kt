@@ -6,6 +6,7 @@
 
 package aps.front
 
+import aps.ReactElement
 import kotlin.browser.window
 import aps.front.Color.*
 import kotlin.reflect.KProperty

@@ -15,9 +15,6 @@ fun imf(what: String = "me"): Nothing = throw JSException("Implement $what, plea
 fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw JSException("WTF: $msg")
 fun die(msg: String = "You killed me, motherfucker..."): Nothing = throw JSException(msg)
 
-fun clog(vararg xs: dynamic) {
-    global.console.log.apply(global.console.log, xs.toList().toJSArray())
-}
 
 @native interface JSArray
 
@@ -28,5 +25,33 @@ fun <T> Iterable<T>.toJSArray(): JSArray {
     this.forEach { res.push(it) }
     return res
 }
+
+fun evalAny(code: String): Any = eval(code)
+
+fun jsArrayToList(arr: dynamic, transform: (dynamic) -> dynamic = {it}): List<dynamic> {
+    val list = mutableListOf<dynamic>()
+    for (i in 0 until arr.length)
+        list.add(transform(arr[i]))
+    return list
+}
+
+fun jsKeys(x: Any): Iterable<String> = jsArrayToList(js("Object.keys(x)"))
+
+fun jsSet(target: Any, prop: String, value: Any?) = eval("target[prop] = value")
+
+fun jsIsArray(x: Any?): Boolean = eval("Array.isArray(x)")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -12,11 +12,15 @@ fun sayHi() {
     println("Hi, fuck you")
 }
 
-inline fun <T> T.applet(block: (T) -> Unit): T { block(this); return this }
+inline fun <T> T.applet(f: (T) -> Unit): T { f(this); return this }
+
+inline fun <T> T?.letoes(f: (T) -> String): String =
+    if (this == null) ""
+    else f(this)
 
 fun <T> T.oneOf(vararg xs: T) = xs.contains(this)
 
-class relazy<T>(val initializer: () -> T) {
+class relazy<out T>(val initializer: () -> T) {
     private var backing = lazy(initializer)
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T = backing.value
@@ -34,3 +38,43 @@ fun probe(msg: Any?): ProbeLHS {
 object ProbeLHS {
     infix operator fun <T> div(rhs: T): T = rhs
 }
+
+fun checkAtMostOneOf(vararg pairs: Pair<String, Any?>) {
+    val definedNames = pairs.filter{it.second != null}.map{it.first}
+    check(definedNames.size <= 1) {"These motherfuckers violate checkAtMostOneOf: " + definedNames.joinToString()}
+}
+
+val fuckYou: Nothing get() = throw Exception("Fuck you")
+
+fun <T> firstNotNull(vararg branches: () -> T?): T? {
+    for (branch in branches) {
+        branch()?.let {
+            return it
+        }
+    }
+    return null
+}
+
+fun <T> String?.ifNotBlankApplet(block: (String) -> T?): T? =
+    if (this.isNullOrBlank()) null
+    else block(this!!)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

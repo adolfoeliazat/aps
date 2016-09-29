@@ -21,7 +21,7 @@ class AdminUsersPage(val ui: dynamic) {
 
             "hasFilterSelect" to true,
             "filterSelectValues" to global.apsdata.userFilters(),
-            "defaultFilter" to "all",
+            "defaultFilter" to "ALL",
 
             "plusIcon" to "plus",
 
@@ -78,10 +78,10 @@ class AdminUsersPage(val ui: dynamic) {
                                 var invisible = jsArrayOf("profileRejectionReason", "banReason")
 
                                 val state = form.getField("state").getValue()
-                                if (state == "profile-rejected") {
+                                if (state == "PROFILE_REJECTED") {
                                     invisible = jshit.utils.without(invisible, "profileRejectionReason")
                                 }
-                                else if (state == "banned") {
+                                else if (state == "BANNED") {
                                     invisible = jshit.utils.without(invisible, "banReason")
                                 }
 

@@ -17,11 +17,11 @@ title aps backend & backend.cmd
 cd /d C:\opt\Redis
 title redis-cli & redis-cli
 
-cd /d E:\work\aps\bin\dev\win
-title pg-dev pg-dev-start.cmd
+cd /d E:\work\aps\back\bin\dev\win
+title pg-dev & pg-dev-start.cmd
 
-cd /d E:\work\aps\bin\dev\win
-title pg-test pg-test-start.cmd
+cd /d E:\work\aps\back\bin\dev\win
+title pg-test & pg-test-start.cmd
 
 cd /d E:\work\aps\tools
 title WatchAndEnhanceJS & WatchAndEnhanceJS

@@ -101,6 +101,8 @@
           <root url="jar://$MODULE_DIR$/lib-gradle/annotations-2.0.1.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/reflections-0.9.10-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/jetty-server-9.3.11.v20160721-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

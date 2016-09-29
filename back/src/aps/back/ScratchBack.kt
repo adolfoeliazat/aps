@@ -5,7 +5,7 @@ import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 
 fun main(args: Array<String>) {
-//    ScratchBack.fiddleWithDB_apsTestOnTestServer()
+    ScratchBack.fiddleWithDB_apsTestOnTestServer()
 }
 
 object ScratchBack {

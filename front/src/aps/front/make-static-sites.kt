@@ -6,6 +6,8 @@
 
 package aps.front
 
+import aps.UserKind
+
 object MakeStaticSites {
     val kindaDirname = "e:/work/aps/aps/lib"
     val fs = js("require('fs')")
@@ -21,13 +23,13 @@ object MakeStaticSites {
         sh.config.fatal = true
         js("Error").stackTraceLimit = js("Infinity")
 
-        makeWriterSite(json("lang" to "ua"))
-        makeCustomerSite(json("lang" to "ua"))
+        makeWriterSite(json("lang" to "UA"))
+        makeCustomerSite(json("lang" to "UA"))
     }
 
     fun makeWriterSite(arg: dynamic) {
         // {lang}
-        val lang = arg.lang
+        val lang: String = arg.lang
 
         val _t = jshit.utils.makeT(lang)
         t = run {
@@ -44,7 +46,7 @@ object MakeStaticSites {
         }
         // imposeClientT(t)
 
-        val root = "${kindaDirname}/../built/${lang}-writer"
+        val root = "${kindaDirname}/../built/${lang.toLowerCase()}-writer"
         sh.rm("-rf", root)
         sh.mkdir("-p", root)
 
@@ -56,18 +58,18 @@ object MakeStaticSites {
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
         sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
 
-        val tabTitle = t(json("en" to "Writer", "ua" to "Writer UA"))
+        val tabTitle = t(json("EN" to "Writer", "UA" to "Writer UA"))
 
         fun writePage(def: dynamic) {
-            genericWritePage(global.Object.assign(def, json("root" to root, "tabTitle" to tabTitle, "lang" to lang, "clientKind" to "writer", "t" to t)))
+            genericWritePage(global.Object.assign(def, json("root" to root, "tabTitle" to tabTitle, "lang" to lang, "clientKind" to UserKind.WRITER, "t" to t)))
         }
 
         writePage(json("name" to "index", // For Writer site
             "comp" to jshit.diva(json(),
             jshit.diva(json("className" to "container"),
-                jshit.pageHeader(t(json("en" to "Welcome to Writer", "ua" to "Приветствуем на Писце"))),
+                jshit.pageHeader(t(json("EN" to "Welcome to Writer", "UA" to "Приветствуем на Писце"))),
                 markdownPiece(json(
-                    "en" to """
+                    "EN" to """
                         Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
 
                         Sitting in front of your laptop, desperately typing the keywords in your search engine browser and wondering why AcademicPaperServed came up with an idea of giving written assignments to the needy students like yourself?
@@ -78,7 +80,7 @@ object MakeStaticSites {
 
                         Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
                         """,
-                    "ua" to """
+                    "UA" to """
                         Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
 
                         Sitting in front of your laptop, desperately typing the keywords in your search engine browser and wondering why AcademicPaperServed came up with an idea of giving written assignments to the needy students like yourself?
@@ -90,21 +92,21 @@ object MakeStaticSites {
                         Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
                         """)),
 
-                jshit.pageHeader(t(json("en" to "Features", "ua" to "Фичи"))),
+                jshit.pageHeader(t(json("EN" to "Features", "UA" to "Фичи"))),
                 horizBulletsRow(jsArrayOf(
-                    json("glyph" to "pencil", "en" to "No plagiarism", "ua" to "No plagiarism"),
-                    json("glyph" to "star", "en" to "Only premium quality", "ua" to "Only premium quality"),
-                    json("glyph" to "list", "en" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references", "ua" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references")
+                    json("glyph" to "pencil", "EN" to "No plagiarism", "UA" to "No plagiarism"),
+                    json("glyph" to "star", "EN" to "Only premium quality", "UA" to "Only premium quality"),
+                    json("glyph" to "list", "EN" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references", "UA" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references")
                 ), json("horizContentMargin" to 40)),
                 horizBulletsRow(jsArrayOf(
-                    json("glyph" to "gi-piggy-bank", "en" to "One-time and life-time discounts to returning customers", "ua" to "One-time and life-time discounts to returning customers"),
-                    json("glyph" to "credit-card", "en" to "30-days money back guarantee", "ua" to "30-days money back guarantee"),
-                    json("glyph" to "life-saver", "en" to "24/7 support", "ua" to "24/7 support")
+                    json("glyph" to "gi-piggy-bank", "EN" to "One-time and life-time discounts to returning customers", "UA" to "One-time and life-time discounts to returning customers"),
+                    json("glyph" to "credit-card", "EN" to "30-days money back guarantee", "UA" to "30-days money back guarantee"),
+                    json("glyph" to "life-saver", "EN" to "24/7 support", "UA" to "24/7 support")
                 ), json("horizContentMargin" to 40)),
 
-                jshit.pageHeader(t(json("en" to "Who We Are", "ua" to "Кто мы"))),
+                jshit.pageHeader(t(json("EN" to "Who We Are", "UA" to "Кто мы"))),
                 markdownPiece(json(
-                    "en" to """
+                    "EN" to """
                         AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
 
                         Our writers are versed in various fields of academic writing, so if you do not find a suitable category on this page, feel free to contact our Support Center to find out availability of writing help in your area of interest.
@@ -113,7 +115,7 @@ object MakeStaticSites {
 
                             AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.
                         """,
-                    "ua" to """
+                    "UA" to """
                         AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
 
                         Our writers are versed in various fields of academic writing, so if you do not find a suitable category on this page, feel free to contact our Support Center to find out availability of writing help in your area of interest.
@@ -123,50 +125,50 @@ object MakeStaticSites {
                             AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.
                         """)),
 
-                renderTestimonials("writer"),
+                renderTestimonials("WRITER"),
 
-                jshit.pageHeader(t(json("en" to "What We Offer", "ua" to "Мы предлагаем"))),
+                jshit.pageHeader(t(json("EN" to "What We Offer", "UA" to "Мы предлагаем"))),
                 horizBulletsRow(jsArrayOf(
-                    json("glyph" to "envira", "en" to "Custom essay, research, thesis writing", "ua" to "Custom essay, research, thesis writing"),
-                    json("glyph" to "rocket", "en" to "Plagiarism-free original papers written from scratch", "ua" to "Plagiarism-free original papers written from scratch"),
-                    json("glyph" to "bomb", "en" to "Proofreading and editing of written papers", "ua" to "Proofreading and editing of written papers"),
-                    json("glyph" to "book", "en" to "Free guidelines on essay topic selection and writing process", "ua" to "Free guidelines on essay topic selection and writing process")
+                    json("glyph" to "envira", "EN" to "Custom essay, research, thesis writing", "UA" to "Custom essay, research, thesis writing"),
+                    json("glyph" to "rocket", "EN" to "Plagiarism-free original papers written from scratch", "UA" to "Plagiarism-free original papers written from scratch"),
+                    json("glyph" to "bomb", "EN" to "Proofreading and editing of written papers", "UA" to "Proofreading and editing of written papers"),
+                    json("glyph" to "book", "EN" to "Free guidelines on essay topic selection and writing process", "UA" to "Free guidelines on essay topic selection and writing process")
                 )),
                 locBullets(jsArrayOf(
-                    json("en" to "Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports", "ua" to "Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports"),
-                    json("en" to "Plagiarism-free original papers written from scratch", "ua" to "Plagiarism-free original papers written from scratch"),
-                    json("en" to "Proofreading and editing of written papers", "ua" to "Proofreading and editing of written papers"),
-                    json("en" to "Choosing sources for your paper, providing with annotated bibliography upon request", "ua" to "Choosing sources for your paper, providing with annotated bibliography upon request"),
-                    json("en" to "Free guidelines on successful essay topic selection and writing process", "ua" to "Free guidelines on successful essay topic selection and writing process"),
-                    json("en" to "Individual approach to every customer, no repetitions, free consulting on the paper content", "ua" to "Individual approach to every customer, no repetitions, free consulting on the paper content"),
-                    json("en" to "Free revisions till you are completely satisfied", "ua" to "Free revisions till you are completely satisfied"),
-                    json("en" to "Meeting your deadline", "ua" to "Meeting your deadline"),
-                    json("en" to "Security and confidentiality", "ua" to "Security and confidentiality")
+                    json("EN" to "Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports", "UA" to "Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports"),
+                    json("EN" to "Plagiarism-free original papers written from scratch", "UA" to "Plagiarism-free original papers written from scratch"),
+                    json("EN" to "Proofreading and editing of written papers", "UA" to "Proofreading and editing of written papers"),
+                    json("EN" to "Choosing sources for your paper, providing with annotated bibliography upon request", "UA" to "Choosing sources for your paper, providing with annotated bibliography upon request"),
+                    json("EN" to "Free guidelines on successful essay topic selection and writing process", "UA" to "Free guidelines on successful essay topic selection and writing process"),
+                    json("EN" to "Individual approach to every customer, no repetitions, free consulting on the paper content", "UA" to "Individual approach to every customer, no repetitions, free consulting on the paper content"),
+                    json("EN" to "Free revisions till you are completely satisfied", "UA" to "Free revisions till you are completely satisfied"),
+                    json("EN" to "Meeting your deadline", "UA" to "Meeting your deadline"),
+                    json("EN" to "Security and confidentiality", "UA" to "Security and confidentiality")
                 ))))
         ))
 
         writePage(json("name" to "why", "highlightedItem" to "why", // For Writer site
             "comp" to jshit.diva(json(),
             jshit.diva.apply(null, js("[]").concat(json("className" to "container"),
-                jshit.pageHeader(t(json("en" to "Why Writer?", "ua" to "Почему Писец?"))),
+                jshit.pageHeader(t(json("EN" to "Why Writer?", "UA" to "Почему Писец?"))),
                 jsArrayOf(json(
-                "title" to json("en" to "We care about each customer’s academic success", "ua" to "We care about each customer’s academic success"),
+                "title" to json("EN" to "We care about each customer’s academic success", "UA" to "We care about each customer’s academic success"),
                 "content" to json(
-                "en" to "According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal.",
-                "ua" to "According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal."
+                "EN" to "According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal.",
+                "UA" to "According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal."
             )
             ),
                 json(
-                    "title" to json("en" to "We make a very strong commitment to quality", "ua" to "We make a very strong commitment to quality"),
+                    "title" to json("EN" to "We make a very strong commitment to quality", "UA" to "We make a very strong commitment to quality"),
                     "content" to json(
-                    "en" to "Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge.",
-                    "ua" to "Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge."
+                    "EN" to "Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge.",
+                    "UA" to "Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge."
                 )
                 ),
                 json(
-                    "title" to json("en" to "We show an individual approach", "ua" to "We show an individual approach"),
+                    "title" to json("EN" to "We show an individual approach", "UA" to "We show an individual approach"),
                     "content" to json(
-                    "en" to """
+                    "EN" to """
                     To Every Customer and Every Project we deal with.
 
                         With us customers are sure to get their high school, college and university papers tailored exactly to their requirements and needs. No need to worry about quality! Your professor will be completely satisfied. We follow paper details specifically, provide with relevant sources from our library and/or use definite sources (books, journal and magazine articles, encyclopedia excerpts, peer reviewed studies, etc.) requested by the customer.
@@ -177,7 +179,7 @@ object MakeStaticSites {
 
                     AcademicPaperServed team helps English speaking customers from all over the world with anything an academic writing implies, from research ideas to styles and design of your paper. We are strictly following the rules of academic presentation combining it with modern and creative approaches. You are sure to get your project written in a plain, clear language with smooth transitions and coherent rendering.
                     """,
-                    "ua" to """
+                    "UA" to """
                     To Every Customer and Every Project we deal with.
 
                         With us customers are sure to get their high school, college and university papers tailored exactly to their requirements and needs. No need to worry about quality! Your professor will be completely satisfied. We follow paper details specifically, provide with relevant sources from our library and/or use definite sources (books, journal and magazine articles, encyclopedia excerpts, peer reviewed studies, etc.) requested by the customer.
@@ -191,9 +193,9 @@ object MakeStaticSites {
                 )
                 ),
                 json(
-                    "title" to json("en" to "We hire only expert writers", "ua" to "We hire only expert writers"),
+                    "title" to json("EN" to "We hire only expert writers", "UA" to "We hire only expert writers"),
                     "content" to json(
-                    "en" to """
+                    "EN" to """
                     We involve only experienced staff in the writing process! Each member of the AcademicPaperServed writing team has at least 2 years + experience in academic research field.
 
                     You are sure to get your custom paper done by a native English speaker, who is versed in the area of your research, formats your paper according to the latest requirements of citation styles (MLA, APA, Harvard, Chicago, Turabian, Oxford and others) and delivers with no delays.
@@ -202,7 +204,7 @@ object MakeStaticSites {
 
                     We’ve been dealing with ALL types of academic papers and we are always glad to offer you help with any essay (like scholarship essay, admission essay, application essay, entrance essay, personal statement) and research paper type at any academic level and in every possible discipline. If you want your paper to be well-organized and logically constructed, choose us!
                     """,
-                    "ua" to """
+                    "UA" to """
                     We involve only experienced staff in the writing process! Each member of the AcademicPaperServed writing team has at least 2 years + experience in academic research field.
 
                     You are sure to get your custom paper done by a native English speaker, who is versed in the area of your research, formats your paper according to the latest requirements of citation styles (MLA, APA, Harvard, Chicago, Turabian, Oxford and others) and delivers with no delays.
@@ -214,16 +216,16 @@ object MakeStaticSites {
                 )
                 ),
                 json(
-                    "title" to json("en" to "Plagiarism-free and full-of-creativity zone", "ua" to "Plagiarism-free and full-of-creativity zone"),
+                    "title" to json("EN" to "Plagiarism-free and full-of-creativity zone", "UA" to "Plagiarism-free and full-of-creativity zone"),
                     "content" to json(
-                    "en" to """
+                    "EN" to """
                     Our writers get paid only when they use their own thoughts and ideas, elucidated through high-quality research and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with the most up-to-date plagiarism detection software prior to being delivered to customer. There is totally no chance of delivering a plagiarized paper.
 
                     At AcademicPaperServed all writers apply a creative approach to every essay. Each custom paper is written in compliance with the requests and desires of the customer.
 
                         Be assured our friendly and knowledgeable staff will provide you with immediate, top-quality, and US-based customer support. All responses are personalized to the needs of the student.
                     """,
-                    "ua" to """
+                    "UA" to """
                     Our writers get paid only when they use their own thoughts and ideas, elucidated through high-quality research and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with the most up-to-date plagiarism detection software prior to being delivered to customer. There is totally no chance of delivering a plagiarized paper.
 
                     At AcademicPaperServed all writers apply a creative approach to every essay. Each custom paper is written in compliance with the requests and desires of the customer.
@@ -243,19 +245,19 @@ object MakeStaticSites {
         writePage(json("name" to "prices", "highlightedItem" to "prices", // For Writer site
             "comp" to jshit.diva(json(),
             jshit.diva(json("className" to "container"),
-                jshit.pageHeader(t(json("en" to "Our Prices", "ua" to "Наши цены"))),
+                jshit.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
                 markdownPiece(json(
-                    "en" to """
+                    "EN" to """
                     Здесь такие идут расценки для писателей.
                     """,
-                    "ua" to """
+                    "UA" to """
                     Здесь такие идут расценки для писателей.
                     """
                 )),
 
-                jshit.pageHeader(t(json("en" to "Pricing Policy", "ua" to "Pricing Policy"))),
+                jshit.pageHeader(t(json("EN" to "Pricing Policy", "UA" to "Pricing Policy"))),
                 markdownPiece(json(
-                    "en" to """
+                    "EN" to """
                     Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
 
                     Our support is daily queried on how one can buy an essay or research paper on a certain topic. AcademicPaperServed does sell pre-written papers, each assignment is made individually and each research is written from scratch. Top-notch writing quality is only achieved through effective communication of the writer and the customer, be it an order on a blog article, high school debate project or a music review.
@@ -264,7 +266,7 @@ object MakeStaticSites {
 
                     You may find out your quote in one minute! Simply press the Order Your Custom Essay Now tab at the top of the page marked in green. Our Customer Support employee will advise you on the price and terms of delivery.
                     """,
-                    "ua" to """
+                    "UA" to """
                     Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
 
                     Our support is daily queried on how one can buy an essay or research paper on a certain topic. AcademicPaperServed does sell pre-written papers, each assignment is made individually and each research is written from scratch. Top-notch writing quality is only achieved through effective communication of the writer and the customer, be it an order on a blog article, high school debate project or a music review.
@@ -275,32 +277,32 @@ object MakeStaticSites {
                     """
                 )),
 
-                jshit.pageHeader(t(json("en" to "Bonuses", "ua" to "Bonuses"))),
+                jshit.pageHeader(t(json("EN" to "Bonuses", "UA" to "Bonuses"))),
                 markdownPiece(json(
-                    "en" to "Ordering a paper at AcademicPaperServed, you also get:",
-                    "ua" to "Ordering a paper at AcademicPaperServed, you also get:"
+                    "EN" to "Ordering a paper at AcademicPaperServed, you also get:",
+                    "UA" to "Ordering a paper at AcademicPaperServed, you also get:"
                 )),
                 locBullets(jsArrayOf(
-                json("en" to "Free Title Page", "ua" to "Free Title Page"),
-                json("en" to "Free Outline", "ua" to "Free Outline"),
-                json("en" to "Free List of References", "ua" to "Free List of References"),
-                json("en" to "Free Plagiarism Report (upon additional request)", "ua" to "Free Plagiarism Report (upon additional request)")
+                json("EN" to "Free Title Page", "UA" to "Free Title Page"),
+                json("EN" to "Free Outline", "UA" to "Free Outline"),
+                json("EN" to "Free List of References", "UA" to "Free List of References"),
+                json("EN" to "Free Plagiarism Report (upon additional request)", "UA" to "Free Plagiarism Report (upon additional request)")
             )),
 
-            jshit.pageHeader(t(json("en" to "Discount Policy", "ua" to "Discount Policy"))),
+            jshit.pageHeader(t(json("EN" to "Discount Policy", "UA" to "Discount Policy"))),
             markdownPiece(json(
-                "en" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:",
-                "ua" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:"
+                "EN" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:",
+                "UA" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:"
             )),
             locBullets(jsArrayOf(
-            json("en" to "More than 50 pages${jshit.mdash}5%", "ua" to "Более 50 страниц ${jshit.ndash} 5%"),
-            json("en" to "More than 100 pages${jshit.mdash}10%", "ua" to "Более 100 страниц ${jshit.ndash} 10%"),
-            json("en" to "More than 150 pages${jshit.mdash}15%", "ua" to "Более 150 страниц ${jshit.ndash} 15%"),
-            json("en" to "More than 200 pages${jshit.mdash}30%", "ua" to "Более 200 страниц ${jshit.ndash} 30%")
+            json("EN" to "More than 50 pages${jshit.mdash}5%", "UA" to "Более 50 страниц ${jshit.ndash} 5%"),
+            json("EN" to "More than 100 pages${jshit.mdash}10%", "UA" to "Более 100 страниц ${jshit.ndash} 10%"),
+            json("EN" to "More than 150 pages${jshit.mdash}15%", "UA" to "Более 150 страниц ${jshit.ndash} 15%"),
+            json("EN" to "More than 200 pages${jshit.mdash}30%", "UA" to "Более 200 страниц ${jshit.ndash} 30%")
             )),
             markdownPiece(json(
-                "en" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
-                "ua" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy."
+                "EN" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
+                "UA" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy."
             ))
             )
             )
@@ -309,37 +311,37 @@ object MakeStaticSites {
         writePage(json("name" to "faq", "highlightedItem" to "faq", // For Writer site
             "comp" to jshit.diva(json(),
             jshit.diva.apply(null, js("[]").concat(json("className" to "container"),
-                jshit.pageHeader(t(json("en" to "FAQ", "ua" to "Частые вопросы"))),
+                jshit.pageHeader(t(json("EN" to "FAQ", "UA" to "Частые вопросы"))),
                 jsArrayOf(json(
-                "title" to json("en" to "How does AcademicPaperServed work?", "ua" to "How does AcademicPaperServed work?"),
+                "title" to json("EN" to "How does AcademicPaperServed work?", "UA" to "How does AcademicPaperServed work?"),
                 "content" to json(
-                "en" to "As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail.",
-                "ua" to "As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail."
+                "EN" to "As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail.",
+                "UA" to "As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail."
             )
             ),
                 json(
-                    "title" to json("en" to "I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?", "ua" to "I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?"),
+                    "title" to json("EN" to "I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?", "UA" to "I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?"),
                     "content" to json(
-                    "en" to "Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price.",
-                    "ua" to "Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price."
+                    "EN" to "Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price.",
+                    "UA" to "Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price."
                 )
                 ),
                 json(
-                    "title" to json("en" to "How safe is your service? Is there any risk to place an order online?", "ua" to "How safe is your service? Is there any risk to place an order online?"),
+                    "title" to json("EN" to "How safe is your service? Is there any risk to place an order online?", "UA" to "How safe is your service? Is there any risk to place an order online?"),
                     "content" to json(
-                    "en" to "It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card.",
-                    "ua" to "It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card."
+                    "EN" to "It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card.",
+                    "UA" to "It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card."
                 )
                 ),
                 json(
-                    "title" to json("en" to "What are your policies concerning the paper format and citation?", "ua" to "What are your policies concerning the paper format and citation?"),
+                    "title" to json("EN" to "What are your policies concerning the paper format and citation?", "UA" to "What are your policies concerning the paper format and citation?"),
                     "content" to json(
-                    "en" to """
+                    "EN" to """
                     Our writers use Microsoft Word .doc format by default (Times New Roman, 12, double-spaced, ~ 250-300 words/page). However, any format specified by the customer is available. The same concerns citation style.,
 
                     If not chosen, the writer chooses a citation style most appropriate for the written assignment in process. The latest edition with newest formatting style and its rules is applied, unless indicated otherwise.
                     """,
-                    "ua" to """
+                    "UA" to """
                     Our writers use Microsoft Word .doc format by default (Times New Roman, 12, double-spaced, ~ 250-300 words/page). However, any format specified by the customer is available. The same concerns citation style.
 
                     If not chosen, the writer chooses a citation style most appropriate for the written assignment in process. The latest edition with newest formatting style and its rules is applied, unless indicated otherwise.
@@ -347,58 +349,58 @@ object MakeStaticSites {
                 )
                 ),
                 json(
-                    "title" to json("en" to "What if I don’t like my paper and it does not meet the requirements?", "ua" to "What if I don’t like my paper and it does not meet the requirements?"),
+                    "title" to json("EN" to "What if I don’t like my paper and it does not meet the requirements?", "UA" to "What if I don’t like my paper and it does not meet the requirements?"),
                     "content" to json(
-                    "en" to "After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy.",
-                    "ua" to "After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy."
+                    "EN" to "After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy.",
+                    "UA" to "After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy."
                 )
                 ),
                 json(
-                    "title" to json("en" to "Does your service provide refunds?", "ua" to "Does your service provide refunds?"),
+                    "title" to json("EN" to "Does your service provide refunds?", "UA" to "Does your service provide refunds?"),
                     "content" to json(
-                    "en" to "Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order.",
-                    "ua" to "Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order."
+                    "EN" to "Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order.",
+                    "UA" to "Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order."
                 )
                 ),
                 json(
-                    "title" to json("en" to "What if my paper is found to be plagiarized?", "ua" to "What if my paper is found to be plagiarized?"),
+                    "title" to json("EN" to "What if my paper is found to be plagiarized?", "UA" to "What if my paper is found to be plagiarized?"),
                     "content" to json(
-                    "en" to "In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper.",
-                    "ua" to "In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper."
+                    "EN" to "In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper.",
+                    "UA" to "In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper."
                 )
                 ),
                 json(
-                    "title" to json("en" to "Can I check my order status?", "ua" to "Can I check my order status?"),
+                    "title" to json("EN" to "Can I check my order status?", "UA" to "Can I check my order status?"),
                     "content" to json(
-                    "en" to "In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions.",
-                    "ua" to "In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions."
+                    "EN" to "In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions.",
+                    "UA" to "In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions."
                 )
                 ),
                 json(
-                    "title" to json("en" to "Can I contact the writer?", "ua" to "Can I contact the writer?"),
+                    "title" to json("EN" to "Can I contact the writer?", "UA" to "Can I contact the writer?"),
                     "content" to json(
-                    "en" to "Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way.",
-                    "ua" to "Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way."
+                    "EN" to "Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way.",
+                    "UA" to "Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way."
                 )
                 ),
                 json(
-                    "title" to json("en" to "Can I ever find my ordered paper being available to the public?", "ua" to "Can I ever find my ordered paper being available to the public?"),
+                    "title" to json("EN" to "Can I ever find my ordered paper being available to the public?", "UA" to "Can I ever find my ordered paper being available to the public?"),
                     "content" to json(
-                    "en" to "Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system.",
-                    "ua" to "Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system."
+                    "EN" to "Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system.",
+                    "UA" to "Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system."
                 )
                 ),
                 json(
-                    "title" to json("en" to "How can I make sure the writer has understood my assignment correctly?", "ua" to "How can I make sure the writer has understood my assignment correctly?"),
+                    "title" to json("EN" to "How can I make sure the writer has understood my assignment correctly?", "UA" to "How can I make sure the writer has understood my assignment correctly?"),
                     "content" to json(
-                    "en" to """
+                    "EN" to """
                     When you start an ordering process, please, make sure you provide your writer with all necessary info, instructions, guidelines, additional materials for study, your class notes if any, and your personal preferences as to the writing style and paper formatting. It will surely facilitate the writing process and advance your chances in getting a higher grade.
 
                     We specifically created an easy-to-use interface for your communication with the writer and support center in the process of paper writing.
 
                     AcademicPaperServed writers’ team is highly flexible and is ready to consider every order on a personal basis. We value our customers and set communication as a priority. We will appreciate your help in giving explicit order details once your order is made.
                     """,
-                    "ua" to """
+                    "UA" to """
                     When you start an ordering process, please, make sure you provide your writer with all necessary info, instructions, guidelines, additional materials for study, your class notes if any, and your personal preferences as to the writing style and paper formatting. It will surely facilitate the writing process and advance your chances in getting a higher grade.
 
                     We specifically created an easy-to-use interface for your communication with the writer and support center in the process of paper writing.
@@ -408,10 +410,10 @@ object MakeStaticSites {
                 )
                 ),
                 json(
-                    "title" to json("en" to "What if my professor requires to hand in all copies of sources used?", "ua" to "What if my professor requires to hand in all copies of sources used?"),
+                    "title" to json("EN" to "What if my professor requires to hand in all copies of sources used?", "UA" to "What if my professor requires to hand in all copies of sources used?"),
                     "content" to json(
-                    "en" to "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. ",
-                    "ua" to "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. "
+                    "EN" to "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. ",
+                    "UA" to "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. "
                 )
                 )
                 ).map{section: dynamic ->
@@ -422,7 +424,7 @@ object MakeStaticSites {
             )
         ))
 
-        writeDynamicPages(legacyClient.writerDynamicPageNames(), ::writePage)
+        writeDynamicPages(writerDynamicPageNames(), ::writePage)
     }
 
     fun writeDynamicPages(names: dynamic, writePage: dynamic) {
@@ -435,7 +437,7 @@ object MakeStaticSites {
         return jshit.rawHtml("""
     <div class="container">
     <div style="display: flex; align-items: center; justify-content: center; position: absolute; left: 0px; top: 200px; width: 100%;">
-    <span style="margin-left: 10">${t(json("en" to "Breathe slowly...", "ua" to "Дышите глубоко..."))}</span>
+    <span style="margin-left: 10">${t(json("EN" to "Breathe slowly...", "UA" to "Дышите глубоко..."))}</span>
     <div id="wholePageTicker" class="progressTicker" style="background-color: ${Color.BLUE_GRAY_600}; width: 14px; height: 28px; margin-left: 10px; margin-top: -5px"></div>
     </div>
     </div>""")
@@ -443,7 +445,7 @@ object MakeStaticSites {
 
     fun makeCustomerSite(arg: dynamic) {
         // {lang}
-        val lang = arg.lang
+        val lang: String = arg.lang
 
         val _t = jshit.utils.makeT(lang)
         t = run {
@@ -460,7 +462,7 @@ object MakeStaticSites {
         }
         // imposeClientT(t)
 
-        val root = "${kindaDirname}/../built/${lang}-customer"
+        val root = "${kindaDirname}/../built/${lang.toLowerCase()}-customer"
         sh.rm("-rf", root)
         sh.mkdir("-p", root)
 
@@ -472,17 +474,17 @@ object MakeStaticSites {
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
         sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
 
-        val tabTitle = t(json("en" to "APS", "ua" to "APS UA"))
+        val tabTitle = t(json("EN" to "APS", "UA" to "APS UA"))
 
         fun writePage(def: dynamic) {
-            genericWritePage(global.Object.assign(def, json("root" to root, "tabTitle" to tabTitle, "lang" to lang, "clientKind" to "customer", "t" to t)))
+            genericWritePage(global.Object.assign(def, json("root" to root, "tabTitle" to tabTitle, "lang" to lang, "clientKind" to UserKind.CUSTOMER, "t" to t)))
         }
 
         writePage(json("name" to "index", // For Customer site
             "comp" to jshit.diva(json(),
                 jshit.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("en" to "Welcome to AcademicPaperServed", "ua" to "Welcome to AcademicPaperServed UA"))),
-                    markdownPiece(json("en" to """
+                    jshit.pageHeader(t(json("EN" to "Welcome to AcademicPaperServed", "UA" to "Welcome to AcademicPaperServed UA"))),
+                    markdownPiece(json("EN" to """
                 Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
 
                 Sitting in front of your laptop, desperately typing the keywords in your search engine browser and wondering why AcademicPaperServed came up with an idea of giving written assignments to the needy students like yourself?
@@ -493,7 +495,7 @@ object MakeStaticSites {
 
                 Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
                 """,
-                        "ua" to """
+                        "UA" to """
                 Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
 
                 Sitting in front of your laptop, desperately typing the keywords in your search engine browser and wondering why AcademicPaperServed came up with an idea of giving written assignments to the needy students like yourself?
@@ -505,20 +507,20 @@ object MakeStaticSites {
                 Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
                 """)),
 
-                    jshit.pageHeader(t(json("en" to "Features", "ua" to "Features"))),
+                    jshit.pageHeader(t(json("EN" to "Features", "UA" to "Features"))),
                     horizBulletsRow(jsArrayOf(
-                        json("glyph" to "pencil", "en" to "No plagiarism", "ua" to "No plagiarism"),
-                        json("glyph" to "star", "en" to "Only premium quality", "ua" to "Only premium quality"),
-                        json("glyph" to "list", "en" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references", "ua" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references")
+                        json("glyph" to "pencil", "EN" to "No plagiarism", "UA" to "No plagiarism"),
+                        json("glyph" to "star", "EN" to "Only premium quality", "UA" to "Only premium quality"),
+                        json("glyph" to "list", "EN" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references", "UA" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references")
                         ), json("horizContentMargin" to 40)),
                     horizBulletsRow(jsArrayOf(
-                        json("glyph" to "gi-piggy-bank", "en" to "One-time and life-time discounts to returning customers", "ua" to "One-time and life-time discounts to returning customers"),
-                        json("glyph" to "credit-card", "en" to "30-days money back guarantee", "ua" to "30-days money back guarantee"),
-                        json("glyph" to "life-saver", "en" to "24/7 support", "ua" to "24/7 support")
+                        json("glyph" to "gi-piggy-bank", "EN" to "One-time and life-time discounts to returning customers", "UA" to "One-time and life-time discounts to returning customers"),
+                        json("glyph" to "credit-card", "EN" to "30-days money back guarantee", "UA" to "30-days money back guarantee"),
+                        json("glyph" to "life-saver", "EN" to "24/7 support", "UA" to "24/7 support")
                         ), json("horizContentMargin" to 40)),
 
-                    jshit.pageHeader(t(json("en" to "Who We Are", "ua" to "Who We Are"))),
-                    markdownPiece(json("en" to """
+                    jshit.pageHeader(t(json("EN" to "Who We Are", "UA" to "Who We Are"))),
+                    markdownPiece(json("EN" to """
             AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
 
             Our writers are versed in various fields of academic writing, so if you do not find a suitable category on this page, feel free to contact our Support Center to find out availability of writing help in your area of interest.
@@ -527,7 +529,7 @@ object MakeStaticSites {
 
                 AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.
             """,
-                        "ua" to """
+                        "UA" to """
             AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
 
             Our writers are versed in various fields of academic writing, so if you do not find a suitable category on this page, feel free to contact our Support Center to find out availability of writing help in your area of interest.
@@ -537,25 +539,25 @@ object MakeStaticSites {
                 AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.
             """)),
 
-                    renderTestimonials("customer"),
+                    renderTestimonials("CUSTOMER"),
 
-                    jshit.pageHeader(t(json("en" to "What We Offer", "ua" to "What We Offer"))),
+                    jshit.pageHeader(t(json("EN" to "What We Offer", "UA" to "What We Offer"))),
                     horizBulletsRow(jsArrayOf(
-                        json("glyph" to "envira", "en" to "Custom essay, research, thesis writing", "ua" to "Custom essay, research, thesis writing"),
-                        json("glyph" to "rocket", "en" to "Plagiarism-free original papers written from scratch", "ua" to "Plagiarism-free original papers written from scratch"),
-                        json("glyph" to "bomb", "en" to "Proofreading and editing of written papers", "ua" to "Proofreading and editing of written papers"),
-                        json("glyph" to "book", "en" to "Free guidelines on essay topic selection and writing process", "ua" to "Free guidelines on essay topic selection and writing process")
+                        json("glyph" to "envira", "EN" to "Custom essay, research, thesis writing", "UA" to "Custom essay, research, thesis writing"),
+                        json("glyph" to "rocket", "EN" to "Plagiarism-free original papers written from scratch", "UA" to "Plagiarism-free original papers written from scratch"),
+                        json("glyph" to "bomb", "EN" to "Proofreading and editing of written papers", "UA" to "Proofreading and editing of written papers"),
+                        json("glyph" to "book", "EN" to "Free guidelines on essay topic selection and writing process", "UA" to "Free guidelines on essay topic selection and writing process")
                         )),
                     locBullets(jsArrayOf(
-                        json("en" to "Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports", "ua" to "Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports"),
-                        json("en" to "Plagiarism-free original papers written from scratch", "ua" to "Plagiarism-free original papers written from scratch"),
-                        json("en" to "Proofreading and editing of written papers", "ua" to "Proofreading and editing of written papers"),
-                        json("en" to "Choosing sources for your paper, providing with annotated bibliography upon request", "ua" to "Choosing sources for your paper, providing with annotated bibliography upon request"),
-                        json("en" to "Free guidelines on successful essay topic selection and writing process", "ua" to "Free guidelines on successful essay topic selection and writing process"),
-                        json("en" to "Individual approach to every customer, no repetitions, free consulting on the paper content", "ua" to "Individual approach to every customer, no repetitions, free consulting on the paper content"),
-                        json("en" to "Free revisions till you are completely satisfied", "ua" to "Free revisions till you are completely satisfied"),
-                        json("en" to "Meeting your deadline", "ua" to "Meeting your deadline"),
-                        json("en" to "Security and confidentiality", "ua" to "Security and confidentiality")
+                        json("EN" to "Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports", "UA" to "Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports"),
+                        json("EN" to "Plagiarism-free original papers written from scratch", "UA" to "Plagiarism-free original papers written from scratch"),
+                        json("EN" to "Proofreading and editing of written papers", "UA" to "Proofreading and editing of written papers"),
+                        json("EN" to "Choosing sources for your paper, providing with annotated bibliography upon request", "UA" to "Choosing sources for your paper, providing with annotated bibliography upon request"),
+                        json("EN" to "Free guidelines on successful essay topic selection and writing process", "UA" to "Free guidelines on successful essay topic selection and writing process"),
+                        json("EN" to "Individual approach to every customer, no repetitions, free consulting on the paper content", "UA" to "Individual approach to every customer, no repetitions, free consulting on the paper content"),
+                        json("EN" to "Free revisions till you are completely satisfied", "UA" to "Free revisions till you are completely satisfied"),
+                        json("EN" to "Meeting your deadline", "UA" to "Meeting your deadline"),
+                        json("EN" to "Security and confidentiality", "UA" to "Security and confidentiality")
                         ))
                 )
                 )
@@ -564,25 +566,25 @@ object MakeStaticSites {
         writePage(json("name" to "why", "highlightedItem" to "why", // For Customer site
             "comp" to jshit.diva(json(),
                 jshit.diva.apply(null, js("[]").concat(json("className" to "container"),
-                    jshit.pageHeader(t(json("en" to "Why AcademicPaperServed?", "ua" to "Why AcademicPaperServed UA?"))),
+                    jshit.pageHeader(t(json("EN" to "Why AcademicPaperServed?", "UA" to "Why AcademicPaperServed UA?"))),
                     jsArrayOf(json(
-                        "title" to json("en" to "We care about each customer’s academic success", "ua" to "We care about each customer’s academic success"),
+                        "title" to json("EN" to "We care about each customer’s academic success", "UA" to "We care about each customer’s academic success"),
                         "content" to json(
-                            "en" to "According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal.",
-                            "ua" to "According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal."
+                            "EN" to "According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal.",
+                            "UA" to "According to the statistics, almost 90% of current U.S. undergraduate and graduate students work either full-time or part-time, while they study. Often, they have little time to complete all of their essays and term papers by themselves, as writing is really time consuming. Others simply don't think of writing as the most pleasurable activity. All students aim for graduation. AcademicPaperServed is here to help them reach this goal."
                         )
                     ),
                         json(
-                            "title" to json("en" to "We make a very strong commitment to quality", "ua" to "We make a very strong commitment to quality"),
+                            "title" to json("EN" to "We make a very strong commitment to quality", "UA" to "We make a very strong commitment to quality"),
                             "content" to json(
-                                "en" to "Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge.",
-                                "ua" to "Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge."
+                                "EN" to "Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge.",
+                                "UA" to "Quality is one of the major benefits of our custom writing service. Every AcademicPaperServed writer is experienced in the special field of studies. As a result, all of the customer's most sophisticated requirements are met by the professional freelance writer with a deep knowledge of the custom paper topic. Our custom essay writers possess Bachelor's / Master's degrees in the related fields of knowledge."
                             )
                         ),
                         json(
-                            "title" to json("en" to "We show an individual approach", "ua" to "We show an individual approach"),
+                            "title" to json("EN" to "We show an individual approach", "UA" to "We show an individual approach"),
                             "content" to json(
-                                "en" to """
+                                "EN" to """
                 To Every Customer and Every Project we deal with.
 
                     With us customers are sure to get their high school, college and university papers tailored exactly to their requirements and needs. No need to worry about quality! Your professor will be completely satisfied. We follow paper details specifically, provide with relevant sources from our library and/or use definite sources (books, journal and magazine articles, encyclopedia excerpts, peer reviewed studies, etc.) requested by the customer.
@@ -593,7 +595,7 @@ object MakeStaticSites {
 
                 AcademicPaperServed team helps English speaking customers from all over the world with anything an academic writing implies, from research ideas to styles and design of your paper. We are strictly following the rules of academic presentation combining it with modern and creative approaches. You are sure to get your project written in a plain, clear language with smooth transitions and coherent rendering.
                 """,
-                                "ua" to """
+                                "UA" to """
                 To Every Customer and Every Project we deal with.
 
                     With us customers are sure to get their high school, college and university papers tailored exactly to their requirements and needs. No need to worry about quality! Your professor will be completely satisfied. We follow paper details specifically, provide with relevant sources from our library and/or use definite sources (books, journal and magazine articles, encyclopedia excerpts, peer reviewed studies, etc.) requested by the customer.
@@ -607,9 +609,9 @@ object MakeStaticSites {
                             )
                         ),
                         json(
-                            "title" to json("en" to "We hire only expert writers", "ua" to "We hire only expert writers"),
+                            "title" to json("EN" to "We hire only expert writers", "UA" to "We hire only expert writers"),
                             "content" to json(
-                                "en" to """
+                                "EN" to """
                 We involve only experienced staff in the writing process! Each member of the AcademicPaperServed writing team has at least 2 years + experience in academic research field.
 
                 You are sure to get your custom paper done by a native English speaker, who is versed in the area of your research, formats your paper according to the latest requirements of citation styles (MLA, APA, Harvard, Chicago, Turabian, Oxford and others) and delivers with no delays.
@@ -618,7 +620,7 @@ object MakeStaticSites {
 
                 We’ve been dealing with ALL types of academic papers and we are always glad to offer you help with any essay (like scholarship essay, admission essay, application essay, entrance essay, personal statement) and research paper type at any academic level and in every possible discipline. If you want your paper to be well-organized and logically constructed, choose us!
                 """,
-                                "ua" to """
+                                "UA" to """
                 We involve only experienced staff in the writing process! Each member of the AcademicPaperServed writing team has at least 2 years + experience in academic research field.
 
                 You are sure to get your custom paper done by a native English speaker, who is versed in the area of your research, formats your paper according to the latest requirements of citation styles (MLA, APA, Harvard, Chicago, Turabian, Oxford and others) and delivers with no delays.
@@ -630,16 +632,16 @@ object MakeStaticSites {
                                 )
                         ),
                         json(
-                            "title" to json("en" to "Plagiarism-free and full-of-creativity zone", "ua" to "Plagiarism-free and full-of-creativity zone"),
+                            "title" to json("EN" to "Plagiarism-free and full-of-creativity zone", "UA" to "Plagiarism-free and full-of-creativity zone"),
                             "content" to json(
-                                "en" to """
+                                "EN" to """
                 Our writers get paid only when they use their own thoughts and ideas, elucidated through high-quality research and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with the most up-to-date plagiarism detection software prior to being delivered to customer. There is totally no chance of delivering a plagiarized paper.
 
                 At AcademicPaperServed all writers apply a creative approach to every essay. Each custom paper is written in compliance with the requests and desires of the customer.
 
                     Be assured our friendly and knowledgeable staff will provide you with immediate, top-quality, and US-based customer support. All responses are personalized to the needs of the student.
                 """,
-                                "ua" to """
+                                "UA" to """
                 Our writers get paid only when they use their own thoughts and ideas, elucidated through high-quality research and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with the most up-to-date plagiarism detection software prior to being delivered to customer. There is totally no chance of delivering a plagiarized paper.
 
                 At AcademicPaperServed all writers apply a creative approach to every essay. Each custom paper is written in compliance with the requests and desires of the customer.
@@ -672,13 +674,13 @@ object MakeStaticSites {
         writePage(json("name" to "prices", "highlightedItem" to "prices", // For Customer site
             "comp" to jshit.diva(json(),
                 jshit.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("en" to "Our Prices", "ua" to "Наши цены"))),
+                    jshit.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
                     jshit.el("table", json("className" to "table table-hover table-condensed"),
                         jshit.el("thead", json(),
                             jshit.el("tr", json(),
-                                jshit.el("th", json(), t(json("en" to "Delivery Option", "ua" to "Срочность"))),
-                                jshit.el("th", json(), t(json("en" to "Type of Paper", "ua" to "Тип работы"))),
-                                jshit.el("th", json(), t(json("en" to "Price", "ua" to "Цена")))
+                                jshit.el("th", json(), t(json("EN" to "Delivery Option", "UA" to "Срочность"))),
+                                jshit.el("th", json(), t(json("EN" to "Type of Paper", "UA" to "Тип работы"))),
+                                jshit.el("th", json(), t(json("EN" to "Price", "UA" to "Цена")))
                                 )),
                         jshit.el.apply(null, js("[]").concat("tbody", json(),
                             priceTableRows.map{row: dynamic -> jshit.el("tr", json(),
@@ -687,9 +689,9 @@ object MakeStaticSites {
                                 jshit.el("td", json(), row[2])
                                 )}))),
 
-                        jshit.pageHeader(t(json("en" to "Pricing Policy", "ua" to "Pricing Policy"))),
+                        jshit.pageHeader(t(json("EN" to "Pricing Policy", "UA" to "Pricing Policy"))),
                         markdownPiece(json(
-                            "en" to """
+                            "EN" to """
                                 Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
 
                                 Our support is daily queried on how one can buy an essay or research paper on a certain topic. AcademicPaperServed does sell pre-written papers, each assignment is made individually and each research is written from scratch. Top-notch writing quality is only achieved through effective communication of the writer and the customer, be it an order on a blog article, high school debate project or a music review.
@@ -698,7 +700,7 @@ object MakeStaticSites {
 
                                 You may find out your quote in one minute! Simply press the Order Your Custom Essay Now tab at the top of the page marked in green. Our Customer Support employee will advise you on the price and terms of delivery.
                                 """,
-                            "ua" to """
+                            "UA" to """
                                 Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
 
                                 Our support is daily queried on how one can buy an essay or research paper on a certain topic. AcademicPaperServed does sell pre-written papers, each assignment is made individually and each research is written from scratch. Top-notch writing quality is only achieved through effective communication of the writer and the customer, be it an order on a blog article, high school debate project or a music review.
@@ -709,46 +711,46 @@ object MakeStaticSites {
                                 """
                         )),
 
-                        jshit.pageHeader(t(json("en" to "Bonuses", "ua" to "Bonuses"))),
+                        jshit.pageHeader(t(json("EN" to "Bonuses", "UA" to "Bonuses"))),
                         markdownPiece(json(
-                            "en" to "Ordering a paper at AcademicPaperServed, you also get:",
-                            "ua" to "Ordering a paper at AcademicPaperServed, you also get:"
+                            "EN" to "Ordering a paper at AcademicPaperServed, you also get:",
+                            "UA" to "Ordering a paper at AcademicPaperServed, you also get:"
                             )),
                         locBullets(jsArrayOf(
-                            json("en" to "Free Title Page", "ua" to "Free Title Page"),
-                            json("en" to "Free Outline", "ua" to "Free Outline"),
-                            json("en" to "Free List of References", "ua" to "Free List of References"),
-                            json("en" to "Free Plagiarism Report (upon additional request)", "ua" to "Free Plagiarism Report (upon additional request)")
+                            json("EN" to "Free Title Page", "UA" to "Free Title Page"),
+                            json("EN" to "Free Outline", "UA" to "Free Outline"),
+                            json("EN" to "Free List of References", "UA" to "Free List of References"),
+                            json("EN" to "Free Plagiarism Report (upon additional request)", "UA" to "Free Plagiarism Report (upon additional request)")
                             )),
 
-                        jshit.pageHeader(t(json("en" to "Discount Policy", "ua" to "Discount Policy"))),
+                        jshit.pageHeader(t(json("EN" to "Discount Policy", "UA" to "Discount Policy"))),
                         markdownPiece(json(
-                            "en" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:",
-                            "ua" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:"
+                            "EN" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:",
+                            "UA" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:"
                             )),
                         locBullets(jsArrayOf(
-                            json("en" to "More than 50 pages${jshit.mdash}5%", "ua" to "Более 50 страниц ${jshit.ndash} 5%"),
-                            json("en" to "More than 100 pages${jshit.mdash}10%", "ua" to "Более 100 страниц ${jshit.ndash} 10%"),
-                            json("en" to "More than 150 pages${jshit.mdash}15%", "ua" to "Более 150 страниц ${jshit.ndash} 15%"),
-                            json("en" to "More than 200 pages${jshit.mdash}30%", "ua" to "Более 200 страниц ${jshit.ndash} 30%")
+                            json("EN" to "More than 50 pages${jshit.mdash}5%", "UA" to "Более 50 страниц ${jshit.ndash} 5%"),
+                            json("EN" to "More than 100 pages${jshit.mdash}10%", "UA" to "Более 100 страниц ${jshit.ndash} 10%"),
+                            json("EN" to "More than 150 pages${jshit.mdash}15%", "UA" to "Более 150 страниц ${jshit.ndash} 15%"),
+                            json("EN" to "More than 200 pages${jshit.mdash}30%", "UA" to "Более 200 страниц ${jshit.ndash} 30%")
                             )),
                         markdownPiece(json(
-                            "en" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
-                            "ua" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy."
+                            "EN" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
+                            "UA" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy."
                             ))
                         )
                 )
             ))
 
         val sampleItems = t(json(
-            "en" to jsArrayOf(
+            "EN" to jsArrayOf(
                 json("title" to "Sample APA paper", "href" to "apa-sample.doc"),
                 json("title" to "Sample MLA research paper", "href" to "mla-sample.doc"),
                 json("title" to "Sample Harvard-style paper", "href" to "harvard-sample.doc"),
                 json("title" to "Sample Chicago paper", "href" to "chicago-sample.doc"),
                 json("title" to "Sample Turabian paper", "href" to "turabian-sample.doc")
                 ),
-            "ua" to jsArrayOf(
+            "UA" to jsArrayOf(
                 json("title" to "Пример реферата", "href" to "ua_essay-sample.doc"),
                 json("title" to "Пример курсовой работы", "href" to "ua_course-sample.doc"),
                 json("title" to "Пример дипломной работы", "href" to "ua_graduate-sample.doc")
@@ -758,7 +760,7 @@ object MakeStaticSites {
         writePage(json("name" to "samples", "highlightedItem" to "samples", // For Customer site
             "comp" to jshit.diva(json(),
                 jshit.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("en" to "Sample Papers", "ua" to "Примеры работ"))),
+                    jshit.pageHeader(t(json("EN" to "Sample Papers", "UA" to "Примеры работ"))),
                     hrefBullets(sampleItems)
                     )
             )
@@ -767,37 +769,37 @@ object MakeStaticSites {
             writePage(json("name" to "faq", "highlightedItem" to "faq", // For Customer site
             "comp" to jshit.diva(json(),
                 jshit.diva.apply(null, js("[]").concat(json("className" to "container"),
-                    jshit.pageHeader(t(json("en" to "FAQ", "ua" to "FAQ"))),
+                    jshit.pageHeader(t(json("EN" to "FAQ", "UA" to "FAQ"))),
                     jsArrayOf(json(
-                        "title" to json("en" to "How does AcademicPaperServed work?", "ua" to "How does AcademicPaperServed work?"),
+                        "title" to json("EN" to "How does AcademicPaperServed work?", "UA" to "How does AcademicPaperServed work?"),
                         "content" to json(
-                            "en" to "As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail.",
-                            "ua" to "As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail."
+                            "EN" to "As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail.",
+                            "UA" to "As soon as you order a custom essay, term paper, research paper or book report your order is reviewed and then the most appropriate writer is assigned, who then takes responsibility to complete it. After your paper is ready, it is send to you via e-mail."
                         )
                     ),
                         json(
-                            "title" to json("en" to "I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?", "ua" to "I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?"),
+                            "title" to json("EN" to "I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?", "UA" to "I have had unpleasant experiences with other custom essay companies. How does AcademicPaperServed differ from fraud services?"),
                             "content" to json(
-                                "en" to "Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price.",
-                                "ua" to "Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price."
+                                "EN" to "Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price.",
+                                "UA" to "Sorry to say, but we often hear from our clients, that they have been deceived by unknown and disreputable essay writing companies that harm the reputation of legitimate writing companies. On the contrary, our service has done its best to earn the trust of our clients by offering quality custom papers at reasonable price."
                             )
                         ),
                         json(
-                            "title" to json("en" to "How safe is your service? Is there any risk to place an order online?", "ua" to "How safe is your service? Is there any risk to place an order online?"),
+                            "title" to json("EN" to "How safe is your service? Is there any risk to place an order online?", "UA" to "How safe is your service? Is there any risk to place an order online?"),
                             "content" to json(
-                                "en" to "It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card.",
-                                "ua" to "It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card."
+                                "EN" to "It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card.",
+                                "UA" to "It is totally safe. Hundreds of our customers make orders and buy custom writing services at AcademicPaperServed daily. All of your transactions are processed securely and encrypted by PayPal. It is impossible to make an unauthorized transaction using your credit card."
                             )
                         ),
                         json(
-                            "title" to json("en" to "What are your policies concerning the paper format and citation?", "ua" to "What are your policies concerning the paper format and citation?"),
+                            "title" to json("EN" to "What are your policies concerning the paper format and citation?", "UA" to "What are your policies concerning the paper format and citation?"),
                             "content" to json(
-                                "en" to """
+                                "EN" to """
                 Our writers use Microsoft Word .doc format by default (Times New Roman, 12, double-spaced, ~ 250-300 words/page). However, any format specified by the customer is available. The same concerns citation style.,
 
                 If not chosen, the writer chooses a citation style most appropriate for the written assignment in process. The latest edition with newest formatting style and its rules is applied, unless indicated otherwise.
                 """,
-                                "ua" to """
+                                "UA" to """
                 Our writers use Microsoft Word .doc format by default (Times New Roman, 12, double-spaced, ~ 250-300 words/page). However, any format specified by the customer is available. The same concerns citation style.
 
                 If not chosen, the writer chooses a citation style most appropriate for the written assignment in process. The latest edition with newest formatting style and its rules is applied, unless indicated otherwise.
@@ -805,58 +807,58 @@ object MakeStaticSites {
                             )
                         ),
                         json(
-                            "title" to json("en" to "What if I don’t like my paper and it does not meet the requirements?", "ua" to "What if I don’t like my paper and it does not meet the requirements?"),
+                            "title" to json("EN" to "What if I don’t like my paper and it does not meet the requirements?", "UA" to "What if I don’t like my paper and it does not meet the requirements?"),
                             "content" to json(
-                                "en" to "After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy.",
-                                "ua" to "After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy."
+                                "EN" to "After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy.",
+                                "UA" to "After you have ordered a paper, you can be confident that it will meet your expectations. Our writers will scrupulously adhere to your exact instructions to write a custom, first-rate academic paper. The team of writers works directly from customers’ instructions, and our clients get what they ask for. Still, there are moments when a customer can feel the writer has missed any of his/her requirements. In this case the customer should request a free revision. The writer will improve the paper and include all the instructions and will not stop working until the client is happy."
                             )
                         ),
                         json(
-                            "title" to json("en" to "Does your service provide refunds?", "ua" to "Does your service provide refunds?"),
+                            "title" to json("EN" to "Does your service provide refunds?", "UA" to "Does your service provide refunds?"),
                             "content" to json(
-                                "en" to "Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order.",
-                                "ua" to "Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order."
+                                "EN" to "Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order.",
+                                "UA" to "Our aim is total customer satisfaction. According to our monthly data we have an acceptable 95% approval rating among our customers. Our writers work hard to do what is best for our customers. If the final version of the paper does not meet customer’s specified criteria, he/she can ask for a revision within thirty days. The writer will add any missing requirements and deliver the revision in 24 hours. If the customer provides us with evidence that the final revised version is still lacking some of the specified requirements, s/he can request a refund within three days after the completion of the order."
                             )
                         ),
                         json(
-                            "title" to json("en" to "What if my paper is found to be plagiarized?", "ua" to "What if my paper is found to be plagiarized?"),
+                            "title" to json("EN" to "What if my paper is found to be plagiarized?", "UA" to "What if my paper is found to be plagiarized?"),
                             "content" to json(
-                                "en" to "In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper.",
-                                "ua" to "In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper."
+                                "EN" to "In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper.",
+                                "UA" to "In fact, it is impossible. The writer gets paid only when he uses his own thoughts and ideas, elucidated through high-quality research/ and writing proficiency. For that reason, the following is not acceptable under any situation: copy-pasting from websites, copying from offline books, texts, and journals, basing one’s work on the ideas/structure of others or previous pieces of work. All papers are checked against millions of hard copy sources, billions of web pages, and countless pieces of work of other researchers. The papers are checked with most up to date anti-plagiarism software before sending any paper to customer. There is totally no chance of delivering a plagiarized paper."
                             )
                         ),
                         json(
-                            "title" to json("en" to "Can I check my order status?", "ua" to "Can I check my order status?"),
+                            "title" to json("EN" to "Can I check my order status?", "UA" to "Can I check my order status?"),
                             "content" to json(
-                                "en" to "In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions.",
-                                "ua" to "In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions."
+                                "EN" to "In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions.",
+                                "UA" to "In order to track the order status the customer can communicate with the writer or upload supplementary files or instructions."
                             )
                         ),
                         json(
-                            "title" to json("en" to "Can I contact the writer?", "ua" to "Can I contact the writer?"),
+                            "title" to json("EN" to "Can I contact the writer?", "UA" to "Can I contact the writer?"),
                             "content" to json(
-                                "en" to "Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way.",
-                                "ua" to "Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way."
+                                "EN" to "Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way.",
+                                "UA" to "Certainly, there is a personal message board on each private account. A customer can easily post a message to the assigned writer, and he/she will reply to almost immediately. If the writer encounters any questions, he will contact the customer the in same way."
                             )
                         ),
                         json(
-                            "title" to json("en" to "Can I ever find my ordered paper being available to the public?", "ua" to "Can I ever find my ordered paper being available to the public?"),
+                            "title" to json("EN" to "Can I ever find my ordered paper being available to the public?", "UA" to "Can I ever find my ordered paper being available to the public?"),
                             "content" to json(
-                                "en" to "Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system.",
-                                "ua" to "Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system."
+                                "EN" to "Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system.",
+                                "UA" to "Our service guarantees that the paper that has been written by our writers will never be available to the public. All papers are stored under an exclusively developed security system."
                             )
                         ),
                         json(
-                            "title" to json("en" to "How can I make sure the writer has understood my assignment correctly?", "ua" to "How can I make sure the writer has understood my assignment correctly?"),
+                            "title" to json("EN" to "How can I make sure the writer has understood my assignment correctly?", "UA" to "How can I make sure the writer has understood my assignment correctly?"),
                             "content" to json(
-                                "en" to """
+                                "EN" to """
                 When you start an ordering process, please, make sure you provide your writer with all necessary info, instructions, guidelines, additional materials for study, your class notes if any, and your personal preferences as to the writing style and paper formatting. It will surely facilitate the writing process and advance your chances in getting a higher grade.
 
                 We specifically created an easy-to-use interface for your communication with the writer and support center in the process of paper writing.
 
                 AcademicPaperServed writers’ team is highly flexible and is ready to consider every order on a personal basis. We value our customers and set communication as a priority. We will appreciate your help in giving explicit order details once your order is made.
                 """,
-                                "ua" to """
+                                "UA" to """
                 When you start an ordering process, please, make sure you provide your writer with all necessary info, instructions, guidelines, additional materials for study, your class notes if any, and your personal preferences as to the writing style and paper formatting. It will surely facilitate the writing process and advance your chances in getting a higher grade.
 
                 We specifically created an easy-to-use interface for your communication with the writer and support center in the process of paper writing.
@@ -866,10 +868,10 @@ object MakeStaticSites {
                             )
                         ),
                         json(
-                            "title" to json("en" to "What if my professor requires to hand in all copies of sources used?", "ua" to "What if my professor requires to hand in all copies of sources used?"),
+                            "title" to json("EN" to "What if my professor requires to hand in all copies of sources used?", "UA" to "What if my professor requires to hand in all copies of sources used?"),
                             "content" to json(
-                                "en" to "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. ",
-                                "ua" to "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. "
+                                "EN" to "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. ",
+                                "UA" to "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. "
                             )
                         )
                         ).map{section: dynamic ->
@@ -883,25 +885,25 @@ object MakeStaticSites {
             writePage(json("name" to "contact", "highlightedItem" to "contact", // For Customer site
             "comp" to jshit.diva(json(),
                 jshit.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("en" to "Contact Us", "ua" to "Contact Us"))),
+                    jshit.pageHeader(t(json("EN" to "Contact Us", "UA" to "Contact Us"))),
                     markdownPiece(json(
-                        "en" to """
+                        "EN" to """
                 Thank you for visiting AcademicPaperServed website! We will be happy to answer any questions, give a quote, and select a writer for your paper at any academic level. We value each customer and strive to achieve best results through communication process. Customer support representative is ready to advise you on the ordering process, choosing your delivery option and selecting an appropriate writer.
                 """,
-                        "ua" to """
+                        "UA" to """
                 Thank you for visiting AcademicPaperServed website! We will be happy to answer any questions, give a quote, and select a writer for your paper at any academic level. We value each customer and strive to achieve best results through communication process. Customer support representative is ready to advise you on the ordering process, choosing your delivery option and selecting an appropriate writer.
                 """
                     )),
 
-                    jshit.diva(json("style" to json("marginBottom" to 10)), t(json("en" to "AcademicPaperServed headquarter:", "ua" to "AcademicPaperServed headquarter:"))),
+                    jshit.diva(json("style" to json("marginBottom" to 10)), t(json("EN" to "AcademicPaperServed headquarter:", "UA" to "AcademicPaperServed headquarter:"))),
                     jshit.diva(json("style" to json("whiteSpace" to "pre", "fontFamily" to "monospace")), tdedent(json(
-                        "en" to """
+                        "EN" to """
                 DP World Inc
                 624 W Kristina Ln
                     Round Lake, IL 60073
                 United States
                     """,
-                        "ua" to """
+                        "UA" to """
                 DP World Inc
                 624 W Kristina Ln
                     Round Lake, IL 60073
@@ -913,7 +915,7 @@ object MakeStaticSites {
         ))
 
             val blogItems = t(json(
-            "en" to jsArrayOf(
+            "EN" to jsArrayOf(
                 json(
                     "listTitle" to "Why Would I Order a Research Paper Online?",
                     "title" to "Being a Student is not Easy",
@@ -1059,7 +1061,7 @@ object MakeStaticSites {
             """
                 )
                 ),
-            "ua" to jsArrayOf(
+            "UA" to jsArrayOf(
                 json(
                     "listTitle" to "Why Would I Order a Research Paper Online?",
                     "title" to "Being a Student is not Easy",
@@ -1221,19 +1223,19 @@ object MakeStaticSites {
         writePage(json("name" to "blog", "highlightedItem" to "blog", // For Customer site
             "comp" to jshit.diva(json(),
                 jshit.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("en" to "Writing Blog", "ua" to "Писательский Блог"))),
+                    jshit.pageHeader(t(json("EN" to "Writing Blog", "UA" to "Писательский Блог"))),
                     hrefBullets(blogItems.map{x: dynamic -> (json("title" to x.listTitle, "href" to "blog-${x.slug}.html"))})
                     )
             )
         ))
 
-        writeDynamicPages(legacyClient.customerDynamicPageNames(), ::writePage)
+        writeDynamicPages(customerDynamicPageNames(), ::writePage)
     }
 
     fun genericWritePage(arg: dynamic) {
         // {name, comp, css="", js="", highlightedItem, root, tabTitle, lang, clientKind, t}
         val name = arg.name; val comp = arg.comp; val highlightedItem = arg.highlightedItem; val t = arg.t
-        val root = arg.root; val tabTitle = arg.tabTitle; val lang = arg.lang; val clientKind = arg.clientKind
+        val root = arg.root; val tabTitle = arg.tabTitle; val lang = arg.lang; val clientKind: UserKind = arg.clientKind
         val css = if (arg.css) arg.css else ""
         val js = if (arg.js) arg.js else ""
 
@@ -1436,8 +1438,8 @@ object MakeStaticSites {
 
     <script>
         LANG = '${lang}'
-    CLIENT_KIND = '${clientKind}'
-    setFavicon('${if (clientKind == "customer") "favicon-customer.ico" else "favicon-writer.ico"}')
+    CLIENT_KIND = '${clientKind.name}'
+    setFavicon('${if (clientKind == UserKind.CUSTOMER) "favicon-customer.ico" else "favicon-writer.ico"}')
 
     function setFavicon(src) {
         var link = document.createElement('link')
@@ -1450,7 +1452,7 @@ object MakeStaticSites {
     </head>
     <body style="padding-top: 50px; padding-bottom: 40px; overflow-y: scroll;">
     <div id="topNavbarContainer">
-    ${jshit.ReactDOMServer.renderToStaticMarkup(legacyClient.renderTopNavbar(json("clientKind" to clientKind, "highlightedItem" to highlightedItem, "t" to t)))}
+    ${jshit.ReactDOMServer.renderToStaticMarkup(renderTopNavbar(clientKind, json("highlightedItem" to highlightedItem, "t" to t)))}
     </div>
 
     <div id="root" style="min-height: calc(100vh - 28px - 50px);">
@@ -1475,10 +1477,10 @@ object MakeStaticSites {
     <div id="footer" style="">
     <div style="background-color: #f8f8f8; border: 1px solid #e7e7e7; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding: 5px 15px; height: 28px;">
     ${
-        if (clientKind == "customer") """
+        if (clientKind == UserKind.CUSTOMER) """
             © Copyright 2015-2016 AcademicPaperServed. All rights reserved
             """
-        else if (clientKind == "writer") """
+        else if (clientKind == UserKind.WRITER) """
             © Copyright 2015-2016 Writer UA. All rights reserved
             """
         else wtf("clientKind")
@@ -1678,27 +1680,27 @@ object MakeStaticSites {
 
     fun renderTestimonials(clientKind: dynamic): dynamic {
         return jshit.diva(json(),
-            jshit.pageHeader(t(json("en" to "What People Say", "ua" to "Что о нас говорят"))),
+            jshit.pageHeader(t(json("EN" to "What People Say", "UA" to "Что о нас говорят"))),
             jshit.diva(json("id" to "testimonials-window"),
                 jshit.diva.apply(null, js("[]").concat(json("id" to "testimonials-strip"), jsArrayOf(
-                    json("name" to json("en" to "Nicole", "ua" to "Nicole"), "img" to "nicole.jpg", "says" to json(
-                        "en" to "Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.",
-                        "ua" to "Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.")),
-                    json("name" to json("en" to "Miranda", "ua" to "Miranda"), "img" to "miranda.jpg", "says" to json(
-                        "en" to "Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!",
-                        "ua" to "Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!")),
-                    json("name" to json("en" to "Mike P.", "ua" to "Mike P."), "img" to "mike-p.jpg", "says" to json(
-                        "en" to "I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!",
-                        "ua" to "I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!")),
-                    json("name" to json("en" to "Joseph B.", "ua" to "Joseph B."), "img" to "joseph-b.jpg", "says" to json(
-                        "en" to "First I doubted I’d get anything of good quality, but I was up${jshit.nbsp}to the eyes in work and had no other choice. The paper${jshit.nbsp}proved to be authentic and came on time. Can I get${jshit.nbsp}the same writer for my next essay?",
-                        "ua" to "First I doubted I’d get anything of good quality, but I was up${jshit.nbsp}to the eyes in work and had no other choice. The paper${jshit.nbsp}proved to be authentic and came on time. Can I get${jshit.nbsp}the same writer for my next essay?")),
-                    json("name" to json("en" to "Mark C.", "ua" to "Mark C."), "img" to "mark-c.jpg", "says" to json(
-                        "en" to "How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.",
-                        "ua" to "How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.")),
-                    json("name" to json("en" to "Linda R.", "ua" to "Linda R."), "img" to "linda-r.jpg", "says" to json(
-                        "en" to "I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!",
-                        "ua" to "I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!"))
+                    json("name" to json("EN" to "Nicole", "UA" to "Nicole"), "img" to "nicole.jpg", "says" to json(
+                        "EN" to "Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.",
+                        "UA" to "Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.")),
+                    json("name" to json("EN" to "Miranda", "UA" to "Miranda"), "img" to "miranda.jpg", "says" to json(
+                        "EN" to "Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!",
+                        "UA" to "Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!")),
+                    json("name" to json("EN" to "Mike P.", "UA" to "Mike P."), "img" to "mike-p.jpg", "says" to json(
+                        "EN" to "I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!",
+                        "UA" to "I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!")),
+                    json("name" to json("EN" to "Joseph B.", "UA" to "Joseph B."), "img" to "joseph-b.jpg", "says" to json(
+                        "EN" to "First I doubted I’d get anything of good quality, but I was up${jshit.nbsp}to the eyes in work and had no other choice. The paper${jshit.nbsp}proved to be authentic and came on time. Can I get${jshit.nbsp}the same writer for my next essay?",
+                        "UA" to "First I doubted I’d get anything of good quality, but I was up${jshit.nbsp}to the eyes in work and had no other choice. The paper${jshit.nbsp}proved to be authentic and came on time. Can I get${jshit.nbsp}the same writer for my next essay?")),
+                    json("name" to json("EN" to "Mark C.", "UA" to "Mark C."), "img" to "mark-c.jpg", "says" to json(
+                        "EN" to "How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.",
+                        "UA" to "How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.")),
+                    json("name" to json("EN" to "Linda R.", "UA" to "Linda R."), "img" to "linda-r.jpg", "says" to json(
+                        "EN" to "I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!",
+                        "UA" to "I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!"))
                     ).map{item: dynamic ->
                     jshit.diva(json("className" to "testimonials-item"),
                         jshit.diva(json("className" to "media"),

@@ -187,11 +187,12 @@ app.post('/rpc', async function(req, res) {
             //   e.g. danger_eval might not need it. For those requests where connection is necessary
             //   everything should always be wrapped in start transaction/commit/rollback.
             
+            // dlog('REQUESTER: ' + msg.LANG + '_' + msg.clientKind)
             const [clientDomain, clientPortSuffix] = {
-                ua_customer: [DOMAIN_UA_CUSTOMER, PORT_SUFFIX_UA_CUSTOMER],
-                ua_writer: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
-                en_customer: [DOMAIN_EN_CUSTOMER, PORT_SUFFIX_EN_CUSTOMER],
-                en_writer: [DOMAIN_EN_WRITER, PORT_SUFFIX_EN_WRITER],
+                UA_CUSTOMER: [DOMAIN_UA_CUSTOMER, PORT_SUFFIX_UA_CUSTOMER],
+                UA_WRITER: [DOMAIN_UA_WRITER, PORT_SUFFIX_UA_WRITER],
+                EN_CUSTOMER: [DOMAIN_EN_CUSTOMER, PORT_SUFFIX_EN_CUSTOMER],
+                EN_WRITER: [DOMAIN_EN_WRITER, PORT_SUFFIX_EN_WRITER],
             }[msg.LANG + '_' + msg.clientKind] || [undefined, undefined]
             if (!clientDomain && msg.clientKind !== 'devenv' && msg.clientKind !== 'debug') raise('WTF is the clientKind?')
             
@@ -704,7 +705,7 @@ app.post('/rpc', async function(req, res) {
                 if (msg.fun === 'private_getLiveStatus') {
                     const res = {}
                     
-                    if (user.kind === 'admin') {
+                    if (user.kind === 'ADMIN') {
                         let heapSize = 0
                         let unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259', y: q`
                             select count(*) from support_threads where supporter_id is null`})[0].count, 10)
@@ -715,13 +716,13 @@ app.post('/rpc', async function(req, res) {
                         
                         res.suka = {count: 'blia-' + puid()}
                         res.profilesToApprove = (#await tx.query(s{y: q`
-                            select count(*) from users where state = 'profile-approval-pending'
+                            select count(*) from users where state = 'PROFILE_APPROVAL_PENDING'
                                                              and assigned_to = ${user.id}`}))[0]
                     }
-                    else if (user.kind === 'writer') {
+                    else if (user.kind === 'WRITER') {
                         res.suka = {count: 'blia-' + puid()}
                     }
-                    else if (user.kind === 'customer') {
+                    else if (user.kind === 'CUSTOMER') {
                         res.suka = {count: 'blia-' + puid()}
                     }
                     
@@ -732,7 +733,7 @@ app.post('/rpc', async function(req, res) {
                               and m.data->'seenBy'->${user.id} is null`})[0].count, 10)
                               
                     if (unseenThreadMessageCount) {
-                        if (user.kind === 'admin') {
+                        if (user.kind === 'ADMIN') {
                             const unseenThreadCount = parseInt(#await tx.query({$tag: '2404edb2-34b4-4da1-9a7e-9b4af3c0419b', y: q`
                                 select count(*) from support_threads t
                                 where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
@@ -773,14 +774,14 @@ app.post('/rpc', async function(req, res) {
                     
                             #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb', y: q`
                                 insert into users (inserted_at,         updated_at,          email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
-                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.clientKind}, ${msg.LANG}, ${'profile-pending'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`})
+                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.clientKind.toUpperCase()}, ${msg.LANG.toUpperCase()}, ${'PROFILE_PENDING'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`})
                             
                             const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
                                 
                             let subject
-                            if (msg.LANG === 'ua' && msg.clientKind === 'customer') {
+                            if (msg.LANG === 'UA' && msg.clientKind === 'CUSTOMER') {
                                 subject = 'Пароль для APS'
-                            } else if (msg.LANG === 'ua' && msg.clientKind === 'writer') {
+                            } else if (msg.LANG === 'UA' && msg.clientKind === 'WRITER') {
                                 subject = 'Пароль для Writer UA'
                             }
                             if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
@@ -826,8 +827,8 @@ app.post('/rpc', async function(req, res) {
                         loadProfileFields(s{})
                         loadAdminNotesField(s{})
                         loadField(s{key: 'state', mandatory: true, allowedValues: apsdata.userStateValues()})
-                        loadReasonField(s{key: 'profileRejectionReason', shouldBePresentIfKeys: 'state', valueEquals: 'profile-rejected'})
-                        loadReasonField(s{key: 'banReason', shouldBePresentIfKeys: 'state', valueEquals: 'banned'})
+                        loadReasonField(s{key: 'profileRejectionReason', shouldBePresentIfKeys: 'state', valueEquals: 'PROFILE_REJECTED'})
+                        loadReasonField(s{key: 'banReason', shouldBePresentIfKeys: 'state', valueEquals: 'BANNED'})
                     traceEndSection(s{})
 
                     if (isEmpty(fieldErrors)) {
@@ -835,8 +836,8 @@ app.post('/rpc', async function(req, res) {
                             update users set 
                                 updated_at = ${requestTimestamp},
                                 state = ${fields.state},
-                                profile_rejection_reason = ${fields.state === 'profile-rejected' ? fields.profileRejectionReason : null},
-                                ban_reason = ${fields.state === 'banned' ? fields.banReason : null},
+                                profile_rejection_reason = ${fields.state === 'PROFILE_REJECTED' ? fields.profileRejectionReason : null},
+                                ban_reason = ${fields.state === 'BANNED' ? fields.banReason : null},
                                 email = ${fields.email},
                                 kind = ${msg.clientKind},
                                 first_name = ${fields.firstName},
@@ -870,7 +871,7 @@ app.post('/rpc', async function(req, res) {
                                              phone = ${fields.phone},
                                              compact_phone = ${compactPhone(fields.phone)},
                                              about_me = ${fields.aboutMe},
-                                             state = 'profile-approval-pending',
+                                             state = 'PROFILE_APPROVAL_PENDING',
                                              assigned_to = ${THE_ADMIN_ID}
                                    where id = ${user.id}`})
                         #await loadUserForToken(s{})
@@ -946,11 +947,11 @@ app.post('/rpc', async function(req, res) {
                             }()
                             
                             !function considerFilter() {
-                                if (actualFilter === 'all') return
-                                if (actualFilter === 'cool') return qb.append(q`and state = 'cool'`)
-                                if (actualFilter === '2approve') return qb.append(q`and state = 'profile-approval-pending'`)
-                                if (actualFilter === 'rejected') return qb.append(q`and state = 'profile-rejected'`)
-                                if (actualFilter === 'banned') return qb.append(q`and state = 'banned'`)
+                                if (actualFilter === 'ALL') return
+                                if (actualFilter === 'COOL') return qb.append(q`and state = 'COOL'`)
+                                if (actualFilter === '2APPROVE') return qb.append(q`and state = 'PROFILE_APPROVAL_PENDING'`)
+                                if (actualFilter === 'REJECTED') return qb.append(q`and state = 'PROFILE_REJECTED'`)
+                                if (actualFilter === 'BANNED') return qb.append(q`and state = 'BANNED'`)
                                 
                                 raise(`Weird filter: ${actualFilter}`)
                             }()
@@ -991,13 +992,13 @@ app.post('/rpc', async function(req, res) {
                     const hasUpdated = #await hasUpdatedSupportThreads()
                     const availableFilters = []
                     let filter = msg.filter
-                    if (!['updatedOrAll', 'updated', 'all'].includes(filter)) filter = 'all'
+                    if (!['updatedOrAll', 'updated', 'ALL'].includes(filter)) filter = 'ALL'
                     if (hasUpdated || filter === 'updated') { // If user explicitly requests "updated", we show it even with no items
                         availableFilters.push('updated')
                     }
-                    availableFilters.push('all')
+                    availableFilters.push('ALL')
                     if (filter === 'updatedOrAll') {
-                        filter = hasUpdated ? 'updated' : 'all'
+                        filter = hasUpdated ? 'updated' : 'ALL'
                     }
                     const chunk = #await selectSupportThreadsChunk(s{filter})
                     return traceEndHandler(s{ret: hunkyDory(asn({availableFilters, filter}, chunk))})
@@ -1170,7 +1171,7 @@ app.post('/rpc', async function(req, res) {
                     const thread = #await tx.query(s{y: q`
                         select * from support_threads where id = ${msg.threadID}`})[0]
                     if (!thread || thread.deleted) return traceEndHandler(s{ret: notFoundResult()})
-                    if (user.kind === 'admin') {
+                    if (user.kind === 'ADMIN') {
                         raise('implement me')
                     } else {
                         if (thread.supportee_id !== user.id) return traceEndHandler(s{ret: forbiddenResult()})
@@ -1209,7 +1210,7 @@ app.post('/rpc', async function(req, res) {
                 }
                 
                 function getTSLang() {
-                    if (msg.LANG === 'ua') return 'russian'
+                    if (msg.LANG === 'UA') return 'russian'
                     return 'english'
                 }
                     
@@ -1349,7 +1350,7 @@ app.post('/rpc', async function(req, res) {
                 
                 function failOnClientUserMismatch() {
                     if (user.lang !== msg.LANG) raise('Client/user language mismatch')
-                    if (msg.clientKind === 'writer' && (user.kind === 'admin' || user.kind === 'root' || user.kind === 'toor')) return
+                    if (msg.clientKind === 'WRITER' && (user.kind === 'ADMIN' || user.kind === 'root' || user.kind === 'toor')) return
                     if (user.kind !== msg.clientKind) raise('Client/user kind mismatch')
                 }
                 

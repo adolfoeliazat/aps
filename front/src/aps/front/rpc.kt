@@ -10,32 +10,11 @@ import aps.*
 
 fun igniteRPCShit() {
     dlog("Igniting RPC shit...")
-    shouldLoadMeta = true
-    global.testRPC1 = ::testRPC1
+//    shouldLoadMeta = true
 }
 
-fun testRPC1() {"__async"
-    run {
-        console.log("Sending request for Billy...")
-        val res: HiResponse = __await(rpc(HiRequest(name = "Billy")))
-        console.log("Got response", res.toString())
-    }
-
-    run {
-        console.log("Sending request for Wilma...")
-        val res: HiResponse = __await(rpc(HiRequest(name = "Wilma")))
-        console.log("Got response", res.toString())
-    }
-}
-
-class FieldMeta {
-    enum class Type {
-        STRING
-    }
-}
-
-var shouldLoadMeta = true
-val classNameToFieldDeserializationInfos = mutableMapOf<String, Iterable<FieldDeserializationInfo>>()
+//var shouldLoadMeta = true
+//val classNameToFieldDeserializationInfos = mutableMapOf<String, Iterable<FieldDeserializationInfo>>()
 
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {"__async"
     val stackBeforeXHR: String = js("Error().stack")
@@ -52,7 +31,7 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
                     // dlog("Got backend response for /$path", global.JSON.stringify(jsonObject, null, 4))
                     resolve(jsonObject)
                 } else {
-                    reject(JSException("Got a shitty backend response at /$path: status = ${xhr.status}", stackBeforeXHR))
+                    reject(JSException("Got shitty backend response at /$path: status = ${xhr.status}", stackBeforeXHR))
                 }
             }
         }
@@ -61,65 +40,103 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
     }
 }
 
-fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res> {"__async"
-    if (shouldLoadMeta) {
-        // {classes: [{name: '', fields: [{name: '', strategy: {type: 'Enum', ...}}]}]}
-        fun loadStrategy(jsonObject: dynamic): TypeDeserializationStrategy = when (jsonObject.type) {
-            "Simple" -> TypeDeserializationStrategy.Simple()
-            "Enum" -> TypeDeserializationStrategy.Enum(jsonObject.enumClassName)
-            "Class" -> TypeDeserializationStrategy.Class(jsonObject.className)
-            "List" -> TypeDeserializationStrategy.List(loadStrategy(jsonObject.itemStrategy))
-            else -> wtf("Strategy type: ${jsonObject.type}")
-        }
+fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: dynamic): Promise<Res> {"__async"
+//    if (shouldLoadMeta) {
+//        // {classes: [{name: '', fields: [{name: '', strategy: {type: 'Enum', ...}}]}]}
+//        fun loadStrategy(jsonObject: dynamic): TypeDeserializationStrategy = when (jsonObject.type) {
+//            "Simple" -> TypeDeserializationStrategy.Simple()
+//            "Enum" -> TypeDeserializationStrategy.Enum(jsonObject.enumClassName)
+//            "Class" -> TypeDeserializationStrategy.Class(jsonObject.className)
+//            "List" -> TypeDeserializationStrategy.List(loadStrategy(jsonObject.itemStrategy))
+//            else -> wtf("Strategy type: ${jsonObject.type}")
+//        }
+//
+//        val metaJSONObject = __await(fetchFromBackend("meta"))
+////        dlog("Got meta", js("JSON").stringify(metaJSONObject, null, 2))
+//        classNameToFieldDeserializationInfos.clear()
+//        for (classJSONObject in jsArrayToList(metaJSONObject.classes)) {
+//            val fdis = mutableListOf<FieldDeserializationInfo>()
+//            for (fieldJSONObject in jsArrayToList(classJSONObject.fields)) {
+//                fdis.add(FieldDeserializationInfo(
+//                    fieldName = fieldJSONObject.name,
+//                    strategy = loadStrategy(fieldJSONObject.strategy)))
+//            }
+//            classNameToFieldDeserializationInfos[classJSONObject.name] = fdis
+//        }
+//
+//        shouldLoadMeta = false
+//    }
 
-        val metaJSONObject = __await(fetchFromBackend("meta"))
-        classNameToFieldDeserializationInfos.clear()
-        for (classJSONObject in jsArrayToList(metaJSONObject.classes)) {
-            val fdis = mutableListOf<FieldDeserializationInfo>()
-            for (fieldJSONObject in jsArrayToList(classJSONObject.fields)) {
-                fdis.add(FieldDeserializationInfo(
-                    fieldName = fieldJSONObject.name,
-                    strategy = loadStrategy(fieldJSONObject.strategy)))
-            }
-            classNameToFieldDeserializationInfos[classJSONObject.name] = fdis
-        }
+    // dlog("requestJSONObject", requestJSONObject)
 
-        shouldLoadMeta = false
+    val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
+    dlog("Response", js("JSON").stringify(responseJSONObject, null, 2))
+
+    return __asyncResult(dejsonize(responseJSONObject) as Res)
+}
+
+fun <Res> callRemoteProcedure(procedureName: String, req: Map<String, String>): Promise<Res> {"__async"
+    val requestJSONObject = js("({})")
+    for ((k, v) in req) {
+        requestJSONObject[k] = v
     }
 
+    return __await(callRemoteProcedurePassingJSONObject(procedureName, requestJSONObject))
+}
+
+fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res> {"__async"
     val requestJSONObject = js("({})")
     val dynamicReq: dynamic = req
     for (k in jsArrayToList(global.Object.keys(req))) {
         requestJSONObject[k] = dynamicReq[k]
     }
-    // dlog("requestJSONObject", requestJSONObject)
 
-    val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
-
-    return __asyncResult(jsonObjectToFuckingObject(responseJSONObject, "aps.${procedureName.capitalize()}Response"))
+    return __await(callRemoteProcedurePassingJSONObject(procedureName, requestJSONObject))
 }
 
-fun <T> jsonObjectToFuckingObject(jsonObject: dynamic, className: String): T {
-    val res = eval("new _.$className()")
-    val fds = classNameToFieldDeserializationInfos[className] ?: wtf("No field deserialization infos for $className")
-    for (fd in fds) {
-        res[fd.fieldName] = jsonValueToFuckingValue(jsonObject[fd.fieldName], fd.strategy)
+fun dejsonize(jsThing: dynamic): Any? {
+    return when {
+        jsThing == null -> null
+
+        jsTypeOf(jsThing).oneOf("string", "number", "boolean") -> jsThing
+
+        jsThing.`$$$enum` != null -> eval("_.${jsThing.`$$$enum`}.${jsThing.value}")
+
+        jsThing.`$$$class` != null ->
+            evalAny("new _.${(jsThing.`$$$class` as String).replace("$", ".")}()").applet {res ->
+                for (k in jsKeys(jsThing))
+                    if (k != "\$\$\$class")
+                        jsSet(res, k, dejsonize(jsThing[k]))
+            }
+
+        jsIsArray(jsThing) -> jsArrayToList(jsThing)
+
+//        jsIsArray(jsThing) -> mutableListOf<Any?>().applet {res ->
+//        }
+
+        else -> { dwarn("jsThing", jsThing); wtf("Dunno how to dejsonize that jsThing") }
     }
-    return res
 }
 
-fun jsonValueToFuckingValue(jsonValue: dynamic, strategy: TypeDeserializationStrategy): Any? =
-    if (jsonValue == null) null
-    else when (strategy) {
-        is TypeDeserializationStrategy.Simple -> jsonValue
-        is TypeDeserializationStrategy.Enum -> eval("_.${strategy.enumClassName}.$jsonValue")
-        is TypeDeserializationStrategy.Class -> jsonObjectToFuckingObject(jsonValue, strategy.className)
-        is TypeDeserializationStrategy.List -> jsArrayToList(jsonValue, { jsonValueToFuckingValue(it, strategy.itemStrategy) })
-    }
+//fun <T> bak_dejsonize(jsonObject: dynamic, className: String): T {
+//    val res = eval("new _.$className()")
+//    val fds = classNameToFieldDeserializationInfos[className] ?: wtf("No field deserialization infos for $className")
+//    for (fd in fds) {
+//        res[fd.fieldName] = jsonValueToFuckingValue(jsonObject[fd.fieldName], fd.strategy)
+//    }
+//    return res
+//}
+
+//fun jsonValueToFuckingValue(jsonValue: dynamic, strategy: TypeDeserializationStrategy): Any? =
+//    if (jsonValue == null) null
+//    else when (strategy) {
+//        is TypeDeserializationStrategy.Simple -> jsonValue
+//        is TypeDeserializationStrategy.Enum -> eval("_.${strategy.enumClassName}.$jsonValue")
+//        is TypeDeserializationStrategy.Class -> dejsonize(jsonValue, strategy.className)
+//        is TypeDeserializationStrategy.List -> jsArrayToList(jsonValue, { jsonValueToFuckingValue(it, strategy.itemStrategy) })
+//    }
 
 
-fun rpc(req: HiRequest): Promise<HiResponse> = callRemoteProcedure("hi", req)
-fun rpc(req: SignInWithPasswordRequest): Promise<SignInWithPasswordResponse> = callRemoteProcedure("signInWithPassword", req)
 fun rpc(req: ResetTestDatabaseRequest): Promise<ResetTestDatabaseRequest> = callRemoteProcedure("resetTestDatabase", req)
 
 

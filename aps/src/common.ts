@@ -50,20 +50,20 @@ const makeOrRemakeAPSCommonExportedShit = function hot$makeOrRemakeAPSCommonExpo
         
         userFilters() {
             return [
-                {value: 'all', title: t(`TOTE`, `Все`)},
-                {value: 'cool', title: t(`TOTE`, `Прохладные`)},
-                {value: '2approve', title: t(`TOTE`, `Ждут аппрува`)},
-                {value: 'rejected', title: t(`TOTE`, `Завернутые`)},
-                {value: 'banned', title: t(`TOTE`, `Забаненые`)},
+                {value: 'ALL', title: t(`TOTE`, `Все`)},
+                {value: 'COOL', title: t(`TOTE`, `Прохладные`)},
+                {value: '2APPROVE', title: t(`TOTE`, `Ждут аппрува`)},
+                {value: 'REJECTED', title: t(`TOTE`, `Завернутые`)},
+                {value: 'BANNED', title: t(`TOTE`, `Забаненые`)},
             ]
         },
         
         userStates() {
             return [
-                {value: 'cool', title: t(`TOTE`, `Прохладный`)},
-                {value: 'profile-approval-pending', title: t(`TOTE`, `Ждет аппрува профиля`)},
-                {value: 'profile-rejected', title: t(`TOTE`, `Профиль завернут`)},
-                {value: 'banned', title: t(`TOTE`, `Забанен`)},
+                {value: 'COOL', title: t(`TOTE`, `Прохладный`)},
+                {value: 'PROFILE_APPROVAL_PENDING', title: t(`TOTE`, `Ждет аппрува профиля`)},
+                {value: 'PROFILE_REJECTED', title: t(`TOTE`, `Профиль завернут`)},
+                {value: 'BANNED', title: t(`TOTE`, `Забанен`)},
             ]
         },
     }
