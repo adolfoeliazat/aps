@@ -9,12 +9,12 @@
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/db.kt" line="48" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/navbar.kt" line="182" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" line="55" />
-    <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" line="107" />
-    <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/Back.kt" line="447" />
-    <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/Back.kt" line="693" />
+    <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" line="76" />
+    <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/Back.kt" line="250" />
+    <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/Back.kt" line="406" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front.kt" line="205" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/art.kt" line="119" />
-    <bookmark url="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" line="81" />
+    <bookmark url="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" line="66" />
     <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java" line="3730" />
     <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java" line="229" />
   </component>
@@ -117,12 +117,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rpc.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="rpc.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/rpc.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="702">
-              <caret line="80" column="87" selection-start-line="80" selection-start-column="87" selection-end-line="80" selection-end-column="87" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Back.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#80#787#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -140,20 +152,23 @@
       <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="90" column="6" selection-start-line="90" selection-start-column="6" selection-end-line="90" selection-end-column="6" />
-              <folding />
+            <state relative-caret-position="51">
+              <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+              <folding>
+                <marker date="1475259771736" expanded="false" signature="0:60" ph="/.../" />
+                <marker date="1475259771736" expanded="true" signature="1714:1716" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="56" column="17" selection-start-line="56" selection-start-column="17" selection-end-line="56" selection-end-column="17" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1475250777088" expanded="false" signature="0:60" ph="/.../" />
+                <marker date="1475259771736" expanded="false" signature="0:60" ph="/.../" />
               </folding>
             </state>
           </provider>
@@ -245,15 +260,15 @@
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/db.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/art.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test-writer-ua.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" />
-        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back-front-dummies-2.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/rpc.kt" />
+        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
       </list>
     </option>
   </component>
@@ -365,7 +380,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib-gradle/websocket-servlet-9.3.11.v20160721.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="fuckyou&#9;null&#9;null&#10;RTO&#9;null&#9;null&#10;ignite&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;rpc(&#9;null&#9;null&#10;Inrt&#9;null&#9;null&#10;OMapper&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java&#10;ObjectM&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java&#10;Bdeserializer&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.BeanDeserializer&#10;BDeseBase&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.BeanDeserializerBase&#10;DPH&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DeserializationProblemHandler.java&#10;hom&#9;null&#9;null&#10;Deserializationcontext&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.DeserializationContext&#10;Imrequest&#9;null&#9;null&#10;Inrtrp&#9;null&#9;null&#10;PG_&#9;null&#9;null&#10;RemotePro&#9;null&#9;null&#10;Resette&#9;null&#9;null&#10;front-she&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;URTO&#9;null&#9;null&#10;ExecuteListener&#9;PSI&#9;JAVA://org.jooq.ExecuteListener&#10;DB&#9;null&#9;null&#10;CharSequence&#9;null&#9;null&#10;String&#9;null&#9;null&#10;UPRP&#9;null&#9;null&#10;Scra&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/ScratchBack.kt&#10;phonefi&#9;null&#9;null&#10;crappy&#9;null&#9;null&#10;Crappy&#9;null&#9;null&#10;CoolFo&#9;null&#9;null&#10;phonefie&#9;null&#9;null&#10;signinwi&#9;null&#9;null&#10;CoolForm&#9;null&#9;null&#10;Reque&#9;null&#9;null&#10;Request&#9;null&#9;null&#10;FBack&#9;null&#9;null&#10;scra&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/ScratchBack.kt&#10;scratch&#9;RUN_CONFIGURATION&#9;scratch.kts&#10;defaultname&#9;null&#9;null&#10;requestba&#9;null&#9;null&#10;Updateprofilerespo&#9;null&#9;null&#10;RTD&#9;null&#9;null&#10;RTDRP&#9;null&#9;null&#10;UPReq&#9;null&#9;null&#10;apply&#9;null&#9;null&#10;applet&#9;null&#9;null&#10;CaseFormat&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/guava-19.0-sources.jar!/com/google/common/base/CaseFormat.java&#10;Case&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/guava-19.0-sources.jar!/com/google/common/base/CaseFormat.java&#10;shared-util&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;Remote&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="Request&#9;null&#9;null&#10;fuckyou&#9;null&#9;null&#10;RTO&#9;null&#9;null&#10;ignite&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;rpc(&#9;null&#9;null&#10;Inrt&#9;null&#9;null&#10;OMapper&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java&#10;ObjectM&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java&#10;Bdeserializer&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.BeanDeserializer&#10;BDeseBase&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.BeanDeserializerBase&#10;DPH&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DeserializationProblemHandler.java&#10;hom&#9;null&#9;null&#10;Deserializationcontext&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.DeserializationContext&#10;Imrequest&#9;null&#9;null&#10;Inrtrp&#9;null&#9;null&#10;PG_&#9;null&#9;null&#10;RemotePro&#9;null&#9;null&#10;Resette&#9;null&#9;null&#10;front-she&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;URTO&#9;null&#9;null&#10;ExecuteListener&#9;PSI&#9;JAVA://org.jooq.ExecuteListener&#10;DB&#9;null&#9;null&#10;CharSequence&#9;null&#9;null&#10;String&#9;null&#9;null&#10;UPRP&#9;null&#9;null&#10;Scra&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/ScratchBack.kt&#10;phonefi&#9;null&#9;null&#10;crappy&#9;null&#9;null&#10;Crappy&#9;null&#9;null&#10;CoolFo&#9;null&#9;null&#10;phonefie&#9;null&#9;null&#10;signinwi&#9;null&#9;null&#10;CoolForm&#9;null&#9;null&#10;Reque&#9;null&#9;null&#10;FBack&#9;null&#9;null&#10;scra&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/ScratchBack.kt&#10;scratch&#9;RUN_CONFIGURATION&#9;scratch.kts&#10;defaultname&#9;null&#9;null&#10;requestba&#9;null&#9;null&#10;Updateprofilerespo&#9;null&#9;null&#10;RTD&#9;null&#9;null&#10;RTDRP&#9;null&#9;null&#10;UPReq&#9;null&#9;null&#10;apply&#9;null&#9;null&#10;applet&#9;null&#9;null&#10;CaseFormat&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/guava-19.0-sources.jar!/com/google/common/base/CaseFormat.java&#10;Case&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/guava-19.0-sources.jar!/com/google/common/base/CaseFormat.java&#10;shared-util&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;Remote&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
@@ -720,7 +735,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2811159" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
+      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2811159" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32713348" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -998,7 +1013,7 @@
         <state relative-caret-position="351">
           <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1118,16 +1133,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="135" column="0" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
-          <folding>
-            <element signature="e#80#1825#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/test-writer-ua.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
@@ -1140,9 +1145,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="90" column="6" selection-start-line="90" selection-start-column="6" selection-end-line="90" selection-end-column="6" />
-          <folding />
+        <state relative-caret-position="51">
+          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <folding>
+            <marker date="1475259771736" expanded="false" signature="0:60" ph="/.../" />
+            <marker date="1475259771736" expanded="true" signature="1714:1716" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1151,16 +1159,6 @@
         <state relative-caret-position="321">
           <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="56" column="17" selection-start-line="56" selection-start-column="17" selection-end-line="56" selection-end-column="17" />
-          <folding>
-            <marker date="1475250777088" expanded="false" signature="0:60" ph="/.../" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1214,9 +1212,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/rpc.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="80" column="87" selection-start-line="80" selection-start-column="87" selection-end-line="80" selection-end-column="87" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#80#787#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1475259771736" expanded="false" signature="0:60" ph="/.../" />
+          </folding>
         </state>
       </provider>
     </entry>
