@@ -6,8 +6,7 @@
 
 package aps.front
 
-import aps.React
-import aps.ReactElement
+import aps.*
 import aps.front.Color.*
 
 enum class Color(val string: String) {
@@ -134,45 +133,53 @@ object KotlinShit : IKotlinShit {
 
     override fun userKindIcon(def: dynamic): dynamic {
         // #extract {user} from def
-        val user = def.user
+        val user: UserRTO = def.user
 
-        return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5), "icon" to jshit.utils.lookup(user.kind, json(
-            "CUSTOMER" to "user", "WRITER" to "pencil", "ADMIN" to "cog"))))
+        return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5),
+            "icon" to when (user.kind) {
+                UserKind.CUSTOMER -> "user"
+                UserKind.WRITER -> "pencil"
+                UserKind.ADMIN -> "cog"
+            }
+        ))
     }
 
     override fun renderProfile(def: dynamic): dynamic {
         // #extract {user} from def
         val user = def.user
 
-        val model = user
+//        val model = user
+        val model: UserRTO = user
+        // dlog("Profile model", model)
 
-        val profileFilled = model.profile_updated_at
+//        val profileFilled = model.profileUpdatedAt != null
+        val profileUpdatedAt = model.profileUpdatedAt
 
         var profileUpdatedPiece: dynamic = undefined
-        if (profileFilled) {
-            profileUpdatedPiece = jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "profile_updated_at",
+        if (profileUpdatedAt != null) {
+            profileUpdatedPiece = jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "profileUpdatedAt",
                 "label" to t("TOTE", "Профиль залит"),
-                "value" to jshit.timestampString(model.profile_updated_at, json("includeTZ" to true))))
+                "value" to jshit.timestampString(profileUpdatedAt.value, json("includeTZ" to true))))
         } else {
             profileUpdatedPiece = jshit.limpopo(json("colsm" to 3, "model" to model,
-                "prop" to "profile_updated_at", "label" to t("TOTE", "Профиль"), "value" to t("TOTE", "Нифига не заполнялся")))
+                "prop" to "profileUpdatedAt", "label" to t("TOTE", "Профиль"), "value" to t("TOTE", "Нифига не заполнялся")))
         }
 
         val adminLooks = KotlinShit.ui.getUser().kind == "ADMIN"
 
         return jshit.diva(json("controlTypeName" to "renderProfile", "tame" to "profile"),
             jshit.diva(json("className" to "row"),
-                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "first_name", "label" to t("TOTE", "Имя"))),
-                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "last_name", "label" to t("TOTE", "Фамилия"))),
+                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "firstName", "label" to t("TOTE", "Имя"))),
+                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "lastName", "label" to t("TOTE", "Фамилия"))),
                 jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "email", "label" to t("TOTE", "Почта"))),
-                profileFilled && jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "phone", "label" to t("TOTE", "Телефон")))
+                if (profileUpdatedAt != null) jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "phone", "label" to t("TOTE", "Телефон"))) else undefined
                 ),
             jshit.diva(json("className" to "row"),
                 jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "kind",
                     "label" to t("TOTE", "Тип"),
                     "content" to jshit.diva(json("style" to js("({})")),
                         KotlinShit.userKindIcon(json("user" to user)),
-                    jshit.spanc(json("tame" to "value", "content" to global.apsdata.userKindTitle(user.kind)))))),
+                    jshit.spanc(json("tame" to "value", "content" to userKindTitle(model.kind)))))),
                 adminLooks && jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "state",
                     "formGroupStyle" to
                         if (user.state == "PROFILE_APPROVAL_PENDING") json("background" to jshit.AMBER_200)
@@ -180,17 +187,17 @@ object KotlinShit : IKotlinShit {
                         else if (user.state == "BANNED") json("background" to jshit.RED_200)
                         else js("({})"),
                     "label" to t("TOTE", "Статус"), "prop" to "state", "transform" to global.apsdata.userStateTitle)),
-                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "inserted_at",
+                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "insertedAt",
                     "label" to t("TOTE", "Аккаунт создан"),
-                    "value" to jshit.timestampString(model.inserted_at, json("includeTZ" to true)))),
+                    "value" to jshit.timestampString(model.insertedAt.value, json("includeTZ" to true)))),
                 profileUpdatedPiece
                 ),
             user.state == "PROFILE_REJECTED" && jshit.diva(json("className" to "row"),
                 jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "profile_rejection_reason", "label" to t("TOTE", "Причина отказа"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
             user.state == "BANNED" && jshit.diva(json("className" to "row"),
                 jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "ban_reason", "label" to t("TOTE", "Причина бана"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
-            profileFilled && jshit.diva(json("className" to "row"),
-                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "about_me", "label" to t("TOTE", "Набрехано о себе"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
+            if (profileUpdatedAt != null) jshit.diva(json("className" to "row"),
+                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "aboutMe", "label" to t("TOTE", "Набрехано о себе"), "contentStyle" to json("whiteSpace" to "pre-wrap")))) else undefined,
             adminLooks && user.admin_notes && jshit.diva(json("className" to "row"),
                 jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "admin_notes", "label" to t("TOTE", "Заметки админа"), "contentStyle" to json("whiteSpace" to "pre-wrap"))))
         )

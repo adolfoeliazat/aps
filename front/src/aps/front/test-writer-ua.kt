@@ -18,7 +18,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         }
 
 //        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
-        __await(rpc(ResetTestDatabaseRequest{templateDB = "test-template-ua-1"; recreateTemplate = true}))
+        __await(rpc(ResetTestDatabaseRequest(templateDB = "test-template-ua-1", recreateTemplate = true)))
 
         val instructions = mutableListOf<TestInstruction>()
         instructions.addAll(vovchok1())
@@ -53,7 +53,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 action("Clicking 'Sign Up' link") {
                     setValue("TextField-email.Input", "vovchok@test.shit.ua")
                     setValue("TextField-password.Input", "something")
-                    click("link-createAccount", "2016/08/12 20:40:58")
+                    click("link-createAccount", "2016-08-12 20:40:58")
                 }
                 state("Got registration form") {
                     assertGen("877a3f2f-ad7d-41c7-af4b-9665526fc27f")
@@ -61,7 +61,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                 section("Submitting sign-up form") {
                     action("Trying to submit empty form") {
-                        click("button-primary", "2016/08/14 12:55:19")
+                        click("button-primary", "2016-08-14 12:55:19")
                     }
                     state("Got a bunch of errors") {
                         assertGen("9b0cad6b-c396-4b8a-b731-57905900a80a")
@@ -69,7 +69,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Agreeing terms") {
                         setValue("AgreeTermsField.Checkbox", true)
-                        click("button-primary", "2016/08/14 14:22:04")
+                        click("button-primary", "2016-08-14 14:22:04")
                     }
                     state("-1 error message") {
                         assertGen("7dbefeef-84f6-47e2-8635-d67ddcbb153d")
@@ -77,7 +77,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering email") {
                         setValue("TextField-email.Input", "vovchok@test.shit.ua")
-                        click("button-primary", "2016/08/14 14:23:51")
+                        click("button-primary", "2016-08-14 14:23:51")
                     }
                     state("-1 error message") {
                         assertGen("ac403942-31f7-45a3-b42c-e37f6c1b83a2")
@@ -85,7 +85,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering first name") {
                         setValue("TextField-firstName.Input", "Марко")
-                        click("button-primary", "2016/08/14 14:25:32")
+                        click("button-primary", "2016-08-14 14:25:32")
                     }
                     state("-1 error message") {
                         assertGen("f866c286-58f4-4785-a2da-bad213bd4567")
@@ -97,7 +97,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                             __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
                         })
 
-                        click("button-primary", "2016/08/14 17:48:51")
+                        click("button-primary", "2016-08-14 17:48:51")
                     }
                     state("Sign-in form with message saying that account is created. Got email with password") {
                         assertGen("0b7e96bf-4f42-41dc-b658-7b60e863356e")
@@ -112,7 +112,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     action("First try with wrong password") {
                         setValue("TextField-email.Input", "vovchok@test.shit.ua")
                         setValue("TextField-password.Input", "dead-wrong-shit")
-                        click("button-primary", "2016/08/15 19:26:34")
+                        click("button-primary", "2016-08-15 19:26:34")
                     }
                     state("No way") {
                         assertGen("51815ec8-62e9-4c25-aad5-fa97f30d6cff")
@@ -121,7 +121,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     action("Now with password from received email") {
                         setValue("TextField-email.Input", "vovchok@test.shit.ua")
                         setValue("TextField-password.Input", "fucking-big-generated-secret")
-                        click("button-primary", "2016/08/15 19:48:57")
+                        click("button-primary", "2016-08-15 19:48:57")
                     }
                     state("Got page asking to fill profile") {
                         assertGen("00997d56-f00a-4b6a-bffd-595ba4c23806")
@@ -132,7 +132,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     action("Trying to send empty profile") {
                         setValue("TextField-phone.Input", "")
                         setValue("TextField-aboutMe.Input", "")
-                        click("button-primary", "2016/08/15 20:12:37")
+                        click("button-primary", "2016-08-15 20:12:37")
                     }
                     state("Bunch of errors") {
                         assertGen("4fc3f3d3-2806-4c99-9769-6d046cd7a985")
@@ -140,7 +140,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering phone: some junk") {
                         setValue("TextField-phone.Input", "qwerty")
-                        click("button-primary", "2016/08/15 20:16:20")
+                        click("button-primary", "2016-08-15 20:16:20")
                     }
                     state("No way") {
                         assertGen("243f5834-48a4-496b-8770-371ac0c94b19")
@@ -148,7 +148,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering phone: too long") {
                         setValue("TextField-phone.Input", "012345678901234567890")
-                        click("button-primary", "2016/08/16 11:56:01")
+                        click("button-primary", "2016-08-16 11:56:01")
                     }
                     state("No way") {
                         assertGen("a07d90e4-60a6-45c1-a5c6-cd217a01a933")
@@ -156,7 +156,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering phone: too few digits") {
                         setValue("TextField-phone.Input", "--3234--++--")
-                        click("button-primary", "2016/08/16 11:56:05")
+                        click("button-primary", "2016-08-16 11:56:05")
                     }
                     state("No way") {
                         assertGen("3f290096-9162-419b-835d-ec2b02f8f5ca")
@@ -164,7 +164,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering phone: something sane") {
                         setValue("TextField-phone.Input", "+38 (068) 9110032")
-                        click("button-primary", "2016/08/16 12:02:30")
+                        click("button-primary", "2016-08-16 12:02:30")
                     }
                     state("-1 error") {
                         assertGen("d072d3c4-38c9-481a-9fec-0ecd9c5601a2")
@@ -172,7 +172,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering about: too long") {
                         setValue("TextField-aboutMe.Input", dynamicAsString(testCommon.LONG_SHIT_301))
-                        click("button-primary", "2016/08/16 14:01:33")
+                        click("button-primary", "2016-08-16 14:01:33")
                     }
                     state("TODO State description") {
                         assertGen("e3c1c929-27af-4742-850c-1c1b7cb2ff51")
@@ -180,7 +180,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering aboutMe: something sane") {
                         setValue("TextField-aboutMe.Input", "I am a fucking bitch. No, really. Wanna have one for the team?")
-                        click("button-primary", "2016/08/16 14:55:45")
+                        click("button-primary", "2016-08-16 14:55:45")
                     }
                     state("TODO State description") {
                         assertGen("9219ded3-54e4-4d6b-bf1b-63615cf8a56e")
@@ -203,7 +203,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Click on 'Approve Profiles' link") {
-                    click("section-workPending.profilesToApprove.link", "2016/08/18 14:58:16")
+                    click("section-workPending.profilesToApprove.link", "2016-08-18 14:58:16")
                 }
                 state("Got page with profiles to be approved") {
                     assertGen("dd32f775-d45f-4a86-b815-c8897fa01fe3",
@@ -211,7 +211,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Click on edit icon") {
-                    click("chunk-i000.item-i000.heading.icon-edit", "2016/08/26 13:56:04")
+                    click("chunk-i000.item-i000.heading.icon-edit", "2016-08-26 13:56:04")
                 }
                 state("Got form") {
                     assertGen("ba17b066-b272-48eb-901c-d22b5b1f803b", expectAll(
@@ -227,7 +227,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     setValue("chunk-i000.item-i000.TextField-phone.Input", "+38 (068) 9110032")
                     setValue("chunk-i000.item-i000.TextField-aboutMe.Input", "I am a fucking bitch. No, really. Wanna have one for the team?")
                     setValue("chunk-i000.item-i000.TextField-adminNotes.Input", "And she really is...")
-                    click("chunk-i000.item-i000.button-primary", "2016/08/26 14:14:26")
+                    click("chunk-i000.item-i000.button-primary", "2016-08-26 14:14:26")
                 }
                 state("That bitch is now cool") {
                     assertGen("59308ccf-67b9-4fab-a13d-154c96e8bd63",
@@ -261,7 +261,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 action("Sign in") {
                     setValue("TextField-email.Input", "vovchok@test.shit.ua")
                     setValue("TextField-password.Input", "fucking-big-generated-secret")
-                    click("button-primary", "2016/08/27 12:11:34")
+                    click("button-primary", "2016-08-27 12:11:34")
                 }
                 state("Got something") {
                     assertGen("86e56915-a334-4209-85c9-8d2c53cd9f0a")
@@ -283,7 +283,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Select 'Users' in top navbar") {
-                    click("TopNavItem-admin-users", "2016/08/27 13:17:16")
+                    click("TopNavItem-admin-users", "2016-08-27 13:17:16")
                 }
                 state("Got users") {
                     assertGen("6fbd591f-f62c-4a37-a6ae-0958ef6c81f7",
@@ -291,7 +291,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Click on edit icon for the bitch") {
-                    click("chunk-i000.item-i000.heading.icon-edit", "2016/08/27 13:20:58")
+                    click("chunk-i000.item-i000.heading.icon-edit", "2016-08-27 13:20:58")
                 }
                 state("TODO State description") {
                     assertGen("b138801b-9fec-43b3-94d6-f135318b2a22",
@@ -334,7 +334,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                 action("Try to reject without reason") {
                     setValue("chunk-i000.item-i000.TextField-profileRejectionReason.Input", "")
-                    click("chunk-i000.item-i000.button-primary", "2016/08/27 13:23:05")
+                    click("chunk-i000.item-i000.button-primary", "2016-08-27 13:23:05")
                 }
                 state("No way") {
                     assertGen("c2f5de3e-ff25-4c38-80dc-e09d89e0944f",
@@ -347,7 +347,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     setValue("chunk-i000.item-i000.TextField-email.Input", "vovkulaka@test.shit.ua")
                     setValue("chunk-i000.item-i000.TextField-firstName.Input", "Мокрожопик")
                     setValue("chunk-i000.item-i000.TextField-profileRejectionReason.Input", "Why I do this? Cause I can! I'm the admin! U-ha-ha-ha...")
-                    click("chunk-i000.item-i000.button-primary", "2016/08/27 13:23:07")
+                    click("chunk-i000.item-i000.button-primary", "2016-08-27 13:23:07")
                 }
                 state("The motherfucker is now reddish") {
                     assertGen("0d4d388f-a0ad-4824-9a37-36e7e74365ae",
@@ -389,7 +389,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 action("Try to sign in with old email") {
                     setValue("TextField-email.Input", "vovchok@test.shit.ua")
                     setValue("TextField-password.Input", "fucking-big-generated-secret")
-                    click("button-primary", "2016/08/27 14:53:22")
+                    click("button-primary", "2016-08-27 14:53:22")
                 }
                 state("No way, cause admin have changed her email to 'vovkulaka...'") {
                     assertGen("eeb4fc2a-0e24-4fc0-9e66-6ecccd932d8e")
@@ -398,7 +398,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 action("Sign in with new email") {
                     setValue("TextField-email.Input", "vovkulaka@test.shit.ua")
                     setValue("TextField-password.Input", "fucking-big-generated-secret")
-                    click("button-primary", "2016/08/27 14:54:22")
+                    click("button-primary", "2016-08-27 14:54:22")
                 }
                 state("Oh, they rejected me") {
                     assertGen("f80aea79-7308-444b-acd3-fe81cee46eff")
@@ -406,7 +406,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                 action("Improve 'About Me' section") {
                     setValue("TextField-aboutMe.Input", "Пишу тексты за еду. Любые стили и направления.")
-                    click("button-primary", "2016/08/28 01:19:00")
+                    click("button-primary", "2016-08-28 01:19:00")
                 }
                 state("Got waiting screen") {
                     assertGen("35a2c077-01b2-407c-beba-4debb789d07d")
@@ -428,7 +428,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Click on 'Profiles to approve'") {
-                    click("section-workPending.profilesToApprove.link", "2016/08/28 01:33:48")
+                    click("section-workPending.profilesToApprove.link", "2016-08-28 01:33:48")
                 }
                 state("Bitch somewhat improved her profile") {
                     assertGen("48b2f0d2-a1f0-446d-8c10-550b9abfd3e3",
@@ -436,7 +436,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Click on pencil") {
-                    click("chunk-i000.item-i000.heading.icon-edit", "2016/08/28 01:56:33")
+                    click("chunk-i000.item-i000.heading.icon-edit", "2016-08-28 01:56:33")
                 }
                 state("Edit form opens") {
                     assertGen("18f8286c-ea61-4820-95c0-9ce3a129edfb",
@@ -448,7 +448,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 action("Accept now") {
                     setValue("chunk-i000.item-i000.SelectField-state.Select", "COOL")
                     setValue("chunk-i000.item-i000.TextField-adminNotes.Input", "Free workforce. Good. We'll exploit her to death. U-ha-ha-ha...")
-                    click("chunk-i000.item-i000.button-primary", "2016/08/28 01:59:30")
+                    click("chunk-i000.item-i000.button-primary", "2016-08-28 01:59:30")
                 }
                 state("She is cool now") {
                     assertGen("5d82460a-268f-43d8-bd00-e04dd671029c",
@@ -466,7 +466,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 action("Sign in") {
                     setValue("TextField-email.Input", "vovkulaka@test.shit.ua")
                     setValue("TextField-password.Input", "fucking-big-generated-secret")
-                    click("button-primary", "2016/08/28 02:04:24")
+                    click("button-primary", "2016-08-28 02:04:24")
                 }
                 state("Great, they accepted my profile") {
                     assertGen("5c4d0c0c-8e1f-4dfc-898d-dec7c3e6bbf7")
@@ -488,7 +488,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Click on 'Users'") {
-                    click("TopNavItem-admin-users", "2016/08/28 08:36:33")
+                    click("TopNavItem-admin-users", "2016-08-28 08:36:33")
                 }
                 state("Got users, bitch is here") {
                     assertGen("4c7fa9d2-c993-4fdf-91e6-fc7e45d49e3b",
@@ -496,7 +496,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Click on pencil to edit bitch") {
-                    click("chunk-i000.item-i000.heading.icon-edit", "2016/08/28 08:38:01")
+                    click("chunk-i000.item-i000.heading.icon-edit", "2016-08-28 08:38:01")
                 }
                 state("Got editing form") {
                     assertGen("4290992b-9d2b-4ab2-97e6-e32c87e9ea0c",
@@ -516,7 +516,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 }
 
                 action("Try to submit without giving a reason") {
-                    click("chunk-i000.item-i000.button-primary", "2016/08/28 10:00:48")
+                    click("chunk-i000.item-i000.button-primary", "2016-08-28 10:00:48")
                 }
                 state("No way") {
                     assertGen("4ec74b0c-df11-4228-a327-92b4a3c1ac64",
@@ -527,7 +527,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                 action("Give some reason") {
                     setValue("chunk-i000.item-i000.TextField-banReason.Input", "Мы тебя больше не хотим")
-                    click("chunk-i000.item-i000.button-primary", "2016/08/28 10:01:48")
+                    click("chunk-i000.item-i000.button-primary", "2016-08-28 10:01:48")
                 }
                 state("She is very red now") {
                     assertGen("06325345-e660-4f6c-989c-aafdbac35d55",

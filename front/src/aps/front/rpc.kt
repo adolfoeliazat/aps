@@ -75,13 +75,13 @@ fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSO
     return __asyncResult(dejsonize(responseJSONObject) as Res)
 }
 
-fun <Res> callRemoteProcedure(procedureName: String, req: Map<String, String>): Promise<Res> {"__async"
-    val requestJSONObject = js("({})")
-    for ((k, v) in req) {
-        requestJSONObject[k] = v
-    }
+fun <Res> callRemoteProcedure(procedureName: String, req: dynamic): Promise<Res> {"__async"
+//    val requestJSONObject = js("({})")
+//    for ((k, v) in req) {
+//        requestJSONObject[k] = v
+//    }
 
-    return __await(callRemoteProcedurePassingJSONObject(procedureName, requestJSONObject))
+    return __await(callRemoteProcedurePassingJSONObject(procedureName, req))
 }
 
 fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res> {"__async"
@@ -138,5 +138,6 @@ fun dejsonize(jsThing: dynamic): Any? {
 
 
 fun rpc(req: ResetTestDatabaseRequest): Promise<ResetTestDatabaseRequest> = callRemoteProcedure("resetTestDatabase", req)
+fun rpc(req: ImposeNextRequestTimestampRequest): Promise<ImposeNextRequestTimestampRequest> = callRemoteProcedure("imposeNextRequestTimestamp", req)
 
 

@@ -12,7 +12,9 @@ fun sayHi() {
     println("Hi, fuck you")
 }
 
-inline fun <T> T.applet(f: (T) -> Unit): T { f(this); return this }
+inline fun <T, FRet> T.applet(f: (T) -> FRet): T { f(this); return this }
+
+inline fun <T, reified CastTo> T.calet(f: (T) -> Unit): Unit { f(this) }
 
 inline fun <T> T?.letoes(f: (T) -> String): String =
     if (this == null) ""
@@ -58,7 +60,6 @@ fun <T> firstNotNull(vararg branches: () -> T?): T? {
 fun <T> String?.ifNotBlankApplet(block: (String) -> T?): T? =
     if (this.isNullOrBlank()) null
     else block(this!!)
-
 
 
 

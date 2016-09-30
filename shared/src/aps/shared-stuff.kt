@@ -81,12 +81,18 @@ class UserRTO(
     val aboutMe: String?
 )
 
-class ResetTestDatabaseRequest(build: (ResetTestDatabaseRequest.() -> Unit)? = null) {
-    init { build?.let{it()} }
-    lateinit var templateDB: String
-    var recreateTemplate: Boolean = false
+val SHITS = "--SHIT--"
+val SHITB = false
+
+class ImposeNextRequestTimestampRequest(val stamp: String) : Request() {
+    constructor() : this(SHITS) // For fucking Jackson
 }
 
+class ResetTestDatabaseRequest(val templateDB: String, val recreateTemplate: Boolean = false) : Request() {
+    constructor() : this(SHITS, SHITB) // For fucking Jackson
+}
+
+class GenericResponse
 
 class ResetTestDatabaseResponse
 
@@ -95,33 +101,34 @@ sealed class FormResponse {
     class Shitty(val error: String, val fieldErrors: Iterable<FieldError>): FormResponse()
 }
 
-class SignInWithPasswordRequest() {
-    lateinit var email: String
-    lateinit var password: String
-}
-
 class SignInWithPasswordResponse {
     lateinit var token: String
     lateinit var user: UserRTO
 }
 
-abstract class PrivateRequest {
-    lateinit var token: String
-}
-
-class UpdateProfileResponse : PrivateRequest() {
+class UpdateProfileResponse {
     lateinit var newUser: UserRTO
 }
 
 interface ProfileFields {
-    var phone: String
+    //    var phone: String
     var aboutMe: String
 }
 
-class UpdateProfileRequest : PrivateRequest(), ProfileFields {
-    override lateinit var phone: String
-    override lateinit var aboutMe: String
+//class SignInWithPasswordRequest : Request() {
+//    lateinit var email: String
+//    lateinit var password: String
+//}
+
+open class Request {
+    var token: String? = null
+    var fields = mapOf<String, String?>()
 }
+
+
+
+
+
 
 
 

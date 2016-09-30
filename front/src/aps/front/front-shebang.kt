@@ -41,6 +41,13 @@ class ProfileFields(form: CoolForm<*>, user: UserRTO?) {
     }
 }
 
+fun userKindTitle(kind: UserKind) = when (kind) {
+    UserKind.CUSTOMER -> t("TOTE", "Заказчик")
+    UserKind.WRITER -> t("TOTE", "Писатель")
+    UserKind.ADMIN -> t("TOTE", "Админ")
+}
+
+
 
 
 

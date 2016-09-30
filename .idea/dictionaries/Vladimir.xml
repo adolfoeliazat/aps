@@ -15,6 +15,7 @@
       <w>postgresql</w>
       <w>relazy</w>
       <w>unduplicate</w>
+      <w>unhardcode</w>
     </words>
   </dictionary>
 </component>

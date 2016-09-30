@@ -14,14 +14,12 @@ import aps.back.generated.jooq.tables.records.UsersRecord
 import com.zaxxer.hikari.HikariDataSource
 import org.jooq.*
 import org.jooq.conf.Settings
-import org.jooq.impl.DSL
-import org.jooq.impl.DefaultConfiguration
-import org.jooq.impl.DefaultExecuteListener
-import org.jooq.impl.DefaultExecuteListenerProvider
+import org.jooq.impl.*
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
+import java.util.*
 
 val PG_LOCAL_DATE_TIME = DateTimeFormatterBuilder()
     .parseCaseInsensitive()
@@ -29,6 +27,8 @@ val PG_LOCAL_DATE_TIME = DateTimeFormatterBuilder()
     .appendLiteral(' ')
     .append(DateTimeFormatter.ISO_LOCAL_TIME)
     .toFormatter()
+
+fun stringToStamp(s: String): Timestamp = Timestamp.valueOf(LocalDateTime.parse(s, PG_LOCAL_DATE_TIME))
 
 object DB {
     val PORT_DEV = 5432
@@ -114,7 +114,14 @@ object DB {
                                 {ctx.sql().ifNotBlankApplet {dumpShit(it)}}
                             )
                         }
-                    })))
+                    }))
+//                    .set(DefaultRecordListenerProvider(object:DefaultRecordListener() {
+//                        override fun insertStart(ctx: RecordContext) {
+//                            val rec = ctx.record()
+//                            rec.set(rec.field("inserted_at") as Field<Timestamp>, Timestamp(Date().time))
+//                        }
+//                    }))
+                )
 
                 return act(q)
             } finally {
@@ -161,49 +168,48 @@ object DB {
             }
         }
 
-        fun stamp(s: String): Timestamp = Timestamp.valueOf(LocalDateTime.parse(s, PG_LOCAL_DATE_TIME))
 
         addInsertUserActions(UserKind.ADMIN, listOf(
-            UserSpec(UsersRecord().apply {firstName = "Дася"; lastName = "Админовна"; email = "dasja@test.shit.ua"; insertedAt = stamp("2016-07-10 13:14:15")},listOf(UserRole.SUPPORT)),
-            UserSpec(UsersRecord().apply {firstName = "Тодд"; lastName = "Суппортод"; email = "todd@test.shit.ua"; insertedAt = stamp("2016-07-13 02:44:05")}, listOf(UserRole.SUPPORT)),
-            UserSpec(UsersRecord().apply {firstName = "Алиса"; lastName = "Планктоновна"; email = "alice@test.shit.ua"; insertedAt = stamp("2016-07-11 20:28:17")}, listOf(UserRole.SUPPORT)),
-            UserSpec(UsersRecord().apply {firstName = "Элеанора"; lastName = "Суконская"; email = "eleanor@test.shit.ua"; insertedAt = stamp("2016-07-11 20:28:17")}, listOf(UserRole.SUPPORT))
+            UserSpec(UsersRecord().apply {firstName = "Дася"; lastName = "Админовна"; email = "dasja@test.shit.ua"; insertedAt = stringToStamp("2016-07-10 13:14:15")},listOf(UserRole.SUPPORT)),
+            UserSpec(UsersRecord().apply {firstName = "Тодд"; lastName = "Суппортод"; email = "todd@test.shit.ua"; insertedAt = stringToStamp("2016-07-13 02:44:05")}, listOf(UserRole.SUPPORT)),
+            UserSpec(UsersRecord().apply {firstName = "Алиса"; lastName = "Планктоновна"; email = "alice@test.shit.ua"; insertedAt = stringToStamp("2016-07-11 20:28:17")}, listOf(UserRole.SUPPORT)),
+            UserSpec(UsersRecord().apply {firstName = "Элеанора"; lastName = "Суконская"; email = "eleanor@test.shit.ua"; insertedAt = stringToStamp("2016-07-11 20:28:17")}, listOf(UserRole.SUPPORT))
         ))
 
         addInsertUserActions(UserKind.WRITER, listOf(
-            UserSpec(UsersRecord().apply {firstName = "Франц"; lastName = "Кафка"; email = "kafka@test.shit.ua"; insertedAt = stamp("2016-07-11 01:05:30")}),
-            UserSpec(UsersRecord().apply {firstName = "Лев"; lastName = "Толстой"; email = "leo@test.shit.ua"; insertedAt = stamp("2016-07-29 22:54:42")}),
-            UserSpec(UsersRecord().apply {firstName = "Николай"; lastName = "Гоголь"; email = "gogol@test.shit.ua"; insertedAt = stamp("2016-07-13 17:32:27")}),
-            UserSpec(UsersRecord().apply {firstName = "Федор"; lastName = "Достоевский"; email = "fedor@test.shit.ua"; insertedAt = stamp("2016-08-04 14:41:07")}),
-            UserSpec(UsersRecord().apply {firstName = "Александр"; lastName = "Пушкин"; email = "pushkin@test.shit.ua"; insertedAt = stamp("2016-07-19 21:35:30")}),
-            UserSpec(UsersRecord().apply {firstName = "Георг"; lastName = "Гегель"; email = "hegel@test.shit.ua"; insertedAt = stamp("2016-07-22 07:19:47")}),
-            UserSpec(UsersRecord().apply {firstName = "Иммануил"; lastName = "Кант"; email = "kant@test.shit.ua"; insertedAt = stamp("2016-07-13 05:54:20")}),
-            UserSpec(UsersRecord().apply {firstName = "Мигель"; lastName = "Сервантес"; email = "miguel@test.shit.ua"; insertedAt = stamp("2016-07-16 22:25:56")}),
-            UserSpec(UsersRecord().apply {firstName = "Карлос"; lastName = "Кастанеда"; email = "carlos@test.shit.ua"; insertedAt = stamp("2016-07-29 13:39:06")}),
-            UserSpec(UsersRecord().apply {firstName = "Елена"; lastName = "Блаватская"; email = "blava@test.shit.ua"; insertedAt = stamp("2016-07-27 12:06:11")}),
-            UserSpec(UsersRecord().apply {firstName = "Джейн"; lastName = "Остин"; email = "jane@test.shit.ua"; insertedAt = stamp("2016-07-15 15:13:27")}),
-            UserSpec(UsersRecord().apply {firstName = "Мэри"; lastName = "Шелли"; email = "mary@test.shit.ua"; insertedAt = stamp("2016-07-22 01:33:17")}),
-            UserSpec(UsersRecord().apply {firstName = "Франсуаза"; lastName = "Саган"; email = "francoise@test.shit.ua"; insertedAt = stamp("2016-08-08 16:04:53")}),
-            UserSpec(UsersRecord().apply {firstName = "Жорж"; lastName = "Санд"; email = "sand@test.shit.ua"; insertedAt = stamp("2016-07-16 20:47:26")}),
-            UserSpec(UsersRecord().apply {firstName = "Агата"; lastName = "Кристи"; email = "agatha@test.shit.ua"; insertedAt = stamp("2016-08-12 09:59:53")})
+            UserSpec(UsersRecord().apply {firstName = "Франц"; lastName = "Кафка"; email = "kafka@test.shit.ua"; insertedAt = stringToStamp("2016-07-11 01:05:30")}),
+            UserSpec(UsersRecord().apply {firstName = "Лев"; lastName = "Толстой"; email = "leo@test.shit.ua"; insertedAt = stringToStamp("2016-07-29 22:54:42")}),
+            UserSpec(UsersRecord().apply {firstName = "Николай"; lastName = "Гоголь"; email = "gogol@test.shit.ua"; insertedAt = stringToStamp("2016-07-13 17:32:27")}),
+            UserSpec(UsersRecord().apply {firstName = "Федор"; lastName = "Достоевский"; email = "fedor@test.shit.ua"; insertedAt = stringToStamp("2016-08-04 14:41:07")}),
+            UserSpec(UsersRecord().apply {firstName = "Александр"; lastName = "Пушкин"; email = "pushkin@test.shit.ua"; insertedAt = stringToStamp("2016-07-19 21:35:30")}),
+            UserSpec(UsersRecord().apply {firstName = "Георг"; lastName = "Гегель"; email = "hegel@test.shit.ua"; insertedAt = stringToStamp("2016-07-22 07:19:47")}),
+            UserSpec(UsersRecord().apply {firstName = "Иммануил"; lastName = "Кант"; email = "kant@test.shit.ua"; insertedAt = stringToStamp("2016-07-13 05:54:20")}),
+            UserSpec(UsersRecord().apply {firstName = "Мигель"; lastName = "Сервантес"; email = "miguel@test.shit.ua"; insertedAt = stringToStamp("2016-07-16 22:25:56")}),
+            UserSpec(UsersRecord().apply {firstName = "Карлос"; lastName = "Кастанеда"; email = "carlos@test.shit.ua"; insertedAt = stringToStamp("2016-07-29 13:39:06")}),
+            UserSpec(UsersRecord().apply {firstName = "Елена"; lastName = "Блаватская"; email = "blava@test.shit.ua"; insertedAt = stringToStamp("2016-07-27 12:06:11")}),
+            UserSpec(UsersRecord().apply {firstName = "Джейн"; lastName = "Остин"; email = "jane@test.shit.ua"; insertedAt = stringToStamp("2016-07-15 15:13:27")}),
+            UserSpec(UsersRecord().apply {firstName = "Мэри"; lastName = "Шелли"; email = "mary@test.shit.ua"; insertedAt = stringToStamp("2016-07-22 01:33:17")}),
+            UserSpec(UsersRecord().apply {firstName = "Франсуаза"; lastName = "Саган"; email = "francoise@test.shit.ua"; insertedAt = stringToStamp("2016-08-08 16:04:53")}),
+            UserSpec(UsersRecord().apply {firstName = "Жорж"; lastName = "Санд"; email = "sand@test.shit.ua"; insertedAt = stringToStamp("2016-07-16 20:47:26")}),
+            UserSpec(UsersRecord().apply {firstName = "Агата"; lastName = "Кристи"; email = "agatha@test.shit.ua"; insertedAt = stringToStamp("2016-08-12 09:59:53")})
         ))
 
         addInsertUserActions(UserKind.CUSTOMER, listOf(
-            UserSpec(UsersRecord().apply {firstName = "Пися"; lastName = "Камушкин"; email = "pisya@test.shit.ua"; insertedAt = stamp("2016-08-02 14:38:15")}),
-            UserSpec(UsersRecord().apply {firstName = "Люк"; lastName = "Хуюк"; email = "luke@test.shit.ua"; insertedAt = stamp("2016-07-14 18:36:35")}),
-            UserSpec(UsersRecord().apply {firstName = "Павло"; lastName = "Зибров"; email = "zibrov@test.shit.ua"; insertedAt = stamp("2016-08-09 11:36:01")}),
-            UserSpec(UsersRecord().apply {firstName = "Василий"; lastName = "Теркин"; email = "terkin@test.shit.ua"; insertedAt = stamp("2016-07-16 18:59:35")}),
-            UserSpec(UsersRecord().apply {firstName = "Иво"; lastName = "Бобул"; email = "ivo@test.shit.ua"; insertedAt = stamp("2016-07-16 22:51:51")}),
-            UserSpec(UsersRecord().apply {firstName = "Регина"; lastName = "Дубовицкая"; email = "regina@test.shit.ua"; insertedAt = stamp("2016-07-12 06:31:58")}),
-            UserSpec(UsersRecord().apply {firstName = "Евгений"; lastName = "Ваганович"; email = "vaganovich@test.shit.ua"; insertedAt = stamp("2016-08-06 03:59:58")}),
-            UserSpec(UsersRecord().apply {firstName = "Павел"; lastName = "Дристальский"; email = "paul@test.shit.ua"; insertedAt = stamp("2016-07-27 07:57:02")}),
-            UserSpec(UsersRecord().apply {firstName = "Тело"; lastName = "Странное"; email = "telo@test.shit.ua"; insertedAt = stamp("2016-07-26 08:50:23")}),
-            UserSpec(UsersRecord().apply {firstName = "Арчибальд"; lastName = "Нелеподлиннаяфамилияуменя"; email = "archie@test.shit.ua"; insertedAt = stamp("2016-08-12 10:26:14")}),
-            UserSpec(UsersRecord().apply {firstName = "Даздраперма"; lastName = "Дивизионная"; email = "perma@test.shit.ua"; insertedAt = stamp("2016-08-11 07:56:00")}),
-            UserSpec(UsersRecord().apply {firstName = "Уменяреальносамыйдлинный"; lastName = "Ымя"; email = "ymya@test.shit.ua"; insertedAt = stamp("2016-08-06 08:23:56")}),
-            UserSpec(UsersRecord().apply {firstName = "Варсоновий"; lastName = "Оптинский"; email = "varso@test.shit.ua"; insertedAt = stamp("2016-08-04 08:29:23")}),
-            UserSpec(UsersRecord().apply {firstName = "Евстафий"; lastName = "Антиохийский"; email = "anti@test.shit.ua"; insertedAt = stamp("2016-08-12 17:38:34")}),
-            UserSpec(UsersRecord().apply {firstName = "Ксенофонт"; lastName = "Тутанский"; email = "xeno@test.shit.ua"; insertedAt = stamp("2016-07-10 17:07:24")})
+            UserSpec(UsersRecord().apply {firstName = "Пися"; lastName = "Камушкин"; email = "pisya@test.shit.ua"; insertedAt = stringToStamp("2016-08-02 14:38:15")}),
+            UserSpec(UsersRecord().apply {firstName = "Люк"; lastName = "Хуюк"; email = "luke@test.shit.ua"; insertedAt = stringToStamp("2016-07-14 18:36:35")}),
+            UserSpec(UsersRecord().apply {firstName = "Павло"; lastName = "Зибров"; email = "zibrov@test.shit.ua"; insertedAt = stringToStamp("2016-08-09 11:36:01")}),
+            UserSpec(UsersRecord().apply {firstName = "Василий"; lastName = "Теркин"; email = "terkin@test.shit.ua"; insertedAt = stringToStamp("2016-07-16 18:59:35")}),
+            UserSpec(UsersRecord().apply {firstName = "Иво"; lastName = "Бобул"; email = "ivo@test.shit.ua"; insertedAt = stringToStamp("2016-07-16 22:51:51")}),
+            UserSpec(UsersRecord().apply {firstName = "Регина"; lastName = "Дубовицкая"; email = "regina@test.shit.ua"; insertedAt = stringToStamp("2016-07-12 06:31:58")}),
+            UserSpec(UsersRecord().apply {firstName = "Евгений"; lastName = "Ваганович"; email = "vaganovich@test.shit.ua"; insertedAt = stringToStamp("2016-08-06 03:59:58")}),
+            UserSpec(UsersRecord().apply {firstName = "Павел"; lastName = "Дристальский"; email = "paul@test.shit.ua"; insertedAt = stringToStamp("2016-07-27 07:57:02")}),
+            UserSpec(UsersRecord().apply {firstName = "Тело"; lastName = "Странное"; email = "telo@test.shit.ua"; insertedAt = stringToStamp("2016-07-26 08:50:23")}),
+            UserSpec(UsersRecord().apply {firstName = "Арчибальд"; lastName = "Нелеподлиннаяфамилияуменя"; email = "archie@test.shit.ua"; insertedAt = stringToStamp("2016-08-12 10:26:14")}),
+            UserSpec(UsersRecord().apply {firstName = "Даздраперма"; lastName = "Дивизионная"; email = "perma@test.shit.ua"; insertedAt = stringToStamp("2016-08-11 07:56:00")}),
+            UserSpec(UsersRecord().apply {firstName = "Уменяреальносамыйдлинный"; lastName = "Ымя"; email = "ymya@test.shit.ua"; insertedAt = stringToStamp("2016-08-06 08:23:56")}),
+            UserSpec(UsersRecord().apply {firstName = "Варсоновий"; lastName = "Оптинский"; email = "varso@test.shit.ua"; insertedAt = stringToStamp("2016-08-04 08:29:23")}),
+            UserSpec(UsersRecord().apply {firstName = "Евстафий"; lastName = "Антиохийский"; email = "anti@test.shit.ua"; insertedAt = stringToStamp("2016-08-12 17:38:34")}),
+            UserSpec(UsersRecord().apply {firstName = "Ксенофонт"; lastName = "Тутанский"; email = "xeno@test.shit.ua"; insertedAt = stringToStamp("2016-07-10 17:07:24")})
         ))
 
         actions.sortBy {it.stamp}

@@ -248,11 +248,13 @@ open class CoolForm<Res>(
                                     working = true
                                     update()
 
-                                    val req = mutableMapOf<String, String>()
+                                    // TODO:vgrechka Use Request class here instead of generic map
+                                    val req = js("({})")
+                                    req.fields = js("({})")
                                     for (field in fields) {
-                                        req[field.name] = field.value
+                                        req.fields[field.name] = field.value
                                     }
-                                    ui.token?.let {req["token"] = it}
+                                    ui.token?.let {req.token = it}
                                     val res: FormResponse = __await(callRemoteProcedure(remoteProcedureName, req))
 
                                     when (res) {

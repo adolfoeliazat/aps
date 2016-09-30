@@ -6,6 +6,7 @@
 
 package aps.front
 
+import aps.ImposeNextRequestTimestampRequest
 import aps.ReactElement
 import kotlin.browser.window
 import aps.front.Color.*
@@ -117,6 +118,7 @@ object art {
                     val control = getControlForAction(json("implementing" to "testSetValue"))
                     if (instr.timestamp.there) {
                         __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
+                        __await(rpc(ImposeNextRequestTimestampRequest(instr.timestamp)))
                     }
 
                     __await<dynamic>(control.testSetValue(json("value" to when (instr) {
@@ -159,6 +161,7 @@ object art {
                         val control = getControlForAction(json("implementing" to "testClick"))
                         if (instr.timestamp.there) {
                             __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
+                            __await(rpc(ImposeNextRequestTimestampRequest(instr.timestamp)))
                         }
                         __await<dynamic>(control.testClick(instr))
                     }
@@ -166,6 +169,7 @@ object art {
                         val control = getControlForAction(json("implementing" to "testKeyDown"))
                         if (instr.timestamp.there) {
                             __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
+                            __await(rpc(ImposeNextRequestTimestampRequest(instr.timestamp)))
                         }
                         __await<dynamic>(control.testKeyDown(instr))
                     }
