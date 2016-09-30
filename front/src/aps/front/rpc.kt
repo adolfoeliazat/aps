@@ -10,11 +10,7 @@ import aps.*
 
 fun igniteRPCShit() {
     dlog("Igniting RPC shit...")
-//    shouldLoadMeta = true
 }
-
-//var shouldLoadMeta = true
-//val classNameToFieldDeserializationInfos = mutableMapOf<String, Iterable<FieldDeserializationInfo>>()
 
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {"__async"
     val stackBeforeXHR: String = js("Error().stack")
@@ -41,47 +37,11 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
 }
 
 fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: dynamic): Promise<Res> {"__async"
-//    if (shouldLoadMeta) {
-//        // {classes: [{name: '', fields: [{name: '', strategy: {type: 'Enum', ...}}]}]}
-//        fun loadStrategy(jsonObject: dynamic): TypeDeserializationStrategy = when (jsonObject.type) {
-//            "Simple" -> TypeDeserializationStrategy.Simple()
-//            "Enum" -> TypeDeserializationStrategy.Enum(jsonObject.enumClassName)
-//            "Class" -> TypeDeserializationStrategy.Class(jsonObject.className)
-//            "List" -> TypeDeserializationStrategy.List(loadStrategy(jsonObject.itemStrategy))
-//            else -> wtf("Strategy type: ${jsonObject.type}")
-//        }
-//
-//        val metaJSONObject = __await(fetchFromBackend("meta"))
-////        dlog("Got meta", js("JSON").stringify(metaJSONObject, null, 2))
-//        classNameToFieldDeserializationInfos.clear()
-//        for (classJSONObject in jsArrayToList(metaJSONObject.classes)) {
-//            val fdis = mutableListOf<FieldDeserializationInfo>()
-//            for (fieldJSONObject in jsArrayToList(classJSONObject.fields)) {
-//                fdis.add(FieldDeserializationInfo(
-//                    fieldName = fieldJSONObject.name,
-//                    strategy = loadStrategy(fieldJSONObject.strategy)))
-//            }
-//            classNameToFieldDeserializationInfos[classJSONObject.name] = fdis
-//        }
-//
-//        shouldLoadMeta = false
-//    }
-
     // dlog("requestJSONObject", requestJSONObject)
-
     val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
-    dlog("Response", js("JSON").stringify(responseJSONObject, null, 2))
+    dlog("responseJSONObject ", global.JSON.stringify(responseJSONObject, null, 2))
 
     return __asyncResult(dejsonize(responseJSONObject) as Res)
-}
-
-fun <Res> callRemoteProcedure(procedureName: String, req: dynamic): Promise<Res> {"__async"
-//    val requestJSONObject = js("({})")
-//    for ((k, v) in req) {
-//        requestJSONObject[k] = v
-//    }
-
-    return __await(callRemoteProcedurePassingJSONObject(procedureName, req))
 }
 
 fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res> {"__async"
@@ -111,33 +71,16 @@ fun dejsonize(jsThing: dynamic): Any? {
 
         jsIsArray(jsThing) -> jsArrayToList(jsThing)
 
-//        jsIsArray(jsThing) -> mutableListOf<Any?>().applet {res ->
-//        }
-
         else -> { dwarn("jsThing", jsThing); wtf("Dunno how to dejsonize that jsThing") }
     }
 }
 
-//fun <T> bak_dejsonize(jsonObject: dynamic, className: String): T {
-//    val res = eval("new _.$className()")
-//    val fds = classNameToFieldDeserializationInfos[className] ?: wtf("No field deserialization infos for $className")
-//    for (fd in fds) {
-//        res[fd.fieldName] = jsonValueToFuckingValue(jsonObject[fd.fieldName], fd.strategy)
-//    }
-//    return res
-//}
-
-//fun jsonValueToFuckingValue(jsonValue: dynamic, strategy: TypeDeserializationStrategy): Any? =
-//    if (jsonValue == null) null
-//    else when (strategy) {
-//        is TypeDeserializationStrategy.Simple -> jsonValue
-//        is TypeDeserializationStrategy.Enum -> eval("_.${strategy.enumClassName}.$jsonValue")
-//        is TypeDeserializationStrategy.Class -> dejsonize(jsonValue, strategy.className)
-//        is TypeDeserializationStrategy.List -> jsArrayToList(jsonValue, { jsonValueToFuckingValue(it, strategy.itemStrategy) })
-//    }
-
-
-fun rpc(req: ResetTestDatabaseRequest): Promise<ResetTestDatabaseRequest> = callRemoteProcedure("resetTestDatabase", req)
-fun rpc(req: ImposeNextRequestTimestampRequest): Promise<ImposeNextRequestTimestampRequest> = callRemoteProcedure("imposeNextRequestTimestamp", req)
+fun <T : Request> rpc(req: T): Promise<T> {
+    global.shit = req
+    val dynamicReq: dynamic = req
+    val requestClassName: String = dynamicReq.__proto__.constructor.`$$$kindaPackageKey`
+    val procedureName = requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
+    return callRemoteProcedure(procedureName, req)
+}
 
 

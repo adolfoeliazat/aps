@@ -16,6 +16,4 @@ fun t(en: String, ru: String) = ru
 
 val noImpl: Nothing get() = throw Exception("Don't call me, motherfucker")
 
-@native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
-    fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
-}
+

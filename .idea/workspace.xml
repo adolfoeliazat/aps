@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front.kt" line="629" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front.kt" line="643" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/Control.kt" line="155" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" line="41" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/art.kt" line="153" />
@@ -12,7 +12,7 @@
     <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" line="107" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/Back.kt" line="447" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/Back.kt" line="693" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front.kt" line="191" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front.kt" line="205" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/art.kt" line="119" />
     <bookmark url="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" line="81" />
     <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java" line="3730" />
@@ -77,33 +77,81 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Back.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
+      <file leaf-file-name="front.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/front.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="567">
-              <caret line="135" column="0" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
-              <folding>
-                <element signature="e#80#1825#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BeanDeserializerBase.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="233" column="12" selection-start-line="233" selection-start-column="12" selection-end-line="233" selection-end-column="12" />
+            <state relative-caret-position="405">
+              <caret line="74" column="55" selection-start-line="74" selection-start-column="55" selection-end-line="74" selection-end-column="55" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="shared-utils.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shared-utils-back-impl.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shared-utils.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="rpc.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/rpc.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="702">
+              <caret line="80" column="87" selection-start-line="80" selection-start-column="87" selection-end-line="80" selection-end-column="87" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestCommon.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="321">
+              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="90" column="6" selection-start-line="90" selection-start-column="6" selection-end-line="90" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+            <state relative-caret-position="294">
+              <caret line="56" column="17" selection-start-line="56" selection-start-column="17" selection-end-line="56" selection-end-column="17" />
               <folding>
                 <marker date="1475250777088" expanded="false" signature="0:60" ph="/.../" />
               </folding>
@@ -118,72 +166,6 @@
               <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BeanDeserializer.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="306" column="12" selection-start-line="306" selection-start-column="12" selection-end-line="306" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjectMapper.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="3889" column="37" selection-start-line="3889" selection-start-column="37" selection-end-line="3889" selection-end-column="37" />
-              <folding>
-                <element signature="e#39598#39599#0" expanded="true" />
-                <element signature="e#39643#39644#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeserializationContext.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/DeserializationContext.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="472" column="42" selection-start-line="472" selection-start-column="42" selection-end-line="472" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DefaultDeserializationContext.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="296" column="50" selection-start-line="296" selection-start-column="50" selection-end-line="296" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleModule.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleModule.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="318" column="6" selection-start-line="318" selection-start-column="6" selection-end-line="318" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeserializationConfig.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/DeserializationConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="27" column="39" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
-              <folding>
-                <element signature="e#31805#31806#0" expanded="true" />
-                <element signature="e#31844#31845#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -225,7 +207,6 @@
         <option value="$PROJECT_DIR$/back/src/aps/back/Run.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/test-writer-ua.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/rpc.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" />
         <option value="$PROJECT_DIR$/doc/aps-notions.txt" />
         <option value="$PROJECT_DIR$/back/src/scratch/JVMScratch.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/JVMScratch.kt" />
@@ -246,13 +227,11 @@
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/stuff.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/front/back-front-dummies.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/back-front-dummies.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back-front-dummies-2.kt" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/Control.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/StatefulElement.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/interop.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back-front-dummies.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Control.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/SignUpPage.kt" />
@@ -260,18 +239,21 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/back-utils.kt" />
-        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Form.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/ScratchBack.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/front.kt" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/db.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/rpc.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/art.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test-writer-ua.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" />
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" />
+        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back-front-dummies-2.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/front.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/rpc.kt" />
       </list>
     </option>
   </component>
@@ -383,7 +365,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib-gradle/websocket-servlet-9.3.11.v20160721.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="Inrt&#9;null&#9;null&#10;OMapper&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java&#10;ObjectM&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java&#10;Bdeserializer&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.BeanDeserializer&#10;BDeseBase&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.BeanDeserializerBase&#10;DPH&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DeserializationProblemHandler.java&#10;hom&#9;null&#9;null&#10;Deserializationcontext&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.DeserializationContext&#10;Imrequest&#9;null&#9;null&#10;Inrtrp&#9;null&#9;null&#10;PG_&#9;null&#9;null&#10;RemotePro&#9;null&#9;null&#10;Resette&#9;null&#9;null&#10;front-she&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;URTO&#9;null&#9;null&#10;ExecuteListener&#9;PSI&#9;JAVA://org.jooq.ExecuteListener&#10;DB&#9;null&#9;null&#10;CharSequence&#9;null&#9;null&#10;String&#9;null&#9;null&#10;UPRP&#9;null&#9;null&#10;Scra&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/ScratchBack.kt&#10;phonefi&#9;null&#9;null&#10;crappy&#9;null&#9;null&#10;Crappy&#9;null&#9;null&#10;CoolFo&#9;null&#9;null&#10;phonefie&#9;null&#9;null&#10;signinwi&#9;null&#9;null&#10;CoolForm&#9;null&#9;null&#10;Reque&#9;null&#9;null&#10;Request&#9;null&#9;null&#10;FBack&#9;null&#9;null&#10;scra&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/ScratchBack.kt&#10;scratch&#9;RUN_CONFIGURATION&#9;scratch.kts&#10;defaultname&#9;null&#9;null&#10;requestba&#9;null&#9;null&#10;Updateprofilerespo&#9;null&#9;null&#10;RTD&#9;null&#9;null&#10;RTDRP&#9;null&#9;null&#10;UPReq&#9;null&#9;null&#10;apply&#9;null&#9;null&#10;applet&#9;null&#9;null&#10;CaseFormat&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/guava-19.0-sources.jar!/com/google/common/base/CaseFormat.java&#10;Case&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/guava-19.0-sources.jar!/com/google/common/base/CaseFormat.java&#10;shared-util&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;Remote&#9;null&#9;null&#10;fields&#9;null&#9;null&#10;TextField&#9;null&#9;null&#10;CF&#9;null&#9;null&#10;priva&#9;null&#9;null&#10;privatere&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="fuckyou&#9;null&#9;null&#10;RTO&#9;null&#9;null&#10;ignite&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;rpc(&#9;null&#9;null&#10;Inrt&#9;null&#9;null&#10;OMapper&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java&#10;ObjectM&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java&#10;Bdeserializer&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.BeanDeserializer&#10;BDeseBase&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.BeanDeserializerBase&#10;DPH&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DeserializationProblemHandler.java&#10;hom&#9;null&#9;null&#10;Deserializationcontext&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.DeserializationContext&#10;Imrequest&#9;null&#9;null&#10;Inrtrp&#9;null&#9;null&#10;PG_&#9;null&#9;null&#10;RemotePro&#9;null&#9;null&#10;Resette&#9;null&#9;null&#10;front-she&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;URTO&#9;null&#9;null&#10;ExecuteListener&#9;PSI&#9;JAVA://org.jooq.ExecuteListener&#10;DB&#9;null&#9;null&#10;CharSequence&#9;null&#9;null&#10;String&#9;null&#9;null&#10;UPRP&#9;null&#9;null&#10;Scra&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/ScratchBack.kt&#10;phonefi&#9;null&#9;null&#10;crappy&#9;null&#9;null&#10;Crappy&#9;null&#9;null&#10;CoolFo&#9;null&#9;null&#10;phonefie&#9;null&#9;null&#10;signinwi&#9;null&#9;null&#10;CoolForm&#9;null&#9;null&#10;Reque&#9;null&#9;null&#10;Request&#9;null&#9;null&#10;FBack&#9;null&#9;null&#10;scra&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/ScratchBack.kt&#10;scratch&#9;RUN_CONFIGURATION&#9;scratch.kts&#10;defaultname&#9;null&#9;null&#10;requestba&#9;null&#9;null&#10;Updateprofilerespo&#9;null&#9;null&#10;RTD&#9;null&#9;null&#10;RTDRP&#9;null&#9;null&#10;UPReq&#9;null&#9;null&#10;apply&#9;null&#9;null&#10;applet&#9;null&#9;null&#10;CaseFormat&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/guava-19.0-sources.jar!/com/google/common/base/CaseFormat.java&#10;Case&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/guava-19.0-sources.jar!/com/google/common/base/CaseFormat.java&#10;shared-util&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;Remote&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
@@ -796,38 +778,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/impl/ObjectIdValueProperty.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/SettableBeanProperty.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="171" column="14" selection-start-line="171" selection-start-column="14" selection-end-line="171" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/Module.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="185" column="45" selection-start-line="185" selection-start-column="45" selection-end-line="185" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/Deserializers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6580">
-          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleDeserializers.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
@@ -835,14 +785,6 @@
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -928,14 +870,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="2136" column="5" selection-start-line="2136" selection-start-column="5" selection-end-line="2136" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
           <folding />
         </state>
       </provider>
@@ -1069,14 +1003,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="189" column="16" selection-start-line="189" selection-start-column="16" selection-end-line="189" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/sql/Timestamp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
@@ -1093,14 +1019,6 @@
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#80#593#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/rpc.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="140" column="5" selection-start-line="140" selection-start-column="5" selection-end-line="140" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1130,14 +1048,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="120" column="11" selection-start-line="120" selection-start-column="11" selection-end-line="120" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/lang/Boolean.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
@@ -1159,8 +1069,8 @@
         <state relative-caret-position="135">
           <caret line="27" column="39" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
           <folding>
-            <element signature="e#31805#31806#0" expanded="true" />
-            <element signature="e#31844#31845#0" expanded="true" />
+            <element signature="e#31805#31806#0" expanded="false" />
+            <element signature="e#31844#31845#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1228,13 +1138,85 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="90" column="6" selection-start-line="90" selection-start-column="6" selection-end-line="90" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+        <state relative-caret-position="294">
+          <caret line="56" column="17" selection-start-line="56" selection-start-column="17" selection-end-line="56" selection-end-column="17" />
           <folding>
             <marker date="1475250777088" expanded="false" signature="0:60" ph="/.../" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back-front-dummies-2.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/interop.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="74" column="55" selection-start-line="74" selection-start-column="55" selection-end-line="74" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/rpc.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="702">
+          <caret line="80" column="87" selection-start-line="80" selection-start-column="87" selection-end-line="80" selection-end-column="87" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -64,6 +64,20 @@ object KotlinShit : IKotlinShit {
             global.__asyncResult = function(x) { return x }
         """)
 
+        run { // Kinda reflection
+            val shitThatEvenCannotBeAccessedForWhateverReasons = listOf("RemoteTransferObject")
+
+            val kindaPackage = js("_").aps
+            for (key: String in global.Object.getOwnPropertyNames(kindaPackage)) {
+                if (!shitThatEvenCannotBeAccessedForWhateverReasons.contains(key)) {
+                    val value = kindaPackage[key]
+                    if (jsTypeOf(value) == "function") {
+                        value.`$$$kindaPackageKey` = key
+                    }
+                }
+            }
+        }
+
         jshit.elcl = ::jsFacing_elcl
         jshit.diva = ::jsFacing_diva
         jshit.spana = ::jsFacing_spana

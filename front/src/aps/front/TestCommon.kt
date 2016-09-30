@@ -39,7 +39,6 @@ fun runTestScenario(fullName: String) {
 }
 
 fun tetete() {
-    val x = UserState.BANNED
 }
 
 

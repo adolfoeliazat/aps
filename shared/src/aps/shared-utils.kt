@@ -46,8 +46,6 @@ fun checkAtMostOneOf(vararg pairs: Pair<String, Any?>) {
     check(definedNames.size <= 1) {"These motherfuckers violate checkAtMostOneOf: " + definedNames.joinToString()}
 }
 
-val fuckYou: Nothing get() = throw Exception("Fuck you")
-
 fun <T> firstNotNull(vararg branches: () -> T?): T? {
     for (branch in branches) {
         branch()?.let {
