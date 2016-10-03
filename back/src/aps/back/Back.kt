@@ -8,16 +8,24 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.Tables.*
+import aps.back.generated.jooq.tables.pojos.UserRoles
 import aps.back.generated.jooq.tables.pojos.Users
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.ser.*
 import com.fasterxml.jackson.databind.type.TypeFactory
+import org.apache.commons.validator.routines.EmailValidator
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletHandler
 import org.jooq.DSLContext
 import org.mindrot.jbcrypt.BCrypt
+import org.reflections.Reflections
+import org.reflections.scanners.MethodAnnotationsScanner
+import org.reflections.util.ClasspathHelper
+import org.reflections.util.ConfigurationBuilder
+import org.reflections.util.FilterBuilder
 import org.slf4j.Logger
+import java.lang.reflect.Method
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,8 +36,19 @@ import javax.servlet.http.HttpServletResponse
 
 val THE_ADMIN_ID = 101L // TODO:vgrechka Unhardcode admin ID    17c5cc52-57c2-480d-a7c3-abb030b01cc9
 
+val remoteProcedureNameToFactory: MutableMap<String, Method> = Collections.synchronizedMap(mutableMapOf())
+
 fun main(args: Array<String>) {
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
+
+    run { // Gather meta
+        val refl = Reflections(ConfigurationBuilder()
+            .setUrls(ClasspathHelper.forPackage("aps.back"))
+            .setScanners(MethodAnnotationsScanner()))
+        val methods = refl.getMethodsAnnotatedWith(RemoteProcedureFactory::class.java)
+        debugLog.section("Remote procedure factories:", methods.map{it.name}.joinToString())
+        for (m in methods) remoteProcedureNameToFactory[m.name] = m
+    }
 
     Server(8080).apply {
         handler = ServletHandler().apply {
@@ -86,7 +105,7 @@ val hackyObjectMapper = ObjectMapper().applet {om ->
     }
 }
 
-fun t(en: String, ru: String) = ru
+fun t(en: String, ua: String) = ua
 
 fun bitchExpectedly(msg: String) {
     throw ExpectedRPCShit(msg)
@@ -103,7 +122,9 @@ fun String.toUserKind(): UserKind = UserKind.values().find{it.name == this} ?: w
 fun String.toLanguage(): Language = Language.values().find{it.name == this} ?: wtf("[$this] to Language")
 fun String.toUserState(): UserState = UserState.values().find{it.name == this} ?: wtf("[$this] to UserState")
 
-fun Users.toRTO(): UserRTO {
+fun Users.toRTO(q: DSLContext): UserRTO {
+    val roles = q.select().from(USER_ROLES).where(USER_ROLES.USER_ID.eq(id)).fetchInto(UserRoles::class.java)
+
     return UserRTO(
         id = "" + id,
         deleted = deleted,
@@ -121,20 +142,22 @@ fun Users.toRTO(): UserRTO {
         lastName = lastName,
         phone = phone,
         compactPhone = compactPhone,
-        aboutMe = aboutMe
+        aboutMe = aboutMe,
+        roles = roles.map{UserRole.valueOf(it.role)}.toSet()
     )
 }
 
-object ImposedShit {
-    @Volatile
-    var requestTimestamp: Timestamp? = null
+object TestServerFiddling {
+    @Volatile var nextRequestTimestamp: Timestamp? = null
+    @Volatile var rejectAllRequests: Boolean = false
+    @Volatile var nextGeneratedPassword: String? = null
 }
 
 class ImposeNextRequestTimestampRemoteProcedure : RemoteProcedure<ImposeNextRequestTimestampRequest, GenericResponse>() {
     override val access: Access = Access.SYSTEM
 
     override fun doStuff() {
-        ImposedShit.requestTimestamp = stringToStamp(req.stamp)
+        TestServerFiddling.nextRequestTimestamp = stringToStamp(req.stamp)
     }
 }
 
@@ -176,218 +199,267 @@ abstract class RemoteProcedure<Req: Request, Res: Any> {
     lateinit var req: Req
     lateinit var res: Res
     lateinit var q: DSLContext
-    lateinit var user: Users
-    val requestTimestamp: Timestamp
+    lateinit var user: UserRTO
+    lateinit var requestTimestamp: Timestamp
+    lateinit var clientDomain: String
+    lateinit var clientPortSuffix: String
 
-    val fields = mutableListOf<SomeField>()
+    val fields = mutableListOf<Any>()
     val fieldErrors = mutableListOf<FieldError>()
 
+    private fun clientKindDescr(): String {
+        throw UnsupportedOperationException("Implement me, please, fuck you")
+    }
+
+//    fun bitchAboutFieldErrors() {
+//        bitchExpectedly(t("Please fix errors below", "Пожалуйста, исправьте ошибки ниже"))
+//    }
+
     init {
-        requestTimestamp = ImposedShit.requestTimestamp?.let {
-            ImposedShit.requestTimestamp = null
-            it
-        } ?: Timestamp(Date().time)
     }
 
     fun invoke() {
         val req = this.req
 
+        requestTimestamp = TestServerFiddling.nextRequestTimestamp?.let {
+            TestServerFiddling.nextRequestTimestamp = null
+            it
+        } ?: Timestamp(Date().time)
+
+        if (access != Access.SYSTEM) {
+            when (req.lang) {
+                Language.EN -> when (req.clientKind) {
+                    ClientKind.CUSTOMER -> {clientDomain = "aps-en-customer.local"; clientPortSuffix = ":3011"}
+                    ClientKind.WRITER -> {clientDomain = "aps-en-writer.local"; clientPortSuffix = ":3021"}
+                }
+                Language.UA -> when (req.clientKind) {
+                    ClientKind.CUSTOMER -> {clientDomain = "aps-ua-customer.local"; clientPortSuffix = ":3012"}
+                    ClientKind.WRITER -> {clientDomain = "aps-ua-writer.local"; clientPortSuffix = ":3022"}
+                }
+            }
+        }
+
         if (access == Access.SYSTEM) {
             // TODO:vgrechka Check DANGEROUS_TOKEN    50ec0187-3b47-43de-8a29-b561e6d7132f
         }
 
-        if (access == Access.USER) {
-            val rows = q.select()
-                .from(USER_TOKENS, USERS)
-                .where(USER_TOKENS.TOKEN.eq(req.token))
-                .and(USERS.ID.eq(USER_TOKENS.USER_ID))
-                .fetch().into(Users::class.java)
-            if (rows.isEmpty()) bitch("Invalid token") // TODO:vgrechka Redirect user to sign-in page    301a55be-8bb4-4c60-ae7b-a6201f17d8e2
+//        if (access == Access.USER) {
+//            val rows = q.select()
+//                .from(USER_TOKENS, USERS)
+//                .where(USER_TOKENS.TOKEN.eq(req.token))
+//                .and(USERS.ID.eq(USER_TOKENS.USER_ID))
+//                .fetch().into(Users::class.java)
+//            if (rows.isEmpty()) bitch("Invalid token") // TODO:vgrechka Redirect user to sign-in page    301a55be-8bb4-4c60-ae7b-a6201f17d8e2
+//
+//            // TODO:vgrechka Check that user kind matches requesting client kind    fc937ee4-010c-4f5e-bece-5d7db51bf8c1
+//
+//            user = rows[0].toRTO()
+//        }
 
-            // TODO:vgrechka Check that user kind matches requesting client kind    fc937ee4-010c-4f5e-bece-5d7db51bf8c1
-
-            user = rows[0]
-        }
-
-        for (field in fields) {
-            field.load()
-        }
-
-        if (!fieldErrors.isEmpty()) bitchExpectedly(t("TOTE", "Пожалуйста, исправьте ошибки ниже"))
+//        for (field in fields) field.load()
+//        validate()
+//        if (!fieldErrors.isEmpty()) bitchExpectedly(t("TOTE", "Пожалуйста, исправьте ошибки ниже"))
 
         doStuff()
     }
 
-    abstract class SomeField {
-        abstract fun load()
-    }
+    open fun validate() {}
 
-    abstract class StringValueField : SomeField() {
-        abstract val value: String
-    }
+//    abstract class SomeField {
+//        abstract fun load()
+//    }
 
-    inner open class CrappyField(val name: String) : StringValueField() {
-        override lateinit var value: String
+//    abstract class StringValueField : SomeField() {
+//        abstract val value: String
+//    }
+//
+//    abstract class BooleanValueField : SomeField() {
+//        abstract val yes: Boolean
+//        abstract val no: Boolean
+//    }
 
-        init {
-            fields.add(this)
-        }
+//    inner open class CrappyStringField(val name: String) : StringValueField() {
+//        override lateinit var value: String
+//
+//        init {
+//            fields.add(this)
+//        }
+//
+//        override fun load() {
+//            value = (req.fields[name] ?: bitch("Gimme $name, motherfucker")) as String
+//        }
+//    }
 
-        override fun load() {
-            value = req.fields[name] ?: bitch("Gimme $name, motherfucker")
-        }
-    }
-
-    fun emailField(name: String = "email"): StringValueField {
-        return object:CrappyField(name) {
-        }
-    }
-
-    fun passwordField(name: String = "password"): StringValueField {
-        return object:CrappyField(name) {
-        }
-    }
-
-    fun textField(name: String, minLen: Int, maxLen: Int): StringValueField {
-        return object:CrappyField(name) {
-            override fun load() {
-                value = req.fields[name] ?: bitch("Gimme $name, motherfucker")
-                value = value.trim()
-
-                run error@{
-                    if (value.length < minLen)
-                        return@error if (value.length == 0) t("TOTE", "Поле обязательно")
-                                     else t("TOTE", "Не менее $minLen символов")
-                    if (value.length > maxLen) return@error t("TOTE", "Не более $maxLen символов")
-                    null
-                }?.let {error ->
-                    fieldErrors.add(FieldError(name, error)); return
-                }
-            }
-        }
-    }
-
-    fun phoneField(name: String = "phone", minDigitCount: Int = 6, maxLen: Int = 20): StringValueField {
-        return object:CrappyField(name) {
-            override fun load() {
-                value = req.fields[name] ?: bitch("Gimme $name, motherfucker")
-                value = value.trim()
-
-                run error@{
-                    if (value.length == 0) return@error t("TOTE", "Поле обязательно")
-                    if (value.length > maxLen) return@error t("TOTE", "Не более $maxLen символов")
-
-                    var digitCount = 0
-                    for (c in value.toCharArray()) {
-                        if (!Regex("(\\d| |-|\\+|\\(|\\))+").matches("$c")) return@error t("TOTE", "Странный телефон какой-то")
-                        if (Regex("\\d").matches("$c")) ++digitCount
-                    }
-
-                    if (digitCount < minDigitCount) return@error t("TOTE", "Не менее $minDigitCount цифр")
-
-                    null
-                }?.let {error ->
-                    fieldErrors.add(FieldError(name, error)); return
-                }
-            }
-        }
-    }
+//    inner open class CrappyBooleanField(val name: String) : BooleanValueField() {
+//        var loaded = false
+//        override var yes: Boolean = SHITB; get() = checking(loaded) {field}
+//        override val no: Boolean get() = !yes
+//
+//        init {
+//            fields.add(this)
+//        }
+//
+//        override fun load() {
+//            yes = (req.fields[name] ?: bitch("Gimme $name, motherfucker")) as Boolean
+//            loaded = true
+//        }
+//    }
+//
+//    fun emailField(name: String = "email"): StringValueField {
+//        return object: CrappyStringField(name) {
+//            override fun load() {
+//                value = (req.fields[name] ?: bitch("Gimme $name, motherfucker")) as String
+//                value = value.trim()
+//
+//                run error@{
+//                    val minLen = 3; val maxLen = 50
+//
+//                    if (value.length == 0) return@error t("TOTE", "Поле обязательно")
+//                    if (value.length < minLen) return@error t("TOTE", "Не менее $minLen символов")
+//                    if (value.length > maxLen) return@error t("TOTE", "Не более $maxLen символов")
+//
+//                    if (!EmailValidator.getInstance(false, true).isValid(value)) return@error t("TOTE", "Странная почта какая-то")
+//
+//                    null
+//                }?.let {error ->
+//                    fieldErrors.add(FieldError(name, error)); return
+//                }
+//            }
+//        }
+//    }
+//
+//    fun agreeTermsField(name: String = "agreeTerms"): BooleanValueField {
+//        return object:CrappyBooleanField(name) {
+//        }
+//    }
+//
+//    fun passwordField(name: String = "password"): StringValueField {
+//        return object: CrappyStringField(name) {
+//        }
+//    }
+//
+//    fun textField(name: String, minLen: Int, maxLen: Int): StringValueField {
+//        return object: CrappyStringField(name) {
+//            override fun load() {
+//                value = (req.fields[name] ?: bitch("Gimme $name, motherfucker")) as String
+//                value = value.trim()
+//
+//                run error@{
+//                    if (value.length < minLen)
+//                        return@error if (value.length == 0) t("TOTE", "Поле обязательно")
+//                                     else t("TOTE", "Не менее $minLen символов")
+//                    if (value.length > maxLen) return@error t("TOTE", "Не более $maxLen символов")
+//                    null
+//                }?.let {error ->
+//                    fieldErrors.add(FieldError(name, error)); return
+//                }
+//            }
+//        }
+//    }
+//
+//    fun phoneField(name: String = "phone", minDigitCount: Int = 6, maxLen: Int = 20): StringValueField {
+//        return object: CrappyStringField(name) {
+//            override fun load() {
+//                value = (req.fields[name] ?: bitch("Gimme $name, motherfucker")) as String
+//                value = value.trim()
+//
+//                run error@{
+//                    if (value.length == 0) return@error t("TOTE", "Поле обязательно")
+//                    if (value.length > maxLen) return@error t("TOTE", "Не более $maxLen символов")
+//
+//                    var digitCount = 0
+//                    for (c in value.toCharArray()) {
+//                        if (!Regex("(\\d| |-|\\+|\\(|\\))+").matches("$c")) return@error t("TOTE", "Странный телефон какой-то")
+//                        if (Regex("\\d").matches("$c")) ++digitCount
+//                    }
+//
+//                    if (digitCount < minDigitCount) return@error t("TOTE", "Не менее $minDigitCount цифр")
+//
+//                    null
+//                }?.let {error ->
+//                    fieldErrors.add(FieldError(name, error)); return
+//                }
+//            }
+//        }
+//    }
 
 }
 
-class SignInWithPasswordRemoteProcedure : RemoteProcedure<Request, SignInWithPasswordResponse>() {
-    override val access: Access = Access.PUBLIC
-
-    val email = emailField()
-    val password = passwordField()
-
-    override fun doStuff() {
-        // TODO:vgrechka Peculiarly log wrong-password sign-in attempts    5e8dd00b-c96e-4991-b350-a1aa78c784a4
-
-        val vagueMessage = t("Invalid email or password", "Неверная почта или пароль")
-
-        val users = q.select().from(USERS).where(USERS.EMAIL.equal(email.value)).fetch().into(Users::class.java)
-        if (users.isEmpty()) bitchExpectedly(vagueMessage)
-
-        val user = users[0]
-        if (!BCrypt.checkpw(password.value, user.passwordHash)) bitchExpectedly(vagueMessage)
-
-        // TODO:vgrechka Prevent things like writer signing into customer-facing site    69781de0-05c4-440f-98ac-6de6e0c31157
-
-        // TODO:vgrechka Store tokens in Redis instead of DB    c51fe75c-f55e-4a68-9a7b-465e44db6235
-        res.token = "" + UUID.randomUUID()
-        q.insertInto(USER_TOKENS, USER_TOKENS.USER_ID, USER_TOKENS.TOKEN)
-            .values(user.id, res.token)
-            .execute()
-
-        // TODO:vgrechka Load related user shit?
-
-        res.user = user.toRTO()
-    }
-}
 
 class GodServlet : HttpServlet() {
     val log by logger()
 
     override fun service(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse) {
+        if (TestServerFiddling.rejectAllRequests) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
+
         val pathInfo = servletRequest.pathInfo
         try {
-            servletResponse.addHeader("Access-Control-Allow-Origin", "*")
-            servletResponse.contentType = "application/json; charset=utf-8"
-
             when {
                 pathInfo.startsWith("/rpc/") -> {
-                    // TODO:vgrechka Think about securing /rpc    ba3ffaac-6037-4991-9f51-abc8f17934f2
-
                     val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
-                    val cnamePrefix = procedureName.capitalize()
 
-                    val procedureClass = Class.forName("aps.back.${cnamePrefix}RemoteProcedure")
-                    val requestClass =
-                        try {
-                            Class.forName("aps.back.${cnamePrefix}Request")
-                        } catch(e: ClassNotFoundException) {
+                    val factory = remoteProcedureNameToFactory[procedureName]
+                    if (factory != null) {
+                        val proc = factory.invoke(null) as MatumbaProcedure<*, *>
+                        proc.service(servletRequest, servletResponse)
+                    } else {
+                        servletRequest.characterEncoding = "UTF-8"
+                        servletResponse.addHeader("Access-Control-Allow-Origin", "*")
+                        servletResponse.contentType = "application/json; charset=utf-8"
+
+                        val response: Any
+
+                        val cnamePrefix = procedureName.capitalize()
+                        val procedureClass = Class.forName("aps.back.${cnamePrefix}RemoteProcedure")
+                        val requestClass =
                             try {
-                                Class.forName("aps.${cnamePrefix}Request")
+                                Class.forName("aps.back.${cnamePrefix}Request")
                             } catch(e: ClassNotFoundException) {
-                                Request::class.java
+                                try {
+                                    Class.forName("aps.${cnamePrefix}Request")
+                                } catch(e: ClassNotFoundException) {
+                                    Request::class.java
+                                }
                             }
-                        }
-                    val responseClass =
+                        val responseClass =
+                            try {
+                                Class.forName("aps.${cnamePrefix}Request\$Response")
+                            } catch(e: ClassNotFoundException) {
+                                GenericResponse::class.java
+                            }
+
+                        val procedure = procedureClass.newInstance() as RemoteProcedure<Request, Any>
+
+                        val requestJSON = servletRequest.reader.readText()
+                        log.info("${servletRequest.pathInfo}: $requestJSON")
+                        procedure.req = hackyObjectMapper.readValue(requestJSON, requestClass) as Request
+
+                        procedure.res = responseClass.newInstance()
+
                         try {
-                            Class.forName("aps.${cnamePrefix}Response")
-                        } catch(e: ClassNotFoundException) {
-                            GenericResponse::class.java
-                        }
-
-                    val procedure = procedureClass.newInstance() as RemoteProcedure<Request, Any>
-
-                    val requestJSON = servletRequest.reader.readText()
-                    log.info("requestJSON: $requestJSON")
-                    procedure.req = hackyObjectMapper.readValue(requestJSON, requestClass) as Request
-
-                    procedure.res = responseClass.newInstance()
-
-                    val response: FormResponse
-                    try {
-                        if (!procedure.needsDBConnection) {
-                            procedure.invoke()
-                        } else {
-                            val db = DB.apsTestOnTestServer
-                            db.joo { q ->
-                                // TODO:vgrechka Wrap each RPC in transaction    5928def7-392e-433f-99a8-9decfe959971
-                                procedure.q = q
+                            if (!procedure.needsDBConnection) {
                                 procedure.invoke()
+                            } else {
+                                val db = DB.apsTestOnTestServer
+                                db.joo { q ->
+                                    // TODO:vgrechka Wrap each RPC in transaction    5928def7-392e-433f-99a8-9decfe959971
+                                    procedure.q = q
+                                    procedure.invoke()
+                                }
                             }
-                        }
-                        response = FormResponse.Hunky(procedure.res)
-                    } catch (e: ExpectedRPCShit) {
-                        log.info("Expected RPC shit: ${e.message}")
-                        response = FormResponse.Shitty(e.message, procedure.fieldErrors)
-                    }
 
-                    servletResponse.writer.println(hackyObjectMapper.writeValueAsString(response))
-                    servletResponse.status = HttpServletResponse.SC_OK
+                            response =
+                                if (procedure.access == RemoteProcedure.Access.SYSTEM) procedure.res
+                                else FormResponse.Hunky(procedure.res)
+
+                        } catch (e: ExpectedRPCShit) {
+                            log.info("Expected RPC shit: ${e.message}")
+                            response = FormResponse.Shitty(e.message, procedure.fieldErrors)
+                        }
+
+                        servletResponse.writer.println(hackyObjectMapper.writeValueAsString(response))
+                        servletResponse.status = HttpServletResponse.SC_OK
+                    }
                 }
 
 
@@ -404,29 +476,10 @@ fun compactPhone(s: String): String {
     return s.replace(Regex("[^0-9]"), "")
 }
 
-class UpdateProfileRemoteProcedure() : RemoteProcedure<Request, UpdateProfileResponse>() {
-    override val access: Access = Access.USER
-    val log by logger()
+annotation class RemoteProcedureFactory
 
-    val phone = phoneField()
-    val aboutMe = textField("aboutMe", 1, 300)
 
-    override fun doStuff() {
-        q.update(USERS)
-            .set(USERS.PROFILE_UPDATED_AT, requestTimestamp)
-            .set(USERS.PHONE, phone.value)
-            .set(USERS.COMPACT_PHONE, compactPhone(phone.value))
-            .set(USERS.ABOUT_ME, aboutMe.value)
-            .set(USERS.STATE, UserState.PROFILE_APPROVAL_PENDING.name)
-            .set(USERS.ASSIGNED_TO, THE_ADMIN_ID)
-            .where(USERS.ID.eq(user.id))
-            .execute()
 
-        val users = q.select().from(USERS).where(USERS.ID.eq(user.id)).fetch().into(Users::class.java)
-        res.newUser = users.first().toRTO()
-    }
-
-}
 
 
 

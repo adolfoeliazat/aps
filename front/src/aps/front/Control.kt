@@ -6,8 +6,7 @@
 
 package aps.front
 
-import aps.React
-import aps.ReactElement
+import aps.*
 
 fun button(build: ButtonBuilder.() -> Unit): Control {
     val cis = ButtonBuilder()

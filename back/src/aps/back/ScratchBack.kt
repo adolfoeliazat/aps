@@ -5,20 +5,14 @@ import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 
 fun main(args: Array<String>) {
-//    ScratchBack.fiddleWithDB_apsTestOnTestServer()
-
-    run {
-        for (c in "foobar".toCharArray()) {
-            println(c)
-        }
-    }
+    ScratchBack.fiddleWithDB_apsTestOnTestServer()
 }
 
 object ScratchBack {
 
     fun fiddleWithDB_apsTestOnTestServer() {
-//        val query = "select * from users"
-        val query = "select * from user_tokens"
+        val query = "select * from users"
+//        val query = "select * from user_tokens"
 
         DB.apsTestOnTestServer.joo{q->
             val res = q.fetch(query)

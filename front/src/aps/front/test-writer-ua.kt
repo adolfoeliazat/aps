@@ -6,7 +6,7 @@
 
 package aps.front
 
-import aps.ResetTestDatabaseRequest
+import aps.*
 
 class TS_UA_Writer_SignUp_1 : TestScenario() {
     override fun run(): Promise<Unit> {"__async"
@@ -18,7 +18,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         }
 
 //        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
-        __await(rpc(ResetTestDatabaseRequest(templateDB = "test-template-ua-1", recreateTemplate = true)))
+        __await(ResetTestDatabaseRequest(templateDB = "test-template-ua-1", recreateTemplate = true).rpc())
 
         val instructions = mutableListOf<TestInstruction>()
         instructions.addAll(vovchok1())
@@ -94,7 +94,8 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     action("Entering last name") {
                         setValue("TextField-lastName.Input", "Вовчок")
                         - TestInstruction.Do({"__async"
-                            __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
+                            __await(ImposeNextGeneratedPasswordRequest("fucking-big-generated-secret").rpc()) /ignora
+//                            __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
                         })
 
                         click("button-primary", "2016-08-14 17:48:51")
@@ -104,7 +105,8 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     }
 
                     - TestInstruction.Do({"__async"
-                        __await<dynamic>(drpc(json("fun" to "danger_clearSentEmails")))
+                        __await(ClearSentEmailsRequest().rpc()) /ignora
+//                        __await<dynamic>(drpc(json("fun" to "danger_clearSentEmails")))
                     })
                 }
 

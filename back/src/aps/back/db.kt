@@ -31,16 +31,18 @@ val PG_LOCAL_DATE_TIME = DateTimeFormatterBuilder()
 fun stringToStamp(s: String): Timestamp = Timestamp.valueOf(LocalDateTime.parse(s, PG_LOCAL_DATE_TIME))
 
 object DB {
-    val PORT_DEV = 5432
-    val PORT_TEST = 5433
+    val PORT_DEV = 5432   // On disk
+    val PORT_TEST = 5433  // On memory drive
 
     val dbs = mutableListOf<Database>()
     val testTemplateUA1 = Database("127.0.0.1", PORT_TEST, "test-template-ua-1", "postgres", allowRecreation = true, populate = this::populate_testTemplateUA1)
     val apsTestOnTestServer = Database("127.0.0.1", PORT_TEST, "aps-test", "postgres", allowRecreation = true)
+    val postgresOnTestServer = Database("127.0.0.1", PORT_TEST, "postgres", "postgres")
+    val postgresOnDevServer = Database("127.0.0.1", PORT_DEV, "postgres", "postgres")
 
-    private val systemDatabases = mapOf(
-        PORT_DEV to Database("127.0.0.1", PORT_DEV, "postgres", "postgres"), // Dev, on disk
-        PORT_TEST to Database("127.0.0.1", PORT_TEST, "postgres", "postgres")  // Test, on memory drive
+    val systemDatabases = mapOf(
+        PORT_DEV to postgresOnDevServer,
+        PORT_TEST to postgresOnTestServer
     )
 
     fun byNameOnTestServer(name: String): Database =

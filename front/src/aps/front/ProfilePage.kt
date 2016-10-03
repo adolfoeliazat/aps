@@ -8,7 +8,14 @@ package aps.front
 
 import aps.*
 
-class ProfilePage(val ui: dynamic) {
+fun UpdateProfileRequest.Companion.from(user: UserRTO) = UpdateProfileRequest().apply {
+    with(profileFields) {
+        phone.value = user.phone.orEmpty()
+        aboutMe.value = user.aboutMe.orEmpty()
+    }
+}
+
+class ProfilePage(val ui: LegacyUIShit) {
     fun load(): Promise<Unit> {"__async"
         val primaryButtonTitle = t("TOTE", "Отправить на проверку")
 
@@ -27,18 +34,14 @@ class ProfilePage(val ui: dynamic) {
                     "quote" to user.profileRejectionReason))
             }
 
-            val form = object:CoolForm<UpdateProfileResponse>("updateProfile", primaryButtonTitle = primaryButtonTitle) {
-                val profileFields = ProfileFields(this, user)
+            pageBody = jshit.diva(json(), prelude, FormMatumba(UpdateProfileRequest.from(ui.user), UpdateProfileRequest.Response(), ui=ui) {
+                this.primaryButtonTitle = primaryButtonTitle
 
-                override fun onSuccessa(res: UpdateProfileResponse): Promise<Unit> {"__async"
+                onSuccessa = {res -> "__async"
                     ui.setUser(res.newUser)
-                    __await(ui.replaceNavigate("profile.html"))
-                    return __asyncResult(Unit)
+                    __await(ui.replaceNavigate("profile.html")) /ignora
                 }
-            }
-            form.ui = ui
-
-            pageBody = jshit.diva(json(), prelude, form.toReactElement())
+            }.toReactElement())
         }
         else if (userState == UserState.PROFILE_APPROVAL_PENDING) {
             pageBody = jshit.diva(json(),

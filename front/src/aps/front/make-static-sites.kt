@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.UserKind
+import aps.wtf
 
 object MakeStaticSites {
     val kindaDirname = "e:/work/aps/aps/lib"

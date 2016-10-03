@@ -6,8 +6,7 @@
 
 package aps.front
 
-import aps.UserKind
-import aps.dlog
+import aps.*
 
 fun jsFacing_renderTopNavbar_calledByFuckingUI(ui: dynamic, arg: dynamic): dynamic {
     // {highlightedItem}
@@ -23,10 +22,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
 
     val t: (String, String) -> String = arg.t
 
-    var user: dynamic = undefined
-    if (ui) {
-        user = ui.getUser()
-    }
+    val user: UserRTO? = if (ui) ui.getUser() else null
 
     fun TopNavItem(def: dynamic): dynamic {
         // #extract {counter} from def
@@ -55,7 +51,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
         TopNavItem(json("name" to "blog", "title" to t("Blog", "Блог"), "counter" to proseCounter))
         )
     } else {
-        if (!user || user.kind != "ADMIN") {
+        if (user == null || user.kind != UserKind.ADMIN) {
             proseItems = jsArrayOf(
             TopNavItem(json("name" to "why", "title" to t("Why Us?", "Почему мы?"), "counter" to proseCounter)),
             TopNavItem(json("name" to "prices", "title" to t("Prices", "Цены"), "counter" to proseCounter)),
@@ -66,7 +62,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
 
     var privateItems: dynamic = undefined
     val privateCounter = jsArrayOf(0)
-    if (user) {
+    if (user != null) {
         if (clientKind == UserKind.CUSTOMER) {
             privateItems = jsArrayOf(
             TopNavItem(json("name" to "orders", "title" to t("My Orders", "Мои заказы"), "counter" to privateCounter)),
@@ -75,18 +71,18 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
         } else {
             if (user.kind == UserKind.WRITER) {
                 privateItems = jshit.utils.compact(jsArrayOf(
-                user.state == "COOL" && TopNavItem(json("name" to "orders", "title" to t("My Orders", "Мои заказы"), "counter" to privateCounter)),
-                user.state == "COOL" && TopNavItem(json("name" to "store", "title" to t("Store", "Аукцион"), "counter" to privateCounter)),
+                user.state == UserState.COOL && TopNavItem(json("name" to "orders", "title" to t("My Orders", "Мои заказы"), "counter" to privateCounter)),
+                user.state == UserState.COOL && TopNavItem(json("name" to "store", "title" to t("Store", "Аукцион"), "counter" to privateCounter)),
                 TopNavItem(json("name" to "profile", "title" to t("Profile", "Профиль"), "counter" to privateCounter))
 
                 // TODO:vgrechka Reenable Support navitem...    11a150ac-97fd-48ce-8ba6-67d0559a2768
                 // TopNavItem(json("name" to "support", "title" to t("Support", "Поддержка"), "liveStatusFieldName" to "supportMenuBadge", "counter" to privateCounter))
                 ))
-            } else if (user.kind == "ADMIN") {
+            } else if (user.kind == UserKind.ADMIN) {
                 privateItems = jsArrayOf()
                 // privateItems.push(TopNavItem(json("name" to "admin-heap", "title" to t("TOTE", "Куча"), "liveStatusFieldName" to "heapSize", "counter" to privateCounter)))
                 privateItems.push(TopNavItem(json("name" to "admin-users", "title" to t("Users", "Юзеры"), "counter" to privateCounter)))
-                if (user.roles.support) {
+                if (user.roles.contains(UserRole.SUPPORT)) {
                     // TODO:vgrechka Reenable Support navitem...    9c49cfeb-86c1-4d86-85ed-6430e14946d8
                     // privateItems.push(TopNavItem(json("name" to "support", "title" to t("Support", "Поддержка"), "liveStatusFieldName" to "supportMenuBadge", "counter" to privateCounter)))
                 }
@@ -95,10 +91,10 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
     }
 
     var leftNavbarItems: dynamic = undefined; var rightNavbarItem: dynamic = undefined
-    if (user) {
+    if (user != null) {
         val liaid = puid()
         leftNavbarItems = jsArrayOf()
-        if (user.kind != "ADMIN") {
+        if (user.kind != UserKind.ADMIN) {
             var dropdownAStyle: dynamic = undefined
             if (proseItems.some{x -> x.name == highlightedItem}) {
                 dropdownAStyle = json("backgroundColor" to "#e7e7e7")
@@ -113,7 +109,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
         leftNavbarItems.push.apply(leftNavbarItems, privateItems)
         // @wip rejection
         if (ui.getUser().state == "COOL") {
-            rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to t(user.first_name), "counter" to jsArrayOf(0)))
+            rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to t(user.firstName), "counter" to jsArrayOf(0)))
         }
     } else {
         leftNavbarItems = proseItems
@@ -125,7 +121,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
         brand = "APS"
     } else {
         brand = t("Writer", "Писец")
-        if (user && user.kind == "ADMIN") {
+        if (user != null && user.kind == UserKind.ADMIN) {
             brand = t("Admin", "Админ")
         }
     }

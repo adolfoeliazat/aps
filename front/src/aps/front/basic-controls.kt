@@ -6,9 +6,7 @@
 
 package aps.front
 
-import aps.ReactElement
-import aps.front.JSException
-import aps.front.wtf
+import aps.*
 
 fun asReactElement(x: Any?): ReactElement {
     val didi: dynamic = x

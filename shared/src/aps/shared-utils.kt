@@ -59,7 +59,37 @@ fun <T> String?.ifNotBlankApplet(block: (String) -> T?): T? =
     if (this.isNullOrBlank()) null
     else block(this!!)
 
+fun <T> checking(cond: Boolean, block: () -> T) =
+    if (cond) block()
+    else die("Fucking illegal state")
 
+fun dedent(it: String): String {
+    var lines = it.split(Regex("\\r?\\n"))
+    if (lines.size > 0 && lines[0].isBlank()) {
+        lines = lines.drop(1)
+    }
+    if (lines.size > 0 && lines.last().isBlank()) {
+        lines = lines.dropLast(1)
+    }
+
+    var minIndent = 9999 // TODO:vgrechka Platform-specific max integer (for JS: Number.MAX_SAFE_INTEGER)
+    for (line in lines) {
+        if (!line.isBlank()) {
+            val lineIndent = line.length - line.trimStart().length
+            if (lineIndent < minIndent) {
+                minIndent = lineIndent
+            }
+        }
+    }
+
+    return lines.map {line ->
+        if (line.trim().isBlank()) ""
+        else line.substring(minIndent)
+    }.joinToString("\n")
+}
+
+var _puid = 1L
+fun puid(): Long = _puid++
 
 
 

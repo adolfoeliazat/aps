@@ -6,10 +6,11 @@
 
 package aps.front
 
-import aps.ImposeNextRequestTimestampRequest
-import aps.ReactElement
 import kotlin.browser.window
 import aps.front.Color.*
+import aps.*
+import aps.WorldPointRequest.Action.RESTORE
+import aps.WorldPointRequest.Action.SAVE
 import kotlin.reflect.KProperty
 
 class HotReloadSurvivingShit(val nameInGlobalScope: String) {
@@ -88,16 +89,18 @@ object art {
             }
 
             if (instr is TestInstruction.WorldPoint) {
-                val wpname = jshit.getCurrentTestScenarioName() + " -- " + instr.name
+                val wpname: String = jshit.getCurrentTestScenarioName() + " -- " + instr.name
                 if (skipping) {
                     if (instr.name == from) {
                         jshit.utils.dlog("Restoring world point ${wpname}")
-                        __await<dynamic>(debugRPC(json("db" to undefined, "fun" to "danger_restoreWorldPoint", "wpname" to wpname)))
+//                        __await<dynamic>(debugRPC(json("db" to undefined, "fun" to "danger_restoreWorldPoint", "wpname" to wpname)))
+                        __await(WorldPointRequest(wpname, RESTORE).rpc())
                         skipping = false
                     }
                 } else {
                     jshit.utils.dlog("Saving world point ${wpname}")
-                    __await(debugRPC(json("db" to undefined, "fun" to "danger_saveWorldPoint", "wpname" to wpname)))
+//                    __await(debugRPC(json("db" to undefined, "fun" to "danger_saveWorldPoint", "wpname" to wpname)))
+                    __await(WorldPointRequest(wpname, SAVE).rpc())
                 }
             }
             else if (!skipping) {
@@ -118,7 +121,7 @@ object art {
                     val control = getControlForAction(json("implementing" to "testSetValue"))
                     if (instr.timestamp.there) {
                         __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-                        __await(rpc(ImposeNextRequestTimestampRequest(instr.timestamp)))
+                        __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
                     }
 
                     __await<dynamic>(control.testSetValue(json("value" to when (instr) {
@@ -161,7 +164,7 @@ object art {
                         val control = getControlForAction(json("implementing" to "testClick"))
                         if (instr.timestamp.there) {
                             __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-                            __await(rpc(ImposeNextRequestTimestampRequest(instr.timestamp)))
+                            __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
                         }
                         __await<dynamic>(control.testClick(instr))
                     }
@@ -169,7 +172,7 @@ object art {
                         val control = getControlForAction(json("implementing" to "testKeyDown"))
                         if (instr.timestamp.there) {
                             __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-                            __await(rpc(ImposeNextRequestTimestampRequest(instr.timestamp)))
+                            __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
                         }
                         __await<dynamic>(control.testKeyDown(instr))
                     }

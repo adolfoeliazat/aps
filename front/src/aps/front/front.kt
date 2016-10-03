@@ -40,12 +40,13 @@ enum class Color(val string: String) {
     fun ignite(_global: dynamic, _jshit: dynamic, hotIgnition: Boolean)
     fun loadDebugKotlinPlaygroundPage()
     fun loadAdminUsersPage(): Promise<Unit>
-    fun loadDashboardPage(def: dynamic): Promise<Unit>
+    fun loadDashboardPage(): Promise<Unit>
     fun loadProfilePage(): Promise<Unit>
 //    fun loadSignUpPage(): Promise<Unit>
     fun renderProfile(def: dynamic): dynamic
     fun userKindIcon(def: dynamic): dynamic
-    fun makeProfileFields(def: dynamic): dynamic
+//    fun makeProfileFields(def: dynamic): dynamic
+    fun loadSignUpPage(): Promise<Unit>
 }
 
 var global: dynamic = null
@@ -64,15 +65,18 @@ object KotlinShit : IKotlinShit {
             global.__asyncResult = function(x) { return x }
         """)
 
-        run { // Kinda reflection
+        run { // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    7cc920fa-31da-414a-94b6-03a56206fc7e
             val shitThatEvenCannotBeAccessedForWhateverReasons = listOf("RemoteTransferObject")
 
             val kindaPackage = js("_").aps
             for (key: String in global.Object.getOwnPropertyNames(kindaPackage)) {
                 if (!shitThatEvenCannotBeAccessedForWhateverReasons.contains(key)) {
-                    val value = kindaPackage[key]
-                    if (jsTypeOf(value) == "function") {
-                        value.`$$$kindaPackageKey` = key
+                    // dlog("---", key)
+                    if (!key.oneOf("Front")) { // XXX Annotation classes can't even be accessed like below...
+                        val value = kindaPackage[key]
+                        if (jsTypeOf(value) == "function") {
+                            value.`$$$kindaPackageKey` = key
+                        }
                     }
                 }
             }
@@ -129,21 +133,29 @@ object KotlinShit : IKotlinShit {
         return __asyncResult(__await(ProfilePage(ui).load()))
     }
 
+    override fun loadSignUpPage(): Promise<Unit> {"__async"
+        return __asyncResult(__await(SignUpPage(ui).load()))
+    }
+
+    override fun loadDashboardPage(): Promise<Unit> {"__async"
+        return __asyncResult(__await(DashboardPage(ui).load()))
+    }
+
     val kot_melinda = ::jsFacing_melinda
 
-    override fun makeProfileFields(def: dynamic): dynamic {
-        return jsArrayOf(
-            ui.TextField(json(
-                "name" to "phone",
-                "title" to t("TOTE", "Телефон")
-            )),
-            ui.TextField(json(
-                "name" to "aboutMe",
-                "kind" to "textarea",
-                "title" to t("TOTE", "Пара ласковых о себе")
-            ))
-        )
-    }
+//    override fun makeProfileFields(def: dynamic): dynamic {
+//        return jsArrayOf(
+//            ui.TextField(json(
+//                "name" to "phone",
+//                "title" to t("TOTE", "Телефон")
+//            )),
+//            ui.TextField(json(
+//                "name" to "aboutMe",
+//                "kind" to "textarea",
+//                "title" to t("TOTE", "Пара ласковых о себе")
+//            ))
+//        )
+//    }
 
     override fun userKindIcon(def: dynamic): dynamic {
         // #extract {user} from def
@@ -224,131 +236,6 @@ object KotlinShit : IKotlinShit {
         ))
     }
 
-    override fun loadDashboardPage(_def: dynamic): Promise<Unit> {"__async"
-        // {preserveScroll}={}
-        val def = if (_def) _def else js("({})")
-        val preserveScroll = if (def.preserveScroll) def.preserveScroll else js("({})")
-
-        fun section(def: dynamic): dynamic {
-            // #extract {name, title, items, emptyItemsText} from def
-            val name = def.name; val title = def.title; val items = def.items; val emptyItemsText = def.emptyItemsText
-
-            return jshit.diva(json("tame" to "section-${name}", "style" to js("({})")),
-                jshit.diva(json("style" to json("backgroundColor" to jshit.BLUE_GRAY_50, "fontWeight" to "bold", "padding" to "2px 5px", "marginBottom" to 10)),
-                    title),
-                run outta@{
-                    if (!items.length) return@outta emptyItemsText || jshit.diva(json("style" to js("({})")), t("TOTE", "Савсэм пусто здэсь..."))
-                    return@outta jshit.ula.apply(null, js("[]").concat(json("className" to "fa-ul", "style" to json("marginLeft" to 20)),
-                        items.map({item: dynamic ->
-                            jshit.lia(json("style" to json("marginBottom" to 5)),
-                                jshit.ia(json("className" to "fa fa-li fa-chevron-right", "style" to json("color" to jshit.BLUE_GRAY_600))),
-                                item)})))
-                }
-            )
-        }
-
-        val myPage = json(
-            "id" to jshit.utils.puid(),
-            "header" to jshit.pageHeader(json("title" to t("Dashboard", "Панель"))),
-            "body" to jshit.diva(json(),
-                jshit.diva(json("className" to "row"),
-                    jshit.diva(json("className" to "col-sm-6"),
-                        section(json(
-                            "name" to "workPending",
-                            "title" to t("TOTE", "Работенка"),
-                            "emptyItemsText" to t("TOTE", "Сюшай, савсэм нэт работы..."),
-
-                            "items" to __await<dynamic>(jshit.utils.runa({
-                                "__async"
-                                val items = js("[]")
-                                val res = __await<dynamic>(ui.rpcSoft(json("fun" to "private_getLiveStatus")))
-
-                                fun addMetric(def: dynamic) {
-                                    // #extract {metric, url, title, noStateContributions} from def
-                                    val metric = def.metric;
-                                    val url = def.url;
-                                    val title = def.title;
-                                    val noStateContributions = def.noStateContributions
-
-                                    val model = res[metric]
-                                    if (model.count != "0") {
-                                        items.push(jshit.diva(json("controlTypeName" to "addMetric", "tame" to metric, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden")),
-                                            jshit.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), jshit.utils.repeat(".", 210)),
-                                            ui.urlLink(json("tamy" to true, "style" to json("background" to WHITE, "paddingRight" to 8, "color" to jshit.BLACK_BOOT), "blinkOpts" to json("dwidth" to -8),
-                                                "title" to title, "url" to url, "delayActionForFanciness" to true)),
-                                            jshit.diva(json("style" to json("float" to "right", "paddingLeft" to 8, "background" to jshit.WHITE)),
-                                                jshit.spana(json("className" to "badge", "style" to json("float" to "right", "backgroundColor" to jshit.BLUE_GRAY_400)),
-                                                    jshit.spanc(json("tame" to "badge", "content" to model.count))))
-                                        ))
-                                    }
-                                }
-
-                                if (res.error) {
-                                    // TODO:vgrechka Handle RPC error while updating dashboard    8e69deec-39ba-48d7-8112-57e2bdf91228
-                                    console.warn("RPC error: " + jshit.textMeat(res.error))
-                                    return@runa __asyncResult(js("[]"))
-                                }
-
-                                if (ui.getUser().kind == "ADMIN") {
-                                    addMetric(json("metric" to "profilesToApprove", "url" to "admin-users.html?filter=2approve", "title" to t("TOTE", "Профилей зааппрувить")))
-                                    addMetric(json("metric" to "suka", "noStateContributions" to true, "url" to "suka.html", "title" to t("TOTE", "Сцуко-метрика")))
-                                } else if (ui.getUser().kind == "WRITER") {
-                                    addMetric(json("metric" to "suka", "noStateContributions" to true, "url" to "suka.html", "title" to t("TOTE", "Сцуко-метрика")))
-                                } else if (ui.getUser().kind == "CUSTOMER") {
-                                    raise("implement me")
-                                }
-
-                                return@runa __asyncResult(items)
-                            }))
-                        ))
-                    ),
-
-                    jshit.diva(json("className" to "col-sm-6"),
-                        section(json(
-                            "name" to "account",
-                            "title" to t("TOTE", "Аккаунт"),
-                            "items" to jsArrayOf(
-                                jshit.darkLink(json("tamy" to "signOut", "title" to t("TOTE", "Выйти прочь"), "onClick" to {
-                                    "__async"
-                                    ui.signOut()
-                                })),
-                                jshit.darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {
-                                    "__async"
-                                    console.warn("// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a")
-                                }))
-                            )
-                        ))
-                    )
-                )
-            )
-        )
-
-        val scrollTop = jshit.utils.jQuery(kotlin.browser.document).scrollTop()
-        KotlinShit.ui.setPage(myPage)
-        if (preserveScroll) {
-            jshit.utils.jQuery(kotlin.browser.document).scrollTop(scrollTop)
-        }
-
-        fun scheduleUpdate() {
-            jshit.utils.timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
-                if (KotlinShit.clientImpl.stale) return@outta Unit
-                if (myPage != KotlinShit.ui.currentPage) return@outta Unit
-
-                // Automatic refreshes should be prevented while something is being investigated via revealer,
-                // otherwise elements being looked at might be removed
-                if (jshit.controlBeingRevealed) { scheduleUpdate(); return@outta Unit }
-
-                if (jshit.isOrWasInTestScenario() && jshit.getCurrentTestBrowser().ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
-
-                // dlog("currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}")
-                jshit.utils.dlog("Updating dashboard page")
-                __await(loadDashboardPage(json("preserveScroll" to true)))
-            })
-        }
-        scheduleUpdate()
-
-        return __asyncResult(Unit)
-    }
 
 }
 
@@ -1253,10 +1140,6 @@ fun <T> ifornull(cond: Boolean, f: () -> T): T? {
     return if (cond) f() else null
 }
 
-@native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
-    fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
-}
-
 class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit) {
     val promise: Promise<Unit>
 
@@ -1838,9 +1721,6 @@ class StyleBuilder {
 
 // ------------------------- Async Playground -------------------------
 
-@native fun <T> __await(x: Promise<T>): T = noImpl
-@native fun <T> no__await(x: Promise<T>): T = noImpl
-@native fun <T> __asyncResult(x: T): Promise<T> = noImpl
 
 fun testAsyncShit() {"__async"
     println("Begin testAsyncShit")

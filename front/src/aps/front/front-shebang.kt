@@ -29,17 +29,6 @@ fun jsFacing_isDynamicPage(name: String): Boolean {
 
 val theClientKind: UserKind get() = UserKind.valueOf(global.CLIENT_KIND)
 
-class ProfileFields(form: CoolForm<*>, user: UserRTO?) {
-    val phone = TextField(form, "phone", t("TOTE", "Телефон"))
-    val aboutMe = TextField(form, "aboutMe", t("TOTE", "Пара ласковых о себе"), kind = TextField.Kind.TEXTAREA)
-
-    init {
-        if (user != null) {
-            phone.value = user.phone.orEmpty()
-            aboutMe.value = user.aboutMe.orEmpty()
-        }
-    }
-}
 
 fun userKindTitle(kind: UserKind) = when (kind) {
     UserKind.CUSTOMER -> t("TOTE", "Заказчик")

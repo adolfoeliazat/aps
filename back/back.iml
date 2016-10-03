@@ -25,6 +25,11 @@
           <root url="jar://$MODULE_DIR$/lib-gradle/asm-5.0.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/asm-commons-5.0.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/asm-tree-5.0.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/commons-beanutils-1.9.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/commons-collections-3.2.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/commons-digester-1.8.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/commons-logging-1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib-gradle/commons-validator-1.5.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/comsat-jdbc-0.7.1-SNAPSHOT.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/comsat-jooq-0.7.1-SNAPSHOT.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/comsat-servlet-0.7.1-SNAPSHOT.jar!/" />
@@ -104,6 +109,7 @@
           <root url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/guava-19.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ideaLibSources/commons-validator-1.5.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

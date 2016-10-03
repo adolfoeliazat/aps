@@ -209,9 +209,9 @@ app.post('/rpc', async function(req, res) {
                 const fieldErrors = {}, fields = {}
                 let user
             
-                if (msg.fun.startsWith('private_')) {
-                    #await loadUserForToken(s{})
-                }
+//                if (msg.fun.startsWith('private_')) {
+//                    #await loadUserForToken(s{})
+//                }
                 
                 if (msg.fun === 'danger_eval') {
                     try {
@@ -327,40 +327,40 @@ app.post('/rpc', async function(req, res) {
                     return hunkyDory({piece})
                 }
                 
-                if (msg.fun === 'danger_saveWorldPoint' || msg.fun === 'danger_restoreWorldPoint') {
-                    // @wip worldPoint
-                    rejectAllFreakingRequests = true
-                    try {
+//                if (msg.fun === 'danger_saveWorldPoint' || msg.fun === 'danger_restoreWorldPoint') {
+//                    // @wip worldPoint
+//                    rejectAllFreakingRequests = true
+//                    try {
+////                        await pgConnection({db: 'test-postgres'}, async function(db) {
+////                            await db.query(s{y: q`
+////                                SELECT pg_terminate_backend(pg_stat_activity.pid)
+////                                FROM pg_stat_activity
+////                                WHERE pg_stat_activity.datname = '"aps-test"' AND pid <> pg_backend_pid();
+////                            `})
+////                        })
+//                        await shutDownPool('aps-test')
 //                        await pgConnection({db: 'test-postgres'}, async function(db) {
-//                            await db.query(s{y: q`
-//                                SELECT pg_terminate_backend(pg_stat_activity.pid)
-//                                FROM pg_stat_activity
-//                                WHERE pg_stat_activity.datname = '"aps-test"' AND pid <> pg_backend_pid();
-//                            `})
+//                            const wpdbname = `world point ${msg.wpname}`
+//                            let databaseToCreate, databaseToUseAsTemplate
+//                            
+//                            if (msg.fun === 'danger_saveWorldPoint') {
+//                                databaseToCreate = wpdbname
+//                                databaseToUseAsTemplate = 'aps-test'
+//                            }
+//                            else if (msg.fun === 'danger_restoreWorldPoint') {
+//                                databaseToCreate = 'aps-test'
+//                                databaseToUseAsTemplate = wpdbname
+//                            }
+//                            
+//                            await db.query(s{y: q`drop database if exists "${{inline: databaseToCreate}}"`})
+//                            await db.query(s{y: q`create database "${{inline: databaseToCreate}}" template = "${{inline: databaseToUseAsTemplate}}"`})
 //                        })
-                        await shutDownPool('aps-test')
-                        await pgConnection({db: 'test-postgres'}, async function(db) {
-                            const wpdbname = `world point ${msg.wpname}`
-                            let databaseToCreate, databaseToUseAsTemplate
-                            
-                            if (msg.fun === 'danger_saveWorldPoint') {
-                                databaseToCreate = wpdbname
-                                databaseToUseAsTemplate = 'aps-test'
-                            }
-                            else if (msg.fun === 'danger_restoreWorldPoint') {
-                                databaseToCreate = 'aps-test'
-                                databaseToUseAsTemplate = wpdbname
-                            }
-                            
-                            await db.query(s{y: q`drop database if exists "${{inline: databaseToCreate}}"`})
-                            await db.query(s{y: q`create database "${{inline: databaseToCreate}}" template = "${{inline: databaseToUseAsTemplate}}"`})
-                        })
-                    } finally {
-                        rejectAllFreakingRequests = false
-                    }
-                    
-                    return hunkyDory()
-                }
+//                    } finally {
+//                        rejectAllFreakingRequests = false
+//                    }
+//                    
+//                    return hunkyDory()
+//                }
                 
 //                if (msg.fun === 'danger_captureTestDB_killme') {
 //                    const condb = 'test-postgres'
@@ -490,10 +490,10 @@ app.post('/rpc', async function(req, res) {
                     return hunkyDory()
                 }
                 
-                if (msg.fun === 'danger_clearSentEmails') {
-                    sentEmails = []
-                    return hunkyDory()
-                }
+//                if (msg.fun === 'danger_clearSentEmails') {
+//                    sentEmails = []
+//                    return hunkyDory()
+//                }
                 
                 if (msg.fun === 'danger_imposeNextRequestTimestamp') {
                     imposedRequestTimestamp = msg.timestamp
@@ -505,9 +505,9 @@ app.post('/rpc', async function(req, res) {
                     return hunkyDory()
                 }
                 
-                if (msg.fun === 'danger_getSentEmails') {
-                    return sentEmails
-                }
+//                if (msg.fun === 'danger_getSentEmails') {
+//                    return sentEmails
+//                }
                 
                 if (msg.fun === 'danger_killUser') {
                     #await dangerouslyKillUser({email: msg.email})
@@ -527,10 +527,10 @@ app.post('/rpc', async function(req, res) {
                     return hunkyDory()
                 }
                 
-                if (msg.fun === 'danger_imposeNextGeneratedPassword') {
-                    fixedNextGeneratedPassword = msg.password
-                    return hunkyDory()
-                }
+//                if (msg.fun === 'danger_imposeNextGeneratedPassword') {
+//                    fixedNextGeneratedPassword = msg.password
+//                    return hunkyDory()
+//                }
                 
                 if (msg.fun === 'danger_openSourceCode') {
                     let file, line, column, offset, ide
@@ -702,52 +702,52 @@ app.post('/rpc', async function(req, res) {
                     return hunkyDory({user: pickFromUser(s{user})})
                 }
                 
-                if (msg.fun === 'private_getLiveStatus') {
-                    const res = {}
-                    
-                    if (user.kind === 'ADMIN') {
-                        let heapSize = 0
-                        let unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259', y: q`
-                            select count(*) from support_threads where supporter_id is null`})[0].count, 10)
-                        heapSize += unassignedSupportThreadCount
-                        
-                        if (unassignedSupportThreadCount) res.unassignedSupportThreadCount = t(''+unassignedSupportThreadCount)
-                        if (heapSize) res.heapSize = t(''+heapSize)
-                        
-                        res.suka = {count: 'blia-' + puid()}
-                        res.profilesToApprove = (#await tx.query(s{y: q`
-                            select count(*) from users where state = 'PROFILE_APPROVAL_PENDING'
-                                                             and assigned_to = ${user.id}`}))[0]
-                    }
-                    else if (user.kind === 'WRITER') {
-                        res.suka = {count: 'blia-' + puid()}
-                    }
-                    else if (user.kind === 'CUSTOMER') {
-                        res.suka = {count: 'blia-' + puid()}
-                    }
-                    
-                    const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18', y: q`
-                        select count(*) from support_thread_messages m, support_threads t
-                        where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
-                              and m.thread_id = t.id
-                              and m.data->'seenBy'->${user.id} is null`})[0].count, 10)
-                              
-                    if (unseenThreadMessageCount) {
-                        if (user.kind === 'ADMIN') {
-                            const unseenThreadCount = parseInt(#await tx.query({$tag: '2404edb2-34b4-4da1-9a7e-9b4af3c0419b', y: q`
-                                select count(*) from support_threads t
-                                where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
-                                      and exists (select 1 from support_thread_messages m
-                                                  where m.thread_id = t.id
-                                                        and m.data->'seenBy'->${user.id} is null)`})[0].count, 10)
-                            res.supportMenuBadge = t(`${unseenThreadMessageCount}/${unseenThreadCount}`)
-                        } else {
-                            res.supportMenuBadge = t(''+unseenThreadMessageCount)
-                        }
-                    }
-                    
-                    return hunkyDory(res)
-                }
+//                if (msg.fun === 'private_getLiveStatus') {
+//                    const res = {}
+//                    
+//                    if (user.kind === 'ADMIN') {
+//                        let heapSize = 0
+//                        let unassignedSupportThreadCount = parseInt(#await tx.query({$tag: '0c955700-5ef5-4803-bc5f-307be0380259', y: q`
+//                            select count(*) from support_threads where supporter_id is null`})[0].count, 10)
+//                        heapSize += unassignedSupportThreadCount
+//                        
+//                        if (unassignedSupportThreadCount) res.unassignedSupportThreadCount = t(''+unassignedSupportThreadCount)
+//                        if (heapSize) res.heapSize = t(''+heapSize)
+//                        
+//                        res.suka = {count: 'blia-' + puid()}
+//                        res.profilesToApprove = (#await tx.query(s{y: q`
+//                            select count(*) from users where state = 'PROFILE_APPROVAL_PENDING'
+//                                                             and assigned_to = ${user.id}`}))[0]
+//                    }
+//                    else if (user.kind === 'WRITER') {
+//                        res.suka = {count: 'blia-' + puid()}
+//                    }
+//                    else if (user.kind === 'CUSTOMER') {
+//                        res.suka = {count: 'blia-' + puid()}
+//                    }
+//                    
+//                    const unseenThreadMessageCount = parseInt(#await tx.query({$tag: 'c2a288a3-1591-42e4-a45a-c50de64c7b18', y: q`
+//                        select count(*) from support_thread_messages m, support_threads t
+//                        where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
+//                              and m.thread_id = t.id
+//                              and m.data->'seenBy'->${user.id} is null`})[0].count, 10)
+//                              
+//                    if (unseenThreadMessageCount) {
+//                        if (user.kind === 'ADMIN') {
+//                            const unseenThreadCount = parseInt(#await tx.query({$tag: '2404edb2-34b4-4da1-9a7e-9b4af3c0419b', y: q`
+//                                select count(*) from support_threads t
+//                                where (t.supporter_id = ${user.id} or t.supportee_id = ${user.id})
+//                                      and exists (select 1 from support_thread_messages m
+//                                                  where m.thread_id = t.id
+//                                                        and m.data->'seenBy'->${user.id} is null)`})[0].count, 10)
+//                            res.supportMenuBadge = t(`${unseenThreadMessageCount}/${unseenThreadCount}`)
+//                        } else {
+//                            res.supportMenuBadge = t(''+unseenThreadMessageCount)
+//                        }
+//                    }
+//                    
+//                    return hunkyDory(res)
+//                }
                 
                 function loadSignUpFields(def) {
                     loadField(s{key: 'email', kind: 'email', mandatory: true})
@@ -755,64 +755,64 @@ app.post('/rpc', async function(req, res) {
                     loadField(s{key: 'lastName', kind: 'lastName', mandatory: true})
                 }
                 
-                if (msg.fun === 'signUp') {
-                    traceBeginHandler(s{})
-                    if (!msg.agreeTerms) {
-                        fieldErrors.agreeTerms = t('You have to agree with terms and conditions', 'Необходимо принять соглашение')
-                    }
-                    
-                    loadSignUpFields(s{})
-                    
-                    if (isEmpty(fieldErrors)) {
-                        try {
-                            let password = uuid()
-                            
-                            if (fixedNextGeneratedPassword) {
-                                password = fixedNextGeneratedPassword
-                                fixedNextGeneratedPassword = undefined
-                            }
-                    
-                            #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb', y: q`
-                                insert into users (inserted_at,         updated_at,          email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
-                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.clientKind.toUpperCase()}, ${msg.LANG.toUpperCase()}, ${'PROFILE_PENDING'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`})
-                            
-                            const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
-                                
-                            let subject
-                            if (msg.LANG === 'UA' && msg.clientKind === 'CUSTOMER') {
-                                subject = 'Пароль для APS'
-                            } else if (msg.LANG === 'UA' && msg.clientKind === 'WRITER') {
-                                subject = 'Пароль для Writer UA'
-                            }
-                            if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
-                            
-                            #await sendEmail({
-                                to: `${fields.firstName} ${fields.lastName} <${fields.email}>`,
-                                subject,
-                                html: dedent(_t({
-                                    en: `
-                                        TODO
-                                    `,
-                                    ua: `
-                                        Привет, ${fields.firstName}!<br><br>
-                                        Вот твой пароль: ${password}
-                                        <br><br>
-                                        <a href="${signInURL}">${signInURL}</a>
-                                    `
-                                }))})
-                            return traceEndHandler(s{ret: hunkyDory()})
-                        } catch (e) {
-                            if (e.code === '23505') {
-                                fieldErrors.email = t('This email is already registered', 'Такая почта уже зарегистрирована')
-                                return traceEndHandler(s{ret: fixErrorsResult()})
-                            } else {
-                                throw e
-                            }
-                        }
-                    }
-                    
-                    return traceEndHandler(s{ret: fixErrorsResult()})
-                }
+//                if (msg.fun === 'signUp') {
+//                    traceBeginHandler(s{})
+//                    if (!msg.agreeTerms) {
+//                        fieldErrors.agreeTerms = t('You have to agree with terms and conditions', 'Необходимо принять соглашение')
+//                    }
+//                    
+//                    loadSignUpFields(s{})
+//                    
+//                    if (isEmpty(fieldErrors)) {
+//                        try {
+//                            let password = uuid()
+//                            
+//                            if (fixedNextGeneratedPassword) {
+//                                password = fixedNextGeneratedPassword
+//                                fixedNextGeneratedPassword = undefined
+//                            }
+//                    
+//                            #await tx.query({$tag: 'f1030713-94b1-4626-a5ca-20d5b60fb0cb', y: q`
+//                                insert into users (inserted_at,         updated_at,          email,           kind,               lang,        state,                password_hash,                   first_name,          last_name)
+//                                            values(${requestTimestamp}, ${requestTimestamp}, ${fields.email}, ${msg.clientKind.toUpperCase()}, ${msg.LANG.toUpperCase()}, ${'PROFILE_PENDING'}, ${await hashPassword(password)}, ${fields.firstName}, ${fields.lastName})`})
+//                            
+//                            const signInURL = `http://${clientDomain}${clientPortSuffix}/sign-in.html`
+//                                
+//                            let subject
+//                            if (msg.LANG === 'UA' && msg.clientKind === 'CUSTOMER') {
+//                                subject = 'Пароль для APS'
+//                            } else if (msg.LANG === 'UA' && msg.clientKind === 'WRITER') {
+//                                subject = 'Пароль для Writer UA'
+//                            }
+//                            if (!subject) raise(`Implement mail subject for the ${clientKindDescr()}`)
+//                            
+//                            #await sendEmail({
+//                                to: `${fields.firstName} ${fields.lastName} <${fields.email}>`,
+//                                subject,
+//                                html: dedent(_t({
+//                                    en: `
+//                                        TODO
+//                                    `,
+//                                    ua: `
+//                                        Привет, ${fields.firstName}!<br><br>
+//                                        Вот твой пароль: ${password}
+//                                        <br><br>
+//                                        <a href="${signInURL}">${signInURL}</a>
+//                                    `
+//                                }))})
+//                            return traceEndHandler(s{ret: hunkyDory()})
+//                        } catch (e) {
+//                            if (e.code === '23505') {
+//                                fieldErrors.email = t('This email is already registered', 'Такая почта уже зарегистрирована')
+//                                return traceEndHandler(s{ret: fixErrorsResult()})
+//                            } else {
+//                                throw e
+//                            }
+//                        }
+//                    }
+//                    
+//                    return traceEndHandler(s{ret: fixErrorsResult()})
+//                }
                 
                 function loadAdminNotesField(def) {
                     loadField(s{key: 'adminNotes', mandatory: false, nullIfBlank: true, maxlen: 5000})
@@ -1643,6 +1643,10 @@ export async function shutDownPool(db) {
 }
 
 async function pgTransaction(opts, doInTransaction) {
+    return await doInTransaction()
+    
+    // ----- cut here -----
+    
     return await pgConnection(opts, async function(db) {
         try {
             await db._query('begin isolation level repeatable read')

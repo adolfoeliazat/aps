@@ -36,24 +36,6 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
     }
 }
 
-fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: dynamic): Promise<Res> {"__async"
-    // dlog("requestJSONObject", requestJSONObject)
-    val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
-    dlog("responseJSONObject ", global.JSON.stringify(responseJSONObject, null, 2))
-
-    return __asyncResult(dejsonize(responseJSONObject) as Res)
-}
-
-fun <Req, Res> callRemoteProcedure(procedureName: String, req: Req): Promise<Res> {"__async"
-    val requestJSONObject = js("({})")
-    val dynamicReq: dynamic = req
-    for (k in jsArrayToList(global.Object.keys(req))) {
-        requestJSONObject[k] = dynamicReq[k]
-    }
-
-    return __await(callRemoteProcedurePassingJSONObject(procedureName, requestJSONObject))
-}
-
 fun dejsonize(jsThing: dynamic): Any? {
     return when {
         jsThing == null -> null
@@ -75,12 +57,84 @@ fun dejsonize(jsThing: dynamic): Any? {
     }
 }
 
-fun <T : Request> rpc(req: T): Promise<T> {
-    global.shit = req
-    val dynamicReq: dynamic = req
-    val requestClassName: String = dynamicReq.__proto__.constructor.`$$$kindaPackageKey`
-    val procedureName = requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
-    return callRemoteProcedure(procedureName, req)
+fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: dynamic): Promise<Res> {"__async"
+    // dlog("requestJSONObject", requestJSONObject)
+    val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
+    dlog("responseJSONObject ", global.JSON.stringify(responseJSONObject, null, 2))
+
+    return __asyncResult(dejsonize(responseJSONObject) as Res)
 }
+
+@Deprecated("Old RPC")
+fun <Res> callRemoteProcedure(procedureName: String, req: Request): Promise<Res> {"__async"
+    val requestJSONObject = js("({})")
+    val dynamicReq: dynamic = req
+    for (k in jsArrayToList(global.Object.keys(req))) {
+        val dynamicValue = dynamicReq[k]
+        requestJSONObject[k] = when {
+            dynamicValue == null -> null
+
+            // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    94315462-a862-4148-95a0-e45a0f73212d
+            dynamicValue.`name$` != null -> dynamicValue.`name$` // Kinda enum
+
+//            global.Array.isArray(dynamicValue.array) -> {
+//                jsArrayToList(dynamicValue.array)
+//            }
+
+            else -> dynamicValue
+        }
+    }
+
+    return __await(callRemoteProcedurePassingJSONObject(procedureName, requestJSONObject))
+}
+
+fun <Res> callRemoteProcedure(procedureName: String, req: RequestMatumba, ui: LegacyUIShit): Promise<Res> {"__async"
+    return __await(callRemoteProcedurePassingJSONObject(procedureName, dyna {r ->
+        r.clientKind = global.CLIENT_KIND
+        r.lang = global.LANG
+        ui.token?.let {r.token = it}
+
+        r.fields = js("({})")
+
+        r.arg = dyna {arg ->
+            val dynamicReq: dynamic = req
+            for (k in jsArrayToList(global.Object.keys(req))) {
+                val dynamicValue = dynamicReq[k]
+                arg[k] = when {
+                    dynamicValue == null -> null
+
+                    // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    94315462-a862-4148-95a0-e45a0f73212d
+                    dynamicValue.`name$` != null -> dynamicValue.`name$` // Kinda enum
+
+//                    global.Array.isArray(dynamicValue.array) -> {
+//                        jsArrayToList(dynamicValue.array)
+//                    }
+
+                    else -> dynamicValue
+                }
+            }
+        }
+    }))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

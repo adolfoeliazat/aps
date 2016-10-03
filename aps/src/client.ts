@@ -334,8 +334,8 @@ async support() {
     }
 },
 
-async dashboard(def) { // @ctx page dashboard
-    await kot.aps.front.KotlinShit.loadDashboardPage(def)
+async dashboard() { // @ctx page dashboard
+    await kot.aps.front.KotlinShit.loadDashboardPage()
 },
                 
 // @ported-to-kotlin

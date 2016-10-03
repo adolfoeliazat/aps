@@ -6,8 +6,7 @@
 
 package aps.front
 
-import aps.React
-import aps.ReactElement
+import aps.*
 import aps.front.Color.*
 
 object js {

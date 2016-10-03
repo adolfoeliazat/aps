@@ -19,6 +19,7 @@ dependencies {
     compile 'org.jooq:jooq-codegen:3.8.4'
     compile 'com.zaxxer:HikariCP:2.5.1'
     compile 'org.reflections:reflections:0.9.10'
+    compile 'commons-validator:commons-validator:1.5.1'
 }
 
 task importDeps(type: Copy) {
