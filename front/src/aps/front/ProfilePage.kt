@@ -8,13 +8,6 @@ package aps.front
 
 import aps.*
 
-fun UpdateProfileRequest.Companion.from(user: UserRTO) = UpdateProfileRequest().apply {
-    with(profileFields) {
-        phone.value = user.phone.orEmpty()
-        aboutMe.value = user.aboutMe.orEmpty()
-    }
-}
-
 class ProfilePage(val ui: LegacyUIShit) {
     fun load(): Promise<Unit> {"__async"
         val primaryButtonTitle = t("TOTE", "Отправить на проверку")
@@ -34,25 +27,33 @@ class ProfilePage(val ui: LegacyUIShit) {
                     "quote" to user.profileRejectionReason))
             }
 
-            pageBody = jshit.diva(json(), prelude, FormMatumba(UpdateProfileRequest.from(ui.user), UpdateProfileRequest.Response(), ui=ui) {
-                this.primaryButtonTitle = primaryButtonTitle
-
-                onSuccessa = {res -> "__async"
-                    ui.setUser(res.newUser)
-                    __await(ui.replaceNavigate("profile.html")) /ignora
-                }
-            }.toReactElement())
+            pageBody = jshit.diva(json(),
+                prelude,
+                FormMatumba<UpdateProfileRequest, UpdateProfileRequest.Response>(FormSpec(
+                    UpdateProfileRequest().apply {
+                        with(profileFields) {
+                            phone.value = user.phone.orEmpty()
+                            aboutMe.value = user.aboutMe.orEmpty()
+                        }
+                    },
+                    ui,
+                    primaryButtonTitle = primaryButtonTitle,
+                    onSuccessa = {res -> "__async"
+                        ui.setUser(res.newUser)
+                        // TODO:vgrechka Simplify code await/return like below    b75d3e99-4883-4153-8777-34e568d942e1
+                        __await(ui.replaceNavigate("profile.html")) /ignora
+                    })).toReactElement())
         }
         else if (userState == UserState.PROFILE_APPROVAL_PENDING) {
             pageBody = jshit.diva(json(),
                 jshit.preludeWithHourglass(json("content" to jshit.spancTitle(json("title" to t("TOTE", "Админ проверяет профиль, жди извещения почтой"))))),
-                KotlinShit.renderProfile(json("user" to user))
+                renderProfile(ui, user)
                 )
         }
         else if (userState == UserState.BANNED) {
             pageBody = jshit.diva(json(),
                 jshit.preludeWithVeryBadNews(json("content" to jshit.spancTitle(json("title" to t("TOTE", "Тебя тупо забанили, ОК? Кина не будет."))))),
-                KotlinShit.renderProfile(json("user" to user))
+                renderProfile(ui, user)
                 )
         }
         else {

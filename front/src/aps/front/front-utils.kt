@@ -41,6 +41,9 @@ fun dyna(build: (dynamic) -> Unit): dynamic {
     return res
 }
 
+fun kindaClassName(x: dynamic): String {
+    return x.__proto__.constructor.`$$$kindaPackageKey`
+}
 
 
 

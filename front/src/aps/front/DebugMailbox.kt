@@ -18,7 +18,7 @@ fun jsFacing_initDebugMailbox() {
             if (jshit.isHotReloading) {
                 emails = jshit.debugCheckEmail_cachedEmails
             } else {
-                val res = __await<GetSentEmailsRequest.Response>(GetSentEmailsRequest().rpc())
+                val res = __await<GetSentEmailsRequest.Response>(GetSentEmailsRequest.send())
 //                console.warn("qqqqqqqqqq", res)
                 emails = res.emails
 //                if (emails.size > 0) {

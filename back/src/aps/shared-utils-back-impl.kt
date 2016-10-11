@@ -6,8 +6,10 @@
 
 package aps
 
-import aps.back.debugLog
-import aps.back.striking
+import aps.back.*
+import com.sun.org.apache.xpath.internal.operations.Bool
+import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
 fun bitch(msg: String = "Just bitching..."): Nothing = throw Exception(msg)
 fun imf(what: String = "me"): Nothing = throw Exception("Implement $what, please, fuck you")
@@ -30,18 +32,88 @@ annotation class Back
 @Dummy fun <T> __await(x: Promise<T>): T = dontCallMe
 @Dummy fun <T> __asyncResult(x: T): Promise<T> = dontCallMe
 @Dummy interface LegacyUIShit
-
+@Dummy fun <Res> callMatumba(req: RequestMatumba, token: String?): Promise<Res> = dontCallMe
+@Dummy fun <Res> callDangerousMatumba(req: RequestMatumba): Promise<Res> = dontCallMe
+@Dummy fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> = dontCallMe
+@Dummy fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> = dontCallMe
 
 @Back open class RequestMatumba {
     val fields = mutableListOf<FormFieldBack>()
 }
 
-abstract class FormFieldBack(container: RequestMatumba, val name: String) {
-    abstract fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>)
+//abstract class HiddenFormFieldBack<T>(val container: RequestMatumba, val name: String) {
+//    init {
+//        container.hiddenFields.add(this)
+//    }
+//
+//    abstract fun toRemote(): Any?
+//}
 
+//@Back inline fun <reified T : Any> HiddenField(container: RequestMatumba, name: String): HiddenField<T> {
+//    return HiddenField(container, name, T::class)
+//}
+
+
+
+@Back class EnumHiddenField<E : Enum<E>>(container: RequestMatumba, name: String, val values: Array<E>) : FormFieldBack(container, name) {
+    lateinit var value: E
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        val string = input[name] as String
+        value = values.find{it.name == string} ?: bitch("Bad enum value: [$string]")
+    }
+}
+
+fun <T> culprit(culprit: Culprit, f: () -> T): T {
+    return try {
+        f()
+    } catch (e: Exception) {
+        throw ExceptionWithCulprit(e, culprit)
+    }
+}
+
+@Back class StringHiddenField(container: RequestMatumba, name: String) : FormFieldBack(container, name) {
+    lateinit var value: String
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        value = input[name] as String
+    }
+}
+
+@Back class HiddenMaybeStringField(container: RequestMatumba, name: String) : FormFieldBack(container, name) {
+    var loaded = false
+    var _value: String? = null
+    val value: String? get() = if (!loaded) bitch("I am not loaded") else _value
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        _value = input[name] as String?
+        loaded = true
+    }
+}
+
+@Back class BooleanHiddenField(container: RequestMatumba, name: String) : FormFieldBack(container, name) {
+    lateinit var _value: java.lang.Boolean
+    var value: Boolean
+        get() = _value.booleanValue()
+        @Dummy set(x) = wtf("@Back BooleanHiddenField.value.set should not be called")
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        _value = input[name] as java.lang.Boolean
+    }
+}
+
+abstract class FormFieldBack(container: RequestMatumba, val name: String) : Culprit {
+    abstract fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>)
+
+    override val constructionStack = Exception().stackTrace
     init {
         container.fields.add(this)
     }
+
+    fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) =
+        culprit(this, {loadOrBitch(input, fieldErrors)})
+
+    override fun toString(): String = bitch("Use field.value to get value of field [$name]")
 }
 
 @Back class TextField(
@@ -60,7 +132,7 @@ abstract class FormFieldBack(container: RequestMatumba, val name: String) {
 
     lateinit var value: String
 
-    override fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         value = (input[name] ?: bitch("Gimme $name, motherfucker")) as String
         value = value.trim()
 
@@ -89,16 +161,24 @@ abstract class FormFieldBack(container: RequestMatumba, val name: String) {
 }
 
 @Back class CheckboxField(container: RequestMatumba, name: String) : FormFieldBack(container, name) {
-    override fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-        _yes = input[name] as java.lang.Boolean
-    }
-
     lateinit var _yes: java.lang.Boolean
 
     val yes: Boolean get() = _yes.booleanValue()
     val no: Boolean get() = !yes
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        _yes = input[name] as java.lang.Boolean
+    }
 }
 
+@Back class SelectField<T>(container: RequestMatumba, name: String, val title: String, val values: Array<T>)
+: FormFieldBack(container, name) where T : Enum<T> {
+    lateinit var value: T
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        value = values.find{it.name == input[name] as String}!!
+    }
+}
 
 
 

@@ -43,14 +43,15 @@ enum class Color(val string: String) {
     fun loadDashboardPage(): Promise<Unit>
     fun loadProfilePage(): Promise<Unit>
 //    fun loadSignUpPage(): Promise<Unit>
-    fun renderProfile(def: dynamic): dynamic
+//    fun renderProfile(def: dynamic): dynamic
     fun userKindIcon(def: dynamic): dynamic
 //    fun makeProfileFields(def: dynamic): dynamic
     fun loadSignUpPage(): Promise<Unit>
 }
 
+
 var global: dynamic = null
-var jshit: dynamic = null
+var jshit: JShit = js("undefined")
 
 object KotlinShit : IKotlinShit {
     var ui: dynamic = null
@@ -103,7 +104,7 @@ object KotlinShit : IKotlinShit {
         jshit.art.gertrude = ::gertrude
         jshit.art.invokeStateContributions = ::jsFacing_invokeStateContributions
         jshit.spanc = ::jsFacing_spanc
-        jshit.limpopo = ::jsFacing_limpopo
+//        jshit.limpopo = ::jsFacing_limpopo
 
 
         initTestShit()
@@ -116,6 +117,8 @@ object KotlinShit : IKotlinShit {
     val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
     val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
     val isDynamicPage = ::jsFacing_isDynamicPage
+
+    val jsFacing_pushNavigate: Any = ::pushNavigate
 
 //    val shittyShit = json(
 //        "tests_UA_Writer" to ::jsFacing_tests_UA_Writer
@@ -141,7 +144,7 @@ object KotlinShit : IKotlinShit {
         return __asyncResult(__await(DashboardPage(ui).load()))
     }
 
-    val kot_melinda = ::jsFacing_melinda
+//    val kot_melinda = ::jsFacing_melinda
 
 //    override fun makeProfileFields(def: dynamic): dynamic {
 //        return jsArrayOf(
@@ -170,64 +173,6 @@ object KotlinShit : IKotlinShit {
         ))
     }
 
-    override fun renderProfile(def: dynamic): dynamic {
-        // #extract {user} from def
-        val user = def.user
-
-//        val model = user
-        val model: UserRTO = user
-        // dlog("Profile model", model)
-
-//        val profileFilled = model.profileUpdatedAt != null
-        val profileUpdatedAt = model.profileUpdatedAt
-
-        var profileUpdatedPiece: dynamic = undefined
-        if (profileUpdatedAt != null) {
-            profileUpdatedPiece = jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "profileUpdatedAt",
-                "label" to t("TOTE", "Профиль залит"),
-                "value" to jshit.timestampString(profileUpdatedAt.value, json("includeTZ" to true))))
-        } else {
-            profileUpdatedPiece = jshit.limpopo(json("colsm" to 3, "model" to model,
-                "prop" to "profileUpdatedAt", "label" to t("TOTE", "Профиль"), "value" to t("TOTE", "Нифига не заполнялся")))
-        }
-
-        val adminLooks = KotlinShit.ui.getUser().kind == "ADMIN"
-
-        return jshit.diva(json("controlTypeName" to "renderProfile", "tame" to "profile"),
-            jshit.diva(json("className" to "row"),
-                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "firstName", "label" to t("TOTE", "Имя"))),
-                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "lastName", "label" to t("TOTE", "Фамилия"))),
-                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "email", "label" to t("TOTE", "Почта"))),
-                if (profileUpdatedAt != null) jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "phone", "label" to t("TOTE", "Телефон"))) else undefined
-                ),
-            jshit.diva(json("className" to "row"),
-                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "kind",
-                    "label" to t("TOTE", "Тип"),
-                    "content" to jshit.diva(json("style" to js("({})")),
-                        KotlinShit.userKindIcon(json("user" to user)),
-                    jshit.spanc(json("tame" to "value", "content" to userKindTitle(model.kind)))))),
-                adminLooks && jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "state",
-                    "formGroupStyle" to
-                        if (user.state == "PROFILE_APPROVAL_PENDING") json("background" to jshit.AMBER_200)
-                        else if (user.state == "PROFILE_REJECTED") json("background" to jshit.DEEP_ORANGE_200)
-                        else if (user.state == "BANNED") json("background" to jshit.RED_200)
-                        else js("({})"),
-                    "label" to t("TOTE", "Статус"), "prop" to "state", "transform" to global.apsdata.userStateTitle)),
-                jshit.limpopo(json("colsm" to 3, "model" to model, "prop" to "insertedAt",
-                    "label" to t("TOTE", "Аккаунт создан"),
-                    "value" to jshit.timestampString(model.insertedAt.value, json("includeTZ" to true)))),
-                profileUpdatedPiece
-                ),
-            user.state == "PROFILE_REJECTED" && jshit.diva(json("className" to "row"),
-                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "profile_rejection_reason", "label" to t("TOTE", "Причина отказа"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
-            user.state == "BANNED" && jshit.diva(json("className" to "row"),
-                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "ban_reason", "label" to t("TOTE", "Причина бана"), "contentStyle" to json("whiteSpace" to "pre-wrap")))),
-            if (profileUpdatedAt != null) jshit.diva(json("className" to "row"),
-                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "aboutMe", "label" to t("TOTE", "Набрехано о себе"), "contentStyle" to json("whiteSpace" to "pre-wrap")))) else undefined,
-            adminLooks && user.admin_notes && jshit.diva(json("className" to "row"),
-                jshit.limpopo(json("colsm" to 12, "model" to model, "prop" to "admin_notes", "label" to t("TOTE", "Заметки админа"), "contentStyle" to json("whiteSpace" to "pre-wrap"))))
-        )
-    }
 
     override fun loadDebugKotlinPlaygroundPage() {
         KotlinShit.ui.setPage(json(
@@ -240,29 +185,6 @@ object KotlinShit : IKotlinShit {
 }
 
 
-fun jsFacing_limpopo(def: dynamic): dynamic {
-    // #extract {model, content, value, prop, label, transform=identity, colsm, formGroupStyle={}, contentStyle={}} from def
-    val model = def.model; var content = def.content; val value = def.value; val prop = def.prop; val label = def.label; val colsm = def.colsm
-    val transform = if (def.transform) def.transform else jshit.utils.identity
-    val formGroupStyle = if (def.formGroupStyle) def.formGroupStyle else js("({})")
-    val contentStyle = if (def.contentStyle) def.contentStyle else js("({})")
-
-    if (!content) {
-        content = jshit.spanc(json("tame" to "value", "style" to contentStyle,
-            "content" to
-                if (value != undefined)
-                    value
-                else transform(model[prop])))
-    }
-
-    var res = jshit.diva(json("controlTypeName" to "limpopo", "tame" to prop, "className" to "form-group", "style" to formGroupStyle),
-    jshit.labe(json("content" to label)),
-    jshit.diva(js("({})"), content))
-    if (colsm) {
-        res = jshit.diva(json("className" to "col-sm-${colsm}"), res)
-    }
-    return res
-}
 
 
 fun jsFacing_faIcon(def: dynamic): dynamic {
@@ -706,7 +628,7 @@ fun gertrude(def: dynamic) {
 
     var detailsUI: dynamic = null
     if (jshit.getURLQueryBeforeRunningTest().minimalGertrude == "yes" || global.testGlobal.minimalGertrude) {
-        detailsUI = div { styleKludge = json("background" to jshit.WHITE); -"I am minimal because of minimalGertrude" }
+        detailsUI = div { styleKludge = json("background" to Color.WHITE); -"I am minimal because of minimalGertrude" }
 //        detailsUI = jshit.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
     } else {
         detailsUI = jshit.updatableElement(js("({})"), wholeShitCtor@ { updateWholeShit ->
@@ -897,7 +819,7 @@ fun gertrude(def: dynamic) {
 
                                                 if (isExtValueLine(valueLine))
                                                     -span {
-                                                        styleKludge = json("marginRight" to 5, "padding" to 3, "background" to jshit.ORANGE_200, "fontSize" to "75%")
+                                                        styleKludge = json("marginRight" to 5, "padding" to 3, "background" to Color.ORANGE_200, "fontSize" to "75%")
                                                         -"ext"
                                                     }
                                                 -div {
@@ -1090,12 +1012,11 @@ fun openTestPassedPane(def: dynamic) {
         val m = global.RegExp("\\s+([0-9a-z]{8})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{12})$").exec(scenarioName)
         if (m != undefined) {
             scenarioName = scenarioName.substring(0, m.index)
-            links.add(jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to jshit.WHITE))))
+            links.add(jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to Color.WHITE))))
         }
         if (jshit.art.actionPlaceholderTag != undefined) {
-            links.add(jshit.marginateLeft(10, jshit.OpenSourceCodeLink(json("where" to json("\$tag" to jshit.art.actionPlaceholderTag), "style" to json("color" to jshit.WHITE)))))
+            links.add(jshit.marginateLeft(10, jshit.OpenSourceCodeLink(json("where" to json("\$tag" to jshit.art.actionPlaceholderTag), "style" to json("color" to Color.WHITE)))))
         }
-
         val uq = jshit.getURLQueryBeforeRunningTest()
         if (!uq.scrollToBottom || uq.scrollToBottom == "yes" || uq.scrollToBottom == "success") {
             kotlin.browser.window.requestAnimationFrame { kotlin.browser.document.body?.scrollTop = 99999 }
@@ -1362,261 +1283,6 @@ fun Map<String, Any?>.toJSObject(): dynamic {
     return obj
 }
 
-fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
-    val ui: dynamic = def.ui
-    val trainName: dynamic = def.trainName; val urlPath: dynamic = def.urlPath; val urlEntityParamName: dynamic = def.urlEntityParamName;
-    val tabDefs: dynamic = def.tabDefs; val defaultActiveTab: dynamic = def.defaultActiveTab; val header: dynamic = def.header;
-    val entityID: dynamic = def.entityID;val entityFun: dynamic = def.entityFun; val itemsFun: dynamic = def.itemsFun;
-    val emptyMessage: dynamic = def.emptyMessage; val plusFormDef: dynamic = def.plusFormDef; val editFormDef: dynamic = def.editFormDef;
-    val aboveItems: dynamic = def.aboveItems; val renderItem: dynamic = def.renderItem; val hasFilterSelect: dynamic = def.hasFilterSelect;
-    val filterSelectValues: dynamic = def.filterSelectValues; val defaultFilter: dynamic = def.defaultFilter
-
-    val plusIcon: dynamic = if (def.plusIcon != undefined) def.plusIcon else "plus"
-    val defaultOrdering: dynamic = if (def.defaultOrdering != undefined) def.defaultOrdering else "desc"
-    val hasSearchBox: dynamic = if (def.hasSearchBox != undefined) def.hasSearchBox else true
-    val hasOrderingSelect: dynamic = if (def.hasOrderingSelect != undefined) def.hasOrderingSelect else true
-    val hasHeaderControls: dynamic = if (def.hasHeaderControls != undefined) def.hasHeaderControls else true
-
-    if (trainName) jshit.beginTrain(json("name" to trainName)); try {
-        var items: dynamic = undefined; var showEmptyLabel = true; var headerControlsVisible = true
-        var headerControlsClass: dynamic = undefined; var headerControlsDisabled = false
-        var cancelForm: dynamic = undefined; var plusShit: dynamic = undefined; var editShit: dynamic = undefined
-        var updateHeaderControls: dynamic = undefined
-        var filterSelect: dynamic = undefined; var orderingSelect: dynamic = undefined
-        var searchBox: dynamic = undefined; var searchBoxInput: dynamic = undefined
-
-
-        fun setHeaderControlsDisappearing() {
-            headerControlsVisible = false
-            headerControlsClass = undefined
-        }
-
-        fun setHeaderControlsAppearing() {
-            headerControlsVisible = true
-            headerControlsClass = "aniFadeIn"
-            timeoutSet(500) {
-                headerControlsClass = undefined
-                ui.updatePage()
-            }
-        }
-
-        fun setHeaderControlsDisabled(b: Boolean) {
-            headerControlsDisabled = b
-            updateHeaderControls()
-        }
-
-        fun showBadResponse(res: dynamic) {
-            return ui.setPage(json(
-                "header" to jshit.pageHeader(json("title" to t("TOTE", "Облом"))),
-                "body" to jshit.diva(js("({})"), jshit.errorBanner(json("content" to res.error)))))
-        }
-
-        fun applyHeaderControls(arg: dynamic): Promise<dynamic> {"__async"
-            // {controlToBlink}
-            val controlToBlink = arg.controlToBlink
-
-            setHeaderControlsDisabled(true)
-            controlToBlink.setBlinking(true)
-
-            val urlParamParts = js("[]")
-
-            if (urlEntityParamName) {
-                urlParamParts.push("${urlEntityParamName}=${entityID}")
-            }
-
-            urlParamParts.push("filter=${filterSelect.getValue()}")
-            urlParamParts.push("ordering=${orderingSelect.getValue()}")
-
-            val searchString = searchBoxInput.getValue().trim()
-            if (searchString) {
-                urlParamParts.push("search=${global.encodeURIComponent(searchString)}")
-            }
-
-            val url = "${urlPath}?${urlParamParts.join("&")}"
-            __await<dynamic>(ui.pushNavigate(url))
-
-            setHeaderControlsDisabled(false)
-            controlToBlink.setBlinking(false)
-
-            return js("undefined") // Dummy
-        }
-
-        fun makeButtonFormShit(def: dynamic): dynamic {
-            // #extract {name, level, icon, formDef} from def
-            val name = def.name; val level = def.level; val icon = def.icon; val formDef = def.formDef
-
-            var form: dynamic = undefined; var formClass: dynamic = undefined
-
-            return json(
-                "button" to {
-                    jshit.button(json(
-                        "tamyShamy" to name, "style" to json("marginLeft" to 0), "level" to level, "icon" to icon, "disabled" to headerControlsDisabled,
-                        "onClick" to {
-                            showEmptyLabel = false
-                            setHeaderControlsDisappearing()
-                            formClass = "aniFadeIn"
-
-                            cancelForm = {
-                                setHeaderControlsAppearing()
-                                form = undefined
-                                ui.updatePage()
-                            }
-
-                            form = ui.Form(global.Object.assign(formDef, json(
-                                "onCancel" to cancelForm)))
-
-                            ui.updatePage()
-                        }
-                    ))
-                },
-
-                "form" to {
-                    if (form) jshit.diva(json("className" to formClass, "style" to json("marginBottom" to 15)), form)
-                    else undefined
-                }
-            )
-        }
-
-        var entityRes: dynamic = undefined
-        if (entityFun) {
-            entityRes = __await(ui.rpcSoft(json("fun" to entityFun, "entityID" to entityID)))
-            if (entityRes.error) return __asyncResult(showBadResponse(entityRes))
-        }
-
-        val searchString = ui.urlQuery.search
-
-        var filter: dynamic = undefined
-        if (hasFilterSelect) {
-            filter = ui.urlQuery.filter
-            val saneFilters = filterSelectValues.map({x: dynamic -> x.value})
-            if (!saneFilters.includes(filter)) filter = defaultFilter
-        }
-
-        var ordering = ui.urlQuery.ordering
-        if (!js("['asc', 'desc']").includes(ordering)) ordering = defaultOrdering
-
-        var tabs: dynamic = undefined; var activeTab: dynamic = undefined
-        if (tabDefs) {
-            activeTab = ui.urlQuery.tab || defaultActiveTab
-            tabs = ui.tabs(json("name" to "main", "active" to activeTab, "tabDefs" to tabDefs))
-        }
-
-        val itemsReq = json(
-            "fun" to jshit.utils.fov(itemsFun, json("activeTab" to activeTab)),
-            "entityID" to entityID, "filter" to filter, "ordering" to ordering, "searchString" to searchString)
-        val itemsRes = __await<dynamic>(ui.rpcSoft(itemsReq))
-        if (itemsRes.error) return __asyncResult(showBadResponse(itemsRes))
-
-        if (hasSearchBox) {
-            searchBoxInput = jshit.Input(json(
-                "tamyShamy" to "search",
-                "style" to json("paddingLeft" to 30, "width" to 160),
-                "placeholder" to t("TOTE", "Поиск..."),
-                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
-                // TODO:vgrechka Check if async below is enhanced correctly
-                "onKeyDown" to {e: dynamic -> "__async"
-                    if (e.keyCode == 13) {
-                        preventAndStop(e)
-                        __await(applyHeaderControls(json("controlToBlink" to searchBoxInput)))
-                    }
-                }
-            ))
-            searchBoxInput.setValueExt(json("value" to itemsRes.actualSearchString, "notify" to false))
-
-            searchBox = jshit.diva(json("style" to json("position" to "relative")),
-                searchBoxInput,
-                jshit.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to Color.GRAY_500)))
-            )
-        }
-
-        if (hasFilterSelect) {
-            filterSelect = jshit.Select(json(
-                "tamyShamy" to "filter", "isAction" to true, "style" to json("width" to 160),
-                "values" to filterSelectValues,
-                "initialValue" to filter,
-                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
-                "onChange" to {"__async"
-                    __await(applyHeaderControls(json("controlToBlink" to filterSelect)))
-                }
-            ))
-
-            filterSelect.setValueExt(json("value" to itemsRes.actualFilter, "notify" to false))
-        }
-
-        if (hasOrderingSelect) {
-            orderingSelect = jshit.Select(json(
-                "tamyShamy" to "ordering", "isAction" to true, "style" to json("width" to 160),
-                "values" to jsArrayOf(
-                    json("value" to "desc", "title" to t("TOTE", "Сначала новые")),
-                    json("value" to "asc", "title" to t("TOTE", "Сначала старые"))),
-                "initialValue" to ordering,
-                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
-                "onChange" to {"__async"
-                    __await(applyHeaderControls(json("controlToBlink" to orderingSelect)))
-                }
-            ))
-
-            orderingSelect.setValueExt(json("value" to itemsRes.actualOrdering, "notify" to false))
-        }
-
-        if (plusFormDef) {
-            plusShit = makeButtonFormShit(json("name" to "plus", "level" to "primary", "icon" to plusIcon, "formDef" to plusFormDef))
-        }
-        if (editFormDef) {
-            editShit = makeButtonFormShit(json("name" to "edit", "level" to "default", "icon" to "edit", "formDef" to editFormDef))
-        }
-
-        ui.setPage(json(
-            "header" to jshit.utils.fov(header, entityRes),
-
-            "body" to {
-                jshit.diva(json("style" to json("marginBottom" to 15)),
-                    tabs,
-                    if (editShit) editShit.form else null,
-                    if (plusShit) plusShit.form else null,
-                    jshit.utils.fov(aboveItems, entityRes),
-                    run { // Render items
-                        if (itemsRes.items.length)
-                            ui.renderMoreable(json("itemsRes" to itemsRes, "itemsReq" to itemsReq, "renderItem" to renderItem))
-                        else
-                            if (showEmptyLabel)
-                                jshit.diva(json("style" to json("marginTop" to 10)),
-                                    emptyMessage || jshit.spanc(json("tame" to "nothingLabel", "content" to t("TOTE", "Савсэм ничего нэт, да..."))))
-                            else ""
-                    }
-                )
-            },
-
-            "headerControls" to {
-                jshit.updatableElement(js("({})"), { update: dynamic ->
-                    updateHeaderControls = update
-                    { // Yeah, returning closure
-                        if (!jshit.utils.fov(hasHeaderControls, entityRes) || !headerControlsVisible) undefined
-                        else {
-                            jshit.hor2(json(
-                                "style" to json("display" to "flex", "marginTop" to if (tabDefs) 55 else 0),
-                                "className" to headerControlsClass),
-
-                                searchBox,
-                                filterSelect,
-                                orderingSelect,
-                                if (editShit) editShit.button else null,
-                                if (plusShit) plusShit.button else null
-                            )
-                        }
-                    }
-                })
-            },
-
-            "onKeyDown" to {e: dynamic ->
-                if (e.keyCode == 27) {
-                    jshit.utils.fov(cancelForm)
-                }
-            }
-        ))
-    } finally { if (trainName) jshit.endTrain() }
-    return __asyncResult(Unit)
-}
 
 
 fun jsArrayOf(vararg xs: dynamic): dynamic {

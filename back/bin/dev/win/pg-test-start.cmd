@@ -1,5 +1,3 @@
-rem imdisk -a -t vm -s 2G -m r:
-
 rmdir /q /s r:\pgsql
 %PG_HOME%\bin\initdb -D r:\pgsql -U postgres -E UTF8
 copy %~dp0\pg-test.conf r:\pgsql\postgresql.conf

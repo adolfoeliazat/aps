@@ -626,7 +626,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i001.title': `Поддержка`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Тодд`,
-          url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=asc`
+          url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=ASC`
     }, // end of generated piece of shit
 
     '1920f57c-db76-40ff-9f85-8ebdd8faf2f3': {
@@ -667,7 +667,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i001.title': `Поддержка`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Тодд`,
-          url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=desc`
+          url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=DESC`
     }, // end of generated piece of shit
 
     'bd47917a-b212-4d03-8910-5af36b2f7ebc': {
@@ -702,7 +702,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i001.title': `Поддержка`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Тодд`,
-          url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=desc`
+          url: `http://aps-ua-writer.local:3022/support.html?thread=308&ordering=DESC`
     }, // end of generated piece of shit
 
     '0bb446ca-4e6e-4bcf-b9c9-687f1f3a2f29': {
@@ -1381,7 +1381,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i000.title': `Юзеры`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Дася`,
-          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve`
+          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=PROFILE_APPROVAL_PENDING`
     }, // end of generated piece of shit
 
     'ba17b066-b272-48eb-901c-d22b5b1f803b': {
@@ -1410,7 +1410,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i000.title': `Юзеры`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Дася`,
-          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve`
+          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=PROFILE_APPROVAL_PENDING`
     }, // end of generated piece of shit
 
     '59308ccf-67b9-4fab-a13d-154c96e8bd63': {
@@ -1445,7 +1445,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i000.title': `Юзеры`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Дася`,
-          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve`
+          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=PROFILE_APPROVAL_PENDING`
     }, // end of generated piece of shit
 
 
@@ -1644,7 +1644,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i000.title': `Юзеры`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Дася`,
-          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=all&ordering=desc`
+          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=ALL&ordering=DESC`
     }, // end of generated piece of shit
 
     '86e56915-a334-4209-85c9-8d2c53cd9f0a': {
@@ -2460,7 +2460,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i000.title': `Юзеры`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Дася`,
-          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=cool&ordering=desc`
+          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=COOL&ordering=DESC`
     }, // end of generated piece of shit
 
     'd21b167c-3064-41b7-a3d3-d8a7c5f91b92': {
@@ -2497,7 +2497,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i000.title': `Юзеры`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Дася`,
-          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=rejected&ordering=desc`
+          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=PROFILE_REJECTED&ordering=DESC`
     }, // end of generated piece of shit
 
     'd72124f6-0ad2-4f50-ba0e-7bedff1e6a79': {
@@ -2697,7 +2697,7 @@ module.exports = {
           'topNavLeft.TopNavItem-i000.title': `Юзеры`,
           'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
           'topNavRight.TopNavItem-i000.title': `Дася`,
-          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=all&ordering=desc`
+          url: `http://aps-ua-writer.local:3022/admin-users.html?filter=ALL&ordering=DESC`
     }, // end of generated piece of shit
 
     'eeb4fc2a-0e24-4fc0-9e66-6ecccd932d8e': {
@@ -3601,7 +3601,7 @@ module.exports = {
         'topNavLeft.TopNavItem-i000.title': `Юзеры`,
         'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
         'topNavRight.TopNavItem-i000.title': `Дася`,
-        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve`,
+        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=PROFILE_APPROVAL_PENDING`,
     }, // end of generated piece of shit
 
     '18f8286c-ea61-4820-95c0-9ce3a129edfb': {
@@ -3630,7 +3630,7 @@ module.exports = {
         'topNavLeft.TopNavItem-i000.title': `Юзеры`,
         'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
         'topNavRight.TopNavItem-i000.title': `Дася`,
-        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve`,
+        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=PROFILE_APPROVAL_PENDING`,
     }, // end of generated piece of shit
 
     '5d82460a-268f-43d8-bd00-e04dd671029c': {
@@ -3665,7 +3665,7 @@ module.exports = {
         'topNavLeft.TopNavItem-i000.title': `Юзеры`,
         'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
         'topNavRight.TopNavItem-i000.title': `Дася`,
-        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve`,
+        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=PROFILE_APPROVAL_PENDING`,
     }, // end of generated piece of shit
 
     '5c4d0c0c-8e1f-4dfc-898d-dec7c3e6bbf7': {
@@ -4873,7 +4873,7 @@ module.exports = {
         'topNavLeft.TopNavItem-i000.title': `Юзеры`,
         'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
         'topNavRight.TopNavItem-i000.title': `Дася`,
-        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=cool&ordering=desc`,
+        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=COOL&ordering=DESC`,
     }, // end of generated piece of shit
 
     'ffd89ee7-31b5-4742-b15a-196876ebec6f': {
@@ -4885,7 +4885,7 @@ module.exports = {
         'topNavLeft.TopNavItem-i000.title': `Юзеры`,
         'topNavRight.TopNavItem-i000.shame': `TopNavItem-dashboard`,
         'topNavRight.TopNavItem-i000.title': `Дася`,
-        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=2approve&ordering=desc`,
+        url: `http://aps-ua-writer.local:3022/admin-users.html?filter=PROFILE_APPROVAL_PENDING&ordering=DESC`,
     }, // end of generated piece of shit
 
     // place to insert new generated piece of shit

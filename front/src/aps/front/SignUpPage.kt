@@ -13,14 +13,15 @@ class SignUpPage(val ui: LegacyUIShit) {
         ui.setPage(json(
             "header" to jshit.pageHeader(json("title" to t("Sign Up", "Регистрация"))),
             "body" to jshit.diva(json(),
-                FormMatumba(SignUpRequest(), GenericResponse(), ui=ui) {
-                    primaryButtonTitle = t("Proceed", "Вперед")
-
-                    onSuccessa = {res -> "__async"
+                FormMatumba<SignUpRequest, GenericResponse>(FormSpec(
+                    SignUpRequest(),
+                    ui,
+                    primaryButtonTitle = t("Proceed", "Вперед"),
+                    onSuccessa = {"__async"
                         ui.signedUpOK = true
                         __await(ui.pushNavigate("sign-in.html")) /ignora
                     }
-                }.toReactElement(),
+                )).toReactElement(),
 
                 jshit.diva(json(),
                     jshit.hr(),

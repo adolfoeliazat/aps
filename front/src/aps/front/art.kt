@@ -94,13 +94,13 @@ object art {
                     if (instr.name == from) {
                         jshit.utils.dlog("Restoring world point ${wpname}")
 //                        __await<dynamic>(debugRPC(json("db" to undefined, "fun" to "danger_restoreWorldPoint", "wpname" to wpname)))
-                        __await(WorldPointRequest(wpname, RESTORE).rpc())
+                        __await(WorldPointRequest.send(wpname, RESTORE))
                         skipping = false
                     }
                 } else {
                     jshit.utils.dlog("Saving world point ${wpname}")
 //                    __await(debugRPC(json("db" to undefined, "fun" to "danger_saveWorldPoint", "wpname" to wpname)))
-                    __await(WorldPointRequest(wpname, SAVE).rpc())
+                    __await(WorldPointRequest.send(wpname, SAVE))
                 }
             }
             else if (!skipping) {
@@ -121,7 +121,8 @@ object art {
                     val control = getControlForAction(json("implementing" to "testSetValue"))
                     if (instr.timestamp.there) {
                         __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-                        __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
+                        __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+//                        __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
                     }
 
                     __await<dynamic>(control.testSetValue(json("value" to when (instr) {
@@ -164,7 +165,7 @@ object art {
                         val control = getControlForAction(json("implementing" to "testClick"))
                         if (instr.timestamp.there) {
                             __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-                            __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
+                            __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                         }
                         __await<dynamic>(control.testClick(instr))
                     }
@@ -172,7 +173,7 @@ object art {
                         val control = getControlForAction(json("implementing" to "testKeyDown"))
                         if (instr.timestamp.there) {
                             __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-                            __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
+                            __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                         }
                         __await<dynamic>(control.testKeyDown(instr))
                     }
@@ -390,8 +391,8 @@ object art {
                     indent,
                     lineContent = div { style { fontWeight = "normal"; fontStyle = "italic" }; - "World point: ${instr.name}" },
                     rulerContent = jdiva(json("style" to json("position" to "relative")),
-                        jshit.ia(json("className" to "fa fa-circle", "style" to json("color" to jshit.GRAY_500))),
-                        jdiva(json("style" to json("width" to 38, "position" to "absolute", "left" to 0, "top" to 9, "borderTop" to "2px dotted ${jshit.GRAY_500}")))
+                        jshit.ia(json("className" to "fa fa-circle", "style" to json("color" to Color.GRAY_500))),
+                        jdiva(json("style" to json("width" to 38, "position" to "absolute", "left" to 0, "top" to 9, "borderTop" to "2px dotted ${Color.GRAY_500}")))
                     ),
                     // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 2
                     actions = listOf(
@@ -409,7 +410,7 @@ object art {
 
 //    return makeSwearBoxes().toReactElement()
 
-        return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to jshit.GRAY_200, "fontWeight" to "bold")), "Steps"),
+        return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to Color.GRAY_200, "fontWeight" to "bold")), "Steps"),
             *els.toTypedArray())
     }
 

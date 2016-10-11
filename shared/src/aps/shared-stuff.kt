@@ -24,13 +24,22 @@ enum class Language() {
     EN, UA
 }
 
-enum class UserState() {
-    COOL, PROFILE_PENDING, PROFILE_APPROVAL_PENDING, PROFILE_REJECTED, BANNED
+interface Titled {
+    val title: String
+}
+
+enum class UserState(override val title: String) : Titled {
+    COOL(t("TOTE", "Прохладный")),
+    PROFILE_PENDING(t("TOTE", "Без профиля")),
+    PROFILE_APPROVAL_PENDING(t("TOTE", "Ждет аппрува профиля")),
+    PROFILE_REJECTED(t("TOTE", "Профиль завернут")),
+    BANNED(t("TOTE", "Забанен"));
 }
 
 class TimestampRTO(val value: String) {
 }
 
+// TODO:vgrechka Model profile as separate class with non-nullable props (to avoid !!)    fece17b6-5816-4b63-b687-a68b42fb2304
 class UserRTO(
     val id: String,
     val deleted: Boolean,
@@ -64,17 +73,43 @@ open class Request {
 
 open class GenericRequest : Request()
 
-class ImposeNextRequestTimestampRequest(val stamp: String) : Request() {
-    constructor() : this(SHITS) // For fucking Jackson
-    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
+class ImposeNextRequestTimestampRequest : RequestMatumba() {
+    val stamp = StringHiddenField(this, "stamp")
+
+    companion object {
+        fun send(stamp: String): Promise<GenericResponse> = callDangerousMatumba(ImposeNextRequestTimestampRequest().apply {
+            this.stamp.value = stamp
+        })
+    }
+
+//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
-class ResetTestDatabaseRequest(val templateDB: String, val recreateTemplate: Boolean = false) : Request() {
-    constructor() : this(SHITS, SHITB) // For fucking Jackson
-    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
+//class ImposeNextRequestTimestampRequest(val stamp: String) : Request() {
+//    constructor() : this(SHITS) // For fucking Jackson
+//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
+//}
+
+class ResetTestDatabaseRequest() : RequestMatumba() {
+    val templateDB = StringHiddenField(this, "templateDB")
+    val recreateTemplate = BooleanHiddenField(this, "recreateTemplate")
+
+    companion object {
+        fun send(templateDB: String, recreateTemplate: Boolean = false): Promise<GenericResponse> = callDangerousMatumba(ResetTestDatabaseRequest().apply {
+            this.templateDB.value = templateDB
+            this.recreateTemplate.value = recreateTemplate
+        })
+    }
+
+//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
 class GenericResponse
+
+sealed class ZimbabweResponse<T> {
+    class Hunky<T>(val meat: T): ZimbabweResponse<T>()
+    class Shitty<T>(val error: String, val fieldErrors: Iterable<FieldError>): ZimbabweResponse<T>()
+}
 
 sealed class FormResponse {
     class Hunky<Meat>(val meat: Meat): FormResponse()
@@ -95,16 +130,7 @@ class SignInWithPasswordRequest : RequestMatumba() {
     val email = emailField(this)
     val password = passwordField(this)
 
-    class Response {
-        lateinit var token: String
-        lateinit var user: UserRTO
-    }
-}
-
-class SignUpFields(container: RequestMatumba) {
-    val email = emailField(container)
-    val firstName = TextField(container, "firstName", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50)
-    val lastName = TextField(container, "lastName", t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50)
+    class Response(val token: String, val user: UserRTO)
 }
 
 class SignUpRequest : RequestMatumba() {
@@ -113,13 +139,25 @@ class SignUpRequest : RequestMatumba() {
 }
 
 class UpdateProfileRequest() : RequestMatumba() {
-    class Response {
-        lateinit var newUser: UserRTO
-    }
-
-    companion object
+    class Response(val newUser: UserRTO)
 
     val profileFields = ProfileFields(this)
+}
+
+open class UpdateUserRequest() : RequestMatumba() {
+    val signUpFields = SignUpFields(this)
+    val profileFields = ProfileFields(this)
+    val state = SelectField(this, "state", t("TOTE", "Статус"), UserState.values())
+    val profileRejectionReason = TextField(this, "profileRejectionReason", t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000)
+    val adminNotes = TextField(this, "adminNotes", t("TOTE", "Админские заметки"), TextFieldType.TEXTAREA, 0, 5000)
+}
+
+class AdminCreateUserRequest: UpdateUserRequest()
+
+class SignUpFields(container: RequestMatumba) {
+    val email = emailField(container)
+    val firstName = TextField(container, "firstName", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50)
+    val lastName = TextField(container, "lastName", t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50)
 }
 
 class ProfileFields(container: RequestMatumba) {
@@ -128,41 +166,64 @@ class ProfileFields(container: RequestMatumba) {
 }
 
 
-class WorldPointRequest(val pointName: String, val action: Action) : Request() {
+class WorldPointRequest() : RequestMatumba() {
     enum class Action { SAVE, RESTORE }
-    constructor() : this(SHITS, Action.SAVE) // For fucking Jackson
 
-    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
-}
+    val pointName = StringHiddenField(this, "pointName")
+    val action = EnumHiddenField(this, "action", Action.values())
 
-class GetSentEmailsRequest : Request() {
-    class Response {
-        lateinit var emails: List<Email>
+    companion object {
+        fun send(pointName: String, action: Action): Promise<GenericResponse> = callDangerousMatumba(WorldPointRequest().apply {
+            this.pointName.value = pointName
+            this.action.value = action
+        })
     }
 
-    fun rpc(): Promise<Response> = callRemoteProcedure(this)
+//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
-class ClearSentEmailsRequest : Request() {
-    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
+class GetSentEmailsRequest : RequestMatumba() {
+    class Response(val emails: List<Email>)
+
+    companion object {
+        fun send(): Promise<Response> = callDangerousMatumba(GetSentEmailsRequest())
+    }
+
+//    fun rpc(): Promise<Response> = callRemoteProcedure(this)
 }
 
-class ImposeNextGeneratedPasswordRequest(val password: String) : Request() {
-    constructor() : this(SHITS) // For fucking Jackson
-    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
+class ClearSentEmailsRequest : RequestMatumba() {
+    companion object {
+        fun send(): Promise<GenericResponse> = callDangerousMatumba(ClearSentEmailsRequest())
+    }
+
+//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
+}
+
+class ImposeNextGeneratedPasswordRequest() : RequestMatumba() {
+    val password = StringHiddenField(this, "password")
+
+    companion object {
+        fun send(password: String): Promise<GenericResponse> = callDangerousMatumba(ImposeNextGeneratedPasswordRequest().apply {
+            this.password.value = password
+        })
+    }
+
+//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
 class GetLiveStatusRequest : RequestMatumba() {
-    class Response {
-        lateinit var case: Case
-        sealed class Case {
-            class ForAdmin(val profilesToApprove: String, val suka: String) : Case()
-            class ForWriter(val suka: String) : Case()
-            class ForCustomer(val suka: String) : Case()
-        }
+    sealed class Response {
+        class ForAdmin(val profilesToApprove: String, val suka: String) : Response()
+        class ForWriter(val suka: String) : Response()
+        class ForCustomer(val suka: String) : Response()
     }
 
-    fun rpc(ui: LegacyUIShit): Promise<Response> = callRemoteProcedure(this, ui)
+    companion object {
+        fun send(token: String): Promise<Response> = callMatumba(GetLiveStatusRequest(), token)
+    }
+
+//    fun rpc(ui: LegacyUIShit): Promise<Response> = callRemoteProcedure(this, ui)
 }
 
 class Email(val to: String, val subject: String, val html: String)
@@ -178,6 +239,68 @@ infix operator fun Any?.div(erongi: ignore) = Unit
 
 object ignora
 infix operator fun Any?.div(arongi: ignora) = __asyncResult(Unit)
+infix operator fun ignora.div(any: Any?) = __asyncResult(Unit)
+
+object a
+infix operator fun <T> a.div(x: T) = __asyncResult(x)
+
+object resulta
+infix operator fun <T> resulta.div(x: T) = __asyncResult(x)
+
+class GetUserRequest() : RequestMatumba() {
+    class Response (
+        val user: UserRTO
+    )
+
+    val id = StringHiddenField(this, "id")
+
+    companion object {
+        fun send(token: String, id: String): Promise<ZimbabweResponse<Response>> = callZimbabwe(GetUserRequest()-{o->
+            o.id.value = id
+        }, token)
+    }
+}
+
+enum class UserFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все")),
+    COOL(t("TOTE", "Прохладные")),
+    PROFILE_APPROVAL_PENDING(t("TOTE", "Ждут аппрува")),
+    PROFILE_REJECTED(t("TOTE", "Завернутые")),
+    BANNED(t("TOTE", "Забаненые"))
+}
+
+class EntityRequest() : RequestMatumba() {
+    val id = StringHiddenField(this, "id")
+}
+
+class EntityResponse<Item> (
+    val entity: Item
+)
+
+class ItemsRequest<Filter>(filterValues: Array<Filter>) : RequestMatumba()
+where Filter: Enum<Filter>, Filter: Titled {
+    val entityID = HiddenMaybeStringField(this, "entityID")
+    val filter = EnumHiddenField(this, "filter", filterValues)
+    val ordering = EnumHiddenField(this, "ordering", Ordering.values())
+    val searchString = TextField(this, "searchString", "", TextFieldType.STRING, 0, 50)
+    val fromID = HiddenMaybeStringField(this, "fromID")
+}
+
+class ItemsResponse<Item> (
+    val items: List<Item>,
+    val moreFromID: String?
+)
+
+
+enum class Ordering(override val title: String) : Titled {
+    ASC(t("TOTE", "Сначала старые")),
+    DESC(t("TOTE", "Сначала новые"))
+}
+
+fun <T> T.orDefault(default: T) = if (this != null) this else default
+
+
+
 
 
 

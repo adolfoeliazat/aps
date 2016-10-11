@@ -1,10 +1,6 @@
 cd /d e:\work\foundation
 title foundation watch & make watch
 
-cd /d e:\work\foundation\devui
-title devui-runner & %FOUNDATION_HOME%\devui\devui-runner.cmd
-Ctrl+Alt+1
-
 cd /d e:\work\aps
 title aps watch & make watch
 
@@ -17,17 +13,25 @@ title aps backend & backend.cmd
 cd /d C:\opt\Redis
 title redis-cli & redis-cli
 
-cd /d E:\work\aps\back\bin\dev\win
-title pg-dev & pg-dev-start.cmd
+# TEMPORARILY FUCK IT
+# cd /d E:\work\aps\back\bin\dev\win
+# title pg-dev & pg-dev-start.cmd
+
+imdisk -a -t vm -s 2G -m r:
+#
+# Then format the disk
 
 cd /d E:\work\aps\back\bin\dev\win
 title pg-test & pg-test-start.cmd
+#
+# Will complain with [FATAL:  role "Vladimir" does not exist], but this is totally OK.
+# It just tries to check created DB by connecting to it as current user name.
 
 cd /d E:\work\aps\tools
 title WatchAndEnhanceJS & WatchAndEnhanceJS
 
 cd /d e:\work\aps\back
-title APSBack & back
+title APSBack & run forever
 
 
 
@@ -35,6 +39,10 @@ title APSBack & back
 
 
 
+# FUCK IT
+# cd /d e:\work\foundation\devui
+# title devui-runner & %FOUNDATION_HOME%\devui\devui-runner.cmd
+# Ctrl+Alt+1
 
 # FUCK IT
 # cd /d C:\opt\selenium
@@ -43,3 +51,4 @@ title APSBack & back
 # FUCK IT
 # cd /d e:\work\eclipse-newhotness\enh-dll
 # title enh-dll & make watch
+

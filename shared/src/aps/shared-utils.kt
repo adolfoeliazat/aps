@@ -14,6 +14,9 @@ fun sayHi() {
 
 inline fun <T, FRet> T.applet(f: (T) -> FRet): T { f(this); return this }
 
+// Rapier operator: x-{o->
+inline operator fun <T, FRet> T.minus(f: (T) -> FRet): T { f(this); return this }
+
 inline fun <T, reified CastTo> T.calet(f: (T) -> Unit): Unit { f(this) }
 
 inline fun <T> T?.letoes(f: (T) -> String): String =
@@ -90,6 +93,14 @@ fun dedent(it: String): String {
 
 var _puid = 1L
 fun puid(): Long = _puid++
+
+fun <T> Iterable<T>.without(xs: Iterable<T>) = this.filter{!xs.contains(it)}
+
+object exhaustive {
+    infix operator fun <T> div(rhs: T): Unit {}
+}
+
+fun <T> cast(x: Any?): T = x as T
 
 
 

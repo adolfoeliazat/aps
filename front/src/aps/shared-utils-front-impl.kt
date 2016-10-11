@@ -41,17 +41,17 @@ fun remoteProcedureNameForRequest(req: Any): String {
     return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
 }
 
-@Deprecated("Old RPC")
-fun <Res> callRemoteProcedure(req: Request): Promise<Res> {
-    val dynamicReq: dynamic = req
-    val requestClassName: String = dynamicReq.__proto__.constructor.`$$$kindaPackageKey`
-    val procedureName = requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
-    return callRemoteProcedure(remoteProcedureNameForRequest(req), req)
-}
+//@Deprecated("Old RPC")
+//fun <Res> callRemoteProcedure(req: Request): Promise<Res> {
+//    val dynamicReq: dynamic = req
+//    val requestClassName: String = dynamicReq.__proto__.constructor.`$$$kindaPackageKey`
+//    val procedureName = requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
+//    return callRemoteProcedure(remoteProcedureNameForRequest(req), req)
+//}
 
-fun <Res> callRemoteProcedure(req: RequestMatumba, ui: LegacyUIShit): Promise<Res> {
-    return callRemoteProcedure(remoteProcedureNameForRequest(req), req, ui)
-}
+//fun <Res> callRemoteProcedure(req: RequestMatumba, ui: LegacyUIShit): Promise<Res> {
+//    return callRemoteProcedure(remoteProcedureNameForRequest(req), req, ui)
+//}
 
 @native fun <T> __await(p: Promise<T>): T = noImpl
 @native fun <T> __asyncResult(x: T): Promise<T> = noImpl
@@ -65,23 +65,73 @@ fun <Res> callRemoteProcedure(req: RequestMatumba, ui: LegacyUIShit): Promise<Re
 //}
 
 
-open class RequestMatumba { // Front
-    val fields = mutableListOf<FormFieldFront>()
+@Front open class RequestMatumba {
+    val fields = mutableListOf<FormFieldFront<*>>()
+    val hiddenFields = mutableListOf<HiddenFormFieldFront>()
 }
 
-abstract class FormFieldFront(val container: RequestMatumba, val name: String) {
+abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: String) {
+    init {
+        container.hiddenFields.add(this)
+    }
+
+    abstract fun toRemote(): Any?
+}
+
+abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
     init {
         container.fields.add(this)
     }
 
+    lateinit var form: FormMatumba<*, *>
+
     abstract fun render(): ReactElement
-    abstract val value: String
+    abstract val value: Value
 
     abstract var error: String?
     abstract var disabled: Boolean
+    abstract fun focus()
+    abstract fun toRemote(): Any
 }
 
 annotation class Front
+
+@Front fun <E : Enum<E>> EnumHiddenField(container: RequestMatumba, name: String, values: Array<E>): HiddenField<E> {
+    return HiddenField(container, name)
+}
+
+@Front fun StringHiddenField(container: RequestMatumba, name: String): HiddenField<String> {
+    return HiddenField(container, name)
+}
+
+@Front fun HiddenMaybeStringField(container: RequestMatumba, name: String): HiddenField<String?> {
+    return HiddenField(container, name)
+}
+
+@Front fun BooleanHiddenField(container: RequestMatumba, name: String): HiddenField<Boolean> {
+    return HiddenField(container, name)
+}
+
+@Front class HiddenField<T>(container: RequestMatumba, name: String): HiddenFormFieldFront(container, name) {
+    var value: T? = null
+
+    // TODO:vgrechka Extract this generic toRemote()
+    override fun toRemote(): Any? {
+        val dynaValue: dynamic = value
+        return when {
+            dynaValue == null -> null
+
+            // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    94315462-a862-4148-95a0-e45a0f73212d
+            dynaValue.`name$` != null -> dynaValue.`name$` // Kinda enum
+
+//            global.Array.isArray(dynaValue.array) -> {
+//                jsArrayToList(dynaValue.array)
+//            }
+
+            else -> dynaValue
+        }
+    }
+}
 
 @Front class TextField(
     container: RequestMatumba,
@@ -91,7 +141,7 @@ annotation class Front
     val minLen: Int,
     val maxLen: Int,
     val minDigits: Int = -1
-): FormFieldFront(container, name) {
+): FormFieldFront<String>(container, name) {
 
     override var error: String? = null
 
@@ -119,6 +169,8 @@ annotation class Front
         get() = input.isDisabled()
         set(value) { input.setDisabled(value) }
 
+    override fun focus() = input.focus()
+
     override fun render(): ReactElement {
         return jshit.diva(json("controlTypeName" to "TextField", "tamy" to name, "className" to "form-group"),
             if (title != null) jshit.labela(json(), jshit.spanc(json("tame" to "label", "content" to title))) else undefined,
@@ -127,9 +179,11 @@ annotation class Front
                 if (error != null) jshit.errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
                 if (error != null) jshit.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
     }
+
+    override fun toRemote() = value
 }
 
-@Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront(container, name) {
+@Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront<Boolean>(container, name) {
     override var error: String? = null
 
     val checkbox = jshit.Checkbox(json("tamy" to true))
@@ -149,7 +203,7 @@ annotation class Front
         )
     }
 
-    override var value: String
+    override var value: Boolean
         get() = checkbox.getValue()
         set(value) { checkbox.setValue(value) }
 
@@ -157,9 +211,13 @@ annotation class Front
         get() = checkbox.isDisabled()
         set(value) { checkbox.setDisabled(value) }
 
+    override fun focus() = dwarn("Need focus() for CheckboxField?")
+
     fun popupTerms() {
         global.alert("No fucking terms. You can go crazy with this shit...")
     }
+
+    override fun toRemote() = value
 }
 
 @native interface LegacyUIShit {
@@ -174,7 +232,112 @@ annotation class Front
     fun urlLink(spec: Json): dynamic
     fun getUser(): UserRTO
     fun signOut()
+    fun updatePage()
+    val urlQuery: Any
+    var currentPage: Any?
+    fun loadPageForURL(): Promise<Unit>
 }
+
+@Front class SelectField<T>(
+    container: RequestMatumba,
+    name: String,
+    val title: String,
+    val values: Array<T>
+) : FormFieldFront<T>(container, name)
+where T : Enum<T>, T : Titled {
+
+    override var error: String? = null
+
+    val select = Select(values, null, json(
+        "values" to values.map{json("value" to it.name, "title" to it.title)}.toJSArray(),
+        "tamy" to true,
+        "onChange" to {
+            form.fieldChanged()
+        },
+        "onFocus" to {
+            form.fieldFocused(this)
+        },
+        "onBlur" to {
+            form.fieldBlurred(this)
+        }
+    ))
+
+    override fun render(): ReactElement {
+        return jshit.diva(json("controlTypeName" to "SelectField", "tamy" to name, "className" to "form-group"),
+            // Can it be null?
+            if (title != null) jshit.labela(json(), jshit.spanc(json("tame" to "label", "content" to title))) else null,
+            jshit.diva(json("style" to json("position" to "relative")),
+                select.toReactElement(),
+                if (error != null) jshit.errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null,
+                if (error != null) jshit.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else null))
+    }
+
+    override var value: T
+        get() = select.getValue()
+        set(value) { select.setValue(value) }
+
+    override var disabled: Boolean
+        get() = select.isDisabled()
+        set(value) { select.setDisabled(value) }
+
+    override fun focus() = select.focus()
+
+    override fun toRemote() = select.getValue().name
+
+}
+
+fun <Res> callMatumba(req: RequestMatumba, token: String?): Promise<Res> =
+    callMatumba(remoteProcedureNameForRequest(req), req, token)
+
+fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?): Promise<Res> {
+    return callRemoteProcedurePassingJSONObject(procedureName, dyna{r->
+        r.clientKind = global.CLIENT_KIND
+        r.lang = global.LANG
+        token?.let {r.token = it}
+
+        r.fields = dyna{o->
+            for (field in req.fields) o[field.name] = field.toRemote()
+            for (field in req.hiddenFields) o[field.name] = field.toRemote()
+        }
+    })
+}
+
+fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> =
+    callZimbabwe(remoteProcedureNameForRequest(req), req, token)
+
+fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> {"__async"
+    return a/try {
+        val res = __await<Any>(callRemoteProcedurePassingJSONObject(procedureName, dyna{r->
+            r.clientKind = global.CLIENT_KIND
+            r.lang = global.LANG
+            token?.let {r.token = it}
+
+            r.fields = dyna{o->
+                for (field in req.fields) o[field.name] = field.toRemote()
+                for (field in req.hiddenFields) o[field.name] = field.toRemote()
+            }
+        }))
+        when (res) {
+            is FormResponse.Hunky<*> -> ZimbabweResponse.Hunky(cast(res.meat))
+            is FormResponse.Shitty -> ZimbabweResponse.Shitty<Res>(res.error, listOf())
+            else -> ZimbabweResponse.Hunky<Res>(cast(res))
+        }
+    } catch(e: Throwable) {
+        spitExceptionToConsole(e)
+        ZimbabweResponse.Shitty<Res>(t("TOTE", "Сервис временно в жопе, просим прощения"), listOf())
+    }
+}
+
+fun spitExceptionToConsole(e: dynamic) {
+    jshit.revealStack(json("exception" to e))
+}
+
+fun <Res> callDangerousMatumba(req: RequestMatumba): Promise<Res> {
+    return callMatumba(req, js("typeof DANGEROUS_TOKEN === 'undefined' ? null : DANGEROUS_TOKEN")
+        ?: bitch("This fucking client is built without DANGEROUS_TOKEN"))
+}
+
+
 
 
 
