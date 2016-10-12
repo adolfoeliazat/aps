@@ -4,18 +4,14 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-@file:Suppress("UNREACHABLE_CODE")
-
 package aps.front
 
 import aps.*
 import kotlin.collections.*
 
-fun span(s: String): ToReactElementable = oldShitAsReactElementable(jshit.spana(json(), s))
-
 val reactNull = oldShitAsReactElementable(null)
 
-open class Melinda<Item, Entity, Filter>(
+class Melinda<Item, Entity, Filter>(
     val ui: LegacyUIShit,
     val urlPath: String,
     val procedureName: String,
@@ -51,7 +47,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     var plusShit: ButtonAndForm? = null
     var editShit: ButtonAndForm? = null
     var searchBox: ToReactElementable = reactNull
-    var searchBoxInput: dynamic = null
+    var searchBoxInput: Input? = null
     var filterSelect: Select<Filter>? = null
     var orderingSelect: Select<Ordering>? = null
 
@@ -103,10 +99,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     }
 
 
-    fun applyHeaderControls(arg: dynamic): Promise<dynamic> {"__async"
-        // {controlToBlink}
-        val controlToBlink = arg.controlToBlink
-
+    fun applyHeaderControls(controlToBlink: Blinkable): Promise<dynamic> {"__async"
         setHeaderControlsDisabled(true)
         controlToBlink.setBlinking(true)
 
@@ -119,9 +112,11 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         filterSelect?.let {urlParamParts.push("filter=${it.getValue()}")}
         orderingSelect?.let {urlParamParts.push("ordering=${it.getValue()}")}
 
-        val searchString = searchBoxInput.getValue().trim()
-        if (searchString) {
-            urlParamParts.push("search=${global.encodeURIComponent(searchString)}")
+        searchBoxInput?.let {
+            it.value.let {
+                if (it.isNotBlank())
+                    urlParamParts.push("search=${global.encodeURIComponent(it)}")
+            }
         }
 
         val url = "${urlPath}?${urlParamParts.join("&")}"
@@ -176,7 +171,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         val tabs: Any? = null
 
         if (hasSearchBox) {
-            searchBoxInput = jshit.Input(json(
+            searchBoxInput = Input(json(
                 "tamyShamy" to "search",
                 "style" to json("paddingLeft" to 30, "width" to 160),
                 "placeholder" to t("TOTE", "Поиск..."),
@@ -185,7 +180,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 "onKeyDown" to {e: dynamic -> "__async"
                     if (e.keyCode == 13) {
                         preventAndStop(e)
-                        __await(applyHeaderControls(json("controlToBlink" to searchBoxInput)))
+                        __await(applyHeaderControls(searchBoxInput!!))
                     }
                 }
             ))
@@ -193,7 +188,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 //        searchBoxInput.setValueExt(json("value" to itemsRes.actualSearchString, "notify" to false))
 
             searchBox = oldShitAsReactElementable(jshit.diva(json("style" to json("position" to "relative")),
-                searchBoxInput,
+                searchBoxInput!!.toReactElement(),
                 jshit.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to Color.GRAY_500)))
             ))
         }
@@ -205,7 +200,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 //                "initialValue" to filter,
                 "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
                 "onChange" to {"__async"
-                    __await(applyHeaderControls(json("controlToBlink" to filterSelect)))
+                    __await(applyHeaderControls(filterSelect!!))
                 }
             ))
 
@@ -221,7 +216,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 //                "initialValue" to ordering,
                 "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
                 "onChange" to {"__async"
-                    __await(applyHeaderControls(json("controlToBlink" to orderingSelect)))
+                    __await(applyHeaderControls(orderingSelect!!))
                 }
             ))
 

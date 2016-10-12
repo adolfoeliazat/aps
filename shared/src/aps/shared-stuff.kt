@@ -145,11 +145,15 @@ class UpdateProfileRequest() : RequestMatumba() {
 }
 
 open class UpdateUserRequest() : RequestMatumba() {
+    class Response(val newUser: UserRTO)
+
+    val id = StringHiddenField(this, "id")
     val signUpFields = SignUpFields(this)
     val profileFields = ProfileFields(this)
     val state = SelectField(this, "state", t("TOTE", "Статус"), UserState.values())
     val profileRejectionReason = TextField(this, "profileRejectionReason", t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000)
-    val adminNotes = TextField(this, "adminNotes", t("TOTE", "Админские заметки"), TextFieldType.TEXTAREA, 0, 5000)
+    val banReason = TextField(this, "banReason", t("TOTE", "Причина бана"), TextFieldType.TEXTAREA, 0, 5000)
+    val adminNotes = TextField(this, "adminNotes", t("TOTE", "Заметки админа"), TextFieldType.TEXTAREA, 0, 5000)
 }
 
 class AdminCreateUserRequest: UpdateUserRequest()

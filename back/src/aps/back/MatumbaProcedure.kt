@@ -180,10 +180,11 @@ anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRe
         userKinds = setOf(UserKind.CUSTOMER, UserKind.WRITER, UserKind.ADMIN)))
 
 fun <Req : RequestMatumba, Res : Any>
-adminProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): ServletService =
+adminProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): ServletService =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
+        validate = validate ?: {ctx, req ->},
         wrapInFormResponse = wrapInFormResponse ?: true,
         needsDB = true,
         needsDangerousToken = false,

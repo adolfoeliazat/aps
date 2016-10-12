@@ -118,6 +118,11 @@ package aps.front
     var ObjectViewer: dynamic
     var Betsy: dynamic
     var textMeat: dynamic
+    var input: dynamic
+    var preloader: dynamic
+    var closeControlRevealer: dynamic
+    var getControlByShame: dynamic
+    var Preloader: dynamic
 }
 
 

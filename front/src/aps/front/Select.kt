@@ -8,7 +8,7 @@ package aps.front
 
 import aps.*
 
-class Select<E>(val values: Array<E>, val initialValue: E?, val legacySpec: Json) : ToReactElementable
+class Select<E>(val values: Array<E>, val initialValue: E?, val legacySpec: Json) : ToReactElementable, Blinkable
 where E : Enum<E>, E : Titled {
 
     fun LegacyCtor(): dynamic {
@@ -92,7 +92,7 @@ where E : Enum<E>, E : Titled {
 
                     stringValue = newValue
                     update()
-                    if (notify != false && onChange != null) {
+                    if (notify && onChange != null) {
                         __await<dynamic>(onChange())
                     }
                 },
@@ -113,9 +113,11 @@ where E : Enum<E>, E : Titled {
                         __await<dynamic>(jshit.delay(global.DEBUG_ACTION_HAND_DELAY))
                         testActionHand.delete()
 
-                        __await<dynamic>(me.setValue(value))
+                        __await<dynamic>(me.setValueExt(json("value" to value, "notify" to true)))
+//                        __await<dynamic>(me.setValue(value))
                     } else {
-                        __await<dynamic>(me.setValue(value))
+                        __await<dynamic>(me.setValueExt(json("value" to value, "notify" to true)))
+//                        __await<dynamic>(me.setValue(value))
                     }
                 },
 
@@ -185,6 +187,10 @@ where E : Enum<E>, E : Titled {
     }
 
     val value: E get() = getValue()
+
+    override fun setBlinking(b: Boolean) {
+        legacyShit.setBlinking(b)
+    }
 
 }
 

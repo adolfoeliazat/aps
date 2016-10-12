@@ -44,7 +44,7 @@ enum class Color(val string: String) {
     fun loadProfilePage(): Promise<Unit>
 //    fun loadSignUpPage(): Promise<Unit>
 //    fun renderProfile(def: dynamic): dynamic
-    fun userKindIcon(def: dynamic): dynamic
+//    fun userKindIcon(def: dynamic): dynamic
 //    fun makeProfileFields(def: dynamic): dynamic
     fun loadSignUpPage(): Promise<Unit>
 }
@@ -160,18 +160,18 @@ object KotlinShit : IKotlinShit {
 //        )
 //    }
 
-    override fun userKindIcon(def: dynamic): dynamic {
-        // #extract {user} from def
-        val user: UserRTO = def.user
-
-        return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5),
-            "icon" to when (user.kind) {
-                UserKind.CUSTOMER -> "user"
-                UserKind.WRITER -> "pencil"
-                UserKind.ADMIN -> "cog"
-            }
-        ))
-    }
+//    override fun userKindIcon(def: dynamic): dynamic {
+//        // #extract {user} from def
+//        val user: UserRTO = def.user
+//
+//        return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5),
+//            "icon" to when (user.kind) {
+//                UserKind.CUSTOMER -> "user"
+//                UserKind.WRITER -> "pencil"
+//                UserKind.ADMIN -> "cog"
+//            }
+//        ))
+//    }
 
 
     override fun loadDebugKotlinPlaygroundPage() {

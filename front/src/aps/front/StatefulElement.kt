@@ -377,10 +377,6 @@ class ControlShit {
 
 }
 
-fun implementControlShit(): ControlShit {
-    throw js.Error()
-}
-
 fun elcl(spec: IReactClassSpec): ReactElement {
     val clazz = React.createClass(json(
 

@@ -24,11 +24,8 @@ import aps.back.generated.jooq.tables.pojos.Users
             .where(USERS.ID.eq(ctx.user.id.toLong()))
             .execute()
 
-        val users = q.select().from(USERS)
-            .where(USERS.ID.eq(ctx.user.id.toLong()))
-            .fetch().into(Users::class.java)
-
-        UpdateProfileRequest.Response(users.first().toRTO(q))
+        UpdateProfileRequest.Response(loadUser(ctx))
     }
 )
+
 

@@ -59,7 +59,7 @@ class limpopo(val tame: String, val label: String, val colsm: Int?, val formGrou
     }
 }
 
-fun renderStamp(stamp: String, includeTZ: Boolean = true): ReactElement {
+fun renderStamp(stamp: String, includeTZ: Boolean = true): String {
     return jshit.timestampString(stamp, json("includeTZ" to includeTZ))
 }
 
@@ -70,6 +70,12 @@ fun pushNavigate(ui: LegacyUIShit, url: String): Promise<Unit> {"__async"
     global.history.pushState(null, "", url)
     return __await(ui.loadPageForURL()) /ignora
 }
+
+interface Blinkable {
+    fun setBlinking(b: Boolean)
+}
+
+
 
 
 

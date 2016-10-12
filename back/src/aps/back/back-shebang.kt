@@ -7,6 +7,8 @@
 package aps.back
 
 import aps.*
+import aps.back.generated.jooq.tables.pojos.Users
+import aps.back.generated.jooq.Tables.*
 import org.jooq.*
 import kotlin.reflect.KClass
 
@@ -72,6 +74,32 @@ fun <POJO : Any, RTO> selectChunk(
 
     return Chunk(items, moreFromId)
 }
+
+fun loadUser(ctx: ProcedureContext): UserRTO {
+    val users = ctx.q
+        .select()
+        .from(USERS)
+        .where(USERS.ID.eq(ctx.user.id.toLong()))
+        .fetch().into(Users::class.java)
+
+    return users.first().toRTO(ctx.q)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

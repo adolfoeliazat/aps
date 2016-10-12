@@ -645,13 +645,15 @@ fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", item
 
         global.Object.assign(expected, json(
             "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i000.title" to "Прохладный",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i000.value" to UserFilter.COOL.name,
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.title" to "Ждет аппрува профиля",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.value" to "PROFILE_APPROVAL_PENDING",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.title" to "Профиль завернут",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.value" to "PROFILE_REJECTED",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.title" to "Забанен",
-            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.value" to UserFilter.BANNED.name,
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i000.value" to UserState.COOL.name,
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.title" to "Без профиля",
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i001.value" to UserState.PROFILE_PENDING.name,
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.title" to "Ждет аппрува профиля",
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i002.value" to UserState.PROFILE_APPROVAL_PENDING.name,
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.title" to "Профиль завернут",
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i003.value" to UserState.PROFILE_REJECTED.name,
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i004.title" to "Забанен",
+            "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.item-i004.value" to UserState.BANNED.name,
             "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.label" to "Статус"
         ))
 

@@ -48,6 +48,7 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                         "body" to jshit.diva(json("style" to json("marginBottom" to 15)),
                             FormMatumba<UpdateUserRequest, GenericResponse>(FormSpec(
                                 UpdateUserRequest()-{o->
+                                    o.id.value = user.id
                                     o.state.value = user.state
                                     o.profileRejectionReason.value = user.profileRejectionReason.orEmpty()
                                     o.adminNotes.value = user.adminNotes.orEmpty()
