@@ -301,7 +301,7 @@ enum class Ordering(override val title: String) : Titled {
     DESC(t("TOTE", "Сначала новые"))
 }
 
-fun <T> T.orDefault(default: T) = if (this != null) this else default
+fun <T : Any> T?.orDefault(default: () -> T): T = if (this != null) this else default()
 
 
 

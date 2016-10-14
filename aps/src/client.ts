@@ -220,119 +220,121 @@ async 'admin-my-tasks'() {
     })
 },
                     
-async support() {
-    raise('reimplement me')
-    if (ui.urlQuery.thread) {
-        await kot.aps.front.KotlinShit.kot_melinda({
-            ui,
-            urlPath: 'support.html', urlEntityParamName: 'thread',
-            trainName: 'Load support page with thread param',
-            entityFun: 'private_getSupportThread',
-            itemsFun: 'private_getSupportThreadMessages',
-            entityID: ui.urlQuery.thread,
-            header: entityRes => {
-                let labels
-                if (entityRes.entity.status === 'resolved') {
-                    labels = [{level: 'success', title: t(`TOTE`, `Решён`)}]
-                }
-                return pageHeader({title: t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`), labels})
-            },
-            hasHeaderControls: entityRes => {
-                if (ui.getUser().kind === 'ADMIN') return true
-                return entityRes.entity.status === 'open'
-            },
-            aboveItems(entityRes) {
-                return pageTopBlockQuote({content: entityRes.entity.topic})
-            },
-            plusIcon: 'comment',
-            
-            plusFormDef: {
-                primaryButtonTitle: t(`TOTE`, `Запостить`),
-                cancelButtonTitle: t(`TOTE`, `Передумал`),
-                autoFocus: 'message',
-                fields: [
-                    ui.HiddenField({
-                        name: 'threadID',
-                        value: ui.urlQuery.thread,
-                    }),
-                    ui.TextField({
-                        name: 'message',
-                        kind: 'textarea',
-                        title: t(`TOTE`, `Сообщение`),
-                    }),
-                ],
-                rpcFun: 'private_createSupportThreadMessage',
-                async onSuccess~(res) {
-                    await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
-                },
-            },
-            
-            editFormDef: run(_=> {
-                const fields = [
-                    ui.HiddenField({
-                        name: 'threadID',
-                        value: ui.urlQuery.thread,
-                    }),
-                ]
-                
-                const statusValues = []
-                if (ui.getUser().kind === 'ADMIN') {
-                    statusValues.push({value: 'open', title: t(`TOTE`, `Открыт`)})
-                }
-                statusValues.push({value: 'resolved', title: t(`TOTE`, `Решён`)})
-                fields.push(ui.SelectField(s{
-                    name: 'status',
-                    title: t(`TOTE`, `Статус`),
-                    values: statusValues
-                }))
-                
-                return {
-                    primaryButtonTitle: t(`TOTE`, `Сохранить`),
-                    cancelButtonTitle: t(`TOTE`, `Не стоит`),
-                    // autoFocus: 'resolution',
-                    fields,
-                    rpcFun: 'private_updateSupportThreadMessage',
-                    async onSuccess~(res) {
-                        await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
-                    },
-                }
-            }),
-            
-            renderItem(def) {
-                #extract {item: message, index} from def
-                
-                return diva({controlTypeName: 'renderItem-leila', className: `zebra-${index % 2}`, style: {}},
-                    makeRenderSupportThreadMessage({showMessageNewLabel: true})(s{message, index}))
-            },
-        })
-    } else if (!ui.urlQuery.thread) {
-        beginTrain({name: 'Load support page without thread param'}); try {
-            const itemsReq = s{fun: 'private_getSupportThreads', filter: ui.urlQuery.filter || 'updatedOrAll'}
-            const itemsRes = await ui.rpcSoft(itemsReq)
-            if (itemsRes.error) return ui.setToughLuckPage({res: itemsRes})
-            
-            const filter = itemsRes.filter
-            
-            const tabDefs = itemsRes.availableFilters.map(name => ({
-                name,
-                content: ui.taby({
-                    title: lookup(name, {
-                        updated: t(`TOTE`, `Обновленные`),
-                        all: t(`TOTE`, `Все`)
-                    }),
-                    url: `support.html?filter=${name}`
-                })}))
-            
-            ui.setPage(s{
-                header: pageHeader({title: t(`TOTE`, `Поддержка`)}),
-                body: diva({},
-                    ui.tabs({name: 'main', tabDefs, active: filter}),
-                    ui.renderMoreable(s{itemsRes, itemsReq: {fun: 'private_getSupportThreadsChunk', filter}, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}),
-                )
-            })
-        } finally { endTrain() }
-    }
-},
+// Should be reconsidered and reimplemented
+//
+//async support() {
+//    raise('reimplement me')
+//    if (ui.urlQuery.thread) {
+//        await kot.aps.front.KotlinShit.kot_melinda({
+//            ui,
+//            urlPath: 'support.html', urlEntityParamName: 'thread',
+//            trainName: 'Load support page with thread param',
+//            entityFun: 'private_getSupportThread',
+//            itemsFun: 'private_getSupportThreadMessages',
+//            entityID: ui.urlQuery.thread,
+//            header: entityRes => {
+//                let labels
+//                if (entityRes.entity.status === 'resolved') {
+//                    labels = [{level: 'success', title: t(`TOTE`, `Решён`)}]
+//                }
+//                return pageHeader({title: t(`TOTE`, `Запрос в поддержку № ${entityRes.entity.id}`), labels})
+//            },
+//            hasHeaderControls: entityRes => {
+//                if (ui.getUser().kind === 'ADMIN') return true
+//                return entityRes.entity.status === 'open'
+//            },
+//            aboveItems(entityRes) {
+//                return pageTopBlockQuote({content: entityRes.entity.topic})
+//            },
+//            plusIcon: 'comment',
+//            
+//            plusFormDef: {
+//                primaryButtonTitle: t(`TOTE`, `Запостить`),
+//                cancelButtonTitle: t(`TOTE`, `Передумал`),
+//                autoFocus: 'message',
+//                fields: [
+//                    ui.HiddenField({
+//                        name: 'threadID',
+//                        value: ui.urlQuery.thread,
+//                    }),
+//                    ui.TextField({
+//                        name: 'message',
+//                        kind: 'textarea',
+//                        title: t(`TOTE`, `Сообщение`),
+//                    }),
+//                ],
+//                rpcFun: 'private_createSupportThreadMessage',
+//                async onSuccess~(res) {
+//                    await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
+//                },
+//            },
+//            
+//            editFormDef: run(_=> {
+//                const fields = [
+//                    ui.HiddenField({
+//                        name: 'threadID',
+//                        value: ui.urlQuery.thread,
+//                    }),
+//                ]
+//                
+//                const statusValues = []
+//                if (ui.getUser().kind === 'ADMIN') {
+//                    statusValues.push({value: 'open', title: t(`TOTE`, `Открыт`)})
+//                }
+//                statusValues.push({value: 'resolved', title: t(`TOTE`, `Решён`)})
+//                fields.push(ui.SelectField(s{
+//                    name: 'status',
+//                    title: t(`TOTE`, `Статус`),
+//                    values: statusValues
+//                }))
+//                
+//                return {
+//                    primaryButtonTitle: t(`TOTE`, `Сохранить`),
+//                    cancelButtonTitle: t(`TOTE`, `Не стоит`),
+//                    // autoFocus: 'resolution',
+//                    fields,
+//                    rpcFun: 'private_updateSupportThreadMessage',
+//                    async onSuccess~(res) {
+//                        await ui.pushNavigate(`support.html?thread=${ui.urlQuery.thread}`)
+//                    },
+//                }
+//            }),
+//            
+//            renderItem(def) {
+//                #extract {item: message, index} from def
+//                
+//                return diva({controlTypeName: 'renderItem-leila', className: `zebra-${index % 2}`, style: {}},
+//                    makeRenderSupportThreadMessage({showMessageNewLabel: true})(s{message, index}))
+//            },
+//        })
+//    } else if (!ui.urlQuery.thread) {
+//        beginTrain({name: 'Load support page without thread param'}); try {
+//            const itemsReq = s{fun: 'private_getSupportThreads', filter: ui.urlQuery.filter || 'updatedOrAll'}
+//            const itemsRes = await ui.rpcSoft(itemsReq)
+//            if (itemsRes.error) return ui.setToughLuckPage({res: itemsRes})
+//            
+//            const filter = itemsRes.filter
+//            
+//            const tabDefs = itemsRes.availableFilters.map(name => ({
+//                name,
+//                content: ui.taby({
+//                    title: lookup(name, {
+//                        updated: t(`TOTE`, `Обновленные`),
+//                        all: t(`TOTE`, `Все`)
+//                    }),
+//                    url: `support.html?filter=${name}`
+//                })}))
+//            
+//            ui.setPage(s{
+//                header: pageHeader({title: t(`TOTE`, `Поддержка`)}),
+//                body: diva({},
+//                    ui.tabs({name: 'main', tabDefs, active: filter}),
+//                    ui.renderMoreable(s{itemsRes, itemsReq: {fun: 'private_getSupportThreadsChunk', filter}, renderItem: makeRenderSupportThread({topicIsLink: true, hasTakeAndReplyButton: false, showMessageNewLabel: true})}),
+//                )
+//            })
+//        } finally { endTrain() }
+//    }
+//},
 
 async dashboard() { // @ctx page dashboard
     await kot.aps.front.KotlinShit.loadDashboardPage()

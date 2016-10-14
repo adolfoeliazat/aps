@@ -8,6 +8,11 @@ package aps.front
 
 import aps.*
 
+fun jsFacing_Input(legacySpec: Json) {
+    val input = Input(legacySpec)
+    return input.legacyShit
+}
+
 class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
 
     fun LegacyCtor(): dynamic {
@@ -163,7 +168,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
             }
 
             me.controlTypeName = "Input"
-            jshit.implementControlShit(json("me" to me, "def" to def, "implementTestKeyDown" to json("onKeyDown" to onKeyDown)))
+            legacy_implementControlShit(json("me" to me, "def" to def, "implementTestKeyDown" to json("onKeyDown" to onKeyDown)))
             return@statefulElementCtor me
         }))
     }

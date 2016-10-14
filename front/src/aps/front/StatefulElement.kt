@@ -373,16 +373,6 @@ class ImplementControlShitSpec {
 
 }
 
-class ControlShit {
-
-}
-
-fun elcl(spec: IReactClassSpec): ReactElement {
-    val clazz = React.createClass(json(
-
-    ))
-    return React.createElement(clazz, js("({})"))
-}
 
 typealias MaybeFun = (() -> Unit)?
 

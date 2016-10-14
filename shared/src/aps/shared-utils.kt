@@ -92,7 +92,7 @@ fun dedent(it: String): String {
 }
 
 var _puid = 1L
-fun puid(): Long = _puid++
+fun puid(): String = "" + _puid++
 
 fun <T> Iterable<T>.without(xs: Iterable<T>) = this.filter{!xs.contains(it)}
 
@@ -101,6 +101,12 @@ object exhaustive {
 }
 
 fun <T> cast(x: Any?): T = x as T
+
+fun want(b: Boolean, msg: () -> String = {"I want that"}) {
+    if (!b) wtf(msg())
+}
+
+fun wantNull(x: Any?, msg: () -> String = {"I want null here"}) = want(x == null, msg)
 
 
 

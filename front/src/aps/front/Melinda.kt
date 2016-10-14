@@ -27,7 +27,7 @@ class Melinda<Item, Entity, Filter>(
     val entityID: String? = null,
     val plusFormSpec: FormSpec<*, *>? = null,
     val editFormSpec: FormSpec<*, *>? = null,
-    val renderItem: (Int, Item) -> ReactElement,
+    val renderItem: (Int, Item) -> ToReactElementable,
     val emptyMessage: String? = null,
     val tabsSpec: Any? = null,
     val header: (Me).() -> ToReactElementable,
@@ -129,11 +129,6 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     }
 
     fun ignita(): Promise<Unit> {"__async"
-
-
-
-
-
         if (entityProcedureName != null) {
             val entityReq = EntityRequest()
             val res = __await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.token))
@@ -157,16 +152,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             if (q == null) defaultOrdering else stringToEnum(q, Ordering.values())
         }
 
-//        val _filter = if (filterSelectValues != null) stringToEnum(getURLQueryParam(ui, "filter"), filterSelectValues, defaultFilter) else null
-//        val ordering = stringToEnum(getURLQueryParam(ui, "ordering"), Ordering.values(), defaultOrdering)
-
         if (tabsSpec != null) {
             imf("melinda: tabsSpec")
-//        var tabs: dynamic = undefined; var activeTab: dynamic = undefined
-//        if (tabsSpec) {
-//            activeTab = ui.urlQuery.tab || defaultActiveTab
-//            tabs = ui.tabs(json("name" to "main", "active" to activeTab, "tabDefs" to tabsSpec))
-//        }
         }
         val tabs: Any? = null
 
@@ -185,8 +172,6 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 }
             ))
 
-//        searchBoxInput.setValueExt(json("value" to itemsRes.actualSearchString, "notify" to false))
-
             searchBox = oldShitAsReactElementable(jshit.diva(json("style" to json("position" to "relative")),
                 searchBoxInput!!.toReactElement(),
                 jshit.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to Color.GRAY_500)))
@@ -194,33 +179,29 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
         if (filterSelectValues != null) {
-            filterSelect = Select(filterSelectValues, filter, json(
-                "tamyShamy" to "filter", "isAction" to true, "style" to json("width" to 160),
-//                "values" to filterSelectValues,
-//                "initialValue" to filter,
-                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
-                "onChange" to {"__async"
+            filterSelect = Select(filterSelectValues, filter,
+                tamyShamy = "filter",
+                isAction = true,
+                style = json("width" to 160),
+                volatileDisabled = {headerControlsDisabled},
+                onChanga = {"__async"
                     __await(applyHeaderControls(filterSelect!!))
                 }
-            ))
+            )
 
-//        filterSelect.setValueExt(json("value" to itemsRes.actualFilter, "notify" to false))
         }
 
         if (hasOrderingSelect) {
-            orderingSelect = Select(Ordering.values(), ordering, json(
-                "tamyShamy" to "ordering", "isAction" to true, "style" to json("width" to 160),
-//                "values" to jsArrayOf(
-//                    json("value" to "desc", "title" to t("TOTE", "Сначала новые")),
-//                    json("value" to "asc", "title" to t("TOTE", "Сначала старые"))),
-//                "initialValue" to ordering,
-                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
-                "onChange" to {"__async"
+            orderingSelect = Select(Ordering.values(), ordering,
+                tamyShamy = "ordering",
+                isAction = true,
+                style = json("width" to 160),
+                volatileDisabled = {headerControlsDisabled},
+                onChanga = {"__async"
                     __await(applyHeaderControls(orderingSelect!!))
                 }
-            ))
+            )
 
-//        orderingSelect.setValueExt(json("value" to itemsRes.actualOrdering, "notify" to false))
         }
 
         if (plusFormSpec != null) {
@@ -300,7 +281,7 @@ fun <Item, Filter>
 renderMoreable(ui: LegacyUIShit,
                itemsRes: ItemsResponse<Item>,
                itemsReq: ItemsRequest<Filter>,
-               renderItem: (Int, Item) -> ReactElement,
+               renderItem: (Int, Item) -> ToReactElementable,
                chunkName: String = "chunk",
                chunkIndex: Int = 0,
                style: dynamic = undefined)
@@ -309,7 +290,7 @@ where Filter : Enum<Filter>, Filter : Titled {
 
     if (itemsRes.moreFromID != null) {
         bottom = jshit.updatableElement(json(), updatableElementCtor@{update: dynamic ->
-            val moreButtonID = jshit.utils.puid()
+            val moreButtonID = puid()
             var thing: dynamic = undefined
             thing = jshit.diva(json("style" to style), jshit.button(json(
                 "id" to moreButtonID,
@@ -340,10 +321,11 @@ where Filter : Enum<Filter>, Filter : Titled {
     return jshit.diva(json("controlTypeName" to "renderMoreable"),
         if (itemsRes.items.isEmpty())
             jshit.diva(json("style" to json("marginTop" to 10)), t("TOTE", "Здесь ничего нет, такие дела..."))
-        else
+        else {
             jshit.diva.apply(null, js("[]").concat(
                 json("tame" to "${chunkName}${jshit.sufindex(chunkIndex)}"),
-                itemsRes.items.mapIndexed {index, item -> renderItem(index, item)}.toJSArray())),
+                itemsRes.items.mapIndexed { index, item -> renderItem(index, item).toReactElement() }.toJSArray()))
+        },
         bottom
     )
 }

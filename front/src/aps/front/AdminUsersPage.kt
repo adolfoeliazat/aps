@@ -10,13 +10,57 @@ import kotlin.browser.document
 import aps.front.Color.*
 import aps.*
 
+fun pageHeader(arg: Json): ReactElement {
+    val title: dynamic = arg["title"]
+    val labels: dynamic = arg["labels"]?.let{it} ?: jsArrayOf()
+    val className: dynamic = arg["classname"]?.let{it} ?: ""
+
+    val id = puid()
+
+    val me = json(
+        "render" to render@{
+            return@render jshit.diva(json("className" to "page-header ${className}", "style" to json("marginTop" to 0, "marginBottom" to 15)),
+                jshit.h3a.apply(null, jsArrayOf().concat(json("tame" to "pageHeader", "style" to json("marginBottom" to 0)),
+                    jshit.spancTitle(json("title" to title)),
+                    labels.map({label: dynamic, i: dynamic ->
+            val style = json(
+                "fontSize" to "12px",
+                "fontWeight" to "normal",
+                "position" to "relative",
+                "top" to "-4px",
+                "left" to "8px",
+                "display" to "inline",
+                "padding" to ".2em .6em .3em",
+                "lineHeight" to "1",
+                "color" to "#fff",
+                "textAlign" to "center",
+                "whiteSpace" to "nowrap",
+                "verticalAlign" to "baseline",
+                "borderRadius" to ".25em"
+            )
+            if (label.level == "success") {
+                global.Object.assign(style, json("background" to "" + LIGHT_GREEN_700))
+            } else {
+                raise("Weird pageHeader label level: ${label.level}")
+            }
+            return@map jshit.spana(json("tame" to "label${jshit.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
+                jshit.spancTitle(json("title" to label.title)))
+        }))))
+        }
+    )
+
+    return jsFacing_elcl(me)
+}
+
 class AdminUsersPage(val ui: LegacyUIShit) {
     fun load(): Promise<Unit> {"__async"
         __await(Melinda<UserRTO, Nothing, UserFilter>(
             ui,
             urlPath = "admin-users.html",
             procedureName = "getUsers",
-            header = {oldShitAsReactElementable(jshit.pageHeader(json("title" to t("TOTE", "Пользователи"))))},
+//            header = {pageHeader(t("TOTE", "Пользователи"))},
+            header = {oldShitAsReactElementable(pageHeader(json("title" to t("TOTE", "Пользователи"))))},
+//            header = {oldShitAsReactElementable(jshit.pageHeader(json("title" to t("TOTE", "Пользователи"))))},
             filterSelectValues = UserFilter.values(),
             defaultFilter = UserFilter.ALL,
             plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
@@ -24,10 +68,10 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                 primaryButtonTitle = t("TOTE", "Создать засранца"),
                 cancelButtonTitle = defaultCancelButtonTitle),
 
-            renderItem = {index, _user -> object {
+            renderItem = {index, _user -> oldShitAsReactElementable(object {
                 var user = _user
                 val renderedThing = jshit.Placeholder()
-                val headingID = "hehe-" + jshit.utils.puid()
+                val headingID = "hehe-" + puid()
 
                 init {
                     enterDisplayMode()
@@ -138,7 +182,7 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                         }
                     }
                 }
-            }.renderedThing
+            }.renderedThing)
             }
         ).ignita())
         return __asyncResult(Unit)

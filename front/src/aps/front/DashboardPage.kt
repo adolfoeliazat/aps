@@ -11,7 +11,7 @@ import aps.*
 class DashboardPage(val ui: LegacyUIShit) {
     fun load(preserveScroll: Boolean = false): Promise<Unit> {"__async"
         val myPage = json(
-            "id" to jshit.utils.puid(),
+            "id" to puid(),
             "header" to jshit.pageHeader(json("title" to t("Dashboard", "Панель"))),
             "body" to jshit.diva(json(),
                 jshit.diva(json("className" to "row"),

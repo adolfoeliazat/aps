@@ -248,19 +248,32 @@ where T : Enum<T>, T : Titled {
 
     override var error: String? = null
 
-    val select = Select(values, null, json(
-        "values" to values.map{json("value" to it.name, "title" to it.title)}.toJSArray(),
-        "tamy" to true,
-        "onChange" to {
+    val select = Select(values, null,
+        tamy = true,
+        onChange = {
             form.fieldChanged()
         },
-        "onFocus" to {
+        onFocus = {
             form.fieldFocused(this)
         },
-        "onBlur" to {
+        onBlur = {
             form.fieldBlurred(this)
         }
-    ))
+
+//        json(
+//            "values" to values.map{json("value" to it.name, "title" to it.title)}.toJSArray(),
+//            "tamy" to true,
+//            "onChange" to {
+//                form.fieldChanged()
+//            },
+//            "onFocus" to {
+//                form.fieldFocused(this)
+//            },
+//            "onBlur" to {
+//                form.fieldBlurred(this)
+//            }
+//        )
+    )
 
     override fun render(): ReactElement {
         return jshit.diva(json("controlTypeName" to "SelectField", "tamy" to name, "className" to "form-group"),

@@ -290,259 +290,474 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
     return ::jsFacing_Form
 }
 
-//fun jsFacing_melinda(def: dynamic): Promise<Unit> {"__async"
-//    val ui: dynamic = def.ui
-//    val trainName: dynamic = def.trainName; val urlPath: dynamic = def.urlPath; val urlEntityParamName: dynamic = def.urlEntityParamName;
-//    val tabDefs: dynamic = def.tabDefs; val defaultActiveTab: dynamic = def.defaultActiveTab; val header: dynamic = def.header;
-//    val entityID: dynamic = def.entityID;val entityFun: dynamic = def.entityFun; val itemsFun: dynamic = def.itemsFun;
-//    val emptyMessage: dynamic = def.emptyMessage; val plusFormDef: dynamic = def.plusFormDef; val editFormDef: dynamic = def.editFormDef;
-//    val aboveItems: dynamic = def.aboveItems; val renderItem: dynamic = def.renderItem; val hasFilterSelect: dynamic = def.hasFilterSelect;
-//    val filterSelectValues: dynamic = def.filterSelectValues; val defaultFilter: dynamic = def.defaultFilter
-//
-//    val plusIcon: dynamic = if (def.plusIcon != undefined) def.plusIcon else "plus"
-//    val defaultOrdering: dynamic = if (def.defaultOrdering != undefined) def.defaultOrdering else "desc"
-//    val hasSearchBox: dynamic = if (def.hasSearchBox != undefined) def.hasSearchBox else true
-//    val hasOrderingSelect: dynamic = if (def.hasOrderingSelect != undefined) def.hasOrderingSelect else true
-//    val hasHeaderControls: dynamic = if (def.hasHeaderControls != undefined) def.hasHeaderControls else true
-//
-//    if (trainName) jshit.beginTrain(json("name" to trainName)); try {
-//        var items: dynamic = undefined; var showEmptyLabel = true; var headerControlsVisible = true
-//        var headerControlsClass: dynamic = undefined; var headerControlsDisabled = false
-//        var cancelForm: dynamic = undefined; var plusShit: dynamic = undefined; var editShit: dynamic = undefined
-//        var updateHeaderControls: dynamic = undefined
-//        var filterSelect: dynamic = undefined; var orderingSelect: dynamic = undefined
-//        var searchBox: dynamic = undefined; var searchBoxInput: dynamic = undefined
-//
-//
-//        fun setHeaderControlsDisappearing() {
-//            headerControlsVisible = false
-//            headerControlsClass = undefined
-//        }
-//
-//        fun setHeaderControlsAppearing() {
-//            headerControlsVisible = true
-//            headerControlsClass = "aniFadeIn"
-//            timeoutSet(500) {
-//                headerControlsClass = undefined
-//                ui.updatePage()
-//            }
-//        }
-//
-//        fun setHeaderControlsDisabled(b: Boolean) {
-//            headerControlsDisabled = b
-//            updateHeaderControls()
-//        }
-//
-//        fun showBadResponse(res: dynamic) {
-//            return ui.setPage(json(
-//                "header" to jshit.pageHeader(json("title" to t("TOTE", "Облом"))),
-//                "body" to jshit.diva(js("({})"), jshit.errorBanner(json("content" to res.error)))))
-//        }
-//
-//        fun applyHeaderControls(arg: dynamic): Promise<dynamic> {"__async"
-//            // {controlToBlink}
-//            val controlToBlink = arg.controlToBlink
-//
-//            setHeaderControlsDisabled(true)
-//            controlToBlink.setBlinking(true)
-//
-//            val urlParamParts = js("[]")
-//
-//            if (urlEntityParamName) {
-//                urlParamParts.push("${urlEntityParamName}=${entityID}")
-//            }
-//
-//            urlParamParts.push("filter=${filterSelect.getValue()}")
-//            urlParamParts.push("ordering=${orderingSelect.getValue()}")
-//
-//            val searchString = searchBoxInput.getValue().trim()
-//            if (searchString) {
-//                urlParamParts.push("search=${global.encodeURIComponent(searchString)}")
-//            }
-//
-//            val url = "${urlPath}?${urlParamParts.join("&")}"
-//            __await<dynamic>(ui.pushNavigate(url))
-//
-//            setHeaderControlsDisabled(false)
-//            controlToBlink.setBlinking(false)
-//
-//            return js("undefined") // Dummy
-//        }
-//
-//        fun makeButtonFormShit(def: dynamic): dynamic {
-//            // #extract {name, level, icon, formDef} from def
-//            val name = def.name; val level = def.level; val icon = def.icon; val formDef = def.formDef
-//
-//            var form: dynamic = undefined; var formClass: dynamic = undefined
-//
-//            return json(
-//                "button" to {
-//                    jshit.button(json(
-//                        "tamyShamy" to name, "style" to json("marginLeft" to 0), "level" to level, "icon" to icon, "disabled" to headerControlsDisabled,
-//                        "onClick" to {
-//                            showEmptyLabel = false
-//                            setHeaderControlsDisappearing()
-//                            formClass = "aniFadeIn"
-//
-//                            cancelForm = {
-//                                setHeaderControlsAppearing()
-//                                form = undefined
-//                                ui.updatePage()
-//                            }
-//
-//                            form = ui.Form(global.Object.assign(formDef, json(
-//                                "onCancel" to cancelForm)))
-//
-//                            ui.updatePage()
-//                        }
-//                    ))
-//                },
-//
-//                "form" to {
-//                    if (form) jshit.diva(json("className" to formClass, "style" to json("marginBottom" to 15)), form)
-//                    else undefined
-//                }
-//            )
-//        }
-//
-//        var entityRes: dynamic = undefined
-//        if (entityFun) {
-//            entityRes = __await(ui.rpcSoft(json("fun" to entityFun, "entityID" to entityID)))
-//            if (entityRes.error) return __asyncResult(showBadResponse(entityRes))
-//        }
-//
-//        val searchString = ui.urlQuery.search
-//
-//        var filter: dynamic = undefined
-//        if (hasFilterSelect) {
-//            filter = ui.urlQuery.filter
-//            val saneFilters = filterSelectValues.map({x: dynamic -> x.value})
-//            if (!saneFilters.includes(filter)) filter = defaultFilter
-//        }
-//
-//        var ordering = ui.urlQuery.ordering
-//        if (!js("['asc', 'desc']").includes(ordering)) ordering = defaultOrdering
-//
-//        var tabs: dynamic = undefined; var activeTab: dynamic = undefined
-//        if (tabDefs) {
-//            activeTab = ui.urlQuery.tab || defaultActiveTab
-//            tabs = ui.tabs(json("name" to "main", "active" to activeTab, "tabDefs" to tabDefs))
-//        }
-//
-//        val itemsReq = json(
-//            "fun" to jshit.utils.fov(itemsFun, json("activeTab" to activeTab)),
-//            "entityID" to entityID, "filter" to filter, "ordering" to ordering, "searchString" to searchString)
-//        val itemsRes = __await<dynamic>(ui.rpcSoft(itemsReq))
-//        if (itemsRes.error) return __asyncResult(showBadResponse(itemsRes))
-//
-//        if (hasSearchBox) {
-//            searchBoxInput = jshit.Input(json(
-//                "tamyShamy" to "search",
-//                "style" to json("paddingLeft" to 30, "width" to 160),
-//                "placeholder" to t("TOTE", "Поиск..."),
-//                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
-//                // TODO:vgrechka Check if async below is enhanced correctly
-//                "onKeyDown" to {e: dynamic -> "__async"
-//                    if (e.keyCode == 13) {
-//                        preventAndStop(e)
-//                        __await(applyHeaderControls(json("controlToBlink" to searchBoxInput)))
-//                    }
-//                }
-//            ))
-//            searchBoxInput.setValueExt(json("value" to itemsRes.actualSearchString, "notify" to false))
-//
-//            searchBox = jshit.diva(json("style" to json("position" to "relative")),
-//                searchBoxInput,
-//                jshit.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to Color.GRAY_500)))
-//            )
-//        }
-//
-//        if (hasFilterSelect) {
-//            filterSelect = Select(json(
-//                "tamyShamy" to "filter", "isAction" to true, "style" to json("width" to 160),
-//                "values" to filterSelectValues,
-//                "initialValue" to filter,
-//                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
-//                "onChange" to {"__async"
-//                    __await(applyHeaderControls(json("controlToBlink" to filterSelect)))
-//                }
-//            ))
-//
-//            filterSelect.setValueExt(json("value" to itemsRes.actualFilter, "notify" to false))
-//        }
-//
-//        if (hasOrderingSelect) {
-//            orderingSelect = Select(json(
-//                "tamyShamy" to "ordering", "isAction" to true, "style" to json("width" to 160),
-//                "values" to jsArrayOf(
-//                    json("value" to "desc", "title" to t("TOTE", "Сначала новые")),
-//                    json("value" to "asc", "title" to t("TOTE", "Сначала старые"))),
-//                "initialValue" to ordering,
-//                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
-//                "onChange" to {"__async"
-//                    __await(applyHeaderControls(json("controlToBlink" to orderingSelect)))
-//                }
-//            ))
-//
-//            orderingSelect.setValueExt(json("value" to itemsRes.actualOrdering, "notify" to false))
-//        }
-//
-//        if (plusFormDef) {
-//            plusShit = makeButtonFormShit(json("name" to "plus", "level" to "primary", "icon" to plusIcon, "formDef" to plusFormDef))
-//        }
-//        if (editFormDef) {
-//            editShit = makeButtonFormShit(json("name" to "edit", "level" to "default", "icon" to "edit", "formDef" to editFormDef))
-//        }
-//
-//        ui.setPage(json(
-//            "header" to jshit.utils.fov(header, entityRes),
-//
-//            "body" to {
-//                jshit.diva(json("style" to json("marginBottom" to 15)),
-//                    tabs,
-//                    if (editShit) editShit.form else null,
-//                    if (plusShit) plusShit.form else null,
-//                    jshit.utils.fov(aboveItems, entityRes),
-//                    run { // Render items
-//                        if (itemsRes.items.length)
-//                            ui.renderMoreable(json("itemsRes" to itemsRes, "itemsReq" to itemsReq, "renderItem" to renderItem))
-//                        else
-//                            if (showEmptyLabel)
-//                                jshit.diva(json("style" to json("marginTop" to 10)),
-//                                    emptyMessage || jshit.spanc(json("tame" to "nothingLabel", "content" to t("TOTE", "Савсэм ничего нэт, да..."))))
-//                            else ""
-//                    }
-//                )
-//            },
-//
-//            "headerControls" to {
-//                jshit.updatableElement(js("({})"), { update: dynamic ->
-//                    updateHeaderControls = update
-//                    { // Yeah, returning closure
-//                        if (!jshit.utils.fov(hasHeaderControls, entityRes) || !headerControlsVisible) undefined
-//                        else {
-//                            jshit.hor2(json(
-//                                "style" to json("display" to "flex", "marginTop" to if (tabDefs) 55 else 0),
-//                                "className" to headerControlsClass),
-//
-//                                searchBox,
-//                                filterSelect,
-//                                orderingSelect,
-//                                if (editShit) editShit.button else null,
-//                                if (plusShit) plusShit.button else null
-//                            )
-//                        }
-//                    }
-//                })
-//            },
-//
-//            "onKeyDown" to {e: dynamic ->
-//                if (e.keyCode == 27) {
-//                    jshit.utils.fov(cancelForm)
-//                }
-//            }
-//        ))
-//    } finally { if (trainName) jshit.endTrain() }
-//    return __asyncResult(Unit)
-//}
+fun legacy_implementControlShit(arg: dynamic) {
+    val me: dynamic = arg.me
+    val def: dynamic = arg.def
+    val implementTestClick: dynamic = arg.implementTestClick
+    val implementTestKeyDown: dynamic = arg.implementTestKeyDown
+
+    if (def.controlTypeName || def.ctn) me.controlTypeName = def.controlTypeName || def.ctn
+    invariant(me.controlTypeName, "I want controlTypeName")
+    invariant(!(me.tame && me.tamy), "I want either tame or tamy")
+
+    me.`$definitionStack` = def.`$definitionStack`
+    val `$definitionStack` = me.`$definitionStack`
+
+    me.id = puid()
+    if (!me.elementID) me.elementID = def.id || def.elementID || puid().asDynamic()
+    if (!me.`$tag`) me.`$tag` = def.`$tag`
+    if (!me.`$sourceLocation`) me.`$sourceLocation` = def.`$sourceLocation`
+    if (!me.`$callStack`) me.`$callStack` = def.`$callStack`
+
+//        if (def.shameIsTamePath != undefined) me.shameIsTamePath = true
+
+    if (def.tamyShamy) {
+        invariant(!(def.tamy || def.shamy), "tamyShamy is incompatible with tamy or shamy")
+        def.shamy = def.tamyShamy
+        def.tamy = def.shamy
+    }
+
+    if (!me.shame) {
+        if (def.shamy) {
+            if (!me.shamyPrefix) me.shamyPrefix = me.tamyPrefix || me.controlTypeName
+            me.shame = me.shamyPrefix + "-" + def.shamy
+        } else {
+            me.shame = def.shame
+        }
+    }
+
+    if (!me.tame) {
+        if (def.tamy == true) me.tame = me.tamyPrefix || me.controlTypeName
+        else if (def.tamy) me.tame = (me.tamyPrefix || me.controlTypeName).asDynamic() + "-" + def.tamy
+        else me.tame = def.tame
+    }
+    if (!me.tattrs) me.tattrs = def.tattrs
+    if (me.tattrs) invariant(me.tame, "Control with tattrs should be tamed")
+
+    if (me.tame && me.controlTypeName && me.tame != me.controlTypeName) me.debugDisplayName = "${me.tame}"
+    else if (def.tame) me.debugDisplayName = def.tame
+    else if (me.controlTypeName) me.debugDisplayName = me.controlTypeName
+    else me.debugDisplayName = "dunno"
+
+    if (me.noStateContributions == undefined) me.noStateContributions = def.noStateContributions
+
+    if (!me.getLongRevelationTitle) {
+        me.getLongRevelationTitle = {
+            me.debugDisplayName
+        }
+    }
+
+    fun addEventListeners() {
+        jshit.byid(me.elementID).off() // Several controls can be on same element, and we don't want to handle click several times
+        jshit.byid(me.elementID).on("click", onClick@{e: dynamic -> "__async"
+            if (MODE == "debug" && e.ctrlKey) {
+                if (e.shiftKey) {
+                    if (me.ignoreDebugCtrlShiftClick) return@onClick Unit
+
+                    preventAndStop(e)
+
+                    if (!me.effectiveShame) {
+                        jshit.raiseWithMeta(json("message" to "Put some shame on me", "meta" to me))
+                    }
+
+                    return@onClick me.captureAction()
+                }
+
+                preventAndStop(e)
+                return@onClick jshit.revealControl(me)
+            }
+
+            __await<dynamic>(jshit.utils.fova(me.onRootClick, e))
+        })
+    }
+
+    fun removeEventListeners() {
+        jshit.byid(me.elementID).off()
+    }
+
+    var came: dynamic = null
+        val mutatorFunctionNames = jsArrayOf("setValue", "click")
+
+    fun hasTestManipulationFunctions(): dynamic {
+        return me.testClick || me.testSetValue
+    }
+
+    jshit.decorate(json("target" to me,
+        "pre_componentWillUpdate" to outta@{
+            if (js("typeof window != 'object'")) return@outta
+            removeEventListeners()
+        },
+
+        "pre_componentDidUpdate" to outta@{
+            if (js("typeof window != 'object'")) return@outta
+            addEventListeners()
+        },
+
+        "pre_componentWillMount" to outta@{
+            if (js("typeof window != 'object'")) return@outta
+
+            var elementControls = jshit.elementIDToControls[me.elementID]
+            if (elementControls == null) {
+                jshit.elementIDToControls[me.elementID] = jsArrayOf()
+                elementControls = jshit.elementIDToControls[me.elementID]
+            }
+
+            if (me.tame) {
+                for (another: dynamic in jsArrayToList(elementControls)) {
+                    if (another.tame) raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed", json(
+                        "\$render" to {
+                            fun renderControl(co: dynamic): dynamic {
+                                val cshit = jshit.CollapsibleShit(json("content" to jshit.diva(json(), jshit.renderStacks(jshit.pickStacks(co)))))
+                                return jshit.diva(json(),
+                                    jshit.diva(json("style" to json("display" to "flex", "marginRight" to 10)),
+                                        jshit.diva(json("style" to json("fontWeight" to "bold")), co.debugDisplayName),
+                                        cshit.renderCaret(json("style" to json("marginLeft" to 10)))),
+                                    cshit.renderContent())
+                            }
+
+                            jshit.diva(json("style" to json("display" to "flex")), renderControl(me), renderControl(another))
+                        }
+                    ))
+                }
+            }
+
+            elementControls.unshift(me)
+        },
+
+        "pre_componentDidMount" to outta@{
+            if (js("typeof window != 'object'")) return@outta
+
+            addEventListeners()
+
+            jshit.art.uiStateContributions[me.id] = {state: dynamic ->
+                if (me.contributeTestState) {
+                    var shouldContribute = !me.noStateContributions
+
+                    if (shouldContribute) {
+                        jshit.byid(me.elementID).parents().each {
+                            val parentControls = jshit.elementIDToControls[js("this").id] || jsArrayOf()
+                            for (parentControl in jsArrayToList(parentControls)) {
+                                if (parentControl.noStateContributions) {
+                                    shouldContribute = false
+                                    return@each false // break
+                                }
+                            }
+                        }
+                    }
+
+                    if (shouldContribute) {
+                        me.contributeTestState(state)
+                    }
+                }
+
+                for (entry in jsArrayToList(jshit.utils.toPairs(me.tattrs || js("({})")))) {
+                    val key: dynamic = entry[0]
+                    val value: dynamic = entry[1]
+                    if (value != null) {
+                        state.put(json("control" to me, "key" to me.getTamePath() + "." + key, "value" to value))
+                    }
+                }
+
+                if (me.effectiveShame) {
+                    val tp = me.getTamePath()
+                    if (tp != me.effectiveShame) {
+                        state.put(json("control" to me, "key" to tp + ".shame", "value" to me.effectiveShame))
+                    }
+                }
+            }
+
+            // Determine effective shame
+            if (me.shame) {
+                me.effectiveShame = me.shame
+            }
+            else if (me.tame && hasTestManipulationFunctions()) {
+                me.effectiveShame = me.getTamePath()
+            }
+
+            if (me.effectiveShame) {
+                if (jshit.utils.keys(global.testGlobal.controls).includes(me.effectiveShame)) {
+                    me.stickException(json("exception" to Error("testGlobal.controls already contains thing shamed ${me.effectiveShame}")))
+                }
+                global.testGlobal.controls[me.effectiveShame] = me
+            }
+        },
+
+        "post_componentWillUnmount" to outta@{
+            if (js("typeof window != 'object'")) return@outta
+
+            removeEventListeners()
+            // @wip perf
+            jshit.utils.arrayDeleteFirstThat(jshit.elementIDToControls[me.elementID], {x: dynamic -> x.id == me.id})
+            jshit.utils.deleteKey(jshit.art.uiStateContributions, me.id)
+
+            if (me.effectiveShame) {
+                jshit.utils.deleteKey(global.testGlobal.controls, me.effectiveShame)
+            }
+        }
+    ))
+
+
+    me.stickException = {arg: dynamic ->
+        // {exception}
+        val exception: dynamic = arg.exception
+
+        fun doReveal() {
+            jshit.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
+                jshit.renderDefinitionStackStrip(json("stack" to me.`$definitionStack`))
+            }))))
+        }
+
+        doReveal() // Does nothing if something is already revealed
+
+        jshit.debugControlStickers.add(json("control" to me, "shit" to json(
+            "onClick" to {
+                jshit.hideStackRevelation()
+                doReveal()
+            }
+        )))
+    }
+
+    me.getTamePath = getTamePath@{
+        invariant(me.tame, "getTamePath can only be called on tamed control", json("\$definitionStack" to def.`$definitionStack`))
+
+        var res: dynamic = me.tame
+        val parents = jshit.byid(me.elementID).parents()
+        parents.each {
+            val parentControls: dynamic = jshit.elementIDToControls[js("this").id] || jsArrayOf()
+            for (parentControl in jsArrayToList(parentControls.slice().reverse())) {
+                if (parentControl.tame) {
+                    res = parentControl.tame + "." + res
+                }
+            }
+        }
+
+//            res = res.replace(/-\$the$/, '')
+
+        return@getTamePath res
+    }
+
+    var testActionHand: dynamic = null
+
+    me.testShowHand = {_arg: dynamic ->
+        val arg: dynamic = if (_arg) _arg else js("({})")
+        val testActionHandOpts = arg.testActionHandOpts
+
+        testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
+    }
+
+    me.testHideHand = {
+        testActionHand.delete()
+    }
+
+    if (implementTestClick) {
+        me.testClick = {_arg: dynamic -> "__async"
+            val arg: dynamic = if (_arg) _arg else json()
+            val testActionHandOpts = arg.testActionHandOpts
+
+            val stubEvent = json("preventDefault" to jshit.utils.noop, "stopPropagation" to jshit.utils.noop)
+
+            if (jshit.testSpeed == "slow") {
+                val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
+                __await<dynamic>(jshit.delay(global.DEBUG_ACTION_HAND_DELAY))
+                testActionHand.delete()
+                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
+            } else {
+                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
+            }
+        }
+    }
+
+    if (implementTestKeyDown) {
+        me.testKeyDown = {_arg: dynamic -> "__async"
+            val arg: dynamic = if (_arg) _arg else json()
+            val testActionHandOpts = arg.testActionHandOpts
+            val keyCode = arg.keyCode
+
+            val stubEvent = json("preventDefault" to jshit.utils.noop, "stopPropagation" to jshit.utils.noop, "keyCode" to keyCode)
+
+            if (jshit.testSpeed == "slow") {
+                val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
+                __await<dynamic>(jshit.utils.delay(global.DEBUG_ACTION_HAND_DELAY))
+                testActionHand.delete()
+                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
+            } else {
+                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
+            }
+        }
+    }
+
+    me.captureAction = captureAction@{_def: dynamic ->
+        val def = if (_def) _def else js("({})")
+        val includeShames: dynamic = def.includeShames
+        val excludeShames: dynamic = def.excludeShames
+        val todoActionDescription: dynamic = def.todoActionDescription
+
+        jshit.thingsToDoAfterHotUpdate.control_captureAction = control_captureAction@{
+            val control = jshit.getControlByShame(me.effectiveShame)
+            if (!control) return@control_captureAction console.warn("No control shamed [${me.effectiveShame}] to capture action on")
+            control.captureAction(def)
+        }
+
+        if (!(me.testClick || me.testSetValue)) {
+            return@captureAction console.warn("Control ${me.debugDisplayName} doesn’t support any of test manipulation functions")
+        }
+
+        val codeLines = jsArrayOf()
+
+        val inputLines = jsArrayOf()
+        for (co: dynamic in jsArrayToList(jshit.utils.values(global.testGlobal.controls))) {
+            if (co.testSetValue) {
+                if (!co.testGetValue) {
+                    jshit.raiseWithMeta(json("message" to "co.testSetValue requires co.testGetValue", "meta" to co))
+                }
+
+                var shouldCapture = true
+                if (includeShames && !includeShames.includes(co.effectiveShame)) shouldCapture = false
+                if (excludeShames && excludeShames.includes(co.effectiveShame)) shouldCapture = false
+                if (shouldCapture) {
+                    inputLines.push("${"s"}{setValue: {shame: '${co.effectiveShame}', value: ${jshit.utils.toLiteralCode(co.testGetValue())}}},")
+                }
+            }
+        }
+
+        codeLines.push("${"s"}{step: {kind: 'action', long: ${"t"}('${todoActionDescription || "TODO Action description".asDynamic()}')}},")
+        codeLines.push.apply(codeLines.push, inputLines)
+        val stampUTC = jshit.utils.moment.tz("UTC").format("YYYY/MM/DD HH:mm:ss")
+        val timestampPropCode = ", timestamp: '${stampUTC}'"
+        if (me.testSetValue && me.setValueIsAction) {
+            codeLines.push("${"s"}{setValue: {shame: '${me.effectiveShame}', value: ${jshit.utils.toLiteralCode(me.testGetValue())}${if (me.setValueIsAction) timestampPropCode else ""}}},")
+        }
+        if (me.testClick) {
+            codeLines.push("${"s"}{click: {shame: '${me.effectiveShame}'${timestampPropCode}}},")
+        }
+
+        codeLines.push("${"s"}{step: {kind: 'state', long: ${"t"}('TODO State description')}},")
+        val expectationWillBeGeneratedShit = true
+
+        if (expectationWillBeGeneratedShit) {
+            codeLines.push("${"s"}{assert: {\$tag: '${jshit.utils.uuid()}', expected: '---generated-shit---'}},")
+        } else {
+            raise("implement this case properly")
+            codeLines.push("art.uiState({\$tag: '${jshit.utils.uuid()}', expected: {")
+            codeLines.push()
+            codeLines.push("}})")
+        }
+
+        codeLines.push()
+
+        run { // Action capture pane
+            var thePane: dynamic = null
+            thePane = jshit.openDebugPane(json("name" to "openActionCapturePane", "height" to 250,
+                "content" to jshit.updatableElement(json(), updatableElementCtor@{update: dynamic ->
+                    val code = jshit.utils.codeLinesToString(json(codeLines, "indent" to 0))
+
+                    val codeArea = jshit.Input(json(
+                        "kind" to "textarea", "rows" to 8, "style" to json("fontFamily" to "monospace"),
+                        "initialValue" to code,
+                        "onKeyDown" to { e: dynamic ->
+                            if (e.keyCode == 27) {
+                                thePane.close()
+                            }
+                        }
+                    ))
+
+                    var insertedCodeLink: dynamic = null
+                    val progressPlaceholder = jshit.Placeholder()
+
+//                                function focusAndSelect() {
+//                                    requestAnimationFrame(_=> {
+//                                        codeArea.focus()
+//                                        codeArea.select()
+//                                    })
+//                                }
+
+                    return@updatableElementCtor render@{
+                        jshit.diva(json("controlTypeName" to "openActionCapturePane", "style" to json("position" to "relative")),
+                            jshit.diva(json("style" to json("height" to "1.5em"))),
+                            jshit.diva(json("className" to "form-group"),
+                                jshit.labela(json(), "Code"),
+                                jshit.diva(json(), codeArea)
+                            ),
+                            jshit.diva(json("style" to json("position" to "absolute", "right" to 0, "top" to 10, "display" to "flex")),
+                                jshit.diva(json(), progressPlaceholder),
+
+                                {
+                                    if (art.actionPlaceholderTag != null) t("No actionPlaceholderTag")
+                                    else if (insertedCodeLink) insertedCodeLink
+                                    else jshit.button(json("level" to "primary", "icon" to "pencil", "title" to "Insert Test Action Code", "style" to json(),
+                                        "onClick" to {
+                                            "__async"
+                                            __await<dynamic>(jshit.callDebugRPWithProgress(json(
+                                                "msg" to json(
+                                                    "fun" to "danger_insertTestActionCode",
+                                                    "placeholderTag" to art.actionPlaceholderTag,
+                                                    "code" to codeArea.getValue()
+                                                ),
+                                                "progressPlaceholder" to progressPlaceholder,
+                                                "progressTitle" to "Inserting test action code"
+                                            )))
+
+                                            val m = codeArea.getValue().match(global.RegExp("\\\$tag: \"(.*?)\""))
+                                            invariant(m && m[1], "Where the fuck is tag in generated code?")
+                                            insertedCodeLink = jshit.diva(json(
+                                                "style" to json("marginLeft" to 8)),
+                                                jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
+                                            update()
+                                        }
+                                    ))
+                                }
+                            )
+                        )
+                    }
+                },
+
+                "onClose" to {
+                    jshit.utils.deleteKey(jshit.thingsToDoAfterHotUpdate, "control_captureAction")
+                }
+            )))
+        }
+    }
+
+}
+
+
+fun jsFacing_horiza(vararg ignored: dynamic): dynamic {
+    val arg = js("arguments[0]")
+    val items = js("Array.prototype.slice.call(arguments, 1)")
+
+    val itemStyle = arg.itemStyle
+    jshit.utils.deleteKey(arg, "itemStyle")
+    val spacing = if (arg.spacing == null) 10 else arg.spacing
+    jshit.utils.deleteKey(arg, "spacing")
+
+
+    return jshit.diva(global.Object.assign(arg, json(
+        "items" to jshit.utils.fcomapo(items,
+            {v: dynamic, k: dynamic, i: dynamic ->
+                jshit.diva(json("style" to global.Object.assign(
+                    json("verticalAlign" to "middle"),
+                    itemStyle,
+                    json("display" to "inline-block", "marginLeft" to if (i > 0) spacing else 0))),
+                v)
+    }))))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -8,46 +8,66 @@ package aps.front
 
 import aps.*
 
-class Select<E>(val values: Array<E>, val initialValue: E?, val legacySpec: Json) : ToReactElementable, Blinkable
+class Select<E>(
+    val values: Array<E>,
+    val initialValue: E?,
+
+    // TODO:vgrechka Kotlinize tame/y, shame/y, and all that shit
+    val tamyShamy: String? = null,
+    val tamy: Any? = null,
+
+    val isAction: Boolean = false,
+    val style: Json = json(),
+    val volatileDisabled: (() -> Boolean)? = null,
+
+    val onChange: () -> Unit = {},
+    val onChanga: () -> Promise<Unit> = {__asyncResult(Unit)},
+    val onFocus: () -> Unit = {},
+    val onFocusa: () -> Promise<Unit> = {__asyncResult(Unit)},
+    val onBlur: () -> Unit = {},
+    val onBlura: () -> Promise<Unit> = {__asyncResult(Unit)}
+    ) : ToReactElementable, Blinkable
 where E : Enum<E>, E : Titled {
+    var persistentDisabled: Boolean = false
+
+    fun wantPersistentDisablingAllowed() {
+        wantNull(volatileDisabled) {"volatileDisabled conflicts with persistent disabling"}
+    }
 
     fun LegacyCtor(): dynamic {
-//        val values: dynamic = legacySpec.get("values")
-//        val initialValue: dynamic = legacySpec.get("initialValue")
-        val onChange: dynamic = legacySpec.get("onChange")
-        var disabled: dynamic = legacySpec.get("disabled")
-        val isAction: dynamic = legacySpec.get("isAction")
-        val onFocus: dynamic = legacySpec.get("onFocus")
-        val onBlur: dynamic = legacySpec.get("onBlur")
-
-        val def = global.Object.assign(js("({})"), legacySpec)
-        js("delete def.values")
-        js("delete def.initialValue")
-        js("delete def.onChange")
-        js("delete def.disabled")
-        js("delete def.isAction")
-        js("delete def.onFocus")
-        js("delete def.onBlur")
-
         var stringValue: String = if (initialValue == null) values[0].name else initialValue.name
 
         return jshit.statefulElement(json("ctor" to {update: dynamic ->
             var me: dynamic = null
             me = json(
                 "render" to {
-                    jshit.el.apply(null, js("[]").concat("select", global.Object.assign(json(
-                        "id" to me.elementID,
-                        "className" to "form-control",
-                        "value" to stringValue,
-                        "disabled" to jshit.utils.fov(disabled),
-                        "onFocus" to onFocus,
-                        "onBlur" to onBlur,
-                        "onChange" to {
-                            me.setValue(jshit.byid0(me.elementID).value)
-                        }), def),
+                    jshit.el.apply(null, js("[]").concat(
+                        "select",
+
+                        json(
+                            "id" to me.elementID,
+                            "className" to "form-control",
+                            "value" to stringValue,
+                            "disabled" to (volatileDisabled?.let {it()} ?: persistentDisabled),
+
+                            "onChange" to {"__async"
+                                me.setValue(jshit.byid0(me.elementID).value)
+                                onChange()
+                                __await(onChanga())
+                            },
+
+                            "onFocus" to {"__async"
+                                onFocus()
+                                __await(onFocusa())
+                            },
+
+                            "onBlur" to {"__async"
+                                onBlur()
+                                __await(onBlura())
+                            }
+                        ),
 
                         values.map {
-//                            val value = x.value; val title = x.title
                             jshit.el("option", json("value" to it.name), it.title)
                         }.toJSArray()
                     ))
@@ -92,8 +112,10 @@ where E : Enum<E>, E : Titled {
 
                     stringValue = newValue
                     update()
-                    if (notify && onChange != null) {
-                        __await<dynamic>(onChange())
+
+                    if (notify) {
+                        onChange()
+                        __await(onChanga())
                     }
                 },
 
@@ -129,13 +151,15 @@ where E : Enum<E>, E : Titled {
                     }
                 },
 
-                "setDisabled" to {x: dynamic ->
-                    disabled = x
+                "setDisabled" to {b: Boolean ->
+                    wantPersistentDisablingAllowed()
+                    persistentDisabled = b
                     update()
                 },
 
                 "isDisabled" to {
-                    disabled
+                    wantPersistentDisablingAllowed()
+                    persistentDisabled
                 },
 
                 "renderInRevelationPane" to {
@@ -153,7 +177,10 @@ where E : Enum<E>, E : Titled {
             me.tamyPrefix = "Select"
 
 
-            jshit.implementControlShit(json("me" to me, "def" to def))
+            jshit.implementControlShit(json("me" to me, "def" to json(
+                "tamy" to tamy,
+                "tamyShamy" to tamyShamy
+            )))
 
             me
         }))

@@ -39,6 +39,9 @@ fun runTestScenario(fullName: String) {
 }
 
 fun tetete() {
+    val x = puid()
+    println(x)
+    println(jsTypeOf(x))
 }
 
 
@@ -167,11 +170,9 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic) {"__async"
 
     if (!jshit.art.halted) {
         jshit.openTestPassedPaneArgs = json("scenario" to scenario)
-        jshit.art.openTestPassedPane(jshit.openTestPassedPaneArgs)
+        openTestPassedPane(jshit.openTestPassedPaneArgs)
     }
 }
-
-
 
 
 
