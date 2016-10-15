@@ -75,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="make-static-sites.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="make-static-sites.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/make-static-sites.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="1495" column="9" selection-start-line="1495" selection-start-column="9" selection-end-line="1495" selection-end-column="9" />
+            <state relative-caret-position="567">
+              <caret line="1778" column="4" selection-start-line="1778" selection-start-column="4" selection-end-line="1778" selection-end-column="4" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -87,11 +87,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestCommon.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestCommon.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="65" column="4" selection-start-line="65" selection-start-column="4" selection-end-line="65" selection-end-column="4" />
+            <state relative-caret-position="324">
+              <caret line="67" column="69" selection-start-line="67" selection-start-column="69" selection-end-line="67" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -110,8 +110,8 @@
       <file leaf-file-name="jshit.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/jshit.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+            <state relative-caret-position="294">
+              <caret line="124" column="8" selection-start-line="124" selection-start-column="8" selection-end-line="124" selection-end-column="8" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -249,11 +249,11 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/art.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Input.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/make-static-sites.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/jshit.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/jshit.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/make-static-sites.kt" />
       </list>
     </option>
   </component>
@@ -371,7 +371,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib-gradle/websocket-servlet-9.3.11.v20160721.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="jshit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/jshit.kt&#10;ignite&#9;null&#9;null&#10;front-util&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;makes&#9;RUN_CONFIGURATION&#9;make-static-sites&#10;MakeStatic&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/make-static-sites.kt&#10;run.js&#9;FILE&#9;file://E:/work/aps/front/run.js&#10;build.xml&#9;FILE&#9;file://E:/work/aps/back/build.xml&#10;makestat&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/make-static-sites.kt&#10;bsclearme&#9;null&#9;null&#10;isdynamic&#9;null&#9;null&#10;wae&#9;FILE&#9;file://E:/work/aps/tools/src/aps/WatchAndEnhanceJS.kt&#10;invokestatecon&#9;null&#9;null&#10;Promise&#9;null&#9;null&#10;faicon&#9;null&#9;null&#10;jsfacing_fai&#9;null&#9;null&#10;l_ics&#9;null&#9;null&#10;implementcon&#9;null&#9;null&#10;melinda&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Melinda.kt&#10;s-u&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;wtf&#9;null&#9;null&#10;select&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Select.kt&#10;ireact&#9;null&#9;null&#10;kotlins&#9;null&#9;null&#10;admiuser&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt&#10;div&#9;null&#9;null&#10;diva&#9;null&#9;null&#10;jsfacingdi&#9;null&#9;null&#10;front-ki&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-killme.kt&#10;front-ke&#9;null&#9;null&#10;input&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Input.kt&#10;kosh&#9;null&#9;null&#10;init&#9;null&#9;null&#10;initshit&#9;null&#9;null&#10;art&#9;null&#9;null&#10;kill&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-killme.kt&#10;implementcontrol&#9;null&#9;null&#10;kot&#9;null&#9;null&#10;asdynamic&#9;null&#9;null&#10;TUSC&#9;null&#9;null&#10;jshiart&#9;null&#9;null&#10;invokestate&#9;null&#9;null&#10;assertfu&#9;null&#9;null&#10;renderstep&#9;null&#9;null&#10;gertrude&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;jumbo&#9;PSI&#9;JAVA://java.util.JumboEnumSet&#10;enumset&#9;PSI&#9;JAVA://java.util.EnumSet&#10;Map&#9;PSI&#9;JAVA://java.util.Map&#10;puid&#9;null&#9;null&#10;React&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="rawhtml&#9;null&#9;null&#10;markdown&#9;null&#9;null&#10;jshit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/jshit.kt&#10;ignite&#9;null&#9;null&#10;front-util&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;makes&#9;RUN_CONFIGURATION&#9;make-static-sites&#10;MakeStatic&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/make-static-sites.kt&#10;run.js&#9;FILE&#9;file://E:/work/aps/front/run.js&#10;build.xml&#9;FILE&#9;file://E:/work/aps/back/build.xml&#10;makestat&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/make-static-sites.kt&#10;bsclearme&#9;null&#9;null&#10;isdynamic&#9;null&#9;null&#10;wae&#9;FILE&#9;file://E:/work/aps/tools/src/aps/WatchAndEnhanceJS.kt&#10;invokestatecon&#9;null&#9;null&#10;Promise&#9;null&#9;null&#10;faicon&#9;null&#9;null&#10;jsfacing_fai&#9;null&#9;null&#10;l_ics&#9;null&#9;null&#10;implementcon&#9;null&#9;null&#10;melinda&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Melinda.kt&#10;s-u&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;wtf&#9;null&#9;null&#10;select&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Select.kt&#10;ireact&#9;null&#9;null&#10;kotlins&#9;null&#9;null&#10;admiuser&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt&#10;div&#9;null&#9;null&#10;diva&#9;null&#9;null&#10;jsfacingdi&#9;null&#9;null&#10;front-ki&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-killme.kt&#10;front-ke&#9;null&#9;null&#10;input&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Input.kt&#10;kosh&#9;null&#9;null&#10;init&#9;null&#9;null&#10;initshit&#9;null&#9;null&#10;art&#9;null&#9;null&#10;kill&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-killme.kt&#10;implementcontrol&#9;null&#9;null&#10;kot&#9;null&#9;null&#10;asdynamic&#9;null&#9;null&#10;TUSC&#9;null&#9;null&#10;jshiart&#9;null&#9;null&#10;invokestate&#9;null&#9;null&#10;assertfu&#9;null&#9;null&#10;renderstep&#9;null&#9;null&#10;gertrude&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;jumbo&#9;PSI&#9;JAVA://java.util.JumboEnumSet&#10;enumset&#9;PSI&#9;JAVA://java.util.EnumSet&#10;Map&#9;PSI&#9;JAVA://java.util.Map" />
   </component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
@@ -1200,16 +1200,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/make-static-sites.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="1495" column="9" selection-start-line="1495" selection-start-column="9" selection-end-line="1495" selection-end-column="9" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -1228,21 +1218,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="67" column="69" selection-start-line="67" selection-start-column="69" selection-end-line="67" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/jshit.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        <state relative-caret-position="294">
+          <caret line="124" column="8" selection-start-line="124" selection-start-column="8" selection-end-line="124" selection-end-column="8" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt">
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/make-static-sites.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="65" column="4" selection-start-line="65" selection-start-column="4" selection-end-line="65" selection-end-column="4" />
-          <folding />
+        <state relative-caret-position="567">
+          <caret line="1778" column="4" selection-start-line="1778" selection-start-column="4" selection-end-line="1778" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

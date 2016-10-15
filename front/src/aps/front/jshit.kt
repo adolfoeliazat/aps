@@ -174,7 +174,7 @@ package aps.front
     var getURLQueryBeforeRunningTest: dynamic
     var getArtLastSuccessfulExpected: dynamic
     var nbsp: dynamic
-    var markdown: dynamic
+//    var markdown: dynamic
     var mdash: dynamic
     var ndash: dynamic
     var el: dynamic

@@ -235,7 +235,7 @@ object MakeStaticSites {
                 ).map{section: dynamic ->
             jshit.diva(json(),
                 jshit.diva(json(), h3Smaller(t(section.title))),
-                jshit.diva(json(), jshit.markdown(jshit.utils.dedent(t(section.content)))))}
+                jshit.diva(json(), markdown(jshit.utils.dedent(t(section.content)))))}
             ))
             )
         ))
@@ -417,7 +417,7 @@ object MakeStaticSites {
                 ).map{section: dynamic ->
             jshit.diva(json(),
                 jshit.diva(json(), markdownPiece("> " + t(section.title))),
-                jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), jshit.markdown(jshit.utils.dedent(t(section.content)))))}
+                jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(jshit.utils.dedent(t(section.content)))))}
             ))
             )
         ))
@@ -658,7 +658,7 @@ object MakeStaticSites {
                         ).map{section: dynamic ->
                         jshit.diva(json(),
                             jshit.diva(json(), h3Smaller(t(section.title))),
-                            jshit.diva(json(), jshit.markdown(jshit.utils.dedent(t(section.content)))))}
+                            jshit.diva(json(), markdown(jshit.utils.dedent(t(section.content)))))}
                 ))
             )
         ))
@@ -882,7 +882,7 @@ object MakeStaticSites {
                         ).map{section: dynamic ->
                         jshit.diva(json(),
                             jshit.diva(json(), markdownPiece("> " + t(section.title))),
-                            jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), jshit.markdown(jshit.utils.dedent(t(section.content)))))}
+                            jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(jshit.utils.dedent(t(section.content)))))}
                 ))
             )
         ))
@@ -1751,7 +1751,7 @@ object MakeStaticSites {
         if (js("typeof content") == "object") {
             content = t(content)
         }
-        return jshit.markdown(jshit.utils.dedent(content))
+        return markdown(jshit.utils.dedent(content))
     }
 
     fun horizBulletsRow(items: dynamic, opts: dynamic = js("({})")): dynamic {
@@ -1774,6 +1774,11 @@ object MakeStaticSites {
         global.process.stderr.write("And to stderr again\n")
         jshit.utils.clog("Can you see all this shit in DevUI?")
         global.process.exit(1)
+    }
+
+    fun markdown(it: dynamic): dynamic {
+        val md = js("require('markdown-it')()")
+        return jshit.rawHtml(md.render(it))
     }
 
 }
