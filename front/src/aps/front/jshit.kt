@@ -178,10 +178,10 @@ package aps.front
     var mdash: dynamic
     var ndash: dynamic
     var el: dynamic
-    var ReactDOMServer: dynamic
+//    var ReactDOMServer: dynamic
     var random: dynamic
     var effects: dynamic
-    var React: dynamic
+//    var React: dynamic
     var img: dynamic
     var ui: dynamic
     var TopNavItem_: dynamic

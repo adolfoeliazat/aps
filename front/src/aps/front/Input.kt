@@ -52,7 +52,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                             isRenderingDisabled = jshit.utils.fov(disabled)
                         }
 
-                    return@render jshit.React.createElement(jshit.input, json(
+                    return@render React.createElement(jshit.input, json(
                         "id" to me.elementID,
                         "rows" to rows,
                         "placeholder" to jshit.textMeat(placeholder),

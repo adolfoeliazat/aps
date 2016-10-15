@@ -10,6 +10,12 @@ import aps.UserKind
 import aps.wtf
 
 object MakeStaticSites {
+    val React = js("require('react')")
+    init {
+        js("global").React = React
+    }
+    val ReactDOMServer = js("require('react-dom/server')")
+
     val kindaDirname = "e:/work/aps/aps/lib"
     val fs = js("require('fs')")
     val sh = js("require('shelljs')")
@@ -1244,7 +1250,7 @@ object MakeStaticSites {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    ${jshit.ReactDOMServer.renderToStaticMarkup(jshit.React.createElement("title", json(), tabTitle))}
+    ${ReactDOMServer.renderToStaticMarkup(React.createElement("title", json(), tabTitle))}
 
     <link href="bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
@@ -1449,17 +1455,17 @@ object MakeStaticSites {
     </head>
     <body style="padding-top: 50px; padding-bottom: 40px; overflow-y: scroll;">
     <div id="topNavbarContainer">
-    ${jshit.ReactDOMServer.renderToStaticMarkup(renderTopNavbar(clientKind, json("highlightedItem" to highlightedItem, "t" to t)))}
+    ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar(clientKind, json("highlightedItem" to highlightedItem, "t" to t)))}
     </div>
 
     <div id="root" style="min-height: calc(100vh - 28px - 50px);">
     <div id="staticShit" style="display: none;">
     <!-- BEGIN CONTENT -->
-    ${jshit.ReactDOMServer.renderToStaticMarkup(comp)}
+    ${ReactDOMServer.renderToStaticMarkup(comp)}
     <!-- END CONTENT -->
     </div>
 
-    <div id="ticker" style="display: none;">${jshit.ReactDOMServer.renderToStaticMarkup(wholePageTicker())}</div>
+    <div id="ticker" style="display: none;">${ReactDOMServer.renderToStaticMarkup(wholePageTicker())}</div>
 
     <script>
         if (localStorage.getItem('token')) {
