@@ -47,178 +47,182 @@ const impl = {
 isDynamicPage: kot.aps.front.KotlinShit.isDynamicPage,
 
 css() {
-    const zebraLight = WHITE
-    const zebraDark = BLUE_GRAY_50
-    
-    let res = `
-        body {overflow-x: hidden;}
-        
-        button:disabled {cursor: default !important;}
-        input:disabled {cursor: default !important;}
-        textarea:disabled {cursor: default !important;}
-        select:disabled {cursor: default !important;}
-    
-        .form-control:focus {border-color: #b0bec5; box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(176,190,197,.6);}
-
-        .btn-primary {background-color: #78909c; border-color: #546e7a;}
-        .btn-primary:hover {background-color: #546e7a; border-color: #37474f;}
-        .btn-primary:focus {background-color: #455a64; border-color: #263238; outline-color: #b0bec5;}
-        .btn-primary:focus:hover {background-color: #455a64; border-color: #263238;}
-        .btn-primary:active {background-color: #455a64; border-color: #263238;}
-        .btn-primary:active:focus {background-color: #455a64; border-color: #263238; outline-color: #b0bec5;}
-        .btn-primary:active:hover {background-color: #455a64; border-color: #263238;}
-    
-        .btn-primary.disabled.focus,
-        .btn-primary.disabled:focus,
-        .btn-primary.disabled:hover,
-        .btn-primary[disabled].focus,
-        .btn-primary[disabled]:focus,
-        .btn-primary[disabled]:hover,
-        fieldset[disabled] .btn-primary.focus,
-        fieldset[disabled] .btn-primary:focus,
-        fieldset[disabled] .btn-primary:hover {
-            background-color: #78909c;
-            border-color: #546e7a;
-        }      
-    
-        .aniFadeOutDelayed {
-            animation-name: aniFadeOutDelayed;
-            animation-delay: 0.5s;
-            animation-duration: 500ms;
-            animation-iteration-count: 1;
-            animation-fill-mode: forwards;
-        }
-        @keyframes aniFadeOutDelayed {
-            0% {
-                opacity: 1;
-            }
-            
-            100% {
-                opacity: 0;
-            }
-        }
-    
-        .aniFadeOutAfterSomeBlinking {
-            animation-name: aniFadeOutAfterSomeBlinking;
-            animation-delay: 0;
-            animation-duration: 500ms;
-            animation-iteration-count: 3;
-            animation-fill-mode: forwards;
-        }
-        @keyframes aniFadeOutAfterSomeBlinking {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
-        }
-    
-        .showOnParentHovered {display: none;}
-        .showOnParentHovered-parent:hover .showOnParentHovered {display: initial;}
-        
-        .zebra-0 {background: ${zebraLight};}
-        .zebra-0 .borderTopColoredOnZebra {border-top-color: ${zebraDark};}
-        .zebra-0 .borderRightColoredOnZebra {border-right-color: ${zebraDark};}
-        .label1 {background-color: ${TEAL_50};}
-    
-        .zebra-1 {background: ${zebraDark};}
-        .zebra-1 .borderTopColoredOnZebra {border-top-color: ${zebraLight};}
-        .zebra-1 .borderRightColoredOnZebra {border-right-color: ${zebraLight};}
-        .zebra-1 .label1 {background-color: ${TEAL_100};}
-        
-        .hover-color-BLUE_GRAY_800:hover {color: ${BLUE_GRAY_800};}
-    ` // @ctx css
-    return res
+    return kot.aps.front.KotlinShit.apsCSS()
 },
+
+//css() {
+//    const zebraLight = WHITE
+//    const zebraDark = BLUE_GRAY_50
+//    
+//    let res = `
+//        body {overflow-x: hidden;}
+//        
+//        button:disabled {cursor: default !important;}
+//        input:disabled {cursor: default !important;}
+//        textarea:disabled {cursor: default !important;}
+//        select:disabled {cursor: default !important;}
+//    
+//        .form-control:focus {border-color: #b0bec5; box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(176,190,197,.6);}
+//
+//        .btn-primary {background-color: #78909c; border-color: #546e7a;}
+//        .btn-primary:hover {background-color: #546e7a; border-color: #37474f;}
+//        .btn-primary:focus {background-color: #455a64; border-color: #263238; outline-color: #b0bec5;}
+//        .btn-primary:focus:hover {background-color: #455a64; border-color: #263238;}
+//        .btn-primary:active {background-color: #455a64; border-color: #263238;}
+//        .btn-primary:active:focus {background-color: #455a64; border-color: #263238; outline-color: #b0bec5;}
+//        .btn-primary:active:hover {background-color: #455a64; border-color: #263238;}
+//    
+//        .btn-primary.disabled.focus,
+//        .btn-primary.disabled:focus,
+//        .btn-primary.disabled:hover,
+//        .btn-primary[disabled].focus,
+//        .btn-primary[disabled]:focus,
+//        .btn-primary[disabled]:hover,
+//        fieldset[disabled] .btn-primary.focus,
+//        fieldset[disabled] .btn-primary:focus,
+//        fieldset[disabled] .btn-primary:hover {
+//            background-color: #78909c;
+//            border-color: #546e7a;
+//        }      
+//    
+//        .aniFadeOutDelayed {
+//            animation-name: aniFadeOutDelayed;
+//            animation-delay: 0.5s;
+//            animation-duration: 500ms;
+//            animation-iteration-count: 1;
+//            animation-fill-mode: forwards;
+//        }
+//        @keyframes aniFadeOutDelayed {
+//            0% {
+//                opacity: 1;
+//            }
+//            
+//            100% {
+//                opacity: 0;
+//            }
+//        }
+//    
+//        .aniFadeOutAfterSomeBlinking {
+//            animation-name: aniFadeOutAfterSomeBlinking;
+//            animation-delay: 0;
+//            animation-duration: 500ms;
+//            animation-iteration-count: 3;
+//            animation-fill-mode: forwards;
+//        }
+//        @keyframes aniFadeOutAfterSomeBlinking {
+//            0% {
+//                opacity: 1;
+//            }
+//            100% {
+//                opacity: 0;
+//            }
+//        }
+//    
+//        .showOnParentHovered {display: none;}
+//        .showOnParentHovered-parent:hover .showOnParentHovered {display: initial;}
+//        
+//        .zebra-0 {background: ${zebraLight};}
+//        .zebra-0 .borderTopColoredOnZebra {border-top-color: ${zebraDark};}
+//        .zebra-0 .borderRightColoredOnZebra {border-right-color: ${zebraDark};}
+//        .label1 {background-color: ${TEAL_50};}
+//    
+//        .zebra-1 {background: ${zebraDark};}
+//        .zebra-1 .borderTopColoredOnZebra {border-top-color: ${zebraLight};}
+//        .zebra-1 .borderRightColoredOnZebra {border-right-color: ${zebraLight};}
+//        .zebra-1 .label1 {background-color: ${TEAL_100};}
+//        
+//        .hover-color-BLUE_GRAY_800:hover {color: ${BLUE_GRAY_800};}
+//    ` // @ctx css
+//    return res
+//},
 
 
 privatePageLoader(name) {
 return lookup(name, {
     
-async 'admin-heap'() {
-    await kot.aps.front.KotlinShit.kot_melinda({
-        ui,
-        urlPath: 'admin-heap.html',
-        trainName: 'Load admin-heap page',
-        itemsFun({activeTab}) {
-            if (activeTab === 'support') return 'private_getUnassignedSupportThreads'
-            raise('Weird active tab')
-        },
-        entityID: ui.urlQuery.thread,
-        header: pageHeader({title: t(`TOTE`, `Куча работы`)}),
-        defaultOrdering: 'asc',
-        defaultActiveTab: 'support',
-        tabDefs: [
-            {
-                name: 'support',
-                content: ui.taby({
-                    title: t(`TOTE`, `Поддержка`),
-                    liveStatusFieldName: 'unassignedSupportThreadCount',
-                    url: 'admin-heap.html?tab=support',
-                })
-            },
-        ],
-        renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true}),
-    })
-    
-    
-    
-    return
-    
-    beginTrain({name: 'Load page admin-heap'}); try {
-        const pageTitle = t(`TOTE`, `Куча работы`)
-        const activeTab = ui.urlQuery.tab || 'support'
-        
-        const itemsFun
-        if (activeTab === 'support') {
-            itemsFun = 'private_getUnassignedSupportThreads'
-        }
-        
-        const itemsReq = {fun: itemsFun}
-        const itemsRes = await ui.rpcSoft(itemsReq)
-        if (itemsRes.error) {
-            return ui.setPage(s{
-                header: pageHeader({title: pageTitle}),
-                body: diva({}, errorBanner(s{content: itemsRes.error}))
-            })
-        }
-        
-        function tabydef(def) {
-            #extract {name} from def
-            
-            return {
-                name,
-                content: ui.taby({}.asn1(def))
-            }
-        }
-        
-        ui.setPage(s{
-            header: pageHeader({title: pageTitle}),
-            body: diva({},
-                ui.tabs({name: 'main', active: activeTab, tabDefs: [
-                    tabydef(s{
-                        name: 'support',
-                        title: t(`TOTE`, `Поддержка`),
-                        liveStatusFieldName: 'unassignedSupportThreadCount',
-                        url: 'admin-heap.html?tab=support',
-                    }),
-                ]}),
-                ui.renderMoreable(s{itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})
-            )
-        })
-        
-    } finally { endTrain() }
-},
+//async 'admin-heap'() {
+//    await kot.aps.front.KotlinShit.kot_melinda({
+//        ui,
+//        urlPath: 'admin-heap.html',
+//        trainName: 'Load admin-heap page',
+//        itemsFun({activeTab}) {
+//            if (activeTab === 'support') return 'private_getUnassignedSupportThreads'
+//            raise('Weird active tab')
+//        },
+//        entityID: ui.urlQuery.thread,
+//        header: pageHeader({title: t(`TOTE`, `Куча работы`)}),
+//        defaultOrdering: 'asc',
+//        defaultActiveTab: 'support',
+//        tabDefs: [
+//            {
+//                name: 'support',
+//                content: ui.taby({
+//                    title: t(`TOTE`, `Поддержка`),
+//                    liveStatusFieldName: 'unassignedSupportThreadCount',
+//                    url: 'admin-heap.html?tab=support',
+//                })
+//            },
+//        ],
+//        renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true}),
+//    })
+//    
+//    
+//    
+//    return
+//    
+//    beginTrain({name: 'Load page admin-heap'}); try {
+//        const pageTitle = t(`TOTE`, `Куча работы`)
+//        const activeTab = ui.urlQuery.tab || 'support'
+//        
+//        const itemsFun
+//        if (activeTab === 'support') {
+//            itemsFun = 'private_getUnassignedSupportThreads'
+//        }
+//        
+//        const itemsReq = {fun: itemsFun}
+//        const itemsRes = await ui.rpcSoft(itemsReq)
+//        if (itemsRes.error) {
+//            return ui.setPage(s{
+//                header: pageHeader({title: pageTitle}),
+//                body: diva({}, errorBanner(s{content: itemsRes.error}))
+//            })
+//        }
+//        
+//        function tabydef(def) {
+//            #extract {name} from def
+//            
+//            return {
+//                name,
+//                content: ui.taby({}.asn1(def))
+//            }
+//        }
+//        
+//        ui.setPage(s{
+//            header: pageHeader({title: pageTitle}),
+//            body: diva({},
+//                ui.tabs({name: 'main', active: activeTab, tabDefs: [
+//                    tabydef(s{
+//                        name: 'support',
+//                        title: t(`TOTE`, `Поддержка`),
+//                        liveStatusFieldName: 'unassignedSupportThreadCount',
+//                        url: 'admin-heap.html?tab=support',
+//                    }),
+//                ]}),
+//                ui.renderMoreable(s{itemsRes, itemsReq, renderItem: makeRenderSupportThread({topicIsLink: false, hasTakeAndReplyButton: true, dryFroms: true})})
+//            )
+//        })
+//        
+//    } finally { endTrain() }
+//},
                     
-async 'admin-my-tasks'() {
-    raise('implement me')
-    ui.setPage(s{
-        header: pageHeader({title: 'rtrtyyt'}),
-        body: diva({},
-            t(`TOTE`, `foooooooooo`), aa({href: '#', onClick() { dlog('cliiiiick') }}, t('qqqqqqqqqqq')))
-    })
-},
+//async 'admin-my-tasks'() {
+//    raise('implement me')
+//    ui.setPage(s{
+//        header: pageHeader({title: 'rtrtyyt'}),
+//        body: diva({},
+//            t(`TOTE`, `foooooooooo`), aa({href: '#', onClick() { dlog('cliiiiick') }}, t('qqqqqqqqqqq')))
+//    })
+//},
                     
 // Should be reconsidered and reimplemented
 //
@@ -696,34 +700,34 @@ async profile() { // @ctx page admin-users
 //    })
 //},
 
-async 'debug-perf-render'() { // @ctx page debug-perf-render
-    // @wip perf
-    const msms = Measurements()
-    const msm_debug_perf_render = msms.begin({name: 'debug-perf-render'})
-    
-    const cucu = React.createClass({
-        render() {
-            return React.createElement('div', {}, ...this.children)
-        }
-    })
-
-    //////
-    const shit = diva({}, ...range(1000).map(index => {
-        return diva({fast: true}, `Item ${index}`)
-        return React.createElement(cucu, {}, `Item ${index}`)
-        return React.createElement('div', {}, `Item ${index}`)
-        return dom['diva']({}, `Item ${index}`)
-        return el('div', {}, `Item ${index}`)
-    }))
-    
-    ui.setPage(s{
-        header: pageHeader({title: t('debug-perf-render')}),
-        body: diva({}, shit)
-    })
-    
-    msm_debug_perf_render.end()
-    msms.log()
-},
+//async 'debug-perf-render'() { // @ctx page debug-perf-render
+//    // @wip perf
+//    const msms = Measurements()
+//    const msm_debug_perf_render = msms.begin({name: 'debug-perf-render'})
+//    
+//    const cucu = React.createClass({
+//        render() {
+//            return React.createElement('div', {}, ...this.children)
+//        }
+//    })
+//
+//    //////
+//    const shit = diva({}, ...range(1000).map(index => {
+//        return diva({fast: true}, `Item ${index}`)
+//        return React.createElement(cucu, {}, `Item ${index}`)
+//        return React.createElement('div', {}, `Item ${index}`)
+//        return dom['diva']({}, `Item ${index}`)
+//        return el('div', {}, `Item ${index}`)
+//    }))
+//    
+//    ui.setPage(s{
+//        header: pageHeader({title: t('debug-perf-render')}),
+//        body: diva({}, shit)
+//    })
+//    
+//    msm_debug_perf_render.end()
+//    msms.log()
+//},
 
 async 'debug-kotlin-playground'() { // @ctx page debug-kotlin-playground
     kot.aps.front.KotlinShit.loadDebugKotlinPlaygroundPage(ui)
@@ -1051,147 +1055,147 @@ return impl
 //    )
 //}
         
-function makeRenderSupportThread({topicIsLink, hasTakeAndReplyButton, showMessageNewLabel, dryFroms}) {
-    return function renderSupportThread(def) {
-        #extract {item: thread, index} from def
+//function makeRenderSupportThread({topicIsLink, hasTakeAndReplyButton, showMessageNewLabel, dryFroms}) {
+//    return function renderSupportThread(def) {
+//        #extract {item: thread, index} from def
+//        
+//        const url = `support.html?thread=${thread.id}`
+//            
+//        let topicElement
+//        if (topicIsLink) {
+//            topicElement = ui.urlLink({url, tamy: `topic`, shame: `link-threadTopic-${thread.id}`, title: {mopy: {model: thread, prop: 'topicWithID'}}, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
+//        } else {
+//            topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: {mopy: {model: thread, prop: 'topicWithID'}}}))
+//        }
+//        
+//        const paddingRight = hasTakeAndReplyButton ? 45 : 0
+//        const renderSupportThreadNewMessage = makeRenderSupportThreadMessage({dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
+//        const renderSupportThreadOldMessage = makeRenderSupportThreadMessage({dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
+//        
+//        const moreNewMessages = thread.newMessages.total - thread.newMessages.top.length
+//        const moreOldMessages = thread.oldMessages.total - thread.oldMessages.top.length
+//        
+//        return diva({controlTypeName: 'renderSupportThread', tame: `thread${sufindex(index)}`, className: `zebra-${index % 2}`, style: {position: 'relative'}},
+//            diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
+//                hasTakeAndReplyButton && ui.busyButton({tamy: `takeAndReply`, shame: `button-takeAndReply-${thread.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
+//                    beginTrain({name: 'Take support thread and reply'}); try {
+//                        await ui.rpc({fun: 'private_takeSupportThread', id: thread.id})
+//                        // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
+//                        await ui.pushNavigate(`support.html?thread=${thread.id}`)
+//                    } finally { endTrain() }
+//                }}),
+//                ),
+//            
+//            diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
+//                topicElement,
+//                // renderLangLabel(s{style: {marginLeft: 8, fontWeight: 'bold'}, content: {mopy: {model: thread, prop: 'tslang'}}})
+//                ),
+//                
+//            diva({tame: 'newMessages'},
+//                diva({}, ...thread.newMessages.top.map((message, index) => renderSupportThreadNewMessage(s{message, index}))),
+//                moreMessagesDiv({count: moreNewMessages, kind: 'new'}),
+//            ),
+//            
+//            thread.newMessages.top.length > 0 && thread.oldMessages.top.length > 0 &&
+//                diva({className: 'borderTopColoredOnZebra', style: {borderTopWidth: '3px', borderTopStyle: 'dotted', paddingTop: 5}}),
+//                                          
+//            diva({tame: 'oldMessages'},
+//                diva({}, ...thread.oldMessages.top.map((message, index) => renderSupportThreadOldMessage(s{message, index}))),
+//                moreMessagesDiv({count: moreOldMessages, kind: 'old'})
+//            ),
+//        )
+//        
+//        function moreMessagesDiv({count, kind}) {
+//            if (count > 0) {
+//                let title
+//                if (LANG === 'en') {
+//                    raise('Implement en moreMessagesDiv')
+//                } else if (LANG === 'ua') {
+//                    if (count === 1) {
+//                        title = `...и еще одно`
+//                        if (kind === 'new') title += ` новое сообщение`
+//                        else if (kind === 'old') title += ` старое сообщение`
+//                    } else {
+//                        title = `...и еще ${count}`
+//                        if (kind === 'new') title += ` новых`
+//                        else if (kind === 'old') title += ` старых`
+//                            
+//                        if (count >=2 && count <= 4) title += ` сообщения`
+//                        else title += ` сообщений`
+//                    }
+//                }
+//                return diva({style: {textAlign: 'right'}}, ui.urlLink({tamy: 'andMore', shame: `link-andMore-${thread.id}`, url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
+//            }
+//        }
+//    }
+//}
         
-        const url = `support.html?thread=${thread.id}`
-            
-        let topicElement
-        if (topicIsLink) {
-            topicElement = ui.urlLink({url, tamy: `topic`, shame: `link-threadTopic-${thread.id}`, title: {mopy: {model: thread, prop: 'topicWithID'}}, style: {color: BLACK_BOOT, fontWeight: 'bold'}})
-        } else {
-            topicElement = spana({style: {color: BLACK_BOOT, fontWeight: 'bold'}}, spanc({tame: 'topic', content: {mopy: {model: thread, prop: 'topicWithID'}}}))
-        }
-        
-        const paddingRight = hasTakeAndReplyButton ? 45 : 0
-        const renderSupportThreadNewMessage = makeRenderSupportThreadMessage({dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
-        const renderSupportThreadOldMessage = makeRenderSupportThreadMessage({dottedLines: true, dryFroms, showMessageNewLabel, paddingRight})
-        
-        const moreNewMessages = thread.newMessages.total - thread.newMessages.top.length
-        const moreOldMessages = thread.oldMessages.total - thread.oldMessages.top.length
-        
-        return diva({controlTypeName: 'renderSupportThread', tame: `thread${sufindex(index)}`, className: `zebra-${index % 2}`, style: {position: 'relative'}},
-            diva({style: {position: 'absolute', right: 0, top: 0, zIndex: 1000}},
-                hasTakeAndReplyButton && ui.busyButton({tamy: `takeAndReply`, shame: `button-takeAndReply-${thread.id}`, icon: 'comment', iconColor: COLOR_1_DARK, hint: t(`TOTE`, `Взять себе и ответить`), async onClick() {
-                    beginTrain({name: 'Take support thread and reply'}); try {
-                        await ui.rpc({fun: 'private_takeSupportThread', id: thread.id})
-                        // TODO:vgrechka Handle private_takeSupportThread RPC failure. Need error popup or something instead of trying to pushNavigate    12fbe33a-c4a5-4967-9cec-5c2aa217e947 
-                        await ui.pushNavigate(`support.html?thread=${thread.id}`)
-                    } finally { endTrain() }
-                }}),
-                ),
-            
-            diva({className: '', style: {marginTop: 10,  marginBottom: 5, paddingRight: 45}},
-                topicElement,
-                // renderLangLabel(s{style: {marginLeft: 8, fontWeight: 'bold'}, content: {mopy: {model: thread, prop: 'tslang'}}})
-                ),
-                
-            diva({tame: 'newMessages'},
-                diva({}, ...thread.newMessages.top.map((message, index) => renderSupportThreadNewMessage(s{message, index}))),
-                moreMessagesDiv({count: moreNewMessages, kind: 'new'}),
-            ),
-            
-            thread.newMessages.top.length > 0 && thread.oldMessages.top.length > 0 &&
-                diva({className: 'borderTopColoredOnZebra', style: {borderTopWidth: '3px', borderTopStyle: 'dotted', paddingTop: 5}}),
-                                          
-            diva({tame: 'oldMessages'},
-                diva({}, ...thread.oldMessages.top.map((message, index) => renderSupportThreadOldMessage(s{message, index}))),
-                moreMessagesDiv({count: moreOldMessages, kind: 'old'})
-            ),
-        )
-        
-        function moreMessagesDiv({count, kind}) {
-            if (count > 0) {
-                let title
-                if (LANG === 'en') {
-                    raise('Implement en moreMessagesDiv')
-                } else if (LANG === 'ua') {
-                    if (count === 1) {
-                        title = `...и еще одно`
-                        if (kind === 'new') title += ` новое сообщение`
-                        else if (kind === 'old') title += ` старое сообщение`
-                    } else {
-                        title = `...и еще ${count}`
-                        if (kind === 'new') title += ` новых`
-                        else if (kind === 'old') title += ` старых`
-                            
-                        if (count >=2 && count <= 4) title += ` сообщения`
-                        else title += ` сообщений`
-                    }
-                }
-                return diva({style: {textAlign: 'right'}}, ui.urlLink({tamy: 'andMore', shame: `link-andMore-${thread.id}`, url, title, style: {color: BLACK_BOOT, fontWight: 'normal', fontStyle: 'italic'}}))
-            }
-        }
-    }
-}
-        
-function makeRenderSupportThreadMessage({dottedLines, dryFroms, showMessageNewLabel, paddingRight=0}) {
-    return function renderSupportThreadMessage(def) {
-        #extract {message, index} from def
-        
-        return diva({controlTypeName: 'renderSupportThreadMessage', tame: `message${sufindex(index)}`, className: 'row borderTopColoredOnZebra', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: index > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
-                   index > 0 && dottedLines && {borderTopStyle: 'dotted', borderTopWidth: '3px'})},
-                   
-            diva({className: 'col-sm-3 borderRightColoredOnZebra', style: {display: 'flex', flexDirection: 'column', borderRightWidth: '3px', borderRightStyle: 'solid', paddingLeft: 0}},
-                index === 0 || !dryFroms
-                    ? diva({}, diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
-                              t(`TOTE`, `От: `)),
-                              userLabel({tamy: 'from', user: message.sender})),
-                          diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
-                              t(`TOTE`, `Кому: `)),
-                              message.recipient ? userLabel({tamy: 'to', user: message.recipient})
-                                                : spanc({tame: 'to', content: t(`TOTE`, `В рельсу`)})))
-                    : diva({style: {fontWeight: 'bold'}}, spanc({tame: 'continuation', content: t(`TOTE`, `Вдогонку`)})),
-                                                   
-                diva({style: {marginTop: 10}},
-                    spanc({tame: 'timestamp', content: timestampString(message.inserted_at)}),
-                )
-            ),
-            
-            diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
-                diva({},
-                    run(function renderLabels() {
-                        if (showMessageNewLabel) {
-                            const seen = message.data.seenBy[ui.getUser().id]
-                            const justBecameSeen = seen && ui.prevPageStuff[`supportThreadMessageNewLabelWasRendered-${message.id}`]
-                            if (!seen) {
-                                ui.currentPageStuff[`supportThreadMessageNewLabelWasRendered-${message.id}`] = true
-                            }
-                            if (!seen || justBecameSeen) {
-                                return spanc({
-                                    tame: 'newLabel',
-                                    className: `label label-primary ${justBecameSeen ? 'aniFadeOutDelayed' : ''}`,
-                                    style: {float: 'right'},
-                                    content: t(`New`, `Новое`)})
-                            }
-                        }
-                    }),
-                    spanc({tame: 'message', content: {mopy: {model: message, prop: 'message'}}}),
-                    ),
-                
-            )
-        )
-    }
-}
+//function makeRenderSupportThreadMessage({dottedLines, dryFroms, showMessageNewLabel, paddingRight=0}) {
+//    return function renderSupportThreadMessage(def) {
+//        #extract {message, index} from def
+//        
+//        return diva({controlTypeName: 'renderSupportThreadMessage', tame: `message${sufindex(index)}`, className: 'row borderTopColoredOnZebra', style: asn({display: 'flex', flexWrap: 'wrap', paddingTop: index > 0 ? 5 : 0, paddingBottom: 5, paddingRight, marginLeft: 0, marginRight: 0, position: 'relative'},
+//                   index > 0 && dottedLines && {borderTopStyle: 'dotted', borderTopWidth: '3px'})},
+//                   
+//            diva({className: 'col-sm-3 borderRightColoredOnZebra', style: {display: 'flex', flexDirection: 'column', borderRightWidth: '3px', borderRightStyle: 'solid', paddingLeft: 0}},
+//                index === 0 || !dryFroms
+//                    ? diva({}, diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+//                              t(`TOTE`, `От: `)),
+//                              userLabel({tamy: 'from', user: message.sender})),
+//                          diva({style: {whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}, spana({style: {fontWeight: 'bold'}},
+//                              t(`TOTE`, `Кому: `)),
+//                              message.recipient ? userLabel({tamy: 'to', user: message.recipient})
+//                                                : spanc({tame: 'to', content: t(`TOTE`, `В рельсу`)})))
+//                    : diva({style: {fontWeight: 'bold'}}, spanc({tame: 'continuation', content: t(`TOTE`, `Вдогонку`)})),
+//                                                   
+//                diva({style: {marginTop: 10}},
+//                    spanc({tame: 'timestamp', content: timestampString(message.inserted_at)}),
+//                )
+//            ),
+//            
+//            diva({className: 'col-sm-9', style: {display: 'flex', flexDirection: 'column', paddingRight: 5, whiteSpace: 'pre-wrap', position: 'relative'}},
+//                diva({},
+//                    run(function renderLabels() {
+//                        if (showMessageNewLabel) {
+//                            const seen = message.data.seenBy[ui.getUser().id]
+//                            const justBecameSeen = seen && ui.prevPageStuff[`supportThreadMessageNewLabelWasRendered-${message.id}`]
+//                            if (!seen) {
+//                                ui.currentPageStuff[`supportThreadMessageNewLabelWasRendered-${message.id}`] = true
+//                            }
+//                            if (!seen || justBecameSeen) {
+//                                return spanc({
+//                                    tame: 'newLabel',
+//                                    className: `label label-primary ${justBecameSeen ? 'aniFadeOutDelayed' : ''}`,
+//                                    style: {float: 'right'},
+//                                    content: t(`New`, `Новое`)})
+//                            }
+//                        }
+//                    }),
+//                    spanc({tame: 'message', content: {mopy: {model: message, prop: 'message'}}}),
+//                    ),
+//                
+//            )
+//        )
+//    }
+//}
 
-function userLabel(def) {
-    #extract {user} from def
-    
-    const title = user.first_name + ' ' + user.last_name
-    
-    const me = {
-        render() {
-            return spana({id: me.elementID},
-                kot.aps.front.KotlinShit.userKindIcon(s{user}),
-                spancTitle({title}))
-        },
-    }
-    
-    me.controlTypeName = 'userLabel'
-    implementControlShit({me, def})
-    return elcl(me)
-}
+//function userLabel(def) {
+//    #extract {user} from def
+//    
+//    const title = user.first_name + ' ' + user.last_name
+//    
+//    const me = {
+//        render() {
+//            return spana({id: me.elementID},
+//                kot.aps.front.KotlinShit.userKindIcon(s{user}),
+//                spancTitle({title}))
+//        },
+//    }
+//    
+//    me.controlTypeName = 'userLabel'
+//    implementControlShit({me, def})
+//    return elcl(me)
+//}
         
 // @ported-to-kotlin
 //
@@ -1202,10 +1206,10 @@ function userLabel(def) {
 //        customer: 'user', writer: 'pencil', admin: 'cog'})})
 //}
 
-function brightBadgea(def, content) {
-    #extract {style} from def
-    return spana({className: 'badge', style: asn({paddingRight: 8, backgroundColor: BLUE_GRAY_400}, style)}, content) 
-}
+//function brightBadgea(def, content) {
+//    #extract {style} from def
+//    return spana({className: 'badge', style: asn({paddingRight: 8, backgroundColor: BLUE_GRAY_400}, style)}, content) 
+//}
 
 }, // End of hot$ImplForShitIgniter
     
@@ -1455,13 +1459,13 @@ function brightBadgea(def, content) {
 
 
 
-function test_awaitGeneratedByTypeScript() {
-    async function someAsyncShit() {
-        const a = await aPromise()
-        const b = await bPromise()
-        return a + b
-    }
-}
+//function test_awaitGeneratedByTypeScript() {
+//    async function someAsyncShit() {
+//        const a = await aPromise()
+//        const b = await bPromise()
+//        return a + b
+//    }
+//}
 
 
 
@@ -1469,37 +1473,3 @@ function test_awaitGeneratedByTypeScript() {
 
 
 clog('Client code is kind of loaded')
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    

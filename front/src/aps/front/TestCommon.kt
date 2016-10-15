@@ -60,7 +60,7 @@ class TestCommon(val sim: dynamic) {
 
 }
 
-fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic) {"__async"
+fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__async"
     val urlObject = jshit.utils.url.parse(global.location.href)
     val urlQuery = jshit.utils.querystring.parse(urlObject.query)
 
@@ -172,6 +172,8 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic) {"__async"
         jshit.openTestPassedPaneArgs = json("scenario" to scenario)
         openTestPassedPane(jshit.openTestPassedPaneArgs)
     }
+
+    return __asyncResult(Unit)
 }
 
 

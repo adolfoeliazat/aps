@@ -139,12 +139,15 @@ fun doStuff(jsFileEntry: Entry, mapFileEntry: Entry) {
 
             val tos = callNode.function.toString()
             if (callNode.function.isTokenType(TokenType.IDENT)) {
-                val ident = callNode.function as IdentNode
-                if (ident.name == "__await") {
-                    changes.add(Change(ident.start, ident.length(), "yield "))
-                }
-                else if (ident.name == "__asyncResult") {
-                    changes.add(Change(ident.start, ident.length(), ""))
+                val function = callNode.function
+                if (function is IdentNode) { // Can be CallNode: foo()()
+                    val ident = function
+                    if (ident.name == "__await") {
+                        changes.add(Change(ident.start, ident.length(), "yield "))
+                    }
+                    else if (ident.name == "__asyncResult") {
+                        changes.add(Change(ident.start, ident.length(), ""))
+                    }
                 }
             }
 

@@ -54,6 +54,7 @@ package aps.front
     val uuid: dynamic
     val codeLinesToString: dynamic
     val fcomapo: dynamic
+    val invalidateKotlinStackSourceMapConsumer: dynamic
 }
 
 @native interface JShitArt {
@@ -195,12 +196,24 @@ package aps.front
     var getControlByShame: dynamic
     var Preloader: dynamic
     var reassertUIState: dynamic
-    val thingsToDoAfterHotUpdate: dynamic
+    var thingsToDoAfterHotUpdate: dynamic
+    var thingsToDoBeforeHotUpdate: dynamic
     val openDebugPane: dynamic
     val decorate: dynamic
     val CollapsibleShit: dynamic
     val pickStacks: dynamic
     var horiza: dynamic
+    var liveBadge: dynamic
+    var liveBadge2: dynamic
+    var TopNavItem: dynamic
+    var apsCSS: dynamic
+    var makeUIShitIgniter: dynamic
+    var lang: dynamic
+    var _t: dynamic
+    var initDebugFunctions: dynamic
+    var entraina: dynamic
+    var hotCodeListener: dynamic
+    var runHotCodeUpdateStuff: dynamic
 }
 
 

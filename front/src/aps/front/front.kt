@@ -84,7 +84,6 @@ object KotlinShit : IKotlinShit {
         }
 
         jshit.implementControlShit = ::legacy_implementControlShit
-
         jshit.elcl = ::jsFacing_elcl
         jshit.diva = ::jsFacing_diva
         jshit.spana = ::jsFacing_spana
@@ -100,6 +99,14 @@ object KotlinShit : IKotlinShit {
         jshit.blockquotea = ::jsFacing_blockquotea
         jshit.dom.spana = ::jsFacing_dom_spana
         jshit.horiza = ::jsFacing_horiza
+        jshit.link = ::jsFacing_link
+        jshit.faIcon = ::jsFacing_faIcon
+        jshit.liveBadge = ::jsFacing_liveBadge
+        jshit.liveBadge2 = ::jsFacing_liveBadge2
+        jshit.Checkbox = ::jsFacing_Checkbox
+        jshit.button = ::jsFacing_button
+        jshit.TopNavItem = ::jsFacing_TopNavItem
+//        jshit.makeUIShitIgniter = ::jsFacing_makeUIShitIgniter
 
         art.initArtShit()
 //        jshit.art.renderStepDescriptions = { art.renderStepDescriptions() }
@@ -127,6 +134,13 @@ object KotlinShit : IKotlinShit {
     val jsFacing_puid = ::puid
 
     val jsFacing_art_invokeStateContributions = ::invokeStateContributions
+    val apsCSS = ::jsFacing_apsCSS
+    val pollLiveStatus = ::jsFacing_pollLiveStatus
+    val startLiveStatusPolling = ::jsFacing_startLiveStatusPolling
+    val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
+    val urlLink = ::jsFacing_urlLink
+    val pageLink = ::jsFacing_pageLink
+    val initHotCodeShit = ::jsFacing_initHotCodeShit
 
 //    val shittyShit = json(
 //        "tests_UA_Writer" to ::jsFacing_tests_UA_Writer
@@ -195,31 +209,6 @@ object KotlinShit : IKotlinShit {
 
 
 
-fun jsFacing_faIcon(def: dynamic): dynamic {
-    // #extract {icon, style, className='', onClick} from def
-    val icon = def.icon; val style = def.style; val onClick = def.onClick
-    val className = if (def.className) def.className else ""
-
-    var me: dynamic = undefined // @workaround
-    me = json(
-        "render" to {
-            jshit.ia(json("id" to me.elementID, "className" to "fa fa-${icon} ${className}", "style" to style, "onClick" to {
-                if (onClick) onClick()
-            }))
-        },
-        "contributeTestState" to {state: dynamic ->
-            if (me.tame) {
-                state.put(json("control" to me, "key" to me.getTamePath(), "value" to icon))
-            }
-        }
-    )
-
-    def.`$definitionStack` = promiseDefinitionStack(js("Error()"), 1)
-
-    me.controlTypeName = "icon"
-    jshit.implementControlShit(json("me" to me, "def" to def, "implementTestClick" to json("onClick" to onClick)))
-    return jshit.elcl(me)
-}
 
 class ReactClassShit(
     val render: () -> ReactElement,
