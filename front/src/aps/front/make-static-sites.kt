@@ -48,16 +48,7 @@ object MakeStaticSites {
         // imposeClientT(t)
 
         val root = "${kindaDirname}/../built/${lang.toLowerCase()}-writer"
-        sh.rm("-rf", root)
-        sh.mkdir("-p", root)
-
-        val vendor = "${kindaDirname}/../vendor"
-        sh.cp("${vendor}/jquery-2.2.4/jquery.min.js", root)
-        sh.cp("-r", "${vendor}/bootstrap-3.3.6", root)
-        sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
-        sh.cp("${kindaDirname}/../asset/*", root)
-        sh.cp("${kindaDirname}/../lib/bundle.js", root)
-        sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
+        remakeDirAndCopyShit(root)
 
         val tabTitle = t(json("EN" to "Writer", "UA" to "Writer UA"))
 
@@ -428,6 +419,20 @@ object MakeStaticSites {
         writeDynamicPages(writerDynamicPageNames(), ::writePage)
     }
 
+    private fun remakeDirAndCopyShit(root: String) {
+        sh.rm("-rf", root)
+        sh.mkdir("-p", root)
+
+        val vendor = "${kindaDirname}/../vendor"
+        sh.cp("${vendor}/jquery-2.2.4/jquery.min.js", root)
+        sh.cp("-r", "${vendor}/bootstrap-3.3.6", root)
+        sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
+        sh.cp("${vendor}/jsdiff-3.0.1/diff.min.js", root)
+        sh.cp("${kindaDirname}/../asset/*", root)
+        sh.cp("${kindaDirname}/../lib/bundle.js", root)
+        sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
+    }
+
     fun writeDynamicPages(names: dynamic, writePage: dynamic) {
         names.forEach{name: dynamic ->
             writePage(json("name" to name, "highlightedItem" to "",
@@ -464,16 +469,7 @@ object MakeStaticSites {
         // imposeClientT(t)
 
         val root = "${kindaDirname}/../built/${lang.toLowerCase()}-customer"
-        sh.rm("-rf", root)
-        sh.mkdir("-p", root)
-
-        val vendor = "${kindaDirname}/../vendor"
-        sh.cp("${vendor}/jquery-2.2.4/jquery.min.js", root)
-        sh.cp("-r", "${vendor}/bootstrap-3.3.6", root)
-        sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
-        sh.cp("${kindaDirname}/../asset/*", root)
-        sh.cp("${kindaDirname}/../lib/bundle.js", root)
-        sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
+        remakeDirAndCopyShit(root)
 
         val tabTitle = t(json("EN" to "APS", "UA" to "APS UA"))
 
@@ -1492,6 +1488,7 @@ object MakeStaticSites {
     </div>
 
     <script src="jquery.min.js"></script>
+    <script src="diff.min.js"></script>
     <!-- <script src="jquery-hack.js"></script> -->
     <script src="bootstrap-hack.js"></script>
     <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->

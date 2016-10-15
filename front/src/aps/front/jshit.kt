@@ -6,6 +6,10 @@
 
 package aps.front
 
+@native object JsDiff {
+    fun diffLines(string1: String, string2: String): Any?
+}
+
 @native interface JShitUtils {
     var jQuery: dynamic
     var arrayDeleteFirstThat: dynamic
@@ -38,7 +42,7 @@ package aps.front
     var isBlank: dynamic
     var sortKeys: dynamic
     var trim: dynamic
-    var diff: dynamic
+//    var diff: dynamic
     var trimStart: dynamic
     var sortBy: dynamic
     var isEmpty: dynamic
@@ -183,7 +187,6 @@ package aps.front
     var TopNavItem_: dynamic
     var isInTestScenario: dynamic
     var delay: dynamic
-    var bsClearMenus: dynamic
     var timestampString: dynamic
     var setTestSpeed: dynamic
     var errorLabel: dynamic
@@ -213,7 +216,9 @@ package aps.front
     var initDebugFunctions: dynamic
     var entraina: dynamic
     var hotCodeListener: dynamic
-    var runHotCodeUpdateStuff: dynamic
+//    var runHotCodeUpdateStuff: dynamic
+    var debugRPC: dynamic
+    val clogError: dynamic
 }
 
 

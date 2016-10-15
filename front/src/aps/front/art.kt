@@ -585,7 +585,7 @@ fun gertrude(def: dynamic) {
 
                     if (!greenTitle) greenTitle = "Expected"
                     var prevLabel: dynamic = undefined
-                    val diffLineItems = jshit.utils.diff.diffLines(string1, string2)
+                    val diffLineItems = JsDiff.diffLines(string1, string2)
                     for (item in jsArrayToList(diffLineItems)) {
                         var backgroundColor: dynamic = undefined
                         var label: dynamic = undefined

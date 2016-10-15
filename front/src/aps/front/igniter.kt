@@ -8,6 +8,71 @@ package aps.front
 
 import aps.*
 
+fun makeAPSShitIgniter() {
+    global.DEBUG_ACTION_HAND_DELAY = 1000
+    global.ACTION_DELAY_FOR_FANCINESS = 1000
+    global.LIVE_STATUS_POLLING_INTERVAL = 30000
+    global.MODE = "debug"
+    global.DEBUG_SIMULATE_SLOW_NETWORK = true
+    global.DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 500
+    global.BOOTSTRAP_VERSION = 3
+    global.BACKEND_URL = "http://localhost:3100"
+
+    global.Error.stackTraceLimit = js("Infinity")
+
+    global.igniteShit = jshit.makeUIShitIgniter(json(
+
+        "Impl" to makeAPSShitImplCtor()
+    ))
+}
+
+fun makeAPSShitImplCtor(): (dynamic) -> Json {
+    return {arg: dynamic ->
+        KotlinShit.ui = arg.ui
+
+        val impl = json(
+
+            "isDynamicPage" to KotlinShit.isDynamicPage,
+
+            "css" to {
+                KotlinShit.apsCSS()
+            },
+
+            "privatePageLoader" to { name: dynamic ->
+                val shit: dynamic = json(
+                    "dashboard" to {
+                        "__async"
+                        __await(KotlinShit.loadDashboardPage())
+                    },
+
+                    "admin-users" to {
+                        "__async"
+                        __await(KotlinShit.loadAdminUsersPage())
+                    },
+
+                    "profile" to {
+                        "__async"
+                        __await(KotlinShit.loadProfilePage())
+                    },
+
+                    "debug-kotlin-playground" to {
+                        KotlinShit.loadDebugKotlinPlaygroundPage()
+                    }
+                )
+                shit[name]
+            },
+
+            "renderTopNavbar" to { arg: dynamic ->
+                KotlinShit.renderTopNavbar_calledByFuckingUI(KotlinShit.ui, arg)
+            }
+        )
+
+        KotlinShit.clientImpl = impl
+        impl
+    }
+}
+
+
 //fun jsFacing_makeUIShitIgniter(def: dynamic): dynamic {
 //    fun igniter() {
 //

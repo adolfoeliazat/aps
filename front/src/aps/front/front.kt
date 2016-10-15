@@ -121,6 +121,10 @@ object KotlinShit : IKotlinShit {
         initTestShit()
         igniteRPCShit()
 
+        makeAPSShitIgniter()
+
+        // For hot reloading
+        global.makeAPSShitImplCtor = ::makeAPSShitImplCtor
     }
 
     val igniteTestShit = ::jsFacing_igniteTestShit

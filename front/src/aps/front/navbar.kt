@@ -184,7 +184,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                     global.setTimeout({
                         jshit.effects.blinkOff()
                         global.testGlobal["topNavbarLink_" + name + "_blinks"] = false
-                        jshit.bsClearMenus()
+                        global.bsClearMenus()
                     }, 250)
 
                     return __asyncResult(Unit)

@@ -12,6 +12,145 @@ fun newNativePromise(arg: dynamic): dynamic {
     return js("new Promise(arg)")
 }
 
+fun runHotCodeUpdateStuff(arg: dynamic): dynamic {"__async"
+    val hotFunctions: dynamic = arg.hotFunctions
+    val applyHotCode: dynamic = arg.applyHotCode
+
+    var lastBackendInstanceID: dynamic = null
+    var lastBundleCtime: dynamic = null
+    var hotUpdateNumber: dynamic = 0
+    var lastUpdateAttemptAt: dynamic = null
+    var killed: dynamic = null
+
+    val hotEntries = js("[]")
+//    run {
+//        val res = __await<dynamic>(jshit.debugRPC(json("fun" to "danger_getHotShitCodeEntries", "db" to null)))
+//        for (entry in jsArrayToList(res.items)) {
+//            entry.`fun` = hotFunctions.find{x: dynamic -> x.hotShitTag == entry.hotShitTag}
+//            if (!entry.`fun`) {
+//                console.error("Gimme hot function for tag [${entry.hotShitTag}]")
+//                return null
+//            }
+//            hotEntries.push(entry)
+//        }
+//    }
+
+    val period = 500
+
+    fun tick() {"__async"
+        if (killed) {
+            dlog("You fucking killed hot code update")
+            return@tick
+        }
+
+        var shouldScheduleAgain = true
+
+        try {
+            if (jshit.hotCodeUpdateDisabled) return@tick
+
+            try {
+                val sofv = __await<dynamic>(jshit.debugRPC(json("fun" to "danger_getSoftwareVersion", "db" to null)))
+
+                if (sofv.bundleCtime) { // Can be undefined if bundle is deleted
+                    if (lastBundleCtime && lastBundleCtime !== sofv.bundleCtime) {
+                        dlog("Bundle was updated, you can refresh this shit")
+                    }
+                    lastBundleCtime = sofv.bundleCtime
+                }
+
+                val biid = sofv.backendInstanceID
+                if (!lastBackendInstanceID) {
+                    lastBackendInstanceID = biid
+                    return@tick
+                }
+
+                if (lastBackendInstanceID !== biid) {
+                    lastBackendInstanceID = biid
+                    val shouldUpdate = !lastUpdateAttemptAt || (global.Date.now() - lastUpdateAttemptAt >= 10000) // XXX Work around of nodemon's bug with restarting shit twice (possibly https://github.com/remy/nodemon/issues/763)
+                    // const shouldUpdate = true
+                    if (shouldUpdate) {
+                        lastUpdateAttemptAt = global.Date.now()
+                        dlog("Starting hot update #${++hotUpdateNumber}...")
+                        jshit.hideStackRevelation()
+
+                        val updatedHotFunctions = json()
+
+//                        val res = __await<dynamic>(jshit.debugRPC(json("fun" to "danger_getHotShitCodeEntries", "db" to null)))
+//                        for (entry in jsArrayToList(res.items)) {
+//                            val hotShitTag: dynamic = entry.hotShitTag
+//                            val newCode: dynamic = entry.code
+//                            val hotEntry = hotEntries.find{x: dynamic -> x.hotShitTag == hotShitTag}
+//                            if (!hotEntry) {
+//                                return@tick console.error("Hot entry [${hotShitTag}] arrived from backend, but we are not tracking it. Giving up")
+//                            }
+//
+//                            fun stripVolatileStuff(code: dynamic): dynamic {
+//                                return code.replace(global.RegExp("'[^']*?\\.ts\\[\\d+\\]:\\d+:\\d+'", "g"), "SOMEWHERE")
+//                            }
+//
+//                            val currentCodeWithoutVolatileStuff = stripVolatileStuff(hotEntry.code)
+//                            val newCodeWithoutVolatileStuff = stripVolatileStuff(newCode)
+//
+//                            if (currentCodeWithoutVolatileStuff === newCodeWithoutVolatileStuff) {
+//                            } else {
+//                                try {
+//                                    val oldFun = hotEntry.`fun`
+//                                    val newFun = oldFun.nearEval("(" + newCode + ")")
+//                                    newFun.hotShitTag = oldFun.hotShitTag
+//                                    newFun.nearEval = oldFun.nearEval
+//
+//                                    hotEntry.code = newCode
+//                                    hotEntry.`fun` = newFun
+//                                    updatedHotFunctions[hotShitTag] = newFun
+//                                    // dlog("Evaluated new code for hot entry [${hotShitTag}]")
+//                                } catch (e: Throwable) {
+//                                    jshit.clogError(e, "Failed to evaluate new code for hot entry [${hotShitTag}]. Giving up")
+//                                    return@tick
+//                                }
+//                            }
+//                        }
+
+                        try {
+                            __await<dynamic>(applyHotCode(json("updatedHotFunctions" to updatedHotFunctions)))
+                        } catch (e: Throwable) {
+                            if (e.message != "UI assertion failed") {
+                                jshit.clogError(e, "Failed to apply hot code")
+                                jshit.revealStack(json("exception" to e))
+                                return@tick
+                            }
+                        }
+
+                        dlog("Finished hot update #${hotUpdateNumber} ")
+                    }
+                }
+            } catch (_e: Throwable) {
+                val e: dynamic = _e
+                if (e.requestHasBeenTerminated) {
+                    console.warn("Hot update tick failed slightly, will try again soon...")
+                } else {
+                    jshit.clogError(e, "Hot update tick failed badly, giving up")
+                    shouldScheduleAgain = false
+                }
+            }
+        } finally {
+            if (shouldScheduleAgain) {
+                timeoutSet(period, ::tick)
+            }
+        }
+    }
+
+    timeoutSet(period, ::tick)
+
+    val me = json(
+        "kill" to {
+            killed = true
+        }
+    )
+
+    dlog("Listening for hot code updates")
+    return me
+}
+
 
 fun jsFacing_initHotCodeShit(impl: dynamic,
                              instantiateImpl: dynamic,
@@ -30,7 +169,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
         jshit.hotCodeListener.kill()
     }
 
-    jshit.hotCodeListener = __await<dynamic>(jshit.runHotCodeUpdateStuff(json(
+    jshit.hotCodeListener = __await<dynamic>(runHotCodeUpdateStuff(json(
         "hotFunctions" to js("[]").concat(
             getMakeOrRemakeExportedShitFunction(),
             makeUIShitIgniterDef.Impl,
@@ -53,25 +192,25 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                 }
             }
 
-            for (hof in jsArrayToList(hotFunctions)) {
-                val `fun` = updatedHotFunctions[hof.`fun`.hotShitTag]
-                if (`fun` != null) {
-                    `fun`()
-                    dlog("Hot-refreshed ${`fun`.name}")
-                }
-            }
-
-            val hotImpl = updatedHotFunctions[makeUIShitIgniterDef.Impl.hotShitTag]
-            val hotMakeOrRemakeExportedShit = updatedHotFunctions[getMakeOrRemakeExportedShitFunction().hotShitTag]
-
-            // const shouldMakeOrRemakeExportedShit = hotMakeOrRemakeExportedShit || hotImpl
-            if (true) {
-                if (hotMakeOrRemakeExportedShit) {
-                    setMakeOrRemakeExportedShitFunction(hotMakeOrRemakeExportedShit)
-                }
-                getMakeOrRemakeExportedShitFunction()()
-                dlog("Hot-refreshed makeOrRemakeExportedShit")
-            }
+//            for (hof in jsArrayToList(hotFunctions)) {
+//                val `fun` = updatedHotFunctions[hof.`fun`.hotShitTag]
+//                if (`fun` != null) {
+//                    `fun`()
+//                    dlog("Hot-refreshed ${`fun`.name}")
+//                }
+//            }
+//
+//            val hotImpl = updatedHotFunctions[makeUIShitIgniterDef.Impl.hotShitTag]
+//            val hotMakeOrRemakeExportedShit = updatedHotFunctions[getMakeOrRemakeExportedShitFunction().hotShitTag]
+//
+//            // const shouldMakeOrRemakeExportedShit = hotMakeOrRemakeExportedShit || hotImpl
+//            if (true) {
+//                if (hotMakeOrRemakeExportedShit) {
+//                    setMakeOrRemakeExportedShitFunction(hotMakeOrRemakeExportedShit)
+//                }
+//                getMakeOrRemakeExportedShitFunction()()
+//                dlog("Hot-refreshed makeOrRemakeExportedShit")
+//            }
 
 
             run { // Kotlin
@@ -116,9 +255,11 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                 dlog("Hot-refreshed initUIFunctions")
             }
 
-            if (hotImpl != null) {
-                makeUIShitIgniterDef.Impl = hotImpl
-            }
+            makeUIShitIgniterDef.Impl = global.makeAPSShitImplCtor()
+
+//            if (hotImpl != null) {
+//                makeUIShitIgniterDef.Impl = hotImpl
+//            }
 //                        if (hotImpl) {
             impl.stale = true // @ctx forgetmenot-1-4
 //                            def.Impl = hotImpl

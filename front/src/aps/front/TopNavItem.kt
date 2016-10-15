@@ -42,7 +42,7 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
 
             global.setTimeout({
                 jshit.effects.blinkOff()
-                jshit.bsClearMenus()
+                global.bsClearMenus()
             }, 250)
         }
     )
