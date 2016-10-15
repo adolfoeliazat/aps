@@ -21,8 +21,8 @@ package aps.front
     var timeoutSet: dynamic
     var dlog: dynamic
     var fov: dynamic
-    var url: dynamic
-    var querystring: dynamic
+//    var url: dynamic
+//    var querystring: dynamic
     var tokens: dynamic
     var values: dynamic
     var invariant: dynamic

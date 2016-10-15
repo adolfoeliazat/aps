@@ -145,6 +145,7 @@ object KotlinShit : IKotlinShit {
     val urlLink = ::jsFacing_urlLink
     val pageLink = ::jsFacing_pageLink
     val initHotCodeShit = ::jsFacing_initHotCodeShit
+    val parseQueryString = ::jsFacing_parseQueryString
 
 //    val shittyShit = json(
 //        "tests_UA_Writer" to ::jsFacing_tests_UA_Writer

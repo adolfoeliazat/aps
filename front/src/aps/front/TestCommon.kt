@@ -61,8 +61,9 @@ class TestCommon(val sim: dynamic) {
 }
 
 fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__async"
-    val urlObject = jshit.utils.url.parse(global.location.href)
-    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
+//    val urlObject = jshit.utils.url.parse(global.location.href)
+//    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
+    val urlQuery = jsFacing_parseQueryString(global.location.href)
 
     for (name in jsArrayToList(jshit.utils.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
         if (urlQuery[name] != undefined) {

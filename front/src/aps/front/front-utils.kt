@@ -45,6 +45,22 @@ fun kindaClassName(x: dynamic): String {
     return x.__proto__.constructor.`$$$kindaPackageKey`
 }
 
+fun jsFacing_parseQueryString(href: dynamic): dynamic {
+    val regex = global.RegExp("([^&=]+)=?([^&]*)", "g")
+    var match: dynamic = null
+    val store = json()
+
+    var haystack = global.location.search
+    haystack = haystack.substring(haystack.indexOf('?') + 1, haystack.length)
+
+    while (true) {
+        match = regex.exec(haystack)
+        if (!match) break
+        store[global.decodeURIComponent(match[1])] = global.decodeURIComponent(match[2])
+    }
+
+    return store
+}
 
 
 
