@@ -434,6 +434,8 @@ object MakeStaticSites {
         sh.cp("-r", "${vendor}/bootstrap-3.3.6", root)
         sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
         sh.cp("${vendor}/jsdiff-3.0.1/diff.min.js", root)
+        sh.cp("${vendor}/react-15.3.2/react.js", root)
+        sh.cp("${vendor}/react-15.3.2/react-dom.js", root)
         sh.cp("${kindaDirname}/../asset/*", root)
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
         sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
@@ -1495,6 +1497,8 @@ object MakeStaticSites {
 
     <script src="jquery.min.js"></script>
     <script src="diff.min.js"></script>
+    <script src="react.js"></script>
+    <script src="react-dom.js"></script>
     <!-- <script src="jquery-hack.js"></script> -->
     <script src="bootstrap-hack.js"></script>
     <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->
