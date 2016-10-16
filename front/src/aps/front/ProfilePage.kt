@@ -57,7 +57,7 @@ class ProfilePage(val ui: LegacyUIShit) {
                 )
         }
         else {
-            raise("Weird user state: ${userState}")
+            Shitus.raise("Weird user state: ${userState}")
         }
 
         ui.setPage(json(

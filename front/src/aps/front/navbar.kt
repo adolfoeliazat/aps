@@ -177,7 +177,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                     global.testGlobal["topNavbarLink_" + name + "_blinks"] = true
 
                     if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(jshit.isInTestScenario() && jshit.getTestSpeed() == "fast")) {
-                        __await<dynamic>(jshit.delay(global.ACTION_DELAY_FOR_FANCINESS))
+                        __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
                     }
                     __await<dynamic>(ui.pushNavigate(href))
 
@@ -220,7 +220,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
             },
 
             "componentWillUnmount" to {
-                jshit.utils.deleteKey(global.testGlobal.topNavbarLinks, name)
+                jsFacing_deleteKey(global.testGlobal.topNavbarLinks, name)
                 jshit.byid(id).off()
             }
         ))

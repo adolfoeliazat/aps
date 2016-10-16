@@ -6,10 +6,15 @@
 
 package aps.front
 
-import aps.UserKind
-import aps.wtf
+import aps.*
 
-object MakeStaticSites {
+@native interface IMakeStaticSites { // To prevent name mangling
+    fun runShit(argv: dynamic)
+}
+
+object MakeStaticSites : IMakeStaticSites {
+    enum class Mode { DEBUG, PROD }
+
     val React = js("require('react')")
     init {
         js("global").React = React
@@ -17,6 +22,9 @@ object MakeStaticSites {
     val ReactDOMServer = js("require('react-dom/server')")
 
     val kindaDirname = "e:/work/aps/aps/lib"
+
+    val require = js("require")
+    val process = js("process")
     val fs = js("require('fs')")
     val sh = js("require('shelljs')")
     val legacyStuff = js("require('e:/work/aps/aps/lib/stuff')")
@@ -24,17 +32,29 @@ object MakeStaticSites {
 
     var t: (dynamic) -> dynamic = js("undefined")
 
-    fun runShit() {
+    lateinit var mode: Mode
+
+    override fun runShit(_argv: dynamic) {"__async"
         js("require('e:/work/foundation/u')")
 
         sh.config.fatal = true
         js("Error").stackTraceLimit = js("Infinity")
 
-        makeWriterSite(json("lang" to "UA"))
-        makeCustomerSite(json("lang" to "UA"))
+        val argv = js("require('minimist')(_argv)")
+        val modeString = argv.mode ?: wtf("Gimme fucking --mode")
+        mode = when (modeString) {
+            "debug" -> Mode.DEBUG
+            "prod" -> Mode.PROD
+            else -> wtf("modeString $modeString")
+        }
+
+        __await(makeWriterSite(json("lang" to "UA")))
+//        makeCustomerSite(json("lang" to "UA"))
+
+        println("COOL")
     }
 
-    fun makeWriterSite(arg: dynamic) {
+    fun makeWriterSite(arg: dynamic): Promise<Unit> {"__async"
         // {lang}
         val lang: String = arg.lang
 
@@ -54,7 +74,7 @@ object MakeStaticSites {
         // imposeClientT(t)
 
         val root = "${kindaDirname}/../built/${lang.toLowerCase()}-writer"
-        remakeDirAndCopyShit(root)
+        __await(remakeDirAndCopyShit(root))
 
         val tabTitle = t(json("EN" to "Writer", "UA" to "Writer UA"))
 
@@ -423,9 +443,10 @@ object MakeStaticSites {
         ))
 
         writeDynamicPages(writerDynamicPageNames(), ::writePage)
+        return __asyncResult(Unit)
     }
 
-    private fun remakeDirAndCopyShit(root: String) {
+    fun remakeDirAndCopyShit(root: String): Promise<Unit> {"__async"
         sh.rm("-rf", root)
         sh.mkdir("-p", root)
 
@@ -439,6 +460,37 @@ object MakeStaticSites {
         sh.cp("${kindaDirname}/../asset/*", root)
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
         sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
+
+        val entryStream = js("new (require('stream')).Readable")
+        entryStream.push("""
+            if (typeof global === 'undefined') global = window
+            ${if (mode == Mode.DEBUG) """
+                global.deepEql = require('deep-eql')
+            """ else ""}
+        """)
+        entryStream.push(null) // EOF
+
+        val bro = require("browserify")(json(
+            "entries" to jsArrayOf(entryStream),
+            "cache" to json(),
+            "packageCache" to json(),
+            "debug" to true
+        ))
+
+        process.stdout.write("Browserifying shit... ")
+        __await<Unit>(newNativePromise {resolve: dynamic, reject: dynamic ->
+            bro.bundle {err: dynamic, buf: dynamic ->
+                if (err != null) {
+                    reject(err)
+                } else {
+                    val code = buf.toString()
+                    fs.writeFileSync("$root/deps.js", code)
+                    resolve()
+                }
+            }
+        })
+        println("DONE")
+        return __asyncResult(Unit)
     }
 
     fun writeDynamicPages(names: dynamic, writePage: dynamic) {
@@ -1495,6 +1547,7 @@ object MakeStaticSites {
     </div>
     </div>
 
+    <script src="deps.js"></script>
     <script src="jquery.min.js"></script>
     <script src="diff.min.js"></script>
     <script src="react.js"></script>
@@ -1505,8 +1558,6 @@ object MakeStaticSites {
 
     <script src="kotlin/lib/kotlin.js"></script>
     <script src="kotlin/front-enhanced.js"></script>
-
-    <!-- <script src="aps-scala-fastopt.js"></script> -->
 
     <script>
         var testimonials

@@ -317,11 +317,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                                 append("Control 2: ${thisDescription}\n")
                             }
                             console.error(longMessage)
-                            raise(shortMessage, json(
-                                "\$render" to {
-                                    "TODO: Implement ce3ace61-41ee-4c31-ac9c-209748b5cc99"
-                                }
-                            ))
+                            Shitus.raise(shortMessage)
                         }
                     }
                 }
@@ -374,11 +370,11 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
             componentWillUnmount()
 
             removeEventListeners()
-            jshit.utils.arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x -> x.controlID == controlID })
-            jshit.utils.deleteKey(jshit.art.uiStateContributions, controlID)
+            jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x: dynamic -> x.controlID == controlID })
+            jsFacing_deleteKey(jshit.art.uiStateContributions, controlID)
 
             if (effectiveShame != "") {
-                jshit.utils.deleteKey(global.testGlobal.controls, effectiveShame)
+                jsFacing_deleteKey(global.testGlobal.controls, effectiveShame)
             }
         }
 

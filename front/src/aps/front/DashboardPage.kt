@@ -21,7 +21,7 @@ class DashboardPage(val ui: LegacyUIShit) {
                             "title" to t("TOTE", "Работенка"),
                             "emptyItemsText" to t("TOTE", "Сюшай, савсэм нэт работы..."),
 
-                            "items" to __await<dynamic>(jshit.utils.runa({
+                            "items" to __await<dynamic>(Shitus.runa({
                                 "__async"
                                 val items = js("[]")
 
@@ -35,7 +35,7 @@ class DashboardPage(val ui: LegacyUIShit) {
                                 fun addMetric(value: String, tame: String, url: String, title: String, noStateContributions: Boolean = false) {
                                     if (value != "0") {
                                         items.push(jshit.diva(json("controlTypeName" to "addMetric", "tame" to tame, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden")),
-                                            jshit.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), jshit.utils.repeat(".", 210)),
+                                            jshit.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), Shitus.repeat(".", 210)),
                                             ui.urlLink(json("tamy" to true, "style" to json("background" to Color.WHITE, "paddingRight" to 8, "color" to Color.BLACK_BOOT), "blinkOpts" to json("dwidth" to -8),
                                                 "title" to title, "url" to url, "delayActionForFanciness" to true)),
                                             jshit.diva(json("style" to json("float" to "right", "paddingLeft" to 8, "background" to Color.WHITE)),
@@ -90,7 +90,7 @@ class DashboardPage(val ui: LegacyUIShit) {
         }
 
         fun scheduleUpdate() {
-            jshit.utils.timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
+            timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
                 if (KotlinShit.clientImpl.stale) return@outta Unit
                 if (myPage != KotlinShit.ui.currentPage) return@outta Unit
 
@@ -101,7 +101,7 @@ class DashboardPage(val ui: LegacyUIShit) {
                 if (jshit.isOrWasInTestScenario() && jshit.getCurrentTestBrowser().ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
 
                 // dlog("currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}")
-                jshit.utils.dlog("Updating dashboard page")
+                dlog("Updating dashboard page")
 
                 __asyncResult(__await(DashboardPage(ui).load(preserveScroll = true)))
             })

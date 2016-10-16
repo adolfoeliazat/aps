@@ -65,7 +65,7 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
 //    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
     val urlQuery = jsFacing_parseQueryString(global.location.href)
 
-    for (name in jsArrayToList(jshit.utils.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
+    for (name in jsArrayToList(Shitus.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
         if (urlQuery[name] != undefined) {
             global[name] = urlQuery[name]
         }
@@ -89,14 +89,14 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
 
     val sim = object : TestHost {
         override fun navigate(url: String): Promise<Unit> {"__async"
-            jshit.utils.dlog("Navigating", jshit.browser.name, url)
+            dlog("Navigating", jshit.browser.name, url)
             global.history.replaceState(null, "", url)
             __await<dynamic>(makeCleanPairAndBoot())
             return __asyncResult(Unit)
         }
 
         override fun selectBrowser(name: String) {
-            jshit.utils.dlog("Selecting browser", name)
+            dlog("Selecting browser", name)
             jshit.browser = jshit.browsers[name]
             if (!jshit.browser) {
                 var storageLocalItems = js("({})")

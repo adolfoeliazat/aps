@@ -49,7 +49,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                 "render" to render@{
                     var isRenderingDisabled = _isDisabled
                         if (disabled != null) {
-                            isRenderingDisabled = jshit.utils.fov(disabled)
+                            isRenderingDisabled = shittyFov(disabled)
                         }
 
                     return@render React.createElement(jshit.input, json(
@@ -63,7 +63,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                         "disabled" to isRenderingDisabled,
                         "onClick" to me.onPhysicalClick,
                         "style" to global.Object.assign(json(),
-                            jshit.utils.fov(volatileStyle),
+                            shittyFov(volatileStyle),
                             style,
                             // TODO:vgrechka Implement new-style spinner for Input    d39c80df-fc4e-4b83-8318-c79963b6a010
                             if (loading) json(
@@ -79,7 +79,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                         },
 
                         "onKeyDown" to {e: dynamic ->
-                            jshit.utils.fov(onKeyDown, e)
+                            shittyFov(onKeyDown, e)
                         }
                     ))
                 },
@@ -124,7 +124,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                     if (jshit.testSpeed == "slow") {
                         me.setValue("")
                         for (len in 1 until value.length) {
-                            __await<dynamic>(jshit.delay(50))
+                            __await<dynamic>(Shitus.delay(50))
                             me.setValue(value.slice(0, len))
                         }
                     } else {

@@ -12,37 +12,34 @@ package aps.front
 
 @native interface JShitUtils {
     var jQuery: dynamic
-    var arrayDeleteFirstThat: dynamic
-    var deleteKey: dynamic
+//    var arrayDeleteFirstThat: dynamic
+//    var deleteKey: dynamic
     var delay: dynamic
     var DEBUG_ACTION_HAND_DELAY: dynamic
-    var runa: dynamic
-    var repeat: dynamic
-    var timeoutSet: dynamic
-    var dlog: dynamic
-    var fov: dynamic
-//    var url: dynamic
-//    var querystring: dynamic
-    var tokens: dynamic
-    var values: dynamic
-    var invariant: dynamic
-    var keys: dynamic
-    var without: dynamic
-    var raise: dynamic
-    var isEqual: dynamic
-    var clone: dynamic
-    var fova: dynamic
-    var isObject: dynamic
-    var isArray: dynamic
-    var pick: dynamic
-    var nil: dynamic
-    var deepEquals: dynamic
+//    var runa: dynamic
+//    var repeat: dynamic
+//    var timeoutSet: dynamic
+//    var dlog: dynamic
+//    var fov: dynamic
+//    var tokens: dynamic
+//    var values: dynamic
+//    var invariant: dynamic
+//    var keys: dynamic
+//    var without: dynamic
+//    var raise: dynamic
+//    var isEqual: dynamic
+//    var clone: dynamic
+//    var fova: dynamic
+//    var isObject: dynamic
+//    var isArray: dynamic
+//    var pick: dynamic
+//    var nil: dynamic
+//    var deepEquals: dynamic
     var noop: dynamic
     var deepInspect: dynamic
     var isBlank: dynamic
     var sortKeys: dynamic
     var trim: dynamic
-//    var diff: dynamic
     var trimStart: dynamic
     var sortBy: dynamic
     var isEmpty: dynamic
@@ -162,7 +159,7 @@ package aps.front
     var labe: dynamic
     var implementControlShit: dynamic
     var renderExceptionTriangleAndRevealStack: dynamic
-    var raise: dynamic
+//    var raise: dynamic
     var setLastSeenTag: dynamic
     var setArtLastSuccessfulExpected: dynamic
     var renderStacks: dynamic
@@ -186,7 +183,7 @@ package aps.front
     var ui: dynamic
     var TopNavItem_: dynamic
     var isInTestScenario: dynamic
-    var delay: dynamic
+//    var delay: dynamic
     var timestampString: dynamic
     var setTestSpeed: dynamic
     var errorLabel: dynamic
@@ -220,6 +217,7 @@ package aps.front
     var debugRPC: dynamic
     val clogError: dynamic
 }
+
 
 
 

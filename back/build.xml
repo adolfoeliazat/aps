@@ -7,6 +7,7 @@
         <exec executable="node" dir="../front">
             <arg value="run.js"/>
             <arg value="MakeStaticSites"/>
+            <arg value="--mode=debug"/>
         </exec>
     </target>
 </project>

@@ -185,7 +185,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
             jshit.revealStack.calledTimes = 0
 
             run {
-                val things = jshit.utils.values(jshit.thingsToDoBeforeHotUpdate)
+                val things = Shitus.values(jshit.thingsToDoBeforeHotUpdate)
                 jshit.thingsToDoBeforeHotUpdate = {}
                 for (thing in jsArrayToList(things)) {
                     __await<dynamic>(thing())
@@ -285,7 +285,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
 
             if (shouldReloadPage) {
                 dlog("----- Reloading page -----")
-                jshit.utils.fov(jshit.closeControlRevealer)
+                shittyFov(jshit.closeControlRevealer)
 
                 // debugPanes.deleteAll()
 
@@ -304,7 +304,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                 }
 
                 run {
-                    val things = jshit.utils.values(jshit.thingsToDoAfterHotUpdate)
+                    val things = Shitus.values(jshit.thingsToDoAfterHotUpdate)
                     jshit.thingsToDoAfterHotUpdate = json()
                     for (thing in jsArrayToList(things)) {
                         __await<dynamic>(thing())

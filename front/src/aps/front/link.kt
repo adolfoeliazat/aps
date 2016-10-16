@@ -17,7 +17,7 @@ fun jsFacing_link(def: Json): ReactElement {
     val onMouseEnter: dynamic = def["onMouseEnter"]
     val onMouseLeave: dynamic = def["onMouseLeave"]
 
-    invariant(!(content != null && title != null), "It should be either content or title")
+    Shitus.invariant(!(content != null && title != null), "It should be either content or title")
 
     if (title != null) {
         content = jshit.spancTitle(json("title" to title))
@@ -39,7 +39,9 @@ fun jsFacing_link(def: Json): ReactElement {
         "onRootClick" to {e: dynamic -> "__async"
             e.preventDefault()
             e.stopPropagation()
-            __await<dynamic>(jshit.utils.fova(onClick))
+            val shit: (() -> Promise<Any?>)? = onClick
+            shit?.let {__await(it())}
+//            __await<dynamic>(jshit.utils.fova(onClick))
         }
     )
 
@@ -70,7 +72,7 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
             }
 
             if (delayActionForFanciness && !(jshit.isInTestScenario() && jshit.testSpeed == "fast")) {
-                __await<dynamic>(jshit.delay(global.ACTION_DELAY_FOR_FANCINESS))
+                __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
             }
 
             __await<dynamic>(jshit.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {"__async"
@@ -88,7 +90,7 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
 }
 
 fun jsFacing_pageLink(ui: dynamic, def: dynamic) {
-    raise("Kill me please, i don’t deserve living")
+    Shitus.raise("Kill me please, i don’t deserve living")
 }
 
 

@@ -132,7 +132,7 @@ where E : Enum<E>, E : Titled {
                         el.value = value
                         el.dispatchEvent(js("new MouseEvent('mousedown')"))
                         val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
-                        __await<dynamic>(jshit.delay(global.DEBUG_ACTION_HAND_DELAY))
+                        __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                         testActionHand.delete()
 
                         __await<dynamic>(me.setValueExt(json("value" to value, "notify" to true)))

@@ -20,7 +20,7 @@ require('regenerator-runtime/runtime') // TODO:vgrechka Get rid of this shit, as
 //import {apsdata} from './common'
 //global.apsdata = apsdata // TODO:vgrechka @unhack    28879d4e-6b58-4b37-933e-ccdfc42f4be4 
 
-require('into-u/utils-client')
+// require('into-u/utils-client')
 require('into-u/ui')
 
 //import {link, faIcon, Select, spanc, implementControlShit, renderStacks, OpenSourceCodeLink, CollapsibleShit,

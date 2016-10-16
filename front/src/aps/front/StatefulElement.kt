@@ -148,11 +148,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
                                 append("Control 2: ${thisDescription}\n")
                             }
                             console.error(longMessage)
-                            raise(shortMessage, json(
-                                "\$render" to {
-                                    "TODO: Implement ce3ace61-41ee-4c31-ac9c-209748b5cc99"
-                                }
-                            ))
+                            Shitus.raise(shortMessage)
                         }
                     }
                 }
@@ -218,11 +214,11 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
             componentWillUnmount()
 
             removeEventListeners()
-            jshit.utils.arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x -> x.id == controlID })
-            jshit.utils.deleteKey(jshit.art.uiStateContributions, controlID)
+            jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x: dynamic -> x.id == controlID })
+            jsFacing_deleteKey(jshit.art.uiStateContributions, controlID)
 
             if (effectiveShame != null) {
-                jshit.utils.deleteKey(global.testGlobal.controls, effectiveShame)
+                jsFacing_deleteKey(global.testGlobal.controls, effectiveShame)
             }
         }
 

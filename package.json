@@ -19,8 +19,10 @@
   "dependencies": {
     "Haraka": "^2.8.7",
     "body-parser": "^1.15.2",
+    "browserify": "^13.1.0",
     "chokidar": "^1.6.0",
     "convert-source-map": "^1.2.0",
+    "deep-eql": "^1.0.0",
     "diff": "^2.2.3",
     "express": "^4.13.4",
     "forever": "^0.15.2",

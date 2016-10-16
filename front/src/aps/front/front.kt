@@ -347,7 +347,7 @@ fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: dynamic): dy
         "render" to render@{
             try {
                 childrenAsJSArray.forEach({ child: dynamic, idx: dynamic ->
-                    if (!jshit.utils.isObject(child)) return@forEach Unit
+                    if (!Shitus.isObject(child)) return@forEach Unit
                     else {
                         if (js("typeof child") == "function") return@forEach Unit
                         if (child.`$$typeof` == js("Symbol['for']('react.element')")) return@forEach Unit
@@ -392,10 +392,10 @@ fun killme_veryBasicTag(tag: String, attrs: dynamic, vararg _items: dynamic): dy
     val items = if (attrs.items) jsArrayOrArrayLikeObjectToArray(attrs.items) else _items
 
     fun enhanceChild(element: dynamic, key: dynamic): dynamic {
-        if (jshit.utils.isArray(element)) jshit.raise("I don't want arrays as ${tag}’s children (key=${key})")
+        if (global.Array.isArray(element)) Shitus.raise("I don't want arrays as ${tag}’s children (key=${key})")
         val typeofElement = js("typeof element")
 
-        if (typeofElement != "object" && typeofElement != "string") raise("I don't want to deal with ${typeofElement} element children (key=${key})")
+        if (typeofElement != "object" && typeofElement != "string") Shitus.raise("I don't want to deal with ${typeofElement} element children (key=${key})")
 
         val element2 =
             if (element.element)
@@ -408,7 +408,7 @@ fun killme_veryBasicTag(tag: String, attrs: dynamic, vararg _items: dynamic): dy
                 element2
             } else if (element2.`$meta` || element2.`$metaID`) {
                 val meat = element2.meat
-                if (js("typeof meat") != "string") raise("Only string meat, please, fuck you")
+                if (js("typeof meat") != "string") Shitus.raise("Only string meat, please, fuck you")
 
                 var me: dynamic = undefined
                 me = json(
@@ -418,7 +418,11 @@ fun killme_veryBasicTag(tag: String, attrs: dynamic, vararg _items: dynamic): dy
                 )
                 if (element2.`$meta`) {
                     me.controlTypeName = "t()"
-                    global.Object.assign(me, jshit.utils.pick(element2.`$meta`, "\$sourceLocation", "\$definitionStack"))
+                    global.Object.assign(me, json(
+                        "\$sourceLocation" to element2.`$meta`.`$sourceLocation`,
+                        "\$definitionStack" to element2.`$meta`.`$definitionStack`
+                    ))
+//                    global.Object.assign(me, Shitus.pick(element2.`$meta`, "\$sourceLocation", "\$definitionStack"))
                 } else {
                     me.controlTypeName = "backend-t()"
                     me.`$metaID` = element2.`$metaID`
@@ -471,7 +475,7 @@ fun jsFacing_spanc(def: dynamic): dynamic {
 
     val isString = js("typeof content") == "string"
     val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
-    jshit.utils.invariant(jshit.utils.nil(content) || isString || isMeaty, "Bad content for spanc (keys: ${if (content == null) "null-like" else global.Object.keys(content)})")
+    Shitus.invariant(content == null || isString || isMeaty, "Bad content for spanc (keys: ${if (content == null) "null-like" else global.Object.keys(content)})")
 
     return spanc(def.tame, if (isString || content == null) content else content.meat) {
         className = if (def.className != undefined) def.className else ""
@@ -747,15 +751,6 @@ fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStack
         }
     })
 }
-
-fun invariant(cond: dynamic, msg: String, props: dynamic = null) {
-    jshit.utils.invariant(cond, msg, props)
-}
-
-fun raise(msg: String, props: dynamic = undefined) {
-    jshit.utils.raise(msg, props)
-}
-
 
 
 fun div(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {

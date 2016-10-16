@@ -11,9 +11,11 @@ import aps.*
 fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
     fun jsFacing_Form(spec: dynamic): dynamic {
         val primaryButtonTitle = spec.primaryButtonTitle; val cancelButtonTitle = spec.cancelButtonTitle; val autoFocus = spec.autoFocus;
-        val fields = spec.fields; val rpcFun = spec.rpcFun; val onSuccess = spec.onSuccess; val onError = spec.onError;
+        val fields = spec.fields; val rpcFun = spec.rpcFun; val onSuccess = spec.onSuccess;
         val className = spec.className; val dontShameButtons = spec.dontShameButtons; val errorBannerStyle = spec.errorBannerStyle;
         val debugName = spec.debugName; val getInvisibleFieldNames = spec.getInvisibleFieldNames; val onCancel = spec.onCancel;
+
+        val onError: ((x: Any?) -> Promise<Any?>)? = spec.onError
 
         fun formTicker(): dynamic {
             return jshit.elcl(json(
@@ -29,7 +31,7 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
             ))
         }
 
-        return jshit.statefulElement(json("ctor" to statefulElementCtor@{update: dynamic ->
+        return jshit.statefulElement(json("ctor" to statefulElementCtor@{ update: dynamic ->
             var working: dynamic = undefined
             var error: dynamic = undefined
             var focusedField: dynamic = undefined
@@ -38,7 +40,8 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
             fun figureOutActualVisibleFieldNames() {
                 actualVisibleFieldNames = fields.map({x -> x.getName()})
                 if (getInvisibleFieldNames) {
-                    actualVisibleFieldNames = jshit.utils.without.apply(null, js("[]").concat(jsArrayOf(actualVisibleFieldNames), getInvisibleFieldNames()))
+                    actualVisibleFieldNames = jsArrayToList(actualVisibleFieldNames).without(jsArrayToList(getInvisibleFieldNames())).toJSArray()
+//                    actualVisibleFieldNames = Shitus.without.apply(null, js("[]").concat(jsArrayOf(actualVisibleFieldNames), getInvisibleFieldNames()))
                 }
             }
 
@@ -47,15 +50,15 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
                     for (field in jsArrayToList(fields)) {
                         if (field.getName() == name) return@outta field
                     }
-                    jshit.utils.raise("No fucking field [${name}] in the form")
+                    Shitus.raise("No fucking field [${name}] in the form")
                 },
 
                 "fieldChanged" to {
                     // @wip rejection
                     if (getInvisibleFieldNames) {
-                        val oldVisible = jshit.utils.clone(actualVisibleFieldNames)
+                        val oldVisible = Shitus.clone(actualVisibleFieldNames)
                         figureOutActualVisibleFieldNames()
-                        if (!jshit.utils.isEqual(oldVisible, actualVisibleFieldNames)) {
+                        if (!Shitus.isEqual(oldVisible, actualVisibleFieldNames)) {
                             update()
                         }
                     }
@@ -105,7 +108,8 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
 
                                             if (res.error) {
                                                 error = res.error
-                                                __await<dynamic>(jshit.utils.fova(onError, res))
+                                                onError?.let {__await(it(res))}
+//                                                __await<dynamic>(jshit.utils.fova(onError, res))
                                             } else {
                                                 error = undefined
                                                 __await<dynamic>(onSuccess(res))
@@ -152,9 +156,11 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
 fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
     fun jsFacing_Form(spec: dynamic): dynamic {
         val primaryButtonTitle = spec.primaryButtonTitle; val cancelButtonTitle = spec.cancelButtonTitle; val autoFocus = spec.autoFocus;
-        val fields = spec.fields; val rpcFun = spec.rpcFun; val onSuccess = spec.onSuccess; val onError = spec.onError;
+        val fields = spec.fields; val rpcFun = spec.rpcFun; val onSuccess = spec.onSuccess;
         val className = spec.className; val dontShameButtons = spec.dontShameButtons; val errorBannerStyle = spec.errorBannerStyle;
         val debugName = spec.debugName; val getInvisibleFieldNames = spec.getInvisibleFieldNames; val onCancel = spec.onCancel;
+
+        val onError: ((Any?) -> Promise<Any?>)? = spec.onError
 
         fun formTicker(): dynamic {
             return jshit.elcl(json(
@@ -179,7 +185,7 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
             fun figureOutActualVisibleFieldNames() {
                 actualVisibleFieldNames = fields.map({x -> x.getName()})
                 if (getInvisibleFieldNames) {
-                    actualVisibleFieldNames = jshit.utils.without.apply(null, js("[]").concat(jsArrayOf(actualVisibleFieldNames), getInvisibleFieldNames()))
+                    actualVisibleFieldNames = jsArrayToList(actualVisibleFieldNames).without(jsArrayToList(getInvisibleFieldNames())).toJSArray()
                 }
             }
 
@@ -188,15 +194,15 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
                     for (field in jsArrayToList(fields)) {
                         if (field.getName() == name) return@outta field
                     }
-                    jshit.utils.raise("No fucking field [${name}] in the form")
+                    Shitus.raise("No fucking field [${name}] in the form")
                 },
 
                 "fieldChanged" to {
                     // @wip rejection
                     if (getInvisibleFieldNames) {
-                        val oldVisible = jshit.utils.clone(actualVisibleFieldNames)
+                        val oldVisible = Shitus.clone(actualVisibleFieldNames)
                         figureOutActualVisibleFieldNames()
-                        if (!jshit.utils.isEqual(oldVisible, actualVisibleFieldNames)) {
+                        if (!Shitus.isEqual(oldVisible, actualVisibleFieldNames)) {
                             update()
                         }
                     }
@@ -246,7 +252,8 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
 
                                             if (res.error) {
                                                 error = res.error
-                                                __await<dynamic>(jshit.utils.fova(onError, res))
+                                                onError?.let {__await(it(res))}
+//                                                __await<dynamic>(jshit.utils.fova(onError, res))
                                             } else {
                                                 error = undefined
                                                 __await<dynamic>(onSuccess(res))
@@ -297,8 +304,8 @@ fun legacy_implementControlShit(arg: dynamic) {
     val implementTestKeyDown: dynamic = arg.implementTestKeyDown
 
     if (def.controlTypeName || def.ctn) me.controlTypeName = def.controlTypeName || def.ctn
-    invariant(me.controlTypeName, "I want controlTypeName")
-    invariant(!(me.tame && me.tamy), "I want either tame or tamy")
+    Shitus.invariant(me.controlTypeName, "I want controlTypeName")
+    Shitus.invariant(!(me.tame && me.tamy), "I want either tame or tamy")
 
     me.`$definitionStack` = def.`$definitionStack`
     val `$definitionStack` = me.`$definitionStack`
@@ -312,7 +319,7 @@ fun legacy_implementControlShit(arg: dynamic) {
 //        if (def.shameIsTamePath != undefined) me.shameIsTamePath = true
 
     if (def.tamyShamy) {
-        invariant(!(def.tamy || def.shamy), "tamyShamy is incompatible with tamy or shamy")
+        Shitus.invariant(!(def.tamy || def.shamy), "tamyShamy is incompatible with tamy or shamy")
         def.shamy = def.tamyShamy
         def.tamy = def.shamy
     }
@@ -332,7 +339,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         else me.tame = def.tame
     }
     if (!me.tattrs) me.tattrs = def.tattrs
-    if (me.tattrs) invariant(me.tame, "Control with tattrs should be tamed")
+    if (me.tattrs) Shitus.invariant(me.tame, "Control with tattrs should be tamed")
 
     if (me.tame && me.controlTypeName && me.tame != me.controlTypeName) me.debugDisplayName = "${me.tame}"
     else if (def.tame) me.debugDisplayName = def.tame
@@ -367,7 +374,9 @@ fun legacy_implementControlShit(arg: dynamic) {
                 return@onClick jshit.revealControl(me)
             }
 
-            __await<dynamic>(jshit.utils.fova(me.onRootClick, e))
+            val shit: ((Any?) -> Promise<Any?>)? = me.onRootClick
+            shit?.let {__await(it(e))}
+//            __await<dynamic>(jshit.utils.fova(me.onRootClick, e))
         })
     }
 
@@ -404,20 +413,22 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             if (me.tame) {
                 for (another: dynamic in jsArrayToList(elementControls)) {
-                    if (another.tame) raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed", json(
-                        "\$render" to {
-                            fun renderControl(co: dynamic): dynamic {
-                                val cshit = jshit.CollapsibleShit(json("content" to jshit.diva(json(), jshit.renderStacks(jshit.pickStacks(co)))))
-                                return jshit.diva(json(),
-                                    jshit.diva(json("style" to json("display" to "flex", "marginRight" to 10)),
-                                        jshit.diva(json("style" to json("fontWeight" to "bold")), co.debugDisplayName),
-                                        cshit.renderCaret(json("style" to json("marginLeft" to 10)))),
-                                    cshit.renderContent())
-                            }
+                    if (another.tame) Shitus.raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed")
 
-                            jshit.diva(json("style" to json("display" to "flex")), renderControl(me), renderControl(another))
-                        }
-                    ))
+//                        raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed", json(
+//                        "\$render" to {
+//                            fun renderControl(co: dynamic): dynamic {
+//                                val cshit = jshit.CollapsibleShit(json("content" to jshit.diva(json(), jshit.renderStacks(jshit.pickStacks(co)))))
+//                                return jshit.diva(json(),
+//                                    jshit.diva(json("style" to json("display" to "flex", "marginRight" to 10)),
+//                                        jshit.diva(json("style" to json("fontWeight" to "bold")), co.debugDisplayName),
+//                                        cshit.renderCaret(json("style" to json("marginLeft" to 10)))),
+//                                    cshit.renderContent())
+//                            }
+//
+//                            jshit.diva(json("style" to json("display" to "flex")), renderControl(me), renderControl(another))
+//                        }
+//                    ))
                 }
             }
 
@@ -475,7 +486,7 @@ fun legacy_implementControlShit(arg: dynamic) {
             }
 
             if (me.effectiveShame) {
-                if (jshit.utils.keys(global.testGlobal.controls).includes(me.effectiveShame)) {
+                if (global.Object.keys(global.testGlobal.controls).includes(me.effectiveShame)) {
                     me.stickException(json("exception" to Error("testGlobal.controls already contains thing shamed ${me.effectiveShame}")))
                 }
                 global.testGlobal.controls[me.effectiveShame] = me
@@ -487,11 +498,11 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             removeEventListeners()
             // @wip perf
-            jshit.utils.arrayDeleteFirstThat(jshit.elementIDToControls[me.elementID], {x: dynamic -> x.id == me.id})
-            jshit.utils.deleteKey(jshit.art.uiStateContributions, me.id)
+            jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[me.elementID], {x: dynamic -> x.id == me.id})
+            jsFacing_deleteKey(jshit.art.uiStateContributions, me.id)
 
             if (me.effectiveShame) {
-                jshit.utils.deleteKey(global.testGlobal.controls, me.effectiveShame)
+                jsFacing_deleteKey(global.testGlobal.controls, me.effectiveShame)
             }
         }
     ))
@@ -518,7 +529,8 @@ fun legacy_implementControlShit(arg: dynamic) {
     }
 
     me.getTamePath = getTamePath@{
-        invariant(me.tame, "getTamePath can only be called on tamed control", json("\$definitionStack" to def.`$definitionStack`))
+        Shitus.invariant(me.tame, "getTamePath can only be called on tamed control")
+//        invariant(me.tame, "getTamePath can only be called on tamed control", json("\$definitionStack" to def.`$definitionStack`))
 
         var res: dynamic = me.tame
         val parents = jshit.byid(me.elementID).parents()
@@ -558,11 +570,15 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             if (jshit.testSpeed == "slow") {
                 val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
-                __await<dynamic>(jshit.delay(global.DEBUG_ACTION_HAND_DELAY))
+                __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
-                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
+                val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
+                shit?.let {__await(it(stubEvent))}
+//                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
             } else {
-                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
+                val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
+                shit?.let {__await(it(stubEvent))}
+//                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
             }
         }
     }
@@ -579,9 +595,13 @@ fun legacy_implementControlShit(arg: dynamic) {
                 val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
                 __await<dynamic>(jshit.utils.delay(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
-                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
+                val shit: ((Any?) -> Promise<Any?>)? = implementTestKeyDown.onKeyDown
+                shit?.let {__await(it(stubEvent))}
+//                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
             } else {
-                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
+                val shit: ((Any?) -> Promise<Any?>)? = implementTestKeyDown.onKeyDown
+                shit?.let {__await(it(stubEvent))}
+//                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
             }
         }
     }
@@ -605,7 +625,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         val codeLines = jsArrayOf()
 
         val inputLines = jsArrayOf()
-        for (co: dynamic in jsArrayToList(jshit.utils.values(global.testGlobal.controls))) {
+        for (co: dynamic in jsArrayToList(Shitus.values(global.testGlobal.controls))) {
             if (co.testSetValue) {
                 if (!co.testGetValue) {
                     jshit.raiseWithMeta(json("message" to "co.testSetValue requires co.testGetValue", "meta" to co))
@@ -637,7 +657,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         if (expectationWillBeGeneratedShit) {
             codeLines.push("${"s"}{assert: {\$tag: '${jshit.utils.uuid()}', expected: '---generated-shit---'}},")
         } else {
-            raise("implement this case properly")
+            Shitus.raise("implement this case properly")
             codeLines.push("art.uiState({\$tag: '${jshit.utils.uuid()}', expected: {")
             codeLines.push()
             codeLines.push("}})")
@@ -698,7 +718,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                                             )))
 
                                             val m = codeArea.getValue().match(global.RegExp("\\\$tag: \"(.*?)\""))
-                                            invariant(m && m[1], "Where the fuck is tag in generated code?")
+                                            Shitus.invariant(m && m[1], "Where the fuck is tag in generated code?")
                                             insertedCodeLink = jshit.diva(json(
                                                 "style" to json("marginLeft" to 8)),
                                                 jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
@@ -712,7 +732,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                 },
 
                 "onClose" to {
-                    jshit.utils.deleteKey(jshit.thingsToDoAfterHotUpdate, "control_captureAction")
+                    jsFacing_deleteKey(jshit.thingsToDoAfterHotUpdate, "control_captureAction")
                 }
             )))
         }
@@ -726,9 +746,9 @@ fun jsFacing_horiza(vararg ignored: dynamic): dynamic {
     val items = js("Array.prototype.slice.call(arguments, 1)")
 
     val itemStyle = arg.itemStyle
-    jshit.utils.deleteKey(arg, "itemStyle")
+    jsFacing_deleteKey(arg, "itemStyle")
     val spacing = if (arg.spacing == null) 10 else arg.spacing
-    jshit.utils.deleteKey(arg, "spacing")
+    jsFacing_deleteKey(arg, "spacing")
 
 
     return jshit.diva(global.Object.assign(arg, json(

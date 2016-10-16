@@ -77,7 +77,7 @@ fun jsFacing_liveBadge2(ui: dynamic, def: dynamic): dynamic {
                 },
 
                 "componentWillUnmount" to {
-                    jshit.utils.deleteKey(ui.liveStatusUpdaters, def.name)
+                    jsFacing_deleteKey(ui.liveStatusUpdaters, def.name)
                 },
 
                 "contributeTestState" to {state: dynamic ->

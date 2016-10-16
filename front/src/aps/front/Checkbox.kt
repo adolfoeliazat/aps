@@ -9,7 +9,7 @@ package aps.front
 import aps.*
 
 fun jsFacing_Checkbox(def: dynamic): dynamic {
-    val onChange: dynamic = def.onChange
+    val onChange: (() -> Promise<Unit>)? = def.onChange
     val initialValue: dynamic = if (def.initialValue != null) def.initialValue else false
 
     var disabled: Boolean = false
@@ -29,7 +29,8 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
                         "onChange" to {"__async"
                             value = !value
                             update()
-                            __await<dynamic>(jshit.utils.fova(onChange))
+                            onChange?.let {__await(it())}
+//                            __await<dynamic>(fova(onChange))
                         }
                     ))
                 },

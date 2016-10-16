@@ -682,7 +682,7 @@ fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", item
             ))
         }
         else {
-            raise("Weird state: ${state}")
+            Shitus.raise("Weird state: ${state}")
         }
     }
 }
@@ -754,7 +754,7 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): Expe
             ))
         }
         else {
-            raise("Weird filter to ${filter}")
+            Shitus.raise("Weird filter to ${filter}")
         }
 
         if (ordering == Ordering.ASC.name) {
@@ -770,7 +770,7 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): Expe
             ))
         }
         else {
-            raise("Weird ordering to ${ordering}")
+            Shitus.raise("Weird ordering to ${ordering}")
         }
     }
 }

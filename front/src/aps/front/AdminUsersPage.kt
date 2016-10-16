@@ -41,7 +41,7 @@ fun pageHeader(arg: Json): ReactElement {
             if (label.level == "success") {
                 global.Object.assign(style, json("background" to "" + LIGHT_GREEN_700))
             } else {
-                raise("Weird pageHeader label level: ${label.level}")
+                Shitus.raise("Weird pageHeader label level: ${label.level}")
             }
             return@map jshit.spana(json("tame" to "label${jshit.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
                 jshit.spancTitle(json("title" to label.title)))

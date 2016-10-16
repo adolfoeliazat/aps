@@ -103,7 +103,7 @@ object art {
         var stepIndex = 0
         instructions.forEachIndexed {instrIndex, instr ->
             if (instrIndex == until) {
-                jshit.utils.dlog("Stopping test before instruction ${instrIndex}")
+                dlog("Stopping test before instruction ${instrIndex}")
                 return __asyncResult(Unit)
             }
 
@@ -111,13 +111,13 @@ object art {
                 val wpname: String = jshit.getCurrentTestScenarioName() + " -- " + instr.name
                 if (skipping) {
                     if (instr.name == from) {
-                        jshit.utils.dlog("Restoring world point ${wpname}")
+                        dlog("Restoring world point ${wpname}")
 //                        __await<dynamic>(debugRPC(json("db" to undefined, "fun" to "danger_restoreWorldPoint", "wpname" to wpname)))
                         __await(WorldPointRequest.send(wpname, RESTORE))
                         skipping = false
                     }
                 } else {
-                    jshit.utils.dlog("Saving world point ${wpname}")
+                    dlog("Saving world point ${wpname}")
 //                    __await(debugRPC(json("db" to undefined, "fun" to "danger_saveWorldPoint", "wpname" to wpname)))
                     __await(WorldPointRequest.send(wpname, SAVE))
                 }
@@ -209,7 +209,7 @@ object art {
         if (skipping) {
             console.warn("WTF, I’ve just skipped all test steps")
         } else {
-            jshit.utils.dlog("Seems test is passed")
+            dlog("Seems test is passed")
         }
 
         return __asyncResult(Unit)
@@ -381,7 +381,7 @@ object art {
                             "action" -> span { style { marginRight(5); padding(3); backgroundColor = GREEN_100; fontSize = "75%" }; -"Action" }
                             "state" -> span { style { marginRight(5); padding(3); backgroundColor = LIGHT_BLUE_100; fontSize = "75%" }; -"State" }
                             "navigation" -> span { style { marginRight(5); padding(3); backgroundColor = BROWN_50; fontSize = "75%" }; -"Navigation" }
-                            else -> raise("WTF is instr.kind")
+                            else -> Shitus.raise("WTF is instr.kind")
                         }
                         - title
                     },
@@ -455,7 +455,7 @@ fun gertrude(def: dynamic) {
 
     jshit.setLastSeenTag(tag)
     if (expected == undefined) {
-        raise("WTF")
+        Shitus.raise("WTF")
     }
     if (expected == "---generated-shit---") {
         expected = global.GENERATED_SHIT[tag]
@@ -495,7 +495,7 @@ fun gertrude(def: dynamic) {
         }
     }
 
-    if (jshit.utils.deepEquals(actual, expected)) {
+    if (global.deepEql(actual, expected)) {
         if (thisIsReassertion) {
             console.warn("// TODO:vgrechka If reassertion after hot reload passed, make it clear in UI    e5d48597-62d4-4740-b915-04f6934c2bc0 ")
         }
@@ -549,7 +549,7 @@ fun gertrude(def: dynamic) {
                     if (jshit.utils.isBlank(valueLine)) return false
 
                     val colonIndex = valueLine.indexOf(":")
-                    invariant(colonIndex != -1, "Expecting colon: ${valueLine}")
+                    Shitus.invariant(colonIndex != -1, "Expecting colon: ${valueLine}")
                     val key = jshit.utils.trim(valueLine.slice(0, colonIndex).replace(js("/'/g"), ""))
                     if (extenderKeys.includes(key)) {
                         return true
@@ -855,7 +855,7 @@ fun gertrude(def: dynamic) {
                     updateWholeShit()
 
                     if (scrollThere && keys.length) {
-                        jshit.utils.fov(pileOfShit["scrollToDivForKey-${keys[0]}"])
+                        shittyFov(pileOfShit["scrollToDivForKey-${keys[0]}"])
                     }
                 }
             )
@@ -897,15 +897,15 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 
     jshit.art.stateContributionsByControl = js("new Map()")
 
-    for (contribute in jsArrayToList(jshit.utils.values(jshit.art.uiStateContributions))) {
+    for (contribute in jsArrayToList(Shitus.values(jshit.art.uiStateContributions))) {
         contribute(json(
             "put" to {arg: dynamic ->
                 // {$definitionStack, $callStack, control, key, value}
                 val `$definitionStack` = arg.`$definitionStack`; val `$callStack` = arg.`$callStack`
                 val control = arg.control; val key = arg.key; val value = arg.value
 
-                jshit.utils.invariant(control, "I want control for state.put()")
-                if (jshit.utils.keys(actual).includes(key)) {
+                Shitus.invariant(control, "I want control for state.put()")
+                if (global.Object.keys(actual).includes(key)) {
                     val message = "uiStateContribution put duplication: key=${key}, value=${value}"
 
                     runni {"__async"
