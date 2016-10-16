@@ -23,7 +23,7 @@
     "chokidar": "^1.6.0",
     "convert-source-map": "^1.2.0",
     "deep-eql": "^1.0.0",
-    "diff": "^2.2.3",
+    "diff": "^3.0.1",
     "express": "^4.13.4",
     "forever": "^0.15.2",
     "markdown-it": "^6.0.5",

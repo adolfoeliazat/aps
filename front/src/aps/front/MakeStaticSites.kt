@@ -454,7 +454,6 @@ object MakeStaticSites : IMakeStaticSites {
         sh.cp("${vendor}/jquery-2.2.4/jquery.min.js", root)
         sh.cp("-r", "${vendor}/bootstrap-3.3.6", root)
         sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
-        sh.cp("${vendor}/jsdiff-3.0.1/diff.min.js", root)
         sh.cp("${vendor}/react-15.3.2/react.js", root)
         sh.cp("${vendor}/react-15.3.2/react-dom.js", root)
         sh.cp("${kindaDirname}/../asset/*", root)
@@ -464,7 +463,12 @@ object MakeStaticSites : IMakeStaticSites {
         val entryStream = js("new (require('stream')).Readable")
         entryStream.push("""
             if (typeof global === 'undefined') global = window
+
+            global.React = require('react')
+            global.ReactDOM = require('react-dom')
+
             ${if (mode == Mode.DEBUG) """
+                global.JsDiff = require('diff')
                 global.deepEql = require('deep-eql')
             """ else ""}
         """)
@@ -1549,9 +1553,6 @@ object MakeStaticSites : IMakeStaticSites {
 
     <script src="deps.js"></script>
     <script src="jquery.min.js"></script>
-    <script src="diff.min.js"></script>
-    <script src="react.js"></script>
-    <script src="react-dom.js"></script>
     <!-- <script src="jquery-hack.js"></script> -->
     <script src="bootstrap-hack.js"></script>
     <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->

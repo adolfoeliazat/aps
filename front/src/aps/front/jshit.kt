@@ -6,10 +6,6 @@
 
 package aps.front
 
-@native object JsDiff {
-    fun diffLines(string1: String, string2: String): Any?
-}
-
 @native interface JShitUtils {
     var jQuery: dynamic
 //    var arrayDeleteFirstThat: dynamic
