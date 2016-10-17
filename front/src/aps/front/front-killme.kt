@@ -461,7 +461,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                     }
                 }
 
-                for (entry in jsArrayToList(jshit.utils.toPairs(me.tattrs || js("({})")))) {
+                for (entry in jsArrayToList(lodash.toPairs(me.tattrs || js("({})")))) {
                     val key: dynamic = entry[0]
                     val value: dynamic = entry[1]
                     if (value != null) {
@@ -566,7 +566,7 @@ fun legacy_implementControlShit(arg: dynamic) {
             val arg: dynamic = if (_arg) _arg else json()
             val testActionHandOpts = arg.testActionHandOpts
 
-            val stubEvent = json("preventDefault" to jshit.utils.noop, "stopPropagation" to jshit.utils.noop)
+            val stubEvent = json("preventDefault" to Shitus.noop, "stopPropagation" to Shitus.noop)
 
             if (jshit.testSpeed == "slow") {
                 val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
@@ -589,7 +589,7 @@ fun legacy_implementControlShit(arg: dynamic) {
             val testActionHandOpts = arg.testActionHandOpts
             val keyCode = arg.keyCode
 
-            val stubEvent = json("preventDefault" to jshit.utils.noop, "stopPropagation" to jshit.utils.noop, "keyCode" to keyCode)
+            val stubEvent = json("preventDefault" to Shitus.noop, "stopPropagation" to Shitus.noop, "keyCode" to keyCode)
 
             if (jshit.testSpeed == "slow") {
                 val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
@@ -635,17 +635,18 @@ fun legacy_implementControlShit(arg: dynamic) {
                 if (includeShames && !includeShames.includes(co.effectiveShame)) shouldCapture = false
                 if (excludeShames && excludeShames.includes(co.effectiveShame)) shouldCapture = false
                 if (shouldCapture) {
-                    inputLines.push("${"s"}{setValue: {shame: '${co.effectiveShame}', value: ${jshit.utils.toLiteralCode(co.testGetValue())}}},")
+
+                    inputLines.push("${"s"}{setValue: {shame: '${co.effectiveShame}', value: ${global.nodeUtil.inspect(co.testGetValue(), json("depth" to null))}}},")
                 }
             }
         }
 
         codeLines.push("${"s"}{step: {kind: 'action', long: ${"t"}('${todoActionDescription || "TODO Action description".asDynamic()}')}},")
         codeLines.push.apply(codeLines.push, inputLines)
-        val stampUTC = jshit.utils.moment.tz("UTC").format("YYYY/MM/DD HH:mm:ss")
+        val stampUTC = global.moment.tz("UTC").format("YYYY/MM/DD HH:mm:ss")
         val timestampPropCode = ", timestamp: '${stampUTC}'"
         if (me.testSetValue && me.setValueIsAction) {
-            codeLines.push("${"s"}{setValue: {shame: '${me.effectiveShame}', value: ${jshit.utils.toLiteralCode(me.testGetValue())}${if (me.setValueIsAction) timestampPropCode else ""}}},")
+            codeLines.push("${"s"}{setValue: {shame: '${me.effectiveShame}', value: ${global.nodeUtil.inspect(me.testGetValue(), json("depth" to null))}${if (me.setValueIsAction) timestampPropCode else ""}}},")
         }
         if (me.testClick) {
             codeLines.push("${"s"}{click: {shame: '${me.effectiveShame}'${timestampPropCode}}},")
@@ -655,10 +656,10 @@ fun legacy_implementControlShit(arg: dynamic) {
         val expectationWillBeGeneratedShit = true
 
         if (expectationWillBeGeneratedShit) {
-            codeLines.push("${"s"}{assert: {\$tag: '${jshit.utils.uuid()}', expected: '---generated-shit---'}},")
+            codeLines.push("${"s"}{assert: {\$tag: '${Shitus.uuid()}', expected: '---generated-shit---'}},")
         } else {
             Shitus.raise("implement this case properly")
-            codeLines.push("art.uiState({\$tag: '${jshit.utils.uuid()}', expected: {")
+            codeLines.push("art.uiState({\$tag: '${Shitus.uuid()}', expected: {")
             codeLines.push()
             codeLines.push("}})")
         }
@@ -669,7 +670,7 @@ fun legacy_implementControlShit(arg: dynamic) {
             var thePane: dynamic = null
             thePane = jshit.openDebugPane(json("name" to "openActionCapturePane", "height" to 250,
                 "content" to jshit.updatableElement(json(), updatableElementCtor@{update: dynamic ->
-                    val code = jshit.utils.codeLinesToString(json(codeLines, "indent" to 0))
+                    val code = Shitus.codeLinesToString(json(codeLines, "indent" to 0))
 
                     val codeArea = jshit.Input(json(
                         "kind" to "textarea", "rows" to 8, "style" to json("fontFamily" to "monospace"),
@@ -752,7 +753,7 @@ fun jsFacing_horiza(vararg ignored: dynamic): dynamic {
 
 
     return jshit.diva(global.Object.assign(arg, json(
-        "items" to jshit.utils.fcomapo(items,
+        "items" to Shitus.fcomapo(items,
             {v: dynamic, k: dynamic, i: dynamic ->
                 jshit.diva(json("style" to global.Object.assign(
                     json("verticalAlign" to "middle"),

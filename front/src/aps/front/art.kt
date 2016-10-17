@@ -96,7 +96,7 @@ object art {
 
         var skipping = from != js("'start'")
 
-        val debugRPC = jshit.getDebugRPC()
+//        val debugRPC = jshit.getDebugRPC()
 
 
 
@@ -139,7 +139,7 @@ object art {
                     val instr = instr as TestInstruction.Action
                     val control = getControlForAction(json("implementing" to "testSetValue"))
                     if (instr.timestamp.there) {
-                        __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
+//                        __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
                         __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
 //                        __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
                     }
@@ -183,7 +183,7 @@ object art {
                     is TestInstruction.Click -> {
                         val control = getControlForAction(json("implementing" to "testClick"))
                         if (instr.timestamp.there) {
-                            __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
+//                            __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
                             __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                         }
                         __await<dynamic>(control.testClick(instr))
@@ -191,7 +191,7 @@ object art {
                     is TestInstruction.KeyDown -> {
                         val control = getControlForAction(json("implementing" to "testKeyDown"))
                         if (instr.timestamp.there) {
-                            __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
+//                            __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
                             __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                         }
                         __await<dynamic>(control.testKeyDown(instr))
@@ -510,7 +510,7 @@ fun gertrude(def: dynamic) {
     } else {
         detailsUI = jshit.updatableElement(js("({})"), wholeShitCtor@ { updateWholeShit ->
             var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
-            var paneControls: dynamic = null; var lineHideFilter = jshit.utils.noop
+            var paneControls: dynamic = null; var lineHideFilter = Shitus.noop
             var highlightedKeys = js("({})"); var pileOfShit = js("({})")
             val progressPlaceholder = jshit.Placeholder()
             var unifyIndicesCheck: dynamic = null; var hideKeyRepetitionsCheck: dynamic = null
@@ -520,7 +520,7 @@ fun gertrude(def: dynamic) {
                     // {stripIndices}={}
                     val stripIndices: Boolean = opts.stripIndices
 
-                    var s = jshit.utils.deepInspect(it)
+                    var s = global.nodeUtil.inspect(it, json("depth" to null))
                     // s = s.replace(/\\n/g, "\n")
 
                     if (stripIndices) {
@@ -535,7 +535,7 @@ fun gertrude(def: dynamic) {
                         .map({x: dynamic ->
                             var res = x
                             res = res.trim()
-                            if (res == "{" || res == "}" || jshit.utils.isBlank(res)) return@map res
+                            if (res == "{" || res == "}" || Shitus.isBlank(res)) return@map res
                             if (!res.endsWith(",")) res += ","
                             return@map res
                         })
@@ -546,11 +546,11 @@ fun gertrude(def: dynamic) {
 
                 fun isExtValueLine(valueLine: dynamic): Boolean {
                     if (valueLine == "{" || valueLine == "}") return false
-                    if (jshit.utils.isBlank(valueLine)) return false
+                    if (Shitus.isBlank(valueLine)) return false
 
                     val colonIndex = valueLine.indexOf(":")
                     Shitus.invariant(colonIndex != -1, "Expecting colon: ${valueLine}")
-                    val key = jshit.utils.trim(valueLine.slice(0, colonIndex).replace(js("/'/g"), ""))
+                    val key = Shitus.trim(valueLine.slice(0, colonIndex).replace(js("/'/g"), ""))
                     if (extenderKeys.includes(key)) {
                         return true
                     }
@@ -560,8 +560,8 @@ fun gertrude(def: dynamic) {
 
                 val pileOfShit = js("({})")
 
-                jshit.utils.sortKeys(actual) // Order of keys sent over the wire is mangled
-                jshit.utils.sortKeys(expected)
+                Shitus.sortKeys(actual) // Order of keys sent over the wire is mangled
+                Shitus.sortKeys(expected)
 
                 val definitionStacks = js("[]"); val callStacks = js("[]"); val controls = js("[]"); val origKeys = js("[]")
                 for (key in jsArrayToList(global.Object.keys(actual))) {
@@ -725,7 +725,7 @@ fun gertrude(def: dynamic) {
 
                 var actualStringForPasting = actualStringOrig.trim()
                 if (actualStringForPasting[0] == "{" || actualStringForPasting[0] == "[") {
-                    actualStringForPasting = jshit.utils.trimStart(actualStringForPasting.slice(1, actualStringForPasting.length - 1))
+                    actualStringForPasting = Shitus.trimStart(actualStringForPasting.slice(1, actualStringForPasting.length - 1))
                 }
                 val chars = actualStringForPasting.split("")
 
@@ -755,7 +755,7 @@ fun gertrude(def: dynamic) {
                     }
                     from = backtickIndex + 1
                 }
-                replacements = jshit.utils.sortBy(replacements, "from")
+                replacements = Shitus.sortBy(replacements, "from")
                 var newActualStringForPasting = ""; from = 0
                 for (replacement in jsArrayToList(replacements)) {
                     newActualStringForPasting += actualStringForPasting.slice(from, replacement.from) + replacement.newString
@@ -773,7 +773,7 @@ fun gertrude(def: dynamic) {
                         .join("\n")
 
                 tabs = jshit.Tabs(json(
-                    "activeTab" to if (jshit.utils.isEmpty(expected)) "diffLast" else "diff",
+                    "activeTab" to if (Shitus.isEmpty(expected)) "diffLast" else "diff",
                     "tabs" to json(
                         "diff" to json(
                             "title" to "Diff",
@@ -905,7 +905,7 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
                 val control = arg.control; val key = arg.key; val value = arg.value
 
                 Shitus.invariant(control, "I want control for state.put()")
-                if (global.Object.keys(actual).includes(key)) {
+                if (actual != null && global.Object.keys(actual).includes(key)) {
                     val message = "uiStateContribution put duplication: key=${key}, value=${value}"
 
                     runni {"__async"

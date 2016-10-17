@@ -186,6 +186,14 @@ class WorldPointRequest() : RequestMatumba() {
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
+class GetSoftwareVersionRequest : RequestMatumba() {
+    class Response(val ctime: String, val backendInstanceID: String)
+
+    companion object {
+        fun send(): Promise<Response> = callDangerousMatumba(GetSoftwareVersionRequest ())
+    }
+}
+
 class GetSentEmailsRequest : RequestMatumba() {
     class Response(val emails: List<Email>)
 

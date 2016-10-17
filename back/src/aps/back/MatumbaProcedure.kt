@@ -41,7 +41,8 @@ class ProcedureSpec<Req : RequestMatumba, Res : Any>(
     val needsDB: Boolean,
     val needsDangerousToken: Boolean,
     val needsUser: Boolean,
-    val userKinds: Set<UserKind>
+    val userKinds: Set<UserKind>,
+    val considerNextRequestTimestampFiddling: Boolean
 )
 
 fun <Req : RequestMatumba, Res : Any>
@@ -60,10 +61,13 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): ServletService = {servletRequest
         ctx.clientKind = ClientKind.valueOf(rmap["clientKind"] as String)
         ctx.lang = Language.valueOf(rmap["lang"] as String)
 
-        ctx.requestTimestamp = TestServerFiddling.nextRequestTimestamp?.let {
-            TestServerFiddling.nextRequestTimestamp = null
-            it
-        } ?: Timestamp(Date().time)
+        ctx.requestTimestamp = Timestamp(Date().time)
+        if (spec.considerNextRequestTimestampFiddling) {
+            TestServerFiddling.nextRequestTimestamp?.let {
+                TestServerFiddling.nextRequestTimestamp = null
+                ctx.requestTimestamp = it
+            }
+        }
 
         ctx.clientDomain = when (ctx.lang) {
             Language.EN -> when (ctx.clientKind) {
@@ -166,7 +170,8 @@ publicProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRes
         needsDB = true,
         needsDangerousToken = false,
         needsUser = false,
-        userKinds = setOf()))
+        userKinds = setOf(),
+        considerNextRequestTimestampFiddling = true))
 
 fun <Req : RequestMatumba, Res : Any>
 anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): ServletService =
@@ -177,7 +182,8 @@ anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRe
         needsDB = true,
         needsDangerousToken = false,
         needsUser = true,
-        userKinds = setOf(UserKind.CUSTOMER, UserKind.WRITER, UserKind.ADMIN)))
+        userKinds = setOf(UserKind.CUSTOMER, UserKind.WRITER, UserKind.ADMIN),
+        considerNextRequestTimestampFiddling = true))
 
 fun <Req : RequestMatumba, Res : Any>
 adminProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): ServletService =
@@ -189,7 +195,8 @@ adminProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResp
         needsDB = true,
         needsDangerousToken = false,
         needsUser = true,
-        userKinds = setOf(UserKind.ADMIN)))
+        userKinds = setOf(UserKind.ADMIN),
+        considerNextRequestTimestampFiddling = true))
 
 
 

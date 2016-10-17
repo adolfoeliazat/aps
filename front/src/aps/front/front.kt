@@ -733,7 +733,7 @@ fun <R> runni(f: () -> R): R {
 
 fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
     return Promise<dynamic>({ resolve, reject ->
-        jshit.utils.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
+        Shitus.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
             // @wip sourceLocation
             var lines = stackString.lines()
             lines = lines.slice(firstSignificantStackLine..lines.lastIndex)

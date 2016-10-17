@@ -70,7 +70,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
             )
         } else {
             if (user.kind == UserKind.WRITER) {
-                privateItems = jshit.utils.compact(jsArrayOf(
+                privateItems = lodash.compact(jsArrayOf(
                 user.state == UserState.COOL && TopNavItem(json("name" to "orders", "title" to t("My Orders", "Мои заказы"), "counter" to privateCounter)),
                 user.state == UserState.COOL && TopNavItem(json("name" to "store", "title" to t("Store", "Аукцион"), "counter" to privateCounter)),
                 TopNavItem(json("name" to "profile", "title" to t("Profile", "Профиль"), "counter" to privateCounter))

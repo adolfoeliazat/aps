@@ -24,41 +24,52 @@ object MakeStaticSites : IMakeStaticSites {
     val kindaDirname = "e:/work/aps/aps/lib"
 
     val require = js("require")
+
+    init {
+        global = js("global")
+        global.lodash = require("lodash")
+    }
+
     val process = js("process")
     val fs = js("require('fs')")
     val sh = js("require('shelljs')")
     val legacyStuff = js("require('e:/work/aps/aps/lib/stuff')")
     val legacyClient = js("require('e:/work/aps/aps/lib/client')")
 
+
     var t: (dynamic) -> dynamic = js("undefined")
 
     lateinit var mode: Mode
 
-    override fun runShit(_argv: dynamic) {"__async"
-        js("require('e:/work/foundation/u')")
+    override fun runShit(argv: dynamic) {"__async"
+        try {
+            js("require('e:/work/foundation/u')")
 
-        sh.config.fatal = true
-        js("Error").stackTraceLimit = js("Infinity")
+            sh.config.fatal = true
+            js("Error").stackTraceLimit = js("Infinity")
 
-        val argv = js("require('minimist')(_argv)")
-        val modeString = argv.mode ?: wtf("Gimme fucking --mode")
-        mode = when (modeString) {
-            "debug" -> Mode.DEBUG
-            "prod" -> Mode.PROD
-            else -> wtf("modeString $modeString")
-        }
+            val margv = js("require('minimist')(argv)")
+            val modeString = margv.mode ?: wtf("Gimme fucking --mode")
+            mode = when (modeString) {
+                "debug" -> Mode.DEBUG
+                "prod" -> Mode.PROD
+                else -> wtf("modeString $modeString")
+            }
 
-        __await(makeWriterSite(json("lang" to "UA")))
+            __await(makeWriterSite(json("lang" to "UA")))
 //        makeCustomerSite(json("lang" to "UA"))
 
-        println("COOL")
+            println("COOL")
+        } catch (e: Throwable) { // run.js won't get it, because it's in promise
+            println(e.asDynamic().stack)
+        }
     }
 
     fun makeWriterSite(arg: dynamic): Promise<Unit> {"__async"
         // {lang}
         val lang: String = arg.lang
 
-        val _t = jshit.utils.makeT(lang)
+        val _t = Shitus.makeT(lang)
         t = run {
             fun anon(ignored: dynamic): dynamic {
                 // ...args
@@ -255,7 +266,7 @@ object MakeStaticSites : IMakeStaticSites {
                 ).map{section: dynamic ->
             jshit.diva(json(),
                 jshit.diva(json(), h3Smaller(t(section.title))),
-                jshit.diva(json(), markdown(jshit.utils.dedent(t(section.content)))))}
+                jshit.diva(json(), markdown(Shitus.dedent(t(section.content)))))}
             ))
             )
         ))
@@ -437,7 +448,7 @@ object MakeStaticSites : IMakeStaticSites {
                 ).map{section: dynamic ->
             jshit.diva(json(),
                 jshit.diva(json(), markdownPiece("> " + t(section.title))),
-                jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(jshit.utils.dedent(t(section.content)))))}
+                jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(Shitus.dedent(t(section.content)))))}
             ))
             )
         ))
@@ -454,8 +465,6 @@ object MakeStaticSites : IMakeStaticSites {
         sh.cp("${vendor}/jquery-2.2.4/jquery.min.js", root)
         sh.cp("-r", "${vendor}/bootstrap-3.3.6", root)
         sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
-        sh.cp("${vendor}/react-15.3.2/react.js", root)
-        sh.cp("${vendor}/react-15.3.2/react-dom.js", root)
         sh.cp("${kindaDirname}/../asset/*", root)
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
         sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
@@ -464,10 +473,17 @@ object MakeStaticSites : IMakeStaticSites {
         entryStream.push("""
             if (typeof global === 'undefined') global = window
 
+            global.lodash = require('lodash')
             global.React = require('react')
             global.ReactDOM = require('react-dom')
+            global.moment = require('moment-timezone')
 
             ${if (mode == Mode.DEBUG) """
+                global.Buffer = require('buffer').Buffer // Like under Node, needed by source-map
+                global.sourceMap = require('source-map')
+                global.convertSourceMap = require('convert-source-map')
+                global.superagent = require('superagent')
+                global.nodeUtil = require('util')
                 global.JsDiff = require('diff')
                 global.deepEql = require('deep-eql')
             """ else ""}
@@ -517,7 +533,7 @@ object MakeStaticSites : IMakeStaticSites {
         // {lang}
         val lang: String = arg.lang
 
-        val _t = jshit.utils.makeT(lang)
+        val _t = Shitus.makeT(lang)
         t = run {
             fun anon(ignored: dynamic): dynamic {
                 // ...args
@@ -714,7 +730,7 @@ object MakeStaticSites : IMakeStaticSites {
                         ).map{section: dynamic ->
                         jshit.diva(json(),
                             jshit.diva(json(), h3Smaller(t(section.title))),
-                            jshit.diva(json(), markdown(jshit.utils.dedent(t(section.content)))))}
+                            jshit.diva(json(), markdown(Shitus.dedent(t(section.content)))))}
                 ))
             )
         ))
@@ -938,7 +954,7 @@ object MakeStaticSites : IMakeStaticSites {
                         ).map{section: dynamic ->
                         jshit.diva(json(),
                             jshit.diva(json(), markdownPiece("> " + t(section.title))),
-                            jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(jshit.utils.dedent(t(section.content)))))}
+                            jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(Shitus.dedent(t(section.content)))))}
                 ))
             )
         ))
@@ -1795,7 +1811,7 @@ object MakeStaticSites : IMakeStaticSites {
     }
 
     fun tdedent(ss: dynamic): dynamic {
-        return t(jshit.utils.omapo(ss, jshit.utils.dedent))
+        return t(Shitus.omapo(ss, Shitus.dedent))
     }
 
     fun markdownPiece(_content: dynamic): dynamic {
@@ -1803,7 +1819,7 @@ object MakeStaticSites : IMakeStaticSites {
         if (js("typeof content") == "object") {
             content = t(content)
         }
-        return markdown(jshit.utils.dedent(content))
+        return markdown(Shitus.dedent(content))
     }
 
     fun horizBulletsRow(items: dynamic, opts: dynamic = js("({})")): dynamic {
@@ -1818,13 +1834,13 @@ object MakeStaticSites : IMakeStaticSites {
     }
 
     fun crashForDebuggingSake_randomly() {
-        if (jshit.random(1) == 0) return jshit.utils.clog("Not crashing for now")
+        if (jshit.random(1) == 0) return clog("Not crashing for now")
 
-        jshit.utils.clog("Receive some shit on stdout")
+        clog("Receive some shit on stdout")
         global.process.stderr.write("More on stderr\n")
-        jshit.utils.clog("Stdout shit continues on another line")
+        clog("Stdout shit continues on another line")
         global.process.stderr.write("And to stderr again\n")
-        jshit.utils.clog("Can you see all this shit in DevUI?")
+        clog("Can you see all this shit in DevUI?")
         global.process.exit(1)
     }
 

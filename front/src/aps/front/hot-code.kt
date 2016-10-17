@@ -49,14 +49,15 @@ fun runHotCodeUpdateStuff(arg: dynamic): dynamic {"__async"
             if (jshit.hotCodeUpdateDisabled) return@tick
 
             try {
-                val sofv = __await<dynamic>(jshit.debugRPC(json("fun" to "danger_getSoftwareVersion", "db" to null)))
+//                val sofv = __await<dynamic>(jshit.debugRPC(json("fun" to "danger_getSoftwareVersion", "db" to null)))
+                val sofv = __await(GetSoftwareVersionRequest.send())
 
-                if (sofv.bundleCtime) { // Can be undefined if bundle is deleted
-                    if (lastBundleCtime && lastBundleCtime !== sofv.bundleCtime) {
+//                if (sofv.ctime) { // Can be undefined if bundle is deleted
+                    if (lastBundleCtime && lastBundleCtime !== sofv.ctime) {
                         dlog("Bundle was updated, you can refresh this shit")
                     }
-                    lastBundleCtime = sofv.bundleCtime
-                }
+                    lastBundleCtime = sofv.ctime
+//                }
 
                 val biid = sofv.backendInstanceID
                 if (!lastBackendInstanceID) {
@@ -214,7 +215,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
 
 
             run { // Kotlin
-                jshit.utils.invalidateKotlinStackSourceMapConsumer()
+                Shitus.invalidateKotlinStackSourceMapConsumer()
 
 
                 __await<dynamic>(newNativePromise {resolve: dynamic, reject: dynamic ->

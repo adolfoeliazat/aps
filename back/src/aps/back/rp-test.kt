@@ -7,6 +7,10 @@
 package aps.back
 
 import aps.*
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.attribute.BasicFileAttributes
 import java.sql.Timestamp
 import java.util.*
 
@@ -25,7 +29,8 @@ testProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res): ServletService
         needsDB = false,
         needsDangerousToken = true,
         needsUser = false,
-        userKinds = setOf()))
+        userKinds = setOf(),
+        considerNextRequestTimestampFiddling = false))
 
 @RemoteProcedureFactory fun imposeNextRequestTimestamp() = testProcedure(
     ImposeNextRequestTimestampRequest(),
@@ -112,7 +117,18 @@ object EmailMatumba {
     }
 )
 
+val backendInstanceID = "" + UUID.randomUUID()
 
+@RemoteProcedureFactory fun getSoftwareVersion() = testProcedure(
+    GetSoftwareVersionRequest(),
+    runShit = {req, res ->
+        val path = Paths.get("e:/work/aps/front/out/front-enhanced.js")
+        val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)
+        GetSoftwareVersionRequest.Response(
+            ctime = "" + Math.max(attrs.creationTime().toMillis(), attrs.lastModifiedTime().toMillis()),
+            backendInstanceID = backendInstanceID)
+    }
+)
 
 
 

@@ -20,6 +20,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import sh = require('shelljs')
 
+global.lodash = require('lodash')
+
 // @wip kotlin
 global.kotlin = require('E:/work/aps/aps/built/ua-writer/kotlin/lib/kotlin.js')
 require('E:/work/aps/aps/built/ua-writer/kotlin/front-enhanced.js')

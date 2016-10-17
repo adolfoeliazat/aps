@@ -58,9 +58,7 @@ class AdminUsersPage(val ui: LegacyUIShit) {
             ui,
             urlPath = "admin-users.html",
             procedureName = "getUsers",
-//            header = {pageHeader(t("TOTE", "Пользователи"))},
             header = {oldShitAsReactElementable(pageHeader(json("title" to t("TOTE", "Пользователи"))))},
-//            header = {oldShitAsReactElementable(jshit.pageHeader(json("title" to t("TOTE", "Пользователи"))))},
             filterSelectValues = UserFilter.values(),
             defaultFilter = UserFilter.ALL,
             plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
