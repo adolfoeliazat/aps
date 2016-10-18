@@ -65,9 +65,9 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
         "style" to style,
         "id" to id,
         "onClick" to {"__async"
-            jshit.effects.blinkOn(global.Object.assign(json("target" to jshit.byid(id), "dtop" to 3), blinkOpts))
+            jshit.effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
             if (name != null) {
-                jshit.byid(id).css("text-decoration", "none")
+                Shitus.byid(id).css("text-decoration", "none")
                 global.testGlobal["link_" + name + "_blinks"] = true
             }
 
@@ -81,7 +81,7 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
 
             jshit.effects.blinkOff()
             if (name) {
-                jshit.byid(id).css("text-decoration", "")
+                Shitus.byid(id).css("text-decoration", "")
                 global.testGlobal["link_" + name + "_blinks"] = false
             }
     })

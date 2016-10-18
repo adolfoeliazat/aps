@@ -85,8 +85,7 @@ object KotlinShit : IKotlinShit {
 
         jshit.implementControlShit = ::legacy_implementControlShit
 
-
-        art.initArtShit()
+//        art.initArtShit()
 
         initTestShit()
         igniteRPCShit()
@@ -173,17 +172,11 @@ object KotlinShit : IKotlinShit {
 
     override fun loadDebugKotlinPlaygroundPage() {
         KotlinShit.ui.setPage(json(
-            "header" to jshit.pageHeader(json("title" to "debug-kotlin-playground")),
+            "header" to Shitus.pageHeader(json("title" to "debug-kotlin-playground")),
             "body" to Shitus.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5")
         ))
     }
-
-
 }
-
-
-
-
 
 class ReactClassShit(
     val render: () -> ReactElement,

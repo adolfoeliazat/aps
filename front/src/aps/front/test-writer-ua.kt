@@ -14,7 +14,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
         if (slowly) {
             jshit.setTestSpeed("slow")
-            jshit.art.respectArtPauses = true
+            art.respectArtPauses = true
         }
 
         __await(ClearSentEmailsRequest.send())

@@ -161,7 +161,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                              hotFunctions: dynamic,
                              kokoko: dynamic,
                              getMakeOrRemakeExportedShitFunction: dynamic, setMakeOrRemakeExportedShitFunction: dynamic,
-                             getMakeOrRemakeArtFunction: dynamic, setMakeOrRemakeArtFunction: dynamic,
+//                             getMakeOrRemakeArtFunction: dynamic, setMakeOrRemakeArtFunction: dynamic,
                              getInitUIFunctionsFunction: dynamic, setInitUIFunctionsFunction: dynamic) {
     "__async"
     if (MODE != "debug") return
@@ -176,7 +176,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
             makeUIShitIgniterDef.Impl,
             initDebugFunctions,
             getInitUIFunctionsFunction(),
-            getMakeOrRemakeArtFunction(),
+//            getMakeOrRemakeArtFunction(),
         /*...*/hotFunctions.map({hof: dynamic -> hof.`fun`})),
 
         "applyHotCode" to {arg: dynamic -> "__async"
@@ -235,17 +235,17 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                 kokoko(hotIgnition)
             }
 
-            val hotMakeOrRemakeArt = updatedHotFunctions[getMakeOrRemakeArtFunction().hotShitTag]
-            if (hotMakeOrRemakeArt != null) {
-                setMakeOrRemakeArtFunction(hotMakeOrRemakeArt)
-            }
-//                        if (hotMakeOrRemakeArt) {
-//                            makeOrRemakeArt = hotMakeOrRemakeArt
-            val oldStepDescriptions = jshit.art.stepDescriptions
-            getMakeOrRemakeArtFunction()()
-            jshit.art.stepDescriptions = oldStepDescriptions
-
-            dlog("Hot-refreshed makeOrRemakeArt")
+//            val hotMakeOrRemakeArt = updatedHotFunctions[getMakeOrRemakeArtFunction().hotShitTag]
+//            if (hotMakeOrRemakeArt != null) {
+//                setMakeOrRemakeArtFunction(hotMakeOrRemakeArt)
+//            }
+////                        if (hotMakeOrRemakeArt) {
+////                            makeOrRemakeArt = hotMakeOrRemakeArt
+//            val oldStepDescriptions = art.stepDescriptions
+//            getMakeOrRemakeArtFunction()()
+//            art.stepDescriptions = oldStepDescriptions
+//
+//            dlog("Hot-refreshed makeOrRemakeArt")
 //                        }
 
 
@@ -265,7 +265,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
             impl.stale = true // @ctx forgetmenot-1-4
 //                            def.Impl = hotImpl
             instantiateImpl()
-            jshit.byid("css").replaceWith("<style id='css'>${impl.css()}</style>")
+            Shitus.byid("css").replaceWith("<style id='css'>${impl.css()}</style>")
             dlog("Hot-refreshed Impl")
 //                        }
 

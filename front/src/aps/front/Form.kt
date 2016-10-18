@@ -64,7 +64,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
                 Shitus.forma.apply(null, js("[]").concat(
                     jsArrayOf(
                         json("className" to spec.className),
-                        if (error != null) jshit.errorBanner(json("content" to error, "style" to spec.errorBannerStyle)) else undefined),
+                        if (error != null) Shitus.errorBanner(json("content" to error, "style" to spec.errorBannerStyle)) else undefined),
 
                     spec.req.fields
                         .filter{x -> actualVisibleFieldNames.contains(x.name)}

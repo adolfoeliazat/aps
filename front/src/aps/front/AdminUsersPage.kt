@@ -68,7 +68,7 @@ class AdminUsersPage(val ui: LegacyUIShit) {
 
             renderItem = {index, _user -> oldShitAsReactElementable(object {
                 var user = _user
-                val renderedThing = jshit.Placeholder()
+                val renderedThing = Shitus.Placeholder()
                 val headingID = "hehe-" + puid()
 
                 init {
@@ -151,9 +151,9 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                         - diva {tame = "heading"; elementID = headingID; style {marginBottom(10); backgroundColor = BLUE_GRAY_50; borderBottom = "1px solid ${BLUE_GRAY_100}"}
                             - spana {style {fontWeight = "normal"}
                                 - spanc("title", user.firstName + " " + user.lastName) {style {fontSize = "135%"}}
-                                - spanc("no", "" + jshit.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
+                                - spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
 
-                            - asReactElement(jshit.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to Color.BLUE_GRAY_600),
+                            - asReactElement(Shitus.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to Color.BLUE_GRAY_600),
                                 "items" to headingActionItems)))
                         }
 
@@ -162,8 +162,8 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                 }
 
                 fun scrollToHeading() {
-                    val top = jshit.byid(headingID).offset().top - 50 - 15
-                    global.requestAnimationFrame { jshit.utils.jQuery(document).scrollTop(top) }
+                    val top = Shitus.byid(headingID).offset().top - 50 - 15
+                    global.requestAnimationFrame { js("$")(document).scrollTop(top) }
                 }
 
 
@@ -172,7 +172,7 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                     return ignora/when (res) {
                         is ZimbabweResponse.Shitty -> peggy(json(
                             "headingActionItems" to jsArrayOf(),
-                            "body" to jshit.errorBanner(json("content" to res.error))))
+                            "body" to Shitus.errorBanner(json("content" to res.error))))
 
                         is ZimbabweResponse.Hunky -> {
                             user = res.meat.user

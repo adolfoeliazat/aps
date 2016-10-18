@@ -173,7 +173,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
 //                        return
                     }
 
-                    jshit.effects.blinkOn(json("target" to jshit.byid(id).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
+                    jshit.effects.blinkOn(json("target" to Shitus.byid(id).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
                     global.testGlobal["topNavbarLink_" + name + "_blinks"] = true
 
                     if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(jshit.isInTestScenario() && jshit.getTestSpeed() == "fast")) {
@@ -194,7 +194,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                     "click" to {"__async"
                         if (jshit.getTestSpeed() == "slow") {
                             me.showHand()
-                            __await<dynamic>(jshit.utils.delay(global.DEBUG_ACTION_HAND_DELAY))
+                            __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                             me.hideHand()
                             __await<dynamic>(onClick(js("undefined")))
                         } else {
@@ -206,7 +206,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                         val arg = if (_arg) arg else js("({})")
                         val testActionHandOpts = arg.testActionHandOpts
 
-                        testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(id)), testActionHandOpts))
+                        testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(id)), testActionHandOpts))
                     }
                     "hideHand" to {
                         testActionHand.delete()
@@ -214,14 +214,14 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                 }
                 global.testGlobal.topNavbarLinks[name] = me
 
-                jshit.byid(id).on("click", ::onClick)
+                Shitus.byid(id).on("click", ::onClick)
 
 
             },
 
             "componentWillUnmount" to {
                 jsFacing_deleteKey(global.testGlobal.topNavbarLinks, name)
-                jshit.byid(id).off()
+                Shitus.byid(id).off()
             }
         ))
     }

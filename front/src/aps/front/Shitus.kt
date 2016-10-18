@@ -7,10 +7,19 @@
 package aps.front
 
 import aps.*
+import aps.front.Color.*
 
 @native val lodash: dynamic = noImpl
 
 object Shitus {
+    val glyph: dynamic = ::jsFacing_glyph
+    val errorBanner: dynamic = ::jsFacing_errorBanner
+    val byid: dynamic = ::jsFacing_byid
+    val byid0: dynamic = ::jsFacing_byid0
+    val horizontala: dynamic = ::jsFacing_horizontala
+    val hor1: dynamic = ::jsFacing_hor1
+    val hor2: dynamic = ::jsFacing_hor2
+    val nostring: dynamic = ::jsFacing_nostring
     val elcl: dynamic = ::jsFacing_elcl
     val diva: dynamic = ::jsFacing_diva
     val spana: dynamic = ::jsFacing_spana
@@ -103,6 +112,8 @@ object Shitus {
     val spancTitle: dynamic = ::jsFacing_spancTitle
     val statefulElement: dynamic = ::jsFacing_statefulElement
     val updatableElement: dynamic = ::jsFacing_updatableElement
+    val pageHeader: dynamic = ::jsFacing_pageHeader
+    val Placeholder: dynamic = ::jsFacing_Placeholder
 }
 
 fun jsFacing_spancTitle(def: dynamic): dynamic {
@@ -605,6 +616,167 @@ fun jsFacing_updatableElement(def: dynamic, ctor_killme: dynamic): dynamic {
     )), json())
 }
 
+fun jsFacing_pageHeader(def: dynamic): dynamic {
+    val title: dynamic = def.title
+    val labels: dynamic = def.labels ?: jsArrayOf()
+    val className: dynamic = def.className ?: ""
 
+    val id = puid()
+
+    val me = json(
+        "render" to render@{
+            // TODO:vgrechka Externalize pageHeader colors    bec22c87-4fa1-4118-aa88-a37a6baeca56
+            return@render Shitus.diva(json("className" to "page-header ${className}", "style" to json("marginTop" to 0, "marginBottom" to 15)),
+                Shitus.h3a.apply(null, js("[]").concat(
+                    json("tame" to "pageHeader", "style" to json("marginBottom" to 0)),
+                    Shitus.spancTitle(json("title" to title)),
+                    /*...*/labels.map({label: dynamic, i: dynamic ->
+                        val style = json(
+                            "fontSize" to "12px",
+                            "fontWeight" to "normal",
+                            "position" to "relative",
+                            "top" to "-4px",
+                            "left" to "8px",
+                            "display" to "inline",
+                            "padding" to ".2em .6em .3em",
+                            "lineHeight" to "1",
+                            "color" to "#fff",
+                            "textAlign" to "center",
+                            "whiteSpace" to "nowrap",
+                            "verticalAlign" to "baseline",
+                            "borderRadius" to ".25em"
+                        )
+                        if (label.level === "success") {
+                            global.Object.assign(style, json("background" to LIGHT_GREEN_700.toString()))
+                        } else {
+                            Shitus.raise("Weird pageHeader label level: ${label.level}")
+                        }
+                        return@map Shitus.spana(json("tame" to "label${jshit.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
+                            Shitus.spancTitle(json("title" to label.title))
+                        )
+                    })
+                ))
+            )
+        }
+    )
+
+    return Shitus.elcl(me)
+}
+
+fun jsFacing_Placeholder(): dynamic {
+    var content: dynamic = null
+    var prevContent: dynamic = null
+
+    return Shitus.statefulElement(json(
+        "ctor" to ctor@{update: dynamic ->
+            var me: dynamic = null
+            me = json(
+                "render" to render@{
+                    return@render content
+                },
+
+                "setContent" to {newContent: dynamic ->
+                    prevContent = content
+                    content = newContent
+                    update()
+                },
+
+                "setPrevContent" to {
+                    me.setContent(prevContent)
+                }
+            )
+
+            return@ctor me
+        }
+    ))
+}
+
+fun jsFacing_nostring(arg: dynamic): dynamic {
+    val no: dynamic = arg.no
+    var lang: dynamic = arg.lang
+
+    if (!lang) {
+        if (jsTypeOf(global.LANG) == "string") lang = global.LANG
+        else Shitus.raise("If not lang, I want global LANG")
+    }
+    lang = lang.toUpperCase()
+
+    if (lang === "EN") return "#" + no
+    if (lang === "UA" || lang === "RU") return "№" + no
+    wtf("Weird lang for nostring: ${lang}")
+}
+
+fun jsFacing_horizontala() {
+    val all = js("Array.prototype.slice.call(arguments)")
+    val def = all[0]
+    val items = all.slice(1)
+
+    val spacing: dynamic = def.spacing
+    val style: dynamic = def.style ?: json()
+    val className: dynamic = def.className ?: ""
+
+    Shitus.invariant(spacing != null, "Gimme some spacing")
+
+    return Shitus.diva.apply(null, js("[]").concat(
+        Shitus.asn1(json("controlTypeName" to (def.controlTypeName ?: "horizontala"), "className" to className, "style" to Shitus.asnn(json("display" to "flex"), style)), def),
+        /*...*/items.map({item: dynamic, i: dynamic -> if (item != null) Shitus.diva(json("style" to json("marginLeft" to if (i > 0) spacing else 0)), item) else null}))
+    )
+}
+
+fun jsFacing_hor1() {
+    val all = js("Array.prototype.slice.call(arguments)")
+    val def = all[0]
+    val items = all.slice(1)
+
+    return Shitus.horizontala.apply(null, js("[]").concat(Shitus.asn1(json("controlTypeName" to "hor1", "spacing" to 4), def), /*...*/items))
+}
+
+fun jsFacing_hor2() {
+    val all = js("Array.prototype.slice.call(arguments)")
+    val def = all[0]
+    val items = all.slice(1)
+
+    return Shitus.horizontala.apply(null, js("[]").concat(Shitus.asn1(json("controlTypeName" to "hor2", "spacing" to 8), def), /*...*/items))
+}
+
+fun jsFacing_byid(id: dynamic): dynamic {
+    return js("$")("#" + ("" + id).asDynamic().replace(global.RegExp("\\.", "g"), "\\."))
+}
+
+fun jsFacing_byid0(id: dynamic): dynamic {
+    return jsFacing_byid(id)[0]
+}
+
+fun jsFacing_errorBanner(def: dynamic): dynamic {
+    val content: dynamic = def.content
+    val style: dynamic = def.style
+
+    return Shitus.blockquotea(json("controlTypeName" to "errorBanner", "style" to Shitus.asnn(json(
+        "backgroundColor" to RED_50,
+        "borderLeft" to "3px solid " + Color.RED_300,
+        "fontSize" to "14px",
+        "marginBottom" to 15
+        ), style)),
+        Shitus.spanc(json("tame" to "errorBanner", "content" to content)))
+}
+
+fun jsFacing_glyph(_name: dynamic, _def: dynamic): dynamic {
+    var name: dynamic = _name
+    val def: dynamic = _def ?: json()
+
+    val hint: dynamic = def.hint
+    val className: dynamic = def.className ?: ""
+    val attrs: dynamic = lodash.omit(def, "hint", "className")
+
+    val names: dynamic = Shitus.tokens(name)
+    name = names[0]
+    var className0: dynamic = null
+    val className1: dynamic = names[1] ?: ""
+    if (name.startsWith("gi-"))
+        className0 = "glyphicon glyphicon-" + name.slice(3)
+    else
+        className0 = "fa fa-" + name
+    return React.createElement("i", global.Object.assign(json("className" to "${className0} ${className1} ${className}", "title" to hint), attrs))
+}
 
 

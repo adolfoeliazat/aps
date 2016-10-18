@@ -51,7 +51,7 @@ where E : Enum<E>, E : Titled {
                             "disabled" to (volatileDisabled?.let {it()} ?: persistentDisabled),
 
                             "onChange" to {"__async"
-                                me.setValue(jshit.byid0(me.elementID).value)
+                                me.setValue(Shitus.byid0(me.elementID).value)
                                 onChange()
                                 __await(onChanga())
                             },
@@ -78,7 +78,7 @@ where E : Enum<E>, E : Titled {
 //                },
 
                 "getValue" to {stringValue},
-                "focus" to {jshit.byid(me.elementID).focus()},
+                "focus" to {Shitus.byid(me.elementID).focus()},
 
                 "contributeTestState" to {state: dynamic ->
                     if (me.tame) {
@@ -128,10 +128,10 @@ where E : Enum<E>, E : Titled {
                     val testActionHandOpts = arg.testActionHandOpts
 
                     if (jshit.testSpeed == "slow") {
-                        val el = jshit.byid0(me.elementID)
+                        val el = Shitus.byid0(me.elementID)
                         el.value = value
                         el.dispatchEvent(js("new MouseEvent('mousedown')"))
-                        val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
+                        val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
                         __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                         testActionHand.delete()
 
@@ -145,7 +145,7 @@ where E : Enum<E>, E : Titled {
 
                 "setBlinking" to {b: dynamic ->
                     if (b) {
-                        jshit.effects.blinkOn(json("target" to jshit.byid(me.elementID), "widthCountMargin" to false))
+                        jshit.effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
                     } else {
                         jshit.effects.blinkOff()
                     }

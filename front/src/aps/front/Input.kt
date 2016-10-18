@@ -134,8 +134,8 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
 
                 "getValue" to { value },
                 "setLoading" to {x: dynamic -> loading = x; update() },
-                "focus" to { jshit.byid(me.elementID).focus() },
-                "select" to { jshit.byid(legacySpec.get("id")).select() },
+                "focus" to { Shitus.byid(me.elementID).focus() },
+                "select" to { Shitus.byid(legacySpec.get("id")).select() },
                 "setDisabled" to {x: dynamic -> _isDisabled = x; update() },
                 "isDisabled" to { _isDisabled },
 
@@ -172,7 +172,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
 
                 "setBlinking" to {b: dynamic ->
                     if (b) {
-                        jshit.effects.blinkOn(json("target" to jshit.byid(me.elementID), "widthCountMargin" to false))
+                        jshit.effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
                     } else {
                         jshit.effects.blinkOff()
                     }
@@ -182,7 +182,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
             me.renderInRevelationPane = {
                 val els = js("[]")
                 Shitus.diva(json("style" to json()),
-                    jshit.hor2(json(),
+                    Shitus.hor2(json(),
                         Shitus.link(json(
                             "title" to t("Capture primary click with only this entered"),
                             "onClick" to onClick@{

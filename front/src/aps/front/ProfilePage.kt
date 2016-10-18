@@ -61,7 +61,7 @@ class ProfilePage(val ui: LegacyUIShit) {
         }
 
         ui.setPage(json(
-            "header" to jshit.pageHeader(json("title" to t("Profile", "Профиль"))),
+            "header" to Shitus.pageHeader(json("title" to t("Profile", "Профиль"))),
             "body" to pageBody
         ))
 

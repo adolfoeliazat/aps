@@ -64,6 +64,11 @@ abstract class TestInstruction(val opcode: String) : DefinitionStackHolder {
 
 
 object art {
+    var stateContributionsByControl: dynamic = null
+    val halted: Boolean = false
+    var respectArtPauses: Boolean = false
+    var stepDescriptions: dynamic = jsArrayOf()
+    val uiStateContributions: dynamic = json()
     var actionPlaceholderTag: String? = null
     var testInstructions: Iterable<TestInstruction> by HotReloadSurvivingShit("art_testInstructions")
 
@@ -365,7 +370,7 @@ object art {
 
             if (instr is TestInstruction.Step) {
                 val title: Any? = instr.long
-                val untilParamValue = if (instrIndex == jshit.art.stepDescriptions.length - 1) "infinity" else instrIndex
+                val untilParamValue = if (instrIndex == art.stepDescriptions.length - 1) "infinity" else instrIndex
 
                 val stepRowStyle = StyleBuilder()
                 if (!instr.fulfilled) stepRowStyle {
@@ -433,9 +438,88 @@ object art {
             *els.toTypedArray())
     }
 
-    fun initArtShit() {
-        jshit.art = js("({uiStateContributions: {}, stepDescriptions: []})")
-//        jshit.art = js("({uiStateContributions: {}, stateContributionsByControl: new Map(), stepDescriptions: []})")
+//    fun initArtShit() {
+//        jshit.art = js("({ })")
+////        jshit.art = js("({uiStateContributions: {}, stateContributionsByControl: new Map(), stepDescriptions: []})")
+//    }
+
+    fun assert(condition: dynamic, errorMessage: dynamic, _opts: Any? = null) {
+        val opts: dynamic = (_opts ?: json())
+        val detailsUI: dynamic = opts.detailsUI
+        val scrollThere: dynamic = (opts.scrollThere ?: true)
+
+        if (condition) return
+
+        val assertionErrorPane = Shitus.statefulElement(json(
+            "ctor" to ctor@{update: dynamic ->
+                var visible: dynamic = null
+                var content: dynamic = null
+                var top: dynamic = null
+
+                return@ctor json(
+                    "render" to render@{
+                        if (!visible) return@render null
+
+                        val messageStyle = json("fontWeight" to "bold", "paddingBottom" to 5, "marginBottom" to 5, "color" to WHITE.toString())
+                        if (content.stack) {
+                            global.Object.assign(messageStyle, json(
+                                "borderBottom" to "2px solid white")
+                            )
+                        }
+                        return@render Shitus.diva(json("style" to json("backgroundColor" to RED_700, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
+                            Shitus.diva(json("style" to messageStyle), content.message),
+                            content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
+                            content.detailsUI
+                        )
+                    },
+
+                    "set" to {def: dynamic ->
+                        val scrollThere: dynamic = def.scrollThere
+                        content = def
+                        visible = true
+                        update()
+
+                        if (scrollThere && !jshit.preventScrollToBottomOnAssertionError) {
+                            global.requestAnimationFrame({
+                                global.document.body.scrollTop =  js("$")("#debug_assertionErrorPane").offset().top - 60
+                                Unit
+                            })
+                        }
+                    }
+                )
+        }))
+
+        val existingDiv = Shitus.byid("debug_assertionErrorPane")
+        if (existingDiv[0]) {
+            global.ReactDOM.unmountComponentAtNode(existingDiv[0])
+            existingDiv.remove()
+        }
+        Shitus.byid("footer").after("<div id='debug_assertionErrorPane'></div>")
+        global.ReactDOM.render(assertionErrorPane.element, Shitus.byid0("debug_assertionErrorPane"))
+
+        val stack = null
+        assertionErrorPane.set(json("message" to errorMessage + jshit.mdash + jshit.currentTestScenarioName, "stack" to stack, "detailsUI" to detailsUI, "scrollThere" to scrollThere))
+        if (!jshit.preventUIAssertionThrowing) Shitus.raise("UI assertion failed")
+    }
+
+    fun assertionDetailsWithSourceLink(arg: dynamic): dynamic {
+        val `$tag`: dynamic = arg.`$tag`
+        val details: dynamic = arg.details
+        val collapsedDetails: dynamic = arg.collapsedDetails
+        val controls: dynamic = arg.controls
+
+        val cshit = jshit.CollapsibleShit(json("initialOpen" to true, "content" to Shitus.diva(json("style" to json("marginTop" to 5, "marginBottom" to 5)),
+            collapsedDetails || Shitus.spana(json(), "Nothing particularly interesting here"))))
+
+        return Shitus.diva(json("noStateContributions" to true, "style" to json("marginTop" to 5, "padding" to 5, "backgroundColor" to WHITE.toString(), "position" to "relative")),
+            Shitus.horiza(json("style" to json("marginBottom" to 5)),
+                Shitus.spana(json("style" to json("fontWeight" to "bold")), "Assertion ID: "),
+                jshit.OpenSourceCodeLink(json("where" to json("\$tag" to `$tag`))),
+                cshit.renderCaret(json("marginLeft" to 10))),
+            cshit.renderContent(),
+            details,
+            Shitus.diva(json("style" to json("position" to "absolute", "right" to 5, "top" to 5)), controls)
+        )
     }
 
 }
@@ -512,7 +596,7 @@ fun gertrude(def: dynamic) {
             var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
             var paneControls: dynamic = null; var lineHideFilter = Shitus.noop
             var highlightedKeys = js("({})"); var pileOfShit = js("({})")
-            val progressPlaceholder = jshit.Placeholder()
+            val progressPlaceholder = Shitus.Placeholder()
             var unifyIndicesCheck: dynamic = null; var hideKeyRepetitionsCheck: dynamic = null
 
             fun makeFuckingTabs() {
@@ -668,7 +752,7 @@ fun gertrude(def: dynamic) {
                                     val origKey = origKeys[actualLineIndex]
                                     shouldBeHighlighted = highlightedKeys[origKey]
                                     pileOfShit["scrollToDivForKey-${origKey}"] = {
-                                        global.requestAnimationFrame { jshit.utils.jQuery(kotlin.browser.document).scrollTop(jshit.byid(lineDivID).offset().top - 50 - 20) }
+                                        global.requestAnimationFrame { js("$")(kotlin.browser.document).scrollTop(Shitus.byid(lineDivID).offset().top - 50 - 20) }
                                     }
                                 } else {
                                     console.warn("WTF colonIndex is -1")
@@ -861,7 +945,7 @@ fun gertrude(def: dynamic) {
             )
 
             return@wholeShitCtor {
-                jshit.art.assertionDetailsWithSourceLink(json("\$tag" to tag, "details" to tabs, "controls" to paneControls,
+                art.assertionDetailsWithSourceLink(json("\$tag" to tag, "details" to tabs, "controls" to paneControls,
                     "collapsedDetails" to Shitus.updatableElement(js("({})"), {update ->
                         return@updatableElement {
                             Shitus.diva(js("({})"),
@@ -875,7 +959,7 @@ fun gertrude(def: dynamic) {
         })
     }
 
-    jshit.art.assert(false, descr, json("scrollThere" to scrollThere, "detailsUI" to detailsUI))
+    art.assert(false, descr, json("scrollThere" to scrollThere, "detailsUI" to detailsUI))
 }
 
 @native interface LegacyControl
@@ -895,9 +979,9 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
     // {actual}={}
 //    val actual = if (arg) arg.actual else undefined
 
-    jshit.art.stateContributionsByControl = js("new Map()")
+    art.stateContributionsByControl = js("new Map()")
 
-    for (contribute in jsArrayToList(Shitus.values(jshit.art.uiStateContributions))) {
+    for (contribute in jsArrayToList(Shitus.values(art.uiStateContributions))) {
         contribute(json(
             "put" to {arg: dynamic ->
                 // {$definitionStack, $callStack, control, key, value}
@@ -925,10 +1009,10 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
                 }
 
                 if (control) {
-                    var contributions = jshit.art.stateContributionsByControl.get(control)
+                    var contributions = art.stateContributionsByControl.get(control)
                     if (!contributions) {
                         contributions = js("({})")
-                        jshit.art.stateContributionsByControl.set(control, contributions)
+                        art.stateContributionsByControl.set(control, contributions)
                     }
                     contributions[key] = value
                 }
@@ -1021,8 +1105,8 @@ fun openTestPassedPane(def: dynamic) {
             scenarioName = scenarioName.substring(0, m.index)
             links.add(jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to Color.WHITE))))
         }
-        if (jshit.art.actionPlaceholderTag != undefined) {
-            links.add(jshit.marginateLeft(10, jshit.OpenSourceCodeLink(json("where" to json("\$tag" to jshit.art.actionPlaceholderTag), "style" to json("color" to Color.WHITE)))))
+        if (art.actionPlaceholderTag != undefined) {
+            links.add(jshit.marginateLeft(10, jshit.OpenSourceCodeLink(json("where" to json("\$tag" to art.actionPlaceholderTag), "style" to json("color" to Color.WHITE)))))
         }
         val uq = jshit.getURLQueryBeforeRunningTest()
         if (!uq.scrollToBottom || uq.scrollToBottom == "yes" || uq.scrollToBottom == "success") {
@@ -1060,6 +1144,151 @@ fun openTestPassedPane(def: dynamic) {
 
     jshit.debugPanes.set(json(
         "name" to "openTestPassedPane",
-        "parentJqel" to jshit.byid("underFooter"),
+        "parentJqel" to Shitus.byid("underFooter"),
         "element" to Shitus.spana(json(), testPassedPane.element)))
 }
+
+
+//        async scroll({origY, destY, totalTime}) {
+//            const bottom = $(document).height() - window.innerHeight
+//            const current = $(document).scrollTop()
+//            if (origY === 'bottom') origY = bottom
+//            if (origY === 'current') origY = current
+//            if (destY === 'bottom') destY = bottom
+//            if (destY === 'current') destY = current
+//
+//            if ($(document).scrollTop() !== origY) {
+//                if (testSpeed === 'slow') {
+//                    await doit({origY: $(document).scrollTop(), destY: origY, totalTime: 150})
+//                } else {
+//                    $(document).scrollTop(origY)
+//                }
+//            }
+//
+//            await doit({origY, destY, totalTime})
+//
+//            /*async*/ function doit({origY, destY, totalTime}) {
+//                return new Promise(resolve => {
+//                    if (!totalTime) {
+//                        if (testSpeed === 'slow') totalTime= 1000
+//                        else totalTime= 50
+//                    }
+//                    const startTime = Date.now()
+//                    requestAnimationFrame(function it() {
+//                        let y
+//                        const dt = Date.now() - startTime
+//                        if (dt >= totalTime) {
+//                            y = destY
+//                        } else {
+//                            y = origY + (destY - origY) * dt / totalTime
+//                        }
+//                        $(document).scrollTop(y)
+//                        if (y === destY) {
+//                            // dlog('No more scrolling')
+//                            resolve()
+//                        } else {
+//                            requestAnimationFrame(it)
+//                        }
+//                    })
+//                })
+//            }
+//        },
+
+
+//        async pausePoint({$tag, title, theme='lime', locus='bottom'}) {
+//            lastSeenTag = $tag
+//            if (!art.respectArtPauses) return
+//
+//            await art.ui.pollLiveStatus()
+//
+//            await Shitus.run(function() {
+//                return new Promise(resolve => {
+//                    debugPanes.set({name: 'artPause', element: updatableElement(s{}, update => {
+//                        window.addEventListener('keydown', keyListener)
+//
+//                        if (/\n/.test(title)) {
+//                            title = Shitus.spana({style: {whiteSpace: 'pre'}}, dedent(title))
+//                        }
+//
+//                        let top, bottom, left, right, width, borders
+//                        if (locus === 'bottom') {
+//                            bottom = 0
+//                            width = '100%'
+//                            borders = 'top'
+//                        } else if (locus === 'top-right') {
+//                            top = 0
+//                            right = 0
+//                            width = '50%'
+//                            borders = 'left bottom'
+//                        } else {
+//                            Shitus.raise(`Weird locus: ${locus}`)
+//                        }
+//
+//                        let backgroundColor, borderColor
+//                        if (theme === 'lime') {
+//                            backgroundColor = LIME_100
+//                            borderColor = LIME_900
+//                        } else if (theme === 'blue') {
+//                            backgroundColor = BLUE_50
+//                            borderColor = BLUE_700
+//                        }
+//
+//                        const bos = `3px solid ${borderColor}`
+//                        const borderStyles = {
+//                            borderTop: borders.includes('top') && bos,
+//                            borderRight: borders.includes('right')  && bos,
+//                            borderBottom: borders.includes('bottom') && bos,
+//                            borderLeft: borders.includes('left')  && bos
+//                        }
+//
+//                        return _=> Shitus.diva({style: Object.assign({position: 'fixed', zIndex: 100000, display: 'flex', bottom, top, right, left, width, backgroundColor, padding: '10px 10px'}, borderStyles)},
+//                                       Shitus.diva({},
+//                                           Shitus.diva({style: {fontWeight: 'bold'}}, title),
+//                                           OpenSourceCodeLink({where: {$tag}})),
+//                                       button({icon: 'play', style: {marginLeft: 10}, onClick() {
+//                                           resume()
+//                                       }, untested: true}))
+//
+//
+//                        function resume() {
+//                            window.removeEventListener('keydown', keyListener)
+//                            debugPanes.delete({name: 'artPause'})
+//                            resolve()
+//                        }
+//
+//                        function keyListener(e) {
+//                            if (document.activeElement.tagName === 'INPUT') return
+//                            if (e.key === ' ') {
+//                                e.preventDefault()
+//                                e.stopPropagation()
+//                                if (e.ctrlKey) {
+//                                    tinkeringWithTestActionHand = true
+//                                }
+//                                resume()
+//                            }
+//                        }
+//                    })})
+//                })
+//            })
+//        },
+
+//async shitBlinksForMax({$tag, name, max, kind='link'}) {
+//    lastSeenTag = $tag
+//    art.shitBlinks({$tag, name, kind})
+//
+//    const t0 = Date.now()
+//    while (Date.now() - t0 < max) {
+//        if (!testGlobal[kind + '_' + name + '_blinks']) return
+//        await Shitus.delay(50)
+//    }
+//
+//    art.assertWithSourceLink(false, `I expected ${kind} ${name} to stop blinking in ${max}ms`, $tag)
+//},
+
+//        shitBlinks({$tag, name, kind='link'}) {
+//            lastSeenTag = $tag
+//            art.assertWithSourceLink(testGlobal[kind + '_' + name + '_blinks'], `I want ${kind} ${name} to be blinking`, $tag)
+//        },
+
+
+

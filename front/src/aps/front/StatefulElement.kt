@@ -162,11 +162,11 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
         def.componentDidMount = {
             addEventListeners()
 
-            jshit.art.uiStateContributions[controlID] = {state: dynamic ->
+            art.uiStateContributions[controlID] = {state: dynamic ->
                 var shouldContribute = !noStateContributions
 
                 if (shouldContribute) {
-                    jshit.byid(elementID).parents().each {
+                    Shitus.byid(elementID).parents().each {
                         val parentControls = jshit.elementIDToControls[js("this").id]
                         if (!parentControls) undefined
                         else {
@@ -215,7 +215,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
 
             removeEventListeners()
             jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x: dynamic -> x.id == controlID })
-            jsFacing_deleteKey(jshit.art.uiStateContributions, controlID)
+            jsFacing_deleteKey(art.uiStateContributions, controlID)
 
             if (effectiveShame != null) {
                 jsFacing_deleteKey(global.testGlobal.controls, effectiveShame)
@@ -273,11 +273,11 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
         }
 
         removeEventListeners() // Several controls can be on same element, and we don't want to handle click several times
-        jshit.byid(elementID).on("click", ::onClick)
+        Shitus.byid(elementID).on("click", ::onClick)
     }
 
     private fun removeEventListeners() {
-        jshit.byid(elementID).off()
+        Shitus.byid(elementID).off()
     }
 
     protected fun update() {
@@ -293,7 +293,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
         }
 
         var res = tame
-        val parents = jshit.byid(elementID).parents()
+        val parents = Shitus.byid(elementID).parents()
         parents.each {
             val parentControls = jshit.elementIDToControls[js("this").id]
             if (!parentControls) undefined

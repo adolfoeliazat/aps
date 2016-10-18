@@ -81,7 +81,7 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
                         Shitus.forma.apply(null, js("[]").concat(
                             jsArrayOf(
                                 json("className" to className),
-                                error && jshit.errorBanner(json("content" to error, "style" to errorBannerStyle))),
+                                error && Shitus.errorBanner(json("content" to error, "style" to errorBannerStyle))),
                             fields
                                 .filter({x: dynamic -> actualVisibleFieldNames.includes(x.getName())})
                                 .map({x: dynamic -> x.render(json())}),
@@ -225,7 +225,7 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
                         Shitus.forma.apply(null, js("[]").concat(
                             jsArrayOf(
                                 json("className" to className),
-                                error && jshit.errorBanner(json("content" to error, "style" to errorBannerStyle))),
+                                error && Shitus.errorBanner(json("content" to error, "style" to errorBannerStyle))),
                             fields
                                 .filter({x: dynamic -> actualVisibleFieldNames.includes(x.getName())})
                                 .map({x: dynamic -> x.render(json())}),
@@ -355,8 +355,8 @@ fun legacy_implementControlShit(arg: dynamic) {
     }
 
     fun addEventListeners() {
-        jshit.byid(me.elementID).off() // Several controls can be on same element, and we don't want to handle click several times
-        jshit.byid(me.elementID).on("click", onClick@{e: dynamic -> "__async"
+        Shitus.byid(me.elementID).off() // Several controls can be on same element, and we don't want to handle click several times
+        Shitus.byid(me.elementID).on("click", onClick@{e: dynamic -> "__async"
             if (MODE == "debug" && e.ctrlKey) {
                 if (e.shiftKey) {
                     if (me.ignoreDebugCtrlShiftClick) return@onClick Unit
@@ -381,7 +381,7 @@ fun legacy_implementControlShit(arg: dynamic) {
     }
 
     fun removeEventListeners() {
-        jshit.byid(me.elementID).off()
+        Shitus.byid(me.elementID).off()
     }
 
     var came: dynamic = null
@@ -440,12 +440,12 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             addEventListeners()
 
-            jshit.art.uiStateContributions[me.id] = {state: dynamic ->
+            art.uiStateContributions[me.id] = {state: dynamic ->
                 if (me.contributeTestState) {
                     var shouldContribute = !me.noStateContributions
 
                     if (shouldContribute) {
-                        jshit.byid(me.elementID).parents().each {
+                        Shitus.byid(me.elementID).parents().each {
                             val parentControls = jshit.elementIDToControls[js("this").id] || jsArrayOf()
                             for (parentControl in jsArrayToList(parentControls)) {
                                 if (parentControl.noStateContributions) {
@@ -499,7 +499,7 @@ fun legacy_implementControlShit(arg: dynamic) {
             removeEventListeners()
             // @wip perf
             jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[me.elementID], {x: dynamic -> x.id == me.id})
-            jsFacing_deleteKey(jshit.art.uiStateContributions, me.id)
+            jsFacing_deleteKey(art.uiStateContributions, me.id)
 
             if (me.effectiveShame) {
                 jsFacing_deleteKey(global.testGlobal.controls, me.effectiveShame)
@@ -533,7 +533,7 @@ fun legacy_implementControlShit(arg: dynamic) {
 //        invariant(me.tame, "getTamePath can only be called on tamed control", json("\$definitionStack" to def.`$definitionStack`))
 
         var res: dynamic = me.tame
-        val parents = jshit.byid(me.elementID).parents()
+        val parents = Shitus.byid(me.elementID).parents()
         parents.each {
             val parentControls: dynamic = jshit.elementIDToControls[js("this").id] || jsArrayOf()
             for (parentControl in jsArrayToList(parentControls.slice().reverse())) {
@@ -554,7 +554,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         val arg: dynamic = if (_arg) _arg else js("({})")
         val testActionHandOpts = arg.testActionHandOpts
 
-        testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
+        testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
     }
 
     me.testHideHand = {
@@ -569,7 +569,7 @@ fun legacy_implementControlShit(arg: dynamic) {
             val stubEvent = json("preventDefault" to Shitus.noop, "stopPropagation" to Shitus.noop)
 
             if (jshit.testSpeed == "slow") {
-                val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
+                val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
                 __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
                 val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
@@ -592,8 +592,8 @@ fun legacy_implementControlShit(arg: dynamic) {
             val stubEvent = json("preventDefault" to Shitus.noop, "stopPropagation" to Shitus.noop, "keyCode" to keyCode)
 
             if (jshit.testSpeed == "slow") {
-                val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(me.elementID)), testActionHandOpts))
-                __await<dynamic>(jshit.utils.delay(global.DEBUG_ACTION_HAND_DELAY))
+                val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
+                __await<dynamic>(js("$")(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
                 val shit: ((Any?) -> Promise<Any?>)? = implementTestKeyDown.onKeyDown
                 shit?.let {__await(it(stubEvent))}
@@ -683,7 +683,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                     ))
 
                     var insertedCodeLink: dynamic = null
-                    val progressPlaceholder = jshit.Placeholder()
+                    val progressPlaceholder = Shitus.Placeholder()
 
 //                                function focusAndSelect() {
 //                                    requestAnimationFrame(_=> {

@@ -6,80 +6,82 @@
 
 package aps.front
 
-@native interface JShitUtils {
-    var jQuery: dynamic
-//    var arrayDeleteFirstThat: dynamic
-//    var deleteKey: dynamic
-    var delay: dynamic
-    var DEBUG_ACTION_HAND_DELAY: dynamic
-//    var runa: dynamic
-//    var repeat: dynamic
-//    var timeoutSet: dynamic
-//    var dlog: dynamic
-//    var fov: dynamic
-//    var tokens: dynamic
-//    var values: dynamic
-//    var invariant: dynamic
-//    var keys: dynamic
-//    var without: dynamic
-//    var raise: dynamic
-//    var isEqual: dynamic
-//    var clone: dynamic
-//    var fova: dynamic
-//    var isObject: dynamic
-//    var isArray: dynamic
-//    var pick: dynamic
-//    var nil: dynamic
-//    var deepEquals: dynamic
-//    var noop: dynamic
-//    var deepInspect: dynamic
-//    var isBlank: dynamic
-//    var sortKeys: dynamic
-//    var trim: dynamic
-//    var trimStart: dynamic
-//    var sortBy: dynamic
-//    var isEmpty: dynamic
-//    var errorToMappedClientStackString: dynamic
-//    var makeT: dynamic
-//    var dedent: dynamic
-//    var omapo: dynamic
-//    var clog: dynamic
-//    var compact: dynamic
-//    val toPairs: dynamic
-//    val toLiteralCode: dynamic
-//    val moment: dynamic
-//    val uuid: dynamic
-//    val codeLinesToString: dynamic
-//    val fcomapo: dynamic
-//    val invalidateKotlinStackSourceMapConsumer: dynamic
-}
+//@native interface JShitUtils {
+//    var jQuery: dynamic
+////    var arrayDeleteFirstThat: dynamic
+////    var deleteKey: dynamic
+//    var delay: dynamic
+//    var DEBUG_ACTION_HAND_DELAY: dynamic
+////    var runa: dynamic
+////    var repeat: dynamic
+////    var timeoutSet: dynamic
+////    var dlog: dynamic
+////    var fov: dynamic
+////    var tokens: dynamic
+////    var values: dynamic
+////    var invariant: dynamic
+////    var keys: dynamic
+////    var without: dynamic
+////    var raise: dynamic
+////    var isEqual: dynamic
+////    var clone: dynamic
+////    var fova: dynamic
+////    var isObject: dynamic
+////    var isArray: dynamic
+////    var pick: dynamic
+////    var nil: dynamic
+////    var deepEquals: dynamic
+////    var noop: dynamic
+////    var deepInspect: dynamic
+////    var isBlank: dynamic
+////    var sortKeys: dynamic
+////    var trim: dynamic
+////    var trimStart: dynamic
+////    var sortBy: dynamic
+////    var isEmpty: dynamic
+////    var errorToMappedClientStackString: dynamic
+////    var makeT: dynamic
+////    var dedent: dynamic
+////    var omapo: dynamic
+////    var clog: dynamic
+////    var compact: dynamic
+////    val toPairs: dynamic
+////    val toLiteralCode: dynamic
+////    val moment: dynamic
+////    val uuid: dynamic
+////    val codeLinesToString: dynamic
+////    val fcomapo: dynamic
+////    val invalidateKotlinStackSourceMapConsumer: dynamic
+//}
 
-@native interface JShitArt {
-    var uiStateContributions: dynamic
-    var respectArtPauses: dynamic
-    var halted: dynamic
-//    var openTestPassedPane: dynamic
-    var stepDescriptions: dynamic
-    var assertionDetailsWithSourceLink: dynamic
-//    var renderStepDescriptions: dynamic
-    var assert: dynamic
+//@native interface JShitArt {
+////    var uiStateContributions: dynamic
+//    var respectArtPauses: dynamic
+//    var halted: dynamic
+////    var openTestPassedPane: dynamic
+////    var stepDescriptions: dynamic
+//    var assertionDetailsWithSourceLink: dynamic
+////    var renderStepDescriptions: dynamic
+//    var assert: dynamic
+////    var stateContributionsByControl: dynamic
+//    var actionPlaceholderTag: dynamic
 //    var stateContributionsByControl: dynamic
-    var actionPlaceholderTag: dynamic
-    var stateContributionsByControl: dynamic
-
-}
+//
+//}
 
 @native interface JShit {
-    var art: JShitArt
-    var dom: dynamic
-    var pageHeader: dynamic
-    var utils: JShitUtils
-    var Placeholder: dynamic
-    var nostring: dynamic
-    var hor2: dynamic
-    var byid: dynamic
-    var errorBanner: dynamic
-    var glyph: dynamic
+//    var art: JShitArt
+//    var dom: dynamic
+//    var pageHeader: dynamic
+//    var utils: JShitUtils
+//    var Placeholder: dynamic
+//    var nostring: dynamic
+//    var hor1: dynamic
+//    var hor2: dynamic
+//    var byid: dynamic
+//    var byid0: dynamic
+//    var errorBanner: dynamic
+//    var glyph: dynamic
     var elementIDToControls: dynamic
     var getTestSpeed: dynamic
     var showTestActionHand: dynamic
@@ -99,7 +101,6 @@ package aps.front
     var debugCheckEmail_cachedEmails: dynamic
     var darkLink: dynamic
     var sufindex: dynamic
-    var hor1: dynamic
     var rawHtml: dynamic
     var beginTrain: dynamic
     var endTrain: dynamic
@@ -119,7 +120,6 @@ package aps.front
     var alternativeTestSpeed: dynamic
     var browser: dynamic
     var ReactDOM: dynamic
-    var byid0: dynamic
     var DB: dynamic
     var lastTestScenarioName: dynamic
     var getURLQuery: dynamic

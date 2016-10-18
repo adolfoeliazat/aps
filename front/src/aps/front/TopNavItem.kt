@@ -36,7 +36,7 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
                 dwidth = 15
             }
 
-            jshit.effects.blinkOn(json("target" to jshit.byid(aid).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
+            jshit.effects.blinkOn(json("target" to Shitus.byid(aid).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
 
             __await<dynamic>(ui.pushNavigate(href))
 

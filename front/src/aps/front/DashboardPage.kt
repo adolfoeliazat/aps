@@ -12,7 +12,7 @@ class DashboardPage(val ui: LegacyUIShit) {
     fun load(preserveScroll: Boolean = false): Promise<Unit> {"__async"
         val myPage = json(
             "id" to puid(),
-            "header" to jshit.pageHeader(json("title" to t("Dashboard", "Панель"))),
+            "header" to Shitus.pageHeader(json("title" to t("Dashboard", "Панель"))),
             "body" to Shitus.diva(json(),
                 Shitus.diva(json("className" to "row"),
                     Shitus.diva(json("className" to "col-sm-6"),
@@ -83,10 +83,10 @@ class DashboardPage(val ui: LegacyUIShit) {
             )
         )
 
-        val scrollTop = jshit.utils.jQuery(kotlin.browser.document).scrollTop()
+        val scrollTop = js("$")(kotlin.browser.document).scrollTop()
         KotlinShit.ui.setPage(myPage)
         if (preserveScroll) {
-            jshit.utils.jQuery(kotlin.browser.document).scrollTop(scrollTop)
+            js("$")(kotlin.browser.document).scrollTop(scrollTop)
         }
 
         fun scheduleUpdate() {

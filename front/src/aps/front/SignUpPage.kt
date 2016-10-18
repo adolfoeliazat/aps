@@ -11,7 +11,7 @@ import aps.*
 class SignUpPage(val ui: LegacyUIShit) {
     fun load(): Promise<Unit> {"__async"
         ui.setPage(json(
-            "header" to jshit.pageHeader(json("title" to t("Sign Up", "Регистрация"))),
+            "header" to Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация"))),
             "body" to Shitus.diva(json(),
                 FormMatumba<SignUpRequest, GenericResponse>(FormSpec(
                     SignUpRequest(),

@@ -96,7 +96,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "index", // For Writer site
             "comp" to Shitus.diva(json(),
             Shitus.diva(json("className" to "container"),
-                jshit.pageHeader(t(json("EN" to "Welcome to Writer", "UA" to "Приветствуем на Писце"))),
+                Shitus.pageHeader(t(json("EN" to "Welcome to Writer", "UA" to "Приветствуем на Писце"))),
                 markdownPiece(json(
                     "EN" to """
                         Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
@@ -121,7 +121,7 @@ object MakeStaticSites : IMakeStaticSites {
                         Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
                         """)),
 
-                jshit.pageHeader(t(json("EN" to "Features", "UA" to "Фичи"))),
+                Shitus.pageHeader(t(json("EN" to "Features", "UA" to "Фичи"))),
                 horizBulletsRow(jsArrayOf(
                     json("glyph" to "pencil", "EN" to "No plagiarism", "UA" to "No plagiarism"),
                     json("glyph" to "star", "EN" to "Only premium quality", "UA" to "Only premium quality"),
@@ -133,7 +133,7 @@ object MakeStaticSites : IMakeStaticSites {
                     json("glyph" to "life-saver", "EN" to "24/7 support", "UA" to "24/7 support")
                 ), json("horizContentMargin" to 40)),
 
-                jshit.pageHeader(t(json("EN" to "Who We Are", "UA" to "Кто мы"))),
+                Shitus.pageHeader(t(json("EN" to "Who We Are", "UA" to "Кто мы"))),
                 markdownPiece(json(
                     "EN" to """
                         AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
@@ -156,7 +156,7 @@ object MakeStaticSites : IMakeStaticSites {
 
                 renderTestimonials("WRITER"),
 
-                jshit.pageHeader(t(json("EN" to "What We Offer", "UA" to "Мы предлагаем"))),
+                Shitus.pageHeader(t(json("EN" to "What We Offer", "UA" to "Мы предлагаем"))),
                 horizBulletsRow(jsArrayOf(
                     json("glyph" to "envira", "EN" to "Custom essay, research, thesis writing", "UA" to "Custom essay, research, thesis writing"),
                     json("glyph" to "rocket", "EN" to "Plagiarism-free original papers written from scratch", "UA" to "Plagiarism-free original papers written from scratch"),
@@ -179,7 +179,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "why", "highlightedItem" to "why", // For Writer site
             "comp" to Shitus.diva(json(),
             Shitus.diva.apply(null, js("[]").concat(json("className" to "container"),
-                jshit.pageHeader(t(json("EN" to "Why Writer?", "UA" to "Почему Писец?"))),
+                Shitus.pageHeader(t(json("EN" to "Why Writer?", "UA" to "Почему Писец?"))),
                 jsArrayOf(json(
                 "title" to json("EN" to "We care about each customer’s academic success", "UA" to "We care about each customer’s academic success"),
                 "content" to json(
@@ -274,7 +274,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "prices", "highlightedItem" to "prices", // For Writer site
             "comp" to Shitus.diva(json(),
             Shitus.diva(json("className" to "container"),
-                jshit.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
+                Shitus.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
                 markdownPiece(json(
                     "EN" to """
                     Здесь такие идут расценки для писателей.
@@ -284,7 +284,7 @@ object MakeStaticSites : IMakeStaticSites {
                     """
                 )),
 
-                jshit.pageHeader(t(json("EN" to "Pricing Policy", "UA" to "Pricing Policy"))),
+                Shitus.pageHeader(t(json("EN" to "Pricing Policy", "UA" to "Pricing Policy"))),
                 markdownPiece(json(
                     "EN" to """
                     Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
@@ -306,7 +306,7 @@ object MakeStaticSites : IMakeStaticSites {
                     """
                 )),
 
-                jshit.pageHeader(t(json("EN" to "Bonuses", "UA" to "Bonuses"))),
+                Shitus.pageHeader(t(json("EN" to "Bonuses", "UA" to "Bonuses"))),
                 markdownPiece(json(
                     "EN" to "Ordering a paper at AcademicPaperServed, you also get:",
                     "UA" to "Ordering a paper at AcademicPaperServed, you also get:"
@@ -318,7 +318,7 @@ object MakeStaticSites : IMakeStaticSites {
                 json("EN" to "Free Plagiarism Report (upon additional request)", "UA" to "Free Plagiarism Report (upon additional request)")
             )),
 
-            jshit.pageHeader(t(json("EN" to "Discount Policy", "UA" to "Discount Policy"))),
+            Shitus.pageHeader(t(json("EN" to "Discount Policy", "UA" to "Discount Policy"))),
             markdownPiece(json(
                 "EN" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:",
                 "UA" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:"
@@ -340,7 +340,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "faq", "highlightedItem" to "faq", // For Writer site
             "comp" to Shitus.diva(json(),
             Shitus.diva.apply(null, js("[]").concat(json("className" to "container"),
-                jshit.pageHeader(t(json("EN" to "FAQ", "UA" to "Частые вопросы"))),
+                Shitus.pageHeader(t(json("EN" to "FAQ", "UA" to "Частые вопросы"))),
                 jsArrayOf(json(
                 "title" to json("EN" to "How does AcademicPaperServed work?", "UA" to "How does AcademicPaperServed work?"),
                 "content" to json(
@@ -563,7 +563,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "index", // For Customer site
             "comp" to Shitus.diva(json(),
                 Shitus.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("EN" to "Welcome to AcademicPaperServed", "UA" to "Welcome to AcademicPaperServed UA"))),
+                    Shitus.pageHeader(t(json("EN" to "Welcome to AcademicPaperServed", "UA" to "Welcome to AcademicPaperServed UA"))),
                     markdownPiece(json("EN" to """
                 Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
 
@@ -587,7 +587,7 @@ object MakeStaticSites : IMakeStaticSites {
                 Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
                 """)),
 
-                    jshit.pageHeader(t(json("EN" to "Features", "UA" to "Features"))),
+                    Shitus.pageHeader(t(json("EN" to "Features", "UA" to "Features"))),
                     horizBulletsRow(jsArrayOf(
                         json("glyph" to "pencil", "EN" to "No plagiarism", "UA" to "No plagiarism"),
                         json("glyph" to "star", "EN" to "Only premium quality", "UA" to "Only premium quality"),
@@ -599,7 +599,7 @@ object MakeStaticSites : IMakeStaticSites {
                         json("glyph" to "life-saver", "EN" to "24/7 support", "UA" to "24/7 support")
                         ), json("horizContentMargin" to 40)),
 
-                    jshit.pageHeader(t(json("EN" to "Who We Are", "UA" to "Who We Are"))),
+                    Shitus.pageHeader(t(json("EN" to "Who We Are", "UA" to "Who We Are"))),
                     markdownPiece(json("EN" to """
             AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
 
@@ -621,7 +621,7 @@ object MakeStaticSites : IMakeStaticSites {
 
                     renderTestimonials("CUSTOMER"),
 
-                    jshit.pageHeader(t(json("EN" to "What We Offer", "UA" to "What We Offer"))),
+                    Shitus.pageHeader(t(json("EN" to "What We Offer", "UA" to "What We Offer"))),
                     horizBulletsRow(jsArrayOf(
                         json("glyph" to "envira", "EN" to "Custom essay, research, thesis writing", "UA" to "Custom essay, research, thesis writing"),
                         json("glyph" to "rocket", "EN" to "Plagiarism-free original papers written from scratch", "UA" to "Plagiarism-free original papers written from scratch"),
@@ -646,7 +646,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "why", "highlightedItem" to "why", // For Customer site
             "comp" to Shitus.diva(json(),
                 Shitus.diva.apply(null, js("[]").concat(json("className" to "container"),
-                    jshit.pageHeader(t(json("EN" to "Why AcademicPaperServed?", "UA" to "Why AcademicPaperServed UA?"))),
+                    Shitus.pageHeader(t(json("EN" to "Why AcademicPaperServed?", "UA" to "Why AcademicPaperServed UA?"))),
                     jsArrayOf(json(
                         "title" to json("EN" to "We care about each customer’s academic success", "UA" to "We care about each customer’s academic success"),
                         "content" to json(
@@ -754,7 +754,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "prices", "highlightedItem" to "prices", // For Customer site
             "comp" to Shitus.diva(json(),
                 Shitus.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
+                    Shitus.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
                     jshit.el("table", json("className" to "table table-hover table-condensed"),
                         jshit.el("thead", json(),
                             jshit.el("tr", json(),
@@ -769,7 +769,7 @@ object MakeStaticSites : IMakeStaticSites {
                                 jshit.el("td", json(), row[2])
                                 )}))),
 
-                        jshit.pageHeader(t(json("EN" to "Pricing Policy", "UA" to "Pricing Policy"))),
+                        Shitus.pageHeader(t(json("EN" to "Pricing Policy", "UA" to "Pricing Policy"))),
                         markdownPiece(json(
                             "EN" to """
                                 Prices at AcademicPaperServed are set to meet the average point on the current custom writing market. This enables us to choose experts writers as freelance members in the team, who are able to meet the highest demands at faculties teaching in English.
@@ -791,7 +791,7 @@ object MakeStaticSites : IMakeStaticSites {
                                 """
                         )),
 
-                        jshit.pageHeader(t(json("EN" to "Bonuses", "UA" to "Bonuses"))),
+                        Shitus.pageHeader(t(json("EN" to "Bonuses", "UA" to "Bonuses"))),
                         markdownPiece(json(
                             "EN" to "Ordering a paper at AcademicPaperServed, you also get:",
                             "UA" to "Ordering a paper at AcademicPaperServed, you also get:"
@@ -803,7 +803,7 @@ object MakeStaticSites : IMakeStaticSites {
                             json("EN" to "Free Plagiarism Report (upon additional request)", "UA" to "Free Plagiarism Report (upon additional request)")
                             )),
 
-                        jshit.pageHeader(t(json("EN" to "Discount Policy", "UA" to "Discount Policy"))),
+                        Shitus.pageHeader(t(json("EN" to "Discount Policy", "UA" to "Discount Policy"))),
                         markdownPiece(json(
                             "EN" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:",
                             "UA" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:"
@@ -840,7 +840,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "samples", "highlightedItem" to "samples", // For Customer site
             "comp" to Shitus.diva(json(),
                 Shitus.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("EN" to "Sample Papers", "UA" to "Примеры работ"))),
+                    Shitus.pageHeader(t(json("EN" to "Sample Papers", "UA" to "Примеры работ"))),
                     hrefBullets(sampleItems)
                     )
             )
@@ -849,7 +849,7 @@ object MakeStaticSites : IMakeStaticSites {
             writePage(json("name" to "faq", "highlightedItem" to "faq", // For Customer site
             "comp" to Shitus.diva(json(),
                 Shitus.diva.apply(null, js("[]").concat(json("className" to "container"),
-                    jshit.pageHeader(t(json("EN" to "FAQ", "UA" to "FAQ"))),
+                    Shitus.pageHeader(t(json("EN" to "FAQ", "UA" to "FAQ"))),
                     jsArrayOf(json(
                         "title" to json("EN" to "How does AcademicPaperServed work?", "UA" to "How does AcademicPaperServed work?"),
                         "content" to json(
@@ -965,7 +965,7 @@ object MakeStaticSites : IMakeStaticSites {
             writePage(json("name" to "contact", "highlightedItem" to "contact", // For Customer site
             "comp" to Shitus.diva(json(),
                 Shitus.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("EN" to "Contact Us", "UA" to "Contact Us"))),
+                    Shitus.pageHeader(t(json("EN" to "Contact Us", "UA" to "Contact Us"))),
                     markdownPiece(json(
                         "EN" to """
                 Thank you for visiting AcademicPaperServed website! We will be happy to answer any questions, give a quote, and select a writer for your paper at any academic level. We value each customer and strive to achieve best results through communication process. Customer support representative is ready to advise you on the ordering process, choosing your delivery option and selecting an appropriate writer.
@@ -1293,7 +1293,7 @@ object MakeStaticSites : IMakeStaticSites {
             writePage(json("name" to "blog-${item.slug}", "highlightedItem" to "blog", // For Customer site
                 "comp" to Shitus.diva(json(),
                     Shitus.diva(json("className" to "container"),
-                        jshit.pageHeader(item.title),
+                        Shitus.pageHeader(item.title),
                         markdownPiece(item.content)
                     )
                 )
@@ -1303,7 +1303,7 @@ object MakeStaticSites : IMakeStaticSites {
         writePage(json("name" to "blog", "highlightedItem" to "blog", // For Customer site
             "comp" to Shitus.diva(json(),
                 Shitus.diva(json("className" to "container"),
-                    jshit.pageHeader(t(json("EN" to "Writing Blog", "UA" to "Писательский Блог"))),
+                    Shitus.pageHeader(t(json("EN" to "Writing Blog", "UA" to "Писательский Блог"))),
                     hrefBullets(blogItems.map{x: dynamic -> (json("title" to x.listTitle, "href" to "blog-${x.slug}.html"))})
                     )
             )
@@ -1762,7 +1762,7 @@ object MakeStaticSites : IMakeStaticSites {
 
     fun renderTestimonials(clientKind: dynamic): dynamic {
         return Shitus.diva(json(),
-            jshit.pageHeader(t(json("EN" to "What People Say", "UA" to "Что о нас говорят"))),
+            Shitus.pageHeader(t(json("EN" to "What People Say", "UA" to "Что о нас говорят"))),
             Shitus.diva(json("id" to "testimonials-window"),
                 Shitus.diva.apply(null, js("[]").concat(json("id" to "testimonials-strip"), jsArrayOf(
                     json("name" to json("EN" to "Nicole", "UA" to "Nicole"), "img" to "nicole.jpg", "says" to json(
@@ -1793,7 +1793,7 @@ object MakeStaticSites : IMakeStaticSites {
                                 Shitus.spana(json(), t(item.says)))))})),
 
                 Shitus.diva(json("style" to json("display" to "flex", "alignItems" to "center", "position" to "absolute", "width" to 20, "right" to 0, "top" to 0, "height" to "100%")),
-                    jshit.glyph("chevron-right", json("id" to "testimonials-right", "className" to "fa-2x")))),
+                    Shitus.glyph("chevron-right", json("id" to "testimonials-right", "className" to "fa-2x")))),
 
             jshit.rawHtml("")
             )
@@ -1805,7 +1805,7 @@ object MakeStaticSites : IMakeStaticSites {
 
     fun bullets(items: dynamic): dynamic {
         return Shitus.ula.apply(null, js("[]").concat(json("className" to "fa-ul", "style" to json("marginLeft" to 22)), items.map{item: dynamic ->
-            Shitus.lia(json("style" to json("marginBottom" to 10)), jshit.glyph("star", json("className" to "fa-li", "style" to json("color" to Color.BLUE_GRAY_600))), item)}))
+            Shitus.lia(json("style" to json("marginBottom" to 10)), Shitus.glyph("star", json("className" to "fa-li", "style" to json("color" to Color.BLUE_GRAY_600))), item)}))
     }
 
     fun locBullets(items: dynamic): dynamic {
@@ -1835,7 +1835,7 @@ object MakeStaticSites : IMakeStaticSites {
         val colSize = js("12 / items.length")
         return Shitus.diva.apply(null, js("[]").concat(json("className" to "row", "style" to json("marginBottom" to 20)), items.map{x: dynamic ->
             Shitus.diva(json("className" to "col-md-" + colSize),
-                Shitus.diva(json("style" to json("textAlign" to "center", "marginBottom" to 10)), jshit.glyph(x.glyph, json("className" to "fa-2x", "style" to json("color" to Color.BLUE_GRAY_600)))),
+                Shitus.diva(json("style" to json("textAlign" to "center", "marginBottom" to 10)), Shitus.glyph(x.glyph, json("className" to "fa-2x", "style" to json("color" to Color.BLUE_GRAY_600)))),
                 Shitus.diva(json("style" to json("textAlign" to "center", "margin" to "0 ${horizContentMargin}px")), t(x)))}))
     }
 

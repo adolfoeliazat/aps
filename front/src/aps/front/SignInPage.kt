@@ -7,7 +7,7 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
     fun loadSignInPage() {
 
         ui.setPage(json(
-            "header" to jshit.pageHeader(json("title" to t("Sign In", "Вход"))),
+            "header" to Shitus.pageHeader(json("title" to t("Sign In", "Вход"))),
             "body" to Shitus.diva(json(),
                 ui.signedUpOK && jshit.preludeWithGreenCheck(json("title" to t(
                     "Cool. You have an account now. We sent you email with password.",

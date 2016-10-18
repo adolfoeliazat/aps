@@ -25,7 +25,7 @@ fun button(build: ButtonBuilder.() -> Unit): Control {
                 "style" to cis.style.toJSObject(),
                 "title" to cis.hint),
 
-                if (cis.icon != null) jshit.glyph(cis.icon, glyphAttrs) else null,
+                if (cis.icon != null) Shitus.glyph(cis.icon, glyphAttrs) else null,
                 if (cis.icon != null && cis.title != null) Shitus.spana(js("({})"), nbsp) else null,
                 Shitus.spana(js("({})"), cis.title)
             )
@@ -249,7 +249,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
             n(tame) -> ""
             else -> {
                 var res = tame
-                val parents = jshit.byid(elementID).parents()
+                val parents = Shitus.byid(elementID).parents()
                 parents.each {
                     val parentControls = jshit.elementIDToControls[js("this").id]
                     if (!parentControls) undefined
@@ -335,7 +335,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                 if (n(effectiveTame)) return
                 if (cis.noStateContributions) return
 
-                for (parentElement in jsArrayToList(jshit.byid(elementID).parents())) {
+                for (parentElement in jsArrayToList(Shitus.byid(elementID).parents())) {
                     val parentControls = jshit.elementIDToControls[parentElement.id]
                     if (parentControls)
                         for (parentControl in jsArrayToList(parentControls))
@@ -353,7 +353,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                     state.put(json("control" to this, "key" to "$effectiveTame.shame", "value" to effectiveShame))
             }
 
-            jshit.art.uiStateContributions[controlID] = ::testStateContributor
+            art.uiStateContributions[controlID] = ::testStateContributor
 
             if (effectiveShame != "") {
                 val myEffectiveShame = effectiveShame
@@ -371,7 +371,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
 
             removeEventListeners()
             jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x: dynamic -> x.controlID == controlID })
-            jsFacing_deleteKey(jshit.art.uiStateContributions, controlID)
+            jsFacing_deleteKey(art.uiStateContributions, controlID)
 
             if (effectiveShame != "") {
                 jsFacing_deleteKey(global.testGlobal.controls, effectiveShame)
@@ -398,8 +398,8 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
         val testActionHandOpts: dynamic = if (spec) spec.testActionHandOpts else undefined
 
         if (jshit.getTestSpeed() == "slow") {
-            val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to jshit.byid(elementID)), testActionHandOpts))
-            __await<dynamic>(jshit.utils.delay(jshit.utils.DEBUG_ACTION_HAND_DELAY))
+            val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(elementID)), testActionHandOpts))
+            __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
             testActionHand.delete()
         }
 
@@ -436,11 +436,11 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
         }
 
         removeEventListeners() // Several controls can be on same element, and we don't want to handle click several times
-        jshit.byid(elementID).on("click", ::onClick)
+        Shitus.byid(elementID).on("click", ::onClick)
     }
 
     fun removeEventListeners() {
-        jshit.byid(elementID).off()
+        Shitus.byid(elementID).off()
     }
 
     val `$sourceLocation`: Promise<String?> by lazy {

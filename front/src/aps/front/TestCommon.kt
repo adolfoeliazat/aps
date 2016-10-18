@@ -83,7 +83,7 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
             jshit.alternativeTestSpeed = "medium"
         }
     }
-    jshit.art.respectArtPauses = urlQuery.respectArtPauses == "yes"
+    art.respectArtPauses = urlQuery.respectArtPauses == "yes"
 
     val sim = object : TestHost {
         override fun navigate(url: String): Promise<Unit> {"__async"
@@ -126,8 +126,8 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
                 //                        byid("topNavbarContainer").html(`<div style="text-align: center;">New browser: ${name}</div>`)
                 //                        byid("root").html("")
             } else {
-                jshit.ReactDOM.render(jshit.browser.topNavbarElement, jshit.byid0("topNavbarContainer"))
-                jshit.ReactDOM.render(jshit.browser.rootElement, jshit.byid0("root"))
+                jshit.ReactDOM.render(jshit.browser.topNavbarElement, Shitus.byid0("topNavbarContainer"))
+                jshit.ReactDOM.render(jshit.browser.rootElement, Shitus.byid0("root"))
             }
         }
     }
@@ -167,7 +167,7 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
         }
     }
 
-    if (!jshit.art.halted) {
+    if (!art.halted) {
         jshit.openTestPassedPaneArgs = json("scenario" to scenario)
         openTestPassedPane(jshit.openTestPassedPaneArgs)
     }

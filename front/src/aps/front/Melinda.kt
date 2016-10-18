@@ -134,8 +134,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             val res = __await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.token))
             entity = when (res) {
                 is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(json(
-                    "header" to jshit.pageHeader(json("title" to t("TOTE", "Облом"))),
-                    "body" to Shitus.diva(js("({})"), jshit.errorBanner(json("content" to res.error)))))
+                    "header" to Shitus.pageHeader(json("title" to t("TOTE", "Облом"))),
+                    "body" to Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error)))))
 
                 is ZimbabweResponse.Hunky -> res.meat.entity
             }
@@ -217,8 +217,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         val res = __await(callZimbabwe<ItemsResponse<Item>>(procedureName, itemsReq, ui.token))
         val itemsRes = when (res) {
             is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(json(
-                "header" to jshit.pageHeader(json("title" to t("TOTE", "Облом"))),
-                "body" to Shitus.diva(js("({})"), jshit.errorBanner(json("content" to res.error)))))
+                "header" to Shitus.pageHeader(json("title" to t("TOTE", "Облом"))),
+                "body" to Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error)))))
 
             is ZimbabweResponse.Hunky -> res.meat
         }
@@ -248,7 +248,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 updateHeaderControls = update
                 render@{
                     if (!hasHeaderControls() || !headerControlsVisible) return@render null
-                    jshit.hor2(json(
+                    Shitus.hor2(json(
                         "style" to json("display" to "flex", "marginTop" to if (tabsSpec != null) 55 else 0),
                         "className" to headerControlsClass),
 
@@ -298,7 +298,7 @@ where Filter : Enum<Filter>, Filter : Titled {
                 "title" to t("Show More", "Показать еще"),
                 "style" to json("background" to Color.BLUE_GRAY_50, "width" to "100%", "marginTop" to 15),
                 "onClick" to onClick@{"__async"
-                    jshit.effects.blinkOn(json("target" to jshit.byid(moreButtonID), "dtop" to -16))
+                    jshit.effects.blinkOn(json("target" to Shitus.byid(moreButtonID), "dtop" to -16))
                     // testGlobal['button_showMore_blinks'] = true
 
                     val moreRes = __await<dynamic>(jshit.ui.rpcSoft(global.Object.assign(itemsReq, json("fromID" to itemsRes.moreFromID))))
