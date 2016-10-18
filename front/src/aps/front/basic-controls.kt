@@ -34,7 +34,7 @@ fun renderExpandableOnDemandStack(definitionStackHolder: DefinitionStackHolder):
         override fun render(): ReactElement {
             return diva {
                 - when (state) {
-                    "virgin" -> toReactElementable(jshit.link(json("content" to "Show stack", "onClick" to {
+                    "virgin" -> toReactElementable(Shitus.link(json("content" to "Show stack", "onClick" to {
                         state = "loading"
                         runni {"__async"
                             val jsarray = __await<dynamic>(definitionStackHolder.promiseDefinitionStack())

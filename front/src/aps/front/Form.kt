@@ -47,9 +47,9 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
             figureOutActualVisibleFieldNames()
 
             fun formTicker(): dynamic {
-                return jshit.elcl(json(
+                return jsFacing_elcl(json(
                     "render" to {
-                        jshit.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
+                        Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
                     },
                     "componentDidMount" to {
                         global.testGlobal["shitSpins"] = true
@@ -60,8 +60,8 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
                 ))
             }
 
-            return jshit.diva(json(),
-                jshit.forma.apply(null, js("[]").concat(
+            return Shitus.diva(json(),
+                Shitus.forma.apply(null, js("[]").concat(
                     jsArrayOf(
                         json("className" to spec.className),
                         if (error != null) jshit.errorBanner(json("content" to error, "style" to spec.errorBannerStyle)) else undefined),
@@ -71,8 +71,8 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
                         .map{x -> x.render()}
                         .toJSArray(),
 
-                    jshit.diva(json("style" to json("textAlign" to "left")),
-                        jshit.button(json("tamy" to "primary", "shamy" to if (spec.dontShameButtons) undefined else "primary",
+                    Shitus.diva(json("style" to json("textAlign" to "left")),
+                        Shitus.button(json("tamy" to "primary", "shamy" to if (spec.dontShameButtons) undefined else "primary",
                             "level" to "primary", "title" to spec.primaryButtonTitle, "disabled" to working,
                             "onClick" to {"__async"
                                 jshit.beginTrain(json("name" to "Submit fucking form")); try {
@@ -119,7 +119,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
                         )),
 
                         if (spec.cancelButtonTitle != null)
-                            jshit.button(json("tamy" to "cancel", "shamy" to if (spec.dontShameButtons) undefined else "cancel",
+                            Shitus.button(json("tamy" to "cancel", "shamy" to if (spec.dontShameButtons) undefined else "cancel",
                                 "title" to spec.cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10),
                                 "onClick" to {"__async"
                                     (spec.onCancel)()

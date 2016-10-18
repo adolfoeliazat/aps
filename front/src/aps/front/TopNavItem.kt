@@ -20,9 +20,9 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
     var me: dynamic = null
     me = json(
         "render" to {
-            jshit.lia(json("id" to me.elementID, "className" to (if (active) "active" else "")),
-                jshit.aa(json("id" to aid, "href" to href),
-                    jshit.spancTitle(json("title" to title)),
+            Shitus.lia(json("id" to me.elementID, "className" to (if (active) "active" else "")),
+                Shitus.aa(json("id" to aid, "href" to href),
+                    Shitus.spancTitle(json("title" to title)),
                     if (liveStatusFieldName != null) ui.liveBadge2(json("liveStatusFieldName" to liveStatusFieldName)) else null))
         },
 

@@ -70,26 +70,11 @@ package aps.front
 }
 
 @native interface JShit {
-    var elcl: dynamic
-    var diva: dynamic
-    var spana: dynamic
-    var ula: dynamic
-    var lia: dynamic
-    var forma: dynamic
-    var labela: dynamic
-    var nava: dynamic
-    var aa: dynamic
-    var ia: dynamic
-    var h3a: dynamic
-    var h4a: dynamic
-    var blockquotea: dynamic
     var art: JShitArt
-    var spanc: dynamic
     var dom: dynamic
     var pageHeader: dynamic
     var utils: JShitUtils
     var Placeholder: dynamic
-    var faIcon: dynamic
     var nostring: dynamic
     var hor2: dynamic
     var byid: dynamic
@@ -108,7 +93,7 @@ package aps.front
     var isOrWasInTestScenario: dynamic
     var getCurrentTestBrowser: dynamic
     var debugPanes: dynamic
-    var updatableElement: dynamic
+//    var updatableElement: dynamic
     var debugCheckEmail: dynamic
     var isHotReloading: dynamic
     var debugCheckEmail_cachedEmails: dynamic
@@ -116,7 +101,6 @@ package aps.front
     var sufindex: dynamic
     var hor1: dynamic
     var rawHtml: dynamic
-    var button: dynamic
     var beginTrain: dynamic
     var endTrain: dynamic
     var preludeWithOrangeTriangle: dynamic
@@ -147,10 +131,8 @@ package aps.front
     var openTestPassedPaneArgs: dynamic
     var browsers: dynamic
     var getCurrentTestScenarioName: dynamic
-    var link: dynamic
-    var statefulElement: dynamic
+//    var statefulElement: dynamic
     var RequestBuilder: dynamic
-    var Input: dynamic
 //    var Select: dynamic
     var labe: dynamic
     var implementControlShit: dynamic
@@ -161,7 +143,6 @@ package aps.front
     var renderStacks: dynamic
     var Tabs: dynamic
     var callDebugRPWithProgress: dynamic
-    var Checkbox: dynamic
     var OpenSourceCodeLink: dynamic
     var marginateLeft: dynamic
     var getURLQueryBeforeRunningTest: dynamic
@@ -177,7 +158,7 @@ package aps.front
 //    var React: dynamic
     var img: dynamic
     var ui: dynamic
-    var TopNavItem_: dynamic
+//    var TopNavItem_: dynamic
     var isInTestScenario: dynamic
 //    var delay: dynamic
     var timestampString: dynamic
@@ -198,10 +179,6 @@ package aps.front
     val decorate: dynamic
     val CollapsibleShit: dynamic
     val pickStacks: dynamic
-    var horiza: dynamic
-    var liveBadge: dynamic
-    var liveBadge2: dynamic
-    var TopNavItem: dynamic
     var apsCSS: dynamic
     var makeUIShitIgniter: dynamic
     var lang: dynamic
@@ -212,6 +189,7 @@ package aps.front
 //    var runHotCodeUpdateStuff: dynamic
     var debugRPC: dynamic
     val clogError: dynamic
+    val worldIsHalted: dynamic
 }
 
 

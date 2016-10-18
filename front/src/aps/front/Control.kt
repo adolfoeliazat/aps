@@ -26,8 +26,8 @@ fun button(build: ButtonBuilder.() -> Unit): Control {
                 "title" to cis.hint),
 
                 if (cis.icon != null) jshit.glyph(cis.icon, glyphAttrs) else null,
-                if (cis.icon != null && cis.title != null) jshit.spana(js("({})"), nbsp) else null,
-                jshit.spana(js("({})"), cis.title)
+                if (cis.icon != null && cis.title != null) Shitus.spana(js("({})"), nbsp) else null,
+                Shitus.spana(js("({})"), cis.title)
             )
         }
 
@@ -38,9 +38,9 @@ fun button(build: ButtonBuilder.() -> Unit): Control {
     }
 }
 
-val NIL_AsyncReactEventHandler: AsyncReactEventHandler = js("({})")
+val NIL_AsyncReactEventHandler: (ReactEvent) -> Promise<Unit> = js("({})")
 
-inline fun y(areh: AsyncReactEventHandler) = areh !== NIL_AsyncReactEventHandler
+inline fun y(areh: (ReactEvent) -> Promise<Unit>) = areh !== NIL_AsyncReactEventHandler
 
 
 inline fun ifs(cond: String, then: () -> String): String = if (cond != "") then() else ""
@@ -94,7 +94,7 @@ fun spanc(tame: String, content: String, build: CommonControlInstanceShit.() -> 
         override fun defaultControlTypeName() = "spanc"
 
         override fun render(): ReactElement {
-            return jshit.spana(json("id" to elementID, "className" to cis.className, "style" to cis.style.toJSObject()), content)
+            return Shitus.spana(json("id" to elementID, "className" to cis.className, "style" to cis.style.toJSObject()), content)
         }
 
         override fun contributeTestState(state: dynamic) {
@@ -191,9 +191,9 @@ open class ControlInstanceSpec {
         shamy = value
     }
 
-    fun onClicka(handler: AsyncReactEventHandler) { onClick = handler }
+    fun onClicka(handler: (ReactEvent) -> Promise<Unit>) { onClick = handler }
 
-    fun onClick(handler: ReactEventHandler) {
+    fun onClick(handler: (ReactEvent) -> Unit) {
         onClick = {e -> "__async"
             handler(e)
             __asyncResult(Unit)

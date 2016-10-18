@@ -13,9 +13,9 @@ class DashboardPage(val ui: LegacyUIShit) {
         val myPage = json(
             "id" to puid(),
             "header" to jshit.pageHeader(json("title" to t("Dashboard", "Панель"))),
-            "body" to jshit.diva(json(),
-                jshit.diva(json("className" to "row"),
-                    jshit.diva(json("className" to "col-sm-6"),
+            "body" to Shitus.diva(json(),
+                Shitus.diva(json("className" to "row"),
+                    Shitus.diva(json("className" to "col-sm-6"),
                         section(json(
                             "name" to "workPending",
                             "title" to t("TOTE", "Работенка"),
@@ -34,13 +34,13 @@ class DashboardPage(val ui: LegacyUIShit) {
 
                                 fun addMetric(value: String, tame: String, url: String, title: String, noStateContributions: Boolean = false) {
                                     if (value != "0") {
-                                        items.push(jshit.diva(json("controlTypeName" to "addMetric", "tame" to tame, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden")),
-                                            jshit.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), Shitus.repeat(".", 210)),
+                                        items.push(Shitus.diva(json("controlTypeName" to "addMetric", "tame" to tame, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden")),
+                                            Shitus.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), Shitus.repeat(".", 210)),
                                             ui.urlLink(json("tamy" to true, "style" to json("background" to Color.WHITE, "paddingRight" to 8, "color" to Color.BLACK_BOOT), "blinkOpts" to json("dwidth" to -8),
                                                 "title" to title, "url" to url, "delayActionForFanciness" to true)),
-                                            jshit.diva(json("style" to json("float" to "right", "paddingLeft" to 8, "background" to Color.WHITE)),
-                                                jshit.spana(json("className" to "badge", "style" to json("float" to "right", "backgroundColor" to Color.BLUE_GRAY_400)),
-                                                    jshit.spanc(json("tame" to "badge", "content" to "" + value))))
+                                            Shitus.diva(json("style" to json("float" to "right", "paddingLeft" to 8, "background" to Color.WHITE)),
+                                                Shitus.spana(json("className" to "badge", "style" to json("float" to "right", "backgroundColor" to Color.BLUE_GRAY_400)),
+                                                    Shitus.spanc(json("tame" to "badge", "content" to "" + value))))
                                         ))
                                     }
                                 }
@@ -63,7 +63,7 @@ class DashboardPage(val ui: LegacyUIShit) {
                         ))
                     ),
 
-                    jshit.diva(json("className" to "col-sm-6"),
+                    Shitus.diva(json("className" to "col-sm-6"),
                         section(json(
                             "name" to "account",
                             "title" to t("TOTE", "Аккаунт"),
@@ -115,15 +115,15 @@ class DashboardPage(val ui: LegacyUIShit) {
         // #extract {name, title, items, emptyItemsText} from def
         val name = def.name; val title = def.title; val items = def.items; val emptyItemsText = def.emptyItemsText
 
-        return jshit.diva(json("tame" to "section-${name}", "style" to js("({})")),
-            jshit.diva(json("style" to json("backgroundColor" to Color.BLUE_GRAY_50, "fontWeight" to "bold", "padding" to "2px 5px", "marginBottom" to 10)),
+        return Shitus.diva(json("tame" to "section-${name}", "style" to js("({})")),
+            Shitus.diva(json("style" to json("backgroundColor" to Color.BLUE_GRAY_50, "fontWeight" to "bold", "padding" to "2px 5px", "marginBottom" to 10)),
                 title),
             run outta@{
-                if (!items.length) return@outta emptyItemsText || jshit.diva(json("style" to js("({})")), t("TOTE", "Савсэм пусто здэсь..."))
-                return@outta jshit.ula.apply(null, js("[]").concat(json("className" to "fa-ul", "style" to json("marginLeft" to 20)),
+                if (!items.length) return@outta emptyItemsText || Shitus.diva(json("style" to js("({})")), t("TOTE", "Савсэм пусто здэсь..."))
+                return@outta Shitus.ula.apply(null, js("[]").concat(json("className" to "fa-ul", "style" to json("marginLeft" to 20)),
                     items.map({item: dynamic ->
-                        jshit.lia(json("style" to json("marginBottom" to 5)),
-                            jshit.ia(json("className" to "fa fa-li fa-chevron-right", "style" to json("color" to Color.BLUE_GRAY_600))),
+                        Shitus.lia(json("style" to json("marginBottom" to 5)),
+                            Shitus.ia(json("className" to "fa fa-li fa-chevron-right", "style" to json("color" to Color.BLUE_GRAY_600))),
                             item)})))
             }
         )

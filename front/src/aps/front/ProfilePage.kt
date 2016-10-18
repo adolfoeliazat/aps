@@ -27,7 +27,7 @@ class ProfilePage(val ui: LegacyUIShit) {
                     "quote" to user.profileRejectionReason))
             }
 
-            pageBody = jshit.diva(json(),
+            pageBody = Shitus.diva(json(),
                 prelude,
                 FormMatumba<UpdateProfileRequest, UpdateProfileRequest.Response>(FormSpec(
                     UpdateProfileRequest().apply {
@@ -45,14 +45,14 @@ class ProfilePage(val ui: LegacyUIShit) {
                     })).toReactElement())
         }
         else if (userState == UserState.PROFILE_APPROVAL_PENDING) {
-            pageBody = jshit.diva(json(),
-                jshit.preludeWithHourglass(json("content" to jshit.spancTitle(json("title" to t("TOTE", "Админ проверяет профиль, жди извещения почтой"))))),
+            pageBody = Shitus.diva(json(),
+                jshit.preludeWithHourglass(json("content" to Shitus.spancTitle(json("title" to t("TOTE", "Админ проверяет профиль, жди извещения почтой"))))),
                 renderProfile(ui, user)
                 )
         }
         else if (userState == UserState.BANNED) {
-            pageBody = jshit.diva(json(),
-                jshit.preludeWithVeryBadNews(json("content" to jshit.spancTitle(json("title" to t("TOTE", "Тебя тупо забанили, ОК? Кина не будет."))))),
+            pageBody = Shitus.diva(json(),
+                jshit.preludeWithVeryBadNews(json("content" to Shitus.spancTitle(json("title" to t("TOTE", "Тебя тупо забанили, ОК? Кина не будет."))))),
                 renderProfile(ui, user)
                 )
         }

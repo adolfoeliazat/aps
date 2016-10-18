@@ -19,9 +19,9 @@ fun pageHeader(arg: Json): ReactElement {
 
     val me = json(
         "render" to render@{
-            return@render jshit.diva(json("className" to "page-header ${className}", "style" to json("marginTop" to 0, "marginBottom" to 15)),
-                jshit.h3a.apply(null, jsArrayOf().concat(json("tame" to "pageHeader", "style" to json("marginBottom" to 0)),
-                    jshit.spancTitle(json("title" to title)),
+            return@render Shitus.diva(json("className" to "page-header ${className}", "style" to json("marginTop" to 0, "marginBottom" to 15)),
+                Shitus.h3a.apply(null, jsArrayOf().concat(json("tame" to "pageHeader", "style" to json("marginBottom" to 0)),
+                    Shitus.spancTitle(json("title" to title)),
                     labels.map({label: dynamic, i: dynamic ->
             val style = json(
                 "fontSize" to "12px",
@@ -43,8 +43,8 @@ fun pageHeader(arg: Json): ReactElement {
             } else {
                 Shitus.raise("Weird pageHeader label level: ${label.level}")
             }
-            return@map jshit.spana(json("tame" to "label${jshit.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
-                jshit.spancTitle(json("title" to label.title)))
+            return@map Shitus.spana(json("tame" to "label${jshit.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
+                Shitus.spancTitle(json("title" to label.title)))
         }))))
         }
     )
@@ -78,16 +78,16 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                 fun enterDisplayMode() {
                     peggy(json(
                         "headingActionItems" to jsArrayOf(
-                            jshit.faIcon(json("tamy" to "edit", "className" to "hover-color-BLUE_GRAY_800", "style" to json("fontSize" to "135%", "cursor" to "pointer"), "icon" to "pencil",
+                            Shitus.faIcon(json("tamy" to "edit", "className" to "hover-color-BLUE_GRAY_800", "style" to json("fontSize" to "135%", "cursor" to "pointer"), "icon" to "pencil",
                                 "onClick" to { enterEditMode() }))),
-                        "body" to jshit.diva(js("({})"), renderProfile(ui, user))))
+                        "body" to Shitus.diva(js("({})"), renderProfile(ui, user))))
                 }
 
 
                 fun enterEditMode() {
                     peggy(json(
                         "headingActionItems" to jsArrayOf(),
-                        "body" to jshit.diva(json("style" to json("marginBottom" to 15)),
+                        "body" to Shitus.diva(json("style" to json("marginBottom" to 15)),
                             FormMatumba<UpdateUserRequest, GenericResponse>(FormSpec(
                                 UpdateUserRequest()-{o->
                                     o.id.value = user.id

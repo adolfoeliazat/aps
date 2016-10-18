@@ -30,11 +30,11 @@ class Melinda<Item, Entity, Filter>(
     val renderItem: (Int, Item) -> ToReactElementable,
     val emptyMessage: String? = null,
     val tabsSpec: Any? = null,
-    val header: (Me).() -> ToReactElementable,
-    val aboveItems: (Me).() -> ToReactElementable = {reactNull})
+    val header: (Melinda<Item, Entity, Filter>).() -> ToReactElementable,
+    val aboveItems: (Melinda<Item, Entity, Filter>).() -> ToReactElementable = {reactNull})
 where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
-    typealias Me = Melinda<Item, Entity, Filter>
+//    typealias Me = Melinda<Item, Entity, Filter>
 
     lateinit var entity: Entity
     var headerControlsDisabled = false
@@ -55,7 +55,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         private var form: ReactElement? = null
         private var formClass = ""
 
-        fun button() = jshit.button(json(
+        fun button() = Shitus.button(json(
             "tamyShamy" to name, "style" to json("marginLeft" to 0), "level" to level, "icon" to icon, "disabled" to headerControlsDisabled,
             "onClick" to {
                 showEmptyLabel = false
@@ -75,7 +75,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         ))
 
         fun form() = form?.let {
-            jshit.diva(json("className" to formClass, "style" to json("marginBottom" to 15)), it)
+            Shitus.diva(json("className" to formClass, "style" to json("marginBottom" to 15)), it)
         }
     }
 
@@ -135,7 +135,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             entity = when (res) {
                 is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(json(
                     "header" to jshit.pageHeader(json("title" to t("TOTE", "Облом"))),
-                    "body" to jshit.diva(js("({})"), jshit.errorBanner(json("content" to res.error)))))
+                    "body" to Shitus.diva(js("({})"), jshit.errorBanner(json("content" to res.error)))))
 
                 is ZimbabweResponse.Hunky -> res.meat.entity
             }
@@ -172,9 +172,9 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 }
             ))
 
-            searchBox = oldShitAsReactElementable(jshit.diva(json("style" to json("position" to "relative")),
+            searchBox = oldShitAsReactElementable(Shitus.diva(json("style" to json("position" to "relative")),
                 searchBoxInput!!.toReactElement(),
-                jshit.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to Color.GRAY_500)))
+                Shitus.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to Color.GRAY_500)))
             ))
         }
 
@@ -218,7 +218,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         val itemsRes = when (res) {
             is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(json(
                 "header" to jshit.pageHeader(json("title" to t("TOTE", "Облом"))),
-                "body" to jshit.diva(js("({})"), jshit.errorBanner(json("content" to res.error)))))
+                "body" to Shitus.diva(js("({})"), jshit.errorBanner(json("content" to res.error)))))
 
             is ZimbabweResponse.Hunky -> res.meat
         }
@@ -227,7 +227,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         return ignora/ ui.setPage(json(
             "header" to header().toReactElement(),
 
-            "body" to {jshit.diva(json("style" to json("marginBottom" to 15)),
+            "body" to {Shitus.diva(json("style" to json("marginBottom" to 15)),
                 tabs,
                 editShit?.let {it.form()},
                 plusShit?.let {it.form()},
@@ -238,13 +238,13 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                         renderMoreable(ui, itemsRes, itemsReq, renderItem)
                     else
                         if (showEmptyLabel)
-                            jshit.diva(json("style" to json("marginTop" to 10)),
-                                emptyMessage?.let{it} ?: jshit.spanc(json("tame" to "nothingLabel", "content" to t("TOTE", "Савсэм ничего нэт, да..."))))
+                            Shitus.diva(json("style" to json("marginTop" to 10)),
+                                emptyMessage?.let{it} ?: Shitus.spanc(json("tame" to "nothingLabel", "content" to t("TOTE", "Савсэм ничего нэт, да..."))))
                         else ""
                 }
             )},
 
-            "headerControls" to {jshit.updatableElement(js("({})"), {update: dynamic ->
+            "headerControls" to {Shitus.updatableElement(js("({})"), {update: dynamic ->
                 updateHeaderControls = update
                 render@{
                     if (!hasHeaderControls() || !headerControlsVisible) return@render null
@@ -289,10 +289,10 @@ where Filter : Enum<Filter>, Filter : Titled {
     var bottom: dynamic = undefined
 
     if (itemsRes.moreFromID != null) {
-        bottom = jshit.updatableElement(json(), updatableElementCtor@{update: dynamic ->
+        bottom = Shitus.updatableElement(json(), updatableElementCtor@{update: dynamic ->
             val moreButtonID = puid()
             var thing: dynamic = undefined
-            thing = jshit.diva(json("style" to style), jshit.button(json(
+            thing = Shitus.diva(json("style" to style), Shitus.button(json(
                 "id" to moreButtonID,
                 "tamyShamy" to "showMore",
                 "title" to t("Show More", "Показать еще"),
@@ -318,11 +318,11 @@ where Filter : Enum<Filter>, Filter : Titled {
         })
     }
 
-    return jshit.diva(json("controlTypeName" to "renderMoreable"),
+    return Shitus.diva(json("controlTypeName" to "renderMoreable"),
         if (itemsRes.items.isEmpty())
-            jshit.diva(json("style" to json("marginTop" to 10)), t("TOTE", "Здесь ничего нет, такие дела..."))
+            Shitus.diva(json("style" to json("marginTop" to 10)), t("TOTE", "Здесь ничего нет, такие дела..."))
         else {
-            jshit.diva.apply(null, js("[]").concat(
+            Shitus.diva.apply(null, js("[]").concat(
                 json("tame" to "${chunkName}${jshit.sufindex(chunkIndex)}"),
                 itemsRes.items.mapIndexed { index, item -> renderItem(index, item).toReactElement() }.toJSArray()))
         },

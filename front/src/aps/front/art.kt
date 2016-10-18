@@ -47,7 +47,7 @@ abstract class TestInstruction(val opcode: String) : DefinitionStackHolder {
     class BeginSection(val long: String) : TestInstruction("BeginSection")
     class EndSection() : TestInstruction("EndSection")
 
-    class AssertGenerated(val tag: String, val expected: String, val expectedExtender: ExpectationExtender?) : TestInstruction("AssertGenerated")
+    class AssertGenerated(val tag: String, val expected: String, val expectedExtender: ((dynamic) -> Unit)?) : TestInstruction("AssertGenerated")
 
     class AssertFuck(val tag: String, val expected: Json) : TestInstruction("AssertFuck")
 
@@ -410,7 +410,7 @@ object art {
                     indent,
                     lineContent = div { style { fontWeight = "normal"; fontStyle = "italic" }; - "World point: ${instr.name}" },
                     rulerContent = jdiva(json("style" to json("position" to "relative")),
-                        jshit.ia(json("className" to "fa fa-circle", "style" to json("color" to Color.GRAY_500))),
+                        Shitus.ia(json("className" to "fa fa-circle", "style" to json("color" to Color.GRAY_500))),
                         jdiva(json("style" to json("width" to 38, "position" to "absolute", "left" to 0, "top" to 9, "borderTop" to "2px dotted ${Color.GRAY_500}")))
                     ),
                     // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 2
@@ -506,9 +506,9 @@ fun gertrude(def: dynamic) {
     var detailsUI: dynamic = null
     if (jshit.getURLQueryBeforeRunningTest().minimalGertrude == "yes" || global.testGlobal.minimalGertrude) {
         detailsUI = div { styleKludge = json("background" to Color.WHITE); -"I am minimal because of minimalGertrude" }
-//        detailsUI = jshit.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
+//        detailsUI = Shitus.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
     } else {
-        detailsUI = jshit.updatableElement(js("({})"), wholeShitCtor@ { updateWholeShit ->
+        detailsUI = Shitus.updatableElement(js("({})"), wholeShitCtor@ {updateWholeShit ->
             var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
             var paneControls: dynamic = null; var lineHideFilter = Shitus.noop
             var highlightedKeys = js("({})"); var pileOfShit = js("({})")
@@ -621,7 +621,7 @@ fun gertrude(def: dynamic) {
                                 var callStack = callStacks[actualLineIndex] || js("[]")
                                 if (definitionStack || callStack) {
                                     var open = false
-                                    metaBox = jshit.updatableElement(js("({})"), { update: dynamic ->
+                                    metaBox = Shitus.updatableElement(js("({})"), { update: dynamic ->
                                         {
                                             div {
                                                 styleKludge = json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)
@@ -679,7 +679,7 @@ fun gertrude(def: dynamic) {
 
                             divs.push({
                                 if (!lineHideFilter(valueLine) && !shouldBeHiddenCuaseItsFuckingKeyRepetition)
-                                    jshit.updatableElement(js("({})"), { update: dynamic ->
+                                    Shitus.updatableElement(js("({})"), { update: dynamic ->
                                         val style = json("backgroundColor" to backgroundColor, "position" to "relative")
                                         if (shouldBeHighlighted) {
                                             global.Object.assign(style, json(
@@ -781,7 +781,7 @@ fun gertrude(def: dynamic) {
                                 var args = js("[]")
                                 args.push(json("style" to json("whiteSpace" to "pre-wrap")))
                                 args = args.concat(diffDivs)
-                                jshit.diva.apply(null, args)
+                                Shitus.diva.apply(null, args)
                             }),
                         "diffLast" to json(
                             "title" to "Diff Last",
@@ -789,22 +789,22 @@ fun gertrude(def: dynamic) {
                                 var args = js("[]")
                                 args.push(json("style" to json("whiteSpace" to "pre-wrap")))
                                 args = args.concat(diffLastDivs)
-                                jshit.diva.apply(null, args)
+                                Shitus.diva.apply(null, args)
                             }),
                             "actual" to json(
                                 "title" to "Actual",
-                                "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")), actualString)),
+                                "content" to Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap")), actualString)),
                             "expected" to json(
                                 "title" to "Expected",
-                                "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")), expectedString)),
+                                "content" to Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap")), expectedString)),
                             "actualPaste" to json(
                                 "title" to "Actual Paste",
-                                "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")),
-                                    jshit.Input(json("initialValue" to actualStringForPasting, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true)))),
+                                "content" to Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap")),
+                                    Shitus.Input(json("initialValue" to actualStringForPasting, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true)))),
                             "actualPasteWithExt" to json(
                                 "title" to "Actual Paste + ext",
-                                "content" to jshit.diva(json("style" to json("whiteSpace" to "pre-wrap")),
-                                    jshit.Input(json("initialValue" to actualStringForPastingPlusExt, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true))))
+                                "content" to Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap")),
+                                    Shitus.Input(json("initialValue" to actualStringForPastingPlusExt, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true))))
                     )
                 ))
 
@@ -823,12 +823,12 @@ fun gertrude(def: dynamic) {
                 }
             }
 
-            unifyIndicesCheck = jshit.Checkbox(json("initialValue" to stripFuckingIndices, "onChange" to {
+            unifyIndicesCheck = Shitus.Checkbox(json("initialValue" to stripFuckingIndices, "onChange" to {
                 stripFuckingIndices = unifyIndicesCheck.getValue()
                 makeFuckingTabs()
                 updateWholeShit()
             }))
-            hideKeyRepetitionsCheck = jshit.Checkbox(json("initialValue" to hideFuckingKeyRepetitions, "onChange" to {
+            hideKeyRepetitionsCheck = Shitus.Checkbox(json("initialValue" to hideFuckingKeyRepetitions, "onChange" to {
                 hideFuckingKeyRepetitions = hideKeyRepetitionsCheck.getValue()
                 makeFuckingTabs()
                 updateWholeShit()
@@ -862,10 +862,10 @@ fun gertrude(def: dynamic) {
 
             return@wholeShitCtor {
                 jshit.art.assertionDetailsWithSourceLink(json("\$tag" to tag, "details" to tabs, "controls" to paneControls,
-                    "collapsedDetails" to jshit.updatableElement(js("({})"), { update ->
+                    "collapsedDetails" to Shitus.updatableElement(js("({})"), {update ->
                         return@updatableElement {
-                            jshit.diva(js("({})"),
-                                definitionStack && jshit.diva(json("style" to json("marginBottom" to 8)), jshit.renderDefinitionStackStrip(json("stack" to definitionStack))),
+                            Shitus.diva(js("({})"),
+                                definitionStack && Shitus.diva(json("style" to json("marginBottom" to 8)), jshit.renderDefinitionStackStrip(json("stack" to definitionStack))),
                                 art.renderStepDescriptions())
                         }
                     })
@@ -1012,7 +1012,7 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 fun openTestPassedPane(def: dynamic) {
     val scenario = def.scenario
 
-    val testPassedPane = jshit.statefulElement(json("ctor" to { update: dynamic ->
+    val testPassedPane = Shitus.statefulElement(json("ctor" to { update: dynamic ->
         var scenarioName: String = scenario.name
         val links = mutableListOf<ReactElement>()
 
@@ -1061,5 +1061,5 @@ fun openTestPassedPane(def: dynamic) {
     jshit.debugPanes.set(json(
         "name" to "openTestPassedPane",
         "parentJqel" to jshit.byid("underFooter"),
-        "element" to jshit.spana(json(), testPassedPane.element)))
+        "element" to Shitus.spana(json(), testPassedPane.element)))
 }

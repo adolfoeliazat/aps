@@ -14,7 +14,7 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
 
     var disabled: Boolean = false
 
-    return jshit.statefulElement(json(
+    return Shitus.statefulElement(json(
         "ctor" to ctor@{update: () -> Unit ->
             var value: dynamic = initialValue
 

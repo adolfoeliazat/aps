@@ -84,39 +84,9 @@ object KotlinShit : IKotlinShit {
         }
 
         jshit.implementControlShit = ::legacy_implementControlShit
-        jshit.elcl = ::jsFacing_elcl
-        jshit.diva = ::jsFacing_diva
-        jshit.spana = ::jsFacing_spana
-        jshit.ula = ::jsFacing_ula
-        jshit.lia = ::jsFacing_lia
-        jshit.forma = ::jsFacing_forma
-        jshit.labela = ::jsFacing_labela
-        jshit.nava = ::jsFacing_nava
-        jshit.aa = ::jsFacing_aa
-        jshit.ia = ::jsFacing_ia
-        jshit.h3a = ::jsFacing_h3a
-        jshit.h4a = ::jsFacing_h4a
-        jshit.blockquotea = ::jsFacing_blockquotea
-        jshit.dom.spana = ::jsFacing_dom_spana
-        jshit.horiza = ::jsFacing_horiza
-        jshit.link = ::jsFacing_link
-        jshit.faIcon = ::jsFacing_faIcon
-        jshit.liveBadge = ::jsFacing_liveBadge
-        jshit.liveBadge2 = ::jsFacing_liveBadge2
-        jshit.Checkbox = ::jsFacing_Checkbox
-        jshit.button = ::jsFacing_button
-        jshit.TopNavItem = ::jsFacing_TopNavItem
-//        jshit.makeUIShitIgniter = ::jsFacing_makeUIShitIgniter
+
 
         art.initArtShit()
-//        jshit.art.renderStepDescriptions = { art.renderStepDescriptions() }
-//        jshit.art.openTestPassedPane = ::openTestPassedPane
-//        jshit.art.gertrude = ::gertrude
-//        jshit.art.invokeStateContributions = ::jsFacing_invokeStateContributions
-        jshit.spanc = ::jsFacing_spanc
-//        jshit.limpopo = ::jsFacing_limpopo
-
-        jshit.Input = ::jsFacing_Input
 
         initTestShit()
         igniteRPCShit()
@@ -191,7 +161,7 @@ object KotlinShit : IKotlinShit {
 //        // #extract {user} from def
 //        val user: UserRTO = def.user
 //
-//        return jshit.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5),
+//        return Shitus.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5),
 //            "icon" to when (user.kind) {
 //                UserKind.CUSTOMER -> "user"
 //                UserKind.WRITER -> "pencil"
@@ -204,7 +174,7 @@ object KotlinShit : IKotlinShit {
     override fun loadDebugKotlinPlaygroundPage() {
         KotlinShit.ui.setPage(json(
             "header" to jshit.pageHeader(json("title" to "debug-kotlin-playground")),
-            "body" to jshit.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5")
+            "body" to Shitus.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5")
         ))
     }
 
@@ -379,7 +349,7 @@ fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: dynamic): dy
     me.controlTypeName = tag + "a"
     me.ignoreDebugCtrlShiftClick = true
     jshit.implementControlShit(json("me" to me, "def" to attrs))
-    return jshit.elcl(me)
+    return jsFacing_elcl(me)
 }
 
 fun jsArrayOrArrayLikeObjectToArray(obj: dynamic): Array<Any?> {
@@ -430,7 +400,7 @@ fun killme_veryBasicTag(tag: String, attrs: dynamic, vararg _items: dynamic): dy
                 me.ignoreDebugCtrlShiftClick = true
                 jshit.implementControlShit(json("me" to me, "def" to js("({})")))
 
-                jshit.elcl(me)
+                jsFacing_elcl(me)
             } else {
                 element2
             }
@@ -499,7 +469,7 @@ fun jsFacing_spanc(def: dynamic): dynamic {
 //    me = json(
 //        "render" to {
 //            var renderThing = content
-//            jshit.spana(json("id" to me.elementID, "className" to className, "style" to style), renderThing)
+//            Shitus.spana(json("id" to me.elementID, "className" to className, "style" to style), renderThing)
 //        },
 //
 //        "contributeTestState" to {state: dynamic ->
@@ -545,14 +515,14 @@ fun renderRedExclamationTriangleLabel(title: String): ReactElement {
 //    }
 //
 ////    try {
-////        return jshit.spana(json("noStateContributions" to true, "controlTypeName" to "renderExceptionTriangle"),
-////            jshit.spana(json("style" to json("cursor" to "pointer"),
+////        return Shitus.spana(json("noStateContributions" to true, "controlTypeName" to "renderExceptionTriangle"),
+////            Shitus.spana(json("style" to json("cursor" to "pointer"),
 ////                "onClick" to { jshit.revealStack(json("exception" to exception)) }),
 ////                jshit.renderRedExclamationTriangleLabel(json("title" to t("It fucking throwed: ${exception.message}")))
 ////            ),
 ////
-////            jshit.spana(json("style" to json("marginLeft" to 10)), "("),
-////            jshit.link(json("title" to t("Reveal"), "onClick" to { jshit.revealStack(json("exception" to exception)) })),
+////            Shitus.spana(json("style" to json("marginLeft" to 10)), "("),
+////            Shitus.link(json("title" to t("Reveal"), "onClick" to { jshit.revealStack(json("exception" to exception)) })),
 ////            ")"
 ////        )
 ////    } catch(e: Throwable) {
@@ -565,7 +535,7 @@ fun renderRedExclamationTriangleLabel(title: String): ReactElement {
 
 @Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE")
 fun jsLink(vararg args: dynamic): ReactElement {
-    val shit = jshit
+    val shit = Shitus
     return js("shit.link.apply(null, args)")
 }
 
@@ -576,7 +546,7 @@ fun dynamicKeys(obj: dynamic): dynamic {
 
 @Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE")
 fun jdiva(vararg args: dynamic): ReactElement {
-    val shit = jshit
+    val shit = Shitus
     return js("shit.diva.apply(null, args)")
 }
 
@@ -587,11 +557,11 @@ fun hor2(vararg args: dynamic): ReactElement {
 }
 
 fun fuckingDiviarius(): ReactElement {
-    return jshit.diva(js("({})"), "Fucking Diviarius")
+    return Shitus.diva(js("({})"), "Fucking Diviarius")
 }
 
 fun fuckingSpantus(): ReactElement {
-    return jshit.spana(js("({})"), "Fucking Spantus")
+    return Shitus.spana(js("({})"), "Fucking Spantus")
 }
 
 
@@ -621,12 +591,12 @@ fun promiseUnit(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit): 
     }
 }
 
-typealias Voidy = () -> Unit
+// typealias Voidy = () -> Unit
 
 class SimpleEventHandlerBuilder {
-    var handler: Voidy? = null
+    var handler: (() -> Unit)? = null
 
-    operator fun invoke(_handler: Voidy) {
+    operator fun invoke(_handler: () -> Unit) {
         handler = _handler
     }
 

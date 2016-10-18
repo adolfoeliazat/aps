@@ -17,6 +17,8 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
             jshit.art.respectArtPauses = true
         }
 
+        __await(ClearSentEmailsRequest.send())
+
 //        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
         __await(ResetTestDatabaseRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
 
@@ -639,7 +641,7 @@ fun signIn(email: String, password: String): Iterable<TestInstruction> {
     )
 }
 
-fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", itemIndex: String = "000"): ExpectationExtender {
+fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", itemIndex: String = "000"): (dynamic) -> Unit {
     return {arg: dynamic ->
         val expected = arg.expected
 
@@ -687,9 +689,9 @@ fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", item
     }
 }
 
-typealias ExpectationExtender = (dynamic) -> Unit
+// typealias ExpectationExtender = (dynamic) -> Unit
 
-fun expectAll(vararg fs: ExpectationExtender): ExpectationExtender {
+fun expectAll(vararg fs: (dynamic) -> Unit): (dynamic) -> Unit {
     return {arg: dynamic ->
         for (f in fs) {
             f(arg)
@@ -697,7 +699,7 @@ fun expectAll(vararg fs: ExpectationExtender): ExpectationExtender {
     }
 }
 
-fun expectHeaderControls(search: String, filter: String, ordering: String): ExpectationExtender {
+fun expectHeaderControls(search: String, filter: String, ordering: String): (dynamic) -> Unit {
     return {arg: dynamic ->
         val expected = arg.expected
 
@@ -794,7 +796,7 @@ class TestActionBuilder(val items: MutableList<TestInstruction>) {
 }
 
 class TestStateBuilder(val items: MutableList<TestInstruction>) {
-    fun assertGen(tag: String, expectedExtender: ExpectationExtender? = null) {
+    fun assertGen(tag: String, expectedExtender: ((dynamic) -> Unit)? = null) {
         items.add(TestInstruction.AssertGenerated(tag, "---generated-shit---", expectedExtender))
     }
 }

@@ -18,9 +18,9 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
         val onError: ((x: Any?) -> Promise<Any?>)? = spec.onError
 
         fun formTicker(): dynamic {
-            return jshit.elcl(json(
+            return jsFacing_elcl(json(
                 "render" to {
-                    jshit.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
+                    Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
                 },
                 "componentDidMount" to {
                     global.testGlobal["shitSpins"] = true
@@ -31,7 +31,7 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
             ))
         }
 
-        return jshit.statefulElement(json("ctor" to statefulElementCtor@{ update: dynamic ->
+        return Shitus.statefulElement(json("ctor" to statefulElementCtor@{ update: dynamic ->
             var working: dynamic = undefined
             var error: dynamic = undefined
             var focusedField: dynamic = undefined
@@ -77,8 +77,8 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
                 "render" to outta@{
                     figureOutActualVisibleFieldNames()
 
-                    return@outta jshit.diva(json(),
-                        jshit.forma.apply(null, js("[]").concat(
+                    return@outta Shitus.diva(json(),
+                        Shitus.forma.apply(null, js("[]").concat(
                             jsArrayOf(
                                 json("className" to className),
                                 error && jshit.errorBanner(json("content" to error, "style" to errorBannerStyle))),
@@ -86,8 +86,8 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
                                 .filter({x: dynamic -> actualVisibleFieldNames.includes(x.getName())})
                                 .map({x: dynamic -> x.render(json())}),
 
-                            jshit.diva(json("style" to json("textAlign" to "left")),
-                                jshit.button(json("tamy" to "primary", "shamy" to if (dontShameButtons) undefined else "primary",
+                            Shitus.diva(json("style" to json("textAlign" to "left")),
+                                Shitus.button(json("tamy" to "primary", "shamy" to if (dontShameButtons) undefined else "primary",
                                     "level" to "primary", "title" to primaryButtonTitle, "disabled" to working,
                                     "onClick" to {"__async"
                                         jshit.beginTrain(json("name" to "Submit fucking${if (debugName) " " + debugName else ""} form")); try {
@@ -123,7 +123,7 @@ fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
                                             update()
                                         } finally { jshit.endTrain() }
                                     })),
-                                cancelButtonTitle && jshit.button(json("tamy" to "cancel", "shamy" to if (dontShameButtons) undefined else "cancel",
+                                cancelButtonTitle && Shitus.button(json("tamy" to "cancel", "shamy" to if (dontShameButtons) undefined else "cancel",
                                     "title" to cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10), "onClick" to onCancel)),
                                 working && formTicker())
                         )))
@@ -163,9 +163,9 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
         val onError: ((Any?) -> Promise<Any?>)? = spec.onError
 
         fun formTicker(): dynamic {
-            return jshit.elcl(json(
+            return jsFacing_elcl(json(
                 "render" to {
-                    jshit.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
+                    Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
                 },
                 "componentDidMount" to {
                     global.testGlobal["shitSpins"] = true
@@ -176,7 +176,7 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
             ))
         }
 
-        return jshit.statefulElement(json("ctor" to statefulElementCtor@{update: dynamic ->
+        return Shitus.statefulElement(json("ctor" to statefulElementCtor@{update: dynamic ->
             var working: dynamic = undefined
             var error: dynamic = undefined
             var focusedField: dynamic = undefined
@@ -221,8 +221,8 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
                 "render" to outta@{
                     figureOutActualVisibleFieldNames()
 
-                    return@outta jshit.diva(json(),
-                        jshit.forma.apply(null, js("[]").concat(
+                    return@outta Shitus.diva(json(),
+                        Shitus.forma.apply(null, js("[]").concat(
                             jsArrayOf(
                                 json("className" to className),
                                 error && jshit.errorBanner(json("content" to error, "style" to errorBannerStyle))),
@@ -230,8 +230,8 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
                                 .filter({x: dynamic -> actualVisibleFieldNames.includes(x.getName())})
                                 .map({x: dynamic -> x.render(json())}),
 
-                            jshit.diva(json("style" to json("textAlign" to "left")),
-                                jshit.button(json("tamy" to "primary", "shamy" to if (dontShameButtons) undefined else "primary",
+                            Shitus.diva(json("style" to json("textAlign" to "left")),
+                                Shitus.button(json("tamy" to "primary", "shamy" to if (dontShameButtons) undefined else "primary",
                                     "level" to "primary", "title" to primaryButtonTitle, "disabled" to working,
                                     "onClick" to {"__async"
                                         jshit.beginTrain(json("name" to "Submit fucking${if (debugName) " " + debugName else ""} form")); try {
@@ -267,7 +267,7 @@ fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
                                             update()
                                         } finally { jshit.endTrain() }
                                     })),
-                                cancelButtonTitle && jshit.button(json("tamy" to "cancel", "shamy" to if (dontShameButtons) undefined else "cancel",
+                                cancelButtonTitle && Shitus.button(json("tamy" to "cancel", "shamy" to if (dontShameButtons) undefined else "cancel",
                                     "title" to cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10), "onClick" to onCancel)),
                                 working && formTicker())
                         )))
@@ -418,15 +418,15 @@ fun legacy_implementControlShit(arg: dynamic) {
 //                        raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed", json(
 //                        "\$render" to {
 //                            fun renderControl(co: dynamic): dynamic {
-//                                val cshit = jshit.CollapsibleShit(json("content" to jshit.diva(json(), jshit.renderStacks(jshit.pickStacks(co)))))
-//                                return jshit.diva(json(),
-//                                    jshit.diva(json("style" to json("display" to "flex", "marginRight" to 10)),
-//                                        jshit.diva(json("style" to json("fontWeight" to "bold")), co.debugDisplayName),
+//                                val cshit = jshit.CollapsibleShit(json("content" to Shitus.diva(json(), jshit.renderStacks(jshit.pickStacks(co)))))
+//                                return Shitus.diva(json(),
+//                                    Shitus.diva(json("style" to json("display" to "flex", "marginRight" to 10)),
+//                                        Shitus.diva(json("style" to json("fontWeight" to "bold")), co.debugDisplayName),
 //                                        cshit.renderCaret(json("style" to json("marginLeft" to 10)))),
 //                                    cshit.renderContent())
 //                            }
 //
-//                            jshit.diva(json("style" to json("display" to "flex")), renderControl(me), renderControl(another))
+//                            Shitus.diva(json("style" to json("display" to "flex")), renderControl(me), renderControl(another))
 //                        }
 //                    ))
                 }
@@ -669,10 +669,10 @@ fun legacy_implementControlShit(arg: dynamic) {
         run { // Action capture pane
             var thePane: dynamic = null
             thePane = jshit.openDebugPane(json("name" to "openActionCapturePane", "height" to 250,
-                "content" to jshit.updatableElement(json(), updatableElementCtor@{update: dynamic ->
+                "content" to Shitus.updatableElement(json(), updatableElementCtor@{update: dynamic ->
                     val code = Shitus.codeLinesToString(json(codeLines, "indent" to 0))
 
-                    val codeArea = jshit.Input(json(
+                    val codeArea = Shitus.Input(json(
                         "kind" to "textarea", "rows" to 8, "style" to json("fontFamily" to "monospace"),
                         "initialValue" to code,
                         "onKeyDown" to { e: dynamic ->
@@ -693,19 +693,19 @@ fun legacy_implementControlShit(arg: dynamic) {
 //                                }
 
                     return@updatableElementCtor render@{
-                        jshit.diva(json("controlTypeName" to "openActionCapturePane", "style" to json("position" to "relative")),
-                            jshit.diva(json("style" to json("height" to "1.5em"))),
-                            jshit.diva(json("className" to "form-group"),
-                                jshit.labela(json(), "Code"),
-                                jshit.diva(json(), codeArea)
+                        Shitus.diva(json("controlTypeName" to "openActionCapturePane", "style" to json("position" to "relative")),
+                            Shitus.diva(json("style" to json("height" to "1.5em"))),
+                            Shitus.diva(json("className" to "form-group"),
+                                Shitus.labela(json(), "Code"),
+                                Shitus.diva(json(), codeArea)
                             ),
-                            jshit.diva(json("style" to json("position" to "absolute", "right" to 0, "top" to 10, "display" to "flex")),
-                                jshit.diva(json(), progressPlaceholder),
+                            Shitus.diva(json("style" to json("position" to "absolute", "right" to 0, "top" to 10, "display" to "flex")),
+                                Shitus.diva(json(), progressPlaceholder),
 
                                 {
                                     if (art.actionPlaceholderTag != null) t("No actionPlaceholderTag")
                                     else if (insertedCodeLink) insertedCodeLink
-                                    else jshit.button(json("level" to "primary", "icon" to "pencil", "title" to "Insert Test Action Code", "style" to json(),
+                                    else Shitus.button(json("level" to "primary", "icon" to "pencil", "title" to "Insert Test Action Code", "style" to json(),
                                         "onClick" to {
                                             "__async"
                                             __await<dynamic>(jshit.callDebugRPWithProgress(json(
@@ -720,7 +720,7 @@ fun legacy_implementControlShit(arg: dynamic) {
 
                                             val m = codeArea.getValue().match(global.RegExp("\\\$tag: \"(.*?)\""))
                                             Shitus.invariant(m && m[1], "Where the fuck is tag in generated code?")
-                                            insertedCodeLink = jshit.diva(json(
+                                            insertedCodeLink = Shitus.diva(json(
                                                 "style" to json("marginLeft" to 8)),
                                                 jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
                                             update()
@@ -752,10 +752,10 @@ fun jsFacing_horiza(vararg ignored: dynamic): dynamic {
     jsFacing_deleteKey(arg, "spacing")
 
 
-    return jshit.diva(global.Object.assign(arg, json(
+    return Shitus.diva(global.Object.assign(arg, json(
         "items" to Shitus.fcomapo(items,
             {v: dynamic, k: dynamic, i: dynamic ->
-                jshit.diva(json("style" to global.Object.assign(
+                Shitus.diva(json("style" to global.Object.assign(
                     json("verticalAlign" to "middle"),
                     itemStyle,
                     json("display" to "inline-block", "marginLeft" to if (i > 0) spacing else 0))),

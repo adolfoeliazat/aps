@@ -10,8 +10,8 @@ import aps.*
 
 fun jsFacing_link(def: Json): ReactElement {
     var content: dynamic = def["content"]
-    val title: String? = def["title"] as String?
-    val className: String = (def["className"] as String?) ?: ""
+    val title: String? = def["title"].asDynamic()
+    val className: String = (def["className"].asDynamic()) ?: ""
     val style: dynamic = def["style"] ?: json()
     val onClick: dynamic = def["onClick"]
     val onMouseEnter: dynamic = def["onMouseEnter"]
@@ -20,13 +20,13 @@ fun jsFacing_link(def: Json): ReactElement {
     Shitus.invariant(!(content != null && title != null), "It should be either content or title")
 
     if (title != null) {
-        content = jshit.spancTitle(json("title" to title))
+        content = Shitus.spancTitle(json("title" to title))
     }
 
     var me: dynamic = null
     me = json(
         "render" to {
-            jshit.aa(json(
+            Shitus.aa(json(
                 "id" to me.elementID,
                 "className" to className,
                 "style" to style,
@@ -86,7 +86,7 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
             }
     })
 
-    return jshit.link(linkDef.asn1(def))
+    return Shitus.link(Shitus.asn1(linkDef, def))
 }
 
 fun jsFacing_pageLink(ui: dynamic, def: dynamic) {

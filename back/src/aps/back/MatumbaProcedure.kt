@@ -19,7 +19,7 @@ import kotlin.reflect.KClass
 
 fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die("I want APS_DANGEROUS_TOKEN environment variable")
 
-typealias ServletService = (HttpServletRequest, HttpServletResponse) -> Unit
+// typealias ServletService = (HttpServletRequest, HttpServletResponse) -> Unit
 
 class ProcedureContext {
     lateinit var q: DSLContext
@@ -36,25 +36,28 @@ class ProcedureContext {
 class ProcedureSpec<Req : RequestMatumba, Res : Any>(
     val req: Req,
     val runShit: (ProcedureContext, Req) -> Res,
-    val validate: (ProcedureContext, Req) -> Unit = {ctx, req ->},
+    val validate: (ProcedureContext, Req) -> Unit = { ctx, req -> },
     val wrapInFormResponse: Boolean,
     val needsDB: Boolean,
     val needsDangerousToken: Boolean,
     val needsUser: Boolean,
     val userKinds: Set<UserKind>,
-    val considerNextRequestTimestampFiddling: Boolean
+    val considerNextRequestTimestampFiddling: Boolean,
+    val logRequestJSON: Boolean
 )
 
 fun <Req : RequestMatumba, Res : Any>
-remoteProcedure(spec: ProcedureSpec<Req, Res>): ServletService = {servletRequest, servletResponse ->
-    val responseBean: Any
+remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServletResponse) -> Unit  = {servletRequest, servletResponse ->
+    var responseBean: Any
     val log = debugLog
     val ctx = ProcedureContext()
 
     try {
         servletRequest.characterEncoding = "UTF-8"
         val requestJSON = servletRequest.reader.readText()
-        log.info("${servletRequest.pathInfo}: $requestJSON")
+        if (spec.logRequestJSON) {
+            log.info("${servletRequest.pathInfo}: $requestJSON")
+        }
         val rmap = hackyObjectMapper.readValue(requestJSON, Map::class.java)
         // log.section("rmap:", rmap)
 
@@ -161,7 +164,7 @@ fun <Req> void(shit: (ProcedureContext, Req) -> Unit): (ProcedureContext, Req) -
 }
 
 fun <Req : RequestMatumba, Res : Any>
-publicProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): ServletService =
+publicProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -171,10 +174,11 @@ publicProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRes
         needsDangerousToken = false,
         needsUser = false,
         userKinds = setOf(),
-        considerNextRequestTimestampFiddling = true))
+        considerNextRequestTimestampFiddling = true,
+        logRequestJSON = true))
 
 fun <Req : RequestMatumba, Res : Any>
-anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): ServletService =
+anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -183,10 +187,16 @@ anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRe
         needsDangerousToken = false,
         needsUser = true,
         userKinds = setOf(UserKind.CUSTOMER, UserKind.WRITER, UserKind.ADMIN),
-        considerNextRequestTimestampFiddling = true))
+        considerNextRequestTimestampFiddling = true,
+        logRequestJSON = true))
 
 fun <Req : RequestMatumba, Res : Any>
-adminProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): ServletService =
+adminProcedure(
+    req: Req,
+    runShit: (ProcedureContext, Req) -> Res,
+    wrapInFormResponse: Boolean? = null,
+    validate: ((ProcedureContext, Req) -> Unit)? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -196,7 +206,9 @@ adminProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResp
         needsDangerousToken = false,
         needsUser = true,
         userKinds = setOf(UserKind.ADMIN),
-        considerNextRequestTimestampFiddling = true))
+        considerNextRequestTimestampFiddling = true,
+        logRequestJSON = true))
+
 
 
 

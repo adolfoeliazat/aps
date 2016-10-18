@@ -12,7 +12,7 @@ class SignUpPage(val ui: LegacyUIShit) {
     fun load(): Promise<Unit> {"__async"
         ui.setPage(json(
             "header" to jshit.pageHeader(json("title" to t("Sign Up", "Регистрация"))),
-            "body" to jshit.diva(json(),
+            "body" to Shitus.diva(json(),
                 FormMatumba<SignUpRequest, GenericResponse>(FormSpec(
                     SignUpRequest(),
                     ui,
@@ -23,10 +23,10 @@ class SignUpPage(val ui: LegacyUIShit) {
                     }
                 )).toReactElement(),
 
-                jshit.diva(json(),
+                Shitus.diva(json(),
                     jshit.hr(),
-                    jshit.diva(json("tame" to "signInSuggestion", "style" to json("textAlign" to "left")),
-                        jshit.spanc(json("tame" to "prose", "content" to t("TOTE", "Уже есть аккаунт? Тогда "))),
+                    Shitus.diva(json("tame" to "signInSuggestion", "style" to json("textAlign" to "left")),
+                        Shitus.spanc(json("tame" to "prose", "content" to t("TOTE", "Уже есть аккаунт? Тогда "))),
                         ui.urlLink(json("tamy" to true, "title" to t("TOTE", "входим сюда"), "url" to "sign-in.html", "delayActionForFanciness" to true)),
                         "."))
                 )

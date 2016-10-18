@@ -8,11 +8,36 @@ package aps.front
 
 import aps.*
 
-@native var lodash: dynamic
+@native val lodash: dynamic = noImpl
 
 object Shitus {
+    val elcl: dynamic = ::jsFacing_elcl
+    val diva: dynamic = ::jsFacing_diva
+    val spana: dynamic = ::jsFacing_spana
+    val ula: dynamic = ::jsFacing_ula
+    val lia: dynamic = ::jsFacing_lia
+    val forma: dynamic = ::jsFacing_forma
+    val labela: dynamic = ::jsFacing_labela
+    val nava: dynamic = ::jsFacing_nava
+    val aa: dynamic = ::jsFacing_aa
+    val ia: dynamic = ::jsFacing_ia
+    val h3a: dynamic = ::jsFacing_h3a
+    val h4a: dynamic = ::jsFacing_h4a
+    val blockquotea: dynamic = ::jsFacing_blockquotea
+//    val dom.spana = ::jsFacing_dom_spana
+    val horiza: dynamic = ::jsFacing_horiza
+    val link: dynamic = ::jsFacing_link
+    val faIcon: dynamic = ::jsFacing_faIcon
+    val liveBadge: dynamic = ::jsFacing_liveBadge
+    val liveBadge2: dynamic = ::jsFacing_liveBadge2
+    val Checkbox: dynamic = ::jsFacing_Checkbox
+    val button: dynamic = ::jsFacing_button
+    val TopNavItem: dynamic = ::jsFacing_TopNavItem
+    val spanc: dynamic = ::jsFacing_spanc
+    val Input: dynamic = ::jsFacing_Input
+
     val delay = ::jsFacing_delay
-    val run = ::jsFacing_run
+    val run: dynamic = ::jsFacing_run
     val runa = ::jsFacing_runa
     val repeat = ::jsFacing_repeat
     val fov: dynamic = ::jsFacing_fov
@@ -41,6 +66,50 @@ object Shitus {
     val invalidateKotlinStackSourceMapConsumer = ::jsFacing_invalidateKotlinStackSourceMapConsumer
     val captureStackAsException = ::jsFacing_captureStackAsException
     val omapa = ::jsFacing_omapa
+
+    val asn1: dynamic = {
+        val all = js("Array.prototype.slice.call(arguments)")
+        val first = all[0]
+        val rest = all.slice(1)
+        global.Object.assign.apply(global.Object, js("[]").concat(json(), /*...*/rest, first))
+    }
+
+    val asnn: dynamic = {
+        val all = js("Array.prototype.slice.call(arguments)")
+        val first = all[0]
+        val rest = all.slice(1)
+        global.Object.assign.apply(global.Object, js("[]").concat(json(), first, /*...*/rest))
+    }
+
+    val asnnoDollar = {
+        val all = js("Array.prototype.slice.call(arguments)")
+        val first = all[0]
+        val rest = all.slice(1)
+
+        val res = json()
+        global.Object.assign(res, first)
+        for (arg: dynamic in jsArrayToList(rest)) {
+            if (arg) {
+                for (key: dynamic in jsArrayToList(global.Object.keys(arg))) {
+                    if (key[0] != "$") {
+                        res[key] = arg[key]
+                    }
+                }
+            }
+        }
+        res
+    }
+
+    val spancTitle: dynamic = ::jsFacing_spancTitle
+    val statefulElement: dynamic = ::jsFacing_statefulElement
+    val updatableElement: dynamic = ::jsFacing_updatableElement
+}
+
+fun jsFacing_spancTitle(def: dynamic): dynamic {
+    // #extract {title} from def
+    val title = def.title
+    jsFacing_deleteKey(def, "title")
+    return Shitus.spanc(global.Object.assign(def, json("tame" to "title", "content" to title)))
 }
 
 fun jsFacing_arrayDeleteFirstThat(arr: dynamic, pred: dynamic): dynamic {
@@ -162,6 +231,7 @@ fun jsFacing_errorToMappedClientStackString(shit: dynamic, _opts: dynamic = null
     val skipMessage = opts.skipMessage
 
     val stack = if (jsTypeOf(shit) == "string") shit else shit.stack
+    if (stack == null) return __asyncResult(null)
     var lines = stack.split("\n")
     lines = __await(jsFacing_linesToMappedUsefulLines(lines))
 
@@ -352,7 +422,7 @@ fun jsFacing_dedent(it: dynamic): dynamic {
 
     return lines.map({line: dynamic ->
         if (!line.trim()) "" else line.slice(minIndent)
-    }).join('\n')
+    }).join("\n")
 }
 
 fun jsFacing_omapo(o: dynamic, f: dynamic): dynamic {
@@ -420,7 +490,120 @@ fun jsFacing_omapa(o: dynamic, f: dynamic): dynamic {
     return global.Object.keys(o).map {k: dynamic, i: dynamic -> f(o[k], k, i)}
 }
 
+fun jsFacing_statefulElement(def: dynamic): dynamic {
+    val ctor: dynamic = def.ctor
+    val noisy: dynamic = def.noisy
+    val displayName: dynamic = def.displayName
 
+    var reactElement: dynamic = null
+    var shouldUpdate: dynamic = null
+
+    var inst: dynamic = ctor(update@{then: dynamic ->
+        if (jshit.isInTestScenario && jshit.worldIsHalted) return@update Unit
+        if (!reactElement) return@update Unit // Not yet mounted or unmounted
+
+        shouldUpdate = true
+        reactElement.forceUpdate()
+        Shitus.fov(then)
+    })
+
+    if (jsTypeOf(inst) == "function") inst = json("render" to inst)
+    Shitus.invariant(jsTypeOf(inst.render) == "function", "Element constructor should return a function or something with render()")
+
+    inst.element = React.createElement(React.createClass(json(
+        "componentWillMount" to {
+            reactElement = js("this")
+            Shitus.fov(inst.componentWillMount)
+        },
+
+        "componentDidMount" to {
+            reactElement = js("this")
+            Shitus.fov(inst.componentDidMount)
+        },
+
+        "componentWillUnmount" to {
+            reactElement = null
+            Shitus.fov(inst.componentWillUnmount)
+        },
+
+        "componentWillUpdate" to {
+            Shitus.fov(inst.componentWillUpdate)
+        },
+
+        "componentDidUpdate" to {
+            Shitus.fov(inst.componentDidUpdate)
+        },
+
+        "shouldComponentUpdate" to shouldComponentUpdate@{
+            if (!shouldUpdate) return@shouldComponentUpdate false
+
+            shouldUpdate = false
+            return@shouldComponentUpdate true
+        },
+
+        "render" to render@{
+            // TODO:vgrechka Render exception triangle
+            return@render inst.render()
+
+//            try {
+//                val res = inst.render()
+//                return@render res
+//            } catch (e: Throwable) {
+//                return@render renderExceptionTriangleAndRevealStack(json("exception" to e))
+//            }
+        }
+    )), json())
+
+    return inst
+}
+
+fun jsFacing_updatableElement(def: dynamic, ctor_killme: dynamic): dynamic {
+    var renderCtor: dynamic = def.renderCtor
+    if (renderCtor != null && ctor_killme != null) Shitus.raise("Gimme either renderCtor or ctor_killme")
+
+    if (!renderCtor) renderCtor = ctor_killme
+
+    var inst: dynamic = null
+    var renderElement: dynamic = null
+
+    fun makeRenderElement() {
+        renderElement = renderCtor(updater@{then: dynamic ->
+            if (jshit.isInTestScenario && jshit.worldIsHalted) return@updater Unit
+            if (!inst) return@updater Unit
+
+            try {
+                inst.forceUpdate()
+            } catch (e: Throwable) {
+                jshit.raiseWithMeta(json("message" to e.message, "meta" to def, "cause" to e))
+            }
+
+            Shitus.fov(then)
+        })
+    }
+
+    makeRenderElement()
+
+
+    return React.createElement(React.createClass(json(
+        "componentDidMount" to {
+            inst = js("this")
+        },
+
+        "componentWillUnmount" to {
+            inst = null
+        },
+
+        "render" to render@{
+            return@render renderElement()
+//            try {
+//                const res = renderElement()
+//                return res
+//            } catch (e) {
+//                return renderExceptionTriangleAndRevealStack({exception: e})
+//            }
+        }
+    )), json())
+}
 
 
 

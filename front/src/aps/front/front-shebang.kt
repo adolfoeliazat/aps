@@ -45,14 +45,14 @@ fun oldShitAsReactElementable(someShit: Any?): ToReactElementable =
 
 class limpopo(val tame: String, val label: String, val colsm: Int?, val formGroupStyle: Any? = null) {
     operator fun invoke(content: ReactElement): ReactElement {
-        val res = jshit.diva(json("controlTypeName" to "limpopo", "tame" to tame, "className" to "form-group", "style" to formGroupStyle),
+        val res = Shitus.diva(json("controlTypeName" to "limpopo", "tame" to tame, "className" to "form-group", "style" to formGroupStyle),
             jshit.labe(json("content" to label)),
-            jshit.diva(json(), content))
-        return if (colsm == null) res else jshit.diva(json("className" to "col-sm-${colsm}"), res)
+            Shitus.diva(json(), content))
+        return if (colsm == null) res else Shitus.diva(json("className" to "col-sm-${colsm}"), res)
     }
 
     operator fun invoke(value: String, spancStyle: Any? = null): ReactElement {
-        return this(asReactElement(jshit.spanc(json(
+        return this(asReactElement(Shitus.spanc(json(
             "tame" to "value",
             "style" to spancStyle,
             "content" to value))))

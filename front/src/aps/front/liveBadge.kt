@@ -17,7 +17,7 @@ fun jsFacing_liveBadge(ui: dynamic, def: dynamic): dynamic {
 //                "render" to render@{
 //                    if (!me.getValue()) return@render null
 //                    // Was dom.spana
-//                    return@render jshit.spana(json("id" to def.id), jshit.spana(json(
+//                    return@render Shitus.spana(json("id" to def.id), Shitus.spana(json(
 //                        "className" to "badge ${if (def.className) def.className else ""}",
 //                        "style" to global.Object.assign(json(
 //                            "marginTop" to -2,
@@ -51,7 +51,7 @@ fun jsFacing_liveBadge(ui: dynamic, def: dynamic): dynamic {
 fun jsFacing_liveBadge2(ui: dynamic, def: dynamic): dynamic {
     if (def.tame == null) def.tame = "badge"
 
-    return jshit.statefulElement(json(
+    return Shitus.statefulElement(json(
         "ctor" to ctor@{update: dynamic ->
 
             fun getValue(): dynamic {
@@ -62,7 +62,7 @@ fun jsFacing_liveBadge2(ui: dynamic, def: dynamic): dynamic {
             me = json(
                 "render" to render@{
                     if (!getValue()) return@render null
-                    jshit.spana(json("id" to me.elementID, "className" to "badge",
+                    Shitus.spana(json("id" to me.elementID, "className" to "badge",
                         "style" to global.Object.assign(json(
                             "marginTop" to -2,
                             "marginLeft" to 5,

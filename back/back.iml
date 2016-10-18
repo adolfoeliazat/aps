@@ -14,13 +14,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
     <orderEntry type="module-library">
       <library name="aps-gradle-lib">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/kotlin-runtime.jar!/" />
           <root url="jar://$MODULE_DIR$/lib/postgresql-9.4.1211.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/kotlin-reflect.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/annotations-2.0.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/asm-5.0.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib-gradle/asm-commons-5.0.1.jar!/" />
@@ -113,5 +110,6 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
   </component>
 </module>

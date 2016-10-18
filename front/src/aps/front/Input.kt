@@ -13,6 +13,41 @@ fun jsFacing_Input(legacySpec: Json) {
     return input.legacyShit
 }
 
+val inputReactClass by lazy {React.createClass(json(
+    "render" to render@{
+        val self = js("this")
+
+        val kind: String? =  self.props.kind
+        val defaultValue: dynamic =  self.props.value
+        val onChange: dynamic =  self.props.onChange
+        val onMount: dynamic =  self.props.onMount
+        val style: dynamic =  self.props.style
+
+        val rest = lodash.omit( self.props, "kind", "value", "onChange", "onMount", "style")
+
+        return@render React.createElement(kind ?: "input", global.Object.assign(json(
+            "ref" to "input",
+            "defaultValue" to defaultValue,
+            "style" to global.Object.assign(json("resize" to "none"), style),
+            "onChange" to {e: dynamic ->
+                self.manualValue = e.target.value
+                onChange && onChange(e)
+            }
+        ), rest))
+    },
+
+    "componentDidUpdate" to {
+        if (js("this").props.value !== js("this").manualValue) {
+            global.ReactDOM.findDOMNode(js("this").refs.input).value = js("this").props.value
+        }
+    },
+
+    "componentDidMount" to {
+        js("this").props.onMount && js("this").props.onMount()
+    }
+))}
+
+
 class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
 
     fun LegacyCtor(): dynamic {
@@ -39,7 +74,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
         js("delete def.type")
         js("delete def.initialValue")
 
-        return jshit.statefulElement(json("ctor" to statefulElementCtor@{update: dynamic ->
+        return Shitus.statefulElement(json("ctor" to statefulElementCtor@{update: dynamic ->
             var value = initialValue
             var loading = false
             var _isDisabled = false
@@ -52,7 +87,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                             isRenderingDisabled = shittyFov(disabled)
                         }
 
-                    return@render React.createElement(jshit.input, json(
+                    return@render React.createElement(inputReactClass, json(
                         "id" to me.elementID,
                         "rows" to rows,
                         "placeholder" to jshit.textMeat(placeholder),
@@ -146,9 +181,9 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
 
             me.renderInRevelationPane = {
                 val els = js("[]")
-                jshit.diva(json("style" to json()),
+                Shitus.diva(json("style" to json()),
                     jshit.hor2(json(),
-                        jshit.link(json(
+                        Shitus.link(json(
                             "title" to t("Capture primary click with only this entered"),
                             "onClick" to onClick@{
                                 jshit.closeControlRevealer()

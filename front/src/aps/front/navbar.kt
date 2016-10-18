@@ -29,7 +29,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
         val counter = def.counter
 
         val active = highlightedItem == def.name
-        val res = jshit.TopNavItem_(global.Object.assign(def, json(
+        val res = Shitus.TopNavItem(global.Object.assign(def, json(
             "shame" to "TopNavItem-${def.name}",
             "tame" to "${sufindex("TopNavItem", counter[0]++)}",
             "tattrs" to json("active" to (active || js("undefined"))),
@@ -100,9 +100,9 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                 dropdownAStyle = json("backgroundColor" to "#e7e7e7")
             }
             leftNavbarItems.push(
-                jshit.lia(json("tame" to "prose", "className" to "dropdown"),
-                    jshit.aa(json("href" to "#", "className" to "dropdown-toggle skipClearMenus", "style" to dropdownAStyle, "data-toggle" to "dropdown", "role" to "button"), t("Prose", "Проза"), jshit.spana(json("className" to "caret", "style" to json("marginLeft" to 5)))),
-                    jshit.ula.apply(null, js("[]").concat(
+                Shitus.lia(json("tame" to "prose", "className" to "dropdown"),
+                    Shitus.aa(json("href" to "#", "className" to "dropdown-toggle skipClearMenus", "style" to dropdownAStyle, "data-toggle" to "dropdown", "role" to "button"), t("Prose", "Проза"), Shitus.spana(json("className" to "caret", "style" to json("marginLeft" to 5)))),
+                    Shitus.ula.apply(null, js("[]").concat(
                         json("className" to "dropdown-menu"),
                         proseItems))))
         }
@@ -138,9 +138,9 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
             dwidth = 15
         }
 
-        return jshit.elcl(json(
+        return jsFacing_elcl(json(
             "render" to {
-                jshit.aa(json("id" to id, "className" to className, "href" to href), title)
+                Shitus.aa(json("id" to id, "className" to className, "href" to href), title)
             },
 
             "componentDidMount" to {
@@ -226,16 +226,16 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
         ))
     }
 
-    return jshit.nava(json("className" to "navbar navbar-default navbar-fixed-top"),
-        jshit.diva(json("className" to "container-fluid"),
-            jshit.diva(json("className" to "navbar-header"),
+    return Shitus.nava(json("className" to "navbar navbar-default navbar-fixed-top"),
+        Shitus.diva(json("className" to "container-fluid"),
+            Shitus.diva(json("className" to "navbar-header"),
                 makeLink("home", brand, "navbar-brand")),
 
-            jshit.diva(json("style" to json("textAlign" to "left")),
-                jshit.ula.apply(null, js("[]").concat(
+            Shitus.diva(json("style" to json("textAlign" to "left")),
+                Shitus.ula.apply(null, js("[]").concat(
                     json("tame" to "topNavLeft", "id" to "leftNavbar", "className" to "nav navbar-nav", "style" to json("float" to "none", "display" to "inline-block", "verticalAlign" to "top")),
                     leftNavbarItems)),
-            rightNavbarItem && jshit.ula(json("tame" to "topNavRight", "id" to "rightNavbar", "className" to "nav navbar-nav navbar-right"),
+            rightNavbarItem && Shitus.ula(json("tame" to "topNavRight", "id" to "rightNavbar", "className" to "nav navbar-nav navbar-right"),
                 rightNavbarItem))))
 }
 

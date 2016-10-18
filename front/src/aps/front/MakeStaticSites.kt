@@ -94,8 +94,8 @@ object MakeStaticSites : IMakeStaticSites {
         }
 
         writePage(json("name" to "index", // For Writer site
-            "comp" to jshit.diva(json(),
-            jshit.diva(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+            Shitus.diva(json("className" to "container"),
                 jshit.pageHeader(t(json("EN" to "Welcome to Writer", "UA" to "Приветствуем на Писце"))),
                 markdownPiece(json(
                     "EN" to """
@@ -177,8 +177,8 @@ object MakeStaticSites : IMakeStaticSites {
         ))
 
         writePage(json("name" to "why", "highlightedItem" to "why", // For Writer site
-            "comp" to jshit.diva(json(),
-            jshit.diva.apply(null, js("[]").concat(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+            Shitus.diva.apply(null, js("[]").concat(json("className" to "container"),
                 jshit.pageHeader(t(json("EN" to "Why Writer?", "UA" to "Почему Писец?"))),
                 jsArrayOf(json(
                 "title" to json("EN" to "We care about each customer’s academic success", "UA" to "We care about each customer’s academic success"),
@@ -264,16 +264,16 @@ object MakeStaticSites : IMakeStaticSites {
                 )
                 )
                 ).map{section: dynamic ->
-            jshit.diva(json(),
-                jshit.diva(json(), h3Smaller(t(section.title))),
-                jshit.diva(json(), markdown(Shitus.dedent(t(section.content)))))}
+            Shitus.diva(json(),
+                Shitus.diva(json(), h3Smaller(t(section.title))),
+                Shitus.diva(json(), markdown(Shitus.dedent(t(section.content)))))}
             ))
             )
         ))
 
         writePage(json("name" to "prices", "highlightedItem" to "prices", // For Writer site
-            "comp" to jshit.diva(json(),
-            jshit.diva(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+            Shitus.diva(json("className" to "container"),
                 jshit.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
                 markdownPiece(json(
                     "EN" to """
@@ -338,8 +338,8 @@ object MakeStaticSites : IMakeStaticSites {
         ))
 
         writePage(json("name" to "faq", "highlightedItem" to "faq", // For Writer site
-            "comp" to jshit.diva(json(),
-            jshit.diva.apply(null, js("[]").concat(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+            Shitus.diva.apply(null, js("[]").concat(json("className" to "container"),
                 jshit.pageHeader(t(json("EN" to "FAQ", "UA" to "Частые вопросы"))),
                 jsArrayOf(json(
                 "title" to json("EN" to "How does AcademicPaperServed work?", "UA" to "How does AcademicPaperServed work?"),
@@ -446,9 +446,9 @@ object MakeStaticSites : IMakeStaticSites {
                 )
                 )
                 ).map{section: dynamic ->
-            jshit.diva(json(),
-                jshit.diva(json(), markdownPiece("> " + t(section.title))),
-                jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(Shitus.dedent(t(section.content)))))}
+            Shitus.diva(json(),
+                Shitus.diva(json(), markdownPiece("> " + t(section.title))),
+                Shitus.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(Shitus.dedent(t(section.content)))))}
             ))
             )
         ))
@@ -468,6 +468,9 @@ object MakeStaticSites : IMakeStaticSites {
         sh.cp("${kindaDirname}/../asset/*", root)
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
         sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
+
+        val frontDir = "e:/work/aps/front"
+        sh.cp("$frontDir/kotlin-hack.js", root)
 
         val entryStream = js("new (require('stream')).Readable")
         entryStream.push("""
@@ -558,8 +561,8 @@ object MakeStaticSites : IMakeStaticSites {
         }
 
         writePage(json("name" to "index", // For Customer site
-            "comp" to jshit.diva(json(),
-                jshit.diva(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+                Shitus.diva(json("className" to "container"),
                     jshit.pageHeader(t(json("EN" to "Welcome to AcademicPaperServed", "UA" to "Welcome to AcademicPaperServed UA"))),
                     markdownPiece(json("EN" to """
                 Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
@@ -641,8 +644,8 @@ object MakeStaticSites : IMakeStaticSites {
             ))
 
         writePage(json("name" to "why", "highlightedItem" to "why", // For Customer site
-            "comp" to jshit.diva(json(),
-                jshit.diva.apply(null, js("[]").concat(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+                Shitus.diva.apply(null, js("[]").concat(json("className" to "container"),
                     jshit.pageHeader(t(json("EN" to "Why AcademicPaperServed?", "UA" to "Why AcademicPaperServed UA?"))),
                     jsArrayOf(json(
                         "title" to json("EN" to "We care about each customer’s academic success", "UA" to "We care about each customer’s academic success"),
@@ -728,9 +731,9 @@ object MakeStaticSites : IMakeStaticSites {
                                 )
                         )
                         ).map{section: dynamic ->
-                        jshit.diva(json(),
-                            jshit.diva(json(), h3Smaller(t(section.title))),
-                            jshit.diva(json(), markdown(Shitus.dedent(t(section.content)))))}
+                        Shitus.diva(json(),
+                            Shitus.diva(json(), h3Smaller(t(section.title))),
+                            Shitus.diva(json(), markdown(Shitus.dedent(t(section.content)))))}
                 ))
             )
         ))
@@ -749,8 +752,8 @@ object MakeStaticSites : IMakeStaticSites {
         }
 
         writePage(json("name" to "prices", "highlightedItem" to "prices", // For Customer site
-            "comp" to jshit.diva(json(),
-                jshit.diva(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+                Shitus.diva(json("className" to "container"),
                     jshit.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
                     jshit.el("table", json("className" to "table table-hover table-condensed"),
                         jshit.el("thead", json(),
@@ -835,8 +838,8 @@ object MakeStaticSites : IMakeStaticSites {
         ))
 
         writePage(json("name" to "samples", "highlightedItem" to "samples", // For Customer site
-            "comp" to jshit.diva(json(),
-                jshit.diva(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+                Shitus.diva(json("className" to "container"),
                     jshit.pageHeader(t(json("EN" to "Sample Papers", "UA" to "Примеры работ"))),
                     hrefBullets(sampleItems)
                     )
@@ -844,8 +847,8 @@ object MakeStaticSites : IMakeStaticSites {
         ))
 
             writePage(json("name" to "faq", "highlightedItem" to "faq", // For Customer site
-            "comp" to jshit.diva(json(),
-                jshit.diva.apply(null, js("[]").concat(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+                Shitus.diva.apply(null, js("[]").concat(json("className" to "container"),
                     jshit.pageHeader(t(json("EN" to "FAQ", "UA" to "FAQ"))),
                     jsArrayOf(json(
                         "title" to json("EN" to "How does AcademicPaperServed work?", "UA" to "How does AcademicPaperServed work?"),
@@ -952,16 +955,16 @@ object MakeStaticSites : IMakeStaticSites {
                             )
                         )
                         ).map{section: dynamic ->
-                        jshit.diva(json(),
-                            jshit.diva(json(), markdownPiece("> " + t(section.title))),
-                            jshit.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(Shitus.dedent(t(section.content)))))}
+                        Shitus.diva(json(),
+                            Shitus.diva(json(), markdownPiece("> " + t(section.title))),
+                            Shitus.diva(json("style" to json("marginBottom" to 20, "marginTop" to -5)), markdown(Shitus.dedent(t(section.content)))))}
                 ))
             )
         ))
 
             writePage(json("name" to "contact", "highlightedItem" to "contact", // For Customer site
-            "comp" to jshit.diva(json(),
-                jshit.diva(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+                Shitus.diva(json("className" to "container"),
                     jshit.pageHeader(t(json("EN" to "Contact Us", "UA" to "Contact Us"))),
                     markdownPiece(json(
                         "EN" to """
@@ -972,8 +975,8 @@ object MakeStaticSites : IMakeStaticSites {
                 """
                     )),
 
-                    jshit.diva(json("style" to json("marginBottom" to 10)), t(json("EN" to "AcademicPaperServed headquarter:", "UA" to "AcademicPaperServed headquarter:"))),
-                    jshit.diva(json("style" to json("whiteSpace" to "pre", "fontFamily" to "monospace")), tdedent(json(
+                    Shitus.diva(json("style" to json("marginBottom" to 10)), t(json("EN" to "AcademicPaperServed headquarter:", "UA" to "AcademicPaperServed headquarter:"))),
+                    Shitus.diva(json("style" to json("whiteSpace" to "pre", "fontFamily" to "monospace")), tdedent(json(
                         "EN" to """
                 DP World Inc
                 624 W Kristina Ln
@@ -1288,8 +1291,8 @@ object MakeStaticSites : IMakeStaticSites {
 
             for (item in blogItems) {
             writePage(json("name" to "blog-${item.slug}", "highlightedItem" to "blog", // For Customer site
-                "comp" to jshit.diva(json(),
-                    jshit.diva(json("className" to "container"),
+                "comp" to Shitus.diva(json(),
+                    Shitus.diva(json("className" to "container"),
                         jshit.pageHeader(item.title),
                         markdownPiece(item.content)
                     )
@@ -1298,8 +1301,8 @@ object MakeStaticSites : IMakeStaticSites {
         }
 
         writePage(json("name" to "blog", "highlightedItem" to "blog", // For Customer site
-            "comp" to jshit.diva(json(),
-                jshit.diva(json("className" to "container"),
+            "comp" to Shitus.diva(json(),
+                Shitus.diva(json("className" to "container"),
                     jshit.pageHeader(t(json("EN" to "Writing Blog", "UA" to "Писательский Блог"))),
                     hrefBullets(blogItems.map{x: dynamic -> (json("title" to x.listTitle, "href" to "blog-${x.slug}.html"))})
                     )
@@ -1573,7 +1576,7 @@ object MakeStaticSites : IMakeStaticSites {
     <script src="bootstrap-hack.js"></script>
     <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->
 
-    <script src="kotlin/lib/kotlin.js"></script>
+    <script src="kotlin-hack.js"></script>
     <script src="kotlin/front-enhanced.js"></script>
 
     <script>
@@ -1748,17 +1751,20 @@ object MakeStaticSites : IMakeStaticSites {
     </script>
 
     <script src="bundle.js"></script>
-    <script>igniteShit()</script>
+    <script>
+        window.Kotlin = kotlin
+        igniteShit()
+    </script>
     </body>
     </html>
     """)
     }
 
     fun renderTestimonials(clientKind: dynamic): dynamic {
-        return jshit.diva(json(),
+        return Shitus.diva(json(),
             jshit.pageHeader(t(json("EN" to "What People Say", "UA" to "Что о нас говорят"))),
-            jshit.diva(json("id" to "testimonials-window"),
-                jshit.diva.apply(null, js("[]").concat(json("id" to "testimonials-strip"), jsArrayOf(
+            Shitus.diva(json("id" to "testimonials-window"),
+                Shitus.diva.apply(null, js("[]").concat(json("id" to "testimonials-strip"), jsArrayOf(
                     json("name" to json("EN" to "Nicole", "UA" to "Nicole"), "img" to "nicole.jpg", "says" to json(
                         "EN" to "Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.",
                         "UA" to "Never expect such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.")),
@@ -1778,15 +1784,15 @@ object MakeStaticSites : IMakeStaticSites {
                         "EN" to "I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!",
                         "UA" to "I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!"))
                     ).map{item: dynamic ->
-                    jshit.diva(json("className" to "testimonials-item"),
-                        jshit.diva(json("className" to "media"),
-                            jshit.diva(json("className" to "media-left"),
+                    Shitus.diva(json("className" to "testimonials-item"),
+                        Shitus.diva(json("className" to "media"),
+                            Shitus.diva(json("className" to "media-left"),
                                 jshit.img(item.img, json("className" to "media-object"))),
-                            jshit.diva(json("className" to "media-body"),
-                                jshit.h4a(json("className" to "media-heading"), t(item.name)),
-                                jshit.spana(json(), t(item.says)))))})),
+                            Shitus.diva(json("className" to "media-body"),
+                                Shitus.h4a(json("className" to "media-heading"), t(item.name)),
+                                Shitus.spana(json(), t(item.says)))))})),
 
-                jshit.diva(json("style" to json("display" to "flex", "alignItems" to "center", "position" to "absolute", "width" to 20, "right" to 0, "top" to 0, "height" to "100%")),
+                Shitus.diva(json("style" to json("display" to "flex", "alignItems" to "center", "position" to "absolute", "width" to 20, "right" to 0, "top" to 0, "height" to "100%")),
                     jshit.glyph("chevron-right", json("id" to "testimonials-right", "className" to "fa-2x")))),
 
             jshit.rawHtml("")
@@ -1794,12 +1800,12 @@ object MakeStaticSites : IMakeStaticSites {
     }
 
     fun h3Smaller(it: dynamic): dynamic {
-        return jshit.h3a(json(), jshit.spana(json("style" to json("fontSize" to "80%")), it))
+        return Shitus.h3a(json(), Shitus.spana(json("style" to json("fontSize" to "80%")), it))
     }
 
     fun bullets(items: dynamic): dynamic {
-        return jshit.ula.apply(null, js("[]").concat(json("className" to "fa-ul", "style" to json("marginLeft" to 22)), items.map{item: dynamic ->
-            jshit.lia(json("style" to json("marginBottom" to 10)), jshit.glyph("star", json("className" to "fa-li", "style" to json("color" to Color.BLUE_GRAY_600))), item)}))
+        return Shitus.ula.apply(null, js("[]").concat(json("className" to "fa-ul", "style" to json("marginLeft" to 22)), items.map{item: dynamic ->
+            Shitus.lia(json("style" to json("marginBottom" to 10)), jshit.glyph("star", json("className" to "fa-li", "style" to json("color" to Color.BLUE_GRAY_600))), item)}))
     }
 
     fun locBullets(items: dynamic): dynamic {
@@ -1807,7 +1813,7 @@ object MakeStaticSites : IMakeStaticSites {
     }
 
     fun hrefBullets(items: dynamic): dynamic {
-        return bullets(items.map{x: dynamic -> jshit.aa(json("href" to x.href), x.title)})
+        return bullets(items.map{x: dynamic -> Shitus.aa(json("href" to x.href), x.title)})
     }
 
     fun tdedent(ss: dynamic): dynamic {
@@ -1827,10 +1833,10 @@ object MakeStaticSites : IMakeStaticSites {
         val horizContentMargin = if (opts.horizContentMargin) opts.horizContentMargin else 0
 
         val colSize = js("12 / items.length")
-        return jshit.diva.apply(null, js("[]").concat(json("className" to "row", "style" to json("marginBottom" to 20)), items.map{x: dynamic ->
-            jshit.diva(json("className" to "col-md-" + colSize),
-                jshit.diva(json("style" to json("textAlign" to "center", "marginBottom" to 10)), jshit.glyph(x.glyph, json("className" to "fa-2x", "style" to json("color" to Color.BLUE_GRAY_600)))),
-                jshit.diva(json("style" to json("textAlign" to "center", "margin" to "0 ${horizContentMargin}px")), t(x)))}))
+        return Shitus.diva.apply(null, js("[]").concat(json("className" to "row", "style" to json("marginBottom" to 20)), items.map{x: dynamic ->
+            Shitus.diva(json("className" to "col-md-" + colSize),
+                Shitus.diva(json("style" to json("textAlign" to "center", "marginBottom" to 10)), jshit.glyph(x.glyph, json("className" to "fa-2x", "style" to json("color" to Color.BLUE_GRAY_600)))),
+                Shitus.diva(json("style" to json("textAlign" to "center", "margin" to "0 ${horizContentMargin}px")), t(x)))}))
     }
 
     fun crashForDebuggingSake_randomly() {

@@ -145,7 +145,7 @@ annotation class Front
 
     override var error: String? = null
 
-    val input = jshit.Input(json(
+    val input = Shitus.Input(json(
         "tamy" to true,
         "type" to when (type) {
             TextFieldType.PASSWORD -> "password"
@@ -172,12 +172,12 @@ annotation class Front
     override fun focus() = input.focus()
 
     override fun render(): ReactElement {
-        return jshit.diva(json("controlTypeName" to "TextField", "tamy" to name, "className" to "form-group"),
-            if (title != null) jshit.labela(json(), jshit.spanc(json("tame" to "label", "content" to title))) else undefined,
-            jshit.diva(json("style" to json("position" to "relative")),
+        return Shitus.diva(json("controlTypeName" to "TextField", "tamy" to name, "className" to "form-group"),
+            if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else undefined,
+            Shitus.diva(json("style" to json("position" to "relative")),
                 input,
                 if (error != null) jshit.errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
-                if (error != null) jshit.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
+                if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
     }
 
     override fun toRemote() = value
@@ -186,18 +186,18 @@ annotation class Front
 @Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront<Boolean>(container, name) {
     override var error: String? = null
 
-    val checkbox = jshit.Checkbox(json("tamy" to true))
+    val checkbox = Shitus.Checkbox(json("tamy" to true))
 
     override fun render(): ReactElement {
-        return jshit.diva(json("controlTypeName" to "AgreeTermsField", "tame" to "AgreeTermsField", "className" to "form-group"),
-            jshit.diva(json("style" to json("display" to "flex")),
+        return Shitus.diva(json("controlTypeName" to "AgreeTermsField", "tame" to "AgreeTermsField", "className" to "form-group"),
+            Shitus.diva(json("style" to json("display" to "flex")),
                 checkbox,
-                jshit.diva(json("style" to json("width" to 5))),
-                jshit.diva(json(),
-                    jshit.spanc(json("tame" to "prose", "content" to t("I’ve read and agreed with ", "Я прочитал и принял "))),
-                    jshit.link(json("tamy" to true, "title" to t("terms and conditions", "соглашение"), "onClick" to this::popupTerms))
+                Shitus.diva(json("style" to json("width" to 5))),
+                Shitus.diva(json(),
+                    Shitus.spanc(json("tame" to "prose", "content" to t("I’ve read and agreed with ", "Я прочитал и принял "))),
+                    Shitus.link(json("tamy" to true, "title" to t("terms and conditions", "соглашение"), "onClick" to {this.popupTerms()}))
                 ),
-                if (error != null) jshit.diva(json("style" to json("width" to 15, "height" to 15, "borderRadius" to 10, "marginTop" to 3, "marginRight" to 9, "marginLeft" to "auto", "backgroundColor" to Color.RED_300))) else null
+                if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "borderRadius" to 10, "marginTop" to 3, "marginRight" to 9, "marginLeft" to "auto", "backgroundColor" to Color.RED_300))) else null
             ),
             if (error != null) jshit.errorLabel(json("name" to "agreeTerms", "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null
         )
@@ -276,13 +276,13 @@ where T : Enum<T>, T : Titled {
     )
 
     override fun render(): ReactElement {
-        return jshit.diva(json("controlTypeName" to "SelectField", "tamy" to name, "className" to "form-group"),
+        return Shitus.diva(json("controlTypeName" to "SelectField", "tamy" to name, "className" to "form-group"),
             // Can it be null?
-            if (title != null) jshit.labela(json(), jshit.spanc(json("tame" to "label", "content" to title))) else null,
-            jshit.diva(json("style" to json("position" to "relative")),
+            if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else null,
+            Shitus.diva(json("style" to json("position" to "relative")),
                 select.toReactElement(),
                 if (error != null) jshit.errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null,
-                if (error != null) jshit.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else null))
+                if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else null))
     }
 
     override var value: T

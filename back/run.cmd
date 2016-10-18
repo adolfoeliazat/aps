@@ -7,7 +7,7 @@ rem =======================================================================
 
 java ^
 -cp %~dp0out;^
-%~dp0lib\kotlin-runtime.jar;^
-%~dp0lib\kotlin-reflect.jar; ^
+%~dp0..\lib\kotlin-jvm\kotlin-runtime.jar;^
+%~dp0..\lib\kotlin-jvm\kotlin-reflect.jar; ^
 aps.back.RunKt %*
 

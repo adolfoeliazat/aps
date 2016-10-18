@@ -18,7 +18,7 @@ fun makeAPSShitIgniter() {
     global.BOOTSTRAP_VERSION = 3
     global.BACKEND_URL = "http://localhost:3100"
 
-    global.Error.stackTraceLimit = js("Infinity")
+//    global.Error.stackTraceLimit = js("Infinity")
 
     global.igniteShit = jshit.makeUIShitIgniter(json(
 

@@ -16,7 +16,7 @@ fun jsFacing_faIcon(def: dynamic): dynamic {
     var me: dynamic = undefined // @workaround
     me = json(
         "render" to {
-            jshit.ia(json("id" to me.elementID, "className" to "fa fa-${icon} ${className}", "style" to style, "onClick" to {
+            Shitus.ia(json("id" to me.elementID, "className" to "fa fa-${icon} ${className}", "style" to style, "onClick" to {
                 if (onClick) onClick()
             }))
         },
@@ -31,7 +31,7 @@ fun jsFacing_faIcon(def: dynamic): dynamic {
 
     me.controlTypeName = "icon"
     jshit.implementControlShit(json("me" to me, "def" to def, "implementTestClick" to json("onClick" to onClick)))
-    return jshit.elcl(me)
+    return jsFacing_elcl(me)
 }
 
 

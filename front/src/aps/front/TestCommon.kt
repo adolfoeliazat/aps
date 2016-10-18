@@ -39,9 +39,7 @@ fun runTestScenario(fullName: String) {
 }
 
 fun tetete() {
-    val x = puid()
-    println(x)
-    println(jsTypeOf(x))
+    console.log(puid())
 }
 
 

@@ -388,7 +388,7 @@ class GodServlet : HttpServlet() {
                     val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
 
                     val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
-                    val service = factory.invoke(null) as ServletService
+                    val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
                     service(servletRequest, servletResponse)
 
 //                    val factory = remoteProcedureNameToFactory[procedureName]

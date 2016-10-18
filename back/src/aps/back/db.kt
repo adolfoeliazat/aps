@@ -35,7 +35,7 @@ object DB {
     val PORT_TEST = 5433  // On memory drive
 
     val dbs = mutableListOf<Database>()
-    val testTemplateUA1 = Database("127.0.0.1", PORT_TEST, "test-template-ua-1", "postgres", allowRecreation = true, populate = this::populate_testTemplateUA1)
+    val testTemplateUA1 = Database("127.0.0.1", PORT_TEST, "test-template-ua-1", "postgres", allowRecreation = true, populate = {q -> populate_testTemplateUA1(q)})
     val apsTestOnTestServer = Database("127.0.0.1", PORT_TEST, "aps-test", "postgres", allowRecreation = true)
     val postgresOnTestServer = Database("127.0.0.1", PORT_TEST, "postgres", "postgres")
     val postgresOnDevServer = Database("127.0.0.1", PORT_DEV, "postgres", "postgres")

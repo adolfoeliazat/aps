@@ -37,7 +37,7 @@ where E : Enum<E>, E : Titled {
     fun LegacyCtor(): dynamic {
         var stringValue: String = if (initialValue == null) values[0].name else initialValue.name
 
-        return jshit.statefulElement(json("ctor" to {update: dynamic ->
+        return Shitus.statefulElement(json("ctor" to {update: dynamic ->
             var me: dynamic = null
             me = json(
                 "render" to {
@@ -164,7 +164,7 @@ where E : Enum<E>, E : Titled {
 
                 "renderInRevelationPane" to {
                     val els = js("[]")
-                    jshit.diva(json("style" to json()),
+                    Shitus.diva(json("style" to json()),
                         jshit.Betsy(json(
                             "title" to "Values",
                             "details" to jshit.ObjectViewer(("object" to values))

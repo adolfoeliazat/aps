@@ -13,6 +13,8 @@ import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 import java.sql.Timestamp
 import java.util.*
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 object TestServerFiddling {
     @Volatile var nextRequestTimestamp: Timestamp? = null
@@ -21,7 +23,7 @@ object TestServerFiddling {
 }
 
 fun <Req : RequestMatumba, Res : Any>
-testProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res): ServletService =
+testProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, logRequestJSON: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -30,7 +32,8 @@ testProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res): ServletService
         needsDangerousToken = true,
         needsUser = false,
         userKinds = setOf(),
-        considerNextRequestTimestampFiddling = false))
+        considerNextRequestTimestampFiddling = false,
+        logRequestJSON = logRequestJSON ?: true))
 
 @RemoteProcedureFactory fun imposeNextRequestTimestamp() = testProcedure(
     ImposeNextRequestTimestampRequest(),
@@ -121,6 +124,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 
 @RemoteProcedureFactory fun getSoftwareVersion() = testProcedure(
     GetSoftwareVersionRequest(),
+    logRequestJSON = false,
     runShit = {req, res ->
         val path = Paths.get("e:/work/aps/front/out/front-enhanced.js")
         val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)

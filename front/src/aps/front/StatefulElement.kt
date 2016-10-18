@@ -369,21 +369,18 @@ class ImplementControlShitSpec {
 
 }
 
-
-typealias MaybeFun = (() -> Unit)?
-
 interface IReactClassSpec {
     val render: () -> ReactElement
-    val componentWillMount: MaybeFun
-    val componentDidMount: MaybeFun
-    val componentWillUpdate: MaybeFun
-    val componentDidUpdate: MaybeFun
-    val componentWillUnmount: MaybeFun
+    val componentWillMount:(() -> Unit)?
+    val componentDidMount: (() -> Unit)?
+    val componentWillUpdate: (() -> Unit)?
+    val componentDidUpdate: (() -> Unit)?
+    val componentWillUnmount: (() -> Unit)?
 }
 
 
-typealias ReactEventHandler = (ReactEvent) -> Unit
-typealias AsyncReactEventHandler = (ReactEvent) -> Promise<Unit>
+// typealias ReactEventHandler = (ReactEvent) -> Unit
+// typealias AsyncReactEventHandler = (ReactEvent) -> Promise<Unit>
 
 //open class ControlSpec {
 //    var elementID: String? = null
@@ -505,7 +502,7 @@ open class FlowElementBuilder(val tag: String) {
 //        insideMe()
 //    }
 
-    fun onClick(handler: ReactEventHandler) {
+    fun onClick(handler: (ReactEvent) -> Unit) {
         attrs["onClick"] = handler
     }
 
