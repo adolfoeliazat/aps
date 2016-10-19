@@ -43,7 +43,7 @@ fun pageHeader(arg: Json): ReactElement {
             } else {
                 Shitus.raise("Weird pageHeader label level: ${label.level}")
             }
-            return@map Shitus.spana(json("tame" to "label${jshit.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
+            return@map Shitus.spana(json("tame" to "label${Shitus.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
                 Shitus.spancTitle(json("title" to label.title)))
         }))))
         }
@@ -54,6 +54,7 @@ fun pageHeader(arg: Json): ReactElement {
 
 class AdminUsersPage(val ui: LegacyUIShit) {
     fun load(): Promise<Unit> {"__async"
+//        throw Exception("pizda")
         __await(Melinda<UserRTO, Nothing, UserFilter>(
             ui,
             urlPath = "admin-users.html",

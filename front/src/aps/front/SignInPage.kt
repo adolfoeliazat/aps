@@ -9,7 +9,7 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
         ui.setPage(json(
             "header" to Shitus.pageHeader(json("title" to t("Sign In", "Вход"))),
             "body" to Shitus.diva(json(),
-                ui.signedUpOK && jshit.preludeWithGreenCheck(json("title" to t(
+                ui.signedUpOK && preludeWithGreenCheck(json("title" to t(
                     "Cool. You have an account now. We sent you email with password.",
                     "Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом."))),
 
@@ -25,7 +25,7 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
                         ui.user = res.user
                         ui.startLiveStatusPolling()
                         ui.token = res.token
-                        jshit.storageLocal.setItem("token", ui.token)
+                        hrss.storageLocal.setItem("token", ui.token)
 
                         __await(ui.pushNavigate(when (res.user.state) {
                             UserState.COOL -> "dashboard.html"
@@ -35,7 +35,7 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
                 )).toReactElement(),
 
                 !ui.signedUpOK && Shitus.diva(json(),
-                    jshit.hr(),
+                    hr(),
                     Shitus.diva(json("style" to json("textAlign" to "left")),
                         t("TOTE", "Как? Еще нет аккаунта? "),
                         ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true))))

@@ -125,7 +125,7 @@ object MakeStaticSites : IMakeStaticSites {
                 horizBulletsRow(jsArrayOf(
                     json("glyph" to "pencil", "EN" to "No plagiarism", "UA" to "No plagiarism"),
                     json("glyph" to "star", "EN" to "Only premium quality", "UA" to "Only premium quality"),
-                    json("glyph" to "list", "EN" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references", "UA" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references")
+                    json("glyph" to "list", "EN" to "Free title page, outline, list${nbsp}of${nbsp}references", "UA" to "Free title page, outline, list${nbsp}of${nbsp}references")
                 ), json("horizContentMargin" to 40)),
                 horizBulletsRow(jsArrayOf(
                     json("glyph" to "gi-piggy-bank", "EN" to "One-time and life-time discounts to returning customers", "UA" to "One-time and life-time discounts to returning customers"),
@@ -324,10 +324,10 @@ object MakeStaticSites : IMakeStaticSites {
                 "UA" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:"
             )),
             locBullets(jsArrayOf(
-            json("EN" to "More than 50 pages${jshit.mdash}5%", "UA" to "Более 50 страниц ${jshit.ndash} 5%"),
-            json("EN" to "More than 100 pages${jshit.mdash}10%", "UA" to "Более 100 страниц ${jshit.ndash} 10%"),
-            json("EN" to "More than 150 pages${jshit.mdash}15%", "UA" to "Более 150 страниц ${jshit.ndash} 15%"),
-            json("EN" to "More than 200 pages${jshit.mdash}30%", "UA" to "Более 200 страниц ${jshit.ndash} 30%")
+            json("EN" to "More than 50 pages${mdash}5%", "UA" to "Более 50 страниц ${ndash} 5%"),
+            json("EN" to "More than 100 pages${mdash}10%", "UA" to "Более 100 страниц ${ndash} 10%"),
+            json("EN" to "More than 150 pages${mdash}15%", "UA" to "Более 150 страниц ${ndash} 15%"),
+            json("EN" to "More than 200 pages${mdash}30%", "UA" to "Более 200 страниц ${ndash} 30%")
             )),
             markdownPiece(json(
                 "EN" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
@@ -523,7 +523,7 @@ object MakeStaticSites : IMakeStaticSites {
     }
 
     fun wholePageTicker(): dynamic {
-        return jshit.rawHtml("""
+        return rawHtml("""
     <div class="container">
     <div style="display: flex; align-items: center; justify-content: center; position: absolute; left: 0px; top: 200px; width: 100%;">
     <span style="margin-left: 10">${t(json("EN" to "Breathe slowly...", "UA" to "Дышите глубоко..."))}</span>
@@ -591,7 +591,7 @@ object MakeStaticSites : IMakeStaticSites {
                     horizBulletsRow(jsArrayOf(
                         json("glyph" to "pencil", "EN" to "No plagiarism", "UA" to "No plagiarism"),
                         json("glyph" to "star", "EN" to "Only premium quality", "UA" to "Only premium quality"),
-                        json("glyph" to "list", "EN" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references", "UA" to "Free title page, outline, list${jshit.nbsp}of${jshit.nbsp}references")
+                        json("glyph" to "list", "EN" to "Free title page, outline, list${nbsp}of${nbsp}references", "UA" to "Free title page, outline, list${nbsp}of${nbsp}references")
                         ), json("horizContentMargin" to 40)),
                     horizBulletsRow(jsArrayOf(
                         json("glyph" to "gi-piggy-bank", "EN" to "One-time and life-time discounts to returning customers", "UA" to "One-time and life-time discounts to returning customers"),
@@ -755,18 +755,18 @@ object MakeStaticSites : IMakeStaticSites {
             "comp" to Shitus.diva(json(),
                 Shitus.diva(json("className" to "container"),
                     Shitus.pageHeader(t(json("EN" to "Our Prices", "UA" to "Наши цены"))),
-                    jshit.el("table", json("className" to "table table-hover table-condensed"),
-                        jshit.el("thead", json(),
-                            jshit.el("tr", json(),
-                                jshit.el("th", json(), t(json("EN" to "Delivery Option", "UA" to "Срочность"))),
-                                jshit.el("th", json(), t(json("EN" to "Type of Paper", "UA" to "Тип работы"))),
-                                jshit.el("th", json(), t(json("EN" to "Price", "UA" to "Цена")))
+                    el("table", json("className" to "table table-hover table-condensed"),
+                        el("thead", json(),
+                            el("tr", json(),
+                                el("th", json(), t(json("EN" to "Delivery Option", "UA" to "Срочность"))),
+                                el("th", json(), t(json("EN" to "Type of Paper", "UA" to "Тип работы"))),
+                                el("th", json(), t(json("EN" to "Price", "UA" to "Цена")))
                                 )),
-                        jshit.el.apply(null, js("[]").concat("tbody", json(),
-                            priceTableRows.map{row: dynamic -> jshit.el("tr", json(),
-                                jshit.el("td", json(), row[0]),
-                                jshit.el("td", json(), row[1]),
-                                jshit.el("td", json(), row[2])
+                        el.apply(null, js("[]").concat("tbody", json(),
+                            priceTableRows.map{row: dynamic -> el("tr", json(),
+                                el("td", json(), row[0]),
+                                el("td", json(), row[1]),
+                                el("td", json(), row[2])
                                 )}))),
 
                         Shitus.pageHeader(t(json("EN" to "Pricing Policy", "UA" to "Pricing Policy"))),
@@ -809,10 +809,10 @@ object MakeStaticSites : IMakeStaticSites {
                             "UA" to "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:"
                             )),
                         locBullets(jsArrayOf(
-                            json("EN" to "More than 50 pages${jshit.mdash}5%", "UA" to "Более 50 страниц ${jshit.ndash} 5%"),
-                            json("EN" to "More than 100 pages${jshit.mdash}10%", "UA" to "Более 100 страниц ${jshit.ndash} 10%"),
-                            json("EN" to "More than 150 pages${jshit.mdash}15%", "UA" to "Более 150 страниц ${jshit.ndash} 15%"),
-                            json("EN" to "More than 200 pages${jshit.mdash}30%", "UA" to "Более 200 страниц ${jshit.ndash} 30%")
+                            json("EN" to "More than 50 pages${mdash}5%", "UA" to "Более 50 страниц ${ndash} 5%"),
+                            json("EN" to "More than 100 pages${mdash}10%", "UA" to "Более 100 страниц ${ndash} 10%"),
+                            json("EN" to "More than 150 pages${mdash}15%", "UA" to "Более 150 страниц ${ndash} 15%"),
+                            json("EN" to "More than 200 pages${mdash}30%", "UA" to "Более 200 страниц ${ndash} 30%")
                             )),
                         markdownPiece(json(
                             "EN" to "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
@@ -1114,19 +1114,19 @@ object MakeStaticSites : IMakeStaticSites {
 
             > Writing is not a preplanned recitation of what you know; writing Is thinking.
             >
-            > ${jshit.mdash}Donald Murray
+            > ${mdash}Donald Murray
 
             Why not perceive writing as an exciting opportunity to make meaning out of your experiences and ideas, to help you think more clearly and independently and to establish new understandings in order to make new connections? In other words, change your current attitude towards writing!
 
             > The two most engaging powers of an author are to make new things familiar and familiar things new.
             >
-            > ${jshit.mdash}Dr. Samuel Johnson
+            > ${mdash}Dr. Samuel Johnson
 
             Be sure you understand your assignment well and do not hesitate overloading your instructor with as many questions as possible to get an in-depth and insightful understanding of what to write about! Feel the power of being able to inform others, while learning something new at the same time! Isn’t it exciting to deliver via obtaining? Millions of men worldwide dream of having such a power. Think of what you can lose if you don’t try to love writing.
 
             > It's good to rub and polish our brain against that of others.
             >
-            > ${jshit.mdash}Montaigne
+            > ${mdash}Montaigne
 
             When choosing a good topic for your informative speech, high school debate, college essay or research, brainstorm your topic ideas first! Take a sheet of paper and a pen, draw a line in the center of the paper, and write questions on the left and answers on the right. Ask yourself:
 
@@ -1260,19 +1260,19 @@ object MakeStaticSites : IMakeStaticSites {
 
             > Writing is not a preplanned recitation of what you know; writing Is thinking.
             >
-            > ${jshit.mdash}Donald Murray
+            > ${mdash}Donald Murray
 
             Why not perceive writing as an exciting opportunity to make meaning out of your experiences and ideas, to help you think more clearly and independently and to establish new understandings in order to make new connections? In other words, change your current attitude towards writing!
 
             > The two most engaging powers of an author are to make new things familiar and familiar things new.
             >
-            > ${jshit.mdash}Dr. Samuel Johnson
+            > ${mdash}Dr. Samuel Johnson
 
             Be sure you understand your assignment well and do not hesitate overloading your instructor with as many questions as possible to get an in-depth and insightful understanding of what to write about! Feel the power of being able to inform others, while learning something new at the same time! Isn’t it exciting to deliver via obtaining? Millions of men worldwide dream of having such a power. Think of what you can lose if you don’t try to love writing.
 
             > It's good to rub and polish our brain against that of others.
             >
-            > ${jshit.mdash}Montaigne
+            > ${mdash}Montaigne
 
             When choosing a good topic for your informative speech, high school debate, college essay or research, brainstorm your topic ideas first! Take a sheet of paper and a pen, draw a line in the center of the paper, and write questions on the left and answers on the right. Ask yourself:
 
@@ -1775,8 +1775,8 @@ object MakeStaticSites : IMakeStaticSites {
                         "EN" to "I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!",
                         "UA" to "I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!")),
                     json("name" to json("EN" to "Joseph B.", "UA" to "Joseph B."), "img" to "joseph-b.jpg", "says" to json(
-                        "EN" to "First I doubted I’d get anything of good quality, but I was up${jshit.nbsp}to the eyes in work and had no other choice. The paper${jshit.nbsp}proved to be authentic and came on time. Can I get${jshit.nbsp}the same writer for my next essay?",
-                        "UA" to "First I doubted I’d get anything of good quality, but I was up${jshit.nbsp}to the eyes in work and had no other choice. The paper${jshit.nbsp}proved to be authentic and came on time. Can I get${jshit.nbsp}the same writer for my next essay?")),
+                        "EN" to "First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?",
+                        "UA" to "First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?")),
                     json("name" to json("EN" to "Mark C.", "UA" to "Mark C."), "img" to "mark-c.jpg", "says" to json(
                         "EN" to "How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.",
                         "UA" to "How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.")),
@@ -1787,7 +1787,7 @@ object MakeStaticSites : IMakeStaticSites {
                     Shitus.diva(json("className" to "testimonials-item"),
                         Shitus.diva(json("className" to "media"),
                             Shitus.diva(json("className" to "media-left"),
-                                jshit.img(item.img, json("className" to "media-object"))),
+                                img(item.img, json("className" to "media-object"))),
                             Shitus.diva(json("className" to "media-body"),
                                 Shitus.h4a(json("className" to "media-heading"), t(item.name)),
                                 Shitus.spana(json(), t(item.says)))))})),
@@ -1795,7 +1795,7 @@ object MakeStaticSites : IMakeStaticSites {
                 Shitus.diva(json("style" to json("display" to "flex", "alignItems" to "center", "position" to "absolute", "width" to 20, "right" to 0, "top" to 0, "height" to "100%")),
                     Shitus.glyph("chevron-right", json("id" to "testimonials-right", "className" to "fa-2x")))),
 
-            jshit.rawHtml("")
+            rawHtml("")
             )
     }
 
@@ -1839,20 +1839,10 @@ object MakeStaticSites : IMakeStaticSites {
                 Shitus.diva(json("style" to json("textAlign" to "center", "margin" to "0 ${horizContentMargin}px")), t(x)))}))
     }
 
-    fun crashForDebuggingSake_randomly() {
-        if (jshit.random(1) == 0) return clog("Not crashing for now")
-
-        clog("Receive some shit on stdout")
-        global.process.stderr.write("More on stderr\n")
-        clog("Stdout shit continues on another line")
-        global.process.stderr.write("And to stderr again\n")
-        clog("Can you see all this shit in DevUI?")
-        global.process.exit(1)
-    }
 
     fun markdown(it: dynamic): dynamic {
         val md = js("require('markdown-it')()")
-        return jshit.rawHtml(md.render(it))
+        return rawHtml(md.render(it))
     }
 
 }

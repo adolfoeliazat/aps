@@ -298,17 +298,18 @@ where Filter : Enum<Filter>, Filter : Titled {
                 "title" to t("Show More", "Показать еще"),
                 "style" to json("background" to Color.BLUE_GRAY_50, "width" to "100%", "marginTop" to 15),
                 "onClick" to onClick@{"__async"
-                    jshit.effects.blinkOn(json("target" to Shitus.byid(moreButtonID), "dtop" to -16))
+                    effects.blinkOn(json("target" to Shitus.byid(moreButtonID), "dtop" to -16))
                     // testGlobal['button_showMore_blinks'] = true
 
-                    val moreRes = __await<dynamic>(jshit.ui.rpcSoft(global.Object.assign(itemsReq, json("fromID" to itemsRes.moreFromID))))
-
-                    if (moreRes.error) { console.error(moreRes.error); return@onClick }
-                    // TODO:vgrechka Handle RPC error in Show More button    408e3096-aab1-42f5-9209-a9b35e7b5800
-                    jshit.effects.blinkOff()
-                    // testGlobal['button_showMore_blinks'] = false
-
-                    thing = jshit.ui.renderMoreable(json("itemsRes" to moreRes, "itemsReq" to itemsReq, "renderItem" to renderItem, "chunkName" to chunkName, "chunkIndex" to chunkIndex + 1))
+                    imf("renderMoreable")
+//                    val moreRes = __await<dynamic>(jshit.ui.rpcSoft(global.Object.assign(itemsReq, json("fromID" to itemsRes.moreFromID))))
+//
+//                    if (moreRes.error) { console.error(moreRes.error); return@onClick }
+//                    // TODO:vgrechka Handle RPC error in Show More button    408e3096-aab1-42f5-9209-a9b35e7b5800
+//                    effects.blinkOff()
+//                    // testGlobal['button_showMore_blinks'] = false
+//
+//                    thing = jshit.ui.renderMoreable(json("itemsRes" to moreRes, "itemsReq" to itemsReq, "renderItem" to renderItem, "chunkName" to chunkName, "chunkIndex" to chunkIndex + 1))
 
                     update()
                 }
@@ -323,7 +324,7 @@ where Filter : Enum<Filter>, Filter : Titled {
             Shitus.diva(json("style" to json("marginTop" to 10)), t("TOTE", "Здесь ничего нет, такие дела..."))
         else {
             Shitus.diva.apply(null, js("[]").concat(
-                json("tame" to "${chunkName}${jshit.sufindex(chunkIndex)}"),
+                json("tame" to "${chunkName}${Shitus.sufindex(chunkIndex)}"),
                 itemsRes.items.mapIndexed { index, item -> renderItem(index, item).toReactElement() }.toJSArray()))
         },
         bottom

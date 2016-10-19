@@ -75,7 +75,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
                         Shitus.button(json("tamy" to "primary", "shamy" to if (spec.dontShameButtons) undefined else "primary",
                             "level" to "primary", "title" to spec.primaryButtonTitle, "disabled" to working,
                             "onClick" to {"__async"
-                                jshit.beginTrain(json("name" to "Submit fucking form")); try {
+                                Shitus.beginTrain(json("name" to "Submit fucking form")); try {
                                     for (field: FormFieldFront<*> in spec.req.fields) {
                                         field.error = null
                                         field.disabled = true
@@ -114,7 +114,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
 
                                     working = false
                                     update()
-                                } finally { jshit.endTrain() }
+                                } finally { Shitus.endTrain() }
                             }
                         )),
 

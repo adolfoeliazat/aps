@@ -14,7 +14,7 @@ fun jsFacing_pollLiveStatus(ui: dynamic): Promise<Unit> {"__async"
 
 fun jsFacing_startLiveStatusPolling(ui: dynamic) {
     ui.liveStatusPollingIntervalHandle = global.setInterval({
-        if (!jshit.liveStatusPollingViaIntervalDisabled) {
+        if (!hrss.liveStatusPollingViaIntervalDisabled) {
             ui.pollLiveStatus()
         }
     }, global.LIVE_STATUS_POLLING_INTERVAL)

@@ -173,16 +173,16 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
 //                        return
                     }
 
-                    jshit.effects.blinkOn(json("target" to Shitus.byid(id).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
+                    effects.blinkOn(json("target" to Shitus.byid(id).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
                     global.testGlobal["topNavbarLink_" + name + "_blinks"] = true
 
-                    if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(jshit.isInTestScenario() && jshit.getTestSpeed() == "fast")) {
+                    if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(isInTestScenario() && art.testSpeed == "fast")) {
                         __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
                     }
                     __await<dynamic>(ui.pushNavigate(href))
 
                     global.setTimeout({
-                        jshit.effects.blinkOff()
+                        effects.blinkOff()
                         global.testGlobal["topNavbarLink_" + name + "_blinks"] = false
                         global.bsClearMenus()
                     }, 250)
@@ -192,7 +192,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
 
                 me = {
                     "click" to {"__async"
-                        if (jshit.getTestSpeed() == "slow") {
+                        if (art.testSpeed == "slow") {
                             me.showHand()
                             __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                             me.hideHand()
@@ -206,7 +206,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                         val arg = if (_arg) arg else js("({})")
                         val testActionHandOpts = arg.testActionHandOpts
 
-                        testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(id)), testActionHandOpts))
+                        testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(id)), testActionHandOpts))
                     }
                     "hideHand" to {
                         testActionHand.delete()

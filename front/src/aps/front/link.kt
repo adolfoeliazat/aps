@@ -65,21 +65,21 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
         "style" to style,
         "id" to id,
         "onClick" to {"__async"
-            jshit.effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
+            effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
             if (name != null) {
                 Shitus.byid(id).css("text-decoration", "none")
                 global.testGlobal["link_" + name + "_blinks"] = true
             }
 
-            if (delayActionForFanciness && !(jshit.isInTestScenario() && jshit.testSpeed == "fast")) {
+            if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
                 __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
             }
 
-            __await<dynamic>(jshit.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {"__async"
+            __await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {"__async"
                 __await<dynamic>(ui.pushNavigate(url))
             })))
 
-            jshit.effects.blinkOff()
+            effects.blinkOff()
             if (name) {
                 Shitus.byid(id).css("text-decoration", "")
                 global.testGlobal["link_" + name + "_blinks"] = false

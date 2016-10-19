@@ -176,7 +176,7 @@ annotation class Front
             if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else undefined,
             Shitus.diva(json("style" to json("position" to "relative")),
                 input,
-                if (error != null) jshit.errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
+                if (error != null) errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
                 if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
     }
 
@@ -199,7 +199,7 @@ annotation class Front
                 ),
                 if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "borderRadius" to 10, "marginTop" to 3, "marginRight" to 9, "marginLeft" to "auto", "backgroundColor" to Color.RED_300))) else null
             ),
-            if (error != null) jshit.errorLabel(json("name" to "agreeTerms", "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null
+            if (error != null) errorLabel(json("name" to "agreeTerms", "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null
         )
     }
 
@@ -281,7 +281,7 @@ where T : Enum<T>, T : Titled {
             if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else null,
             Shitus.diva(json("style" to json("position" to "relative")),
                 select.toReactElement(),
-                if (error != null) jshit.errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null,
+                if (error != null) errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null,
                 if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else null))
     }
 
@@ -342,7 +342,7 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
 }
 
 fun spitExceptionToConsole(e: dynamic) {
-    jshit.revealStack(json("exception" to e))
+    Shitus.revealStack(json("exception" to e))
 }
 
 fun <Res> callDangerousMatumba(req: RequestMatumba): Promise<Res> {

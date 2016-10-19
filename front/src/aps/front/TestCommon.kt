@@ -25,7 +25,6 @@ interface TestHost {
 abstract class TestScenario {
     lateinit var host: TestHost
 
-    val drpc = jshit.getDebugRPC()
     val testCommon by lazy { TestCommon(host) }
 
     abstract fun run(): Promise<Unit>
@@ -71,23 +70,23 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
 
     val testScenarioToRun: String = urlQuery.testScenario ?: bitch("Gimme testScenario")
 
-    jshit.preventScrollToBottomOnAssertionError = urlQuery.scrollToBottom == "no"
-    jshit.preventExceptionRevelation = urlQuery.revealException == "no"
-    jshit.preventUIAssertionThrowing = urlQuery.uiAssertionThrows == "no"
-    jshit.testSpeed = if (urlQuery.testSpeed) urlQuery.testSpeed else "fast"
-    jshit.alternativeTestSpeed = urlQuery.alternativeTestSpeed
-    if (!jshit.alternativeTestSpeed) {
-        if (jshit.testSpeed == "fast" || jshit.testSpeed == "medium") {
-            jshit.alternativeTestSpeed = "slow"
+    hrss.preventScrollToBottomOnAssertionError = urlQuery.scrollToBottom == "no"
+    hrss.preventExceptionRevelation = urlQuery.revealException == "no"
+    hrss.preventUIAssertionThrowing = urlQuery.uiAssertionThrows == "no"
+    art.testSpeed = if (urlQuery.testSpeed) urlQuery.testSpeed else "fast"
+    hrss.alternativeTestSpeed = urlQuery.alternativeTestSpeed
+    if (!hrss.alternativeTestSpeed) {
+        if (art.testSpeed == "fast" || art.testSpeed == "medium") {
+            hrss.alternativeTestSpeed = "slow"
         } else {
-            jshit.alternativeTestSpeed = "medium"
+            hrss.alternativeTestSpeed = "medium"
         }
     }
     art.respectArtPauses = urlQuery.respectArtPauses == "yes"
 
     val sim = object : TestHost {
         override fun navigate(url: String): Promise<Unit> {"__async"
-            dlog("Navigating", jshit.browser.name, url)
+            dlog("Navigating", hrss.browser.name, url)
             global.history.replaceState(null, "", url)
             __await<dynamic>(makeCleanPairAndBoot())
             return __asyncResult(Unit)
@@ -95,11 +94,11 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
 
         override fun selectBrowser(name: String) {
             dlog("Selecting browser", name)
-            jshit.browser = jshit.browsers[name]
-            if (!jshit.browser) {
+            hrss.browser = hrss.browsers[name]
+            if (!hrss.browser) {
                 var storageLocalItems = js("({})")
 
-                jshit.browser = json(
+                hrss.browser = json(
                     "name" to name,
                     "storageLocal" to json(
                         "clear" to {
@@ -115,19 +114,19 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
                     )
                 )
 
-                jshit.browsers[name] = jshit.browser
+                hrss.browsers[name] = hrss.browser
             }
 
-            jshit.storageLocal = jshit.browser.storageLocal
+            hrss.storageLocal = hrss.browser.storageLocal
 
-            if (!jshit.browser.topNavbarElement) {
+            if (!hrss.browser.topNavbarElement) {
                 // WTF is this?..
                 // Doing this prevents proper unmounting of React components
                 //                        byid("topNavbarContainer").html(`<div style="text-align: center;">New browser: ${name}</div>`)
                 //                        byid("root").html("")
             } else {
-                jshit.ReactDOM.render(jshit.browser.topNavbarElement, Shitus.byid0("topNavbarContainer"))
-                jshit.ReactDOM.render(jshit.browser.rootElement, Shitus.byid0("root"))
+                global.ReactDOM.render(hrss.browser.topNavbarElement, Shitus.byid0("topNavbarContainer"))
+                global.ReactDOM.render(hrss.browser.rootElement, Shitus.byid0("root"))
             }
         }
     }
@@ -136,40 +135,40 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
     val scenario: TestScenario = eval("new scenarioClass()")
     scenario.host = sim
 
-    jshit.DB = "aps-test"
-    global.sessionStorage.setItem("DB", jshit.DB)
+    global.DB = "aps-test"
+    global.sessionStorage.setItem("DB", global.DB)
 
 
 
 
     val initialPath = global.location.pathname + global.location.search
 
-    jshit.currentTestScenarioName = testScenarioToRun
-    jshit.lastTestScenarioName = testScenarioToRun
-    val oldHotCodeUpdateDisabled = jshit.hotCodeUpdateDisabled
-    val oldLiveStatusPollingViaIntervalDisabled = jshit.liveStatusPollingViaIntervalDisabled
+    hrss.currentTestScenarioName = testScenarioToRun
+    lastTestScenarioName = testScenarioToRun
+    val oldHotCodeUpdateDisabled = hrss.hotCodeUpdateDisabled
+    val oldLiveStatusPollingViaIntervalDisabled = hrss.liveStatusPollingViaIntervalDisabled
 
     // Prevent some unnecessary glithes
-    jshit.hotCodeUpdateDisabled = false
-    jshit.liveStatusPollingViaIntervalDisabled = false
+    hrss.hotCodeUpdateDisabled = false
+    hrss.liveStatusPollingViaIntervalDisabled = false
 
-    jshit.urlQueryBeforeRunningTest = jshit.getURLQuery()
+    hrss.urlQueryBeforeRunningTest = getURLQuery()
 
     try {
         __await(scenario.run())
     } finally {
-        jshit.hotCodeUpdateDisabled = oldHotCodeUpdateDisabled
-        jshit.liveStatusPollingViaIntervalDisabled = oldLiveStatusPollingViaIntervalDisabled
+        hrss.hotCodeUpdateDisabled = oldHotCodeUpdateDisabled
+        hrss.liveStatusPollingViaIntervalDisabled = oldLiveStatusPollingViaIntervalDisabled
 
-        jshit.currentTestScenarioName = undefined
-        if (!jshit.preventRestoringURLAfterTest) {
+        hrss.currentTestScenarioName = undefined
+        if (!hrss.preventRestoringURLAfterTest) {
             global.setTimeout({ global.history.replaceState(null, "", initialPath) }, 1000)
         }
     }
 
     if (!art.halted) {
-        jshit.openTestPassedPaneArgs = json("scenario" to scenario)
-        openTestPassedPane(jshit.openTestPassedPaneArgs)
+        hrss.openTestPassedPaneArgs = json("scenario" to scenario)
+        openTestPassedPane(hrss.openTestPassedPaneArgs)
     }
 
     return __asyncResult(Unit)

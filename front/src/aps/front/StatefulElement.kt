@@ -124,10 +124,10 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
         def.componentWillMount = {
             elementThis = js("this")
 
-            var elementControls = jshit.elementIDToControls[elementID]
+            var elementControls = Shitus.elementIDToControls[elementID]
             if (!elementControls) {
                 elementControls = js("[]")
-                jshit.elementIDToControls[elementID] = elementControls
+                Shitus.elementIDToControls[elementID] = elementControls
             }
 
             if (tame != null) {
@@ -167,7 +167,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
 
                 if (shouldContribute) {
                     Shitus.byid(elementID).parents().each {
-                        val parentControls = jshit.elementIDToControls[js("this").id]
+                        val parentControls = Shitus.elementIDToControls[js("this").id]
                         if (!parentControls) undefined
                         else {
                             for (parentControl in jsArrayToList(parentControls)) {
@@ -214,7 +214,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
             componentWillUnmount()
 
             removeEventListeners()
-            jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x: dynamic -> x.id == controlID })
+            jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[elementID], {x: dynamic -> x.id == controlID })
             jsFacing_deleteKey(art.uiStateContributions, controlID)
 
             if (effectiveShame != null) {
@@ -230,19 +230,19 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
 
     private fun stickException(exception: dynamic) {
         fun doReveal() {
-            jshit.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
-                jshit.renderDefinitionStackStrip(json("stack" to `$definitionStack`))
+            Shitus.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
+                Shitus.renderDefinitionStackStrip(json("stack" to `$definitionStack`))
             }))))
         }
 
         doReveal() // Does nothing if something is already revealed
 
-        jshit.debugControlStickers.add(json("control" to this, "shit" to json(
-            "onClick" to {
-                jshit.hideStackRevelation()
-                doReveal()
-            }
-        )))
+//        jshit.debugControlStickers.add(json("control" to this, "shit" to json(
+//            "onClick" to {
+//                jshit.hideStackRevelation()
+//                doReveal()
+//            }
+//        )))
     }
 
 
@@ -259,14 +259,14 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
                     preventAndStop(e)
 
                     if (effectiveShame == null) {
-                        jshit.raiseWithMeta(json("message" to "Put some shame on me", "meta" to this)) // TODO:vgrechka meta: me
+                        Shitus.raiseWithMeta(json("message" to "Put some shame on me", "meta" to this)) // TODO:vgrechka meta: me
                     }
 
                     return captureAction()
                 }
 
                 preventAndStop(e)
-                return jshit.revealControl(this)
+                return Shitus.revealControl(this)
             }
 
             onRootClick(e)
@@ -295,7 +295,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
         var res = tame
         val parents = Shitus.byid(elementID).parents()
         parents.each {
-            val parentControls = jshit.elementIDToControls[js("this").id]
+            val parentControls = Shitus.elementIDToControls[js("this").id]
             if (!parentControls) undefined
             else {
                 for (parentControl in jsArrayToList(js("parentControls.slice().reverse()"))) {
@@ -484,7 +484,7 @@ interface IReactClassSpec {
 //}
 
 fun sufindex(prefix: String, index: Int): String {
-    return prefix + jshit.sufindex(index)
+    return prefix + Shitus.sufindex(index)
 }
 
 open class FlowElementBuilder(val tag: String) {

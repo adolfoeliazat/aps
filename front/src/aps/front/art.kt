@@ -13,7 +13,7 @@ import aps.WorldPointRequest.Action.RESTORE
 import aps.WorldPointRequest.Action.SAVE
 import kotlin.reflect.KProperty
 
-class HotReloadSurvivingShit(val nameInGlobalScope: String) {
+class HotReloadSurvivingFuckingShit(val nameInGlobalScope: String) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): dynamic {
         return global[nameInGlobalScope]
     }
@@ -64,20 +64,21 @@ abstract class TestInstruction(val opcode: String) : DefinitionStackHolder {
 
 
 object art {
+    lateinit var testSpeed: String
     var stateContributionsByControl: dynamic = null
     val halted: Boolean = false
     var respectArtPauses: Boolean = false
     var stepDescriptions: dynamic = jsArrayOf()
     val uiStateContributions: dynamic = json()
     var actionPlaceholderTag: String? = null
-    var testInstructions: Iterable<TestInstruction> by HotReloadSurvivingShit("art_testInstructions")
+    var testInstructions: Iterable<TestInstruction> by HotReloadSurvivingFuckingShit("art_testInstructions")
 
     fun uiState(def: dynamic): Promise<Unit> {"__async"
-        val url: String = global.location.href // Capture location for reassertion on hot reload, as it will be changed to `/test.html...`
+        val url: String = global.location.href // Capture location for reassertion on hot reload, as it will be changed to "/test.html..."
 
-        jshit.reassertUIState = {arg: dynamic -> "__async"
+        hrss.reassertUIState = {arg: dynamic -> "__async"
             val scrollThere: dynamic = arg.scrollThere
-            __await<dynamic>(jshit.debugCheckEmail())
+            __await<dynamic>(debugCheckEmail())
 
 //            val actual = json("url" to url)
             val actual = mutableMapOf<String, Any>("url" to url)
@@ -85,7 +86,7 @@ object art {
             gertrude(global.Object.assign(def, json("actual" to actual, "scrollThere" to scrollThere)))
         }
 
-        __await<dynamic>(jshit.reassertUIState(json("scrollThere" to true)))
+        __await<dynamic>(hrss.reassertUIState(json("scrollThere" to true)))
         return __asyncResult(Unit)
     }
 
@@ -93,7 +94,7 @@ object art {
     fun run(instructions: Iterable<TestInstruction>): Promise<Unit> {"__async"
         testInstructions = instructions
 
-        val urlq = jshit.getURLQuery()
+        val urlq = getURLQuery()
         // dlogs({urlq})
         var until = urlq.until
         if (until) until = global.parseInt(until, 10)
@@ -113,7 +114,7 @@ object art {
             }
 
             if (instr is TestInstruction.WorldPoint) {
-                val wpname: String = jshit.getCurrentTestScenarioName() + " -- " + instr.name
+                val wpname: String = hrss.currentTestScenarioName + " -- " + instr.name
                 if (skipping) {
                     if (instr.name == from) {
                         dlog("Restoring world point ${wpname}")
@@ -135,8 +136,8 @@ object art {
                     val implementing = if (arg) arg.implementing else undefined
 
                     val control = global.testGlobal.controls[instr.shame]
-                    if (!control) jshit.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instr))
-                    if (implementing && !control[implementing]) jshit.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instr))
+                    if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instr))
+                    if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instr))
                     return control
                 }
 
@@ -256,8 +257,8 @@ object art {
 //                val implementing = if (arg) arg.implementing else undefined
 //
 //                val control = global.testGlobal.controls[instr.shame]
-//                if (!control) jshit.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instrdef))
-//                if (implementing && !control[implementing]) jshit.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instrdef))
+//                if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instrdef))
+//                if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instrdef))
 //                return control
 //            }
 //
@@ -323,7 +324,7 @@ object art {
 //                continue
 //            }
 //
-//            jshit.raiseWithMeta(json("message" to "Unknown instruction opcode: ${opcode}", "meta" to instrdef))
+//            Shitus.raiseWithMeta(json("message" to "Unknown instruction opcode: ${opcode}", "meta" to instrdef))
 //        }
 //
 //        if (skipping) {
@@ -479,7 +480,7 @@ object art {
                         visible = true
                         update()
 
-                        if (scrollThere && !jshit.preventScrollToBottomOnAssertionError) {
+                        if (scrollThere && !hrss.preventScrollToBottomOnAssertionError) {
                             global.requestAnimationFrame({
                                 global.document.body.scrollTop =  js("$")("#debug_assertionErrorPane").offset().top - 60
                                 Unit
@@ -498,8 +499,8 @@ object art {
         global.ReactDOM.render(assertionErrorPane.element, Shitus.byid0("debug_assertionErrorPane"))
 
         val stack = null
-        assertionErrorPane.set(json("message" to errorMessage + jshit.mdash + jshit.currentTestScenarioName, "stack" to stack, "detailsUI" to detailsUI, "scrollThere" to scrollThere))
-        if (!jshit.preventUIAssertionThrowing) Shitus.raise("UI assertion failed")
+        assertionErrorPane.set(json("message" to errorMessage + mdash + hrss.currentTestScenarioName, "stack" to stack, "detailsUI" to detailsUI, "scrollThere" to scrollThere))
+        if (!hrss.preventUIAssertionThrowing) Shitus.raise("UI assertion failed")
     }
 
     fun assertionDetailsWithSourceLink(arg: dynamic): dynamic {
@@ -508,18 +509,218 @@ object art {
         val collapsedDetails: dynamic = arg.collapsedDetails
         val controls: dynamic = arg.controls
 
-        val cshit = jshit.CollapsibleShit(json("initialOpen" to true, "content" to Shitus.diva(json("style" to json("marginTop" to 5, "marginBottom" to 5)),
+        val cshit = CollapsibleShit(json("initialOpen" to true, "content" to Shitus.diva(json("style" to json("marginTop" to 5, "marginBottom" to 5)),
             collapsedDetails || Shitus.spana(json(), "Nothing particularly interesting here"))))
 
         return Shitus.diva(json("noStateContributions" to true, "style" to json("marginTop" to 5, "padding" to 5, "backgroundColor" to WHITE.toString(), "position" to "relative")),
             Shitus.horiza(json("style" to json("marginBottom" to 5)),
                 Shitus.spana(json("style" to json("fontWeight" to "bold")), "Assertion ID: "),
-                jshit.OpenSourceCodeLink(json("where" to json("\$tag" to `$tag`))),
+                OpenSourceCodeLink(json("where" to json("\$tag" to `$tag`))),
                 cshit.renderCaret(json("marginLeft" to 10))),
             cshit.renderContent(),
             details,
             Shitus.diva(json("style" to json("position" to "absolute", "right" to 5, "top" to 5)), controls)
         )
+    }
+
+    fun showTestActionHand(arg: dynamic): dynamic {
+        imf("showTestActionHand")
+        //export function showTestActionHand({target, pointingFrom='bottom', dleft=0, dtop=0, noBlinking}={}) {
+        //    const targetOffset = target.offset()
+        //    const targetWidth = target.outerWidth(true)
+        //    const targetHeight = target.outerHeight(true)
+        //    const paneID = 'testIndicatorOfLinkToClick-' + puid()
+        //    debugPanes.set({name: paneID, element: updatableElement(s{}, update => {
+        //        let glyph, left, top
+        //        if (pointingFrom === 'bottom') {
+        //            const handWidth = 24
+        //            glyph = 'fa-hand-o-up'
+        //            left = targetOffset.left + targetWidth / 2 - handWidth / 2 + dleft
+        //            top = targetOffset.top + targetHeight + 10 + dtop
+        //        } else if (pointingFrom === 'top') {
+        //            const handWidth = 24, handHeight = 28
+        //            glyph = 'fa-hand-o-down'
+        //            left = targetOffset.left + targetWidth / 2 - handWidth / 2 + dleft
+        //            top = targetOffset.top - 10 - handHeight + dtop
+        //        } else if (pointingFrom === 'right') {
+        //            const handWidth = 28, handHeight = 28
+        //            glyph = 'fa-hand-o-left'
+        //            left = targetOffset.left + targetWidth + 10 + dleft
+        //            top = targetOffset.top + targetHeight / 2 - handHeight / 2 + dtop
+        //        } else if (pointingFrom === 'left') {
+        //            const handWidth = 28, handHeight = 28
+        //            glyph = 'fa-hand-o-right'
+        //            left = targetOffset.left - handWidth - 10 + dleft
+        //            top = targetOffset.top + targetHeight / 2 - handHeight / 2 + dtop
+        //        } else {
+        //            Shitus.raise(`Weird pointingFrom: ${pointingFrom}`)
+        //        }
+        //
+        //        let clazz = 'aniBlinkingFast'
+        //        if (noBlinking) clazz = ''
+        //
+        //        if (pointingFrom === 'right') {
+        //            return _=> Shitus.diva({id: 'testActionHand', className: clazz, style: {zIndex: 100000, position: 'absolute', left, top}},
+        //                Shitus.diva({style: {position: 'relative', width: '2em', width: '2em'}},
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.9)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.8)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.7)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.6)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.55)'}}),
+        //                    ia({className: `fa fa-2x fa-circle`, style: {color: WHITE, position: 'absolute', left: '0.04em', top: '0em', transform: 'scale(0.5)'}}),
+        //                    ia({className: `fa fa-2x fa-circle`, style: {color: WHITE, position: 'absolute', left: '0.07em', top: '0.03em', transform: 'scale(0.5)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: BROWN_500, position: 'absolute', left: '0em', top: '0em'}}),
+        //                    ))
+        //        } else if (pointingFrom === 'bottom') {
+        //            return _=> Shitus.diva({id: 'testActionHand', className: clazz, style: {zIndex: 100000, position: 'absolute', left, top}},
+        //                Shitus.diva({style: {position: 'relative', width: '2em', width: '2em'}},
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.9)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.8)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.7)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.6)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.55)'}}),
+        //                    ia({className: `fa fa-2x fa-circle`, style: {color: WHITE, position: 'absolute', left: '0.01em', top: '-0.05em', transform: 'scale(0.5)'}}),
+        //                    ia({className: `fa fa-2x fa-circle`, style: {color: WHITE, position: 'absolute', left: '0.07em', top: '0.03em', transform: 'scale(0.5)'}}),
+        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: BROWN_500, position: 'absolute', left: '0em', top: '0em'}}),
+        //                    ))
+        //        } else {
+        //            return _=> ia({id: 'testActionHand', className: `${clazz} fa fa-2x ${glyph}`, style: {color: BROWN_500, zIndex: 100000, position: 'absolute', left, top}})
+        //        }
+        //    })})
+        //
+        //    return {
+        //        delete() {
+        //            if (!tinkeringWithTestActionHand) {
+        //                debugPanes.delete({name: paneID})
+        //            } else {
+        //                haltTheWorld()
+        //
+        //                let movingHand, startScreenX, startScreenY, dx, dy, startOffset
+        //
+        //                document.addEventListener('mousemove', e => {
+        //                    if (movingHand) {
+        //                        if (!e.ctrlKey) {
+        //                            movingHand = false
+        //                            dleft = dleft + dx
+        //                            dtop = dtop + dy
+        //                            return
+        //                        }
+        //
+        //                        dx = e.screenX - startScreenX
+        //                        dy = e.screenY - startScreenY
+        //                        Shitus.byid('testActionHand').offset({left: startOffset.left + dx, top: startOffset.top + dy})
+        //                        dlogs({dleft: dleft + dx, dtop: dtop + dy})
+        //                    } else {
+        //                        if (e.ctrlKey) {
+        //                            movingHand = true
+        //                            startScreenX = e.screenX
+        //                            startScreenY = e.screenY
+        //                            startOffset = Shitus.byid('testActionHand').offset()
+        //                            return
+        //                        }
+        //                    }
+        //                })
+        //            }
+        //        }
+        //    }
+        //}
+    }
+
+    fun initDebugFunctionsShit() {
+        global.window.removeEventListener("unhandledrejection", hrss.onUnhandledRejection)
+        hrss.onUnhandledRejection = { event: dynamic ->
+            if (!hrss.preventExceptionRevelation && event.reason.message != "UI assertion failed") {
+                console.error(event.reason.message)
+                Shitus.revealStack(json("exception" to event.reason))
+            }
+        }
+        global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)
+
+        debugPanes.set(json("name" to "initDebugFunctions-shit", "element" to Shitus.updatableElement(json(), paneCtor@{updateShit: dynamic ->
+            var shitVisible = false
+            var shitToRender: dynamic= null
+
+            global.removeEventListener("keydown", hrss.debugFunctionsKeydownListener)
+            hrss.debugFunctionsKeydownListener = { e: dynamic ->
+                if (e.code == "Backquote") {
+                    e.preventDefault()
+                    e.stopPropagation()
+
+                    shitVisible = !shitVisible
+                    if (shitVisible) {
+                        global.lightStateContributions()
+                    } else {
+                        shitToRender = null
+                    }
+
+                    updateShit()
+                }
+            }
+            global.addEventListener("keydown", hrss.debugFunctionsKeydownListener)
+
+//            Object.assign(testGlobal, {
+//                printCurrentStamp() {
+//                    clog(moment.tz("UTC").format("YYYY/MM/DD HH:mm:ss"))
+//                },
+//            })
+
+//            global.hideSomeAssertionDiffKeys = function({includesAny=[]}={}) {
+//                global.assertionPane.setLineHideFilter(lineValue => {
+//                    for (const includes of includesAny) {
+//                    if (lineValue.includes(includes)) return true
+//                }
+//                })
+//            }
+
+            global.lightStateContributions = lightStateContributions@{
+                console.log("Lighting state contributions")
+
+                shitToRender = makeHrundels(json(
+                    "controls" to global.Array.from(Shitus.getArtStateContributionsByControl().keys()),
+                    "borderColor" to PURPLE_500.toString(),
+                    "normalBorderWidth" to 1,
+                    "thickBorderWidth" to 3,
+                    "hoverStyleString" to "background: rgba(156, 39, 176, 0.1);",
+                    "onClick" to {arg: dynamic ->
+                        val control = arg.control
+                        dumpContributionsByControlAndChildren(control, js("({})"))
+                    },
+                    "onLens" to {arg: dynamic ->
+                        val control = arg.control
+                        val contribs = Shitus.getArtStateContributionsByControl().get(control)
+                        global.assertionPane.highlightStuff(json("keys" to global.Object.keys(contribs), "scrollThere" to true))
+                    },
+                    "onMouseEnter" to {arg: dynamic ->
+                        val control = arg.control
+                        console.log("--------------------")
+                        console.log("CONTRIBS: ${controlDisplayNameForDumping(control)}")
+                        console.log("--------------------")
+                        console.log(global.nodeUtil.inspect(Shitus.getArtStateContributionsByControl().get(control)))
+                    }
+                ))
+
+                updateShit()
+            }
+
+//            global.dumpStateContributionKeysShortestToLongest = function({unifyIndices}={}) {
+//                const actual = {}
+//                art.invokeStateContributions({actual})
+//                let items = Object.keys(actual)
+//                if (unifyIndices) {
+//                    items = items.map(x => x.replace(/-i\d\d\d/g, "-ω")) // omega
+//                }
+//                items = sortBy(items, x => x.length)
+//                items = uniq(items)
+//                console.log("===================================================")
+//                console.log("Contribution keys, shortest key to longest:")
+//                console.log(global.nodeUtil.inspect(items))
+//                console.log("title", actual.title)
+//            }
+
+            return@paneCtor {shitToRender}
+        })))
+
+        initDebugMailbox()
     }
 
 }
@@ -537,7 +738,7 @@ fun gertrude(def: dynamic) {
     val actual: dynamic = js("({})")
     for ((k, v) in kactual) actual[k] = v
 
-    jshit.setLastSeenTag(tag)
+    hrss.lastSeenTag = tag
     if (expected == undefined) {
         Shitus.raise("WTF")
     }
@@ -583,19 +784,19 @@ fun gertrude(def: dynamic) {
         if (thisIsReassertion) {
             console.warn("// TODO:vgrechka If reassertion after hot reload passed, make it clear in UI    e5d48597-62d4-4740-b915-04f6934c2bc0 ")
         }
-        jshit.setArtLastSuccessfulExpected(expected)
+        hrss.artLastSuccessfulExpected = expected
         return
     }
 
     var detailsUI: dynamic = null
-    if (jshit.getURLQueryBeforeRunningTest().minimalGertrude == "yes" || global.testGlobal.minimalGertrude) {
+    if (hrss.urlQueryBeforeRunningTest.minimalGertrude == "yes" || global.testGlobal.minimalGertrude) {
         detailsUI = div { styleKludge = json("background" to Color.WHITE); -"I am minimal because of minimalGertrude" }
 //        detailsUI = Shitus.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
     } else {
         detailsUI = Shitus.updatableElement(js("({})"), wholeShitCtor@ {updateWholeShit ->
             var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
             var paneControls: dynamic = null; var lineHideFilter = Shitus.noop
-            var highlightedKeys = js("({})"); var pileOfShit = js("({})")
+            var highlightedKeys = js("({})"); val pileOfShit = js("({})")
             val progressPlaceholder = Shitus.Placeholder()
             var unifyIndicesCheck: dynamic = null; var hideKeyRepetitionsCheck: dynamic = null
 
@@ -642,7 +843,6 @@ fun gertrude(def: dynamic) {
                 }
 
 
-                val pileOfShit = js("({})")
 
                 Shitus.sortKeys(actual) // Order of keys sent over the wire is mangled
                 Shitus.sortKeys(expected)
@@ -658,7 +858,7 @@ fun gertrude(def: dynamic) {
                 val actualString = repr(actual, json("stripIndices" to stripFuckingIndices))
                 val actualStringOrig = repr(actual, json("stripIndices" to false))
                 val expectedString = repr(expected, json("stripIndices" to stripFuckingIndices))
-                val lastExpectedString = if(jshit.getArtLastSuccessfulExpected()) repr(jshit.getArtLastSuccessfulExpected(), json("stripIndices" to stripFuckingIndices)) else "--- Nothing ---"
+                val lastExpectedString = if (hrss.artLastSuccessfulExpected != null) repr(hrss.artLastSuccessfulExpected, json("stripIndices" to stripFuckingIndices)) else "--- Nothing ---"
                 val diffDivs = js("[]"); val diffLastDivs = js("[]")
 
                 var lineIndex = 0; var actualLineIndex = 0
@@ -694,11 +894,12 @@ fun gertrude(def: dynamic) {
                         item.value = item.value.replace(js("/\\n*\$/"), "")
                         val valueLines = item.value.split("\n")
                         val keysAdded = js("({})")
-                        for (valueLine in jsArrayToList(valueLines)) {
+                        for ((i, valueLine) in jsArrayToList(valueLines).withIndex()) {
                             var shouldBeHiddenCuaseItsFuckingKeyRepetition: dynamic = undefined
                             var shouldBeHighlighted: dynamic = undefined
 
-                            val lineDivID = puid()
+                            val lineDivID = "diffLine-$i"
+//                            val lineDivID = puid()
                             var gotoIcon: dynamic = undefined; var metaBox: dynamic = undefined
                             if (valueLine != "{" && valueLine != "}" && !item.removed) {
                                 val definitionStack = definitionStacks[actualLineIndex] || js("[]")
@@ -720,7 +921,7 @@ fun gertrude(def: dynamic) {
                                                 if (open)
                                                     -div {
                                                         styleKludge = json("display" to "inline-block", "verticalAlign" to "top", "marginLeft" to 10)
-                                                        -jshit.renderStacks(json("definitionStack" to definitionStack, "callStack" to callStack))
+                                                        -renderStacks(json("definitionStack" to definitionStack, "callStack" to callStack))
                                                     }
                                             }
                                         }
@@ -734,7 +935,7 @@ fun gertrude(def: dynamic) {
                                         -span {
                                             className = "fa fa-search"; styleKludge = json("cursor" to "pointer", "marginLeft" to 10)
                                             onClick {
-                                                jshit.revealControl(control, json("scrollToTarget" to true))
+                                                Shitus.revealControl(control, json("scrollToTarget" to true))
                                             }
                                         }
                                     }
@@ -752,7 +953,9 @@ fun gertrude(def: dynamic) {
                                     val origKey = origKeys[actualLineIndex]
                                     shouldBeHighlighted = highlightedKeys[origKey]
                                     pileOfShit["scrollToDivForKey-${origKey}"] = {
-                                        global.requestAnimationFrame { js("$")(kotlin.browser.document).scrollTop(Shitus.byid(lineDivID).offset().top - 50 - 20) }
+                                        global.requestAnimationFrame {
+                                            js("$")(global.document).scrollTop(Shitus.byid(lineDivID).offset().top - 50 - 20)
+                                        }
                                     }
                                 } else {
                                     console.warn("WTF colonIndex is -1")
@@ -769,7 +972,7 @@ fun gertrude(def: dynamic) {
                                             global.Object.assign(style, json(
                                                 "borderLeft" to "5px solid black",
                                                 "paddingLeft" to 5,
-                                                "background" to Color.ORANGE_100))
+                                                "background" to ORANGE_100))
                                         }
 
                                         return@updatableElement {
@@ -780,7 +983,7 @@ fun gertrude(def: dynamic) {
 
                                                 if (isExtValueLine(valueLine))
                                                     -span {
-                                                        styleKludge = json("marginRight" to 5, "padding" to 3, "background" to Color.ORANGE_200, "fontSize" to "75%")
+                                                        styleKludge = json("marginRight" to 5, "padding" to 3, "background" to ORANGE_200, "fontSize" to "75%")
                                                         -"ext"
                                                     }
                                                 -div {
@@ -856,7 +1059,7 @@ fun gertrude(def: dynamic) {
                         .filter({line -> !isExtValueLine(line)})
                         .join("\n")
 
-                tabs = jshit.Tabs(json(
+                tabs = Tabs(json(
                     "activeTab" to if (Shitus.isEmpty(expected)) "diffLast" else "diff",
                     "tabs" to json(
                         "diff" to json(
@@ -899,7 +1102,7 @@ fun gertrude(def: dynamic) {
                         -button {
                             level = "primary"; title = "Update Assertion Code"; icon = "pencil"; onClickp {
                             global.testGlobal.minimalGertrude = true
-                            jshit.callDebugRPWithProgress(json("msg" to json("fun" to "danger_updateAssertionCode", "assertionTag" to tag, "actualStringForPasting" to actualStringForPasting), "progressPlaceholder" to progressPlaceholder, "progressTitle" to "Updating assertion code"))
+                            callDebugRPWithProgress(json("msg" to json("fun" to "danger_updateAssertionCode", "assertionTag" to tag, "actualStringForPasting" to actualStringForPasting), "progressPlaceholder" to progressPlaceholder, "progressTitle" to "Updating assertion code"))
                         }
                         }
                     }
@@ -939,7 +1142,10 @@ fun gertrude(def: dynamic) {
                     updateWholeShit()
 
                     if (scrollThere && keys.length) {
-                        shittyFov(pileOfShit["scrollToDivForKey-${keys[0]}"])
+                        val scrollToShitFunction = pileOfShit["scrollToDivForKey-${keys[0]}"]
+                        if (scrollToShitFunction != null) {
+                            scrollToShitFunction()
+                        }
                     }
                 }
             )
@@ -949,7 +1155,7 @@ fun gertrude(def: dynamic) {
                     "collapsedDetails" to Shitus.updatableElement(js("({})"), {update ->
                         return@updatableElement {
                             Shitus.diva(js("({})"),
-                                definitionStack && Shitus.diva(json("style" to json("marginBottom" to 8)), jshit.renderDefinitionStackStrip(json("stack" to definitionStack))),
+                                definitionStack && Shitus.diva(json("style" to json("marginBottom" to 8)), Shitus.renderDefinitionStackStrip(json("stack" to definitionStack))),
                                 art.renderStepDescriptions())
                         }
                     })
@@ -966,7 +1172,7 @@ fun gertrude(def: dynamic) {
 @native interface LegacyDefinitionStack
 @native interface LegacyCallStack
 
-val stateContributionsByControl = mutableMapOf<LegacyControl, MutableMap<String, dynamic>>()
+//val stateContributionsByControl = mutableMapOf<LegacyControl, MutableMap<String, dynamic>>()
 
 @native class TestUIStateContribution(
     val value: String,
@@ -1001,7 +1207,7 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
                                 "Existing: $existingDefinitionStackString")
                     }
 
-                    jshit.raiseWithMeta(json(
+                    Shitus.raiseWithMeta(json(
                         "message" to message,
                         "metaItems" to jsArrayOf(
                             json("titlePrefix" to "This", "meta" to control),
@@ -1056,7 +1262,7 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 //                            "Existing: $existingDefinitionStackString")
 //                    }
 //
-//                    jshit.raiseWithMeta(json(
+//                    Shitus.raiseWithMeta(json(
 //                        "message" to message,
 //                        "metaItems" to jsArrayOf(
 //                            json("titlePrefix" to "This", "meta" to control),
@@ -1103,12 +1309,12 @@ fun openTestPassedPane(def: dynamic) {
         val m = global.RegExp("\\s+([0-9a-z]{8})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{12})$").exec(scenarioName)
         if (m != undefined) {
             scenarioName = scenarioName.substring(0, m.index)
-            links.add(jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to Color.WHITE))))
+            links.add(OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to Color.WHITE))))
         }
         if (art.actionPlaceholderTag != undefined) {
-            links.add(jshit.marginateLeft(10, jshit.OpenSourceCodeLink(json("where" to json("\$tag" to art.actionPlaceholderTag), "style" to json("color" to Color.WHITE)))))
+            links.add(marginateLeft(10, OpenSourceCodeLink(json("where" to json("\$tag" to art.actionPlaceholderTag), "style" to json("color" to Color.WHITE)))))
         }
-        val uq = jshit.getURLQueryBeforeRunningTest()
+        val uq = hrss.urlQueryBeforeRunningTest
         if (!uq.scrollToBottom || uq.scrollToBottom == "yes" || uq.scrollToBottom == "success") {
             kotlin.browser.window.requestAnimationFrame { kotlin.browser.document.body?.scrollTop = 99999 }
         }
@@ -1142,11 +1348,11 @@ fun openTestPassedPane(def: dynamic) {
             })
     }))
 
-    jshit.debugPanes.set(json(
+    debugPanes.set(json(
         "name" to "openTestPassedPane",
         "parentJqel" to Shitus.byid("underFooter"),
         "element" to Shitus.spana(json(), testPassedPane.element)))
-}
+    }
 
 
 //        async scroll({origY, destY, totalTime}) {
@@ -1289,6 +1495,252 @@ fun openTestPassedPane(def: dynamic) {
 //            lastSeenTag = $tag
 //            art.assertWithSourceLink(testGlobal[kind + '_' + name + '_blinks'], `I want ${kind} ${name} to be blinking`, $tag)
 //        },
+
+fun dumpContributionsByControlAndChildren(target: dynamic, _opts: dynamic) {
+    val opts: dynamic = _opts ?: json()
+    val sorting: dynamic = opts.sorting ?: "key"
+    val commonPrefixesToEllipsis = opts.commonPrefixesToEllipsis
+
+    clog("--------------------")
+    clog("CONTRIBS (+CHILDREN): ${controlDisplayNameForDumping(target)}")
+    clog("--------------------")
+    var contributions = findContributionsByControlAndChildren(target)
+
+    var sortf: dynamic = null
+    if (sorting === "key") sortf = {pair: dynamic -> pair[0]}
+    else if (sorting === "keyLength") sortf = {pair: dynamic -> pair[0].length}
+    else Shitus.raise("Bad sorting option: " + sorting)
+    sortObjectBy(contributions, sortf)
+
+    if (commonPrefixesToEllipsis) {
+        val pairs = lodash.toPairs(contributions)
+        var prevKey: dynamic = null
+        for (pair in jsArrayToList(pairs)) {
+            val key: dynamic = pair[0]
+            val value: dynamic = pair[1]
+            if (prevKey) {
+                var commonPrefixLen = 0
+                while ((commonPrefixLen + 1).asDynamic() < key.length && (commonPrefixLen + 1).asDynamic() < prevKey.length) {
+                    if (key[commonPrefixLen] === prevKey[commonPrefixLen]) {
+                        ++commonPrefixLen
+                    } else {
+                        break
+                    }
+                }
+
+                pair[0] = Shitus.repeat(".", commonPrefixLen) + key.slice(commonPrefixLen)
+            }
+            prevKey = key
+        }
+        contributions = lodash.fromPairs(pairs)
+    }
+
+    clog(global.nodeUtil.inspect(contributions, json("depth" to null)))
+}
+
+fun controlDisplayNameForDumping(target: dynamic): dynamic {
+    return if (target.tame) target.getTamePath() else target.debugDisplayName
+}
+
+fun sortObjectBy(o: dynamic, f: dynamic) {
+    if (lodash.isArray(o)) {
+        o.filter(lodash.isObject).forEach(::sortKeys)
+    } else if (lodash.isObject(o)) {
+        var pairs = lodash.toPairs(o)
+        pairs = lodash.sortBy(pairs, {x: dynamic -> f(x)})
+        pairs.forEach {arg: dynamic ->
+            val k = arg[0]
+            val v = arg[1]
+            jsFacing_deleteKey(o, k)
+        }
+        pairs.forEach {arg: dynamic ->
+            val k = arg[0]
+            val v = arg[1]
+            o[k] = v
+            if (lodash.isObject(v)) {
+                sortKeys(v)
+            }
+        }
+    }
+}
+
+fun sortKeys(o: dynamic) {
+    if (lodash.isArray(o)) {
+        o.filter(lodash.isObject).forEach(::sortKeys)
+    } else if (lodash.isObject(o)) {
+        var pairs = lodash.toPairs(o)
+        pairs = lodash.sortBy(pairs, {x: dynamic -> x[0]})
+        pairs.forEach {arg: dynamic ->
+            val k = arg[0]
+            val v = arg[1]
+            jsFacing_deleteKey(o, k)
+        }
+        pairs.forEach {arg: dynamic ->
+            val k = arg[0]
+            val v = arg[1]
+            o[k] = v
+            if (lodash.isObject(v)) {
+                sortKeys(v)
+            }
+        }
+    }
+}
+
+fun findContributionsByControlAndChildren(target: dynamic): dynamic {
+    val contributions: dynamic = json()
+    global.Object.assign(contributions, art.stateContributionsByControl.get(target))
+    Shitus.byid(target.elementID).find('*').each({
+        if (js("this").id) {
+            val controls = Shitus.elementIDToControls[js("this").id] ?: jsArrayOf()
+            for (control in jsArrayToList(controls)) {
+                global.Object.assign(contributions, art.stateContributionsByControl.get(control))
+            }
+        }
+    })
+    return contributions
+}
+
+fun makeHrundels(def: dynamic): dynamic {
+    val controls: dynamic = def.controls
+    val borderColor: dynamic = def.borderColor
+    val normalBorderWidth: dynamic = def.normalBorderWidth
+    val thickBorderWidth: dynamic = def.thickBorderWidth
+    val hoverStyleString: dynamic = def.hoverStyleString
+    val onClick: dynamic = def.onClick
+    val onMouseEnter: dynamic = def.onMouseEnter
+    val onLens: dynamic = def.onLens
+
+    val clazz = "makeHrunderls-${puid()}"
+
+    val divs: dynamic = js("[]")
+    val possToStyles = js("({})")
+    for (control in jsArrayToList(controls)) {
+        // dlog('co', control.debugDisplayName)
+        val jqel = Shitus.byid(control.elementID)
+        val ofs = jqel.offset()
+        var width = jqel.outerWidth(true) // + 10
+        var height = jqel.outerHeight(true) // + 10
+        var left = ofs.left // - 5
+        var top = ofs.top // - 5
+
+        val poss = "${left}:${top}:${width}:${height}"
+        for (style in jsArrayToList(possToStyles[poss] ?: jsArrayOf())) {
+            // style.left -= 5; style.top -= 5; style.width += 10; style.height += 10
+            style.width += 10
+            style.borderRight = "${thickBorderWidth}px solid ${borderColor}"
+        }
+
+        val style = json(
+            "position" to "absolute",
+            "zIndex" to Shitus.topZIndex++,
+            "left" to left,
+            "top" to top,
+            "width" to width,
+            "height" to height,
+            "border" to "${normalBorderWidth}px solid ${borderColor}"
+        )
+        if (!possToStyles[poss]) possToStyles[poss] = jsArrayOf()
+        possToStyles[poss].push(style)
+
+        divs.push(Shitus.diva(json(
+            "className" to "${clazz} showOnParentHovered-parent",
+            "style" to style,
+            "onMouseEnter" to {
+                Shitus.fov(onMouseEnter, json("control" to control))
+            },
+            "onClick" to {
+                Shitus.fov(onClick, json("control" to control))
+            }),
+
+            onLens && Shitus.diva(json("className" to "showOnParentHovered"),
+                Shitus.diva(json("style" to json("position" to "absolute", "right" to 0, "top" to -20, "height" to 40, "width" to 40, "textAlign" to "right")),
+                    Shitus.spana(json("className" to "fa fa-search", "style" to json("cursor" to "pointer"),
+                        "onClick" to {e: dynamic ->
+                            preventAndStop(e)
+                            onLens(json("control" to control))
+                        }
+                    ))
+                )
+            )
+        ))
+    }
+
+    return Shitus.diva.apply(null, js("[]").concat(
+        json(),
+        rawHtml("""
+            <style>
+                    .${clazz}:hover {${hoverStyleString}}
+            </style>"""),
+        /*...*/divs
+    ))
+}
+
+fun isInTestScenario(): Boolean {
+    return hrss.currentTestScenarioName != null
+}
+
+fun renderStacks(def: dynamic): dynamic {
+    return "Implement renderStacks, please, fuck you"
+
+//export function renderStacks(def) {
+//    #extract {definitionStack, callStack} from def
+//
+//    return updatableElement(s{}, update => {
+//        let thinking = true
+//
+//        Shitus.run(async function() {
+//            if (callStack) {
+//                if (callStack instanceof Error) {
+//                    const stackString = await Shitus.errorToMappedClientStackString(callStack)
+//                    callStack = []
+//                    for (const line of stackString.split('\n')) {
+//                        if (line.startsWith('    at ') && !line.includes('__awaiter')) {
+//                            // dlog('Stack line', line)
+//                            const m = line.match(/(.*?)\(([^()]+?:\d+:\d+)\)/)
+//                            if (m) {
+//                                callStack.push({title: m[1].trim(), location: m[2]})
+//                            }
+//                        }
+//                    }
+//                    callStack.shift() // Remove stack capturing function
+//                }
+//                if (!isArray(callStack)) Shitus.raise('I want callStack to be an array or Error')
+//            }
+//
+//            update(thinking = false)
+//        })
+//
+//        return _=> {
+//        const ctn = 'renderStacks'
+//        if (thinking) return Shitus.spana({ctn, style: {fontStyle: 'italic'}}, t('Thinking deeply...'))
+//
+//        if (definitionStack && !definitionStack.length) definitionStack = undefined
+//        if (callStack && !callStack.length) callStack = undefined
+//        if (!(definitionStack || callStack)) return Shitus.spana({ctn, style: {fontStyle: 'italic'}}, t('No fucking stacks'))
+//
+//        return Shitus.diva({controlTypeName: 'renderStacks', style: {display: 'flex'}},
+//            definitionStack && Shitus.diva({},
+//                Shitus.diva({style: {fontWeight: 'bold', textDecoration: ''}}, t('Definitions:')),
+//                ...definitionStack.map(stackItem => OpenSourceCodeLink({where: {$sourceLocation: stackItem.loc}}))),
+//
+//        callStack && Shitus.diva({style: {marginLeft: 15}},
+//            Shitus.diva({style: {fontWeight: 'bold', textDecoration: ''}}, t('Locations:')),
+//            ...callStack.map(item => Shitus.diva({style: {display: 'flex'}},
+//        Shitus.diva({style: {marginRight: 10}}, item.title),
+//        OpenSourceCodeLink({where: {$sourceLocation: item.location}})))),
+//        )
+//    }
+//    })
+//}
+}
+
+fun openDebugPane(def: dynamic) {
+    imf("openDebugPane")
+}
+
+
+
+
 
 
 

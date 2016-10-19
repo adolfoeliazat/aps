@@ -36,12 +36,12 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
                 dwidth = 15
             }
 
-            jshit.effects.blinkOn(json("target" to Shitus.byid(aid).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
+            effects.blinkOn(json("target" to Shitus.byid(aid).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
 
             __await<dynamic>(ui.pushNavigate(href))
 
             global.setTimeout({
-                jshit.effects.blinkOff()
+                effects.blinkOff()
                 global.bsClearMenus()
             }, 250)
         }

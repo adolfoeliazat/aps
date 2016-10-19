@@ -30,7 +30,7 @@ fun jsFacing_button(def: dynamic): dynamic {
                 "id" to me.elementID,
                 "className" to "btn btn-${level} ${className}",
                 "style" to style,
-                "title" to if (hint != null) jshit.textMeat(hint) else null)),
+                "title" to if (hint != null) textMeat(hint) else null)),
 
                 if (icon != null) Shitus.glyph(icon, glyphAttrs) else null,
                 if (icon != null && title != null) Shitus.spana(json(), nbsp) else null,
@@ -47,8 +47,8 @@ fun jsFacing_button(def: dynamic): dynamic {
 
         "contributeTestState" to {state: dynamic ->
             if (me.tame) {
-                if (title) state.put(json("control" to me, "key" to me.getTamePath() + ".title", "value" to jshit.textMeat(title)))
-                if (icon) state.put(json("control" to me, "key" to me.getTamePath() + ".icon", "value" to jshit.textMeat(icon)))
+                if (title) state.put(json("control" to me, "key" to me.getTamePath() + ".title", "value" to textMeat(title)))
+                if (icon) state.put(json("control" to me, "key" to me.getTamePath() + ".icon", "value" to textMeat(icon)))
             }
         }
     )

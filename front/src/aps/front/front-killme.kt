@@ -8,295 +8,6 @@ package aps.front
 
 import aps.*
 
-fun jsFacing_makeFormCtor(ui: dynamic): dynamic {
-    fun jsFacing_Form(spec: dynamic): dynamic {
-        val primaryButtonTitle = spec.primaryButtonTitle; val cancelButtonTitle = spec.cancelButtonTitle; val autoFocus = spec.autoFocus;
-        val fields = spec.fields; val rpcFun = spec.rpcFun; val onSuccess = spec.onSuccess;
-        val className = spec.className; val dontShameButtons = spec.dontShameButtons; val errorBannerStyle = spec.errorBannerStyle;
-        val debugName = spec.debugName; val getInvisibleFieldNames = spec.getInvisibleFieldNames; val onCancel = spec.onCancel;
-
-        val onError: ((x: Any?) -> Promise<Any?>)? = spec.onError
-
-        fun formTicker(): dynamic {
-            return jsFacing_elcl(json(
-                "render" to {
-                    Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
-                },
-                "componentDidMount" to {
-                    global.testGlobal["shitSpins"] = true
-                },
-                "componentWillUnmount" to {
-                    global.testGlobal["shitSpins"] = false
-                }
-            ))
-        }
-
-        return Shitus.statefulElement(json("ctor" to statefulElementCtor@{ update: dynamic ->
-            var working: dynamic = undefined
-            var error: dynamic = undefined
-            var focusedField: dynamic = undefined
-            var actualVisibleFieldNames: dynamic = undefined
-
-            fun figureOutActualVisibleFieldNames() {
-                actualVisibleFieldNames = fields.map({x -> x.getName()})
-                if (getInvisibleFieldNames) {
-                    actualVisibleFieldNames = jsArrayToList(actualVisibleFieldNames).without(jsArrayToList(getInvisibleFieldNames())).toJSArray()
-//                    actualVisibleFieldNames = Shitus.without.apply(null, js("[]").concat(jsArrayOf(actualVisibleFieldNames), getInvisibleFieldNames()))
-                }
-            }
-
-            val me = json(
-                "getField" to outta@{name: dynamic ->
-                    for (field in jsArrayToList(fields)) {
-                        if (field.getName() == name) return@outta field
-                    }
-                    Shitus.raise("No fucking field [${name}] in the form")
-                },
-
-                "fieldChanged" to {
-                    // @wip rejection
-                    if (getInvisibleFieldNames) {
-                        val oldVisible = Shitus.clone(actualVisibleFieldNames)
-                        figureOutActualVisibleFieldNames()
-                        if (!Shitus.isEqual(oldVisible, actualVisibleFieldNames)) {
-                            update()
-                        }
-                    }
-                },
-
-                "fieldFocused" to {arg: dynamic ->
-                    val field = arg.field
-                    focusedField = field
-                },
-
-                "fieldBlurred" to {arg: dynamic ->
-                    val field = arg.field
-                    focusedField = undefined
-                },
-
-                "render" to outta@{
-                    figureOutActualVisibleFieldNames()
-
-                    return@outta Shitus.diva(json(),
-                        Shitus.forma.apply(null, js("[]").concat(
-                            jsArrayOf(
-                                json("className" to className),
-                                error && Shitus.errorBanner(json("content" to error, "style" to errorBannerStyle))),
-                            fields
-                                .filter({x: dynamic -> actualVisibleFieldNames.includes(x.getName())})
-                                .map({x: dynamic -> x.render(json())}),
-
-                            Shitus.diva(json("style" to json("textAlign" to "left")),
-                                Shitus.button(json("tamy" to "primary", "shamy" to if (dontShameButtons) undefined else "primary",
-                                    "level" to "primary", "title" to primaryButtonTitle, "disabled" to working,
-                                    "onClick" to {"__async"
-                                        jshit.beginTrain(json("name" to "Submit fucking${if (debugName) " " + debugName else ""} form")); try {
-                                            for (field in jsArrayToList(fields)) {
-                                                field.setError(undefined)
-                                                field.setDisabled(true)
-                                            }
-                                            error = undefined
-                                            working = true
-                                            update()
-
-                                            val reb = jshit.RequestBuilder(json())
-                                            reb.set(json("key" to "fun", "value" to rpcFun))
-                                            for (field in jsArrayToList(fields.filter({ x: dynamic -> actualVisibleFieldNames.includes(x.getName())}))) {
-                                                field.contributeToRequest(json("reb" to reb))
-                                            }
-                                            val res = __await<dynamic>(ui.rpcSoft(reb.toMessage(json())))
-
-                                            if (res.error) {
-                                                error = res.error
-                                                onError?.let {__await(it(res))}
-//                                                __await<dynamic>(jshit.utils.fova(onError, res))
-                                            } else {
-                                                error = undefined
-                                                __await<dynamic>(onSuccess(res))
-                                            }
-
-                                            working = false
-                                            for (field in jsArrayToList(fields)) {
-                                                field.setError(res.fieldErrors && res.fieldErrors[field.getName()])
-                                                field.setDisabled(false)
-                                            }
-                                            update()
-                                        } finally { jshit.endTrain() }
-                                    })),
-                                cancelButtonTitle && Shitus.button(json("tamy" to "cancel", "shamy" to if (dontShameButtons) undefined else "cancel",
-                                    "title" to cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10), "onClick" to onCancel)),
-                                working && formTicker())
-                        )))
-                },
-
-                "componentDidMount" to {
-                    if (focusedField) {
-                        focusedField.focus()
-                    }
-                },
-
-                "componentDidUpdate" to {
-                    if (focusedField) {
-                        focusedField.focus()
-                    }
-                }
-            )
-
-            for (field in jsArrayToList(fields)) {
-                field.form = me
-            }
-
-            return@statefulElementCtor me
-        }))
-    }
-
-    return ::jsFacing_Form
-}
-
-fun orig_jsFacing_makeFormCtor(ui: dynamic): dynamic {
-    fun jsFacing_Form(spec: dynamic): dynamic {
-        val primaryButtonTitle = spec.primaryButtonTitle; val cancelButtonTitle = spec.cancelButtonTitle; val autoFocus = spec.autoFocus;
-        val fields = spec.fields; val rpcFun = spec.rpcFun; val onSuccess = spec.onSuccess;
-        val className = spec.className; val dontShameButtons = spec.dontShameButtons; val errorBannerStyle = spec.errorBannerStyle;
-        val debugName = spec.debugName; val getInvisibleFieldNames = spec.getInvisibleFieldNames; val onCancel = spec.onCancel;
-
-        val onError: ((Any?) -> Promise<Any?>)? = spec.onError
-
-        fun formTicker(): dynamic {
-            return jsFacing_elcl(json(
-                "render" to {
-                    Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
-                },
-                "componentDidMount" to {
-                    global.testGlobal["shitSpins"] = true
-                },
-                "componentWillUnmount" to {
-                    global.testGlobal["shitSpins"] = false
-                }
-            ))
-        }
-
-        return Shitus.statefulElement(json("ctor" to statefulElementCtor@{update: dynamic ->
-            var working: dynamic = undefined
-            var error: dynamic = undefined
-            var focusedField: dynamic = undefined
-            var actualVisibleFieldNames: dynamic = undefined
-
-            fun figureOutActualVisibleFieldNames() {
-                actualVisibleFieldNames = fields.map({x -> x.getName()})
-                if (getInvisibleFieldNames) {
-                    actualVisibleFieldNames = jsArrayToList(actualVisibleFieldNames).without(jsArrayToList(getInvisibleFieldNames())).toJSArray()
-                }
-            }
-
-            val me = json(
-                "getField" to outta@{name: dynamic ->
-                    for (field in jsArrayToList(fields)) {
-                        if (field.getName() == name) return@outta field
-                    }
-                    Shitus.raise("No fucking field [${name}] in the form")
-                },
-
-                "fieldChanged" to {
-                    // @wip rejection
-                    if (getInvisibleFieldNames) {
-                        val oldVisible = Shitus.clone(actualVisibleFieldNames)
-                        figureOutActualVisibleFieldNames()
-                        if (!Shitus.isEqual(oldVisible, actualVisibleFieldNames)) {
-                            update()
-                        }
-                    }
-                },
-
-                "fieldFocused" to {arg: dynamic ->
-                    val field = arg.field
-                    focusedField = field
-                },
-
-                "fieldBlurred" to {arg: dynamic ->
-                    val field = arg.field
-                    focusedField = undefined
-                },
-
-                "render" to outta@{
-                    figureOutActualVisibleFieldNames()
-
-                    return@outta Shitus.diva(json(),
-                        Shitus.forma.apply(null, js("[]").concat(
-                            jsArrayOf(
-                                json("className" to className),
-                                error && Shitus.errorBanner(json("content" to error, "style" to errorBannerStyle))),
-                            fields
-                                .filter({x: dynamic -> actualVisibleFieldNames.includes(x.getName())})
-                                .map({x: dynamic -> x.render(json())}),
-
-                            Shitus.diva(json("style" to json("textAlign" to "left")),
-                                Shitus.button(json("tamy" to "primary", "shamy" to if (dontShameButtons) undefined else "primary",
-                                    "level" to "primary", "title" to primaryButtonTitle, "disabled" to working,
-                                    "onClick" to {"__async"
-                                        jshit.beginTrain(json("name" to "Submit fucking${if (debugName) " " + debugName else ""} form")); try {
-                                            for (field in jsArrayToList(fields)) {
-                                                field.setError(undefined)
-                                                field.setDisabled(true)
-                                            }
-                                            error = undefined
-                                            working = true
-                                            update()
-
-                                            val reb = jshit.RequestBuilder(json())
-                                            reb.set(json("key" to "fun", "value" to rpcFun))
-                                            for (field in jsArrayToList(fields.filter({ x: dynamic -> actualVisibleFieldNames.includes(x.getName())}))) {
-                                                field.contributeToRequest(json("reb" to reb))
-                                            }
-                                            val res = __await<dynamic>(ui.rpcSoft(reb.toMessage(json())))
-
-                                            if (res.error) {
-                                                error = res.error
-                                                onError?.let {__await(it(res))}
-//                                                __await<dynamic>(jshit.utils.fova(onError, res))
-                                            } else {
-                                                error = undefined
-                                                __await<dynamic>(onSuccess(res))
-                                            }
-
-                                            working = false
-                                            for (field in jsArrayToList(fields)) {
-                                                field.setError(res.fieldErrors && res.fieldErrors[field.getName()])
-                                                field.setDisabled(false)
-                                            }
-                                            update()
-                                        } finally { jshit.endTrain() }
-                                    })),
-                                cancelButtonTitle && Shitus.button(json("tamy" to "cancel", "shamy" to if (dontShameButtons) undefined else "cancel",
-                                    "title" to cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10), "onClick" to onCancel)),
-                                working && formTicker())
-                        )))
-                },
-
-                "componentDidMount" to {
-                    if (focusedField) {
-                        focusedField.focus()
-                    }
-                },
-
-                "componentDidUpdate" to {
-                    if (focusedField) {
-                        focusedField.focus()
-                    }
-                }
-            )
-
-            for (field in jsArrayToList(fields)) {
-                field.form = me
-            }
-
-            return@statefulElementCtor me
-        }))
-    }
-
-    return ::jsFacing_Form
-}
-
 fun legacy_implementControlShit(arg: dynamic) {
     val me: dynamic = arg.me
     val def: dynamic = arg.def
@@ -364,14 +75,14 @@ fun legacy_implementControlShit(arg: dynamic) {
                     preventAndStop(e)
 
                     if (!me.effectiveShame) {
-                        jshit.raiseWithMeta(json("message" to "Put some shame on me", "meta" to me))
+                        Shitus.raiseWithMeta(json("message" to "Put some shame on me", "meta" to me))
                     }
 
                     return@onClick me.captureAction()
                 }
 
                 preventAndStop(e)
-                return@onClick jshit.revealControl(me)
+                return@onClick Shitus.revealControl(me)
             }
 
             val shit: ((Any?) -> Promise<Any?>)? = me.onRootClick
@@ -391,7 +102,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         return me.testClick || me.testSetValue
     }
 
-    jshit.decorate(json("target" to me,
+    decorate(json("target" to me,
         "pre_componentWillUpdate" to outta@{
             if (js("typeof window != 'object'")) return@outta
             removeEventListeners()
@@ -405,10 +116,10 @@ fun legacy_implementControlShit(arg: dynamic) {
         "pre_componentWillMount" to outta@{
             if (js("typeof window != 'object'")) return@outta
 
-            var elementControls = jshit.elementIDToControls[me.elementID]
+            var elementControls = Shitus.elementIDToControls[me.elementID]
             if (elementControls == null) {
-                jshit.elementIDToControls[me.elementID] = jsArrayOf()
-                elementControls = jshit.elementIDToControls[me.elementID]
+                Shitus.elementIDToControls[me.elementID] = jsArrayOf()
+                elementControls = Shitus.elementIDToControls[me.elementID]
             }
 
             if (me.tame) {
@@ -446,7 +157,7 @@ fun legacy_implementControlShit(arg: dynamic) {
 
                     if (shouldContribute) {
                         Shitus.byid(me.elementID).parents().each {
-                            val parentControls = jshit.elementIDToControls[js("this").id] || jsArrayOf()
+                            val parentControls = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
                             for (parentControl in jsArrayToList(parentControls)) {
                                 if (parentControl.noStateContributions) {
                                     shouldContribute = false
@@ -498,7 +209,7 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             removeEventListeners()
             // @wip perf
-            jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[me.elementID], {x: dynamic -> x.id == me.id})
+            jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[me.elementID], {x: dynamic -> x.id == me.id})
             jsFacing_deleteKey(art.uiStateContributions, me.id)
 
             if (me.effectiveShame) {
@@ -508,25 +219,25 @@ fun legacy_implementControlShit(arg: dynamic) {
     ))
 
 
-    me.stickException = {arg: dynamic ->
-        // {exception}
-        val exception: dynamic = arg.exception
-
-        fun doReveal() {
-            jshit.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
-                jshit.renderDefinitionStackStrip(json("stack" to me.`$definitionStack`))
-            }))))
-        }
-
-        doReveal() // Does nothing if something is already revealed
-
-        jshit.debugControlStickers.add(json("control" to me, "shit" to json(
-            "onClick" to {
-                jshit.hideStackRevelation()
-                doReveal()
-            }
-        )))
-    }
+//    me.stickException = {arg: dynamic ->
+//        // {exception}
+//        val exception: dynamic = arg.exception
+//
+//        fun doReveal() {
+//            Shitus.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
+//                Shitus.renderDefinitionStackStrip(json("stack" to me.`$definitionStack`))
+//            }))))
+//        }
+//
+//        doReveal() // Does nothing if something is already revealed
+//
+//        jshit.debugControlStickers.add(json("control" to me, "shit" to json(
+//            "onClick" to {
+//                jshit.hideStackRevelation()
+//                doReveal()
+//            }
+//        )))
+//    }
 
     me.getTamePath = getTamePath@{
         Shitus.invariant(me.tame, "getTamePath can only be called on tamed control")
@@ -535,7 +246,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         var res: dynamic = me.tame
         val parents = Shitus.byid(me.elementID).parents()
         parents.each {
-            val parentControls: dynamic = jshit.elementIDToControls[js("this").id] || jsArrayOf()
+            val parentControls: dynamic = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
             for (parentControl in jsArrayToList(parentControls.slice().reverse())) {
                 if (parentControl.tame) {
                     res = parentControl.tame + "." + res
@@ -554,7 +265,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         val arg: dynamic = if (_arg) _arg else js("({})")
         val testActionHandOpts = arg.testActionHandOpts
 
-        testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
+        testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
     }
 
     me.testHideHand = {
@@ -568,8 +279,8 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             val stubEvent = json("preventDefault" to Shitus.noop, "stopPropagation" to Shitus.noop)
 
-            if (jshit.testSpeed == "slow") {
-                val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
+            if (art.testSpeed == "slow") {
+                val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
                 __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
                 val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
@@ -591,8 +302,8 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             val stubEvent = json("preventDefault" to Shitus.noop, "stopPropagation" to Shitus.noop, "keyCode" to keyCode)
 
-            if (jshit.testSpeed == "slow") {
-                val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
+            if (art.testSpeed == "slow") {
+                val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
                 __await<dynamic>(js("$")(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
                 val shit: ((Any?) -> Promise<Any?>)? = implementTestKeyDown.onKeyDown
@@ -612,8 +323,8 @@ fun legacy_implementControlShit(arg: dynamic) {
         val excludeShames: dynamic = def.excludeShames
         val todoActionDescription: dynamic = def.todoActionDescription
 
-        jshit.thingsToDoAfterHotUpdate.control_captureAction = control_captureAction@{
-            val control = jshit.getControlByShame(me.effectiveShame)
+        hrss.thingsToDoAfterHotUpdate.control_captureAction = control_captureAction@{
+            val control = getControlByShame(me.effectiveShame)
             if (!control) return@control_captureAction console.warn("No control shamed [${me.effectiveShame}] to capture action on")
             control.captureAction(def)
         }
@@ -628,7 +339,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         for (co: dynamic in jsArrayToList(Shitus.values(global.testGlobal.controls))) {
             if (co.testSetValue) {
                 if (!co.testGetValue) {
-                    jshit.raiseWithMeta(json("message" to "co.testSetValue requires co.testGetValue", "meta" to co))
+                    Shitus.raiseWithMeta(json("message" to "co.testSetValue requires co.testGetValue", "meta" to co))
                 }
 
                 var shouldCapture = true
@@ -668,7 +379,7 @@ fun legacy_implementControlShit(arg: dynamic) {
 
         run { // Action capture pane
             var thePane: dynamic = null
-            thePane = jshit.openDebugPane(json("name" to "openActionCapturePane", "height" to 250,
+            thePane = openDebugPane(json("name" to "openActionCapturePane", "height" to 250,
                 "content" to Shitus.updatableElement(json(), updatableElementCtor@{update: dynamic ->
                     val code = Shitus.codeLinesToString(json(codeLines, "indent" to 0))
 
@@ -708,7 +419,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                                     else Shitus.button(json("level" to "primary", "icon" to "pencil", "title" to "Insert Test Action Code", "style" to json(),
                                         "onClick" to {
                                             "__async"
-                                            __await<dynamic>(jshit.callDebugRPWithProgress(json(
+                                            __await<dynamic>(callDebugRPWithProgress(json(
                                                 "msg" to json(
                                                     "fun" to "danger_insertTestActionCode",
                                                     "placeholderTag" to art.actionPlaceholderTag,
@@ -722,7 +433,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                                             Shitus.invariant(m && m[1], "Where the fuck is tag in generated code?")
                                             insertedCodeLink = Shitus.diva(json(
                                                 "style" to json("marginLeft" to 8)),
-                                                jshit.OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
+                                                OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
                                             update()
                                         }
                                     ))
@@ -733,7 +444,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                 },
 
                 "onClose" to {
-                    jsFacing_deleteKey(jshit.thingsToDoAfterHotUpdate, "control_captureAction")
+                    jsFacing_deleteKey(hrss.thingsToDoAfterHotUpdate, "control_captureAction")
                 }
             )))
         }
@@ -762,7 +473,6 @@ fun jsFacing_horiza(vararg ignored: dynamic): dynamic {
                 v)
     }))))
 }
-
 
 
 

@@ -19,10 +19,10 @@ class ProfilePage(val ui: LegacyUIShit) {
         if (userState == UserState.PROFILE_PENDING || userState == UserState.PROFILE_REJECTED) {
             var prelude: dynamic = undefined
             if (userState == UserState.PROFILE_PENDING) {
-                prelude = jshit.preludeWithOrangeTriangle(json("title" to t("TOTE", "Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное."), "center" to 720))
+                prelude = preludeWithOrangeTriangle(json("title" to t("TOTE", "Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное."), "center" to 720))
             } else if (userState == UserState.PROFILE_REJECTED) {
                 // @wip rejection
-                prelude = jshit.preludeWithBadNews(json(
+                prelude = preludeWithBadNews(json(
                     "title" to t("TOTE", "Админ завернул твой профиль"),
                     "quote" to user.profileRejectionReason))
             }
@@ -46,13 +46,13 @@ class ProfilePage(val ui: LegacyUIShit) {
         }
         else if (userState == UserState.PROFILE_APPROVAL_PENDING) {
             pageBody = Shitus.diva(json(),
-                jshit.preludeWithHourglass(json("content" to Shitus.spancTitle(json("title" to t("TOTE", "Админ проверяет профиль, жди извещения почтой"))))),
+                preludeWithHourglass(json("content" to Shitus.spancTitle(json("title" to t("TOTE", "Админ проверяет профиль, жди извещения почтой"))))),
                 renderProfile(ui, user)
                 )
         }
         else if (userState == UserState.BANNED) {
             pageBody = Shitus.diva(json(),
-                jshit.preludeWithVeryBadNews(json("content" to Shitus.spancTitle(json("title" to t("TOTE", "Тебя тупо забанили, ОК? Кина не будет."))))),
+                preludeWithVeryBadNews(json("content" to Shitus.spancTitle(json("title" to t("TOTE", "Тебя тупо забанили, ОК? Кина не будет."))))),
                 renderProfile(ui, user)
                 )
         }

@@ -251,7 +251,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                 var res = tame
                 val parents = Shitus.byid(elementID).parents()
                 parents.each {
-                    val parentControls = jshit.elementIDToControls[js("this").id]
+                    val parentControls = Shitus.elementIDToControls[js("this").id]
                     if (!parentControls) undefined
                     else {
                         // TODO:vgrechka @unjs    85c906ea-435e-439e-a8bf-3c9f4a3c9798
@@ -296,10 +296,10 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
         reactClassSpec.componentWillMount = {
             elementThis = js("this")
 
-            var elementControls = jshit.elementIDToControls[elementID]
+            var elementControls = Shitus.elementIDToControls[elementID]
             if (!elementControls) {
                 elementControls = js("[]")
-                jshit.elementIDToControls[elementID] = elementControls
+                Shitus.elementIDToControls[elementID] = elementControls
             }
 
             if (tame != null) {
@@ -336,7 +336,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                 if (cis.noStateContributions) return
 
                 for (parentElement in jsArrayToList(Shitus.byid(elementID).parents())) {
-                    val parentControls = jshit.elementIDToControls[parentElement.id]
+                    val parentControls = Shitus.elementIDToControls[parentElement.id]
                     if (parentControls)
                         for (parentControl in jsArrayToList(parentControls))
                             if (parentControl.noStateContributions) return
@@ -370,7 +370,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
             componentWillUnmount()
 
             removeEventListeners()
-            jsFacing_arrayDeleteFirstThat(jshit.elementIDToControls[elementID], {x: dynamic -> x.controlID == controlID })
+            jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[elementID], {x: dynamic -> x.controlID == controlID })
             jsFacing_deleteKey(art.uiStateContributions, controlID)
 
             if (effectiveShame != "") {
@@ -397,8 +397,8 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
     fun testClick(spec: dynamic): Promise<Unit> {"__async"
         val testActionHandOpts: dynamic = if (spec) spec.testActionHandOpts else undefined
 
-        if (jshit.getTestSpeed() == "slow") {
-            val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(elementID)), testActionHandOpts))
+        if (art.testSpeed == "slow") {
+            val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(elementID)), testActionHandOpts))
             __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
             testActionHand.delete()
         }
@@ -422,14 +422,14 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                     preventAndStop(e)
 
                     if (effectiveShame == null) {
-                        jshit.raiseWithMeta(json("message" to "Put some shame on me", "meta" to this)) // TODO:vgrechka meta: me
+                        Shitus.raiseWithMeta(json("message" to "Put some shame on me", "meta" to this)) // TODO:vgrechka meta: me
                     }
 
                     return captureAction()
                 }
 
                 preventAndStop(e)
-                return jshit.revealControl(this)
+                return Shitus.revealControl(this)
             }
 
             onRootClick(e)
@@ -472,19 +472,19 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
 
     fun stickException(exception: dynamic) {
         fun doReveal() {
-            jshit.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
-                jshit.renderDefinitionStackStrip(json("stack" to `$definitionStack`))
+            Shitus.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
+                Shitus.renderDefinitionStackStrip(json("stack" to `$definitionStack`))
             }))))
         }
 
         doReveal() // Does nothing if something is already revealed
 
-        jshit.debugControlStickers.add(json("control" to this, "shit" to json(
-            "onClick" to {
-                jshit.hideStackRevelation()
-                doReveal()
-            }
-        )))
+//        jshit.debugControlStickers.add(json("control" to this, "shit" to json(
+//            "onClick" to {
+//                jshit.hideStackRevelation()
+//                doReveal()
+//            }
+//        )))
     }
 
     fun captureAction() {

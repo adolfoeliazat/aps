@@ -82,12 +82,12 @@ fun jsFacing_liveBadge2(ui: dynamic, def: dynamic): dynamic {
 
                 "contributeTestState" to {state: dynamic ->
                     if (getValue()) {
-                        state.put(json("control" to me, "key" to me.getTamePath(), "value" to jshit.textMeat(getValue())))
+                        state.put(json("control" to me, "key" to me.getTamePath(), "value" to textMeat(getValue())))
                     }
                 },
 
                 "getLongRevelationTitle" to {
-                    me.debugDisplayName + ": " + jshit.textMeat(getValue())
+                    me.debugDisplayName + ": " + textMeat(getValue())
                 }
             )
 

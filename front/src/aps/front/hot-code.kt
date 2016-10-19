@@ -46,7 +46,7 @@ fun runHotCodeUpdateStuff(arg: dynamic): dynamic {"__async"
         var shouldScheduleAgain = true
 
         try {
-            if (jshit.hotCodeUpdateDisabled) return@tick
+            if (hrss.hotCodeUpdateDisabled) return@tick
 
             try {
 //                val sofv = __await<dynamic>(jshit.debugRPC(json("fun" to "danger_getSoftwareVersion", "db" to null)))
@@ -72,7 +72,7 @@ fun runHotCodeUpdateStuff(arg: dynamic): dynamic {"__async"
                     if (shouldUpdate) {
                         lastUpdateAttemptAt = global.Date.now()
                         dlog("Starting hot update #${++hotUpdateNumber}...")
-                        jshit.hideStackRevelation()
+                        Shitus.hideStackRevelation()
 
                         val updatedHotFunctions = json()
 
@@ -115,8 +115,8 @@ fun runHotCodeUpdateStuff(arg: dynamic): dynamic {"__async"
                             __await<dynamic>(applyHotCode(json("updatedHotFunctions" to updatedHotFunctions)))
                         } catch (e: Throwable) {
                             if (e.message != "UI assertion failed") {
-                                jshit.clogError(e, "Failed to apply hot code")
-                                jshit.revealStack(json("exception" to e))
+                                clogError(e, "Failed to apply hot code")
+                                Shitus.revealStack(json("exception" to e))
                                 return@tick
                             }
                         }
@@ -129,7 +129,7 @@ fun runHotCodeUpdateStuff(arg: dynamic): dynamic {"__async"
                 if (e.requestHasBeenTerminated) {
                     console.warn("Hot update tick failed slightly, will try again soon...")
                 } else {
-                    jshit.clogError(e, "Hot update tick failed badly, giving up")
+                    clogError(e, "Hot update tick failed badly, giving up")
                     shouldScheduleAgain = false
                 }
             }
@@ -157,37 +157,32 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                              instantiateImpl: dynamic,
                              makeUIShitIgniterDef: dynamic,
                              ui: dynamic,
-                             initDebugFunctions: dynamic,
-                             hotFunctions: dynamic,
-                             kokoko: dynamic,
-                             getMakeOrRemakeExportedShitFunction: dynamic, setMakeOrRemakeExportedShitFunction: dynamic,
-//                             getMakeOrRemakeArtFunction: dynamic, setMakeOrRemakeArtFunction: dynamic,
-                             getInitUIFunctionsFunction: dynamic, setInitUIFunctionsFunction: dynamic) {
+                             hotFunctions: dynamic) {
     "__async"
     if (MODE != "debug") return
 
-    if (jshit.hotCodeListener) {
-        jshit.hotCodeListener.kill()
+    if (hrss.hotCodeListener) {
+        hrss.hotCodeListener.kill()
     }
 
-    jshit.hotCodeListener = __await<dynamic>(runHotCodeUpdateStuff(json(
+    hrss.hotCodeListener = __await<dynamic>(runHotCodeUpdateStuff(json(
         "hotFunctions" to js("[]").concat(
-            getMakeOrRemakeExportedShitFunction(),
+//            getMakeOrRemakeExportedShitFunction(),
             makeUIShitIgniterDef.Impl,
-            initDebugFunctions,
-            getInitUIFunctionsFunction(),
+//            initDebugFunctions,
+//            getInitUIFunctionsFunction(),
 //            getMakeOrRemakeArtFunction(),
         /*...*/hotFunctions.map({hof: dynamic -> hof.`fun`})),
 
         "applyHotCode" to {arg: dynamic -> "__async"
             val updatedHotFunctions = arg.updatedHotFunctions
 
-            jshit.isHotReloading = true
-            jshit.revealStack.calledTimes = 0
+            hrss.isHotReloading = true
+            Shitus.revealStack.calledTimes = 0
 
             run {
-                val things = Shitus.values(jshit.thingsToDoBeforeHotUpdate)
-                jshit.thingsToDoBeforeHotUpdate = {}
+                val things = Shitus.values(hrss.thingsToDoBeforeHotUpdate)
+                hrss.thingsToDoBeforeHotUpdate = json()
                 for (thing in jsArrayToList(things)) {
                     __await<dynamic>(thing())
                 }
@@ -231,8 +226,13 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
 
                 dlog("Hot-refreshed kotlin/front-enhanced.js")
 
-                val hotIgnition = true
-                kokoko(hotIgnition)
+                js("""
+                    global.kot = kotlin.modules['front']
+                    kot.aps.front.KotlinShit.ignite(/*hotIgnition*/ true)
+                """)
+
+//                val hotIgnition = true
+//                kokoko(hotIgnition)
             }
 
 //            val hotMakeOrRemakeArt = updatedHotFunctions[getMakeOrRemakeArtFunction().hotShitTag]
@@ -249,12 +249,12 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
 //                        }
 
 
-            val hotInitUIFunctions = updatedHotFunctions[getInitUIFunctionsFunction().hotShitTag]
-            if (hotInitUIFunctions != null) {
-                setInitUIFunctionsFunction(hotInitUIFunctions)
-                getInitUIFunctionsFunction()(ui)
-                dlog("Hot-refreshed initUIFunctions")
-            }
+//            val hotInitUIFunctions = updatedHotFunctions[getInitUIFunctionsFunction().hotShitTag]
+//            if (hotInitUIFunctions != null) {
+//                setInitUIFunctionsFunction(hotInitUIFunctions)
+//                getInitUIFunctionsFunction()(ui)
+//                dlog("Hot-refreshed initUIFunctions")
+//            }
 
             makeUIShitIgniterDef.Impl = global.makeAPSShitImplCtor()
 
@@ -269,11 +269,11 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
             dlog("Hot-refreshed Impl")
 //                        }
 
-            val hotInitDebugFunctions = updatedHotFunctions[initDebugFunctions.hotShitTag]
-            if (hotInitDebugFunctions != null) {
-                hotInitDebugFunctions()
-                dlog("Hot-refreshed initDebugFunctions")
-            }
+//            val hotInitDebugFunctions = updatedHotFunctions[initDebugFunctions.hotShitTag]
+//            if (hotInitDebugFunctions != null) {
+//                hotInitDebugFunctions()
+//                dlog("Hot-refreshed initDebugFunctions")
+//            }
 
 //                        const hotRevealControl = updatedHotFunctions[revealer.revealControl.hotShitTag]
 //                        if (hotRevealControl) {
@@ -286,7 +286,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
 
             if (shouldReloadPage) {
                 dlog("----- Reloading page -----")
-                shittyFov(jshit.closeControlRevealer)
+                shittyFov(hrss.closeControlRevealer)
 
                 // debugPanes.deleteAll()
 
@@ -305,8 +305,8 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                 }
 
                 run {
-                    val things = Shitus.values(jshit.thingsToDoAfterHotUpdate)
-                    jshit.thingsToDoAfterHotUpdate = json()
+                    val things = Shitus.values(hrss.thingsToDoAfterHotUpdate)
+                    hrss.thingsToDoAfterHotUpdate = json()
                     for (thing in jsArrayToList(things)) {
                         __await<dynamic>(thing())
                     }
@@ -315,9 +315,9 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                 if (global.testGlobal.explicitMinimalGertrude == undefined) global.testGlobal.explicitMinimalGertrude = false
                 global.testGlobal.minimalGertrude = global.testGlobal.explicitMinimalGertrude
 
-                if (jshit.reassertUIState) {
+                if (hrss.reassertUIState) {
                     dlog("Reasserting fucking UI state")
-                    __await<dynamic>(jshit.reassertUIState(json("scrollThere" to false, "thisIsReassertion" to true)))
+                    __await<dynamic>(hrss.reassertUIState(json("scrollThere" to false, "thisIsReassertion" to true)))
 
                     // WTF is this?
 //                    noException: art.openTestPassedPane(openTestPassedPaneArgs)

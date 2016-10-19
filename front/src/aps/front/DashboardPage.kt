@@ -68,11 +68,11 @@ class DashboardPage(val ui: LegacyUIShit) {
                             "name" to "account",
                             "title" to t("TOTE", "Аккаунт"),
                             "items" to jsArrayOf(
-                                jshit.darkLink(json("tamy" to "signOut", "title" to t("TOTE", "Выйти прочь"), "onClick" to {
+                                darkLink(json("tamy" to "signOut", "title" to t("TOTE", "Выйти прочь"), "onClick" to {
                                     "__async"
                                     ui.signOut()
                                 })),
-                                jshit.darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {
+                                darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {
                                     "__async"
                                     console.warn("// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a")
                                 }))
@@ -96,9 +96,9 @@ class DashboardPage(val ui: LegacyUIShit) {
 
                 // Automatic refreshes should be prevented while something is being investigated via revealer,
                 // otherwise elements being looked at might be removed
-                if (jshit.controlBeingRevealed) { scheduleUpdate(); return@outta Unit }
+                if (hrss.controlBeingRevealed) { scheduleUpdate(); return@outta Unit }
 
-                if (jshit.isOrWasInTestScenario() && jshit.getCurrentTestBrowser().ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
+                if (Shitus.isOrWasInTestScenario() && hrss.browser.ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
 
                 // dlog("currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}")
                 dlog("Updating dashboard page")

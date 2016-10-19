@@ -41,7 +41,7 @@ where E : Enum<E>, E : Titled {
             var me: dynamic = null
             me = json(
                 "render" to {
-                    jshit.el.apply(null, js("[]").concat(
+                    el.apply(null, js("[]").concat(
                         "select",
 
                         json(
@@ -68,7 +68,7 @@ where E : Enum<E>, E : Titled {
                         ),
 
                         values.map {
-                            jshit.el("option", json("value" to it.name), it.title)
+                            el("option", json("value" to it.name), it.title)
                         }.toJSArray()
                     ))
                 },
@@ -90,8 +90,8 @@ where E : Enum<E>, E : Titled {
                             "value" to selectedItem.title))
 
                         values.forEachIndexed {i, entry ->
-                            state.put(json("control" to me, "key" to me.getTamePath() + ".item${jshit.sufindex(i)}.value", "value" to entry.name))
-                            state.put(json("control" to me, "key" to me.getTamePath() + ".item${jshit.sufindex(i)}.title", "value" to entry.title))
+                            state.put(json("control" to me, "key" to me.getTamePath() + ".item${Shitus.sufindex(i)}.value", "value" to entry.name))
+                            state.put(json("control" to me, "key" to me.getTamePath() + ".item${Shitus.sufindex(i)}.title", "value" to entry.title))
                         }
                     }
                 },
@@ -127,11 +127,11 @@ where E : Enum<E>, E : Titled {
                     val value = arg.value
                     val testActionHandOpts = arg.testActionHandOpts
 
-                    if (jshit.testSpeed == "slow") {
+                    if (art.testSpeed == "slow") {
                         val el = Shitus.byid0(me.elementID)
                         el.value = value
                         el.dispatchEvent(js("new MouseEvent('mousedown')"))
-                        val testActionHand = jshit.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
+                        val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
                         __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                         testActionHand.delete()
 
@@ -145,9 +145,9 @@ where E : Enum<E>, E : Titled {
 
                 "setBlinking" to {b: dynamic ->
                     if (b) {
-                        jshit.effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
+                        effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
                     } else {
-                        jshit.effects.blinkOff()
+                        effects.blinkOff()
                     }
                 },
 
@@ -165,9 +165,9 @@ where E : Enum<E>, E : Titled {
                 "renderInRevelationPane" to {
                     val els = js("[]")
                     Shitus.diva(json("style" to json()),
-                        jshit.Betsy(json(
+                        Betsy(json(
                             "title" to "Values",
-                            "details" to jshit.ObjectViewer(("object" to values))
+                            "details" to ObjectViewer(("object" to values))
                             ))
                     )
                 }
@@ -177,7 +177,7 @@ where E : Enum<E>, E : Titled {
             me.tamyPrefix = "Select"
 
 
-            jshit.implementControlShit(json("me" to me, "def" to json(
+            legacy_implementControlShit(json("me" to me, "def" to json(
                 "tamy" to tamy,
                 "tamyShamy" to tamyShamy
             )))

@@ -37,7 +37,7 @@ enum class Color(val string: String) {
 }
 
 @native interface IKotlinShit {
-    fun ignite(_global: dynamic, _jshit: dynamic, hotIgnition: Boolean)
+    fun ignite(hotIgnition: Boolean)
     fun loadDebugKotlinPlaygroundPage()
     fun loadAdminUsersPage(): Promise<Unit>
     fun loadDashboardPage(): Promise<Unit>
@@ -51,16 +51,14 @@ enum class Color(val string: String) {
 
 
 var global: dynamic = null
-var jshit: JShit = js("undefined")
 
 object KotlinShit : IKotlinShit {
     var ui: dynamic = null
     var clientImpl: dynamic = null
 
-    override fun ignite(_global: dynamic, _jshit: dynamic, hotIgnition: Boolean) {
+    override fun ignite(hotIgnition: Boolean) {
         println("----- Igniting front Kotlin shit -----")
-        global = _global
-        jshit = _jshit
+        global = js("window")
 
         js("""
             global.__asyncResult = function(x) { return x }
@@ -83,8 +81,6 @@ object KotlinShit : IKotlinShit {
             }
         }
 
-        jshit.implementControlShit = ::legacy_implementControlShit
-
 //        art.initArtShit()
 
         initTestShit()
@@ -94,11 +90,17 @@ object KotlinShit : IKotlinShit {
 
         // For hot reloading
         global.makeAPSShitImplCtor = ::makeAPSShitImplCtor
+
+        initEffects()
+        Shitus.initTrains()
+
+        global.Shitus = Shitus
+        console.log("Ignited front Kotlin shit")
     }
 
     val igniteTestShit = ::jsFacing_igniteTestShit
 
-    val makeFormCtor = ::jsFacing_makeFormCtor
+//    val makeFormCtor = ::jsFacing_makeFormCtor
     val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
     val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
     val isDynamicPage = ::jsFacing_isDynamicPage
@@ -113,7 +115,7 @@ object KotlinShit : IKotlinShit {
     val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
     val urlLink = ::jsFacing_urlLink
     val pageLink = ::jsFacing_pageLink
-    val initHotCodeShit = ::jsFacing_initHotCodeShit
+    val initHotCodeShit: dynamic = ::jsFacing_initHotCodeShit
     val parseQueryString = ::jsFacing_parseQueryString
 
 //    val shittyShit = json(
@@ -206,7 +208,7 @@ fun jsFacing_elcl(def: dynamic): ReactElement {
         "render" to render@{
             fun hrendus(e: dynamic) {
                 if (js("typeof window") == "object") {
-                    return jshit.renderExceptionTriangleAndRevealStack(json("exception" to e))
+                    return renderExceptionTriangleAndRevealStack(json("exception" to e))
                 } else {
                     throw e
                 }
@@ -327,7 +329,7 @@ fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: dynamic): dy
                         }
 
                         console.log("Bad-boy child at index ${idx}", child)
-                        jshit.raiseWithMeta(json("message" to "Bad-boy child at index ${idx}", "meta" to attrs))
+                        Shitus.raiseWithMeta(json("message" to "Bad-boy child at index ${idx}", "meta" to attrs))
                     }
                 })
 
@@ -341,7 +343,7 @@ fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: dynamic): dy
     )
     me.controlTypeName = tag + "a"
     me.ignoreDebugCtrlShiftClick = true
-    jshit.implementControlShit(json("me" to me, "def" to attrs))
+    legacy_implementControlShit(json("me" to me, "def" to attrs))
     return jsFacing_elcl(me)
 }
 
@@ -391,7 +393,7 @@ fun killme_veryBasicTag(tag: String, attrs: dynamic, vararg _items: dynamic): dy
                     me.`$metaID` = element2.`$metaID`
                 }
                 me.ignoreDebugCtrlShiftClick = true
-                jshit.implementControlShit(json("me" to me, "def" to js("({})")))
+                legacy_implementControlShit(json("me" to me, "def" to js("({})")))
 
                 jsFacing_elcl(me)
             } else {
@@ -434,7 +436,7 @@ fun jsFacing_spanc(def: dynamic): dynamic {
     // #extract {content, className='', style={}} from def
     val content = def.content
 
-    if (!def.tame) jshit.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
+    if (!def.tame) Shitus.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
 
     val isString = js("typeof content") == "string"
     val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
@@ -452,7 +454,7 @@ fun jsFacing_spanc(def: dynamic): dynamic {
 //    val className = if (def.className != undefined) def.className else ""
 //    val style = if (def.style != undefined) def.style else js("({})")
 //
-//    if (!def.tame) jshit.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
+//    if (!def.tame) Shitus.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
 //
 //    val isString = js("typeof content") == "string"
 //    val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"
@@ -482,13 +484,6 @@ fun jsFacing_spanc(def: dynamic): dynamic {
 //    return jshit.elcl(me)
 //}
 
-fun renderRedExclamationTriangleLabel(title: String): ReactElement {
-    return span {
-        style { color = RED_700 }
-        -span { className = "fa fa-exclamation-triangle" }
-        -span { style { marginLeft(10) }; -title }
-    }
-}
 
 //fun jsFacing_renderExceptionTriangle(def: dynamic): dynamic {
 //    var exception = def.exception
@@ -502,7 +497,7 @@ fun renderRedExclamationTriangleLabel(title: String): ReactElement {
 //        -span {style {marginLeft(10) }; -"("}
 //        -"Reveal"
 ////        -link("Reveal") {
-////            jshit.revealStack(json("exception" to exception))
+////            Shitus.revealStack(json("exception" to exception))
 ////        }
 //        -")"
 //    }
@@ -510,12 +505,12 @@ fun renderRedExclamationTriangleLabel(title: String): ReactElement {
 ////    try {
 ////        return Shitus.spana(json("noStateContributions" to true, "controlTypeName" to "renderExceptionTriangle"),
 ////            Shitus.spana(json("style" to json("cursor" to "pointer"),
-////                "onClick" to { jshit.revealStack(json("exception" to exception)) }),
+////                "onClick" to { Shitus.revealStack(json("exception" to exception)) }),
 ////                jshit.renderRedExclamationTriangleLabel(json("title" to t("It fucking throwed: ${exception.message}")))
 ////            ),
 ////
 ////            Shitus.spana(json("style" to json("marginLeft" to 10)), "("),
-////            Shitus.link(json("title" to t("Reveal"), "onClick" to { jshit.revealStack(json("exception" to exception)) })),
+////            Shitus.link(json("title" to t("Reveal"), "onClick" to { Shitus.revealStack(json("exception" to exception)) })),
 ////            ")"
 ////        )
 ////    } catch(e: Throwable) {
@@ -541,12 +536,6 @@ fun dynamicKeys(obj: dynamic): dynamic {
 fun jdiva(vararg args: dynamic): ReactElement {
     val shit = Shitus
     return js("shit.diva.apply(null, args)")
-}
-
-@Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE")
-fun hor2(vararg args: dynamic): ReactElement {
-    val shit = jshit
-    return js("shit.hor2.apply(null, args)")
 }
 
 fun fuckingDiviarius(): ReactElement {
@@ -609,8 +598,6 @@ fun simpleButton(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement
     return React.createElement("button", attrs, title)
 }
 
-
-val nbsp: String = js("String.fromCharCode(0xa0)")
 
 //class link(build: link.() -> Unit) : StatefulElement() {
 //    var content: ReactElement? = null

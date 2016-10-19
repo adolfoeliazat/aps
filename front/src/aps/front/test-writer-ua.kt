@@ -13,7 +13,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         val slowly = false
 
         if (slowly) {
-            jshit.setTestSpeed("slow")
+            art.testSpeed = "slow"
             art.respectArtPauses = true
         }
 

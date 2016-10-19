@@ -90,7 +90,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                     return@render React.createElement(inputReactClass, json(
                         "id" to me.elementID,
                         "rows" to rows,
-                        "placeholder" to jshit.textMeat(placeholder),
+                        "placeholder" to textMeat(placeholder),
                         "kind" to kind,
                         "type" to type,
                         "value" to value,
@@ -102,7 +102,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                             style,
                             // TODO:vgrechka Implement new-style spinner for Input    d39c80df-fc4e-4b83-8318-c79963b6a010
                             if (loading) json(
-                                "background" to "url('${jshit.Preloader.srcDefault32()}') no-repeat right center",
+                                "background" to "url('${Preloader.srcDefault32()}') no-repeat right center",
                                 "paddingRight" to 36
                             ) else null
                         ),
@@ -156,7 +156,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
 
                 "testSetValue" to {arg: dynamic -> "__async"
                     val value: dynamic = arg.value
-                    if (jshit.testSpeed == "slow") {
+                    if (art.testSpeed == "slow") {
                         me.setValue("")
                         for (len in 1 until value.length) {
                             __await<dynamic>(Shitus.delay(50))
@@ -172,9 +172,9 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
 
                 "setBlinking" to {b: dynamic ->
                     if (b) {
-                        jshit.effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
+                        effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
                     } else {
-                        jshit.effects.blinkOff()
+                        effects.blinkOff()
                     }
                 }
             )
@@ -186,8 +186,8 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                         Shitus.link(json(
                             "title" to t("Capture primary click with only this entered"),
                             "onClick" to onClick@{
-                                jshit.closeControlRevealer()
-                                val primaryButton = jshit.getControlByShame("button-primary")
+                                hrss.closeControlRevealer()
+                                val primaryButton = getControlByShame("button-primary")
                                 if (!primaryButton) return@onClick console.warn("No primary control to click on")
 
                                 var descriptiveName = me.effectiveShame

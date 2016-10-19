@@ -21,7 +21,7 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
             var me: dynamic = null
             me = json(
                 "render" to {
-                    jshit.el("input", json(
+                    el("input", json(
                         "id" to me.elementID,
                         "type" to "checkbox",
                         "checked" to value,
@@ -54,7 +54,7 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
                 "testSetValue" to {arg: dynamic -> "__async"
                     val value: dynamic = arg.value
 
-                    if (jshit.testSpeed == "slow") {
+                    if (art.testSpeed == "slow") {
                         console.warn("// TODO:vgrechka Implement slow testSetValue for Checkbox    1dcb9af1-30f4-42b1-8dce-c9e3f742d881")
                         me.setValue(value)
                     } else {
