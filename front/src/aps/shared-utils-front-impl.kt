@@ -208,7 +208,7 @@ annotation class Front
     var user: UserRTO
     fun startLiveStatusPolling()
     fun setPage(spec: Json)
-    fun urlLink(spec: Json): dynamic
+    fun urlLink(spec: Json): ReactElement
     fun getUser(): UserRTO
     fun signOut()
     fun updatePage()

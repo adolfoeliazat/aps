@@ -100,6 +100,12 @@ inline fun measure(what: String, block: () -> Unit) {
     m.end()
 }
 
+fun asReactElement(x: Any?): ReactElement {
+    val didi: dynamic = x
+    return didi
+}
+
+fun Any?.asReactElement(): ReactElement = asReactElement(this)
 
 
 

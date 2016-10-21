@@ -1,3 +1,9 @@
+/*
+ * APS
+ *
+ * (C) Copyright 2015-2016 Vladimir Grechka
+ */
+
 package aps.front
 
 import aps.*
@@ -36,9 +42,16 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
 
                 !ui.signedUpOK && Shitus.diva(json(),
                     hr(),
-                    Shitus.diva(json("style" to json("textAlign" to "left")),
-                        t("TOTE", "Как? Еще нет аккаунта? "),
-                        ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true))))
+
+                    kdiv(TextAlign.LEFT) {o->
+                        o- t("TOTE", "Как? Еще нет аккаунта? ")
+                        o- ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true))
+                    }.toReactElement()
+
+//                    Shitus.diva(json("style" to json("textAlign" to "left")),
+//                        t("TOTE", "Как? Еще нет аккаунта? "),
+//                        ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true)))
+                )
             )
         ))
     }

@@ -8,11 +8,6 @@ package aps.front
 
 import aps.*
 
-fun asReactElement(x: Any?): ReactElement {
-    val didi: dynamic = x
-    return didi
-}
-
 fun toReactElementable(x: Any?): ToReactElementable {
     return object : ToReactElementable {
         override fun toReactElement(): ReactElement {

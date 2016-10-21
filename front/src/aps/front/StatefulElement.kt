@@ -542,7 +542,8 @@ open class FlowElementBuilder(val tag: String) {
     }
 
     fun toElement(): ReactElement {
-        val theStyle = if (styleKludge != undefined) styleKludge else style.toJSObject()
+        val theStyle = if (styleKludge != null) styleKludge else style.toJSObject()
+//        if (theStyle.background == null && theStyle.backgroundColor == null) theStyle.background = "rosybrown"
         val allAttrs = (attrs + ("style" to theStyle)).toJSObject()
         // console.log("allAttrs", allAttrs)
         return React.createElement(tag, allAttrs, *children.toTypedArray())
