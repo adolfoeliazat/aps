@@ -151,7 +151,9 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
 
     hrss.urlQueryBeforeRunningTest = getURLQuery()
 
-    eval(__await(GetGeneratedShitRequest.send()).code)
+//    measure("Load generated shit") {
+        eval(__await(GetGeneratedShitRequest.send()).code)
+//    }
 
     try {
         __await(scenario.run())

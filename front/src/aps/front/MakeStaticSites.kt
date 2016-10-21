@@ -43,6 +43,7 @@ object MakeStaticSites : IMakeStaticSites {
 
     override fun runShit(argv: dynamic) {"__async"
         try {
+            require("regenerator-runtime/runtime")
             js("require('e:/work/foundation/u')")
 
             sh.config.fatal = true

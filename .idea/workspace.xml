@@ -7,19 +7,19 @@
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt" line="61" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front-killme.kt" line="251" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front-killme.kt" line="230" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="472" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="1580" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="473" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="1581" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/back/back.iml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/back/lib/kotlin-runtime.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/back/back.cmd" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/back/lib/kotlin-reflect.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/back/back.cmd" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/back/src/aps/APSBack.kt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,11 +69,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="art.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
+      <file leaf-file-name="Shitus.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Shitus.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="745" column="8" selection-start-line="745" selection-start-column="8" selection-end-line="745" selection-end-column="8" />
+            <state relative-caret-position="12393">
+              <caret line="464" column="0" selection-start-line="464" selection-start-column="0" selection-end-line="464" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -82,18 +82,18 @@
       <file leaf-file-name="rp-test.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
+            <state relative-caret-position="3429">
               <caret line="140" column="8" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="generated-shit.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="generated-shit.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/back/src/aps/back/generated-shit.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="162">
+              <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -102,40 +102,18 @@
       <file leaf-file-name="db.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/back/src/aps/back/db.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
+            <state relative-caret-position="1782">
               <caret line="83" column="49" selection-start-line="83" selection-start-column="49" selection-end-line="83" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Shitus-2.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Shitus-2.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="73" column="4" selection-start-line="73" selection-start-column="4" selection-end-line="73" selection-end-column="4" />
-              <folding>
-                <element signature="e#81#118#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="202" column="8" selection-start-line="202" selection-start-column="8" selection-end-line="202" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestCommon.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TestCommon.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="153" column="4" selection-start-line="153" selection-start-column="4" selection-end-line="153" selection-end-column="4" />
+            <state relative-caret-position="270">
+              <caret line="153" column="0" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
               <folding>
                 <element signature="e#81#141#0" expanded="true" />
               </folding>
@@ -143,11 +121,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="front-utils.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="WatchAndEnhanceJS.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="146" column="0" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
+            <state relative-caret-position="143">
+              <caret line="122" column="33" selection-start-line="122" selection-start-column="33" selection-end-line="122" selection-end-column="33" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -155,10 +143,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="MakeStaticSites.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="45" column="48" selection-start-line="45" selection-start-column="48" selection-end-line="45" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
+            <state relative-caret-position="5238">
               <caret line="198" column="12" selection-start-line="198" selection-start-column="12" selection-end-line="198" selection-end-column="12" />
               <folding />
             </state>
@@ -168,7 +166,7 @@
       <file leaf-file-name="DebugMailbox.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugMailbox.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
+            <state relative-caret-position="486">
               <caret line="22" column="86" selection-start-line="22" selection-start-column="86" selection-end-line="22" selection-end-column="86" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -246,20 +244,20 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/Shitus-2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Shitus.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/art.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/DebugPanes.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-killme.kt" />
         <option value="$PROJECT_DIR$/front/generated-shit.js" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/db.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/generated-shit.js" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" />
       </list>
     </option>
   </component>
@@ -350,120 +348,23 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="back" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+        <subPane />
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Debugger" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15407854" />
     <property name="project.structure.side.proportion" value="0.29066667" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib-gradle/websocket-servlet-9.3.11.v20160721.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="g-s&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/generated-shit.js&#10;watchand&#9;FILE&#9;file://E:/work/aps/tools/src/aps/WatchAndEnhanceJS.kt&#10;getsent&#9;null&#9;null&#10;getgene&#9;null&#9;null&#10;art&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/art.kt&#10;s-2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus-2.kt&#10;its&#9;null&#9;null&#10;remoteproce&#9;null&#9;null&#10;back.kt&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/Back.kt&#10;back&#9;null&#9;null&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;legacy_&#9;null&#9;null&#10;f-u&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;zindex&#9;null&#9;null&#10;ignitetest&#9;null&#9;null&#10;byid0&#9;null&#9;null&#10;byid&#9;null&#9;null&#10;mutablemap&#9;null&#9;null&#10;jq&#9;null&#9;null&#10;debugpanes&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DebugPanes.kt&#10;basictag&#9;null&#9;null&#10;link&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/link.kt&#10;jsfacing_diva&#9;null&#9;null&#10;navitem&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/TopNavItem.kt&#10;zinde&#9;null&#9;null&#10;shitu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus-2.kt&#10;probe&#9;null&#9;null&#10;front-utils&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;jquery&#9;null&#9;null&#10;s-u&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;dlog&#9;null&#9;null&#10;dwarn&#9;null&#9;null&#10;jsfacing_byid&#9;null&#9;null&#10;ignora&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;document&#9;null&#9;null&#10;asre&#9;null&#9;null&#10;diva&#9;null&#9;null&#10;killme&#9;null&#9;null&#10;opendebug&#9;null&#9;null&#10;bim&#9;FILE&#9;file://E:/work/aps/back/src/aps/shared-utils-back-impl.kt&#10;section&#9;null&#9;null&#10;dlo&#9;null&#9;null&#10;makes&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;de&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DebugControlStickers.kt&#10;igni&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/igniter.kt&#10;f-uti&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;f-s&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;bimp&#9;FILE&#9;file://E:/work/aps/back/src/aps/shared-utils-back-impl.kt&#10;fim&#9;FILE&#9;file://E:/work/aps/front/src/aps/shared-utils-front-impl.kt" />
+    <property name="SearchEverywhereHistoryKey" value="f-u&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;testco&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/TestCommon.kt&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;g-s&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/generated-shit.js&#10;watchand&#9;FILE&#9;file://E:/work/aps/tools/src/aps/WatchAndEnhanceJS.kt&#10;getsent&#9;null&#9;null&#10;getgene&#9;null&#9;null&#10;art&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/art.kt&#10;s-2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus-2.kt&#10;its&#9;null&#9;null&#10;remoteproce&#9;null&#9;null&#10;back.kt&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/Back.kt&#10;back&#9;null&#9;null&#10;legacy_&#9;null&#9;null&#10;zindex&#9;null&#9;null&#10;ignitetest&#9;null&#9;null&#10;byid0&#9;null&#9;null&#10;byid&#9;null&#9;null&#10;mutablemap&#9;null&#9;null&#10;jq&#9;null&#9;null&#10;debugpanes&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DebugPanes.kt&#10;basictag&#9;null&#9;null&#10;link&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/link.kt&#10;jsfacing_diva&#9;null&#9;null&#10;navitem&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/TopNavItem.kt&#10;zinde&#9;null&#9;null&#10;shitu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus-2.kt&#10;probe&#9;null&#9;null&#10;front-utils&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;jquery&#9;null&#9;null&#10;s-u&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;dlog&#9;null&#9;null&#10;dwarn&#9;null&#9;null&#10;jsfacing_byid&#9;null&#9;null&#10;ignora&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;document&#9;null&#9;null&#10;asre&#9;null&#9;null&#10;diva&#9;null&#9;null&#10;killme&#9;null&#9;null&#10;opendebug&#9;null&#9;null&#10;bim&#9;FILE&#9;file://E:/work/aps/back/src/aps/shared-utils-back-impl.kt&#10;section&#9;null&#9;null&#10;dlo&#9;null&#9;null&#10;makes&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;de&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DebugControlStickers.kt&#10;igni&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/igniter.kt&#10;f-uti&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;f-s&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;bimp&#9;FILE&#9;file://E:/work/aps/back/src/aps/shared-utils-back-impl.kt" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -833,7 +734,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27414164" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
+      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29881975" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32603937" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -842,8 +743,6 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32713348" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24839056" sideWeight="0.49617487" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27145922" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31838074" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -852,9 +751,11 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27145922" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Dynamic Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32992464" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31838074" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -892,19 +793,10 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-debug.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/DashboardPage.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
           <caret line="113" column="8" selection-start-line="113" selection-start-column="8" selection-end-line="113" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -920,7 +812,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
           <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -928,7 +819,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -936,7 +826,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
           <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -944,7 +833,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="11" column="18" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -952,7 +840,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
           <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -960,7 +847,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="347">
           <caret line="60" column="8" selection-start-line="60" selection-start-column="8" selection-end-line="60" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -976,7 +862,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -984,9 +869,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
           <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding>
-            <marker date="1476997004747" expanded="false" signature="0:60" ph="/ APS .../" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -994,7 +876,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
           <caret line="0" column="102743" selection-start-line="0" selection-start-column="102743" selection-end-line="0" selection-end-column="102743" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1002,7 +883,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
           <caret line="679" column="9" selection-start-line="679" selection-start-column="9" selection-end-line="679" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1010,7 +890,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="199" column="16" selection-start-line="199" selection-start-column="16" selection-end-line="199" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1018,9 +897,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
           <caret line="32" column="41" selection-start-line="32" selection-start-column="41" selection-end-line="32" selection-end-column="41" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1028,7 +904,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="296" column="4" selection-start-line="296" selection-start-column="4" selection-end-line="296" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1044,7 +919,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1052,7 +926,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="567">
           <caret line="60" column="17" selection-start-line="60" selection-start-column="17" selection-end-line="60" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1060,7 +933,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
           <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1068,7 +940,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1076,7 +947,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="337" column="4" selection-start-line="337" selection-start-column="4" selection-end-line="337" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1084,9 +954,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="499">
           <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1098,44 +965,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugStickers.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#81#231#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugStickers.kt" />
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugPanes.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#81#149#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Shitus.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="24" column="52" selection-start-line="24" selection-start-column="52" selection-end-line="24" selection-end-column="52" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#81#118#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1143,9 +977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
           <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-          <folding>
-            <element signature="e#81#118#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1153,7 +984,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="360" column="16" selection-start-line="360" selection-start-column="16" selection-end-line="360" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1169,15 +999,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
           <caret line="202" column="31" selection-start-line="202" selection-start-column="31" selection-end-line="202" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="1573" column="4" selection-start-line="1573" selection-start-column="4" selection-end-line="1573" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1185,7 +1006,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
           <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1193,7 +1013,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="827">
           <caret line="99" column="11" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1201,7 +1020,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1209,10 +1027,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
           <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#80#143#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1220,9 +1034,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
           <caret line="393" column="17" selection-start-line="393" selection-start-column="17" selection-end-line="393" selection-end-column="17" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1230,7 +1041,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="89" column="19" selection-start-line="89" selection-start-column="19" selection-end-line="89" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1238,7 +1048,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
           <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1252,7 +1061,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
+        <state relative-caret-position="5346">
           <caret line="202" column="8" selection-start-line="202" selection-start-column="8" selection-end-line="202" selection-end-column="8" />
           <folding />
         </state>
@@ -1260,7 +1069,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/Shitus-2.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
+        <state relative-caret-position="1836">
           <caret line="73" column="4" selection-start-line="73" selection-start-column="4" selection-end-line="73" selection-end-column="4" />
           <folding>
             <element signature="e#81#118#0" expanded="true" />
@@ -1270,7 +1079,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugMailbox.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
+        <state relative-caret-position="486">
           <caret line="22" column="86" selection-start-line="22" selection-start-column="86" selection-end-line="22" selection-end-column="86" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -1280,35 +1089,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
+        <state relative-caret-position="5238">
           <caret line="198" column="12" selection-start-line="198" selection-start-column="12" selection-end-line="198" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="146" column="0" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="153" column="4" selection-start-line="153" selection-start-column="4" selection-end-line="153" selection-end-column="4" />
-          <folding>
-            <element signature="e#81#141#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/db.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
+        <state relative-caret-position="1782">
           <caret line="83" column="49" selection-start-line="83" selection-start-column="49" selection-end-line="83" selection-end-column="49" />
           <folding />
         </state>
@@ -1316,7 +1105,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
+        <state relative-caret-position="3429">
           <caret line="140" column="8" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="8" />
           <folding />
         </state>
@@ -1324,9 +1113,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/generated-shit.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="162">
+          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Shitus.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12393">
+          <caret line="464" column="0" selection-start-line="464" selection-start-column="0" selection-end-line="464" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/kotlin-hack.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="837">
+          <caret line="644" column="4" selection-start-line="644" selection-start-column="4" selection-end-line="644" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="122" column="33" selection-start-line="122" selection-start-column="33" selection-end-line="122" selection-end-column="33" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="45" column="48" selection-start-line="45" selection-start-column="48" selection-end-line="45" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="153" column="0" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
+          <folding>
+            <element signature="e#81#141#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

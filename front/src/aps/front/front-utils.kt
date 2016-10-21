@@ -13,6 +13,8 @@ import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 
+val REALLY_BIG_Z_INDEX = 2147483647
+
 fun constructorName(x: Any): String = x.asDynamic().__proto__.constructor.name
 
 class JSException(override val message: String, val asyncStack: String? = null) : Throwable(message) {
@@ -92,7 +94,21 @@ fun JQuery.scrollTop(): Int = this.asDynamic().scrollTop()
     fun unmountComponentAtNode(container: HTMLElement): Unit = noImpl
 }
 
-val REALLY_BIG_Z_INDEX = 2147483647
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
