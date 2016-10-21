@@ -293,7 +293,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                 val prevDebugSimulateSlowNetwork = global.DEBUG_SIMULATE_SLOW_NETWORK
                 global.DEBUG_SIMULATE_SLOW_NETWORK = false
                 try {
-                    global.testGlobal.controls = json()
+//                    TestGlobal.controls = json()
                     val scrollTop = js("\$(document)").scrollTop()
                     __await<dynamic>(ui.loadPageForURL())
                     js("\$(document)").scrollTop(scrollTop)
@@ -311,9 +311,6 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
                         __await<dynamic>(thing())
                     }
                 }
-
-                if (global.testGlobal.explicitMinimalGertrude == undefined) global.testGlobal.explicitMinimalGertrude = false
-                global.testGlobal.minimalGertrude = global.testGlobal.explicitMinimalGertrude
 
                 if (hrss.reassertUIState) {
                     dlog("Reasserting fucking UI state")

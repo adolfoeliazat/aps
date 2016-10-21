@@ -7,7 +7,18 @@
 package aps.front
 
 import aps.*
-import aps.front.Shitus.isObject
+import aps.front.Color.*
+
+object TestGlobal {
+    val shameToControl = mutableMapOf<String, dynamic>()
+    var minimalGertrude = false
+    lateinit var loadPageForURL_href: String
+    val topNavbarLinks = mutableMapOf<String, dynamic>() // TODO:vgrechka Rename to nameToTopNavbarLink
+}
+
+fun requestAnimationFrame(block: () -> Unit) {
+    global.requestAnimationFrame(block)
+}
 
 fun customerDynamicPageNames(): dynamic {
     return jsArrayOf("test", "sign-in", "sign-up", "dashboard", "orders", "support")
@@ -257,15 +268,20 @@ fun callDebugRPWithProgress(arg: dynamic): Promise<Unit> {
     imf("callDebugRPWithProgress")
 }
 
+fun debugRPC(arg: dynamic): Promise<dynamic> {
+    bitch("It's time to use new RPC shit, OK?")
+}
+
 fun OpenSourceCodeLink(def: dynamic): dynamic {
-    return "Implement OpenSourceCodeLink, please, fuck you"
-//    var where = def.where
-//    val stackItem = def.stackItem
-//    val style = def.style
-//    val title = def.title
-//    val icon = def.icon
-//
-//    var payload: dynamic = null
+    var where = def.where
+    val stackItem = def.stackItem
+    val style = def.style
+    val title = def.title
+    val icon = def.icon
+
+    var payload: dynamic = null
+    if (stackItem) imf("stackItem in OpenSourceCodeLink")
+
 //    if (stackItem) {
 //        where = json("\$sourceLocation" to stackItem.loc)
 //
@@ -332,54 +348,62 @@ fun OpenSourceCodeLink(def: dynamic): dynamic {
 //            }
 //        }
 //    }
-//
-//    let cshit
-//        if (payload) {
-//            cshit = CollapsibleShit({content: payload})
+
+    var cshit: dynamic = null
+    if (payload) {
+        cshit = CollapsibleShit(json("content" to payload))
+    }
+
+    return Shitus.updatableElement(json(), ctor@{update: dynamic ->
+        var tag = where.`$tag`
+        var sourceLocation = where.`$sourceLocation`
+        var linkText = title || where.`$tag` || where.`$sourceLocation`
+
+        if (js("linkText instanceof Promise")) imf("Promise linkText in OpenSourceCodeLink")
+        val loading = false
+//        var loading = linkText instanceof Promise
+//        if (loading) {
+//            linkText.then(res => {
+//                sourceLocation = linkText = res
+//                loading = false
+//                update()
+//            })
 //        }
-//
-//    return Shitus.updatableElement(json(), update => {
-//        let tag = where.$tag
-//        let sourceLocation = where.$sourceLocation
-//        let linkText = title || where.$tag || where.$sourceLocation
-//
-//        let loading = linkText instanceof Promise
-//            if (loading) {
-//                linkText.then(res => {
-//                    sourceLocation = linkText = res
-//                    loading = false
-//                    update()
-//                })
-//            }
-//
-//        const my = json()
-//        return _=> {
-//        if (loading) return Shitus.spana(json(), "Loading...")
-//        return Shitus.diva(json(),
-//            Shitus.diva(json(),
-//                Shitus.link({title: linkText, style: Shitus.asnn({color: BLACK_BOOT, textDecoration: "underline"}, style), async onClick() {
-//                    update(my.linkProgress = Shitus.glyph("refresh fa-spin"))
-//                    let error
-//                        try {
-//                            const res = await debugRPC({fun: "danger_openSourceCode", tag, sourceLocation})
-//                            //                            const res = await debugRPC(Object.assign({fun: "danger_openSourceCode"}, pick(where, "$tag", "$sourceLocation")))
-//                            if (!(error = res.error)) {
-//                                return update(my.linkProgress = Shitus.glyph("check"))
-//                            }
-//                        } catch (e) {
-//                            console.error(e)
-//                            error = "Big internal fuckup"
-//                        }
-//
-//                    update(my.linkProgress = Shitus.spana({style: {color: RED_700}}, Shitus.glyph("exclamation-triangle"), Shitus.spana({style: {marginLeft: 10}}, error)))
-//                }}),
-//                my.linkProgress && Shitus.spana({style: {marginLeft: 10}}, my.linkProgress),
-//                cshit && cshit.renderCaret({style: {marginLeft: 10}}),
-//                ),
-//            cshit && cshit.renderContent(),
-//            )
-//    }
-//    })
+
+        val my: dynamic = json()
+        return@ctor render@{
+            if (loading) return@render Shitus.spana(json(), "Loading...")
+            return@render Shitus.diva(json(),
+                Shitus.diva(json(),
+                    Shitus.link(json("title" to linkText, "style" to Shitus.asnn(json("color" to BLACK_BOOT.toString(), "textDecoration" to "underline"), style),
+                        "onClick" to onClick@{"__async"
+                            my.linkProgress = Shitus.glyph("refresh fa-spin")
+                            update()
+
+                            var error: dynamic = null
+                            try {
+                                val res = __await(debugRPC(json("fun" to "danger_openSourceCode", "tag" to tag, "sourceLocation" to sourceLocation)))
+                                error = res.error
+                                if (error == null) {
+                                    my.linkProgress = Shitus.glyph("check")
+                                    return@onClick update()
+                                }
+                            } catch (e: Throwable) {
+                                console.error(e)
+                                error = "Big internal fuckup"
+                            }
+
+                            my.linkProgress = Shitus.spana(json("style" to json("color" to RED_700.toString())),
+                                Shitus.glyph("exclamation-triangle"), Shitus.spana(json("style" to json("marginLeft" to 10)), error))
+                            update()
+                        })),
+                    if (my.linkProgress != null) Shitus.spana(json("style" to json("marginLeft" to 10)), my.linkProgress) else null,
+                    if (cshit != null) cshit.renderCaret(json("style" to json("marginLeft" to 10))) else null
+                ),
+                if (cshit != null) cshit.renderContent() else null
+            )
+        }
+    })
 }
 
 fun marginateLeft(size: dynamic, content: dynamic): dynamic {

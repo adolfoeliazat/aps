@@ -36,34 +36,13 @@ fun t(en: String, ru: String) = ru
 }
 
 fun remoteProcedureNameForRequest(req: Any): String {
-    val dynamicDummyReq: dynamic = req
-    val requestClassName: String = dynamicDummyReq.__proto__.constructor.`$$$kindaPackageKey`
+    val requestClassName = constructorName(req)
     return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
 }
 
-//@Deprecated("Old RPC")
-//fun <Res> callRemoteProcedure(req: Request): Promise<Res> {
-//    val dynamicReq: dynamic = req
-//    val requestClassName: String = dynamicReq.__proto__.constructor.`$$$kindaPackageKey`
-//    val procedureName = requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
-//    return callRemoteProcedure(remoteProcedureNameForRequest(req), req)
-//}
-
-//fun <Res> callRemoteProcedure(req: RequestMatumba, ui: LegacyUIShit): Promise<Res> {
-//    return callRemoteProcedure(remoteProcedureNameForRequest(req), req, ui)
-//}
 
 @native fun <T> __await(p: Promise<T>): T = noImpl
 @native fun <T> __asyncResult(x: T): Promise<T> = noImpl
-
-//object __await {
-//    inline infix operator fun <T> div(p: Promise<T>): T = __await(p)
-//}
-
-//object awaita {
-//    inline infix operator fun <T> div(p: Promise<T>): Promise<T> {"__async"; "qweqweqwe"; return __await(p) as Promise<T>}
-//}
-
 
 @Front open class RequestMatumba {
     val fields = mutableListOf<FormFieldFront<*>>()
@@ -350,6 +329,9 @@ fun <Res> callDangerousMatumba(req: RequestMatumba): Promise<Res> {
         ?: bitch("This fucking client is built without DANGEROUS_TOKEN"))
 }
 
+fun printStack() {
+    console.log(global.Error("Gimme the stack").stack)
+}
 
 
 

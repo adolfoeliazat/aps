@@ -17,9 +17,8 @@ fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw E
 fun die(msg: String = "You've just killed me, motherfucker!"): Nothing = throw Exception("Aarrgghh... $msg")
 val dontCallMe: Nothing get() = wtf("Don't call me, motherfucker")
 
-fun dlog(vararg xs: Any?) {
-    debugLog.info(xs.joinToString(" "))
-}
+fun dlog(vararg xs: Any?) = debugLog.info(xs.joinToString(" "))
+fun dwarn(vararg xs: Any?) = debugLog.info(xs.joinToString(" "))
 
 fun t(en: String, ru: String) = ru
 
@@ -178,6 +177,11 @@ abstract class FormFieldBack(container: RequestMatumba, val name: String) : Culp
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         value = values.find{it.name == input[name] as String}!!
     }
+}
+
+fun printStack() {
+    try {throw Exception("Gimme the stack")}
+    catch (e: Throwable) {e.printStackTrace()}
 }
 
 

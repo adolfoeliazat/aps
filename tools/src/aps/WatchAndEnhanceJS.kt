@@ -143,7 +143,7 @@ fun doStuff(jsFileEntry: Entry, mapFileEntry: Entry) {
                 if (function is IdentNode) { // Can be CallNode: foo()()
                     val ident = function
                     if (ident.name == "__await") {
-                        changes.add(Change(ident.start, ident.length(), "yield "))
+                        changes.add(Change(ident.start, ident.length() + 1, "(yield "))
                     }
                     else if (ident.name == "__asyncResult") {
                         changes.add(Change(ident.start, ident.length(), ""))

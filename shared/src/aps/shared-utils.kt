@@ -12,6 +12,24 @@ fun sayHi() {
     println("Hi, fuck you")
 }
 
+class Abortion : Throwable()
+
+val abort: Nothing get() {printStack(); throw Exception("qwe")}
+//val abort: Nothing get() = throw Abortion()
+
+inline fun abort(block: () -> Unit) {
+    block()
+    throw Abortion()
+}
+
+inline fun arun(block: () -> Unit) {
+    try {
+        block()
+    } catch (e: Abortion) {
+        // That's OK
+    }
+}
+
 inline fun <T, FRet> T.applet(f: (T) -> FRet): T { f(this); return this }
 
 // Rapier operator: x-{o->
@@ -34,6 +52,20 @@ class relazy<out T>(val initializer: () -> T) {
         backing = lazy(initializer)
     }
 }
+
+fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
+
+class Probe<T>(val transform: (T) -> Any?)
+fun <T> probe(transform: (T) -> Any?) = Probe(transform)
+
+infix operator fun <T> T.div(probe: Probe<T>): T {
+    dwarn("--[probe]----------> ", probe.transform(this))
+    return this
+}
+
+object probe
+infix operator fun <T> T.div(the: probe): T = this / probe {it}
+
 
 fun probe(msg: Any?): ProbeLHS {
     dlog("--[probe]----------> ", msg)

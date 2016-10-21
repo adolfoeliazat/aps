@@ -8,6 +8,31 @@ package aps.front
 
 import aps.*
 
+var global: dynamic = null
+
+@JsName("ignite")
+fun ignite() {
+    println("----- Igniting front Kotlin shit -----")
+    global = js("window")
+
+    global.__asyncResult = {x: dynamic -> x}
+
+    initTestShit()
+    igniteRPCShit()
+
+    makeAPSShitIgniter()
+
+    // For hot reloading
+    global.makeAPSShitImplCtor = ::makeAPSShitImplCtor
+
+    initEffects()
+    Shitus.initTrains()
+
+    global.Shitus = Shitus
+
+    global.igniteShit()
+}
+
 fun makeAPSShitIgniter() {
     global.DEBUG_ACTION_HAND_DELAY = 1000
     global.ACTION_DELAY_FOR_FANCINESS = 1000
@@ -216,8 +241,9 @@ fun makeUIShitIgniter(def: dynamic): dynamic {
 
                         js("$")(global.document).scrollTop(0)
                         ui.setRootContent(Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
-                            global.testGlobal.updatePage = update
-                            ui.updatePage = global.testGlobal.updatePage
+//                            TestGlobal.updatePage = update
+//                            ui.updatePage = TestGlobal.updatePage
+                            ui.updatePage = update
 
                             return@elementCtor {Shitus.diva(json("className" to "container", "style" to json("position" to "relative"), "onKeyDown" to onKeyDown),
                                 Shitus.updatableElement(json(), {update: dynamic ->
@@ -254,7 +280,7 @@ fun makeUIShitIgniter(def: dynamic): dynamic {
                             pathname = ui.prevPathname
                         }
 
-                        global.testGlobal.loadPageForURL_href = href
+                        TestGlobal.loadPageForURL_href = href
 
                         ui.urlQuery = KotlinShit.parseQueryString(href)
 

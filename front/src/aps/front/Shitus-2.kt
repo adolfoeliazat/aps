@@ -74,11 +74,11 @@ fun jsFacing_revealStack(arg: dynamic): Promise<Unit> {"__async"
     console.error(errorToLog)
 
 
-    if (debugPanes.isSet(json("name" to "revealStack"))) {
+    if (DebugPanes.contains("revealStack")) {
         return console.warn("Some other stack is already revealed, so not showing") /ignora
     }
 
-    debugPanes.set(json("name" to "revealStack", "element" to Shitus.updatableElement(json(), ctor@{update: dynamic ->
+    DebugPanes.put("revealStack", oldShitAsReactElementable(Shitus.updatableElement(json(), ctor@{ update: dynamic ->
         val lineEls = jsArrayOf()
 
         val bottomLineStyle = json("borderBottom" to "1px solid ${GRAY_500}", "marginBottom" to 5, "paddingBottom" to 5, "marginRight" to 40)
@@ -150,7 +150,7 @@ fun jsFacing_revealStack(arg: dynamic): Promise<Unit> {"__async"
 }
 
 fun jsFacing_renderDefinitionStackStrip(arg: dynamic): dynamic {
-    imf("jsFacing_renderDefinitionStackStrip")
+    return "Implement renderDefinitionStackStrip, please, fuck you"
 
 //    export function renderDefinitionStackStrip(def) {
 //        #extract {stack, title} from def

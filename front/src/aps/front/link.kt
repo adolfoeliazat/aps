@@ -68,7 +68,7 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
             effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
             if (name != null) {
                 Shitus.byid(id).css("text-decoration", "none")
-                global.testGlobal["link_" + name + "_blinks"] = true
+//                TestGlobal["link_" + name + "_blinks"] = true
             }
 
             if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
@@ -82,7 +82,7 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
             effects.blinkOff()
             if (name) {
                 Shitus.byid(id).css("text-decoration", "")
-                global.testGlobal["link_" + name + "_blinks"] = false
+//                TestGlobal["link_" + name + "_blinks"] = false
             }
     })
 

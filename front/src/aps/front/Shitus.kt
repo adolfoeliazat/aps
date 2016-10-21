@@ -131,7 +131,7 @@ object Shitus {
     val elementIDToControls: dynamic = json()
 
     val hideStackRevelation: dynamic = {
-        debugPanes.delete(json("name" to "revealStack"))
+        DebugPanes.remove("revealStack")
     }
 
     val timestampString: dynamic = ::jsFacing_timestampString
@@ -665,11 +665,11 @@ fun jsFacing_updatableElement(def: dynamic, ctor_killme: dynamic): dynamic {
             if (isInTestScenario() && hrss.worldIsHalted) return@updater Unit
             if (!inst) return@updater Unit
 
-            try {
+//            try {
                 inst.forceUpdate()
-            } catch (e: Throwable) {
-                Shitus.raiseWithMeta(json("message" to e.message, "meta" to def, "cause" to e))
-            }
+//            } catch (e: Throwable) {
+//                Shitus.raiseWithMeta(json("message" to e.message, "meta" to def, "cause" to e))
+//            }
 
             Shitus.fov(then)
         })

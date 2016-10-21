@@ -370,7 +370,8 @@
       if (initializer !== null) {
         var tmp = initializer;
         initializer = null;
-        tmp.call(instance);
+        tmp.call(instance)
+        // try {tmp.call(instance)} catch (e) {console.error(e.stack); throw e}
       }
       return instance;
     };

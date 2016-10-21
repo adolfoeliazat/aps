@@ -355,13 +355,12 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
 
             art.uiStateContributions[controlID] = ::testStateContributor
 
-            if (effectiveShame != "") {
-                val myEffectiveShame = effectiveShame
-                if (js("Object.keys(testGlobal.controls).includes(myEffectiveShame)")) {
-                    stickException(js.Error("testGlobal.controls already contains thing shamed ${effectiveShame}"))
+            effectiveShame.let {if (it != "") {
+                if (TestGlobal.shameToControl.containsKey(it)) {
+                    stickException(js.Error("There is already a thing shamed ${it}"))
                 }
-                global.testGlobal.controls[effectiveShame] = this
-            }
+                TestGlobal.shameToControl[it] = this
+            }}
 
             componentDidMount()
         }
@@ -374,7 +373,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
             jsFacing_deleteKey(art.uiStateContributions, controlID)
 
             if (effectiveShame != "") {
-                jsFacing_deleteKey(global.testGlobal.controls, effectiveShame)
+                jsFacing_deleteKey(TestGlobal.shameToControl, effectiveShame)
             }
         }
 

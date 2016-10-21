@@ -107,6 +107,7 @@
           <root url="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/guava-19.0-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/commons-validator-1.5.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ideaLibSources/jetty-servlet-9.3.11.v20160721-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

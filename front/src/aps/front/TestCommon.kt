@@ -7,6 +7,8 @@
 package aps.front
 
 import aps.*
+import jquery.jq
+import kotlin.browser.document
 
 // - Run test by full name
 // - Run all tests in given package and subpackages
@@ -38,9 +40,8 @@ fun runTestScenario(fullName: String) {
 }
 
 fun tetete() {
-    console.log(puid())
+    Tether(json())
 }
-
 
 class TestCommon(val sim: dynamic) {
     val LONG_SHIT_301 = makeLongShit(301)
@@ -54,7 +55,6 @@ class TestCommon(val sim: dynamic) {
 
         return bunchOfShit.substring(0, len)
     }
-
 }
 
 fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__async"
@@ -138,9 +138,6 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
     global.DB = "aps-test"
     global.sessionStorage.setItem("DB", global.DB)
 
-
-
-
     val initialPath = global.location.pathname + global.location.search
 
     hrss.currentTestScenarioName = testScenarioToRun
@@ -154,6 +151,8 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
 
     hrss.urlQueryBeforeRunningTest = getURLQuery()
 
+    eval(__await(GetGeneratedShitRequest.send()).code)
+
     try {
         __await(scenario.run())
     } finally {
@@ -163,6 +162,11 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
         hrss.currentTestScenarioName = undefined
         if (!hrss.preventRestoringURLAfterTest) {
             global.setTimeout({ global.history.replaceState(null, "", initialPath) }, 1000)
+        }
+
+        run { // XXX Refresh tethers
+            jqbody.scrollTop(jqbody.scrollTop() + 1)
+            jqbody.scrollTop(jqbody.scrollTop() - 1)
         }
     }
 

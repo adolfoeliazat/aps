@@ -52,10 +52,10 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
                         Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 28, "backgroundColor" to Color.BLUE_GRAY_600)))
                     },
                     "componentDidMount" to {
-                        global.testGlobal["shitSpins"] = true
+//                        TestGlobal.shitSpins = true
                     },
                     "componentWillUnmount" to {
-                        global.testGlobal["shitSpins"] = false
+//                        TestGlobal.shitSpins = false
                     }
                 ))
             }

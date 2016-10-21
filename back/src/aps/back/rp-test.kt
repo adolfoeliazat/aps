@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -134,6 +135,12 @@ val backendInstanceID = "" + UUID.randomUUID()
     }
 )
 
+@RemoteProcedureFactory fun getGeneratedShit() = testProcedure(
+    RequestMatumba(),
+    runShit = {req, res ->
+        GetGeneratedShitRequest.Response(GodServlet::class.java.getResource("generated-shit.js").readText())
+    }
+)
 
 
 

@@ -174,7 +174,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                     }
 
                     effects.blinkOn(json("target" to Shitus.byid(id).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
-                    global.testGlobal["topNavbarLink_" + name + "_blinks"] = true
+//                    TestGlobal["topNavbarLink_" + name + "_blinks"] = true
 
                     if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(isInTestScenario() && art.testSpeed == "fast")) {
                         __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
@@ -183,7 +183,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
 
                     global.setTimeout({
                         effects.blinkOff()
-                        global.testGlobal["topNavbarLink_" + name + "_blinks"] = false
+//                        TestGlobal["topNavbarLink_" + name + "_blinks"] = false
                         global.bsClearMenus()
                     }, 250)
 
@@ -212,7 +212,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                         testActionHand.delete()
                     }
                 }
-                global.testGlobal.topNavbarLinks[name] = me
+                TestGlobal.topNavbarLinks[name] = me
 
                 Shitus.byid(id).on("click", ::onClick)
 
@@ -220,7 +220,8 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
             },
 
             "componentWillUnmount" to {
-                jsFacing_deleteKey(global.testGlobal.topNavbarLinks, name)
+                TestGlobal.topNavbarLinks.remove(name)
+//                jsFacing_deleteKey(TestGlobal.topNavbarLinks, name)
                 Shitus.byid(id).off()
             }
         ))

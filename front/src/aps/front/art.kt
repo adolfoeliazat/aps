@@ -135,7 +135,7 @@ object art {
                     // {implementing}={}
                     val implementing = if (arg) arg.implementing else undefined
 
-                    val control = global.testGlobal.controls[instr.shame]
+                    val control = TestGlobal.shameToControl[instr.shame]
                     if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instr))
                     if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instr))
                     return control
@@ -256,7 +256,7 @@ object art {
 //                // {implementing}={}
 //                val implementing = if (arg) arg.implementing else undefined
 //
-//                val control = global.testGlobal.controls[instr.shame]
+//                val control = TestGlobal.controls[instr.shame]
 //                if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instrdef))
 //                if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instrdef))
 //                return control
@@ -636,7 +636,7 @@ object art {
         }
         global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)
 
-        debugPanes.set(json("name" to "initDebugFunctions-shit", "element" to Shitus.updatableElement(json(), paneCtor@{updateShit: dynamic ->
+        DebugPanes.put("initDebugFunctions-shit", oldShitAsReactElementable(Shitus.updatableElement(json(), paneCtor@{ updateShit: dynamic ->
             var shitVisible = false
             var shitToRender: dynamic= null
 
@@ -789,7 +789,7 @@ fun gertrude(def: dynamic) {
     }
 
     var detailsUI: dynamic = null
-    if (hrss.urlQueryBeforeRunningTest.minimalGertrude == "yes" || global.testGlobal.minimalGertrude) {
+    if (hrss.urlQueryBeforeRunningTest.minimalGertrude == "yes" || TestGlobal.minimalGertrude) {
         detailsUI = div { styleKludge = json("background" to Color.WHITE); -"I am minimal because of minimalGertrude" }
 //        detailsUI = Shitus.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
     } else {
@@ -1101,7 +1101,7 @@ fun gertrude(def: dynamic) {
                         -hor1 { -hideKeyRepetitionsCheck; -"Hide key repetitions" }
                         -button {
                             level = "primary"; title = "Update Assertion Code"; icon = "pencil"; onClickp {
-                            global.testGlobal.minimalGertrude = true
+                            TestGlobal.minimalGertrude = true
                             callDebugRPWithProgress(json("msg" to json("fun" to "danger_updateAssertionCode", "assertionTag" to tag, "actualStringForPasting" to actualStringForPasting), "progressPlaceholder" to progressPlaceholder, "progressTitle" to "Updating assertion code"))
                         }
                         }
@@ -1346,12 +1346,9 @@ fun openTestPassedPane(def: dynamic) {
                     }
                 }
             })
-    }))
+        }))
 
-    debugPanes.set(json(
-        "name" to "openTestPassedPane",
-        "parentJqel" to Shitus.byid("underFooter"),
-        "element" to Shitus.spana(json(), testPassedPane.element)))
+        DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), oldShitAsReactElementable(Shitus.spana(json(), testPassedPane.element)))
     }
 
 
@@ -1737,7 +1734,6 @@ fun renderStacks(def: dynamic): dynamic {
 fun openDebugPane(def: dynamic) {
     imf("openDebugPane")
 }
-
 
 
 

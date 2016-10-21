@@ -6,54 +6,44 @@
 
 package aps.front
 
-val debugPanes: dynamic by lazy {
-    json(
-        "names" to json(),
+import jquery.JQuery
+import jquery.jq
+import kotlin.browser.document
 
-        "set" to {def: dynamic ->
-            val name: dynamic = def.name
-            val element: dynamic = def.element
-            var parentJqel: dynamic = def.parentJqel
+object DebugPanes {
+    val names = mutableSetOf<String>()
 
-            if (!parentJqel) parentJqel = js("$")(global.document.body)
+    fun put(name: String, parent: JQuery = jq(document.body!!), tre: ToReactElementable) {
+        remove(name)
 
-            debugPanes.delete(json("name" to name))
-
-            val id = "debugPanes-${name}"
-            var domel = Shitus.byid0(id)
-            if (!domel) {
-                parentJqel.append("<div id='${id}'></div>")
-                domel = Shitus.byid0(id)
-            }
-
-            global.ReactDOM.render(element, domel)
-
-            debugPanes.names[name] = true
-        },
-
-        "delete" to {def: dynamic ->
-            val name = def.name
-
-            val id = "debugPanes-${name}"
-            val domel = Shitus.byid0(id)
-            if (domel) {
-                global.ReactDOM.unmountComponentAtNode(domel)
-                domel.remove()
-            }
-
-            jsFacing_deleteKey(debugPanes.names, name)
-        },
-
-        "deleteAll" to {
-            for (name in jsArrayToList(global.Object.keys(debugPanes.names))) {
-                debugPanes.delete({name})
-            }
-        },
-
-        "isSet" to {arg: dynamic ->
-            val name = arg.name
-            debugPanes.names[name]
+        val id = "debugPanes-${name}"
+        val container = byid0(id) ?: run {
+            parent.append("<div id='${id}'></div>")
+            byid0ForSure(id)
         }
-    )
+
+        ReactDOM.render(tre.toReactElement(), container)
+
+        names.add(name)
+    }
+
+    fun put(name: String, tre: ToReactElementable) {
+        put(name, jq(document.body!!), tre)
+    }
+
+    fun remove(name: String) {
+        val id = "debugPanes-${name}"
+        val container = byid0(id)
+        if (container != null) {
+            ReactDOM.unmountComponentAtNode(container)
+            container.remove()
+        }
+
+        names.remove(name)
+    }
+
+    fun removeAll() = names.forEach { remove(it)}
+
+    fun contains(name: String) = names.contains(name)
 }
 

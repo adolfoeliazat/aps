@@ -37,70 +37,21 @@ enum class Color(val string: String) {
 }
 
 @native interface IKotlinShit {
-    fun ignite(hotIgnition: Boolean)
+//    fun ignite(hotIgnition: Boolean)
     fun loadDebugKotlinPlaygroundPage()
     fun loadAdminUsersPage(): Promise<Unit>
     fun loadDashboardPage(): Promise<Unit>
     fun loadProfilePage(): Promise<Unit>
-//    fun loadSignUpPage(): Promise<Unit>
-//    fun renderProfile(def: dynamic): dynamic
-//    fun userKindIcon(def: dynamic): dynamic
-//    fun makeProfileFields(def: dynamic): dynamic
     fun loadSignUpPage(): Promise<Unit>
 }
 
-
-var global: dynamic = null
 
 object KotlinShit : IKotlinShit {
     var ui: dynamic = null
     var clientImpl: dynamic = null
 
-    override fun ignite(hotIgnition: Boolean) {
-        println("----- Igniting front Kotlin shit -----")
-        global = js("window")
-
-        js("""
-            global.__asyncResult = function(x) { return x }
-        """)
-
-        run { // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    7cc920fa-31da-414a-94b6-03a56206fc7e
-            val shitThatEvenCannotBeAccessedForWhateverReasons = listOf("RemoteTransferObject")
-
-            val kindaPackage = js("_").aps
-            for (key: String in global.Object.getOwnPropertyNames(kindaPackage)) {
-                if (!shitThatEvenCannotBeAccessedForWhateverReasons.contains(key)) {
-                    // dlog("---", key)
-                    if (!key.oneOf("Front")) { // XXX Annotation classes can't even be accessed like below...
-                        val value = kindaPackage[key]
-                        if (jsTypeOf(value) == "function") {
-                            value.`$$$kindaPackageKey` = key
-                        }
-                    }
-                }
-            }
-        }
-
-//        art.initArtShit()
-
-        initTestShit()
-        igniteRPCShit()
-
-        makeAPSShitIgniter()
-
-        // For hot reloading
-        global.makeAPSShitImplCtor = ::makeAPSShitImplCtor
-
-        initEffects()
-        Shitus.initTrains()
-
-        global.Shitus = Shitus
-        console.log("Ignited front Kotlin shit")
-    }
-
     val igniteTestShit = ::jsFacing_igniteTestShit
 
-//    val makeFormCtor = ::jsFacing_makeFormCtor
     val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
     val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
     val isDynamicPage = ::jsFacing_isDynamicPage

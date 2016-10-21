@@ -8,7 +8,17 @@ package aps.front
 
 import aps.*
 
+@native class Tether(opts: Json) {
+    fun destroy(): Unit = noImpl
+}
+
 fun legacy_implementControlShit(arg: dynamic) {
+    class Shit {
+        var errorStickerID: String? = null
+        var errorStickerTether: Tether? = null
+    }
+    val shit = Shit()
+
     val me: dynamic = arg.me
     val def: dynamic = arg.def
     val implementTestClick: dynamic = arg.implementTestClick
@@ -196,11 +206,13 @@ fun legacy_implementControlShit(arg: dynamic) {
                 me.effectiveShame = me.getTamePath()
             }
 
-            if (me.effectiveShame) {
-                if (global.Object.keys(global.testGlobal.controls).includes(me.effectiveShame)) {
-                    me.stickException(json("exception" to Error("testGlobal.controls already contains thing shamed ${me.effectiveShame}")))
+            val effectiveShame: String? = me.effectiveShame
+            effectiveShame?.let {
+                if (TestGlobal.shameToControl.containsKey(it)) {
+                    me.stickException(json("exception" to Error("There is already a thing shamed ${it}")))
+                } else {
+                    TestGlobal.shameToControl[it] = me
                 }
-                global.testGlobal.controls[me.effectiveShame] = me
             }
         },
 
@@ -213,31 +225,57 @@ fun legacy_implementControlShit(arg: dynamic) {
             jsFacing_deleteKey(art.uiStateContributions, me.id)
 
             if (me.effectiveShame) {
-                jsFacing_deleteKey(global.testGlobal.controls, me.effectiveShame)
+                TestGlobal.shameToControl.remove(me.effectiveShame)
             }
+
+            shit.errorStickerID?.let {DebugPanes.remove(it)}
+            shit.errorStickerTether?.destroy()
         }
     ))
 
 
-//    me.stickException = {arg: dynamic ->
-//        // {exception}
-//        val exception: dynamic = arg.exception
-//
-//        fun doReveal() {
-//            Shitus.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
-//                Shitus.renderDefinitionStackStrip(json("stack" to me.`$definitionStack`))
-//            }))))
-//        }
-//
-//        doReveal() // Does nothing if something is already revealed
-//
-//        jshit.debugControlStickers.add(json("control" to me, "shit" to json(
-//            "onClick" to {
-//                jshit.hideStackRevelation()
-//                doReveal()
-//            }
-//        )))
-//    }
+    me.stickException = {arg: dynamic ->
+        // {exception}
+        val exception: dynamic = arg.exception
+
+        val element = Shitus.byid0(me.elementID)
+        checkNotNull(element) {"stickException to unrendered element"}
+
+        fun doReveal() {
+            Shitus.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
+                Shitus.renderDefinitionStackStrip(json("stack" to me.`$definitionStack`))
+            }))))
+        }
+
+        doReveal() // Does nothing if something is already revealed
+
+        val errorStickerID = puid()
+        shit.errorStickerID = errorStickerID
+
+        DebugPanes.put(errorStickerID, oldShitAsReactElementable(React.createElement("div", json(
+            "id" to errorStickerID,
+            "style" to json(
+                "width" to 10,
+                "height" to 10,
+                "background" to Color.RED_500.toString(),
+                "cursor" to "pointer",
+                "zIndex" to REALLY_BIG_Z_INDEX),
+            "onClick" to {
+                Shitus.hideStackRevelation()
+                revealStackCalledTimes = 0
+                doReveal()
+            }
+        ))))
+
+        requestAnimationFrame {
+            shit.errorStickerTether = Tether(json(
+                "element" to byid(errorStickerID),
+                "target" to element,
+                "attachment" to "top left",
+                "targetAttachment" to "top left"
+            ))
+        }
+    }
 
     me.getTamePath = getTamePath@{
         Shitus.invariant(me.tame, "getTamePath can only be called on tamed control")
@@ -336,7 +374,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         val codeLines = jsArrayOf()
 
         val inputLines = jsArrayOf()
-        for (co: dynamic in jsArrayToList(Shitus.values(global.testGlobal.controls))) {
+        for (co in TestGlobal.shameToControl.values) {
             if (co.testSetValue) {
                 if (!co.testGetValue) {
                     Shitus.raiseWithMeta(json("message" to "co.testSetValue requires co.testGetValue", "meta" to co))

@@ -480,6 +480,7 @@ object MakeStaticSites : IMakeStaticSites {
             global.React = require('react')
             global.ReactDOM = require('react-dom')
             global.moment = require('moment-timezone')
+            global.Tether = require('tether')
 
             ${if (mode == Mode.DEBUG) """
                 global.Buffer = require('buffer').Buffer // Like under Node, needed by source-map
@@ -1750,10 +1751,15 @@ object MakeStaticSites : IMakeStaticSites {
     }
     </script>
 
-    <script src="bundle.js"></script>
+    <!-- <script src="bundle.js"></script> -->
     <script>
-        window.Kotlin = kotlin
-        igniteShit()
+        // TODO:vgrechka Think about DANGEROUS_TOKEN. How it should be included into client, etc.
+        DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}'
+
+        global = window
+        Kotlin = kotlin
+        kot = Kotlin.modules.front
+        kot.aps.front.ignite()
     </script>
     </body>
     </html>

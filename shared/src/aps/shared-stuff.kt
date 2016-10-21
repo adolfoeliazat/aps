@@ -182,8 +182,6 @@ class WorldPointRequest() : RequestMatumba() {
             this.action.value = action
         })
     }
-
-//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
 class GetSoftwareVersionRequest : RequestMatumba() {
@@ -200,8 +198,14 @@ class GetSentEmailsRequest : RequestMatumba() {
     companion object {
         fun send(): Promise<Response> = callDangerousMatumba(GetSentEmailsRequest())
     }
+}
 
-//    fun rpc(): Promise<Response> = callRemoteProcedure(this)
+class GetGeneratedShitRequest : RequestMatumba() {
+    class Response(val code: String)
+
+    companion object {
+        fun send(): Promise<Response> = callDangerousMatumba(GetGeneratedShitRequest())
+    }
 }
 
 class ClearSentEmailsRequest : RequestMatumba() {

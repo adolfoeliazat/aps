@@ -66,8 +66,8 @@ fun initEffects() {
     }))
 
     global.requestAnimationFrame({
-        debugPanes.delete(json("name" to "initEffects"))
-        debugPanes.set(json("name" to "initEffects", "element" to effects.element))
+        DebugPanes.remove("initEffects")
+        DebugPanes.put("initEffects", oldShitAsReactElementable(effects.element))
     })
 }
 
