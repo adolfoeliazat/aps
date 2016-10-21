@@ -94,6 +94,11 @@ fun JQuery.scrollTop(): Int = this.asDynamic().scrollTop()
     fun unmountComponentAtNode(container: HTMLElement): Unit = noImpl
 }
 
+inline fun measure(what: String, block: () -> Unit) {
+    val m = jsFacing_beginLogTime(what)
+    block()
+    m.end()
+}
 
 
 
