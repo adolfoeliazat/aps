@@ -6,11 +6,9 @@
 
 package aps.front
 
-import aps.ReactElement
-import jquery.JQuery
-import jquery.jq
-import org.w3c.dom.Element
-import org.w3c.dom.HTMLElement
+import aps.*
+import jquery.*
+import org.w3c.dom.*
 import kotlin.browser.document
 
 val REALLY_BIG_Z_INDEX = 2147483647
@@ -107,7 +105,9 @@ fun asReactElement(x: Any?): ReactElement {
 
 fun Any?.asReactElement(): ReactElement = asReactElement(this)
 
-
+fun reactCreateElement(tag: String, attrs: Json, children: Collection<ReactElement>): ReactElement {
+    return React.createElement(tag, attrs, *children.toTypedArray())
+}
 
 
 

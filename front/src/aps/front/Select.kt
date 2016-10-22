@@ -8,6 +8,26 @@ package aps.front
 
 import aps.*
 
+interface ShitWithRenderFunction {
+    val render: () -> ReactElement
+}
+
+class statefulElement(ctor: () -> ShitWithRenderFunction): ToReactElementable {
+    lateinit var legacyUpdate: () -> Unit
+
+    val legacyStatefulElement = Shitus.statefulElement(json("ctor" to {update: dynamic ->
+        legacyUpdate = update
+        ctor()
+    }))
+
+    override fun toReactElement() = legacyStatefulElement.element
+
+    fun update() {
+        legacyUpdate()
+    }
+
+}
+
 class Select<E>(
     val values: Array<E>,
     val initialValue: E?,
@@ -34,202 +54,131 @@ where E : Enum<E>, E : Titled {
         wantNull(volatileDisabled) {"volatileDisabled conflicts with persistent disabling"}
     }
 
-    fun LegacyCtor(): dynamic {
-        var stringValue: String = if (initialValue == null) values[0].name else initialValue.name
+    var value: E = initialValue ?: values[0]
 
-        return Shitus.statefulElement(json("ctor" to {update: dynamic ->
-            var me: dynamic = null
-            me = json(
-                "render" to {
-                    el.apply(null, js("[]").concat(
-                        "select",
+    fun stringToValue(s: String) = values.find {it.name == s} ?: bitch("Select value: $s")
 
-                        json(
-                            "id" to me.elementID,
-                            "className" to "form-control",
-                            "value" to stringValue,
-                            "disabled" to (volatileDisabled?.let {it()} ?: persistentDisabled),
+    val me = ControlShitMe()
 
-                            "onChange" to {"__async"
-                                me.setValue(Shitus.byid0(me.elementID).value)
-                                onChange()
-                                __await(onChanga())
-                            },
+    val statefulShit = statefulElement({
+        me.contributeTestState = {state: dynamic ->
+            if (me.tame != null) {
+                state.put(json("control" to me, "key" to me.getTamePath() + ".selected.value", "value" to value.name))
 
-                            "onFocus" to {"__async"
-                                onFocus()
-                                __await(onFocusa())
-                            },
+                val selectedItem = values.find{x -> x.name == value.name}
+                if (selectedItem == null) throw JSException("WTF is selectedItem (me=${me.debugDisplayName}; value=${value.name})")
+                state.put(json("control" to me, "key" to me.getTamePath() + ".selected.title",
+                    "value" to selectedItem.title))
 
-                            "onBlur" to {"__async"
-                                onBlur()
-                                __await(onBlura())
-                            }
-                        ),
-
-                        values.map {
-                            el("option", json("value" to it.name), it.title)
-                        }.toJSArray()
-                    ))
-                },
-
-//                isAction() {
-//                    return isAction
-//                },
-
-                "getValue" to {stringValue},
-                "focus" to {Shitus.byid(me.elementID).focus()},
-
-                "contributeTestState" to {state: dynamic ->
-                    if (me.tame) {
-                        state.put(json("control" to me, "key" to me.getTamePath() + ".selected.value", "value" to stringValue))
-
-                        val selectedItem = values.find{x -> x.name == stringValue}
-                        if (selectedItem == null) throw JSException("WTF is selectedItem (me=${me.debugDisplayName}; value=${stringValue})")
-                        state.put(json("control" to me, "key" to me.getTamePath() + ".selected.title",
-                            "value" to selectedItem.title))
-
-                        values.forEachIndexed {i, entry ->
-                            state.put(json("control" to me, "key" to me.getTamePath() + ".item${Shitus.sufindex(i)}.value", "value" to entry.name))
-                            state.put(json("control" to me, "key" to me.getTamePath() + ".item${Shitus.sufindex(i)}.title", "value" to entry.title))
-                        }
-                    }
-                },
-
-//                getTestValue() {
-//                    return {title: textMeat(values.find(x => x.value == value).title),
-//                            titles: values.map(x => textMeat(x.title))}
-//                },
-
-                "setValue" to {x: dynamic -> "__async"
-                    __await<dynamic>(me.setValueExt(json("value" to x)))
-                },
-
-                "setValueExt" to {def: dynamic -> "__async"
-//                    #extract {value: newValue, notify} from def
-                    val newValue = def.value
-                    val notify = def.notify
-
-                    stringValue = newValue
-                    update()
-
-                    if (notify) {
-                        onChange()
-                        __await(onChanga())
-                    }
-                },
-
-                "testGetValue" to {
-                    me.getValue()
-                },
-
-                "testSetValue" to {arg: dynamic -> "__async"
-                    val value = arg.value
-                    val testActionHandOpts = arg.testActionHandOpts
-
-                    if (art.testSpeed == "slow") {
-                        val el = Shitus.byid0(me.elementID)
-                        el.value = value
-                        el.dispatchEvent(js("new MouseEvent('mousedown')"))
-                        val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
-                        __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
-                        testActionHand.delete()
-
-                        __await<dynamic>(me.setValueExt(json("value" to value, "notify" to true)))
-//                        __await<dynamic>(me.setValue(value))
-                    } else {
-                        __await<dynamic>(me.setValueExt(json("value" to value, "notify" to true)))
-//                        __await<dynamic>(me.setValue(value))
-                    }
-                },
-
-                "setBlinking" to {b: dynamic ->
-                    if (b) {
-                        effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
-                    } else {
-                        effects.blinkOff()
-                    }
-                },
-
-                "setDisabled" to {b: Boolean ->
-                    wantPersistentDisablingAllowed()
-                    persistentDisabled = b
-                    update()
-                },
-
-                "isDisabled" to {
-                    wantPersistentDisablingAllowed()
-                    persistentDisabled
-                },
-
-                "renderInRevelationPane" to {
-                    val els = js("[]")
-                    Shitus.diva(json("style" to json()),
-                        Betsy(json(
-                            "title" to "Values",
-                            "details" to ObjectViewer(("object" to values))
-                            ))
-                    )
+                values.forEachIndexed {i, entry ->
+                    state.put(json("control" to me, "key" to me.getTamePath() + ".item${Shitus.sufindex(i)}.value", "value" to entry.name))
+                    state.put(json("control" to me, "key" to me.getTamePath() + ".item${Shitus.sufindex(i)}.title", "value" to entry.title))
                 }
-            )
+            }
+        }
 
-            me.controlTypeName = "Select"
-            me.tamyPrefix = "Select"
+        me.testGetValue = {
+            value.name
+        }
 
+        me.testSetValue = {arg: dynamic -> "__async"
+            val stringValue = arg.value
+            val testActionHandOpts = arg.testActionHandOpts
 
-            legacy_implementControlShit(json("me" to me, "def" to json(
-                "tamy" to tamy,
-                "tamyShamy" to tamyShamy
-            )))
+            if (art.testSpeed == "slow") {
+                val el = Shitus.byid0(me.elementID)
+                el.value = value
+                el.dispatchEvent(js("new MouseEvent('mousedown')"))
+                val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
+                __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
+                testActionHand.delete()
 
-            me
-        }))
+                __await(setValueExt(stringToValue(stringValue), notify = true))
+            } else {
+                __await(setValueExt(stringToValue(stringValue), notify = true))
+            }
+        }
+
+        me.controlTypeName = "Select"
+        me.tamyPrefix = "Select"
+
+        me.render = {reactCreateElement("select", json(
+            "id" to me.elementID,
+            "className" to "form-control",
+            "value" to value.name,
+            "disabled" to (volatileDisabled?.let {it()} ?: persistentDisabled),
+
+            "onChange" to {"__async"
+                setValue(stringToValue(Shitus.byid0(me.elementID).value))
+                onChange()
+                __await(onChanga())
+            },
+
+            "onFocus" to {"__async"
+                onFocus()
+                __await(onFocusa())
+            },
+
+            "onBlur" to {"__async"
+                onBlur()
+                __await(onBlura())
+            }),
+
+            values.map {
+                reactCreateElement("option", json("value" to it.name), listOf(it.title.asReactElement()))
+            }
+        )}
+
+        implementControlShit2(me, json(
+            "tamy" to tamy,
+            "tamyShamy" to tamyShamy
+        ))
+
+        me
+    })
+
+    override fun toReactElement(): ReactElement = statefulShit.toReactElement()
+
+    fun setValue(value: E): Promise<Unit> {"__async"
+        val x = value.name
+        return __await(setValueExt(value)) /ignora
     }
 
-    val legacyShit = LegacyCtor()
+    fun setValueExt(newValue: E, notify: Boolean = false): Promise<Unit> {"__async"
+        value = newValue
+        statefulShit.update()
 
-    override fun toReactElement(): ReactElement {
-        return asReactElement(legacyShit.element)
-    }
-
-    fun getValue(): E {
-        val legacyValue: String = legacyShit.getValue()
-        return values.find {it.name == legacyValue} ?: wtf("Shitty legacyValue: ${legacyValue}")
-    }
-
-    fun setValue(value: E) {
-        legacyShit.setValue(value.name)
+        if (notify) {
+            onChange()
+            __await(onChanga())
+        }
+        return __asyncResult(Unit)
     }
 
     fun isDisabled(): Boolean {
-        return legacyShit.isDisabled()
+        wantPersistentDisablingAllowed()
+        return persistentDisabled
     }
 
     fun setDisabled(b: Boolean) {
-        legacyShit.setDisabled(b)
+        wantPersistentDisablingAllowed()
+        persistentDisabled = b
+        statefulShit.update()
     }
 
     fun focus() {
-        legacyShit.focus()
+        Shitus.byid(me.elementID).focus()
     }
 
-    val value: E get() = getValue()
-
     override fun setBlinking(b: Boolean) {
-        legacyShit.setBlinking(b)
+        if (b) {
+            effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
+        } else {
+            effects.blinkOff()
+        }
     }
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -265,7 +265,7 @@ where T : Enum<T>, T : Titled {
     }
 
     override var value: T
-        get() = select.getValue()
+        get() = select.value
         set(value) { select.setValue(value) }
 
     override var disabled: Boolean
@@ -274,7 +274,7 @@ where T : Enum<T>, T : Titled {
 
     override fun focus() = select.focus()
 
-    override fun toRemote() = select.getValue().name
+    override fun toRemote() = select.value.name
 
 }
 

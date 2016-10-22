@@ -109,8 +109,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             urlParamParts.push("${urlEntityParamName}=${entityID}")
         }
 
-        filterSelect?.let {urlParamParts.push("filter=${it.getValue()}")}
-        orderingSelect?.let {urlParamParts.push("ordering=${it.getValue()}")}
+        filterSelect?.let {urlParamParts.push("filter=${it.value}")}
+        orderingSelect?.let {urlParamParts.push("ordering=${it.value}")}
 
         searchBoxInput?.let {
             it.value.let {

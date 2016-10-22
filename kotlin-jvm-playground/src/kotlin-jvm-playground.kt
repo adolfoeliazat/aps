@@ -1,17 +1,30 @@
 fun main(args: Array<String>) {
 //    testOverrideWithNothing()
-    testShortCtorNotation()
+    testLateInitGetOrSet()
 }
 
-fun div(style: Style) {}
+fun testLateInitGetOrSet() {
+    run {
+        class A {
+            lateinit var x: String
+        }
 
+        val a = A()
+        try {a.x} catch (e: Throwable) {a.x = "default shit"}
 
-class Style(val width: Int, val height: Int)
+        println(a.x)
+    }
 
-fun testShortCtorNotation() {
-    div(style = Style(width = 10, height = 20))
+    run {
+        class A {
+            lateinit var x: String
+        }
 
-    println("fuck you")
+        val a = A()
+        a.x = try {a.x} catch (e: Throwable) {"default shit"}
+
+        println(a.x)
+    }
 }
 
 

@@ -40,7 +40,7 @@ fun runTestScenario(fullName: String) {
 }
 
 fun tetete() {
-    Tether(json())
+
 }
 
 class TestCommon(val sim: dynamic) {

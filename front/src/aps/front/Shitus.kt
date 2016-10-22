@@ -585,9 +585,9 @@ fun jsFacing_omapa(o: dynamic, f: dynamic): dynamic {
 }
 
 fun jsFacing_statefulElement(def: dynamic): dynamic {
-    val ctor: dynamic = def.ctor
-    val noisy: dynamic = def.noisy
-    val displayName: dynamic = def.displayName
+    val ctor: (update: (then: () -> Unit) -> Unit) -> ShitWithRenderFunction = def.ctor
+//    val noisy: dynamic = def.noisy
+//    val displayName: dynamic = def.displayName
 
     var reactElement: dynamic = null
     var shouldUpdate: dynamic = null
