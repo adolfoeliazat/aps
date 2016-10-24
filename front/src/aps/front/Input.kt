@@ -74,7 +74,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
         js("delete def.type")
         js("delete def.initialValue")
 
-        return Shitus.statefulElement(json("ctor" to statefulElementCtor@{update: dynamic ->
+        return Shitus.statefulElement(statefulElementCtor@{update ->
             var value = initialValue
             var loading = false
             var _isDisabled = false
@@ -205,7 +205,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
             me.controlTypeName = "Input"
             legacy_implementControlShit(json("me" to me, "def" to def, "implementTestKeyDown" to json("onKeyDown" to onKeyDown)))
             return@statefulElementCtor me
-        }))
+        })
     }
 
     val legacyShit = LegacyCtor()

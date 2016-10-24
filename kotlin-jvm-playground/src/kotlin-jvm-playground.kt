@@ -1,29 +1,33 @@
 fun main(args: Array<String>) {
 //    testOverrideWithNothing()
-    testLateInitGetOrSet()
+    testInitOrder()
 }
 
-fun testLateInitGetOrSet() {
+fun testInitOrder() {
     run {
-        class A {
-            lateinit var x: String
+        open class A {
+            open val x = "x of a"
+            init {println(x)}
         }
 
-        val a = A()
-        try {a.x} catch (e: Throwable) {a.x = "default shit"}
+        class B : A() {
+            override val x: String get()= "x of b"
+        }
 
-        println(a.x)
+        B()
     }
 
     run {
-        class A {
-            lateinit var x: String
+        open class A {
+            open fun x() = "x of a"
+            init {println(x())}
         }
 
-        val a = A()
-        a.x = try {a.x} catch (e: Throwable) {"default shit"}
+        class B : A() {
+            override fun x() = "x of b"
+        }
 
-        println(a.x)
+        B()
     }
 }
 

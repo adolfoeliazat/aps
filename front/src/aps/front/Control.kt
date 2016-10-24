@@ -108,7 +108,7 @@ val spana = makeBasicContainerControlCtor("span")
 val forma = makeBasicContainerControlCtor("form")
 val h3a = makeBasicContainerControlCtor("h3")
 
-val NORE: ReactElement = js("({})")
+val NORE_killme: ReactElement = js("({})")
 
 open class BasicContainerControlBuilder: CommonControlInstanceShit() {
     open fun transformChildBeforeAddition(child: ReactElement) = child
@@ -116,9 +116,9 @@ open class BasicContainerControlBuilder: CommonControlInstanceShit() {
     val children = mutableListOf<ReactElement>()
 
     fun add(child: ReactElement) {
-        if (child !== NORE) {
+        if (child !== NORE_killme) {
             val child2 = transformChildBeforeAddition(child)
-            if (child2 !== NORE)
+            if (child2 !== NORE_killme)
                 children.add(child2)
         }
     }

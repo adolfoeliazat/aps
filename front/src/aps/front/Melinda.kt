@@ -179,8 +179,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
         if (filterSelectValues != null) {
-            filterSelect = Select(filterSelectValues, filter,
-                tamyShamy = "filter",
+            filterSelect = Select(A(tamyShamy = "filter"),
+                filterSelectValues, filter,
                 isAction = true,
                 style = json("width" to 160),
                 volatileDisabled = {headerControlsDisabled},
@@ -189,11 +189,21 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 }
             )
 
+//            filterSelect = Select(filterSelectValues, filter,
+//                tamyShamy = "filter",
+//                isAction = true,
+//                style = json("width" to 160),
+//                volatileDisabled = {headerControlsDisabled},
+//                onChanga = {"__async"
+//                    __await(applyHeaderControls(filterSelect!!))
+//                }
+//            )
+
         }
 
         if (hasOrderingSelect) {
-            orderingSelect = Select(Ordering.values(), ordering,
-                tamyShamy = "ordering",
+            orderingSelect = Select(A(tamyShamy = "ordering"),
+                Ordering.values(), ordering,
                 isAction = true,
                 style = json("width" to 160),
                 volatileDisabled = {headerControlsDisabled},
@@ -202,6 +212,15 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 }
             )
 
+//            orderingSelect = Select(Ordering.values(), ordering,
+//                tamyShamy = "ordering",
+//                isAction = true,
+//                style = json("width" to 160),
+//                volatileDisabled = {headerControlsDisabled},
+//                onChanga = {"__async"
+//                    __await(applyHeaderControls(orderingSelect!!))
+//                }
+//            )
         }
 
         if (plusFormSpec != null) {

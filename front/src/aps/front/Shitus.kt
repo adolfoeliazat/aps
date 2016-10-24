@@ -123,7 +123,81 @@ object Shitus {
     }
 
     val spancTitle: dynamic = ::jsFacing_spancTitle
-    val statefulElement: dynamic = ::jsFacing_statefulElement
+
+    fun statefulElement(ctor: (update: () -> Unit) -> ShitWithRenderFunction): dynamic /*ToReactElementable*/ {
+//    val ctor: (update: (then: () -> Unit) -> Unit) -> ShitWithRenderFunction = def.ctor
+//    val noisy: dynamic = def.noisy
+//    val displayName: dynamic = def.displayName
+
+        var reactElement: dynamic = null
+        var shouldUpdate: dynamic = null
+
+        var inst: dynamic = ctor(update@{ // then: dynamic ->
+            if (isInTestScenario() && hrss.worldIsHalted) return@update Unit
+            if (!reactElement) return@update Unit // Not yet mounted or unmounted
+
+            shouldUpdate = true
+            reactElement.forceUpdate()
+
+            // Shitus.fov(then)
+        })
+
+        if (jsTypeOf(inst) == "function") inst = json("render" to inst)
+        Shitus.invariant(jsTypeOf(inst.render) == "function", "Element constructor should return a function or something with render()")
+
+        inst.element = React.createElement(React.createClass(json(
+            "componentWillMount" to {
+                reactElement = js("this")
+                Shitus.fov(inst.componentWillMount)
+            },
+
+            "componentDidMount" to {
+                reactElement = js("this")
+                Shitus.fov(inst.componentDidMount)
+            },
+
+            "componentWillUnmount" to {
+                reactElement = null
+                Shitus.fov(inst.componentWillUnmount)
+            },
+
+            "componentWillUpdate" to {
+                Shitus.fov(inst.componentWillUpdate)
+            },
+
+            "componentDidUpdate" to {
+                Shitus.fov(inst.componentDidUpdate)
+            },
+
+            "shouldComponentUpdate" to shouldComponentUpdate@{
+                if (!shouldUpdate) return@shouldComponentUpdate false
+
+                shouldUpdate = false
+                return@shouldComponentUpdate true
+            },
+
+            "render" to render@{
+                // TODO:vgrechka Render exception triangle
+                return@render inst.render()
+
+//            try {
+//                val res = inst.render()
+//                return@render res
+//            } catch (e: Throwable) {
+//                return@render renderExceptionTriangleAndRevealStack(json("exception" to e))
+//            }
+            }
+        )), json())
+
+        return inst
+
+//        return object : ToReactElementable {
+//            override fun toReactElement(): ReactElement {
+//                return element
+//            }
+//        }
+    }
+
     val updatableElement: dynamic = ::jsFacing_updatableElement
     val pageHeader: dynamic = ::jsFacing_pageHeader
     val Placeholder: dynamic = ::jsFacing_Placeholder
@@ -584,72 +658,6 @@ fun jsFacing_omapa(o: dynamic, f: dynamic): dynamic {
     return global.Object.keys(o).map {k: dynamic, i: dynamic -> f(o[k], k, i)}
 }
 
-fun jsFacing_statefulElement(def: dynamic): dynamic {
-    val ctor: (update: (then: () -> Unit) -> Unit) -> ShitWithRenderFunction = def.ctor
-//    val noisy: dynamic = def.noisy
-//    val displayName: dynamic = def.displayName
-
-    var reactElement: dynamic = null
-    var shouldUpdate: dynamic = null
-
-    var inst: dynamic = ctor(update@{then: dynamic ->
-        if (isInTestScenario() && hrss.worldIsHalted) return@update Unit
-        if (!reactElement) return@update Unit // Not yet mounted or unmounted
-
-        shouldUpdate = true
-        reactElement.forceUpdate()
-        Shitus.fov(then)
-    })
-
-    if (jsTypeOf(inst) == "function") inst = json("render" to inst)
-    Shitus.invariant(jsTypeOf(inst.render) == "function", "Element constructor should return a function or something with render()")
-
-    inst.element = React.createElement(React.createClass(json(
-        "componentWillMount" to {
-            reactElement = js("this")
-            Shitus.fov(inst.componentWillMount)
-        },
-
-        "componentDidMount" to {
-            reactElement = js("this")
-            Shitus.fov(inst.componentDidMount)
-        },
-
-        "componentWillUnmount" to {
-            reactElement = null
-            Shitus.fov(inst.componentWillUnmount)
-        },
-
-        "componentWillUpdate" to {
-            Shitus.fov(inst.componentWillUpdate)
-        },
-
-        "componentDidUpdate" to {
-            Shitus.fov(inst.componentDidUpdate)
-        },
-
-        "shouldComponentUpdate" to shouldComponentUpdate@{
-            if (!shouldUpdate) return@shouldComponentUpdate false
-
-            shouldUpdate = false
-            return@shouldComponentUpdate true
-        },
-
-        "render" to render@{
-            // TODO:vgrechka Render exception triangle
-            return@render inst.render()
-
-//            try {
-//                val res = inst.render()
-//                return@render res
-//            } catch (e: Throwable) {
-//                return@render renderExceptionTriangleAndRevealStack(json("exception" to e))
-//            }
-        }
-    )), json())
-
-    return inst
-}
 
 fun jsFacing_updatableElement(def: dynamic, ctor_killme: dynamic): dynamic {
     var renderCtor: dynamic = def.renderCtor
@@ -750,8 +758,7 @@ fun jsFacing_Placeholder(): dynamic {
     var content: dynamic = null
     var prevContent: dynamic = null
 
-    return Shitus.statefulElement(json(
-        "ctor" to ctor@{update: dynamic ->
+    return Shitus.statefulElement(ctor@{update: dynamic ->
             var me: dynamic = null
             me = json(
                 "render" to render@{
@@ -770,8 +777,7 @@ fun jsFacing_Placeholder(): dynamic {
             )
 
             return@ctor me
-        }
-    ))
+        })
 }
 
 fun jsFacing_nostring(arg: dynamic): dynamic {

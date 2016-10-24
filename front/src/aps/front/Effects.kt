@@ -9,8 +9,7 @@ package aps.front
 var effects: dynamic = null
 
 fun initEffects() {
-    effects = Shitus.statefulElement(json(
-        "ctor" to ctor@{update: dynamic ->
+    effects = Shitus.statefulElement(ctor@{update ->
         var me: dynamic = null
         var blinker: dynamic = null
         var blinkerInterval: dynamic = null
@@ -63,7 +62,7 @@ fun initEffects() {
         )
 
         return@ctor me
-    }))
+    })
 
     global.requestAnimationFrame({
         DebugPanes.remove("initEffects")

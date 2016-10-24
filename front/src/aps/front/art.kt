@@ -451,44 +451,82 @@ object art {
 
         if (condition) return
 
-        val assertionErrorPane = Shitus.statefulElement(json(
-            "ctor" to ctor@{update: dynamic ->
-                var visible: dynamic = null
-                var content: dynamic = null
-                var top: dynamic = null
+        val assertionErrorPane = object : Control2(A()) {
+            override fun defaultControlTypeName() = "assertionErrorPane"
 
-                return@ctor json(
-                    "render" to render@{
-                        if (!visible) return@render null
+            var visible = false
+            var content: dynamic = null
 
-                        val messageStyle = json("fontWeight" to "bold", "paddingBottom" to 5, "marginBottom" to 5, "color" to WHITE.toString())
-                        if (content.stack) {
-                            global.Object.assign(messageStyle, json(
-                                "borderBottom" to "2px solid white")
-                            )
-                        }
-                        return@render Shitus.diva(json("style" to json("backgroundColor" to RED_700, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
-                            Shitus.diva(json("style" to messageStyle), content.message),
-                            content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
-                            content.detailsUI
-                        )
-                    },
+            override fun render(): ReactElement {
+                if (!visible) return NORE
 
-                    "set" to {def: dynamic ->
-                        val scrollThere: dynamic = def.scrollThere
-                        content = def
-                        visible = true
-                        update()
-
-                        if (scrollThere && !hrss.preventScrollToBottomOnAssertionError) {
-                            global.requestAnimationFrame({
-                                global.document.body.scrollTop =  js("$")("#debug_assertionErrorPane").offset().top - 60
-                                Unit
-                            })
-                        }
-                    }
+                val messageStyle = json("fontWeight" to "bold", "paddingBottom" to 5, "marginBottom" to 5, "color" to WHITE.toString())
+                if (content.stack) {
+                    global.Object.assign(messageStyle, json(
+                        "borderBottom" to "2px solid white")
+                    )
+                }
+                return Shitus.diva(json("style" to json("backgroundColor" to RED_700, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
+                    Shitus.diva(json("style" to messageStyle), content.message),
+                    content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
+                    content.detailsUI
                 )
-        }))
+            }
+
+            fun set(def: dynamic) {
+                val scrollThere: dynamic = def.scrollThere
+                content = def
+                visible = true
+                update()
+
+                if (scrollThere && !hrss.preventScrollToBottomOnAssertionError) {
+                    global.requestAnimationFrame({
+                        global.document.body.scrollTop = js("$")("#debug_assertionErrorPane").offset().top - 60
+                        Unit
+                    })
+                }
+            }
+        }
+
+//        val assertionErrorPane_ = Shitus.statefulElement(ctor@{update: dynamic ->
+//            var visible: dynamic = null
+//            var content: dynamic = null
+//            var top: dynamic = null
+//
+//            val me: dynamic = json(
+//                "render" to render@{
+//                    if (!visible) return@render null
+//
+//                    val messageStyle = json("fontWeight" to "bold", "paddingBottom" to 5, "marginBottom" to 5, "color" to WHITE.toString())
+//                    if (content.stack) {
+//                        global.Object.assign(messageStyle, json(
+//                            "borderBottom" to "2px solid white")
+//                        )
+//                    }
+//                    return@render Shitus.diva(json("style" to json("backgroundColor" to RED_700, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
+//                        Shitus.diva(json("style" to messageStyle), content.message),
+//                        content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
+//                        content.detailsUI
+//                    )
+//                },
+//
+//                "set" to {def: dynamic ->
+//                    val scrollThere: dynamic = def.scrollThere
+//                    content = def
+//                    visible = true
+//                    update()
+//
+//                    if (scrollThere && !hrss.preventScrollToBottomOnAssertionError) {
+//                        global.requestAnimationFrame({
+//                            global.document.body.scrollTop =  js("$")("#debug_assertionErrorPane").offset().top - 60
+//                            Unit
+//                        })
+//                    }
+//                }
+//            )
+//
+//            return@ctor me
+//        })
 
         val existingDiv = Shitus.byid("debug_assertionErrorPane")
         if (existingDiv[0]) {
@@ -496,7 +534,7 @@ object art {
             existingDiv.remove()
         }
         Shitus.byid("footer").after("<div id='debug_assertionErrorPane'></div>")
-        global.ReactDOM.render(assertionErrorPane.element, Shitus.byid0("debug_assertionErrorPane"))
+        global.ReactDOM.render(assertionErrorPane.toReactElement(), Shitus.byid0("debug_assertionErrorPane"))
 
         val stack = null
         assertionErrorPane.set(json("message" to errorMessage + mdash + hrss.currentTestScenarioName, "stack" to stack, "detailsUI" to detailsUI, "scrollThere" to scrollThere))
@@ -1302,7 +1340,7 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 fun openTestPassedPane(def: dynamic) {
     val scenario = def.scenario
 
-    val testPassedPane = Shitus.statefulElement(json("ctor" to { update: dynamic ->
+    val testPassedPane = Shitus.statefulElement({update ->
         var scenarioName: String = scenario.name
         val links = mutableListOf<ReactElement>()
 
@@ -1319,7 +1357,7 @@ fun openTestPassedPane(def: dynamic) {
             kotlin.browser.window.requestAnimationFrame { kotlin.browser.document.body?.scrollTop = 99999 }
         }
 
-        json(
+        val me: dynamic = json(
             "render" to {
                 when {
                     scenarioName == undefined -> null
@@ -1345,8 +1383,11 @@ fun openTestPassedPane(def: dynamic) {
                         }
                     }
                 }
-            })
-        }))
+            }
+        )
+
+        me
+    })
 
         DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), oldShitAsReactElementable(Shitus.spana(json(), testPassedPane.element)))
     }

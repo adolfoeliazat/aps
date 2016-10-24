@@ -238,9 +238,9 @@ fun renderRedExclamationTriangleLabel(def: dynamic): dynamic {
 }
 
 fun Tabs(def: dynamic): dynamic {
-    return Shitus.statefulElement(json("ctor" to ctor@{update: dynamic ->
+    return Shitus.statefulElement(ctor@{update: dynamic ->
         var activeId: dynamic = def.activeTab ?: global.Object.keys(def.tabs)[0]
-        return@ctor json(
+        val me: dynamic = json(
             "render" to {
                 Shitus.diva(json(),
                     Shitus.diva(json("style" to json("position" to "relative")),
@@ -261,7 +261,8 @@ fun Tabs(def: dynamic): dynamic {
                             def.tabs[activeId].content))
             }
         )
-    }))
+        return@ctor me
+    })
 }
 
 fun callDebugRPWithProgress(arg: dynamic): Promise<Unit> {

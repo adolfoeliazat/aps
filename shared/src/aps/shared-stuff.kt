@@ -257,11 +257,11 @@ object ignora
 infix operator fun Any?.div(arongi: ignora) = __asyncResult(Unit)
 infix operator fun ignora.div(any: Any?) = __asyncResult(Unit)
 
-object a
-infix operator fun <T> a.div(x: T) = __asyncResult(x)
+//object a
+//infix operator fun <T> a.div(x: T) = __asyncResult(x)
 
-object resulta
-infix operator fun <T> resulta.div(x: T) = __asyncResult(x)
+//object resulta
+//infix operator fun <T> resulta.div(x: T) = __asyncResult(x)
 
 class GetUserRequest() : RequestMatumba() {
     class Response (

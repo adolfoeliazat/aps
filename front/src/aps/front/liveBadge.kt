@@ -51,8 +51,7 @@ fun jsFacing_liveBadge(ui: dynamic, def: dynamic): dynamic {
 fun jsFacing_liveBadge2(ui: dynamic, def: dynamic): dynamic {
     if (def.tame == null) def.tame = "badge"
 
-    return Shitus.statefulElement(json(
-        "ctor" to ctor@{update: dynamic ->
+    return Shitus.statefulElement(ctor@{update: dynamic ->
 
             fun getValue(): dynamic {
                 return ui.liveStatus[def.liveStatusFieldName]
@@ -96,8 +95,7 @@ fun jsFacing_liveBadge2(ui: dynamic, def: dynamic): dynamic {
 
             legacy_implementControlShit(json("me" to me, "def" to def))
             return@ctor me
-        }
-    ))
+        })
 }
 
 

@@ -67,14 +67,14 @@ object probe
 infix operator fun <T> T.div(the: probe): T = this / probe {it}
 
 
-fun probe(msg: Any?): ProbeLHS {
-    dlog("--[probe]----------> ", msg)
-    return ProbeLHS
-}
-
-object ProbeLHS {
-    infix operator fun <T> div(rhs: T): T = rhs
-}
+//fun probe(msg: Any?): ProbeLHS {
+//    dlog("--[probe]----------> ", msg)
+//    return ProbeLHS
+//}
+//
+//object ProbeLHS {
+//    infix operator fun <T> div(rhs: T): T = rhs
+//}
 
 fun checkAtMostOneOf(vararg pairs: Pair<String, Any?>) {
     val definedNames = pairs.filter{it.second != null}.map{it.first}

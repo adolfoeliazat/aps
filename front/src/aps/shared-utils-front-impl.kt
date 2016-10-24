@@ -28,7 +28,12 @@ fun t(en: String, ru: String) = ru
     fun createClass(def: dynamic): dynamic
 }
 
-@native interface ReactElement {
+@native interface ReactElement
+
+val NORE: ReactElement = null.asDynamic()
+
+@native interface ReactClassInstance {
+    fun forceUpdate()
 }
 
 @native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
@@ -227,8 +232,7 @@ where T : Enum<T>, T : Titled {
 
     override var error: String? = null
 
-    val select = Select(values, null,
-        tamy = true,
+    val select = Select(A(tamy=""), values, null,
         onChange = {
             form.fieldChanged()
         },
@@ -298,7 +302,7 @@ fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promise<ZimbabweRes
     callZimbabwe(remoteProcedureNameForRequest(req), req, token)
 
 fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> {"__async"
-    return a/try {
+    return __asyncResult(try {
         val res = __await<Any>(callRemoteProcedurePassingJSONObject(procedureName, dyna{r->
             r.clientKind = global.CLIENT_KIND
             r.lang = global.LANG
@@ -317,7 +321,7 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
     } catch(e: Throwable) {
         spitExceptionToConsole(e)
         ZimbabweResponse.Shitty<Res>(t("TOTE", "Сервис временно в жопе, просим прощения"), listOf())
-    }
+    })
 }
 
 fun spitExceptionToConsole(e: dynamic) {
