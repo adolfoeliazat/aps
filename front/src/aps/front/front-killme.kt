@@ -275,6 +275,10 @@ fun legacy_implementControlShit(arg: dynamic) {
                 "targetAttachment" to "top left"
             ))
         }
+
+        art.uiStateContributions["_stickedError"] = {state: dynamic ->
+            state.put(json("control" to me, "key" to "stickedError", "value" to (exception.message ?: "Some shit happened")))
+        }
     }
 
     me.getTamePath = getTamePath@{

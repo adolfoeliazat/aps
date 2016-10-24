@@ -9,40 +9,34 @@ package aps.front
 import aps.*
 import org.w3c.dom.events.*
 
-val kdiv = ElementBuilder("div")
-val kspan = ElementBuilder("span")
+val kdiv = ElementBuilderFactory("div")
+val kspan = ElementBuilderFactory("span")
 
-interface ElementBuilderMutator {
-    fun mutate(eb: ElementBuilder)
+class ElementBuilderFactory(val tag: String) {
+    operator fun invoke(attrs: A, style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
+        val builder = ElementBuilder(tag, attrs, style)
+        block?.let {it(builder)}
+        return builder
+    }
+
+    operator fun invoke(attrs: A, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
+        return invoke(attrs, Style(), block)
+    }
+
+    operator fun invoke(style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
+        return invoke(A(), style, block)
+    }
 }
 
-class ElementBuilder(val tag: String) : ToReactElementable {
-    var tame: String? = null; var shame: String? = null
-    var tamy: String? = null; var shamy: String? = null; var tamyShamy: String? = null
-    var style = Style()
-    var onClick: ((MouseEvent) -> Unit)? = null
+class ElementBuilder(val tag: String, val attrs: A, val style: Style) : ToReactElementable {
+//    var onClick: ((MouseEvent) -> Unit)? = null
     val children = mutableListOf<ToReactElementable>()
 
-    operator fun invoke(tame: String? = null, shame: String? = null,
-                        tamy: String? = null, shamy: String? = null, tamyShamy: String? = null,
-                        block: ((ElementBuilder) -> Unit)? = null
-    ): ElementBuilder {
-        this.tame = tame; this.shame = shame
-        this.tamy = tamy; this.shamy = shamy; this.tamyShamy = tamyShamy
-        block?.let {it(this)}
-        return this
-    }
 
-    operator fun invoke(vararg mutators: ElementBuilderMutator, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-        mutators.forEach {it.mutate(this)}
-        block?.let {it(this)}
-        return this
-    }
-
-    operator fun invoke(block: (ElementBuilder) -> Unit): ElementBuilder {
-        block(this)
-        return this
-    }
+//    operator fun invoke(block: (ElementBuilder) -> Unit): ElementBuilder {
+//        block(this)
+//        return this
+//    }
 
     operator fun minus(eb: ToReactElementable) {
         children.add(eb)
@@ -58,47 +52,61 @@ class ElementBuilder(val tag: String) : ToReactElementable {
         })
     }
 
-    override fun toReactElement(): ReactElement = reactElement
+    override fun toReactElement(): ReactElement = control.toReactElement()
 
-    val reactElement by lazy {
-        @Suppress("UnsafeCastFromDynamic")
-        Shitus.diva.apply(null, js("[]").concat(
-            dyna{o->
-                o.style = style.toReactStyle()
-            },
-            /*...*/children.map{it.toReactElement()}.toJSArray()
-        ))
-    }
-}
+    val control: Control2 by lazy {
+        object : Control2(attrs) {
+            override fun defaultControlTypeName() = tag
 
-fun newShitUsage() {
-    kdiv(tame="qwe")(TextAlign.CENTER) {o->
-        o- "Some shitty text"
-        o- kdiv {
-            o- "Fucking lorem"
-            o- "Crappy ipsum"
-        }
-
-        o.onClick = {e->
-            e.preventDefault()
-            println("He fucking clicked on me")
+            override fun render(): ReactElement {
+                return React.createElement(
+                    tag,
+                    json(
+                        "id" to elementID,
+                        "className" to attrs.className,
+                        "style" to style.toReactStyle()
+                    ),
+                    *children.map{it.toReactElement()}.toTypedArray()
+                )
+            }
         }
     }
-}
-
-enum class TextAlign(val string: String) : ElementBuilderMutator {
-    LEFT("left"), CENTER("center"), RIGHT("right");
-
-    override fun toString() = string
-    override fun mutate(eb: ElementBuilder) {eb.style.textAlign = this}
 }
 
 data class Style(
-    var textAlign: TextAlign? = null) {
-
+    var marginBottom: Any? = null,
+    var backgroundColor: Any? = null,
+    var borderBottom: String? = null,
+    var textAlign: String? = null,
+    var fontWeight: String? = null
+) {
     fun toReactStyle(): dynamic {
         return dyna{o->
-            textAlign?.let {o.textAlign = it.string}
+            checkNSI(marginBottom, "marginBottom")
+            checkColor(backgroundColor, "backgroundColor")
+
+            marginBottom?.let {o.marginBottom = it}
+            backgroundColor?.let {o.backgroundColor = it.toString()}
+            borderBottom?.let {o.borderBottom = it}
+            textAlign?.let {o.textAlign = it}
+            fontWeight?.let {o.fontWeight = it}
+        }
+    }
+
+    fun checkNSI(value: Any?, name: String) {
+        when {
+            value == null -> return
+            jsTypeOf(value).oneOf("string", "number") -> return
+            else -> bitch("$name should be null, String, or Int, but got [$value]")
+        }
+    }
+
+    fun checkColor(value: Any?, name: String) {
+        when {
+            value == null -> return
+            jsTypeOf(value) == "string" -> return
+            constructorName(value) == "Color" -> return
+            else -> bitch("$name should be null, String, or Color, but got [$value]")
         }
     }
 }
@@ -391,6 +399,10 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                 "attachment" to "top left",
                 "targetAttachment" to "top left"
             ))
+        }
+
+        art.uiStateContributions["stickedError"] = {state: dynamic ->
+            state.put(json("control" to me, "key" to "stickedError", "value" to (exception.message ?: "Some shit happened")))
         }
     }
 

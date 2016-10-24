@@ -31,7 +31,6 @@ class Select<E>(
     attrs: A,
     val values: Array<E>,
     val initialValue: E?,
-    // TODO:vgrechka Kotlinize tame/y, shame/y, and all that shit
     val isAction: Boolean = false,
     val style: Json = json(),
     val volatileDisabled: (() -> Boolean)? = null,
@@ -44,19 +43,16 @@ class Select<E>(
 
 ) : Control2(attrs), Blinkable where E : Enum<E>, E : Titled {
 
-    override fun defaultControlTypeName() = "Select"
-
     var persistentDisabled: Boolean = false
+    var value: E = initialValue ?: values[0]
+
+    override fun defaultControlTypeName() = "Select"
 
     fun wantPersistentDisablingAllowed() {
         wantNull(volatileDisabled) {"volatileDisabled conflicts with persistent disabling"}
     }
 
-    var value: E = initialValue ?: values[0]
-
     fun stringToValue(s: String) = values.find {it.name == s} ?: bitch("Select value: $s")
-
-//    val me = ControlShitMe()
 
     override fun render(): ReactElement {
         return reactCreateElement("select", json(

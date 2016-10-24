@@ -148,18 +148,31 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                     // #extract {headingActionItems, body} from def
                     val headingActionItems = def.headingActionItems; val body = def.body
 
-                    renderedThing.setContent(diva {tame = sufindex("item", index)
-                        - diva {tame = "heading"; elementID = headingID; style {marginBottom(10); backgroundColor = BLUE_GRAY_50; borderBottom = "1px solid ${BLUE_GRAY_100}"}
-                            - spana {style {fontWeight = "normal"}
-                                - spanc("title", user.firstName + " " + user.lastName) {style {fontSize = "135%"}}
-                                - spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
+                    renderedThing.setContent(kdiv(A(tame=sufindex("item", index))) {o->
+                        o- kdiv(A(tame="heading", id=headingID), Style(marginBottom=10, backgroundColor=BLUE_GRAY_50, borderBottom="1px solid ${BLUE_GRAY_100})")) {o->
+//                        o- kdiv(tame="heading", id=headingID, marginBottom=10, backgroundColor=BLUE_GRAY_50, borderBottom="1px solid ${BLUE_GRAY_100})") {o->
+                            o- kspan(Style(fontWeight="normal")) {o->
+                                o- spanc("title", user.firstName + " " + user.lastName) {style {fontSize = "135%"}}
+                                o- spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
 
-                            - asReactElement(Shitus.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to Color.BLUE_GRAY_600),
+                            o- asReactElement(Shitus.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to Color.BLUE_GRAY_600),
                                 "items" to headingActionItems)))
                         }
-
-                        - asReactElement(body)
+                        o- asReactElement(body)
                     }.toReactElement())
+
+//                    renderedThing.setContent(diva {tame = sufindex("item", index)
+//                        - diva {tame = "heading"; elementID = headingID; style {marginBottom(10); backgroundColor = BLUE_GRAY_50; borderBottom = "1px solid ${BLUE_GRAY_100}"}
+//                            - spana {style {fontWeight = "normal"}
+//                                - spanc("title", user.firstName + " " + user.lastName) {style {fontSize = "135%"}}
+//                                - spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
+//
+//                            - asReactElement(Shitus.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to Color.BLUE_GRAY_600),
+//                                "items" to headingActionItems)))
+//                        }
+//
+//                        - asReactElement(body)
+//                    }.toReactElement())
                 }
 
                 fun scrollToHeading() {

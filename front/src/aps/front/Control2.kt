@@ -17,7 +17,8 @@ class A(
     val controlTypeName: String? = null,
     val id: String? = null,
     val tattrs: Json? = null,
-    val noStateContributions: Boolean? = null
+    val noStateContributions: Boolean? = null,
+    val className: String? = null
 )
 
 abstract class Control2(val attrs: A) : ToReactElementable {
@@ -170,7 +171,9 @@ abstract class Control2(val attrs: A) : ToReactElementable {
 
                 removeEventListeners()
                 // @wip perf
+//                dwarnStriking("before", Shitus.elementIDToControls[elementID].length, Shitus.elementIDToControls[elementID])
                 jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[elementID], {x: dynamic -> x.id == id})
+//                dwarnStriking("after", Shitus.elementIDToControls[elementID].length, Shitus.elementIDToControls[elementID])
                 jsFacing_deleteKey(art.uiStateContributions, id)
 
                 effectiveShame?.let {TestGlobal.shameToControl.remove(it)}
@@ -268,7 +271,7 @@ abstract class Control2(val attrs: A) : ToReactElementable {
         return res
     }
 
-    val effectiveShame: String? by lazy {when {
+    val effectiveShame: String? by lazy {when{
         shame != null -> shame
         tame != null && effectiveShameDefaultsToTamePath() -> tamePath()
         else -> null
