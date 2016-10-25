@@ -465,7 +465,7 @@ fun jsFacing_linesToMappedUsefulLines(lines: dynamic): Promise<dynamic> {"__asyn
             }
 
             lineText = lineTextWithoutPos + " (${pos.source}:${pos.line}:${pos.column})"
-            lineText = lineText.replace("file://E:/work/aps", "APS")
+            lineText = lineText.replace("file://$APS_ROOT", "APS")
         }
 
         usefulLines.push(lineText)

@@ -8,9 +8,9 @@ package aps
 
 import kotlin.reflect.KProperty
 
-fun sayHi() {
-    println("Hi, fuck you")
-}
+fun sayHi() = println("Hi, fuck you")
+
+val APS_ROOT: String get() = "e:/work/aps"
 
 class Abortion : Throwable()
 

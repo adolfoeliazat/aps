@@ -6,10 +6,23 @@
 
 package aps.back
 
-import aps.bitch
-import java.io.File
+import aps.*
+import java.io.*
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
+import kotlin.system.exitProcess
+
+fun main(args: Array<String>) {
+    if (args.isEmpty()) bitch("I need a command, motherfucker")
+    val command = args[0]
+
+    when (command) {
+        "jooq" -> runJava("aps.back.GenerateJOOQKt").waitFor()
+        "forever" -> Forever()
+        "lint" -> Lint()
+        else -> bitch("Do your [$command] yourself")
+    }
+}
 
 class Forever {
     @Volatile var shouldReactToRestartFlag = false
@@ -85,6 +98,33 @@ class Forever {
 
 }
 
+class Lint {
+    init {
+        print("Linting your shit... ")
+        visit(File("$APS_ROOT/front/src"))
+        println("COOL")
+    }
+
+    fun visit(f: File) {
+        if (f.isDirectory) return f.listFiles().forEach {visit(it)}
+        if (!f.isFile) wtf("File: $f")
+        if (f.extension != "kt") return
+
+        f.useLines {it.forEachIndexed {lineIndex, line ->
+            for (tag in listOf("kdiv", "kspan")) {
+                if (Regex("\\W$tag\\W").containsMatchIn(line)) {
+                    if (line.trimEnd().endsWith("{")) {
+                        val fname = f.path.substring(APS_ROOT.length)
+                        println("SHIT")
+                        println("$fname:${lineIndex + 1}: Lambda parameter is mandatory for $tag")
+                        exitProcess(1)
+                    }
+                }
+            }
+        }}
+    }
+}
+
 fun runJava(entryPoint: String): Process {
     val pb = ProcessBuilder()
     val cmd = pb.command()
@@ -108,18 +148,6 @@ fun runJava(entryPoint: String): Process {
     return pb.start()
 }
 
-
-fun main(args: Array<String>) {
-    if (args.size < 1) bitch("I need a command, motherfucker")
-    val command = args[0]
-
-    when (command) {
-        "make-static-sites" -> runJava("aps.back.MakeStaticSitesKt").waitFor()
-        "jooq" -> runJava("aps.back.GenerateJOOQKt").waitFor()
-        "forever" -> Forever()
-        else -> bitch("Do your [$command] yourself")
-    }
-}
 
 
 

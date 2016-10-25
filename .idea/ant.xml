@@ -2,7 +2,8 @@
 <project version="4">
   <component name="AntConfiguration">
     <buildFile url="file://$PROJECT_DIR$/back/build.xml">
-      <executeOn event="afterCompilation" target="touch-restart-flag" />
+      <executeOn event="afterCompilation" target="after-compilation" />
+      <executeOn event="beforeCompilation" target="before-compilation" />
     </buildFile>
   </component>
 </project>

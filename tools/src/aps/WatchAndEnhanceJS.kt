@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
 
 fun watch() {
     val watcher = FileSystems.getDefault().newWatchService()
-    val dir = Paths.get("E:/work/aps/front/out")
+    val dir = Paths.get("$APS_ROOT/front/out")
     dir.register(watcher, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE)
 
     val pathStringToEntry = mutableMapOf<String, Entry>()
@@ -109,8 +109,8 @@ fun watch() {
 
 fun test() {
     println("Testing...")
-    val jsFileEntry = Entry("E:/work/aps/front/out/front.js")
-    val mapFileEntry = Entry("E:/work/aps/front/out/front.js.map")
+    val jsFileEntry = Entry("$APS_ROOT/front/out/front.js")
+    val mapFileEntry = Entry("$APS_ROOT/front/out/front.js.map")
     doStuff(jsFileEntry, mapFileEntry)
 }
 
@@ -217,9 +217,9 @@ fun doStuff(jsFileEntry: Entry, mapFileEntry: Entry) {
     }
 
     val inMapFile = File(mapFileEntry.pathString)
-    inMapFile.copyTo(File("E:/work/aps/aps/built/ua-writer/kotlin/" + inMapFile.name), overwrite = true)
+    inMapFile.copyTo(File("$APS_ROOT/aps/built/ua-writer/kotlin/" + inMapFile.name), overwrite = true)
 
-    File("E:/work/aps/aps/built/ua-writer/kotlin/" + inJSFile.name.replace(Regex("\\.js$"), "-enhanced.js")).run{
+    File("$APS_ROOT/aps/built/ua-writer/kotlin/" + inJSFile.name.replace(Regex("\\.js$"), "-enhanced.js")).run{
         this.writeText(newSourceCode)
         logEmitted(this)
     }

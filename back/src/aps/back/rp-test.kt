@@ -127,7 +127,7 @@ val backendInstanceID = "" + UUID.randomUUID()
     GetSoftwareVersionRequest(),
     logRequestJSON = false,
     runShit = {req, res ->
-        val path = Paths.get("e:/work/aps/front/out/front-enhanced.js")
+        val path = Paths.get("$APS_ROOT/front/out/front-enhanced.js")
         val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)
         GetSoftwareVersionRequest.Response(
             ctime = "" + Math.max(attrs.creationTime().toMillis(), attrs.lastModifiedTime().toMillis()),

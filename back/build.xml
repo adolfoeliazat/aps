@@ -1,5 +1,16 @@
-<project>
-    <target name="touch-restart-flag">
+<!-- ======================================================================= -->
+<!-- APS                                                                     -->
+<!--                                                                         -->
+<!-- (C) Copyright 2015-2016 Vladimir Grechka                                -->
+<!-- ======================================================================= -->
+
+<project name="APS">
+    <target name="before-compilation">
+    </target>
+
+    <target name="after-compilation">
+        <!-- TODO:vgrechka Instead of WatchAndEnhanceJS.cmd do that here -->
+        <exec executable="run.cmd" dir="."><arg value="lint"/></exec>
         <touch file="restart-flag"/>
     </target>
 

@@ -21,7 +21,7 @@ object MakeStaticSites : IMakeStaticSites {
     }
     val ReactDOMServer = js("require('react-dom/server')")
 
-    val kindaDirname = "e:/work/aps/aps/lib"
+    val kindaDirname = "$APS_ROOT/aps/lib"
 
     val require = js("require")
 
@@ -31,10 +31,10 @@ object MakeStaticSites : IMakeStaticSites {
     }
 
     val process = js("process")
-    val fs = js("require('fs')")
-    val sh = js("require('shelljs')")
-    val legacyStuff = js("require('e:/work/aps/aps/lib/stuff')")
-    val legacyClient = js("require('e:/work/aps/aps/lib/client')")
+    val fs = require("fs")
+    val sh = require("shelljs")
+    val legacyStuff = require("$APS_ROOT/aps/lib/stuff")
+    val legacyClient = require("$APS_ROOT/aps/lib/client")
 
 
     var t: (dynamic) -> dynamic = js("undefined")
@@ -468,9 +468,9 @@ object MakeStaticSites : IMakeStaticSites {
         sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
         sh.cp("${kindaDirname}/../asset/*", root)
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
-        sh.cp("-r", "e:/work/aps/front/out", "$root/kotlin")
+        sh.cp("-r", "$APS_ROOT/front/out", "$root/kotlin")
 
-        val frontDir = "e:/work/aps/front"
+        val frontDir = "$APS_ROOT/front"
         sh.cp("$frontDir/kotlin-hack.js", root)
 
         val entryStream = js("new (require('stream')).Readable")
