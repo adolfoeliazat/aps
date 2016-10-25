@@ -282,7 +282,7 @@ fun makeUIShitIgniter(def: dynamic): dynamic {
 
                         TestGlobal.loadPageForURL_href = href
 
-                        ui.urlQuery = KotlinShit.parseQueryString(href)
+                        ui.urlQuery = parseQueryString(href)
 
                         val path = pathname
                         var name: dynamic = null

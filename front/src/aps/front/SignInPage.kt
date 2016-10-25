@@ -11,15 +11,14 @@ import java.util.*
 
 fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
     fun loadSignInPage() {
-
         ui.setPage(json(
             "header" to Shitus.pageHeader(json("title" to t("Sign In", "Вход"))),
-            "body" to Shitus.diva(json(),
-                ui.signedUpOK && preludeWithGreenCheck(json("title" to t(
+            "body" to kdiv{o->
+                o- nif(ui.signedUpOK) {preludeWithGreenCheck(json("title" to t(
                     "Cool. You have an account now. We sent you email with password.",
-                    "Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом."))),
+                    "Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.")))}
 
-                FormMatumba<SignInWithPasswordRequest, SignInWithPasswordRequest.Response>(FormSpec(
+                o- FormMatumba<SignInWithPasswordRequest, SignInWithPasswordRequest.Response>(FormSpec(
                     SignInWithPasswordRequest(),
                     ui,
                     primaryButtonTitle = t("Sign In", "Войти"),
@@ -38,21 +37,16 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
                             else -> "profile.html"
                         })) /ignora
                     }
-                )).toReactElement(),
+                ))
 
-                !ui.signedUpOK && Shitus.diva(json(),
-                    hr(),
-
-                    kdiv(Style(textAlign="left")) {o->
+                o- nif(!ui.signedUpOK) {kdiv{o->
+                    o- hr()
+                    o- kdiv(Style(textAlign="left")) {o->
                         o- t("TOTE", "Как? Еще нет аккаунта? ")
                         o- ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true))
-                    }.toReactElement()
-
-//                    Shitus.diva(json("style" to json("textAlign" to "left")),
-//                        t("TOTE", "Как? Еще нет аккаунта? "),
-//                        ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true)))
-                )
-            )
+                    }
+                }}
+            }.toReactElement()
         ))
     }
 

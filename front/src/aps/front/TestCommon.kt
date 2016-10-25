@@ -34,11 +34,6 @@ abstract class TestScenario {
 
 val testScenarios = mutableMapOf<String, TestScenario>()
 
-fun runTestScenario(fullName: String) {
-    val scenario = testScenarios[fullName] ?: die("No such test scenario: $fullName")
-    scenario.run()
-}
-
 fun tetete() {
 
 }
@@ -60,7 +55,7 @@ class TestCommon(val sim: dynamic) {
 fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__async"
 //    val urlObject = jshit.utils.url.parse(global.location.href)
 //    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
-    val urlQuery = jsFacing_parseQueryString(global.location.href)
+    val urlQuery = parseQueryString(global.location.href)
 
     for (name in jsArrayToList(Shitus.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
         if (urlQuery[name] != undefined) {
@@ -68,13 +63,13 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
         }
     }
 
-    val testScenarioToRun: String = urlQuery.testScenario ?: bitch("Gimme testScenario")
+    val testScenarioToRun = urlQuery["testScenario"] ?: bitch("Gimme testScenario")
 
-    hrss.preventScrollToBottomOnAssertionError = urlQuery.scrollToBottom == "no"
-    hrss.preventExceptionRevelation = urlQuery.revealException == "no"
-    hrss.preventUIAssertionThrowing = urlQuery.uiAssertionThrows == "no"
-    art.testSpeed = if (urlQuery.testSpeed) urlQuery.testSpeed else "fast"
-    hrss.alternativeTestSpeed = urlQuery.alternativeTestSpeed
+    hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
+    hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
+    hrss.preventUIAssertionThrowing = urlQuery["uiAssertionThrows"] == "no"
+    art.testSpeed = urlQuery["testSpeed"] ?: "fast"
+    hrss.alternativeTestSpeed = urlQuery["alternativeTestSpeed"]
     if (!hrss.alternativeTestSpeed) {
         if (art.testSpeed == "fast" || art.testSpeed == "medium") {
             hrss.alternativeTestSpeed = "slow"
@@ -82,7 +77,7 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
             hrss.alternativeTestSpeed = "medium"
         }
     }
-    art.respectArtPauses = urlQuery.respectArtPauses == "yes"
+    art.respectArtPauses = urlQuery["respectArtPauses"] == "yes"
 
     val sim = object : TestHost {
         override fun navigate(url: String): Promise<Unit> {"__async"

@@ -292,8 +292,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
 
 fun getURLQueryParam(ui: LegacyUIShit, name: String): String? {
-    val dy: dynamic = ui.urlQuery
-    return dy[name]
+    return ui.urlQuery[name]
 }
 
 fun <Item, Filter>

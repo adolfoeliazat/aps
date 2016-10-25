@@ -13,11 +13,11 @@ fun imf(what: String = "me"): Nothing = throw JSException("Implement $what, plea
 fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw JSException("WTF: $msg")
 fun die(msg: String = "You killed me, motherfucker..."): Nothing = throw JSException(msg)
 
-fun clog(vararg xs: dynamic) = global.console.log.apply(global.console, xs.toList().toJSArray())
-fun cwarn(vararg xs: dynamic) = global.console.warn.apply(global.console, xs.toList().toJSArray())
+inline fun clog(vararg xs: dynamic) = global.console.log.apply(global.console, xs.toList().toJSArray())
+inline fun cwarn(vararg xs: dynamic) = global.console.warn.apply(global.console, xs.toList().toJSArray())
 
-fun dlog(vararg xs: dynamic) = clog("[DEBUG]", *xs)
-fun dwarn(vararg xs: dynamic) = cwarn("[DEBUG]", *xs)
+inline fun dlog(vararg xs: dynamic) = clog("[DEBUG]", *xs)
+inline fun dwarn(vararg xs: dynamic) = cwarn("[DEBUG]", *xs)
 
 fun t(en: String, ru: String) = ru
 
@@ -217,7 +217,7 @@ annotation class Front
     fun getUser(): UserRTO
     fun signOut()
     fun updatePage()
-    val urlQuery: Any
+    val urlQuery: Map<String, String>
     var currentPage: Any?
     fun loadPageForURL(): Promise<Unit>
 }

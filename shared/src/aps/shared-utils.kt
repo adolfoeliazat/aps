@@ -53,7 +53,7 @@ class relazy<out T>(val initializer: () -> T) {
     }
 }
 
-fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
+inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
 
 class Probe<T>(val transform: (T) -> Any?)
 fun <T> probe(transform: (T) -> Any?) = Probe(transform)
@@ -140,6 +140,7 @@ fun want(b: Boolean, msg: () -> String = {"I want that"}) {
 
 fun wantNull(x: Any?, msg: () -> String = {"I want null here"}) = want(x == null, msg)
 
+fun <T> nif(cond: Boolean, block: () -> T): T? = if (cond) block() else null
 
 
 

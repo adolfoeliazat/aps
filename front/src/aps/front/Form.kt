@@ -29,7 +29,7 @@ data class FormSpec<Req: RequestMatumba, Res>(
 )
 
 
-class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
+class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToReactElementable {
     init {
         req.fields.forEach {it.form = this}
     }
@@ -160,8 +160,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) {
         focusedField = null
     }
 
-
-    fun toReactElement(): ReactElement {
+    override fun toReactElement(): ReactElement {
         return control.toReactElement()
     }
 }

@@ -111,7 +111,7 @@ fun preludeWithOrangeTriangle(def: dynamic): dynamic {
         Shitus.spancTitle(json("title" to title)))
 }
 
-fun preludeWithGreenCheck(def: dynamic): dynamic {
+fun preludeWithGreenCheck(def: dynamic): ReactElement {
     val title = def.title
     val center = def.center
 
@@ -192,8 +192,8 @@ fun preludeWithHourglass(def: dynamic): dynamic {
             nbsp, nbsp, content)
 }
 
-fun hr(): dynamic {
-    return el("hr", json())
+fun hr(): ReactElement {
+    return React.createElement("hr", json())
 }
 
 val el: dynamic = {
@@ -201,8 +201,8 @@ val el: dynamic = {
     global.React.createElement.apply(global.React, /*...*/all)
 }
 
-fun getURLQuery(): dynamic {
-    return KotlinShit.parseQueryString(global.location.href)
+fun getURLQuery(): Map<String, String> {
+    return parseQueryString(global.location.href)
 }
 
 fun labe(def: dynamic): dynamic {

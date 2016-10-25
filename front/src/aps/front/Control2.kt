@@ -11,13 +11,13 @@ import aps.*
 class A(
     val tame: String? = null,
     val tamy: String? = null,
-    val shame: String? = null,
+    var shame: String? = null,
     val shamy: String? = null,
     val tamyShamy: String? = null,
     val controlTypeName: String? = null,
     val id: String? = null,
     val tattrs: Json? = null,
-    val noStateContributions: Boolean? = null,
+    var noStateContributions: Boolean? = null,
     val className: String? = null
 )
 

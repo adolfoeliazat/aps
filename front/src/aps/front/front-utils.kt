@@ -50,10 +50,10 @@ fun dyna(build: (dynamic) -> Unit): dynamic {
     return res
 }
 
-fun jsFacing_parseQueryString(href: dynamic): dynamic {
+fun parseQueryString(href: String): Map<String, String> {
     val regex = global.RegExp("([^&=]+)=?([^&]*)", "g")
     var match: dynamic = null
-    val store = json()
+    val store = mutableMapOf<String, String>()
 
     var haystack = global.location.search
     haystack = haystack.substring(haystack.indexOf('?') + 1, haystack.length)
@@ -83,9 +83,17 @@ fun byid0ForSure(id: String): HTMLElement {
     return requireNotNull(byid0(id)) {"I want fucking element #$id"}
 }
 
+// @ctx jquery
+
+@native interface JQueryPosition {
+    val left: Int
+    val top: Int
+}
+
 operator fun JQuery.get(index: Int): HTMLElement? = this.asDynamic()[index]
 fun JQuery.scrollTop(value: Int): Unit = this.asDynamic().scrollTop(value)
 fun JQuery.scrollTop(): Int = this.asDynamic().scrollTop()
+fun JQuery.offset(): JQueryPosition = this.asDynamic().offset()
 
 @native object ReactDOM {
     fun render(rel: ReactElement, container: HTMLElement): Unit = noImpl

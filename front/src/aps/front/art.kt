@@ -11,6 +11,8 @@ import aps.front.Color.*
 import aps.*
 import aps.WorldPointRequest.Action.RESTORE
 import aps.WorldPointRequest.Action.SAVE
+import jquery.jq
+import kotlin.browser.document
 import kotlin.reflect.KProperty
 
 class HotReloadSurvivingFuckingShit(val nameInGlobalScope: String) {
@@ -95,16 +97,10 @@ object art {
         testInstructions = instructions
 
         val urlq = getURLQuery()
-        // dlogs({urlq})
-        var until = urlq.until
-        if (until) until = global.parseInt(until, 10)
-        val from: String = if (urlq.from) urlq.from else "start"
+        val until = urlq["until"]?.let {parseInt(it)} ?: Int.MAX_VALUE
+        val from = urlq["from"] ?: "start"
 
-        var skipping = from != js("'start'")
-
-//        val debugRPC = jshit.getDebugRPC()
-
-
+        var skipping = from != "start"
 
         var stepIndex = 0
         instructions.forEachIndexed {instrIndex, instr ->
@@ -118,13 +114,11 @@ object art {
                 if (skipping) {
                     if (instr.name == from) {
                         dlog("Restoring world point ${wpname}")
-//                        __await<dynamic>(debugRPC(json("db" to undefined, "fun" to "danger_restoreWorldPoint", "wpname" to wpname)))
                         __await(WorldPointRequest.send(wpname, RESTORE))
                         skipping = false
                     }
                 } else {
                     dlog("Saving world point ${wpname}")
-//                    __await(debugRPC(json("db" to undefined, "fun" to "danger_saveWorldPoint", "wpname" to wpname)))
                     __await(WorldPointRequest.send(wpname, SAVE))
                 }
             }
@@ -132,7 +126,6 @@ object art {
                 fun getControlForAction(arg: dynamic): dynamic {
                     if (instr !is ShamedTestInstruction) throw JSException("I want ShamedTestInstruction, got $instr")
 
-                    // {implementing}={}
                     val implementing = if (arg) arg.implementing else undefined
 
                     val control = TestGlobal.shameToControl[instr.shame]
@@ -145,9 +138,7 @@ object art {
                     val instr = instr as TestInstruction.Action
                     val control = getControlForAction(json("implementing" to "testSetValue"))
                     if (instr.timestamp.there) {
-//                        __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
                         __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
-//                        __await(ImposeNextRequestTimestampRequest(instr.timestamp).rpc())
                     }
 
                     __await<dynamic>(control.testSetValue(json("value" to when (instr) {
@@ -189,7 +180,6 @@ object art {
                     is TestInstruction.Click -> {
                         val control = getControlForAction(json("implementing" to "testClick"))
                         if (instr.timestamp.there) {
-//                            __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
                             __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                         }
                         __await<dynamic>(control.testClick(instr))
@@ -197,16 +187,10 @@ object art {
                     is TestInstruction.KeyDown -> {
                         val control = getControlForAction(json("implementing" to "testKeyDown"))
                         if (instr.timestamp.there) {
-//                            __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
                             __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                         }
                         __await<dynamic>(control.testKeyDown(instr))
                     }
-//                    if (opcode == "actionPlaceholder") {
-//                        // invariant(!art.actionPlaceholderTag, "Action placeholder tag is already set")
-//                        jshit.art.actionPlaceholderTag = instr.`$tag`
-//                        continue
-//                    }
                     else -> wtf("Test instruction: $instr")
                 }
             }
@@ -221,123 +205,6 @@ object art {
         return __asyncResult(Unit)
     }
 
-//    fun bak_run(spec: dynamic): Promise<Unit> {"__async"
-//        // #extract {instructions} from def
-//        val instructions = spec.instructions
-//
-//        testInstructions = instructions
-//
-//        val urlq = jshit.getURLQuery()
-//        // dlogs({urlq})
-//        var until = urlq.until
-//        if (until) until = global.parseInt(until, 10)
-//        val from = urlq.from || js("'start'")
-//
-//        var skipping = from != js("'start'")
-//
-//        val debugRPC = jshit.getDebugRPC()
-//
-//        __await<dynamic>(debugRPC(json("fun" to "danger_clearSentEmails")))
-//
-//        var stepIndex = 0
-//        for (instrIndex in 0 until instructions.length) {
-//            val instrdef = instructions[instrIndex]
-//            val opcode = global.Object.keys(instrdef).find({x: dynamic -> x[0] != "$"})
-//            if (!opcode) jshit.raiseWthMeta(json("message" to "Cannot determine opcode for instruction", "meta" to instrdef))
-//
-//            if (instrIndex == until) {
-//                jshit.utils.dlog("Stopping test before instruction ${instrIndex}")
-//                return __asyncResult(Unit)
-//            }
-//
-//            val instr = instrdef[opcode]
-//
-//            fun getControlForAction(arg: dynamic): dynamic {
-//                // {implementing}={}
-//                val implementing = if (arg) arg.implementing else undefined
-//
-//                val control = TestGlobal.controls[instr.shame]
-//                if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instrdef))
-//                if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instrdef))
-//                return control
-//            }
-//
-//            if (opcode == "worldPoint") {
-//                val wpname = jshit.getCurrentTestScenarioName() + " -- " + instr.name
-//                if (skipping) {
-//                    if (instr.name == from) {
-//                        jshit.utils.dlog("Restoring world point ${wpname}")
-//                        __await<dynamic>(debugRPC(json("db" to undefined, "fun" to "danger_restoreWorldPoint", "wpname" to wpname)))
-//                        skipping = false
-//                    }
-//                } else {
-//                    jshit.utils.dlog("Saving world point ${wpname}")
-//                    __await(debugRPC(json("db" to undefined, "fun" to "danger_saveWorldPoint", "wpname" to wpname)))
-//                }
-//                continue
-//            }
-//
-//            if (skipping) continue
-//
-//            if (opcode == "do") {
-//                __await<dynamic>(instr.action())
-//                continue
-//            }
-//            if (opcode == "step") {
-//                instr.fulfilled = true
-//                continue
-//            }
-//            if (jsArrayOf("beginSection", "endSection").includes(opcode)) {
-//                continue
-//            }
-//            if (opcode == "assert") {
-//                __await<dynamic>(jshit.art.uiState(instr.asnn(jshit.utils.pick(instrdef, "\$definitionStack"))))
-//                continue
-//            }
-//            if (opcode == "setValue") {
-//                val control = getControlForAction(json("implementing" to "testSetValue"))
-//                if (instr.timestamp) {
-//                    __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-//                }
-//                __await<dynamic>(control.testSetValue(json("value" to instr.value)))
-//                continue
-//            }
-//            if (opcode == "click") {
-//                val control = getControlForAction(json("implementing" to "testClick"))
-//                if (instr.timestamp) {
-//                    __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-//                }
-//                __await<dynamic>(control.testClick(instr))
-//                continue
-//            }
-//            if (opcode == "keyDown") {
-//                val control = getControlForAction(json("implementing" to "testKeyDown"))
-//                if (instr.timestamp) {
-//                    __await<dynamic>(debugRPC(json("fun" to "danger_imposeNextRequestTimestamp", "timestamp" to instr.timestamp)))
-//                }
-//                __await<dynamic>(control.testKeyDown(instr))
-//                continue
-//            }
-//            if (opcode == "actionPlaceholder") {
-//                // invariant(!art.actionPlaceholderTag, "Action placeholder tag is already set")
-//                jshit.art.actionPlaceholderTag = instr.`$tag`
-//                continue
-//            }
-//
-//            Shitus.raiseWithMeta(json("message" to "Unknown instruction opcode: ${opcode}", "meta" to instrdef))
-//        }
-//
-//        if (skipping) {
-//            console.warn("WTF, I’ve just skipped all test steps")
-//        } else {
-//            jshit.utils.dlog("Seems test is passed")
-//        }
-//
-//        return __asyncResult(Unit)
-//    }
-
-//    val opcode = instrdef.opcode
-//    val instr = instrdef
 
     fun renderStepDescriptions(): ReactElement {
         val testInstructions = art.testInstructions
@@ -345,9 +212,6 @@ object art {
 
         var stepIndex = 0; var indent = 0
         testInstructions.forEachIndexed {instrIndex, instr ->
-//            val instrdef = testInstructions[instrIndex]
-//            val opcode = dynamicKeys(instrdef).find { x: dynamic -> x[0] != "$" }
-//            val instr = instrdef[opcode]
 
             fun addLine(indent: Int, stepRowStyle: dynamic = null, rulerContent: dynamic = null, lineContent: ReactElement? = null, actions: Collection<ReactElement> = listOf()) {
                 els.add(div { style { marginTop(5); display = "flex" }
@@ -433,16 +297,9 @@ object art {
             }
         }
 
-//    return makeSwearBoxes().toReactElement()
-
         return jdiva(json("controlTypeName" to "renderStepDescriptions", "noStateContributions" to true), jdiva(json("style" to json("background" to Color.GRAY_200, "fontWeight" to "bold")), "Steps"),
             *els.toTypedArray())
     }
-
-//    fun initArtShit() {
-//        jshit.art = js("({ })")
-////        jshit.art = js("({uiStateContributions: {}, stateContributionsByControl: new Map(), stepDescriptions: []})")
-//    }
 
     fun assert(condition: dynamic, errorMessage: dynamic, _opts: Any? = null) {
         val opts: dynamic = (_opts ?: json())
@@ -1338,58 +1195,77 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 //}
 
 fun openTestPassedPane(def: dynamic) {
-    val scenario = def.scenario
+    val scenario: Any = def.scenario
 
-    val testPassedPane = Shitus.statefulElement({update ->
-        var scenarioName: String = scenario.name
-        val links = mutableListOf<ReactElement>()
+//    val testPassedPane = Shitus.statefulElement({update ->
+//        var scenarioName: String = scenario.name
+//        val links = mutableListOf<ReactElement>()
+//
+//        val m = global.RegExp("\\s+([0-9a-z]{8})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{12})$").exec(scenarioName)
+//        if (m != undefined) {
+//            scenarioName = scenarioName.substring(0, m.index)
+//            links.add(OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to Color.WHITE))))
+//        }
+//        if (art.actionPlaceholderTag != undefined) {
+//            links.add(marginateLeft(10, OpenSourceCodeLink(json("where" to json("\$tag" to art.actionPlaceholderTag), "style" to json("color" to Color.WHITE)))))
+//        }
+//        val uq = hrss.urlQueryBeforeRunningTest
+//        if (!uq.scrollToBottom || uq.scrollToBottom == "yes" || uq.scrollToBottom == "success") {
+//            kotlin.browser.window.requestAnimationFrame { kotlin.browser.document.body?.scrollTop = 99999 }
+//        }
+//
+//        val me: dynamic = json(
+//            "render" to {
+//                when {
+//                    scenarioName == undefined -> null
+//                    else -> div {
+//                        noStateContributions = true
+//                        style {
+//                            backgroundColor = Color.GREEN_700; color = Color.WHITE
+//                            marginTop(10); padding = "10px 10px"; textAlign = "center"; fontWeight = "bold"
+//                        }
+//
+//                        -div {
+//                            style { paddingBottom(10) }
+//                            -scenarioName
+//                            -div {
+//                                style { display = "flex"; justifyContent = "center" }
+//                                +links
+//                            }
+//                        }
+//
+//                        -div {
+//                            style { backgroundColor = Color.WHITE; color = Color.BLACK_BOOT; fontWeight = "normal"; textAlign = "left"; padding(5) }
+//                            -art.renderStepDescriptions()
+//                        }
+//                    }
+//                }
+//            }
+//        )
+//
+//        me
+//    })
 
-        val m = global.RegExp("\\s+([0-9a-z]{8})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{12})$").exec(scenarioName)
-        if (m != undefined) {
-            scenarioName = scenarioName.substring(0, m.index)
-            links.add(OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to Color.WHITE))))
+    DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(A(noStateContributions=true)){o->
+        o-Style(backgroundColor=Color.GREEN_700, color=Color.WHITE,
+                marginTop=10, padding="10px 10px", textAlign="center", fontWeight="bold")
+
+        o-kdiv(Style(paddingBottom=10)){o->
+            o-constructorName(scenario)
         }
-        if (art.actionPlaceholderTag != undefined) {
-            links.add(marginateLeft(10, OpenSourceCodeLink(json("where" to json("\$tag" to art.actionPlaceholderTag), "style" to json("color" to Color.WHITE)))))
+
+        o-kdiv{o->
+            o-Style(backgroundColor=Color.WHITE, color = Color.BLACK_BOOT,
+                    fontWeight="normal", textAlign="left", padding=5)
+            o-art.renderStepDescriptions()
         }
-        val uq = hrss.urlQueryBeforeRunningTest
-        if (!uq.scrollToBottom || uq.scrollToBottom == "yes" || uq.scrollToBottom == "success") {
-            kotlin.browser.window.requestAnimationFrame { kotlin.browser.document.body?.scrollTop = 99999 }
-        }
-
-        val me: dynamic = json(
-            "render" to {
-                when {
-                    scenarioName == undefined -> null
-                    else -> div {
-                        noStateContributions = true
-                        style {
-                            backgroundColor = Color.GREEN_700; color = Color.WHITE
-                            marginTop(10); padding = "10px 10px"; textAlign = "center"; fontWeight = "bold"
-                        }
-
-                        -div {
-                            style { paddingBottom(10) }
-                            -scenarioName
-                            -div {
-                                style { display = "flex"; justifyContent = "center" }
-                                +links
-                            }
-                        }
-
-                        -div {
-                            style { backgroundColor = Color.WHITE; color = Color.BLACK_BOOT; fontWeight = "normal"; textAlign = "left"; padding(5) }
-                            -art.renderStepDescriptions()
-                        }
-                    }
-                }
-            }
-        )
-
-        me
     })
 
-        DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), oldShitAsReactElementable(Shitus.spana(json(), testPassedPane.element)))
+    requestAnimationFrame {
+        jqbody.scrollTop(jq("#underFooter").offset().top - 60)
+    }
+
+//        DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), oldShitAsReactElementable(Shitus.spana(json(), testPassedPane.element)))
     }
 
 

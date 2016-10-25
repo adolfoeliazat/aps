@@ -26,9 +26,13 @@ class ElementBuilderFactory(val tag: String) {
     operator fun invoke(style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
         return invoke(A(), style, block)
     }
+
+    operator fun invoke(block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
+        return invoke(A(), Style(), block)
+    }
 }
 
-class ElementBuilder(val tag: String, val attrs: A, val style: Style) : ToReactElementable {
+class ElementBuilder(val tag: String, val attrs: A, var style: Style) : ToReactElementable {
 //    var onClick: ((MouseEvent) -> Unit)? = null
     val children = mutableListOf<ToReactElementable>()
 
@@ -38,18 +42,24 @@ class ElementBuilder(val tag: String, val attrs: A, val style: Style) : ToReactE
 //        return this
 //    }
 
-    operator fun minus(eb: ToReactElementable) {
-        children.add(eb)
+    operator fun minus(eb: ToReactElementable?) {
+        if (eb != null) children.add(eb)
     }
 
-    operator fun minus(s: String) {
-        minus(s.asReactElement())
+    operator fun minus(s: String?) {
+        if (s != null) minus(s.asReactElement())
     }
 
-    operator fun minus(re: ReactElement) {
-        minus(object:ToReactElementable {
-            override fun toReactElement() = re
-        })
+    operator fun minus(re: ReactElement?) {
+        if (re != null) minus(
+            object:ToReactElementable {
+                override fun toReactElement(): ReactElement = re
+            }
+        )
+    }
+
+    operator fun minus(newStyle: Style) {
+        style = newStyle
     }
 
     override fun toReactElement(): ReactElement = control.toReactElement()
@@ -71,25 +81,42 @@ class ElementBuilder(val tag: String, val attrs: A, val style: Style) : ToReactE
             }
         }
     }
+
 }
 
 data class Style(
+    var marginTop: Any? = null,
     var marginBottom: Any? = null,
+    var paddingBottom: Any? = null,
+    var padding: Any? = null,
+    var color: Any? = null,
     var backgroundColor: Any? = null,
     var borderBottom: String? = null,
     var textAlign: String? = null,
-    var fontWeight: String? = null
+    var fontWeight: String? = null,
+    var display: String? = null,
+    var justifyContent: String? = null
 ) {
     fun toReactStyle(): dynamic {
         return dyna{o->
+            // TODO:vgrechka Check padding, borderBottom, textAlign, fontWeight, display, justifyContent
+            checkNSI(marginTop, "marginTop")
             checkNSI(marginBottom, "marginBottom")
+            checkNSI(paddingBottom, "paddingBottom")
+            checkColor(color, "backgroundColor")
             checkColor(backgroundColor, "backgroundColor")
 
+            marginTop?.let {o.marginTop = it}
             marginBottom?.let {o.marginBottom = it}
+            paddingBottom?.let {o.paddingBottom = it}
+            color?.let {o.color = it.toString()}
             backgroundColor?.let {o.backgroundColor = it.toString()}
             borderBottom?.let {o.borderBottom = it}
             textAlign?.let {o.textAlign = it}
             fontWeight?.let {o.fontWeight = it}
+            padding?.let {o.padding = it}
+            display?.let {o.display = it}
+            justifyContent?.let {o.justifyContent = it}
         }
     }
 
