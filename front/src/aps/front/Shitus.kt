@@ -122,7 +122,7 @@ object Shitus {
         res
     }
 
-    val spancTitle: dynamic = ::jsFacing_spancTitle
+    val spancTitle = ::jsFacing_spancTitle
 
     fun statefulElement(ctor: (update: () -> Unit) -> ShitWithRenderFunction): dynamic /*ToReactElementable*/ {
 //    val ctor: (update: (then: () -> Unit) -> Unit) -> ShitWithRenderFunction = def.ctor
@@ -273,7 +273,7 @@ object Shitus {
 
 }
 
-fun jsFacing_spancTitle(def: dynamic): dynamic {
+fun jsFacing_spancTitle(def: dynamic): ReactElement {
     // #extract {title} from def
     val title = def.title
     jsFacing_deleteKey(def, "title")

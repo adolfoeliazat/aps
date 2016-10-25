@@ -11,28 +11,10 @@ import org.w3c.dom.events.*
 
 val kdiv = ElementBuilderFactory("div")
 val kspan = ElementBuilderFactory("span")
+val h3 = ElementBuilderFactory("h3")
 
-class ElementBuilderFactory(val tag: String) {
-    operator fun invoke(attrs: A, style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-        val builder = ElementBuilder(tag, attrs, style)
-        block?.let {it(builder)}
-        return builder
-    }
 
-    operator fun invoke(attrs: A, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-        return invoke(attrs, Style(), block)
-    }
-
-    operator fun invoke(style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-        return invoke(A(), style, block)
-    }
-
-    operator fun invoke(block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-        return invoke(A(), Style(), block)
-    }
-}
-
-class ElementBuilder(val tag: String, val attrs: A, var style: Style) : ToReactElementable {
+class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToReactElementable {
 //    var onClick: ((MouseEvent) -> Unit)? = null
     val children = mutableListOf<ToReactElementable>()
 

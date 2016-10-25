@@ -559,9 +559,44 @@ fun clogError(e: dynamic, contextMsg: dynamic) {
     })
 }
 
+fun pageHeader(title: String, className: String = "", labels: Iterable<dynamic> = listOf()): ToReactElementable {
+//    return kdiv(className="page-header ${className}", marginTop=0, marginBottom=15){o->
+//        o-h3(tame = "pageHeader", marginBottom = 0){o->
+//            o-Shitus.spancTitle(json("title" to title))
+//        }
+//    }
 
-
-
+    return kdiv(Attrs(className="page-header ${className}"), Style(marginTop=0, marginBottom=15)){ o->
+        o-h3(Attrs(tame="pageHeader"), Style(marginBottom=0)){ o->
+            o-Shitus.spancTitle(json("title" to title))
+//            /*...*/labels.mapIndexed {i, label ->
+//            val style = json(
+//                "fontSize" to "12px",
+//                "fontWeight" to "normal",
+//                "position" to "relative",
+//                "top" to "-4px",
+//                "left" to "8px",
+//                "display" to "inline",
+//                "padding" to ".2em .6em .3em",
+//                "lineHeight" to "1",
+//                "color" to "#fff",
+//                "textAlign" to "center",
+//                "whiteSpace" to "nowrap",
+//                "verticalAlign" to "baseline",
+//                "borderRadius" to ".25em"
+//            )
+//            if (label.level == "success") {
+//                global.Object.assign(style, json("background" to LIGHT_GREEN_700.toString()))
+//            } else {
+//                Shitus.raise("Weird pageHeader label level: ${label.level}")
+//            }
+//            return@mapIndexed Shitus.spana(json("tame" to "label${Shitus.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
+//                Shitus.spancTitle(json("title" to label.title))
+//            )
+//        }
+        }
+    }
+}
 
 
 

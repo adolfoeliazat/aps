@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import co.paralleluniverse.common.util.Tuple
 import java.io.*
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
@@ -19,7 +20,8 @@ fun main(args: Array<String>) {
     when (command) {
         "jooq" -> runJava("aps.back.GenerateJOOQKt").waitFor()
         "forever" -> Forever()
-        "lint" -> Lint()
+        "lint" -> LintShit()
+        "generate" -> GenerateShit()
         else -> bitch("Do your [$command] yourself")
     }
 }
@@ -98,7 +100,7 @@ class Forever {
 
 }
 
-class Lint {
+class LintShit {
     init {
         print("Linting your shit... ")
         visit(File("$APS_ROOT/front/src"))
@@ -111,7 +113,7 @@ class Lint {
         if (f.extension != "kt") return
 
         f.useLines {it.forEachIndexed {lineIndex, line ->
-            for (tag in listOf("kdiv", "kspan")) {
+            for (tag in listOf("kdiv", "kspan", "h3")) {
                 if (Regex("\\W$tag\\W").containsMatchIn(line)) {
                     if (line.trimEnd().endsWith("{")) {
                         val fname = f.path.substring(APS_ROOT.length)
@@ -122,6 +124,104 @@ class Lint {
                 }
             }
         }}
+    }
+}
+
+class GenerateShit {
+    init {
+        fun loadProps(path: String, beginSnippet: String, endSnippet: String): List<String> {
+            return mutableListOf<String>().applet {res->
+                File(path).useLines {lines->
+                    var readingProps = false; var doneReadingProps = false
+                    lines.saforEachIndexed {lineIndex, line ->
+                        try {
+                            if (!readingProps) {
+                                if (line.trimEnd().endsWith(beginSnippet)) readingProps = true
+                            } else {
+                                if (line.trim() == endSnippet) {
+                                    doneReadingProps = true
+                                    abort()
+                                }
+                                Regex("\\s+var ([^,]*),?$").find(line)?.let {
+                                    res.add(it.groups[1]?.value ?: wtf("group"))
+                                } ?: wtf("find")
+                            }
+                        } catch (e: Exception) {
+                            throw Exception("\nLine ${lineIndex + 1} in $path: " + e.message, e)
+                        }
+                    }
+                    if (!readingProps) wtf("I want [$beginSnippet] in $path")
+                    if (!doneReadingProps) wtf("I want [$endSnippet] in $path")
+                }
+            }
+        }
+
+        fun genParams(props: Iterable<String>) =
+            props.map {
+                "\n                        $it"
+            }
+            .joinToString(",")
+
+        fun genArgs(props: Iterable<String>) =
+            props.map {
+                val name = it.substring(0, it.indexOf(":"))
+                "\n                            $name=$name"
+            }
+            .joinToString(",")
+
+        print("Generating some shit for you... ")
+        val attrsProps = loadProps("$APS_ROOT/front/src/aps/front/Control2.kt", "class Attrs(", ")")
+        val styleProps = loadProps("$APS_ROOT/front/src/aps/front/new-shit.kt", "class Style(", ") {")
+        val code = StringBuilder()
+        code.append("""
+                operator fun invoke(${genParams(attrsProps)}, ${genParams(styleProps)},
+                        block: ((ElementBuilder) -> Unit)? = null): ElementBuilder
+                    = invoke(
+                        Attrs(${genArgs(attrsProps)}),
+                        Style(${genArgs(styleProps)}),
+                        block)
+        """)
+
+        File("$APS_ROOT/front/src/aps/front/ElementBuilderFactory.kt").writeText(dedent("""
+            /*
+             * APS
+             *
+             * (C) Copyright 2015-2016 Vladimir Grechka
+             *
+             * SHIT IN THIS FILE IS GENERATED
+             */
+
+            package aps.front
+
+            class ElementBuilderFactory(val tag: String) {
+                operator fun invoke(attrs: Attrs, style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
+                    val builder = ElementBuilder(tag, attrs, style)
+                    block?.let {it(builder)}
+                    return builder
+                }
+
+                operator fun invoke(attrs: Attrs, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
+                    return invoke(attrs, Style(), block)
+                }
+
+                operator fun invoke(style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
+                    return invoke(Attrs(), style, block)
+                }
+
+                operator fun invoke(block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
+                    return invoke(Attrs(), Style(), block)
+                }
+
+                $code
+            }
+        """))
+        println("COOL")
+    }
+
+    companion object {
+        @JvmStatic fun main(args: Array<String>) {
+            GenerateShit()
+        }
     }
 }
 

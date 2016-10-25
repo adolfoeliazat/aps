@@ -148,8 +148,8 @@ class AdminUsersPage(val ui: LegacyUIShit) {
                     // #extract {headingActionItems, body} from def
                     val headingActionItems = def.headingActionItems; val body = def.body
 
-                    renderedThing.setContent(kdiv(A(tame=sufindex("item", index))) {o->
-                        o- kdiv(A(tame="heading", id=headingID), Style(marginBottom=10, backgroundColor=BLUE_GRAY_50, borderBottom="1px solid ${BLUE_GRAY_100})")) {o->
+                    renderedThing.setContent(kdiv(Attrs(tame=sufindex("item", index))) { o->
+                        o- kdiv(Attrs(tame="heading", id=headingID), Style(marginBottom=10, backgroundColor=BLUE_GRAY_50, borderBottom="1px solid ${BLUE_GRAY_100})")) { o->
                             o- kspan(Style(fontWeight="normal")) {o->
                                 o- spanc("title", user.firstName + " " + user.lastName) {style {fontSize = "135%"}}
                                 o- spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}

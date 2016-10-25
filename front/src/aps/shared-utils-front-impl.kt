@@ -220,6 +220,9 @@ annotation class Front
     val urlQuery: Map<String, String>
     var currentPage: Any?
     fun loadPageForURL(): Promise<Unit>
+    fun setRootContent(re: ReactElement)
+    var updatePage: () -> Unit
+    var updatePageHeader: () -> Unit
 }
 
 @Front class SelectField<T>(
@@ -232,7 +235,7 @@ where T : Enum<T>, T : Titled {
 
     override var error: String? = null
 
-    val select = Select(A(tamy=""), values, null,
+    val select = Select(Attrs(tamy=""), values, null,
         onChange = {
             form.fieldChanged()
         },

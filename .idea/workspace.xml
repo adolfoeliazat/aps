@@ -7,6 +7,8 @@
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" line="153" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/art.kt" line="1248" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/art.kt" line="332" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/SignInPage.kt" line="11" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/igniter.kt" line="144" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
@@ -70,82 +72,89 @@
       <file leaf-file-name="Run.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/back/src/aps/back/Run.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="107" column="23" selection-start-line="107" selection-start-column="23" selection-end-line="107" selection-end-column="23" />
+            <state relative-caret-position="567">
+              <caret line="211" column="38" selection-start-line="211" selection-start-column="38" selection-end-line="211" selection-end-column="38" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#80#212#0" expanded="true" />
+                <element signature="e#80#257#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Process.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/system/Process.kt">
+      <file leaf-file-name="ElementBuilderFactory.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/ElementBuilderFactory.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+            <state relative-caret-position="243">
+              <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shared-utils.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="351">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Regex.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime.jar!/kotlin/text/Regex.class">
+      <file leaf-file-name="Standard.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/util/Standard.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+            <state relative-caret-position="351">
+              <caret line="54" column="27" selection-start-line="54" selection-start-column="27" selection-end-line="54" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StringsJVM.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/text/StringsJVM.kt">
+      <file leaf-file-name="new-shit.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="145">
+              <caret line="69" column="30" selection-start-line="69" selection-start-column="30" selection-end-line="69" selection-end-column="30" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#81#121#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Regex.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/text/regex/Regex.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="294">
-              <caret line="170" column="25" selection-start-line="170" selection-start-column="25" selection-end-line="170" selection-end-column="25" />
+              <caret line="86" column="18" selection-start-line="86" selection-start-column="18" selection-end-line="86" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sequences.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/collections/Sequences.kt">
+      <file leaf-file-name="Library.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/Library.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="783">
-              <caret line="32" column="47" selection-start-line="32" selection-start-column="47" selection-end-line="32" selection-end-column="47" />
+            <state relative-caret-position="270">
+              <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sequence.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/collections/Sequence.kt">
+      <file leaf-file-name="Control2.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Control2.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileReadWrite.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/io/FileReadWrite.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReadWrite.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/io/ReadWrite.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="62" column="42" selection-start-line="62" selection-start-column="42" selection-end-line="62" selection-end-column="42" />
-              <folding />
+            <state relative-caret-position="378">
+              <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -153,18 +162,18 @@
       <file leaf-file-name="shared-utils-back-impl.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
+            <state relative-caret-position="243">
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="art.kt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
+      <file leaf-file-name="MatchResult.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/text/regex/MatchResult.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="1248" column="4" selection-start-line="1248" selection-start-column="4" selection-end-line="1248" selection-end-column="4" />
+            <state relative-caret-position="294">
+              <caret line="56" column="32" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -202,13 +211,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/front/src/aps/front/hot-code.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/navbar.kt" />
-        <option value="$PROJECT_DIR$/front/kotlin-hack.js" />
         <option value="$PROJECT_DIR$/front/src/aps/front/DebugControlStickers.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
-        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/link.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/DebugMailbox.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/DebugStickers.kt" />
@@ -232,27 +236,32 @@
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Select.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/Control2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-killme.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Form.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/SignInPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/igniter.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Melinda.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
         <option value="$PROJECT_DIR$/back/build.xml" />
-        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/Shitus.kt" />
         <option value="$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/Run.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/art.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" />
+        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/igniter.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/SignInPage.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/UI.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/Shitus.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/GenerateJOOQ.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
+        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/ElementBuilderFactory.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/Control2.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/Run.kt" />
       </list>
     </option>
   </component>
@@ -352,14 +361,14 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Kotlin" />
     <property name="settings.editor.splitter.proportion" value="0.21995465" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15407854" />
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="regex&#9;FILE&#9;jar://E:/work/aps/lib/kotlin-jvm/kotlin-runtime.jar!/kotlin/text/Regex.class&#10;lint&#9;null&#9;null&#10;APS_ROOT&#9;null&#9;null&#10;share&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;wa&#9;FILE&#9;file://E:/work/aps/tools/src/aps/WatchAndEnhanceJS.kt&#10;runkt&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/Run.kt&#10;run.cmd&#9;FILE&#9;file://E:/work/aps/back/run.cmd&#10;build.xml&#9;FILE&#9;file://E:/work/aps/back/build.xml&#10;legacyui&#9;null&#9;null&#10;gertru&#9;null&#9;null&#10;inlineonly&#9;null&#9;null&#10;EBui&#9;null&#9;null&#10;debugpanes&#9;null&#9;null&#10;geturlq&#9;null&#9;null&#10;parsequery&#9;null&#9;null&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;ignitetest&#9;null&#9;null&#10;art&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/art.kt&#10;s-u&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;signinpage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;implementcontrolshit&#9;null&#9;null&#10;kdiv&#9;null&#9;null&#10;shitus&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus.kt&#10;f-s&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;signp&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;control2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Control2.kt&#10;select&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Select.kt&#10;jsfacing_diva&#9;null&#9;null&#10;A&#9;null&#9;null&#10;checknsi&#9;null&#9;null&#10;callzim&#9;null&#9;null&#10;elementbuilder&#9;null&#9;null&#10;userspage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt&#10;AUSp&#9;PSI&#9;JAVA://com.sun.media.jfxmedia.effects.AudioSpectrum&#10;limpopo&#9;null&#9;null&#10;run.js&#9;FILE&#9;file://E:/work/aps/kotlin-js-playground/run.js&#10;jspl&#9;FILE&#9;file://E:/work/aps/kotlin-js-playground/src/kotlin-js-playground.kt&#10;selectfiel&#9;null&#9;null&#10;jvmp&#9;FILE&#9;file://E:/work/aps/kotlin-jvm-playground/src/kotlin-jvm-playground.kt&#10;impl&#9;null&#9;null&#10;ics2&#9;null&#9;null&#10;implementcon&#9;null&#9;null&#10;nore&#9;null&#9;null&#10;new-shit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/new-shit.kt&#10;control&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Control.kt&#10;statefuk&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/StatefulElement.kt&#10;mouseevent&#9;PSI&#9;JAVA://org.w3c.dom.events.MouseEvent&#10;jvm&#9;FILE&#9;file://E:/work/aps/kotlin-jvm-playground/src/kotlin-jvm-playground.kt&#10;tetete&#9;null&#9;null&#10;asreactelem&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="control2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Control2.kt&#10;fac&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/ElementBuilderFactory.kt&#10;abor&#9;null&#9;null&#10;matchgro&#9;null&#9;null&#10;s-u&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;tuple&#9;FILE&#9;jar://E:/work/aps/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/util/Tuples.kt&#10;dedent&#9;null&#9;null&#10;generateshit&#9;null&#9;null&#10;runkt&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/Run.kt&#10;eleme&#9;null&#9;null&#10;lint&#9;null&#9;null&#10;f-s&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;setpage&#9;null&#9;null&#10;f-sh&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;signinpa&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;regex&#9;FILE&#9;jar://E:/work/aps/lib/kotlin-jvm/kotlin-runtime.jar!/kotlin/text/Regex.class&#10;APS_ROOT&#9;null&#9;null&#10;share&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;wa&#9;FILE&#9;file://E:/work/aps/tools/src/aps/WatchAndEnhanceJS.kt&#10;run.cmd&#9;FILE&#9;file://E:/work/aps/back/run.cmd&#10;build.xml&#9;FILE&#9;file://E:/work/aps/back/build.xml&#10;legacyui&#9;null&#9;null&#10;gertru&#9;null&#9;null&#10;inlineonly&#9;null&#9;null&#10;EBui&#9;null&#9;null&#10;debugpanes&#9;null&#9;null&#10;geturlq&#9;null&#9;null&#10;parsequery&#9;null&#9;null&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;ignitetest&#9;null&#9;null&#10;art&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/art.kt&#10;signinpage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;implementcontrolshit&#9;null&#9;null&#10;kdiv&#9;null&#9;null&#10;shitus&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus.kt&#10;signp&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;select&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Select.kt&#10;jsfacing_diva&#9;null&#9;null&#10;A&#9;null&#9;null&#10;checknsi&#9;null&#9;null&#10;callzim&#9;null&#9;null&#10;elementbuilder&#9;null&#9;null&#10;userspage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt&#10;AUSp&#9;PSI&#9;JAVA://com.sun.media.jfxmedia.effects.AudioSpectrum&#10;limpopo&#9;null&#9;null&#10;run.js&#9;FILE&#9;file://E:/work/aps/kotlin-js-playground/run.js&#10;jspl&#9;FILE&#9;file://E:/work/aps/kotlin-js-playground/src/kotlin-js-playground.kt&#10;selectfiel&#9;null&#9;null&#10;jvmp&#9;FILE&#9;file://E:/work/aps/kotlin-jvm-playground/src/kotlin-jvm-playground.kt&#10;impl&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
@@ -380,7 +389,7 @@
       <recent name="E:\work\aps\front" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.Kotlin_jvm_playgroundKt">
+  <component name="RunManager" selected="Kotlin.aps.back.GenerateShit">
     <configuration default="false" name="aps.back.ScratchBackKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="aps.back.ScratchBackKt" />
@@ -404,6 +413,19 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="kotlin-jvm-playground" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="aps.back.GenerateShit" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="aps.back.GenerateShit" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="back" />
       <envs />
       <method />
     </configuration>
@@ -686,16 +708,18 @@
       <envs />
       <method />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Ant Target.make-static-sites" />
       <item index="1" class="java.lang.String" itemvalue="Kotlin script.scratch.kts" />
       <item index="2" class="java.lang.String" itemvalue="Kotlin.aps.back.ScratchBackKt" />
       <item index="3" class="java.lang.String" itemvalue="Kotlin.Kotlin_jvm_playgroundKt" />
+      <item index="4" class="java.lang.String" itemvalue="Kotlin.aps.back.GenerateShit" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Kotlin.Kotlin_jvm_playgroundKt" />
-        <item index="1" class="java.lang.String" itemvalue="Kotlin.aps.back.ScratchBackKt" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Kotlin.aps.back.GenerateShit" />
+        <item index="1" class="java.lang.String" itemvalue="Kotlin.Kotlin_jvm_playgroundKt" />
+        <item index="2" class="java.lang.String" itemvalue="Kotlin.aps.back.ScratchBackKt" />
       </list>
     </recent_temporary>
   </component>
@@ -734,7 +758,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32603937" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42231947" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24808744" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32677597" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24839056" sideWeight="0.4918033" order="0" side_tool="false" content_ui="combo" />
@@ -788,85 +812,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/lib/kotlin-js/kotlin-jslib-sources.jar!/kotlin/util/Preconditions.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="79" column="55" selection-start-line="79" selection-start-column="55" selection-end-line="79" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/kotlin-js/kotlin-jslib-sources.jar!/jquery/common.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1107">
-          <caret line="41" column="15" selection-start-line="41" selection-start-column="15" selection-end-line="41" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kotlin-jvm-playground/src/kotlin-jvm-playground.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/kotlin-js/kotlin-jslib-sources.jar!/kotlin/util/Standard.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1296">
-          <caret line="48" column="27" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="261" column="0" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kotlin-js-playground/run.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="263" column="0" selection-start-line="263" selection-start-column="0" selection-end-line="263" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/opt/jdk1.8.0_102/javafx-src.zip!/com/sun/media/jfxmedia/effects/AudioSpectrum.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kotlin-js-playground/src/kotlin-js-playground.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/scratch.kts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/Control.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
@@ -907,44 +852,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/SignInPage.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
-          <folding>
-            <element signature="e#81#112#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/kotlin-js/kotlin-jslib-sources.jar!/core/core.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="27" column="11" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-shebang.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="204" column="11" selection-start-line="204" selection-start-column="11" selection-end-line="204" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/igniter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="284" column="27" selection-start-line="284" selection-start-column="27" selection-end-line="284" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -983,27 +894,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Control2.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="99" column="12" selection-start-line="99" selection-start-column="12" selection-end-line="99" selection-end-column="12" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#81#121#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/annotation/Annotations.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -1027,14 +917,6 @@
           <folding>
             <element signature="e#81#141#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="206" column="18" selection-start-line="206" selection-start-column="18" selection-end-line="206" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1090,22 +972,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Shitus.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="467" column="56" selection-start-line="467" selection-start-column="56" selection-end-line="467" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -1130,34 +996,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/io/ReadWrite.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
           <caret line="62" column="42" selection-start-line="62" selection-start-column="42" selection-end-line="62" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/io/FileReadWrite.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/collections/Sequence.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
           <folding />
         </state>
       </provider>
@@ -1178,14 +1020,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime.jar!/kotlin/text/Regex.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/system/Process.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
@@ -1194,22 +1028,222 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Run.kt">
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="107" column="23" selection-start-line="107" selection-start-column="23" selection-end-line="107" selection-end-column="23" />
+        <state relative-caret-position="135">
+          <caret line="1248" column="4" selection-start-line="1248" selection-start-column="4" selection-end-line="1248" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="54" column="11" selection-start-line="54" selection-start-column="11" selection-end-line="54" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="224" column="23" selection-start-line="224" selection-start-column="23" selection-end-line="224" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/igniter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="140" column="8" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="8" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#80#212#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/UI.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="1248" column="4" selection-start-line="1248" selection-start-column="4" selection-end-line="1248" selection-end-column="4" />
+        <state relative-caret-position="81">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#81#133#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/SignInPage.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding>
+            <element signature="e#81#112#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Shitus.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="124" column="18" selection-start-line="124" selection-start-column="18" selection-end-line="124" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/io/FileReadWrite.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="85" column="16" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-shebang.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="561" column="0" selection-start-line="561" selection-start-column="0" selection-end-line="561" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/GenerateJOOQ.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#80#211#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/util/Tuples.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime.jar!/kotlin/text/Regex.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/generated/_Sequences.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="859" column="0" selection-start-line="859" selection-start-column="0" selection-end-line="859" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/collections/Sequence.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="389">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/Library.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/text/regex/Regex.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="86" column="18" selection-start-line="86" selection-start-column="18" selection-end-line="86" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/text/regex/MatchResult.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="56" column="32" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-jvm/kotlin-runtime-sources.jar!/kotlin/util/Standard.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="54" column="27" selection-start-line="54" selection-start-column="27" selection-end-line="54" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="69" column="30" selection-start-line="69" selection-start-column="30" selection-end-line="69" selection-end-column="30" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#81#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Control2.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Run.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="211" column="38" selection-start-line="211" selection-start-column="38" selection-end-line="211" selection-end-column="38" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#80#257#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/ElementBuilderFactory.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

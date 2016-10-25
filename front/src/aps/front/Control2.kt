@@ -8,20 +8,20 @@ package aps.front
 
 import aps.*
 
-class A(
-    val tame: String? = null,
-    val tamy: String? = null,
+class Attrs(
+    var tame: String? = null,
+    var tamy: String? = null,
     var shame: String? = null,
-    val shamy: String? = null,
-    val tamyShamy: String? = null,
-    val controlTypeName: String? = null,
-    val id: String? = null,
-    val tattrs: Json? = null,
+    var shamy: String? = null,
+    var tamyShamy: String? = null,
+    var controlTypeName: String? = null,
+    var id: String? = null,
+    var tattrs: Json? = null,
     var noStateContributions: Boolean? = null,
-    val className: String? = null
+    var className: String? = null
 )
 
-abstract class Control2(val attrs: A) : ToReactElementable {
+abstract class Control2(val attrs: Attrs) : ToReactElementable {
     abstract fun defaultControlTypeName(): String
     abstract fun render(): ReactElement
 

@@ -308,7 +308,7 @@ object art {
 
         if (condition) return
 
-        val assertionErrorPane = object : Control2(A()) {
+        val assertionErrorPane = object : Control2(Attrs()) {
             override fun defaultControlTypeName() = "assertionErrorPane"
 
             var visible = false
@@ -1246,7 +1246,7 @@ fun openTestPassedPane(def: dynamic) {
 //        me
 //    })
 
-    DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(A(noStateContributions=true)){o->
+    DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(Attrs(noStateContributions=true)){ o->
         o-Style(backgroundColor=Color.GREEN_700, color=Color.WHITE,
                 marginTop=10, padding="10px 10px", textAlign="center", fontWeight="bold")
 

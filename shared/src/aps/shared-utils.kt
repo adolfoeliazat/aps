@@ -12,23 +12,32 @@ fun sayHi() = println("Hi, fuck you")
 
 val APS_ROOT: String get() = "e:/work/aps"
 
-class Abortion : Throwable()
+class AbortException : Throwable()
+fun abort() {throw AbortException()}
 
-val abort: Nothing get() {printStack(); throw Exception("qwe")}
-//val abort: Nothing get() = throw Abortion()
+class SkipException : Throwable()
+fun skip() {throw SkipException()}
 
-inline fun abort(block: () -> Unit) {
-    block()
-    throw Abortion()
-}
-
-inline fun arun(block: () -> Unit) {
-    try {
-        block()
-    } catch (e: Abortion) {
-        // That's OK
+inline fun <T> Sequence<T>.saforEachIndexed(action: (Int, T) -> Unit): Unit {
+    var index = 0
+    for (item in this) {
+        try {
+            action(index++, item)
+        } catch (e: AbortException) {
+            break
+        } catch (e: SkipException) {
+            continue
+        }
     }
 }
+
+//inline fun arun(block: () -> Unit) {
+//    try {
+//        block()
+//    } catch (e: Abortion) {
+//        // That's OK
+//    }
+//}
 
 inline fun <T, FRet> T.applet(f: (T) -> FRet): T { f(this); return this }
 

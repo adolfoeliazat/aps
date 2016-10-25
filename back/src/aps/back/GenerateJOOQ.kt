@@ -8,6 +8,7 @@ package aps.back
 
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.*
+import org.jooq.util.jaxb.Generate
 import org.jooq.util.jaxb.Target
 
 fun main(args: Array<String>) {

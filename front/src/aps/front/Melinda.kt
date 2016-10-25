@@ -179,7 +179,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
         if (filterSelectValues != null) {
-            filterSelect = Select(A(tamyShamy = "filter"),
+            filterSelect = Select(Attrs(tamyShamy = "filter"),
                 filterSelectValues, filter,
                 isAction = true,
                 style = json("width" to 160),
@@ -202,7 +202,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
         if (hasOrderingSelect) {
-            orderingSelect = Select(A(tamyShamy = "ordering"),
+            orderingSelect = Select(Attrs(tamyShamy = "ordering"),
                 Ordering.values(), ordering,
                 isAction = true,
                 style = json("width" to 160),

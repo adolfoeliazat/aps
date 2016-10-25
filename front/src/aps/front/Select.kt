@@ -28,7 +28,7 @@ class statefulElement(ctor: () -> ShitWithRenderFunction): ToReactElementable {
 }
 
 class Select<E>(
-    attrs: A,
+    attrs: Attrs,
     val values: Array<E>,
     val initialValue: E?,
     val isAction: Boolean = false,

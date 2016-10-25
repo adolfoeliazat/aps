@@ -142,6 +142,8 @@ fun makeUIShitIgniter(def: dynamic): dynamic {
             var impl: dynamic = null
 
             fun initUIFunctions(ui: dynamic) {
+                val ui2 = UI2(ui)
+
                 val clientKind = global.CLIENT_KIND
                 global.Object.assign(ui, json(
                     "pollLiveStatus" to {"__async"
@@ -339,7 +341,7 @@ fun makeUIShitIgniter(def: dynamic): dynamic {
                         ui.updateNavbar()
                     },
 
-                    "loadSignInPage" to KotlinShit.loadSignInPageCtor(ui),
+                    "loadSignInPage" to KotlinShit.loadSignInPageCtor(ui, ui2),
 
                     "loadSignUpPage" to {"__async"
                         __await(KotlinShit.loadSignUpPage())

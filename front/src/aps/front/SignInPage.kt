@@ -9,16 +9,16 @@ package aps.front
 import aps.*
 import java.util.*
 
-fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
+fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit, ui2: UI2): dynamic {
     fun loadSignInPage() {
-        ui.setPage(json(
-            "header" to Shitus.pageHeader(json("title" to t("Sign In", "Вход"))),
-            "body" to kdiv{o->
-                o- nif(ui.signedUpOK) {preludeWithGreenCheck(json("title" to t(
+        ui2.setPage(
+            header = pageHeader(t("Sign In", "Вход")),
+            body = kdiv{o->
+                o-nif(ui.signedUpOK) {preludeWithGreenCheck(json("title" to t(
                     "Cool. You have an account now. We sent you email with password.",
                     "Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.")))}
 
-                o- FormMatumba<SignInWithPasswordRequest, SignInWithPasswordRequest.Response>(FormSpec(
+                o-FormMatumba<SignInWithPasswordRequest, SignInWithPasswordRequest.Response>(FormSpec(
                     SignInWithPasswordRequest(),
                     ui,
                     primaryButtonTitle = t("Sign In", "Войти"),
@@ -39,15 +39,15 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit): dynamic {
                     }
                 ))
 
-                o- nif(!ui.signedUpOK) {kdiv{o->
-                    o- hr()
-                    o- kdiv(Style(textAlign="left")) {o->
-                        o- t("TOTE", "Как? Еще нет аккаунта? ")
-                        o- ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true))
+                o-nif(!ui.signedUpOK) {kdiv{o->
+                    o-hr()
+                    o-kdiv(Style(textAlign="left")) {o->
+                        o-t("TOTE", "Как? Еще нет аккаунта? ")
+                        o-ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true))
                     }
                 }}
-            }.toReactElement()
-        ))
+            }
+        )
     }
 
     return ::loadSignInPage
