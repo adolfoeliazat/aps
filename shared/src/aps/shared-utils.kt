@@ -12,6 +12,7 @@ fun sayHi() = println("Hi, fuck you")
 
 val APS_ROOT: String get() = "e:/work/aps"
 val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak"
+val TMP_DIR: String get() = "c:/tmp/aps-tmp"
 
 class AbortException : Throwable()
 fun abort() {throw AbortException()}

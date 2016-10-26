@@ -66,6 +66,7 @@ class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToRe
 
 }
 
+@MixableType
 data class Style(
     var marginTop: Any? = null,
     var marginBottom: Any? = null,

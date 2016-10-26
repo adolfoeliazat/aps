@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 
+@MixableType
 class Attrs(
     var tame: String? = null,
     var tamy: String? = null,

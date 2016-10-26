@@ -90,10 +90,48 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
 }
 
 fun jsFacing_pageLink(ui: dynamic, def: dynamic) {
-    Shitus.raise("Kill me please, i don’t deserve living")
+    Shitus.raise("Kill me please, I don’t deserve living")
 }
 
-
+@GenerateSignatureMixes
+fun urlLink(title: String,
+            url: String,
+            delayActionForFanciness: Boolean = false,
+            blinkOpts: dynamic = null,
+            @Mix attrs: Attrs = Attrs(),
+            @Mix style: Style = Style()
+): ToReactElementable {
+    imf("urlLink")
+//    val id = puid()
+//
+//    val linkDef: dynamic = json(
+//        "controlTypeName" to "urlLink",
+//        "style" to style,
+//        "id" to id,
+//        "onClick" to {"__async"
+//            effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
+//            if (name != null) {
+//                Shitus.byid(id).css("text-decoration", "none")
+////                TestGlobal["link_" + name + "_blinks"] = true
+//            }
+//
+//            if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
+//                __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
+//            }
+//
+//            __await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {"__async"
+//                __await<dynamic>(ui.pushNavigate(url))
+//            })))
+//
+//            effects.blinkOff()
+//            if (name) {
+//                Shitus.byid(id).css("text-decoration", "")
+////                TestGlobal["link_" + name + "_blinks"] = false
+//            }
+//        })
+//
+//    return Shitus.link(Shitus.asn1(linkDef, def))
+}
 
 
 

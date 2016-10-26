@@ -560,14 +560,8 @@ fun clogError(e: dynamic, contextMsg: dynamic) {
 }
 
 fun pageHeader(title: String, className: String = "", labels: Iterable<dynamic> = listOf()): ToReactElementable {
-//    return kdiv(className="page-header ${className}", marginTop=0, marginBottom=15){o->
-//        o-h3(tame = "pageHeader", marginBottom = 0){o->
-//            o-Shitus.spancTitle(json("title" to title))
-//        }
-//    }
-
-    return kdiv(Attrs(className="page-header ${className}"), Style(marginTop=0, marginBottom=15)){ o->
-        o-h3(Attrs(tame="pageHeader"), Style(marginBottom=0)){ o->
+    return kdiv(className="page-header ${className}", marginTop=0, marginBottom=15){o->
+        o-h3(tame="pageHeader", marginBottom=0){o->
             o-Shitus.spancTitle(json("title" to title))
 //            /*...*/labels.mapIndexed {i, label ->
 //            val style = json(
