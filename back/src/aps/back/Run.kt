@@ -11,6 +11,7 @@ import co.paralleluniverse.common.util.Tuple
 import java.io.*
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
+import java.time.LocalDateTime
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
@@ -172,49 +173,30 @@ class GenerateShit {
         print("Generating some shit for you... ")
         val attrsProps = loadProps("$APS_ROOT/front/src/aps/front/Control2.kt", "class Attrs(", ")")
         val styleProps = loadProps("$APS_ROOT/front/src/aps/front/new-shit.kt", "class Style(", ") {")
-        val code = StringBuilder()
-        code.append("""
-                operator fun invoke(${genParams(attrsProps)}, ${genParams(styleProps)},
-                        block: ((ElementBuilder) -> Unit)? = null): ElementBuilder
-                    = invoke(
-                        Attrs(${genArgs(attrsProps)}),
-                        Style(${genArgs(styleProps)}),
-                        block)
-        """)
+        val newCode = reindent(4, """
+            operator fun invoke(${genParams(attrsProps)}, ${genParams(styleProps)},
+                    block: ((ElementBuilder) -> Unit)? = null): ElementBuilder
+                = invoke(
+                    Attrs(${genArgs(attrsProps)}),
+                    Style(${genArgs(styleProps)}),
+                    block)
+        """) + "\n"
 
-        File("$APS_ROOT/front/src/aps/front/ElementBuilderFactory.kt").writeText(dedent("""
-            /*
-             * APS
-             *
-             * (C) Copyright 2015-2016 Vladimir Grechka
-             *
-             * SHIT IN THIS FILE IS GENERATED
-             */
+        val file = File("$APS_ROOT/front/src/aps/front/ElementBuilderFactory.kt")
+        val currentCode = file.readText()
+        val stamp = LocalDateTime.now().format(PG_LOCAL_DATE_TIME).replace(Regex("[ :\\.]"), "-")
+        File("$GENERATOR_BAK_DIR/ElementBuilderFactory.kt--$stamp").writeText(currentCode)
+        val beginMarker = "//---------- BEGIN GENERATED SHIT { ----------"
+        val beginMarkerIndex = currentCode.indexOf(beginMarker)
+        if (beginMarkerIndex == -1) wtf("No beginMarkerIndex in ${file.path}")
+        val endMarker = "    //---------- END GENERATED SHIT } ----------"
+        val endMarkerIndex = currentCode.indexOf(endMarker)
+        if (endMarkerIndex == -1) wtf("No endMarkerIndex in ${file.path}")
+        val before = currentCode.substring(0, beginMarkerIndex + beginMarker.length)
+        val after = currentCode.substring(endMarkerIndex)
+        File("$APS_ROOT/front/src/aps/front/ElementBuilderFactory.kt").writeText(
+            before + "\n\n" + newCode + "\n" + after)
 
-            package aps.front
-
-            class ElementBuilderFactory(val tag: String) {
-                operator fun invoke(attrs: Attrs, style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-                    val builder = ElementBuilder(tag, attrs, style)
-                    block?.let {it(builder)}
-                    return builder
-                }
-
-                operator fun invoke(attrs: Attrs, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-                    return invoke(attrs, Style(), block)
-                }
-
-                operator fun invoke(style: Style, block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-                    return invoke(Attrs(), style, block)
-                }
-
-                operator fun invoke(block: ((ElementBuilder) -> Unit)? = null): ElementBuilder {
-                    return invoke(Attrs(), Style(), block)
-                }
-
-                $code
-            }
-        """))
         println("COOL")
     }
 

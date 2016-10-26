@@ -11,6 +11,7 @@ import kotlin.reflect.KProperty
 fun sayHi() = println("Hi, fuck you")
 
 val APS_ROOT: String get() = "e:/work/aps"
+val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak"
 
 class AbortException : Throwable()
 fun abort() {throw AbortException()}
@@ -130,6 +131,10 @@ fun dedent(it: String): String {
         if (line.trim().isBlank()) ""
         else line.substring(minIndent)
     }.joinToString("\n")
+}
+
+fun reindent(newIndent: Int, it: String): String {
+    return dedent(it).split("\n").joinToString("\n") {" ".repeat(newIndent) + it}
 }
 
 var _puid = 1L
