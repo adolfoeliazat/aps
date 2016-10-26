@@ -1246,11 +1246,11 @@ fun openTestPassedPane(def: dynamic) {
 //        me
 //    })
 
-    DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(Attrs(noStateContributions=true)){ o->
+    DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(noStateContributions=true){o->
         o-Style(backgroundColor=Color.GREEN_700, color=Color.WHITE,
                 marginTop=10, padding="10px 10px", textAlign="center", fontWeight="bold")
 
-        o-kdiv(Style(paddingBottom=10)){o->
+        o-kdiv(paddingBottom=10){o->
             o-constructorName(scenario)
         }
 
