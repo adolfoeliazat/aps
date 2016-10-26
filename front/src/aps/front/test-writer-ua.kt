@@ -583,7 +583,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     "TextField-password.Input.type" to "password",
                     "TextField-password.label" to "Пароль",
                     "button-primary.title" to "Войти",
-                    "link-createAccount.title" to "Срочно создать!",
+                    "urlLink-createAccount.title" to "Срочно создать!",
                     "pageHeader.title" to "Вход",
                     "topNavLeft.TopNavItem-i000.shame" to "TopNavItem-why",
                     "topNavLeft.TopNavItem-i000.title" to "Почему мы?",

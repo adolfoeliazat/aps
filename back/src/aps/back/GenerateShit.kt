@@ -85,6 +85,7 @@ class GenerateShit {
 
         import aps.*
         import aps.front.*
+        import org.w3c.dom.events.*
 
     """) + "\n")
 

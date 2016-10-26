@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import org.w3c.dom.events.MouseEvent
 
 fun jsFacing_link(def: Json): ReactElement {
     var content: dynamic = def["content"]
@@ -94,45 +95,86 @@ fun jsFacing_pageLink(ui: dynamic, def: dynamic) {
 }
 
 @GenerateSignatureMixes
-fun urlLink(title: String,
-            url: String,
+fun urlLink(url: String,
             delayActionForFanciness: Boolean = false,
             blinkOpts: dynamic = null,
+            @Mix linkParams: LinkParams,
             @Mix attrs: Attrs = Attrs(),
             @Mix style: Style = Style()
 ): ToReactElementable {
-    imf("urlLink")
-//    val id = puid()
-//
-//    val linkDef: dynamic = json(
-//        "controlTypeName" to "urlLink",
-//        "style" to style,
-//        "id" to id,
-//        "onClick" to {"__async"
-//            effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
-//            if (name != null) {
-//                Shitus.byid(id).css("text-decoration", "none")
-////                TestGlobal["link_" + name + "_blinks"] = true
-//            }
-//
-//            if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
-//                __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
-//            }
-//
-//            __await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {"__async"
-//                __await<dynamic>(ui.pushNavigate(url))
-//            })))
-//
-//            effects.blinkOff()
-//            if (name) {
-//                Shitus.byid(id).css("text-decoration", "")
-////                TestGlobal["link_" + name + "_blinks"] = false
-//            }
-//        })
-//
-//    return Shitus.link(Shitus.asn1(linkDef, def))
+    val ui = hrss.browser.ui
+    val id = puid()
+
+    return link(
+        linkParams,
+        attrs.copy(
+            controlTypeName = attrs.controlTypeName ?: "urlLink",
+            id = id,
+            onClicka = {"__async"
+                effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
+                Shitus.byid(id).css("text-decoration", "none")
+
+                if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
+                    __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
+                }
+
+                __await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {"__async"
+                    __await<dynamic>(ui.pushNavigate(url))
+                })))
+
+                effects.blinkOff()
+                Shitus.byid(id).css("text-decoration", "")
+            }
+        ),
+        style
+    )
 }
 
+@MixableType
+data class LinkParams(
+    val content: ToReactElementable? = null,
+    val title: String? = null
+)
+
+@GenerateSignatureMixes
+fun link(@Mix params: LinkParams,
+         @Mix attrs: Attrs = Attrs(),
+         @Mix style: Style = Style()
+): ToReactElementable {
+    check(params.content != null || params.title != null) {"Either content or title"}
+
+    val content = params.content ?: oldShitAsReactElementable(jsFacing_spancTitle(json("title" to params.title)))
+    return object:Control2(attrs) {
+        override fun defaultControlTypeName() = "link"
+
+        override fun render(): ReactElement {
+            return Shitus.aa(
+                json("id" to elementID,
+                     "className" to attrs.className,
+                     "style" to style.toReactStyle(),
+                     "href" to "#",
+                     "onMouseEnter" to {e: MouseEvent -> "__async"
+                         attrs.onMouseEnter?.let {it(e)}
+                         attrs.onMouseEntera?.let {__await(it(e))}
+                     },
+                     "onMouseLeave" to {e: MouseEvent -> "__async"
+                         attrs.onMouseLeave?.let {it(e)}
+                         attrs.onMouseLeava?.let {__await(it(e))}
+                     }),
+                content.toReactElement()
+            )
+        }
+
+        override fun onRootClick(e: dynamic): Promise<Unit> {"__async"
+            e.preventDefault()
+            e.stopPropagation()
+            attrs.onClick?.let {it(e)}
+            attrs.onClicka?.let {__await(it(e))}
+            return __asyncResult(Unit)
+        }
+
+    }
+}
 
 
 

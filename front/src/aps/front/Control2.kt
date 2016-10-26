@@ -7,19 +7,26 @@
 package aps.front
 
 import aps.*
+import org.w3c.dom.events.MouseEvent
 
 @MixableType
-class Attrs(
-    var tame: String? = null,
-    var tamy: String? = null,
-    var shame: String? = null,
-    var shamy: String? = null,
-    var tamyShamy: String? = null,
-    var controlTypeName: String? = null,
-    var id: String? = null,
-    var tattrs: Json? = null,
-    var noStateContributions: Boolean? = null,
-    var className: String? = null
+data class Attrs(
+    val tame: String? = null,
+    val tamy: String? = null,
+    val shame: String? = null,
+    val shamy: String? = null,
+    val tamyShamy: String? = null,
+    val controlTypeName: String? = null,
+    val id: String? = null,
+    val tattrs: Json? = null,
+    val noStateContributions: Boolean? = null,
+    val className: String? = null,
+    val onClick: ((MouseEvent) -> Unit)? = null,
+    val onClicka: ((MouseEvent) -> Promise<Unit>)? = null,
+    val onMouseEnter: ((MouseEvent) -> Unit)? = null,
+    val onMouseEntera: ((MouseEvent) -> Promise<Unit>)? = null,
+    val onMouseLeave: ((MouseEvent) -> Unit)? = null,
+    val onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null
 )
 
 abstract class Control2(val attrs: Attrs) : ToReactElementable {

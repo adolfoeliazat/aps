@@ -43,11 +43,11 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit, ui2: UI2): dynamic {
                     o-hr()
                     o-kdiv(textAlign="left"){o->
                         o-t("TOTE", "Как? Еще нет аккаунта? ")
-                        o-urlLink(
-                            // tamyShamy="createAccount",
-                            title=t("TOTE", "Срочно создать!"),
-                            url="sign-up.html",
-                            delayActionForFanciness=true)
+                        o-urlLink(tamyShamy="createAccount",
+                                  title=t("TOTE", "Срочно создать!"),
+                                  url="sign-up.html",
+                                  delayActionForFanciness=true)
+
 //                        o-ui.urlLink(json("tamyShamy" to "createAccount", "title" to t("TOTE", "Срочно создать!"), "url" to "sign-up.html", "delayActionForFanciness" to true))
                     }
                 }}
