@@ -138,7 +138,7 @@ fun runJava(entryPoint: String): Process {
     val cmd = pb.command()
     val cp = buildString {
         append("out${File.pathSeparator}")
-        for (dir in sequenceOf("../lib/kotlin-jvm", "lib", "lib-gradle"))
+        for (dir in sequenceOf("../lib/kotlin/1.1-m02-eap", "lib", "lib-gradle"))
             for (file in File(dir).list().filter { it.endsWith(".jar") })
                 append("$dir/$file${File.pathSeparator}")
     }

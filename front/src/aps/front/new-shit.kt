@@ -13,7 +13,6 @@ val kdiv = ElementBuilderFactory("div")
 val kspan = ElementBuilderFactory("span")
 val h3 = ElementBuilderFactory("h3")
 
-
 class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToReactElementable {
 //    var onClick: ((MouseEvent) -> Unit)? = null
     val children = mutableListOf<ToReactElementable>()

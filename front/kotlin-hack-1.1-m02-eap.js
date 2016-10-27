@@ -370,8 +370,7 @@
       if (initializer !== null) {
         var tmp = initializer;
         initializer = null;
-        tmp.call(instance)
-        // try {tmp.call(instance)} catch (e) {console.error(e.stack); throw e}
+        tmp.call(instance);
       }
       return instance;
     };
@@ -595,13 +594,13 @@
   };
   Kotlin.Throwable = Error;
 
-  // -------------------- Begin hack { --------------------
+  // -------------------- BEGIN HACK { --------------------
 
   function createClassNowWithMessage(kindaClassName, base) {
-     return Kotlin.createClassNow(base, function(message) {
-       this.message = message !== void 0 ? message : null;
-       this.stack = Error('shit').stack.replace(/^Error: shit/, kindaClassName + ': ' + message)
-     });
+    return Kotlin.createClassNow(base, function(message) {
+      this.message = message !== void 0 ? message : null;
+      this.stack = Error('shit').stack.replace(/^Error: shit/, kindaClassName + ': ' + message)
+    });
   }
   Kotlin.Error = createClassNowWithMessage('Kotlin.Error', Kotlin.Throwable);
   Kotlin.Exception = createClassNowWithMessage('Kotlin.Exception', Kotlin.Throwable);
@@ -634,7 +633,7 @@
 //  Kotlin.IOException = createClassNowWithMessage(Kotlin.Exception);
 //  Kotlin.AssertionError = createClassNowWithMessage(Kotlin.Error);
 
-  // -------------------- End hack } --------------------
+  // -------------------- BEGIN HACK { --------------------
 
   Kotlin.throwNPE = function(message) {
     throw new Kotlin.NullPointerException(message);
@@ -1366,17 +1365,11 @@
     this.key = key;
     this.value = value;
   }
-  Entry.prototype.getKey = function() {
-    return this.key;
-  };
-  Entry.prototype.getValue = function() {
-    return this.value;
-  };
   Entry.prototype.hashCode = function() {
     return mapEntryHashCode(this.key, this.value);
   };
   Entry.prototype.equals_za3rmp$ = function(o) {
-    return o instanceof Entry && Kotlin.equals(this.key, o.getKey()) && Kotlin.equals(this.value, o.getValue());
+    return o instanceof Entry && Kotlin.equals(this.key, o.key) && Kotlin.equals(this.value, o.value);
   };
   Entry.prototype.toString = function() {
     return Kotlin.toString(this.key) + "=" + Kotlin.toString(this.value);
@@ -1386,7 +1379,7 @@
     var it = entries.iterator();
     while (it.hasNext()) {
       var e = it.next();
-      this.put_wn2jw4$(e.getKey(), e.getValue());
+      this.put_wn2jw4$(e.key, e.value);
     }
   }
   function hashSetEquals(o) {
@@ -16887,6 +16880,11 @@ module.exports = function(Kotlin) {
     return res;
   }, get_jsClass_s8jyvl$:{value:function($receiver) {
     return Object.getPrototypeOf($receiver).constructor;
+  }}, get_js_t5ir34$:{value:function($receiver) {
+    var tmp$0;
+    return (Kotlin.isType(tmp$0 = $receiver, _.kotlin.reflect.js.internal.KClassImpl) ? tmp$0 : Kotlin.throwCCE()).jClass_0;
+  }}, get_kotlin_vr962c$:{value:function($receiver) {
+    return _.getKClass($receiver);
   }}, internal:Kotlin.definePackage(null, {DoubleCompanionObject:Kotlin.createObject(null, function DoubleCompanionObject() {
     this.MIN_VALUE = Number.MIN_VALUE;
     this.MAX_VALUE = Number.MAX_VALUE;
@@ -21545,7 +21543,87 @@ module.exports = function(Kotlin) {
     return $receiver.outerHTML;
   }, toXmlString_rq0l4m$:function($receiver, xmlDeclaration) {
     return $receiver.outerHTML;
-  }}), test:Kotlin.definePackage(function() {
+  }}), reflect:Kotlin.definePackage(null, {js:Kotlin.definePackage(null, {internal:Kotlin.definePackage(null, {KClassImpl:Kotlin.createClass(function() {
+    return [_.kotlin.reflect.KClass];
+  }, function KClassImpl(jClass) {
+    this.jClass_0 = jClass;
+    this.metadata_0 = this.jClass_0.$metadata$;
+    var tmp$0, tmp$1;
+    this.hashCode_0 = (tmp$1 = (tmp$0 = this.simpleName) != null ? Kotlin.hashCode(tmp$0) : null) != null ? tmp$1 : 0;
+  }, {simpleName:{get:function() {
+    var tmp$0;
+    return (tmp$0 = this.metadata_0) != null ? tmp$0.simpleName : null;
+  }}, annotations:{get:function() {
+    throw new _.kotlin.NotImplementedError;
+  }}, constructors:{get:function() {
+    throw new _.kotlin.NotImplementedError;
+  }}, members:{get:function() {
+    throw new _.kotlin.NotImplementedError;
+  }}, nestedClasses:{get:function() {
+    throw new _.kotlin.NotImplementedError;
+  }}, objectInstance:{get:function() {
+    throw new _.kotlin.NotImplementedError;
+  }}, qualifiedName:{get:function() {
+    throw new _.kotlin.NotImplementedError;
+  }}, equals_za3rmp$:function(other) {
+    return Kotlin.isType(other, _.kotlin.reflect.js.internal.KClassImpl) && Kotlin.equals(this.jClass_0, other.jClass_0);
+  }, hashCode:function() {
+    return this.hashCode_0;
+  }, toString:function() {
+    return "class " + Kotlin.toString(this.simpleName);
+  }})})}), KAnnotatedElement:Kotlin.createTrait(null), KCallable:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KAnnotatedElement];
+  }), KClass:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KAnnotatedElement, _.kotlin.reflect.KDeclarationContainer];
+  }), KDeclarationContainer:Kotlin.createTrait(null), KFunction:Kotlin.createTrait(function() {
+    return [_.kotlin.Function, _.kotlin.reflect.KCallable];
+  }), KParameter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KAnnotatedElement];
+  }, null, {Kind:Kotlin.createEnumClass(function() {
+    return [Kotlin.Enum];
+  }, function Kind() {
+    Kind.baseInitializer.call(this);
+  }, function() {
+    return {INSTANCE:function() {
+      return new _.kotlin.reflect.KParameter.Kind;
+    }, EXTENSION_RECEIVER:function() {
+      return new _.kotlin.reflect.KParameter.Kind;
+    }, VALUE:function() {
+      return new _.kotlin.reflect.KParameter.Kind;
+    }};
+  })}), KProperty:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KCallable];
+  }, null, {Accessor:Kotlin.createTrait(null), Getter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KFunction, _.kotlin.reflect.KProperty.Accessor];
+  })}), KMutableProperty:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KProperty];
+  }, null, {Setter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KFunction, _.kotlin.reflect.KProperty.Accessor];
+  })}), KProperty0:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KProperty];
+  }, null, {Getter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KProperty.Getter];
+  })}), KMutableProperty0:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KMutableProperty, _.kotlin.reflect.KProperty0];
+  }, null, {Setter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KMutableProperty.Setter];
+  })}), KProperty1:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KProperty];
+  }, null, {Getter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KProperty.Getter];
+  })}), KMutableProperty1:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KMutableProperty, _.kotlin.reflect.KProperty1];
+  }, null, {Setter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KMutableProperty.Setter];
+  })}), KProperty2:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KProperty];
+  }, null, {Getter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KProperty.Getter];
+  })}), KMutableProperty2:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KMutableProperty, _.kotlin.reflect.KProperty2];
+  }, null, {Setter:Kotlin.createTrait(function() {
+    return [_.kotlin.reflect.KMutableProperty.Setter];
+  })}), KType:Kotlin.createTrait(null)}), test:Kotlin.definePackage(function() {
     this.asserter = new _.kotlin.test.QUnitAsserter;
   }, {todo_un3fny$:function(block) {
     Kotlin.println("TODO at " + block);
@@ -21679,59 +21757,7 @@ module.exports = function(Kotlin) {
       var tmp$0;
       return ((tmp$0 = closure$message != null ? closure$message + ". " : null) != null ? tmp$0 : "") + "Expected value to be not null.";
     };
-  }}), AsserterContributor:Kotlin.createTrait(null)}), reflect:Kotlin.definePackage(null, {KAnnotatedElement:Kotlin.createTrait(null), KCallable:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KAnnotatedElement];
-  }), KClass:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KAnnotatedElement, _.kotlin.reflect.KDeclarationContainer];
-  }), KDeclarationContainer:Kotlin.createTrait(null), KFunction:Kotlin.createTrait(function() {
-    return [_.kotlin.Function, _.kotlin.reflect.KCallable];
-  }), KParameter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KAnnotatedElement];
-  }, null, {Kind:Kotlin.createEnumClass(function() {
-    return [Kotlin.Enum];
-  }, function Kind() {
-    Kind.baseInitializer.call(this);
-  }, function() {
-    return {INSTANCE:function() {
-      return new _.kotlin.reflect.KParameter.Kind;
-    }, EXTENSION_RECEIVER:function() {
-      return new _.kotlin.reflect.KParameter.Kind;
-    }, VALUE:function() {
-      return new _.kotlin.reflect.KParameter.Kind;
-    }};
-  })}), KProperty:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KCallable];
-  }, null, {Accessor:Kotlin.createTrait(null), Getter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KFunction, _.kotlin.reflect.KProperty.Accessor];
-  })}), KMutableProperty:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KProperty];
-  }, null, {Setter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KFunction, _.kotlin.reflect.KProperty.Accessor];
-  })}), KProperty0:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KProperty];
-  }, null, {Getter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KProperty.Getter];
-  })}), KMutableProperty0:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KMutableProperty, _.kotlin.reflect.KProperty0];
-  }, null, {Setter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KMutableProperty.Setter];
-  })}), KProperty1:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KProperty];
-  }, null, {Getter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KProperty.Getter];
-  })}), KMutableProperty1:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KMutableProperty, _.kotlin.reflect.KProperty1];
-  }, null, {Setter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KMutableProperty.Setter];
-  })}), KProperty2:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KProperty];
-  }, null, {Getter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KProperty.Getter];
-  })}), KMutableProperty2:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KMutableProperty, _.kotlin.reflect.KProperty2];
-  }, null, {Setter:Kotlin.createTrait(function() {
-    return [_.kotlin.reflect.KMutableProperty.Setter];
-  })}), KType:Kotlin.createTrait(null)}), comparisons:Kotlin.definePackage(null, {compareValuesBy_hhbmn6$:function(a, b, selectors) {
+  }}), AsserterContributor:Kotlin.createTrait(null)}), comparisons:Kotlin.definePackage(null, {compareValuesBy_hhbmn6$:function(a, b, selectors) {
     var tmp$2;
     if (!(selectors.length > 0)) {
       var message = "Failed requirement.";
@@ -23293,7 +23319,24 @@ module.exports = function(Kotlin) {
     o["bubbles"] = bubbles;
     o["cancelable"] = cancelable;
     return o;
-  })})})})});
+  })})})}), getKClass:function(jClass) {
+    return _.getOrCreateKClass_0(jClass);
+  }, getKClassFromExpression:function(e) {
+    return _.getOrCreateKClass_0(_.kotlin.js.get_jsClass_s8jyvl$(e));
+  }, getOrCreateKClass_0:function(jClass) {
+    var metadata = jClass.$metadata$;
+    if (metadata != null) {
+      if (metadata.$kClass$ == null) {
+        var kClass = new _.kotlin.reflect.js.internal.KClassImpl(jClass);
+        metadata.$kClass$ = kClass;
+        return kClass;
+      } else {
+        return metadata.$kClass$;
+      }
+    } else {
+      return new _.kotlin.reflect.js.internal.KClassImpl(jClass);
+    }
+  }});
   Kotlin.defineModule("kotlin", _);
   return _;
 }(require("kotlin"));

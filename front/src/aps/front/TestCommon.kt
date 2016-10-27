@@ -126,6 +126,7 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
         }
     }
 
+    dwarnStriking(testScenarioToRun)
     val scenarioClass = eval("kot.aps.front.$testScenarioToRun") ?: bitch("No test scenario named [${testScenarioToRun}]")
     val scenario: TestScenario = eval("new scenarioClass()")
     scenario.host = sim

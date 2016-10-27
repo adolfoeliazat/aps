@@ -1,3 +1,3 @@
 @echo off
-java -cp %~dp0lib\kotlin-runtime.jar;%~dp0out aps.WatchAndEnhanceJSKt
+java -cp %~dp0..\lib\kotlin\1.1-m02-eap\kotlin-runtime.jar;%~dp0..\back\out;%~dp0out aps.WatchAndEnhanceJSKt
 

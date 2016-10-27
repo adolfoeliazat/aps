@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="KotlinJavaScript">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/kotlin-js/kotlin-jslib.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin/1.0.5-eap/kotlin-jslib.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/lib/kotlin-js/kotlin-jslib-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin/1.0.5-eap/kotlin-jslib-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

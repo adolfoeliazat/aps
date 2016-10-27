@@ -471,7 +471,7 @@ object MakeStaticSites : IMakeStaticSites {
         sh.cp("-r", "$APS_ROOT/front/out", "$root/kotlin")
 
         val frontDir = "$APS_ROOT/front"
-        sh.cp("$frontDir/kotlin-hack.js", root)
+        sh.cp("$frontDir/kotlin-hack-1.1-m02-eap.js", root)
 
         val entryStream = js("new (require('stream')).Readable")
         entryStream.push("""
@@ -1578,7 +1578,7 @@ object MakeStaticSites : IMakeStaticSites {
     <script src="bootstrap-hack.js"></script>
     <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->
 
-    <script src="kotlin-hack.js"></script>
+    <script src="kotlin-hack-1.1-m02-eap.js"></script>
     <script src="kotlin/front-enhanced.js"></script>
 
     <script>
