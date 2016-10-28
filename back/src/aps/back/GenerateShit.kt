@@ -11,7 +11,6 @@ import aps.*
 import java.time.LocalDateTime
 
 class GenerateShit {
-    class MixableType(val name: String, val props: List<Prop> = mutableListOf())
 
     enum class PAState {
         WAITING_INITIAL_ANNOTATION,
@@ -70,8 +69,6 @@ class GenerateShit {
         var extensionOf: String? = null
     }
 
-    val nameToMixableType = mutableMapOf<String, MixableType>()
-
     val generatedShit = StringBuilder(dedent("""
         /*
          * APS
@@ -89,9 +86,10 @@ class GenerateShit {
 
     """) + "\n")
 
+    val meta = AnalyzeShit()
+
     init {
         println("Generating some shit for you...")
-//        renameme1()
         processAnnotations()
         File("$APS_ROOT/front/src/aps/front/generated-shit.kt").writeText("" + generatedShit)
         println("COOL")
@@ -132,7 +130,7 @@ class GenerateShit {
                                     if (shouldBlankSeparate) appendln()
                                     shouldBlankSeparate = true
                                     appendln(indent + "// @Mix ${param.name}")
-                                    val mixableType = nameToMixableType[param.type] ?: wtf("Unknown mixable type: ${param.type}")
+                                    val mixableType = meta.nameToMixableType[param.type] ?: wtf("Unknown mixable type: ${param.type}")
                                     for (prop in mixableType.props) {
                                         appendln(indent + "${prop.name}: ${prop.type} = ${prop.defaultValue},")
                                     }
@@ -163,7 +161,7 @@ class GenerateShit {
                                             if (shouldBlankSeparate) appendln()
                                             shouldBlankSeparate = true
                                             appendln("        ${param.name} = ${param.type}(")
-                                            val mixableType = nameToMixableType[param.type] ?: wtf("Unknown mixable type: ${param.type}")
+                                            val mixableType = meta.nameToMixableType[param.type] ?: wtf("Unknown mixable type: ${param.type}")
                                             for (prop in mixableType.props) {
                                                 appendln("            ${prop.name} = ${prop.name},")
                                             }
@@ -186,8 +184,8 @@ class GenerateShit {
                         }
 
                         GenerateShit.ShitKind.MIXABLE_TYPE -> {
-                            val mt = MixableType(shit.className, shit.props)
-                            nameToMixableType[mt.name] = mt
+//                            val mt = MixableType(shit.className, shit.props)
+//                            nameToMixableType[mt.name] = mt
                         }
                     }
 

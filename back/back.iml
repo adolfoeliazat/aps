@@ -112,5 +112,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="module" module-name="into-kotlin" />
   </component>
 </module>
