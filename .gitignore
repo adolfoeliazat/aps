@@ -2,3 +2,5 @@
 out
 /shared-back-junction
 /shared-front-junction
+/_run.cmd
+/_restart-flag

@@ -27,6 +27,8 @@ val DEBUG_OUT_FILE = true
 var emittedShitCount = 0
 
 fun main(args: Array<String>) {
+    throw Exception("Kill me, I'm worthless")
+
     when (MODE) {
         "test" -> test()
         "watch" -> watch()

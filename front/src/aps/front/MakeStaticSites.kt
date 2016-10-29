@@ -468,15 +468,14 @@ object MakeStaticSites : IMakeStaticSites {
         sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
         sh.cp("${kindaDirname}/../asset/*", root)
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
-        sh.cp("-r", "$APS_HOME/front/out", "$root/kotlin")
+        // sh.cp("-r", "$APS_HOME/front/out", "$root/kotlin")
 
-        val frontDir = "$APS_HOME/front"
-        sh.cp("$KOMMON_HOME/lib/kotlin-hack-1.1-m02.js", root)
+        sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
+        sh.cp("${KOMMON_HOME}/js/out/into-kommon-js-enhanced.js", root)
+        sh.cp("$APS_HOME/front/out/front-enhanced.js", root)
 
         val entryStream = js("new (require('stream')).Readable")
         entryStream.push("""
-            if (typeof global === 'undefined') global = window
-
             global.lodash = require('lodash')
             global.React = require('react')
             global.ReactDOM = require('react-dom')
@@ -1572,14 +1571,16 @@ object MakeStaticSites : IMakeStaticSites {
     </div>
     </div>
 
+    <script>if (typeof global === 'undefined') global = window</script>
+
     <script src="deps.js"></script>
     <script src="jquery.min.js"></script>
     <!-- <script src="jquery-hack.js"></script> -->
     <script src="bootstrap-hack.js"></script>
     <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->
-
-    <script src="kotlin-hack-1.1-m02-eap.js"></script>
-    <script src="kotlin/front-enhanced.js"></script>
+    <script src="kotlin-1.1-m02-eap-hacked.js"></script>
+    <script src="into-kommon-js-enhanced.js"></script>
+    <script src="front-enhanced.js"></script>
 
     <script>
         var testimonials

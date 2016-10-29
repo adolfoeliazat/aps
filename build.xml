@@ -12,6 +12,8 @@
     <path id="cp">
         <path refid="into-kommon-jvm-classpath"/>
         <pathelement location="${env.APS_HOME}/back/out"/>
+        <fileset dir="${env.APS_HOME}/back/lib" includes="*.jar"/>
+        <fileset dir="${env.APS_HOME}/back/lib-gradle" includes="*.jar"/>
     </path>
 
     <target name="before-compilation">
@@ -28,7 +30,15 @@
             <param name="inFile" value="${env.APS_HOME}/front/out/front.js"/>
         </antcall>
 
-        <touch file="${env.APS_HOME}/back/restart-flag"/>
+        <copy file="${env.APS_HOME}/front/out/front-enhanced.js" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
+        <copy file="${env.INTO_KOMMON_HOME}/js/out/into-kommon-js-enhanced.js" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
+
+        <pathconvert targetos="windows" property="cpstring" refid="cp"/>
+        <echo file="_run.cmd">
+            java -cp ${cpstring} %*
+        </echo>
+
+        <touch file="${env.APS_HOME}/_restart-flag"/>
     </target>
 
     <target name="make-static-sites">
@@ -39,4 +49,7 @@
         </exec>
     </target>
 </project>
+
+
+
 
