@@ -10,30 +10,23 @@ import aps.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.UserRoles
 import aps.back.generated.jooq.tables.pojos.Users
+import into.kommon.*
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.ser.*
 import com.fasterxml.jackson.databind.type.TypeFactory
-import org.apache.commons.validator.routines.EmailValidator
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletHandler
 import org.jooq.DSLContext
-import org.mindrot.jbcrypt.BCrypt
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.util.ClasspathHelper
 import org.reflections.util.ConfigurationBuilder
-import org.reflections.util.FilterBuilder
 import org.slf4j.Logger
 import java.lang.reflect.Method
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.servlet.Servlet
-import javax.servlet.ServletException
-import javax.servlet.http.HttpServlet
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 val THE_ADMIN_ID = 101L // TODO:vgrechka Unhardcode admin ID    17c5cc52-57c2-480d-a7c3-abb030b01cc9
 

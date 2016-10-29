@@ -7,15 +7,14 @@
 package aps.back
 
 import aps.*
+import into.kommon.*
 import org.jooq.DSLContext
 import java.sql.Timestamp
 import java.util.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.Users
-import org.jooq.Field
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import kotlin.reflect.KClass
 
 fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die("I want APS_DANGEROUS_TOKEN environment variable")
 

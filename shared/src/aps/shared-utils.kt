@@ -6,13 +6,14 @@
 
 package aps
 
+import into.kommon.*
 import kotlin.reflect.KProperty
 
 fun sayHi() = println("Hi, fuck you")
 
-val APS_ROOT: String get() = "e:/work/aps"
-val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak"
-val TMP_DIR: String get() = "c:/tmp/aps-tmp"
+val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environment variable")
+val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak" // TODO:vgrechka Unhardcode
+val TMP_DIR: String get() = "c:/tmp/aps-tmp" // TODO:vgrechka Unhardcode
 
 class AbortException : Throwable()
 fun abort() {throw AbortException()}

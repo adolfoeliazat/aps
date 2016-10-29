@@ -6,9 +6,9 @@
 
 package aps.back
 
-import java.io.*
 import aps.*
-import java.time.LocalDateTime
+import into.kommon.*
+import java.io.*
 
 class GenerateShit {
 
@@ -90,242 +90,242 @@ class GenerateShit {
 
     init {
         println("Generating some shit for you...")
-        processAnnotations()
-        File("$APS_ROOT/front/src/aps/front/generated-shit.kt").writeText("" + generatedShit)
+//        processAnnotations()
+        File("$APS_HOME/front/src/aps/front/generated-shit.kt").writeText("" + generatedShit)
         println("COOL")
     }
 
-    fun processAnnotations() {
-        for (pass in PAPass.values()) {
-            visitSources("$APS_ROOT/front/src") {f->
-                var state = PAState.WAITING_INITIAL_ANNOTATION
-                var shit = Shit()
-
-                fun doShit() {
-                    exhaustive/when (shit.shitKind) {
-                        ShitKind.NONE -> wtf()
-
-                        ShitKind.SIGNATURE_MIXES -> {
-                            with (generatedShit) {
-                                fun deleteLastComma() {
-                                    val lastCommaIndex = length - 1 - ",\n".length
-                                    delete(lastCommaIndex, lastCommaIndex + 1)
-                                }
-
-                                val pfsLines = shit.plainFunctionSignature.trim().lines()
-                                var firstLine = pfsLines.first().substringBefore("(") + "("
-                                shit.extensionOf?.let {
-                                    firstLine = firstLine.replace(Regex("(^|\\s)fun "), "\$1fun $it.")
-                                }
-                                appendln(firstLine)
-                                val indent = " ".repeat(4)
-
-                                var shouldBlankSeparate = false
-                                for (param in shit.params.filter {it.kind == ParamKind.OWN}) {
-                                    appendln(indent + param.signature + ",")
-                                    shouldBlankSeparate = true
-                                }
-
-                                for (param in shit.params.filter {it.kind == ParamKind.MIX}) {
-                                    if (shouldBlankSeparate) appendln()
-                                    shouldBlankSeparate = true
-                                    appendln(indent + "// @Mix ${param.name}")
-                                    val mixableType = meta.nameToMixableType[param.type] ?: wtf("Unknown mixable type: ${param.type}")
-                                    for (prop in mixableType.props) {
-                                        appendln(indent + "${prop.name}: ${prop.type} = ${prop.defaultValue},")
-                                    }
-                                }
-
-                                val afterMixParams = shit.params.filter {it.kind == ParamKind.AFTER_MIX}
-                                if (afterMixParams.isNotEmpty()) {
-                                    appendln()
-                                    appendln(indent + "// @AfterMix")
-                                    for (param in afterMixParams) {
-                                        appendln(indent + param.signature + ",")
-                                    }
-                                }
-
-                                deleteLastComma()
-                                appendln(pfsLines.last().trim())
-
-                                appendln("    return ${shit.functionName}(")
-                                shouldBlankSeparate = false
-                                for (param in shit.params) {
-                                    exhaustive/when (param.kind) {
-                                        GenerateShit.ParamKind.OWN -> {
-                                            appendln("        ${param.name} = ${param.name},")
-                                            shouldBlankSeparate = true
-                                        }
-
-                                        GenerateShit.ParamKind.MIX -> {
-                                            if (shouldBlankSeparate) appendln()
-                                            shouldBlankSeparate = true
-                                            appendln("        ${param.name} = ${param.type}(")
-                                            val mixableType = meta.nameToMixableType[param.type] ?: wtf("Unknown mixable type: ${param.type}")
-                                            for (prop in mixableType.props) {
-                                                appendln("            ${prop.name} = ${prop.name},")
-                                            }
-                                            deleteLastComma()
-                                            appendln("        ),")
-                                        }
-
-                                        GenerateShit.ParamKind.AFTER_MIX -> {
-                                            appendln()
-                                            appendln("        ${param.name} = ${param.name},")
-                                        }
-                                    }
-                                }
-
-                                deleteLastComma()
-                                appendln("    )")
-                                appendln("}")
-                                appendln()
-                            }
-                        }
-
-                        GenerateShit.ShitKind.MIXABLE_TYPE -> {
-//                            val mt = MixableType(shit.className, shit.props)
-//                            nameToMixableType[mt.name] = mt
-                        }
-                    }
-
-                    shit.shitKind = ShitKind.NONE
-                }
-
-                fun parseParam(_from: String) {
-                    var from = _from.trim()
-                    val param = Param()
-
-                    if (from.startsWith("@AfterMix ")) {
-                        param.kind = ParamKind.AFTER_MIX
-                        shit.paramSection = ParamKind.AFTER_MIX
-                        from = from.substring("@AfterMix ".length)
-                    } else if (from.startsWith("@Mix ")) {
-                        if (shit.paramSection > ParamKind.MIX) wtf("Mix param in ${shit.paramSection} section")
-                        param.kind = ParamKind.MIX
-                        shit.paramSection = ParamKind.MIX
-                        from = from.substring("@Mix ".length)
-                    } else {
-                        if (shit.paramSection > ParamKind.OWN) wtf("Own param in ${shit.paramSection} section")
-                        param.kind = ParamKind.OWN
-                    }
-                    if (from.endsWith(",")) from = from.substring(0, from.length - 1)
-
-                    param.signature = from
-
-                    val colonIndex = from.indexOf(":")
-                    val eqIndex = from.indexOf("=")
-                    param.name = from.substring(0, colonIndex)
-                    param.type = from.substring(colonIndex + 1, if (eqIndex == -1) from.length else eqIndex).trim()
-
-                    // println(param)
-                    shit.params.add(param)
-                }
-
-                for ((lineIndex, line) in f.readLines().withIndex()) {
-                    try {
-                        exhaustive/when (state) {
-                            PAState.WAITING_INITIAL_ANNOTATION -> {
-                                when (pass) {
-                                    PAPass.FIRST -> {
-                                        when {
-                                            line == "@MixableType" -> {
-                                                shit = Shit()
-                                                shit.shitKind = ShitKind.MIXABLE_TYPE
-                                                state = PAState.REQUIRING_CLASS_NAME
-                                            }
-                                            else -> Unit
-                                        }
-                                    }
-                                    PAPass.SECOND -> {
-                                        when {
-                                            line.contains("@GenerateSignatureMixes") -> {
-                                                shit = Shit()
-                                                shit.shitKind = ShitKind.SIGNATURE_MIXES
-                                                Regex("extensionOf=\"(\\w+)\"").find(line)?.let {
-                                                    shit.extensionOf = it.groups[1]!!.value
-                                                }
-                                                state = PAState.REQUIRING_FUNCTION_NAME_AND_FIRST_PARAM
-                                            }
-                                            else -> Unit
-                                        }
-                                    }
-                                }
-                            }
-
-                            PAState.REQUIRING_CLASS_NAME -> {
-                                val re = Regex("(?:^|\\s)class (\\w*)\\($")
-                                re.find(line)?.let {mr->
-                                    shit.className = mr.groups[1]?.let {it.value} ?: wtf("fun re group 1")
-                                } ?: wtf("fun re")
-                                state = PAState.REQUIRING_PROP_OR_END_OF_CLASS_SIGNATURE
-                            }
-
-                            PAState.REQUIRING_PROP_OR_END_OF_CLASS_SIGNATURE -> {
-                                when {
-                                    line == ")" || line == ") {" -> {
-                                        doShit()
-                                        state = PAState.WAITING_INITIAL_ANNOTATION
-                                    }
-                                    else -> {
-                                        // var tame: String? = null,
-                                        var from = line.trim()
-                                        val prop = Prop()
-
-                                        if (!from.startsWith("var ") && !from.startsWith("val ")) wtf("I want var or val here")
-                                        from = from.substring("var ".length)
-                                        if (from.endsWith(",")) from = from.substring(0, from.length - 1)
-
-                                        val colonIndex = from.indexOf(":")
-                                        val eqIndex = from.indexOf("=")
-                                        if (eqIndex == -1) wtf("I want default value for this property")
-                                        prop.name = from.substring(0, colonIndex)
-                                        prop.type = from.substring(colonIndex + 1, eqIndex).trim()
-                                        prop.defaultValue = from.substring(eqIndex + 1).trim()
-
-                                        shit.props.add(prop)
-                                        // println("Scanned property of $className: $prop")
-                                    }
-                                }
-                            }
-
-                            PAState.REQUIRING_FUNCTION_NAME_AND_FIRST_PARAM -> {
-                                val re = Regex("^\\s*(?:operator )?fun (\\w*)\\(")
-                                re.find(line)?.let {mr->
-                                    shit.functionName = mr.groups[1]?.let {it.value} ?: wtf("fun re group 1")
-                                } ?: wtf("fun re")
-
-                                val restOfLine = line.substringAfter("(")
-                                parseParam(restOfLine)
-                                shit.plainFunctionSignature.appendln(line)
-
-                                state = PAState.REQUIRING_PARAM_OR_END_OF_FUNCTION_SIGNATURE
-                            }
-
-                            PAState.REQUIRING_PARAM_OR_END_OF_FUNCTION_SIGNATURE -> {
-                                shit.plainFunctionSignature.appendln(line)
-                                when {
-                                    line.trim().startsWith(")") -> {
-                                        doShit()
-                                        state = PAState.WAITING_INITIAL_ANNOTATION
-                                    }
-                                    else -> parseParam(line)
-                                }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        throw Exception(
-                            "\npass=$pass; state=$state; f=${f.path}; lineIndex+1=${lineIndex + 1}" +
-                                "\nline=$line" +
-                                "\n${e.message}",
-                            e)
-                    }
-                }
-
-                if (state != PAState.WAITING_INITIAL_ANNOTATION) wtf("Bad final state: $state; file=${f.path}")
-            }
-        }
-    }
+//    fun processAnnotations() {
+//        for (pass in PAPass.values()) {
+//            visitSources("$APS_ROOT/front/src") {f->
+//                var state = PAState.WAITING_INITIAL_ANNOTATION
+//                var shit = Shit()
+//
+//                fun doShit() {
+//                    exhaustive/when (shit.shitKind) {
+//                        ShitKind.NONE -> wtf()
+//
+//                        ShitKind.SIGNATURE_MIXES -> {
+//                            with (generatedShit) {
+//                                fun deleteLastComma() {
+//                                    val lastCommaIndex = length - 1 - ",\n".length
+//                                    delete(lastCommaIndex, lastCommaIndex + 1)
+//                                }
+//
+//                                val pfsLines = shit.plainFunctionSignature.trim().lines()
+//                                var firstLine = pfsLines.first().substringBefore("(") + "("
+//                                shit.extensionOf?.let {
+//                                    firstLine = firstLine.replace(Regex("(^|\\s)fun "), "\$1fun $it.")
+//                                }
+//                                appendln(firstLine)
+//                                val indent = " ".repeat(4)
+//
+//                                var shouldBlankSeparate = false
+//                                for (param in shit.params.filter {it.kind == ParamKind.OWN}) {
+//                                    appendln(indent + param.signature + ",")
+//                                    shouldBlankSeparate = true
+//                                }
+//
+//                                for (param in shit.params.filter {it.kind == ParamKind.MIX}) {
+//                                    if (shouldBlankSeparate) appendln()
+//                                    shouldBlankSeparate = true
+//                                    appendln(indent + "// @Mix ${param.name}")
+//                                    val mixableType = meta.nameToMixableType[param.type] ?: wtf("Unknown mixable type: ${param.type}")
+//                                    for (prop in mixableType.props) {
+//                                        appendln(indent + "${prop.name}: ${prop.type} = ${prop.defaultValue},")
+//                                    }
+//                                }
+//
+//                                val afterMixParams = shit.params.filter {it.kind == ParamKind.AFTER_MIX}
+//                                if (afterMixParams.isNotEmpty()) {
+//                                    appendln()
+//                                    appendln(indent + "// @AfterMix")
+//                                    for (param in afterMixParams) {
+//                                        appendln(indent + param.signature + ",")
+//                                    }
+//                                }
+//
+//                                deleteLastComma()
+//                                appendln(pfsLines.last().trim())
+//
+//                                appendln("    return ${shit.functionName}(")
+//                                shouldBlankSeparate = false
+//                                for (param in shit.params) {
+//                                    exhaustive/when (param.kind) {
+//                                        GenerateShit.ParamKind.OWN -> {
+//                                            appendln("        ${param.name} = ${param.name},")
+//                                            shouldBlankSeparate = true
+//                                        }
+//
+//                                        GenerateShit.ParamKind.MIX -> {
+//                                            if (shouldBlankSeparate) appendln()
+//                                            shouldBlankSeparate = true
+//                                            appendln("        ${param.name} = ${param.type}(")
+//                                            val mixableType = meta.nameToMixableType[param.type] ?: wtf("Unknown mixable type: ${param.type}")
+//                                            for (prop in mixableType.props) {
+//                                                appendln("            ${prop.name} = ${prop.name},")
+//                                            }
+//                                            deleteLastComma()
+//                                            appendln("        ),")
+//                                        }
+//
+//                                        GenerateShit.ParamKind.AFTER_MIX -> {
+//                                            appendln()
+//                                            appendln("        ${param.name} = ${param.name},")
+//                                        }
+//                                    }
+//                                }
+//
+//                                deleteLastComma()
+//                                appendln("    )")
+//                                appendln("}")
+//                                appendln()
+//                            }
+//                        }
+//
+//                        GenerateShit.ShitKind.MIXABLE_TYPE -> {
+////                            val mt = MixableType(shit.className, shit.props)
+////                            nameToMixableType[mt.name] = mt
+//                        }
+//                    }
+//
+//                    shit.shitKind = ShitKind.NONE
+//                }
+//
+//                fun parseParam(_from: String) {
+//                    var from = _from.trim()
+//                    val param = Param()
+//
+//                    if (from.startsWith("@AfterMix ")) {
+//                        param.kind = ParamKind.AFTER_MIX
+//                        shit.paramSection = ParamKind.AFTER_MIX
+//                        from = from.substring("@AfterMix ".length)
+//                    } else if (from.startsWith("@Mix ")) {
+//                        if (shit.paramSection > ParamKind.MIX) wtf("Mix param in ${shit.paramSection} section")
+//                        param.kind = ParamKind.MIX
+//                        shit.paramSection = ParamKind.MIX
+//                        from = from.substring("@Mix ".length)
+//                    } else {
+//                        if (shit.paramSection > ParamKind.OWN) wtf("Own param in ${shit.paramSection} section")
+//                        param.kind = ParamKind.OWN
+//                    }
+//                    if (from.endsWith(",")) from = from.substring(0, from.length - 1)
+//
+//                    param.signature = from
+//
+//                    val colonIndex = from.indexOf(":")
+//                    val eqIndex = from.indexOf("=")
+//                    param.name = from.substring(0, colonIndex)
+//                    param.type = from.substring(colonIndex + 1, if (eqIndex == -1) from.length else eqIndex).trim()
+//
+//                    // println(param)
+//                    shit.params.add(param)
+//                }
+//
+//                for ((lineIndex, line) in f.readLines().withIndex()) {
+//                    try {
+//                        exhaustive/when (state) {
+//                            PAState.WAITING_INITIAL_ANNOTATION -> {
+//                                when (pass) {
+//                                    PAPass.FIRST -> {
+//                                        when {
+//                                            line == "@MixableType" -> {
+//                                                shit = Shit()
+//                                                shit.shitKind = ShitKind.MIXABLE_TYPE
+//                                                state = PAState.REQUIRING_CLASS_NAME
+//                                            }
+//                                            else -> Unit
+//                                        }
+//                                    }
+//                                    PAPass.SECOND -> {
+//                                        when {
+//                                            line.contains("@GenerateSignatureMixes") -> {
+//                                                shit = Shit()
+//                                                shit.shitKind = ShitKind.SIGNATURE_MIXES
+//                                                Regex("extensionOf=\"(\\w+)\"").find(line)?.let {
+//                                                    shit.extensionOf = it.groups[1]!!.value
+//                                                }
+//                                                state = PAState.REQUIRING_FUNCTION_NAME_AND_FIRST_PARAM
+//                                            }
+//                                            else -> Unit
+//                                        }
+//                                    }
+//                                }
+//                            }
+//
+//                            PAState.REQUIRING_CLASS_NAME -> {
+//                                val re = Regex("(?:^|\\s)class (\\w*)\\($")
+//                                re.find(line)?.let {mr->
+//                                    shit.className = mr.groups[1]?.let {it.value} ?: wtf("fun re group 1")
+//                                } ?: wtf("fun re")
+//                                state = PAState.REQUIRING_PROP_OR_END_OF_CLASS_SIGNATURE
+//                            }
+//
+//                            PAState.REQUIRING_PROP_OR_END_OF_CLASS_SIGNATURE -> {
+//                                when {
+//                                    line == ")" || line == ") {" -> {
+//                                        doShit()
+//                                        state = PAState.WAITING_INITIAL_ANNOTATION
+//                                    }
+//                                    else -> {
+//                                        // var tame: String? = null,
+//                                        var from = line.trim()
+//                                        val prop = Prop()
+//
+//                                        if (!from.startsWith("var ") && !from.startsWith("val ")) wtf("I want var or val here")
+//                                        from = from.substring("var ".length)
+//                                        if (from.endsWith(",")) from = from.substring(0, from.length - 1)
+//
+//                                        val colonIndex = from.indexOf(":")
+//                                        val eqIndex = from.indexOf("=")
+//                                        if (eqIndex == -1) wtf("I want default value for this property")
+//                                        prop.name = from.substring(0, colonIndex)
+//                                        prop.type = from.substring(colonIndex + 1, eqIndex).trim()
+//                                        prop.defaultValue = from.substring(eqIndex + 1).trim()
+//
+//                                        shit.props.add(prop)
+//                                        // println("Scanned property of $className: $prop")
+//                                    }
+//                                }
+//                            }
+//
+//                            PAState.REQUIRING_FUNCTION_NAME_AND_FIRST_PARAM -> {
+//                                val re = Regex("^\\s*(?:operator )?fun (\\w*)\\(")
+//                                re.find(line)?.let {mr->
+//                                    shit.functionName = mr.groups[1]?.let {it.value} ?: wtf("fun re group 1")
+//                                } ?: wtf("fun re")
+//
+//                                val restOfLine = line.substringAfter("(")
+//                                parseParam(restOfLine)
+//                                shit.plainFunctionSignature.appendln(line)
+//
+//                                state = PAState.REQUIRING_PARAM_OR_END_OF_FUNCTION_SIGNATURE
+//                            }
+//
+//                            PAState.REQUIRING_PARAM_OR_END_OF_FUNCTION_SIGNATURE -> {
+//                                shit.plainFunctionSignature.appendln(line)
+//                                when {
+//                                    line.trim().startsWith(")") -> {
+//                                        doShit()
+//                                        state = PAState.WAITING_INITIAL_ANNOTATION
+//                                    }
+//                                    else -> parseParam(line)
+//                                }
+//                            }
+//                        }
+//                    } catch (e: Exception) {
+//                        throw Exception(
+//                            "\npass=$pass; state=$state; f=${f.path}; lineIndex+1=${lineIndex + 1}" +
+//                                "\nline=$line" +
+//                                "\n${e.message}",
+//                            e)
+//                    }
+//                }
+//
+//                if (state != PAState.WAITING_INITIAL_ANNOTATION) wtf("Bad final state: $state; file=${f.path}")
+//            }
+//        }
+//    }
 
 //    fun renameme1() {
 //        val attrsProps = loadProps("$APS_ROOT/front/src/aps/front/Control2.kt", "class Attrs(", ")")
@@ -402,7 +402,7 @@ class GenerateShit {
         val outPath = (
             toDir + "/" +
                 (prefix?.let {it + "--"} ?: "") +
-                origPath.substring(APS_ROOT.length)
+                origPath.substring(APS_HOME.length)
                     .replace("\\", "/")
                     .replace(Regex("^/"), "")
                     .replace("/", "--") +

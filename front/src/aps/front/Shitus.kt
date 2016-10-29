@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 import aps.front.Color.*
+import into.kommon.*
 
 @native val lodash: dynamic = noImpl
 
@@ -465,7 +466,7 @@ fun jsFacing_linesToMappedUsefulLines(lines: dynamic): Promise<dynamic> {"__asyn
             }
 
             lineText = lineTextWithoutPos + " (${pos.source}:${pos.line}:${pos.column})"
-            lineText = lineText.replace("file://$APS_ROOT", "APS")
+            lineText = lineText.replace("file://$APS_HOME", "APS")
         }
 
         usefulLines.push(lineText)

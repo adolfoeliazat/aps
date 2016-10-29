@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 @native interface IMakeStaticSites { // To prevent name mangling
     fun runShit(argv: dynamic)
@@ -21,7 +22,7 @@ object MakeStaticSites : IMakeStaticSites {
     }
     val ReactDOMServer = js("require('react-dom/server')")
 
-    val kindaDirname = "$APS_ROOT/aps/lib"
+    val kindaDirname = "$APS_HOME/aps/lib"
 
     val require = js("require")
 
@@ -30,11 +31,10 @@ object MakeStaticSites : IMakeStaticSites {
         global.lodash = require("lodash")
     }
 
-    val process = js("process")
     val fs = require("fs")
     val sh = require("shelljs")
-    val legacyStuff = require("$APS_ROOT/aps/lib/stuff")
-    val legacyClient = require("$APS_ROOT/aps/lib/client")
+    val legacyStuff = require("$APS_HOME/aps/lib/stuff")
+    val legacyClient = require("$APS_HOME/aps/lib/client")
 
 
     var t: (dynamic) -> dynamic = js("undefined")
@@ -468,10 +468,10 @@ object MakeStaticSites : IMakeStaticSites {
         sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
         sh.cp("${kindaDirname}/../asset/*", root)
         sh.cp("${kindaDirname}/../lib/bundle.js", root)
-        sh.cp("-r", "$APS_ROOT/front/out", "$root/kotlin")
+        sh.cp("-r", "$APS_HOME/front/out", "$root/kotlin")
 
-        val frontDir = "$APS_ROOT/front"
-        sh.cp("$frontDir/kotlin-hack-1.1-m02-eap.js", root)
+        val frontDir = "$APS_HOME/front"
+        sh.cp("$KOMMON_HOME/lib/kotlin-hack-1.1-m02.js", root)
 
         val entryStream = js("new (require('stream')).Readable")
         entryStream.push("""

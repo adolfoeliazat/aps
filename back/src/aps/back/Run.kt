@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import into.kommon.*
 import java.io.*
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
@@ -98,40 +99,6 @@ class Forever {
     }
 
 }
-
-fun visitSources(root: String, block: (File) -> Unit) {
-    fun visit(f: File) {
-        if (f.isDirectory) return f.listFiles().forEach {visit(it)}
-        if (!f.isFile) wtf("File: $f")
-        if (f.extension != "kt") return
-
-        block(f)
-    }
-
-    visit(File(root))
-}
-
-class LintShit {
-    init {
-        print("Linting your shit... ")
-        visitSources("$APS_ROOT/front/src") {f->
-            f.useLines {it.forEachIndexed {lineIndex, line ->
-                for (tag in listOf("kdiv", "kspan", "h3")) {
-                    if (Regex("\\W$tag\\W").containsMatchIn(line)) {
-                        if (line.trimEnd().endsWith("{")) {
-                            val fname = f.path.substring(APS_ROOT.length)
-                            println("SHIT")
-                            println("$fname:${lineIndex + 1}: Lambda parameter is mandatory for $tag")
-                            exitProcess(1)
-                        }
-                    }
-                }
-            }}
-        }
-        println("COOL")
-    }
-}
-
 
 fun runJava(entryPoint: String): Process {
     val pb = ProcessBuilder()

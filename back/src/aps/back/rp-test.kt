@@ -7,9 +7,8 @@
 package aps.back
 
 import aps.*
-import java.io.File
+import into.kommon.*
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 import java.sql.Timestamp
@@ -127,7 +126,7 @@ val backendInstanceID = "" + UUID.randomUUID()
     GetSoftwareVersionRequest(),
     logRequestJSON = false,
     runShit = {req, res ->
-        val path = Paths.get("$APS_ROOT/front/out/front-enhanced.js")
+        val path = Paths.get("$APS_HOME/front/out/front-enhanced.js")
         val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)
         GetSoftwareVersionRequest.Response(
             ctime = "" + Math.max(attrs.creationTime().toMillis(), attrs.lastModifiedTime().toMillis()),

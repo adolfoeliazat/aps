@@ -7,11 +7,12 @@
 package aps
 
 import aps.front.*
+import into.kommon.*
 
-fun bitch(msg: String = "Just bitching..."): Nothing = throw JSException(msg)
-fun imf(what: String = "me"): Nothing = throw JSException("Implement $what, please, fuck you")
-fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw JSException("WTF: $msg")
-fun die(msg: String = "You killed me, motherfucker..."): Nothing = throw JSException(msg)
+//fun bitch(msg: String = "Just bitching..."): Nothing = throw JSException(msg)
+//fun imf(what: String = "me"): Nothing = throw JSException("Implement $what, please, fuck you")
+//fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw JSException("WTF: $msg")
+//fun die(msg: String = "You killed me, motherfucker..."): Nothing = throw JSException(msg)
 
 inline fun clog(vararg xs: dynamic) = global.console.log.apply(global.console, xs.toList().toJSArray())
 inline fun cwarn(vararg xs: dynamic) = global.console.warn.apply(global.console, xs.toList().toJSArray())

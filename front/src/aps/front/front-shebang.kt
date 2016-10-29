@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 import aps.front.Color.*
+import into.kommon.*
 
 object TestGlobal {
     val shameToControl = mutableMapOf<String, dynamic>()

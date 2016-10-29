@@ -11,8 +11,8 @@ import aps.front.Color.*
 import aps.*
 import aps.WorldPointRequest.Action.RESTORE
 import aps.WorldPointRequest.Action.SAVE
+import into.kommon.*
 import jquery.jq
-import kotlin.browser.document
 import kotlin.reflect.KProperty
 
 class HotReloadSurvivingFuckingShit(val nameInGlobalScope: String) {

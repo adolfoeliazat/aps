@@ -7,7 +7,9 @@
 package aps.back
 
 import aps.*
+import into.kommon.*
 import into.kotlin.AnalyzeKotlinSources
+import into.kotlin.AnalyzeKotlinSources.TargetPlatform.JS
 
 class AnalyzeShit {
     class MixableType(val name: String, val props: List<Prop> = mutableListOf())
@@ -25,7 +27,12 @@ class AnalyzeShit {
     val nameToMixableType = mutableMapOf<String, MixableType>()
 
     init {
-        val aks = AnalyzeKotlinSources("$APS_ROOT/front/src")
+        val aks = AnalyzeKotlinSources(JS, arrayOf(
+            "$KOMMON_HOME/both-js-junction/src",
+            "$KOMMON_HOME/js/src",
+            "$APS_HOME/shared-front-junction/src",
+            "$APS_HOME/front/src"
+        ))
     }
 }
 
