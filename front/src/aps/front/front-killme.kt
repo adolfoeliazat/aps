@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 @native class Tether(opts: Json) {
     fun destroy(): Unit = noImpl

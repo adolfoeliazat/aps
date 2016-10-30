@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 fun jsFacing_button(def: dynamic): dynamic {
     val title: dynamic = def.title

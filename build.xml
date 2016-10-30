@@ -31,7 +31,9 @@
         </antcall>
 
         <copy file="${env.APS_HOME}/front/out/front-enhanced.js" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
+        <copy file="${env.APS_HOME}/front/out/front.js.map" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
         <copy file="${env.INTO_KOMMON_HOME}/js/out/into-kommon-js-enhanced.js" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
+        <copy file="${env.INTO_KOMMON_HOME}/js/out/into-kommon-js.js.map" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
 
         <pathconvert targetos="windows" property="cpstring" refid="cp"/>
         <echo file="_run.cmd">

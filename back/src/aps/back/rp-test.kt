@@ -141,7 +141,13 @@ val backendInstanceID = "" + UUID.randomUUID()
     }
 )
 
-
+@RemoteProcedureFactory fun mapStack() = testProcedure(
+    MapStackRequest(),
+    runShit = {req, res ->
+        val originalStack="foo\nbar\nbaz"
+        MapStackRequest.Response(originalStack)
+    }
+)
 
 
 

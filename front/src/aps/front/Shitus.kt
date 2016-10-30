@@ -430,6 +430,7 @@ fun jsFacing_linesToMappedUsefulLines(lines: dynamic): Promise<dynamic> {"__asyn
     val usefulLines = jsArrayOf()
     lines.forEach({_lineText: dynamic, i: dynamic ->
         var lineText = _lineText
+        // println("Mapping stack trace line " + lineText)
         var smapConsumer: dynamic = null
         var sliceLineFrom: dynamic = null
 
@@ -447,7 +448,10 @@ fun jsFacing_linesToMappedUsefulLines(lines: dynamic): Promise<dynamic> {"__asyn
             sliceLineFrom = bjsi + "bundle.js:".length
         }
 
-        if (!smapConsumer) return@forEach Unit
+        if (!smapConsumer) {
+            // console.warn("No smapConsumer for line: " + lineText)
+            return@forEach Unit
+        }
 
         val someShit = lineText.slice(sliceLineFrom, lineText.length - 1).split(":")
         val line = someShit[0]
@@ -466,7 +470,9 @@ fun jsFacing_linesToMappedUsefulLines(lines: dynamic): Promise<dynamic> {"__asyn
             }
 
             lineText = lineTextWithoutPos + " (${pos.source}:${pos.line}:${pos.column})"
-            lineText = lineText.replace("file://$APS_HOME", "APS")
+            lineText = lineText.replace("file://E:/work/aps", "APS")
+        } else {
+            console.warn("Original source location is not found:", "line", line, "column", column, "pos", pos)
         }
 
         usefulLines.push(lineText)
@@ -525,7 +531,7 @@ fun jsFacing_createKotlinStackSourceMapConsumer(): Promise<Any> {"__async"
     val logTime = jsFacing_beginLogTime("createKotlinStackSourceMapConsumer")
     try {
         try {
-            val response = __await<dynamic>(global.superagent.get("kotlin/front.js.map"))
+            val response = __await<dynamic>(global.superagent.get("front.js.map"))
             val text = response.text
             val arg = global.JSON.parse(text)
             return js("new sourceMap.SourceMapConsumer(arg)")

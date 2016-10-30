@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 import aps.front.Color.*
+import into.kommon.*
 
 var revealStackCalledTimes = 0
 
@@ -48,14 +49,14 @@ fun jsFacing_revealStack(arg: dynamic): Promise<Unit> {"__async"
 //                    message = exception.getClass__jl_Class().toString().replace(/^class /, "") + ": " + message
 //                }
 //            }
-        stack = __await(Shitus.errorToMappedClientStackString(exception, json("skipMessage" to true)))
+        stack = __await(errorToMappedClientStackString(exception, skipMessage=true))
 
         if (exception.cause) {
-            causeStack = __await(Shitus.errorToMappedClientStackString(exception.cause, json("skipMessage" to true)))
+            causeStack = __await(errorToMappedClientStackString(exception.cause, skipMessage=true))
         }
 
         if (exception.asyncStack) {
-            asyncStack = __await(Shitus.errorToMappedClientStackString(exception.asyncStack, json("skipMessage" to true)))
+            asyncStack = __await(errorToMappedClientStackString(exception.asyncStack, skipMessage=true))
         }
     }
 

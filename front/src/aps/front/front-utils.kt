@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 import jquery.*
 import org.w3c.dom.*
 import kotlin.browser.document

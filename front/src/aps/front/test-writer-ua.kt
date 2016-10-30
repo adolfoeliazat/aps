@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 class TS_UA_Writer_SignUp_1 : TestScenario() {
     override fun run(): Promise<Unit> {"__async"

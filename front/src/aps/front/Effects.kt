@@ -6,6 +6,8 @@
 
 package aps.front
 
+import into.kommon.*
+
 var effects: dynamic = null
 
 fun initEffects() {

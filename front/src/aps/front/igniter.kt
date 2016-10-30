@@ -7,13 +7,11 @@
 package aps.front
 
 import aps.*
-
-var global: dynamic = null
+import into.kommon.*
 
 @JsName("ignite")
 fun ignite() {
     println("----- Igniting front Kotlin shit -----")
-    global = js("window")
 
     global.__asyncResult = {x: dynamic -> x}
 

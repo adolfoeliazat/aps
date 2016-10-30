@@ -315,6 +315,17 @@ enum class Ordering(override val title: String) : Titled {
 
 fun <T : Any> T?.orDefault(default: () -> T): T = if (this != null) this else default()
 
+class MapStackRequest : RequestMatumba() {
+    class Response(val originalStack: String)
+
+    val mangledStack = StringHiddenField(this, "mangledStack")
+
+    companion object {
+        fun send(mangledStack: String): Promise<Response> = callDangerousMatumba(MapStackRequest()-{o->
+            o.mangledStack.value = mangledStack
+        })
+    }
+}
 
 
 

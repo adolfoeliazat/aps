@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 fun jsFacing_Input(legacySpec: Json) {
     val input = Input(legacySpec)

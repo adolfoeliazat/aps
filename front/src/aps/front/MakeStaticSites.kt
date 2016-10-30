@@ -27,7 +27,6 @@ object MakeStaticSites : IMakeStaticSites {
     val require = js("require")
 
     init {
-        global = js("global")
         global.lodash = require("lodash")
     }
 
@@ -472,7 +471,9 @@ object MakeStaticSites : IMakeStaticSites {
 
         sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
         sh.cp("${KOMMON_HOME}/js/out/into-kommon-js-enhanced.js", root)
+        sh.cp("${KOMMON_HOME}/js/out/into-kommon-js.js.map", root)
         sh.cp("$APS_HOME/front/out/front-enhanced.js", root)
+        sh.cp("$APS_HOME/front/out/front.js.map", root)
 
         val entryStream = js("new (require('stream')).Readable")
         entryStream.push("""
@@ -1518,7 +1519,7 @@ object MakeStaticSites : IMakeStaticSites {
     </style>
 
     <script>
-        LANG = '${lang}'
+    LANG = '${lang}'
     CLIENT_KIND = '${clientKind.name}'
     setFavicon('${if (clientKind == UserKind.CUSTOMER) "favicon-customer.ico" else "favicon-writer.ico"}')
 

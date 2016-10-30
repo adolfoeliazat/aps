@@ -4,12 +4,12 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps
 
 import into.kommon.*
 import kotlin.reflect.KProperty
-
-fun sayHi() = println("Hi, fuck you")
 
 val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environment variable")
 val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak" // TODO:vgrechka Unhardcode

@@ -554,7 +554,7 @@ fun clogError(e: dynamic, contextMsg: dynamic) {
         if (contextMsg) {
             msg += contextMsg + ": "
         }
-        msg += __await(Shitus.errorToMappedClientStackString(e))
+        msg += __await(errorToMappedClientStackString(e))
 
         console.error(msg)
     })
@@ -592,6 +592,45 @@ fun pageHeader(title: String, className: String = "", labels: Iterable<dynamic> 
         }
     }
 }
+
+fun errorToMappedClientStackString(shit: Errorish, skipMessage: Boolean = false, skipReactShit: Boolean = true): Promise<String?> {"__async"
+    val mangledStack = shit.stack ?: return __asyncResult(null)
+    val res = __await(MapStackRequest.send(mangledStack))
+
+    var lines = res.originalStack.lines()
+//    if (skipReactShit) {
+//        var reactShitMarkerSet: dynamic = null
+//        lines.forEach({s: dynamic, i: dynamic ->
+//                          if (s.includes("React")) {
+//                              if (!reactShitMarkerSet) {
+//                                  lines[i] = "----- React shit is skipped -----"
+//                                  reactShitMarkerSet = true
+//                              } else {
+//                                  lines[i] = undefined
+//                              }
+//                          }
+//                      })
+//        lines = global.lodash.compact(lines)
+//    }
+
+    return __asyncResult((if (skipMessage || jsTypeOf(shit) == "string") "" else shit.message + "\n") + lines.joinToString("\n"))
+}
+
+interface Errorish {
+    @JsName("message") val message: String?
+    @JsName("stack") val stack: String?
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -20,6 +20,7 @@ dependencies {
     compile 'com.zaxxer:HikariCP:2.5.1'
     compile 'org.reflections:reflections:0.9.10'
     compile 'commons-validator:commons-validator:1.5.1'
+    compile 'com.google.javascript:closure-compiler:v20161024'
 }
 
 task importDeps(type: Copy) {

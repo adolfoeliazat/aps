@@ -36,7 +36,7 @@ abstract class TestScenario {
 val testScenarios = mutableMapOf<String, TestScenario>()
 
 fun tetete() {
-
+    die()
 }
 
 class TestCommon(val sim: dynamic) {

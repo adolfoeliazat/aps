@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 fun newNativePromise(arg: dynamic): dynamic {
     return js("new Promise(arg)")

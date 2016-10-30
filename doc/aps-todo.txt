@@ -4,5 +4,19 @@
 - Traceability
     - Include client-side stack in GodServlet's exception
 
+- 2016/10/30
+    - Fix hot reloading
+    - Also hot-reload into-kommon-js-enhanced.js
+    - MakeStaticSites object shouldn't end up in front-enhanced.js
+    - Ditch buggy Mozilla's source-map
+        > Do source map lookup on server, via Google Closure Compiler
+        - Remove bundle deps, remove old code from Shitus.kt
+    - Source map lookup should also support into-kommon
 
+- Stuff
+    - Extract generic stuff from APS to kommons
+        - __async/__await
+    - Reimplement GenerateShit in terms of IntoK2JSCompiler
+    - Think about simplification of RPC
+        - Now that I can analyze Kotlin source code, boilerplate should be generated
 

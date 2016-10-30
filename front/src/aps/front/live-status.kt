@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 fun jsFacing_pollLiveStatus(ui: dynamic): Promise<Unit> {"__async"
     return __asyncResult(Unit)
