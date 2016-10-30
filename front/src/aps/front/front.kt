@@ -634,24 +634,25 @@ fun <R> runni(f: () -> R): R {
 
 
 fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
-    return Promise<dynamic>({ resolve, reject ->
-        Shitus.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
-            // @wip sourceLocation
-            var lines = stackString.lines()
-            lines = lines.slice(firstSignificantStackLine..lines.lastIndex)
-            /// println("Liiines"); lines.take(5).forEachIndexed { i, s -> println("$i) $s")}
-
-            val jsArray = js("[]")
-            lines.forEach { line ->
-                Regex("\\((.*?\\.(ts|kt):\\d+:\\d+)\\)").find(line)?.let {
-                    jsArray.push(json(
-                        "loc" to it.groupValues[1]
-                    ))
-                }
-            }
-            resolve(jsArray)
-        }
-    })
+    imf("promiseDefinitionStack")
+//    return Promise<dynamic>({ resolve, reject ->
+//        Shitus.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
+//            // @wip sourceLocation
+//            var lines = stackString.lines()
+//            lines = lines.slice(firstSignificantStackLine..lines.lastIndex)
+//            /// println("Liiines"); lines.take(5).forEachIndexed { i, s -> println("$i) $s")}
+//
+//            val jsArray = js("[]")
+//            lines.forEach { line ->
+//                Regex("\\((.*?\\.(ts|kt):\\d+:\\d+)\\)").find(line)?.let {
+//                    jsArray.push(json(
+//                        "loc" to it.groupValues[1]
+//                    ))
+//                }
+//            }
+//            resolve(jsArray)
+//        }
+//    })
 }
 
 

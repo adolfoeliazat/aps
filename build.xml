@@ -37,7 +37,7 @@
 
         <pathconvert targetos="windows" property="cpstring" refid="cp"/>
         <echo file="_run.cmd">
-            java -cp ${cpstring} %*
+            @java -cp ${cpstring} %*
         </echo>
 
         <touch file="${env.APS_HOME}/_restart-flag"/>

@@ -7,7 +7,10 @@
 package aps.back
 
 import aps.*
+import com.google.debugging.sourcemap.SourceMapConsumerFactory
+import com.google.debugging.sourcemap.SourceMapping
 import into.kommon.*
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
@@ -76,14 +79,14 @@ object EmailMatumba {
 
 @RemoteProcedureFactory fun getSentEmails() = testProcedure(
     RequestMatumba(),
-    runShit = {req, res ->
+    runShit = {ctx, req ->
         GetSentEmailsRequest.Response(EmailMatumba.sentEmails)
     }
 )
 
 @RemoteProcedureFactory fun clearSentEmails() = testProcedure(
     RequestMatumba(),
-    runShit = void {req, res ->
+    runShit = void {ctx, req ->
         EmailMatumba.sentEmails.clear()
     }
 )
@@ -125,7 +128,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 @RemoteProcedureFactory fun getSoftwareVersion() = testProcedure(
     GetSoftwareVersionRequest(),
     logRequestJSON = false,
-    runShit = {req, res ->
+    runShit = {ctx, req ->
         val path = Paths.get("$APS_HOME/front/out/front-enhanced.js")
         val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)
         GetSoftwareVersionRequest.Response(
@@ -136,18 +139,22 @@ val backendInstanceID = "" + UUID.randomUUID()
 
 @RemoteProcedureFactory fun getGeneratedShit() = testProcedure(
     RequestMatumba(),
-    runShit = {req, res ->
+    runShit = {ctx, req ->
         GetGeneratedShitRequest.Response(GodServlet::class.java.getResource("generated-shit.js").readText())
     }
 )
 
-@RemoteProcedureFactory fun mapStack() = testProcedure(
-    MapStackRequest(),
-    runShit = {req, res ->
-        val originalStack="foo\nbar\nbaz"
-        MapStackRequest.Response(originalStack)
-    }
-)
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -211,7 +211,7 @@ fun jsFacing_initHotCodeShit(impl: dynamic,
 
 
             run { // Kotlin
-                Shitus.invalidateKotlinStackSourceMapConsumer()
+//                Shitus.invalidateKotlinStackSourceMapConsumer()
 
 
                 __await<dynamic>(newNativePromise {resolve: dynamic, reject: dynamic ->

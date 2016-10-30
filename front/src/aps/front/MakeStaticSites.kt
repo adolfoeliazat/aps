@@ -484,9 +484,6 @@ object MakeStaticSites : IMakeStaticSites {
             global.Tether = require('tether')
 
             ${if (mode == Mode.DEBUG) """
-                global.Buffer = require('buffer').Buffer // Like under Node, needed by source-map
-                global.sourceMap = require('source-map')
-                global.convertSourceMap = require('convert-source-map')
                 global.superagent = require('superagent')
                 global.nodeUtil = require('util')
                 global.JsDiff = require('diff')

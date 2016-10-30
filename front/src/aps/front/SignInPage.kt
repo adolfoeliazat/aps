@@ -12,8 +12,6 @@ import into.kommon.*
 
 fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit, ui2: UI2): dynamic {
     fun loadSignInPage() {
-        // global.console.trace()
-        console.warn("<<<" + global.Error("qweqweqwe").stack + ">>>")
         die()
         ui2.setPage(
             header = pageHeader(t("Sign In", "Вход")),
