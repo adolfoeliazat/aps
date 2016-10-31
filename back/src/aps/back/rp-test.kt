@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse
 
 object TestServerFiddling {
     @Volatile var nextRequestTimestamp: Timestamp? = null
-    @Volatile var rejectAllRequests: Boolean = false
+    @Volatile var rejectAllRequestsNeedingDB: Boolean = false
     @Volatile var nextGeneratedPassword: String? = null
 }
 
@@ -94,8 +94,8 @@ object EmailMatumba {
 @RemoteProcedureFactory fun worldPoint() = testProcedure(
     WorldPointRequest(),
     runShit = void {ctx, req ->
-        val oldRejectAllRequests = TestServerFiddling.rejectAllRequests
-        TestServerFiddling.rejectAllRequests = true
+        val oldRejectAllRequests = TestServerFiddling.rejectAllRequestsNeedingDB
+        TestServerFiddling.rejectAllRequestsNeedingDB = true
 
         try {
             val snapshotDBName = "world_point_${req.pointName.value}"
@@ -118,7 +118,7 @@ object EmailMatumba {
                 create database "${databaseToCreate}" template = "${databaseToUseAsTemplate}";
             """)}
         } finally {
-            TestServerFiddling.rejectAllRequests = oldRejectAllRequests
+            TestServerFiddling.rejectAllRequestsNeedingDB = oldRejectAllRequests
         }
     }
 )

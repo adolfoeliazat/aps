@@ -27,7 +27,7 @@ fun jsFacing_faIcon(def: dynamic): dynamic {
         }
     )
 
-    def.`$definitionStack` = promiseDefinitionStack(js("Error()"), 1)
+    // def.`$definitionStack` = promiseDefinitionStack(js("Error()"), 1)
 
     me.controlTypeName = "icon"
     legacy_implementControlShit(json("me" to me, "def" to def, "implementTestClick" to json("onClick" to onClick)))

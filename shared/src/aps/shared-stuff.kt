@@ -126,11 +126,17 @@ fun passwordField(container: RequestMatumba) =
 fun emailField(container: RequestMatumba) =
     TextField(container, "email", t("TOTE", "Почта"), TextFieldType.EMAIL, minLen = 3, maxLen = 50)
 
+class SignInResponse(val token: String, val user: UserRTO)
+
 class SignInWithPasswordRequest : RequestMatumba() {
     val email = emailField(this)
     val password = passwordField(this)
+}
 
-    class Response(val token: String, val user: UserRTO)
+class SignInWithTokenRequest : RequestMatumba() {
+    companion object {
+        fun send(token: String): Promise<SignInResponse> = callMatumba(SignInWithTokenRequest(), token)
+    }
 }
 
 class SignUpRequest : RequestMatumba() {
@@ -188,7 +194,7 @@ class GetSoftwareVersionRequest : RequestMatumba() {
     class Response(val ctime: String, val backendInstanceID: String)
 
     companion object {
-        fun send(): Promise<Response> = callDangerousMatumba(GetSoftwareVersionRequest ())
+        fun send(): Promise<Response> = callDangerousMatumba(GetSoftwareVersionRequest())
     }
 }
 

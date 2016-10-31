@@ -9,7 +9,9 @@ package aps.front
 import aps.*
 import into.kommon.*
 import jquery.jq
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
+import kotlin.browser.window
 
 // - Run test by full name
 // - Run all tests in given package and subpackages
@@ -90,28 +92,7 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
 
         override fun selectBrowser(name: String) {
             dlog("Selecting browser", name)
-            hrss.browser = hrss.browsers[name]
-            if (!hrss.browser) {
-                var storageLocalItems = js("({})")
-
-                hrss.browser = json(
-                    "name" to name,
-                    "storageLocal" to json(
-                        "clear" to {
-                            storageLocalItems = js("({})")
-                        },
-                        "getItem" to {key: dynamic ->
-                            storageLocalItems[key]
-                        },
-                        "setItem" to {key: dynamic, value: dynamic ->
-                            storageLocalItems[key] = value
-                            global.localStorage.setItem(key, value) // TODO:vgrechka @kill
-                        }
-                    )
-                )
-
-                hrss.browsers[name] = hrss.browser
-            }
+            hrss.browser = hrss.browsers.getOrPut(name) {Browser(name)}
 
             hrss.storageLocal = hrss.browser.storageLocal
 
@@ -121,9 +102,14 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
                 //                        byid("topNavbarContainer").html(`<div style="text-align: center;">New browser: ${name}</div>`)
                 //                        byid("root").html("")
             } else {
+                // TODO:vgrechka Do ReactDOM.unmountComponentAtNode?
                 global.ReactDOM.render(hrss.browser.topNavbarElement, Shitus.byid0("topNavbarContainer"))
                 global.ReactDOM.render(hrss.browser.rootElement, Shitus.byid0("root"))
             }
+
+//            // TODO:vgrechka Do ReactDOM.unmountComponentAtNode?
+//            global.ReactDOM.render(hrss.browser.topNavbarElement, Shitus.byid0("topNavbarContainer"))
+//            global.ReactDOM.render(hrss.browser.rootElement, Shitus.byid0("root"))
         }
     }
 
@@ -135,7 +121,13 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
     global.DB = "aps-test"
     global.sessionStorage.setItem("DB", global.DB)
 
-    val initialPath = global.location.pathname + global.location.search
+    val initialHref = window.location.pathname + window.location.search
+    global.addEventListener("keydown", {e: KeyboardEvent ->
+        if (e.altKey && e.code == "KeyR") {
+            preventAndStop(e)
+            window.location.href = initialHref
+        }
+    })
 
     hrss.currentTestScenarioName = testScenarioToRun
     lastTestScenarioName = testScenarioToRun
@@ -159,9 +151,9 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
         hrss.liveStatusPollingViaIntervalDisabled = oldLiveStatusPollingViaIntervalDisabled
 
         hrss.currentTestScenarioName = undefined
-        if (!hrss.preventRestoringURLAfterTest) {
-            global.setTimeout({ global.history.replaceState(null, "", initialPath) }, 1000)
-        }
+//        if (!hrss.preventRestoringURLAfterTest) {
+//            global.setTimeout({ global.history.replaceState(null, "", initialHref) }, 1000)
+//        }
 
         run { // XXX Refresh tethers
             jqbody.scrollTop(jqbody.scrollTop() + 1)

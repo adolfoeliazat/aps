@@ -8,6 +8,8 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.events.Event
+import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.events.MouseEvent
 
 @MixableType
@@ -238,7 +240,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
 
     fun addEventListeners() {
         Shitus.byid(elementID).off() // Several controls can be on same element, and we don't want to handle click several times
-        Shitus.byid(elementID).on("click", onClick@{e: dynamic -> "__async"
+        Shitus.byid(elementID).on("click", onClick@{e: KeyboardEvent -> "__async"
             if (MODE == "debug" && e.ctrlKey) {
                 if (e.shiftKey) {
                     if (ignoreDebugCtrlShiftClick()) return@onClick Unit

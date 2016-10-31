@@ -28,6 +28,7 @@ class ProcedureContext {
     lateinit var clientDomain: String
     lateinit var clientPortSuffix: String
     lateinit var user: UserRTO
+    lateinit var token: String
 
     val fieldErrors = mutableListOf<FieldError>()
 }
@@ -108,6 +109,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 
             if (spec.needsUser) {
                 val token = rmap["token"] as String
+                ctx.token = token
                 val rows = ctx.q.select()
                     .from(USER_TOKENS, USERS)
                     .where(USER_TOKENS.TOKEN.eq(token))
@@ -129,6 +131,8 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
         }
 
         val res = if (spec.needsDB) {
+            if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
+
             val db = DB.apsTestOnTestServer
             db.joo{q ->
                 ctx.q = q

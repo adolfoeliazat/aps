@@ -9,6 +9,7 @@ package aps.front
 import aps.*
 import aps.front.Color.*
 import into.kommon.*
+import org.w3c.dom.events.Event
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette
@@ -48,7 +49,7 @@ enum class Color(val string: String) {
 
 
 object KotlinShit : IKotlinShit {
-    var ui: dynamic = null
+    lateinit var ui: ShitPile
     var clientImpl: dynamic = null
 
     val igniteTestShit = ::jsFacing_igniteTestShit
@@ -67,7 +68,7 @@ object KotlinShit : IKotlinShit {
     val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
     val urlLink = ::jsFacing_urlLink
     val pageLink = ::jsFacing_pageLink
-    val initHotCodeShit: dynamic = ::jsFacing_initHotCodeShit
+//    val initHotCodeShit: dynamic = ::jsFacing_initHotCodeShit
 //    val parseQueryString = ::jsFacing_parseQueryString
 
 //    val shittyShit = json(
@@ -628,13 +629,23 @@ fun preventAndStop(e: ReactEvent) {
     e.stopPropagation()
 }
 
+fun preventAndStop(e: Event) {
+    e.preventDefault()
+    e.stopPropagation()
+}
+
 fun <R> runni(f: () -> R): R {
     return f()
 }
 
 
 fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
-    imf("promiseDefinitionStack")
+    return Promise {resolve, reject ->
+        console.warn("Implement promiseDefinitionStack")
+        resolve(jsArrayOf())
+    }
+
+
 //    return Promise<dynamic>({ resolve, reject ->
 //        Shitus.errorToMappedClientStackString(constructionStackAsError, json("skipMessage" to true)).then { stackString: String ->
 //            // @wip sourceLocation
@@ -899,13 +910,13 @@ fun someAsyncShit_localContainer() {
     }
 }
 
-fun initTestShit() {
-    fun testDynamicVarargs() {
-    }
-
-    global.testAsyncShit = ::testAsyncShit
-    global.testDynamicVarargs = ::testDynamicVarargs
-}
+//fun initTestShit() {
+//    fun testDynamicVarargs() {
+//    }
+//
+//    global.testAsyncShit = ::testAsyncShit
+//    global.testDynamicVarargs = ::testDynamicVarargs
+//}
 
 fun t(en: String) = t(en, en)
 fun t(en: String, ru: String) = ru

@@ -14,8 +14,6 @@ class GodServlet : HttpServlet() {
     val log by logger()
 
     override fun service(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse) {
-        if (TestServerFiddling.rejectAllRequests) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
-
         val pathInfo = servletRequest.pathInfo
         try {
             when {

@@ -10,17 +10,17 @@ import aps.*
 import into.kommon.*
 
 
-fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit, ui2: UI2): dynamic {
+fun jsFacing_loadSignInPageCtor(ui: ShitPile, ui2: UI2): dynamic {
     fun loadSignInPage() {
-        die()
         ui2.setPage(
+
             header = pageHeader(t("Sign In", "Вход")),
             body = kdiv{o->
                 o-nif(ui.signedUpOK) {preludeWithGreenCheck(json("title" to t(
                     "Cool. You have an account now. We sent you email with password.",
                     "Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.")))}
 
-                o-FormMatumba<SignInWithPasswordRequest, SignInWithPasswordRequest.Response>(FormSpec(
+                o-FormMatumba<SignInWithPasswordRequest, SignInResponse>(FormSpec(
                     SignInWithPasswordRequest(),
                     ui,
                     primaryButtonTitle = t("Sign In", "Войти"),
@@ -32,7 +32,7 @@ fun jsFacing_loadSignInPageCtor(ui: LegacyUIShit, ui2: UI2): dynamic {
                         ui.user = res.user
                         ui.startLiveStatusPolling()
                         ui.token = res.token
-                        hrss.storageLocal.setItem("token", ui.token)
+                        hrss.storageLocal.setItem("token", ui.token!!)
 
                         __await(ui.pushNavigate(when (res.user.state) {
                             UserState.COOL -> "dashboard.html"

@@ -13,6 +13,7 @@ import aps.WorldPointRequest.Action.RESTORE
 import aps.WorldPointRequest.Action.SAVE
 import into.kommon.*
 import jquery.jq
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.reflect.KProperty
 
 class HotReloadSurvivingFuckingShit(val nameInGlobalScope: String) {
@@ -1569,7 +1570,7 @@ fun makeHrundels(def: dynamic): dynamic {
             onLens && Shitus.diva(json("className" to "showOnParentHovered"),
                 Shitus.diva(json("style" to json("position" to "absolute", "right" to 0, "top" to -20, "height" to 40, "width" to 40, "textAlign" to "right")),
                     Shitus.spana(json("className" to "fa fa-search", "style" to json("cursor" to "pointer"),
-                        "onClick" to {e: dynamic ->
+                        "onClick" to {e: KeyboardEvent ->
                             preventAndStop(e)
                             onLens(json("control" to control))
                         }

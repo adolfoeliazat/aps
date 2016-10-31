@@ -8,12 +8,13 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.events.KeyboardEvent
 
 fun jsFacing_TopNavItem(def: dynamic): dynamic {
     val title: dynamic = def.title
     val liveStatusFieldName: dynamic = def.liveStatusFieldName
     val active: dynamic = def.active
-    val ui: dynamic = def.ui
+    val ui: ShitPile = def.ui
 
     val href = if (def.name == "home") "/" else "${def.name}.html"
     val aid = puid()
@@ -27,7 +28,7 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
                     if (liveStatusFieldName != null) ui.liveBadge2(json("liveStatusFieldName" to liveStatusFieldName)) else null))
         },
 
-        "onRootClick" to {e: dynamic -> "__async"
+        "onRootClick" to {e: KeyboardEvent -> "__async"
             preventAndStop(e)
 
             var dleft = 0; var dwidth = 0

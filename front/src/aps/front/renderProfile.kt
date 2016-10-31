@@ -18,8 +18,8 @@ fun userKindIcon(kind: UserKind): dynamic {
     ))
 }
 
-fun renderProfile(ui: LegacyUIShit, user: UserRTO): dynamic {
-    val adminLooks = ui.user.kind == UserKind.ADMIN
+fun renderProfile(ui: ShitPile, user: UserRTO): dynamic {
+    val adminLooks = ui.user!!.kind == UserKind.ADMIN
 
     return Shitus.diva(json("controlTypeName" to "renderProfile", "tame" to "profile"),
         Shitus.diva(json("className" to "row"),

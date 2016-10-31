@@ -9,7 +9,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun jsFacing_liveBadge(ui: dynamic, def: dynamic): dynamic {
+fun jsFacing_liveBadge(ui: ShitPile, def: dynamic): dynamic {
     imf("jsFacing_liveBadge")
 //    return jshit.statefulElement(json(
 //        "ctor" to ctor@{update: dynamic ->
@@ -49,7 +49,7 @@ fun jsFacing_liveBadge(ui: dynamic, def: dynamic): dynamic {
 //    ))
 }
 
-fun jsFacing_liveBadge2(ui: dynamic, def: dynamic): dynamic {
+fun jsFacing_liveBadge2(ui: ShitPile, def: dynamic): dynamic {
     if (def.tame == null) def.tame = "badge"
 
     return Shitus.statefulElement(ctor@{update: dynamic ->

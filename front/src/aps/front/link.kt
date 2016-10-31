@@ -53,7 +53,7 @@ fun jsFacing_link(def: Json): ReactElement {
     return elcl(me)
 }
 
-fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
+fun jsFacing_urlLink(ui: ShitPile, def: dynamic): dynamic {
     val name = def.name // TODO:vgrechka Seems to be unused
     val url = def.url
     val delayActionForFanciness = def.delayActionForFanciness
@@ -91,7 +91,7 @@ fun jsFacing_urlLink(ui: dynamic, def: dynamic): dynamic {
     return Shitus.link(Shitus.asn1(linkDef, def))
 }
 
-fun jsFacing_pageLink(ui: dynamic, def: dynamic) {
+fun jsFacing_pageLink(ui: ShitPile, def: dynamic) {
     Shitus.raise("Kill me please, I don’t deserve living")
 }
 
@@ -172,6 +172,10 @@ fun link(@Mix params: LinkParams,
             attrs.onClick?.let {it(e)}
             attrs.onClicka?.let {__await(it(e))}
             return __asyncResult(Unit)
+        }
+
+        override fun testClick(): Promise<Unit> {
+            return onRootClick(json("preventDefault" to {}, "stopPropagation" to {}))
         }
 
     }

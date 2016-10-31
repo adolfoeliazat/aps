@@ -37,7 +37,16 @@ import java.util.*
 
         // TODO:vgrechka Load related user shit?
 
-        SignInWithPasswordRequest.Response(token, user.toRTO(ctx.q))
+        SignInResponse(token, user.toRTO(ctx.q))
+    }
+)
+
+
+@RemoteProcedureFactory fun signInWithToken() = anyUserProcedure(
+    SignInWithTokenRequest(),
+    wrapInFormResponse = false,
+    runShit = {ctx, req ->
+        SignInResponse(ctx.token, ctx.user)
     }
 )
 

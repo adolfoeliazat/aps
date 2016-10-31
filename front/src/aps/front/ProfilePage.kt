@@ -8,12 +8,12 @@ package aps.front
 
 import aps.*
 
-class ProfilePage(val ui: LegacyUIShit) {
+class ProfilePage(val ui: ShitPile) {
     fun load(): Promise<Unit> {"__async"
         val primaryButtonTitle = t("TOTE", "Отправить на проверку")
 
         var pageBody: dynamic = undefined
-        val user: UserRTO = ui.getUser()
+        val user: UserRTO = ui.getUser()!!
         val userState = user.state
 
         if (userState == UserState.PROFILE_PENDING || userState == UserState.PROFILE_REJECTED) {

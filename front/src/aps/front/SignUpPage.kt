@@ -8,7 +8,7 @@ package aps.front
 
 import aps.*
 
-class SignUpPage(val ui: LegacyUIShit) {
+class SignUpPage(val ui: ShitPile) {
     fun load(): Promise<Unit> {"__async"
         ui.setPage(json(
             "header" to Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация"))),

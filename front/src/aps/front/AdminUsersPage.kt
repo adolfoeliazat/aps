@@ -53,9 +53,9 @@ fun pageHeader(arg: Json): ReactElement {
     return jsFacing_elcl(me)
 }
 
-class AdminUsersPage(val ui: LegacyUIShit) {
+class AdminUsersPage(val ui: ShitPile) {
     fun load(): Promise<Unit> {"__async"
-//        throw Exception("pizda")
+        // throw Exception("pizda")
         __await(Melinda<UserRTO, Nothing, UserFilter>(
             ui,
             urlPath = "admin-users.html",

@@ -56,7 +56,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 action("Clicking 'Sign Up' link") {
                     setValue("TextField-email.Input", "vovchok@test.shit.ua")
                     setValue("TextField-password.Input", "something")
-                    click("link-createAccount", "2016-08-12 20:40:58")
+                    click("urlLink-createAccount", "2016-08-12 20:40:58")
                 }
                 state("Got registration form") {
                     assertGen("877a3f2f-ad7d-41c7-af4b-9665526fc27f")
@@ -611,7 +611,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                     "TopNavItem-sign-in" to json("active" to true, "title" to "Вход"),
                     "TopNavItem-why" to json("title" to "Почему мы?"),
                     "button-primary" to json("title" to "Войти"),
-                    "link-createAccount" to json("title" to "Срочно создать!"),
+                    "urlLink-createAccount" to json("title" to "Срочно создать!"),
                     "pageHeader" to "Вход",
                     "url" to "http://aps-ua-writer.local:3022/sign-in.html"
                 ))

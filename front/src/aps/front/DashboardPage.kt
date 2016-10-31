@@ -8,7 +8,7 @@ package aps.front
 
 import aps.*
 
-class DashboardPage(val ui: LegacyUIShit) {
+class DashboardPage(val ui: ShitPile) {
     fun load(preserveScroll: Boolean = false): Promise<Unit> {"__async"
         val myPage = json(
             "id" to puid(),

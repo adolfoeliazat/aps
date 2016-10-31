@@ -9,6 +9,7 @@ package aps.front
 import aps.*
 import aps.front.Color.*
 import into.kommon.*
+import org.w3c.dom.events.KeyboardEvent
 
 object TestGlobal {
     val shameToControl = mutableMapOf<String, dynamic>()
@@ -48,7 +49,7 @@ fun userKindTitle(kind: UserKind) = when (kind) {
     UserKind.ADMIN -> t("TOTE", "Админ")
 }
 
-fun requiredToken(ui: LegacyUIShit): String = ui.token ?: bitch("I want a token")
+fun requiredToken(ui: ShitPile): String = ui.token ?: bitch("I want a token")
 
 fun oldShitAsReactElementable(someShit: Any?): ToReactElementable =
     object:ToReactElementable {
@@ -76,7 +77,7 @@ fun renderStamp(stamp: String, includeTZ: Boolean = true): String {
     return Shitus.timestampString(stamp, json("includeTZ" to includeTZ))
 }
 
-fun pushNavigate(ui: LegacyUIShit, url: String): Promise<Unit> {"__async"
+fun pushNavigate(ui: ShitPile, url: String): Promise<Unit> {"__async"
     __dlog.pushNavigate(url)
     ui.currentPage = null
 
@@ -520,7 +521,7 @@ fun CollapsibleShit(def: dynamic): dynamic {
                 return@updatableElementCtor {
                     Shitus.spana(json("controlTypeName" to "CollapsibleShit::caret", "className" to "fa fa-caret-${if (open) "up" else "down"}",
                         "style" to global.Object.assign(json("cursor" to "pointer"), style),
-                        "onClick" to {e: dynamic ->
+                        "onClick" to {e: KeyboardEvent ->
                             preventAndStop(e)
                             me.toggle()
                         }))}

@@ -9,6 +9,7 @@ package aps.front
 import aps.*
 import aps.front.Color.*
 import into.kommon.*
+import kotlin.browser.window
 
 var revealStackCalledTimes = 0
 
@@ -183,18 +184,61 @@ fun jsFacing_isOrWasInTestScenario(): Boolean {
     return lastTestScenarioName != null
 }
 
+interface StorageLocal {
+    fun clear()
+    fun getItem(key: String): String?
+    fun setItem(key: String, value: String)
+}
+
+class RealStorageLocal : StorageLocal {
+    override fun clear() {
+        window.localStorage.clear()
+    }
+
+    override fun getItem(key: String): String? {
+        return window.localStorage.getItem(key)
+    }
+
+    override fun setItem(key: String, value: String) {
+        window.localStorage.setItem(key, value)
+    }
+}
+
+class Browser(val name: String) {
+    var storageLocalItems = js("({})")
+    var topNavbarElement: dynamic = null
+    var rootElement: dynamic = null
+    lateinit var ui: ShitPile
+    var impl: dynamic = null
+
+    val storageLocal = object : StorageLocal {
+        override fun clear() {
+            storageLocalItems = js("({})")
+        }
+
+        override fun getItem(key: dynamic): dynamic {
+            return storageLocalItems[key]
+        }
+
+        override fun setItem(key: dynamic, value: dynamic) {
+            storageLocalItems[key] = value
+            global.localStorage.setItem(key, value) // TODO:vgrechka @kill
+        }
+    }
+}
+
 class HotReloadSurvivingShit {
     var debugFunctionsKeydownListener: dynamic = null
     var onUnhandledRejection: dynamic = null
     var preventExceptionRevelation: Boolean = false
     val controlBeingRevealed: dynamic = null
-    var browsers: dynamic = null
-    var browser: dynamic = null
+    val browsers = mutableMapOf<String, Browser>()
+    lateinit var browser: Browser
     lateinit var lang: String
     var _t: dynamic = null
     var isHotReloading = false
     var debugCheckEmail_cachedEmails: dynamic = null
-    var storageLocal: dynamic = js("localStorage")
+    var storageLocal: StorageLocal = RealStorageLocal()
     var preventScrollToBottomOnAssertionError = false
     var preventUIAssertionThrowing = false
     var alternativeTestSpeed: dynamic = null

@@ -8,12 +8,13 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.collections.*
 
 val reactNull = oldShitAsReactElementable(null)
 
 class Melinda<Item, Entity, Filter>(
-    val ui: LegacyUIShit,
+    val ui: ShitPile,
     val urlPath: String,
     val procedureName: String,
     val entityProcedureName: String? = null,
@@ -165,7 +166,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 "placeholder" to t("TOTE", "Поиск..."),
                 "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
                 // TODO:vgrechka Check if async below is enhanced correctly
-                "onKeyDown" to {e: dynamic -> "__async"
+                "onKeyDown" to {e: KeyboardEvent -> "__async"
                     if (e.keyCode == 13) {
                         preventAndStop(e)
                         __await(applyHeaderControls(searchBoxInput!!))
@@ -292,12 +293,12 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 }
 
 
-fun getURLQueryParam(ui: LegacyUIShit, name: String): String? {
+fun getURLQueryParam(ui: ShitPile, name: String): String? {
     return ui.urlQuery[name]
 }
 
 fun <Item, Filter>
-renderMoreable(ui: LegacyUIShit,
+renderMoreable(ui: ShitPile,
                itemsRes: ItemsResponse<Item>,
                itemsReq: ItemsRequest<Filter>,
                renderItem: (Int, Item) -> ToReactElementable,

@@ -205,26 +205,26 @@ annotation class Front
     override fun toRemote() = value
 }
 
-@native interface LegacyUIShit {
-    fun replaceNavigate(url: String): Promise<Unit>
-    fun pushNavigate(url: String): Promise<Unit>
-    fun setUser(newUser: UserRTO)
-    var token: String?
-    var signedUpOK: Boolean
-    var user: UserRTO
-    fun startLiveStatusPolling()
-    fun setPage(spec: Json)
-    fun urlLink(spec: Json): ReactElement
-    fun getUser(): UserRTO
-    fun signOut()
-    fun updatePage()
-    val urlQuery: Map<String, String>
-    var currentPage: Any?
-    fun loadPageForURL(): Promise<Unit>
-    fun setRootContent(re: ReactElement)
-    var updatePage: () -> Unit
-    var updatePageHeader: () -> Unit
-}
+//@native interface LegacyUIShit {
+//    fun replaceNavigate(url: String): Promise<Unit>
+//    fun pushNavigate(url: String): Promise<Unit>
+//    fun setUser(newUser: UserRTO)
+//    var token: String?
+//    var signedUpOK: Boolean
+//    var user: UserRTO
+//    fun startLiveStatusPolling()
+//    fun setPage(spec: Json)
+//    fun urlLink(spec: Json): ReactElement
+//    fun getUser(): UserRTO
+//    fun signOut()
+//    fun updatePage()
+//    val urlQuery: Map<String, String>
+//    var currentPage: Any?
+//    fun loadPageForURL(): Promise<Unit>
+//    fun setRootContent(re: ReactElement)
+//    var updatePage: () -> Unit
+//    var updatePageHeader: () -> Unit
+//}
 
 @Front class SelectField<T>(
     container: RequestMatumba,

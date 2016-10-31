@@ -9,9 +9,9 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun igniteRPCShit() {
-    dlog("Igniting RPC shit...")
-}
+//fun igniteRPCShit() {
+//    dlog("Igniting RPC shit...")
+//}
 
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {"__async"
     val stackBeforeXHR: String = js("Error().stack")
