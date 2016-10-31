@@ -9,7 +9,7 @@ package aps.front
 import aps.*
 import org.w3c.dom.events.KeyboardEvent
 
-class UI2(val lus: ShitPile) {
+class UI2(val lus: World) {
     fun setPage(header: ToReactElementable,
                 body: ToReactElementable,
                 headerControls: ToReactElementable? = null,

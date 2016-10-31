@@ -49,12 +49,12 @@ enum class Color(val string: String) {
 
 
 object KotlinShit : IKotlinShit {
-    lateinit var ui: ShitPile
-    var clientImpl: dynamic = null
+    lateinit var ui: World
+    lateinit var clientImpl: World
 
     val igniteTestShit = ::jsFacing_igniteTestShit
 
-    val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
+//    val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
     val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
     val isDynamicPage = ::jsFacing_isDynamicPage
 
@@ -64,8 +64,8 @@ object KotlinShit : IKotlinShit {
     val jsFacing_art_invokeStateContributions = ::invokeStateContributions
     val apsCSS = ::jsFacing_apsCSS
     val pollLiveStatus = ::jsFacing_pollLiveStatus
-    val startLiveStatusPolling = ::jsFacing_startLiveStatusPolling
-    val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
+//    val startLiveStatusPolling = ::jsFacing_startLiveStatusPolling
+//    val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
     val urlLink = ::jsFacing_urlLink
     val pageLink = ::jsFacing_pageLink
 //    val initHotCodeShit: dynamic = ::jsFacing_initHotCodeShit
@@ -126,9 +126,9 @@ object KotlinShit : IKotlinShit {
 
 
     override fun loadDebugKotlinPlaygroundPage() {
-        KotlinShit.ui.setPage(json(
-            "header" to Shitus.pageHeader(json("title" to "debug-kotlin-playground")),
-            "body" to Shitus.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5")
+        KotlinShit.ui.setPage(Page(
+            header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to "debug-kotlin-playground"))),
+            body = oldShitAsReactElementable(Shitus.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5"))
         ))
     }
 }
@@ -611,6 +611,7 @@ fun simpleButton(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement
 //}
 
 @native interface ReactEvent {
+    val keyCode: Int
     val ctrlKey: Boolean
     val shiftKey: Boolean
 

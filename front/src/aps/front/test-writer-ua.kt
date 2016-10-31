@@ -568,8 +568,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
             TestInstruction.Do({"__async"
                 global.CLIENT_KIND = clientKind
-                host.selectBrowser(browserName)
-                __await<dynamic>(host.navigate("dashboard.html"))
+                __await(host.selectNewBrowserAndNavigate(browserName, "dashboard.html")) /ignora
             }),
 
             TestInstruction.Step("state", stateDescription)

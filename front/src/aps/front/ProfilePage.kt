@@ -8,7 +8,7 @@ package aps.front
 
 import aps.*
 
-class ProfilePage(val ui: ShitPile) {
+class ProfilePage(val ui: World) {
     fun load(): Promise<Unit> {"__async"
         val primaryButtonTitle = t("TOTE", "Отправить на проверку")
 
@@ -60,9 +60,9 @@ class ProfilePage(val ui: ShitPile) {
             Shitus.raise("Weird user state: ${userState}")
         }
 
-        ui.setPage(json(
-            "header" to Shitus.pageHeader(json("title" to t("Profile", "Профиль"))),
-            "body" to pageBody
+        ui.setPage(Page(
+            header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("Profile", "Профиль")))),
+            body = oldShitAsReactElementable(pageBody)
         ))
 
         return __asyncResult(Unit)

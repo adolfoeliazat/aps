@@ -404,6 +404,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
         }
 
         __await(onRootClick(object : ReactEvent {
+            override val keyCode = 0
             override val ctrlKey = false
             override val shiftKey = false
             override fun preventDefault() {}

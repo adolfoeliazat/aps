@@ -12,7 +12,7 @@ val defaultCancelButtonTitle = t("Never Mind", "Передумал")
 
 data class FormSpec<Req: RequestMatumba, Res>(
     val req: Req,
-    val ui: ShitPile,
+    val ui: World,
     val className: String = "",
     val errorBannerStyle: dynamic = js("undefined"),
     val primaryButtonTitle: String = t("Post", "Запостить"),

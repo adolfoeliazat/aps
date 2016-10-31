@@ -13,18 +13,8 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
 import kotlin.browser.window
 
-// - Run test by full name
-// - Run all tests in given package and subpackages
-// - Cherry-pick tests from several packages into new package
-// - Packages also serve for easy test naming
-// - Name of test is comprised of all super-packages + leaf
-// - Renaming package causes automatic renaming of all sub-tests
-// - Easily define internal test helpers and state
-// - Easily find in code test by its (possibly partial) name
-
 interface TestHost {
-    fun selectBrowser(name: String)
-    fun navigate(url: String): Promise<Unit>
+    fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit>
 }
 
 abstract class TestScenario {
@@ -55,7 +45,7 @@ class TestCommon(val sim: dynamic) {
     }
 }
 
-fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__async"
+fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
 //    val urlObject = jshit.utils.url.parse(global.location.href)
 //    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
     val urlQuery = parseQueryString(global.location.href)
@@ -82,34 +72,17 @@ fun jsFacing_igniteTestShit(makeCleanPairAndBoot: dynamic): Promise<Unit> {"__as
     }
     art.respectArtPauses = urlQuery["respectArtPauses"] == "yes"
 
-    val sim = object : TestHost {
-        override fun navigate(url: String): Promise<Unit> {"__async"
-            dlog("Navigating", hrss.browser.name, url)
-            global.history.replaceState(null, "", url)
-            __await<dynamic>(makeCleanPairAndBoot())
-            return __asyncResult(Unit)
-        }
-
-        override fun selectBrowser(name: String) {
+    val sim = object:TestHost {
+        override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> {"__async"
             dlog("Selecting browser", name)
             hrss.browser = hrss.browsers.getOrPut(name) {Browser(name)}
-
             hrss.storageLocal = hrss.browser.storageLocal
 
-            if (!hrss.browser.topNavbarElement) {
-                // WTF is this?..
-                // Doing this prevents proper unmounting of React components
-                //                        byid("topNavbarContainer").html(`<div style="text-align: center;">New browser: ${name}</div>`)
-                //                        byid("root").html("")
-            } else {
-                // TODO:vgrechka Do ReactDOM.unmountComponentAtNode?
-                global.ReactDOM.render(hrss.browser.topNavbarElement, Shitus.byid0("topNavbarContainer"))
-                global.ReactDOM.render(hrss.browser.rootElement, Shitus.byid0("root"))
-            }
-
-//            // TODO:vgrechka Do ReactDOM.unmountComponentAtNode?
-//            global.ReactDOM.render(hrss.browser.topNavbarElement, Shitus.byid0("topNavbarContainer"))
-//            global.ReactDOM.render(hrss.browser.rootElement, Shitus.byid0("root"))
+            dlog("Navigating", hrss.browser.name, url)
+            global.history.replaceState(null, "", url)
+//            __await<dynamic>(makeCleanPairAndBoot())
+            __await(World().boot())
+            return __asyncResult(Unit)
         }
     }
 

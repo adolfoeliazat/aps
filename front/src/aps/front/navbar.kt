@@ -9,7 +9,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun jsFacing_renderTopNavbar_calledByFuckingUI(ui: ShitPile, arg: dynamic): dynamic {
+fun jsFacing_renderTopNavbar_calledByFuckingUI(ui: World, arg: dynamic): dynamic {
     // {highlightedItem}
     val highlightedItem = arg.highlightedItem
 

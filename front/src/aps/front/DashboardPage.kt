@@ -8,12 +8,11 @@ package aps.front
 
 import aps.*
 
-class DashboardPage(val ui: ShitPile) {
+class DashboardPage(val ui: World) {
     fun load(preserveScroll: Boolean = false): Promise<Unit> {"__async"
-        val myPage = json(
-            "id" to puid(),
-            "header" to Shitus.pageHeader(json("title" to t("Dashboard", "Панель"))),
-            "body" to Shitus.diva(json(),
+        val myPage = Page(
+            header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("Dashboard", "Панель")))),
+            body = oldShitAsReactElementable(Shitus.diva(json(),
                 Shitus.diva(json("className" to "row"),
                     Shitus.diva(json("className" to "col-sm-6"),
                         section(json(
@@ -80,7 +79,7 @@ class DashboardPage(val ui: ShitPile) {
                         ))
                     )
                 )
-            )
+            ))
         )
 
         val scrollTop = js("$")(kotlin.browser.document).scrollTop()
@@ -91,7 +90,7 @@ class DashboardPage(val ui: ShitPile) {
 
         fun scheduleUpdate() {
             timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
-                if (KotlinShit.clientImpl.stale) return@outta Unit
+//                if (KotlinShit.clientImpl.stale) return@outta Unit
                 if (myPage != KotlinShit.ui.currentPage) return@outta Unit
 
                 // Automatic refreshes should be prevented while something is being investigated via revealer,
@@ -100,7 +99,6 @@ class DashboardPage(val ui: ShitPile) {
 
                 if (Shitus.isOrWasInTestScenario() && hrss.browser.ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
 
-                // dlog("currentPage.id = ${currentPage.id}; myPage.id = ${myPage.id}")
                 dlog("Updating dashboard page")
 
                 __asyncResult(__await(DashboardPage(ui).load(preserveScroll = true)))

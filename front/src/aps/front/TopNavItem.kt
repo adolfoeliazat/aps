@@ -14,7 +14,7 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
     val title: dynamic = def.title
     val liveStatusFieldName: dynamic = def.liveStatusFieldName
     val active: dynamic = def.active
-    val ui: ShitPile = def.ui
+    val ui: World = def.ui
 
     val href = if (def.name == "home") "/" else "${def.name}.html"
     val aid = puid()
@@ -24,8 +24,9 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
         "render" to {
             Shitus.lia(json("id" to me.elementID, "className" to (if (active) "active" else "")),
                 Shitus.aa(json("id" to aid, "href" to href),
-                    Shitus.spancTitle(json("title" to title)),
-                    if (liveStatusFieldName != null) ui.liveBadge2(json("liveStatusFieldName" to liveStatusFieldName)) else null))
+                    Shitus.spancTitle(json("title" to title))
+//                    if (liveStatusFieldName != null) ui.liveBadge2(json("liveStatusFieldName" to liveStatusFieldName)) else null
+                ))
         },
 
         "onRootClick" to {e: KeyboardEvent -> "__async"

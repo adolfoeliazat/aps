@@ -49,7 +49,7 @@ fun userKindTitle(kind: UserKind) = when (kind) {
     UserKind.ADMIN -> t("TOTE", "Админ")
 }
 
-fun requiredToken(ui: ShitPile): String = ui.token ?: bitch("I want a token")
+fun requiredToken(ui: World): String = ui.token ?: bitch("I want a token")
 
 fun oldShitAsReactElementable(someShit: Any?): ToReactElementable =
     object:ToReactElementable {
@@ -77,9 +77,9 @@ fun renderStamp(stamp: String, includeTZ: Boolean = true): String {
     return Shitus.timestampString(stamp, json("includeTZ" to includeTZ))
 }
 
-fun pushNavigate(ui: ShitPile, url: String): Promise<Unit> {"__async"
+fun pushNavigate(ui: World, url: String): Promise<Unit> {"__async"
     __dlog.pushNavigate(url)
-    ui.currentPage = null
+    ui.currentPage = null.asDynamic() // TODO:vgrechka Do something about this
 
     global.history.pushState(null, "", url)
     return __await(ui.loadPageForURL()) /ignora

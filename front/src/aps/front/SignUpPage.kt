@@ -8,11 +8,11 @@ package aps.front
 
 import aps.*
 
-class SignUpPage(val ui: ShitPile) {
+class SignUpPage(val ui: World) {
     fun load(): Promise<Unit> {"__async"
-        ui.setPage(json(
-            "header" to Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация"))),
-            "body" to Shitus.diva(json(),
+        ui.setPage(Page(
+            header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация")))),
+            body = oldShitAsReactElementable(Shitus.diva(json(),
                 FormMatumba<SignUpRequest, GenericResponse>(FormSpec(
                     SignUpRequest(),
                     ui,
@@ -29,7 +29,7 @@ class SignUpPage(val ui: ShitPile) {
                         Shitus.spanc(json("tame" to "prose", "content" to t("TOTE", "Уже есть аккаунт? Тогда "))),
                         ui.urlLink(json("tamy" to true, "title" to t("TOTE", "входим сюда"), "url" to "sign-in.html", "delayActionForFanciness" to true)),
                         "."))
-                )
+                ))
         ))
 
         return __asyncResult(Unit)

@@ -53,7 +53,7 @@ fun pageHeader(arg: Json): ReactElement {
     return jsFacing_elcl(me)
 }
 
-class AdminUsersPage(val ui: ShitPile) {
+class AdminUsersPage(val ui: World) {
     fun load(): Promise<Unit> {"__async"
         // throw Exception("pizda")
         __await(Melinda<UserRTO, Nothing, UserFilter>(

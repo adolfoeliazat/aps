@@ -208,8 +208,8 @@ class Browser(val name: String) {
     var storageLocalItems = js("({})")
     var topNavbarElement: dynamic = null
     var rootElement: dynamic = null
-    lateinit var ui: ShitPile
-    var impl: dynamic = null
+    lateinit var ui: World
+    lateinit var impl: World
 
     val storageLocal = object : StorageLocal {
         override fun clear() {

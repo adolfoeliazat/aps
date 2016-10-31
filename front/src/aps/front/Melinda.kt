@@ -14,7 +14,7 @@ import kotlin.collections.*
 val reactNull = oldShitAsReactElementable(null)
 
 class Melinda<Item, Entity, Filter>(
-    val ui: ShitPile,
+    val ui: World,
     val urlPath: String,
     val procedureName: String,
     val entityProcedureName: String? = null,
@@ -135,9 +135,9 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             val entityReq = EntityRequest()
             val res = __await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.token))
             entity = when (res) {
-                is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(json(
-                    "header" to Shitus.pageHeader(json("title" to t("TOTE", "Облом"))),
-                    "body" to Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error)))))
+                is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(Page(
+                    header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
+                    body = oldShitAsReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
 
                 is ZimbabweResponse.Hunky -> res.meat.entity
             }
@@ -237,52 +237,59 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         orderingSelect?.let {itemsReq.ordering.value = it.value}
         val res = __await(callZimbabwe<ItemsResponse<Item>>(procedureName, itemsReq, ui.token))
         val itemsRes = when (res) {
-            is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(json(
-                "header" to Shitus.pageHeader(json("title" to t("TOTE", "Облом"))),
-                "body" to Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error)))))
+            is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(Page(
+                header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
+                body = oldShitAsReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
 
             is ZimbabweResponse.Hunky -> res.meat
         }
 
 
-        return ignora/ ui.setPage(json(
-            "header" to header().toReactElement(),
+        return ignora/ ui.setPage(Page(
+            header = header(),
+            body = object:ToReactElementable {
+                override fun toReactElement(): ReactElement {
+                    return Shitus.diva(json("style" to json("marginBottom" to 15)),
+                                       tabs,
+                                       editShit?.let {it.form()},
+                                       plusShit?.let {it.form()},
+                                       aboveItems().toReactElement(),
 
-            "body" to {Shitus.diva(json("style" to json("marginBottom" to 15)),
-                tabs,
-                editShit?.let {it.form()},
-                plusShit?.let {it.form()},
-                aboveItems().toReactElement(),
-
-                run { // Render items
-                    if (itemsRes.items.isNotEmpty())
-                        renderMoreable(ui, itemsRes, itemsReq, renderItem)
-                    else
-                        if (showEmptyLabel)
-                            Shitus.diva(json("style" to json("marginTop" to 10)),
-                                emptyMessage?.let{it} ?: Shitus.spanc(json("tame" to "nothingLabel", "content" to t("TOTE", "Савсэм ничего нэт, да..."))))
-                        else ""
-                }
-            )},
-
-            "headerControls" to {Shitus.updatableElement(js("({})"), {update: dynamic ->
-                updateHeaderControls = update
-                render@{
-                    if (!hasHeaderControls() || !headerControlsVisible) return@render null
-                    Shitus.hor2(json(
-                        "style" to json("display" to "flex", "marginTop" to if (tabsSpec != null) 55 else 0),
-                        "className" to headerControlsClass),
-
-                        searchBox.toReactElement(),
-                        filterSelect?.toReactElement(),
-                        orderingSelect?.toReactElement(),
-                        editShit?.let {it.button()},
-                        plusShit?.let {it.button()}
+                                       run { // Render items
+                                           if (itemsRes.items.isNotEmpty())
+                                               renderMoreable(ui, itemsRes, itemsReq, renderItem)
+                                           else
+                                               if (showEmptyLabel)
+                                                   Shitus.diva(json("style" to json("marginTop" to 10)),
+                                                               emptyMessage?.let{it} ?: Shitus.spanc(json("tame" to "nothingLabel", "content" to t("TOTE", "Савсэм ничего нэт, да..."))))
+                                               else ""
+                                       }
                     )
                 }
-            })},
+            },
 
-            "onKeyDown" to {e: dynamic ->
+            headerControls = object:ToReactElementable {
+                override fun toReactElement(): ReactElement {
+                    return Shitus.updatableElement(js("({})"), { update: dynamic ->
+                        updateHeaderControls = update
+                        render@{
+                            if (!hasHeaderControls() || !headerControlsVisible) return@render null
+                            Shitus.hor2(json(
+                                "style" to json("display" to "flex", "marginTop" to if (tabsSpec != null) 55 else 0),
+                                "className" to headerControlsClass),
+
+                                        searchBox.toReactElement(),
+                                        filterSelect?.toReactElement(),
+                                        orderingSelect?.toReactElement(),
+                                        editShit?.let {it.button()},
+                                        plusShit?.let {it.button()}
+                            )
+                        }
+                    })
+                }
+            },
+
+            onKeyDown = {e: ReactEvent ->
                 if (e.keyCode == 27) {
                     cancelForm()
                 }
@@ -293,12 +300,12 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 }
 
 
-fun getURLQueryParam(ui: ShitPile, name: String): String? {
+fun getURLQueryParam(ui: World, name: String): String? {
     return ui.urlQuery[name]
 }
 
 fun <Item, Filter>
-renderMoreable(ui: ShitPile,
+renderMoreable(ui: World,
                itemsRes: ItemsResponse<Item>,
                itemsReq: ItemsRequest<Filter>,
                renderItem: (Int, Item) -> ToReactElementable,

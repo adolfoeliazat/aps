@@ -174,7 +174,7 @@ class InitAutoReload {
 //fun jsFacing_initHotCodeShit(impl: dynamic,
 //                             instantiateImpl: dynamic,
 ////                             makeUIShitIgniterDef: dynamic,
-//                             ui: ShitPile,
+//                             ui: World,
 //                             hotFunctions: dynamic) {
 //    "__async"
 //    if (MODE != "debug") return
