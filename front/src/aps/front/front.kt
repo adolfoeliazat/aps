@@ -919,8 +919,8 @@ fun someAsyncShit_localContainer() {
 //    global.testDynamicVarargs = ::testDynamicVarargs
 //}
 
-fun t(en: String) = t(en, en)
-fun t(en: String, ru: String) = ru
+//fun t(en: String) = t(en, en)
+//fun t(en: String, ru: String) = ru
 
 
 

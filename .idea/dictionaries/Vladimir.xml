@@ -18,6 +18,7 @@
       <w>fuckingly</w>
       <w>fuckup</w>
       <w>getenv</w>
+      <w>horiz</w>
       <w>ignita</w>
       <w>igniter</w>
       <w>ignora</w>
@@ -49,6 +50,7 @@
       <w>unduplicate</w>
       <w>unhardcode</w>
       <w>unrendered</w>
+      <w>yaml</w>
     </words>
   </dictionary>
 </component>

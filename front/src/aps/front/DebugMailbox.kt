@@ -44,7 +44,7 @@ fun initDebugMailbox() {
                                 Shitus.spanc(json("tame" to "label", "style" to json("fontWeight" to "bold"), "content" to "To:")),
                                 Shitus.spanc(json("tame" to "value", "content" to email.to))),
                             Shitus.hor1(json("tame" to "section-subject"),
-                                Shitus.spanc(json("tame" to "label", "style" to json("fontWeight" to "bold"), "content" to t("Subject:"))),
+                                Shitus.spanc(json("tame" to "label", "style" to json("fontWeight" to "bold"), "content" to "Subject:")),
                                 Shitus.spanc(json("tame" to "value", "content" to email.subject)))),
                         Shitus.diva(json("tame" to "body", "tattrs" to json("html" to email.html)), rawHtml(email.html)))
                 }).toJSArray()))

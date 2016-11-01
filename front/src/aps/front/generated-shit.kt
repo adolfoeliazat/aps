@@ -33,6 +33,7 @@ operator fun ElementBuilderFactory.invoke(
 
     // @Mix style
     marginTop: Any? = null,
+    marginLeft: Any? = null,
     marginBottom: Any? = null,
     paddingBottom: Any? = null,
     padding: Any? = null,
@@ -69,6 +70,7 @@ operator fun ElementBuilderFactory.invoke(
 
         style = Style(
             marginTop = marginTop,
+            marginLeft = marginLeft,
             marginBottom = marginBottom,
             paddingBottom = paddingBottom,
             padding = padding,
@@ -195,6 +197,7 @@ fun link(
 
     // @Mix style
     marginTop: Any? = null,
+    marginLeft: Any? = null,
     marginBottom: Any? = null,
     paddingBottom: Any? = null,
     padding: Any? = null,
@@ -233,6 +236,7 @@ fun link(
 
         style = Style(
             marginTop = marginTop,
+            marginLeft = marginLeft,
             marginBottom = marginBottom,
             paddingBottom = paddingBottom,
             padding = padding,

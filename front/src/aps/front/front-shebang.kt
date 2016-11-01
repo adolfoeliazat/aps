@@ -22,12 +22,12 @@ fun requestAnimationFrame(block: () -> Unit) {
     global.requestAnimationFrame(block)
 }
 
-fun customerDynamicPageNames(): dynamic {
-    return jsArrayOf("test", "sign-in", "sign-up", "dashboard", "orders", "support")
+fun customerDynamicPageNames(): List<String> {
+    return listOf("test", "sign-in", "sign-up", "dashboard", "orders", "support")
 }
 
-fun writerDynamicPageNames(): dynamic {
-    return jsArrayOf(
+fun writerDynamicPageNames(): List<String> {
+    return listOf(
         "test", "sign-in", "sign-up", "dashboard", "orders", "support", "store", "users", "profile",
         "admin-my-tasks", "admin-heap", "admin-users",
         "debug-perf-render",
@@ -36,11 +36,17 @@ fun writerDynamicPageNames(): dynamic {
 }
 
 fun jsFacing_isDynamicPage(name: String): Boolean {
-    if (global.CLIENT_KIND == UserKind.CUSTOMER.name) return customerDynamicPageNames().indexOf(name)
-    return writerDynamicPageNames().indexOf(name)
+    if (global.CLIENT_KIND == UserKind.CUSTOMER.name) return customerDynamicPageNames().indexOf(name) != -1
+    return writerDynamicPageNames().indexOf(name) != -1
 }
 
-val theClientKind: UserKind get() = UserKind.valueOf(global.CLIENT_KIND)
+fun isDynamicPage(clientKind: ClientKind, name: String): Boolean =
+    when (clientKind) {
+        ClientKind.CUSTOMER -> customerDynamicPageNames().indexOf(name) != -1
+        ClientKind.WRITER -> writerDynamicPageNames().indexOf(name) != -1
+    }
+
+val theClientKind: ClientKind get() = ClientKind.valueOf(global.CLIENT_KIND)
 
 
 fun userKindTitle(kind: UserKind) = when (kind) {
@@ -93,7 +99,7 @@ fun darkLink(def: dynamic) {
     return Shitus.link(Shitus.asnnoDollar(json("style" to json("color" to "#333")), def))
 }
 
-fun rawHtml(__html: dynamic): dynamic {
+fun rawHtml(__html: dynamic): ReactElement {
     return React.createElement("div", json("dangerouslySetInnerHTML" to json("__html" to __html)))
 }
 
@@ -622,6 +628,130 @@ interface Errorish {
     @JsName("stack") val stack: String?
 }
 
+enum class DeliveryOption(override val title: String) : Titled {
+    D8(t("8+ days", "8+ дней")),
+    D7(t("6-7 days", "6-7 дней")),
+    D5(t("4-5 days", "4-5 дней")),
+    D3(t("2-3 days", "2-3 дня")),
+    H24(t("24 hours", "24 часа")),
+    H12(t("12 hours", "12 часов")),
+}
+
+interface PaperType : Titled {
+    fun price(dopt: DeliveryOption): Int
+}
+
+enum class PaperTypeEN(override val title: String) : PaperType {
+    ESSAY("Essay, Research") {
+        override fun price(dopt: DeliveryOption) = when (dopt) {
+            DeliveryOption.D8 -> 1499
+            DeliveryOption.D7 -> 1699
+            DeliveryOption.D5 -> 1899
+            DeliveryOption.D3 -> 2099
+            DeliveryOption.H24 -> 2599
+            DeliveryOption.H12 -> 3099
+        }
+    },
+
+    BIBLIO("Annotated Bibliography") {
+        override fun price(dopt: DeliveryOption) = when (dopt) {
+            DeliveryOption.D8 -> 1099
+            DeliveryOption.D7 -> 1299
+            DeliveryOption.D5 -> 1499
+            DeliveryOption.D3 -> 1699
+            DeliveryOption.H24 -> 1899
+            DeliveryOption.H12 -> 2099
+        }
+    },
+
+    EDITING("Proofreading, Editing") {
+        override fun price(dopt: DeliveryOption) = when (dopt) {
+            DeliveryOption.D8 -> 399
+            DeliveryOption.D7 -> 599
+            DeliveryOption.D5 -> 799
+            DeliveryOption.D3 -> 999
+            DeliveryOption.H24 -> 1199
+            DeliveryOption.H12 -> 1299
+        }
+    }
+}
+
+enum class PaperTypeRU(override val title: String) : PaperType {
+    ESSAY("Реферат") {
+        override fun price(dopt: DeliveryOption) = when (dopt) {
+            DeliveryOption.D8 -> 1099
+            DeliveryOption.D7 -> 1299
+            DeliveryOption.D5 -> 1599
+            DeliveryOption.D3 -> 2099
+            DeliveryOption.H24 -> 2599
+            DeliveryOption.H12 -> 3599
+        }
+    },
+
+    COURSE("Курсовая работа") {
+        override fun price(dopt: DeliveryOption) = when (dopt) {
+            DeliveryOption.D8 -> 1599
+            DeliveryOption.D7 -> 1799
+            DeliveryOption.D5 -> 2099
+            DeliveryOption.D3 -> 2599
+            DeliveryOption.H24 -> 3099
+            DeliveryOption.H12 -> 4099
+        }
+    },
+
+    GRADUATE("Дипломная работа") {
+        override fun price(dopt: DeliveryOption) = when (dopt) {
+            DeliveryOption.D8 -> 2099
+            DeliveryOption.D7 -> 2299
+            DeliveryOption.D5 -> 2599
+            DeliveryOption.D3 -> 3099
+            DeliveryOption.H24 -> 3599
+            DeliveryOption.H12 -> 4599
+        }
+    },
+
+    EDITING("Корректура") {
+        override fun price(dopt: DeliveryOption) = when (dopt) {
+            DeliveryOption.D8 -> 599
+            DeliveryOption.D7 -> 799
+            DeliveryOption.D5 -> 1099
+            DeliveryOption.D3 -> 1599
+            DeliveryOption.H24 -> 2099
+            DeliveryOption.H12 -> 3099
+        }
+    }
+}
+
+enum class Currency {
+    USD {
+        override fun prefixSuffix(lang: Language) = when (lang) {
+            Language.EN -> "\$" to ""
+            Language.UA -> "\$" to ""
+        }
+    },
+
+    UAH {
+        override fun prefixSuffix(lang: Language) = when (lang) {
+            Language.EN -> "" to " UAH"
+            Language.UA -> "" to " грн."
+        }
+    };
+
+    abstract fun prefixSuffix(lang: Language): Pair<String, String>
+}
+
+fun moneyTitleWithoutCurrency(amount: Int, lang: Language): String {
+    val integral = "" + amount / 100
+    var decimal = "" + amount % 100
+    if (decimal.length == 1) decimal = "0$decimal"
+    return integral + lang.decimalPoint + decimal
+}
+
+fun moneyTitleWithCurrency(amount: Int, curr: Currency, lang: Language): String {
+    val raw = moneyTitleWithoutCurrency(amount, lang)
+    val (prefix, suffix) = curr.prefixSuffix(lang)
+    return prefix + raw + suffix
+}
 
 
 

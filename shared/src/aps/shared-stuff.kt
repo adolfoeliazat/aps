@@ -20,8 +20,9 @@ enum class ClientKind {
     CUSTOMER, WRITER
 }
 
-enum class Language() {
-    EN, UA
+enum class Language(val decimalPoint: String) {
+    EN(decimalPoint = "."),
+    UA(decimalPoint = ",")
 }
 
 interface Titled {

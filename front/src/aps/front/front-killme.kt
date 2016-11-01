@@ -458,7 +458,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                                 Shitus.diva(json(), progressPlaceholder),
 
                                 {
-                                    if (art.actionPlaceholderTag != null) t("No actionPlaceholderTag")
+                                    if (art.actionPlaceholderTag != null) "No actionPlaceholderTag"
                                     else if (insertedCodeLink) insertedCodeLink
                                     else Shitus.button(json("level" to "primary", "icon" to "pencil", "title" to "Insert Test Action Code", "style" to json(),
                                         "onClick" to {

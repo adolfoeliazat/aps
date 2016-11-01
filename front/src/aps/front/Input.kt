@@ -185,7 +185,7 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                 Shitus.diva(json("style" to json()),
                     Shitus.hor2(json(),
                         Shitus.link(json(
-                            "title" to t("Capture primary click with only this entered"),
+                            "title" to "Capture primary click with only this entered",
                             "onClick" to onClick@{
                                 hrss.closeControlRevealer()
                                 val primaryButton = getControlByShame("button-primary")

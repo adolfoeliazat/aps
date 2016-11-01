@@ -11,7 +11,7 @@ import aps.front.Color.*
 import aps.*
 import into.kommon.*
 
-fun pageHeader(arg: Json): ReactElement {
+fun pageHeader0(arg: Json): ReactElement {
     val title: dynamic = arg["title"]
     val labels: dynamic = arg["labels"]?.let{it} ?: jsArrayOf()
     val className: dynamic = arg["classname"]?.let{it} ?: ""
@@ -60,7 +60,7 @@ class AdminUsersPage(val ui: World) {
             ui,
             urlPath = "admin-users.html",
             procedureName = "getUsers",
-            header = {oldShitAsReactElementable(pageHeader(json("title" to t("TOTE", "Пользователи"))))},
+            header = {oldShitAsReactElementable(pageHeader0(json("title" to t("TOTE", "Пользователи"))))},
             filterSelectValues = UserFilter.values(),
             defaultFilter = UserFilter.ALL,
             plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(

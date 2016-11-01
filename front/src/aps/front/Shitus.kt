@@ -714,6 +714,10 @@ fun jsFacing_updatableElement(def: dynamic, ctor_killme: dynamic): dynamic {
     )), json())
 }
 
+fun pageHeader(title: String): ReactElement {
+    return jsFacing_pageHeader(json("title" to title))
+}
+
 fun jsFacing_pageHeader(def: dynamic): dynamic {
     val title: dynamic = def.title
     val labels: dynamic = def.labels ?: jsArrayOf()
@@ -856,7 +860,7 @@ fun jsFacing_errorBanner(def: dynamic): dynamic {
         Shitus.spanc(json("tame" to "errorBanner", "content" to content)))
 }
 
-fun jsFacing_glyph(_name: dynamic, _def: dynamic): dynamic {
+fun jsFacing_glyph(_name: dynamic, _def: dynamic): ReactElement {
     var name: dynamic = _name
     val def: dynamic = _def ?: json()
 

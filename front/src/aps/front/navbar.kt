@@ -13,17 +13,16 @@ fun jsFacing_renderTopNavbar_calledByFuckingUI(ui: World, arg: dynamic): dynamic
     // {highlightedItem}
     val highlightedItem = arg.highlightedItem
 
-    fun _t(en: String, ru: String) = ru
-    return renderTopNavbar(theClientKind, json("highlightedItem" to highlightedItem, "t" to ::_t, "ui" to ui))
+    fun _t(en: String, ua: String) = ua
+    return renderTopNavbar(theClientKind, ::_t, json("highlightedItem" to highlightedItem, "ui" to ui))
 }
 
-fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
+fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: dynamic): dynamic {
     // {highlightedItem, t, ui}
-    val highlightedItem = arg.highlightedItem; val ui = arg.ui
+    val highlightedItem = arg.highlightedItem
+    val ui: World? = arg.ui
 
-    val t: (String, String) -> String = arg.t
-
-    val user: UserRTO? = if (ui) ui.getUser() else null
+    val user: UserRTO? = if (ui != null) ui.getUser() else null
 
     fun TopNavItem(def: dynamic): dynamic {
         // #extract {counter} from def
@@ -42,7 +41,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
 
     var proseItems: dynamic = undefined
     val proseCounter = jsArrayOf(0)
-    if (clientKind == UserKind.CUSTOMER) {
+    if (clientKind == ClientKind.CUSTOMER) {
         proseItems = jsArrayOf(
         TopNavItem(json("name" to "why", "title" to t("Why Us?", "Почему мы?"), "counter" to proseCounter)),
         TopNavItem(json("name" to "prices", "title" to t("Prices", "Цены"), "counter" to proseCounter)),
@@ -64,7 +63,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
     var privateItems: dynamic = undefined
     val privateCounter = jsArrayOf(0)
     if (user != null) {
-        if (clientKind == UserKind.CUSTOMER) {
+        if (clientKind == ClientKind.CUSTOMER) {
             privateItems = jsArrayOf(
             TopNavItem(json("name" to "orders", "title" to t("My Orders", "Мои заказы"), "counter" to privateCounter)),
             TopNavItem(json("name" to "support", "title" to t("Support", "Поддержка"), "liveStatusFieldName" to "supportMenuBadge", "counter" to privateCounter))
@@ -109,8 +108,8 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
         }
         leftNavbarItems.push.apply(leftNavbarItems, privateItems)
         // @wip rejection
-        if (ui.getUser().state == "COOL") {
-            rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to t(user.firstName), "counter" to jsArrayOf(0)))
+        if (user.state == UserState.COOL) {
+            rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to user.firstName, "counter" to jsArrayOf(0)))
         }
     } else {
         leftNavbarItems = proseItems
@@ -118,7 +117,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
     }
 
     var brand: dynamic = undefined
-    if (clientKind == UserKind.CUSTOMER) {
+    if (clientKind == ClientKind.CUSTOMER) {
         brand = "APS"
     } else {
         brand = t("Writer", "Писец")
@@ -180,7 +179,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
                     if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(isInTestScenario() && art.testSpeed == "fast")) {
                         __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
                     }
-                    __await<dynamic>(ui.pushNavigate(href))
+                    __await<dynamic>(ui!!.pushNavigate(href))
 
                     global.setTimeout({
                         effects.blinkOff()
@@ -229,7 +228,7 @@ fun renderTopNavbar(clientKind: UserKind, arg: dynamic): dynamic {
     }
 
     return Shitus.nava(json("className" to "navbar navbar-default navbar-fixed-top"),
-        Shitus.diva(json("className" to "container-fluid"),
+        Shitus.diva(json("className" to "container"),
             Shitus.diva(json("className" to "navbar-header"),
                 makeLink("home", brand, "navbar-brand")),
 

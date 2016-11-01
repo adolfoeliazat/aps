@@ -22,7 +22,7 @@
     <target name="after-compilation">
         <ant antfile="${env.INTO_KOMMON_HOME}/build-into-kommon.xml" target="after-compilation"/>
 
-        <java classname="aps.LintShit" fork="true">
+        <java classname="aps.LintShit" fork="true" failonerror="true">
             <classpath refid="cp"/>
         </java>
 

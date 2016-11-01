@@ -13,6 +13,9 @@ import org.w3c.dom.events.*
 val kdiv = ElementBuilderFactory("div")
 val kspan = ElementBuilderFactory("span")
 val h3 = ElementBuilderFactory("h3")
+val kul = ElementBuilderFactory("ul")
+val kol = ElementBuilderFactory("ol")
+val kli = ElementBuilderFactory("li")
 
 class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToReactElementable {
 //    var onClick: ((MouseEvent) -> Unit)? = null
@@ -69,6 +72,7 @@ class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToRe
 @MixableType
 data class Style(
     var marginTop: Any? = null,
+    var marginLeft: Any? = null,
     var marginBottom: Any? = null,
     var paddingBottom: Any? = null,
     var padding: Any? = null,
@@ -84,12 +88,14 @@ data class Style(
         return dyna{o->
             // TODO:vgrechka Check padding, borderBottom, textAlign, fontWeight, display, justifyContent
             checkNSI(marginTop, "marginTop")
+            checkNSI(marginLeft, "marginLeft")
             checkNSI(marginBottom, "marginBottom")
             checkNSI(paddingBottom, "paddingBottom")
             checkColor(color, "backgroundColor")
             checkColor(backgroundColor, "backgroundColor")
 
             marginTop?.let {o.marginTop = it}
+            marginLeft?.let {o.marginLeft = it}
             marginBottom?.let {o.marginBottom = it}
             paddingBottom?.let {o.paddingBottom = it}
             color?.let {o.color = it.toString()}
@@ -591,7 +597,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                                 Shitus.diva(json(), progressPlaceholder),
 
                                 {
-                                    if (art.actionPlaceholderTag != null) t("No actionPlaceholderTag")
+                                    if (art.actionPlaceholderTag != null) "No actionPlaceholderTag"
                                     else if (insertedCodeLink) insertedCodeLink
                                     else Shitus.button(json("level" to "primary", "icon" to "pencil", "title" to "Insert Test Action Code", "style" to json(),
                                         "onClick" to {
