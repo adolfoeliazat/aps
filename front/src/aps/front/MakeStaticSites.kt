@@ -11,7 +11,6 @@ import into.kommon.*
 
 // TODO
 // - Kill all [dynamic]
-// - Browserify shit only once, not for each built site
 
 object MakeStaticSites {
     enum class Mode {DEBUG, PROD}
@@ -22,6 +21,8 @@ object MakeStaticSites {
     class HrefBulletItem(val href: String, val title: String)
     class Testimonial(val name: LS, val img: String, val says: LS)
     class BlogItem(val listTitle: String, val title: String, val slug: String, val content: String)
+
+    val DEPS_JS = "$APS_HOME/front/out/deps.js"
 
     val require = js("require")
     val React = require("react")
@@ -54,6 +55,7 @@ object MakeStaticSites {
                 else -> wtf("modeString $modeString")
             }
 
+            __await(browserifyShit())
             __await(makeWriterSite(Language.UA))
             __await(makeCustomerSite(Language.UA, Currency.UAH))
 
@@ -440,25 +442,8 @@ object MakeStaticSites {
         return __asyncResult(Unit)
     }
 
-    fun remakeDirAndCopyShit(root: String): Promise<Unit> {"__async"
-        sh.rm("-rf", root)
-        sh.mkdir("-p", root)
-
-        val nodeModules = "$APS_HOME/node_modules"
-        sh.cp("$nodeModules/jquery/dist/jquery.min.js", root)
-        sh.cp("-r", "$nodeModules/bootstrap/dist", "$root/bootstrap")
-        sh.cp("$APS_HOME/front/static/hack/bootstrap-3.3.7-hacked.js", "$root/bootstrap/js")
-        sh.mkdir("$root/font-awesome")
-        sh.cp("-r", "$nodeModules/font-awesome/css", "$root/font-awesome")
-        sh.cp("-r", "$nodeModules/font-awesome/fonts", "$root/font-awesome")
-        sh.cp("$APS_HOME/front/static/asset/*", root)
-
-        // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
-        sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
-        sh.cp("${KOMMON_HOME}/js/out/into-kommon-js-enhanced.js", root)
-        sh.cp("${KOMMON_HOME}/js/out/into-kommon-js.js.map", root)
-        sh.cp("$APS_HOME/front/out/front-enhanced.js", root)
-        sh.cp("$APS_HOME/front/out/front.js.map", root)
+    fun browserifyShit(): Promise<Unit> {"__async"
+        sh.rm("-f", DEPS_JS)
 
         val entryStream = js("new (require('stream')).Readable")
         entryStream.push("""
@@ -491,12 +476,37 @@ object MakeStaticSites {
                     reject(err)
                 } else {
                     val code = buf.toString()
-                    fs.writeFileSync("$root/deps.js", code)
+                    fs.writeFileSync(DEPS_JS, code)
                     resolve()
                 }
             }
         })
+
         println("DONE")
+        return __asyncResult(Unit)
+    }
+
+    fun remakeDirAndCopyShit(root: String): Promise<Unit> {"__async"
+        sh.rm("-rf", root)
+        sh.mkdir("-p", root)
+
+        val nodeModules = "$APS_HOME/node_modules"
+        sh.cp("$nodeModules/jquery/dist/jquery.min.js", root)
+        sh.cp("-r", "$nodeModules/bootstrap/dist", "$root/bootstrap")
+        sh.cp("$APS_HOME/front/static/hack/bootstrap-3.3.7-hacked.js", "$root/bootstrap/js")
+        sh.mkdir("$root/font-awesome")
+        sh.cp("-r", "$nodeModules/font-awesome/css", "$root/font-awesome")
+        sh.cp("-r", "$nodeModules/font-awesome/fonts", "$root/font-awesome")
+        sh.cp("$APS_HOME/front/static/asset/*", root)
+        sh.cp(DEPS_JS, root)
+
+        // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
+        sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
+        sh.cp("${KOMMON_HOME}/js/out/into-kommon-js-enhanced.js", root)
+        sh.cp("${KOMMON_HOME}/js/out/into-kommon-js.js.map", root)
+        sh.cp("$APS_HOME/front/out/front-enhanced.js", root)
+        sh.cp("$APS_HOME/front/out/front.js.map", root)
+
         return __asyncResult(Unit)
     }
 
