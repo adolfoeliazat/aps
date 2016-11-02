@@ -9,7 +9,9 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-// TODO:vgrechka !!!!!!!!!! Kill all : dynamic
+// TODO
+// - Kill all [dynamic]
+// - Browserify shit only once, not for each built site
 
 object MakeStaticSites {
     enum class Mode {DEBUG, PROD}
@@ -74,7 +76,7 @@ object MakeStaticSites {
     fun makeWriterSite(lang: Language): Promise<Unit> {"__async"
         this.lang = lang
 
-        val root = "${kindaDirname}/../built/${lang.name.toLowerCase()}-writer"
+        val root = "$APS_HOME/front/out/static/writer-${lang.name.toLowerCase()}"
         __await(remakeDirAndCopyShit(root))
 
         val tabTitle = t(en = "Writer", ua = "Writer UA")
@@ -450,9 +452,10 @@ object MakeStaticSites {
         sh.cp("-r", "${vendor}/bootstrap-3.3.6", root)
         sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
         sh.cp("${kindaDirname}/../asset/*", root)
-        sh.cp("${kindaDirname}/../lib/bundle.js", root)
+//        sh.cp("${kindaDirname}/../lib/bundle.js", root)
         // sh.cp("-r", "$APS_HOME/front/out", "$root/kotlin")
 
+        // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
         sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
         sh.cp("${KOMMON_HOME}/js/out/into-kommon-js-enhanced.js", root)
         sh.cp("${KOMMON_HOME}/js/out/into-kommon-js.js.map", root)
@@ -516,7 +519,7 @@ object MakeStaticSites {
     }
 
     fun makeCustomerSite(lang: Language, currency: Currency): Promise<Unit> {"__async"
-        val root = "${kindaDirname}/../built/${lang.name.toLowerCase()}-customer"
+        val root = "$APS_HOME/front/out/static/customer-${lang.name.toLowerCase()}"
         __await(remakeDirAndCopyShit(root))
 
         val tabTitle = t(en = "APS", ua = "APS UA")

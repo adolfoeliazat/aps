@@ -63,7 +63,6 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/metrics-core-3.1.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/minlog-1.3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/objenesis-2.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/protobuf-java-2.6.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/quasar-core-0.7.6-jdk8.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/reflectasm-1.11.3.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/reflections-0.9.10.jar!/" />
@@ -75,6 +74,7 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/websocket-server-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/websocket-servlet-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/closure-compiler-v20161024.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/ant-1.9.7.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
@@ -94,6 +94,8 @@
       <root url="jar://$USER_HOME$/.ideaLibSources/commons-validator-1.5.1-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/jetty-servlet-9.3.11.v20160721-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/closure-compiler-v20161024-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../vendor/gradle/gradle-core-3.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/ant-1.9.7-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

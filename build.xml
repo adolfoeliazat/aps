@@ -30,15 +30,15 @@
             <param name="inFile" value="${env.APS_HOME}/front/out/front.js"/>
         </antcall>
 
-        <copy file="${env.APS_HOME}/front/out/front-enhanced.js" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
-        <copy file="${env.APS_HOME}/front/out/front.js.map" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
-        <copy file="${env.INTO_KOMMON_HOME}/js/out/into-kommon-js-enhanced.js" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
-        <copy file="${env.INTO_KOMMON_HOME}/js/out/into-kommon-js.js.map" todir="${env.APS_HOME}/aps/built/ua-writer" overwrite="true"/>
-
         <pathconvert targetos="windows" property="cpstring" refid="cp"/>
         <echo file="_run.cmd">
             @java -cp ${cpstring} %*
         </echo>
+
+        <!-- TODO:vgrechka Eventually move all logic here -->
+        <java classname="aps.AfterCompilationShit" fork="true" failonerror="true">
+            <classpath refid="cp"/>
+        </java>
 
         <touch file="${env.APS_HOME}/_restart-flag"/>
     </target>

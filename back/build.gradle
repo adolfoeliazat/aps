@@ -3,6 +3,7 @@ apply plugin: 'java'
 repositories {
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "https://repo.gradle.org/gradle/libs-releases-local" }
 }
 
 dependencies {
@@ -21,6 +22,7 @@ dependencies {
     compile 'org.reflections:reflections:0.9.10'
     compile 'commons-validator:commons-validator:1.5.1'
     compile 'com.google.javascript:closure-compiler:v20161024'
+    compile 'org.apache.ant:ant:1.9.7'
 }
 
 task importDeps(type: Copy) {
