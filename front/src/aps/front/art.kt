@@ -731,7 +731,8 @@ fun gertrude(def: dynamic) {
 
                     val colonIndex = valueLine.indexOf(":")
                     Shitus.invariant(colonIndex != -1, "Expecting colon: ${valueLine}")
-                    val key = Shitus.trim(valueLine.slice(0, colonIndex).replace(js("/'/g"), ""))
+                    val shit: String = valueLine.slice(0, colonIndex).replace(js("/'/g"), "")
+                    val key = shit.trim()
                     if (extenderKeys.includes(key)) {
                         return true
                     }
@@ -908,7 +909,8 @@ fun gertrude(def: dynamic) {
 
                 var actualStringForPasting = actualStringOrig.trim()
                 if (actualStringForPasting[0] == "{" || actualStringForPasting[0] == "[") {
-                    actualStringForPasting = Shitus.trimStart(actualStringForPasting.slice(1, actualStringForPasting.length - 1))
+                    val shit: String = actualStringForPasting.slice(1, actualStringForPasting.length - 1)
+                    actualStringForPasting = shit.trimStart()
                 }
                 val chars = actualStringForPasting.split("")
 
@@ -938,7 +940,11 @@ fun gertrude(def: dynamic) {
                     }
                     from = backtickIndex + 1
                 }
-                replacements = Shitus.sortBy(replacements, "from")
+
+                val shit: Array<dynamic> = replacements
+                shit.sortBy {val from: Int = it; from}
+//                replacements = Shitus.sortBy(replacements, "from")
+
                 var newActualStringForPasting = ""; from = 0
                 for (replacement in jsArrayToList(replacements)) {
                     newActualStringForPasting += actualStringForPasting.slice(from, replacement.from) + replacement.newString
@@ -956,7 +962,7 @@ fun gertrude(def: dynamic) {
                         .join("\n")
 
                 tabs = Tabs(json(
-                    "activeTab" to if (Shitus.isEmpty(expected)) "diffLast" else "diff",
+                    "activeTab" to if (JSObject.keys(expected).isEmpty()) "diffLast" else "diff",
                     "tabs" to json(
                         "diff" to json(
                             "title" to "Diff",

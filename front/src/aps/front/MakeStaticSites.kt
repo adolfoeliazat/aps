@@ -9,28 +9,30 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-class LocalizedShit(val en: String, val ua: String)
-typealias LS = LocalizedShit
-
 // TODO:vgrechka !!!!!!!!!! Kill all : dynamic
 
 object MakeStaticSites {
-    enum class Mode { DEBUG, PROD }
+    enum class Mode {DEBUG, PROD}
+    class LocalizedShit(val en: String, val ua: String)
+    typealias LS = LocalizedShit
     class Section(val title: LS, val content: LS)
+    class HorizBulletItem(val glyph: String, val title: LocalizedShit)
+    class HrefBulletItem(val href: String, val title: String)
+    class Testimonial(val name: LS, val img: String, val says: LS)
+    class BlogItem(val listTitle: String, val title: String, val slug: String, val content: String)
 
     val require = js("require")
     val React = require("react")
     val ReactDOMServer = require("react-dom/server")
     val fs = require("fs")
     val sh = require("shelljs")
+
     val kindaDirname = "$APS_HOME/aps/lib"
 
     init {
         global.React = React
-        global.lodash = require("lodash")
+//        global.lodash = require("lodash")
     }
-
-//    var t: (dynamic) -> dynamic = js("undefined")
 
     lateinit var mode: Mode
     lateinit var lang: Language
@@ -959,8 +961,6 @@ object MakeStaticSites {
                 )
             ))
 
-        class BlogItem(val listTitle: String, val title: String, val slug: String, val content: String)
-
         val blogItems = when (lang) {
             Language.EN -> listOf(
                 BlogItem(
@@ -1143,8 +1143,6 @@ object MakeStaticSites {
     """)
     }
 
-    class Testimonial(val name: LS, val img: String, val says: LS)
-
     fun renderTestimonials(clientKind: ClientKind): ReactElement {
         return Shitus.diva(json(),
             pageHeader(t(en = "What People Say", ua = "Что о нас говорят")),
@@ -1197,7 +1195,6 @@ object MakeStaticSites {
         return bullets(items.map{x -> t(x).asReactElement()})
     }
 
-    class HrefBulletItem(val href: String, val title: String)
 
     fun hrefBullets(items: List<HrefBulletItem>): ReactElement {
         return bullets(items.map{x -> Shitus.aa(json("href" to x.href), x.title)})
@@ -1215,7 +1212,6 @@ object MakeStaticSites {
         return markdown(dedent(content.replace("{{mdash}}", mdash)))
     }
 
-    class HorizBulletItem(val glyph: String, val title: LocalizedShit)
 
     fun horizBulletsRow(items: List<HorizBulletItem>, horizContentMargin: Int = 0): ReactElement {
         val colSize = 12 / items.size

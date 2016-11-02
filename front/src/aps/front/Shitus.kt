@@ -75,10 +75,10 @@ object Shitus {
     val noop: dynamic = {}
     val isBlank = ::jsFacing_isBlank
     val sortKeys = ::jsFacing_sortKeys
-    val trim = lodash.trim
-    val trimStart = lodash.trimStart
-    val sortBy = lodash.sortBy
-    val isEmpty = lodash.isEmpty
+//    val trim = lodash.trim
+//    val trimStart = lodash.trimStart
+//    val sortBy = lodash.sortBy
+//    val isEmpty = lodash.isEmpty
 //    val errorToMappedClientStackString: dynamic = ::jsFacing_errorToMappedClientStackString
     val makeT = ::jsFacing_makeT
     val dedent = ::jsFacing_dedent
@@ -866,7 +866,11 @@ fun jsFacing_glyph(_name: dynamic, _def: dynamic): ReactElement {
 
     val hint: dynamic = def.hint
     val className: dynamic = def.className ?: ""
-    val attrs: dynamic = lodash.omit(def, "hint", "className")
+
+    val attrs: dynamic = global.Object.assign(js("({})"), def)
+    jsFacing_deleteKey(attrs, "hint")
+    jsFacing_deleteKey(attrs, "className")
+//    val attrs: dynamic = lodash.omit(def, "hint", "className")
 
     val names: dynamic = Shitus.tokens(name)
     name = names[0]

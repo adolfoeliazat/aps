@@ -50,6 +50,13 @@
             <arg value="--mode=debug"/>
         </exec>
     </target>
+
+    <target name="spike-js">
+        <exec executable="node" dir="${env.APS_HOME}/front">
+            <arg value="run.js"/>
+            <arg value="SpikeJS"/>
+        </exec>
+    </target>
 </project>
 
 
