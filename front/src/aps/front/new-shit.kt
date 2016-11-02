@@ -27,8 +27,12 @@ class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToRe
 //        return this
 //    }
 
-    operator fun minus(eb: ToReactElementable?) {
+    fun add(eb: ToReactElementable?) {
         if (eb != null) children.add(eb)
+    }
+
+    operator fun minus(eb: ToReactElementable?) {
+        add(eb)
     }
 
     operator fun minus(s: String?) {
@@ -635,6 +639,10 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
 
 }
 
-
+fun ReactElement.asToReactElementable(): ToReactElementable {
+    return object:ToReactElementable {
+        override fun toReactElement() = this@asToReactElementable
+    }
+}
 
 
