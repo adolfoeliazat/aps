@@ -29,11 +29,8 @@ object MakeStaticSites {
     val fs = require("fs")
     val sh = require("shelljs")
 
-    val kindaDirname = "$APS_HOME/aps/lib"
-
     init {
         global.React = React
-//        global.lodash = require("lodash")
     }
 
     lateinit var mode: Mode
@@ -447,13 +444,14 @@ object MakeStaticSites {
         sh.rm("-rf", root)
         sh.mkdir("-p", root)
 
-        val vendor = "${kindaDirname}/../vendor"
-        sh.cp("${vendor}/jquery-2.2.4/jquery.min.js", root)
-        sh.cp("-r", "${vendor}/bootstrap-3.3.6", root)
-        sh.cp("-r", "${vendor}/font-awesome-4.6.3", root)
-        sh.cp("${kindaDirname}/../asset/*", root)
-//        sh.cp("${kindaDirname}/../lib/bundle.js", root)
-        // sh.cp("-r", "$APS_HOME/front/out", "$root/kotlin")
+        val nodeModules = "$APS_HOME/node_modules"
+        sh.cp("$nodeModules/jquery/dist/jquery.min.js", root)
+        sh.cp("-r", "$nodeModules/bootstrap/dist", "$root/bootstrap")
+        sh.cp("$APS_HOME/front/static/hack/bootstrap-3.3.7-hacked.js", "$root/bootstrap/js")
+        sh.mkdir("$root/font-awesome")
+        sh.cp("-r", "$nodeModules/font-awesome/css", "$root/font-awesome")
+        sh.cp("-r", "$nodeModules/font-awesome/fonts", "$root/font-awesome")
+        sh.cp("$APS_HOME/front/static/asset/*", root)
 
         // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
         sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
@@ -1057,8 +1055,8 @@ object MakeStaticSites {
 
     ${ReactDOMServer.renderToStaticMarkup(React.createElement("title", json(), tabTitle))}
 
-    <link href="bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
     <style>
         ${readStatic("style.css")}
     </style>
@@ -1118,9 +1116,7 @@ object MakeStaticSites {
 
     <script src="deps.js"></script>
     <script src="jquery.min.js"></script>
-    <!-- <script src="jquery-hack.js"></script> -->
-    <script src="bootstrap-hack.js"></script>
-    <!-- <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script> -->
+    <script src="bootstrap/js/bootstrap-3.3.7-hacked.js"></script>
     <script src="kotlin-1.1-m02-eap-hacked.js"></script>
     <script src="into-kommon-js-enhanced.js"></script>
     <script src="front-enhanced.js"></script>

@@ -23,20 +23,106 @@
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestCommon.kt" description="igniteTestShit" line="47" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt" description="tinker" line="62" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/igniter.kt" line="44" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="721" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="1201" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="719" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="449" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/aps/AfterCompilationShit.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/aps_gradle_lib.xml" afterPath="$PROJECT_DIR$/.idea/libraries/aps_gradle_lib.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/apa-sample.doc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/chicago-sample.doc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/favicon-customer.ico" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/favicon-writer.ico" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/harvard-sample.doc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/joseph-b.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/linda-r.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/mark-c.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/mike-p.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/miranda.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/mla-sample.doc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/nicole.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/turabian-sample.doc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/ua_course-sample.doc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/ua_essay-sample.doc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/asset/ua_graduate-sample.doc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/hack/bootstrap-3.3.7-hacked.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/css/bootstrap-theme.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/css/bootstrap-theme.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/css/bootstrap-theme.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/css/bootstrap-theme.min.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/css/bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/css/bootstrap.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/css/bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/css/bootstrap.min.css.map.0" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/fonts/glyphicons-halflings-regular.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/fonts/glyphicons-halflings-regular.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/fonts/glyphicons-halflings-regular.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/fonts/glyphicons-halflings-regular.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/fonts/glyphicons-halflings-regular.woff2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/js/bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/js/bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-3.3.6/js/npm.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.min.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/npm.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/alert.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/button.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/carousel.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/collapse.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/dropdown.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/modal.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/popover.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/scrollspy.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/tab.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/tooltip.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-4.0.0-alpha.2/dist/js/umd/util.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/css/bootstrap-theme.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/css/bootstrap-theme.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/css/bootstrap-theme.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/css/bootstrap-theme.min.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/css/bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/css/bootstrap.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/css/bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/css/bootstrap.min.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/fonts/glyphicons-halflings-regular.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/fonts/glyphicons-halflings-regular.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/fonts/glyphicons-halflings-regular.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/fonts/glyphicons-halflings-regular.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/fonts/glyphicons-halflings-regular.woff2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/js/bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/js/bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-master/js/npm.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-v4-dev/dist/css/bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-v4-dev/dist/css/bootstrap.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-v4-dev/dist/css/bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-v4-dev/dist/css/bootstrap.min.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-v4-dev/dist/js/bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/bootstrap-v4-dev/dist/js/bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/font-awesome-4.6.3/css/font-awesome.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/font-awesome-4.6.3/css/font-awesome.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/font-awesome-4.6.3/fonts/FontAwesome.otf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/font-awesome-4.6.3/fonts/fontawesome-webfont.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/font-awesome-4.6.3/fonts/fontawesome-webfont.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/font-awesome-4.6.3/fonts/fontawesome-webfont.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/font-awesome-4.6.3/fonts/fontawesome-webfont.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/font-awesome-4.6.3/fonts/fontawesome-webfont.woff2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-2.2.4/jquery.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-2.2.4/jquery.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-2.2.4/jquery.min.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-3.0.0/dist/core.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-3.0.0/dist/jquery.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-3.0.0/dist/jquery.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-3.0.0/dist/jquery.min.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-3.0.0/dist/jquery.slim.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-3.0.0/dist/jquery.slim.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/aps/vendor/jquery-3.0.0/dist/jquery.slim.min.map" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/build.gradle" afterPath="$PROJECT_DIR$/back/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/doc/snippets.txt" afterPath="$PROJECT_DIR$/doc/snippets.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../into-kommon/js/src/into/kommon/kommon-js.kt" afterPath="$PROJECT_DIR$/../into-kommon/js/src/into/kommon/kommon-js.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,11 +172,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="MakeStaticSites.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MakeStaticSites.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="29" column="4" lean-forward="false" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
+            <state relative-caret-position="288">
+              <caret line="28" column="25" lean-forward="false" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#81#114#0" expanded="true" />
@@ -99,24 +185,44 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServeDevStaticSites.kt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt">
+      <file leaf-file-name="snippets.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/doc/snippets.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="24" column="59" lean-forward="false" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state relative-caret-position="288">
+              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build-into-kommon-inc.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../into-kommon/build-into-kommon-inc.xml">
+      <file leaf-file-name="bootstrap-3.3.7-hacked.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/static/hack/bootstrap-3.3.7-hacked.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="600">
+              <caret line="807" column="2" lean-forward="false" selection-start-line="807" selection-start-column="2" selection-end-line="807" selection-end-column="2" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="24" column="34" lean-forward="false" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServeDevStaticSites.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="10" column="27" lean-forward="false" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -174,26 +280,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Project.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../vendor/gradle/gradle-core-3.1-sources.jar!/org/gradle/api/Project.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="202" column="17" lean-forward="false" selection-start-line="202" selection-start-column="17" selection-end-line="202" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Task.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../vendor/gradle/gradle-core-3.1-sources.jar!/org/gradle/api/Task.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2712">
-              <caret line="141" column="17" lean-forward="false" selection-start-line="141" selection-start-column="17" selection-end-line="141" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -243,9 +329,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/front/src/aps/front/ShitPile.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/Form.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/UI.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/hot-code.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/link.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/renderProfile.kt" />
@@ -291,9 +374,12 @@
         <option value="$PROJECT_DIR$/../into-kommon/js/src/into/kommon/kommon-js.kt" />
         <option value="$PROJECT_DIR$/back/build.gradle" />
         <option value="$PROJECT_DIR$/back/src/aps/AfterCompilationShit.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
         <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt" />
+        <option value="$PROJECT_DIR$/doc/snippets.txt" />
+        <option value="$PROJECT_DIR$/front/static/hack/bootstrap-3.3.7-hacked.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
       </list>
     </option>
   </component>
@@ -425,11 +511,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
+              <option name="myItemId" value="static" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -447,15 +529,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="static" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="aps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="front" />
+              <option name="myItemId" value="hack" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -472,26 +550,26 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib-gradle/ant-1.9.7.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="copy&#9;PSI&#9;JAVA://org.apache.tools.ant.taskdefs.Copy&#10;Task&#9;PSI&#9;JAVA://org.gradle.api.Task&#10;after&#9;FILE&#9;file://E:/work/aps/back/src/aps/AfterCompilationShit.kt&#10;lintshit&#9;null&#9;null&#10;build&#9;FILE&#9;file://E:/work/aps/build.xml&#10;jslib&#9;FILE&#9;file://E:/work/into-kommon/lib/kotlin/1.1-m02-eap/kotlin-jslib-sources.jar&#10;shitus&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus.kt&#10;run.js&#9;FILE&#9;file://E:/work/aps/front/run.js&#10;templa&#9;FILE&#9;file://E:/work/aps/doc/templates.txt&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;build.xml&#9;FILE&#9;file://E:/work/aps/build.xml&#10;tetete&#9;null&#9;null&#10;href&#9;null&#9;null&#10;navbar&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/navbar.kt&#10;global&#9;null&#9;null&#10;language&#9;null&#9;null&#10;titled&#9;null&#9;null&#10;front-she&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;renderna&#9;null&#9;null&#10;client&#9;null&#9;null&#10;k-bot&#9;FILE&#9;file://E:/work/into-kommon/both-js-junction/src/into/kommon/kommon-both.kt&#10;isdyna&#9;null&#9;null&#10;ignite&#9;null&#9;null&#10;k-bo&#9;FILE&#9;file://E:/work/into-kommon/both-js-junction/src/into/kommon/kommon-both.kt&#10;glyph&#9;null&#9;null&#10;genera&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/generated-shit.kt&#10;generateshi&#9;null&#9;null&#10;generateshit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/generated-shit.kt&#10;kdiv&#9;null&#9;null&#10;k-js&#9;FILE&#9;file://E:/work/into-kommon/js/src/into/kommon/kommon-js.kt&#10;hack&#9;FILE&#9;file://E:/work/into-kommon/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js&#10;dash&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DashboardPage.kt&#10;signinpage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;reactevent&#9;null&#9;null&#10;suppa&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignUpPage.kt&#10;world&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/World.kt&#10;promi&#9;null&#9;null&#10;templ&#9;FILE&#9;file://E:/work/aps/doc/templates.txt&#10;testhost&#9;null&#9;null&#10;igniter&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/igniter.kt&#10;mapstack&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-mapStack.kt&#10;hot&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/hot-code.kt&#10;icon&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/icon.kt&#10;signinwi&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-signInWithPassword.kt&#10;signin&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;rpc&#9;null&#9;null&#10;igni&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/igniter.kt&#10;s-2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus-2.kt&#10;hacked&#9;FILE&#9;file://E:/work/into-kommon/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js&#10;users&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt" />
+    <property name="SearchEverywhereHistoryKey" value="snippe&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;copy&#9;PSI&#9;JAVA://org.apache.tools.ant.taskdefs.Copy&#10;Task&#9;PSI&#9;JAVA://org.gradle.api.Task&#10;after&#9;FILE&#9;file://E:/work/aps/back/src/aps/AfterCompilationShit.kt&#10;lintshit&#9;null&#9;null&#10;build&#9;FILE&#9;file://E:/work/aps/build.xml&#10;jslib&#9;FILE&#9;file://E:/work/into-kommon/lib/kotlin/1.1-m02-eap/kotlin-jslib-sources.jar&#10;shitus&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus.kt&#10;run.js&#9;FILE&#9;file://E:/work/aps/front/run.js&#10;templa&#9;FILE&#9;file://E:/work/aps/doc/templates.txt&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;build.xml&#9;FILE&#9;file://E:/work/aps/build.xml&#10;tetete&#9;null&#9;null&#10;href&#9;null&#9;null&#10;navbar&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/navbar.kt&#10;global&#9;null&#9;null&#10;language&#9;null&#9;null&#10;titled&#9;null&#9;null&#10;front-she&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;renderna&#9;null&#9;null&#10;client&#9;null&#9;null&#10;k-bot&#9;FILE&#9;file://E:/work/into-kommon/both-js-junction/src/into/kommon/kommon-both.kt&#10;isdyna&#9;null&#9;null&#10;ignite&#9;null&#9;null&#10;k-bo&#9;FILE&#9;file://E:/work/into-kommon/both-js-junction/src/into/kommon/kommon-both.kt&#10;glyph&#9;null&#9;null&#10;genera&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/generated-shit.kt&#10;generateshi&#9;null&#9;null&#10;generateshit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/generated-shit.kt&#10;kdiv&#9;null&#9;null&#10;k-js&#9;FILE&#9;file://E:/work/into-kommon/js/src/into/kommon/kommon-js.kt&#10;hack&#9;FILE&#9;file://E:/work/into-kommon/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js&#10;dash&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DashboardPage.kt&#10;signinpage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;reactevent&#9;null&#9;null&#10;suppa&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignUpPage.kt&#10;world&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/World.kt&#10;promi&#9;null&#9;null&#10;templ&#9;FILE&#9;file://E:/work/aps/doc/templates.txt&#10;testhost&#9;null&#9;null&#10;igniter&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/igniter.kt&#10;mapstack&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-mapStack.kt&#10;hot&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/hot-code.kt&#10;icon&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/icon.kt&#10;signinwi&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-signInWithPassword.kt&#10;signin&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SignInPage.kt&#10;rpc&#9;null&#9;null&#10;igni&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/igniter.kt&#10;s-2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Shitus-2.kt&#10;hacked&#9;FILE&#9;file://E:/work/into-kommon/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="into.kommon" />
+      <recent name="aps" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\work\aps\front\static\hack" />
+      <recent name="E:\work\aps\front\static\blog" />
+      <recent name="E:\work\aps\front\static" />
+      <recent name="E:\work\aps\back" />
+      <recent name="E:\work\into-kommon\js" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\work\into-kommon\jvm\src\into\kommon\spike" />
       <recent name="E:\work\into-kommon" />
       <recent name="E:\work\into-kommon\both-jvm-junction\src\into\kommon" />
       <recent name="E:\work\aps\back\src\aps\back" />
       <recent name="E:\work\aps\back\src\aps" />
-    </key>
-    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
-      <recent name="into.kommon" />
-      <recent name="aps" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\work\aps\front\static\blog" />
-      <recent name="E:\work\aps\front\static" />
-      <recent name="E:\work\aps\back" />
-      <recent name="E:\work\into-kommon\js" />
-      <recent name="E:\work\into-kommon\js\src\into\kommon" />
     </key>
   </component>
   <component name="RunManager" selected="Ant Target.make-static-sites">
@@ -890,7 +968,14 @@
       <option name="project" value="LOCAL" />
       <updated>1478076559771</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="vovagrechka/aps#3, vovagrechka/aps#14">
+      <created>1478090763307</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1478090763307</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TodoView">
@@ -916,7 +1001,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24590164" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32677597" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17918456" sideWeight="0.4874317" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17918456" sideWeight="0.4874317" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27145922" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -959,7 +1044,8 @@
     <MESSAGE value="Fixes vovagrechka/aps#1" />
     <MESSAGE value="Fixes vovagrechka/aps#13" />
     <MESSAGE value="vovagrechka/aps#3" />
-    <option name="LAST_COMMIT_MESSAGE" value="vovagrechka/aps#3" />
+    <MESSAGE value="vovagrechka/aps#3, vovagrechka/aps#14" />
+    <option name="LAST_COMMIT_MESSAGE" value="vovagrechka/aps#3, vovagrechka/aps#14" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1004,27 +1090,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m02-eap/kotlin-jslib-sources.jar!/core/kotlin_special.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10080">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m02-eap/kotlin-jslib-sources.jar!/stdlib/browser.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m02-eap/kotlin-jslib-sources.jar!/stdlib/domCode.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m02-eap/kotlin-jslib-sources.jar!/stdlib/testCode.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -1380,17 +1445,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="29" column="4" lean-forward="false" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#81#114#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="158">
@@ -1401,10 +1455,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="24" column="59" lean-forward="false" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
+        <state relative-caret-position="240">
+          <caret line="10" column="27" lean-forward="false" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/snippets.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/static/hack/bootstrap-3.3.7-hacked.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="807" column="2" lean-forward="false" selection-start-line="807" selection-start-column="2" selection-end-line="807" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="24" column="34" lean-forward="false" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="28" column="25" lean-forward="false" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#81#114#0" expanded="true" />
           </folding>
         </state>
       </provider>

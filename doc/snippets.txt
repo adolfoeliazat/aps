@@ -4,3 +4,10 @@ taskkill /f /pid zz
 
 _run into.kommon.spike.SpikesKt
 
+git show --pretty="" --name-status <commit-sha>
+
+git diff-tree -r <commit-sha>
+http://stackoverflow.com/questions/1314950/git-get-all-commits-and-blobs-they-created
+
+git diff c7514737083c88979579a936621a0a428112b23a --  "E:\work\aps\aps\vendor\bootstrap-master\js\bootstrap.js"
+
