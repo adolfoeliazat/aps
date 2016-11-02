@@ -44,6 +44,8 @@ operator fun ElementBuilderFactory.invoke(
     fontWeight: String? = null,
     display: String? = null,
     justifyContent: String? = null,
+    whiteSpace: String? = null,
+    fontFamily: String? = null,
 
     // @AfterMix
     block: ((ElementBuilder) -> Unit)? = null
@@ -80,7 +82,9 @@ operator fun ElementBuilderFactory.invoke(
             textAlign = textAlign,
             fontWeight = fontWeight,
             display = display,
-            justifyContent = justifyContent
+            justifyContent = justifyContent,
+            whiteSpace = whiteSpace,
+            fontFamily = fontFamily
         ),
 
         block = block

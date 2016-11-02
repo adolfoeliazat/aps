@@ -86,7 +86,9 @@ data class Style(
     var textAlign: String? = null,
     var fontWeight: String? = null,
     var display: String? = null,
-    var justifyContent: String? = null
+    var justifyContent: String? = null,
+    var whiteSpace: String? = null,
+    var fontFamily: String? = null
 ) {
     fun toReactStyle(): dynamic {
         return dyna{o->
@@ -110,6 +112,8 @@ data class Style(
             padding?.let {o.padding = it}
             display?.let {o.display = it}
             justifyContent?.let {o.justifyContent = it}
+            whiteSpace?.let {o.whiteSpace = it}
+            fontFamily?.let {o.fontFamily = it}
         }
     }
 
