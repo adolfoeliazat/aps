@@ -680,14 +680,14 @@ fun horizontala(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
     return builder.toElement()
 }
 
-fun hor2(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
-    return horizontala {
-        spacing = 8
-        doInsideBuilder()
-    }
-}
+//fun hor2(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
+//    return horizontala {
+//        spacing = 8
+//        doInsideBuilder()
+//    }
+//}
 
-fun hor1(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
+fun hor1_killme(doInsideBuilder: HorizontalaBuilder.() -> Unit): ReactElement {
     return horizontala {
         spacing = 4
         doInsideBuilder()

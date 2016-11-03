@@ -1,6 +1,23 @@
 fun main(args: Array<String>) {
 //    testOverrideWithNothing()
-    testInitOrder()
+//    testInitOrder()
+    test1()
+}
+
+class test1 {
+    init {
+        add(10)
+        add(20)
+        addAll(listOf(30, 40, 50))
+    }
+
+    fun add(x: Int) {
+        println("Adding $x")
+    }
+
+    fun addAll(xs: Iterable<Int>) {
+        xs.forEach(this::add)
+    }
 }
 
 fun testInitOrder() {

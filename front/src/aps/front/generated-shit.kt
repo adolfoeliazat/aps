@@ -12,7 +12,8 @@ import aps.*
 import aps.front.*
 import org.w3c.dom.events.*
 
-operator fun ElementBuilderFactory.invoke (
+fun hor (
+    spacing: Int,
     // @Mix Attrs
     tame: String? = null,
     tamy: String? = null,
@@ -32,6 +33,7 @@ operator fun ElementBuilderFactory.invoke (
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
     marginTop: Any? = null,
+    marginRight: Any? = null,
     marginLeft: Any? = null,
     marginBottom: Any? = null,
     paddingBottom: Any? = null,
@@ -45,8 +47,10 @@ operator fun ElementBuilderFactory.invoke (
     justifyContent: String? = null,
     whiteSpace: String? = null,
     fontFamily: String? = null,
+    float: String? = null,
     block: ((ElementBuilder) -> Unit)? = null
-): ElementBuilder = invoke(
+) = hor(
+    spacing = spacing,
     attrs = Attrs(
         tame = tame,
         tamy = tamy,
@@ -67,6 +71,7 @@ operator fun ElementBuilderFactory.invoke (
     ),
     style = Style(
         marginTop = marginTop,
+        marginRight = marginRight,
         marginLeft = marginLeft,
         marginBottom = marginBottom,
         paddingBottom = paddingBottom,
@@ -79,7 +84,236 @@ operator fun ElementBuilderFactory.invoke (
         display = display,
         justifyContent = justifyContent,
         whiteSpace = whiteSpace,
-        fontFamily = fontFamily
+        fontFamily = fontFamily,
+        float = float
+    ),
+    block = block
+)
+
+fun hor1 (
+    // @Mix Attrs
+    tame: String? = null,
+    tamy: String? = null,
+    shame: String? = null,
+    shamy: String? = null,
+    tamyShamy: String? = null,
+    controlTypeName: String? = null,
+    id: String? = null,
+    tattrs: Json? = null,
+    noStateContributions: Boolean? = null,
+    className: String? = null,
+    onClick: ((MouseEvent) -> Unit)? = null,
+    onClicka: ((MouseEvent) -> Promise<Unit>)? = null,
+    onMouseEnter: ((MouseEvent) -> Unit)? = null,
+    onMouseEntera: ((MouseEvent) -> Promise<Unit>)? = null,
+    onMouseLeave: ((MouseEvent) -> Unit)? = null,
+    onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
+    // @Mix Style
+    marginTop: Any? = null,
+    marginRight: Any? = null,
+    marginLeft: Any? = null,
+    marginBottom: Any? = null,
+    paddingBottom: Any? = null,
+    padding: Any? = null,
+    color: Any? = null,
+    backgroundColor: Any? = null,
+    borderBottom: String? = null,
+    textAlign: String? = null,
+    fontWeight: String? = null,
+    display: String? = null,
+    justifyContent: String? = null,
+    whiteSpace: String? = null,
+    fontFamily: String? = null,
+    float: String? = null,
+    block: ((ElementBuilder) -> Unit)? = null
+) = hor1(
+    attrs = Attrs(
+        tame = tame,
+        tamy = tamy,
+        shame = shame,
+        shamy = shamy,
+        tamyShamy = tamyShamy,
+        controlTypeName = controlTypeName,
+        id = id,
+        tattrs = tattrs,
+        noStateContributions = noStateContributions,
+        className = className,
+        onClick = onClick,
+        onClicka = onClicka,
+        onMouseEnter = onMouseEnter,
+        onMouseEntera = onMouseEntera,
+        onMouseLeave = onMouseLeave,
+        onMouseLeava = onMouseLeava
+    ),
+    style = Style(
+        marginTop = marginTop,
+        marginRight = marginRight,
+        marginLeft = marginLeft,
+        marginBottom = marginBottom,
+        paddingBottom = paddingBottom,
+        padding = padding,
+        color = color,
+        backgroundColor = backgroundColor,
+        borderBottom = borderBottom,
+        textAlign = textAlign,
+        fontWeight = fontWeight,
+        display = display,
+        justifyContent = justifyContent,
+        whiteSpace = whiteSpace,
+        fontFamily = fontFamily,
+        float = float
+    ),
+    block = block
+)
+
+fun hor2 (
+    // @Mix Attrs
+    tame: String? = null,
+    tamy: String? = null,
+    shame: String? = null,
+    shamy: String? = null,
+    tamyShamy: String? = null,
+    controlTypeName: String? = null,
+    id: String? = null,
+    tattrs: Json? = null,
+    noStateContributions: Boolean? = null,
+    className: String? = null,
+    onClick: ((MouseEvent) -> Unit)? = null,
+    onClicka: ((MouseEvent) -> Promise<Unit>)? = null,
+    onMouseEnter: ((MouseEvent) -> Unit)? = null,
+    onMouseEntera: ((MouseEvent) -> Promise<Unit>)? = null,
+    onMouseLeave: ((MouseEvent) -> Unit)? = null,
+    onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
+    // @Mix Style
+    marginTop: Any? = null,
+    marginRight: Any? = null,
+    marginLeft: Any? = null,
+    marginBottom: Any? = null,
+    paddingBottom: Any? = null,
+    padding: Any? = null,
+    color: Any? = null,
+    backgroundColor: Any? = null,
+    borderBottom: String? = null,
+    textAlign: String? = null,
+    fontWeight: String? = null,
+    display: String? = null,
+    justifyContent: String? = null,
+    whiteSpace: String? = null,
+    fontFamily: String? = null,
+    float: String? = null,
+    block: ((ElementBuilder) -> Unit)? = null
+) = hor2(
+    attrs = Attrs(
+        tame = tame,
+        tamy = tamy,
+        shame = shame,
+        shamy = shamy,
+        tamyShamy = tamyShamy,
+        controlTypeName = controlTypeName,
+        id = id,
+        tattrs = tattrs,
+        noStateContributions = noStateContributions,
+        className = className,
+        onClick = onClick,
+        onClicka = onClicka,
+        onMouseEnter = onMouseEnter,
+        onMouseEntera = onMouseEntera,
+        onMouseLeave = onMouseLeave,
+        onMouseLeava = onMouseLeava
+    ),
+    style = Style(
+        marginTop = marginTop,
+        marginRight = marginRight,
+        marginLeft = marginLeft,
+        marginBottom = marginBottom,
+        paddingBottom = paddingBottom,
+        padding = padding,
+        color = color,
+        backgroundColor = backgroundColor,
+        borderBottom = borderBottom,
+        textAlign = textAlign,
+        fontWeight = fontWeight,
+        display = display,
+        justifyContent = justifyContent,
+        whiteSpace = whiteSpace,
+        fontFamily = fontFamily,
+        float = float
+    ),
+    block = block
+)
+
+operator fun ElementBuilderFactory.invoke (
+    // @Mix Attrs
+    tame: String? = null,
+    tamy: String? = null,
+    shame: String? = null,
+    shamy: String? = null,
+    tamyShamy: String? = null,
+    controlTypeName: String? = null,
+    id: String? = null,
+    tattrs: Json? = null,
+    noStateContributions: Boolean? = null,
+    className: String? = null,
+    onClick: ((MouseEvent) -> Unit)? = null,
+    onClicka: ((MouseEvent) -> Promise<Unit>)? = null,
+    onMouseEnter: ((MouseEvent) -> Unit)? = null,
+    onMouseEntera: ((MouseEvent) -> Promise<Unit>)? = null,
+    onMouseLeave: ((MouseEvent) -> Unit)? = null,
+    onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
+    // @Mix Style
+    marginTop: Any? = null,
+    marginRight: Any? = null,
+    marginLeft: Any? = null,
+    marginBottom: Any? = null,
+    paddingBottom: Any? = null,
+    padding: Any? = null,
+    color: Any? = null,
+    backgroundColor: Any? = null,
+    borderBottom: String? = null,
+    textAlign: String? = null,
+    fontWeight: String? = null,
+    display: String? = null,
+    justifyContent: String? = null,
+    whiteSpace: String? = null,
+    fontFamily: String? = null,
+    float: String? = null,
+    block: ((ElementBuilder) -> Unit)? = null
+) = invoke(
+    attrs = Attrs(
+        tame = tame,
+        tamy = tamy,
+        shame = shame,
+        shamy = shamy,
+        tamyShamy = tamyShamy,
+        controlTypeName = controlTypeName,
+        id = id,
+        tattrs = tattrs,
+        noStateContributions = noStateContributions,
+        className = className,
+        onClick = onClick,
+        onClicka = onClicka,
+        onMouseEnter = onMouseEnter,
+        onMouseEntera = onMouseEntera,
+        onMouseLeave = onMouseLeave,
+        onMouseLeava = onMouseLeava
+    ),
+    style = Style(
+        marginTop = marginTop,
+        marginRight = marginRight,
+        marginLeft = marginLeft,
+        marginBottom = marginBottom,
+        paddingBottom = paddingBottom,
+        padding = padding,
+        color = color,
+        backgroundColor = backgroundColor,
+        borderBottom = borderBottom,
+        textAlign = textAlign,
+        fontWeight = fontWeight,
+        display = display,
+        justifyContent = justifyContent,
+        whiteSpace = whiteSpace,
+        fontFamily = fontFamily,
+        float = float
     ),
     block = block
 )
@@ -110,6 +344,7 @@ fun urlLink (
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
     marginTop: Any? = null,
+    marginRight: Any? = null,
     marginLeft: Any? = null,
     marginBottom: Any? = null,
     paddingBottom: Any? = null,
@@ -122,8 +357,9 @@ fun urlLink (
     display: String? = null,
     justifyContent: String? = null,
     whiteSpace: String? = null,
-    fontFamily: String? = null
-): ToReactElementable = urlLink(
+    fontFamily: String? = null,
+    float: String? = null
+) = urlLink(
     url = url,
     delayActionForFanciness = delayActionForFanciness,
     blinkOpts = blinkOpts,
@@ -151,6 +387,7 @@ fun urlLink (
     ),
     style = Style(
         marginTop = marginTop,
+        marginRight = marginRight,
         marginLeft = marginLeft,
         marginBottom = marginBottom,
         paddingBottom = paddingBottom,
@@ -163,7 +400,8 @@ fun urlLink (
         display = display,
         justifyContent = justifyContent,
         whiteSpace = whiteSpace,
-        fontFamily = fontFamily
+        fontFamily = fontFamily,
+        float = float
     )
 )
 
@@ -190,6 +428,7 @@ fun link (
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
     marginTop: Any? = null,
+    marginRight: Any? = null,
     marginLeft: Any? = null,
     marginBottom: Any? = null,
     paddingBottom: Any? = null,
@@ -202,8 +441,9 @@ fun link (
     display: String? = null,
     justifyContent: String? = null,
     whiteSpace: String? = null,
-    fontFamily: String? = null
-): ToReactElementable = link(
+    fontFamily: String? = null,
+    float: String? = null
+) = link(
     params = LinkParams(
         content = content,
         title = title
@@ -228,6 +468,7 @@ fun link (
     ),
     style = Style(
         marginTop = marginTop,
+        marginRight = marginRight,
         marginLeft = marginLeft,
         marginBottom = marginBottom,
         paddingBottom = paddingBottom,
@@ -240,7 +481,8 @@ fun link (
         display = display,
         justifyContent = justifyContent,
         whiteSpace = whiteSpace,
-        fontFamily = fontFamily
+        fontFamily = fontFamily,
+        float = float
     )
 )
 

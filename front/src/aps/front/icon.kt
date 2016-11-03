@@ -8,7 +8,7 @@ package aps.front
 
 import aps.*
 
-fun jsFacing_faIcon(def: dynamic): dynamic {
+fun jsFacing_faIcon(def: dynamic): ReactElement {
     // #extract {icon, style, className='', onClick} from def
     val icon = def.icon; val style = def.style; val onClick = def.onClick
     val className = if (def.className) def.className else ""

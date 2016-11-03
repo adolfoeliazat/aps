@@ -17,15 +17,12 @@ val kul = ElementBuilderFactory("ul")
 val kol = ElementBuilderFactory("ol")
 val kli = ElementBuilderFactory("li")
 
-class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToReactElementable {
-//    var onClick: ((MouseEvent) -> Unit)? = null
+open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, block: ((ElementBuilder) -> Unit)? = null) : ToReactElementable {
     val children = mutableListOf<ToReactElementable>()
 
-
-//    operator fun invoke(block: (ElementBuilder) -> Unit): ElementBuilder {
-//        block(this)
-//        return this
-//    }
+    init {
+        block?.let {it(this)}
+    }
 
     fun add(eb: ToReactElementable?) {
         if (eb != null) children.add(eb)
@@ -51,7 +48,17 @@ class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToRe
         style = newStyle
     }
 
+    fun addAll(ebs: Iterable<ToReactElementable?>) {
+        ebs.forEach{add(it)}
+    }
+
+    operator fun plus(ebs: Iterable<ToReactElementable?>) {
+        addAll(ebs)
+    }
+
     override fun toReactElement(): ReactElement = control.toReactElement()
+
+    open fun wrapChild(index: Int, child: ToReactElementable) = child
 
     val control: Control2 by lazy {
         object : Control2(attrs) {
@@ -65,7 +72,8 @@ class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToRe
                         "className" to attrs.className,
                         "style" to style.toReactStyle()
                     ),
-                    *children.map{it.toReactElement()}.toTypedArray()
+                    *children.mapIndexed {index, child ->
+                        wrapChild(index, child).toReactElement()}.toTypedArray()
                 )
             }
         }
@@ -76,6 +84,7 @@ class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style) : ToRe
 @MixableType
 data class Style(
     var marginTop: Any? = null,
+    var marginRight: Any? = null,
     var marginLeft: Any? = null,
     var marginBottom: Any? = null,
     var paddingBottom: Any? = null,
@@ -88,12 +97,14 @@ data class Style(
     var display: String? = null,
     var justifyContent: String? = null,
     var whiteSpace: String? = null,
-    var fontFamily: String? = null
+    var fontFamily: String? = null,
+    val float: String? = null
 ) {
     fun toReactStyle(): dynamic {
         return dyna{o->
             // TODO:vgrechka Check padding, borderBottom, textAlign, fontWeight, display, justifyContent
             checkNSI(marginTop, "marginTop")
+            checkNSI(marginRight, "marginRight")
             checkNSI(marginLeft, "marginLeft")
             checkNSI(marginBottom, "marginBottom")
             checkNSI(paddingBottom, "paddingBottom")
@@ -101,6 +112,7 @@ data class Style(
             checkColor(backgroundColor, "backgroundColor")
 
             marginTop?.let {o.marginTop = it}
+            marginRight?.let {o.marginRight = it}
             marginLeft?.let {o.marginLeft = it}
             marginBottom?.let {o.marginBottom = it}
             paddingBottom?.let {o.paddingBottom = it}
@@ -114,6 +126,7 @@ data class Style(
             justifyContent?.let {o.justifyContent = it}
             whiteSpace?.let {o.whiteSpace = it}
             fontFamily?.let {o.fontFamily = it}
+            float?.let {o.float = it}
         }
     }
 
@@ -648,5 +661,71 @@ fun ReactElement.toToReactElementable(): ToReactElementable {
         override fun toReactElement() = this@toToReactElementable
     }
 }
+
+fun spancTitle(title: String): ReactElement =
+    Shitus.spancTitle(json("title" to title))
+
+@GenerateSignatureMixes
+fun hor(spacing: Int, @Mix attrs: Attrs, @Mix style: Style, block: ((ElementBuilder) -> Unit)? = null) =
+    object:ElementBuilder("div", attrs, style.copy(display="flex"), block) {
+        override fun wrapChild(index: Int, child: ToReactElementable) =
+            kdiv(marginLeft = if (index > 0) spacing else 0){o->
+                o- child
+            }
+    }
+
+@GenerateSignatureMixes
+fun hor1(@Mix attrs: Attrs, @Mix style: Style, block: ((ElementBuilder) -> Unit)? = null) =
+    hor(4, attrs, style.copy(display="flex"), block)
+
+@GenerateSignatureMixes
+fun hor2(@Mix attrs: Attrs, @Mix style: Style, block: ((ElementBuilder) -> Unit)? = null) =
+    hor(8, attrs, style.copy(display="flex"), block)
+
+fun pageHeader0(title: String, className: String = "") =
+    kdiv(className="page-header $className", marginTop=0, marginBottom=15){o->
+        o- h3(tame="pageHeader", marginBottom=0){o->
+            o- spancTitle(title)
+        }
+    }.toReactElement()
+
+open class Placeholder(attrs: Attrs = Attrs()) : Control2(attrs) {
+    var content: ToReactElementable = kspan()
+    lateinit var prevContent: ToReactElementable
+
+    fun setContent(newContent: ToReactElementable) {
+        prevContent = content
+        content = newContent
+        update()
+    }
+
+    fun setPrevContent() {
+        setContent(prevContent)
+    }
+
+    override fun defaultControlTypeName() = "Placeholder"
+    override fun render() = content.toReactElement()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

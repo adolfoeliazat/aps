@@ -105,7 +105,8 @@ class GenerateShit {
 
                 deleteLastComma()
                 val returnType = function.typeReference?.text ?: "Unit"
-                generated.appendln("): $returnType = ${function.name}(")
+                generated.appendln(") = ${function.name}(")
+//                generated.appendln("): $returnType = ${function.name}(")
 
                 for (vp in function.valueParameters) {
                     when {

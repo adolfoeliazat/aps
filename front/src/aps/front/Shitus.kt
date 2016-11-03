@@ -27,7 +27,7 @@ object Shitus {
     val revealControl: dynamic = ::jsFacing_revealControl
     val raiseWithMeta: dynamic = ::jsFacing_raiseWithMeta
     val glyph: dynamic = ::jsFacing_glyph
-    val errorBanner: dynamic = ::jsFacing_errorBanner
+    val errorBanner = ::jsFacing_errorBanner
     val byid: dynamic = ::jsFacing_byid
     val byid0: dynamic = ::jsFacing_byid0
     val horizontala: dynamic = ::jsFacing_horizontala
@@ -50,7 +50,7 @@ object Shitus {
 //    val dom.spana = ::jsFacing_dom_spana
     val horiza: dynamic = ::jsFacing_horiza
     val link: dynamic = ::jsFacing_link
-    val faIcon: dynamic = ::jsFacing_faIcon
+    val faIcon = ::jsFacing_faIcon
 //    val liveBadge: dynamic = ::jsFacing_liveBadge
 //    val liveBadge2: dynamic = ::jsFacing_liveBadge2
     val Checkbox: dynamic = ::jsFacing_Checkbox
@@ -847,7 +847,7 @@ fun jsFacing_byid0(id: dynamic): dynamic {
     return jsFacing_byid(id)[0]
 }
 
-fun jsFacing_errorBanner(def: dynamic): dynamic {
+fun jsFacing_errorBanner(def: dynamic): ReactElement {
     val content: dynamic = def.content
     val style: dynamic = def.style
 

@@ -1,19 +1,22 @@
-fun testHi() {
-    println("Hi, fuck you")
-}
+fun test1() {
+    class Test {
+        init {
+            add(10)
+            add(20)
+            addAll(listOf(30, 40, 50))
+        }
 
-class Shit {
-    val foo = run {
-        if (true) 1
-        else 2
+        fun add(x: Int) {
+            println("Adding $x")
+        }
+
+        fun addAll(xs: Iterable<Int>) {
+            xs.forEach(this::add)
+        }
     }
 
-    init {
-        println("shit")
-    }
-
+    Test()
 }
-
 
 
 

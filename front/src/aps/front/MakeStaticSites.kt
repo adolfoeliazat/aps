@@ -1012,7 +1012,12 @@ object MakeStaticSites {
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+        <meta http-equiv="pragma" content="no-cache" />
 
     ${ReactDOMServer.renderToStaticMarkup(React.createElement("title", json(), tabTitle))}
 
@@ -1079,22 +1084,43 @@ object MakeStaticSites {
     <script src="jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap-3.3.7-hacked.js"></script>
     <script src="kotlin-1.1-m02-eap-hacked.js"></script>
+    <!--
     <script src="into-kommon-js-enhanced.js"></script>
     <script src="front-enhanced.js"></script>
+    -->
 
     <script>
         ${readStatic("testimonials.js")}
     </script>
 
-    <!-- <script src="bundle.js"></script> -->
     <script>
         // TODO:vgrechka Think about DANGEROUS_TOKEN. How it should be included into client, etc.
         DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}'
 
         global = window
         Kotlin = kotlin
-        kot = Kotlin.modules.front
-        kot.aps.front.ignite()
+
+        Promise.resolve()
+        .then(_=> loadScript('into-kommon-js-enhanced.js?' + Date.now()))
+        .then(_=> loadScript('front-enhanced.js?' + Date.now()))
+        .then(_=> {
+            kot = Kotlin.modules.front
+            kot.aps.front.ignite()
+        })
+
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script')
+                script.type = 'text/javascript'
+                script.async = true
+                script.onload = _=> {
+                    console.log('Loaded ' + src)
+                    resolve()
+                }
+                script.src = src
+                document.getElementsByTagName('head')[0].appendChild(script)
+            })
+        }
     </script>
     </body>
     </html>

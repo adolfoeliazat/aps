@@ -11,56 +11,14 @@ import aps.front.Color.*
 import aps.*
 import into.kommon.*
 
-fun pageHeader0(arg: Json): ReactElement {
-    val title: dynamic = arg["title"]
-    val labels: dynamic = arg["labels"]?.let{it} ?: jsArrayOf()
-    val className: dynamic = arg["classname"]?.let{it} ?: ""
-
-    val id = puid()
-
-    val me = json(
-        "render" to render@{
-            return@render Shitus.diva(json("className" to "page-header ${className}", "style" to json("marginTop" to 0, "marginBottom" to 15)),
-                Shitus.h3a.apply(null, jsArrayOf().concat(json("tame" to "pageHeader", "style" to json("marginBottom" to 0)),
-                    Shitus.spancTitle(json("title" to title)),
-                    labels.map({label: dynamic, i: dynamic ->
-            val style = json(
-                "fontSize" to "12px",
-                "fontWeight" to "normal",
-                "position" to "relative",
-                "top" to "-4px",
-                "left" to "8px",
-                "display" to "inline",
-                "padding" to ".2em .6em .3em",
-                "lineHeight" to "1",
-                "color" to "#fff",
-                "textAlign" to "center",
-                "whiteSpace" to "nowrap",
-                "verticalAlign" to "baseline",
-                "borderRadius" to ".25em"
-            )
-            if (label.level == "success") {
-                global.Object.assign(style, json("background" to "" + LIGHT_GREEN_700))
-            } else {
-                Shitus.raise("Weird pageHeader label level: ${label.level}")
-            }
-            return@map Shitus.spana(json("tame" to "label${Shitus.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
-                Shitus.spancTitle(json("title" to label.title)))
-        }))))
-        }
-    )
-
-    return jsFacing_elcl(me)
-}
 
 class AdminUsersPage(val ui: World) {
     fun load(): Promise<Unit> {"__async"
-        // throw Exception("pizda")
         __await(Melinda<UserRTO, Nothing, UserFilter>(
             ui,
             urlPath = "admin-users.html",
             procedureName = "getUsers",
-            header = {oldShitAsReactElementable(pageHeader0(json("title" to t("TOTE", "Пользователи"))))},
+            header = {oldShitAsReactElementable(pageHeader0(t("TOTE", "Пользователи")))},
             filterSelectValues = UserFilter.values(),
             defaultFilter = UserFilter.ALL,
             plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
@@ -68,9 +26,8 @@ class AdminUsersPage(val ui: World) {
                 primaryButtonTitle = t("TOTE", "Создать засранца"),
                 cancelButtonTitle = defaultCancelButtonTitle),
 
-            renderItem = {index, _user -> oldShitAsReactElementable(object {
+            renderItem = {index, _user -> object:Placeholder() {
                 var user = _user
-                val renderedThing = Shitus.Placeholder()
                 val headingID = "hehe-" + puid()
 
                 init {
@@ -78,19 +35,19 @@ class AdminUsersPage(val ui: World) {
                 }
 
                 fun enterDisplayMode() {
-                    peggy(json(
-                        "headingActionItems" to jsArrayOf(
+                    peggy(
+                        headingActionItems = listOf(
                             Shitus.faIcon(json("tamy" to "edit", "className" to "hover-color-BLUE_GRAY_800", "style" to json("fontSize" to "135%", "cursor" to "pointer"), "icon" to "pencil",
-                                "onClick" to { enterEditMode() }))),
-                        "body" to Shitus.diva(js("({})"), renderProfile(ui, user))))
+                                               "onClick" to { enterEditMode() })).toToReactElementable()),
+                        body = renderProfile(ui, user).toToReactElementable())
                 }
 
 
                 fun enterEditMode() {
-                    peggy(json(
-                        "headingActionItems" to jsArrayOf(),
-                        "body" to Shitus.diva(json("style" to json("marginBottom" to 15)),
-                            FormMatumba<UpdateUserRequest, GenericResponse>(FormSpec(
+                    peggy(
+                        headingActionItems = listOf(),
+                        body = kdiv(marginBottom=15){o->
+                            o- FormMatumba<UpdateUserRequest, GenericResponse>(FormSpec(
                                 UpdateUserRequest()-{o->
                                     o.id.value = user.id
                                     o.state.value = user.state
@@ -131,35 +88,36 @@ class AdminUsersPage(val ui: World) {
                                 },
 
                                 onCancel = {
-                                    renderedThing.setPrevContent()
+                                    setPrevContent()
                                     scrollToHeading()
                                 },
 
                                 onError = {
                                     scrollToHeading()
                                 }
-
-                            )).toReactElement()
-                        )))
+                            ))
+                        }
+                    )
 
                     scrollToHeading()
                 }
 
-                fun peggy(def: dynamic) {
-                    // #extract {headingActionItems, body} from def
-                    val headingActionItems = def.headingActionItems; val body = def.body
-
-                    renderedThing.setContent(kdiv(tame=sufindex("item", index)) { o->
-                        o- kdiv(tame="heading", id=headingID, marginBottom=10, backgroundColor=BLUE_GRAY_50, borderBottom="1px solid ${BLUE_GRAY_100})") { o->
-                            o- kspan(fontWeight="normal") {o->
+                fun peggy(headingActionItems: List<ToReactElementable>, body: ToReactElementable) {
+                    setContent(kdiv(tame=sufindex("item", index)){o->
+                        o- kdiv(tame="heading", id=headingID, marginBottom=10, backgroundColor=BLUE_GRAY_50, borderBottom="1px solid ${BLUE_GRAY_100})"){o->
+                            o- kspan(fontWeight="normal"){o->
                                 o- spanc("title", user.firstName + " " + user.lastName) {style {fontSize = "135%"}}
                                 o- spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
 
-                            o- asReactElement(Shitus.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to Color.BLUE_GRAY_600),
-                                "items" to headingActionItems)))
+                            o- hor2(float="right", marginTop=4, marginRight=4, color=Color.BLUE_GRAY_600){o->
+                                o- kdiv{it-"foo"}
+                                o+ headingActionItems
+                                o- kdiv{it-"bar"}
+                            }
                         }
-                        o- asReactElement(body)
-                    }.toReactElement())
+
+                        o- body
+                    })
 
 //                    renderedThing.setContent(diva {tame = sufindex("item", index)
 //                        - diva {tame = "heading"; elementID = headingID; style {marginBottom(10); backgroundColor = BLUE_GRAY_50; borderBottom = "1px solid ${BLUE_GRAY_100}"}
@@ -184,9 +142,9 @@ class AdminUsersPage(val ui: World) {
                 fun refreshRecord(): Promise<Unit> {"__async"
                     val res = __await(GetUserRequest.send(ui.token!!, user.id))
                     return ignora/when (res) {
-                        is ZimbabweResponse.Shitty -> peggy(json(
-                            "headingActionItems" to jsArrayOf(),
-                            "body" to Shitus.errorBanner(json("content" to res.error))))
+                        is ZimbabweResponse.Shitty -> peggy(
+                            headingActionItems = listOf(),
+                            body = Shitus.errorBanner(json("content" to res.error)).toToReactElementable())
 
                         is ZimbabweResponse.Hunky -> {
                             user = res.meat.user
@@ -194,7 +152,7 @@ class AdminUsersPage(val ui: World) {
                         }
                     }
                 }
-            }.renderedThing)
+            }
             }
         ).ignita())
         return __asyncResult(Unit)
@@ -216,4 +174,44 @@ class AdminUsersPage(val ui: World) {
 
 
 
+
+//    val title: dynamic = arg["title"]
+//    val labels: dynamic = arg["labels"]?.let{it} ?: jsArrayOf()
+//    val className: dynamic = arg["classname"]?.let{it} ?: ""
+//
+//    val id = puid()
+//
+//    val me = json(
+//        "render" to render@{
+//            return@render Shitus.diva(json("className" to "page-header ${className}", "style" to json("marginTop" to 0, "marginBottom" to 15)),
+//                Shitus.h3a.apply(null, jsArrayOf().concat(json("tame" to "pageHeader", "style" to json("marginBottom" to 0)),
+//                    Shitus.spancTitle(json("title" to title)),
+//                    labels.map({label: dynamic, i: dynamic ->
+//            val style = json(
+//                "fontSize" to "12px",
+//                "fontWeight" to "normal",
+//                "position" to "relative",
+//                "top" to "-4px",
+//                "left" to "8px",
+//                "display" to "inline",
+//                "padding" to ".2em .6em .3em",
+//                "lineHeight" to "1",
+//                "color" to "#fff",
+//                "textAlign" to "center",
+//                "whiteSpace" to "nowrap",
+//                "verticalAlign" to "baseline",
+//                "borderRadius" to ".25em"
+//            )
+//            if (label.level == "success") {
+//                global.Object.assign(style, json("background" to "" + LIGHT_GREEN_700))
+//            } else {
+//                Shitus.raise("Weird pageHeader label level: ${label.level}")
+//            }
+//            return@map Shitus.spana(json("tame" to "label${Shitus.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
+//                Shitus.spancTitle(json("title" to label.title)))
+//        }))))
+//        }
+//    )
+//
+//    return jsFacing_elcl(me)
 

@@ -999,8 +999,8 @@ fun gertrude(def: dynamic) {
 
                 paneControls = div {
                     -hor2 {
-                        -hor1 { -unifyIndicesCheck; -"Unify indices" }
-                        -hor1 { -hideKeyRepetitionsCheck; -"Hide key repetitions" }
+                        -hor1_killme { -unifyIndicesCheck; -"Unify indices" }
+                        -hor1_killme { -hideKeyRepetitionsCheck; -"Hide key repetitions" }
                         -button {
                             level = "primary"; title = "Update Assertion Code"; icon = "pencil"; onClickp {
                             TestGlobal.minimalGertrude = true
