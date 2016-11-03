@@ -9,9 +9,6 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-// TODO
-// - Bug: Static pages are blank until localStorage.clear()
-
 object MakeStaticSites {
     enum class Mode {DEBUG, PROD}
     class LocalizedShit(val en: String, val ua: String)
@@ -1097,9 +1094,7 @@ object MakeStaticSites {
         global = window
         Kotlin = kotlin
         kot = Kotlin.modules.front
-        ${ifOrEmpty(isDynamicPage(clientKind, name)) {"""
-            kot.aps.front.ignite()
-        """}}
+        kot.aps.front.ignite()
     </script>
     </body>
     </html>
