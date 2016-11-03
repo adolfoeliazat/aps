@@ -29,6 +29,11 @@ fun t(en: String, ru: String) = ru
     fun createClass(def: dynamic): dynamic
 }
 
+fun el(tag: String, attrs: Json, vararg children: ReactElement): ReactElement =
+    React.createElement(tag, attrs, *children)
+
+fun String?.asReactElement(): ReactElement = this.asDynamicReactElement()
+
 @native interface ReactElement
 
 val NORE: ReactElement = null.asDynamic()

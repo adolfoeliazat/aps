@@ -79,7 +79,7 @@ class Select<E>(
             }),
 
             values.map {
-                reactCreateElement("option", json("value" to it.name), listOf(it.title.asReactElement()))
+                reactCreateElement("option", json("value" to it.name), listOf(it.title.asDynamicReactElement()))
             }
         )
     }

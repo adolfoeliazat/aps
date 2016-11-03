@@ -10,7 +10,6 @@ import aps.*
 import into.kommon.*
 
 // TODO
-// - Kill all [dynamic]
 // - Bug: Static pages are blank until localStorage.clear()
 
 object MakeStaticSites {
@@ -419,7 +418,7 @@ object MakeStaticSites {
         })
 
         for (name in writerDynamicPageNames()) {
-            writePage(name=name, content=wholePageTicker().asToReactElementable())
+            writePage(name=name, content=wholePageTicker().toToReactElementable())
         }
 
         println("DONE")
@@ -758,20 +757,23 @@ object MakeStaticSites {
                 ua = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.")
 
             o- pageHeader(t(en="Our Prices", ua="Наши цены"))
-            o- oldShitAsReactElementable(
-                el("table", json("className" to "table table-hover table-condensed"),
-                   el("thead", json(),
-                      el("tr", json(),
-                         el("th", json(), t(en="Delivery Option", ua="Срочность")),
-                         el("th", json(), t(en="Type of Paper", ua="Тип работы")),
-                         el("th", json(), t(en="Price", ua="Цена"))
-                      )),
-                   el.apply(null, js("[]").concat("tbody", json(),
-                                                  priceTableRows.map{row -> el("tr", json(),
-                                                                               el("td", json(), row[0]),
-                                                                               el("td", json(), row[1]),
-                                                                               el("td", json(), row[2])
-                                                  )}.toJSArray()))))
+            o- el("table", json("className" to "table table-hover table-condensed"),
+                  el("thead", json(),
+                     el("tr", json(),
+                        el("th", json(), t(en="Delivery Option", ua="Срочность").asReactElement()),
+                        el("th", json(), t(en="Type of Paper", ua="Тип работы").asReactElement()),
+                        el("th", json(), t(en="Price", ua="Цена").asReactElement())
+                     )),
+                  el("tbody", json(),
+                     *priceTableRows.map{row ->
+                         el("tr", json(),
+                            el("td", json(), row[0].asReactElement()),
+                            el("td", json(), row[1].asReactElement()),
+                            el("td", json(), row[2].asReactElement())
+                         )
+                     }.toTypedArray()
+                  )
+            )
         })
 
         val sampleItems = when (lang) {
@@ -999,7 +1001,7 @@ object MakeStaticSites {
         })
 
         for (name in customerDynamicPageNames()) {
-            writePage(name=name, content=wholePageTicker().asToReactElementable())
+            writePage(name=name, content=wholePageTicker().toToReactElementable())
         }
 
         println("DONE")
@@ -1153,7 +1155,7 @@ object MakeStaticSites {
     }
 
     fun locBullets(items: List<LS>): ReactElement {
-        return bullets(items.map{x -> t(x).asReactElement()})
+        return bullets(items.map{x -> t(x).asDynamicReactElement()})
     }
 
 

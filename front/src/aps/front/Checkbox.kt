@@ -20,7 +20,7 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
             var me: dynamic = null
             me = json(
                 "render" to {
-                    el("input", json(
+                    elKillme("input", json(
                         "id" to me.elementID,
                         "type" to "checkbox",
                         "checked" to value,

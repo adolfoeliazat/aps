@@ -204,7 +204,7 @@ fun hr(): ReactElement {
     return React.createElement("hr", json())
 }
 
-val el: dynamic = {
+val elKillme: dynamic = {
     val all = js("Array.prototype.slice.call(arguments)")
     global.React.createElement.apply(global.React, /*...*/all)
 }
