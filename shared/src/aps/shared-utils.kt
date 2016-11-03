@@ -12,8 +12,8 @@ import into.kommon.*
 import kotlin.reflect.KProperty
 
 val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environment variable")
-val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak" // TODO:vgrechka Unhardcode
-val TMP_DIR: String get() = "c:/tmp/aps-tmp" // TODO:vgrechka Unhardcode
+val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak" // TODO:vgrechka @unhardcode
+val TMP_DIR: String get() = "c:/tmp/aps-tmp" // TODO:vgrechka @unhardcode
 
 class AbortException : Throwable()
 fun abort() {throw AbortException()}

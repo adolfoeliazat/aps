@@ -7,10 +7,10 @@
 package aps.front
 
 class ElementBuilderFactory(val tag: String) {
-    @GenerateSignatureMixes(extensionOf="ElementBuilderFactory")
+    @GenerateSignatureMixes
     operator fun invoke(@Mix attrs: Attrs,
                         @Mix style: Style,
-                        @AfterMix block: ((ElementBuilder) -> Unit)? = null
+                        block: ((ElementBuilder) -> Unit)? = null
     ): ElementBuilder {
         val builder = ElementBuilder(tag, attrs, style)
         block?.let {it(builder)}

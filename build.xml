@@ -7,6 +7,9 @@
 <project name="aps">
     <property environment="env"/>
 
+    <!-- TODO:vgrechka @unhardcode -->
+    <property name="KOTLIN_COMPILER_JAR" value="C:\Users\Vladimir\.IdeaIC2016.3\config\plugins\Kotlin\kotlinc\lib\kotlin-compiler.jar"/>
+
     <include file="${env.INTO_KOMMON_HOME}/build-into-kommon-inc.xml" as="inc"/>
 
     <path id="cp">
@@ -14,6 +17,7 @@
         <pathelement location="${env.APS_HOME}/back/out"/>
         <fileset dir="${env.APS_HOME}/back/lib" includes="*.jar"/>
         <fileset dir="${env.APS_HOME}/back/lib-gradle" includes="*.jar"/>
+        <pathelement location="${KOTLIN_COMPILER_JAR}"/>
     </path>
 
     <target name="before-compilation">
@@ -41,6 +45,12 @@
         </java>
 
         <touch file="${env.APS_HOME}/_restart-flag"/>
+    </target>
+
+    <target name="generate-shit">
+        <java classname="aps.back.GenerateShit" fork="true" failonerror="true">
+            <classpath refid="cp"/>
+        </java>
     </target>
 
     <target name="make-static-sites">

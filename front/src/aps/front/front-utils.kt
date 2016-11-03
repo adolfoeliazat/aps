@@ -119,9 +119,8 @@ fun reactCreateElement(tag: String, attrs: Json, children: Collection<ReactEleme
 }
 
 annotation class MixableType
-annotation class GenerateSignatureMixes(val extensionOf: String = "")
+annotation class GenerateSignatureMixes
 annotation class Mix
-annotation class AfterMix
 
 
 
