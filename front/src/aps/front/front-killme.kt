@@ -163,7 +163,7 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             addEventListeners()
 
-            art.uiStateContributions[me.id] = {state: dynamic ->
+            art.uiStateContributions[me.id] = {state: TestStateContributions ->
                 if (me.contributeTestState) {
                     var shouldContribute = !me.noStateContributions
 
@@ -188,14 +188,14 @@ fun legacy_implementControlShit(arg: dynamic) {
                     val key: dynamic = entry[0]
                     val value: dynamic = entry[1]
                     if (value != null) {
-                        state.put(json("control" to me, "key" to me.getTamePath() + "." + key, "value" to value))
+                        state.put(me, me.getTamePath() + "." + key, value)
                     }
                 }
 
                 if (me.effectiveShame) {
                     val tp = me.getTamePath()
                     if (tp != me.effectiveShame) {
-                        state.put(json("control" to me, "key" to tp + ".shame", "value" to me.effectiveShame))
+                        state.put(me, tp + ".shame", me.effectiveShame)
                     }
                 }
             }
@@ -224,7 +224,7 @@ fun legacy_implementControlShit(arg: dynamic) {
             removeEventListeners()
             // @wip perf
             jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[me.elementID], {x: dynamic -> x.id == me.id})
-            jsFacing_deleteKey(art.uiStateContributions, me.id)
+            art.uiStateContributions.remove(me.id)
 
             if (me.effectiveShame) {
                 TestGlobal.shameToControl.remove(me.effectiveShame)
@@ -278,8 +278,8 @@ fun legacy_implementControlShit(arg: dynamic) {
             ))
         }
 
-        art.uiStateContributions["_stickedError"] = {state: dynamic ->
-            state.put(json("control" to me, "key" to "stickedError", "value" to (exception.message ?: "Some shit happened")))
+        art.uiStateContributions["_stickedError"] = {state: TestStateContributions ->
+            state.put(me, "stickedError", exception.message ?: "Some shit happened")
         }
     }
 

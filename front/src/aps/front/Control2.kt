@@ -39,7 +39,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
     open fun componentWillUnmount (){}
     open fun componentDidMount    (){}
     open fun componentWillMount   (){}
-    open fun contributeTestState(state: dynamic) {}
+    open fun contributeTestState(state: TestStateContributions) {}
     open fun ignoreDebugCtrlShiftClick() = false
     open fun defaultNoStateContributions() = false
     open fun effectiveShameDefaultsToTamePath() = true
@@ -126,7 +126,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
 
                 addEventListeners()
 
-                art.uiStateContributions[id] = {state: dynamic ->
+                art.uiStateContributions[id] = {state: TestStateContributions ->
                     var shouldContribute = !noStateContributions
 
                     if (shouldContribute) {
@@ -147,14 +147,14 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
                         val key: dynamic = entry[0]
                         val value: dynamic = entry[1]
                         if (value != null) {
-                            state.put(json("control" to this, "key" to tamePath() + "." + key, "value" to value))
+                            state.put(this, tamePath() + "." + key, value)
                         }
                     }
 
                     effectiveShame?.let {es->
                         val tp = tamePath()
                         if (tp != es) {
-                            state.put(json("control" to this, "key" to tp  + ".shame", "value" to es))
+                            state.put(this, tp  + ".shame", es)
                         }
                     }
                 }
@@ -185,7 +185,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
 //                dwarnStriking("before", Shitus.elementIDToControls[elementID].length, Shitus.elementIDToControls[elementID])
                 jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[elementID], {x: dynamic -> x.id == id})
 //                dwarnStriking("after", Shitus.elementIDToControls[elementID].length, Shitus.elementIDToControls[elementID])
-                jsFacing_deleteKey(art.uiStateContributions, id)
+                art.uiStateContributions.remove(id)
 
                 effectiveShame?.let {TestGlobal.shameToControl.remove(it)}
 

@@ -84,19 +84,18 @@ class Select<E>(
         )
     }
 
-    override fun contributeTestState(state: dynamic) {
+    override fun contributeTestState(state: TestStateContributions) {
         if (tame != null) {
             val tp = tamePath()
-            state.put(json("control" to this, "key" to tp + ".selected.value", "value" to value.name))
+            state.put(this, tp + ".selected.value", value.name)
 
             val selectedItem = values.find{x -> x.name == value.name}
             if (selectedItem == null) throw JSException("WTF is selectedItem (me=${debugDisplayName}; value=${value.name})")
-            state.put(json("control" to this, "key" to tp + ".selected.title",
-                "value" to selectedItem.title))
+            state.put(this, tp + ".selected.title", selectedItem.title)
 
             values.forEachIndexed {i, entry ->
-                state.put(json("control" to this, "key" to tp + ".item${Shitus.sufindex(i)}.value", "value" to entry.name))
-                state.put(json("control" to this, "key" to tp + ".item${Shitus.sufindex(i)}.title", "value" to entry.title))
+                state.put(this, tp + ".item${Shitus.sufindex(i)}.value", entry.name)
+                state.put(this, tp + ".item${Shitus.sufindex(i)}.title", entry.title)
             }
         }
     }

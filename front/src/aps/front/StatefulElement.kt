@@ -28,7 +28,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
     open fun componentWillUnmount() {}
 
     protected open fun onRootClick(e: ReactEvent) = UnitPromise {resolve, reject ->}
-    protected open fun contributeTestState(state: dynamic) {}
+    protected open fun contributeTestState(state: TestStateContributions) {}
 
     protected open fun getLongRevelationTitle(): String = "// TODO:vgrechka Implement getLongRevelationTitle"
 
@@ -163,7 +163,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
         def.componentDidMount = {
             addEventListeners()
 
-            art.uiStateContributions[controlID] = {state: dynamic ->
+            art.uiStateContributions[controlID] = {state: TestStateContributions ->
                 var shouldContribute = !noStateContributions
 
                 if (shouldContribute) {
@@ -188,13 +188,13 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
                 getTamePath()?.let {tp ->
                     for ((key, value) in tattrs) {
                         if (value != null) {
-                            state.put(json("control" to this, "key" to tp + "." + key, "value" to value)) // TODO Capture source location
+                            state.put(this, tp + "." + key, value) // TODO Capture source location
                         }
                     }
 
                     if (effectiveShame != null) {
                         if (tp != effectiveShame) {
-                            state.put(json("control" to this, "key" to tp + ".shame", "value" to effectiveShame))
+                            state.put(this, tp + ".shame", effectiveShame!!)
                         }
                     }
                 }
@@ -215,7 +215,7 @@ abstract class StatefulElement(val tame: String? = null, val elementID: String =
 
             removeEventListeners()
             jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[elementID], {x: dynamic -> x.id == controlID })
-            jsFacing_deleteKey(art.uiStateContributions, controlID)
+            art.uiStateContributions.remove(controlID)
 
             if (effectiveShame != null) {
                 jsFacing_deleteKey(TestGlobal.shameToControl, effectiveShame)

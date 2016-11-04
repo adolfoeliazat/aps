@@ -120,15 +120,15 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                     ))
                 },
 
-                "contributeTestState" to {state: dynamic ->
+                "contributeTestState" to {state: TestStateContributions ->
                     if (me.tame) {
                         val key = me.getTamePath()
-                        state.put(json("control" to me, "key" to key, "value" to me.getValue()))
+                        state.put(me, key, me.getValue())
                         if (type != "text") {
-                            state.put(json("control" to me, "key" to key + ".type", "value" to type))
+                            state.put(me, key + ".type", type)
                         }
                         if (kind != "input") {
-                            state.put(json("control" to me, "key" to key + ".kind", "value" to kind))
+                            state.put(me, key + ".kind", kind)
                         }
                     }
                 },

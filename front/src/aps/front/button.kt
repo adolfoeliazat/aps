@@ -46,10 +46,10 @@ fun jsFacing_button(def: dynamic): dynamic {
             // await fova(onClick)
         },
 
-        "contributeTestState" to {state: dynamic ->
+        "contributeTestState" to {state: TestStateContributions ->
             if (me.tame) {
-                if (title) state.put(json("control" to me, "key" to me.getTamePath() + ".title", "value" to textMeat(title)))
-                if (icon) state.put(json("control" to me, "key" to me.getTamePath() + ".icon", "value" to textMeat(icon)))
+                if (title) state.put(me, me.getTamePath() + ".title", textMeat(title))
+                if (icon) state.put(me, me.getTamePath() + ".icon", textMeat(icon))
             }
         }
     )

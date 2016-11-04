@@ -39,10 +39,10 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
                 "setDisabled" to {x: dynamic -> disabled = x; update() },
                 "isDisabled" to {x: dynamic -> disabled },
 
-                "contributeTestState" to {state: dynamic ->
+                "contributeTestState" to {state: TestStateContributions ->
                     if (me.tame) {
                         me.noisy = true
-                        state.put(json("control" to me, "key" to me.getTamePath(), "value" to me.getValue()))
+                        state.put(me, me.getTamePath(), me.getValue())
                     }
                 },
 

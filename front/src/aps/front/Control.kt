@@ -32,9 +32,9 @@ fun button(build: ButtonBuilder.() -> Unit): Control {
             )
         }
 
-        override fun contributeTestState(state: dynamic) {
-            if (cis.title != null) state.put(json("control" to this, "key" to "$effectiveTame.title", "value" to cis.title))
-            if (cis.icon != null) state.put(json("control" to this, "key" to "$effectiveTame.icon", "value" to cis.icon))
+        override fun contributeTestState(state: TestStateContributions) {
+            if (cis.title != null) state.put(this, "$effectiveTame.title", cis.title!!)
+            if (cis.icon != null) state.put(this, "$effectiveTame.icon", cis.icon!!)
         }
     }
 }
@@ -98,8 +98,9 @@ fun spanc(tame: String, content: String, build: CommonControlInstanceShit.() -> 
             return Shitus.spana(json("id" to elementID, "className" to cis.className, "style" to cis.style.toJSObject()), content)
         }
 
-        override fun contributeTestState(state: dynamic) {
-            state.put(json("control" to this, "key" to effectiveTame, "value" to content))
+        override fun contributeTestState(state: TestStateContributions) {
+            // println("controlID=$controlID; elementID=$elementID; effectiveTame=$effectiveTame; content=$content")
+            state.put(this, effectiveTame, content)
         }
     }
 }
@@ -212,7 +213,7 @@ open class ControlInstanceSpec {
 abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : ToReactElementable {
     abstract fun defaultControlTypeName(): String
     abstract fun render(): ReactElement
-    open fun contributeTestState(state: dynamic) {}
+    open fun contributeTestState(state: TestStateContributions) {}
     open fun implicitEffectiveShameIsEffectiveTame_todoMakeMeLonger() = false
     open fun firstSignificantStackLine() = 2
 
@@ -332,7 +333,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
         reactClassSpec.componentDidMount = {
             addEventListeners()
 
-            fun testStateContributor(state: dynamic) {
+            fun testStateContributor(state: TestStateContributions) {
                 if (n(effectiveTame)) return
                 if (cis.noStateContributions) return
 
@@ -348,10 +349,10 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                 for ((key, value) in cis.tattrs)
                     if (y(value))
                     // TODO:vgrechka Capture source location of contributing control    7f25a85a-aed2-4aaf-907f-415b35a74721
-                        state.put(json("control" to this, "key" to "$effectiveTame.$key", "value" to value))
+                        state.put(this, "$effectiveTame.$key", value)
 
                 if (y(effectiveShame) && effectiveTame != effectiveShame)
-                    state.put(json("control" to this, "key" to "$effectiveTame.shame", "value" to effectiveShame))
+                    state.put(this, "$effectiveTame.shame", effectiveShame)
             }
 
             art.uiStateContributions[controlID] = ::testStateContributor
@@ -371,7 +372,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
 
             removeEventListeners()
             jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[elementID], {x: dynamic -> x.controlID == controlID })
-            jsFacing_deleteKey(art.uiStateContributions, controlID)
+            art.uiStateContributions.remove(controlID)
 
             if (effectiveShame != "") {
                 jsFacing_deleteKey(TestGlobal.shameToControl, effectiveShame)

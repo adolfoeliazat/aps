@@ -20,8 +20,8 @@ fun faIcon(icon: String, @Mix attrs: Attrs, @Mix style: Style): ToReactElementab
                            "className" to "fa fa-${icon} ${attrs.className}",
                            "style" to style.toReactStyle()))
 
-        override fun contributeTestState(state: dynamic) {
-            state.put(json("control" to this, "key" to tamePath(), "value" to icon))
+        override fun contributeTestState(state: TestStateContributions) {
+            state.put(this, tamePath(), icon)
         }
     }
 }
@@ -38,9 +38,9 @@ fun jsFacing_faIcon(def: dynamic): ReactElement {
                 if (onClick) onClick()
             }))
         },
-        "contributeTestState" to {state: dynamic ->
+        "contributeTestState" to {state: TestStateContributions ->
             if (me.tame) {
-                state.put(json("control" to me, "key" to me.getTamePath(), "value" to icon))
+                state.put(me, me.getTamePath(), icon)
             }
         }
     )

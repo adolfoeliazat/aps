@@ -332,7 +332,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
 
             addEventListeners()
 
-            art.uiStateContributions[me.id] = {state: dynamic ->
+            art.uiStateContributions[me.id] = {state: TestStateContributions ->
                 me.contributeTestState?.let {cts->
                     var shouldContribute = !me.noStateContributions
 
@@ -355,14 +355,14 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                     val key: dynamic = entry[0]
                     val value: dynamic = entry[1]
                     if (value != null) {
-                        state.put(json("control" to me, "key" to me.getTamePath() + "." + key, "value" to value))
+                        state.put(me, me.getTamePath() + "." + key, value)
                     }
                 }
 
                 if (me.effectiveShame != null) {
                     val tp = me.getTamePath()
                     if (tp != me.effectiveShame) {
-                        state.put(json("control" to me, "key" to tp + ".shame", "value" to me.effectiveShame))
+                        state.put(me, tp + ".shame", me.effectiveShame!!)
                     }
                 }
             }
@@ -391,7 +391,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
             removeEventListeners()
             // @wip perf
             jsFacing_arrayDeleteFirstThat(Shitus.elementIDToControls[me.elementID], {x: dynamic -> x.id == me.id})
-            jsFacing_deleteKey(art.uiStateContributions, me.id)
+            art.uiStateContributions.remove(me.id)
 
             me.effectiveShame?.let {TestGlobal.shameToControl.remove(it)}
 
@@ -443,8 +443,8 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
             ))
         }
 
-        art.uiStateContributions["stickedError"] = {state: dynamic ->
-            state.put(json("control" to me, "key" to "stickedError", "value" to (exception.message ?: "Some shit happened")))
+        art.uiStateContributions["stickedError"] = {state: TestStateContributions ->
+            state.put(me, "stickedError", exception.message ?: "Some shit happened")
         }
     }
 

@@ -65,6 +65,12 @@ abstract class TestInstruction(val opcode: String) : DefinitionStackHolder {
 //    class ActionPlaceholder() : TestInstruction()
 }
 
+typealias ControlID = String
+typealias TestStateContributor = (TestStateContributions) -> Unit
+
+interface TestStateContributions {
+    fun put(control: Any, key: String, value: String)
+}
 
 object art {
     lateinit var testSpeed: String
@@ -72,7 +78,7 @@ object art {
     val halted: Boolean = false
     var respectArtPauses: Boolean = false
     var stepDescriptions: dynamic = jsArrayOf()
-    val uiStateContributions: dynamic = json()
+    val uiStateContributions = mutableMapOf<ControlID, TestStateContributor>()
     var actionPlaceholderTag: String? = null
     var testInstructions: Iterable<TestInstruction> by HotReloadSurvivingFuckingShit("art_testInstructions")
 
@@ -1084,19 +1090,12 @@ fun gertrude(def: dynamic) {
 )
 
 fun invokeStateContributions(actual: MutableMap<String, Any>?) {
-    // {actual}={}
-//    val actual = if (arg) arg.actual else undefined
-
+    // println("--- invokeStateContributions ---")
     art.stateContributionsByControl = js("new Map()")
 
-    for (contribute in jsArrayToList(Shitus.values(art.uiStateContributions))) {
-        contribute(json(
-            "put" to {arg: dynamic ->
-                // {$definitionStack, $callStack, control, key, value}
-                val `$definitionStack` = arg.`$definitionStack`; val `$callStack` = arg.`$callStack`
-                val control = arg.control; val key = arg.key; val value = arg.value
-
-                Shitus.invariant(control, "I want control for state.put()")
+    for (contribute in art.uiStateContributions.values) {
+        contribute(object:TestStateContributions {
+            override fun put(control: Any, key: String, value: String) {
                 if (actual != null && global.Object.keys(actual).includes(key)) {
                     val message = "uiStateContribution put duplication: key=${key}, value=${value}"
 
@@ -1116,24 +1115,25 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
                             json("titlePrefix" to "Existing", "meta" to actual!![key].asDynamic().control))))
                 }
 
-                if (control) {
+//                if (control) {
                     var contributions = art.stateContributionsByControl.get(control)
                     if (!contributions) {
                         contributions = js("({})")
                         art.stateContributionsByControl.set(control, contributions)
                     }
                     contributions[key] = value
-                }
+//                }
 
                 if (actual != null) {
                     actual[key] = json(
                         "value" to value,
-                        "control" to control,
-                        "\$definitionStack" to `$definitionStack`,
-                        "\$callStack" to `$callStack`)
+                        "control" to control
+//                        "\$definitionStack" to `$definitionStack`,
+//                        "\$callStack" to `$callStack`
+                    )
                 }
             }
-        ))
+        })
     }
 }
 
