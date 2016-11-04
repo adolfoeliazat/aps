@@ -7,16 +7,18 @@
 package aps.back
 
 import aps.*
+import com.intellij.navigation.NavigationItem
 import into.kommon.*
 import into.kotlin.AnalyzeKotlinSources
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
+import org.jetbrains.kotlin.psi.psiUtil.getValueParameters
 import java.io.*
 import java.time.LocalDateTime
 
 class GenerateShit {
     val nameToMixableType = mutableMapOf<String, KtClass>()
-    val functionsAnnotatedWithGenerateSignatureMixes = mutableListOf<KtNamedFunction>()
+    val shitAnnotatedWithGenerateSignatureMixes = mutableListOf<NavigationItem>()
 
     init {
         println("Generating some shit for you...")
@@ -49,9 +51,18 @@ class GenerateShit {
 
                     override fun visitNamedFunction(function: KtNamedFunction) {
                         if (hasAnnotation(function, "GenerateSignatureMixes")) {
-                            functionsAnnotatedWithGenerateSignatureMixes.add(function)
+                            shitAnnotatedWithGenerateSignatureMixes.add(function)
                         }
                         super.visitNamedFunction(function)
+                    }
+
+                    override fun visitClassOrObject(classOrObject: KtClassOrObject) {
+                        if (hasAnnotation(classOrObject, "GenerateSignatureMixes")) {
+                            if (classOrObject is KtClass) {
+                                shitAnnotatedWithGenerateSignatureMixes.add(classOrObject)
+                            }
+                        }
+                        super.visitClassOrObject(classOrObject)
                     }
                 })
             }
@@ -78,50 +89,62 @@ class GenerateShit {
                 generated.delete(lastCommaIndex, lastCommaIndex + 1)
             }
 
-            for (function in functionsAnnotatedWithGenerateSignatureMixes) {
-                val modifiersText = function.modifierList?.text ?: ""
-                if (modifiersText.contains(Regex("\\boperator\\b")))
-                    generated.append("operator ")
+            for (piece in shitAnnotatedWithGenerateSignatureMixes) {
+                println("Generating signature mixes for ${piece.name}")
+
+                if (piece is KtNamedFunction) {
+                    val modifiersText = piece.modifierList?.text ?: ""
+                    if (modifiersText.contains(Regex("\\boperator\\b")))
+                        generated.append("operator ")
+                }
 
                 generated.append("fun ")
-                function.containingClassOrObject?.name?.let {generated.append("$it.")}
-                generated.appendln("${function.name} (")
+                if (piece is KtNamedFunction) {
+                    piece.containingClassOrObject?.name?.let {generated.append("$it.")}
+                }
+                generated.appendln("${piece.name} (")
 
-                for (vp in function.valueParameters) {
+                val params = when (piece) {
+                    is KtNamedFunction -> piece.valueParameters
+                    is KtClass -> piece.getValueParameters()
+                    else -> wtf("I want params")
+                }
+
+                for (param in params) {
                     when {
-                        hasAnnotation(vp, "Mix") -> {
-                            val mixableTypeName = vp.typeReference!!.text
+                        hasAnnotation(param, "Mix") -> {
+                            val mixableTypeName = param.typeReference!!.text
                             val mixableType = nameToMixableType[mixableTypeName] ?: bitch("Unknown mixable type: $mixableTypeName")
                             generated.appendln("    // @Mix $mixableTypeName")
-                            for (p in mixableType.getPrimaryConstructorParameters()) {
-                                generated.appendln("    " + p.text.substring("val ".length) + ",")
+                            for (mixedParam in mixableType.getPrimaryConstructorParameters()) {
+                                generated.appendln("    " + unValVar(mixedParam.text) + ",")
                             }
                         }
                         else -> {
-                            generated.appendln("    ${vp.text},")
+                            generated.appendln("    " + unValVar(param.text) + ",")
                         }
                     }
                 }
 
                 deleteLastComma()
-                val returnType = function.typeReference?.text ?: "Unit"
-                generated.appendln(") = ${function.name}(")
-//                generated.appendln("): $returnType = ${function.name}(")
+//                    val returnType = function.typeReference?.text ?: "Unit"
+                generated.appendln(") = ${piece.name}(")
+//                    generated.appendln("): $returnType = ${function.name}(")
 
-                for (vp in function.valueParameters) {
+                for (param in params) {
                     when {
-                        hasAnnotation(vp, "Mix") -> {
-                            val mixableTypeName = vp.typeReference!!.text
+                        hasAnnotation(param, "Mix") -> {
+                            val mixableTypeName = param.typeReference!!.text
                             val mixableType = nameToMixableType[mixableTypeName] ?: bitch("Unknown mixable type: $mixableTypeName")
-                            generated.appendln("    ${vp.name} = $mixableTypeName(")
-                            for (p in mixableType.getPrimaryConstructorParameters()) {
-                                generated.appendln("        ${p.name} = ${p.name},")
+                            generated.appendln("    ${param.name} = $mixableTypeName(")
+                            for (mixedParam in mixableType.getPrimaryConstructorParameters()) {
+                                generated.appendln("        ${mixedParam.name} = ${mixedParam.name},")
                             }
                             deleteLastComma()
                             generated.appendln("    ),")
                         }
                         else -> {
-                            generated.appendln("    ${vp.name} = ${vp.name},")
+                            generated.appendln("    ${param.name} = ${param.name},")
                         }
                     }
                 }
@@ -159,6 +182,12 @@ class GenerateShit {
         File(outPath).writeText(file.readText())
 
     }
+
+    fun unValVar(s: String): String =
+        if (s.startsWith("val ") || s.startsWith("var "))
+            s.substring("val ".length)
+        else s
+
 
     companion object {
         @JvmStatic fun main(args: Array<String>) {

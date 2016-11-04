@@ -1100,7 +1100,7 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
     for (contribute in art.uiStateContributions.values) {
         contribute(object:TestStateContributions {
             override fun put(control: FuckingControl, key: String, value: String) {
-                if (actual != null && global.Object.keys(actual).includes(key)) {
+                if (actual != null && actual.containsKey(key)) {
                     val message = "uiStateContribution put duplication: key=${key}, value=${value}"
 
                     runni {"__async"

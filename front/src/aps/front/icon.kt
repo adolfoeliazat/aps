@@ -9,22 +9,38 @@ package aps.front
 import aps.*
 
 @GenerateSignatureMixes
-fun faIcon(icon: String, @Mix attrs: Attrs, @Mix style: Style): ToReactElementable {
-    return object:Control2(attrs) {
-        override fun defaultControlTypeName() = "icon"
-        override fun simpleOnRootClickImpl() = true
-        override fun simpleTestClickImpl() = true
+class faIcon(val icon: String, @Mix attrs: Attrs, @Mix val style: Style): Control2(attrs) {
+    override fun defaultControlTypeName() = "icon"
+    override fun simpleOnRootClickImpl() = true
+    override fun simpleTestClickImpl() = true
 
-        override fun render() =
-            Shitus.ia(json("id" to elementID,
-                           "className" to "fa fa-${icon} ${attrs.className}",
-                           "style" to style.toReactStyle()))
+    override fun render() =
+        Shitus.ia(json("id" to elementID,
+                       "className" to "fa fa-${icon} ${attrs.className}",
+                       "style" to style.toReactStyle()))
 
-        override fun contributeTestState(state: TestStateContributions) {
-            state.put(this, tamePath(), icon)
-        }
+    override fun contributeTestState(state: TestStateContributions) {
+        state.put(this, tamePath(), icon)
     }
 }
+
+//@GenerateSignatureMixes
+//fun faIcon(icon: String, @Mix attrs: Attrs, @Mix style: Style): ToReactElementable {
+//    return object:Control2(attrs) {
+//        override fun defaultControlTypeName() = "icon"
+//        override fun simpleOnRootClickImpl() = true
+//        override fun simpleTestClickImpl() = true
+//
+//        override fun render() =
+//            Shitus.ia(json("id" to elementID,
+//                           "className" to "fa fa-${icon} ${attrs.className}",
+//                           "style" to style.toReactStyle()))
+//
+//        override fun contributeTestState(state: TestStateContributions) {
+//            state.put(this, tamePath(), icon)
+//        }
+//    }
+//}
 
 fun jsFacing_faIcon(def: dynamic): ReactElement {
     // #extract {icon, style, className='', onClick} from def
