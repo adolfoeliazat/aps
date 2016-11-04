@@ -210,7 +210,7 @@ open class ControlInstanceSpec {
     }
 }
 
-abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : ToReactElementable {
+abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : ToReactElementable, FuckingControl {
     abstract fun defaultControlTypeName(): String
     abstract fun render(): ReactElement
     open fun contributeTestState(state: TestStateContributions) {}
@@ -225,7 +225,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
     open fun componentWillUnmount() {}
 
     val controlID = puid()
-    val elementID = or(cis.elementID, puids())
+    override val elementID = or(cis.elementID, puids())
     val controlTypeName = or(cis.controlTypeName, defaultControlTypeName())
     var elementThis: dynamic = null
     var ignoreDebugCtrlShiftClick: Boolean = false

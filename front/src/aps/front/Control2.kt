@@ -30,7 +30,7 @@ data class Attrs(
     val onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null
 )
 
-abstract class Control2(val attrs: Attrs) : ToReactElementable {
+abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
     abstract fun defaultControlTypeName(): String
     abstract fun render(): ReactElement
 
@@ -90,7 +90,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
     }
 
     val id = puid()
-    val elementID = attrs.id ?: puid()
+    override val elementID = attrs.id ?: puid()
     lateinit var reactClassInstance: ReactClassInstance
     var reactClassInstanceOperable = false
     var shouldUpdate = false

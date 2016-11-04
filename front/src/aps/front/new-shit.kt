@@ -153,12 +153,12 @@ data class Style(
     }
 }
 
-class ControlShitMe : ShitWithRenderFunction {
+class ControlShitMe : ShitWithRenderFunction, FuckingControl {
     override lateinit var render: () -> ReactElement
 
     lateinit var controlTypeName: String
     lateinit var id: String
-    var elementID: String? = null
+    override var elementID: String = ""
     var tame: String? = null
     var tamy: String? = null
     var shame: String? = null

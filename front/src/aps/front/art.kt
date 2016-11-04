@@ -69,12 +69,12 @@ typealias ControlID = String
 typealias TestStateContributor = (TestStateContributions) -> Unit
 
 interface TestStateContributions {
-    fun put(control: Any, key: String, value: String)
+    fun put(control: FuckingControl, key: String, value: String)
 }
 
 object art {
     lateinit var testSpeed: String
-    var stateContributionsByControl: dynamic = null
+    val stateContributionsByControl = mutableMapOf<FuckingControl, MutableMap<String, String>>()
     val halted: Boolean = false
     var respectArtPauses: Boolean = false
     var stepDescriptions: dynamic = jsArrayOf()
@@ -578,7 +578,7 @@ object art {
                 console.log("Lighting state contributions")
 
                 shitToRender = makeHrundels(json(
-                    "controls" to global.Array.from(Shitus.getArtStateContributionsByControl().keys()),
+                    "controls" to art.stateContributionsByControl.keys.toTypedArray(),
                     "borderColor" to PURPLE_500.toString(),
                     "normalBorderWidth" to 1,
                     "thickBorderWidth" to 3,
@@ -589,15 +589,19 @@ object art {
                     },
                     "onLens" to {arg: dynamic ->
                         val control = arg.control
-                        val contribs = Shitus.getArtStateContributionsByControl().get(control)
-                        global.assertionPane.highlightStuff(json("keys" to global.Object.keys(contribs), "scrollThere" to true))
+                        val contribs = art.stateContributionsByControl[control] ?: mutableMapOf()
+                        global.assertionPane.highlightStuff(json("keys" to contribs.keys, "scrollThere" to true))
                     },
                     "onMouseEnter" to {arg: dynamic ->
                         val control = arg.control
                         console.log("--------------------")
                         console.log("CONTRIBS: ${controlDisplayNameForDumping(control)}")
                         console.log("--------------------")
-                        console.log(global.nodeUtil.inspect(Shitus.getArtStateContributionsByControl().get(control)))
+
+                        val jsObject = js("({})")
+                        val contribs = art.stateContributionsByControl[control] ?: mutableMapOf()
+                        for ((k, v) in contribs) jsObject[k] = v
+                        console.log(global.nodeUtil.inspect(jsObject))
                     }
                 ))
 
@@ -1091,11 +1095,11 @@ fun gertrude(def: dynamic) {
 
 fun invokeStateContributions(actual: MutableMap<String, Any>?) {
     // println("--- invokeStateContributions ---")
-    art.stateContributionsByControl = js("new Map()")
+    art.stateContributionsByControl.clear()
 
     for (contribute in art.uiStateContributions.values) {
         contribute(object:TestStateContributions {
-            override fun put(control: Any, key: String, value: String) {
+            override fun put(control: FuckingControl, key: String, value: String) {
                 if (actual != null && global.Object.keys(actual).includes(key)) {
                     val message = "uiStateContribution put duplication: key=${key}, value=${value}"
 
@@ -1116,10 +1120,10 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
                 }
 
 //                if (control) {
-                    var contributions = art.stateContributionsByControl.get(control)
-                    if (!contributions) {
-                        contributions = js("({})")
-                        art.stateContributionsByControl.set(control, contributions)
+                    var contributions: MutableMap<String, String>? = art.stateContributionsByControl.get(control)
+                    if (contributions == null) {
+                        contributions = mutableMapOf()
+                        art.stateContributionsByControl.put(control, contributions)
                     }
                     contributions[key] = value
 //                }
@@ -1507,14 +1511,18 @@ fun sortKeys(o: dynamic) {
     }
 }
 
-fun findContributionsByControlAndChildren(target: dynamic): dynamic {
-    val contributions: dynamic = json()
-    global.Object.assign(contributions, art.stateContributionsByControl.get(target))
+interface FuckingControl {
+    val elementID: String
+}
+
+fun findContributionsByControlAndChildren(target: FuckingControl): Map<String, String> {
+    val contributions = mutableMapOf<String, String>()
+    art.stateContributionsByControl[target]?.let {contributions.putAll(it)}
     Shitus.byid(target.elementID).find('*').each({
         if (js("this").id) {
             val controls = Shitus.elementIDToControls[js("this").id] ?: jsArrayOf()
             for (control in jsArrayToList(controls)) {
-                global.Object.assign(contributions, art.stateContributionsByControl.get(control))
+                art.stateContributionsByControl[control]?.let {contributions.putAll(it)}
             }
         }
     })

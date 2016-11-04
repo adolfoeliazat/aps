@@ -15,9 +15,9 @@ import into.kommon.*
 object Shitus {
     var topZIndex = 100000
 
-    val getArtStateContributionsByControl = {
-        art.stateContributionsByControl
-    }
+//    val getArtStateContributionsByControl = {
+//        art.stateContributionsByControl
+//    }
 
     val initDebugFunctionsShit = {art.initDebugFunctionsShit()}
 
