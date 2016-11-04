@@ -40,6 +40,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
     open fun componentDidMount    (){}
     open fun componentWillMount   (){}
     open fun contributeTestState(state: TestStateContributions) {}
+    open fun contributeTestStateIfTamed(state: TestStateContributions) {}
     open fun ignoreDebugCtrlShiftClick() = false
     open fun defaultNoStateContributions() = false
     open fun effectiveShameDefaultsToTamePath() = true
@@ -141,7 +142,10 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
                         }
                     }
 
-                    if (shouldContribute) contributeTestState(state)
+                    if (shouldContribute) {
+                        contributeTestState(state)
+                        if (tame != null) contributeTestStateIfTamed(state)
+                    }
 
                     for (entry in jsArrayToList(lodash.toPairs(attrs.tattrs ?: js("({})")))) {
                         val key: dynamic = entry[0]

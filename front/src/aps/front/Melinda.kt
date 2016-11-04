@@ -176,7 +176,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
             searchBox = oldShitAsReactElementable(Shitus.diva(json("style" to json("position" to "relative")),
                 searchBoxInput!!.toReactElement(),
-                Shitus.faIcon(json("icon" to "search", "style" to json("position" to "absolute", "left" to 10, "top" to 10, "color" to Color.GRAY_500)))
+                faIcon(icon="search", position="absolute", left=10, top=10, color=Color.GRAY_500).toReactElement()
             ))
         }
 

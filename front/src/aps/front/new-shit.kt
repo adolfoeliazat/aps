@@ -83,6 +83,11 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
 
 @MixableType
 data class Style(
+    var top: Any? = null,
+    var right: Any? = null,
+    var bottom: Any? = null,
+    var left: Any? = null,
+    var position: String? = null,
     var marginTop: Any? = null,
     var marginRight: Any? = null,
     var marginLeft: Any? = null,
@@ -113,6 +118,11 @@ data class Style(
             checkColor(color, "backgroundColor")
             checkColor(backgroundColor, "backgroundColor")
 
+            top?.let {o.top = it}
+            right?.let {o.right = it}
+            bottom?.let {o.bottom = it}
+            left?.let {o.left = it}
+            position?.let {o.position = it}
             marginTop?.let {o.marginTop = it}
             marginRight?.let {o.marginRight = it}
             marginLeft?.let {o.marginLeft = it}
@@ -132,6 +142,7 @@ data class Style(
             whiteSpace?.let {o.whiteSpace = it}
             cursor?.let {o.cursor = it}
             float?.let {o.float = it}
+            // zz?.let {o.zz = it}
         }
     }
 

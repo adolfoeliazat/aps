@@ -50,7 +50,7 @@ object Shitus {
 //    val dom.spana = ::jsFacing_dom_spana
     val horiza: dynamic = ::jsFacing_horiza
     val link: dynamic = ::jsFacing_link
-    val faIcon = ::jsFacing_faIcon
+//    val faIcon = ::jsFacing_faIcon
 //    val liveBadge: dynamic = ::jsFacing_liveBadge
 //    val liveBadge2: dynamic = ::jsFacing_liveBadge2
     val Checkbox: dynamic = ::jsFacing_Checkbox

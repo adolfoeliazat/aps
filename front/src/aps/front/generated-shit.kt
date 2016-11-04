@@ -31,6 +31,11 @@ operator fun ElementBuilderFactory.invoke (
     onMouseLeave: ((MouseEvent) -> Unit)? = null,
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
+    top: Any? = null,
+    right: Any? = null,
+    bottom: Any? = null,
+    left: Any? = null,
+    position: String? = null,
     marginTop: Any? = null,
     marginRight: Any? = null,
     marginLeft: Any? = null,
@@ -71,6 +76,11 @@ operator fun ElementBuilderFactory.invoke (
         onMouseLeava = onMouseLeava
     ),
     style = Style(
+        top = top,
+        right = right,
+        bottom = bottom,
+        left = left,
+        position = position,
         marginTop = marginTop,
         marginRight = marginRight,
         marginLeft = marginLeft,
@@ -114,6 +124,11 @@ fun faIcon (
     onMouseLeave: ((MouseEvent) -> Unit)? = null,
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
+    top: Any? = null,
+    right: Any? = null,
+    bottom: Any? = null,
+    left: Any? = null,
+    position: String? = null,
     marginTop: Any? = null,
     marginRight: Any? = null,
     marginLeft: Any? = null,
@@ -154,6 +169,11 @@ fun faIcon (
         onMouseLeava = onMouseLeava
     ),
     style = Style(
+        top = top,
+        right = right,
+        bottom = bottom,
+        left = left,
+        position = position,
         marginTop = marginTop,
         marginRight = marginRight,
         marginLeft = marginLeft,
@@ -201,6 +221,11 @@ fun urlLink (
     onMouseLeave: ((MouseEvent) -> Unit)? = null,
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
+    top: Any? = null,
+    right: Any? = null,
+    bottom: Any? = null,
+    left: Any? = null,
+    position: String? = null,
     marginTop: Any? = null,
     marginRight: Any? = null,
     marginLeft: Any? = null,
@@ -247,6 +272,11 @@ fun urlLink (
         onMouseLeava = onMouseLeava
     ),
     style = Style(
+        top = top,
+        right = right,
+        bottom = bottom,
+        left = left,
+        position = position,
         marginTop = marginTop,
         marginRight = marginRight,
         marginLeft = marginLeft,
@@ -291,6 +321,11 @@ fun link (
     onMouseLeave: ((MouseEvent) -> Unit)? = null,
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
+    top: Any? = null,
+    right: Any? = null,
+    bottom: Any? = null,
+    left: Any? = null,
+    position: String? = null,
     marginTop: Any? = null,
     marginRight: Any? = null,
     marginLeft: Any? = null,
@@ -334,6 +369,11 @@ fun link (
         onMouseLeava = onMouseLeava
     ),
     style = Style(
+        top = top,
+        right = right,
+        bottom = bottom,
+        left = left,
+        position = position,
         marginTop = marginTop,
         marginRight = marginRight,
         marginLeft = marginLeft,
@@ -376,6 +416,11 @@ fun hor (
     onMouseLeave: ((MouseEvent) -> Unit)? = null,
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
+    top: Any? = null,
+    right: Any? = null,
+    bottom: Any? = null,
+    left: Any? = null,
+    position: String? = null,
     marginTop: Any? = null,
     marginRight: Any? = null,
     marginLeft: Any? = null,
@@ -417,6 +462,11 @@ fun hor (
         onMouseLeava = onMouseLeava
     ),
     style = Style(
+        top = top,
+        right = right,
+        bottom = bottom,
+        left = left,
+        position = position,
         marginTop = marginTop,
         marginRight = marginRight,
         marginLeft = marginLeft,
@@ -459,6 +509,11 @@ fun hor1 (
     onMouseLeave: ((MouseEvent) -> Unit)? = null,
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
+    top: Any? = null,
+    right: Any? = null,
+    bottom: Any? = null,
+    left: Any? = null,
+    position: String? = null,
     marginTop: Any? = null,
     marginRight: Any? = null,
     marginLeft: Any? = null,
@@ -499,6 +554,11 @@ fun hor1 (
         onMouseLeava = onMouseLeava
     ),
     style = Style(
+        top = top,
+        right = right,
+        bottom = bottom,
+        left = left,
+        position = position,
         marginTop = marginTop,
         marginRight = marginRight,
         marginLeft = marginLeft,
@@ -541,6 +601,11 @@ fun hor2 (
     onMouseLeave: ((MouseEvent) -> Unit)? = null,
     onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null,
     // @Mix Style
+    top: Any? = null,
+    right: Any? = null,
+    bottom: Any? = null,
+    left: Any? = null,
+    position: String? = null,
     marginTop: Any? = null,
     marginRight: Any? = null,
     marginLeft: Any? = null,
@@ -581,6 +646,11 @@ fun hor2 (
         onMouseLeava = onMouseLeava
     ),
     style = Style(
+        top = top,
+        right = right,
+        bottom = bottom,
+        left = left,
+        position = position,
         marginTop = marginTop,
         marginRight = marginRight,
         marginLeft = marginLeft,

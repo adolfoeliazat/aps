@@ -8,14 +8,13 @@ package aps.front
 
 import aps.*
 
-fun userKindIcon(kind: UserKind): dynamic {
-    return Shitus.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5),
-        "icon" to when (kind) {
+fun userKindIcon(kind: UserKind): ReactElement {
+    return faIcon(tame="icon", marginLeft=5, marginRight=5,
+        icon = when (kind) {
             UserKind.CUSTOMER -> "user"
             UserKind.WRITER -> "pencil"
             UserKind.ADMIN -> "cog"
-        }
-    ))
+        }).toReactElement()
 }
 
 fun renderProfile(ui: World, user: UserRTO): ReactElement {
