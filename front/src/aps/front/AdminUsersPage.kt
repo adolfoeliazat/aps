@@ -18,7 +18,7 @@ class AdminUsersPage(val ui: World) {
             ui,
             urlPath = "admin-users.html",
             procedureName = "getUsers",
-            header = {oldShitAsReactElementable(pageHeader0(t("TOTE", "Пользователи")))},
+            header = {pageHeader0(t("TOTE", "Пользователи"))},
             filterSelectValues = UserFilter.values(),
             defaultFilter = UserFilter.ALL,
             plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
@@ -37,8 +37,8 @@ class AdminUsersPage(val ui: World) {
                 fun enterDisplayMode() {
                     peggy(
                         headingActionItems = listOf(
-                            Shitus.faIcon(json("tamy" to "edit", "className" to "hover-color-BLUE_GRAY_800", "style" to json("fontSize" to "135%", "cursor" to "pointer"), "icon" to "pencil",
-                                               "onClick" to { enterEditMode() })).toToReactElementable()),
+                            faIcon(icon="pencil", tamy="edit", className="hover-color-BLUE_GRAY_800", fontSize="135%", cursor="pointer",
+                                    onClick={enterEditMode()})),
                         body = renderProfile(ui, user).toToReactElementable())
                 }
 
@@ -110,9 +110,7 @@ class AdminUsersPage(val ui: World) {
                                 o- spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
 
                             o- hor2(float="right", marginTop=4, marginRight=4, color=Color.BLUE_GRAY_600){o->
-                                o- kdiv{it-"foo"}
                                 o+ headingActionItems
-                                o- kdiv{it-"bar"}
                             }
                         }
 

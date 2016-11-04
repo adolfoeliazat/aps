@@ -8,8 +8,6 @@ package aps.front
 
 import aps.*
 import into.kommon.*
-import org.w3c.dom.events.Event
-import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.events.MouseEvent
 
 @MixableType
@@ -45,6 +43,8 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
     open fun ignoreDebugCtrlShiftClick() = false
     open fun defaultNoStateContributions() = false
     open fun effectiveShameDefaultsToTamePath() = true
+    open fun simpleOnRootClickImpl() = false
+    open fun simpleTestClickImpl() = false
 
     val controlTypeName = attrs.controlTypeName ?: defaultControlTypeName()
     val noStateContributions = attrs.noStateContributions?.let {it} ?: defaultNoStateContributions()
@@ -219,7 +219,14 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
 
     open fun testSetValue(x: dynamic): Promise<Unit> {die("Control $debugDisplayName doesn't support testSetValue")}
     open fun testGetValue(): Any? {die("Control $debugDisplayName doesn't support testGetValue")}
-    open fun testClick(): Promise<Unit> {die("Control $debugDisplayName doesn't support testClick")}
+
+    open fun testClick(): Promise<Unit> {
+        if (simpleTestClickImpl()) {
+            return onRootClick(DummyMouseEvent())
+        } else {
+            die("Control $debugDisplayName doesn't support testClick")
+        }
+    }
 
     fun update() {
         if (isInTestScenario() && hrss.worldIsHalted) return
@@ -234,13 +241,22 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable {
         shouldUpdate = false
     }
 
-    open fun onRootClick(e: dynamic): Promise<Unit> {"__async"; return __asyncResult(Unit)}
+    open fun onRootClick(e: MouseEvent): Promise<Unit> {"__async"
+        if (simpleOnRootClickImpl()) {
+            e.preventDefault()
+            e.stopPropagation()
+            attrs.onClick?.let {it(e)}
+            attrs.onClicka?.let {__await(it(e))}
+        }
+
+        return __asyncResult(Unit)
+    }
 
     fun captureAction(arg: dynamic) {imf("captureAction")}
 
     fun addEventListeners() {
         Shitus.byid(elementID).off() // Several controls can be on same element, and we don't want to handle click several times
-        Shitus.byid(elementID).on("click", onClick@{e: KeyboardEvent -> "__async"
+        Shitus.byid(elementID).on("click", onClick@{e: MouseEvent -> "__async"
             if (MODE == "debug" && e.ctrlKey) {
                 if (e.shiftKey) {
                     if (ignoreDebugCtrlShiftClick()) return@onClick Unit

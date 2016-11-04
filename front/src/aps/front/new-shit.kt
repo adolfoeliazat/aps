@@ -93,16 +93,18 @@ data class Style(
     var backgroundColor: Any? = null,
     var borderBottom: String? = null,
     var textAlign: String? = null,
+    var fontFamily: String? = null,
+    var fontSize: String? = null,
     var fontWeight: String? = null,
+    var fontStyle: String? = null,
     var display: String? = null,
     var justifyContent: String? = null,
     var whiteSpace: String? = null,
-    var fontFamily: String? = null,
+    var cursor: String? = null,
     val float: String? = null
 ) {
     fun toReactStyle(): dynamic {
         return dyna{o->
-            // TODO:vgrechka Check padding, borderBottom, textAlign, fontWeight, display, justifyContent
             checkNSI(marginTop, "marginTop")
             checkNSI(marginRight, "marginRight")
             checkNSI(marginLeft, "marginLeft")
@@ -120,12 +122,15 @@ data class Style(
             backgroundColor?.let {o.backgroundColor = it.toString()}
             borderBottom?.let {o.borderBottom = it}
             textAlign?.let {o.textAlign = it}
+            fontFamily?.let {o.fontFamily = it}
+            fontSize?.let {o.fontSize = it}
             fontWeight?.let {o.fontWeight = it}
+            fontStyle?.let {o.fontStyle = it}
             padding?.let {o.padding = it}
             display?.let {o.display = it}
             justifyContent?.let {o.justifyContent = it}
             whiteSpace?.let {o.whiteSpace = it}
-            fontFamily?.let {o.fontFamily = it}
+            cursor?.let {o.cursor = it}
             float?.let {o.float = it}
         }
     }
@@ -687,7 +692,7 @@ fun pageHeader0(title: String, className: String = "") =
         o- h3(tame="pageHeader", marginBottom=0){o->
             o- spancTitle(title)
         }
-    }.toReactElement()
+    }
 
 open class Placeholder(attrs: Attrs = Attrs()) : Control2(attrs) {
     var content: ToReactElementable = kspan()

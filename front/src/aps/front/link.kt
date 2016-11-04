@@ -147,6 +147,8 @@ fun link(@Mix params: LinkParams,
     val content = params.content ?: oldShitAsReactElementable(jsFacing_spancTitle(json("title" to params.title)))
     return object:Control2(attrs) {
         override fun defaultControlTypeName() = "link"
+        override fun simpleOnRootClickImpl() = true
+        override fun simpleTestClickImpl() = true
 
         override fun render(): ReactElement {
             return Shitus.aa(
@@ -166,20 +168,13 @@ fun link(@Mix params: LinkParams,
             )
         }
 
-        override fun onRootClick(e: dynamic): Promise<Unit> {"__async"
-            e.preventDefault()
-            e.stopPropagation()
-            attrs.onClick?.let {it(e)}
-            attrs.onClicka?.let {__await(it(e))}
-            return __asyncResult(Unit)
-        }
-
-        override fun testClick(): Promise<Unit> {
-            return onRootClick(json("preventDefault" to {}, "stopPropagation" to {}))
-        }
 
     }
 }
+
+fun DummyMouseEvent() = MouseEvent("dummyTypeArg")
+
+
 
 
 
