@@ -35,7 +35,7 @@ class AdminUsersPage(val ui: World) {
                 }
 
                 fun enterDisplayMode() {
-                    peggy(
+                    setShit(
                         headingActionItems = listOf(
                             faIcon(icon="pencil", tamy="edit", className="hover-color-BLUE_GRAY_800", fontSize="135%", cursor="pointer",
                                     onClick={enterEditMode()})),
@@ -44,7 +44,7 @@ class AdminUsersPage(val ui: World) {
 
 
                 fun enterEditMode() {
-                    peggy(
+                    setShit(
                         headingActionItems = listOf(),
                         body = kdiv(marginBottom=15){o->
                             o- FormMatumba<UpdateUserRequest, GenericResponse>(FormSpec(
@@ -102,7 +102,7 @@ class AdminUsersPage(val ui: World) {
                     scrollToHeading()
                 }
 
-                fun peggy(headingActionItems: List<ToReactElementable>, body: ToReactElementable) {
+                fun setShit(headingActionItems: List<ToReactElementable>, body: ToReactElementable) {
                     setContent(kdiv(tame=sufindex("item", index)){o->
                         o- kdiv(tame="heading", id=headingID, marginBottom=10, backgroundColor=BLUE_GRAY_50, borderBottom="1px solid ${BLUE_GRAY_100})"){o->
                             o- kspan(fontWeight="normal"){o->
@@ -140,7 +140,7 @@ class AdminUsersPage(val ui: World) {
                 fun refreshRecord(): Promise<Unit> {"__async"
                     val res = __await(GetUserRequest.send(ui.token!!, user.id))
                     return ignora/when (res) {
-                        is ZimbabweResponse.Shitty -> peggy(
+                        is ZimbabweResponse.Shitty -> setShit(
                             headingActionItems = listOf(),
                             body = Shitus.errorBanner(json("content" to res.error)).toToReactElementable())
 

@@ -8,6 +8,47 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.browser.localStorage
+import kotlin.browser.window
+
+/*
+Boot Sequence
+-------------
+
+- HTML is loaded
+- If there's a token in localStorage
+      - Display breathe banner regardless of whether the page in address bar is static,
+        because returning user expects her name to be in the top right corner (and we don't know that name yet)
+      - We can store user's name in localStorage too, but it's still not known which non-static menu items
+        should be visible to her. Also the user may be banned, etc.
+      - Until JS is loaded and user credentials are fetched from backend, top right corner should be empty
+        (i.e. no "Sign In" link)
+- If page is static, display its content immediately and allow user to browse
+- Otherwise display breathe banner
+- Start loading JS
+- If user clicks any link until JS is loaded and ignited, everything will just start over
+  TODO:vgrechka Think about possibility to load and cache JS in separate thread
+                (investigate web workers, "progressive" web apps, and all that trendy stuff)
+- JS is loaded
+- Navbar is updated
+- If static content is being displayed, page body shouldn't be redrawn because user may be in the middle
+  of scrolling or watching animation, etc. But all links on page are replaced with fancy-blinking ones
+- If breathe banner is being displayed, do usual dynamic loading of page corresponding to URL in address bar
+
+Fancy-Blinking Links
+--------------------
+
+- Before JS is loaded, all links are usual links
+- After JS is loaded and ignited and until manual page reload, all links are fancy-blinking
+- Clicking on a fancy-blinking link to a dynamic page:
+      - Show fancy blinking underline
+      - Make necessary request(s) to backend
+      - On retrieving necessary data, hide fancy blinking and redraw page
+- Clicking on a fancy-blinking link to a static page:
+      - Should be consistent with the look and feel of dynamic page loading
+      - Load corresponding static HTML via simple XHR and convert usual links there into fancy-blinking ones,
+        then redraw page body with that
+*/
 
 class World {
     lateinit var rootContent: ReactElement
@@ -185,53 +226,32 @@ class World {
     }
 
     fun loadPageForURL(): Promise<Unit> {"__async"
-//            prevPageStuff = currentPageStuff
-//            currentPageStuff = json()
-
         val firstRun = loadPageForURLFirstRun
         loadPageForURLFirstRun = false
 
-        var href: dynamic = null
-        var pathname: dynamic = null
-        if (global.document.location.pathname == "/test.html") {
-            if (prevHref == null || prevPathname == null) Shitus.raise("I want prevHref and prevPathname")
-            console.log("Loading page against previous URL: ${prevHref}")
-            href = prevHref
-            pathname = prevPathname
-        } else {
-            prevHref = global.location.href
-            href = prevHref
-            prevPathname = global.document.location.pathname
-            pathname = prevPathname
-        }
+        urlQuery = parseQueryString(window.location.href)
 
-        TestGlobal.loadPageForURL_href = href
-
-        urlQuery = parseQueryString(href)
-
-        val path = pathname
-        var name: dynamic = null
-        if (path.endsWith(".html")) {
-            name = path.slice(path.lastIndexOf("/") + 1, path.lastIndexOf("."))
-        } else {
-            name = "home"
-        }
+        val pathname = window.location.pathname
+        var name =
+            if (pathname.endsWith(".html"))
+                pathname.substring(pathname.lastIndexOf("/") + 1, pathname.lastIndexOf("."))
+            else "home"
 
         var loader: dynamic = null
 
-        val isDynamic = isDynamicPage(name)
-        if (!isDynamic) {
+        fun isStaticPage(name: String) = !isDynamicPage(name)
+
+        if (isStaticPage(name)) {
             loader = {"__async"
                 val href = if (name == "home") "/" else "${name}.html"
+                // TODO:vgrechka @ditch-superagent
                 var content: dynamic = (__await<dynamic>(global.superagent.get(href).send())).text
                 content = content.slice(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
                 setRootContent(rawHtml(content))
             }
-        }
-
-        if (!loader) {
-            if (isDynamic && user == null && name !== "sign-in" && name !== "sign-up" && !name.startsWith("debug-")) {
-                global.history.replaceState(null, "", "sign-in.html")
+        } else {
+            if (user == null && name !== "sign-in" && name !== "sign-up" && !name.startsWith("debug-")) {
+                window.history.replaceState(null, "", "sign-in.html")
                 name = "sign-in"
             }
 
@@ -245,11 +265,15 @@ class World {
         }
 
         if (!loader) {
-            console.error("Can’t determine fucking loader for path ${path}")
-            return@loadPageForURL __asyncResult(Unit)
+            console.error("Can't figure out fucking loader")
+            return __asyncResult(Unit)
         }
 
-        val skipBodyRendering = firstRun && !isDynamic && global.window.staticShitIsRenderedStatically
+        val skipBodyRendering =
+            firstRun && // JS has just loaded
+            isStaticPage(name) &&
+            localStorage.getItem("token") == null
+
         if (!skipBodyRendering) {
             global.window.disposeStaticShit()
             __await<dynamic>(loader())
