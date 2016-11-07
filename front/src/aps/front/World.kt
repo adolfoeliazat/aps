@@ -100,7 +100,7 @@ class World {
 
     fun loadSignInPage() {
         setPage(Page(
-            header = oldShitAsReactElementable(pageHeader(t("Sign In", "Вход"))),
+            header = oldShitAsToReactElementable(pageHeader(t("Sign In", "Вход"))),
             body = kdiv{o->
                 o-nif(signedUpOK) {preludeWithGreenCheck(json("title" to t(
                     "Cool. You have an account now. We sent you email with password.",

@@ -55,7 +55,7 @@ class Select<E>(
 
     fun stringToValue(s: String) = values.find {it.name == s} ?: bitch("Select value: $s")
 
-    override fun render(): ReactElement {
+    override fun render(): ToReactElementable {
         return reactCreateElement("select", json(
             "id" to elementID,
             "className" to "form-control",
@@ -81,7 +81,7 @@ class Select<E>(
             values.map {
                 reactCreateElement("option", json("value" to it.name), listOf(it.title.asDynamicReactElement()))
             }
-        )
+        ).toToReactElementable()
     }
 
     override fun contributeTestState(state: TestStateContributions) {

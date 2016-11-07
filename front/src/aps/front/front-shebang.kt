@@ -57,7 +57,7 @@ fun userKindTitle(kind: UserKind) = when (kind) {
 
 fun requiredToken(ui: World): String = ui.token ?: bitch("I want a token")
 
-fun oldShitAsReactElementable(someShit: Any?): ToReactElementable =
+fun oldShitAsToReactElementable(someShit: Any?): ToReactElementable =
     object:ToReactElementable {
         override fun toReactElement() = asReactElement(someShit)
     }
@@ -281,7 +281,7 @@ fun debugRPC(arg: dynamic): Promise<dynamic> {
     bitch("It's time to use new RPC shit, OK?")
 }
 
-fun OpenSourceCodeLink(def: dynamic): dynamic {
+fun OpenSourceCodeLink(def: dynamic): ReactElement {
     var where = def.where
     val stackItem = def.stackItem
     val style = def.style
@@ -419,7 +419,7 @@ fun marginateLeft(size: dynamic, content: dynamic): dynamic {
     return Shitus.diva(json("style" to json("marginLeft" to size)), content)
 }
 
-val nbsp = js("String.fromCharCode(0xa0)")
+val nbsp: String = js("String.fromCharCode(0xa0)")
 val mdash = "—"
 val ndash = "–"
 
@@ -600,11 +600,13 @@ fun pageHeader(title: String, className: String = "", labels: Iterable<dynamic> 
     }
 }
 
-fun errorToMappedClientStackString(shit: Errorish, skipMessage: Boolean = false, skipReactShit: Boolean = true): Promise<String?> {"__async"
-    val mangledStack = shit.stack ?: return __asyncResult(null)
+fun errorToMappedClientStackString(shit: Throwable): Promise<String> {"__async"
+    val mangledStack: String = shit.asDynamic().stack
     val res = __await(MapStackRequest.send(mangledStack))
 
-    var lines = res.originalStack.lines()
+    return __asyncResult(res.originalStack)
+
+//    var lines = res.originalStack.lines()
 //    if (skipReactShit) {
 //        var reactShitMarkerSet: dynamic = null
 //        lines.forEach({s: dynamic, i: dynamic ->
@@ -620,13 +622,13 @@ fun errorToMappedClientStackString(shit: Errorish, skipMessage: Boolean = false,
 //        lines = global.lodash.compact(lines)
 //    }
 
-    return __asyncResult((if (skipMessage || jsTypeOf(shit) == "string") "" else shit.message + "\n") + lines.joinToString("\n"))
+//    return __asyncResult((if (skipMessage || jsTypeOf(shit) == "string") "" else "" + shit.message + "\n") + lines.joinToString("\n"))
 }
 
-interface Errorish {
-    @JsName("message") val message: String?
-    @JsName("stack") val stack: String?
-}
+//interface Errorish {
+//    @JsName("message") val message: String?
+//    @JsName("stack") val stack: String?
+//}
 
 enum class DeliveryOption(override val title: String) : Titled {
     D8(t("8+ days", "8+ дней")),

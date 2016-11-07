@@ -11,9 +11,9 @@ import aps.*
 class SignUpPage(val ui: World) {
     fun load(): Promise<Unit> {"__async"
         ui.setPage(Page(
-            header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация")))),
-            body = oldShitAsReactElementable(Shitus.diva(json(),
-                FormMatumba<SignUpRequest, GenericResponse>(FormSpec(
+            header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация")))),
+            body = oldShitAsToReactElementable(Shitus.diva(json(),
+                                                           FormMatumba<SignUpRequest, GenericResponse>(FormSpec(
                     SignUpRequest(),
                     ui,
                     primaryButtonTitle = t("Proceed", "Вперед"),
@@ -23,7 +23,7 @@ class SignUpPage(val ui: World) {
                     }
                 )).toReactElement(),
 
-                Shitus.diva(json(),
+                                                           Shitus.diva(json(),
                     hr(),
                     Shitus.diva(json("tame" to "signInSuggestion", "style" to json("textAlign" to "left")),
                         Shitus.spanc(json("tame" to "prose", "content" to t("TOTE", "Уже есть аккаунт? Тогда "))),

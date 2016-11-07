@@ -135,10 +135,10 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
         }
     }
 
-    if (!art.halted) {
-        hrss.openTestPassedPaneArgs = json("scenario" to scenario)
-        openTestPassedPane(hrss.openTestPassedPaneArgs)
-    }
+//    if (!art.halted) {
+//        hrss.openTestPassedPaneArgs = json("scenario" to scenario)
+//        openTestPassedPane(hrss.openTestPassedPaneArgs)
+//    }
 
     return __asyncResult(Unit)
 }

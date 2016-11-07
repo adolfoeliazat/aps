@@ -31,14 +31,14 @@ data class Attrs(
 )
 
 abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
-    abstract fun defaultControlTypeName(): String
-    abstract fun render(): ReactElement
+    abstract fun render(): ToReactElementable
 
     open fun componentDidUpdate   (){}
     open fun componentWillUpdate  (){}
     open fun componentWillUnmount (){}
     open fun componentDidMount    (){}
     open fun componentWillMount   (){}
+    open fun defaultControlTypeName() = "SomeShit"
     open fun contributeTestState(state: TestStateContributions) {}
     open fun contributeTestStateIfTamed(state: TestStateContributions) {}
     open fun ignoreDebugCtrlShiftClick() = false
@@ -211,9 +211,8 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
 
             "render" to {
                 try {
-                    render()
+                    render().toReactElement()
                 } catch (e: Throwable) {
-                    // TODO:vgrechka Render clickable error banner, on click reveal control construction stack
                     throw e
                 }
             }
@@ -324,7 +323,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
 
         val errorStickerID = puid(); this.errorStickerID = errorStickerID
 
-        DebugPanes.put(errorStickerID, oldShitAsReactElementable(React.createElement("div", json(
+        DebugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
             "id" to errorStickerID,
             "style" to json(
                 "width" to 10,

@@ -144,14 +144,14 @@ fun link(@Mix params: LinkParams,
 ): ToReactElementable {
     check(params.content != null || params.title != null) {"Either content or title"}
 
-    val content = params.content ?: oldShitAsReactElementable(jsFacing_spancTitle(json("title" to params.title)))
+    val content = params.content ?: oldShitAsToReactElementable(jsFacing_spancTitle(json("title" to params.title)))
     return object:Control2(attrs) {
         override fun defaultControlTypeName() = "link"
         override fun simpleOnRootClickImpl() = true
         override fun simpleTestClickImpl() = true
 
-        override fun render(): ReactElement {
-            return Shitus.aa(
+        override fun render(): ToReactElementable {
+            return oldShitAsToReactElementable(Shitus.aa(
                 json("id" to elementID,
                      "className" to attrs.className,
                      "style" to style.toReactStyle(),
@@ -165,7 +165,7 @@ fun link(@Mix params: LinkParams,
                          attrs.onMouseLeava?.let {__await(it(e))}
                      }),
                 content.toReactElement()
-            )
+            ))
         }
 
 

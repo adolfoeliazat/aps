@@ -12,7 +12,7 @@ import kotlin.browser.window
 class InitAutoReload {
     lateinit var initialCtime: String
 
-    init {run {"__async"
+    init {runni {"__async"
         initialCtime = __await(GetSoftwareVersionRequest.send()).ctime
         schedule()
     }}

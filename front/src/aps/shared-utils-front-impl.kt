@@ -37,6 +37,7 @@ fun String?.asReactElement(): ReactElement = this.asDynamicReactElement()
 @native interface ReactElement
 
 val NORE: ReactElement = null.asDynamic()
+val NOTRE: ToReactElementable = NORE.toToReactElementable()
 
 @native interface ReactClassInstance {
     fun forceUpdate()

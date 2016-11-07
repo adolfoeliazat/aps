@@ -61,8 +61,8 @@ class ProfilePage(val ui: World) {
         }
 
         ui.setPage(Page(
-            header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("Profile", "Профиль")))),
-            body = oldShitAsReactElementable(pageBody)
+            header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Profile", "Профиль")))),
+            body = oldShitAsToReactElementable(pageBody)
         ))
 
         return __asyncResult(Unit)

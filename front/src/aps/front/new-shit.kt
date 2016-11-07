@@ -12,6 +12,7 @@ import org.w3c.dom.events.*
 
 val kdiv = ElementBuilderFactory("div")
 val kspan = ElementBuilderFactory("span")
+val kspan_nolint = ElementBuilderFactory("span")
 val h3 = ElementBuilderFactory("h3")
 val kul = ElementBuilderFactory("ul")
 val kol = ElementBuilderFactory("ol")
@@ -76,7 +77,7 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
         object : Control2(attrs) {
             override fun defaultControlTypeName() = tag
 
-            override fun render(): ReactElement {
+            override fun render(): ToReactElementable {
                 return React.createElement(
                     tag,
                     json(
@@ -86,7 +87,7 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
                     ),
                     *children.mapIndexed {index, child ->
                         wrapChild(index, child).toReactElement()}.toTypedArray()
-                )
+                ).toToReactElementable()
             }
         }
     }
@@ -459,7 +460,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
         val errorStickerID = puid()
         shit.errorStickerID = errorStickerID
 
-        DebugPanes.put(errorStickerID, oldShitAsReactElementable(React.createElement("div", json(
+        DebugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
             "id" to errorStickerID,
             "style" to json(
                 "width" to 10,
@@ -734,8 +735,7 @@ fun pageHeader0(title: String, className: String = "") =
         }
     }
 
-open class Placeholder(attrs: Attrs = Attrs()) : Control2(attrs) {
-    var content: ToReactElementable = kspan()
+open class Placeholder(private var content: ToReactElementable = kspan_nolint()) : Control2(Attrs()) {
     lateinit var prevContent: ToReactElementable
 
     fun setContent(newContent: ToReactElementable) {
@@ -749,7 +749,7 @@ open class Placeholder(attrs: Attrs = Attrs()) : Control2(attrs) {
     }
 
     override fun defaultControlTypeName() = "Placeholder"
-    override fun render() = content.toReactElement()
+    override fun render() = content
 }
 
 

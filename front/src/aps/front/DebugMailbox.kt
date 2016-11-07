@@ -11,7 +11,7 @@ import aps.*
 var debugCheckEmail: dynamic = null
 
 fun initDebugMailbox() {
-    DebugPanes.put("initDebugFunctions-mailbox", byid("underFooter"), oldShitAsReactElementable(Shitus.updatableElement(json(
+    DebugPanes.put("initDebugFunctions-mailbox", byid("underFooter"), oldShitAsToReactElementable(Shitus.updatableElement(json(
         "renderCtor" to renderCtor@{update: dynamic ->
         var content = null
 

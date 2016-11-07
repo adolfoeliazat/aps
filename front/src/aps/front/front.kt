@@ -127,8 +127,8 @@ object KotlinShit : IKotlinShit {
 
     override fun loadDebugKotlinPlaygroundPage() {
         KotlinShit.ui.setPage(Page(
-            header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to "debug-kotlin-playground"))),
-            body = oldShitAsReactElementable(Shitus.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5"))
+            header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to "debug-kotlin-playground"))),
+            body = oldShitAsToReactElementable(Shitus.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5"))
         ))
     }
 }

@@ -14,6 +14,7 @@ class TestBoot1 : TestScenario() {
     override fun run(): Promise<Unit> {"__async"
         return __await(art.run(listOf(
             TestInstruction.Step("action", "Do this"),
+//            TestInstruction.Do {"__async"; die(); __asyncResult(Unit)},
             TestInstruction.Step("action", "Do that")
         ))) /ignora
 

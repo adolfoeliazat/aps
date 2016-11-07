@@ -101,117 +101,185 @@ object art {
 
 
     fun run(instructions: Iterable<TestInstruction>): Promise<Unit> {"__async"
-        testInstructions = instructions
+        try {
+            testInstructions = instructions
 
-        val urlq = getURLQuery()
-        val until = urlq["until"]?.let {parseInt(it)} ?: Int.MAX_VALUE
-        val from = urlq["from"] ?: "start"
+            val urlq = getURLQuery()
+            val until = urlq["until"]?.let {parseInt(it)} ?: Int.MAX_VALUE
+            val from = urlq["from"] ?: "start"
 
-        var skipping = from != "start"
+            var skipping = from != "start"
 
-        var stepIndex = 0
-        instructions.forEachIndexed {instrIndex, instr ->
-            if (instrIndex == until) {
-                dlog("Stopping test before instruction ${instrIndex}")
-                return __asyncResult(Unit)
-            }
-
-            if (instr is TestInstruction.WorldPoint) {
-                val wpname: String = hrss.currentTestScenarioName + " -- " + instr.name
-                if (skipping) {
-                    if (instr.name == from) {
-                        dlog("Restoring world point ${wpname}")
-                        __await(WorldPointRequest.send(wpname, RESTORE))
-                        skipping = false
-                    }
-                } else {
-                    dlog("Saving world point ${wpname}")
-                    __await(WorldPointRequest.send(wpname, SAVE))
-                }
-            }
-            else if (!skipping) {
-                fun getControlForAction(arg: dynamic): dynamic {
-                    if (instr !is ShamedTestInstruction) throw JSException("I want ShamedTestInstruction, got $instr")
-
-                    val implementing = if (arg) arg.implementing else undefined
-
-                    val control = TestGlobal.shameToControl[instr.shame]
-                    if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instr))
-                    if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instr))
-                    return control
-                }
-
-                fun executeSetValueLike(): Promise<Unit> {"__async"
-                    val instr = instr as TestInstruction.Action
-                    val control = getControlForAction(json("implementing" to "testSetValue"))
-                    if (instr.timestamp.there) {
-                        __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
-                    }
-
-                    __await<dynamic>(control.testSetValue(json("value" to when (instr) {
-                        is TestInstruction.SetValue -> instr.value
-                        is TestInstruction.SetCheckbox -> instr.value
-                        else -> wtf()
-                    })))
+            var stepIndex = 0
+            instructions.forEachIndexed {instrIndex, instr ->
+                if (instrIndex == until) {
+                    dlog("Stopping test before instruction ${instrIndex}")
                     return __asyncResult(Unit)
                 }
 
-                when (instr) {
-                    is TestInstruction.BeginSection -> {}
-                    is TestInstruction.EndSection -> {}
-                    is TestInstruction.Do -> {
-                        __await(instr.action())
+                if (instr is TestInstruction.WorldPoint) {
+                    val wpname: String = hrss.currentTestScenarioName + " -- " + instr.name
+                    if (skipping) {
+                        if (instr.name == from) {
+                            dlog("Restoring world point ${wpname}")
+                            __await(WorldPointRequest.send(wpname, RESTORE))
+                            skipping = false
+                        }
+                    } else {
+                        dlog("Saving world point ${wpname}")
+                        __await(WorldPointRequest.send(wpname, SAVE))
                     }
-                    is TestInstruction.Step -> {
-                        instr.fulfilled = true
+                }
+                else if (!skipping) {
+                    fun getControlForAction(arg: dynamic): dynamic {
+                        if (instr !is ShamedTestInstruction) throw JSException("I want ShamedTestInstruction, got $instr")
+
+                        val implementing = if (arg) arg.implementing else undefined
+
+                        val control = TestGlobal.shameToControl[instr.shame]
+                        if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instr))
+                        if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instr))
+                        return control
                     }
-                    is TestInstruction.AssertGenerated -> {
-                        __await(art.uiState(json(
-                            "\$tag" to instr.tag,
-                            "expected" to "---generated-shit---",
-                            "expectedExtender" to instr.expectedExtender
-                        )))
-                    }
-                    is TestInstruction.AssertFuck -> {
-                        __await(art.uiState(json(
-                            "\$tag" to instr.tag,
-                            "expected" to instr.expected
-                        )))
-                    }
-                    is TestInstruction.SetValue -> {
-                        __await(executeSetValueLike())
-                    }
-                    is TestInstruction.SetCheckbox -> {
-                        __await(executeSetValueLike())
-                    }
-                    is TestInstruction.Click -> {
-                        val control = getControlForAction(json("implementing" to "testClick"))
+
+                    fun executeSetValueLike(): Promise<Unit> {"__async"
+                        val instr = instr as TestInstruction.Action
+                        val control = getControlForAction(json("implementing" to "testSetValue"))
                         if (instr.timestamp.there) {
                             __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                         }
-                        __await<dynamic>(control.testClick(instr))
+
+                        __await<dynamic>(control.testSetValue(json("value" to when (instr) {
+                            is TestInstruction.SetValue -> instr.value
+                            is TestInstruction.SetCheckbox -> instr.value
+                            else -> wtf()
+                        })))
+                        return __asyncResult(Unit)
                     }
-                    is TestInstruction.KeyDown -> {
-                        val control = getControlForAction(json("implementing" to "testKeyDown"))
-                        if (instr.timestamp.there) {
-                            __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+
+                    when (instr) {
+                        is TestInstruction.BeginSection -> {}
+                        is TestInstruction.EndSection -> {}
+                        is TestInstruction.Do -> {
+                            __await(instr.action())
                         }
-                        __await<dynamic>(control.testKeyDown(instr))
+                        is TestInstruction.Step -> {
+                            instr.fulfilled = true
+                        }
+                        is TestInstruction.AssertGenerated -> {
+                            __await(art.uiState(json(
+                                "\$tag" to instr.tag,
+                                "expected" to "---generated-shit---",
+                                "expectedExtender" to instr.expectedExtender
+                            )))
+                        }
+                        is TestInstruction.AssertFuck -> {
+                            __await(art.uiState(json(
+                                "\$tag" to instr.tag,
+                                "expected" to instr.expected
+                            )))
+                        }
+                        is TestInstruction.SetValue -> {
+                            __await(executeSetValueLike())
+                        }
+                        is TestInstruction.SetCheckbox -> {
+                            __await(executeSetValueLike())
+                        }
+                        is TestInstruction.Click -> {
+                            val control = getControlForAction(json("implementing" to "testClick"))
+                            if (instr.timestamp.there) {
+                                __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                            }
+                            __await<dynamic>(control.testClick(instr))
+                        }
+                        is TestInstruction.KeyDown -> {
+                            val control = getControlForAction(json("implementing" to "testKeyDown"))
+                            if (instr.timestamp.there) {
+                                __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                            }
+                            __await<dynamic>(control.testKeyDown(instr))
+                        }
+                        else -> wtf("Test instruction: $instr")
                     }
-                    else -> wtf("Test instruction: $instr")
                 }
             }
-        }
 
-        if (skipping) {
-            console.warn("WTF, I’ve just skipped all test steps")
-        } else {
-            dlog("Seems test is passed")
+            if (skipping) {
+                console.warn("WTF, I’ve just skipped all test steps")
+            } else {
+                dlog("Seems test is passed")
+            }
+
+            openTestPassedPane()
+        }
+        catch (e: ArtAssertionError) {
+            showAssertionErrorPane(e.message, e.detailsUI)
+        }
+        catch (e: Throwable) {
+            showAssertionErrorPane(e.message, renderStackTrace(e, onRendered = {
+                scrollRevealing("debug_assertionErrorPane")
+            }))
         }
 
         return __asyncResult(Unit)
     }
 
+    fun scrollRevealing(id: String) {
+        requestAnimationFrame {
+            jqbody.scrollTop(byid(id).offset().top - 60)
+        }
+    }
+
+    fun showAssertionErrorPane(message: String?, detailsUI: ToReactElementable) {
+        val assertionErrorPane = object : Control2(Attrs()) {
+            override fun defaultControlTypeName() = "assertionErrorPane"
+
+            var visible = false
+            var content: dynamic = null
+
+            override fun render(): ToReactElementable {
+                if (!visible) return NOTRE
+
+                val messageStyle = json("fontWeight" to "bold", "paddingBottom" to 5, "marginBottom" to 5, "color" to WHITE.toString())
+                if (content.stack) {
+                    global.Object.assign(messageStyle, json(
+                        "borderBottom" to "2px solid white")
+                    )
+                }
+                return oldShitAsToReactElementable(Shitus.diva(json("style" to json("backgroundColor" to RED_700, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
+                                                               Shitus.diva(json("style" to messageStyle), content.message),
+                                                               content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
+                                                               content.detailsUI
+                ))
+            }
+
+            fun set(def: dynamic) {
+                val scrollThere: dynamic = def.scrollThere
+                content = def
+                visible = true
+                update()
+
+                if (scrollThere && !hrss.preventScrollToBottomOnAssertionError) {
+                    scrollRevealing("debug_assertionErrorPane")
+                }
+            }
+        }
+
+        val existingDiv = Shitus.byid("debug_assertionErrorPane")
+        if (existingDiv[0]) {
+            global.ReactDOM.unmountComponentAtNode(existingDiv[0])
+            existingDiv.remove()
+        }
+        Shitus.byid("footer").after("<div id='debug_assertionErrorPane'></div>")
+        global.ReactDOM.render(assertionErrorPane.toReactElement(), Shitus.byid0("debug_assertionErrorPane"))
+
+        val stack = null
+        assertionErrorPane.set(json(
+            "message" to (message ?: "No fucking message") + mdash + hrss.currentTestScenarioName,
+            "stack" to stack,
+            "detailsUI" to kdiv(backgroundColor = WHITE){it-detailsUI}.toReactElement(),
+            "scrollThere" to true))
+    }
 
     fun renderStepDescriptions(): ReactElement {
         val testInstructions = art.testInstructions
@@ -303,101 +371,8 @@ object art {
             *els.toTypedArray())
     }
 
-    fun assert(condition: dynamic, errorMessage: dynamic, _opts: Any? = null) {
-        val opts: dynamic = (_opts ?: json())
-        val detailsUI: dynamic = opts.detailsUI
-        val scrollThere: dynamic = (opts.scrollThere ?: true)
-
-        if (condition) return
-
-        val assertionErrorPane = object : Control2(Attrs()) {
-            override fun defaultControlTypeName() = "assertionErrorPane"
-
-            var visible = false
-            var content: dynamic = null
-
-            override fun render(): ReactElement {
-                if (!visible) return NORE
-
-                val messageStyle = json("fontWeight" to "bold", "paddingBottom" to 5, "marginBottom" to 5, "color" to WHITE.toString())
-                if (content.stack) {
-                    global.Object.assign(messageStyle, json(
-                        "borderBottom" to "2px solid white")
-                    )
-                }
-                return Shitus.diva(json("style" to json("backgroundColor" to RED_700, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
-                    Shitus.diva(json("style" to messageStyle), content.message),
-                    content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
-                    content.detailsUI
-                )
-            }
-
-            fun set(def: dynamic) {
-                val scrollThere: dynamic = def.scrollThere
-                content = def
-                visible = true
-                update()
-
-                if (scrollThere && !hrss.preventScrollToBottomOnAssertionError) {
-                    global.requestAnimationFrame({
-                        global.document.body.scrollTop = js("$")("#debug_assertionErrorPane").offset().top - 60
-                        Unit
-                    })
-                }
-            }
-        }
-
-//        val assertionErrorPane_ = Shitus.statefulElement(ctor@{update: dynamic ->
-//            var visible: dynamic = null
-//            var content: dynamic = null
-//            var top: dynamic = null
-//
-//            val me: dynamic = json(
-//                "render" to render@{
-//                    if (!visible) return@render null
-//
-//                    val messageStyle = json("fontWeight" to "bold", "paddingBottom" to 5, "marginBottom" to 5, "color" to WHITE.toString())
-//                    if (content.stack) {
-//                        global.Object.assign(messageStyle, json(
-//                            "borderBottom" to "2px solid white")
-//                        )
-//                    }
-//                    return@render Shitus.diva(json("style" to json("backgroundColor" to RED_700, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
-//                        Shitus.diva(json("style" to messageStyle), content.message),
-//                        content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
-//                        content.detailsUI
-//                    )
-//                },
-//
-//                "set" to {def: dynamic ->
-//                    val scrollThere: dynamic = def.scrollThere
-//                    content = def
-//                    visible = true
-//                    update()
-//
-//                    if (scrollThere && !hrss.preventScrollToBottomOnAssertionError) {
-//                        global.requestAnimationFrame({
-//                            global.document.body.scrollTop =  js("$")("#debug_assertionErrorPane").offset().top - 60
-//                            Unit
-//                        })
-//                    }
-//                }
-//            )
-//
-//            return@ctor me
-//        })
-
-        val existingDiv = Shitus.byid("debug_assertionErrorPane")
-        if (existingDiv[0]) {
-            global.ReactDOM.unmountComponentAtNode(existingDiv[0])
-            existingDiv.remove()
-        }
-        Shitus.byid("footer").after("<div id='debug_assertionErrorPane'></div>")
-        global.ReactDOM.render(assertionErrorPane.toReactElement(), Shitus.byid0("debug_assertionErrorPane"))
-
-        val stack = null
-        assertionErrorPane.set(json("message" to errorMessage + mdash + hrss.currentTestScenarioName, "stack" to stack, "detailsUI" to detailsUI, "scrollThere" to scrollThere))
-        if (!hrss.preventUIAssertionThrowing) Shitus.raise("UI assertion failed")
+    fun assert(condition: Boolean, errorMessage: String, detailsUI: ToReactElementable) {
+        if (!condition) throw ArtAssertionError(errorMessage, detailsUI)
     }
 
     fun assertionDetailsWithSourceLink(arg: dynamic): dynamic {
@@ -533,7 +508,7 @@ object art {
         }
         global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)
 
-        DebugPanes.put("initDebugFunctions-shit", oldShitAsReactElementable(Shitus.updatableElement(json(), paneCtor@{ updateShit: dynamic ->
+        DebugPanes.put("initDebugFunctions-shit", oldShitAsToReactElementable(Shitus.updatableElement(json(), paneCtor@{ updateShit: dynamic ->
             var shitVisible = false
             var shitToRender: dynamic= null
 
@@ -689,12 +664,12 @@ fun gertrude(def: dynamic) {
         return
     }
 
-    var detailsUI: dynamic = null
+    val detailsUI: ToReactElementable
     if (hrss.urlQueryBeforeRunningTest.minimalGertrude == "yes" || TestGlobal.minimalGertrude) {
-        detailsUI = div { styleKludge = json("background" to Color.WHITE); -"I am minimal because of minimalGertrude" }
+        detailsUI = oldShitAsToReactElementable(div { styleKludge = json("background" to Color.WHITE); -"I am minimal because of minimalGertrude" })
 //        detailsUI = Shitus.diva(json("style" to json("background" to jshit.WHITE)), t("I am minimal because of minimalGertrude"))
     } else {
-        detailsUI = Shitus.updatableElement(js("({})"), wholeShitCtor@ {updateWholeShit ->
+        detailsUI = oldShitAsToReactElementable(Shitus.updatableElement(js("({})"), wholeShitCtor@ { updateWholeShit ->
             var stripFuckingIndices = true; var hideFuckingKeyRepetitions = false; var tabs: dynamic = null
             var paneControls: dynamic = null; var lineHideFilter = Shitus.noop
             var highlightedKeys = js("({})"); val pileOfShit = js("({})")
@@ -1069,10 +1044,10 @@ fun gertrude(def: dynamic) {
                 ))
             }
 
-        })
+        }))
     }
 
-    art.assert(false, descr, json("scrollThere" to scrollThere, "detailsUI" to detailsUI))
+    art.assert(false, descr, detailsUI)
 }
 
 @native interface LegacyControl
@@ -1136,140 +1111,23 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
     }
 }
 
-//fun _new_invokeStateContributions(actual_: MutableMap<String, dynamic>) {
-//
-////    jshit.art.stateContributionsByControl = js("new Map()")
-//    stateContributionsByControl.clear()
-//
-//    for (contribute: (Json) -> Unit in jsArrayToList(jshit.utils.values(jshit.art.uiStateContributions))) {
-//        contribute(json(
-//            "put" to {arg: dynamic ->
-//                // {$definitionStack, $callStack, control, key, value}
-//                val `$definitionStack` = arg.`$definitionStack`; val `$callStack` = arg.`$callStack`
-//                val control: LegacyControl = arg.control
-//                val key: String = arg.key
-//                val value: String = arg.value
-//
-//                jshit.utils.invariant(control, "I want control for state.put()")
-//                if (actual_.containsKey(key)) {
-//                    val message = "uiStateContribution put duplication: key=${key}, value=${value}"
-//
-//                    runni {"__async"
-//                        val thisDefinitionStackString = __await(anyControlDefinitionStackString(control, sep = "\n"))
-//                        val existingDefinitionStackString = __await(anyControlDefinitionStackString(actual_[key]!!.control, sep = "\n"))
-//                        console.error(
-//                            "$message\n\n" +
-//                            "This: $thisDefinitionStackString\n\n" +
-//                            "Existing: $existingDefinitionStackString")
-//                    }
-//
-//                    Shitus.raiseWithMeta(json(
-//                        "message" to message,
-//                        "metaItems" to jsArrayOf(
-//                            json("titlePrefix" to "This", "meta" to control),
-//                            json("titlePrefix" to "Existing", "meta" to actual_[key]!!.control))))
-//                }
-//
-//                if (control != null) {
-//                    var contributions: MutableMap<String, String>? = stateContributionsByControl[control]
-//                    if (contributions == null) {
-//                        contributions = mutableMapOf()
-//                        stateContributionsByControl.set(control, contributions)
-//                    }
-//                    contributions[key] = value
-//                }
-//
-//// Old
-////                if (control) {
-////                    var contributions: MutableMap<String, String>? = stateContributionsByControl.get(control)
-//////                    var contributions = jshit.art.stateContributionsByControl.get(control)
-////                    if (contributions == null) {
-////                        contributions = js("({})")
-////                        stateContributionsByControl.set(control, contributions)
-//////                        jshit.art.stateContributionsByControl.set(control, contributions)
-////                    }
-////                    contributions[key] = value
-////                }
-//
-////                if (actual_ != null) {
-////                    actual_[key] = TestUIStateContribution(value, control, `$definitionStack`, `$callStack`)
-//                    actual_[key] = json("value" to value, "control" to control, "\$definitionStack" to `$definitionStack`, "\$callStack" to `$callStack`)
-////                }
-//            }
-//        ))
-//    }
-//}
-
-fun openTestPassedPane(def: dynamic) {
-    val scenario: Any = def.scenario
-
-//    val testPassedPane = Shitus.statefulElement({update ->
-//        var scenarioName: String = scenario.name
-//        val links = mutableListOf<ReactElement>()
-//
-//        val m = global.RegExp("\\s+([0-9a-z]{8})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{4})-([0-9a-z]{12})$").exec(scenarioName)
-//        if (m != undefined) {
-//            scenarioName = scenarioName.substring(0, m.index)
-//            links.add(OpenSourceCodeLink(json("where" to json("\$tag" to m[0].trim()), "style" to json("color" to Color.WHITE))))
-//        }
-//        if (art.actionPlaceholderTag != undefined) {
-//            links.add(marginateLeft(10, OpenSourceCodeLink(json("where" to json("\$tag" to art.actionPlaceholderTag), "style" to json("color" to Color.WHITE)))))
-//        }
-//        val uq = hrss.urlQueryBeforeRunningTest
-//        if (!uq.scrollToBottom || uq.scrollToBottom == "yes" || uq.scrollToBottom == "success") {
-//            kotlin.browser.window.requestAnimationFrame { kotlin.browser.document.body?.scrollTop = 99999 }
-//        }
-//
-//        val me: dynamic = json(
-//            "render" to {
-//                when {
-//                    scenarioName == undefined -> null
-//                    else -> div {
-//                        noStateContributions = true
-//                        style {
-//                            backgroundColor = Color.GREEN_700; color = Color.WHITE
-//                            marginTop(10); padding = "10px 10px"; textAlign = "center"; fontWeight = "bold"
-//                        }
-//
-//                        -div {
-//                            style { paddingBottom(10) }
-//                            -scenarioName
-//                            -div {
-//                                style { display = "flex"; justifyContent = "center" }
-//                                +links
-//                            }
-//                        }
-//
-//                        -div {
-//                            style { backgroundColor = Color.WHITE; color = Color.BLACK_BOOT; fontWeight = "normal"; textAlign = "left"; padding(5) }
-//                            -art.renderStepDescriptions()
-//                        }
-//                    }
-//                }
-//            }
-//        )
-//
-//        me
-//    })
-
+fun openTestPassedPane() {
     DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(noStateContributions=true){o->
-        o-Style(backgroundColor=Color.GREEN_700, color=Color.WHITE,
+        o- Style(backgroundColor=Color.GREEN_700, color=Color.WHITE,
                 marginTop=10, padding="10px 10px", textAlign="center", fontWeight="bold")
 
-        o-kdiv(paddingBottom=10){o->
-            o-constructorName(scenario)
+        o- kdiv(paddingBottom=10){o->
+            o- hrss.currentTestScenarioName
         }
 
-        o-kdiv{o->
-            o-Style(backgroundColor=Color.WHITE, color = Color.BLACK_BOOT,
-                    fontWeight="normal", textAlign="left", padding=5)
-            o-art.renderStepDescriptions()
+        o- kdiv{o->
+            o- Style(backgroundColor=Color.WHITE, color = Color.BLACK_BOOT,
+                     fontWeight="normal", textAlign="left", padding=5)
+            o- art.renderStepDescriptions()
         }
     })
 
-    requestAnimationFrame {
-        jqbody.scrollTop(jq("#underFooter").offset().top - 60)
-    }
+    art.scrollRevealing("underFooter")
 
 //        DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), oldShitAsReactElementable(Shitus.spana(json(), testPassedPane.element)))
     }
@@ -1662,7 +1520,7 @@ fun openDebugPane(def: dynamic) {
     imf("openDebugPane")
 }
 
-
+class ArtAssertionError(message: String, val detailsUI: ToReactElementable): Exception(message)
 
 
 

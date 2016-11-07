@@ -15,15 +15,24 @@ class LintShit {
         print("Linting your shit... ")
         visitSources("$APS_HOME/front/src") { f->
             f.useLines {it.forEachIndexed {lineIndex, line ->
-                for (tag in listOf("kdiv", "kspan", "h3")) {
-                    if (Regex("\\W$tag\\W").containsMatchIn(line)) {
-                        if (line.trimEnd().endsWith("{")) {
-                            val fname = f.path.substring(APS_HOME.length)
-                            println("SHIT")
-                            println("$fname:${lineIndex + 1}: Lambda parameter is mandatory for $tag")
-                            exitProcess(1)
+                class Shit(message: String): Exception(message)
+                try {
+                    for (tag in listOf("kdiv", "kspan", "h3")) {
+                        if (Regex("\\W$tag\\W").containsMatchIn(line)) {
+                            if (line.trimEnd().endsWith("{")) {
+                                throw Shit("Lambda parameter is mandatory for $tag")
+                            }
                         }
                     }
+
+                    if (Regex("\\Wrun \\{\\s*\"__async\"").containsMatchIn(line)) {
+                        throw Shit("Don't pass async lambdas to inline functions. Use [runni]")
+                    }
+                } catch (e: Shit) {
+                    println("SHIT")
+                    val fname = f.path.substring(APS_HOME.length)
+                    println("$fname:${lineIndex + 1}: ${e.message}")
+                    exitProcess(1)
                 }
             }}
         }

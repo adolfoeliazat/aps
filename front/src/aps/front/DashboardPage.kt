@@ -11,9 +11,9 @@ import aps.*
 class DashboardPage(val ui: World) {
     fun load(preserveScroll: Boolean = false): Promise<Unit> {"__async"
         val myPage = Page(
-            header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("Dashboard", "Панель")))),
-            body = oldShitAsReactElementable(Shitus.diva(json(),
-                Shitus.diva(json("className" to "row"),
+            header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Dashboard", "Панель")))),
+            body = oldShitAsToReactElementable(Shitus.diva(json(),
+                                                           Shitus.diva(json("className" to "row"),
                     Shitus.diva(json("className" to "col-sm-6"),
                         section(json(
                             "name" to "workPending",

@@ -254,7 +254,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         val errorStickerID = puid()
         shit.errorStickerID = errorStickerID
 
-        DebugPanes.put(errorStickerID, oldShitAsReactElementable(React.createElement("div", json(
+        DebugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
             "id" to errorStickerID,
             "style" to json(
                 "width" to 10,

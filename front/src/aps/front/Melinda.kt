@@ -11,7 +11,7 @@ import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.collections.*
 
-val reactNull = oldShitAsReactElementable(null)
+val reactNull = oldShitAsToReactElementable(null)
 
 class Melinda<Item, Entity, Filter>(
     val ui: World,
@@ -136,8 +136,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             val res = __await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.token))
             entity = when (res) {
                 is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(Page(
-                    header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
-                    body = oldShitAsReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
+                    header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
+                    body = oldShitAsToReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
 
                 is ZimbabweResponse.Hunky -> res.meat.entity
             }
@@ -174,9 +174,9 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 }
             ))
 
-            searchBox = oldShitAsReactElementable(Shitus.diva(json("style" to json("position" to "relative")),
-                searchBoxInput!!.toReactElement(),
-                faIcon(icon="search", position="absolute", left=10, top=10, color=Color.GRAY_500).toReactElement()
+            searchBox = oldShitAsToReactElementable(Shitus.diva(json("style" to json("position" to "relative")),
+                                                                searchBoxInput!!.toReactElement(),
+                                                                faIcon(icon="search", position="absolute", left=10, top=10, color=Color.GRAY_500).toReactElement()
             ))
         }
 
@@ -238,8 +238,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         val res = __await(callZimbabwe<ItemsResponse<Item>>(procedureName, itemsReq, ui.token))
         val itemsRes = when (res) {
             is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(Page(
-                header = oldShitAsReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
-                body = oldShitAsReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
+                header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
+                body = oldShitAsToReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
 
             is ZimbabweResponse.Hunky -> res.meat
         }
