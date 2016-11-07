@@ -216,9 +216,12 @@ object art {
             showAssertionErrorPane(e.message, e.detailsUI)
         }
         catch (e: Throwable) {
-            showAssertionErrorPane(e.message, renderStackTrace(e, onRendered = {
-                scrollRevealing("debug_assertionErrorPane")
-            }))
+            showAssertionErrorPane(e.message, kdiv(padding=5){o->
+                o- renderStackTrace(e, onRendered = {
+                    scrollRevealing("debug_assertionErrorPane")
+                })
+                o- kdiv(marginTop=5){it-art.renderStepDescriptions()}
+            })
         }
 
         return __asyncResult(Unit)
