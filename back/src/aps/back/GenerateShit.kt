@@ -116,6 +116,7 @@ class GenerateShit {
                             val mixableTypeName = param.typeReference!!.text
                             val mixableType = nameToMixableType[mixableTypeName] ?: bitch("Unknown mixable type: $mixableTypeName")
                             generated.appendln("    // @Mix $mixableTypeName")
+                            generated.appendln("    base$mixableTypeName: $mixableTypeName? = null,")
                             for (mixedParam in mixableType.getPrimaryConstructorParameters()) {
                                 generated.appendln("    " + unValVar(mixedParam.text) + ",")
                             }
@@ -138,7 +139,8 @@ class GenerateShit {
                             val mixableType = nameToMixableType[mixableTypeName] ?: bitch("Unknown mixable type: $mixableTypeName")
                             generated.appendln("    ${param.name} = $mixableTypeName(")
                             for (mixedParam in mixableType.getPrimaryConstructorParameters()) {
-                                generated.appendln("        ${mixedParam.name} = ${mixedParam.name},")
+                                generated.appendln("        ${mixedParam.name} = ${mixedParam.name} ?: base$mixableTypeName?.${mixedParam.name},")
+//                                generated.appendln("        ${mixedParam.name} = ${mixedParam.name},")
                             }
                             deleteLastComma()
                             generated.appendln("    ),")

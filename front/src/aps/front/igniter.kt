@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.browser.window
 
 @JsName("ignite")
 fun ignite() {
@@ -52,7 +53,8 @@ fun igniteShit(): Promise<Unit> {"__async"
         Shitus.initDebugFunctionsShit()
     }
 
-    if (global.location.pathname.endsWith("/test.html")) {
+//    if (global.location.pathname.endsWith("/test.html")) {
+    if (window.location.search.contains("test=")) {
         __await(jsFacing_igniteTestShit())
     } else {
         global.DB = global.sessionStorage.getItem("DB") ?: "aps-dev" // TODO:vgrechka @security

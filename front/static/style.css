@@ -182,3 +182,7 @@
 .btn-default:active {border-color: #ccc; outline-color: transparent;}
 .btn-default:focus:active {border-color: #8c8c8c; outline-color: transparent;}
 
+.showOnParentHovered {display: none;}
+.showOnParentHovered-parent:hover .showOnParentHovered {display: initial;}
+
+

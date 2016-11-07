@@ -1056,12 +1056,22 @@ object MakeStaticSites {
     <div id="ticker" style="display: none;">${ReactDOMServer.renderToStaticMarkup(wholePageTicker())}</div>
 
     <script>
-        if (localStorage.getItem('token')) {
-            document.getElementById('ticker').style.display = ''
-        } else {
-            document.getElementById('staticShit').style.display = ''
-            window.staticShitIsRenderedStatically = true
+        function displayInitialShit() {
+            if (localStorage.getItem('token')) {
+                document.getElementById('ticker').style.display = ''
+            } else {
+                document.getElementById('staticShit').style.display = ''
+                window.staticShitIsRenderedStatically = true
+            }
         }
+
+        ${if (mode == Mode.PROD) """
+            displayInitialShit()
+        """ else """
+            if (!/test=/.test(location.href)) {
+                displayInitialShit()
+            }
+        """}
     </script>
     </div>
 

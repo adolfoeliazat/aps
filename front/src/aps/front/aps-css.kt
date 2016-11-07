@@ -77,9 +77,6 @@ fun jsFacing_apsCSS(): String {
             }
         }
 
-        .showOnParentHovered {display: none;}
-        .showOnParentHovered-parent:hover .showOnParentHovered {display: initial;}
-
         .zebra-0 {background: ${zebraLight};}
         .zebra-0 .borderTopColoredOnZebra {border-top-color: ${zebraDark};}
         .zebra-0 .borderRightColoredOnZebra {border-right-color: ${zebraDark};}

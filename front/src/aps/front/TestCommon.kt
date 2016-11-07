@@ -56,7 +56,8 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
         }
     }
 
-    val testScenarioToRun = urlQuery["testScenario"] ?: bitch("Gimme testScenario")
+    val testScenarioToRun = urlQuery["test"] ?: bitch("Gimme test name")
+//    val testScenarioToRun = urlQuery["testScenario"] ?: bitch("Gimme testScenario")
 
     hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
     hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
@@ -87,7 +88,7 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     }
 
     dwarnStriking(testScenarioToRun)
-    val scenarioClass = eval("kot.aps.front.$testScenarioToRun") ?: bitch("No test scenario named [${testScenarioToRun}]")
+    val scenarioClass = eval("kot.aps.front.test.$testScenarioToRun") ?: bitch("No test scenario named [${testScenarioToRun}]")
     val scenario: TestScenario = eval("new scenarioClass()")
     scenario.host = sim
 
@@ -142,11 +143,78 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     return __asyncResult(Unit)
 }
 
+fun buildPieceOfTest(build: (PieceOfTestBuilder) -> Unit): Iterable<TestInstruction> {
+    val items = mutableListOf<TestInstruction>()
+    val builder = PieceOfTestBuilder(items)
+    build(builder)
 
+    return items
+}
 
+class PieceOfTestBuilder(val items: MutableList<TestInstruction>) {
+    fun section(long: String, build: (TestSectionBuilder) -> Unit) {
+        items.add(TestInstruction.BeginSection(long))
 
+        val builder = TestSectionBuilder(items)
+        build(builder)
 
+        items.add(TestInstruction.EndSection())
+    }
+}
 
+class TestSectionBuilder(val items: MutableList<TestInstruction>) {
+
+    fun action(long: String, build: (TestActionBuilder) -> Unit) {
+        items.add(TestInstruction.Step("action", long))
+
+        val builder = TestActionBuilder(items)
+        build(builder)
+    }
+
+    fun state(long: String, build: (TestStateBuilder) -> Unit) {
+        items.add(TestInstruction.Step("state", long))
+
+        val builder = TestStateBuilder(items)
+        build(builder)
+    }
+
+    operator fun Iterable<TestInstruction>.unaryPlus() {
+        for (item in this) add(item)
+    }
+
+    operator fun TestInstruction.unaryMinus() {
+        add(this)
+    }
+
+    fun add(item: TestInstruction) {
+        items.add(item)
+    }
+
+}
+
+class TestActionBuilder(val items: MutableList<TestInstruction>) {
+    fun setValue(shame: String, value: String) {
+        items.add(TestInstruction.SetValue(shame, value))
+    }
+
+    fun setValue(shame: String, value: Boolean) {
+        items.add(TestInstruction.SetCheckbox(shame, value))
+    }
+
+    fun click(shame: String, timestamp: String) {
+        items.add(TestInstruction.Click(shame, timestamp))
+    }
+
+    fun keyDown(shame: String, keyCode: Int) {
+        items.add(TestInstruction.KeyDown("Input-search", 13))
+    }
+}
+
+class TestStateBuilder(val items: MutableList<TestInstruction>) {
+    fun assertGen(tag: String, expectedExtender: ((dynamic) -> Unit)? = null) {
+        items.add(TestInstruction.AssertGenerated(tag, "---generated-shit---", expectedExtender))
+    }
+}
 
 
 

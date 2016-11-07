@@ -28,6 +28,14 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
         if (eb != null) children.add(eb)
     }
 
+    fun add(re: ReactElement?) {
+        if (re != null) add(
+            object:ToReactElementable {
+                override fun toReactElement(): ReactElement = re
+            }
+        )
+    }
+
     operator fun minus(eb: ToReactElementable?) {
         add(eb)
     }
@@ -37,11 +45,7 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
     }
 
     operator fun minus(re: ReactElement?) {
-        if (re != null) minus(
-            object:ToReactElementable {
-                override fun toReactElement(): ReactElement = re
-            }
-        )
+        add(re)
     }
 
     operator fun minus(newStyle: Style) {
@@ -52,7 +56,15 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
         ebs.forEach{add(it)}
     }
 
+    fun addAll(ebs: Iterable<ReactElement?>) {
+        ebs.forEach{add(it)}
+    }
+
     operator fun plus(ebs: Iterable<ToReactElementable?>) {
+        addAll(ebs)
+    }
+
+    operator fun plus(ebs: Iterable<ReactElement?>) {
         addAll(ebs)
     }
 
@@ -87,16 +99,24 @@ data class Style(
     var right: Any? = null,
     var bottom: Any? = null,
     var left: Any? = null,
+    var width: Any? = null,
+    var height: Any? = null,
     var position: String? = null,
     var marginTop: Any? = null,
     var marginRight: Any? = null,
-    var marginLeft: Any? = null,
     var marginBottom: Any? = null,
+    var marginLeft: Any? = null,
+    var paddingTop: Any? = null,
+    var paddingRight: Any? = null,
     var paddingBottom: Any? = null,
+    var paddingLeft: Any? = null,
     var padding: Any? = null,
     var color: Any? = null,
     var backgroundColor: Any? = null,
+    var borderTop: String? = null,
+    var borderRight: String? = null,
     var borderBottom: String? = null,
+    var borderLeft: String? = null,
     var textAlign: String? = null,
     var fontFamily: String? = null,
     var fontSize: String? = null,
@@ -106,7 +126,8 @@ data class Style(
     var justifyContent: String? = null,
     var whiteSpace: String? = null,
     var cursor: String? = null,
-    val float: String? = null
+    var opacity: Any? = null,
+    var float: String? = null
 ) {
     fun toReactStyle(): dynamic {
         return dyna{o->
@@ -122,15 +143,23 @@ data class Style(
             right?.let {o.right = it}
             bottom?.let {o.bottom = it}
             left?.let {o.left = it}
+            width?.let {o.width = it}
+            height?.let {o.height = it}
             position?.let {o.position = it}
             marginTop?.let {o.marginTop = it}
             marginRight?.let {o.marginRight = it}
-            marginLeft?.let {o.marginLeft = it}
             marginBottom?.let {o.marginBottom = it}
+            marginLeft?.let {o.marginLeft = it}
+            paddingTop?.let {o.paddingTop = it}
+            paddingRight?.let {o.paddingRight = it}
             paddingBottom?.let {o.paddingBottom = it}
+            paddingLeft?.let {o.paddingLeft = it}
             color?.let {o.color = it.toString()}
             backgroundColor?.let {o.backgroundColor = it.toString()}
+            borderTop?.let {o.borderTop = it}
+            borderRight?.let {o.borderRight = it}
             borderBottom?.let {o.borderBottom = it}
+            borderLeft?.let {o.borderLeft = it}
             textAlign?.let {o.textAlign = it}
             fontFamily?.let {o.fontFamily = it}
             fontSize?.let {o.fontSize = it}
@@ -141,8 +170,8 @@ data class Style(
             justifyContent?.let {o.justifyContent = it}
             whiteSpace?.let {o.whiteSpace = it}
             cursor?.let {o.cursor = it}
+            opacity?.let {o.opacity = it}
             float?.let {o.float = it}
-            // zz?.let {o.zz = it}
         }
     }
 

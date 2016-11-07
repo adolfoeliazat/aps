@@ -4,9 +4,10 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps.front
+package aps.front.test
 
 import aps.*
+import aps.front.*
 import into.kommon.*
 
 class TS_UA_Writer_SignUp_1 : TestScenario() {
@@ -41,7 +42,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun vovchok1(): Iterable<TestInstruction> {
-        return buildPieceOfTest {
+        return buildPieceOfTest_killme {
             section("Marko Vovchok signs up") {
 
                 + selectBrowser("WRITER", "vovchok1", "Marko Vovchok, an eager writer wannabe, comes to our site")
@@ -196,7 +197,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun dasja1(): Iterable<TestInstruction> {
-        return buildPieceOfTest {
+        return buildPieceOfTest_killme {
             section("Dasja accepts that shitty profile") {
                 + selectBrowser("WRITER", "dasja1", "Dasja, a support admin, comes into play")
 
@@ -259,7 +260,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun vovchok2(): Iterable<TestInstruction> {
-        return buildPieceOfTest {
+        return buildPieceOfTest_killme {
             section("Marko Vovchok can use site") {
                 + selectBrowser("WRITER", "vovchok2", "Marko Vovchok, aka The Bitch, comes again some time later")
 
@@ -276,7 +277,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun dasja2(): Iterable<TestInstruction> {
-        return buildPieceOfTest {
+        return buildPieceOfTest_killme {
             section("Dasja rejects the bitch") {
                 + selectBrowser("WRITER", "dasja2", "Dasja decides to reject the bitch for whatever reasons")
 
@@ -387,7 +388,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun vovchok3(): Iterable<TestInstruction> {
-        return buildPieceOfTest {
+        return buildPieceOfTest_killme {
             section("Marko Vovchok faces she’s rejected") {
                 + selectBrowser("WRITER", "vovchok3", "The Bitch opens browser")
 
@@ -421,7 +422,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun dasja3(): Iterable<TestInstruction> {
-        return buildPieceOfTest {
+        return buildPieceOfTest_killme {
             section("Dasja accepts improved profile") {
                 + selectBrowser("WRITER", "dasja3", "Dasja comes to do some work")
 
@@ -464,7 +465,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun vovchok4(): Iterable<TestInstruction> {
-        return buildPieceOfTest {
+        return buildPieceOfTest_killme {
             section("Marko Vovchok can finally enter") {
                 + selectBrowser("WRITER", "vovchok4", "The Bitch opens browser")
 
@@ -481,7 +482,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun dasja4(): Iterable<TestInstruction> {
-        return buildPieceOfTest {
+        return buildPieceOfTest_killme {
             section("Dasja bans bitch") {
                 + selectBrowser("WRITER", "dasja4", "Dasja comes to ban that bitch")
 
@@ -777,7 +778,7 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): (dyn
     }
 }
 
-class TestActionBuilder(val items: MutableList<TestInstruction>) {
+class TestActionBuilder_killme(val items: MutableList<TestInstruction>) {
     fun setValue(shame: String, value: String) {
         items.add(TestInstruction.SetValue(shame, value))
     }
@@ -795,25 +796,25 @@ class TestActionBuilder(val items: MutableList<TestInstruction>) {
     }
 }
 
-class TestStateBuilder(val items: MutableList<TestInstruction>) {
+class TestStateBuilder_killme(val items: MutableList<TestInstruction>) {
     fun assertGen(tag: String, expectedExtender: ((dynamic) -> Unit)? = null) {
         items.add(TestInstruction.AssertGenerated(tag, "---generated-shit---", expectedExtender))
     }
 }
 
-class TestSectionBuilder(val items: MutableList<TestInstruction>) {
+class TestSectionBuilder_killme(val items: MutableList<TestInstruction>) {
 
-    fun action(long: String, build: TestActionBuilder.() -> Unit) {
+    fun action(long: String, build: TestActionBuilder_killme.() -> Unit) {
         items.add(TestInstruction.Step("action", long))
 
-        val builder = TestActionBuilder(items)
+        val builder = TestActionBuilder_killme(items)
         builder.build()
     }
 
-    fun state(long: String, build: TestStateBuilder.() -> Unit) {
+    fun state(long: String, build: TestStateBuilder_killme.() -> Unit) {
         items.add(TestInstruction.Step("state", long))
 
-        val builder = TestStateBuilder(items)
+        val builder = TestStateBuilder_killme(items)
         builder.build()
     }
 
@@ -831,11 +832,11 @@ class TestSectionBuilder(val items: MutableList<TestInstruction>) {
 
 }
 
-class PieceOfTestBuilder(val items: MutableList<TestInstruction>) {
-    fun section(long: String, build: TestSectionBuilder.() -> Unit) {
+class PieceOfTestBuilder_killme(val items: MutableList<TestInstruction>) {
+    fun section(long: String, build: TestSectionBuilder_killme.() -> Unit) {
         items.add(TestInstruction.BeginSection(long))
 
-        val builder = TestSectionBuilder(items)
+        val builder = TestSectionBuilder_killme(items)
         builder.build()
 
         items.add(TestInstruction.EndSection())
@@ -843,9 +844,9 @@ class PieceOfTestBuilder(val items: MutableList<TestInstruction>) {
 }
 
 
-fun buildPieceOfTest(build: PieceOfTestBuilder.() -> Unit): Iterable<TestInstruction> {
+fun buildPieceOfTest_killme(build: PieceOfTestBuilder_killme.() -> Unit): Iterable<TestInstruction> {
     val items = mutableListOf<TestInstruction>()
-    val builder = PieceOfTestBuilder(items)
+    val builder = PieceOfTestBuilder_killme(items)
     builder.build()
 
     return items

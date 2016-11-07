@@ -220,47 +220,42 @@ object art {
         var stepIndex = 0; var indent = 0
         testInstructions.forEachIndexed {instrIndex, instr ->
 
-            fun addLine(indent: Int, stepRowStyle: dynamic = null, rulerContent: dynamic = null, lineContent: ReactElement? = null, actions: Collection<ReactElement> = listOf()) {
-                els.add(div { style { marginTop(5); display = "flex" }
-                    -div { style { fontWeight = "bold"; width(40) }; - rulerContent }
+            fun addLine(indent: Int, stepRowStyle: Style = Style(), rulerContent: ReactElement? = null, lineContent: ToReactElementable? = null, actions: Collection<ReactElement> = listOf()) {
+                els.add(kdiv(marginTop=5, display="flex"){o->
+                    o- kdiv(fontWeight="bold", width=40){it- rulerContent}
                     // XXX This `width: 100%` is for fucking flexbox to not change `width: 40` above... http://stackoverflow.com/questions/7985021/css-flexbox-issue-why-is-the-width-of-my-flexchildren-affected-by-their-content
-                    -div { className = "showOnParentHovered-parent"
-                        style {
-                            width = "100%"; display = "flex"
-                            add(stepRowStyle)
-                        }
-
-                        + (1..indent).map { div { style { width(20); borderLeft = "2px dotted ${Color.GRAY_500}" } } }
-                        - lineContent
-                        -div { className = "showOnParentHovered"
-                            - hor2 { style { marginLeft(8); paddingLeft(8); borderLeft = "2px solid ${Color.GRAY_500}" }
-                                + actions
-                                - renderExpandableOnDemandStack(instr)
+                    o- kdiv(className="showOnParentHovered-parent", baseStyle=stepRowStyle, width="100%", display="flex"){o->
+                        o+ (1..indent).map {kdiv(width=20, borderLeft="2px dotted ${Color.GRAY_500}")}
+                        o- lineContent
+                        o- kdiv(className="showOnParentHovered"){o->
+                            o- hor2(marginLeft=8, paddingLeft=8, borderLeft="2px solid ${Color.GRAY_500}"){o->
+                                o+ actions
+                                o- renderExpandableOnDemandStack(instr)
 //                                - jshit.OpenSourceCodeLink(json("where" to instrdef, "style" to json("marginLeft" to 20)))
-                            } } } })
+                            }}}}.toReactElement())
             }
 
             if (instr is TestInstruction.Step) {
-                val title: Any? = instr.long
+                val title = instr.long
                 val untilParamValue = if (instrIndex == art.stepDescriptions.length - 1) "infinity" else instrIndex
 
-                val stepRowStyle = StyleBuilder()
-                if (!instr.fulfilled) stepRowStyle {
-                    opacity = 0.3
+                val stepRowStyle = Style()
+                if (!instr.fulfilled) {
+                    stepRowStyle.opacity = 0.3
                 }
 
                 addLine(
-                    indent, stepRowStyle = stepRowStyle,
-                    rulerContent = "#" + (stepIndex++ + 1),
+                    indent, stepRowStyle,
+                    rulerContent = ("#" + (stepIndex++ + 1)).asDynamicReactElement(),
 
-                    lineContent = div { style { display = "flex" }
-                        - when (instr.kind) {
-                            "action" -> span { style { marginRight(5); padding(3); backgroundColor = GREEN_100; fontSize = "75%" }; -"Action" }
-                            "state" -> span { style { marginRight(5); padding(3); backgroundColor = LIGHT_BLUE_100; fontSize = "75%" }; -"State" }
-                            "navigation" -> span { style { marginRight(5); padding(3); backgroundColor = BROWN_50; fontSize = "75%" }; -"Navigation" }
-                            else -> Shitus.raise("WTF is instr.kind")
+                    lineContent = kdiv(display="flex"){o->
+                        o- when (instr.kind) { // TODO:vgrechka Use sealed class
+                            "action" -> kspan(marginRight=5, padding=3, backgroundColor=GREEN_100, fontSize="75%"){it- "Action"}
+                            "state" -> kspan(marginRight=5, padding=3, backgroundColor=LIGHT_BLUE_100, fontSize="75%"){it- "State"}
+                            "navigation" -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%"){it- "Navigation"}
+                            else -> wtf("instr.kind")
                         }
-                        - title
+                        o- title
                     },
 
                     actions = listOf(
@@ -276,7 +271,7 @@ object art {
                 )
             }
             else if (instr is TestInstruction.BeginSection) {
-                addLine(indent, lineContent = div { style { fontWeight = "bold" }; - instr.long })
+                addLine(indent, lineContent = kdiv(fontWeight="bold") {it- instr.long})
                 ++indent
             }
             else if (instr is TestInstruction.EndSection) {
@@ -285,7 +280,7 @@ object art {
             else if (instr is TestInstruction.WorldPoint) {
                 addLine(
                     indent,
-                    lineContent = div { style { fontWeight = "normal"; fontStyle = "italic" }; - "World point: ${instr.name}" },
+                    lineContent = kdiv(fontWeight="normal", fontStyle="italic"){it- "World point: ${instr.name}"},
                     rulerContent = jdiva(json("style" to json("position" to "relative")),
                         Shitus.ia(json("className" to "fa fa-circle", "style" to json("color" to Color.GRAY_500))),
                         jdiva(json("style" to json("width" to 38, "position" to "absolute", "left" to 0, "top" to 9, "borderTop" to "2px dotted ${Color.GRAY_500}")))
