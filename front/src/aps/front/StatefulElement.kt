@@ -230,9 +230,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
 
     private fun stickException(exception: dynamic) {
         fun doReveal() {
-            Shitus.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
-                Shitus.renderDefinitionStackStrip(json("stack" to `$definitionStack`))
-            }))))
+            revealStack(exception)
         }
 
         doReveal() // Does nothing if something is already revealed

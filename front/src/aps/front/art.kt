@@ -34,7 +34,10 @@ val NILS: String = js("new String('NILS')")
 
 val String.there: Boolean get() = this !== NILS
 
+class StackCaptureException : Exception("Hi, fucker")
+
 sealed class TestInstruction() : DefinitionStackHolder {
+    val definitionStackCapture = StackCaptureException()
 
     override fun promiseDefinitionStack(): Promise<dynamic> {
         throw UnsupportedOperationException("Implement me, please, fuck you")
@@ -330,7 +333,10 @@ object art {
                         o- kdiv(className="showOnParentHovered"){o->
                             o- hor2(marginLeft=8, paddingLeft=8, borderLeft="2px solid ${Color.GRAY_500}"){o->
                                 o+ actions
-                                o- renderExpandableOnDemandStack(instr)
+                                o- link(title="Show stack", onClick={
+                                    revealStack(instr.definitionStackCapture)
+                                })
+//                                o- renderExpandableOnDemandStack(instr)
 //                                - jshit.OpenSourceCodeLink(json("where" to instrdef, "style" to json("marginLeft" to 20)))
                             }}}}.toReactElement())
             }
@@ -543,7 +549,7 @@ object art {
         hrss.onUnhandledRejection = { event: dynamic ->
             if (!hrss.preventExceptionRevelation && event.reason.message != "UI assertion failed") {
                 console.error(event.reason.message)
-                Shitus.revealStack(json("exception" to event.reason))
+                imf()
             }
         }
         global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)

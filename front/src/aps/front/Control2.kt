@@ -314,9 +314,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
         check(element != null) {"stickException to unrendered element"}
 
         fun doReveal() {
-            Shitus.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
-                Shitus.renderDefinitionStackStrip(json("stack" to "TODO: Control2 definition stack"))
-            }))))
+            revealStack(exception)
         }
 
         doReveal() // Does nothing if something is already revealed

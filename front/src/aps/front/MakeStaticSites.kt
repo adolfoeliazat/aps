@@ -33,6 +33,7 @@ object MakeStaticSites {
     @JsName("runShit")
     fun runShit(argv: Array<String>) {"__async"
         try {
+            puidPrefix = "MakeStaticSites-"
             global.React = React
             sh.config.fatal = true
             js("Error").stackTraceLimit = js("Infinity")

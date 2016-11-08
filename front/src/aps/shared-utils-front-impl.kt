@@ -336,7 +336,7 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
 }
 
 fun spitExceptionToConsole(e: dynamic) {
-    Shitus.revealStack(json("exception" to e))
+    revealStack(e)
 }
 
 fun <Res> callDangerousMatumba(req: RequestMatumba): Promise<Res> {

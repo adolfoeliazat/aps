@@ -450,9 +450,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
         checkNotNull(element) {"stickException to unrendered element"}
 
         fun doReveal() {
-            Shitus.revealStack(json("exception" to global.Object.assign(exception, json("\$render" to {
-                Shitus.renderDefinitionStackStrip(json("stack" to me.`$definitionStack`))
-            }))))
+            revealStack(exception)
         }
 
         doReveal() // Does nothing if something is already revealed

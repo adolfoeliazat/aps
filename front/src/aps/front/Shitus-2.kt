@@ -13,9 +13,9 @@ import kotlin.browser.window
 
 var revealStackCalledTimes = 0
 
-fun jsFacing_revealStack(arg: dynamic): Promise<Unit> {"__async"
-    val exception = arg.exception
+val Exception.stack: String get() = this.asDynamic().stack
 
+fun revealStack(exception: Exception): Promise<Unit> {"__async"
     if (++revealStackCalledTimes > 3) {
         return console.warn("Too much of stack revealing") /ignora
     }

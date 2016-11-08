@@ -23,7 +23,6 @@ object Shitus {
 
     val isOrWasInTestScenario: dynamic = ::jsFacing_isOrWasInTestScenario
     val renderDefinitionStackStrip: dynamic = ::jsFacing_renderDefinitionStackStrip
-    val revealStack: dynamic = ::jsFacing_revealStack
     val revealControl: dynamic = ::jsFacing_revealControl
     val raiseWithMeta: dynamic = ::jsFacing_raiseWithMeta
     val glyph: dynamic = ::jsFacing_glyph

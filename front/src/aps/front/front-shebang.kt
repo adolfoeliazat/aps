@@ -222,7 +222,7 @@ fun labe(def: dynamic): dynamic {
 
 fun renderExceptionTriangleAndRevealStack(def: dynamic): dynamic {
     val exception = def.exception
-    global.requestAnimationFrame {Shitus.revealStack(json("exception" to exception))}
+    global.requestAnimationFrame {revealStack(exception)}
     return renderExceptionTriangle(json("exception" to exception))
 }
 
@@ -232,11 +232,11 @@ fun renderExceptionTriangle(def: dynamic): dynamic {
         Shitus.spana(
             json("style" to json("cursor" to "pointer"),
                 "onClick" to {
-                    Shitus.revealStack(json("exception" to exception))
+                    revealStack(exception)
                 }),
             renderRedExclamationTriangleLabel(json("title" to "It fucking throwed: ${exception.message}"))),
         Shitus.spana(json("style" to json("marginLeft" to 10)), "(" /*)*/),
-        Shitus.link(json("title" to "Reveal", "onClick" to {Shitus.revealStack(json("exception" to exception))})),
+        Shitus.link(json("title" to "Reveal", "onClick" to {revealStack(exception)})),
         /*(*/ ")")
 }
 
