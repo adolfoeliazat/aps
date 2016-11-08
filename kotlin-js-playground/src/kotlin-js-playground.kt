@@ -1,3 +1,14 @@
+fun testNullableStringPlus() {
+    val s: String? = "tralala"
+    println(s + "...")
+}
+
+fun testNullableStringPlus_workaround() {
+    val s: String? = "tralala"
+    println(s!! + "...")
+}
+
+
 fun test1() {
     class Test {
         init {

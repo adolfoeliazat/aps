@@ -34,7 +34,7 @@ val NILS: String = js("new String('NILS')")
 
 val String.there: Boolean get() = this !== NILS
 
-abstract class TestInstruction(val opcode: String) : DefinitionStackHolder {
+sealed class TestInstruction(val opcode: String) : DefinitionStackHolder {
 
     override fun promiseDefinitionStack(): Promise<dynamic> {
         throw UnsupportedOperationException("Implement me, please, fuck you")
@@ -112,94 +112,101 @@ object art {
 
             var stepIndex = 0
             instructions.forEachIndexed {instrIndex, instr ->
+                fun getControlForAction(arg: dynamic): dynamic {
+                    if (instr !is ShamedTestInstruction) throw JSException("I want ShamedTestInstruction, got $instr")
+
+                    val implementing = if (arg) arg.implementing else undefined
+
+                    val control = TestGlobal.shameToControl[instr.shame]
+                    if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instr))
+                    if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instr))
+                    return control
+                }
+
+                fun executeSetValueLike(): Promise<Unit> {"__async"
+                    val instr = instr as TestInstruction.Action
+                    val control = getControlForAction(json("implementing" to "testSetValue"))
+                    if (instr.timestamp.there) {
+                        __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                    }
+
+                    __await<dynamic>(control.testSetValue(json("value" to when (instr) {
+                        is TestInstruction.SetValue -> instr.value
+                        is TestInstruction.SetCheckbox -> instr.value
+                        else -> wtf()
+                    })))
+                    return __asyncResult(Unit)
+                }
+
                 if (instrIndex == until) {
                     dlog("Stopping test before instruction ${instrIndex}")
                     return __asyncResult(Unit)
                 }
 
-                if (instr is TestInstruction.WorldPoint) {
-                    val wpname: String = hrss.currentTestScenarioName + " -- " + instr.name
-                    if (skipping) {
-                        if (instr.name == from) {
-                            dlog("Restoring world point ${wpname}")
-                            __await(WorldPointRequest.send(wpname, RESTORE))
-                            skipping = false
-                        }
-                    } else {
-                        dlog("Saving world point ${wpname}")
-                        __await(WorldPointRequest.send(wpname, SAVE))
-                    }
-                }
-                else if (!skipping) {
-                    fun getControlForAction(arg: dynamic): dynamic {
-                        if (instr !is ShamedTestInstruction) throw JSException("I want ShamedTestInstruction, got $instr")
-
-                        val implementing = if (arg) arg.implementing else undefined
-
-                        val control = TestGlobal.shameToControl[instr.shame]
-                        if (!control) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is not found", "meta" to instr))
-                        if (implementing && !control[implementing]) Shitus.raiseWithMeta(json("message" to "Control shamed ${instr.shame} is expected to implement ${implementing}", "meta" to instr))
-                        return control
-                    }
-
-                    fun executeSetValueLike(): Promise<Unit> {"__async"
-                        val instr = instr as TestInstruction.Action
-                        val control = getControlForAction(json("implementing" to "testSetValue"))
-                        if (instr.timestamp.there) {
-                            __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
-                        }
-
-                        __await<dynamic>(control.testSetValue(json("value" to when (instr) {
-                            is TestInstruction.SetValue -> instr.value
-                            is TestInstruction.SetCheckbox -> instr.value
-                            else -> wtf()
-                        })))
-                        return __asyncResult(Unit)
-                    }
-
-                    when (instr) {
-                        is TestInstruction.BeginSection -> {}
-                        is TestInstruction.EndSection -> {}
-                        is TestInstruction.Do -> {
-                            __await(instr.action())
-                        }
-                        is TestInstruction.Step -> {
-                            instr.fulfilled = true
-                        }
-                        is TestInstruction.AssertGenerated -> {
-                            __await(art.uiState(json(
-                                "\$tag" to instr.tag,
-                                "expected" to "---generated-shit---",
-                                "expectedExtender" to instr.expectedExtender
-                            )))
-                        }
-                        is TestInstruction.AssertFuck -> {
-                            __await(art.uiState(json(
-                                "\$tag" to instr.tag,
-                                "expected" to instr.expected
-                            )))
-                        }
-                        is TestInstruction.SetValue -> {
-                            __await(executeSetValueLike())
-                        }
-                        is TestInstruction.SetCheckbox -> {
-                            __await(executeSetValueLike())
-                        }
-                        is TestInstruction.Click -> {
-                            val control = getControlForAction(json("implementing" to "testClick"))
-                            if (instr.timestamp.there) {
-                                __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                when {
+                    skipping -> {
+                        when (instr) {
+                            is TestInstruction.WorldPoint -> {
+                                val wpname: String = fullWorldPointName(instr)
+                                if (instr.name == from) {
+                                    dlog("Restoring world point ${wpname}")
+                                    __await(WorldPointRequest.send(wpname, RESTORE))
+                                    skipping = false
+                                }
                             }
-                            __await<dynamic>(control.testClick(instr))
                         }
-                        is TestInstruction.KeyDown -> {
-                            val control = getControlForAction(json("implementing" to "testKeyDown"))
-                            if (instr.timestamp.there) {
-                                __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                    }
+                    !skipping -> {
+                        exhaustive/when (instr) {
+                            is TestInstruction.WorldPoint -> {
+                                val wpname: String = fullWorldPointName(instr)
+                                dlog("Saving world point ${wpname}")
+                                __await(WorldPointRequest.send(wpname, SAVE))
                             }
-                            __await<dynamic>(control.testKeyDown(instr))
+
+                            is TestInstruction.BeginSection -> {}
+                            is TestInstruction.EndSection -> {}
+                            is TestInstruction.Do -> {
+                                __await(instr.action())
+                            }
+                            is TestInstruction.Step -> {
+                                instr.fulfilled = true
+                            }
+                            is TestInstruction.AssertGenerated -> {
+                                __await(art.uiState(json(
+                                    "\$tag" to instr.tag,
+                                    "expected" to "---generated-shit---",
+                                    "expectedExtender" to instr.expectedExtender
+                                )))
+                            }
+                            is TestInstruction.AssertFuck -> {
+                                __await(art.uiState(json(
+                                    "\$tag" to instr.tag,
+                                    "expected" to instr.expected
+                                )))
+                            }
+                            is TestInstruction.SetValue -> {
+                                __await(executeSetValueLike())
+                            }
+                            is TestInstruction.SetCheckbox -> {
+                                __await(executeSetValueLike())
+                            }
+                            is TestInstruction.Click -> {
+                                val control = getControlForAction(json("implementing" to "testClick"))
+                                if (instr.timestamp.there) {
+                                    __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                                }
+                                __await<dynamic>(control.testClick(instr))
+                            }
+                            is TestInstruction.KeyDown -> {
+                                val control = getControlForAction(json("implementing" to "testKeyDown"))
+                                if (instr.timestamp.there) {
+                                    __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                                }
+                                __await<dynamic>(control.testKeyDown(instr))
+                            }
+                            else -> wtf("Test instruction: $instr")
                         }
-                        else -> wtf("Test instruction: $instr")
                     }
                 }
             }
@@ -226,6 +233,11 @@ object art {
 
         return __asyncResult(Unit)
     }
+
+    fun fullWorldPointName(instr: TestInstruction.WorldPoint): String {
+        return hrss.currentTestScenarioName!! + " -- " + instr.name
+    }
+//    fun fullWorldPointName(instr: TestInstruction.WorldPoint) = hrss.currentTestScenarioName + " -- " + instr.name
 
     fun scrollRevealing(id: String) {
         requestAnimationFrame {

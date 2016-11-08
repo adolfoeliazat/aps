@@ -1,7 +1,30 @@
 fun main(args: Array<String>) {
 //    testOverrideWithNothing()
 //    testInitOrder()
-    test1()
+//    test1()
+//    testWhen1()
+    testNullableStringPlus()
+}
+
+fun testNullableStringPlus() {
+    val s: String? = "tralala"
+    println(s + "!")
+}
+
+fun testWhen1() {
+    run {
+        var flag = true
+        when {
+            flag -> {
+                println("case 1")
+                flag = false
+            }
+            !flag -> {
+                println("case 2")
+            }
+        }
+    }
+
 }
 
 class test1 {
