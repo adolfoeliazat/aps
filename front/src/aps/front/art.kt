@@ -50,9 +50,10 @@ sealed class TestInstruction() : DefinitionStackHolder {
     sealed class Step(val long: String) : TestInstruction() {
         var fulfilled = false
 
-        class Action(long: String): Step(long)
-        class State(long: String): Step(long)
-        class Navigation(long: String): Step(long)
+        class ActionStep(long: String): Step(long)
+        class StateStep(long: String): Step(long)
+        class NavigationStep(long: String): Step(long)
+        class AssertionStep(long: String): Step(long)
     }
 
     class BeginSection(val long: String) : TestInstruction()
@@ -227,16 +228,21 @@ object art {
 
             openTestPassedPane()
         }
-        catch (e: ArtAssertionError) {
+        catch (e: ArtFuckingError) {
             showAssertionErrorPane(e.message, e.detailsUI)
         }
         catch (e: Throwable) {
-            showAssertionErrorPane(e.message, kdiv(padding=5){o->
-                o- renderStackTrace(e, onRendered = {
-                    scrollRevealing("debug_assertionErrorPane")
-                })
-                o- kdiv(marginTop=5){it-art.renderStepDescriptions()}
-            })
+            showAssertionErrorPane(e.message,
+                                   kdiv(padding=5){o->
+                                       o- renderStackTrace(e, onRendered = {
+                                           scrollRevealing("debug_assertionErrorPane")
+                                       })
+                                       o- kdiv(marginTop=5){it-art.renderStepDescriptions()}
+                                   },
+                                   backgroundColor = when (e) {
+                                       is ArtAssertionError -> RED_700
+                                       else -> RED_700
+                                   })
         }
 
         return __asyncResult(Unit)
@@ -253,7 +259,7 @@ object art {
         }
     }
 
-    fun showAssertionErrorPane(message: String?, detailsUI: ToReactElementable) {
+    fun showAssertionErrorPane(message: String?, detailsUI: ToReactElementable, backgroundColor: Color = RED_700) {
         val assertionErrorPane = object : Control2(Attrs()) {
             override fun defaultControlTypeName() = "assertionErrorPane"
 
@@ -269,7 +275,7 @@ object art {
                         "borderBottom" to "2px solid white")
                     )
                 }
-                return oldShitAsToReactElementable(Shitus.diva(json("style" to json("backgroundColor" to RED_700, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
+                return oldShitAsToReactElementable(Shitus.diva(json("style" to json("backgroundColor" to backgroundColor, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
                                                                Shitus.diva(json("style" to messageStyle), content.message),
                                                                content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
                                                                content.detailsUI
@@ -341,10 +347,10 @@ object art {
 
                     lineContent = kdiv(display="flex"){o->
                         o- when (instr) { // TODO:vgrechka Use sealed class
-                            is TestInstruction.Step.Action -> kspan(marginRight=5, padding=3, backgroundColor=GREEN_100, fontSize="75%"){it- "Action"}
-                            is TestInstruction.Step.State -> kspan(marginRight=5, padding=3, backgroundColor=LIGHT_BLUE_100, fontSize="75%"){it- "State"}
-                            is TestInstruction.Step.Navigation -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%"){it- "Navigation"}
-                            else -> wtf("instr.kind")
+                            is TestInstruction.Step.ActionStep -> kspan(marginRight=5, padding=3, backgroundColor=GREEN_100, fontSize="75%"){it-"Action"}
+                            is TestInstruction.Step.StateStep -> kspan(marginRight=5, padding=3, backgroundColor=LIGHT_BLUE_100, fontSize="75%"){it-"State"}
+                            is TestInstruction.Step.NavigationStep -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%"){it-"Navigation"}
+                            is TestInstruction.Step.AssertionStep -> kspan(marginRight=5, padding=3, backgroundColor=PURPLE_100, fontSize="75%"){it-"Assertion"}
                         }
                         o- title
                     },
@@ -395,7 +401,7 @@ object art {
     }
 
     fun assert(condition: Boolean, errorMessage: String, detailsUI: ToReactElementable) {
-        if (!condition) throw ArtAssertionError(errorMessage, detailsUI)
+        if (!condition) throw ArtFuckingError(errorMessage, detailsUI)
     }
 
     fun assertionDetailsWithSourceLink(arg: dynamic): dynamic {
@@ -1543,7 +1549,9 @@ fun openDebugPane(def: dynamic) {
     imf("openDebugPane")
 }
 
-class ArtAssertionError(message: String, val detailsUI: ToReactElementable): Exception(message)
+class ArtFuckingError(message: String, val detailsUI: ToReactElementable): Exception(message)
+
+class ArtAssertionError(message: String): Exception(message)
 
 
 

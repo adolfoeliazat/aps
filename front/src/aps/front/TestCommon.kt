@@ -165,14 +165,14 @@ class PieceOfTestBuilder(val items: MutableList<TestInstruction>) {
 class TestSectionBuilder(val items: MutableList<TestInstruction>) {
 
     fun action(long: String, build: (TestActionBuilder) -> Unit) {
-        items.add(TestInstruction.Step.Action(long))
+        items.add(TestInstruction.Step.ActionStep(long))
 
         val builder = TestActionBuilder(items)
         build(builder)
     }
 
     fun state(long: String, build: (TestStateBuilder) -> Unit) {
-        items.add(TestInstruction.Step.State(long))
+        items.add(TestInstruction.Step.StateStep(long))
 
         val builder = TestStateBuilder(items)
         build(builder)

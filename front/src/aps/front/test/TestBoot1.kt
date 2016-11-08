@@ -6,23 +6,21 @@
 
 package aps.front.test
 
-import into.kommon.*
 import aps.*
 import aps.front.*
+import kotlin.browser.window
 
 class TestBoot1 : TestScenario() {
     override fun run(): Promise<Unit> {"__async"
-        return __await(art.run(listOf(
-            TestInstruction.Step.Action("Do this"),
-            TestInstruction.Do {"__async"; die(); __asyncResult(Unit)},
-            TestInstruction.Step.Action("Do that")
-        ))) /ignora
-
-//        return __await(art.run(listOf(
-//            TestInstruction.Do {"__async"
-//                println("aaaaaaaaaaaaaaaa")
-//                __asyncResult(Unit)
-//            }
-//        ))) /ignora
+        __await(buildAndRunTestScenario {o->
+            o.assert("Scenario should be tested against / path", window.location.pathname == "/")
+            o.act {
+                clog("Doing some stuff")
+            }
+            o.act("Doing nasty things") {
+                clog("naaaaaaasty")
+            }
+        })
+        return __asyncResult(Unit)
     }
 }
