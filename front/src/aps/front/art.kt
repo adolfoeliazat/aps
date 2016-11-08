@@ -48,12 +48,15 @@ sealed class TestInstruction() : DefinitionStackHolder {
     class Do(val action: () -> Promise<Unit>) : TestInstruction()
 
     sealed class Step(val long: String) : TestInstruction() {
-        var fulfilled = false
+        var executed = false
 
         class ActionStep(long: String): Step(long)
         class StateStep(long: String): Step(long)
         class NavigationStep(long: String): Step(long)
-        class AssertionStep(long: String): Step(long)
+
+        class AssertionStep(long: String): Step(long) {
+            var passed = false
+        }
     }
 
     class BeginSection(val long: String) : TestInstruction()
@@ -179,7 +182,7 @@ object art {
                                 __await(instr.action())
                             }
                             is TestInstruction.Step -> {
-                                instr.fulfilled = true
+                                instr.executed = true
                             }
                             is TestInstruction.AssertGenerated -> {
                                 __await(art.uiState(json(
@@ -337,7 +340,7 @@ object art {
                 val untilParamValue = if (instrIndex == art.stepDescriptions.length - 1) "infinity" else instrIndex
 
                 val stepRowStyle = Style()
-                if (!instr.fulfilled) {
+                if (!instr.executed) {
                     stepRowStyle.opacity = 0.3
                 }
 
@@ -350,9 +353,17 @@ object art {
                             is TestInstruction.Step.ActionStep -> kspan(marginRight=5, padding=3, backgroundColor=GREEN_100, fontSize="75%"){it-"Action"}
                             is TestInstruction.Step.StateStep -> kspan(marginRight=5, padding=3, backgroundColor=LIGHT_BLUE_100, fontSize="75%"){it-"State"}
                             is TestInstruction.Step.NavigationStep -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%"){it-"Navigation"}
-                            is TestInstruction.Step.AssertionStep -> kspan(marginRight=5, padding=3, backgroundColor=PURPLE_100, fontSize="75%"){it-"Assertion"}
+                            is TestInstruction.Step.AssertionStep -> kspan(marginRight=5, padding=3, fontSize="75%",
+                                backgroundColor = when {
+                                    instr.executed -> when {
+                                        instr.passed -> GREEN_200
+                                        else -> RED_200
+                                    }
+                                    else -> GRAY_300
+                                })
+                                {it-"Assertion"}
                         }
-                        o- title
+                        o- markdown(title, stripP=true)
                     },
 
                     actions = listOf(
@@ -1482,7 +1493,7 @@ fun makeHrundels(def: dynamic): dynamic {
 
     return Shitus.diva.apply(null, js("[]").concat(
         json(),
-        rawHtml("""
+        rawHTML("""
             <style>
                     .${clazz}:hover {${hoverStyleString}}
             </style>"""),

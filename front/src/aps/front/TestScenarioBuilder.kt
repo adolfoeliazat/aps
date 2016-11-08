@@ -23,9 +23,17 @@ class TestScenarioBuilder {
         return __reawait(art.run(instructions))
     }
 
+    fun state(descr: String) {
+        instructions.add(TestInstruction.Step.StateStep(descr))
+    }
+
     fun assert(test: Boolean, descr: String) {
-        instructions.add(TestInstruction.Step.AssertionStep(descr))
-        act {if (!test) art.fail(descr)}
+        val step = TestInstruction.Step.AssertionStep(descr)
+        instructions.add(step)
+        act {
+            step.passed = test
+            if (!step.passed) art.fail(descr)
+        }
     }
 
     fun act(descr: String? = null, block: () -> Unit) {
@@ -43,18 +51,29 @@ class TestScenarioBuilder {
         })
     }
 
-    fun assertVisibleText(expected: String) {
-        assertOnAnimationFrame("Page should contain text: [$expected]", {
-            val actual = jq("body *:not(:has(*)):visible").text()
+    fun assertVisibleText(expected: String, under: CSSSelector = "body") {
+        assertOnAnimationFrame("Page should contain in $under: _${expected}_", {
+            val actual = visibleText(under)
             actual.contains(expected)
         })
     }
 
-    private fun assertOnAnimationFrame(descr: String, test: () -> Boolean) {
-        instructions.add(TestInstruction.Step.AssertionStep(descr))
+    fun assertNoVisibleText(expected: String, under: CSSSelector = "body") {
+        assertOnAnimationFrame("Page should not contain in $under: ~~_${expected}_~~", {
+            val actual = visibleText(under)
+            !actual.contains(expected)
+        })
+    }
+
+    private fun visibleText(under: CSSSelector) = jq("$under *:not(:has(*)):visible").text()
+
+    fun assertOnAnimationFrame(descr: String, test: () -> Boolean) {
+        val step = TestInstruction.Step.AssertionStep(descr)
+        instructions.add(step)
         acta {"__async"
             __await(tillAnimationFrame())
-            if (!test()) art.fail(descr)
+            step.passed = test()
+            if (!step.passed) art.fail(descr)
             __asyncResult(Unit)
         }
     }

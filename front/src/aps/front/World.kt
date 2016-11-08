@@ -170,9 +170,10 @@ class World {
                 } catch (e: Throwable) {
                     // Pretend no one was signed in.
                     // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
-                    console.log("Failed to private_getUserInfo", e)
+                    console.warn("Failed to private_getUserInfo", e)
                     token = undefined
                     hrss.storageLocal.clear()
+                    Globus.makeSignInNavbarLinkVisible()
                 }
             }
 
@@ -247,7 +248,7 @@ class World {
                 // TODO:vgrechka @ditch-superagent
                 var content: dynamic = (__await<dynamic>(global.superagent.get(href).send())).text
                 content = content.slice(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
-                setRootContent(rawHtml(content))
+                setRootContent(rawHTML(content))
             }
         } else {
             if (user == null && name !== "sign-in" && name !== "sign-up" && !name.startsWith("debug-")) {

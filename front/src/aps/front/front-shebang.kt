@@ -99,7 +99,7 @@ fun darkLink(def: dynamic) {
     return Shitus.link(Shitus.asnnoDollar(json("style" to json("color" to "#333")), def))
 }
 
-fun rawHtml(__html: dynamic): ReactElement {
+fun rawHTML(__html: String): ReactElement {
     return React.createElement("div", json("dangerouslySetInnerHTML" to json("__html" to __html)))
 }
 
@@ -755,7 +755,21 @@ fun moneyTitleWithCurrency(amount: Int, curr: Currency, lang: Language): String 
     return prefix + raw + suffix
 }
 
+val markdownItInstance: dynamic by lazy {global.markdownIt()}
 
+fun markdownToHTML(md: String): String {
+    return markdownItInstance.render(md)
+}
+
+fun markdown(md: String, stripP: Boolean = false): ReactElement {
+    var html = markdownToHTML(md).trim()
+
+    if (stripP) html = html
+        .replace(Regex("^<p>"), "")
+        .replace(Regex("</p>$"), "")
+
+    return rawHTML(html)
+}
 
 
 

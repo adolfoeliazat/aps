@@ -432,6 +432,7 @@ object MakeStaticSites {
             global.ReactDOM = require('react-dom')
             global.moment = require('moment-timezone')
             global.Tether = require('tether')
+            global.markdownIt = require('markdown-it')
 
             ${if (mode == Mode.DEBUG) """
                 global.superagent = require('superagent')
@@ -491,7 +492,7 @@ object MakeStaticSites {
     }
 
     fun wholePageTicker(): ReactElement {
-        return rawHtml("""
+        return rawHTML("""
             <div class="container">
             <div style="display: flex; align-items: center; justify-content: center; position: absolute; left: 0px; top: 200px; width: 100%;">
             <span style="margin-left: 10">${t(en="Breathe slowly...", ua="Дышите глубоко...")}</span>
@@ -1060,9 +1061,14 @@ object MakeStaticSites {
             if (localStorage.getItem('token')) {
                 document.getElementById('ticker').style.display = ''
             } else {
+                makeSignInNavbarLinkVisible()
                 document.getElementById('staticShit').style.display = ''
                 window.staticShitIsRenderedStatically = true
             }
+        }
+
+        function makeSignInNavbarLinkVisible() {
+            $(document.head).append('<style>a[href="sign-in.html"] {display: block !important;}</style>')
         }
 
         ${if (mode == Mode.PROD) """
@@ -1139,8 +1145,8 @@ object MakeStaticSites {
 
     fun renderTestimonials(clientKind: ClientKind): ReactElement {
         return Shitus.diva(json(),
-            pageHeader(t(en="What People Say", ua="Что о нас говорят")),
-            Shitus.diva(json("id" to "testimonials-window"),
+                           pageHeader(t(en="What People Say", ua="Что о нас говорят")),
+                           Shitus.diva(json("id" to "testimonials-window"),
                 Shitus.diva.apply(null, js("[]").concat(json("id" to "testimonials-strip"), listOf(
                     Testimonial(name = LS(en="Nicole", ua="Nicole"), img = "nicole.jpg", says = LS(
                         en="Never expected such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.",
@@ -1172,7 +1178,7 @@ object MakeStaticSites {
                 Shitus.diva(json("style" to json("display" to "flex", "alignItems" to "center", "position" to "absolute", "width" to 20, "right" to 0, "top" to 0, "height" to "100%")),
                     Shitus.glyph("chevron-right", json("id" to "testimonials-right", "className" to "fa-2x")))),
 
-            rawHtml("")
+                           rawHTML("")
             )
     }
 
@@ -1218,7 +1224,7 @@ object MakeStaticSites {
 
     fun markdown(it: String): ReactElement {
         val md = js("require('markdown-it')()")
-        return rawHtml(md.render(it))
+        return rawHTML(md.render(it))
     }
 
     fun readStatic(file: String): String {

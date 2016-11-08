@@ -19,7 +19,18 @@ class TestBoot1 : TestScenario() {
                 localStorage["token"] = "garbage"
                 Globus.displayInitialShit()
             }
+            o.state("There's some garbage token in localStorage, checking it")
             o.assertVisibleText("Дышите глубоко...")
+            o.assertNoVisibleText("Приветствуем")
+            o.assertNoVisibleText("Вход", under="#topNavbarContainer")
+
+            o.acta {"__async"
+                __reawait(World().boot())
+            }
+            o.state("Checked and rejected")
+            o.assertVisibleText("Приветствуем")
+            o.assertNoVisibleText("Дышите глубоко...")
+            o.assertVisibleText("Вход", under="#topNavbarContainer")
         })
     }
 }

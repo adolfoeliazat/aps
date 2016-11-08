@@ -101,6 +101,9 @@ fun tillAnimationFrame(): Promise<Unit> = Promise {resolve, reject ->
     }
 }
 
+typealias CSSSelector = String
+
+
 
 
 
