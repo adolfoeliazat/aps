@@ -7,10 +7,10 @@
 package aps.front
 
 import aps.*
+import into.kommon.nodeRequire
 
 object ServeDevStaticSites {
-    val require = js("require")
-    val express = require("express")
+    val express = nodeRequire("express")
 
     @JsName("runShit")
     fun runShit(argv: dynamic) {

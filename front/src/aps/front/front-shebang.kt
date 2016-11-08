@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -755,7 +757,10 @@ fun moneyTitleWithCurrency(amount: Int, curr: Currency, lang: Language): String 
     return prefix + raw + suffix
 }
 
-val markdownItInstance: dynamic by lazy {global.markdownIt()}
+val markdownItInstance: dynamic by lazy {
+    if (isNodeJS()) nodeRequire("markdown-it")()
+    else global.markdownIt()
+}
 
 fun markdownToHTML(md: String): String {
     return markdownItInstance.render(md)

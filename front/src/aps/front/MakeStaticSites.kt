@@ -21,12 +21,11 @@ object MakeStaticSites {
 
     val DEPS_JS = "$APS_HOME/front/out/deps.js"
 
-    val require = js("require")
-    val React = require("react")
-    val ReactDOMServer = require("react-dom/server")
-    val fs = require("fs")
-    val sh = require("shelljs")
-    val minimist = require("minimist")
+    val React = nodeRequire("react")
+    val ReactDOMServer = nodeRequire("react-dom/server")
+    val fs = nodeRequire("fs")
+    val sh = nodeRequire("shelljs")
+    val minimist = nodeRequire("minimist")
 
     lateinit var mode: Mode
     lateinit var lang: Language
@@ -443,7 +442,7 @@ object MakeStaticSites {
         """)
         entryStream.push(null) // EOF
 
-        val bro = require("browserify")(json(
+        val bro = nodeRequire("browserify")(json(
             "entries" to jsArrayOf(entryStream),
             "cache" to json(),
             "packageCache" to json(),
@@ -1219,12 +1218,6 @@ object MakeStaticSites {
             Shitus.diva(json("className" to "col-md-" + colSize),
                 Shitus.diva(json("style" to json("textAlign" to "center", "marginBottom" to 10)), Shitus.glyph(x.glyph, json("className" to "fa-2x", "style" to json("color" to Color.BLUE_GRAY_600)))),
                 Shitus.diva(json("style" to json("textAlign" to "center", "margin" to "0 ${horizContentMargin}px")), t(x.title)))}.toJSArray()))
-    }
-
-
-    fun markdown(it: String): ReactElement {
-        val md = js("require('markdown-it')()")
-        return rawHTML(md.render(it))
     }
 
     fun readStatic(file: String): String {
