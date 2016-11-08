@@ -7,25 +7,25 @@
 package aps.front
 
 import aps.*
+import into.kommon.global
+import jquery.jq
 
 fun buildAndRunTestScenario(block: (TestScenarioBuilder) -> Unit): Promise<Unit> {"__async"
     val builder = TestScenarioBuilder()
     block(builder)
-    __await(builder.runScenario())
-    return __asyncResult(Unit)
+    return __reawait(builder.runScenario())
 }
 
 class TestScenarioBuilder {
     val instructions = mutableListOf<TestInstruction>()
 
     fun runScenario(): Promise<Unit> {"__async"
-        __await(art.run(instructions))
-        return __asyncResult(Unit)
+        return __reawait(art.run(instructions))
     }
 
-    fun assert(descr: String, test: Boolean) {
+    fun assert(test: Boolean, descr: String) {
         instructions.add(TestInstruction.Step.AssertionStep(descr))
-        act {if (!test) throw ArtAssertionError(descr)}
+        act {if (!test) art.fail(descr)}
     }
 
     fun act(descr: String? = null, block: () -> Unit) {
@@ -39,9 +39,24 @@ class TestScenarioBuilder {
         if (descr != null) instructions.add(TestInstruction.Step.ActionStep(descr))
 
         instructions.add(TestInstruction.Do {"__async"
-            __await(block())
-            __asyncResult(Unit)
+            __reawait(block())
         })
+    }
+
+    fun assertVisibleText(expected: String) {
+        assertOnAnimationFrame("Page should contain text: [$expected]", {
+            val actual = jq("body *:not(:has(*)):visible").text()
+            actual.contains(expected)
+        })
+    }
+
+    private fun assertOnAnimationFrame(descr: String, test: () -> Boolean) {
+        instructions.add(TestInstruction.Step.AssertionStep(descr))
+        acta {"__async"
+            __await(tillAnimationFrame())
+            if (!test()) art.fail(descr)
+            __asyncResult(Unit)
+        }
     }
 }
 

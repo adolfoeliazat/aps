@@ -8,19 +8,19 @@ package aps.front.test
 
 import aps.*
 import aps.front.*
-import kotlin.browser.window
+import kotlin.browser.*
 
 class TestBoot1 : TestScenario() {
     override fun run(): Promise<Unit> {"__async"
-        __await(buildAndRunTestScenario {o->
-            o.assert("Scenario should be tested against / path", window.location.pathname == "/")
+        return __reawait(buildAndRunTestScenario {o->
+            o.assert(window.location.pathname == "/", "Scenario should be tested against / path")
             o.act {
-                clog("Doing some stuff")
+                localStorage.clear()
+                localStorage["token"] = "garbage"
+                Globus.displayInitialShit()
             }
-            o.act("Doing nasty things") {
-                clog("naaaaaaasty")
-            }
+            o.assertVisibleText("Дышите глубоко...")
         })
-        return __asyncResult(Unit)
     }
 }
+

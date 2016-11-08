@@ -628,6 +628,10 @@ object art {
         initDebugMailbox()
     }
 
+    fun fail(descr: String) {
+        throw ArtAssertionError(descr)
+    }
+
 }
 
 fun gertrude(def: dynamic) {

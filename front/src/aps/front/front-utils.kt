@@ -68,33 +68,6 @@ fun parseQueryString(href: String): Map<String, String> {
     return store
 }
 
-val jqbody: JQuery get() = jq(document.body!!)
-
-fun byid(id: String): JQuery {
-    val selector = "#$id".replace(Regex("\\."), "\\.")
-    return jq(selector)
-}
-
-fun byid0(id: String): HTMLElement? {
-    val selector = "#$id".replace(Regex("\\."), "\\.")
-    return jq(selector)[0]
-}
-
-fun byid0ForSure(id: String): HTMLElement {
-    return requireNotNull(byid0(id)) {"I want fucking element #$id"}
-}
-
-// @ctx jquery
-
-@native interface JQueryPosition {
-    val left: Int
-    val top: Int
-}
-
-operator fun JQuery.get(index: Int): HTMLElement? = this.asDynamic()[index]
-fun JQuery.scrollTop(value: Int): Unit = this.asDynamic().scrollTop(value)
-fun JQuery.scrollTop(): Int = this.asDynamic().scrollTop()
-fun JQuery.offset(): JQueryPosition = this.asDynamic().offset()
 
 @native object ReactDOM {
     fun render(rel: ReactElement, container: HTMLElement): Unit = noImpl
@@ -122,6 +95,11 @@ annotation class MixableType
 annotation class GenerateSignatureMixes
 annotation class Mix
 
+fun tillAnimationFrame(): Promise<Unit> = Promise {resolve, reject ->
+    requestAnimationFrame {
+        resolve(Unit)
+    }
+}
 
 
 

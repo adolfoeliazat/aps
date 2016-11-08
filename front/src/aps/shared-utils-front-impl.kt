@@ -14,7 +14,7 @@ import into.kommon.*
 //fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw JSException("WTF: $msg")
 //fun die(msg: String = "You killed me, motherfucker..."): Nothing = throw JSException(msg)
 
-inline fun clog(vararg xs: dynamic) = global.console.log.apply(global.console, xs.toList().toJSArray())
+inline fun clog(vararg xs: Any?): Unit = global.console.log.apply(global.console, xs.toList().toJSArray())
 inline fun cwarn(vararg xs: dynamic) = global.console.warn.apply(global.console, xs.toList().toJSArray())
 
 inline fun dlog(vararg xs: dynamic) = clog("[DEBUG]", *xs)
@@ -55,6 +55,7 @@ fun remoteProcedureNameForRequest(req: Any): String {
 
 @native fun <T> __await(p: Promise<T>): T = noImpl
 @native fun <T> __asyncResult(x: T): Promise<T> = noImpl
+@native fun <T> __reawait(p: Promise<T>): Promise<T> = noImpl
 
 @Front open class RequestMatumba {
     val fields = mutableListOf<FormFieldFront<*>>()
