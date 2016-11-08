@@ -564,7 +564,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
     fun selectBrowser(clientKind: String, browserName: String, stateDescription: String): Iterable<TestInstruction> {
         val res = mutableListOf(
-            TestInstruction.Step("navigation", "Trying to open dashboard page as " + browserName),
+            TestInstruction.Step.Navigation("Trying to open dashboard page as " + browserName),
             //            jsonTestItem("step" to json("kind" to "navigation", "long" to "Trying to open dashboard page as " + browserName)),
 
             TestInstruction.Do({"__async"
@@ -572,7 +572,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                 __await(host.selectNewBrowserAndNavigate(browserName, "dashboard.html")) /ignora
             }),
 
-            TestInstruction.Step("state", stateDescription)
+            TestInstruction.Step.State(stateDescription)
         )
 
         if (clientKind == "WRITER") {
@@ -805,14 +805,14 @@ class TestStateBuilder_killme(val items: MutableList<TestInstruction>) {
 class TestSectionBuilder_killme(val items: MutableList<TestInstruction>) {
 
     fun action(long: String, build: TestActionBuilder_killme.() -> Unit) {
-        items.add(TestInstruction.Step("action", long))
+        items.add(TestInstruction.Step.Action(long))
 
         val builder = TestActionBuilder_killme(items)
         builder.build()
     }
 
     fun state(long: String, build: TestStateBuilder_killme.() -> Unit) {
-        items.add(TestInstruction.Step("state", long))
+        items.add(TestInstruction.Step.State(long))
 
         val builder = TestStateBuilder_killme(items)
         builder.build()

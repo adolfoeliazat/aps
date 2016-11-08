@@ -34,34 +34,42 @@ val NILS: String = js("new String('NILS')")
 
 val String.there: Boolean get() = this !== NILS
 
-sealed class TestInstruction(val opcode: String) : DefinitionStackHolder {
+sealed class TestInstruction() : DefinitionStackHolder {
 
     override fun promiseDefinitionStack(): Promise<dynamic> {
         throw UnsupportedOperationException("Implement me, please, fuck you")
     }
 
     override fun toString(): String {
-        return "<opcode=$opcode>"
+        return "<opcode=${constructorName(this)}>"
     }
 
-    class WorldPoint(val name: String) : TestInstruction("WorldPoint")
-    class Do(val action: () -> Promise<Unit>) : TestInstruction("Do")
-    class Step(val kind: String, val long: String) : TestInstruction("Step") { var fulfilled = false }
-    class BeginSection(val long: String) : TestInstruction("BeginSection")
-    class EndSection() : TestInstruction("EndSection")
+    class WorldPoint(val name: String) : TestInstruction()
+    class Do(val action: () -> Promise<Unit>) : TestInstruction()
 
-    class AssertGenerated(val tag: String, val expected: String, val expectedExtender: ((dynamic) -> Unit)?) : TestInstruction("AssertGenerated")
+    sealed class Step(val long: String) : TestInstruction() {
+        var fulfilled = false
 
-    class AssertFuck(val tag: String, val expected: Json) : TestInstruction("AssertFuck")
-
-    abstract class Action(opcode: String, override val shame: String, val timestamp: String) : TestInstruction(opcode), ShamedTestInstruction {
+        class Action(long: String): Step(long)
+        class State(long: String): Step(long)
+        class Navigation(long: String): Step(long)
     }
 
-    class SetValue(shame: String, val value: String, timestamp: String = NILS) : Action("SetValue", shame, timestamp)
-    class SetCheckbox(shame: String, val value: Boolean, timestamp: String = NILS) : Action("SetCheckbox", shame, timestamp)
+    class BeginSection(val long: String) : TestInstruction()
+    class EndSection() : TestInstruction()
 
-    class Click(shame: String, timestamp: String = NILS) : Action("Click", shame, timestamp)
-    class KeyDown(shame: String, val keyCode: Int, timestamp: String = NILS) : Action("KeyDown", shame, timestamp)
+    class AssertGenerated(val tag: String, val expected: String, val expectedExtender: ((dynamic) -> Unit)?) : TestInstruction()
+
+    class AssertFuck(val tag: String, val expected: Json) : TestInstruction()
+
+    abstract class Action(override val shame: String, val timestamp: String) : TestInstruction(), ShamedTestInstruction {
+    }
+
+    class SetValue(shame: String, val value: String, timestamp: String = NILS) : Action(shame, timestamp)
+    class SetCheckbox(shame: String, val value: Boolean, timestamp: String = NILS) : Action(shame, timestamp)
+
+    class Click(shame: String, timestamp: String = NILS) : Action(shame, timestamp)
+    class KeyDown(shame: String, val keyCode: Int, timestamp: String = NILS) : Action(shame, timestamp)
 //    class ActionPlaceholder() : TestInstruction()
 }
 
@@ -332,10 +340,10 @@ object art {
                     rulerContent = ("#" + (stepIndex++ + 1)).asDynamicReactElement(),
 
                     lineContent = kdiv(display="flex"){o->
-                        o- when (instr.kind) { // TODO:vgrechka Use sealed class
-                            "action" -> kspan(marginRight=5, padding=3, backgroundColor=GREEN_100, fontSize="75%"){it- "Action"}
-                            "state" -> kspan(marginRight=5, padding=3, backgroundColor=LIGHT_BLUE_100, fontSize="75%"){it- "State"}
-                            "navigation" -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%"){it- "Navigation"}
+                        o- when (instr) { // TODO:vgrechka Use sealed class
+                            is TestInstruction.Step.Action -> kspan(marginRight=5, padding=3, backgroundColor=GREEN_100, fontSize="75%"){it- "Action"}
+                            is TestInstruction.Step.State -> kspan(marginRight=5, padding=3, backgroundColor=LIGHT_BLUE_100, fontSize="75%"){it- "State"}
+                            is TestInstruction.Step.Navigation -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%"){it- "Navigation"}
                             else -> wtf("instr.kind")
                         }
                         o- title
