@@ -334,6 +334,17 @@ class MapStackRequest : RequestMatumba() {
     }
 }
 
+class OpenSourceCodeRequest : RequestMatumba() {
+    class Response(val error: String?)
+
+    val sourceLocation = StringHiddenField(this, "sourceLocation")
+
+    companion object {
+        fun send(sourceLocation: String): Promise<Response> = callDangerousMatumba(OpenSourceCodeRequest()-{o->
+            o.sourceLocation.value = sourceLocation
+        })
+    }
+}
 
 
 
