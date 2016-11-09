@@ -243,7 +243,7 @@ object art {
                                        o- renderStackTrace(e, onRendered = {
                                            scrollRevealing("debug_assertionErrorPane")
                                        })
-                                       o- kdiv(marginTop=5){it-art.renderStepDescriptions()}
+                                       o- renderCurrentTestScenarioDetails(marginTop=5)
                                    },
                                    backgroundColor = when (e) {
                                        is ArtAssertionError -> RED_700
@@ -255,7 +255,7 @@ object art {
     }
 
     fun fullWorldPointName(instr: TestInstruction.WorldPoint): String {
-        return hrss.currentTestScenarioName!! + " -- " + instr.name
+        return hrss.currentTestScenario!!.name + " -- " + instr.name
     }
 //    fun fullWorldPointName(instr: TestInstruction.WorldPoint) = hrss.currentTestScenarioName + " -- " + instr.name
 
@@ -310,7 +310,7 @@ object art {
 
         val stack = null
         assertionErrorPane.set(json(
-            "message" to (message ?: "No fucking message") + mdash + hrss.currentTestScenarioName,
+            "message" to (message ?: "No fucking message") + mdash + hrss.currentTestScenario!!.name,
             "stack" to stack,
             "detailsUI" to kdiv(backgroundColor = WHITE){it-detailsUI}.toReactElement(),
             "scrollThere" to true))
@@ -1168,13 +1168,18 @@ fun openTestPassedPane() {
                 marginTop=10, padding="10px 10px", textAlign="center", fontWeight="bold")
 
         o- kdiv(paddingBottom=10){o->
-            o- hrss.currentTestScenarioName
+            o- run {
+                val scenario = hrss.currentTestScenario!!
+                var title = scenario.name
+                scenario.shortDescription?.let {title += ". $it"}
+                title
+            }
         }
 
         o- kdiv{o->
             o- Style(backgroundColor=Color.WHITE, color = Color.BLACK_BOOT,
                      fontWeight="normal", textAlign="left", padding=5)
-            o- art.renderStepDescriptions()
+            o- renderCurrentTestScenarioDetails()
         }
     })
 
@@ -1509,7 +1514,7 @@ fun makeHrundels(def: dynamic): dynamic {
 }
 
 fun isInTestScenario(): Boolean {
-    return hrss.currentTestScenarioName != null
+    return hrss.currentTestScenario != null
 }
 
 fun renderStacks(def: dynamic): dynamic {
@@ -1574,6 +1579,23 @@ fun openDebugPane(def: dynamic) {
 class ArtFuckingError(message: String, val detailsUI: ToReactElementable): Exception(message)
 
 class ArtAssertionError(message: String): Exception(message)
+
+
+fun renderCurrentTestScenarioDetails(marginTop: Int = 0) = kdiv{o->
+    val scenario = hrss.currentTestScenario!!
+
+    o- scenario.longDescription?.let {markdown(dedent(it))}
+    o- kdiv(marginTop=marginTop) {it-art.renderStepDescriptions()}
+}
+
+
+
+
+
+
+
+
+
 
 
 

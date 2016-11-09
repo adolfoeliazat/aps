@@ -18,11 +18,14 @@ interface TestHost {
 }
 
 abstract class TestScenario {
-    lateinit var host: TestHost
-
-    val testCommon by lazy { TestCommon(host) }
-
     abstract fun run(): Promise<Unit>
+
+    open val name: String get() = constructorName(this)
+    open val shortDescription: String? = null
+    open val longDescription: String? = null
+
+    lateinit var host: TestHost
+    val testCommon by lazy { TestCommon(host) }
 }
 
 val testScenarios = mutableMapOf<String, TestScenario>()
@@ -103,7 +106,7 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
         }
     })
 
-    hrss.currentTestScenarioName = testScenarioToRun
+    hrss.currentTestScenario = scenario
     lastTestScenarioName = testScenarioToRun
     val oldHotCodeUpdateDisabled = hrss.hotCodeUpdateDisabled
     val oldLiveStatusPollingViaIntervalDisabled = hrss.liveStatusPollingViaIntervalDisabled
@@ -124,7 +127,7 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
         hrss.hotCodeUpdateDisabled = oldHotCodeUpdateDisabled
         hrss.liveStatusPollingViaIntervalDisabled = oldLiveStatusPollingViaIntervalDisabled
 
-        hrss.currentTestScenarioName = undefined
+        hrss.currentTestScenario = null
 //        if (!hrss.preventRestoringURLAfterTest) {
 //            global.setTimeout({ global.history.replaceState(null, "", initialHref) }, 1000)
 //        }

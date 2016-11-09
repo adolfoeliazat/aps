@@ -11,6 +11,8 @@ import aps.front.*
 import kotlin.browser.*
 
 class TestBoot1 : TestScenario() {
+    override val shortDescription = "Invalid token in local storage"
+
     override fun run(): Promise<Unit> {"__async"
         return __reawait(buildAndRunTestScenario {o->
             o.assert(window.location.pathname == "/", "Scenario should be tested against / path")

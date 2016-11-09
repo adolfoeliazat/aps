@@ -194,7 +194,7 @@ class HotReloadSurvivingShit {
     var urlQueryBeforeRunningTest: dynamic = null
     var hotCodeUpdateDisabled : dynamic = null
     var liveStatusPollingViaIntervalDisabled: dynamic = null
-    var currentTestScenarioName: String? = null
+    var currentTestScenario: TestScenario? = null
     var preventRestoringURLAfterTest: dynamic = null
     var openTestPassedPaneArgs: dynamic = null
     var lastSeenTag: String? = null
