@@ -235,6 +235,7 @@ class ImposeNextGeneratedPasswordRequest() : RequestMatumba() {
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
+
 class GetLiveStatusRequest : RequestMatumba() {
     sealed class Response {
         class ForAdmin(val profilesToApprove: String, val suka: String) : Response()
@@ -346,6 +347,17 @@ class OpenSourceCodeRequest : RequestMatumba() {
     }
 }
 
+class TestSetUserStateRequest() : RequestMatumba() {
+    val email = StringHiddenField(this, "email")
+    val state = EnumHiddenField(this, "state", UserState.values())
+
+    companion object {
+        fun send(email: String, state: UserState): Promise<GenericResponse> = callDangerousMatumba(TestSetUserStateRequest()-{o->
+            o.email.value = email
+            o.state.value = state
+        })
+    }
+}
 
 
 

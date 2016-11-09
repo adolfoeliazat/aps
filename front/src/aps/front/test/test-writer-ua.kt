@@ -11,7 +11,7 @@ import aps.front.*
 import into.kommon.*
 
 class TS_UA_Writer_SignUp_1 : TestScenario() {
-    override fun run(): Promise<Unit> {"__async"
+    override fun run0(): Promise<Unit> {"__async"
         val slowly = false
 
         if (slowly) {

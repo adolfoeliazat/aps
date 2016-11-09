@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import aps.back.generated.jooq.Tables.USERS
 import com.google.debugging.sourcemap.SourceMapConsumerFactory
 import com.google.debugging.sourcemap.SourceMapping
 import into.kommon.*
@@ -26,12 +27,12 @@ object TestServerFiddling {
 }
 
 fun <Req : RequestMatumba, Res : Any>
-testProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, logRequestJSON: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit =
+testProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, needsDB: Boolean? = null, logRequestJSON: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
         wrapInFormResponse = false,
-        needsDB = false,
+        needsDB = needsDB ?: false,
         needsDangerousToken = true,
         needsUser = false,
         userKinds = setOf(),
@@ -169,6 +170,18 @@ val backendInstanceID = "" + UUID.randomUUID()
         dlog("External command finished with code", exitCode)
 
         OpenSourceCodeRequest.Response(error = if (exitCode == 0) null else "Bad exit code: $exitCode")
+    }
+)
+
+@RemoteProcedureFactory fun testSetUserState() = testProcedure(
+    TestSetUserStateRequest(),
+    needsDB = true,
+    runShit = {ctx, req ->
+        ctx.q
+            .update(USERS)
+            .set(USERS.STATE, req.state.value.name)
+            .where(USERS.EMAIL.eq(req.email.value))
+            .execute()
     }
 )
 

@@ -44,10 +44,16 @@ class TestScenarioBuilder {
     }
 
     fun acta(descr: String? = null, block: () -> Promise<Unit>) {
-        if (descr != null) instructions.add(TestInstruction.Step.ActionStep(descr))
+        var step: TestInstruction.Step? = null
+        if (descr != null) {
+            step = TestInstruction.Step.ActionStep(descr)
+            instructions.add(step)
+        }
 
         instructions.add(TestInstruction.Do {"__async"
-            __reawait(block())
+            __await(block())
+            step?.passed = true
+            __asyncResult(Unit)
         })
     }
 
@@ -58,7 +64,7 @@ class TestScenarioBuilder {
         })
     }
 
-    fun assertNoVisibleText(expected: String, under: CSSSelector = "body") {
+    fun assertVisibleText_no(expected: String, under: CSSSelector = "body") {
         assertOnAnimationFrame("Page should not contain in $under: ~~_${expected}_~~", {
             val actual = visibleText(under)
             !actual.contains(expected)

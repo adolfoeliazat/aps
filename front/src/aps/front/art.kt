@@ -52,14 +52,13 @@ sealed class TestInstruction() : DefinitionStackHolder {
 
     sealed class Step(val long: String) : TestInstruction() {
         var executed = false
+        var passed = false
 
         class ActionStep(long: String): Step(long)
         class StateStep(long: String): Step(long)
         class NavigationStep(long: String): Step(long)
 
-        class AssertionStep(long: String): Step(long) {
-            var passed = false
-        }
+        class AssertionStep(long: String): Step(long)
     }
 
     class BeginSection(val long: String) : TestInstruction()
@@ -350,24 +349,27 @@ object art {
                     stepRowStyle.opacity = 0.3
                 }
 
+                fun labelBack(passed: Color, failed: Color, skipped: Color? = null): Color {
+                    val _skipped = skipped ?: passed
+                    return when {
+                        instr.executed -> when {
+                            instr.passed -> passed
+                            else -> failed
+                        }
+                        else -> _skipped
+                    }
+                }
+
                 addLine(
                     indent, stepRowStyle,
                     rulerContent = ("#" + (stepIndex++ + 1)).asDynamicReactElement(),
 
                     lineContent = kdiv(display="flex"){o->
                         o- when (instr) { // TODO:vgrechka Use sealed class
-                            is TestInstruction.Step.ActionStep -> kspan(marginRight=5, padding=3, backgroundColor=GREEN_100, fontSize="75%"){it-"Action"}
-                            is TestInstruction.Step.StateStep -> kspan(marginRight=5, padding=3, backgroundColor=ORANGE_200, fontSize="75%"){it-"State"}
-                            is TestInstruction.Step.NavigationStep -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%"){it-"Navigation"}
-                            is TestInstruction.Step.AssertionStep -> kspan(marginRight=5, padding=3, fontSize="75%",
-                                backgroundColor = when {
-                                    instr.executed -> when {
-                                        instr.passed -> GREEN_200
-                                        else -> RED_200
-                                    }
-                                    else -> GRAY_300
-                                })
-                                {it-"Assertion"}
+                            is TestInstruction.Step.ActionStep -> kspan(marginRight=5, padding=3, fontSize="75%", backgroundColor=labelBack(passed=BLUE_200, failed=RED_200)) {it-"Action"}
+                            is TestInstruction.Step.StateStep -> kspan(marginRight=5, padding=3, backgroundColor=ORANGE_200, fontSize="75%") {it-"State"}
+                            is TestInstruction.Step.NavigationStep -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%") {it-"Navigation"}
+                            is TestInstruction.Step.AssertionStep -> kspan(marginRight=5, padding=3, fontSize="75%", backgroundColor=labelBack(passed=GREEN_200, failed=RED_200, skipped=GRAY_300)) {it-"Assertion"}
                         }
                         o- markdown(title, stripP=true)
                     },

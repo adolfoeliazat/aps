@@ -173,6 +173,7 @@ class World {
                     console.warn("Failed to private_getUserInfo", e)
                     token = undefined
                     hrss.storageLocal.clear()
+                } finally {
                     Globus.makeSignInNavbarLinkVisible()
                 }
             }

@@ -18,7 +18,7 @@ interface TestHost {
 }
 
 abstract class TestScenario {
-    abstract fun run(): Promise<Unit>
+    abstract fun run0(): Promise<Unit>
 
     open val name: String get() = constructorName(this)
     open val shortDescription: String? = null
@@ -26,6 +26,13 @@ abstract class TestScenario {
 
     lateinit var host: TestHost
     val testCommon by lazy { TestCommon(host) }
+
+    fun run(): Promise<Unit> {"__async"
+        measure("Resetting database") {
+            __await(ResetTestDatabaseRequest.send(templateDB="test-template-ua-1", recreateTemplate=true))
+        }
+        return __reawait(run0())
+    }
 }
 
 val testScenarios = mutableMapOf<String, TestScenario>()
