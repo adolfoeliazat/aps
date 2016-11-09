@@ -14,6 +14,7 @@ import kotlin.reflect.KProperty
 val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environment variable")
 val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak" // TODO:vgrechka @unhardcode
 val TMP_DIR: String get() = "c:/tmp/aps-tmp" // TODO:vgrechka @unhardcode
+val IDEA_EXE: String get() = "C:/opt/idea-eap/bin/idea64.exe" // TODO:vgrechka @unhardcode
 
 class AbortException : Throwable()
 fun abort() {throw AbortException()}
@@ -139,8 +140,10 @@ fun reindent(newIndent: Int, it: String): String {
     return dedent(it).split("\n").joinToString("\n") {" ".repeat(newIndent) + it}
 }
 
+var puidPrefix = ""
+
 var _puid = 1L
-fun puid(): String = "" + _puid++
+fun puid(): String = puidPrefix + _puid++
 
 fun <T> Iterable<T>.without(xs: Iterable<T>) = this.filter{!xs.contains(it)}
 

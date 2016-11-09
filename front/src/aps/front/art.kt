@@ -334,7 +334,7 @@ object art {
                             o- hor2(marginLeft=8, paddingLeft=8, borderLeft="2px solid ${Color.GRAY_500}"){o->
                                 o+ actions
                                 o- link(title="Show stack", onClick={
-                                    revealStack(instr.definitionStackCapture)
+                                    revealStack(instr.definitionStackCapture, muteConsole=true)
                                 })
 //                                o- renderExpandableOnDemandStack(instr)
 //                                - jshit.OpenSourceCodeLink(json("where" to instrdef, "style" to json("marginLeft" to 20)))
@@ -357,7 +357,7 @@ object art {
                     lineContent = kdiv(display="flex"){o->
                         o- when (instr) { // TODO:vgrechka Use sealed class
                             is TestInstruction.Step.ActionStep -> kspan(marginRight=5, padding=3, backgroundColor=GREEN_100, fontSize="75%"){it-"Action"}
-                            is TestInstruction.Step.StateStep -> kspan(marginRight=5, padding=3, backgroundColor=LIGHT_BLUE_100, fontSize="75%"){it-"State"}
+                            is TestInstruction.Step.StateStep -> kspan(marginRight=5, padding=3, backgroundColor=ORANGE_200, fontSize="75%"){it-"State"}
                             is TestInstruction.Step.NavigationStep -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%"){it-"Navigation"}
                             is TestInstruction.Step.AssertionStep -> kspan(marginRight=5, padding=3, fontSize="75%",
                                 backgroundColor = when {

@@ -391,9 +391,9 @@ fun OpenSourceCodeLink(def: dynamic): ReactElement {
                             my.linkProgress = Shitus.glyph("refresh fa-spin")
                             update()
 
-                            var error: dynamic = null
+                            var error: String? = null
                             try {
-                                val res = __await(debugRPC(json("fun" to "danger_openSourceCode", "tag" to tag, "sourceLocation" to sourceLocation)))
+                                val res = __await(OpenSourceCodeRequest.send(sourceLocation))
                                 error = res.error
                                 if (error == null) {
                                     my.linkProgress = Shitus.glyph("check")

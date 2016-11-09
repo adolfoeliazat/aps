@@ -15,15 +15,17 @@ var revealStackCalledTimes = 0
 
 val Exception.stack: String get() = this.asDynamic().stack
 
-fun revealStack(exception: Exception): Promise<Unit> {"__async"
+fun revealStack(exception: Exception, muteConsole: Boolean = false): Promise<Unit> {"__async"
     if (++revealStackCalledTimes > 3) {
         return console.warn("Too much of stack revealing") /ignora
     }
 
     val stack = __await(errorToMappedClientStackString(exception))
-    var errorToLog = "revealStack: " + stack
-    errorToLog += "\n\n----- Raw -----\n\n" + exception.stack
-    console.error(errorToLog)
+    if (!muteConsole) {
+        var errorToLog = "revealStack: " + stack
+        errorToLog += "\n\n----- Raw -----\n\n" + exception.stack
+        console.error(errorToLog)
+    }
 
     if (DebugPanes.contains("revealStack")) {
         return console.warn("Some other stack is already revealed, so not showing") /ignora
