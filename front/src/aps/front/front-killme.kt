@@ -94,7 +94,8 @@ fun legacy_implementControlShit(arg: dynamic) {
                 }
 
                 preventAndStop(e)
-                return@onClick Shitus.revealControl(me)
+                die("This code path should be deleted")
+//                return@onClick Shitus.revealControl(me)
             }
 
             val shit: ((Any?) -> Promise<Any?>)? = me.onRootClick

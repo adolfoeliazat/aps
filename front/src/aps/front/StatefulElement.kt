@@ -264,7 +264,8 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
                 }
 
                 preventAndStop(e)
-                return Shitus.revealControl(this)
+                die("This code path should be deleted")
+//                return Shitus.revealControl(this)
             }
 
             onRootClick(e)

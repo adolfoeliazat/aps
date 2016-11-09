@@ -25,6 +25,8 @@ fun ignite() {
     global.BOOTSTRAP_VERSION = 3
     global.BACKEND_URL = "http://localhost:3100"
 
+    js("Error").stackTraceLimit = js("Infinity")
+
     InitAutoReload()
 
 //    global.Error.stackTraceLimit = js("Infinity")

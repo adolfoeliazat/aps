@@ -862,7 +862,8 @@ fun gertrude(def: dynamic) {
                                         -span {
                                             className = "fa fa-search"; styleKludge = json("cursor" to "pointer", "marginLeft" to 10)
                                             onClick {
-                                                Shitus.revealControl(control, json("scrollToTarget" to true))
+                                                imf("Control revealing in art")
+//                                                Shitus.revealControl(control, json("scrollToTarget" to true))
                                             }
                                         }
                                     }

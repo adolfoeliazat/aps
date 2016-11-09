@@ -97,6 +97,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
     var shouldUpdate = false
     var errorStickerID: String? = null
     var errorStickerTether: Tether? = null
+    val definitionStackCapture = StackCaptureException()
 
     override fun toReactElement(): ReactElement = reactElement
 
@@ -274,7 +275,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
                 }
 
                 preventAndStop(e)
-                return@onClick Shitus.revealControl(this)
+                return@onClick revealStack(definitionStackCapture, muteConsole=true, skipAllForeignLines=true)
             }
 
             __await(onRootClick(e))

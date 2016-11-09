@@ -23,7 +23,6 @@ object Shitus {
 
     val isOrWasInTestScenario: dynamic = ::jsFacing_isOrWasInTestScenario
     val renderDefinitionStackStrip: dynamic = ::jsFacing_renderDefinitionStackStrip
-    val revealControl: dynamic = ::jsFacing_revealControl
     val raiseWithMeta: dynamic = ::jsFacing_raiseWithMeta
     val glyph: dynamic = ::jsFacing_glyph
     val errorBanner = ::jsFacing_errorBanner
@@ -934,318 +933,318 @@ fun jsFacing_raiseWithMeta(def: dynamic) {
 //    }))
 }
 
-fun jsFacing_revealControl(arg: dynamic) {
-    imf("jsFacing_revealControl")
-
-//    export function revealControl(target, {backTarget, scrollToTarget}={}) {
-//        controlBeingRevealed = target
-//        dumpContributionsByControlAndChildren(target, {})
+//fun jsFacing_revealControl(arg: dynamic) {
+//    imf("jsFacing_revealControl")
 //
-//        debugPanes.set({name: 'revealControl', element: updatableElement({}, update => {
-//            const paneHeight = 210
-//            const paneBodyHeight = 118
-//
-//            const my = {}
-//            const jqel = Shitus.byid(target.elementID)
-//            if (!jqel.length) {
-//                console.error('Failed to find element', deepInspect(target))
-//                console.error(target.$definitionStack)
-//                Shitus.raise(`Failed to find element with ID ${target.elementID}`)
-//            }
-//
-//            if (scrollToTarget) {
-//                const ofs = jqel.offset()
-//                $(document).scrollTop(ofs.top - 50 - 20)
-//            }
-//
-//            let attrsInput
-//                if (target.$attrsTinkerable) {
-//                    let attrSnap
-//                        if (target.$takeAttrSnap) {
-//                            attrSnap = target.$takeAttrSnap()
-//                        } else {
-//                            attrSnap = {className: target.className || '', style: target.style || {}}
-//                        }
-//                    const attrSnapString = deepInspect(attrSnap).replace(/ *\n\ */g, ' ').replace(/\{ /g, '{').replace(/ \}/g, '}')
-//                    attrsInput = Input({kind: 'textarea', initialValue: attrSnapString,
-//                        onKeyDown(e) {
-//                            if (e.ctrlKey && e.keyCode == 13) {
-//                                e.preventDefault()
-//                                applyAttrs()
-//                            }
-//                        }, untested: true})
-//                }
-//            const borderCheck = Checkbox({initialValue: true, onChange: update, untested: true})
-//
-//            return _=> Shitus.diva({noStateContributions: true},
-//            borderCheck.getValue() && elementFrame({jqel, border: `3px dashed ${BLACK}`}),
-//
-//            updatableElement({}, update => {
-//                let frame = null
-//                my.setPotentialRevelationFrame = function(newFrame) {
-//                    frame = newFrame; update()
-//                }
-//                return _=> frame
-//            }),
-//
-//            Shitus.diva({style: {
-//                position: 'fixed', left: 0, bottom: 0, width: '100%', overflow: 'auto',
-//                zIndex: topZIndex++, minHeight: paneHeight, maxHeight: paneHeight + 200, padding: 10,
-//                borderTop: `3px solid ${BLACK}`, background: WHITE}},
-//
-//                Shitus.run(_=> {
-//                    // @wip sourceLocation promise
-//                    if (target.$tag || target.$sourceLocation) return OpenSourceCodeLink({where: pick(target, '$tag', '$sourceLocation')})
-//                    return Shitus.diva({}, t('No client-side source location attached'))
-//                }),
-//
-//            Shitus.diva({style: {position: 'relative'}},
-//                Shitus.diva({className: 'row', style: {marginTop: 10}},
-//
-//                    Shitus.diva({className: 'col-sm-3', style: {}},
-//                        Shitus.diva({className: 'form-group'},
-//                            labela({}, t(`Here`)),
-//                            Shitus.run(function() {
-//                                const items = []
-//
-//                                const controls = elementIDToControls[target.elementID]
-//                                for (const control of controls) {
-//                                if (control.id == target.id) {
-//                                    items.push(Shitus.diva({style: {whiteSpace: 'nowrap', fontStyle: 'italic'}}, '> ' + control.getLongRevelationTitle()))
-//                                } else {
-//                                    items.push(revealAnotherLink({control}))
-//                                }
-//                            }
-//
-//                                return Shitus.diva({style: {height: paneBodyHeight, overflow: 'auto'}}, ...items)
-//                            }))),
-//
-//                    Shitus.diva({className: 'col-sm-3', style: {paddingLeft: 0}},
-//                        Shitus.diva({className: 'form-group'},
-//                            labela({}, t(`Parents`)),
-//                            Shitus.run(function() {
-//                                const items = []
-//
-//                                jqel.parents().each(function() {
-//                                    if (!this.id) return
-//                                    const controls = elementIDToControls[this.id] || []
-//                                    for (const control of controls.slice().reverse()) {
-//                                    items.push(revealAnotherLink({control}))
-//                                }
-//                                })
-//
-//                                if (!items.length) return Shitus.diva({}, 'No parents')
-//                                return Shitus.diva({style: {height: paneBodyHeight, overflow: 'auto'}}, ...items)
-//                            }))),
-//
-//                    Shitus.diva({className: 'col-sm-3', style: {}},
-//                        Shitus.diva({className: 'form-group'},
-//                            labela({}, t(`Children`)),
-//                            Shitus.run(function renderChildren() {
-//                                const items = []
-//
-//                                run2(jqel, 0, function findItems(el, indent) {
-//                                    const children = el.children()
-//                                    if (children.length = 0) return
-//
-//                                    children.each(function() {
-//                                        let indentIncrease = 0
-//                                        if (this.id) {
-//                                            const controls = elementIDToControls[this.id] || []
-//                                            for (const control of controls) {
-//                                                items.push(revealAnotherLink({control}))
-//                                            }
-//                                        }
-//
-//                                        findItems($(this), indent + indentIncrease)
-//                                    })
-//                                })
-//
-//                                if (!items.length) return Shitus.diva({}, 'No children')
-//                                return Shitus.diva({style: {height: paneBodyHeight, overflow: 'auto'}}, ...items)
-//                            })),
-//                        ),
-//
-//                    Shitus.diva({className: 'col-sm-3', style: {}},
-//                        Shitus.diva({className: 'form-group'},
-//                            labela({}, t(`Siblings`)),
-//                            Shitus.run(function() {
-//                                const items = []
-//
-//                                const jqchildren = jqel.parent().children()
-//                                jqchildren.each(function() {
-//                                    const controls = elementIDToControls[this.id]
-//                                    if (controls && controls.length) {
-//                                        const control = controls[0]
-//                                        if (control.elementID == target.elementID) {
-//                                            items.push(Shitus.diva({style: {whiteSpace: 'nowrap', fontStyle: 'italic'}}, '> ' + control.getLongRevelationTitle()))
-//                                        } else {
-//                                            items.push(revealAnotherLink({control}))
-//                                        }
-//                                    }
-//                                })
-//
-//                                return Shitus.diva({style: {height: paneBodyHeight, overflow: 'auto'}}, ...items)
-//                            }))),
-//                    ),
-//
-//                Shitus.diva({},
-//                    target.testName && Shitus.link({title: t('Hand pause'), untested: true, onClick() {
-//                        let movingHand, startScreenX, startScreenY, startDleft, startDtop, dleft = 0, dtop = 0, handShown
-//                        const pausePointTag = uuid()
-//                        const progressPlaceholder = Placeholder()
-//                        const codeArea = Input({kind: 'textarea', untested: true, style: {fontFamily: 'monospace'}})
-//
-//                        generateCodeAndShowHand()
-//
-//                        function generateCodeAndShowHand() {
-//                            if (handShown) {
-//                                testGlobal.controls[target.testName].hideHand()
-//                                handShown = false
-//                            }
-//
-//                            const showHandArg = {testActionHandOpts: {pointingFrom: 'right', dleft, dtop}}
-//                            const showHandArgForTinkering = cloneDeep(showHandArg)
-//                            showHandArgForTinkering.testActionHandOpts.noBlinking = true
-//                            testGlobal.controls[target.testName].showHand(showHandArgForTinkering)
-//                            handShown = true
-//
-//                            codeArea.setValue(dedent(`
-//                                // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
-//                                testGlobal.controls['${target.testName}'].showHand(${JSON.stringify(showHandArg)})
-//                            ${'#'}hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '${pausePointTag}'})
-//                            testGlobal.controls['${target.testName}'].hideHand()
-//                            `))
-//                        }
-//
-//                        document.addEventListener('mousemove', mouseMoveListener)
-//                        function mouseMoveListener(e) {
-//                            if (movingHand) {
-//                                if (e.ctrlKey) {
-//                                    dleft = startDleft + e.screenX - startScreenX
-//                                    dtop = startDtop + e.screenY - startScreenY
-//                                    generateCodeAndShowHand()
-//                                } else {
-//                                    movingHand = false
-//                                }
-//                            } else {
-//                                if (e.ctrlKey) {
-//                                    startScreenX = e.screenX
-//                                    startScreenY = e.screenY
-//                                    startDleft = dleft
-//                                    startDtop = dtop
-//                                    movingHand = true
-//                                }
-//                            }
-//                        }
-//
-//                        revealer.reveal({
-//                            pane: Shitus.diva({style: {position: 'relative'}},
-//                            Shitus.diva({style: {height: '1.5em'}}),
-//                            Shitus.diva({},
-//                                Shitus.diva({className: 'form-group'}, labela({}, t('Code')), Shitus.diva({}, codeArea)),
-//                                ),
-//                            Shitus.diva({style: {position: 'absolute', right: 0, top: 0, display: 'flex'}},
-//                                Shitus.diva({style: {marginTop: 8, marginRight: 10}}, progressPlaceholder),
-//                                art.actionPlaceholderTag && button({level: 'primary', icon: 'pencil', title: t('Insert Test Action Code'), style: {}, async onClick() {
-//                                    callDebugRPWithProgress({msg: {fun: 'danger_insertTestActionCode', placeholderTag: art.actionPlaceholderTag, code: codeArea.getValue()}, progressPlaceholder, progressTitle: 'Inserting test action code'})
-//                                }, untested: true}),
-//                                ),
-//                            ),
-//
-//                            onClose() {
-//                                document.removeEventListener('mousemove', mouseMoveListener)
-//                                if (handShown) {
-//                                    testGlobal.controls[target.testName].hideHand()
-//                                    handShown = false
-//                                }
-//                            },
-//                        })
-//                    }}),
-//
-//                    target.renderInRevelationPane,
-//
-//                    target.$definitionStack && renderDefinitionStackStrip({stack: target.$definitionStack}),
-//
-//                    //                                target.$ctorArgument && Shitus.diva({style: {display: 'flex', flexWrap: 'wrap'}},
-////                                    Shitus.diva({style: {fontWeight: 'bold', marginRight: 10}}, t('$ctorArgument:')),
-////                                    Shitus.diva({}, deepInspect(target.$ctorArgument))),
-//
-//                    Shitus.run(_=> {
-//                        my.stacksCShit = my.stacksCShit || CollapsibleShit({content: Shitus.diva({}, _=> renderStacks(pickStacks(target)))})
-//                        return Shitus.diva({},
-//                            Shitus.diva({style: {display: 'flex', marginRight: 10}},
-//                                Shitus.diva({style: {fontWeight: 'bold'}}, t('Stacks')),
-//                                my.stacksCShit.renderCaret({style: {marginLeft: 10}})),
-//                            my.stacksCShit.renderContent())
-//                    }),
-//
-//                makeBackendMetaPanel({metaID: target.$metaID}),
-//
-//                Shitus.fov(target.contributeRevelationSection),
-//                )
-//            ),
-//
-//            Shitus.diva({style: {position: 'absolute', right: 5, top: 5, display: 'flex', alignItems: 'center'}},
-//                target.tame && target.controlTypeName && Shitus.diva({style: {backgroundColor: LIME_200, fontWeight: 'bold', padding: 5}}, target.getTamePath()),
-//                target.controlTypeName && Shitus.diva({style: {marginLeft: 5, backgroundColor: LIME_200, fontWeight: 'bold', padding: 5}}, target.controlTypeName),
-//                Shitus.diva({style: {marginRight: 15, backgroundColor: WHITE, fontWeight: 'normal', padding: 5}}, `#${target.elementID}`),
-//                Shitus.diva({style: {display: 'flex', marginLeft: 5}}, borderCheck, t('Border')),
-//                backTarget && button({icon: 'reply', style: {marginLeft: 5}, onClick() {
-//                    revealControl(backTarget)
-//                }, untested: true}),
-//                target.$attrsTinkerable && button({level: 'primary', icon: 'bolt', style: {marginLeft: 5}, onClick: applyAttrs, untested: true}),
-//                button({level: 'danger', icon: 'close', style: {marginLeft: 5},
-//                    onClick: closeControlRevealer = function() {
-//                        closeControlRevealer = undefined
-//                        controlBeingRevealed = undefined
-//                        debugPanes.delete({name: 'revealControl'})
-//                    },
-//                    untested: true}),
-//                ),
-//            ))
-//
-//            function elementFrame({jqel, border}) {
-//                const ofs = jqel.offset()
-//                let width = jqel.outerWidth(true) + 10
-//                let height = jqel.outerHeight(true) + 10
-//                let left = ofs.left - 5
-//                let top = ofs.top - 5
-//                return Shitus.diva({style: {
-//                    position: 'absolute',
-//                    left, top, width, height,
-//                    border, zIndex: topZIndex++}})
-//            }
-//
-//            function applyAttrs() {
-//                const newAttrSnap = eval(`(${attrsInput.getValue()})`)
-//                if (target.$tinkerWithAttrs) {
-//                    target.$tinkerWithAttrs(newAttrSnap)
-//                } else {
-//                    target.className = newAttrSnap.className
-//                    target.style = newAttrSnap.style
-//                    target.$update()
-//                }
-//            }
-//
-//            function revealAnotherLink({control}) {
-//                return Shitus.diva({style: {whiteSpace: 'nowrap'}}, Shitus.link({content: control.getLongRevelationTitle(),
-//                    onClick() {
-//                        revealControl(control, {backTarget: target})
-//                    },
-//                    onMouseEnter() {
-//                        my.setPotentialRevelationFrame(elementFrame({jqel: Shitus.byid(control.elementID), border: `2px dashed ${GRAY_500}`}))
-//                    },
-//                    onMouseLeave() {
-//                        my.setPotentialRevelationFrame(null)
-//                    }
-//                }))
-//            }
-//        })})
-//
-//        controlBeingRevealed = target
-//    }
-}
+////    export function revealControl(target, {backTarget, scrollToTarget}={}) {
+////        controlBeingRevealed = target
+////        dumpContributionsByControlAndChildren(target, {})
+////
+////        debugPanes.set({name: 'revealControl', element: updatableElement({}, update => {
+////            const paneHeight = 210
+////            const paneBodyHeight = 118
+////
+////            const my = {}
+////            const jqel = Shitus.byid(target.elementID)
+////            if (!jqel.length) {
+////                console.error('Failed to find element', deepInspect(target))
+////                console.error(target.$definitionStack)
+////                Shitus.raise(`Failed to find element with ID ${target.elementID}`)
+////            }
+////
+////            if (scrollToTarget) {
+////                const ofs = jqel.offset()
+////                $(document).scrollTop(ofs.top - 50 - 20)
+////            }
+////
+////            let attrsInput
+////                if (target.$attrsTinkerable) {
+////                    let attrSnap
+////                        if (target.$takeAttrSnap) {
+////                            attrSnap = target.$takeAttrSnap()
+////                        } else {
+////                            attrSnap = {className: target.className || '', style: target.style || {}}
+////                        }
+////                    const attrSnapString = deepInspect(attrSnap).replace(/ *\n\ */g, ' ').replace(/\{ /g, '{').replace(/ \}/g, '}')
+////                    attrsInput = Input({kind: 'textarea', initialValue: attrSnapString,
+////                        onKeyDown(e) {
+////                            if (e.ctrlKey && e.keyCode == 13) {
+////                                e.preventDefault()
+////                                applyAttrs()
+////                            }
+////                        }, untested: true})
+////                }
+////            const borderCheck = Checkbox({initialValue: true, onChange: update, untested: true})
+////
+////            return _=> Shitus.diva({noStateContributions: true},
+////            borderCheck.getValue() && elementFrame({jqel, border: `3px dashed ${BLACK}`}),
+////
+////            updatableElement({}, update => {
+////                let frame = null
+////                my.setPotentialRevelationFrame = function(newFrame) {
+////                    frame = newFrame; update()
+////                }
+////                return _=> frame
+////            }),
+////
+////            Shitus.diva({style: {
+////                position: 'fixed', left: 0, bottom: 0, width: '100%', overflow: 'auto',
+////                zIndex: topZIndex++, minHeight: paneHeight, maxHeight: paneHeight + 200, padding: 10,
+////                borderTop: `3px solid ${BLACK}`, background: WHITE}},
+////
+////                Shitus.run(_=> {
+////                    // @wip sourceLocation promise
+////                    if (target.$tag || target.$sourceLocation) return OpenSourceCodeLink({where: pick(target, '$tag', '$sourceLocation')})
+////                    return Shitus.diva({}, t('No client-side source location attached'))
+////                }),
+////
+////            Shitus.diva({style: {position: 'relative'}},
+////                Shitus.diva({className: 'row', style: {marginTop: 10}},
+////
+////                    Shitus.diva({className: 'col-sm-3', style: {}},
+////                        Shitus.diva({className: 'form-group'},
+////                            labela({}, t(`Here`)),
+////                            Shitus.run(function() {
+////                                const items = []
+////
+////                                const controls = elementIDToControls[target.elementID]
+////                                for (const control of controls) {
+////                                if (control.id == target.id) {
+////                                    items.push(Shitus.diva({style: {whiteSpace: 'nowrap', fontStyle: 'italic'}}, '> ' + control.getLongRevelationTitle()))
+////                                } else {
+////                                    items.push(revealAnotherLink({control}))
+////                                }
+////                            }
+////
+////                                return Shitus.diva({style: {height: paneBodyHeight, overflow: 'auto'}}, ...items)
+////                            }))),
+////
+////                    Shitus.diva({className: 'col-sm-3', style: {paddingLeft: 0}},
+////                        Shitus.diva({className: 'form-group'},
+////                            labela({}, t(`Parents`)),
+////                            Shitus.run(function() {
+////                                const items = []
+////
+////                                jqel.parents().each(function() {
+////                                    if (!this.id) return
+////                                    const controls = elementIDToControls[this.id] || []
+////                                    for (const control of controls.slice().reverse()) {
+////                                    items.push(revealAnotherLink({control}))
+////                                }
+////                                })
+////
+////                                if (!items.length) return Shitus.diva({}, 'No parents')
+////                                return Shitus.diva({style: {height: paneBodyHeight, overflow: 'auto'}}, ...items)
+////                            }))),
+////
+////                    Shitus.diva({className: 'col-sm-3', style: {}},
+////                        Shitus.diva({className: 'form-group'},
+////                            labela({}, t(`Children`)),
+////                            Shitus.run(function renderChildren() {
+////                                const items = []
+////
+////                                run2(jqel, 0, function findItems(el, indent) {
+////                                    const children = el.children()
+////                                    if (children.length = 0) return
+////
+////                                    children.each(function() {
+////                                        let indentIncrease = 0
+////                                        if (this.id) {
+////                                            const controls = elementIDToControls[this.id] || []
+////                                            for (const control of controls) {
+////                                                items.push(revealAnotherLink({control}))
+////                                            }
+////                                        }
+////
+////                                        findItems($(this), indent + indentIncrease)
+////                                    })
+////                                })
+////
+////                                if (!items.length) return Shitus.diva({}, 'No children')
+////                                return Shitus.diva({style: {height: paneBodyHeight, overflow: 'auto'}}, ...items)
+////                            })),
+////                        ),
+////
+////                    Shitus.diva({className: 'col-sm-3', style: {}},
+////                        Shitus.diva({className: 'form-group'},
+////                            labela({}, t(`Siblings`)),
+////                            Shitus.run(function() {
+////                                const items = []
+////
+////                                const jqchildren = jqel.parent().children()
+////                                jqchildren.each(function() {
+////                                    const controls = elementIDToControls[this.id]
+////                                    if (controls && controls.length) {
+////                                        const control = controls[0]
+////                                        if (control.elementID == target.elementID) {
+////                                            items.push(Shitus.diva({style: {whiteSpace: 'nowrap', fontStyle: 'italic'}}, '> ' + control.getLongRevelationTitle()))
+////                                        } else {
+////                                            items.push(revealAnotherLink({control}))
+////                                        }
+////                                    }
+////                                })
+////
+////                                return Shitus.diva({style: {height: paneBodyHeight, overflow: 'auto'}}, ...items)
+////                            }))),
+////                    ),
+////
+////                Shitus.diva({},
+////                    target.testName && Shitus.link({title: t('Hand pause'), untested: true, onClick() {
+////                        let movingHand, startScreenX, startScreenY, startDleft, startDtop, dleft = 0, dtop = 0, handShown
+////                        const pausePointTag = uuid()
+////                        const progressPlaceholder = Placeholder()
+////                        const codeArea = Input({kind: 'textarea', untested: true, style: {fontFamily: 'monospace'}})
+////
+////                        generateCodeAndShowHand()
+////
+////                        function generateCodeAndShowHand() {
+////                            if (handShown) {
+////                                testGlobal.controls[target.testName].hideHand()
+////                                handShown = false
+////                            }
+////
+////                            const showHandArg = {testActionHandOpts: {pointingFrom: 'right', dleft, dtop}}
+////                            const showHandArgForTinkering = cloneDeep(showHandArg)
+////                            showHandArgForTinkering.testActionHandOpts.noBlinking = true
+////                            testGlobal.controls[target.testName].showHand(showHandArgForTinkering)
+////                            handShown = true
+////
+////                            codeArea.setValue(dedent(`
+////                                // /*killme*/ setTestSpeed('slow'); art.respectArtPauses = true
+////                                testGlobal.controls['${target.testName}'].showHand(${JSON.stringify(showHandArg)})
+////                            ${'#'}hawait art.pausePoint({title: 'TODO: Describe situation', $tag: '${pausePointTag}'})
+////                            testGlobal.controls['${target.testName}'].hideHand()
+////                            `))
+////                        }
+////
+////                        document.addEventListener('mousemove', mouseMoveListener)
+////                        function mouseMoveListener(e) {
+////                            if (movingHand) {
+////                                if (e.ctrlKey) {
+////                                    dleft = startDleft + e.screenX - startScreenX
+////                                    dtop = startDtop + e.screenY - startScreenY
+////                                    generateCodeAndShowHand()
+////                                } else {
+////                                    movingHand = false
+////                                }
+////                            } else {
+////                                if (e.ctrlKey) {
+////                                    startScreenX = e.screenX
+////                                    startScreenY = e.screenY
+////                                    startDleft = dleft
+////                                    startDtop = dtop
+////                                    movingHand = true
+////                                }
+////                            }
+////                        }
+////
+////                        revealer.reveal({
+////                            pane: Shitus.diva({style: {position: 'relative'}},
+////                            Shitus.diva({style: {height: '1.5em'}}),
+////                            Shitus.diva({},
+////                                Shitus.diva({className: 'form-group'}, labela({}, t('Code')), Shitus.diva({}, codeArea)),
+////                                ),
+////                            Shitus.diva({style: {position: 'absolute', right: 0, top: 0, display: 'flex'}},
+////                                Shitus.diva({style: {marginTop: 8, marginRight: 10}}, progressPlaceholder),
+////                                art.actionPlaceholderTag && button({level: 'primary', icon: 'pencil', title: t('Insert Test Action Code'), style: {}, async onClick() {
+////                                    callDebugRPWithProgress({msg: {fun: 'danger_insertTestActionCode', placeholderTag: art.actionPlaceholderTag, code: codeArea.getValue()}, progressPlaceholder, progressTitle: 'Inserting test action code'})
+////                                }, untested: true}),
+////                                ),
+////                            ),
+////
+////                            onClose() {
+////                                document.removeEventListener('mousemove', mouseMoveListener)
+////                                if (handShown) {
+////                                    testGlobal.controls[target.testName].hideHand()
+////                                    handShown = false
+////                                }
+////                            },
+////                        })
+////                    }}),
+////
+////                    target.renderInRevelationPane,
+////
+////                    target.$definitionStack && renderDefinitionStackStrip({stack: target.$definitionStack}),
+////
+////                    //                                target.$ctorArgument && Shitus.diva({style: {display: 'flex', flexWrap: 'wrap'}},
+//////                                    Shitus.diva({style: {fontWeight: 'bold', marginRight: 10}}, t('$ctorArgument:')),
+//////                                    Shitus.diva({}, deepInspect(target.$ctorArgument))),
+////
+////                    Shitus.run(_=> {
+////                        my.stacksCShit = my.stacksCShit || CollapsibleShit({content: Shitus.diva({}, _=> renderStacks(pickStacks(target)))})
+////                        return Shitus.diva({},
+////                            Shitus.diva({style: {display: 'flex', marginRight: 10}},
+////                                Shitus.diva({style: {fontWeight: 'bold'}}, t('Stacks')),
+////                                my.stacksCShit.renderCaret({style: {marginLeft: 10}})),
+////                            my.stacksCShit.renderContent())
+////                    }),
+////
+////                makeBackendMetaPanel({metaID: target.$metaID}),
+////
+////                Shitus.fov(target.contributeRevelationSection),
+////                )
+////            ),
+////
+////            Shitus.diva({style: {position: 'absolute', right: 5, top: 5, display: 'flex', alignItems: 'center'}},
+////                target.tame && target.controlTypeName && Shitus.diva({style: {backgroundColor: LIME_200, fontWeight: 'bold', padding: 5}}, target.getTamePath()),
+////                target.controlTypeName && Shitus.diva({style: {marginLeft: 5, backgroundColor: LIME_200, fontWeight: 'bold', padding: 5}}, target.controlTypeName),
+////                Shitus.diva({style: {marginRight: 15, backgroundColor: WHITE, fontWeight: 'normal', padding: 5}}, `#${target.elementID}`),
+////                Shitus.diva({style: {display: 'flex', marginLeft: 5}}, borderCheck, t('Border')),
+////                backTarget && button({icon: 'reply', style: {marginLeft: 5}, onClick() {
+////                    revealControl(backTarget)
+////                }, untested: true}),
+////                target.$attrsTinkerable && button({level: 'primary', icon: 'bolt', style: {marginLeft: 5}, onClick: applyAttrs, untested: true}),
+////                button({level: 'danger', icon: 'close', style: {marginLeft: 5},
+////                    onClick: closeControlRevealer = function() {
+////                        closeControlRevealer = undefined
+////                        controlBeingRevealed = undefined
+////                        debugPanes.delete({name: 'revealControl'})
+////                    },
+////                    untested: true}),
+////                ),
+////            ))
+////
+////            function elementFrame({jqel, border}) {
+////                const ofs = jqel.offset()
+////                let width = jqel.outerWidth(true) + 10
+////                let height = jqel.outerHeight(true) + 10
+////                let left = ofs.left - 5
+////                let top = ofs.top - 5
+////                return Shitus.diva({style: {
+////                    position: 'absolute',
+////                    left, top, width, height,
+////                    border, zIndex: topZIndex++}})
+////            }
+////
+////            function applyAttrs() {
+////                const newAttrSnap = eval(`(${attrsInput.getValue()})`)
+////                if (target.$tinkerWithAttrs) {
+////                    target.$tinkerWithAttrs(newAttrSnap)
+////                } else {
+////                    target.className = newAttrSnap.className
+////                    target.style = newAttrSnap.style
+////                    target.$update()
+////                }
+////            }
+////
+////            function revealAnotherLink({control}) {
+////                return Shitus.diva({style: {whiteSpace: 'nowrap'}}, Shitus.link({content: control.getLongRevelationTitle(),
+////                    onClick() {
+////                        revealControl(control, {backTarget: target})
+////                    },
+////                    onMouseEnter() {
+////                        my.setPotentialRevelationFrame(elementFrame({jqel: Shitus.byid(control.elementID), border: `2px dashed ${GRAY_500}`}))
+////                    },
+////                    onMouseLeave() {
+////                        my.setPotentialRevelationFrame(null)
+////                    }
+////                }))
+////            }
+////        })})
+////
+////        controlBeingRevealed = target
+////    }
+//}
 
 fun jsFacing_timestampString(_ts: dynamic, _opts: dynamic = null) {
     var ts: dynamic = _ts

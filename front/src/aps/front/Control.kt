@@ -431,7 +431,8 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                 }
 
                 preventAndStop(e)
-                return Shitus.revealControl(this)
+                die("This code path should be deleted")
+//                return Shitus.revealControl(this)
             }
 
             onRootClick(e)

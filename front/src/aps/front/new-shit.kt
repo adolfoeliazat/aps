@@ -304,7 +304,8 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                 }
 
                 preventAndStop(e)
-                return@onClick Shitus.revealControl(me)
+                die("This code path should be deleted")
+//                return@onClick Shitus.revealControl(me)
             }
 
 //            val shit: ((Any?) -> Promise<Any?>)? = me.onRootClick

@@ -15,7 +15,7 @@ var revealStackCalledTimes = 0
 
 val Exception.stack: String get() = this.asDynamic().stack
 
-fun revealStack(exception: Exception, muteConsole: Boolean = false): Promise<Unit> {"__async"
+fun revealStack(exception: Exception, muteConsole: Boolean = false, skipAllForeignLines: Boolean = false): Promise<Unit> {"__async"
     if (++revealStackCalledTimes > 3) {
         return console.warn("Too much of stack revealing") /ignora
     }
@@ -37,7 +37,7 @@ fun revealStack(exception: Exception, muteConsole: Boolean = false): Promise<Uni
                         "position" to "fixed",
                         "left" to 0, "bottom" to 0, "width" to "100%", "padding" to 10, "maxHeight" to 200, "overflow" to "auto", "zIndex" to Shitus.topZIndex++,
                         "borderTop" to "3px solid ${BLACK}", "background" to WHITE.toString())),
-                renderStackTrace(exception).toReactElement(),
+                renderStackTrace(exception, skipAllForeignLines=skipAllForeignLines).toReactElement(),
 
 
                 Shitus.button(json("level" to "danger", "icon" to "close", "style" to json("position" to "absolute", "right" to 5, "top" to 5),
@@ -55,7 +55,7 @@ fun updatableShit(render: (update: () -> Unit) -> ToReactElementable) = object:C
     override fun render() = render({update()})
 }
 
-fun renderStackTrace(exception: Throwable, onRendered: (() -> Unit)? = null): ToReactElementable {
+fun renderStackTrace(exception: Throwable, onRendered: (() -> Unit)? = null, skipAllForeignLines: Boolean = false): ToReactElementable {
     val shit = Placeholder(kdiv{it-"Loading mapped stack..."})
 
     runni {"__async"
@@ -70,6 +70,9 @@ fun renderStackTrace(exception: Throwable, onRendered: (() -> Unit)? = null): To
         fun addStackItemElements(stack: dynamic) {
             if (stack == null) return
             for (line in lines.drop(1)) {
+                if (skipAllForeignLines && (line.startsWith("? ") || line.startsWith("K ")))
+                    continue
+
                 val m = Regex("^(.*?)([^\\s():]+:\\d+:\\d+)(.*)\$").matchEntire(line)
                 if (m != null) {
                     val prefix = m.groupValues[1]
