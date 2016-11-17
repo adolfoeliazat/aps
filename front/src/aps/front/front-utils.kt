@@ -14,9 +14,9 @@ import kotlin.browser.document
 
 val REALLY_BIG_Z_INDEX = 2147483647
 
-fun constructorName(x: Any): String = x.asDynamic().__proto__.constructor.name
+fun ctorName(x: Any): String = x.asDynamic().__proto__.constructor.name
 
-class JSException(override val message: String, val asyncStack: String? = null) : Throwable(message) {
+class FatException(override val message: String, val asyncStack: String? = null, val markdownPayload: String? = null) : Throwable(message) {
     val stack = js("Error")(message).stack
 }
 
@@ -103,7 +103,10 @@ fun tillAnimationFrame(): Promise<Unit> = Promise {resolve, reject ->
 
 typealias CSSSelector = String
 
-
+fun cwarnTitle(title: String) {
+    cwarn(title)
+    cwarn("-".repeat(title.length))
+}
 
 
 

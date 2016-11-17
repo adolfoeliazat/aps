@@ -114,7 +114,12 @@ sealed class ZimbabweResponse<T> {
 
 sealed class FormResponse {
     class Hunky<Meat>(val meat: Meat): FormResponse()
-    class Shitty(val error: String, val fieldErrors: Iterable<FieldError>): FormResponse()
+    class Shitty(val error: String, val fieldErrors: List<FieldError>): FormResponse()
+}
+
+sealed class FormResponse2<Meat> {
+    class Hunky<Meat>(val meat: Meat): FormResponse2<Meat>()
+    class Shitty<Meat>(val error: String, val fieldErrors: List<FieldError>): FormResponse2<Meat>()
 }
 
 enum class TextFieldType {

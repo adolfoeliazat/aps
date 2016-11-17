@@ -188,7 +188,7 @@ data class Style(
         when {
             value == null -> return
             jsTypeOf(value) == "string" -> return
-            constructorName(value) == "Color" -> return
+            ctorName(value) == "Color" -> return
             else -> bitch("$name should be null, String, or Color, but got [$value]")
         }
     }

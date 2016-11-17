@@ -1204,11 +1204,11 @@ object MakeStaticSites {
         return dedent(t(en, ua))
     }
 
-    fun markdownPiece(en: String, ua: String): ReactElement {
+    fun markdownPiece(en: String, ua: String): ToReactElementable {
         return markdownPiece(t(en, ua))
     }
 
-    fun markdownPiece(content: String): ReactElement {
+    fun markdownPiece(content: String): ToReactElementable {
         return markdown(dedent(content.replace("{{mdash}}", mdash)))
     }
 

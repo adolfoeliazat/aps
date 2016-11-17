@@ -20,7 +20,7 @@ interface TestHost {
 abstract class TestScenario {
     abstract fun run0(): Promise<Unit>
 
-    open val name: String get() = constructorName(this)
+    open val name: String get() = ctorName(this)
     open val shortDescription: String? = null
     open val longDescription: String? = null
 
@@ -98,7 +98,7 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     }
 
     dwarnStriking(testScenarioToRun)
-    val scenarioClass = eval("kot.aps.front.test.$testScenarioToRun") ?: bitch("No test scenario named [${testScenarioToRun}]")
+    val scenarioClass = eval("kot.aps.front.$testScenarioToRun") ?: bitch("No test scenario named [${testScenarioToRun}]")
     val scenario: TestScenario = eval("new scenarioClass()")
     scenario.host = sim
 
@@ -225,7 +225,6 @@ class TestStateBuilder(val items: MutableList<TestInstruction>) {
         items.add(TestInstruction.AssertGenerated(tag, "---generated-shit---", expectedExtender))
     }
 }
-
 
 
 

@@ -4,71 +4,24 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
-package aps.front.test
+package aps.front
 
 import aps.*
-import aps.front.*
-import into.kommon.*
 import kotlin.browser.*
 
 class TestBoot3 : TestScenario() {
     override val shortDescription = "Valid token in local storage"
 
-    lateinit var validToken: String
-
     override fun run0(): Promise<Unit> {"__async"
-        return __reawait(buildAndRunTestScenario {o->
+        return __reawait(buildAndRunTestScenario{o->
             o.assert(window.location.pathname == "/", "Scenario should be tested against / path")
 
-            o.acta("Sign Fucker up/in and approve his profile, bypassing UI") {"__async"
-                __await(ImposeNextGeneratedPasswordRequest.send("fucker-secret"))
-
-                run { // Sign-up
-                    val res: FormResponse = __await(callMatumba(SignUpRequest()-{o->
-                        o.agreeTerms.value = true
-                        o.signUpFields.firstName.value = "Gaylord"
-                        o.signUpFields.lastName.value = "Fucker"
-                        o.signUpFields.email.value = "fucker@test.shit.ua"
-                    }, null))
-
-                    if (res is FormResponse.Shitty) {
-                        console.warn("Fucker sign-up failed")
-                        console.warn("---------------------")
-                        console.warn(res.error)
-                        res.fieldErrors.forEach {console.warn("* ${it.field}: ${it.error}")}
-                        bitch("Fucker sign-up failed")
-                    }
-                }
-
-                run { // Sign-in and obtain token
-                    val res: FormResponse = __await(callMatumba(SignInWithPasswordRequest()-{o->
-                        o.email.value = "fucker@test.shit.ua"
-                        o.password.value = "fucker-secret"
-                    }, null))
-
-                    when (res) {
-                        is FormResponse.Shitty -> {
-                            console.warn("Fucker sign-in failed")
-                            console.warn("---------------------")
-                            console.warn(res.error)
-                            res.fieldErrors.forEach {console.warn("* ${it.field}: ${it.error}")}
-                            bitch("Fucker sign-in failed")
-                        }
-                        is FormResponse.Hunky<*> -> { // TODO:vgrechka A way to pass type args from parent sealed class to children
-                            val meat = res.meat as SignInResponse
-                            validToken = meat.token
-                        }
-                    }
-                }
-
-                __await(TestSetUserStateRequest.send("fucker@test.shit.ua", UserState.COOL))
-                __asyncResult(Unit)
-            }
+            val fucker = prepareFucker(o, UserState.COOL)
 
             o.act {
                 localStorage.clear()
-                localStorage["token"] = validToken
-                Globus.displayInitialShit()
+                localStorage["token"] = fucker.token
+                ExternalGlobus.displayInitialShit()
             }
             o.state("There's some garbage token in localStorage, checking it")
             o.assertVisibleText("Дышите глубоко...")
@@ -85,4 +38,86 @@ class TestBoot3 : TestScenario() {
         })
     }
 }
+
+// TODO:vgrechka Should be generated
+fun send(token: String?, req: SignUpRequest): Promise<FormResponse2<GenericResponse>> {"__async"
+    return __asyncResult(__await(_send(token, req)))
+}
+// TODO:vgrechka Should be generated
+fun sendSafe(token: String?, req: SignUpRequest): Promise<FormResponse2<GenericResponse>> {"__async"
+    return __asyncResult(__await(_sendSafe(token, req)))
+}
+// TODO:vgrechka Should be generated
+fun send(token: String?, req: SignInWithPasswordRequest): Promise<FormResponse2<SignInResponse>> {"__async"
+    return __asyncResult(__await(_send(token, req)))
+}
+// TODO:vgrechka Should be generated
+fun sendSafe(token: String?, req: SignInWithPasswordRequest): Promise<FormResponse2<SignInResponse>> {"__async"
+    return __asyncResult(__await(_sendSafe(token, req)))
+}
+
+fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"
+    Globus.lastAttemptedRPCName = ctorName(req)
+    val res: FormResponse = __await(callMatumba(req, token))
+    return __asyncResult(when (res) {
+        is FormResponse.Shitty -> {
+            FormResponse2.Shitty(res.error, res.fieldErrors)
+        }
+        is FormResponse.Hunky<*> -> {
+            FormResponse2.Hunky(res.meat as Meat)
+        }
+    })
+}
+
+fun <Req: RequestMatumba, Meat> _sendSafe(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"
+    return __asyncResult(
+        try {
+            __await(_send<Req, Meat>(token, req))
+        } catch(e: Throwable) {
+            FormResponse2.Shitty<Meat>(t("Service is temporarily fucked up, sorry", "Сервис временно в жопе, просим прощения"), listOf())
+        })
+}
+
+fun <Meat, T> FormResponse2<Meat>.switch(hunky: (meat: Meat) -> T,
+                                         shitty: (error: FormResponse2.Shitty<Meat>) -> T)
+    : T = when (this) {
+    is FormResponse2.Shitty -> shitty(this)
+    is FormResponse2.Hunky -> hunky(this.meat)
+}
+
+fun <Meat> FormResponse2<Meat>.whenShitty(shitty: (error: FormResponse2.Shitty<Meat>) -> Unit)
+    : Unit = this.switch(hunky = {it},
+                         shitty = {shitty(it)})
+
+val <Meat> FormResponse2<Meat>.orDie: Meat get() = this.switch(
+    hunky = {it},
+    shitty = {
+        throw FatException("Got shitty response from ${Globus.lastAttemptedRPCName}: ${it.error}",
+                           markdownPayload =
+                               if (it.fieldErrors.isEmpty())
+                                   "No field errors"
+                               else
+                                   "Field errors:\n" +
+                                   it.fieldErrors.map{"* ${it.field}: ${it.error}"}.joinToString("\n"))
+    }
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

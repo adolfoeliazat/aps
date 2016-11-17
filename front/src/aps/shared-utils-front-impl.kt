@@ -48,7 +48,7 @@ val NOTRE: ToReactElementable = NORE.toToReactElementable()
 }
 
 fun remoteProcedureNameForRequest(req: Any): String {
-    val requestClassName = constructorName(req)
+    val requestClassName = ctorName(req)
     return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
 }
 

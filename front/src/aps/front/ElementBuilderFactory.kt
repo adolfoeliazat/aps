@@ -17,5 +17,9 @@ class ElementBuilderFactory(val tag: String) {
         return builder
     }
 
+    operator fun invoke(@Mix style: Style,
+                        block: ((ElementBuilder) -> Unit)? = null
+    ): ElementBuilder = invoke(Attrs(), style, block)
+
 }
 

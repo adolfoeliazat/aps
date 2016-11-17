@@ -351,7 +351,7 @@ fun jsFacing_invariant(cond: dynamic, msg: dynamic) {
 }
 
 fun jsFacing_raise(msg: dynamic) {
-    throw JSException(msg)
+    throw FatException(msg)
 }
 
 fun jsFacing_isEqual(a: Any?, b: Any?): Boolean {
@@ -556,7 +556,7 @@ fun jsFacing_beginLogTime(what: dynamic): dynamic {
 fun jsFacing_makeT(lang: dynamic): dynamic {
     fun t() {
         val all = js("Array.prototype.slice.call(arguments)")
-        if (!all[0]) throw JSException("I don’t want falsy first argument in t()")
+        if (!all[0]) throw FatException("I don’t want falsy first argument in t()")
         var ss: dynamic = null
         if (jsTypeOf(all[0]) == "object") {
             ss = all[0]
@@ -567,7 +567,7 @@ fun jsFacing_makeT(lang: dynamic): dynamic {
         }
 
         val res = ss[lang.toUpperCase()]
-        if (!res) throw JSException("Localize me: " + global.nodeUtil.inspect(json("lang" to lang, "arguments" to all), json("depth" to null)))
+        if (!res) throw FatException("Localize me: " + global.nodeUtil.inspect(json("lang" to lang, "arguments" to all), json("depth" to null)))
         return res
     }
 
@@ -653,7 +653,7 @@ fun jsFacing_nilf(x: dynamic): Boolean {
 
 fun jsFacing_captureStackAsException(msg: String?): dynamic {
     try {
-        throw JSException(msg ?: "Gimme fucking stack")
+        throw FatException(msg ?: "Gimme fucking stack")
     } catch (e: Throwable) {
         return e
     }

@@ -44,7 +44,7 @@ sealed class TestInstruction() : DefinitionStackHolder {
     }
 
     override fun toString(): String {
-        return "<opcode=${constructorName(this)}>"
+        return "<opcode=${ctorName(this)}>"
     }
 
     class WorldPoint(val name: String) : TestInstruction()
@@ -127,7 +127,7 @@ object art {
             var stepIndex = 0
             instructions.forEachIndexed {instrIndex, instr ->
                 fun getControlForAction(arg: dynamic): dynamic {
-                    if (instr !is ShamedTestInstruction) throw JSException("I want ShamedTestInstruction, got $instr")
+                    if (instr !is ShamedTestInstruction) throw FatException("I want ShamedTestInstruction, got $instr")
 
                     val implementing = if (arg) arg.implementing else undefined
 
@@ -551,7 +551,7 @@ object art {
         hrss.onUnhandledRejection = { event: dynamic ->
             if (!hrss.preventExceptionRevelation && event.reason.message != "UI assertion failed") {
                 console.error(event.reason.message)
-                imf()
+                // imf()
             }
         }
         global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)

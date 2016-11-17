@@ -174,7 +174,7 @@ class World {
                     token = undefined
                     hrss.storageLocal.clear()
                 } finally {
-                    Globus.makeSignInNavbarLinkVisible()
+                    ExternalGlobus.makeSignInNavbarLinkVisible()
                 }
             }
 

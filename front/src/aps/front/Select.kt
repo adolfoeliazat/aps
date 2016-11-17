@@ -90,7 +90,7 @@ class Select<E>(
             state.put(this, tp + ".selected.value", value.name)
 
             val selectedItem = values.find{x -> x.name == value.name}
-            if (selectedItem == null) throw JSException("WTF is selectedItem (me=${debugDisplayName}; value=${value.name})")
+            if (selectedItem == null) throw FatException("WTF is selectedItem (me=${debugDisplayName}; value=${value.name})")
             state.put(this, tp + ".selected.title", selectedItem.title)
 
             values.forEachIndexed {i, entry ->

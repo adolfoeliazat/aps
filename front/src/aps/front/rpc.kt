@@ -14,7 +14,7 @@ import into.kommon.*
 //}
 
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {"__async"
-    val stackBeforeXHR: String = js("Error().stack")
+    val stackBeforeXHR: String = StackCaptureException().stack
 
     return Promise { resolve, reject ->
         val xhr = js("new XMLHttpRequest()")
@@ -28,7 +28,7 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
                     // dlog("Got backend response for /$path", global.JSON.stringify(jsonObject, null, 4))
                     resolve(jsonObject)
                 } else {
-                    reject(JSException("Got shitty backend response at /$path: status = ${xhr.status}", stackBeforeXHR))
+                    reject(FatException("Got shitty backend response at /$path: status = ${xhr.status}", stackBeforeXHR))
                 }
             }
         }

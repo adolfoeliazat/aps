@@ -602,29 +602,14 @@ fun pageHeader(title: String, className: String = "", labels: Iterable<dynamic> 
     }
 }
 
-fun errorToMappedClientStackString(shit: Throwable): Promise<String> {"__async"
+fun errorToMappedClientStackString(shit: Throwable): Promise<String> {
     val mangledStack: String = shit.asDynamic().stack
+    return stackToMappedClientStackString(mangledStack)
+}
+
+fun stackToMappedClientStackString(mangledStack: String): Promise<String> {"__async"
     val res = __await(MapStackRequest.send(mangledStack))
-
     return __asyncResult(res.originalStack)
-
-//    var lines = res.originalStack.lines()
-//    if (skipReactShit) {
-//        var reactShitMarkerSet: dynamic = null
-//        lines.forEach({s: dynamic, i: dynamic ->
-//                          if (s.includes("React")) {
-//                              if (!reactShitMarkerSet) {
-//                                  lines[i] = "----- React shit is skipped -----"
-//                                  reactShitMarkerSet = true
-//                              } else {
-//                                  lines[i] = undefined
-//                              }
-//                          }
-//                      })
-//        lines = global.lodash.compact(lines)
-//    }
-
-//    return __asyncResult((if (skipMessage || jsTypeOf(shit) == "string") "" else "" + shit.message + "\n") + lines.joinToString("\n"))
 }
 
 //interface Errorish {
@@ -766,14 +751,14 @@ fun markdownToHTML(md: String): String {
     return markdownItInstance.render(md)
 }
 
-fun markdown(md: String, stripP: Boolean = false): ReactElement {
+fun markdown(md: String, stripP: Boolean = false): ToReactElementable {
     var html = markdownToHTML(md).trim()
 
     if (stripP) html = html
         .replace(Regex("^<p>"), "")
         .replace(Regex("</p>$"), "")
 
-    return rawHTML(html)
+    return rawHTML(html).toToReactElementable()
 }
 
 

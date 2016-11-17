@@ -85,4 +85,30 @@ class TestScenarioBuilder {
     }
 }
 
+class prepareFucker(o: TestScenarioBuilder, userState: UserState) {
+    lateinit var token: String
+    init {
+        o.acta("Sign Fucker up/in and approve his profile, bypassing UI") {"__async"
+            __await(ImposeNextGeneratedPasswordRequest.send("fucker-secret"))
+
+            __await(send(null, SignUpRequest() - { o ->
+                o.agreeTerms.value = true
+                o.signUpFields.firstName.value = "Gaylord"
+                o.signUpFields.lastName.value = "Fucker"
+                o.signUpFields.email.value = "fucker@test.shit.ua"
+            })).orDie
+
+            token = __await(sendSafe(null, SignInWithPasswordRequest() - { o ->
+                o.email.value = "fucker@test.shit.ua"
+                o.password.value = "fucker-secret"
+            })).orDie.token
+
+            __await(TestSetUserStateRequest.send("fucker@test.shit.ua", userState))
+            __asyncResult(Unit)
+        }
+    }
+}
+
+
+
 

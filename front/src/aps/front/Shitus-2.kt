@@ -37,7 +37,7 @@ fun revealStack(exception: Exception, muteConsole: Boolean = false, skipAllForei
                         "position" to "fixed",
                         "left" to 0, "bottom" to 0, "width" to "100%", "padding" to 10, "maxHeight" to 200, "overflow" to "auto", "zIndex" to Shitus.topZIndex++,
                         "borderTop" to "3px solid ${BLACK}", "background" to WHITE.toString())),
-                renderStackTrace(exception, skipAllForeignLines=skipAllForeignLines).toReactElement(),
+                renderStackTrace(exception, skipAllForeignLines=skipAllForeignLines, marginRight=40).toReactElement(),
 
 
                 Shitus.button(json("level" to "danger", "icon" to "close", "style" to json("position" to "absolute", "right" to 5, "top" to 5),
@@ -55,21 +55,28 @@ fun updatableShit(render: (update: () -> Unit) -> ToReactElementable) = object:C
     override fun render() = render({update()})
 }
 
-fun renderStackTrace(exception: Throwable, onRendered: (() -> Unit)? = null, skipAllForeignLines: Boolean = false): ToReactElementable {
+fun renderStackTrace(e: Throwable, onRendered: (() -> Unit)? = null, skipAllForeignLines: Boolean = false, marginRight: Int? = null): ToReactElementable {
     val shit = Placeholder(kdiv{it-"Loading mapped stack..."})
 
     runni {"__async"
-        val stack = __await(errorToMappedClientStackString(exception))
-        val lines = stack.lines()
         val lineEls = mutableListOf<ToReactElementable>()
 
-        lineEls += kdiv(borderBottom="1px solid ${GRAY_500}", marginBottom=5, paddingBottom=5, marginRight=40){o->
-            o- lines.first()
+        fun addTitle(title: String, prefix: String = "", topBorder: Boolean = false) {
+            val borderStyle = "1px solid $GRAY_500"
+            var style = Style(borderBottom=borderStyle, marginBottom=5, paddingBottom=5, marginRight=marginRight)
+            if (topBorder) style = style.copy(borderTop=borderStyle, marginTop=5, paddingTop=5)
+
+            lineEls += kdiv(style){ o->
+                o- title
+            }
         }
 
-        fun addStackItemElements(stack: dynamic) {
-            if (stack == null) return
-            for (line in lines.drop(1)) {
+        fun addStackTitle(stack: String, prefix: String = "", topBorder: Boolean = false) {
+            addTitle(prefix + stack.lines().first(), topBorder=topBorder)
+        }
+
+        fun addStackItemElements(stack: String) {
+            for (line in stack.lines().drop(1)) {
                 if (skipAllForeignLines && (line.startsWith("? ") || line.startsWith("K ")))
                     continue
 
@@ -91,7 +98,23 @@ fun renderStackTrace(exception: Throwable, onRendered: (() -> Unit)? = null, ski
             }
         }
 
+        val stack = __await(errorToMappedClientStackString(e))
+        addStackTitle(stack)
         addStackItemElements(stack)
+
+        if (e is FatException) {
+            e.asyncStack?.let {
+                __await(stackToMappedClientStackString(it)).let {
+                    addStackTitle(it, prefix="Async stack: ", topBorder=true)
+                    addStackItemElements(it)
+                }
+            }
+
+            e.markdownPayload?.let {
+                addStackTitle("")
+                lineEls += markdown(it)
+            }
+        }
 
         shit.setContent(kdiv{it+lineEls})
         onRendered?.invoke()
