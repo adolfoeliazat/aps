@@ -52,7 +52,7 @@ fun dejsonize(jsThing: dynamic): Any? {
                         jsSet(res, k, dejsonize(jsThing[k]))
             }
 
-        jsIsArray(jsThing) -> jsArrayToList(jsThing) {dejsonize(it)}
+        jsIsArray(jsThing) -> jsArrayToListOfDynamic(jsThing) {dejsonize(it)}
 
         else -> { dwarn("jsThing", jsThing); wtf("Dunno how to dejsonize that jsThing") }
     }
@@ -70,7 +70,7 @@ fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSO
 fun <Res> callRemoteProcedure(procedureName: String, req: Request): Promise<Res> {"__async"
     val requestJSONObject = js("({})")
     val dynamicReq: dynamic = req
-    for (k in jsArrayToList(global.Object.keys(req))) {
+    for (k in jsArrayToListOfDynamic(global.Object.keys(req))) {
         val dynamicValue = dynamicReq[k]
         requestJSONObject[k] = when {
             dynamicValue == null -> null

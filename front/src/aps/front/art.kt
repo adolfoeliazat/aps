@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import kotlin.browser.window
@@ -647,8 +649,8 @@ object art {
         initDebugMailbox()
     }
 
-    fun fail(descr: String) {
-        throw ArtAssertionError(descr)
+    fun fail(message: String) {
+        throw ArtAssertionError(message)
     }
 
 }
@@ -683,7 +685,7 @@ fun gertrude(def: dynamic) {
         expectedExtender(json("expected" to fromExtender))
         extenderKeys = global.Object.keys(fromExtender)
 
-        for (k in jsArrayToList(extenderKeys)) {
+        for (k in jsArrayToListOfDynamic(extenderKeys)) {
             val komega = k.replace(js("/-i\\d\\d\\d/g"), "-ω")
             if (!extenderKeys.includes(komega)) {
                 extenderKeys.push(komega)
@@ -692,7 +694,7 @@ fun gertrude(def: dynamic) {
     }
 
     val keyToDefinitionStack = js("({})"); val keyToCallStack = js("({})"); val keyToControl = js("({})")
-    for (key: String in jsArrayToList(global.Object.keys(actual))) {
+    for (key: String in jsArrayToListOfDynamic(global.Object.keys(actual))) {
         val value = actual[key]
         if (value && value.`$definitionStack`) {
             actual[key] = value.value
@@ -777,7 +779,7 @@ fun gertrude(def: dynamic) {
                 Shitus.sortKeys(expected)
 
                 val definitionStacks = js("[]"); val callStacks = js("[]"); val controls = js("[]"); val origKeys = js("[]")
-                for (key in jsArrayToList(global.Object.keys(actual))) {
+                for (key in jsArrayToListOfDynamic(global.Object.keys(actual))) {
                     definitionStacks.push(keyToDefinitionStack[key])
                     callStacks.push(keyToCallStack[key])
                     controls.push(keyToControl[key])
@@ -799,7 +801,7 @@ fun gertrude(def: dynamic) {
                     if (!greenTitle) greenTitle = "Expected"
                     var prevLabel: dynamic = undefined
                     val diffLineItems = global.JsDiff.diffLines(string1, string2)
-                    for (item in jsArrayToList(diffLineItems)) {
+                    for (item in jsArrayToListOfDynamic(diffLineItems)) {
                         var backgroundColor: dynamic = undefined
                         var label: dynamic = undefined
                         if (item.added) {
@@ -823,7 +825,7 @@ fun gertrude(def: dynamic) {
                         item.value = item.value.replace(js("/\\n*\$/"), "")
                         val valueLines = item.value.split("\n")
                         val keysAdded = js("({})")
-                        for ((i, valueLine) in jsArrayToList(valueLines).withIndex()) {
+                        for ((i, valueLine) in jsArrayToListOfDynamic(valueLines).withIndex()) {
                             var shouldBeHiddenCuaseItsFuckingKeyRepetition: dynamic = undefined
                             var shouldBeHighlighted: dynamic = undefined
 
@@ -979,7 +981,7 @@ fun gertrude(def: dynamic) {
 //                replacements = Shitus.sortBy(replacements, "from")
 
                 var newActualStringForPasting = ""; from = 0
-                for (replacement in jsArrayToList(replacements)) {
+                for (replacement in jsArrayToListOfDynamic(replacements)) {
                     newActualStringForPasting += actualStringForPasting.slice(from, replacement.from) + replacement.newString
                     from = replacement.from + replacement.oldStringLength
                 }
@@ -1069,7 +1071,7 @@ fun gertrude(def: dynamic) {
                     // ({keys, scrollThere})
                     val keys = arg.keys; val scrollThere = arg.scrollThere
                     highlightedKeys = js("({})")
-                    for (k in jsArrayToList(keys)) {
+                    for (k in jsArrayToListOfDynamic(keys)) {
                         highlightedKeys[k] = true
                     }
 
@@ -1351,7 +1353,7 @@ fun dumpContributionsByControlAndChildren(target: dynamic, _opts: dynamic) {
     if (commonPrefixesToEllipsis) {
         val pairs = lodash.toPairs(contributions)
         var prevKey: dynamic = null
-        for (pair in jsArrayToList(pairs)) {
+        for (pair in jsArrayToListOfDynamic(pairs)) {
             val key: dynamic = pair[0]
             val value: dynamic = pair[1]
             if (prevKey) {
@@ -1432,7 +1434,7 @@ fun findContributionsByControlAndChildren(target: FuckingControl): Map<String, S
     Shitus.byid(target.elementID).find('*').each({
         if (js("this").id) {
             val controls = Shitus.elementIDToControls[js("this").id] ?: jsArrayOf()
-            for (control in jsArrayToList(controls)) {
+            for (control in jsArrayToListOfDynamic(controls)) {
                 art.stateContributionsByControl[control]?.let {contributions.putAll(it)}
             }
         }
@@ -1454,7 +1456,7 @@ fun makeHrundels(def: dynamic): dynamic {
 
     val divs: dynamic = js("[]")
     val possToStyles = js("({})")
-    for (control in jsArrayToList(controls)) {
+    for (control in jsArrayToListOfDynamic(controls)) {
         // dlog('co', control.debugDisplayName)
         val jqel = Shitus.byid(control.elementID)
         val ofs = jqel.offset()
@@ -1464,7 +1466,7 @@ fun makeHrundels(def: dynamic): dynamic {
         var top = ofs.top // - 5
 
         val poss = "${left}:${top}:${width}:${height}"
-        for (style in jsArrayToList(possToStyles[poss] ?: jsArrayOf())) {
+        for (style in jsArrayToListOfDynamic(possToStyles[poss] ?: jsArrayOf())) {
             // style.left -= 5; style.top -= 5; style.width += 10; style.height += 10
             style.width += 10
             style.borderRight = "${thickBorderWidth}px solid ${borderColor}"
@@ -1580,7 +1582,10 @@ fun openDebugPane(def: dynamic) {
 
 class ArtFuckingError(message: String, val detailsUI: ToReactElementable): Exception(message)
 
-class ArtAssertionError(message: String): Exception(message)
+class ArtAssertionError(
+    message: String,
+    override val visualPayload: ToReactElementable? = null
+) : Exception(message), WithVisualPayload
 
 
 fun renderCurrentTestScenarioDetails(marginTop: Int = 0) = kdiv{o->

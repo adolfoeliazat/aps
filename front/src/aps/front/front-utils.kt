@@ -20,6 +20,10 @@ class FatException(override val message: String, val asyncStack: String? = null,
     val stack = js("Error")(message).stack
 }
 
+interface WithVisualPayload {
+    val visualPayload: ToReactElementable?
+}
+
 @native interface JSArray
 
 fun <T> Array<T>.toJSArray(): JSArray = this.asIterable().toJSArray()
@@ -32,14 +36,13 @@ fun <T> Iterable<T>.toJSArray(): JSArray {
 
 fun evalAny(code: String): Any = eval(code)
 
-fun jsArrayToList(arr: dynamic, transform: (dynamic) -> dynamic = {it}): List<dynamic> {
-    val list = mutableListOf<dynamic>()
-    for (i in 0 until arr.length)
-        list.add(transform(arr[i]))
-    return list
-}
+fun <T> jsArrayToList(arr: dynamic, transform: (dynamic) -> T = {it}): List<T> =
+    (0 until arr.length).map {transform(arr[it])}
 
-fun jsKeys(x: Any): Iterable<String> = jsArrayToList(js("Object.keys(x)"))
+fun jsArrayToListOfDynamic(arr: dynamic, transform: (dynamic) -> dynamic = {it}): List<dynamic> =
+    jsArrayToList<dynamic>(arr, transform)
+
+fun jsKeys(x: Any): Iterable<String> = jsArrayToListOfDynamic(js("Object.keys(x)"))
 
 fun jsSet(target: Any, prop: String, value: Any?) = eval("target[prop] = value")
 
@@ -70,7 +73,7 @@ fun parseQueryString(href: String): Map<String, String> {
 
 
 @native object ReactDOM {
-    fun render(rel: ReactElement, container: HTMLElement): Unit = noImpl
+    fun render(rel: ReactElement?, container: HTMLElement): Unit = noImpl
     fun unmountComponentAtNode(container: HTMLElement): Unit = noImpl
 }
 
@@ -108,6 +111,24 @@ fun cwarnTitle(title: String) {
     cwarn("-".repeat(title.length))
 }
 
+fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String = buildString {
+    var indent = 0
+    html
+        .replace(">", ">\n")
+        .replace("</", "\n</")
+        .lines()
+        .forEach {
+            var s = (transformLine ?: {it})(it)
+                .replace(Regex("<!--.*?react-text.*?-->"), "")
+                .replace(Regex(" data-reactroot=\".*?\""), "")
+                .trim()
+            if (s.isBlank()) return@forEach
+            s = s.replace(Regex(" id=\"\\d+\""), "")
+            if (s.startsWith("</")) --indent
+            append(" ".repeat(indent * 2) + s + "\n")
+            if (s.startsWith("<") && !s.startsWith("</")) ++indent
+        }
+}
 
 
 

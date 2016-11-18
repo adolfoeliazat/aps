@@ -109,9 +109,9 @@ object Shitus {
 
         val res = json()
         global.Object.assign(res, first)
-        for (arg: dynamic in jsArrayToList(rest)) {
+        for (arg: dynamic in jsArrayToListOfDynamic(rest)) {
             if (arg) {
-                for (key: dynamic in jsArrayToList(global.Object.keys(arg))) {
+                for (key: dynamic in jsArrayToListOfDynamic(global.Object.keys(arg))) {
                     if (key[0] != "$") {
                         res[key] = arg[key]
                     }
@@ -337,7 +337,7 @@ fun jsFacing_tokens(s: dynamic): dynamic {
 
 fun jsFacing_values(x: dynamic): dynamic {
     val res = js("[]")
-    for (k in jsArrayToList(global.Object.keys(x)))
+    for (k in jsArrayToListOfDynamic(global.Object.keys(x)))
         res.push(x[k])
     return res
 }
@@ -584,7 +584,7 @@ fun jsFacing_dedent(it: dynamic): dynamic {
     }
 
     var minIndent = global.Number.MAX_SAFE_INTEGER
-    for (line in jsArrayToList(lines)) {
+    for (line in jsArrayToListOfDynamic(lines)) {
         if (line.trim()) {
             val lineIndent = line.length - line.trimLeft().length
             if (lineIndent < minIndent) {
@@ -614,7 +614,7 @@ fun jsFacing_codeLinesToString(arg: dynamic): dynamic {
     val indent: dynamic = arg.indent
 
     var res = ""
-    for (line in jsArrayToList(codeLines)) {
+    for (line in jsArrayToListOfDynamic(codeLines)) {
         res += " ".repeat(indent) + (line || "".asDynamic()) + "\n"
     }
     return res

@@ -6,8 +6,8 @@ import kotlin.browser.*
 abstract class BootTestScenario : StepBasedTestScenario() {
     abstract val clientKind: ClientKind
     abstract fun fillLocalStorage()
-    abstract fun buildStepsAfterWorldBoot()
     abstract fun buildStepsAfterDisplayInitialShit()
+    abstract fun buildStepsAfterWorldBoot()
 
     override fun buildSteps() {
         val siteName = clientKind.name.toLowerCase()

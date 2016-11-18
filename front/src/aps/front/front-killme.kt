@@ -136,7 +136,7 @@ fun legacy_implementControlShit(arg: dynamic) {
             }
 
             if (me.tame) {
-                for (another: dynamic in jsArrayToList(elementControls)) {
+                for (another: dynamic in jsArrayToListOfDynamic(elementControls)) {
                     if (another.tame) Shitus.raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed")
 
 //                        raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed", json(
@@ -171,7 +171,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                     if (shouldContribute) {
                         Shitus.byid(me.elementID).parents().each {
                             val parentControls = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
-                            for (parentControl in jsArrayToList(parentControls)) {
+                            for (parentControl in jsArrayToListOfDynamic(parentControls)) {
                                 if (parentControl.noStateContributions) {
                                     shouldContribute = false
                                     return@each false // break
@@ -185,7 +185,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                     }
                 }
 
-                for (entry in jsArrayToList(lodash.toPairs(me.tattrs || js("({})")))) {
+                for (entry in jsArrayToListOfDynamic(lodash.toPairs(me.tattrs || js("({})")))) {
                     val key: dynamic = entry[0]
                     val value: dynamic = entry[1]
                     if (value != null) {
@@ -290,7 +290,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         val parents = Shitus.byid(me.elementID).parents()
         parents.each {
             val parentControls: dynamic = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
-            for (parentControl in jsArrayToList(parentControls.slice().reverse())) {
+            for (parentControl in jsArrayToListOfDynamic(parentControls.slice().reverse())) {
                 if (parentControl.tame) {
                     res = parentControl.tame + "." + res
                 }

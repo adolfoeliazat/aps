@@ -18,6 +18,8 @@ val kul = ElementBuilderFactory("ul")
 val kol = ElementBuilderFactory("ol")
 val kli = ElementBuilderFactory("li")
 
+fun span(s: String? = null) = kspan {it-s}
+
 open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, block: ((ElementBuilder) -> Unit)? = null) : ToReactElementable {
     val children = mutableListOf<ToReactElementable>()
 
@@ -29,12 +31,14 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
         if (eb != null) children.add(eb)
     }
 
+    fun add(f: () -> ReactElement?) {
+        add(object:ToReactElementable {
+            override fun toReactElement(): ReactElement? = f()
+        })
+    }
+
     fun add(re: ReactElement?) {
-        if (re != null) add(
-            object:ToReactElementable {
-                override fun toReactElement(): ReactElement = re
-            }
-        )
+        if (re != null) add {re}
     }
 
     operator fun minus(eb: ToReactElementable?) {
@@ -71,7 +75,7 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
 
     override fun toReactElement(): ReactElement = control.toReactElement()
 
-    open fun wrapChild(index: Int, child: ToReactElementable) = child
+    open fun wrapChild(index: Int, child: ToReactElementable): ToReactElementable = child
 
     val control: Control2 by lazy {
         object : Control2(attrs) {
@@ -85,8 +89,16 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
                         "className" to attrs.className,
                         "style" to style.toReactStyle()
                     ),
-                    *children.mapIndexed {index, child ->
-                        wrapChild(index, child).toReactElement()}.toTypedArray()
+                    // TODO:vgrechka This looks shitty
+                    *children
+                        .map{it.toReactElement()}
+                        .filterNotNull()
+                        .mapIndexed {index, child ->
+                            wrapChild(index, ToReactElementable.from(child))
+                        }
+                        .map{it.toReactElement()}
+                        .filterNotNull()
+                        .toTypedArray()
                 ).toToReactElementable()
             }
         }
@@ -103,6 +115,7 @@ data class Style(
     var width: Any? = null,
     var height: Any? = null,
     var position: String? = null,
+    var margin: Any? = null,
     var marginTop: Any? = null,
     var marginRight: Any? = null,
     var marginBottom: Any? = null,
@@ -114,6 +127,7 @@ data class Style(
     var padding: Any? = null,
     var color: Any? = null,
     var backgroundColor: Any? = null,
+    var border: String? = null,
     var borderTop: String? = null,
     var borderRight: String? = null,
     var borderBottom: String? = null,
@@ -147,16 +161,19 @@ data class Style(
             width?.let {o.width = it}
             height?.let {o.height = it}
             position?.let {o.position = it}
+            margin?.let {o.margin = it}
             marginTop?.let {o.marginTop = it}
             marginRight?.let {o.marginRight = it}
             marginBottom?.let {o.marginBottom = it}
             marginLeft?.let {o.marginLeft = it}
+            padding?.let {o.padding = it}
             paddingTop?.let {o.paddingTop = it}
             paddingRight?.let {o.paddingRight = it}
             paddingBottom?.let {o.paddingBottom = it}
             paddingLeft?.let {o.paddingLeft = it}
             color?.let {o.color = it.toString()}
             backgroundColor?.let {o.backgroundColor = it.toString()}
+            border?.let {o.border = it}
             borderTop?.let {o.borderTop = it}
             borderRight?.let {o.borderRight = it}
             borderBottom?.let {o.borderBottom = it}
@@ -166,7 +183,6 @@ data class Style(
             fontSize?.let {o.fontSize = it}
             fontWeight?.let {o.fontWeight = it}
             fontStyle?.let {o.fontStyle = it}
-            padding?.let {o.padding = it}
             display?.let {o.display = it}
             justifyContent?.let {o.justifyContent = it}
             whiteSpace?.let {o.whiteSpace = it}
@@ -346,7 +362,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
             }
 
             if (me.tame != null) {
-                for (another: dynamic in jsArrayToList(elementControls)) {
+                for (another: dynamic in jsArrayToListOfDynamic(elementControls)) {
                     if (another.tame != null) Shitus.raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed on #${me.elementID}")
 
 //                        raise("Control ${me.debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed", json(
@@ -381,7 +397,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                     if (shouldContribute) {
                         Shitus.byid(me.elementID).parents().each {
                             val parentControls = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
-                            for (parentControl in jsArrayToList(parentControls)) {
+                            for (parentControl in jsArrayToListOfDynamic(parentControls)) {
                                 if (parentControl.noStateContributions) {
                                     shouldContribute = false
                                     return@each false // break
@@ -393,7 +409,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                     if (shouldContribute) cts(state)
                 }
 
-                for (entry in jsArrayToList(lodash.toPairs(me.tattrs ?: js("({})")))) {
+                for (entry in jsArrayToListOfDynamic(lodash.toPairs(me.tattrs ?: js("({})")))) {
                     val key: dynamic = entry[0]
                     val value: dynamic = entry[1]
                     if (value != null) {
@@ -496,7 +512,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
         val parents = Shitus.byid(me.elementID).parents()
         parents.each {
             val parentControls: dynamic = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
-            for (parentControl in jsArrayToList(parentControls.slice().reverse())) {
+            for (parentControl in jsArrayToListOfDynamic(parentControls.slice().reverse())) {
                 if (parentControl.tame) {
                     res = parentControl.tame + "." + res
                 }

@@ -475,7 +475,7 @@ fun decorate(def: dynamic) {
     val target = def.target
     jsFacing_deleteKey(def, "target")
 
-    for (name in jsArrayToList(global.Object.keys(def))) {
+    for (name in jsArrayToListOfDynamic(global.Object.keys(def))) {
         val origName = name.slice(name.indexOf("_") + 1)
         val orig = target[origName]
         val decorator = def[name]

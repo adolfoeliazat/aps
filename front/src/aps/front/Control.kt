@@ -117,8 +117,8 @@ open class BasicContainerControlBuilder: CommonControlInstanceShit() {
 
     val children = mutableListOf<ReactElement>()
 
-    fun add(child: ReactElement) {
-        if (child !== NORE_killme) {
+    fun add(child: ReactElement?) {
+        if (child != null && child !== NORE_killme) {
             val child2 = transformChildBeforeAddition(child)
             if (child2 !== NORE_killme)
                 children.add(child2)
@@ -174,7 +174,14 @@ fun makeBasicContainerControlCtor(tag: String): (BasicContainerControlBuilder.()
 }
 
 interface ToReactElementable {
-    fun toReactElement(): ReactElement
+    fun toReactElement(): ReactElement?
+
+    companion object {
+        fun from(el: ReactElement?): ToReactElementable =
+            object:ToReactElementable {
+                override fun toReactElement(): ReactElement? = el
+            }
+    }
 }
 
 open class ControlInstanceSpec {
@@ -257,7 +264,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                     if (!parentControls) undefined
                     else {
                         // TODO:vgrechka @unjs    85c906ea-435e-439e-a8bf-3c9f4a3c9798
-                        for (parentControl in jsArrayToList(js("parentControls.slice().reverse()"))) {
+                        for (parentControl in jsArrayToListOfDynamic(js("parentControls.slice().reverse()"))) {
                             if (parentControl.tame) {
                                 res = parentControl.tame + "." + res
                             }
@@ -305,7 +312,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
             }
 
             if (tame != null) {
-                for (other in jsArrayToList(elementControls)) {
+                for (other in jsArrayToListOfDynamic(elementControls)) {
                     if (other.tame) {
                         runni {"__async"
                             val otherDescription = __await(anyControlDefinitionStackString(other, "  "))
@@ -337,10 +344,10 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                 if (n(effectiveTame)) return
                 if (cis.noStateContributions) return
 
-                for (parentElement in jsArrayToList(Shitus.byid(elementID).parents())) {
+                for (parentElement in jsArrayToListOfDynamic(Shitus.byid(elementID).parents())) {
                     val parentControls = Shitus.elementIDToControls[parentElement.id]
                     if (parentControls)
-                        for (parentControl in jsArrayToList(parentControls))
+                        for (parentControl in jsArrayToListOfDynamic(parentControls))
                             if (parentControl.noStateContributions) return
                 }
 
@@ -460,7 +467,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
 
     fun definitionStackString(sep: String): Promise<String> {"__async"
         val jsarray = __await(this.`$definitionStack`)
-        return __asyncResult(jsArrayToList(jsarray).joinToString(sep) { it.loc })
+        return __asyncResult(jsArrayToListOfDynamic(jsarray).joinToString(sep) { it.loc })
 
 //        return __asyncResult(buildString {
 //            jsArrayToIterable(jsarray).joinToString(sep) { it.loc }

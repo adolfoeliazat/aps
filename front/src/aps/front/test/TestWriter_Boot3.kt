@@ -10,6 +10,8 @@ import aps.*
 import kotlin.browser.*
 
 class TestWriter_Boot3 : WriterBootTestScenario() {
+    override val shortDescription = "Valid token in local storage"
+
     override fun fillDatabase(): Promise<Unit> {"__async"
         return __reawait(prepareFucker(UserState.COOL))
     }
@@ -18,21 +20,20 @@ class TestWriter_Boot3 : WriterBootTestScenario() {
         localStorage["token"] = fuckerToken
     }
 
+    override fun buildStepsAfterDisplayInitialShit() {
+        o.state("There's some token in localStorage, checking it")
+        o.assertVisibleText("Дышите глубоко...")
+        o.assertNoVisibleText("Приветствуем")
+        o.assertNoVisibleText("Вход", under="#topNavbarContainer")
+        o.halt()
+    }
+
     override fun buildStepsAfterWorldBoot() {
         o.state("Checked and rejected")
         o.assertVisibleText("Приветствуем")
-        o.assertVisibleText_no("Дышите глубоко...")
+        o.assertNoVisibleText("Дышите глубоко...")
         o.assertVisibleText("Gaylord", under="#topNavbarContainer")
     }
-
-    override fun buildStepsAfterDisplayInitialShit() {
-        o.state("There's some garbage token in localStorage, checking it")
-        o.assertVisibleText("Дышите глубоко...")
-        o.assertVisibleText_no("Приветствуем")
-        o.assertVisibleText_no("Вход", under="#topNavbarContainer")
-    }
-
-    override val shortDescription = "Valid token in local storage"
 }
 
 // TODO:vgrechka Should be generated

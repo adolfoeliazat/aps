@@ -3,7 +3,16 @@ fun main(args: Array<String>) {
 //    testInitOrder()
 //    test1()
 //    testWhen1()
-    testNullableStringPlus()
+//    testNullableStringPlus()
+    shit1()
+}
+
+fun shit1() {
+    val html = """<ul id="leftNavbar" class="nav navbar-nav" style="float:none;display:inline-block;vertical-align:top;">"""
+    val res = html.replace(Regex("style=\"[^\"]*\"")) {mr->
+        mr.value.replace(":", ": ").replace(";", "; ").replace(Regex("; \"$"), ";\"")
+    }
+    println(res)
 }
 
 fun testNullableStringPlus() {

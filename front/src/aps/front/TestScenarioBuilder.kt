@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.die
 import into.kommon.global
 import jquery.jq
 
@@ -64,23 +65,47 @@ class TestScenarioBuilder {
         })
     }
 
-    fun assertVisibleText_no(expected: String, under: CSSSelector = "body") {
+    fun assertNoVisibleText(expected: String, under: CSSSelector = "body") {
         assertOnAnimationFrame("Page should not contain in $under: ~~_${expected}_~~", {
             val actual = visibleText(under)
+            dwarnStriking(actual)
             !actual.contains(expected)
         })
     }
 
     private fun visibleText(under: CSSSelector) = jq("$under *:not(:has(*)):visible").text()
 
-    fun assertOnAnimationFrame(descr: String, test: () -> Boolean) {
-        val step = TestInstruction.Step.AssertionStep(descr)
+    fun assertOnAnimationFrame(stepTitle: String, test: () -> Boolean) {
+        checkOnAnimationFrame(stepTitle) {
+            if (!test()) throw ArtAssertionError(stepTitle)
+        }
+    }
+
+    fun checkOnAnimationFrame(stepTitle: String, block: () -> Unit) {
+        val step = TestInstruction.Step.AssertionStep(stepTitle)
         instructions.add(step)
         acta {"__async"
             __await(tillAnimationFrame())
-            step.passed = test()
-            if (!step.passed) art.fail(descr)
+            block()
+            step.passed = true
             __asyncResult(Unit)
+        }
+    }
+
+    fun halt() {
+        act {die("Halted")}
+    }
+
+    fun assertHTML(under: CSSSelector, expected: String, transformLine: ((String) -> String)? = null) {
+        val stepTitle = "HTML diff under $under"
+        checkOnAnimationFrame(stepTitle) {
+            val tidyActual = tidyHTML(jq(under).html(), transformLine=transformLine)
+            val tidyExpected = tidyHTML(expected, transformLine=transformLine)
+//            clog("tidyActual", tidyActual)
+//            clog("tidyExpected", tidyExpected)
+            if (tidyActual != tidyExpected) {
+                throw ArtAssertionError(stepTitle, visualPayload = renderDiff(tidyExpected, tidyActual))
+            }
         }
     }
 }

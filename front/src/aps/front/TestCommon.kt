@@ -40,8 +40,11 @@ abstract class TestScenario {
 val testScenarios = mutableMapOf<String, TestScenario>()
 
 fun tetete() {
-    die()
+    val html = jq("#topNavbarContainer").html()
+    val tidy = tidyHTML(html)
+    println(tidy)
 }
+
 
 class TestCommon(val sim: dynamic) {
     val LONG_SHIT_301 = makeLongShit(301)
@@ -62,7 +65,7 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
 //    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
     val urlQuery = parseQueryString(global.location.href)
 
-    for (name in jsArrayToList(Shitus.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
+    for (name in jsArrayToListOfDynamic(Shitus.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
         if (urlQuery[name] != undefined) {
             global[name] = urlQuery[name]
         }

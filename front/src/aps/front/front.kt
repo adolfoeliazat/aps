@@ -753,7 +753,7 @@ class StyleBuilder {
     }
 
     fun addFromJSObject(jso: dynamic) {
-        for (key: String in jsArrayToList(global.Object.keys(jso))) {
+        for (key: String in jsArrayToListOfDynamic(global.Object.keys(jso))) {
             val value = jso[key]
             if (!value) continue
 

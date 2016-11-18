@@ -116,6 +116,13 @@ fun renderStackTrace(e: Throwable, onRendered: (() -> Unit)? = null, skipAllFore
             }
         }
 
+        if (e is WithVisualPayload) {
+            e.visualPayload?.let {
+                addStackTitle("")
+                lineEls += it
+            }
+        }
+
         shit.setContent(kdiv{it+lineEls})
         onRendered?.invoke()
     }

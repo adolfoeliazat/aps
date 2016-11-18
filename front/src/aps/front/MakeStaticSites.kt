@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -1020,7 +1022,7 @@ object MakeStaticSites {
         <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
         <meta http-equiv="pragma" content="no-cache" />
 
-    ${ReactDOMServer.renderToStaticMarkup(React.createElement("title", json(), tabTitle))}
+    ${renderToStaticMarkup(React.createElement("title", json(), tabTitle))}
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
@@ -1044,17 +1046,17 @@ object MakeStaticSites {
     </head>
     <body style="padding-top: 50px; padding-bottom: 0px; overflow-y: scroll;">
     <div id="topNavbarContainer">
-    ${ReactDOMServer.renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, json("highlightedItem" to highlightedItem)))}
+    ${renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, json("highlightedItem" to highlightedItem)))}
     </div>
 
     <div id="root" style="min-height: calc(100vh - 28px - 50px);">
     <div id="staticShit" style="display: none;">
     <!-- BEGIN CONTENT -->
-    ${ReactDOMServer.renderToStaticMarkup(content)}
+    ${renderToStaticMarkup(content)}
     <!-- END CONTENT -->
     </div>
 
-    <div id="ticker" style="display: none;">${ReactDOMServer.renderToStaticMarkup(wholePageTicker())}</div>
+    <div id="ticker" style="display: none;">${renderToStaticMarkup(wholePageTicker())}</div>
 
     <script>
         function displayInitialShit() {
@@ -1223,6 +1225,14 @@ object MakeStaticSites {
 
     fun readStatic(file: String): String {
         return fs.readFileSync("$APS_HOME/front/static/$file", "utf8")
+    }
+
+    fun renderToStaticMarkup(el: ReactElement): String {
+        val html: String = ReactDOMServer.renderToStaticMarkup(el)
+        // For textual diffing
+        return html.replace(Regex("style=\"[^\"]*\"")) {mr->
+            mr.value.replace(":", ": ").replace(";", "; ").replace(Regex("; \"$"), ";\"")
+        }
     }
 
 }

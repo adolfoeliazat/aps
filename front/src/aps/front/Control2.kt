@@ -113,7 +113,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
                 }
 
                 if (tame != null) {
-                    for (another: dynamic in jsArrayToList(elementControls)) {
+                    for (another: dynamic in jsArrayToListOfDynamic(elementControls)) {
                         if (another.tame != null) Shitus.raise("Control ${debugDisplayName} conflicts with ${another.debugDisplayName}, because both are tamed on #${elementID}")
                     }
                 }
@@ -134,7 +134,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
                     if (shouldContribute) {
                         Shitus.byid(elementID).parents().each {
                             val parentControls = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
-                            for (parentControl in jsArrayToList(parentControls)) {
+                            for (parentControl in jsArrayToListOfDynamic(parentControls)) {
                                 if (parentControl.noStateContributions) {
                                     shouldContribute = false
                                     return@each false // break
@@ -148,7 +148,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
                         if (tame != null) contributeTestStateIfTamed(state)
                     }
 
-                    for (entry in jsArrayToList(lodash.toPairs(attrs.tattrs ?: js("({})")))) {
+                    for (entry in jsArrayToListOfDynamic(lodash.toPairs(attrs.tattrs ?: js("({})")))) {
                         val key: dynamic = entry[0]
                         val value: dynamic = entry[1]
                         if (value != null) {
@@ -291,7 +291,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
         val parents: dynamic = Shitus.byid(elementID).parents()
         parents.each {
             val parentControls: dynamic = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
-            for (parentControl in jsArrayToList(parentControls.slice().reverse())) {
+            for (parentControl in jsArrayToListOfDynamic(parentControls.slice().reverse())) {
                 if (parentControl.tame) {
                     // TODO:vgrechka Check that [parentControl.tame] works with new controls
                     res = parentControl.tame + "." + res

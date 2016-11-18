@@ -54,7 +54,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
     val definitionStackString: Promise<String> get() {"__async"
         val jsarray = __await(this.`$definitionStack`)
         return __asyncResult(buildString {
-            for (item in jsArrayToList(jsarray)) {
+            for (item in jsArrayToListOfDynamic(jsarray)) {
                 append("${item.loc}  ")
             }
         })
@@ -132,7 +132,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
             }
 
             if (tame != null) {
-                for (other in jsArrayToList(elementControls)) {
+                for (other in jsArrayToListOfDynamic(elementControls)) {
                     runni {"__async"
                         val otherDescription = if (other is StatefulElement)
                             __await(other.definitionStackString)
@@ -171,7 +171,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
                         val parentControls = Shitus.elementIDToControls[js("this").id]
                         if (!parentControls) undefined
                         else {
-                            for (parentControl in jsArrayToList(parentControls)) {
+                            for (parentControl in jsArrayToListOfDynamic(parentControls)) {
                                 if (parentControl.noStateContributions) {
                                     shouldContribute = false
                                     return@each false // break
@@ -297,7 +297,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
             val parentControls = Shitus.elementIDToControls[js("this").id]
             if (!parentControls) undefined
             else {
-                for (parentControl in jsArrayToList(js("parentControls.slice().reverse()"))) {
+                for (parentControl in jsArrayToListOfDynamic(js("parentControls.slice().reverse()"))) {
                     if (parentControl.tame) {
                         res = parentControl.tame + "." + res
                     }
