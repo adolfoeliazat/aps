@@ -61,7 +61,7 @@ fun renderStackTrace(e: Throwable, onRendered: (() -> Unit)? = null, skipAllFore
     runni {"__async"
         val lineEls = mutableListOf<ToReactElementable>()
 
-        fun addTitle(title: String, prefix: String = "", topBorder: Boolean = false) {
+        fun addTitle(title: String, topBorder: Boolean = false) {
             val borderStyle = "1px solid $GRAY_500"
             var style = Style(borderBottom=borderStyle, marginBottom=5, paddingBottom=5, marginRight=marginRight)
             if (topBorder) style = style.copy(borderTop=borderStyle, marginTop=5, paddingTop=5)

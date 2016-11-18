@@ -19,6 +19,7 @@ interface TestHost {
 
 abstract class TestScenario {
     abstract fun run0(): Promise<Unit>
+    open fun fillDatabase(): Promise<Unit> = __asyncResult(Unit)
 
     open val name: String get() = ctorName(this)
     open val shortDescription: String? = null
@@ -30,6 +31,7 @@ abstract class TestScenario {
     fun run(): Promise<Unit> {"__async"
         measure("Resetting database") {
             __await(ResetTestDatabaseRequest.send(templateDB="test-template-ua-1", recreateTemplate=true))
+            __await(fillDatabase())
         }
         return __reawait(run0())
     }

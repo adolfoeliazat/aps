@@ -9,34 +9,30 @@ package aps.front
 import aps.*
 import kotlin.browser.*
 
-class TestBoot3 : TestScenario() {
-    override val shortDescription = "Valid token in local storage"
-
-    override fun run0(): Promise<Unit> {"__async"
-        return __reawait(buildAndRunTestScenario{o->
-            o.assert(window.location.pathname == "/", "Scenario should be tested against / path")
-
-            val fucker = prepareFucker(o, UserState.COOL)
-
-            o.act {
-                localStorage.clear()
-                localStorage["token"] = fucker.token
-                ExternalGlobus.displayInitialShit()
-            }
-            o.state("There's some garbage token in localStorage, checking it")
-            o.assertVisibleText("Дышите глубоко...")
-            o.assertVisibleText_no("Приветствуем")
-            o.assertVisibleText_no("Вход", under="#topNavbarContainer")
-
-            o.acta {"__async"
-                __reawait(World().boot())
-            }
-            o.state("Checked and rejected")
-            o.assertVisibleText("Приветствуем")
-            o.assertVisibleText_no("Дышите глубоко...")
-            o.assertVisibleText("Gaylord", under="#topNavbarContainer")
-        })
+class TestWriter_Boot3 : WriterBootTestScenario() {
+    override fun fillDatabase(): Promise<Unit> {"__async"
+        return __reawait(prepareFucker(UserState.COOL))
     }
+
+    override fun fillLocalStorage() {
+        localStorage["token"] = fuckerToken
+    }
+
+    override fun buildStepsAfterWorldBoot() {
+        o.state("Checked and rejected")
+        o.assertVisibleText("Приветствуем")
+        o.assertVisibleText_no("Дышите глубоко...")
+        o.assertVisibleText("Gaylord", under="#topNavbarContainer")
+    }
+
+    override fun buildStepsAfterDisplayInitialShit() {
+        o.state("There's some garbage token in localStorage, checking it")
+        o.assertVisibleText("Дышите глубоко...")
+        o.assertVisibleText_no("Приветствуем")
+        o.assertVisibleText_no("Вход", under="#topNavbarContainer")
+    }
+
+    override val shortDescription = "Valid token in local storage"
 }
 
 // TODO:vgrechka Should be generated
