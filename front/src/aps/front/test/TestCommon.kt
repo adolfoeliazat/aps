@@ -106,21 +106,22 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     }
 
     val testName = urlQuery["test"]
+    if (testName != null) TestShit.testHref = window.location.href
     val testSuiteName = urlQuery["testSuite"]
 
     __await(when {
-                testName != null -> runFuckingTestNamed(testName, urlQuery)
-                testSuiteName != null -> runFuckingTestSuiteFailingFast(testSuiteName, urlQuery)
-                else -> bitch("Gimme test or testSuite in URL")
-            })
+        testName != null -> runTestNamed(testName, urlQuery)
+        testSuiteName != null -> runTestSuiteFailingFast(testSuiteName, urlQuery)
+        else -> bitch("Gimme test or testSuite in URL")
+    })
     return __asyncResult(Unit)
 }
 
-private fun runFuckingTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String, String>): Promise<Unit> {"__async"
+private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String, String>): Promise<Unit> {"__async"
     val suite: TestSuite = instantiate(testSuiteName)
     for (scenario in suite.scenarios) {
         clog("=====", "Running scenario", ctorName(scenario), "=====")
-        val res = __await(runFuckingTest(scenario, urlQuery, showTestPassedPane = false))
+        val res = __await(runTest(scenario, urlQuery, showTestPassedPane = false))
         if (res != null) {
             val bar = "*************************************"
             console.error("\n$bar\nWe are fucked, man\n$bar")
@@ -142,12 +143,12 @@ private fun runFuckingTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<
     return __asyncResult(Unit)
 }
 
-private fun runFuckingTestNamed(testName: String, urlQuery: Map<String, String>): Promise<Throwable?> {"__async"
+private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promise<Throwable?> {"__async"
     val scenario: TestScenario = instantiate(testName)
-    return __reawait(runFuckingTest(scenario, urlQuery, showTestPassedPane = true))
+    return __reawait(runTest(scenario, urlQuery, showTestPassedPane = true))
 }
 
-private fun runFuckingTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
     hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
     hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
     hrss.preventUIAssertionThrowing = urlQuery["uiAssertionThrows"] == "no"

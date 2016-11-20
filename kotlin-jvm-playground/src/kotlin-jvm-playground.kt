@@ -4,7 +4,15 @@ fun main(args: Array<String>) {
 //    test1()
 //    testWhen1()
 //    testNullableStringPlus()
-    shit1()
+//    shit1()
+    shit2()
+}
+
+fun shit2() {
+    val a: String? = null
+    val b: String? = null
+    val c = a + b
+    println(c)
 }
 
 fun shit1() {

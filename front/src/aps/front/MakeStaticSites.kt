@@ -1125,6 +1125,7 @@ object MakeStaticSites {
         .then(_=> loadScript('front-enhanced.js?' + Date.now()))
         .then(_=> {
             kot = Kotlin.modules.front
+            F = kot.aps.front
             kot.aps.front.ignite()
         })
 

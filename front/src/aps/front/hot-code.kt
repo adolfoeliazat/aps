@@ -23,8 +23,11 @@ class InitAutoReload {
 
     fun tick() {"__async"
         if (initialCtime != __await(GetSoftwareVersionRequest.send()).ctime) {
-            val href = window.location.href
+            var href = window.location.href
                 .replace(Regex("#.*$"), "") // Otherwise it doesn't actually reload page
+            if (window.localStorage["reloadTest"] == "true")
+                TestShit.testHref?.let {href = it}
+
             window.location.href = href
         } else {
             schedule()

@@ -4,15 +4,16 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
 import into.kommon.*
 import jquery.*
 import org.w3c.dom.*
-import kotlin.browser.document
+import kotlin.browser.window
 import kotlin.dom.asList
-import kotlin.dom.children
 
 val REALLY_BIG_Z_INDEX = 2147483647
 
@@ -152,6 +153,17 @@ fun stripUninterestingElements(jqel: JQuery): HTMLElement {
     return root
 }
 
+operator fun String?.plus(rhs: String?): String =
+    if (this == null && rhs == null) "nullnull"
+    else this.asDynamic() + rhs
+
+fun dumpLocalStorage() {
+    val ls = window.localStorage
+    for (i in 0 until ls.length) {
+        val key = ls.key(i)
+        clog(key + ": " + ls[key!!])
+    }
+}
 
 
 
