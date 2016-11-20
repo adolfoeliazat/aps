@@ -11,7 +11,9 @@ import aps.front.*
 import into.kommon.*
 
 class TS_UA_Writer_SignUp_1 : TestScenario() {
-    override fun run0(): Promise<Unit> {"__async"
+    override val shortDescription = "TS_UA_Writer_SignUp_1"
+
+    override fun run0(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
         val slowly = false
 
         if (slowly) {
@@ -38,7 +40,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         instructions.add(TestInstruction.WorldPoint("4"))
         instructions.addAll(dasja4())
 
-        return __await<dynamic>(art.run(instructions))
+        return __reawait(art.run(instructions, showTestPassedPane))
     }
 
     fun vovchok1(): Iterable<TestInstruction> {

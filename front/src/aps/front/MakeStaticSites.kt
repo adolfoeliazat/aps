@@ -1058,6 +1058,8 @@ object MakeStaticSites {
 
     <div id="ticker" style="display: none;">${renderToStaticMarkup(wholePageTicker())}</div>
 
+    <script src="jquery.min.js"></script>
+
     <script>
         function displayInitialShit() {
             if (localStorage.getItem('token')) {
@@ -1071,18 +1073,17 @@ object MakeStaticSites {
 
         function makeSignInNavbarLinkVisible() {
             $('a[href="sign-in.html"]').css('display', '')
-//            $(document.head).append('<style>a[href="sign-in.html"] {display: block !important;}</style>')
         }
 
         ${if (mode == Mode.PROD) """
             displayInitialShit()
         """ else """
-            if (!/test=/.test(location.href)) {
+            if (!/test=|testSuite=/.test(location.href)) {
                 displayInitialShit()
             }
         """}
     </script>
-    </div>
+    </div> <!-- /#root -->
 
     <div id="footer" style="">
     <div style="background-color: #f8f8f8; border: 1px solid #e7e7e7; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding-top: 5px; padding-bottom: 5px; height: 28px;">
@@ -1100,7 +1101,6 @@ object MakeStaticSites {
     <script>if (typeof global === 'undefined') global = window</script>
 
     <script src="deps.js"></script>
-    <script src="jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap-3.3.7-hacked.js"></script>
     <script src="kotlin-1.1-m02-eap-hacked.js"></script>
     <!--
@@ -1113,6 +1113,7 @@ object MakeStaticSites {
     </script>
 
     <script>
+        console.warn('---------- Running static script ----------')
         // TODO:vgrechka Think about DANGEROUS_TOKEN. How it should be included into client, etc.
         DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}'
 

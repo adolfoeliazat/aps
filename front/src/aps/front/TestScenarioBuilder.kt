@@ -11,17 +11,17 @@ import into.kommon.die
 import into.kommon.global
 import jquery.jq
 
-fun buildAndRunTestScenario(block: (TestScenarioBuilder) -> Unit): Promise<Unit> {"__async"
+fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> {"__async"
     val builder = TestScenarioBuilder()
     block(builder)
-    return __reawait(builder.runScenario())
+    return __reawait(builder.runScenario(showTestPassedPane))
 }
 
 class TestScenarioBuilder {
     val instructions = mutableListOf<TestInstruction>()
 
-    fun runScenario(): Promise<Unit> {"__async"
-        return __reawait(art.run(instructions))
+    fun runScenario(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+        return __reawait(art.run(instructions, showTestPassedPane))
     }
 
     fun state(descr: String) {

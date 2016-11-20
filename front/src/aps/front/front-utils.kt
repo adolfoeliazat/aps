@@ -16,8 +16,6 @@ import kotlin.dom.children
 
 val REALLY_BIG_Z_INDEX = 2147483647
 
-fun ctorName(x: Any): String = x.asDynamic().__proto__.constructor.name
-
 class FatException(override val message: String, val asyncStack: String? = null, val markdownPayload: String? = null) : Throwable(message) {
     val stack = js("Error")(message).stack
 }
@@ -79,10 +77,11 @@ fun parseQueryString(href: String): Map<String, String> {
     fun unmountComponentAtNode(container: HTMLElement): Unit = noImpl
 }
 
-inline fun measure(what: String, block: () -> Unit) {
+inline fun <T> measure(what: String, block: () -> T): T {
     val m = jsFacing_beginLogTime(what)
-    block()
+    val res = block()
     m.end()
+    return res
 }
 
 fun asReactElement(x: Any?): ReactElement {
@@ -114,7 +113,6 @@ fun cwarnTitle(title: String) {
 }
 
 fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String = buildString {
-    // clog(html)
     var indent = 0
     html
         .replace(">", ">\n")
@@ -128,6 +126,10 @@ fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String 
             if (s.isBlank()) return@forEach
             s = s.replace(Regex(" id=\"\\d+\""), "")
             if (s.startsWith("</")) --indent
+            if (indent < 0) {
+                cwarn("Shitty HTML", html)
+                bitch("Can't figure out indentations")
+            }
             append(" ".repeat(indent * 2) + s + "\n")
             if (s.startsWith("<") && !s.startsWith("</")) ++indent
         }
@@ -138,8 +140,9 @@ fun stripUninterestingElements(jqel: JQuery): HTMLElement {
         if (el.tagName == "SCRIPT" || el.style.display == "none") {
             return el.remove()
         }
-        el.children()
-        for (child in el.children.asList()) {
+
+        val children = el.children.asList().toList() // Copying it because `children.asList()` is live
+        for (child in children) {
             descend(child)
         }
     }

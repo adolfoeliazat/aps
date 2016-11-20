@@ -165,6 +165,11 @@ val nbsp: String = "" + 0xa0.toChar()
 val mdash = "—"
 val ndash = "–"
 
+fun String.indexOfOrDie(needle: String): Int {
+    val idx = this.indexOf(needle)
+    if (idx == -1) die("Needle not found: [$needle]")
+    return idx
+}
 
 
 

@@ -116,7 +116,7 @@ object art {
     }
 
 
-    fun run(instructions: Iterable<TestInstruction>): Promise<Unit> {"__async"
+    fun run(instructions: Iterable<TestInstruction>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
         try {
             testInstructions = instructions
 
@@ -156,7 +156,7 @@ object art {
 
                 if (instrIndex == until) {
                     dlog("Stopping test before instruction ${instrIndex}")
-                    return __asyncResult(Unit)
+                    return __asyncResult(null)
                 }
 
                 when {
@@ -233,10 +233,12 @@ object art {
                 dlog("Seems test is passed")
             }
 
-            openTestPassedPane()
+            if (showTestPassedPane) openTestPassedPane()
+            return __asyncResult(null)
         }
         catch (e: ArtFuckingError) {
             showAssertionErrorPane(e.message, e.detailsUI)
+            return __asyncResult(e)
         }
         catch (e: Throwable) {
             showAssertionErrorPane(e.message,
@@ -250,9 +252,8 @@ object art {
                                        is ArtAssertionError -> RED_700
                                        else -> RED_700
                                    })
+            return __asyncResult(e)
         }
-
-        return __asyncResult(Unit)
     }
 
     fun fullWorldPointName(instr: TestInstruction.WorldPoint): String {
@@ -1167,30 +1168,36 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 }
 
 fun openTestPassedPane() {
-    DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(noStateContributions=true){o->
-        o- Style(backgroundColor=Color.GREEN_700, color=Color.WHITE,
-                marginTop=10, padding="10px 10px", textAlign="center", fontWeight="bold")
+    openShitPassedPane(
+        title = run {
+            val scenario = hrss.currentTestScenario!!
+            var title = scenario.name
+            scenario.shortDescription?.let {title += ". $it"}
+            title
+        },
+        details = renderCurrentTestScenarioDetails())
+}
 
-        o- kdiv(paddingBottom=10){o->
-            o- run {
-                val scenario = hrss.currentTestScenario!!
-                var title = scenario.name
-                scenario.shortDescription?.let {title += ". $it"}
+fun openShitPassedPane(title: String, details: ElementBuilder) {
+    DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(noStateContributions = true) {o ->
+        o - Style(backgroundColor = GREEN_700, color = WHITE,
+                  marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
+
+        o - kdiv(paddingBottom = 10) {o ->
+            o - run {
                 title
             }
         }
 
-        o- kdiv{o->
-            o- Style(backgroundColor=Color.WHITE, color = Color.BLACK_BOOT,
-                     fontWeight="normal", textAlign="left", padding=5)
-            o- renderCurrentTestScenarioDetails()
+        o - kdiv {o ->
+            o - Style(backgroundColor = WHITE, color = BLACK_BOOT,
+                      fontWeight = "normal", textAlign = "left", padding = 5)
+            o - details
         }
     })
 
     art.scrollRevealing("underFooter")
-
-//        DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), oldShitAsReactElementable(Shitus.spana(json(), testPassedPane.element)))
-    }
+}
 
 
 //        async scroll({origY, destY, totalTime}) {

@@ -10,9 +10,9 @@ import aps.*
 import kotlin.browser.*
 
 class TestWriter_Boot3 : WriterBootTestScenario() {
-    override val shortDescription = "Valid token in local storage"
+    override val shortDescription = "Valid token in local storage, user is cool"
 
-    override fun fillDatabase(): Promise<Unit> {"__async"
+    override fun prepareShit(): Promise<Unit> {"__async"
         return __reawait(prepareFucker(UserState.COOL))
     }
 

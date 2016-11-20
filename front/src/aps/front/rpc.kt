@@ -9,9 +9,28 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-//fun igniteRPCShit() {
-//    dlog("Igniting RPC shit...")
-//}
+fun fetchURL(url: String, method: String, data: String?): Promise<String> {"__async"
+    val stackBeforeXHR: String = StackCaptureException().stack
+
+    return Promise {resolve, reject ->
+        val xhr = js("new XMLHttpRequest()")
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+
+        xhr.onreadystatechange = {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    val response: String = xhr.responseText
+                    resolve(response)
+                } else {
+                    reject(FatException("Got shitty response from $url: status = ${xhr.status}", stackBeforeXHR))
+                }
+            }
+        }
+
+        xhr.send(data)
+    }
+}
 
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {"__async"
     val stackBeforeXHR: String = StackCaptureException().stack

@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -18,23 +20,55 @@ interface TestHost {
 }
 
 abstract class TestScenario {
-    abstract fun run0(): Promise<Unit>
-    open fun fillDatabase(): Promise<Unit> = __asyncResult(Unit)
+    val SLOWISH = false
+
+    abstract fun run0(showTestPassedPane: Boolean): Promise<Throwable?>
+    abstract val shortDescription: String
+    open fun prepareShit(): Promise<Unit> = __asyncResult(Unit)
 
     open val name: String get() = ctorName(this)
-    open val shortDescription: String? = null
     open val longDescription: String? = null
 
     lateinit var host: TestHost
     val testCommon by lazy { TestCommon(host) }
 
-    fun run(): Promise<Unit> {"__async"
-        measure("Resetting database") {
-            __await(ResetTestDatabaseRequest.send(templateDB="test-template-ua-1", recreateTemplate=true))
-            __await(fillDatabase())
+    fun run(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+        executed += this
+
+        // TODO:vgrechka Track all React-mounted nodes
+        byid0("topNavbarContainer")?.let {ReactDOM.unmountComponentAtNode(it)}
+        byid0("root")?.let {ReactDOM.unmountComponentAtNode(it)}
+
+        docInnerHTML = "<h3>Running Test: ${ctorName(this)}</h3><hr>"
+        measureAndReportToDocumentElement("Resetting database") {
+            __await(ResetTestDatabaseRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
         }
-        return __reawait(run0())
+        measureAndReportToDocumentElement("Preparing shit") {
+            __await(prepareShit())
+        }
+        return __reawait(run0(showTestPassedPane))
     }
+
+    inline fun <T> measureAndReportToDocumentElement(name: String, block: () -> T): T {
+        docInnerHTML += "$name...."
+        val res = measure(name, block)
+        docInnerHTML += " DONE<br>"
+        return res
+    }
+
+    var docInnerHTML: String
+        get() = document.documentElement!!.innerHTML
+        set(value) {document.documentElement!!.innerHTML = value}
+
+
+    companion object {
+        val executed = mutableListOf<TestScenario>()
+    }
+}
+
+interface TestSuite {
+    val scenarios: List<TestScenario>
+    val shortDescription: String
 }
 
 val testScenarios = mutableMapOf<String, TestScenario>()
@@ -71,9 +105,49 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
         }
     }
 
-    val testScenarioToRun = urlQuery["test"] ?: bitch("Gimme test name")
-//    val testScenarioToRun = urlQuery["testScenario"] ?: bitch("Gimme testScenario")
+    val testName = urlQuery["test"]
+    val testSuiteName = urlQuery["testSuite"]
 
+    __await(when {
+                testName != null -> runFuckingTestNamed(testName, urlQuery)
+                testSuiteName != null -> runFuckingTestSuiteFailingFast(testSuiteName, urlQuery)
+                else -> bitch("Gimme test or testSuite in URL")
+            })
+    return __asyncResult(Unit)
+}
+
+private fun runFuckingTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String, String>): Promise<Unit> {"__async"
+    val suite: TestSuite = instantiate(testSuiteName)
+    for (scenario in suite.scenarios) {
+        clog("=====", "Running scenario", ctorName(scenario), "=====")
+        val res = __await(runFuckingTest(scenario, urlQuery, showTestPassedPane = false))
+        if (res != null) {
+            val bar = "*************************************"
+            console.error("\n$bar\nWe are fucked, man\n$bar")
+            return __asyncResult(Unit)
+        }
+    }
+
+    openShitPassedPane(
+        title = "$testSuiteName. ${suite.shortDescription}",
+        details = kdiv{o->
+            o- "Following motherfuckers have executed and kind of passed:"
+            o- kol{o->
+                for (test in TestScenario.executed) {
+                    o- kli {it-"${ctorName(test)}. ${test.shortDescription}"}
+                }
+            }
+        })
+
+    return __asyncResult(Unit)
+}
+
+private fun runFuckingTestNamed(testName: String, urlQuery: Map<String, String>): Promise<Throwable?> {"__async"
+    val scenario: TestScenario = instantiate(testName)
+    return __reawait(runFuckingTest(scenario, urlQuery, showTestPassedPane = true))
+}
+
+private fun runFuckingTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
     hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
     hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
     hrss.preventUIAssertionThrowing = urlQuery["uiAssertionThrows"] == "no"
@@ -88,8 +162,9 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     }
     art.respectArtPauses = urlQuery["respectArtPauses"] == "yes"
 
-    val sim = object:TestHost {
-        override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> {"__async"
+    val sim = object : TestHost {
+        override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> {
+            "__async"
             dlog("Selecting browser", name)
             hrss.browser = hrss.browsers.getOrPut(name) {Browser(name)}
             hrss.storageLocal = hrss.browser.storageLocal
@@ -102,9 +177,6 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
         }
     }
 
-    dwarnStriking(testScenarioToRun)
-    val scenarioClass = eval("kot.aps.front.$testScenarioToRun") ?: bitch("No test scenario named [${testScenarioToRun}]")
-    val scenario: TestScenario = eval("new scenarioClass()")
     scenario.host = sim
 
     global.DB = "aps-test"
@@ -119,7 +191,7 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     })
 
     hrss.currentTestScenario = scenario
-    lastTestScenarioName = testScenarioToRun
+    lastTestScenarioName = ctorName(scenario)
     val oldHotCodeUpdateDisabled = hrss.hotCodeUpdateDisabled
     val oldLiveStatusPollingViaIntervalDisabled = hrss.liveStatusPollingViaIntervalDisabled
 
@@ -130,24 +202,22 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     hrss.urlQueryBeforeRunningTest = getURLQuery()
 
     measure("Load generated shit") {
+        // TODO:vgrechka Load generated shit once for whole suite
         eval(__await(GetGeneratedShitRequest.send()).code)
     }
 
-    try {
-        __await(scenario.run())
-    } finally {
-        hrss.hotCodeUpdateDisabled = oldHotCodeUpdateDisabled
-        hrss.liveStatusPollingViaIntervalDisabled = oldLiveStatusPollingViaIntervalDisabled
+    val res = __await(scenario.run(showTestPassedPane))
+    hrss.hotCodeUpdateDisabled = oldHotCodeUpdateDisabled
+    hrss.liveStatusPollingViaIntervalDisabled = oldLiveStatusPollingViaIntervalDisabled
 
-        hrss.currentTestScenario = null
+    hrss.currentTestScenario = null
 //        if (!hrss.preventRestoringURLAfterTest) {
 //            global.setTimeout({ global.history.replaceState(null, "", initialHref) }, 1000)
 //        }
 
-        run { // XXX Refresh tethers
-            jqbody.scrollTop(jqbody.scrollTop() + 1)
-            jqbody.scrollTop(jqbody.scrollTop() - 1)
-        }
+    run { // XXX Refresh tethers
+        jqbody.scrollTop(jqbody.scrollTop() + 1)
+        jqbody.scrollTop(jqbody.scrollTop() - 1)
     }
 
 //    if (!art.halted) {
@@ -155,7 +225,7 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
 //        openTestPassedPane(hrss.openTestPassedPaneArgs)
 //    }
 
-    return __asyncResult(Unit)
+    return __asyncResult(res)
 }
 
 fun buildPieceOfTest(build: (PieceOfTestBuilder) -> Unit): Iterable<TestInstruction> {

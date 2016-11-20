@@ -56,7 +56,8 @@ fun igniteShit(): Promise<Unit> {"__async"
     }
 
 //    if (global.location.pathname.endsWith("/test.html")) {
-    if (window.location.search.contains("test=")) {
+    val search = window.location.search
+    if (search.contains("test=") || search.contains("testSuite=")) {
         __await(jsFacing_igniteTestShit())
     } else {
         global.DB = global.sessionStorage.getItem("DB") ?: "aps-dev" // TODO:vgrechka @security

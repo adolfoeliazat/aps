@@ -117,8 +117,12 @@ function Testimonials() {
     }
 
     function ignite() {
-        if (disposed) return
-        // console.log('Igniting testimonials ' + testimonialsIncarnationID)
+        if (disposed) {
+            // console.log("Testimonials::ignite -- disposed")
+            return
+        }
+
+        // console.log("Testimonials::ignite -- working")
         clearTimeout(autoIgnitionTimeoutHandle)
         $('#testimonials-right').hide()
 
