@@ -22,6 +22,7 @@ data class Attrs(
     val tattrs: Json? = null,
     val noStateContributions: Boolean? = null,
     val className: String? = null,
+    val href: String? = null,
     val onClick: ((MouseEvent) -> Unit)? = null,
     val onClicka: ((MouseEvent) -> Promise<Unit>)? = null,
     val onMouseEnter: ((MouseEvent) -> Unit)? = null,

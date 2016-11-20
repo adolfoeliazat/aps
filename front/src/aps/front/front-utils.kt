@@ -11,6 +11,8 @@ import into.kommon.*
 import jquery.*
 import org.w3c.dom.*
 import kotlin.browser.document
+import kotlin.dom.asList
+import kotlin.dom.children
 
 val REALLY_BIG_Z_INDEX = 2147483647
 
@@ -112,6 +114,7 @@ fun cwarnTitle(title: String) {
 }
 
 fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String = buildString {
+    // clog(html)
     var indent = 0
     html
         .replace(">", ">\n")
@@ -130,7 +133,21 @@ fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String 
         }
 }
 
+fun stripUninterestingElements(jqel: JQuery): HTMLElement {
+    fun descend(el: HTMLElement) {
+        if (el.tagName == "SCRIPT" || el.style.display == "none") {
+            return el.remove()
+        }
+        el.children()
+        for (child in el.children.asList()) {
+            descend(child)
+        }
+    }
 
+    val root = jqel[0]!!.cloneNode(/*deep*/ true) as HTMLElement
+    descend(root)
+    return root
+}
 
 
 

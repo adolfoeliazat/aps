@@ -19,16 +19,12 @@ class TestWriter_Boot2 : WriterBootTestScenario() {
 
     override fun buildStepsAfterDisplayInitialShit() {
         o.state("There's some garbage token in localStorage, checking it")
-        o.assertVisibleText("Дышите глубоко...")
-        o.assertNoVisibleText("Приветствуем")
-        o.assertNoVisibleText("Вход", under="#topNavbarContainer")
+        assert_breatheBanner_rightNavbarEmpty()
     }
 
     override fun buildStepsAfterWorldBoot() {
         o.state("Checked and rejected")
-        o.assertVisibleText("Приветствуем")
-        o.assertNoVisibleText("Дышите глубоко...")
-        o.assertVisibleText("Вход", under="#topNavbarContainer")
+        assert_staticHomePage_rightNavbarSignIn()
     }
 
 }

@@ -17,6 +17,7 @@ val h3 = ElementBuilderFactory("h3")
 val kul = ElementBuilderFactory("ul")
 val kol = ElementBuilderFactory("ol")
 val kli = ElementBuilderFactory("li")
+val ka = ElementBuilderFactory("a")
 
 fun span(s: String? = null) = kspan {it-s}
 
@@ -77,18 +78,22 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
 
     open fun wrapChild(index: Int, child: ToReactElementable): ToReactElementable = child
 
-    val control: Control2 by lazy {
+    val control:Control2 by lazy {
         object : Control2(attrs) {
             override fun defaultControlTypeName() = tag
 
             override fun render(): ToReactElementable {
+                val jsAttrs = json(
+                    "id" to elementID,
+                    "style" to style.toReactStyle()
+                )
+                attrs.className?.let {jsAttrs["className"] = it}
+                attrs.href?.let {jsAttrs["href"] = it}
+                attrs.onClick?.let {jsAttrs["onClick"] = it}
+
                 return React.createElement(
                     tag,
-                    json(
-                        "id" to elementID,
-                        "className" to attrs.className,
-                        "style" to style.toReactStyle()
-                    ),
+                    jsAttrs,
                     // TODO:vgrechka This looks shitty
                     *children
                         .map{it.toReactElement()}

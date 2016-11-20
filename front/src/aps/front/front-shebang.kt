@@ -421,10 +421,6 @@ fun marginateLeft(size: dynamic, content: dynamic): dynamic {
     return Shitus.diva(json("style" to json("marginLeft" to size)), content)
 }
 
-val nbsp: String = js("String.fromCharCode(0xa0)")
-val mdash = "—"
-val ndash = "–"
-
 fun img(src: dynamic, _attrs: dynamic = null): dynamic {
     val attrs: dynamic = _attrs ?: json()
     return React.createElement("img", global.Object.assign(attrs, json("src" to src)))

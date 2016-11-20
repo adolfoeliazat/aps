@@ -1,6 +1,6 @@
-a[href='sign-in.html'] {
-    display: none !important; /* Initially, until we check local storage token */
-}
+/*a[href='sign-in.html'] {
+    display: none !important; *//* Initially, until we check local storage token *//*
+}*/
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a {
     background: none;

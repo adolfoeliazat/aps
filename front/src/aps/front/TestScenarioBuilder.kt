@@ -68,7 +68,7 @@ class TestScenarioBuilder {
     fun assertNoVisibleText(expected: String, under: CSSSelector = "body") {
         assertOnAnimationFrame("Page should not contain in $under: ~~_${expected}_~~", {
             val actual = visibleText(under)
-            dwarnStriking(actual)
+            // dwarnStriking(actual)
             !actual.contains(expected)
         })
     }
@@ -99,15 +99,29 @@ class TestScenarioBuilder {
     fun assertHTML(under: CSSSelector, expected: String, transformLine: ((String) -> String)? = null) {
         val stepTitle = "HTML diff under $under"
         checkOnAnimationFrame(stepTitle) {
-            val tidyActual = tidyHTML(jq(under).html(), transformLine=transformLine)
+            val rawActual = stripUninterestingElements(jq(under)).innerHTML
+            val tidyActual = tidyHTML(rawActual, transformLine=transformLine)
             val tidyExpected = tidyHTML(expected, transformLine=transformLine)
-//            clog("tidyActual", tidyActual)
-//            clog("tidyExpected", tidyExpected)
             if (tidyActual != tidyExpected) {
-                throw ArtAssertionError(stepTitle, visualPayload = renderDiff(tidyExpected, tidyActual))
+                throw ArtAssertionError(stepTitle, visualPayload = renderDiff(
+                    expected = tidyExpected,
+                    actual = tidyActual, actualPaste = rawActual.trim()))
             }
         }
     }
+
+    fun assertNavbarHTML(expected: String) {
+        assertHTML(under = "#topNavbarContainer",
+                   expected = expected,
+                   transformLine = {it.replace(Regex(" id=\"MakeStaticSites-\\d+\""), "")})
+    }
+
+    fun assertRootHTML(expected: String) {
+        assertHTML(under = "#root",
+                   expected = expected,
+                   transformLine = {it})
+    }
+
 }
 
 

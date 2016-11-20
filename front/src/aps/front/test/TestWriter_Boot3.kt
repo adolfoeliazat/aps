@@ -22,17 +22,12 @@ class TestWriter_Boot3 : WriterBootTestScenario() {
 
     override fun buildStepsAfterDisplayInitialShit() {
         o.state("There's some token in localStorage, checking it")
-        o.assertVisibleText("Дышите глубоко...")
-        o.assertNoVisibleText("Приветствуем")
-        o.assertNoVisibleText("Вход", under="#topNavbarContainer")
-        o.halt()
+        assert_breatheBanner_rightNavbarEmpty()
     }
 
     override fun buildStepsAfterWorldBoot() {
-        o.state("Checked and rejected")
-        o.assertVisibleText("Приветствуем")
-        o.assertNoVisibleText("Дышите глубоко...")
-        o.assertVisibleText("Gaylord", under="#topNavbarContainer")
+        o.state("Fucker is signed in")
+        assert_staticHomePage_rightNavbarGaylord()
     }
 }
 

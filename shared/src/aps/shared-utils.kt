@@ -161,6 +161,9 @@ fun wantNull(x: Any?, msg: () -> String = {"I want null here"}) = want(x == null
 
 fun <T> nif(cond: Boolean, block: () -> T): T? = if (cond) block() else null
 
+val nbsp: String = "" + 0xa0.toChar()
+val mdash = "—"
+val ndash = "–"
 
 
 

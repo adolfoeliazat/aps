@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import org.w3c.dom.*
@@ -36,4 +38,31 @@ fun byid0(id: String): HTMLElement? {
 fun byid0ForSure(id: String): HTMLElement {
     return requireNotNull(byid0(id)) {"I want fucking element #$id"}
 }
+
+fun JQuery.not(selector: String): JQuery = this.asDynamic().not(selector)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

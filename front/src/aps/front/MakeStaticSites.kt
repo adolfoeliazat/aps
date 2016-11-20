@@ -1046,7 +1046,7 @@ object MakeStaticSites {
     </head>
     <body style="padding-top: 50px; padding-bottom: 0px; overflow-y: scroll;">
     <div id="topNavbarContainer">
-    ${renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, json("highlightedItem" to highlightedItem)))}
+    ${renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, json("highlightedItem" to highlightedItem, "rightNavbarItemAStyle" to json("display" to "none"))))}
     </div>
 
     <div id="root" style="min-height: calc(100vh - 28px - 50px);">
@@ -1070,7 +1070,8 @@ object MakeStaticSites {
         }
 
         function makeSignInNavbarLinkVisible() {
-            $(document.head).append('<style>a[href="sign-in.html"] {display: block !important;}</style>')
+            $('a[href="sign-in.html"]').css('display', '')
+//            $(document.head).append('<style>a[href="sign-in.html"] {display: block !important;}</style>')
         }
 
         ${if (mode == Mode.PROD) """

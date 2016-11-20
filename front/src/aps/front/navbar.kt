@@ -21,12 +21,14 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
     // {highlightedItem, t, ui}
     val highlightedItem = arg.highlightedItem
     val ui: World? = arg.ui
+    val rightNavbarItemAStyle = arg.rightNavbarItemAStyle
 
     val user: UserRTO? = if (ui != null) ui.getUser() else null
 
     fun TopNavItem(def: dynamic): dynamic {
         // #extract {counter} from def
         val counter = def.counter
+        val aStyle = def.aStyle
 
         val active = highlightedItem == def.name
         val res = Shitus.TopNavItem(global.Object.assign(def, json(
@@ -34,7 +36,8 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
             "tame" to "${sufindex("TopNavItem", counter[0]++)}",
             "tattrs" to json("active" to (active || js("undefined"))),
             "ui" to ui,
-            "active" to active)))
+            "active" to active,
+            "aStyle" to aStyle)))
         // res.name = def.name
         return res
     }
@@ -109,11 +112,11 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
         leftNavbarItems.push.apply(leftNavbarItems, privateItems)
         // @wip rejection
         if (user.state == UserState.COOL) {
-            rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to user.firstName, "counter" to jsArrayOf(0)))
+            rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to user.firstName, "counter" to jsArrayOf(0), "aStyle" to rightNavbarItemAStyle))
         }
     } else {
         leftNavbarItems = proseItems
-        rightNavbarItem = TopNavItem(json("name" to "sign-in", "title" to t("Sign In", "Вход"), "counter" to jsArrayOf(0)))
+        rightNavbarItem = TopNavItem(json("name" to "sign-in", "title" to t("Sign In", "Вход"), "counter" to jsArrayOf(0), "aStyle" to rightNavbarItemAStyle))
     }
 
     var brand: dynamic = undefined

@@ -61,17 +61,30 @@ val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
                 val orig = sourceMapping.getMappingForLine(line, column)
                     ?: throw Verbatim("No mapping for line")
 
-                var path = orig.originalFile
-                if (path.startsWith("file://")) {
-                    val s = normalizePath(path.substring("file://".length))
-                    path = when {
-                        s.startsWith(NORMAL_APS_HOME) -> "APS" + s.substring(NORMAL_APS_HOME.length)
-                        s.startsWith(NORMAL_KOMMON_HOME) -> "KOMMON" + s.substring(NORMAL_KOMMON_HOME.length)
-                        else -> path
+                var longPath = orig.originalFile
+                var shortPath = orig.originalFile
+                if (longPath.startsWith("file://")) {
+                    longPath = normalizePath(shortPath.substring("file://".length))
+                    shortPath = when {
+                        longPath.startsWith(NORMAL_APS_HOME) -> "APS" + longPath.substring(NORMAL_APS_HOME.length)
+                        longPath.startsWith(NORMAL_KOMMON_HOME) -> "KOMMON" + longPath.substring(NORMAL_KOMMON_HOME.length)
+                        else -> shortPath
                     }
                 }
 
-                val result = "$prefix ($path:${orig.lineNumber}:${orig.columnPosition})"
+                var marginNotes = mutableListOf<String>()
+                try {
+                    val line = File(longPath).readLines()[orig.lineNumber - 1]
+                    if (line.contains(Regex("\\so\\."))) marginNotes.add("o.")
+                    Regex("\\bassert(\\w|\\d|_)*").find(line)?.let {marginNotes.add(it.value)}
+                    when {
+                        line.contains("\"\"\"") -> marginNotes.add("\"\"\"")
+                        line.contains("\"") -> marginNotes.add("\"")
+                    }
+                } catch (e: Exception) {}
+
+                val result = "$prefix ($shortPath:${orig.lineNumber}:${orig.columnPosition})" +
+                             nbsp.repeat(5) + marginNotes.joinToString(nbsp.repeat(3))
                 resultLines.add(result)
             }
             catch (e: Skip) {
