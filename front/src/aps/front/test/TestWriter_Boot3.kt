@@ -16,8 +16,8 @@ class TestWriter_Boot3 : WriterBootTestScenario() {
         return __reawait(prepareFucker(UserState.COOL))
     }
 
-    override fun fillLocalStorage() {
-        localStorage["token"] = fuckerToken
+    override fun fillStorageLocal() {
+        typedStorageLocal.token = fuckerToken
     }
 
     override fun buildStepsAfterDisplayInitialShit() {

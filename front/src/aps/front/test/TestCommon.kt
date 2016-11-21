@@ -35,7 +35,7 @@ abstract class TestScenario {
     fun run(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
         executed += this
 
-        // TODO:vgrechka Track all React-mounted nodes
+        // TODO:vgrechka Track all React-mounted nodes to unmount them before each test
         byid0("topNavbarContainer")?.let {ReactDOM.unmountComponentAtNode(it)}
         byid0("root")?.let {ReactDOM.unmountComponentAtNode(it)}
 
@@ -135,7 +135,7 @@ private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String,
             o- "Following motherfuckers have executed and kind of passed:"
             o- kol{o->
                 for (test in TestScenario.executed) {
-                    o- kli {it-"${ctorName(test)}. ${test.shortDescription}"}
+                    o- kli {it-"${test.name}. ${test.shortDescription}"}
                 }
             }
         })
@@ -167,10 +167,11 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> {
             "__async"
             dlog("Selecting browser", name)
-            hrss.browser = hrss.browsers.getOrPut(name) {Browser(name)}
-            hrss.storageLocal = hrss.browser.storageLocal
+            hrss.browserOld = hrss.browsers.getOrPut(name) {BrowserOld(name)}
+            die("Attempt to use hrss.storageLocal")
+//            hrss.storageLocal = hrss.browserOld.storageLocal
 
-            dlog("Navigating", hrss.browser.name, url)
+            dlog("Navigating", hrss.browserOld.name, url)
             global.history.replaceState(null, "", url)
 //            __await<dynamic>(makeCleanPairAndBoot())
             __await(World().boot())

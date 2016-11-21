@@ -66,7 +66,7 @@ class World {
     lateinit var updateRoot: () -> Unit
 
     fun boot(): Promise<Unit> {"__async"
-        hrss.browser.ui = this
+        hrss.browserOld.ui = this
         KotlinShit.ui = this
 
         global.onpopstate = {e: dynamic -> "__async"
@@ -75,7 +75,7 @@ class World {
             breatheBanner.hide()
         }
 
-        hrss.browser.impl = this
+        hrss.browserOld.impl = this
         KotlinShit.clientImpl = this
         __await<dynamic>(bootKillme())
 
@@ -118,7 +118,8 @@ class World {
                         user = res.user
 //                        ui.startLiveStatusPolling()
                         token = res.token
-                        hrss.storageLocal.setItem("token", token!!)
+                        typedStorageLocal.token = token
+//                        hrss.storageLocal.setItem("token", token!!)
 
                         __await(pushNavigate(when (res.user.state) {
                                                     UserState.COOL -> "dashboard.html"
@@ -144,7 +145,8 @@ class World {
     }
 
     fun signOut() {
-        hrss.storageLocal.clear()
+        typedStorageLocal.clear()
+//        hrss.storageLocal.clear()
         token = null
         user = null
         replaceNavigate("/")
@@ -161,7 +163,8 @@ class World {
 
     fun bootKillme(): Promise<Unit> {"__async"
         Shitus.beginTrain(json("name" to "boot()")); try {
-            token = hrss.storageLocal.getItem("token")
+            token = typedStorageLocal.token
+//            token = hrss.storageLocal.getItem("token")
             if (token != null) {
                 try {
                     val res = __await(SignInWithTokenRequest.send(token!!))
@@ -172,7 +175,8 @@ class World {
                     // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
                     console.warn("Failed to private_getUserInfo", e)
                     token = undefined
-                    hrss.storageLocal.clear()
+                    typedStorageLocal.clear()
+//                    hrss.storageLocal.clear()
                 } finally {
 //                    ExternalGlobus.makeSignInNavbarLinkVisible()
                 }
@@ -180,7 +184,7 @@ class World {
 
             js("$")(global.document.head).append("<style id='css'>${css()}</style>")
 
-            hrss.browser.topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
+            hrss.browserOld.topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
                 updateNavbar = update
                 return@elementCtor render@{
                     var pathname: dynamic = null
@@ -199,7 +203,7 @@ class World {
                 }
             })
 
-            global.ReactDOM.render(hrss.browser.topNavbarElement, Shitus.byid0("topNavbarContainer"))
+            global.ReactDOM.render(hrss.browserOld.topNavbarElement, Shitus.byid0("topNavbarContainer"))
 
             __await<dynamic>(loadPageForURL())
         } finally { Shitus.endTrain() }
@@ -274,7 +278,8 @@ class World {
         val skipBodyRendering =
             firstRun && // JS has just loaded
             isStaticPage(name) &&
-            localStorage.getItem("token") == null
+            typedStorageLocal.token == null
+//            localStorage.getItem("token") == null
 
         if (!skipBodyRendering) {
             global.window.disposeStaticShit()
@@ -299,11 +304,11 @@ class World {
         rootContent = newRootContent
 
         if (updateRoot == null) {
-            hrss.browser.rootElement = Shitus.updatableElement(json(), {update: dynamic ->
+            hrss.browserOld.rootElement = Shitus.updatableElement(json(), {update: dynamic ->
                 updateRoot = update
                 {Shitus.diva(json(), rootContent)}
             })
-            global.ReactDOM.render(hrss.browser.rootElement, Shitus.byid0("root"))
+            global.ReactDOM.render(hrss.browserOld.rootElement, Shitus.byid0("root"))
         }
 
         updateRoot()

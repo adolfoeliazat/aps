@@ -46,7 +46,7 @@ fun ignite() {
 }
 
 fun igniteShit(): Promise<Unit> {"__async"
-    hrss.browser = Browser("default") // Kind of production
+    hrss.browserOld = BrowserOld("default") // Kind of production
 
     hrss.lang = global.LANG
     hrss._t = Shitus.makeT(hrss.lang)

@@ -16,8 +16,8 @@ class TestWriter_Boot4 : WriterBootTestScenario() {
         return __reawait(prepareFucker(UserState.PROFILE_PENDING))
     }
 
-    override fun fillLocalStorage() {
-        localStorage["token"] = fuckerToken
+    override fun fillStorageLocal() {
+        typedStorageLocal.token = fuckerToken
     }
 
     override fun buildStepsAfterWorldBoot() {

@@ -13,8 +13,8 @@ import kotlin.browser.*
 class TestWriter_Boot2 : WriterBootTestScenario() {
     override val shortDescription = "Invalid token in local storage"
 
-    override fun fillLocalStorage() {
-        localStorage["token"] = "garbage"
+    override fun fillStorageLocal() {
+        typedStorageLocal.token = "garbage"
     }
 
     override fun buildStepsAfterDisplayInitialShit() {

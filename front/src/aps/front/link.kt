@@ -103,7 +103,7 @@ fun urlLink(url: String,
             @Mix attrs: Attrs = Attrs(),
             @Mix style: Style = Style()
 ): ToReactElementable {
-    val ui = hrss.browser.ui
+    val ui = hrss.browserOld.ui
     val id = puid()
 
     return link(

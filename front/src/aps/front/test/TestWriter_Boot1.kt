@@ -13,7 +13,7 @@ import kotlin.browser.*
 class TestWriter_Boot1 : WriterBootTestScenario() {
     override val shortDescription = "No token in local storage"
 
-    override fun fillLocalStorage() {
+    override fun fillStorageLocal() {
     }
 
     override fun buildStepsAfterDisplayInitialShit() {

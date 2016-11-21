@@ -97,7 +97,7 @@ class DashboardPage(val ui: World) {
                 // otherwise elements being looked at might be removed
                 if (hrss.controlBeingRevealed) { scheduleUpdate(); return@outta Unit }
 
-                if (Shitus.isOrWasInTestScenario() && hrss.browser.ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
+                if (Shitus.isOrWasInTestScenario() && hrss.browserOld.ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
 
                 dlog("Updating dashboard page")
 

@@ -1061,8 +1061,10 @@ object MakeStaticSites {
     <script src="jquery.min.js"></script>
 
     <script>
+        window.storageLocalForStaticContent = localStorage
+
         function displayInitialShit() {
-            if (localStorage.getItem('token')) {
+            if (window.storageLocalForStaticContent.getItem('token')) {
                 document.getElementById('ticker').style.display = ''
             } else {
                 makeSignInNavbarLinkVisible()
