@@ -13,3 +13,12 @@ git diff c7514737083c88979579a936621a0a428112b23a --  "E:\work\aps\aps\vendor\bo
 
 echo -ne '\e]0;Title\a'
 
+
+
+JavaScript
+==========
+
+F.dumpLocalStorage()
+localStorage.setItem('reloadTest', 'true')
+
+

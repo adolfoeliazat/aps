@@ -26,7 +26,9 @@ object Globus {
         override fun removeItem(key: String) = localStorage.removeItem(key)
     }
 
-    var browser = Browser(typedStorageLocal = TypedStorageLocal(realStorageLocal))
+    val realTypedStorageLocal = TypedStorageLocal(realStorageLocal)
+
+    var browser = Browser(typedStorageLocal = realTypedStorageLocal)
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)
@@ -42,13 +44,24 @@ interface StorageLocal {
 
 class TypedStorageLocal(val store: StorageLocal) {
     var token by StringValue()
+    var reloadTest by BooleanValue()
 
     inner class StringValue {
-        operator fun getValue(thisRef: Any?, property: KProperty<*>) = store.getItem(property.name)
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): String? =
+            store.getItem(property.name)
 
         operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String?) {
             if (value == null) store.removeItem(property.name)
             else store.setItem(property.name, value)
+        }
+    }
+
+    inner class BooleanValue {
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): Boolean =
+            store.getItem(property.name).let {it == "true" || it == "yes"}
+
+        operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Boolean) {
+            store.setItem(property.name, if (value) "true" else "false")
         }
     }
 

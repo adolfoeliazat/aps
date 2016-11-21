@@ -7,6 +7,7 @@
 package aps.front
 
 import aps.*
+import aps.front.Globus.realTypedStorageLocal
 import kotlin.browser.window
 
 class InitAutoReload {
@@ -25,8 +26,7 @@ class InitAutoReload {
         if (initialCtime != __await(GetSoftwareVersionRequest.send()).ctime) {
             var href = window.location.href
                 .replace(Regex("#.*$"), "") // Otherwise it doesn't actually reload page
-            if (window.localStorage["reloadTest"] == "true")
-                TestShit.testHref?.let {href = it}
+            if (realTypedStorageLocal.reloadTest) TestShit.testHref?.let {href = it}
 
             window.location.href = href
         } else {
