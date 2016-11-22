@@ -308,11 +308,11 @@ class EntityResponse<Item> (
 
 class ItemsRequest<Filter>(filterValues: Array<Filter>) : RequestMatumba()
 where Filter: Enum<Filter>, Filter: Titled {
-    val entityID = HiddenMaybeStringField(this, "entityID")
+    val entityID = MaybeStringHiddenField(this, "entityID")
     val filter = EnumHiddenField(this, "filter", filterValues)
     val ordering = EnumHiddenField(this, "ordering", Ordering.values())
     val searchString = TextField(this, "searchString", "", TextFieldType.STRING, 0, 50)
-    val fromID = HiddenMaybeStringField(this, "fromID")
+    val fromID = MaybeStringHiddenField(this, "fromID")
 }
 
 class ItemsResponse<Item> (
@@ -352,16 +352,12 @@ class OpenSourceCodeRequest : RequestMatumba() {
     }
 }
 
-class TestSetUserStateRequest() : RequestMatumba() {
+class TestSetUserFieldsRequest() : RequestMatumba() {
     val email = StringHiddenField(this, "email")
-    val state = EnumHiddenField(this, "state", UserState.values())
+    val state = EnumHiddenField(this, "state", UserState.values(), possiblyUnspecified = true)
+    val profileRejectionReason = MaybeStringHiddenField(this, "profileRejectionReason", possiblyUnspecified = true)
 
-    companion object {
-        fun send(email: String, state: UserState): Promise<GenericResponse> = callDangerousMatumba(TestSetUserStateRequest()-{o->
-            o.email.value = email
-            o.state.value = state
-        })
-    }
+    fun send(): Promise<GenericResponse> = callDangerousMatumba(this)
 }
 
 

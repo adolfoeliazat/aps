@@ -52,7 +52,12 @@ annotation class Back
 
 
 
-@Back class EnumHiddenField<E : Enum<E>>(container: RequestMatumba, name: String, val values: Array<E>) : FormFieldBack(container, name) {
+@Back class EnumHiddenField<E : Enum<E>>(
+    container: RequestMatumba,
+    name: String,
+    val values: Array<E>,
+    possiblyUnspecified: Boolean = false
+) : FormFieldBack(container, name, possiblyUnspecified=possiblyUnspecified) {
     lateinit var value: E
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
@@ -69,7 +74,11 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     }
 }
 
-@Back class StringHiddenField(container: RequestMatumba, name: String) : FormFieldBack(container, name) {
+@Back class StringHiddenField(
+    container: RequestMatumba,
+    name: String,
+    possiblyUnspecified: Boolean = false
+) : FormFieldBack(container, name, possiblyUnspecified=possiblyUnspecified) {
     lateinit var value: String
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
@@ -77,7 +86,11 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     }
 }
 
-@Back class HiddenMaybeStringField(container: RequestMatumba, name: String) : FormFieldBack(container, name) {
+@Back class MaybeStringHiddenField(
+    container: RequestMatumba,
+    name: String,
+    possiblyUnspecified: Boolean = false
+) : FormFieldBack(container, name, possiblyUnspecified=possiblyUnspecified) {
     var loaded = false
     var _value: String? = null
     val value: String? get() = if (!loaded) bitch("I am not loaded") else _value
@@ -88,7 +101,11 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     }
 }
 
-@Back class BooleanHiddenField(container: RequestMatumba, name: String) : FormFieldBack(container, name) {
+@Back class BooleanHiddenField(
+    container: RequestMatumba,
+    name: String,
+    possiblyUnspecified: Boolean = false
+) : FormFieldBack(container, name, possiblyUnspecified=possiblyUnspecified) {
     lateinit var _value: java.lang.Boolean
     var value: Boolean
         get() = _value.booleanValue()
@@ -99,16 +116,28 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     }
 }
 
-abstract class FormFieldBack(container: RequestMatumba, val name: String) : Culprit {
+abstract class FormFieldBack(
+    container: RequestMatumba,
+    val name: String,
+    val possiblyUnspecified: Boolean = false
+) : Culprit {
     abstract fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>)
 
+    lateinit var _specified: java.lang.Boolean
+    val specified: Boolean get() = _specified.booleanValue()
     override val constructionStack = Exception().stackTrace
+
     init {
         container.fields.add(this)
     }
 
     fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) =
-        culprit(this, {loadOrBitch(input, fieldErrors)})
+        culprit(this, {
+            if (possiblyUnspecified) {
+                _specified = input["$name-specified"] as java.lang.Boolean
+            }
+            loadOrBitch(input, fieldErrors)
+        })
 
     override fun toString(): String = bitch("Use field.value to get value of field [$name]")
 }
@@ -157,7 +186,10 @@ abstract class FormFieldBack(container: RequestMatumba, val name: String) : Culp
 
 }
 
-@Back class CheckboxField(container: RequestMatumba, name: String) : FormFieldBack(container, name) {
+@Back class CheckboxField(
+    container: RequestMatumba,
+    name: String
+) : FormFieldBack(container, name) {
     lateinit var _yes: java.lang.Boolean
 
     val yes: Boolean get() = _yes.booleanValue()
@@ -168,7 +200,12 @@ abstract class FormFieldBack(container: RequestMatumba, val name: String) : Culp
     }
 }
 
-@Back class SelectField<T>(container: RequestMatumba, name: String, val title: String, val values: Array<T>)
+@Back class SelectField<T>(
+    container: RequestMatumba,
+    name: String,
+    val title: String,
+    val values: Array<T>
+)
 : FormFieldBack(container, name) where T : Enum<T> {
     lateinit var value: T
 

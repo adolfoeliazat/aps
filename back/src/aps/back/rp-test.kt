@@ -11,6 +11,9 @@ import aps.back.generated.jooq.Tables.USERS
 import com.google.debugging.sourcemap.SourceMapConsumerFactory
 import com.google.debugging.sourcemap.SourceMapping
 import into.kommon.*
+import org.jooq.Record
+import org.jooq.UpdateSetMoreStep
+import org.jooq.UpdateSetStep
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -173,18 +176,22 @@ val backendInstanceID = "" + UUID.randomUUID()
     }
 )
 
-@RemoteProcedureFactory fun testSetUserState() = testProcedure(
-    TestSetUserStateRequest(),
+@RemoteProcedureFactory fun testSetUserFields() = testProcedure(
+    TestSetUserFieldsRequest(),
     needsDB = true,
     runShit = {ctx, req ->
-        ctx.q
+        var step = ctx.q
             .update(USERS)
-            .set(USERS.STATE, req.state.value.name)
+            .set(USERS.ID, USERS.ID)
+
+        req.state.let {if (it.specified) step = step.set(USERS.STATE, it.value.name)}
+        req.profileRejectionReason.let {if (it.specified) step = step.set(USERS.PROFILE_REJECTION_REASON, it.value)}
+
+        step
             .where(USERS.EMAIL.eq(req.email.value))
             .execute()
     }
 )
-
 
 
 

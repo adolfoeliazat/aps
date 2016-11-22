@@ -9,9 +9,12 @@ package aps.front
 import aps.*
 import kotlin.browser.*
 
-class TestWriter_Boot3 : WriterBootTestScenario_FuckerToken() {
+class TestWriter_Boot_Cool : WriterBootTestScenario_FuckerToken() {
     override val shortDescription = "Valid token in local storage, user is cool"
-    override val fuckerState = UserState.COOL
+
+    override fun setFuckerFields(o: TestSetUserFieldsRequest) {
+        o.state.value = UserState.COOL
+    }
 
     override fun buildStepsAfterWorldBoot() {
         o.state("Fucker is signed in")

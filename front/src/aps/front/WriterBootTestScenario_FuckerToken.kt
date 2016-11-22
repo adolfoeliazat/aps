@@ -3,10 +3,12 @@ package aps.front
 import aps.*
 
 abstract class WriterBootTestScenario_FuckerToken : WriterBootTestScenario() {
-    protected abstract val fuckerState: UserState
+    protected abstract fun setFuckerFields(o: TestSetUserFieldsRequest)
 
     override fun prepareShit(): Promise<Unit> {"__async"
-        return __reawait(prepareFucker(fuckerState))
+        val req = TestSetUserFieldsRequest()
+        setFuckerFields(req)
+        return __reawait(prepareFucker(req))
     }
 
     override fun fillStorageLocal() {

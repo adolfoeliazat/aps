@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps
 
 import aps.front.*
@@ -47,6 +49,7 @@ val NOTRE: ToReactElementable = NORE.toToReactElementable()
     fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
 }
 
+
 fun remoteProcedureNameForRequest(req: Any): String {
     val requestClassName = ctorName(req)
     return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
@@ -58,6 +61,7 @@ fun remoteProcedureNameForRequest(req: Any): String {
 @native fun <T> __reawait(p: Promise<T>): Promise<T> = noImpl
 
 @Front open class RequestMatumba {
+    // TODO:vgrechka Why the fuck do I need `fields` in `hiddenFields` to be separate?
     val fields = mutableListOf<FormFieldFront<*>>()
     val hiddenFields = mutableListOf<HiddenFormFieldFront>()
 }
@@ -67,7 +71,7 @@ abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: Str
         container.hiddenFields.add(this)
     }
 
-    abstract fun toRemote(): Any?
+    abstract fun populateRemote(json: Json)
 }
 
 abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
@@ -83,34 +87,48 @@ abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: St
     abstract var error: String?
     abstract var disabled: Boolean
     abstract fun focus()
-    abstract fun toRemote(): Any
+    abstract fun populateRemote(json: Json)
 }
 
 annotation class Front
 
-@Front fun <E : Enum<E>> EnumHiddenField(container: RequestMatumba, name: String, values: Array<E>): HiddenField<E> {
-    return HiddenField(container, name)
+@Front fun <E : Enum<E>> EnumHiddenField(
+    container: RequestMatumba,
+    name: String,
+    values: Array<E>,
+    possiblyUnspecified: Boolean = false
+): HiddenField<E> {
+    return HiddenField(container, name, possiblyUnspecified=possiblyUnspecified)
 }
 
 @Front fun StringHiddenField(container: RequestMatumba, name: String): HiddenField<String> {
     return HiddenField(container, name)
 }
 
-@Front fun HiddenMaybeStringField(container: RequestMatumba, name: String): HiddenField<String?> {
-    return HiddenField(container, name)
+@Front fun MaybeStringHiddenField(
+    container: RequestMatumba,
+    name: String,
+    possiblyUnspecified: Boolean = false
+): HiddenField<String?> {
+    return HiddenField(container, name, possiblyUnspecified=possiblyUnspecified)
 }
 
 @Front fun BooleanHiddenField(container: RequestMatumba, name: String): HiddenField<Boolean> {
     return HiddenField(container, name)
 }
 
-@Front class HiddenField<T>(container: RequestMatumba, name: String): HiddenFormFieldFront(container, name) {
+@Front class HiddenField<T>(container: RequestMatumba, name: String, val possiblyUnspecified: Boolean = false): HiddenFormFieldFront(container, name) {
     var value: T? = null
+        set(value) {field = value; specified = true}
+
+    private var specified = false
 
     // TODO:vgrechka Extract this generic toRemote()
-    override fun toRemote(): Any? {
+    override fun populateRemote(json: Json) {
+        if (!possiblyUnspecified && value == null) bitch("I want field $name specified")
+
         val dynaValue: dynamic = value
-        return when {
+        json[name] = when {
             dynaValue == null -> null
 
             // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    94315462-a862-4148-95a0-e45a0f73212d
@@ -122,6 +140,8 @@ annotation class Front
 
             else -> dynaValue
         }
+
+        json["$name-specified"] = specified
     }
 }
 
@@ -172,7 +192,9 @@ annotation class Front
                 if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
     }
 
-    override fun toRemote() = value
+    override fun populateRemote(json: Json) {
+        json[name] = value
+    }
 }
 
 @Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront<Boolean>(container, name) {
@@ -209,7 +231,9 @@ annotation class Front
         global.alert("No fucking terms. You can go crazy with this shit...")
     }
 
-    override fun toRemote() = value
+    override fun populateRemote(json: Json) {
+        json[name] = value
+    }
 }
 
 //@native interface LegacyUIShit {
@@ -289,7 +313,9 @@ where T : Enum<T>, T : Titled {
 
     override fun focus() = select.focus()
 
-    override fun toRemote() = select.value.name
+    override fun populateRemote(json: Json) {
+        json[name] = select.value.name
+    }
 
 }
 
@@ -302,10 +328,9 @@ fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?
         r.lang = global.LANG
         token?.let {r.token = it}
 
-        r.fields = dyna{o->
-            for (field in req.fields) o[field.name] = field.toRemote()
-            for (field in req.hiddenFields) o[field.name] = field.toRemote()
-        }
+        r.fields = json()
+        for (field in req.fields) field.populateRemote(r.fields)
+        for (field in req.hiddenFields) field.populateRemote(r.fields)
     })
 }
 
@@ -319,10 +344,9 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
             r.lang = global.LANG
             token?.let {r.token = it}
 
-            r.fields = dyna{o->
-                for (field in req.fields) o[field.name] = field.toRemote()
-                for (field in req.hiddenFields) o[field.name] = field.toRemote()
-            }
+            r.fields = json()
+            for (field in req.fields) field.populateRemote(r.fields)
+            for (field in req.hiddenFields) field.populateRemote(r.fields)
         }))
         when (res) {
             is FormResponse.Hunky<*> -> ZimbabweResponse.Hunky(cast(res.meat))

@@ -10,7 +10,7 @@ import aps.*
 import aps.front.*
 import kotlin.browser.*
 
-class TestWriter_Boot1 : WriterBootTestScenario() {
+class TestWriter_Boot_NoToken : WriterBootTestScenario() {
     override val shortDescription = "No token in local storage"
 
     override fun fillStorageLocal() {

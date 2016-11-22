@@ -9,9 +9,12 @@ package aps.front
 import aps.*
 import kotlin.browser.*
 
-class TestWriter_Boot4 : WriterBootTestScenario_FuckerToken() {
+class TestWriter_Boot_ProfilePending : WriterBootTestScenario_FuckerToken() {
     override val shortDescription = "Valid token in local storage, user profile is not filled"
-    override val fuckerState = UserState.PROFILE_PENDING
+
+    override fun setFuckerFields(o: TestSetUserFieldsRequest) {
+        o.state.value = UserState.PROFILE_PENDING
+    }
 
     override fun buildStepsAfterWorldBoot() {
         o.state("Fucker is signed in, system asks to fill profile")
