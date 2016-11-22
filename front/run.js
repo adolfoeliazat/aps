@@ -14,5 +14,8 @@ require(`${KOMMON_HOME}/js/out/into-kommon-js-enhanced.js`)
 require('./out/front-enhanced.js')
 
 const mainObjectName = process.argv[2]
-kotlin.modules.front.aps.front[mainObjectName].runShit(process.argv.slice(3))
+const mainObject = kotlin.modules.front.aps.front[mainObjectName]
+const argv = process.argv.slice(3)
+if (typeof mainObject === 'function') mainObject(argv)
+else mainObject.runShit(argv)
 

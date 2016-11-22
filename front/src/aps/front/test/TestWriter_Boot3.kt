@@ -9,21 +9,9 @@ package aps.front
 import aps.*
 import kotlin.browser.*
 
-class TestWriter_Boot3 : WriterBootTestScenario() {
+class TestWriter_Boot3 : WriterBootTestScenario_FuckerToken() {
     override val shortDescription = "Valid token in local storage, user is cool"
-
-    override fun prepareShit(): Promise<Unit> {"__async"
-        return __reawait(prepareFucker(UserState.COOL))
-    }
-
-    override fun fillStorageLocal() {
-        typedStorageLocal.token = fuckerToken
-    }
-
-    override fun buildStepsAfterDisplayInitialShit() {
-        o.state("There's some token in localStorage, checking it")
-        assert_breatheBanner_rightNavbarEmpty()
-    }
+    override val fuckerState = UserState.COOL
 
     override fun buildStepsAfterWorldBoot() {
         o.state("Fucker is signed in")

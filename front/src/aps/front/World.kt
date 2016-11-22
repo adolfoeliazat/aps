@@ -152,8 +152,8 @@ class World {
         replaceNavigate("/")
     }
 
-    fun pushNavigate(where: dynamic): Promise<Unit> {"__async"
-        return __await(KotlinShit.jsFacing_pushNavigate(this, where)) /ignora
+    fun pushNavigate(url: String): Promise<Unit> {"__async"
+        return __reawait(KotlinShit.jsFacing_pushNavigate(this, url))
     }
 
     fun replaceNavigate(where: dynamic): Promise<Unit> {"__async"
@@ -203,9 +203,13 @@ class World {
                 }
             })
 
-            global.ReactDOM.render(hrss.browserOld.topNavbarElement, Shitus.byid0("topNavbarContainer"))
+            DOMReact.render(hrss.browserOld.topNavbarElement, Shitus.byid0("topNavbarContainer"))
 
-            __await<dynamic>(loadPageForURL())
+            if (user?.state == UserState.PROFILE_PENDING) {
+                __await(pushNavigate("/profile.html"))
+            } else {
+                __await<dynamic>(loadPageForURL())
+            }
         } finally { Shitus.endTrain() }
         return __asyncResult(Unit)
     }
@@ -308,7 +312,7 @@ class World {
                 updateRoot = update
                 {Shitus.diva(json(), rootContent)}
             })
-            global.ReactDOM.render(hrss.browserOld.rootElement, Shitus.byid0("root"))
+            DOMReact.render(hrss.browserOld.rootElement, Shitus.byid0("root"))
         }
 
         updateRoot()

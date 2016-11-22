@@ -22,7 +22,7 @@ object DebugPanes {
             byid0ForSure(id)
         }
 
-        ReactDOM.render(tre.toReactElement(), container)
+        DOMReact.render(tre.toReactElement(), container)
 
         names.add(name)
     }
@@ -35,7 +35,7 @@ object DebugPanes {
         val id = "debugPanes-${name}"
         val container = byid0(id)
         if (container != null) {
-            ReactDOM.unmountComponentAtNode(container)
+            DOMReact.unmountComponentAtNode(container)
             container.remove()
         }
 

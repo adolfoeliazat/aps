@@ -308,7 +308,7 @@ object art {
             existingDiv.remove()
         }
         Shitus.byid("footer").after("<div id='debug_assertionErrorPane'></div>")
-        global.ReactDOM.render(assertionErrorPane.toReactElement(), Shitus.byid0("debug_assertionErrorPane"))
+        DOMReact.render(assertionErrorPane.toReactElement(), Shitus.byid0("debug_assertionErrorPane"))
 
         val stack = null
         assertionErrorPane.set(json(
@@ -552,9 +552,19 @@ object art {
     fun initDebugFunctionsShit() {
         global.window.removeEventListener("unhandledrejection", hrss.onUnhandledRejection)
         hrss.onUnhandledRejection = { event: dynamic ->
-            if (!hrss.preventExceptionRevelation && event.reason.message != "UI assertion failed") {
-                console.error(event.reason.message)
-                // imf()
+            "__async"
+            val reason: Throwable = event.reason
+            if (!hrss.preventExceptionRevelation && reason.message != "UI assertion failed") {
+                console.error("Unhandled rejection: ${reason.message}")
+                console.error(reason.asDynamic().stack)
+                try {
+                    val stack = __await(errorToMappedClientStackString(reason))
+                    console.error("---------- Mapped Stack ----------")
+                    console.error(stack)
+                } catch (e: Throwable) {
+                    console.error("Failed to map stack: ${e.message}")
+                    console.error(e.asDynamic().stack)
+                }
             }
         }
         global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)

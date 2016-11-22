@@ -35,9 +35,9 @@ abstract class TestScenario {
     fun run(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
         executed += this
 
-        // TODO:vgrechka Track all React-mounted nodes to unmount them before each test
-        byid0("topNavbarContainer")?.let {ReactDOM.unmountComponentAtNode(it)}
-        byid0("root")?.let {ReactDOM.unmountComponentAtNode(it)}
+//        byid0("topNavbarContainer")?.let {ReactDOM.unmountComponentAtNode(it)}
+//        byid0("root")?.let {ReactDOM.unmountComponentAtNode(it)}
+        DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
 
         docInnerHTML = "<h3>Running Test: ${ctorName(this)}</h3><hr>"
         measureAndReportToDocumentElement("Resetting database") {
@@ -73,12 +73,17 @@ interface TestSuite {
 
 val testScenarios = mutableMapOf<String, TestScenario>()
 
-fun tetete() {
-    val html = jq("#topNavbarContainer").html()
-    val tidy = tidyHTML(html)
-    println(tidy)
-}
 
+fun tetete() {
+//    val x: MutableList<String> = zz
+    val list = mutableListOf("foo", "bar", "baz")
+    list.forEach {println("Original: $it")}
+    list.forEach {if (it == "foo") list.remove(it)}
+    list.forEach {println("Modified: $it")}
+//    val html = jq("#topNavbarContainer").html()
+//    val tidy = tidyHTML(html)
+//    println(tidy)
+}
 
 class TestCommon(val sim: dynamic) {
     val LONG_SHIT_301 = makeLongShit(301)

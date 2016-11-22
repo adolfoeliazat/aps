@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 
+// TODO:vgrechka @revisit
 object __dlog {
     val requestJSONObject = Dlogger(false, "requestJSONObject")
     val responseJSONObject = Dlogger(false, "responseJSONObject")
@@ -19,6 +20,12 @@ object __dlog {
                 dlog(prefix, *args)
             }
         }
+    }
+}
+
+class DebugNoise(val tag: String, val mute: Boolean) {
+    inline fun clog(vararg xs: Any?) {
+        if (!mute) aps.clog("---$tag---", *xs)
     }
 }
 

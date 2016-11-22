@@ -5,7 +5,14 @@ fun main(args: Array<String>) {
 //    testWhen1()
 //    testNullableStringPlus()
 //    shit1()
-    shit2()
+//    shit2()
+    testConcurrentModification()
+}
+
+
+fun testConcurrentModification() {
+    val list = mutableListOf("foo", "bar", "baz")
+    list.forEach {if (it == "foo") list.remove(it)}
 }
 
 fun shit2() {

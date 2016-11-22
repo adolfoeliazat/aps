@@ -72,6 +72,19 @@ fun parseQueryString(href: String): Map<String, String> {
     return store
 }
 
+object DOMReact {
+    val containers = mutableListOf<HTMLElement>()
+
+    fun render(rel: ReactElement?, container: HTMLElement) {
+        ReactDOM.render(rel, container)
+        containers += container
+    }
+
+    fun unmountComponentAtNode(container: HTMLElement) {
+        ReactDOM.unmountComponentAtNode(container)
+        containers -= container
+    }
+}
 
 @native object ReactDOM {
     fun render(rel: ReactElement?, container: HTMLElement): Unit = noImpl
@@ -165,6 +178,9 @@ fun dumpLocalStorage() {
     }
 }
 
+fun jsArrayLikeToJSArray(xs: Any?) {
+    return js("Array").prototype.slice.call(xs)
+}
 
 
 

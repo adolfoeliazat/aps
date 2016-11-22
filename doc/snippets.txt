@@ -21,4 +21,11 @@ JavaScript
 F.dumpLocalStorage()
 localStorage.setItem('reloadTest', 'true')
 
+Links
+=====
+
+aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot1
+aps-ua-writer.local:3022/faq.html?testSuite=TestSuite_Writer_Boot
+
+
 
