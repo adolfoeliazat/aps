@@ -110,11 +110,9 @@ object DB {
                                 DSL.using(ctx.configuration().dialect(), Settings().withRenderFormatted(true))
                                 .renderInlined(shit))
 
-                            firstNotNull(
-                                {ctx.query()?.applet        {dumpShit(it)}},
-                                {ctx.routine()?.applet      {dumpShit(it)}},
-                                {ctx.sql().ifNotBlankApplet {dumpShit(it)}}
-                            )
+                            ctx.query()?.let {dumpShit(it); return}
+                            ctx.routine()?.let {dumpShit(it); return}
+                            ctx.sql()?.let {dumpShit(it); return}
                         }
                     }))
 //                    .set(DefaultRecordListenerProvider(object:DefaultRecordListener() {

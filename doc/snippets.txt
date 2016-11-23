@@ -28,11 +28,16 @@ JavaScript
 F.dumpLocalStorage()
 localStorage.setItem('reloadTest', 'true')
 
+Redis
+=====
+
+cd /d C:\opt\Redis
+title redis-server & redis-server redis.windows.conf
+title redis-cli & redis-cli
+
 Links
 =====
 
-aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot1
-aps-ua-writer.local:3022/faq.html?testSuite=TestSuite_Writer_Boot
-
+aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_Cool
 
 
