@@ -56,6 +56,7 @@ class World {
     var token: String? = null
     var signedUpOK: Boolean = false
     var user: UserRTO? = null
+    val userSure: UserRTO get() = user.let {it ?: bitch("I want a fucking user")}
     lateinit var urlQuery: Map<String, String>
     lateinit var updateNavbar: () -> Unit
     var prevPathname: String? = null
@@ -205,11 +206,7 @@ class World {
 
             DOMReact.render(hrss.browserOld.topNavbarElement, Shitus.byid0("topNavbarContainer"))
 
-            if (user?.state == UserState.PROFILE_PENDING) {
-                __await(pushNavigate("/profile.html"))
-            } else {
-                __await<dynamic>(loadPageForURL())
-            }
+            __await<dynamic>(loadPageForURL())
         } finally { Shitus.endTrain() }
         return __asyncResult(Unit)
     }
@@ -236,41 +233,54 @@ class World {
     }
 
     fun loadPageForURL(): Promise<Unit> {"__async"
+        val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
+        noise.clog(window.location.href)
+
+        val user = user
         val firstRun = loadPageForURLFirstRun
         loadPageForURLFirstRun = false
-
         urlQuery = parseQueryString(window.location.href)
-
         val pathname = window.location.pathname
-        var name =
+
+        var ultimateName =
             if (pathname.endsWith(".html"))
                 pathname.substring(pathname.lastIndexOf("/") + 1, pathname.lastIndexOf("."))
-            else "home"
+            else { // Root of the site, otherwise we won't reach here because of 404
+                if (user == null) "index"
+                // TODO:vgrechka Banned
+                else if (user.state == UserState.PROFILE_REJECTED) {
+                    window.history.pushState(null, "", "/profile.html")
+                    "profile"
+                } else {
+                    window.history.pushState(null, "", "/dashboard.html")
+                    "dashboard"
+                }
+            }
 
         var loader: dynamic = null
-
         fun isStaticPage(name: String) = !isDynamicPage(name)
 
-        if (isStaticPage(name)) {
+        if (isStaticPage(ultimateName)) {
             loader = {"__async"
-                val href = if (name == "home") "/" else "${name}.html"
+//                val href = if (ultimateName == "index") "/" else "${ultimateName}.html"
+                val href = "${ultimateName}.html"
                 // TODO:vgrechka @ditch-superagent
                 var content: dynamic = (__await<dynamic>(global.superagent.get(href).send())).text
                 content = content.slice(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
                 setRootContent(rawHTML(content))
             }
         } else {
-            if (user == null && name !== "sign-in" && name !== "sign-up" && !name.startsWith("debug-")) {
+            if (user == null && ultimateName !== "sign-in" && ultimateName !== "sign-up" && !ultimateName.startsWith("debug-")) {
                 window.history.replaceState(null, "", "sign-in.html")
-                name = "sign-in"
+                ultimateName = "sign-in"
             }
 
-            if (name === "sign-in") {
+            if (ultimateName === "sign-in") {
                 loader = {loadSignInPage()}
-            } else if (name === "sign-up") {
+            } else if (ultimateName === "sign-up") {
                 loader = {loadSignUpPage()}
-            } else if (user != null || (MODE === "debug" && name.startsWith("debug-"))) {
-                loader = privatePageLoader(name)
+            } else if (user != null || (MODE === "debug" && ultimateName.startsWith("debug-"))) {
+                loader = privatePageLoader(ultimateName)
             }
         }
 
@@ -281,7 +291,7 @@ class World {
 
         val skipBodyRendering =
             firstRun && // JS has just loaded
-            isStaticPage(name) &&
+            isStaticPage(ultimateName) &&
             typedStorageLocal.token == null
 //            localStorage.getItem("token") == null
 

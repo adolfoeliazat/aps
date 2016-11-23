@@ -11,6 +11,7 @@ import kotlin.browser.*
 
 class TestWriter_Boot_Cool : WriterBootTestScenario_FuckerToken() {
     override val shortDescription = "Valid token in local storage, user is cool"
+    override val path = "/"
 
     override fun setFuckerFields(o: TestSetUserFieldsRequest) {
         o.state.value = UserState.COOL

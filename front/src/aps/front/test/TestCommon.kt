@@ -23,9 +23,8 @@ abstract class TestScenario {
     val SLOWISH = false
 
     abstract fun run0(showTestPassedPane: Boolean): Promise<Throwable?>
-    abstract val shortDescription: String
+    open val shortDescription: String = ctorName(this)
     open fun prepareShit(): Promise<Unit> = __asyncResult(Unit)
-
     open val name: String get() = ctorName(this)
     open val longDescription: String? = null
 

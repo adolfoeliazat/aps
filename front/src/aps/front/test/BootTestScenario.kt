@@ -13,12 +13,9 @@ abstract class BootTestScenario : StepBasedTestScenario() {
     abstract fun fillStorageLocal()
     abstract fun buildStepsAfterDisplayInitialShit()
     abstract fun buildStepsAfterWorldBoot()
+    abstract val path: String
 
     override fun buildSteps() {
-//        val siteName = clientKind.name.toLowerCase()
-//        o.assert(window.location.hostname.contains("$siteName"), "Scenario should be tested against $siteName site")
-//        o.assert(window.location.pathname == "/", "Scenario should be tested against / path")
-
         o.act {
             val fakeStorageLocal = object : StorageLocal {
                 val map = mutableMapOf<String, String>()
@@ -40,7 +37,7 @@ abstract class BootTestScenario : StepBasedTestScenario() {
         }
 
         o.acta {"__async"
-            val url = "http://aps-ua-writer.local:3022"
+            val url = "http://aps-ua-writer.local:3022$path"
             val content = measureAndReportToDocumentElement("Loading $url") {
                 __await(fetchURL(url, "GET", null))
             }

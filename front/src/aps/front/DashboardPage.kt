@@ -4,16 +4,21 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
 
 class DashboardPage(val ui: World) {
     fun load(preserveScroll: Boolean = false): Promise<Unit> {"__async"
+        val showWorkSection = ui.userSure.state == UserState.COOL
         val myPage = Page(
             header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Dashboard", "Панель")))),
-            body = oldShitAsToReactElementable(Shitus.diva(json(),
-                                                           Shitus.diva(json("className" to "row"),
+            body = oldShitAsToReactElementable(Shitus.diva(
+                json(),
+                Shitus.diva(json("className" to "row"),
+                    if (!showWorkSection) null else
                     Shitus.diva(json("className" to "col-sm-6"),
                         section(json(
                             "name" to "workPending",

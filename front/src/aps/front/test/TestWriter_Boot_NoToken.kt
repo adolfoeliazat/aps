@@ -12,6 +12,7 @@ import kotlin.browser.*
 
 class TestWriter_Boot_NoToken : WriterBootTestScenario() {
     override val shortDescription = "No token in local storage"
+    override val path = "/"
 
     override fun fillStorageLocal() {
     }

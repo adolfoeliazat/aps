@@ -12,6 +12,7 @@ import kotlin.browser.*
 
 class TestWriter_Boot_InvalidToken : WriterBootTestScenario() {
     override val shortDescription = "Invalid token in local storage"
+    override val path = "/"
 
     override fun fillStorageLocal() {
         typedStorageLocal.token = "garbage"
