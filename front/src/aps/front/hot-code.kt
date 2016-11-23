@@ -26,7 +26,7 @@ class InitAutoReload {
         if (initialCtime != __await(GetSoftwareVersionRequest.send()).ctime) {
             var href = window.location.href
                 .replace(Regex("#.*$"), "") // Otherwise it doesn't actually reload page
-            if (realTypedStorageLocal.reloadTest) TestShit.testHref?.let {href = it}
+            if (realTypedStorageLocal.reloadTest) TestShit.lastTestHref?.let {href = it}
 
             window.location.href = href
         } else {

@@ -82,7 +82,9 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     lateinit var value: String
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-        value = input[name] as String
+        if (!possiblyUnspecified || specified) {
+            value = input[name] as String
+        }
     }
 }
 

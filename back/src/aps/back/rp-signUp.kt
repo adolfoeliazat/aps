@@ -17,9 +17,9 @@ fun signUp() = publicProcedure(
     SignUpRequest(),
     runShit = void {ctx, req ->
         try {
-            val firstName = req.signUpFields.firstName.value
-            val lastName = req.signUpFields.lastName.value
-            val email = req.signUpFields.email.value
+            val firstName = req.mutableSignUpFields.firstName.value
+            val lastName = req.mutableSignUpFields.lastName.value
+            val email = req.immutableSignUpFields.email.value
             val password = TestServerFiddling.nextGeneratedPassword?.let {
                 TestServerFiddling.nextGeneratedPassword = null
                 it

@@ -17,7 +17,12 @@ import kotlin.dom.asList
 
 val REALLY_BIG_Z_INDEX = 2147483647
 
-class FatException(override val message: String, val asyncStack: String? = null, val markdownPayload: String? = null) : Throwable(message) {
+class FatException(
+    override val message: String,
+    val asyncStack: String? = null,
+    val markdownPayload: String? = null,
+    override val visualPayload: ToReactElementable? = null
+) : Throwable(message), WithVisualPayload {
     val stack = js("Error")(message).stack
 }
 
@@ -151,9 +156,8 @@ fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String 
 
 fun stripUninterestingElements(jqel: JQuery): HTMLElement {
     fun descend(el: HTMLElement) {
-        if (el.tagName == "SCRIPT" || el.style.display == "none") {
-            return el.remove()
-        }
+        if (el.tagName == "SCRIPT" || el.style.display == "none") return el.remove()
+        if (el.className.contains("ignoreInTests")) return el.remove()
 
         val children = el.children.asList().toList() // Copying it because `children.asList()` is live
         for (child in children) {

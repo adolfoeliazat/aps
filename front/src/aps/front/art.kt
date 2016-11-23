@@ -59,8 +59,8 @@ sealed class TestInstruction() : DefinitionStackHolder {
         class ActionStep(long: String): Step(long)
         class StateStep(long: String): Step(long)
         class NavigationStep(long: String): Step(long)
-
         class AssertionStep(long: String): Step(long)
+        class HaltStep(long: String): Step(long)
     }
 
     class BeginSection(val long: String) : TestInstruction()
@@ -373,6 +373,7 @@ object art {
                             is TestInstruction.Step.StateStep -> kspan(marginRight=5, padding=3, backgroundColor=ORANGE_200, fontSize="75%") {it-"State"}
                             is TestInstruction.Step.NavigationStep -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%") {it-"Navigation"}
                             is TestInstruction.Step.AssertionStep -> kspan(marginRight=5, padding=3, fontSize="75%", backgroundColor=labelBack(passed=GREEN_200, failed=RED_200, skipped=GRAY_300)) {it-"Assertion"}
+                            is TestInstruction.Step.HaltStep -> kspan(marginRight=5, padding=3, fontSize="75%", backgroundColor=labelBack(passed=GREEN_200, failed=RED_200, skipped=GRAY_300)) {it-"Halt"}
                         }
                         o- markdown(title, stripP=true)
                     },
@@ -1182,7 +1183,7 @@ fun openTestPassedPane() {
         title = run {
             val scenario = hrss.currentTestScenario!!
             var title = scenario.name
-            scenario.shortDescription?.let {title += ". $it"}
+            scenario.shortDescription?.let {if (it != title) title += ". $it"}
             title
         },
         details = renderCurrentTestScenarioDetails())

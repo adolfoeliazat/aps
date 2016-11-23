@@ -30,10 +30,14 @@ class ProfilePage(val ui: World) {
             pageBody = Shitus.diva(json(),
                 prelude,
                 FormMatumba<UpdateProfileRequest, UpdateProfileRequest.Response>(FormSpec(
-                    UpdateProfileRequest().apply {
-                        with(profileFields) {
-                            phone.value = user.phone.orEmpty()
-                            aboutMe.value = user.aboutMe.orEmpty()
+                    UpdateProfileRequest()-{o->
+                        o.mutableSignUpFields-{o->
+                            o.firstName.value = user.firstName
+                            o.lastName.value = user.lastName
+                        }
+                        o.profileFields-{o->
+                            o.phone.value = user.phone.orEmpty()
+                            o.aboutMe.value = user.aboutMe.orEmpty()
                         }
                     },
                     ui,
@@ -52,8 +56,9 @@ class ProfilePage(val ui: World) {
         }
         else if (userState == UserState.BANNED) {
             pageBody = Shitus.diva(json(),
-                preludeWithVeryBadNews(json("content" to Shitus.spancTitle(json("title" to t("TOTE", "Тебя тупо забанили, ОК? Кина не будет."))))),
-                renderProfile(ui, user)
+                preludeWithBadNews(json(
+                    "title" to t("TOTE", "Тебя тупо забанили, всему конец"),
+                    "quote" to user.banReason))
                 )
         }
         else {

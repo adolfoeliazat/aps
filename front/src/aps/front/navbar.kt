@@ -111,9 +111,7 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
         }
         leftNavbarItems.push.apply(leftNavbarItems, privateItems)
         // @wip rejection
-        if (user.state != UserState.BANNED) {
-            rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to user.firstName, "counter" to jsArrayOf(0), "aStyle" to rightNavbarItemAStyle))
-        }
+        rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to user.firstName, "counter" to jsArrayOf(0), "aStyle" to rightNavbarItemAStyle))
     } else {
         leftNavbarItems = proseItems
         rightNavbarItem = TopNavItem(json("name" to "sign-in", "title" to t("Sign In", "Вход"), "counter" to jsArrayOf(0), "aStyle" to rightNavbarItemAStyle))

@@ -146,13 +146,15 @@ class SignInWithTokenRequest : RequestMatumba() {
 }
 
 class SignUpRequest : RequestMatumba() {
-    val signUpFields = SignUpFields(this)
+    val immutableSignUpFields = ImmutableSignUpFields(this)
+    val mutableSignUpFields = MutableSignUpFields(this)
     val agreeTerms = CheckboxField(this, "agreeTerms")
 }
 
 class UpdateProfileRequest() : RequestMatumba() {
     class Response(val newUser: UserRTO)
 
+    val mutableSignUpFields = MutableSignUpFields(this)
     val profileFields = ProfileFields(this)
 }
 
@@ -160,7 +162,8 @@ open class UpdateUserRequest() : RequestMatumba() {
     class Response(val newUser: UserRTO)
 
     val id = StringHiddenField(this, "id")
-    val signUpFields = SignUpFields(this)
+    val immutableSignUpFields = ImmutableSignUpFields(this)
+    val mutableSignUpFields = MutableSignUpFields(this)
     val profileFields = ProfileFields(this)
     val state = SelectField(this, "state", t("TOTE", "Статус"), UserState.values())
     val profileRejectionReason = TextField(this, "profileRejectionReason", t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000)
@@ -170,8 +173,11 @@ open class UpdateUserRequest() : RequestMatumba() {
 
 class AdminCreateUserRequest: UpdateUserRequest()
 
-class SignUpFields(container: RequestMatumba) {
+class ImmutableSignUpFields(container: RequestMatumba) {
     val email = emailField(container)
+}
+
+class MutableSignUpFields(container: RequestMatumba) {
     val firstName = TextField(container, "firstName", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50)
     val lastName = TextField(container, "lastName", t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50)
 }
@@ -356,6 +362,11 @@ class TestSetUserFieldsRequest() : RequestMatumba() {
     val email = StringHiddenField(this, "email")
     val state = EnumHiddenField(this, "state", UserState.values(), possiblyUnspecified = true)
     val profileRejectionReason = MaybeStringHiddenField(this, "profileRejectionReason", possiblyUnspecified = true)
+    val phone = MaybeStringHiddenField(this, "phone", possiblyUnspecified = true)
+    val aboutMe = MaybeStringHiddenField(this, "aboutMe", possiblyUnspecified = true)
+    val banReason = MaybeStringHiddenField(this, "banReason", possiblyUnspecified = true)
+    val profileUpdatedAt = StringHiddenField(this, "profileUpdatedAt ", possiblyUnspecified = true)
+    val insertedAt = StringHiddenField(this, "insertedAt ", possiblyUnspecified = true)
 
     fun send(): Promise<GenericResponse> = callDangerousMatumba(this)
 }

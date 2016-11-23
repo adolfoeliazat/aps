@@ -93,31 +93,52 @@ class TestScenarioBuilder {
     }
 
     fun halt() {
-        act {die("Halted")}
+        val step = TestInstruction.Step.HaltStep("Fucking halt")
+        instructions.add(step)
+        act {
+            throw FatException("Fucking halted", visualPayload = kdiv{o->
+                fun makeTab(title: String, paste: String) = TabSpec(
+                    id = title,
+                    title = title,
+                    content = kdiv{o->
+                        o- Input(json("initialValue" to paste,
+                                      "kind" to "textarea",
+                                      "rows" to 10,
+                                      "style" to json("width" to "100%",
+                                                      "height" to "100%"),
+                                      "untested" to true))
+                    })
+
+                o- Tabs2(initialActiveID = "Navbar Paste", tabs = listOf(
+                    makeTab("Navbar Paste", "o.assertNavbarHTML(\"\"\"${takeHTMLForAssertion(SELECTOR_NAVBAR)}\"\"\")"),
+                    makeTab("Root Paste", "o.assertRootHTML(\"\"\"${takeHTMLForAssertion(SELECTOR_ROOT)}\"\"\")")
+                ))
+            })
+        }
     }
 
     fun assertHTML(under: CSSSelector, expected: String, transformLine: ((String) -> String)? = null) {
         val stepTitle = "HTML diff under $under"
         checkOnAnimationFrame(stepTitle) {
-            val rawActual = stripUninterestingElements(jq(under)).innerHTML
+            val rawActual = takeHTMLForAssertion(under)
             val tidyActual = tidyHTML(rawActual, transformLine=transformLine)
             val tidyExpected = tidyHTML(expected, transformLine=transformLine)
             if (tidyActual != tidyExpected) {
                 throw ArtAssertionError(stepTitle, visualPayload = renderDiff(
                     expected = tidyExpected,
-                    actual = tidyActual, actualPaste = rawActual.trim()))
+                    actual = tidyActual, actualPaste = threeQuotes + rawActual.trim() + threeQuotes))
             }
         }
     }
 
     fun assertNavbarHTML(expected: String) {
-        assertHTML(under = "#topNavbarContainer",
+        assertHTML(under = SELECTOR_NAVBAR,
                    expected = expected,
                    transformLine = {it.replace(Regex(" id=\"MakeStaticSites-\\d+\""), "")})
     }
 
     fun assertRootHTML(expected: String) {
-        assertHTML(under = "#root",
+        assertHTML(under = SELECTOR_ROOT,
                    expected = expected,
                    transformLine = {it})
     }

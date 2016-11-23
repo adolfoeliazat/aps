@@ -54,8 +54,11 @@ class AdminUsersPage(val ui: World) {
                                     o.profileRejectionReason.value = user.profileRejectionReason.orEmpty()
                                     o.adminNotes.value = user.adminNotes.orEmpty()
 
-                                    o.signUpFields-{o->
+                                    o.immutableSignUpFields-{o->
                                         o.email.value = user.email
+                                    }
+
+                                    o.mutableSignUpFields-{o->
                                         o.firstName.value = user.firstName
                                         o.lastName.value = user.lastName
                                     }

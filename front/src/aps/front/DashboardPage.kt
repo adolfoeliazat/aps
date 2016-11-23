@@ -9,6 +9,9 @@
 package aps.front
 
 import aps.*
+import into.kommon.ifOrEmpty
+
+// TODO:vgrechka Auto-refresh only minimal necessary parts
 
 class DashboardPage(val ui: World) {
     fun load(preserveScroll: Boolean = false): Promise<Unit> {"__async"
@@ -36,9 +39,10 @@ class DashboardPage(val ui: World) {
                                     return@runa __asyncResult(js("[]"))
                                 }
 
-                                fun addMetric(value: String, tame: String, url: String, title: String, noStateContributions: Boolean = false) {
+                                fun addMetric(value: String, tame: String, url: String, title: String, noStateContributions: Boolean = false, ignoreInTests: Boolean = false) {
                                     if (value != "0") {
-                                        items.push(Shitus.diva(json("controlTypeName" to "addMetric", "tame" to tame, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden")),
+                                        items.push(Shitus.diva(json("controlTypeName" to "addMetric", "tame" to tame, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden"),
+                                                                    "className" to ifOrEmpty(ignoreInTests){"ignoreInTests"}),
                                             Shitus.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), Shitus.repeat(".", 210)),
                                             ui.urlLink(json("tamy" to true, "style" to json("background" to Color.WHITE, "paddingRight" to 8, "color" to Color.BLACK_BOOT), "blinkOpts" to json("dwidth" to -8),
                                                 "title" to title, "url" to url, "delayActionForFanciness" to true)),
@@ -52,13 +56,13 @@ class DashboardPage(val ui: World) {
                                 when (res) {
                                     is GetLiveStatusRequest.Response.ForAdmin -> {
                                         addMetric(value = res.profilesToApprove, tame = "profilesToApprove", url = "admin-users.html?filter=${UserFilter.PROFILE_APPROVAL_PENDING.name}", title = t("TOTE", "Профилей зааппрувить"))
-                                        addMetric(value = res.suka, tame = "suka", noStateContributions = true, url = "suka.html", title = t("TOTE", "Сцуко-метрика"))
+                                        addMetric(value = res.suka, tame = "suka", noStateContributions = true, url = "suka.html", title = t("TOTE", "Сцуко-метрика"), ignoreInTests = true)
                                     }
                                     is GetLiveStatusRequest.Response.ForWriter -> {
-                                        addMetric(value = res.suka, tame = "suka", noStateContributions = true, url = "suka.html", title = t("TOTE", "Сцуко-метрика"))
+                                        addMetric(value = res.suka, tame = "suka", noStateContributions = true, url = "suka.html", title = t("TOTE", "Сцуко-метрика"), ignoreInTests = true)
                                     }
                                     is GetLiveStatusRequest.Response.ForCustomer -> {
-                                        addMetric(value = res.suka, tame = "suka", noStateContributions = true, url = "suka.html", title = t("TOTE", "Сцуко-метрика"))
+                                        addMetric(value = res.suka, tame = "suka", noStateContributions = true, url = "suka.html", title = t("TOTE", "Сцуко-метрика"), ignoreInTests = true)
                                     }
                                 }
 
@@ -71,16 +75,17 @@ class DashboardPage(val ui: World) {
                         section(json(
                             "name" to "account",
                             "title" to t("TOTE", "Аккаунт"),
-                            "items" to jsArrayOf(
-                                darkLink(json("tamy" to "signOut", "title" to t("TOTE", "Выйти прочь"), "onClick" to {
-                                    "__async"
+                            "items" to mutableListOf<ReactElement>().applet{o->
+                                o+= darkLink(json("tamy" to "signOut", "title" to t("TOTE", "Выйти прочь"), "onClick" to {"__async"
                                     ui.signOut()
-                                })),
-                                darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {
-                                    "__async"
-                                    console.warn("// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a")
                                 }))
-                            )
+
+                                if (ui.userSure.state != UserState.BANNED) {
+                                    o+= darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {"__async"
+                                        console.warn("// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a")
+                                    }))
+                                }
+                            }.toJSArray()
                         ))
                     )
                 )

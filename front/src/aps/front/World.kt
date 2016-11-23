@@ -245,15 +245,22 @@ class World {
         var ultimateName =
             if (pathname.endsWith(".html"))
                 pathname.substring(pathname.lastIndexOf("/") + 1, pathname.lastIndexOf("."))
-            else { // Root of the site, otherwise we won't reach here because of 404
-                if (user == null) "index"
-                // TODO:vgrechka Banned
-                else if (user.state == UserState.PROFILE_REJECTED) {
-                    window.history.pushState(null, "", "/profile.html")
-                    "profile"
-                } else {
-                    window.history.pushState(null, "", "/dashboard.html")
-                    "dashboard"
+            else { // Root of the site (/), otherwise we wouldn't have reached here because of 404
+                when (user) {
+                    null -> "index"
+                    else -> when (user.state) {
+                        UserState.COOL -> {
+                            window.history.pushState(null, "", "/dashboard.html")
+                            "dashboard"
+                        }
+                        UserState.PROFILE_REJECTED,
+                        UserState.PROFILE_PENDING,
+                        UserState.PROFILE_APPROVAL_PENDING,
+                        UserState.BANNED -> {
+                            window.history.pushState(null, "", "/profile.html")
+                            "profile"
+                        }
+                    }
                 }
             }
 

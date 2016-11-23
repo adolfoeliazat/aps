@@ -186,6 +186,11 @@ val backendInstanceID = "" + UUID.randomUUID()
 
         req.state.let {if (it.specified) step = step.set(USERS.STATE, it.value.name)}
         req.profileRejectionReason.let {if (it.specified) step = step.set(USERS.PROFILE_REJECTION_REASON, it.value)}
+        req.phone.let {if (it.specified) step = step.set(USERS.PHONE, it.value)}
+        req.aboutMe.let {if (it.specified) step = step.set(USERS.ABOUT_ME, it.value)}
+        req.banReason.let {if (it.specified) step = step.set(USERS.BAN_REASON, it.value)}
+        req.profileUpdatedAt.let {if (it.specified) step = step.set(USERS.PROFILE_UPDATED_AT, stringToStamp(it.value))}
+        req.insertedAt.let {if (it.specified) step = step.set(USERS.INSERTED_AT, stringToStamp(it.value))}
 
         step
             .where(USERS.EMAIL.eq(req.email.value))

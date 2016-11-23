@@ -110,7 +110,6 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     }
 
     val testName = urlQuery["test"]
-    if (testName != null) TestShit.testHref = window.location.href
     val testSuiteName = urlQuery["testSuite"]
 
     __await(when {
@@ -139,7 +138,12 @@ private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String,
             o- "Following motherfuckers have executed and kind of passed:"
             o- kol{o->
                 for (test in TestScenario.executed) {
-                    o- kli {it-"${test.name}. ${test.shortDescription}"}
+                    o- kli{o->
+                        o- "${test.name}"
+                        if (test.shortDescription != test.name) {
+                            o- ". ${test.shortDescription}"
+                        }
+                    }
                 }
             }
         })
@@ -153,6 +157,12 @@ private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promi
 }
 
 private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+    val testName = ctorName(scenario)
+    TestShit.lastTestHref = when {
+        testName.contains("Writer") -> "http://aps-ua-writer.local:3022/faq.html?test=$testName"
+        else -> bitch("Cannot figure out URL for test [$testName]")
+    }
+
     hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
     hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
     hrss.preventUIAssertionThrowing = urlQuery["uiAssertionThrows"] == "no"

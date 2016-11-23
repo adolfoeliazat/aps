@@ -14,6 +14,13 @@ git diff c7514737083c88979579a936621a0a428112b23a --  "E:\work\aps\aps\vendor\bo
 echo -ne '\e]0;Title\a'
 
 
+PostgreSQL
+==========
+
+cd /d E:\work\aps\back\bin\dev\win>title
+pg-test & pg-test-start.cmd
+    | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
+
 
 JavaScript
 ==========

@@ -5,15 +5,15 @@ import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 
 fun main(args: Array<String>) {
-//    ScratchBack.fiddleWithDB_apsTestOnTestServer()
-    println(Boolean::class == Boolean::class)
-
+    ScratchBack.fiddleWithDB_apsTestOnTestServer()
+//    println(Boolean::class == Boolean::class)
 }
 
 object ScratchBack {
 
     fun fiddleWithDB_apsTestOnTestServer() {
-        val query = "select * from users"
+        val query = "select now()"
+//        val query = "select * from users"
 //        val query = "select * from user_tokens"
 
         DB.apsTestOnTestServer.joo{q->

@@ -164,6 +164,7 @@ fun <T> nif(cond: Boolean, block: () -> T): T? = if (cond) block() else null
 val nbsp: String = "" + 0xa0.toChar()
 val mdash = "—"
 val ndash = "–"
+val threeQuotes = "\"\"\""
 
 fun String.indexOfOrDie(needle: String): Int {
     val idx = this.indexOf(needle)

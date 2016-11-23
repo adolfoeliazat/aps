@@ -97,7 +97,7 @@ interface Blinkable {
     fun setBlinking(b: Boolean)
 }
 
-fun darkLink(def: dynamic) {
+fun darkLink(def: dynamic): ReactElement {
     return Shitus.link(Shitus.asnnoDollar(json("style" to json("color" to "#333")), def))
 }
 

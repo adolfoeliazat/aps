@@ -101,8 +101,12 @@ annotation class Front
     return HiddenField(container, name, possiblyUnspecified=possiblyUnspecified)
 }
 
-@Front fun StringHiddenField(container: RequestMatumba, name: String): HiddenField<String> {
-    return HiddenField(container, name)
+@Front fun StringHiddenField(
+    container: RequestMatumba,
+    name: String,
+    possiblyUnspecified: Boolean = false
+): HiddenField<String> {
+    return HiddenField(container, name, possiblyUnspecified=possiblyUnspecified)
 }
 
 @Front fun MaybeStringHiddenField(
