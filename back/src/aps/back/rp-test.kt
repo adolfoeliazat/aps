@@ -30,7 +30,12 @@ object TestServerFiddling {
 }
 
 fun <Req : RequestMatumba, Res : Any>
-testProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, needsDB: Boolean? = null, logRequestJSON: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit =
+testProcedure(
+    req: Req,
+    runShit: (ProcedureContext, Req) -> Res,
+    needsDB: Boolean? = null,
+    logRequestJSON: Boolean? = null
+): (HttpServletRequest, HttpServletResponse) -> Unit =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -40,7 +45,8 @@ testProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, needsDB: Boolea
         needsUser = false,
         userKinds = setOf(),
         considerNextRequestTimestampFiddling = false,
-        logRequestJSON = logRequestJSON ?: true))
+        logRequestJSON = logRequestJSON ?: true
+    ))
 
 @RemoteProcedureFactory fun imposeNextRequestTimestamp() = testProcedure(
     ImposeNextRequestTimestampRequest(),
@@ -197,7 +203,6 @@ val backendInstanceID = "" + UUID.randomUUID()
             .execute()
     }
 )
-
 
 
 

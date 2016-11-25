@@ -6,9 +6,18 @@ fun main(args: Array<String>) {
 //    testNullableStringPlus()
 //    shit1()
 //    shit2()
-    testConcurrentModification()
+//    testConcurrentModification()
+    testDownTo()
 }
 
+fun testDownTo() {
+    println("(5 downTo 3)")
+    (5 downTo 3).forEach(::println)
+    println("(5 downTo 5)")
+    (5 downTo 5).forEach(::println)
+    println("(5 downTo 6)")
+    (5 downTo 6).forEach(::println)
+}
 
 fun testConcurrentModification() {
     val list = mutableListOf("foo", "bar", "baz")

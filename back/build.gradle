@@ -23,6 +23,7 @@ dependencies {
     compile 'commons-validator:commons-validator:1.5.1'
     compile 'com.google.javascript:closure-compiler:v20161024'
     compile 'org.apache.ant:ant:1.9.7'
+    compile 'redis.clients:jedis:2.9.0'
 }
 
 task importDeps(type: Copy) {

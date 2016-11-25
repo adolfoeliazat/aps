@@ -545,6 +545,10 @@ fun timeoutSet(ms: Int, cb: () -> Unit) {
     kotlin.browser.window.setTimeout(cb, ms)
 }
 
+fun intervalSet(ms: Int, cb: () -> Unit) {
+    kotlin.browser.window.setInterval(cb, ms)
+}
+
 @Suppress("UNUSED_PARAMETER")
 fun simpleButton(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement {
     val attrs = js("({onClick: onClick})")

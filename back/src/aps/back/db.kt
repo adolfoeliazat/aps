@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import aps.RedisLogMessage.Type.SQL
 import into.kommon.*
 import aps.back.generated.jooq.Tables
 import aps.back.generated.jooq.tables.records.UserRolesRecord
@@ -82,7 +83,7 @@ object DB {
             """)}
 
             if (template == null) joo{it.execute(DB::class.java.getResource("schema.sql").readText())}
-            populate?.let {joo(it)}
+            populate?.let {joo(act=it)}
         }
 
         fun close() {
@@ -99,12 +100,14 @@ object DB {
                     .set(SQLDialect.POSTGRES_9_5)
                     .set(DefaultExecuteListenerProvider(object:DefaultExecuteListener() {
                         override fun executeStart(ctx: ExecuteContext) {
-                            fun dumpShit(shit: String) =
+                            fun dumpShit(shit: String) {
                                 // TODO:vgrechka Capture stack where SQL statement was created and include it into dump    1fb0a0b3-e8db-4490-a710-22a310528037
                                 dlog("\n"
-                                    + "--- SQL { -------------------------------------------------\n"
-                                    + "$shit                                                      \n"
-                                    + "--- SQL } -------------------------------------------------\n")
+                                         + "--- SQL { -------------------------------------------------\n"
+                                         + "$shit                                                      \n"
+                                         + "--- SQL } -------------------------------------------------\n")
+                                redisLog.send(RedisLogMessage(SQL, shit))
+                            }
 
                             fun dumpShit(shit: QueryPart) = dumpShit(
                                 DSL.using(ctx.configuration().dialect(), Settings().withRenderFormatted(true))

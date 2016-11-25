@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -57,12 +59,20 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
 }
 
 fun dejsonize(jsThing: dynamic): Any? {
+    val noise = DebugNoise("dejsonize", mute = true)
+
+    noise.clog("jsThing", jsThing)
+
     return when {
         jsThing == null -> null
 
         jsTypeOf(jsThing).oneOf("string", "number", "boolean") -> jsThing
 
-        jsThing.`$$$enum` != null -> eval("_.${jsThing.`$$$enum`}.${jsThing.value}")
+        jsThing.`$$$enum` != null -> {
+            val code = "_.${jsThing.`$$$enum`.replace("\$", ".")}.${jsThing.value}"
+            noise.clog("code", code)
+            eval(code)
+        }
 
         jsThing.`$$$class` != null ->
             evalAny("new _.${(jsThing.`$$$class` as String).replace("$", ".")}()").applet {res ->

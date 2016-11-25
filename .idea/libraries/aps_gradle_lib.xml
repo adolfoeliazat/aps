@@ -75,6 +75,8 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/websocket-servlet-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/closure-compiler-v20161024.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/ant-1.9.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jedis-2.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/commons-pool2-2.4.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

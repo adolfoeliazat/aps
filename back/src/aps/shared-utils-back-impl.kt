@@ -8,6 +8,7 @@ package aps
 
 import aps.back.*
 import into.kommon.*
+import kotlin.system.exitProcess
 
 //fun bitch(msg: String = "Just bitching..."): Nothing = throw Exception(msg)
 //fun imf(what: String = "me"): Nothing = throw Exception("Implement $what, please, fuck you")
@@ -220,6 +221,18 @@ fun printStack() {
     try {throw Exception("Gimme the stack")}
     catch (e: Throwable) {e.printStackTrace()}
 }
+
+fun dwarnStrikingAndExit(vararg xs: Any?) {
+    dwarnStriking(*xs)
+    exitProcess(0)
+}
+
+
+
+
+
+
+
 
 
 

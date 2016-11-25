@@ -371,6 +371,11 @@ class TestSetUserFieldsRequest() : RequestMatumba() {
     fun send(): Promise<GenericResponse> = callDangerousMatumba(this)
 }
 
+class GetRedisLogMessagesRequest : RequestMatumba() {
+    class Response(val items: List<RedisLogMessage>)
+
+    fun send(): Promise<Response> = callDangerousMatumba(this)
+}
 
 
 

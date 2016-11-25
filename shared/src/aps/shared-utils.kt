@@ -68,6 +68,7 @@ class relazy<out T>(val initializer: () -> T) {
 
 inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
 
+
 class Probe<T>(val transform: (T) -> Any?)
 fun <T> probe(transform: (T) -> Any?) = Probe(transform)
 
@@ -170,6 +171,24 @@ fun String.indexOfOrDie(needle: String): Int {
     val idx = this.indexOf(needle)
     if (idx == -1) die("Needle not found: [$needle]")
     return idx
+}
+
+inline fun loopNotTooLong(maxIterations: Int = 1000, block: () -> Unit) {
+    for (i in 1..maxIterations) {
+        try {
+            block()
+        } catch (e: SkipException) {
+            continue
+        } catch (e: AbortException) {
+            return
+        }
+    }
+
+    die("It took too long")
+}
+
+fun <T> Iterable<T>.toDebugString(): String {
+    return "\n" + this.mapIndexed{i, x -> "$i) $x"}.joinToString("\n")
 }
 
 

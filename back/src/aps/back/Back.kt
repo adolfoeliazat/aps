@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import aps.RedisLogMessage.Type.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.UserRoles
 import aps.back.generated.jooq.tables.pojos.Users
@@ -27,6 +28,7 @@ import java.lang.reflect.Method
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.system.exitProcess
 
 val THE_ADMIN_ID = 101L // TODO:vgrechka Unhardcode admin ID    17c5cc52-57c2-480d-a7c3-abb030b01cc9
 
@@ -34,6 +36,8 @@ val remoteProcedureNameToFactory: MutableMap<String, Method> = Collections.synch
 
 fun main(args: Array<String>) {
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
+
+    redisLog.send(RedisLogMessage(THICK_SEPARATOR, "Booting fucking backend"))
 
     run { // Gather meta
         val refl = Reflections(ConfigurationBuilder()
@@ -54,6 +58,8 @@ fun main(args: Array<String>) {
         join()
     }
 }
+
+val objectMapper = ObjectMapper()
 
 val hackyObjectMapper = ObjectMapper().applet {om ->
     om.serializerFactory = object:BeanSerializerFactory(null) {

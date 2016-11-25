@@ -277,16 +277,16 @@ class World {
                 setRootContent(rawHTML(content))
             }
         } else {
-            if (user == null && ultimateName !== "sign-in" && ultimateName !== "sign-up" && !ultimateName.startsWith("debug-")) {
+            if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
                 window.history.replaceState(null, "", "sign-in.html")
                 ultimateName = "sign-in"
             }
 
-            if (ultimateName === "sign-in") {
+            if (ultimateName == "sign-in") {
                 loader = {loadSignInPage()}
-            } else if (ultimateName === "sign-up") {
+            } else if (ultimateName == "sign-up") {
                 loader = {loadSignUpPage()}
-            } else if (user != null || (MODE === "debug" && ultimateName.startsWith("debug-"))) {
+            } else if (user != null || (MODE == "debug" && ultimateName.startsWith("debug"))) {
                 loader = privatePageLoader(ultimateName)
             }
         }
@@ -359,6 +359,10 @@ class World {
 
             "debug-kotlin-playground" -> ({"__async"
                 KotlinShit.loadDebugKotlinPlaygroundPage() /ignora
+            })
+
+            "debug" -> ({"__async"
+                __reawait(DebugPage(KotlinShit.ui).load())
             })
 
             else -> wtf("privatePageLoader for [$name]")
