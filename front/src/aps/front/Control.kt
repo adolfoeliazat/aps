@@ -455,9 +455,9 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
 
     val `$sourceLocation`: Promise<String?> by lazy {
         Promise<String?>({resolve, reject ->
-            `$definitionStack`.then<Nothing> {jsArray ->
+            `$definitionStack`.then<Nothing>({jsArray ->
                 resolve(if (jsArray[0]) jsArray[0].loc else null)
-            }
+            })
         })
     }
 

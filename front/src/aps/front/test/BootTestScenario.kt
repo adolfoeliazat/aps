@@ -36,30 +36,43 @@ abstract class BootTestScenario : StepBasedTestScenario() {
             fillStorageLocal()
         }
 
-        o.acta {"__async"
+        o.acta {async{
             val url = "http://aps-ua-writer.local:3022$path"
             val content = measureAndReportToDocumentElement("Loading $url") {
-                __await(fetchURL(url, "GET", null))
+                await(fetchURL(url, "GET", null))
             }
 
-            if (SLOWISH) __await(delay(1000))
+            if (SLOWISH) await(delay(1000))
             window.history.pushState(null, "", url)
             val openingHeadTagIndex = content.indexOfOrDie("<head")
             val closingHTMLTagIndex = content.indexOfOrDie("</html>")
             val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
             docInnerHTML = innerHTMLContent
-            __asyncResult(Unit)
-        }
+        }}
+
+//        o.acta {"__async"
+//            val url = "http://aps-ua-writer.local:3022$path"
+//            val content = measureAndReportToDocumentElement("Loading $url") {
+//                __await(fetchURL(url, "GET", null))
+//            }
+//
+//            if (SLOWISH) __await(delay(1000))
+//            window.history.pushState(null, "", url)
+//            val openingHeadTagIndex = content.indexOfOrDie("<head")
+//            val closingHTMLTagIndex = content.indexOfOrDie("</html>")
+//            val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
+//            docInnerHTML = innerHTMLContent
+//            __asyncResult(Unit)
+//        }
 
         o.act {
             ExternalGlobus.displayInitialShit()
         }
         buildStepsAfterDisplayInitialShit()
 
-        o.acta {"__async"
-            "zzzzzzz"
-            __reawait(World().boot())
-        }
+        o.acta {async{
+            await(World().boot())
+        }}
         buildStepsAfterWorldBoot()
     }
 }

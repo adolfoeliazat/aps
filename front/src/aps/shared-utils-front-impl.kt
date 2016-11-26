@@ -46,7 +46,10 @@ val NOTRE: ToReactElementable = NORE.toToReactElementable()
 }
 
 @native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
-    fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
+    fun <U> then(onFulfilled: (T) -> Unit,
+                 onRejected: ((Throwable) -> Unit)? = null): Promise<U> = noImpl
+
+//    fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
 }
 
 

@@ -38,10 +38,9 @@ class TestScenarioBuilder {
     }
 
     fun act(descr: String? = null, block: () -> Unit) {
-        acta(descr, {"__async"
+        acta(descr, {async{
             block()
-            __asyncResult(Unit)
-        })
+        }})
     }
 
     fun acta(descr: String? = null, block: () -> Promise<Unit>) {
@@ -52,12 +51,25 @@ class TestScenarioBuilder {
         }
 
         instructions.add(TestInstruction.Do {"__async"
-            "xxxxxxx"
             __await(block())
             step?.passed = true
             __asyncResult(Unit)
         })
     }
+
+//    fun acta2(descr: String? = null, block: () -> Promise<Unit>) {
+//        var step: TestInstruction.Step? = null
+//        if (descr != null) {
+//            step = TestInstruction.Step.ActionStep(descr)
+//            instructions.add(step)
+//        }
+//
+//        instructions.add(TestInstruction.Do {"__async"
+//            __await(block())
+//            step?.passed = true
+//            __asyncResult(Unit)
+//        })
+//    }
 
     fun assertVisibleText(expected: String, under: CSSSelector = "body") {
         assertOnAnimationFrame("Page should contain in $under: _${expected}_", {
@@ -85,12 +97,11 @@ class TestScenarioBuilder {
     fun checkOnAnimationFrame(stepTitle: String, block: () -> Unit) {
         val step = TestInstruction.Step.AssertionStep(stepTitle)
         instructions.add(step)
-        acta {"__async"
-            __await(tillAnimationFrame())
+        acta {async{
+            await(tillAnimationFrame())
             block()
             step.passed = true
-            __asyncResult(Unit)
-        }
+        }}
     }
 
     fun halt() {
@@ -145,7 +156,6 @@ class TestScenarioBuilder {
     }
 
 }
-
 
 
 

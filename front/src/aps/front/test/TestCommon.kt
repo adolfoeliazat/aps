@@ -74,14 +74,22 @@ val testScenarios = mutableMapOf<String, TestScenario>()
 
 
 fun tetete() {
-//    val x: MutableList<String> = zz
-    val list = mutableListOf("foo", "bar", "baz")
-    list.forEach {println("Original: $it")}
-    list.forEach {if (it == "foo") list.remove(it)}
-    list.forEach {println("Modified: $it")}
-//    val html = jq("#topNavbarContainer").html()
-//    val tidy = tidyHTML(html)
-//    println(tidy)
+    fun fuck() {
+        fun shit() {
+            throw Exception("bitch")
+        }
+        shit()
+    }
+    fuck()
+
+////    val x: MutableList<String> = zz
+//    val list = mutableListOf("foo", "bar", "baz")
+//    list.forEach {println("Original: $it")}
+//    list.forEach {if (it == "foo") list.remove(it)}
+//    list.forEach {println("Modified: $it")}
+////    val html = jq("#topNavbarContainer").html()
+////    val tidy = tidyHTML(html)
+////    println(tidy)
 }
 
 class TestCommon(val sim: dynamic) {

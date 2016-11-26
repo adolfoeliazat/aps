@@ -516,7 +516,7 @@ class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit)
     }
 
     fun then(cb: () -> Unit) {
-        promise.then<Nothing> { cb() }
+        promise.then<Nothing>({cb()})
     }
 }
 
@@ -910,9 +910,9 @@ fun someAsyncShit_localContainer() {
         return __asyncResult(a + b)
     }
 
-    someAsyncShit_local().then<Nothing> {res: Int ->
+    someAsyncShit_local().then<Nothing>({res: Int ->
         println("Got result in `then`: $res")
-    }
+    })
 }
 
 //fun initTestShit() {
