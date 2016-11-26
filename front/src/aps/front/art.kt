@@ -237,11 +237,11 @@ object art {
             return __asyncResult(null)
         }
         catch (e: ArtFuckingError) {
-            showAssertionErrorPane(e.message, e.detailsUI)
+            showAssertionErrorPane(e, e.detailsUI)
             return __asyncResult(e)
         }
         catch (e: Throwable) {
-            showAssertionErrorPane(e.message,
+            showAssertionErrorPane(e,
                                    kdiv(padding=5){o->
                                        o- renderStackTrace(e, onRendered = {
                                            scrollRevealing("debug_assertionErrorPane")
@@ -267,7 +267,8 @@ object art {
         }
     }
 
-    fun showAssertionErrorPane(message: String?, detailsUI: ToReactElementable, backgroundColor: Color = RED_700) {
+    fun showAssertionErrorPane(exception: Throwable, detailsUI: ToReactElementable, backgroundColor: Color = RED_700) {
+        val message = exception.message
         val assertionErrorPane = object : Control2(Attrs()) {
             override fun defaultControlTypeName() = "assertionErrorPane"
 
@@ -308,7 +309,13 @@ object art {
             existingDiv.remove()
         }
         Shitus.byid("footer").after("<div id='debug_assertionErrorPane'></div>")
-        DOMReact.render(assertionErrorPane.toReactElement(), Shitus.byid0("debug_assertionErrorPane"))
+        val container = Shitus.byid0("debug_assertionErrorPane")
+        if (container != null) {
+            DOMReact.render(assertionErrorPane.toReactElement(), container)
+        } else {
+            cwarn("Failed to assertion error pane -- no container for it")
+            console.error(exception.asDynamic().stack)
+        }
 
         val stack = null
         assertionErrorPane.set(json(
@@ -552,8 +559,7 @@ object art {
 
     fun initDebugFunctionsShit() {
         global.window.removeEventListener("unhandledrejection", hrss.onUnhandledRejection)
-        hrss.onUnhandledRejection = { event: dynamic ->
-            "__async"
+        fun shit(event: dynamic): Promise<Unit> {"__async"
             val reason: Throwable = event.reason
             if (!hrss.preventExceptionRevelation && reason.message != "UI assertion failed") {
                 console.error("Unhandled rejection: ${reason.message}")
@@ -567,7 +573,9 @@ object art {
                     console.error(e.asDynamic().stack)
                 }
             }
+            return __asyncResult(Unit)
         }
+        hrss.onUnhandledRejection = ::shit
         global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)
 
         DebugPanes.put("initDebugFunctions-shit", oldShitAsToReactElementable(Shitus.updatableElement(json(), paneCtor@{ updateShit: dynamic ->

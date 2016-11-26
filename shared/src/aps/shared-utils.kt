@@ -8,6 +8,7 @@
 
 package aps
 
+import aps.DebugNoise.Style.*
 import into.kommon.*
 import kotlin.reflect.KProperty
 
@@ -191,8 +192,18 @@ fun <T> Iterable<T>.toDebugString(): String {
     return "\n" + this.mapIndexed{i, x -> "$i) $x"}.joinToString("\n")
 }
 
+class DebugNoise(val tag: String, val mute: Boolean, val style: Style = IN_THREE_DASHES) {
+    enum class Style {IN_THREE_DASHES, COLON}
 
-
+    inline fun clog(vararg xs: Any?) {
+        if (!mute) {
+            exhaustive/when (style) {
+                IN_THREE_DASHES -> aps.clog("---$tag---", *xs)
+                COLON -> aps.clog("$tag: ", *xs)
+            }
+        }
+    }
+}
 
 
 

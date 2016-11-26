@@ -58,7 +58,7 @@ fun updatableShit(render: (update: () -> Unit) -> ToReactElementable) = object:C
 fun renderStackTrace(e: Throwable, onRendered: (() -> Unit)? = null, skipAllForeignLines: Boolean = false, marginRight: Int? = null): ToReactElementable {
     val shit = Placeholder(kdiv{it-"Loading mapped stack..."})
 
-    runni {"__async"
+    fun fuck(): Promise<Unit> {"__async"
         val lineEls = mutableListOf<ToReactElementable>()
 
         fun addTitle(title: String, topBorder: Boolean = false) {
@@ -125,8 +125,10 @@ fun renderStackTrace(e: Throwable, onRendered: (() -> Unit)? = null, skipAllFore
 
         shit.setContent(kdiv{it+lineEls})
         onRendered?.invoke()
+        return __asyncResult(Unit)
     }
 
+    fuck()
     return shit
 }
 

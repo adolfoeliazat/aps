@@ -13,10 +13,19 @@ import kotlin.browser.window
 class InitAutoReload {
     lateinit var initialCtime: String
 
-    init {runni {"__async"
-        initialCtime = __await(GetSoftwareVersionRequest.send()).ctime
-        schedule()
-    }}
+    init {
+        fun inita(): Promise<Unit> {"__async"
+            initialCtime = __await(GetSoftwareVersionRequest.send()).ctime
+            schedule()
+            return __asyncResult(Unit)
+        }
+        inita()
+    }
+
+//    init {runni {"__async"
+//        initialCtime = __await(GetSoftwareVersionRequest.send()).ctime
+//        schedule()
+//    }}
 
     fun schedule() {
         window.setTimeout({tick()}, 500)

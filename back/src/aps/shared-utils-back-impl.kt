@@ -16,6 +16,7 @@ import kotlin.system.exitProcess
 //fun die(msg: String = "You've just killed me, motherfucker!"): Nothing = throw Exception("Aarrgghh... $msg")
 //val dontCallMe: Nothing get() = wtf("Don't call me, motherfucker")
 
+fun clog(vararg xs: Any?): Unit = println(xs.joinToString(" "))
 fun dlog(vararg xs: Any?) = debugLog.info(xs.joinToString(" "))
 fun dwarn(vararg xs: Any?) = debugLog.info(xs.joinToString(" "))
 

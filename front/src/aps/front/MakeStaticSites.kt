@@ -484,11 +484,12 @@ object MakeStaticSites {
         sh.cp(DEPS_JS, root)
 
         // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
-        sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
-        sh.cp("${KOMMON_HOME}/js/out/into-kommon-js-enhanced.js", root)
-        sh.cp("${KOMMON_HOME}/js/out/into-kommon-js.js.map", root)
+//        sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
+        sh.cp("$KOMMON_HOME/js/out/into-kommon-js-enhanced.js", root)
+        sh.cp("$KOMMON_HOME/js/out/into-kommon-js.js.map", root)
         sh.cp("$APS_HOME/front/out/front-enhanced.js", root)
         sh.cp("$APS_HOME/front/out/front.js.map", root)
+        sh.cp("$APS_HOME/front/out/lib/kotlin.js", root)
 
         return __asyncResult(Unit)
     }
@@ -1104,10 +1105,11 @@ object MakeStaticSites {
 
     <script src="deps.js"></script>
     <script src="bootstrap/js/bootstrap-3.3.7-hacked.js"></script>
-    <script src="kotlin-1.1-m02-eap-hacked.js"></script>
+    <script src="kotlin.js"></script>
     <!--
-    <script src="into-kommon-js-enhanced.js"></script>
-    <script src="front-enhanced.js"></script>
+        <script src="kotlin-1.1-m02-eap-hacked.js"></script>
+        <script src="into-kommon-js-enhanced.js"></script>
+        <script src="front-enhanced.js"></script>
     -->
 
     <script>
@@ -1241,6 +1243,20 @@ object MakeStaticSites {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -268,14 +268,16 @@ class World {
         fun isStaticPage(name: String) = !isDynamicPage(name)
 
         if (isStaticPage(ultimateName)) {
-            loader = {"__async"
+            fun staticLoader(): Promise<Unit> {"__async"
 //                val href = if (ultimateName == "index") "/" else "${ultimateName}.html"
                 val href = "${ultimateName}.html"
                 // TODO:vgrechka @ditch-superagent
                 var content: dynamic = (__await<dynamic>(global.superagent.get(href).send())).text
                 content = content.slice(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
                 setRootContent(rawHTML(content))
+                return __asyncResult(Unit)
             }
+            loader = ::staticLoader
         } else {
             if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
                 window.history.replaceState(null, "", "sign-in.html")

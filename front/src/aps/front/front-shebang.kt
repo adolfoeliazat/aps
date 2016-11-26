@@ -475,24 +475,24 @@ fun decorate(def: dynamic) {
         val orig = target[origName]
         val decorator = def[name]
         if (name.startsWith("pre_")) {
-            target[origName] = shit@{
+            target[origName] = {
                 val args = js("Array.prototype.slice.call(arguments)")
                 decorator()
-                return@shit Shitus.fov.apply(null, js("[]").concat(orig, /*...*/args))
+                Shitus.fov.apply(null, js("[]").concat(orig, /*...*/args))
             }
         } else if (name.startsWith("post_")) {
-            target[origName] = shit@{
+            target[origName] = {
                 val args = js("Array.prototype.slice.call(arguments)")
                 try {
-                    return@shit Shitus.fov.apply(null, js("[]").concat(orig, /*...*/args))
+                    Shitus.fov.apply(null, js("[]").concat(orig, /*...*/args))
                 } finally {
                     decorator()
                 }
             }
         } else if (name.startsWith("arounda_")) {
-            target[origName] = shit@{"__async"
+            target[origName] = {"__async"
                 val args = js("Array.prototype.slice.call(arguments)")
-                return@shit __await(decorator.apply(null, js("[]").concat(orig, /*...*/args)))
+                __await(decorator.apply(null, js("[]").concat(orig, /*...*/args)))
             }
         } else {
             Shitus.raise("WTF is decorator kind ${name}")

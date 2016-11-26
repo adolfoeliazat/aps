@@ -52,6 +52,7 @@ class TestScenarioBuilder {
         }
 
         instructions.add(TestInstruction.Do {"__async"
+            "xxxxxxx"
             __await(block())
             step?.passed = true
             __asyncResult(Unit)

@@ -7,7 +7,6 @@
 package aps.front
 
 import aps.*
-import aps.front.DebugNoise.Style.*
 
 // TODO:vgrechka @revisit
 object __dlog {
@@ -24,18 +23,6 @@ object __dlog {
     }
 }
 
-class DebugNoise(val tag: String, val mute: Boolean, val style: Style = IN_THREE_DASHES) {
-    enum class Style {IN_THREE_DASHES, COLON}
-
-    inline fun clog(vararg xs: Any?) {
-        if (!mute) {
-            exhaustive/when (style) {
-                IN_THREE_DASHES -> aps.clog("---$tag---", *xs)
-                COLON -> aps.clog("$tag: ", *xs)
-            }
-        }
-    }
-}
 
 
 

@@ -7,7 +7,17 @@ fun main(args: Array<String>) {
 //    shit1()
 //    shit2()
 //    testConcurrentModification()
-    testDownTo()
+//    testDownTo()
+    testFinallyResult()
+}
+
+fun testFinallyResult() {
+    val res = try {
+        "fuck"
+    } finally {
+        "shit"
+    }
+    println(res)
 }
 
 fun testDownTo() {

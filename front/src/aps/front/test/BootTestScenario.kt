@@ -57,6 +57,7 @@ abstract class BootTestScenario : StepBasedTestScenario() {
         buildStepsAfterDisplayInitialShit()
 
         o.acta {"__async"
+            "zzzzzzz"
             __reawait(World().boot())
         }
         buildStepsAfterWorldBoot()
