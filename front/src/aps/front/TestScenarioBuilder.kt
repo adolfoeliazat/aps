@@ -57,20 +57,6 @@ class TestScenarioBuilder {
         })
     }
 
-//    fun acta2(descr: String? = null, block: () -> Promise<Unit>) {
-//        var step: TestInstruction.Step? = null
-//        if (descr != null) {
-//            step = TestInstruction.Step.ActionStep(descr)
-//            instructions.add(step)
-//        }
-//
-//        instructions.add(TestInstruction.Do {"__async"
-//            __await(block())
-//            step?.passed = true
-//            __asyncResult(Unit)
-//        })
-//    }
-
     fun assertVisibleText(expected: String, under: CSSSelector = "body") {
         assertOnAnimationFrame("Page should contain in $under: _${expected}_", {
             val actual = visibleText(under)

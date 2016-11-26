@@ -18,6 +18,7 @@ val kul = ElementBuilderFactory("ul")
 val kol = ElementBuilderFactory("ol")
 val kli = ElementBuilderFactory("li")
 val ka = ElementBuilderFactory("a")
+val ki = ElementBuilderFactory("i")
 
 fun span(s: String? = null) = kspan {it-s}
 

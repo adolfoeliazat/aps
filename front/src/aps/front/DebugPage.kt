@@ -1,3 +1,5 @@
+@file:Suppress("RemoveEmptyParenthesesFromLambdaCall")
+
 package aps.front
 
 import aps.*
@@ -60,14 +62,22 @@ class DebugPage(val ui: World) {
                             o- "No shit to render..."
                         } else {
                             o+ itemsToRender.map {msg->
+                                fun renderMsgText() = kdiv(whiteSpace="pre"){o->
+                                    o- msg.text
+                                }
+
                                 kdiv(position="relative"){o->
                                     exhaustive/when (msg.type) {
                                         SEPARATOR -> renderSeparator(o, msg.text, "1px solid $BLUE_500", "0.75em")
                                         THICK_SEPARATOR -> renderSeparator(o, msg.text, "5px solid $BLUE_500", "0.55em")
-                                        SQL ->
-                                            o- kdiv(whiteSpace="pre"){o->
-                                                o- msg.text
-                                            }
+                                        THICK_DASHED_SEPARATOR -> renderSeparator(o, msg.text, "5px dashed $BLUE_500", "0.55em")
+                                        SQL -> {
+                                            val short = msg.shortDescription
+                                            if (short != null)
+                                                o- Betsy("SQL: $short", renderMsgText())
+                                            else
+                                                o- renderMsgText()
+                                        }
                                     }
                                     o- kdiv(position="absolute", top=0, right=0, backgroundColor=WHITE, paddingLeft="0.5em"){o->
                                         o- msg.stamp

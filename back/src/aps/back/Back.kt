@@ -122,7 +122,7 @@ fun String.toUserKind(): UserKind = UserKind.values().find{it.name == this} ?: w
 fun String.toLanguage(): Language = Language.values().find{it.name == this} ?: wtf("[$this] to Language")
 fun String.toUserState(): UserState = UserState.values().find{it.name == this} ?: wtf("[$this] to UserState")
 
-fun Users.toRTO(q: DSLContext): UserRTO {
+fun Users.toRTO(q: DSLContextProxy): UserRTO {
     val roles = q.select().from(USER_ROLES).where(USER_ROLES.USER_ID.eq(id)).fetchInto(UserRoles::class.java)
 
     // TODO:vgrechka Double-check all secrets are excluded from UserRTO    7c2d1191-d43b-485c-af67-b95b46bbf62b

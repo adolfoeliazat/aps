@@ -15,7 +15,9 @@ import aps.back.generated.jooq.tables.records.UserTokensRecord
 import aps.back.generated.jooq.tables.records.UsersRecord
 import com.zaxxer.hikari.HikariDataSource
 import org.jooq.*
+import org.jooq.SelectField
 import org.jooq.conf.Settings
+import org.jooq.exception.DataAccessException
 import org.jooq.impl.*
 import java.sql.Timestamp
 import java.time.LocalDateTime
@@ -51,7 +53,7 @@ object DB {
 
     class Database(val host: String, val port: Int, val name: String,
                    val user: String, val password: String? = null,
-                   val allowRecreation: Boolean = false, val populate: ((DSLContext) -> Unit)? = null) {
+                   val allowRecreation: Boolean = false, val populate: ((DSLContextProxy) -> Unit)? = null) {
 
         private val dslazy = relazy {HikariDataSource().applet {o->
             o.dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
@@ -91,7 +93,7 @@ object DB {
             dslazy.reset()
         }
 
-        fun <T> joo(act: (DSLContext) -> T): T {
+        fun <T> joo(act: (DSLContextProxy) -> T): T {
             val connection = ds.connection
             try {
                 // TODO:vgrechka Cache jOOQ DSLContext    b68c51a6-ec10-4784-9d58-ce141398e1d1
@@ -102,11 +104,13 @@ object DB {
                         override fun executeStart(ctx: ExecuteContext) {
                             fun dumpShit(shit: String) {
                                 // TODO:vgrechka Capture stack where SQL statement was created and include it into dump    1fb0a0b3-e8db-4490-a710-22a310528037
-                                dlog("\n"
-                                         + "--- SQL { -------------------------------------------------\n"
-                                         + "$shit                                                      \n"
-                                         + "--- SQL } -------------------------------------------------\n")
-                                redisLog.send(RedisLogMessage(SQL, shit))
+//                                dlog("\n"
+//                                         + "--- SQL { -------------------------------------------------\n"
+//                                         + "$shit                                                      \n"
+//                                         + "--- SQL } -------------------------------------------------\n")
+                                redisLog.send(RedisLogMessage(SQL, text = shit)-{o->
+                                    o.shortDescription = requestShit.dbOperationShortDescription
+                                })
                             }
 
                             fun dumpShit(shit: QueryPart) = dumpShit(
@@ -126,7 +130,7 @@ object DB {
 //                    }))
                 )
 
-                return act(q)
+                return act(DSLContextProxy(q))
             } finally {
                 connection.close()
             }
@@ -135,7 +139,7 @@ object DB {
         override fun toString() = "Database(host='$host', port=$port, name='$name', user='$user')"
     }
 
-    fun populate_testTemplateUA1(q: DSLContext) {
+    fun populate_testTemplateUA1(q: DSLContextProxy) {
         val secretHash = "\$2a\$10\$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6" // secret
         var nextUserID = 101L
 
@@ -219,6 +223,68 @@ object DB {
         for (action in actions) action.act()
     }
 }
+
+class DSLContextProxy(val q: DSLContext) {
+    fun <R : Record> insertInto(into: Table<R>, vararg fields: Field<*>): InsertValuesStepN<R> {
+        return q.insertInto(into, *fields)
+    }
+
+    fun fetch(sql: String, vararg bindings: Any?): Result<Record> {
+        return q.fetch(sql, *bindings)
+    }
+
+    fun selectCount(): SelectSelectStep<Record1<Int>> {
+        return q.selectCount()
+    }
+
+    fun <R : Record> update(table: Table<R>): UpdateSetFirstStep<R> {
+        return q.update(table)
+    }
+
+    fun select(vararg fields: SelectField<*>): SelectSelectStep<Record> {
+        return q.select(*fields)
+    }
+
+    fun fetch(sql: String): Result<Record> {
+        return q.fetch(sql)
+    }
+
+    fun <R : Record> insertInto(into: Table<R>): InsertSetStep<R> {
+        return q.insertInto(into)
+    }
+
+    fun execute(short: String, sql: String): Int {
+        requestShit.dbOperationShortDescription = short
+        try {
+            return q.execute(sql)
+        } finally {
+            requestShit.dbOperationShortDescription = null
+        }
+    }
+
+    fun execute(sql: String): Int {
+        return execute("Describe me", sql)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

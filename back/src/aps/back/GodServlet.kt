@@ -20,14 +20,12 @@ class GodServlet : HttpServlet() {
         val pathInfo = servletRequest.pathInfo
 
         _requestShit.set(RequestShit())
-        val patternsToNotLogToRedis = listOf(
-            "getSoftwareVersion", "getLiveStatus", "getRedisLogMessages", "resetTestDatabase",
-            "getGeneratedShit", "imposeNextGeneratedPassword", "mapStack")
-        requestShit.skipLoggingToRedis = patternsToNotLogToRedis.any {pathInfo.contains(it)}
+        requestShit.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
+        val shouldLogBeginEndServiceToRedis = !patternsToExcludeBeginEndServiceRedisLogging.any {pathInfo.contains(it)}
 
         try {
             try {
-                redisLog.send(RedisLogMessage(SEPARATOR, "Begin service: $pathInfo {"))
+                if (shouldLogBeginEndServiceToRedis) redisLog.send(RedisLogMessage(SEPARATOR, "Begin service: $pathInfo {"))
                 when {
                     pathInfo.startsWith("/rpc/") -> {
                         val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
@@ -39,7 +37,7 @@ class GodServlet : HttpServlet() {
                     else -> bitch("Weird request path: $pathInfo")
                 }
             } finally {
-                redisLog.send(RedisLogMessage(SEPARATOR, "End service: $pathInfo }"))
+                if (shouldLogBeginEndServiceToRedis) redisLog.send(RedisLogMessage(SEPARATOR, "End service: $pathInfo }"))
             }
         } catch(fuckup: Throwable) {
             log.error("Can't fucking service [$pathInfo]: ${fuckup.message}", fuckup)
@@ -55,18 +53,22 @@ class GodServlet : HttpServlet() {
 
 class RequestShit {
     var skipLoggingToRedis = false
+    var dbOperationShortDescription: String? = null
 }
 
 val _requestShit = ThreadLocal<RequestShit>()
 val isRequestThread: Boolean get() = _requestShit.get() != null
 val requestShit: RequestShit get() = _requestShit.get()
 
+val patternsToExcludeRedisLoggingCompletely = listOf(
+//    "resetTestDatabase",
+    "getSoftwareVersion", "getLiveStatus", "getRedisLogMessages",
+    "getGeneratedShit", "imposeNextGeneratedPassword", "mapStack"
+)
 
-
-
-
-
-
+val patternsToExcludeBeginEndServiceRedisLogging = listOf(
+    "sendRedisLogMessage"
+)
 
 
 

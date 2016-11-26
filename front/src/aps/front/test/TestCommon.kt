@@ -171,6 +171,11 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         else -> bitch("Cannot figure out URL for test [$testName]")
     }
 
+    send(SendRedisLogMessageRequest()-{o->
+        o.type.value = RedisLogMessage.Type.THICK_DASHED_SEPARATOR
+        o.text.value = "Running test: $testName"
+    })
+
     hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
     hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
     hrss.preventUIAssertionThrowing = urlQuery["uiAssertionThrows"] == "no"

@@ -438,10 +438,6 @@ fun ObjectViewer(def: dynamic): dynamic {
     imf("ObjectViewer")
 }
 
-fun Betsy(def: dynamic): dynamic {
-    imf("Betsy")
-}
-
 fun textMeat(it: dynamic): dynamic {
     if (!it) return it
     if (it.meat) return it.meat

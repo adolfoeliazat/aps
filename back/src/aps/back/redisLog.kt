@@ -46,6 +46,15 @@ object redisLog {
     }
 )
 
+@RemoteProcedureFactory fun sendRedisLogMessage() = testProcedure(
+    SendRedisLogMessageRequest(),
+    needsDB = false,
+    runShit = fun(ctx, req): GenericResponse {
+        redisLog.send(RedisLogMessage(req.type.value, req.text.value))
+        return GenericResponse()
+    }
+)
+
 
 
 

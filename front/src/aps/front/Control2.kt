@@ -261,10 +261,10 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
 
     fun addEventListeners() {
         Shitus.byid(elementID).off() // Several controls can be on same element, and we don't want to handle click several times
-        Shitus.byid(elementID).on("click", onClick@{e: MouseEvent -> "__async"
+        Shitus.byid(elementID).on("click", {e: MouseEvent -> async<Unit> {
             if (MODE == "debug" && e.ctrlKey) {
                 if (e.shiftKey) {
-                    if (ignoreDebugCtrlShiftClick()) return@onClick Unit
+                    if (ignoreDebugCtrlShiftClick()) return@async Unit
 
                     preventAndStop(e)
 
@@ -272,15 +272,15 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
                         Shitus.raiseWithMeta(json("message" to "Put some shame on me", "meta" to this))
                     }
 
-                    return@onClick captureAction(null) // TODO:vgrechka Prettier default argument
+                    return@async captureAction(null) // TODO:vgrechka Prettier default argument
                 }
 
                 preventAndStop(e)
-                return@onClick revealStack(definitionStackCapture, muteConsole=true, skipAllForeignLines=true)
+                return@async await(revealStack(definitionStackCapture, muteConsole=true, skipAllForeignLines=true))
             }
 
-            __await(onRootClick(e))
-        })
+            await(onRootClick(e))
+        }})
     }
 
     fun removeEventListeners() {
