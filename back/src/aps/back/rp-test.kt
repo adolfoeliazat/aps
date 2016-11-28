@@ -160,14 +160,21 @@ val backendInstanceID = "" + UUID.randomUUID()
     runShit = {ctx, req ->
         val sourceLocation = req.sourceLocation.value.replace("\\", "/")
         val firstColon = sourceLocation.indexOf(':')
-        val secondColon = sourceLocation.indexOf(':', firstColon + 1)
-        if (firstColon == -1 || secondColon == -1) bitch("I want two colons in source location")
+        var afterLine = sourceLocation.indexOf(':', firstColon + 1)
+        if (firstColon == -1) bitch("I want a colon in source location")
+        if (afterLine == -1) afterLine = sourceLocation.length
 
         val filePartEnd = firstColon
         val filePart = sourceLocation.substring(0, filePartEnd)
-        if (!filePart.startsWith("APS/")) bitch("Obscure file in source location")
-        val file = APS_HOME + "/" + filePart.substring("APS/".length)
-        val line = sourceLocation.substring(firstColon + 1, secondColon)
+        val file =
+            if (filePart.startsWith("APS/")) {
+                APS_HOME + "/" + filePart.substring("APS/".length)
+            } else run {
+                for (f in File("$APS_HOME/back/src").walkTopDown())
+                    if (f.name == filePart) return@run f.absolutePath
+                bitch("Obscure backend file: $filePart")
+            }
+        val line = sourceLocation.substring(firstColon + 1, afterLine)
 
         val pb = ProcessBuilder()
         val cmd = pb.command()

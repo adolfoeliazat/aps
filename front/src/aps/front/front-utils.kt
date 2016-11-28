@@ -17,18 +17,18 @@ import kotlin.dom.asList
 
 val REALLY_BIG_Z_INDEX = 2147483647
 
-class FatException(
-    override val message: String,
+open class FatException(
+    message: String,
     val asyncStack: String? = null,
     val markdownPayload: String? = null,
-    override val visualPayload: ToReactElementable? = null
-) : Throwable(message), WithVisualPayload {
-    val stack = js("Error")(message).stack
+    val visualPayload: ToReactElementable? = null
+) : Exception(message) {
+//    val stack = js("Error")(message).stack
 }
 
-interface WithVisualPayload {
-    val visualPayload: ToReactElementable?
-}
+//abstract class ExceptionWithVisualPayload(message: String): Exception(message) {
+//    abstract val visualPayload: ToReactElementable?
+//}
 
 @native interface JSArray
 

@@ -39,12 +39,11 @@ fun jsFacing_button(def: dynamic): dynamic {
             )
         },
 
-        "onRootClick" to {e: dynamic -> "__async"
+        "onRootClick" to {e: dynamic -> async<Unit> {
             e.preventDefault()
             e.stopPropagation()
-            if (onClick) __await<dynamic>(onClick())
-            // await fova(onClick)
-        },
+            if (onClick) awaitJSShit<dynamic>(onClick())
+        }},
 
         "contributeTestState" to {state: TestStateContributions ->
             if (me.tame) {

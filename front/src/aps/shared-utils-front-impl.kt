@@ -45,6 +45,14 @@ val NOTRE: ToReactElementable = NORE.toToReactElementable()
     fun forceUpdate()
 }
 
+fun qweqwe() {
+    open class A
+    class B : A()
+    val p = Promise<A> {resolve, reject ->
+        resolve(B())
+    }
+}
+
 @native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
     fun <U> then(onFulfilled: (T) -> Unit,
                  onRejected: ((Throwable) -> Unit)? = null): Promise<U> = noImpl

@@ -98,7 +98,7 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
     var shouldUpdate = false
     var errorStickerID: String? = null
     var errorStickerTether: Tether? = null
-    val definitionStackCapture = StackCaptureException()
+    val definitionStackCapture = CaptureStackException()
 
     override fun toReactElement(): ReactElement = reactElement
 

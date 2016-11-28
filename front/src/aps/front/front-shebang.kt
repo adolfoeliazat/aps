@@ -752,6 +752,15 @@ fun markdown(md: String, stripP: Boolean = false): ToReactElementable {
     return rawHTML(html).toToReactElementable()
 }
 
+fun showStackLink(e: Throwable, title: String = "Show stack"): ToReactElementable =
+    link(title=title, onClick = {
+        revealStack(e, muteConsole = true)
+    })
+
+fun showRawStackLink(stack: String, title: String = "Show stack"): ToReactElementable =
+    link(title=title, onClick = {
+        revealRawStack(stack)
+    })
 
 
 

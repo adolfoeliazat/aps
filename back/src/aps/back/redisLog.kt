@@ -3,6 +3,8 @@ package aps.back
 import aps.*
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.time.LocalDateTime
 import kotlin.system.exitProcess
 
@@ -26,6 +28,11 @@ object redisLog {
 
         // TODO:vgrechka Make this asynchronous
         msg.stamp = LocalDateTime.now().format(PG_LOCAL_DATE_TIME)
+
+        val sw = StringWriter()
+        PrintWriter(sw).use {CaptureStackException().printStackTrace(it)}
+        msg.stack = sw.toString()
+
         val json = objectMapper.writeValueAsString(msg)
 
         jedisPool.resource.use {jedis->

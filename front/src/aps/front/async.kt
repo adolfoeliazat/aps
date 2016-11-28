@@ -3,14 +3,13 @@ package aps.front
 import aps.*
 
 fun <T> async(
-    coroutine c: FutureController<T>.() -> Continuation<Unit>
+    coroutine c: PromiseController<T>.() -> Continuation<Unit>
 ): Promise<T> =
     Promise {resolve, reject ->
-        c(FutureController(resolve, reject)).resume(Unit)
+        c(PromiseController(resolve, reject)).resume(Unit)
     }
 
-@AllowSuspendExtensions
-class FutureController<T>(
+class PromiseController<T>(
     private val resolve: (T) -> Unit,
     private val reject: (Throwable) -> Unit
 ) {
@@ -25,6 +24,15 @@ class FutureController<T>(
         )
     }
 
+    @Suppress("UnsafeCastFromDynamic")
+    suspend fun <V> awaitJSShit(p: dynamic, machine: Continuation<V>) {
+        if (p is Promise<*>) {
+            await<V>(p, machine)
+        } else {
+            machine.resume(p)
+        }
+    }
+
     operator fun handleResult(value: T, c: Continuation<Nothing>) {
         resolve(value)
     }
@@ -33,18 +41,6 @@ class FutureController<T>(
         reject(t)
     }
 }
-
-
-fun ttt_async() {
-    val p = async<Unit> {
-        console.log("fuck")
-    }
-    p.then<Unit>({console.log("shit")})
-}
-
-
-
-
 
 
 

@@ -36,10 +36,8 @@ val NILS: String = js("new String('NILS')")
 
 val String.there: Boolean get() = this !== NILS
 
-class StackCaptureException : Exception("Hi, fucker")
-
 sealed class TestInstruction() : DefinitionStackHolder {
-    val definitionStackCapture = StackCaptureException()
+    val definitionStackCapture = CaptureStackException()
 
     override fun promiseDefinitionStack(): Promise<dynamic> {
         throw UnsupportedOperationException("Implement me, please, fuck you")
@@ -342,9 +340,7 @@ object art {
                         o- kdiv(className="showOnParentHovered"){o->
                             o- hor2(marginLeft=8, paddingLeft=8, borderLeft="2px solid ${Color.GRAY_500}"){o->
                                 o+ actions
-                                o- link(title="Show stack", onClick={
-                                    revealStack(instr.definitionStackCapture, muteConsole=true)
-                                })
+                                o- showStackLink(instr.definitionStackCapture)
 //                                o- renderExpandableOnDemandStack(instr)
 //                                - jshit.OpenSourceCodeLink(json("where" to instrdef, "style" to json("marginLeft" to 20)))
                             }}}}.toReactElement())
@@ -1610,8 +1606,8 @@ class ArtFuckingError(message: String, val detailsUI: ToReactElementable): Excep
 
 class ArtAssertionError(
     message: String,
-    override val visualPayload: ToReactElementable? = null
-) : Exception(message), WithVisualPayload
+    visualPayload: ToReactElementable? = null
+) : FatException(message, visualPayload=visualPayload)
 
 
 fun renderCurrentTestScenarioDetails(marginTop: Int = 0) = kdiv{o->

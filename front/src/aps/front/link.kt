@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -38,13 +40,12 @@ fun jsFacing_link(def: Json): ReactElement {
             content)
         },
 
-        "onRootClick" to {e: dynamic -> "__async"
+        "onRootClick" to {e: MouseEvent -> async<Unit> {
             e.preventDefault()
             e.stopPropagation()
-            val shit: (() -> Promise<Any?>)? = onClick
-            shit?.let {__await(it())}
-//            __await<dynamic>(jshit.utils.fova(onClick))
-        }
+            val shit: (() -> Promise<Unit>)? = onClick
+            shit?.let {await(it())}
+        }}
     )
 
     me.controlTypeName = "link"

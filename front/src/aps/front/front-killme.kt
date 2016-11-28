@@ -99,7 +99,9 @@ fun legacy_implementControlShit(arg: dynamic) {
             }
 
             val shit: ((Any?) -> Promise<Any?>)? = me.onRootClick
-            shit?.let {__await(it(e))}
+//            shit?.let {__await(it(e))}
+            shit?.let {it(e)}
+
 //            __await<dynamic>(jshit.utils.fova(me.onRootClick, e))
         })
     }

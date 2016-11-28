@@ -9,6 +9,7 @@ class RedisLogMessage() {
     }
 
     lateinit var stamp: String
+    lateinit var stack: String
     lateinit var type: Type
     lateinit var text: String
     var shortDescription: String? = null

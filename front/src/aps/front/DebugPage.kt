@@ -11,6 +11,8 @@ import into.kommon.*
 
 class DebugPage(val ui: World) {
     val noise = DebugNoise("DebugPage", mute = false)
+    val CN_ROW = "cn" + puid()
+    val CN_OPAQUE = "cn" + puid()
 
     fun load(): Promise<Unit> {"__async"
         val page = when (ui.urlQuery["page"]) {
@@ -19,6 +21,15 @@ class DebugPage(val ui: World) {
                 Page(
                     header = pageHeader2("Fucking Log"),
                     body = kdiv{o->
+                        o- rawHTML("""
+                            <style>
+                                .$CN_ROW {background-color: $WHITE;}
+                                .$CN_ROW .$CN_OPAQUE {background-color: $WHITE;}
+                                .$CN_ROW:hover {background-color: $BLUE_GRAY_50;}
+                                .$CN_ROW:hover .$CN_OPAQUE {background-color: $BLUE_GRAY_50;}
+                            </style>
+                        """)
+
                         noise.clog("allItems.size", allItems.size)
 
                         var itemsToRender = mutableListOf<RedisLogMessage>()
@@ -66,7 +77,7 @@ class DebugPage(val ui: World) {
                                     o- msg.text
                                 }
 
-                                kdiv(position="relative"){o->
+                                kdiv(position = "relative", className = CN_ROW){o->
                                     exhaustive/when (msg.type) {
                                         SEPARATOR -> renderSeparator(o, msg.text, "1px solid $BLUE_500", "0.75em")
                                         THICK_SEPARATOR -> renderSeparator(o, msg.text, "5px solid $BLUE_500", "0.55em")
@@ -79,8 +90,8 @@ class DebugPage(val ui: World) {
                                                 o- renderMsgText()
                                         }
                                     }
-                                    o- kdiv(position="absolute", top=0, right=0, backgroundColor=WHITE, paddingLeft="0.5em"){o->
-                                        o- msg.stamp
+                                    o- kdiv(className = CN_OPAQUE, position="absolute", top=0, right=0, paddingLeft="0.5em"){o->
+                                        o- showRawStackLink(msg.stack, msg.stamp)
                                     }
                                 }
                             }
@@ -100,7 +111,7 @@ class DebugPage(val ui: World) {
     private fun renderSeparator(o: ElementBuilder, title: String, borderStyle: String, offset: String) {
         o - kdiv(borderBottom = borderStyle, position = "absolute", top = offset, width = "100%")
         o - kdiv(position = "relative", left = "1em"){o->
-            o - kspan(backgroundColor = WHITE, paddingLeft = "0.5em", paddingRight = "0.5em"){o->
+            o - kspan(className = CN_OPAQUE, paddingLeft = "0.5em", paddingRight = "0.5em"){o->
                 o - title
             }
         }

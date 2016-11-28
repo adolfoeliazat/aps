@@ -205,6 +205,7 @@ object Shitus {
 
     val hideStackRevelation: dynamic = {
         DebugPanes.remove("revealStack")
+        revealStackCalledTimes = 0
     }
 
     val timestampString: dynamic = ::jsFacing_timestampString
