@@ -14,7 +14,7 @@ val jedisPool by lazy {
     JedisPool(JedisPoolConfig(), "localhost").let {
         Runtime.getRuntime().addShutdownHook(object:Thread() {
             override fun run() {
-                println("\n\n================ Shutting shit down ==============\n\n")
+                println("Shutting Redis shit down")
                 it.destroy()
             }
         })
@@ -34,7 +34,7 @@ object redisLog {
         msg.stack = CaptureStackException().stackString()
 
         jedisPool.resource.use {jedis->
-            jedis.set(msg.id, objectMapper.writeValueAsString(msg))
+            jedis.set(msg.id, shittyObjectMapper.writeValueAsString(msg))
             jedis.rpush("log", msg.id)
             jedis.ltrim("log", -MAX_LEN, -1)
         }
@@ -45,7 +45,7 @@ object redisLog {
         if (shouldSkip()) return
 
         jedisPool.resource.use {jedis->
-            jedis.set(msg.id, objectMapper.writeValueAsString(msg))
+            jedis.set(msg.id, shittyObjectMapper.writeValueAsString(msg))
         }
     }
 
@@ -90,7 +90,7 @@ object redisLog {
     needsDB = false,
     runShit = fun (ctx, req): JSONResponse {
         val res = jedisPool.resource.use {jedis ->
-            val rmap = hackyObjectMapper.readValue(req.json.value, Map::class.java)
+            val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
             val command: String = cast(rmap["command"])
             when (command) {
                 "lrange" -> {
@@ -106,7 +106,7 @@ object redisLog {
             }
         }
 
-        return JSONResponse(hackyObjectMapper.writeValueAsString(res))
+        return JSONResponse(shittyObjectMapper.writeValueAsString(res))
     }
 )
 
