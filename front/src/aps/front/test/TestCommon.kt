@@ -74,14 +74,8 @@ val testScenarios = mutableMapOf<String, TestScenario>()
 
 
 fun tetete() {
-    class MyException(msg: String) : Throwable(msg)
-
-    try {
-        throw MyException("booom")
-    } catch (e: Throwable) {
-        global.shit = e
-        console.log("stack:", e.asDynamic().stack)
-    }
+    val list = listOf("foo", "bar", "baz")
+    global.shit = list.toTypedArray()
 }
 
 
@@ -165,7 +159,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
     }
 
     send(SendRedisLogMessageRequest()-{o->
-        o.type.value = RedisLogMessage.Type.THICK_DASHED_SEPARATOR
+        o.type.value = RedisLogMessage.Separator.Type.THICK_DASHED_SEPARATOR
         o.text.value = "Running test: $testName"
     })
 

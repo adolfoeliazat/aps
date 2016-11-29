@@ -1,21 +1,25 @@
 package aps
 
-class RedisLogMessage() {
-    enum class Type {SQL, SEPARATOR, THICK_SEPARATOR, THICK_DASHED_SEPARATOR}
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.annotation.JsonTypeInfoAlias
 
-    constructor(type: Type, text: String) : this() {
-        this.type = type
-        this.text = text
-    }
-
+@JsonTypeInfoAlias(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+sealed class RedisLogMessage {
+    lateinit var id: String
     lateinit var stamp: String
     lateinit var stack: String
-    lateinit var type: Type
     lateinit var text: String
     var shortDescription: String? = null
 
-    override fun toString(): String {
-        return "RedisLogMessage(stamp='$stamp', type=$type, text='$text')"
+    class Separator : RedisLogMessage() {
+        enum class Type {SEPARATOR, THICK_SEPARATOR, THICK_DASHED_SEPARATOR}
+        lateinit var type: Type
+    }
+
+    class SQL : RedisLogMessage() {
+        enum class Stage {PENDING, SUCCESS, FAILURE}
+        lateinit var stage: Stage
+        var exceptionStack: String? = null
     }
 }
 

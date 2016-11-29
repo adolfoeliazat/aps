@@ -16,7 +16,7 @@ object ScratchBack {
 //        val query = "select * from users"
 //        val query = "select * from user_tokens"
 
-        DB.apsTestOnTestServer.joo{q->
+        DB.apsTestOnTestServer.joo("Some shit 3") {q->
             val res = q.fetch(query)
             res.forEachIndexed {recordIndex, record ->
                 println("Record $recordIndex:")

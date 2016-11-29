@@ -123,10 +123,13 @@ object EmailMatumba {
             }
 
             DB.apsTestOnTestServer.close()
-            DB.postgresOnTestServer.joo{it.execute("""
-                drop database if exists "${databaseToCreate}";
-                create database "${databaseToCreate}" template = "${databaseToUseAsTemplate}";
-            """)}
+            // TODO:vgrechka @duplication e530f4e5-7a5f-4dc2-8a59-cafc22e19870 2
+            DB.postgresOnTestServer.joo("Recreate database") {
+                it.execute(""""
+                    drop database if exists "${databaseToCreate}";
+                    create database "${databaseToCreate}" template = "${databaseToUseAsTemplate}";
+                """)
+            }
         } finally {
             TestServerFiddling.rejectAllRequestsNeedingDB = oldRejectAllRequests
         }

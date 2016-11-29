@@ -7,7 +7,7 @@
 package aps.back
 
 import aps.*
-import aps.RedisLogMessage.Type.*
+import aps.RedisLogMessage.Separator.Type.*
 import into.kommon.*
 import javax.servlet.*
 import javax.servlet.http.*
@@ -25,7 +25,10 @@ class GodServlet : HttpServlet() {
 
         try {
             try {
-                if (shouldLogBeginEndServiceToRedis) redisLog.send(RedisLogMessage(SEPARATOR, "Begin service: $pathInfo {"))
+                if (shouldLogBeginEndServiceToRedis) redisLog.send(RedisLogMessage.Separator()-{o->
+                    o.type = SEPARATOR
+                    o.text = "Begin service: $pathInfo {"
+                })
                 when {
                     pathInfo.startsWith("/rpc/") -> {
                         val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
@@ -37,7 +40,10 @@ class GodServlet : HttpServlet() {
                     else -> bitch("Weird request path: $pathInfo")
                 }
             } finally {
-                if (shouldLogBeginEndServiceToRedis) redisLog.send(RedisLogMessage(SEPARATOR, "End service: $pathInfo }"))
+                if (shouldLogBeginEndServiceToRedis) redisLog.send(RedisLogMessage.Separator()-{o->
+                    o.type = SEPARATOR
+                    o.text = "End service: $pathInfo }"
+                })
             }
         } catch(fuckup: Throwable) {
             log.error("Can't fucking service [$pathInfo]: ${fuckup.message}", fuckup)
@@ -53,7 +59,7 @@ class GodServlet : HttpServlet() {
 
 class RequestShit {
     var skipLoggingToRedis = false
-    var dbOperationShortDescription: String? = null
+//    var sqlRedisLogMessage: RedisLogMessage.SQL? = null
 }
 
 val _requestShit = ThreadLocal<RequestShit>()

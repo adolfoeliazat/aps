@@ -378,10 +378,18 @@ class GetRedisLogMessagesRequest : RequestMatumba() {
 }
 
 class SendRedisLogMessageRequest : RequestMatumba() {
-    val type = EnumHiddenField(this, "type", RedisLogMessage.Type.values())
+    val type = EnumHiddenField(this, "type", RedisLogMessage.Separator.Type.values())
     val text = StringHiddenField(this, "text")
 }
 fun send(req: SendRedisLogMessageRequest): Promise<GenericResponse> = callDangerousMatumba(req)
+
+
+class JSONResponse(val json: String)
+
+class PrivilegedRedisCommandRequest : RequestMatumba() {
+    val json = StringHiddenField(this, "json")
+}
+fun send(req: PrivilegedRedisCommandRequest): Promise<JSONResponse> = callDangerousMatumba(req)
 
 
 

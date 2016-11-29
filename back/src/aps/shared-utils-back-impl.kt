@@ -22,7 +22,6 @@ fun dwarn(vararg xs: Any?) = debugLog.info(xs.joinToString(" "))
 
 fun t(en: String, ru: String) = ru
 
-annotation class Dummy
 annotation class Back
 
 @Dummy interface Promise<T>

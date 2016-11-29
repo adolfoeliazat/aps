@@ -205,8 +205,9 @@ class DebugNoise(val tag: String, val mute: Boolean, val style: Style = IN_THREE
     }
 }
 
+class CaptureStackException : Exception("Hi, fucker")
 
-
+annotation class Dummy
 
 
 

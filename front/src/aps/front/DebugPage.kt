@@ -3,7 +3,8 @@
 package aps.front
 
 import aps.*
-import aps.RedisLogMessage.Type.*
+import aps.RedisLogMessage.*
+import aps.RedisLogMessage.Separator.Type.*
 import aps.front.Color.*
 import into.kommon.*
 
@@ -14,10 +15,21 @@ class DebugPage(val ui: World) {
     val CN_ROW = "cn" + puid()
     val CN_OPAQUE = "cn" + puid()
 
-    fun load(): Promise<Unit> {"__async"
+    fun load(): Promise<Unit> = async {
         val page = when (ui.urlQuery["page"]) {
             "log" -> {
-                val allItems = __await(GetRedisLogMessagesRequest().send()).items
+//                val allItems = await(GetRedisLogMessagesRequest().send()).items
+
+                val jsons = run {
+                    val ids = await(fedis.lrange("log", 0, -1))
+                    if (ids.isNotEmpty())
+                        await(fedis.mget(ids))
+                    else
+                        listOf()
+                }
+
+                val allItems = jsons.filterNotNull().map {dejsonizeValue<RedisLogMessage>(JSON.parse(it))!!}
+
                 Page(
                     header = pageHeader2("Fucking Log"),
                     body = kdiv{o->
@@ -39,7 +51,8 @@ class DebugPage(val ui: World) {
 
                         fun cutFromLastBoot(bottomIndex: Int) {
                             for (i in bottomIndex downTo 0) {
-                                if (itemsToRender[i].type == THICK_SEPARATOR) { // TODO:vgrechka Introduce BOOT type
+                                val item = itemsToRender[i]
+                                if (item is Separator && item.type == THICK_SEPARATOR) {
                                     itemsToRender = itemsToRender.subList(i, itemsToRender.size)
                                     break
                                 }
@@ -78,11 +91,15 @@ class DebugPage(val ui: World) {
                                 }
 
                                 kdiv(position = "relative", className = CN_ROW){o->
-                                    exhaustive/when (msg.type) {
-                                        SEPARATOR -> renderSeparator(o, msg.text, "1px solid $BLUE_500", "0.75em")
-                                        THICK_SEPARATOR -> renderSeparator(o, msg.text, "5px solid $BLUE_500", "0.55em")
-                                        THICK_DASHED_SEPARATOR -> renderSeparator(o, msg.text, "5px dashed $BLUE_500", "0.55em")
-                                        SQL -> {
+                                    exhaustive/when (msg) {
+                                        is Separator -> {
+                                            when (msg.type) {
+                                                SEPARATOR -> renderSeparator(o, msg.text, "1px solid $BLUE_500", "0.75em")
+                                                THICK_SEPARATOR -> renderSeparator(o, msg.text, "5px solid $BLUE_500", "0.55em")
+                                                THICK_DASHED_SEPARATOR -> renderSeparator(o, msg.text, "5px dashed $BLUE_500", "0.55em")
+                                            }
+                                        }
+                                        is SQL -> {
                                             val short = msg.shortDescription
                                             if (short != null)
                                                 o- Betsy("SQL: $short", renderMsgText())
@@ -105,7 +122,6 @@ class DebugPage(val ui: World) {
 
         KotlinShit.ui.setPage(page)
         // initFakeFeed()
-        return __asyncResult(Unit)
     }
 
     private fun renderSeparator(o: ElementBuilder, title: String, borderStyle: String, offset: String) {

@@ -7,15 +7,26 @@
 package aps.back
 
 import aps.*
-import aps.RedisLogMessage.Type.*
+import aps.RedisLogMessage.Separator.Type.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.UserRoles
 import aps.back.generated.jooq.tables.pojos.Users
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import into.kommon.*
 import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.JsonToken
 import com.fasterxml.jackson.databind.*
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL
+import com.fasterxml.jackson.databind.deser.*
+import com.fasterxml.jackson.databind.deser.std.EnumDeserializer
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer
+import com.fasterxml.jackson.databind.module.SimpleDeserializers
+import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.*
-import com.fasterxml.jackson.databind.type.TypeFactory
+import com.fasterxml.jackson.databind.type.*
+import com.fasterxml.jackson.databind.util.EnumResolver
+import com.fasterxml.jackson.databind.util.LinkedNode
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletHandler
 import org.jooq.DSLContext
@@ -37,7 +48,10 @@ val remoteProcedureNameToFactory: MutableMap<String, Method> = Collections.synch
 fun main(args: Array<String>) {
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
 
-    redisLog.send(RedisLogMessage(THICK_SEPARATOR, "Booting fucking backend"))
+    redisLog.send(RedisLogMessage.Separator()-{o->
+        o.type = THICK_SEPARATOR
+        o.text = "Booting fucking backend"
+    })
 
     run { // Gather meta
         val refl = Reflections(ConfigurationBuilder()
@@ -59,7 +73,9 @@ fun main(args: Array<String>) {
     }
 }
 
-val objectMapper = ObjectMapper()
+val objectMapper = ObjectMapper()-{o->
+    o.enableDefaultTyping(NON_FINAL, JsonTypeInfo.As.PROPERTY)
+}
 
 val hackyObjectMapper = ObjectMapper().applet {om ->
     om.serializerFactory = object:BeanSerializerFactory(null) {
@@ -105,6 +121,85 @@ val hackyObjectMapper = ObjectMapper().applet {om ->
     }
 }
 
+val shittyObjectMapper = object:ObjectMapper() {
+
+    override fun createDeserializationContext(p: JsonParser?, cfg: DeserializationConfig?): DefaultDeserializationContext {
+        val defaultContext = super.createDeserializationContext(p, cfg)
+        return defaultContext.with(defaultContext.factory.withAdditionalDeserializers(object:SimpleDeserializers() {
+            override fun findEnumDeserializer(type: Class<*>?, config: DeserializationConfig?, beanDesc: BeanDescription?): JsonDeserializer<*> {
+                val resolver = EnumResolver.constructUnsafe(type, defaultContext.config.annotationIntrospector)
+                return object:EnumDeserializer(resolver) {
+                    override fun _deserializeOther(p: JsonParser, ctxt: DeserializationContext?): Any {
+                        check(p.currentToken == JsonToken.START_OBJECT)
+                        run { // Ex: "$$$enum": "aps.RedisLogMessage$SQL$Stage"
+                            val fieldName = p.nextFieldName() ?: wtf()
+                            check(fieldName == "\$\$\$enum")
+                            p.nextTextValue() ?: wtf()
+                        }
+                        run { // Ex: "value": "SUCCESS"
+                            val fieldName = p.nextFieldName() ?: wtf()
+                            check(fieldName == "value")
+                            val name = p.nextTextValue() ?: wtf()
+                            val value = _lookupByName.find(name)
+                            return value
+                        }
+                    }
+                }
+            }
+        }))
+    }
+
+    init {
+        this.serializerFactory = object:BeanSerializerFactory(null) {
+            override fun findBeanProperties(prov: SerializerProvider,
+                                            beanDesc: BeanDescription,
+                                            builder: BeanSerializerBuilder): List<BeanPropertyWriter>? {
+
+                open class DumbBeanPropertyWriter : BeanPropertyWriter() {
+                    override fun fixAccess(config: SerializationConfig?) {
+                        // At least not NPE
+                    }
+
+                    override fun getSerializationType(): JavaType {
+                        // At least not NPE
+                        return TypeFactory.unknownType()
+                    }
+                }
+
+                val writers = super.findBeanProperties(prov, beanDesc, builder) ?: mutableListOf<BeanPropertyWriter>()
+
+                writers.forEachIndexed {i, w ->
+                    if (w.type.isEnumType) {
+                        writers[i] = object:DumbBeanPropertyWriter() {
+                            override fun serializeAsField(bean: Any, gen: JsonGenerator, prov: SerializerProvider?) {
+                                gen.writeFieldName(w.name)
+                                gen.writeStartObject()
+                                gen.writeStringField("\$\$\$enum", w.type.rawClass.name)
+                                gen.writeStringField("value", bean.javaClass.getMethod("get${w.name.capitalize()}").invoke(bean)?.toString())
+                                gen.writeEndObject()
+                            }
+                        }
+                    }
+                }
+
+                writers.add(0, object:DumbBeanPropertyWriter() {
+                    override fun serializeAsField(bean: Any, gen: JsonGenerator, prov: SerializerProvider) {
+                        gen.writeStringField("\$\$\$class", bean.javaClass.name)
+                    }
+                })
+
+                return writers
+            }
+        }
+
+        this.addHandler(object:DeserializationProblemHandler() {
+            override fun handleUnknownProperty(ctxt: DeserializationContext?, p: JsonParser?, deserializer: JsonDeserializer<*>?, beanOrClass: Any?, propertyName: String?): Boolean {
+                return propertyName == "\$\$\$class"
+            }
+        })
+    }
+}
+
 fun t(en: String, ua: String) = ua
 
 fun bitchExpectedly(msg: String) {
@@ -122,7 +217,7 @@ fun String.toUserKind(): UserKind = UserKind.values().find{it.name == this} ?: w
 fun String.toLanguage(): Language = Language.values().find{it.name == this} ?: wtf("[$this] to Language")
 fun String.toUserState(): UserState = UserState.values().find{it.name == this} ?: wtf("[$this] to UserState")
 
-fun Users.toRTO(q: DSLContextProxy): UserRTO {
+fun Users.toRTO(q: DSLContext): UserRTO {
     val roles = q.select().from(USER_ROLES).where(USER_ROLES.USER_ID.eq(id)).fetchInto(UserRoles::class.java)
 
     // TODO:vgrechka Double-check all secrets are excluded from UserRTO    7c2d1191-d43b-485c-af67-b95b46bbf62b

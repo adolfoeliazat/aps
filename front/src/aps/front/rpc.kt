@@ -58,32 +58,42 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
     }
 }
 
-fun dejsonize(jsThing: dynamic): Any? {
-    val noise = DebugNoise("dejsonize", mute = true)
+fun <T> dejsonize(json: String): T? = dejsonizeValue(JSON.parse(json))
 
-    noise.clog("jsThing", jsThing)
+fun <T> dejsonizeValue(jsThing: dynamic): T? {
+    try {
+        val noise = DebugNoise("dejsonize", mute = true)
 
-    return when {
-        jsThing == null -> null
+        noise.clog("jsThing", jsThing)
 
-        jsTypeOf(jsThing).oneOf("string", "number", "boolean") -> jsThing
+        return when {
+            jsThing == null -> null
 
-        jsThing.`$$$enum` != null -> {
-            val code = "_.${jsThing.`$$$enum`.replace("\$", ".")}.${jsThing.value}"
-            noise.clog("code", code)
-            eval(code)
-        }
+            jsTypeOf(jsThing).oneOf("string", "number", "boolean") -> jsThing
 
-        jsThing.`$$$class` != null ->
-            evalAny("new _.${(jsThing.`$$$class` as String).replace("$", ".")}()").applet {res ->
-                for (k in jsKeys(jsThing))
-                    if (k != "\$\$\$class")
-                        jsSet(res, k, dejsonize(jsThing[k]))
+            jsThing.`$$$enum` != null -> {
+                val enumName = jsThing.`$$$enum` as String
+                val code = "_.${enumName.replace("\$", ".")}.${jsThing.value}"
+                noise.clog("code", code)
+                eval(code)
             }
 
-        jsIsArray(jsThing) -> jsArrayToListOfDynamic(jsThing) {dejsonize(it)}
+            jsThing.`$$$class` != null -> {
+                val inst = eval("new _.${(jsThing.`$$$class` as String).replace("$", ".")}()")
+                for (k in jsKeys(jsThing))
+                    if (k != "\$\$\$class")
+                        jsSet(inst, k, dejsonizeValue(jsThing[k]))
+                inst
+            }
 
-        else -> { dwarn("jsThing", jsThing); wtf("Dunno how to dejsonize that jsThing") }
+            jsIsArray(jsThing) -> jsArrayToListOfDynamic(jsThing) {dejsonizeValue(it)} .asDynamic()
+
+            else -> wtf("Dunno how to dejsonize that jsThing")
+        }
+    } catch(e: Throwable) {
+        console.error(e.message)
+        console.error("Offending jsThing", jsThing)
+        throw e
     }
 }
 
@@ -92,7 +102,7 @@ fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSO
     val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
     __dlog.responseJSONObject(procedureName, global.JSON.stringify(responseJSONObject, null, 2))
 
-    return __asyncResult(dejsonize(responseJSONObject) as Res)
+    return __asyncResult(dejsonizeValue<Res>(responseJSONObject)!!)
 }
 
 @Deprecated("Old RPC")
