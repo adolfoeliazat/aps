@@ -18,8 +18,6 @@ class DebugPage(val ui: World) {
     fun load(): Promise<Unit> = async {
         val page = when (ui.urlQuery["page"]) {
             "log" -> {
-//                val allItems = await(GetRedisLogMessagesRequest().send()).items
-
                 val jsons = run {
                     val ids = await(fedis.lrange("log", 0, -1))
                     if (ids.isNotEmpty())

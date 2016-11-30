@@ -11,8 +11,12 @@ fun main(args: Array<String>) {
 }
 
 fun test2() {
+    val om = shittyObjectMapper
+//    val om = objectMapper
+
     val msgOut = RedisLogMessage.SQL()-{o->
         o.id = "123"
+        o.beginMillis = Long.MAX_VALUE
         o.stamp = "sometime"
         o.stack = "somewhere"
         o.shortDescription = "poeben'"
@@ -20,11 +24,16 @@ fun test2() {
         o.stage = RedisLogMessage.SQL.Stage.SUCCESS
         o.exceptionStack = "pizda"
     }
-    val json1 = shittyObjectMapper.writeValueAsString(msgOut)
+
+    val json1 = om.writeValueAsString(msgOut)
+//    val json1 = """{"@class":"aps.RedisLogMessage${'$'}SQL","${'$'}${'$'}${'$'}class":"aps.RedisLogMessage${'$'}SQL","id":"123","stamp":"sometime","stack":"somewhere","text":"some shit","shortDescription":"poeben'","stage":{"${'$'}${'$'}${'$'}enum":"aps.RedisLogMessage${'$'}SQL${'$'}Stage","value":"SUCCESS"},"exceptionStack":"pizda","beginMillis":9223372036854775807}"""
+//    val json1 = """{"@class":"aps.RedisLogMessage${'$'}SQL","${'$'}${'$'}${'$'}class":"aps.RedisLogMessage${'$'}SQL","id":"123","stamp":"sometime","stack":"somewhere","text":"some shit","shortDescription":"poeben'","stage":{"${'$'}${'$'}${'$'}enum":"aps.RedisLogMessage${'$'}SQL${'$'}Stage","value":"SUCCESS"},"exceptionStack":"pizda","beginMillis":9223372036854775807}"""
+//    val json1 = """{"@class":"aps.RedisLogMessage${'$'}SQL","id":"123","stamp":"sometime","stack":"somewhere","text":"some shit","shortDescription":"poeben'","stage":"SUCCESS","exceptionStack":"pizda","beginMillis":9223372036854775807}"""
     clog("json1", json1)
 
-    val msgIn = shittyObjectMapper.readValue(json1, RedisLogMessage::class.java)
+    val msgIn = om.readValue(json1, RedisLogMessage::class.java)
     clog("id", msgIn.id)
+    clog("beginMillis", msgIn.beginMillis)
     clog("shortDescription", msgIn.shortDescription)
     clog("stack", msgIn.stack)
     clog("stamp", msgIn.stamp)

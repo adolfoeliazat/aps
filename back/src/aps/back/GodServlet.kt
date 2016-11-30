@@ -21,14 +21,14 @@ class GodServlet : HttpServlet() {
 
         _requestShit.set(RequestShit())
         requestShit.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
-        val shouldLogBeginEndServiceToRedis = !patternsToExcludeBeginEndServiceRedisLogging.any {pathInfo.contains(it)}
 
         try {
+            val rlm = RedisLogMessage.Separator() - {o ->
+                o.type = SEPARATOR
+                o.text = "Request: $pathInfo"
+            }
+            redisLog.send(rlm)
             try {
-                if (shouldLogBeginEndServiceToRedis) redisLog.send(RedisLogMessage.Separator()-{o->
-                    o.type = SEPARATOR
-                    o.text = "Begin service: $pathInfo {"
-                })
                 when {
                     pathInfo.startsWith("/rpc/") -> {
                         val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
@@ -40,9 +40,8 @@ class GodServlet : HttpServlet() {
                     else -> bitch("Weird request path: $pathInfo")
                 }
             } finally {
-                if (shouldLogBeginEndServiceToRedis) redisLog.send(RedisLogMessage.Separator()-{o->
-                    o.type = SEPARATOR
-                    o.text = "End service: $pathInfo }"
+                redisLog.amend(rlm-{o->
+
                 })
             }
         } catch(fuckup: Throwable) {
@@ -69,10 +68,6 @@ val requestShit: RequestShit get() = _requestShit.get()
 val patternsToExcludeRedisLoggingCompletely = listOf(
     "getSoftwareVersion", "getLiveStatus", "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword",
     "mapStack", "privilegedRedisCommand"
-)
-
-val patternsToExcludeBeginEndServiceRedisLogging = listOf(
-    "sendRedisLogMessage"
 )
 
 

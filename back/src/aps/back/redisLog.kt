@@ -56,22 +56,22 @@ object redisLog {
     }
 }
 
-@RemoteProcedureFactory fun getRedisLogMessages() = testProcedure(
-    GetRedisLogMessagesRequest(),
-    needsDB = false,
-    runShit = fun (ctx, req): GetRedisLogMessagesRequest.Response {
-        val jsons = jedisPool.resource.use {jedis ->
-            val ids = jedis.lrange("log", 0, -1)
-            if (ids.isNotEmpty())
-                jedis.mget(*ids.toTypedArray())
-            else
-                listOf()
-        }
-
-        return GetRedisLogMessagesRequest.Response(
-            jsons.filterNotNull().map {objectMapper.readValue(it, RedisLogMessage::class.java)})
-    }
-)
+//@RemoteProcedureFactory fun getRedisLogMessages() = testProcedure(
+//    GetRedisLogMessagesRequest(),
+//    needsDB = false,
+//    runShit = fun (ctx, req): GetRedisLogMessagesRequest.Response {
+//        val jsons = jedisPool.resource.use {jedis ->
+//            val ids = jedis.lrange("log", 0, -1)
+//            if (ids.isNotEmpty())
+//                jedis.mget(*ids.toTypedArray())
+//            else
+//                listOf()
+//        }
+//
+//        return GetRedisLogMessagesRequest.Response(
+//            jsons.filterNotNull().map {objectMapper.readValue(it, RedisLogMessage::class.java)})
+//    }
+//)
 
 @RemoteProcedureFactory fun sendRedisLogMessage() = testProcedure(
     SendRedisLogMessageRequest(),

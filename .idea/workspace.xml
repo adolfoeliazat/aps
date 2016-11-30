@@ -1,43 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" line="110" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" line="108" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" line="754" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/Shitus-2.kt" line="89" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/Shitus-2.kt" line="122" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" line="92" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" line="90" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/db.kt" line="150" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" line="20" />
     <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java" line="572" />
     <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/EnumDeserializer.java" line="114" />
     <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/EnumDeserializer.java" line="199" />
     <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java" line="1258" />
+    <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/NumberDeserializers.java" line="341" />
+    <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/SerializerProvider.java" line="1297" />
+    <bookmark url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/DeserializationContext.java" line="1091" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeNulls.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/dummy-jackson-back.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/aps/front/fedis.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/dummy-jackson-front.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/Back.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/ScratchBack.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/ScratchBack.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/back-shebang.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/back-shebang.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/back-utils.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/back-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/db.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/db.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/redisLog.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/redisLog.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" afterPath="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/rpc.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/rpc.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/redisLog-shared.kt" afterPath="$PROJECT_DIR$/shared/src/aps/redisLog-shared.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -97,107 +85,107 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="EnumDeserializer.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/EnumDeserializer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="212" column="8" lean-forward="false" selection-start-line="212" selection-start-column="8" selection-end-line="212" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BasicDeserializerFactory.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="1231" column="45" lean-forward="false" selection-start-line="1231" selection-start-column="45" selection-end-line="1231" selection-end-column="45" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Deserializers.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/Deserializers.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="17" column="24" lean-forward="false" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeserializerFactoryConfig.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/cfg/DeserializerFactoryConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BeanDeserializerBase.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="1590" column="0" lean-forward="false" selection-start-line="1590" selection-start-column="0" selection-end-line="1590" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Back.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Back.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="138" column="54" lean-forward="false" selection-start-line="138" selection-start-column="54" selection-end-line="138" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpikeJackson.kt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding>
-                <element signature="e#24#119#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JsonParser.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/com/fasterxml/jackson/core/JsonParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="642">
-              <caret line="721" column="18" lean-forward="false" selection-start-line="721" selection-start-column="18" selection-end-line="721" selection-end-column="18" />
-              <folding>
-                <element signature="e#32016#32017#0" expanded="true" />
-                <element signature="e#32056#32057#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JsonToken.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/com/fasterxml/jackson/core/JsonToken.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="11" column="12" lean-forward="false" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleDeserializers.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleDeserializers.java">
-          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="336">
-              <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+              <caret line="178" column="24" lean-forward="false" selection-start-line="178" selection-start-column="24" selection-end-line="178" selection-end-column="24" />
+              <folding>
+                <element signature="e#80#1597#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DeserializationContext.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/DeserializationContext.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="576">
+              <caret line="1123" column="4" lean-forward="false" selection-start-line="1123" selection-start-column="4" selection-end-line="1123" selection-end-column="4" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StdDeserializer.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/StdDeserializer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="474" column="30" lean-forward="true" selection-start-line="474" selection-start-column="30" selection-end-line="474" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NumberDeserializers.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/NumberDeserializers.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="467">
+              <caret line="345" column="0" lean-forward="false" selection-start-line="345" selection-start-column="0" selection-end-line="345" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SettableBeanProperty.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/SettableBeanProperty.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="488" column="49" lean-forward="false" selection-start-line="488" selection-start-column="49" selection-end-line="488" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Class.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/lang/Class.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="291">
+              <caret line="482" column="26" lean-forward="false" selection-start-line="482" selection-start-column="26" selection-end-line="482" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BeanSerializerBase.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/std/BeanSerializerBase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="376" column="0" lean-forward="false" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DefaultSerializerProvider.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/DefaultSerializerProvider.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="269" column="0" lean-forward="false" selection-start-line="269" selection-start-column="0" selection-end-line="269" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ObjectMapper.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="560" column="0" lean-forward="false" selection-start-line="560" selection-start-column="0" selection-end-line="560" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DefaultDeserializationContext.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="308" column="31" lean-forward="false" selection-start-line="308" selection-start-column="31" selection-end-line="308" selection-end-column="31" />
+              <folding>
+                <element signature="e#12071#12072#0" expanded="true" />
+                <element signature="e#12110#12111#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -215,7 +203,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&quot;link-createaccount</find>
       <find>ShitPile</find>
       <find>en = &quot;</find>
       <find>ua = &quot;</find>
@@ -245,6 +232,7 @@
       <find>CSSSele</find>
       <find>recreate database</find>
       <find>offending js</find>
+      <find>dunno how</find>
     </findStrings>
     <replaceStrings>
       <replace>/</replace>
@@ -317,24 +305,24 @@
         <option value="$PROJECT_DIR$/back/src/aps/back/spike/SpikePolymorphicJackson.kt" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt" />
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" />
-        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/redisLog-shared.kt" />
-        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/redisLog-shared.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/back-shebang.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/back-utils.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/ScratchBack.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/spike/SpikeNulls.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/db.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" />
-        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/fedis.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/redisLog.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/rpc.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/redisLog.kt" />
+        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
+        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/redisLog-shared.kt" />
+        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/redisLog-shared.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
       </list>
     </option>
   </component>
@@ -686,7 +674,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m03/kotlin-jslib-sources.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="deserializeother&#9;null&#9;null&#10;enumde&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/EnumDeserializer.java&#10;deserializers&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleDeserializers.java&#10;method&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/impl/MethodProperty.java&#10;deserializerfactory&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.DeserializerFactory&#10;shittyo&#9;null&#9;null&#10;simple&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleDeserializers.java&#10;RLM&#9;null&#9;null&#10;spike&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/spike/SpikePolymorphicJackson.kt&#10;rlog&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/redisLog.kt&#10;redis&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/redisLog.kt&#10;rp-te&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-test.kt&#10;hiddenfield&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;dejso&#9;null&#9;null&#10;redisreq&#9;null&#9;null&#10;getredislogmessages&#9;null&#9;null&#10;captureass&#9;null&#9;null&#10;back&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-utils.kt&#10;closeable&#9;PSI&#9;JAVA://java.io.Closeable&#10;rlsha&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/redisLog-shared.kt&#10;back-&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-utils.kt&#10;rpc&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/rpc.kt&#10;rlogkt&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/redisLog.kt&#10;hacky&#9;null&#9;null&#10;omapper&#9;null&#9;null&#10;genericrespo&#9;null&#9;null&#10;objectmapper&#9;null&#9;null&#10;spik&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/spike/SpikePolymorphicJackson.kt&#10;rls&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/redisLog-shared.kt&#10;jtia&#9;null&#9;null&#10;fim&#9;FILE&#9;file://E:/work/aps/front/src/aps/shared-utils-front-impl.kt&#10;bim&#9;FILE&#9;file://E:/work/aps/back/src/aps/shared-utils-back-impl.kt&#10;dja&#9;FILE&#9;file://E:/work/aps/front/src/dummy-jackson.kt&#10;back-u&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-utils.kt&#10;jsontype&#9;FILE&#9;jar://E:/work/aps/back/lib-gradle/jackson-annotations-2.8.0.jar!/com/fasterxml/jackson/annotation/JsonTypeInfo.class&#10;jsontypeinfo&#9;PSI&#9;JAVA://com.fasterxml.jackson.annotation.JsonTypeInfo&#10;sfi&#9;FILE&#9;file://E:/work/aps/front/src/aps/shared-utils-front-impl.kt&#10;s-ut&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;defaulttyping&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping&#10;debugpa&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DebugPage.kt&#10;redislog&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/redisLog.kt&#10;debugp&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DebugPage.kt&#10;th&#9;FILE&#9;jar://E:/work/into-kommon/lib/kotlin/1.1-m03/kotlin-runtime-sources.jar!/kotlin/Throwable.kt&#10;RSTC&#9;null&#9;null&#10;renderstacktrace&#9;null&#9;null&#10;printwriter&#9;PSI&#9;JAVA://java.io.PrintWriter&#10;shared-utils&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;capture&#9;null&#9;null&#10;revealstackcal&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="beandeserializer&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java&#10;longserializer&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.ser.std.NumberSerializers.LongSerializer&#10;longdeseriali&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.std.NumberDeserializers.LongDeserializer&#10;delegates&#9;null&#9;null&#10;j.l.system&#9;PSI&#9;JAVA://java.lang.System&#10;java.util.date&#9;PSI&#9;JAVA://java.util.Date&#10;RLM&#9;null&#9;null&#10;sendredi&#9;null&#9;null&#10;GRLMR&#9;null&#9;null&#10;godser&#9;null&#9;null&#10;redislog&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/redisLog.kt&#10;deserializeother&#9;null&#9;null&#10;enumde&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/EnumDeserializer.java&#10;deserializers&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleDeserializers.java&#10;method&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/impl/MethodProperty.java&#10;deserializerfactory&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.deser.DeserializerFactory&#10;shittyo&#9;null&#9;null&#10;simple&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleDeserializers.java&#10;spike&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/spike/SpikePolymorphicJackson.kt&#10;rlog&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/redisLog.kt&#10;redis&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/redisLog.kt&#10;rp-te&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-test.kt&#10;hiddenfield&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;dejso&#9;null&#9;null&#10;redisreq&#9;null&#9;null&#10;getredislogmessages&#9;null&#9;null&#10;captureass&#9;null&#9;null&#10;back&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-utils.kt&#10;closeable&#9;PSI&#9;JAVA://java.io.Closeable&#10;rlsha&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/redisLog-shared.kt&#10;back-&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-utils.kt&#10;rpc&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/rpc.kt&#10;rlogkt&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/redisLog.kt&#10;hacky&#9;null&#9;null&#10;omapper&#9;null&#9;null&#10;genericrespo&#9;null&#9;null&#10;objectmapper&#9;null&#9;null&#10;spik&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/spike/SpikePolymorphicJackson.kt&#10;rls&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/redisLog-shared.kt&#10;jtia&#9;null&#9;null&#10;fim&#9;FILE&#9;file://E:/work/aps/front/src/aps/shared-utils-front-impl.kt&#10;bim&#9;FILE&#9;file://E:/work/aps/back/src/aps/shared-utils-back-impl.kt&#10;dja&#9;FILE&#9;file://E:/work/aps/front/src/dummy-jackson.kt&#10;back-u&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-utils.kt&#10;jsontype&#9;FILE&#9;jar://E:/work/aps/back/lib-gradle/jackson-annotations-2.8.0.jar!/com/fasterxml/jackson/annotation/JsonTypeInfo.class&#10;jsontypeinfo&#9;PSI&#9;JAVA://com.fasterxml.jackson.annotation.JsonTypeInfo&#10;sfi&#9;FILE&#9;file://E:/work/aps/front/src/aps/shared-utils-front-impl.kt&#10;s-ut&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;defaulttyping&#9;PSI&#9;JAVA://com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
   </component>
   <component name="Push.Settings">
@@ -1012,20 +1000,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
-    </task>
-    <task id="LOCAL-00012" summary="vovagrechka/aps#3">
-      <created>1478096983155</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1478096983155</updated>
-    </task>
-    <task id="LOCAL-00013" summary="vovagrechka/aps#3">
-      <created>1478097653967</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1478097653967</updated>
     </task>
     <task id="LOCAL-00014" summary="vovagrechka/aps#3">
       <created>1478119893275</created>
@@ -1356,7 +1330,21 @@
       <option name="project" value="LOCAL" />
       <updated>1480322086766</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="vovagrechka/aps#27">
+      <created>1480442352303</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1480442352303</updated>
+    </task>
+    <task id="LOCAL-00062" summary="vovagrechka/aps#27">
+      <created>1480453913079</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1480453913079</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1376,10 +1364,10 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2387339" sideWeight="0.49617487" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30491802" sideWeight="0.50429183" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2428884" sideWeight="0.50214595" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30163935" sideWeight="0.49570817" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24371585" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24262296" sideWeight="0.49785408" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32677597" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18401287" sideWeight="0.47431695" order="0" side_tool="false" content_ui="combo" />
@@ -1389,7 +1377,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17918456" sideWeight="0.52568305" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30150214" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2693133" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1485,6 +1473,12 @@
           <properties />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java</url>
+          <line>178</line>
+          <properties />
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
         <line-breakpoint type="java-field">
           <url>jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerBuilder.java</url>
           <line>48</line>
@@ -1493,11 +1487,17 @@
           </properties>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
+        <line-breakpoint type="java-field">
+          <url>jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/BeanPropertyWriter.java</url>
+          <line>139</line>
+          <properties field="_serializer" class="com.fasterxml.jackson.databind.ser.BeanPropertyWriter" />
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="35" />
+      <option name="time" value="50" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1589,141 +1589,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/lang/Throwable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="1029" column="5" lean-forward="false" selection-start-line="1029" selection-start-column="5" selection-end-line="1029" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="136" column="12" lean-forward="false" selection-start-line="136" selection-start-column="12" selection-end-line="136" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/ScratchBack.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="18" column="49" lean-forward="false" selection-start-line="18" selection-start-column="49" selection-end-line="18" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/spike/SpikeNulls.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding>
-            <marker date="1480362185271" expanded="true" signature="70:123" ph="{...}" />
-            <marker date="1480362185271" expanded="true" signature="158:283" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/back-utils.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/db.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="101" column="8" lean-forward="false" selection-start-line="101" selection-start-column="8" selection-end-line="101" selection-end-column="8" />
-          <folding>
-            <element signature="e#80#708#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/jedis-2.9.0.jar!/redis/clients/jedis/Jedis.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="227" column="24" lean-forward="false" selection-start-line="227" selection-start-column="24" selection-end-line="227" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="22" column="16" lean-forward="false" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
-          <folding>
-            <element signature="e#75#206#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/async.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="8" lean-forward="false" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="744">
-          <caret line="47" column="4" lean-forward="false" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="105" column="0" lean-forward="false" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="388" column="6" lean-forward="false" selection-start-line="388" selection-start-column="6" selection-end-line="388" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="388" column="6" lean-forward="false" selection-start-line="388" selection-start-column="6" selection-end-line="388" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/fedis.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="6" column="57" lean-forward="false" selection-start-line="6" selection-start-column="57" selection-end-line="6" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
@@ -1737,32 +1602,6 @@
         <state relative-caret-position="282">
           <caret line="155" column="8" lean-forward="false" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/redisLog.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="100" column="16" lean-forward="false" selection-start-line="100" selection-start-column="16" selection-end-line="100" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/rpc.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/redisLog-shared.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="e#13#123#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1793,14 +1632,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/DefaultSerializerProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/util/ObjectBuffer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -1825,39 +1656,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/DeserializationConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="690" column="33" lean-forward="false" selection-start-line="690" selection-start-column="33" selection-end-line="690" selection-end-column="33" />
-          <folding>
-            <element signature="e#31805#31806#0" expanded="false" />
-            <element signature="e#31844#31845#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/redisLog-shared.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding>
-            <element signature="e#13#123#0" expanded="true" />
-            <marker date="1480352924171" expanded="true" signature="747:752" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="334" column="22" lean-forward="false" selection-start-line="334" selection-start-column="22" selection-end-line="334" selection-end-column="22" />
-          <folding>
-            <element signature="e#2255#2256#0" expanded="true" />
-            <element signature="e#2281#2282#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DeserializerFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="282">
@@ -1874,14 +1672,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DeserializerCache.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="282">
@@ -1890,26 +1680,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="2832" column="0" lean-forward="false" selection-start-line="2832" selection-start-column="0" selection-end-line="2832" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="282">
           <caret line="169" column="0" lean-forward="false" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/SettableBeanProperty.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="488" column="24" lean-forward="false" selection-start-line="488" selection-start-column="24" selection-end-line="488" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1930,37 +1704,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/DeserializationContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="1074" column="0" lean-forward="false" selection-start-line="1074" selection-start-column="0" selection-end-line="1074" selection-end-column="0" />
-          <folding>
-            <element signature="e#10129#10130#0" expanded="true" />
-            <element signature="e#10160#10161#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="1590" column="0" lean-forward="false" selection-start-line="1590" selection-start-column="0" selection-end-line="1590" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/cfg/DeserializerFactoryConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleDeserializers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -1973,30 +1720,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="1231" column="45" lean-forward="false" selection-start-line="1231" selection-start-column="45" selection-end-line="1231" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/com/fasterxml/jackson/core/JsonToken.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="11" column="12" lean-forward="false" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/com/fasterxml/jackson/core/JsonParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="642">
-          <caret line="721" column="18" lean-forward="false" selection-start-line="721" selection-start-column="18" selection-end-line="721" selection-end-column="18" />
-          <folding>
-            <element signature="e#32016#32017#0" expanded="true" />
-            <element signature="e#32056#32057#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2008,20 +1736,286 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/rpc.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="138" column="54" lean-forward="false" selection-start-line="138" selection-start-column="54" selection-end-line="138" selection-end-column="54" />
+        <state relative-caret-position="528">
+          <caret line="90" column="25" lean-forward="false" selection-start-line="90" selection-start-column="25" selection-end-line="90" selection-end-column="25" />
+          <folding>
+            <marker date="1480424543696" expanded="true" signature="2853:2866" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="19" column="12" lean-forward="false" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
+          <folding>
+            <element signature="e#75#206#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="160" column="9" lean-forward="false" selection-start-line="160" selection-start-column="9" selection-end-line="160" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="534">
+          <caret line="383" column="0" lean-forward="false" selection-start-line="383" selection-start-column="0" selection-end-line="383" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/redisLog.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="27" column="8" lean-forward="false" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/GodServlet.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding>
+            <element signature="e#80#241#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/redisLog-shared.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="12" column="20" lean-forward="false" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+          <folding>
+            <marker date="1480494482077" expanded="true" signature="20:123" ph="..." />
+            <marker date="1480494482077" expanded="true" signature="370:836" ph="{...}" />
+            <marker date="1480494482077" expanded="true" signature="545:661" ph="{...}" />
+            <marker date="1480494482077" expanded="true" signature="829:834" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/util/Date.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="130" column="13" lean-forward="false" selection-start-line="130" selection-start-column="13" selection-end-line="130" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/lang/System.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="352" column="30" lean-forward="false" selection-start-line="352" selection-start-column="30" selection-end-line="352" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m03/kotlin-runtime-sources.jar!/kotlin/properties/Interfaces.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="32" column="17" lean-forward="false" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m03/kotlin-runtime-sources.jar!/kotlin/properties/Delegates.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1032">
+          <caret line="43" column="50" lean-forward="false" selection-start-line="43" selection-start-column="50" selection-end-line="43" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/redisLog-shared.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="8" lean-forward="false" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+          <folding>
+            <element signature="e#13#166#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/com/fasterxml/jackson/core/JsonParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="660" column="30" lean-forward="false" selection-start-line="660" selection-start-column="30" selection-end-line="660" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state relative-caret-position="192">
+          <caret line="33" column="4" lean-forward="false" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
           <folding>
             <element signature="e#24#119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/DeserializationConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="933" column="8" lean-forward="false" selection-start-line="933" selection-start-column="8" selection-end-line="933" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BasicDeserializerFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="1234" column="36" lean-forward="false" selection-start-line="1234" selection-start-column="36" selection-end-line="1234" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/std/NumberSerializers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="178" column="0" lean-forward="false" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/BeanPropertyWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="377" column="0" lean-forward="false" selection-start-line="377" selection-start-column="0" selection-end-line="377" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/module/SimpleDeserializers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="91" column="31" lean-forward="false" selection-start-line="91" selection-start-column="31" selection-end-line="91" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializerBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="28" column="22" lean-forward="false" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/BeanDeserializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="49" column="5" lean-forward="false" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/SerializerCache.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="196" column="40" lean-forward="true" selection-start-line="196" selection-start-column="40" selection-end-line="196" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/SerializerProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="697" column="0" lean-forward="false" selection-start-line="697" selection-start-column="0" selection-end-line="697" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/DefaultSerializerProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="269" column="0" lean-forward="false" selection-start-line="269" selection-start-column="0" selection-end-line="269" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/lang/Class.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="482" column="26" lean-forward="false" selection-start-line="482" selection-start-column="26" selection-end-line="482" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ser/std/BeanSerializerBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="376" column="0" lean-forward="false" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/StdDeserializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="474" column="30" lean-forward="true" selection-start-line="474" selection-start-column="30" selection-end-line="474" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/NumberDeserializers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="467">
+          <caret line="345" column="0" lean-forward="false" selection-start-line="345" selection-start-column="0" selection-end-line="345" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/SettableBeanProperty.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="488" column="49" lean-forward="false" selection-start-line="488" selection-start-column="49" selection-end-line="488" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/deser/DefaultDeserializationContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="308" column="31" lean-forward="false" selection-start-line="308" selection-start-column="31" selection-end-line="308" selection-end-column="31" />
+          <folding>
+            <element signature="e#12071#12072#0" expanded="true" />
+            <element signature="e#12110#12111#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/DeserializationContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="1123" column="4" lean-forward="false" selection-start-line="1123" selection-start-column="4" selection-end-line="1123" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="560" column="0" lean-forward="false" selection-start-line="560" selection-start-column="0" selection-end-line="560" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="178" column="24" lean-forward="false" selection-start-line="178" selection-start-column="24" selection-end-line="178" selection-end-column="24" />
+          <folding>
+            <element signature="e#80#1597#0" expanded="true" />
           </folding>
         </state>
       </provider>
