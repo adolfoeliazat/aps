@@ -32,7 +32,7 @@ class QueryBuilder {
         return this
     }
 
-    fun fetch(q: DSLContext): List<Record> {
+    fun fetch(q: DSLContextProxy): List<Record> {
         return q.fetch("" + sql, *bindings.toTypedArray())
     }
 }
@@ -43,12 +43,12 @@ class Chunk<T>(val items: List<T>, val moreFromId: String?)
 
 
 fun <POJO : Any, RTO> selectChunk(
-    q: DSLContext,
+    q: DSLContextProxy,
     table: String,
     pojoClass: KClass<POJO>,
     appendToSelect: (QueryBuilder) -> Unit = {},
     appendToWhere: (QueryBuilder) -> Unit = {},
-    loadItem: (POJO, DSLContext) -> RTO,
+    loadItem: (POJO, DSLContextProxy) -> RTO,
     ordering: Ordering,
     fromID: Long?) : Chunk<RTO> {
 

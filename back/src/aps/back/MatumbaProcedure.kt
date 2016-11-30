@@ -21,7 +21,7 @@ fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die
 // typealias ServletService = (HttpServletRequest, HttpServletResponse) -> Unit
 
 class ProcedureContext {
-    lateinit var q: DSLContext
+    lateinit var q: DSLContextProxy
     lateinit var clientKind: ClientKind
     lateinit var lang: Language
     lateinit var requestTimestamp: Timestamp
@@ -134,9 +134,11 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
             if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
 
             val db = DB.apsTestOnTestServer
-            db.joo("Some shit 2") {q->
-                ctx.q = q
-                runShitWithMaybeDB()
+            redisLog.group("Some shit 2") {
+                db.joo {q->
+                    ctx.q = q
+                    runShitWithMaybeDB()
+                }
             }
         } else {
             runShitWithMaybeDB()

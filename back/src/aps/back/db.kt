@@ -53,7 +53,7 @@ object DB {
 
     class Database(val host: String, val port: Int, val name: String,
                    val user: String, val password: String? = null,
-                   val allowRecreation: Boolean = false, val populate: ((DSLContext) -> Unit)? = null) {
+                   val allowRecreation: Boolean = false, val populate: ((DSLContextProxy) -> Unit)? = null) {
 
         private val dslazy = relazy {HikariDataSource().applet {o->
             o.dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
@@ -79,19 +79,27 @@ object DB {
             template?.let {it.close()}
 
             val sysdb = systemDatabases[port] ?: wtf("No system DB on port $port")
-            // TODO:vgrechka @duplication e530f4e5-7a5f-4dc2-8a59-cafc22e19870 1
-            sysdb.joo("Recreate database") {
-                it.execute("""
-                    drop database if exists "$name";
-                    create database "$name" ${template.letoes {"template = \"${it.name}\""}};
-                """)
+            redisLog.group("Recreate database $name") {
+                sysdb.joo {
+                    it.execute("""
+                        drop database if exists "$name";
+                        create database "$name" ${template.letoes {"template = \"${it.name}\""}};
+                    """)
+                }
             }
 
             if (template == null)
-                joo("schema.sql") {
-                    it.execute(DB::class.java.getResource("schema.sql").readText())
+                redisLog.group("schema.sql") {
+                    joo {
+                        it.execute(DB::class.java.getResource("schema.sql").readText())
+                    }
                 }
-            populate?.let {joo("Some shit", it)}
+
+            populate?.let {
+                redisLog.group("Some shit 0") {
+                    joo(it)
+                }
+            }
         }
 
         fun close() {
@@ -99,15 +107,8 @@ object DB {
             dslazy.reset()
         }
 
-        fun <T> joo(descr: String, act: (DSLContext) -> T): T {
+        fun <T> joo(act: (DSLContextProxy) -> T): T {
             ds.connection.use {con->
-                val rlm = RedisLogMessage.SQL()-{o->
-                    o.shortDescription = descr
-                    o.text = "Not known yet"
-                    o.stage = PENDING
-                }
-                redisLog.send(rlm)
-
                 // TODO:vgrechka Cache jOOQ DSLContext
                 val q = DSL.using(
                     DefaultConfiguration()
@@ -116,8 +117,7 @@ object DB {
                         .set(DefaultExecuteListenerProvider(object:DefaultExecuteListener() {
                             override fun executeStart(ctx: ExecuteContext) {
                                 fun dumpShit(shit: String) {
-                                    rlm.text = shit
-                                    redisLog.amend(rlm)
+                                    requestShit.actualSQLFromJOOQ = shit
                                 }
 
                                 fun dumpShit(shit: QueryPart) = dumpShit(
@@ -131,25 +131,14 @@ object DB {
                         }))
                 )
 
-                try {
-                    val res = act(q)
-                    rlm.stage = SUCCESS
-                    return res
-                } catch (e: Throwable) {
-                    rlm.stage = FAILURE
-                    rlm.exceptionStack = e.stackString()
-                    throw e
-                } finally {
-                    rlm.endMillis = currentTimeMillis()
-                    redisLog.amend(rlm)
-                }
+                return act(DSLContextProxy(q))
             }
         }
 
         override fun toString() = "Database(host='$host', port=$port, name='$name', user='$user')"
     }
 
-    fun populate_testTemplateUA1(q: DSLContext) {
+    fun populate_testTemplateUA1(q: DSLContextProxy) {
         redisLog.group("populate_testTemplateUA1") {
             val secretHash = "\$2a\$10\$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6" // secret
             var nextUserID = 101L
@@ -237,61 +226,64 @@ object DB {
     }
 }
 
-//class DSLContextProxy(val q: DSLContext) {
-//    fun <R : Record> insertInto(into: Table<R>, vararg fields: Field<*>): InsertValuesStepN<R> {
-//        return q.insertInto(into, *fields)
-//    }
-//
-//    fun fetch(sql: String, vararg bindings: Any?): Result<Record> {
-//        return q.fetch(sql, *bindings)
-//    }
-//
-//    fun selectCount(): SelectSelectStep<Record1<Int>> {
-//        return q.selectCount()
-//    }
-//
-//    fun <R : Record> update(table: Table<R>): UpdateSetFirstStep<R> {
-//        return q.update(table)
-//    }
-//
-//    fun select(vararg fields: SelectField<*>): SelectSelectStep<Record> {
-//        return q.select(*fields)
-//    }
-//
-//    fun fetch(sql: String): Result<Record> {
-//        return q.fetch(sql)
-//    }
-//
-//    fun <R : Record> insertInto(into: Table<R>): InsertSetStep<R> {
-//        return q.insertInto(into)
-//    }
-//
-//    fun execute(short: String, sql: String): Int {
-//        val msg = RedisLogMessage.SQL()-{o->
-//            o.shortDescription = short
-//            o.stage = PENDING
-//            o.text = sql
-//        }
-//        requestShit.sqlRedisLogMessage = msg
-//        redisLog.send(msg)
-//
-//        try {
-//            val res = q.execute(sql)
-//            msg.stage = SUCCESS
-//            return res
-//        } catch (e: Throwable) {
-//            msg.stage = FAILURE
-//            msg.exceptionStack = captureStackAsString()
-//            throw e
-//        } finally {
-//            redisLog.amend(msg)
-//        }
-//    }
-//
-//    fun execute(sql: String): Int {
-//        return execute("Describe me", sql)
-//    }
-//}
+class DSLContextProxy(val q: DSLContext) {
+    fun <R : Record> insertInto(into: Table<R>, vararg fields: Field<*>): InsertValuesStepN<R> {
+        return q.insertInto(into, *fields)
+    }
+
+    fun fetch(sql: String, vararg bindings: Any?): Result<Record> {
+        return q.fetch(sql, *bindings)
+    }
+
+    fun selectCount(): SelectSelectStep<Record1<Int>> {
+        return q.selectCount()
+    }
+
+    fun <R : Record> update(table: Table<R>): UpdateSetFirstStep<R> {
+        return q.update(table)
+    }
+
+    fun select(vararg fields: SelectField<*>): SelectSelectStep<Record> {
+        return q.select(*fields)
+    }
+
+    fun fetch(sql: String): Result<Record> {
+        return q.fetch(sql)
+    }
+
+    fun <R : Record> insertInto(into: Table<R>): InsertSetStep<R> {
+        return q.insertInto(into)
+    }
+
+    fun execute(short: String, sql: String): Int {
+        val rlm = RedisLogMessage.SQL()-{o->
+            o.shortDescription = short
+            o.stage = PENDING
+            o.text = "Not known yet"
+        }
+        redisLog.send(rlm)
+
+        requestShit.actualSQLFromJOOQ = null
+
+        try {
+            val res = q.execute(sql)
+            rlm.stage = SUCCESS
+            return res
+        } catch (e: Throwable) {
+            rlm.stage = FAILURE
+            rlm.exceptionStack = e.stackString()
+            throw e
+        } finally {
+            requestShit.actualSQLFromJOOQ?.let {rlm.text = it}
+            rlm.endMillis = currentTimeMillis()
+            redisLog.amend(rlm)
+        }
+    }
+
+    fun execute(sql: String): Int {
+        return execute("Describe me", sql)
+    }
+}
 
 
 

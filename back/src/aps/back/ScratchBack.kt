@@ -16,18 +16,20 @@ object ScratchBack {
 //        val query = "select * from users"
 //        val query = "select * from user_tokens"
 
-        DB.apsTestOnTestServer.joo("Some shit 3") {q->
-            val res = q.fetch(query)
-            res.forEachIndexed {recordIndex, record ->
-                println("Record $recordIndex:")
-                for (fieldIndex in 0 until res.fieldsRow().size()) {
-                    val fieldName = res.fieldsRow().field(fieldIndex).name
-                    val fieldValue = record[fieldIndex]
-                    println("    $fieldName: $fieldValue")
+        redisLog.group("Some shit 3") {
+            DB.apsTestOnTestServer.joo {q->
+                val res = q.fetch(query)
+                res.forEachIndexed {recordIndex, record ->
+                    println("Record $recordIndex:")
+                    for (fieldIndex in 0 until res.fieldsRow().size()) {
+                        val fieldName = res.fieldsRow().field(fieldIndex).name
+                        val fieldValue = record[fieldIndex]
+                        println("    $fieldName: $fieldValue")
+                    }
+                    println()
                 }
-                println()
+                println("Rows fetched: ${res.size}")
             }
-            println("Rows fetched: ${res.size}")
         }
     }
 

@@ -23,7 +23,7 @@ class GodServlet : HttpServlet() {
         requestShit.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
 
         try {
-            val rlm = RedisLogMessage.Separator() - {o ->
+            val rlm = RedisLogMessage.Separator()-{o->
                 o.type = SEPARATOR
                 o.text = "Request: $pathInfo"
             }
@@ -41,7 +41,7 @@ class GodServlet : HttpServlet() {
                 }
             } finally {
                 redisLog.amend(rlm-{o->
-
+                    o.endMillis = currentTimeMillis()
                 })
             }
         } catch(fuckup: Throwable) {
@@ -58,7 +58,7 @@ class GodServlet : HttpServlet() {
 
 class RequestShit {
     var skipLoggingToRedis = false
-//    var sqlRedisLogMessage: RedisLogMessage.SQL? = null
+    var actualSQLFromJOOQ: String? = null
 }
 
 val _requestShit = ThreadLocal<RequestShit>()
