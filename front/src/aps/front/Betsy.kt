@@ -2,7 +2,11 @@ package aps.front
 
 import aps.front.Color.*
 
-class Betsy(val title: String, val content: ToReactElementable) : Control2(Attrs()) {
+class Betsy(
+    val title: String,
+    val content: ToReactElementable,
+    val onExpand: () -> Unit = {}
+) : Control2(Attrs()) {
     private var collapsed = true
 
     override fun render() = kdiv{o->
@@ -12,7 +16,7 @@ class Betsy(val title: String, val content: ToReactElementable) : Control2(Attrs
         }
 
         if (!collapsed)
-            o- kdiv(marginLeft = "0.4em", paddingLeft = "1em", fontFamily = "monospace", borderLeft = "1px dashed $GRAY_500"){o->
+            o- kdiv(marginLeft = "0.4em", paddingLeft = "1em", borderLeft = "1px dashed $GRAY_500"){o->
                 o- content
             }
     }
@@ -20,6 +24,8 @@ class Betsy(val title: String, val content: ToReactElementable) : Control2(Attrs
     private fun onClick() {
         collapsed = !collapsed
         update()
+
+        if (!collapsed) onExpand()
     }
 }
 

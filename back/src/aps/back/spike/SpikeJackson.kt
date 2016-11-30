@@ -63,7 +63,7 @@ private fun test1() {
             is RedisLogMessage.Separator -> {
                 clog("Yeah, separator: ${msgIn.type} ${msgIn.text}")
             }
-            is RedisLogMessage.SQL -> wtf()
+            else -> wtf()
         }
     }
 

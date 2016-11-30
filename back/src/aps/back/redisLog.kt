@@ -4,11 +4,8 @@ import aps.*
 import into.kommon.*
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
-import java.io.PrintWriter
-import java.io.StringWriter
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.system.exitProcess
 
 val jedisPool by lazy {
     JedisPool(JedisPoolConfig(), "localhost").let {
@@ -23,21 +20,25 @@ val jedisPool by lazy {
 }
 
 object redisLog {
-    val MAX_LEN = 200L
-
     fun send(msg: RedisLogMessage) {
         // TODO:vgrechka Make this asynchronous
         if (shouldSkip()) return
 
         msg.id = UUID.randomUUID().toString()
+        msg.parentID = RedisLogMessage.ROOT_ID
+        if (isRequestThread) {
+            requestShit.redisLogParentIDs.let {
+                if (it.isNotEmpty())
+                    msg.parentID = it.peek()
+            }
+        }
         msg.beginMillis = currentTimeMillis()
         msg.stamp = LocalDateTime.now().format(PG_LOCAL_DATE_TIME)
         msg.stack = CaptureStackException().stackString()
 
         jedisPool.resource.use {jedis->
             jedis.set(msg.id, shittyObjectMapper.writeValueAsString(msg))
-            jedis.rpush("log", msg.id)
-            jedis.ltrim("log", -MAX_LEN, -1)
+            jedis.rpush("${msg.parentID}:children", msg.id)
         }
     }
 
@@ -53,7 +54,26 @@ object redisLog {
     private fun shouldSkip() = isRequestThread && requestShit.skipLoggingToRedis
 
     fun <T> group(title: String, block: () -> T): T {
-        return block()
+        val rlm = RedisLogMessage.Fuck()-{o->
+            o.text = title
+            o.stage = RedisLogMessage.Fuck.Stage.PENDING
+        }
+        redisLog.send(rlm)
+        requestShit.redisLogParentIDs.push(rlm.id)
+
+        try {
+            val res = block()
+            rlm.stage = RedisLogMessage.Fuck.Stage.SUCCESS
+            return res
+        } catch(e: Throwable) {
+            rlm.stage = RedisLogMessage.Fuck.Stage.FAILURE
+            rlm.exceptionStack = e.stackString()
+            throw e
+        } finally {
+            rlm.endMillis = currentTimeMillis()
+            requestShit.redisLogParentIDs.pop()
+            redisLog.amend(rlm)
+        }
     }
 }
 

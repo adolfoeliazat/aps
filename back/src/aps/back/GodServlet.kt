@@ -9,6 +9,7 @@ package aps.back
 import aps.*
 import aps.RedisLogMessage.Separator.Type.*
 import into.kommon.*
+import java.util.*
 import javax.servlet.*
 import javax.servlet.http.*
 import kotlin.system.exitProcess
@@ -59,6 +60,7 @@ class GodServlet : HttpServlet() {
 class RequestShit {
     var skipLoggingToRedis = false
     var actualSQLFromJOOQ: String? = null
+    val redisLogParentIDs = Stack<String>()
 }
 
 val _requestShit = ThreadLocal<RequestShit>()

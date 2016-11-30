@@ -153,33 +153,35 @@ object DB {
                     actions.add(Action(u.user.insertedAt) {
                         dlog("Inserting ${_kind.name} ${u.user.firstName} at ${u.user.insertedAt}")
 
-                        q("Insert user ${u.user.email}")
-                            .insertInto(Tables.USERS)
-                            .set(u.user.apply {
-                                id = nextUserID++
-                                kind = _kind.name
-                                lang = Language.UA.name
-                                state = UserState.COOL.name
-                                passwordHash = secretHash
-                            })
-                            .execute()
-
-                        q("Insert token for ${u.user.email}")
-                            .insertInto(Tables.USER_TOKENS)
-                            .set(UserTokensRecord().apply {
-                                userId = u.user.id
-                                token = "temp-${u.user.id}"
-                            })
-                            .execute()
-
-                        for (r in u.roles) {
-                            q("Insert role ${r.name} for ${u.user.email}")
-                                .insertInto(Tables.USER_ROLES)
-                                .set(UserRolesRecord().apply {
-                                    userId = u.user.id
-                                    role = r.name
+                        redisLog.group("Make user: ${u.user.email}") {
+                            q("Insert user ${u.user.email}")
+                                .insertInto(Tables.USERS)
+                                .set(u.user.apply {
+                                    id = nextUserID++
+                                    kind = _kind.name
+                                    lang = Language.UA.name
+                                    state = UserState.COOL.name
+                                    passwordHash = secretHash
                                 })
                                 .execute()
+
+                            q("Insert token for ${u.user.email}")
+                                .insertInto(Tables.USER_TOKENS)
+                                .set(UserTokensRecord().apply {
+                                    userId = u.user.id
+                                    token = "temp-${u.user.id}"
+                                })
+                                .execute()
+
+                            for (r in u.roles) {
+                                q("Insert role ${r.name} for ${u.user.email}")
+                                    .insertInto(Tables.USER_ROLES)
+                                    .set(UserRolesRecord().apply {
+                                        userId = u.user.id
+                                        role = r.name
+                                    })
+                                    .execute()
+                            }
                         }
                     })
                 }
