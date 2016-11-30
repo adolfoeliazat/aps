@@ -17,6 +17,7 @@ fun test2() {
     val msgOut = RedisLogMessage.SQL()-{o->
         o.id = "123"
         o.beginMillis = Long.MAX_VALUE
+        o.endMillis = 234L
         o.stamp = "sometime"
         o.stack = "somewhere"
         o.shortDescription = "poeben'"
@@ -34,6 +35,7 @@ fun test2() {
     val msgIn = om.readValue(json1, RedisLogMessage::class.java)
     clog("id", msgIn.id)
     clog("beginMillis", msgIn.beginMillis)
+    clog("endMillis", msgIn.endMillis)
     clog("shortDescription", msgIn.shortDescription)
     clog("stack", msgIn.stack)
     clog("stamp", msgIn.stamp)

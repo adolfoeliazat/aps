@@ -86,6 +86,17 @@ fun <T> dejsonizeValue(jsThing: dynamic): T? {
                 inst
             }
 
+            jsThing.`$$$primitiveish` != null -> {
+                val typeName: String = jsThing.`$$$primitiveish`
+                val stringValue: String = jsThing.value
+                val code = when (typeName) {
+                    "long" -> "new Kotlin.Long(stringValue)"
+                    else -> wtf("Primitiveish typeName: $typeName")
+                }
+                noise.clog("code", code)
+                eval(code)
+            }
+
             jsIsArray(jsThing) -> jsArrayToListOfDynamic(jsThing) {dejsonizeValue(it)} .asDynamic()
 
             else -> wtf("Dunno how to dejsonize that jsThing")

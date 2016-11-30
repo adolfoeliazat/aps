@@ -8,6 +8,7 @@ import kotlin.properties.Delegates.notNull
 sealed class RedisLogMessage {
     lateinit var id: String
     var beginMillis: Long by notNull()
+    var endMillis: Long? = null
     lateinit var stamp: String
     lateinit var stack: String
     lateinit var text: String

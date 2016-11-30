@@ -99,8 +99,13 @@ class DebugPage(val ui: World) {
                                         }
                                         is SQL -> {
                                             val short = msg.shortDescription
-                                            if (short != null)
-                                                o- Betsy("SQL: $short", renderMsgText())
+                                            if (short != null) {
+                                                val elapsed = msg.endMillis?.let {
+                                                    nbsp+nbsp+nbsp + (it - msg.beginMillis) + "ms"
+                                                } ?: ""
+
+                                                o- Betsy("SQL: $short $elapsed", renderMsgText())
+                                            }
                                             else
                                                 o- renderMsgText()
                                         }

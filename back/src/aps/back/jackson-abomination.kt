@@ -139,7 +139,7 @@ val shittyObjectMapper = object:ObjectMapper() {
                             }
                         }
                     }
-                    else if (w.type.rawClass == Long::class.java) {
+                    else if (w.type.rawClass == java.lang.Long.TYPE || w.type.rawClass == java.lang.Long::class.java) {
                         writers[i] = object:DumbBeanPropertyWriter() {
                             override fun serializeAsField(bean: Any, gen: JsonGenerator, prov: SerializerProvider?) {
                                 gen.writeFieldName(w.name)
@@ -168,7 +168,7 @@ val shittyObjectMapper = object:ObjectMapper() {
             }
 
             override fun handleUnexpectedToken(ctxt: DeserializationContext?, targetType: Class<*>?, t: JsonToken, p: JsonParser, failureMsg: String?): Any {
-                if (targetType == Long::class.java) {
+                if (targetType == java.lang.Long.TYPE || targetType == java.lang.Long::class.java) {
                     check(p.currentToken == JsonToken.START_OBJECT)
                     run { // Ex: "$$$primitiveish": "long"
                         val fieldName = p.nextFieldName() ?: wtf()

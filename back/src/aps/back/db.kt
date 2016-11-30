@@ -140,6 +140,7 @@ object DB {
                     rlm.exceptionStack = e.stackString()
                     throw e
                 } finally {
+                    rlm.endMillis = currentTimeMillis()
                     redisLog.amend(rlm)
                 }
             }

@@ -30,6 +30,7 @@ object redisLog {
         if (shouldSkip()) return
 
         msg.id = UUID.randomUUID().toString()
+        msg.beginMillis = currentTimeMillis()
         msg.stamp = LocalDateTime.now().format(PG_LOCAL_DATE_TIME)
         msg.stack = CaptureStackException().stackString()
 

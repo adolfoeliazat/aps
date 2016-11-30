@@ -74,8 +74,21 @@ val testScenarios = mutableMapOf<String, TestScenario>()
 
 
 fun tetete() {
-    val list = listOf("foo", "bar", "baz")
-    global.shit = list.toTypedArray()
+    run {
+        val a = 9223372036854775807L
+        val b = 6L
+        val c = a - b
+        clog(c)
+        clog(c.toString())
+    }
+
+//    run {
+//        val a: Long? = 9223372036854775807L
+//        val b = 6L
+//        val c = a - b
+//        clog(c)
+//        clog(c.toString())
+//    }
 }
 
 
