@@ -18,7 +18,7 @@ object ScratchBack {
 
         redisLog.group("Some shit 3") {
             DB.apsTestOnTestServer.joo {q->
-                val res = q.fetch(query)
+                val res = q("Fucking around").fetch(query)
                 res.forEachIndexed {recordIndex, record ->
                     println("Record $recordIndex:")
                     for (fieldIndex in 0 until res.fieldsRow().size()) {

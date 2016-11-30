@@ -25,7 +25,8 @@ fun signUp() = publicProcedure(
                 it
             } ?: "" + UUID.randomUUID()
 
-            ctx.q.insertInto(USERS)
+            ctx.q("Insert user")
+                .insertInto(USERS)
                 .set(USERS.INSERTED_AT, ctx.requestTimestamp)
                 .set(USERS.UPDATED_AT, ctx.requestTimestamp)
                 .set(USERS.EMAIL, email)

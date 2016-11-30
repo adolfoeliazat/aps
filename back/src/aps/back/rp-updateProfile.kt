@@ -14,7 +14,8 @@ import aps.back.generated.jooq.tables.pojos.Users
     UpdateProfileRequest(),
     runShit = {ctx, req ->
         val q = ctx.q
-        q.update(USERS)
+        q("Update profile")
+            .update(USERS)
             .set(USERS.PROFILE_UPDATED_AT, ctx.requestTimestamp)
             .set(USERS.PHONE, req.profileFields.phone.value)
             .set(USERS.COMPACT_PHONE, compactPhone(req.profileFields.phone.value))

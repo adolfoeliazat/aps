@@ -123,13 +123,11 @@ object EmailMatumba {
             }
 
             DB.apsTestOnTestServer.close()
-            redisLog.group("Recreate database") {
-                DB.postgresOnTestServer.joo {
-                    it.execute(""""
+            DB.postgresOnTestServer.joo {
+                it("Recreate database").execute(""""
                     drop database if exists "$databaseToCreate";
                     create database "$databaseToCreate" template = "$databaseToUseAsTemplate";
                 """)
-                }
             }
         } finally {
             TestServerFiddling.rejectAllRequestsNeedingDB = oldRejectAllRequests
@@ -197,7 +195,7 @@ val backendInstanceID = "" + UUID.randomUUID()
     TestSetUserFieldsRequest(),
     needsDB = true,
     runShit = {ctx, req ->
-        var step = ctx.q
+        var step = ctx.q("Update user")
             .update(USERS)
             .set(USERS.ID, USERS.ID)
 

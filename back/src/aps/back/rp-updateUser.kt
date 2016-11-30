@@ -31,7 +31,7 @@ import aps.back.generated.jooq.Tables.*
         #await loadUserForToken(s{})
         return traceEndHandler(s{ret: hunkyDory({newUser: pickFromUser(s{user})})})*/
 
-        ctx.q
+        ctx.q("Update user")
             .update(USERS)
             .set(USERS.UPDATED_AT, ctx.requestTimestamp)
             .set(USERS.STATE, req.state.value.name)

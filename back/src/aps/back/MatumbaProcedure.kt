@@ -21,7 +21,7 @@ fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die
 // typealias ServletService = (HttpServletRequest, HttpServletResponse) -> Unit
 
 class ProcedureContext {
-    lateinit var q: DSLContextProxy
+    lateinit var q: DSLContextProxyFactory
     lateinit var clientKind: ClientKind
     lateinit var lang: Language
     lateinit var requestTimestamp: Timestamp
@@ -110,8 +110,8 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
             if (spec.needsUser) {
                 val token = rmap["token"] as String
                 ctx.token = token
-                val rows = ctx.q.select()
-                    .from(USER_TOKENS, USERS)
+                val rows = ctx.q("Select token")
+                    .select().from(USER_TOKENS, USERS)
                     .where(USER_TOKENS.TOKEN.eq(token))
                     .and(USERS.ID.eq(USER_TOKENS.USER_ID))
                     .fetch().into(Users::class.java)

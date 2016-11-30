@@ -16,9 +16,8 @@ import aps.GetLiveStatusRequest.Response as Res
     runShit = {ctx, req ->
         when (ctx.user.kind) {
             UserKind.ADMIN -> Res.ForAdmin(
-                profilesToApprove = ctx.q
-                    .selectCount()
-                    .from(USERS)
+                profilesToApprove = ctx.q("Select amount of profiles to approve")
+                    .selectCount().from(USERS)
                     .where(USERS.STATE.eq(UserState.PROFILE_APPROVAL_PENDING.name))
                     .and(USERS.ASSIGNED_TO.eq(ctx.user.id.toLong()))
                     .fetchOne(0, java.lang.Long.TYPE).toString(),

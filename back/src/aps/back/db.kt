@@ -58,7 +58,7 @@ object DB {
 
     class Database(val host: String, val port: Int, val name: String,
                    val user: String, val password: String? = null,
-                   val allowRecreation: Boolean = false, val populate: ((DSLContextProxy) -> Unit)? = null) {
+                   val allowRecreation: Boolean = false, val populate: ((DSLContextProxyFactory) -> Unit)? = null) {
 
         private val dslazy = relazy {HikariDataSource().applet {o->
             o.dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
@@ -84,27 +84,21 @@ object DB {
             template?.let {it.close()}
 
             val sysdb = systemDatabases[port] ?: wtf("No system DB on port $port")
-            redisLog.group("Recreate database $name") {
-                sysdb.joo {
-                    it.execute("""
+            sysdb.joo {
+                it("Recreate database $name")
+                    .execute("""
                         drop database if exists "$name";
                         create database "$name" ${template.letoes {"template = \"${it.name}\""}};
                     """)
-                }
             }
 
             if (template == null)
-                redisLog.group("schema.sql") {
-                    joo {
-                        it.execute(DB::class.java.getResource("schema.sql").readText())
-                    }
+                joo {
+                    it("schema.sql")
+                        .execute(DB::class.java.getResource("schema.sql").readText())
                 }
 
-            populate?.let {
-                redisLog.group("Some shit 0") {
-                    joo(it)
-                }
-            }
+            populate?.let {joo(it)}
         }
 
         fun close() {
@@ -112,7 +106,7 @@ object DB {
             dslazy.reset()
         }
 
-        fun <T> joo(act: (DSLContextProxy) -> T): T {
+        fun <T> joo(act: (DSLContextProxyFactory) -> T): T {
             ds.connection.use {con->
                 // TODO:vgrechka Cache jOOQ DSLContext
                 val q = DSL.using(
@@ -136,14 +130,14 @@ object DB {
                         }))
                 )
 
-                return act(DSLContextProxy(q))
+                return act(DSLContextProxyFactory(q))
             }
         }
 
         override fun toString() = "Database(host='$host', port=$port, name='$name', user='$user')"
     }
 
-    fun populate_testTemplateUA1(q: DSLContextProxy) {
+    fun populate_testTemplateUA1(q: DSLContextProxyFactory) {
         redisLog.group("populate_testTemplateUA1") {
             val secretHash = "\$2a\$10\$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6" // secret
             var nextUserID = 101L
@@ -159,23 +153,33 @@ object DB {
                     actions.add(Action(u.user.insertedAt) {
                         dlog("Inserting ${_kind.name} ${u.user.firstName} at ${u.user.insertedAt}")
 
-                        q.insertInto(Tables.USERS).set(u.user.apply {
-                            id = nextUserID++
-                            kind = _kind.name
-                            lang = Language.UA.name
-                            state = UserState.COOL.name
-                            passwordHash = secretHash
-                        }).execute()
-                        q.insertInto(Tables.USER_TOKENS).set(UserTokensRecord().apply {
-                            userId = u.user.id
-                            token = "temp-${u.user.id}"
-                        }).execute()
+                        q("Insert user ${u.user.email}")
+                            .insertInto(Tables.USERS)
+                            .set(u.user.apply {
+                                id = nextUserID++
+                                kind = _kind.name
+                                lang = Language.UA.name
+                                state = UserState.COOL.name
+                                passwordHash = secretHash
+                            })
+                            .execute()
+
+                        q("Insert token for ${u.user.email}")
+                            .insertInto(Tables.USER_TOKENS)
+                            .set(UserTokensRecord().apply {
+                                userId = u.user.id
+                                token = "temp-${u.user.id}"
+                            })
+                            .execute()
 
                         for (r in u.roles) {
-                            q.insertInto(Tables.USER_ROLES).set(UserRolesRecord().apply {
-                                userId = u.user.id
-                                role = r.name
-                            }).execute()
+                            q("Insert role ${r.name} for ${u.user.email}")
+                                .insertInto(Tables.USER_ROLES)
+                                .set(UserRolesRecord().apply {
+                                    userId = u.user.id
+                                    role = r.name
+                                })
+                                .execute()
                         }
                     })
                 }
@@ -231,7 +235,20 @@ object DB {
     }
 }
 
-class DSLContextProxy(val q: DSLContext) {
+class ActivityParams {
+    lateinit var shortDescription: String
+}
+
+class DSLContextProxyFactory(val q: DSLContext) {
+    operator fun invoke(shortDescription: String): DSLContextProxy {
+        val activityParams = ActivityParams()-{o->
+            o.shortDescription = shortDescription
+        }
+        return DSLContextProxy(activityParams, q)
+    }
+}
+
+class DSLContextProxy(val activityParams: ActivityParams, val q: DSLContext) {
     fun <R : Record> insertInto(into: Table<R>, vararg fields: Field<*>): InsertValuesStepN<R> {
         return q.insertInto(into, *fields)
     }
@@ -256,13 +273,9 @@ class DSLContextProxy(val q: DSLContext) {
         return q.fetch(sql)
     }
 
-    fun <R : Record> insertInto(descr: String, into: Table<R>): InsertSetStep<R> {
-        val res = q.insertInto(into)
-        return InsertSetStepProxy(res)
-    }
-
     fun <R : Record> insertInto(into: Table<R>): InsertSetStep<R> {
-        return insertInto("Describe me (insertInto)", into)
+        val res = q.insertInto(into)
+        return InsertSetStepProxy(activityParams, res)
     }
 
     fun execute(descr: String, sql: String): Int {
@@ -299,7 +312,7 @@ class DSLContextProxy(val q: DSLContext) {
     }
 }
 
-class InsertSetStepProxy<R : Record>(private val wrappee: InsertSetStep<R>) : InsertSetStep<R> {
+class InsertSetStepProxy<R : Record>(val activityParams: ActivityParams, val wrappee: InsertSetStep<R>) : InsertSetStep<R> {
 
     override fun columns(fields: Array<Field<*>>): InsertValuesStepN<R> {
         return wrappee.columns(*fields)
@@ -399,27 +412,27 @@ class InsertSetStepProxy<R : Record>(private val wrappee: InsertSetStep<R>) : In
 
     operator override fun <T> set(field: Field<T>, value: T): InsertSetMoreStep<R> {
         val res = wrappee.set(field, value)
-        return InsertSetMoreStepProxy(res)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     operator override fun <T> set(field: Field<T>, value: Field<T>): InsertSetMoreStep<R> {
         val res = wrappee.set(field, value)
-        return InsertSetMoreStepProxy(res)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     operator override fun <T> set(field: Field<T>, value: Select<out Record1<T>>): InsertSetMoreStep<R> {
         val res = wrappee.set(field, value)
-        return InsertSetMoreStepProxy(res)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     override fun set(map: Map<out Field<*>, *>): InsertSetMoreStep<R> {
         val res = wrappee.set(map)
-        return InsertSetMoreStepProxy(res)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     override fun set(record: Record): InsertSetMoreStep<R> {
         val res = wrappee.set(record)
-        return InsertSetMoreStepProxy(res)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     override fun values(vararg values: Any): InsertValuesStepN<R> {
@@ -443,7 +456,7 @@ class InsertSetStepProxy<R : Record>(private val wrappee: InsertSetStep<R>) : In
     }
 }
 
-class InsertSetMoreStepProxy<R : Record>(val wrappee: InsertSetMoreStep<R>) : InsertSetMoreStep<R> {
+class InsertSetMoreStepProxy<R : Record>(val activityParams: ActivityParams, val wrappee: InsertSetMoreStep<R>) : InsertSetMoreStep<R> {
     operator override fun <T> set(field: Field<T>, value: T): InsertSetMoreStep<R> {
         return wrappee.set(field, value)
     }
@@ -493,7 +506,7 @@ class InsertSetMoreStepProxy<R : Record>(val wrappee: InsertSetMoreStep<R>) : In
         val block = {wrappee.execute()}
 
         val rlm = RedisLogMessage.SQL() - {o ->
-            o.shortDescription = "pizda 1"
+            o.shortDescription = activityParams.shortDescription
             o.stage = PENDING
             o.text = "Not known yet"
         }
