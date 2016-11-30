@@ -11,22 +11,7 @@ import aps.RedisLogMessage.Separator.Type.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.UserRoles
 import aps.back.generated.jooq.tables.pojos.Users
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import into.kommon.*
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.core.JsonToken
-import com.fasterxml.jackson.databind.*
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL
-import com.fasterxml.jackson.databind.deser.*
-import com.fasterxml.jackson.databind.deser.std.EnumDeserializer
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer
-import com.fasterxml.jackson.databind.module.SimpleDeserializers
-import com.fasterxml.jackson.databind.module.SimpleModule
-import com.fasterxml.jackson.databind.ser.*
-import com.fasterxml.jackson.databind.type.*
-import com.fasterxml.jackson.databind.util.EnumResolver
-import com.fasterxml.jackson.databind.util.LinkedNode
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletHandler
 import org.jooq.DSLContext
@@ -35,12 +20,10 @@ import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.util.ClasspathHelper
 import org.reflections.util.ConfigurationBuilder
 import org.slf4j.Logger
-import java.io.IOException
 import java.lang.reflect.Method
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.system.exitProcess
 
 val THE_ADMIN_ID = 101L // TODO:vgrechka Unhardcode admin ID    17c5cc52-57c2-480d-a7c3-abb030b01cc9
 
@@ -74,241 +57,10 @@ fun main(args: Array<String>) {
     }
 }
 
-val objectMapper = ObjectMapper()-{o->
-    o.enableDefaultTyping(NON_FINAL, JsonTypeInfo.As.PROPERTY)
-}
-
-val hackyObjectMapper = ObjectMapper().applet {om ->
-    om.serializerFactory = object:BeanSerializerFactory(null) {
-        override fun findBeanProperties(prov: SerializerProvider,
-                                        beanDesc: BeanDescription,
-                                        builder: BeanSerializerBuilder): List<BeanPropertyWriter>? {
-
-            open class DumbBeanPropertyWriter : BeanPropertyWriter() {
-                override fun fixAccess(config: SerializationConfig?) {
-                    // At least not NPE
-                }
-
-                override fun getSerializationType(): JavaType {
-                    // At least not NPE
-                    return TypeFactory.unknownType()
-                }
-            }
-
-            val writers = super.findBeanProperties(prov, beanDesc, builder) ?: mutableListOf<BeanPropertyWriter>()
-
-            writers.forEachIndexed {i, w ->
-                if (w.type.isEnumType) {
-                    writers[i] = object:DumbBeanPropertyWriter() {
-                        override fun serializeAsField(bean: Any, gen: JsonGenerator, prov: SerializerProvider?) {
-                            gen.writeFieldName(w.name)
-                            gen.writeStartObject()
-                            gen.writeStringField("\$\$\$enum", w.type.rawClass.name)
-                            gen.writeStringField("value", bean.javaClass.getMethod("get${w.name.capitalize()}").invoke(bean)?.toString())
-                            gen.writeEndObject()
-                        }
-                    }
-                }
-            }
-
-            writers.add(0, object:DumbBeanPropertyWriter() {
-                override fun serializeAsField(bean: Any, gen: JsonGenerator, prov: SerializerProvider) {
-                    gen.writeStringField("\$\$\$class", bean.javaClass.name)
-                }
-            })
-
-            return writers
-        }
-    }
-}
 
 
 
-val shittyObjectMapper = object:ObjectMapper() {
 
-
-    override fun createDeserializationContext(p: JsonParser, cfg: DeserializationConfig): DefaultDeserializationContext {
-        class FuckingContext : DefaultDeserializationContext {
-
-            /**
-             * Default constructor for a blueprint object, which will use the standard
-             * [DeserializerCache], given factory.
-             */
-            constructor(df: DeserializerFactory) : super(df, null) {
-            }
-
-            protected constructor(src: FuckingContext,
-                                  config: DeserializationConfig, jp: JsonParser, values: InjectableValues?) : super(src, config, jp, values) {
-            }
-
-            protected constructor(src: FuckingContext) : super(src) {
-            }
-
-            protected constructor(src: FuckingContext, factory: DeserializerFactory) : super(src, factory) {
-            }
-
-            override fun copy(): DefaultDeserializationContext {
-                if (javaClass != FuckingContext::class.java) {
-                    return super.copy()
-                }
-                return FuckingContext(this)
-            }
-
-            override fun createInstance(config: DeserializationConfig,
-                                        jp: JsonParser, values: InjectableValues?): DefaultDeserializationContext {
-                return FuckingContext(this, config, jp, values)
-            }
-
-            override fun with(factory: DeserializerFactory): DefaultDeserializationContext {
-                return FuckingContext(this, factory)
-            }
-
-            @Throws(IOException::class)
-            override fun handleUnexpectedToken(instClass: Class<*>, t: JsonToken?,
-                                      p: JsonParser,
-                                      msg: String?, vararg msgArgs: Any): Any? {
-                var msg = msg
-                if (msgArgs.size > 0) {
-                    msg = String.format(msg!!, *msgArgs)
-                }
-                var h: LinkedNode<DeserializationProblemHandler>? = _config.problemHandlers
-                while (h != null) {
-                    val instance = h.value().handleUnexpectedToken(this,
-                                                                   instClass, t, p, msg)
-                    if (instance !== DeserializationProblemHandler.NOT_HANDLED) {
-                        if (instance == null
-                            || instClass.isInstance(instance)
-                            || instance.javaClass == java.lang.Long::class.java && instClass == java.lang.Long.TYPE) {
-                            return instance
-                        }
-                        reportMappingException("DeserializationProblemHandler.handleUnexpectedToken() for type %s returned value of type %s",
-                                               instClass, instance.javaClass)
-                    }
-                    h = h.next()
-                }
-                if (msg == null) {
-                    if (t == null) {
-                        msg = String.format("Unexpected end-of-input when binding data into %s",
-                                            _calcName(instClass))
-                    } else {
-                        msg = String.format("Can not deserialize instance of %s out of %s token",
-                                            _calcName(instClass), t)
-                    }
-                }
-                reportMappingException(msg)
-                return null // never gets here
-            }
-        }
-
-        val blueprint = FuckingContext(BeanDeserializerFactory.instance)
-        val context = blueprint.createInstance(cfg, p, _injectableValues)
-
-        return context.with(context.factory.withAdditionalDeserializers(object:SimpleDeserializers() {
-            override fun findEnumDeserializer(type: Class<*>?, config: DeserializationConfig?, beanDesc: BeanDescription?): JsonDeserializer<*> {
-                val resolver = EnumResolver.constructUnsafe(type, context.config.annotationIntrospector)
-                return object:EnumDeserializer(resolver) {
-                    override fun _deserializeOther(p: JsonParser, ctxt: DeserializationContext?): Any {
-                        check(p.currentToken == JsonToken.START_OBJECT)
-                        run { // Ex: "$$$enum": "aps.RedisLogMessage$SQL$Stage"
-                            val fieldName = p.nextFieldName() ?: wtf()
-                            check(fieldName == "\$\$\$enum")
-                            p.nextTextValue() ?: wtf()
-                        }
-                        run { // Ex: "value": "SUCCESS"
-                            val fieldName = p.nextFieldName() ?: wtf()
-                            check(fieldName == "value")
-                            val name = p.nextTextValue() ?: wtf()
-                            val value = _lookupByName.find(name)
-                            check(p.nextToken() == JsonToken.END_OBJECT)
-                            return value
-                        }
-                    }
-                }
-            }
-        }))
-    }
-
-    init {
-        this.serializerFactory = object:BeanSerializerFactory(null) {
-            override fun findBeanProperties(prov: SerializerProvider,
-                                            beanDesc: BeanDescription,
-                                            builder: BeanSerializerBuilder): List<BeanPropertyWriter>? {
-
-                open class DumbBeanPropertyWriter : BeanPropertyWriter() {
-                    override fun fixAccess(config: SerializationConfig?) {
-                        // At least not NPE
-                    }
-
-                    override fun getSerializationType(): JavaType {
-                        // At least not NPE
-                        return TypeFactory.unknownType()
-                    }
-                }
-
-                val writers = super.findBeanProperties(prov, beanDesc, builder) ?: mutableListOf<BeanPropertyWriter>()
-
-                writers.forEachIndexed {i, w ->
-                    if (w.type.isEnumType) {
-                        writers[i] = object:DumbBeanPropertyWriter() {
-                            override fun serializeAsField(bean: Any, gen: JsonGenerator, prov: SerializerProvider?) {
-                                gen.writeFieldName(w.name)
-                                gen.writeStartObject()
-                                gen.writeStringField("\$\$\$enum", w.type.rawClass.name)
-                                gen.writeStringField("value", bean.javaClass.getMethod("get${w.name.capitalize()}").invoke(bean)?.toString())
-                                gen.writeEndObject()
-                            }
-                        }
-                    }
-                    else if (w.type.rawClass == Long::class.java) {
-                        writers[i] = object:DumbBeanPropertyWriter() {
-                            override fun serializeAsField(bean: Any, gen: JsonGenerator, prov: SerializerProvider?) {
-                                gen.writeFieldName(w.name)
-                                gen.writeStartObject()
-                                gen.writeStringField("\$\$\$primitiveish", "long")
-                                gen.writeStringField("value", bean.javaClass.getMethod("get${w.name.capitalize()}").invoke(bean)?.toString())
-                                gen.writeEndObject()
-                            }
-                        }
-                    }
-                }
-
-                writers.add(0, object:DumbBeanPropertyWriter() {
-                    override fun serializeAsField(bean: Any, gen: JsonGenerator, prov: SerializerProvider) {
-                        gen.writeStringField("\$\$\$class", bean.javaClass.name)
-                    }
-                })
-
-                return writers
-            }
-        }
-
-        this.addHandler(object:DeserializationProblemHandler() {
-            override fun handleUnknownProperty(ctxt: DeserializationContext?, p: JsonParser?, deserializer: JsonDeserializer<*>?, beanOrClass: Any?, propertyName: String?): Boolean {
-                return propertyName == "\$\$\$class"
-            }
-
-            override fun handleUnexpectedToken(ctxt: DeserializationContext?, targetType: Class<*>?, t: JsonToken, p: JsonParser, failureMsg: String?): Any {
-                if (targetType == Long::class.java) {
-                    check(p.currentToken == JsonToken.START_OBJECT)
-                    run { // Ex: "$$$primitiveish": "long"
-                        val fieldName = p.nextFieldName() ?: wtf()
-                        check(fieldName == "\$\$\$primitiveish")
-                        p.nextTextValue() ?: wtf()
-                    }
-                    run { // Ex: "value": "9223372036854775807"
-                        val fieldName = p.nextFieldName() ?: wtf()
-                        check(fieldName == "value")
-                        val stringValue = p.nextTextValue() ?: wtf()
-                        check(p.nextToken() == JsonToken.END_OBJECT)
-                        return stringValue.toLong()
-                    }
-                }
-
-                return super.handleUnexpectedToken(ctxt, targetType, t, p, failureMsg)
-            }
-        })
-    }
-}
 
 fun t(en: String, ua: String) = ua
 
@@ -617,39 +369,3 @@ annotation class RemoteProcedureFactory
 
 
 
-//class MyFuckingDeserializationContext : DefaultDeserializationContext {
-//
-//    /**
-//     * Default constructor for a blueprint object, which will use the standard
-//     * [DeserializerCache], given factory.
-//     */
-//    constructor(df: DeserializerFactory) : super(df, null) {
-//    }
-//
-//    protected constructor(src: MyFuckingDeserializationContext,
-//                          config: DeserializationConfig, jp: JsonParser, values: InjectableValues) : super(src, config, jp, values) {
-//    }
-//
-//    protected constructor(src: MyFuckingDeserializationContext) : super(src) {
-//    }
-//
-//    protected constructor(src: MyFuckingDeserializationContext, factory: DeserializerFactory) : super(src, factory) {
-//    }
-//
-//    override fun copy(): DefaultDeserializationContext {
-//        if (javaClass != MyFuckingDeserializationContext::class.java) {
-//            return super.copy()
-//        }
-//        return MyFuckingDeserializationContext(this)
-//    }
-//
-//    override fun createInstance(config: DeserializationConfig,
-//                                jp: JsonParser, values: InjectableValues): DefaultDeserializationContext {
-//        return MyFuckingDeserializationContext(this, config, jp, values)
-//    }
-//
-//    override fun with(factory: DeserializerFactory): DefaultDeserializationContext {
-//        return MyFuckingDeserializationContext(this, factory)
-//    }
-//
-//}
