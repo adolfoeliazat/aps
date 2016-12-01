@@ -13,6 +13,7 @@ import java.sql.Timestamp
 import java.util.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.Users
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -46,120 +47,138 @@ class ProcedureSpec<Req : RequestMatumba, Res : Any>(
     val logRequestJSON: Boolean
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+class CommonRequestFieldsHolder : CommonRequestFields {
+    override var rootRedisLogMessageID: String? = null
+}
+
 fun <Req : RequestMatumba, Res : Any>
-remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServletResponse) -> Unit  = {servletRequest, servletResponse ->
-    var responseBean: Any
-    val log = debugLog
-    val ctx = ProcedureContext()
+remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServletResponse) -> Unit =
+    {servletRequest, servletResponse -> object {
+        lateinit var responseBean: Any
+        val log = debugLog
+        val ctx = ProcedureContext()
 
-    try {
-        servletRequest.characterEncoding = "UTF-8"
-        val requestJSON = servletRequest.reader.readText()
-        if (spec.logRequestJSON) {
-            log.info("${servletRequest.pathInfo}: $requestJSON")
-        }
-        val rmap = hackyObjectMapper.readValue(requestJSON, Map::class.java)
-        // log.section("rmap:", rmap)
+        init {
+            try {
+                servletRequest.characterEncoding = "UTF-8"
+                val requestJSON = servletRequest.reader.readText()
+                if (spec.logRequestJSON) {
+                    log.info("${servletRequest.pathInfo}: $requestJSON")
+                }
+                val rmap = hackyObjectMapper.readValue(requestJSON, Map::class.java)
+                requestShit.commonRequestFields = hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class.java)
+                // log.section("rmap:", rmap)
 
-        ctx.clientKind = ClientKind.valueOf(rmap["clientKind"] as String)
-        ctx.lang = Language.valueOf(rmap["lang"] as String)
+                fun serviceShit() {
+                    ctx.clientKind = ClientKind.valueOf(rmap["clientKind"] as String)
+                    ctx.lang = Language.valueOf(rmap["lang"] as String)
 
-        ctx.requestTimestamp = Timestamp(Date().time)
-        if (spec.considerNextRequestTimestampFiddling) {
-            TestServerFiddling.nextRequestTimestamp?.let {
-                TestServerFiddling.nextRequestTimestamp = null
-                ctx.requestTimestamp = it
+                    ctx.requestTimestamp = Timestamp(Date().time)
+                    if (spec.considerNextRequestTimestampFiddling) {
+                        TestServerFiddling.nextRequestTimestamp?.let {
+                            TestServerFiddling.nextRequestTimestamp = null
+                            ctx.requestTimestamp = it
+                        }
+                    }
+
+                    ctx.clientDomain = when (ctx.lang) {
+                        Language.EN -> when (ctx.clientKind) {
+                            ClientKind.CUSTOMER -> "aps-en-customer.local"
+                            ClientKind.WRITER -> "aps-en-writer.local"
+                        }
+                        Language.UA -> when (ctx.clientKind) {
+                            ClientKind.CUSTOMER -> "aps-ua-customer.local"
+                            ClientKind.WRITER -> "aps-ua-writer.local"
+                        }
+                    }
+
+                    ctx.clientPortSuffix = when (ctx.lang) {
+                        Language.EN -> when (ctx.clientKind) {
+                            ClientKind.CUSTOMER -> ":3011"
+                            ClientKind.WRITER -> ":3021"
+                        }
+                        Language.UA -> when (ctx.clientKind) {
+                            ClientKind.CUSTOMER -> ":3012"
+                            ClientKind.WRITER -> ":3022"
+                        }
+                    }
+
+                    fun runShitWithMaybeDB(): Res {
+                        // TODO:vgrechka Wrap each RPC in transaction    5928def7-392e-433f-99a8-9decfe959971
+
+                        val input  = rmap["fields"] as Map<String, Any?>
+                        for (field in spec.req.fields) field.load(input, ctx.fieldErrors)
+
+                        if (spec.needsDangerousToken) {
+                            if (rmap["token"] != systemDangerousToken()) {
+                                // TODO:vgrechka Notify me about hackers    50ec0187-3b47-43de-8a29-b561e6d7132f
+                                bitch("Invalid dangerous token")
+                            }
+                        }
+
+                        if (spec.needsUser) {
+                            val token = rmap["token"] as String
+                            ctx.token = token
+                            val rows = ctx.q("Select token")
+                                .select().from(USER_TOKENS, USERS)
+                                .where(USER_TOKENS.TOKEN.eq(token))
+                                .and(USERS.ID.eq(USER_TOKENS.USER_ID))
+                                .fetch().into(Users::class.java)
+                            if (rows.isEmpty()) bitch("Invalid token") // TODO:vgrechka Redirect user to sign-in page    301a55be-8bb4-4c60-ae7b-a6201f17d8e2
+
+                            // TODO:vgrechka Check that user kind matches requesting client kind    fc937ee4-010c-4f5e-bece-5d7db51bf8c1
+
+                            ctx.user = rows[0].toRTO(ctx.q)
+
+                            if (!spec.userKinds.contains(ctx.user.kind)) bitch("User kind not allowed: ${ctx.user.kind}")
+                        }
+
+                        spec.validate(ctx, spec.req)
+                        if (ctx.fieldErrors.isNotEmpty()) bitchExpectedly(t("Please fix errors below", "Пожалуйста, исправьте ошибки ниже"))
+
+                        return spec.runShit(ctx, spec.req)
+                    }
+
+                    val res = if (spec.needsDB) {
+                        if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
+
+                        val db = DB.apsTestOnTestServer
+                        redisLog.group("Some shit 2") {
+                            db.joo {q->
+                                ctx.q = q
+                                runShitWithMaybeDB()
+                            }
+                        }
+                    } else {
+                        runShitWithMaybeDB()
+                    }
+
+                    responseBean = if (spec.wrapInFormResponse) FormResponse.Hunky(res) else res
+                }
+
+                val pathInfo = servletRequest.pathInfo
+                if (pathInfo.contains("privilegedRedisCommand"))
+                    serviceShit()
+                else
+                    redisLog.group("Request: $pathInfo", ::serviceShit)
             }
-        }
-
-        ctx.clientDomain = when (ctx.lang) {
-            Language.EN -> when (ctx.clientKind) {
-                ClientKind.CUSTOMER -> "aps-en-customer.local"
-                ClientKind.WRITER -> "aps-en-writer.local"
-            }
-            Language.UA -> when (ctx.clientKind) {
-                ClientKind.CUSTOMER -> "aps-ua-customer.local"
-                ClientKind.WRITER -> "aps-ua-writer.local"
-            }
-        }
-
-        ctx.clientPortSuffix = when (ctx.lang) {
-            Language.EN -> when (ctx.clientKind) {
-                ClientKind.CUSTOMER -> ":3011"
-                ClientKind.WRITER -> ":3021"
-            }
-            Language.UA -> when (ctx.clientKind) {
-                ClientKind.CUSTOMER -> ":3012"
-                ClientKind.WRITER -> ":3022"
-            }
-        }
-
-        fun runShitWithMaybeDB(): Res {
-            // TODO:vgrechka Wrap each RPC in transaction    5928def7-392e-433f-99a8-9decfe959971
-
-            val input  = rmap["fields"] as Map<String, Any?>
-            for (field in spec.req.fields) field.load(input, ctx.fieldErrors)
-
-            if (spec.needsDangerousToken) {
-                if (rmap["token"] != systemDangerousToken()) {
-                    // TODO:vgrechka Notify me about hackers    50ec0187-3b47-43de-8a29-b561e6d7132f
-                    bitch("Invalid dangerous token")
+            catch (e: ExpectedRPCShit) {
+                if (spec.wrapInFormResponse) {
+                    log.info("Softened RPC shit: ${e.message}")
+                    responseBean = FormResponse.Shitty(e.message, ctx.fieldErrors)
+                } else {
+                    throw e
                 }
             }
 
-            if (spec.needsUser) {
-                val token = rmap["token"] as String
-                ctx.token = token
-                val rows = ctx.q("Select token")
-                    .select().from(USER_TOKENS, USERS)
-                    .where(USER_TOKENS.TOKEN.eq(token))
-                    .and(USERS.ID.eq(USER_TOKENS.USER_ID))
-                    .fetch().into(Users::class.java)
-                if (rows.isEmpty()) bitch("Invalid token") // TODO:vgrechka Redirect user to sign-in page    301a55be-8bb4-4c60-ae7b-a6201f17d8e2
-
-                // TODO:vgrechka Check that user kind matches requesting client kind    fc937ee4-010c-4f5e-bece-5d7db51bf8c1
-
-                ctx.user = rows[0].toRTO(ctx.q)
-
-                if (!spec.userKinds.contains(ctx.user.kind)) bitch("User kind not allowed: ${ctx.user.kind}")
+            with (servletResponse) {
+                addHeader("Access-Control-Allow-Origin", "*")
+                contentType = "application/json; charset=utf-8"
+                writer.println(hackyObjectMapper.writeValueAsString(responseBean))
+                status = HttpServletResponse.SC_OK
             }
-
-            spec.validate(ctx, spec.req)
-            if (ctx.fieldErrors.isNotEmpty()) bitchExpectedly(t("Please fix errors below", "Пожалуйста, исправьте ошибки ниже"))
-
-            return spec.runShit(ctx, spec.req)
         }
-
-        val res = if (spec.needsDB) {
-            if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
-
-            val db = DB.apsTestOnTestServer
-            redisLog.group("Some shit 2") {
-                db.joo {q->
-                    ctx.q = q
-                    runShitWithMaybeDB()
-                }
-            }
-        } else {
-            runShitWithMaybeDB()
-        }
-
-        responseBean = if (spec.wrapInFormResponse) FormResponse.Hunky(res) else res
-
-    } catch (e: ExpectedRPCShit) {
-        if (spec.wrapInFormResponse) {
-            log.info("Softened RPC shit: ${e.message}")
-            responseBean = FormResponse.Shitty(e.message, ctx.fieldErrors)
-        } else {
-            throw e
-        }
-    }
-
-    with (servletResponse) {
-        addHeader("Access-Control-Allow-Origin", "*")
-        contentType = "application/json; charset=utf-8"
-        writer.println(hackyObjectMapper.writeValueAsString(responseBean))
-        status = HttpServletResponse.SC_OK
     }
 }
 

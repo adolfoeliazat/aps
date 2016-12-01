@@ -24,17 +24,15 @@ class GodServlet : HttpServlet() {
         requestShit.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
 
         try {
-            redisLog.group("Request: $pathInfo") {
-                when {
-                    pathInfo.startsWith("/rpc/") -> {
-                        val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
-                        val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
-                        val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
-                        service(servletRequest, servletResponse)
-                    }
-
-                    else -> bitch("Weird request path: $pathInfo")
+            when {
+                pathInfo.startsWith("/rpc/") -> {
+                    val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
+                    val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
+                    @Suppress("UNCHECKED_CAST")
+                    val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
+                    service(servletRequest, servletResponse)
                 }
+                else -> bitch("Weird request path: $pathInfo")
             }
         } catch(fuckup: Throwable) {
             log.error("Can't fucking service [$pathInfo]: ${fuckup.message}", fuckup)
@@ -52,6 +50,7 @@ class RequestShit {
     var skipLoggingToRedis = false
     var actualSQLFromJOOQ: String? = null
     val redisLogParentIDs = Stack<String>()
+    lateinit var commonRequestFields: CommonRequestFieldsHolder
 }
 
 val _requestShit = ThreadLocal<RequestShit>()
@@ -60,7 +59,7 @@ val requestShit: RequestShit get() = _requestShit.get()
 
 val patternsToExcludeRedisLoggingCompletely = listOf(
     "getSoftwareVersion", "getLiveStatus", "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword",
-    "mapStack", "privilegedRedisCommand"
+    "mapStack"
 )
 
 

@@ -391,6 +391,9 @@ class PrivilegedRedisCommandRequest : RequestMatumba() {
 }
 fun send(req: PrivilegedRedisCommandRequest): Promise<JSONResponse> = callDangerousMatumba(req)
 
+interface CommonRequestFields {
+    var rootRedisLogMessageID: String?
+}
 
 
 

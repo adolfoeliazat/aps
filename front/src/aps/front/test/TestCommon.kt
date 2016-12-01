@@ -164,97 +164,99 @@ private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promi
     return __reawait(runTest(scenario, urlQuery, showTestPassedPane = true))
 }
 
-private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
     val testName = ctorName(scenario)
     TestShit.lastTestHref = when {
         testName.contains("Writer") -> "http://aps-ua-writer.local:3022/faq.html?test=$testName"
         else -> bitch("Cannot figure out URL for test [$testName]")
     }
 
-    send(SendRedisLogMessageRequest()-{o->
-        o.type.value = RedisLogMessage.Separator.Type.THICK_DASHED_SEPARATOR
-        o.text.value = "Running test: $testName"
-    })
+    Globus.rootRedisLogMessageID = await(fedis.logGroup("Test: $testName"))
 
-    hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
-    hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
-    hrss.preventUIAssertionThrowing = urlQuery["uiAssertionThrows"] == "no"
-    art.testSpeed = urlQuery["testSpeed"] ?: "fast"
-    hrss.alternativeTestSpeed = urlQuery["alternativeTestSpeed"]
-    if (!hrss.alternativeTestSpeed) {
-        if (art.testSpeed == "fast" || art.testSpeed == "medium") {
-            hrss.alternativeTestSpeed = "slow"
-        } else {
-            hrss.alternativeTestSpeed = "medium"
+    try {
+        hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
+        hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
+        hrss.preventUIAssertionThrowing = urlQuery["uiAssertionThrows"] == "no"
+        art.testSpeed = urlQuery["testSpeed"] ?: "fast"
+        hrss.alternativeTestSpeed = urlQuery["alternativeTestSpeed"]
+        if (!hrss.alternativeTestSpeed) {
+            if (art.testSpeed == "fast" || art.testSpeed == "medium") {
+                hrss.alternativeTestSpeed = "slow"
+            } else {
+                hrss.alternativeTestSpeed = "medium"
+            }
         }
-    }
-    art.respectArtPauses = urlQuery["respectArtPauses"] == "yes"
+        art.respectArtPauses = urlQuery["respectArtPauses"] == "yes"
 
-    val sim = object : TestHost {
-        override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> {
-            "__async"
-            dlog("Selecting browser", name)
-            hrss.browserOld = hrss.browsers.getOrPut(name) {BrowserOld(name)}
-            die("Attempt to use hrss.storageLocal")
+        val sim = object : TestHost {
+            override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> {
+                "__async"
+                dlog("Selecting browser", name)
+                hrss.browserOld = hrss.browsers.getOrPut(name) {BrowserOld(name)}
+                die("Attempt to use hrss.storageLocal")
 //            hrss.storageLocal = hrss.browserOld.storageLocal
 
-            dlog("Navigating", hrss.browserOld.name, url)
-            global.history.replaceState(null, "", url)
+                dlog("Navigating", hrss.browserOld.name, url)
+                global.history.replaceState(null, "", url)
 //            __await<dynamic>(makeCleanPairAndBoot())
-            __await(World().boot())
-            return __asyncResult(Unit)
+                __await(World().boot())
+                return __asyncResult(Unit)
+            }
         }
-    }
 
-    scenario.host = sim
+        scenario.host = sim
 
-    global.DB = "aps-test"
-    global.sessionStorage.setItem("DB", global.DB)
+        global.DB = "aps-test"
+        global.sessionStorage.setItem("DB", global.DB)
 
-    val initialHref = window.location.pathname + window.location.search
-    global.addEventListener("keydown", {e: KeyboardEvent ->
-        if (e.altKey && e.code == "KeyR") {
-            preventAndStop(e)
-            window.location.href = initialHref
+        val initialHref = window.location.pathname + window.location.search
+        global.addEventListener("keydown", {e: KeyboardEvent ->
+            if (e.altKey && e.code == "KeyR") {
+                preventAndStop(e)
+                window.location.href = initialHref
+            }
+        })
+
+        hrss.currentTestScenario = scenario
+        lastTestScenarioName = ctorName(scenario)
+        val oldHotCodeUpdateDisabled = hrss.hotCodeUpdateDisabled
+        val oldLiveStatusPollingViaIntervalDisabled = hrss.liveStatusPollingViaIntervalDisabled
+
+        // Prevent some unnecessary glithes
+        hrss.hotCodeUpdateDisabled = false
+        hrss.liveStatusPollingViaIntervalDisabled = false
+
+        hrss.urlQueryBeforeRunningTest = getURLQuery()
+
+        measure("Load generated shit") {
+            // TODO:vgrechka Load generated shit once for whole suite
+            eval(await(GetGeneratedShitRequest.send()).code)
         }
-    })
 
-    hrss.currentTestScenario = scenario
-    lastTestScenarioName = ctorName(scenario)
-    val oldHotCodeUpdateDisabled = hrss.hotCodeUpdateDisabled
-    val oldLiveStatusPollingViaIntervalDisabled = hrss.liveStatusPollingViaIntervalDisabled
+        val res = await(scenario.run(showTestPassedPane))
+        hrss.hotCodeUpdateDisabled = oldHotCodeUpdateDisabled
+        hrss.liveStatusPollingViaIntervalDisabled = oldLiveStatusPollingViaIntervalDisabled
 
-    // Prevent some unnecessary glithes
-    hrss.hotCodeUpdateDisabled = false
-    hrss.liveStatusPollingViaIntervalDisabled = false
-
-    hrss.urlQueryBeforeRunningTest = getURLQuery()
-
-    measure("Load generated shit") {
-        // TODO:vgrechka Load generated shit once for whole suite
-        eval(__await(GetGeneratedShitRequest.send()).code)
-    }
-
-    val res = __await(scenario.run(showTestPassedPane))
-    hrss.hotCodeUpdateDisabled = oldHotCodeUpdateDisabled
-    hrss.liveStatusPollingViaIntervalDisabled = oldLiveStatusPollingViaIntervalDisabled
-
-    hrss.currentTestScenario = null
+        hrss.currentTestScenario = null
 //        if (!hrss.preventRestoringURLAfterTest) {
 //            global.setTimeout({ global.history.replaceState(null, "", initialHref) }, 1000)
 //        }
 
-    run { // XXX Refresh tethers
-        jqbody.scrollTop(jqbody.scrollTop() + 1)
-        jqbody.scrollTop(jqbody.scrollTop() - 1)
-    }
+        run { // XXX Refresh tethers
+            jqbody.scrollTop(jqbody.scrollTop() + 1)
+            jqbody.scrollTop(jqbody.scrollTop() - 1)
+        }
 
 //    if (!art.halted) {
 //        hrss.openTestPassedPaneArgs = json("scenario" to scenario)
 //        openTestPassedPane(hrss.openTestPassedPaneArgs)
 //    }
 
-    return __asyncResult(res)
+        return@async res
+    }
+    finally {
+        Globus.rootRedisLogMessageID = null
+    }
 }
 
 fun buildPieceOfTest(build: (PieceOfTestBuilder) -> Unit): Iterable<TestInstruction> {

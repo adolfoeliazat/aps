@@ -94,7 +94,7 @@ class DebugPage(val ui: World) {
 
     fun renderLogMessages(messages: List<RedisLogMessage>): ToReactElementable {
         if (messages.isEmpty()) return kdiv {o->
-            o- "No shit to render..."
+            o- "No shit here..."
         }
 
         return kdiv {o->

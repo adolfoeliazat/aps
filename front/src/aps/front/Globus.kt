@@ -29,6 +29,7 @@ object Globus {
     val realTypedStorageLocal = TypedStorageLocal(realStorageLocal)
 
     var browser = Browser(typedStorageLocal = realTypedStorageLocal)
+    var rootRedisLogMessageID: String? = null
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)

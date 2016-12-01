@@ -110,10 +110,11 @@ fun <T> dejsonizeValue(jsThing: dynamic): T? {
     }
 }
 
-fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: dynamic): Promise<Res> {"__async"
-    __dlog.requestJSONObject(procedureName, requestJSONObject)
+fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields): Promise<Res> {"__async"
+//    __dlog.requestJSONObject(procedureName, requestJSONObject)
+    requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
     val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
-    __dlog.responseJSONObject(procedureName, global.JSON.stringify(responseJSONObject, null, 2))
+//    __dlog.responseJSONObject(procedureName, global.JSON.stringify(responseJSONObject, null, 2))
 
     return __asyncResult(dejsonizeValue<Res>(responseJSONObject)!!)
 }

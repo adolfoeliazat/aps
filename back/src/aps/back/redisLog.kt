@@ -30,6 +30,9 @@ object redisLog {
             requestShit.redisLogParentIDs.let {
                 if (it.isNotEmpty())
                     msg.parentID = it.peek()
+                else requestShit.commonRequestFields.rootRedisLogMessageID?.let {
+                    msg.parentID = it
+                }
             }
         }
         msg.beginMillis = currentTimeMillis()
@@ -111,22 +114,36 @@ object redisLog {
     PrivilegedRedisCommandRequest(),
     needsDB = false,
     runShit = fun (ctx, req): JSONResponse {
-        val res = jedisPool.resource.use {jedis ->
-            val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
-            val command: String = cast(rmap["command"])
-            when (command) {
-                "lrange" -> {
-                    jedis.lrange(rmap["key"] as String,
-                                 (rmap["start"] as String).toLong(),
-                                 (rmap["end"] as String).toLong())
+        val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
+        val command: String = cast(rmap["command"])
+
+        val res: Any = run {when (command) {
+            "logGroup" -> {
+                val title: String = cast(rmap["title"])
+                val rlm = RedisLogMessage.Fuck()-{o->
+                    o.stage = RedisLogMessage.Fuck.Stage.PENDING
+                    o.text = title
                 }
-                "mget" -> {
-                    val keys: List<String> = cast(rmap["keys"])
-                    jedis.mget(*keys.toTypedArray())
-                }
-                else -> wtf("command: $command")
+                redisLog.send(rlm)
+                return@run rlm.id
             }
-        }
+            else -> jedisPool.resource.use {jedis ->
+                when (command) {
+                    "lrange" -> {
+                        val key: String  = cast(rmap["key"])
+                        val start: Long = (rmap["start"] as String).toLong()
+                        val end: Long = (rmap["end"] as String).toLong()
+                        return@run jedis.lrange(key, start, end)
+                    }
+                    "mget" -> {
+                        val keys: List<String> = cast(rmap["keys"])
+                        return@run jedis.mget(*keys.toTypedArray())
+                    }
+                    else -> wtf("command: $command")
+                }
+            }
+
+        }}
 
         return JSONResponse(shittyObjectMapper.writeValueAsString(res))
     }
