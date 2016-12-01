@@ -340,7 +340,7 @@ object art {
                         o- kdiv(className="showOnParentHovered"){o->
                             o- hor2(marginLeft=8, paddingLeft=8, borderLeft="2px solid ${Color.GRAY_500}"){o->
                                 o+ actions
-                                o- showStackLink(instr.definitionStackCapture)
+                                o- renderStackLink(instr.definitionStackCapture)
 //                                o- renderExpandableOnDemandStack(instr)
 //                                - jshit.OpenSourceCodeLink(json("where" to instrdef, "style" to json("marginLeft" to 20)))
                             }}}}.toReactElement())

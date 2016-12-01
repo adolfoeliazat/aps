@@ -14,6 +14,7 @@ class DebugPage(val ui: World) {
     val noise = DebugNoise("DebugPage", mute = false)
     val MAX_LEN = 200L
     val CN_ROW = "cn" + puid()
+    val CN_HOVER_HIGHLIGHT = "cn" + puid()
     val CN_OPAQUE = "cn" + puid()
 
     fun load(): Promise<Unit> = async {
@@ -61,10 +62,10 @@ class DebugPage(val ui: World) {
                     body = kdiv{o->
                         o- rawHTML("""
                             <style>
-                                .$CN_ROW {background-color: $WHITE;}
-                                .$CN_ROW .$CN_OPAQUE {background-color: $WHITE;}
-                                .$CN_ROW:hover {background-color: $BLUE_GRAY_50;}
-                                .$CN_ROW:hover .$CN_OPAQUE {background-color: $BLUE_GRAY_50;}
+                                .$CN_HOVER_HIGHLIGHT {background-color: $WHITE;}
+                                .$CN_HOVER_HIGHLIGHT .$CN_OPAQUE {background-color: $WHITE;}
+                                .$CN_HOVER_HIGHLIGHT:hover {background-color: $BLUE_GRAY_50;}
+                                .$CN_HOVER_HIGHLIGHT:hover .$CN_OPAQUE {background-color: $BLUE_GRAY_50;}
                             </style>
                         """)
 
@@ -106,10 +107,10 @@ class DebugPage(val ui: World) {
                 kdiv(position = "relative", className = CN_ROW){o->
                     exhaustive/when (msg) {
                         is Separator -> {
-                            when (msg.type) {
-                                SEPARATOR -> renderSeparator(o, msg.text, "1px solid $BLUE_500", "0.75em")
-                                THICK_SEPARATOR -> renderSeparator(o, msg.text, "5px solid $BLUE_500", "0.55em")
-                                THICK_DASHED_SEPARATOR -> renderSeparator(o, msg.text, "5px dashed $BLUE_500", "0.55em")
+                            o- when (msg.type) {
+                                SEPARATOR -> renderSeparator(msg, "1px solid $BLUE_500", "0.75em")
+                                THICK_SEPARATOR -> renderSeparator(msg, "5px solid $BLUE_500", "0.55em")
+                                THICK_DASHED_SEPARATOR -> renderSeparator(msg, "5px dashed $BLUE_500", "0.55em")
                             }
                         }
 
@@ -120,16 +121,20 @@ class DebugPage(val ui: World) {
                                 o- "Loading..."
                             })
 
-                            o- Betsy(msg.text, content, onExpand = {
-                                if (virgin) {
-                                    virgin = false
-                                    async<Unit> {
-                                        val children = await(getLogMessages(msg.id))
-                                        content.setContent(renderLogMessages(children))
-                                        content.update()
-                                    }
-                                }
-                            })
+                            o- Betsy(msg.text,
+                                     content,
+                                     headerClassName = CN_HOVER_HIGHLIGHT,
+                                     onExpand = {
+                                         if (virgin) {
+                                             virgin = false
+                                             async<Unit> {
+                                                 val children = await(getLogMessages(msg.id))
+                                                 content.setContent(renderLogMessages(children))
+                                                 content.update()
+                                             }
+                                         }
+                                     },
+                                     renderInHeader = {renderStamp(it, msg)})
                         }
 
                         is SQL -> {
@@ -139,28 +144,37 @@ class DebugPage(val ui: World) {
                                     nbsp+nbsp+nbsp + (it - msg.beginMillis) + "ms"
                                 } ?: ""
 
-                                o- Betsy("SQL: $short $elapsed", renderMsgText())
+                                o- Betsy("SQL: $short $elapsed",
+                                         renderMsgText(),
+                                         className = CN_HOVER_HIGHLIGHT,
+                                         renderInHeader = {renderStamp(it, msg)})
                             }
                             else
                                 o- renderMsgText()
                         }
-                    }
-                    o- kdiv(className = CN_OPAQUE, position="absolute", top=0, right=0, paddingLeft="0.5em"){o->
-                        o- showRawStackLink(msg.stack, msg.stamp)
                     }
                 }
             }
         }
     }
 
-    fun renderSeparator(o: ElementBuilder, title: String, borderStyle: String, offset: String) {
-        o - kdiv(borderBottom = borderStyle, position = "absolute", top = offset, width = "100%")
-        o - kdiv(position = "relative", left = "1em"){o->
-            o - kspan(className = CN_OPAQUE, paddingLeft = "0.5em", paddingRight = "0.5em"){o->
-                o - title
+    fun renderSeparator(msg: RedisLogMessage, borderStyle: String, offset: String) =
+        kdiv(className = CN_HOVER_HIGHLIGHT){o->
+            o - kdiv(borderBottom = borderStyle, position = "absolute", top = offset, width = "100%")
+            o - kdiv(position = "relative", left = "1em"){o->
+                o - kspan(className = CN_OPAQUE, paddingLeft = "0.5em", paddingRight = "0.5em"){o->
+                    o - msg.text
+                }
             }
+            renderStamp(o, msg)
+        }
+
+    fun renderStamp(o: ElementBuilder, msg: RedisLogMessage) {
+        o - kdiv(className = CN_OPAQUE, position = "absolute", top = 0, right = 0, paddingLeft = "0.5em") {o ->
+            o - renderRawStackLink(msg.stack, msg.stamp)
         }
     }
+
 }
 
 
