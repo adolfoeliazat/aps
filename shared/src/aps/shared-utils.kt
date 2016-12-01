@@ -51,9 +51,11 @@ inline operator fun <T, FRet> T.minus(f: (T) -> FRet): T { f(this); return this 
 
 inline fun <T, reified CastTo> T.calet(f: (T) -> Unit): Unit { f(this) }
 
-inline fun <T> T?.letoes(f: (T) -> String): String =
+inline fun <T> T?.letOrEmpty(f: (T) -> String): String =
     if (this == null) ""
     else f(this)
+
+inline fun <T> T?.letoes(f: (T) -> String): String = this.letOrEmpty(f)
 
 fun <T> T.oneOf(vararg xs: T) = xs.contains(this)
 

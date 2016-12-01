@@ -88,11 +88,13 @@ fun <T> dejsonizeValue(jsThing: dynamic): T? {
 
             jsThing.`$$$primitiveish` != null -> {
                 val typeName: String = jsThing.`$$$primitiveish`
-                val stringValue: String = jsThing.value
-                val code = when (typeName) {
-                    "long" -> "new Kotlin.Long(stringValue)"
-                    else -> wtf("Primitiveish typeName: $typeName")
-                }
+                val stringValue: String? = jsThing.value
+                val code =
+                    if (stringValue == null) "null"
+                    else when (typeName) {
+                        "long" -> "new Kotlin.Long(stringValue)"
+                        else -> wtf("Primitiveish typeName: $typeName")
+                    }
                 noise.clog("code", code)
                 eval(code)
             }

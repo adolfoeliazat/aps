@@ -85,10 +85,10 @@ object DB {
 
             val sysdb = systemDatabases[port] ?: wtf("No system DB on port $port")
             sysdb.joo {
-                it("Recreate database $name")
+                it("Recreate database $name" + template.letOrEmpty {" from ${it.name}"})
                     .execute("""
                         drop database if exists "$name";
-                        create database "$name" ${template.letoes {"template = \"${it.name}\""}};
+                        create database "$name" ${template.letOrEmpty {"template = \"${it.name}\""}};
                     """)
             }
 
@@ -280,37 +280,8 @@ class DSLContextProxy(val activityParams: ActivityParams, val q: DSLContext) {
         return InsertSetStepProxy(activityParams, res)
     }
 
-    fun execute(descr: String, sql: String): Int {
-        return tracing(descr) {q.execute(sql)}
-    }
-
     fun execute(sql: String): Int {
-        return execute("Describe me (execute)", sql)
-    }
-
-    private fun <T> tracing(descr: String, block: () -> T): T {
-        val rlm = RedisLogMessage.SQL() - {o ->
-            o.shortDescription = descr
-            o.stage = PENDING
-            o.text = "Not known yet"
-        }
-        redisLog.send(rlm)
-
-        requestShit.actualSQLFromJOOQ = null
-
-        try {
-            val res = block()
-            rlm.stage = SUCCESS
-            return res
-        } catch (e: Throwable) {
-            rlm.stage = FAILURE
-            rlm.exceptionStack = e.stackString()
-            throw e
-        } finally {
-            requestShit.actualSQLFromJOOQ?.let {rlm.text = it}
-            rlm.endMillis = currentTimeMillis()
-            redisLog.amend(rlm)
-        }
+        return executeTracing(activityParams) {q.execute(sql)}
     }
 }
 
@@ -505,30 +476,7 @@ class InsertSetMoreStepProxy<R : Record>(val activityParams: ActivityParams, val
 
     @Throws(DataAccessException::class)
     override fun execute(): Int {
-        val block = {wrappee.execute()}
-
-        val rlm = RedisLogMessage.SQL() - {o ->
-            o.shortDescription = activityParams.shortDescription
-            o.stage = PENDING
-            o.text = "Not known yet"
-        }
-        redisLog.send(rlm)
-
-        requestShit.actualSQLFromJOOQ = null
-
-        try {
-            val res = block()
-            rlm.stage = SUCCESS
-            return res
-        } catch (e: Throwable) {
-            rlm.stage = FAILURE
-            rlm.exceptionStack = e.stackString()
-            throw e
-        } finally {
-            requestShit.actualSQLFromJOOQ?.let {rlm.text = it}
-            rlm.endMillis = currentTimeMillis()
-            redisLog.amend(rlm)
-        }
+        return executeTracing(activityParams) {wrappee.execute()}
     }
 
     override fun executeAsync(): CompletionStage<Int> {
@@ -603,7 +551,30 @@ class InsertSetMoreStepProxy<R : Record>(val activityParams: ActivityParams, val
     }
 }
 
+private fun <T> executeTracing(activityParams: ActivityParams, block: () -> T): T {
+    val rlm = RedisLogMessage.SQL() - {o ->
+        o.shortDescription = activityParams.shortDescription
+        o.stage = PENDING
+        o.text = "Not known yet"
+    }
+    redisLog.send(rlm)
 
+    requestShit.actualSQLFromJOOQ = null
+
+    try {
+        val res = block()
+        rlm.stage = SUCCESS
+        return res
+    } catch (e: Throwable) {
+        rlm.stage = FAILURE
+        rlm.exceptionStack = e.stackString()
+        throw e
+    } finally {
+        requestShit.actualSQLFromJOOQ?.let {rlm.text = it}
+        rlm.endMillis = currentTimeMillis()
+        redisLog.amend(rlm)
+    }
+}
 
 
 

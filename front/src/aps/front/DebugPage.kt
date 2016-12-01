@@ -78,7 +78,6 @@ class DebugPage(val ui: World) {
         }
 
         KotlinShit.ui.setPage(page)
-        // initFakeFeed()
     }
 
     fun getLogMessages(parentID: String): Promise<List<RedisLogMessage>> = async {
@@ -134,19 +133,17 @@ class DebugPage(val ui: World) {
                                              }
                                          }
                                      },
+                                     renderInTitle = {renderInTitle(it, msg)},
                                      renderInHeader = {renderStamp(it, msg)})
                         }
 
                         is SQL -> {
                             val short = msg.shortDescription
                             if (short != null) {
-                                val elapsed = msg.endMillis?.let {
-                                    nbsp+nbsp+nbsp + (it - msg.beginMillis) + "ms"
-                                } ?: ""
-
-                                o- Betsy("SQL: $short $elapsed",
+                                o- Betsy("SQL: $short",
                                          renderMsgText(),
                                          className = CN_HOVER_HIGHLIGHT,
+                                         renderInTitle = {renderInTitle(it, msg)},
                                          renderInHeader = {renderStamp(it, msg)})
                             }
                             else
@@ -160,18 +157,33 @@ class DebugPage(val ui: World) {
 
     fun renderSeparator(msg: RedisLogMessage, borderStyle: String, offset: String) =
         kdiv(className = CN_HOVER_HIGHLIGHT){o->
-            o - kdiv(borderBottom = borderStyle, position = "absolute", top = offset, width = "100%")
-            o - kdiv(position = "relative", left = "1em"){o->
-                o - kspan(className = CN_OPAQUE, paddingLeft = "0.5em", paddingRight = "0.5em"){o->
-                    o - msg.text
+            o- kdiv(borderBottom = borderStyle, position = "absolute", top = offset, width = "100%")
+            o- kdiv(position = "relative", left = "1em"){o->
+                o- kspan(className = CN_OPAQUE, paddingLeft = "0.5em", paddingRight = "0.5em"){o->
+                    o- msg.text
+                    renderInTitle(o, msg)
                 }
             }
             renderStamp(o, msg)
         }
 
+    fun renderInTitle(o: ElementBuilder, msg: RedisLogMessage) {
+        msg.endMillis?.let {
+            o- "${nbsp+nbsp+nbsp}${it - msg.beginMillis}ms"
+        }
+    }
+
     fun renderStamp(o: ElementBuilder, msg: RedisLogMessage) {
-        o - kdiv(className = CN_OPAQUE, position = "absolute", top = 0, right = 0, paddingLeft = "0.5em") {o ->
-            o - renderRawStackLink(msg.stack, msg.stamp)
+        o- kdiv(className = CN_OPAQUE, position = "absolute", top = 0, right = 0, paddingLeft = "0.5em"){o->
+            var title = msg.stamp
+            title += when {
+                !title.contains(".") -> ".000"
+                Regex("\\.\\d\$").find(title) != null -> "00"
+                Regex("\\.\\d\\d\$").find(title) != null -> "0"
+                else -> ""
+            }
+
+            o- renderRawStackLink(msg.stack, title)
         }
     }
 

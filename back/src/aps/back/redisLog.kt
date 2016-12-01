@@ -19,9 +19,9 @@ val jedisPool by lazy {
     }
 }
 
+// TODO:vgrechka Make this asynchronous
 object redisLog {
     fun send(msg: RedisLogMessage) {
-        // TODO:vgrechka Make this asynchronous
         if (shouldSkip()) return
 
         msg.id = UUID.randomUUID().toString()
@@ -43,7 +43,6 @@ object redisLog {
     }
 
     fun amend(msg: RedisLogMessage) {
-        // TODO:vgrechka Make this asynchronous
         if (shouldSkip()) return
 
         jedisPool.resource.use {jedis->
@@ -54,6 +53,8 @@ object redisLog {
     private fun shouldSkip() = isRequestThread && requestShit.skipLoggingToRedis
 
     fun <T> group(title: String, block: () -> T): T {
+        if (shouldSkip()) return block()
+
         val rlm = RedisLogMessage.Fuck()-{o->
             o.text = title
             o.stage = RedisLogMessage.Fuck.Stage.PENDING

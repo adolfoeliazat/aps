@@ -24,12 +24,7 @@ class GodServlet : HttpServlet() {
         requestShit.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
 
         try {
-            val rlm = RedisLogMessage.Separator()-{o->
-                o.type = SEPARATOR
-                o.text = "Request: $pathInfo"
-            }
-            redisLog.send(rlm)
-            try {
+            redisLog.group("Request: $pathInfo") {
                 when {
                     pathInfo.startsWith("/rpc/") -> {
                         val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
@@ -40,10 +35,6 @@ class GodServlet : HttpServlet() {
 
                     else -> bitch("Weird request path: $pathInfo")
                 }
-            } finally {
-                redisLog.amend(rlm-{o->
-                    o.endMillis = currentTimeMillis()
-                })
             }
         } catch(fuckup: Throwable) {
             log.error("Can't fucking service [$pathInfo]: ${fuckup.message}", fuckup)
