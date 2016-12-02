@@ -63,7 +63,7 @@ class DebugPage(val ui: World) {
                 Page(
                     header = pageHeader2("Fucking Log"),
 
-                    headerControls = BurgerPopupButton(Menu(listOf(
+                    headerControls = BurgerDropdownButton(Menu(listOf(
                             MenuItem("Clear") {
                                 clog("Clearing all fucking shit")
                             }
