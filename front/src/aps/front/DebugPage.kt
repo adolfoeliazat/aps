@@ -8,8 +8,6 @@ import aps.RedisLogMessage.Separator.Type.*
 import aps.front.Color.*
 import into.kommon.*
 
-// TODO:vgrechka Typed urlQuery
-
 class DebugPage(val ui: World) {
     val noise = DebugNoise("DebugPage", mute = false)
     val MAX_LEN = 200L
@@ -17,8 +15,14 @@ class DebugPage(val ui: World) {
     val CN_HOVER_HIGHLIGHT = "cn" + puid()
     val CN_OPAQUE = "cn" + puid()
 
+    class URLQuery {
+        var page: String? = null
+        var cut: String? = null
+    }
+
     fun load(): Promise<Unit> = async {
-        val page = when (ui.urlQuery["page"]) {
+        val urlQuery = typeSafeURLQuery(ui){URLQuery()}
+        val page = when (urlQuery.page) {
             "log" -> {
                 var rootMessages = await(getLogMessages(RedisLogMessage.ROOT_ID))
                 run {
@@ -32,7 +36,7 @@ class DebugPage(val ui: World) {
                         }
                     }
 
-                    val cut = ui.urlQuery["cut"]
+                    val cut = urlQuery.cut
                     exhaustive/when (cut) {
                         null -> {}
                         "lastBoot" -> {
@@ -56,9 +60,15 @@ class DebugPage(val ui: World) {
                     }
                 }
 
-
                 Page(
                     header = pageHeader2("Fucking Log"),
+
+                    headerControls = BurgerPopupButton(Menu(listOf(
+                            MenuItem("Clear") {
+                                clog("Clearing all fucking shit")
+                            }
+                        ))),
+
                     body = kdiv{o->
                         o- rawHTML("""
                             <style>

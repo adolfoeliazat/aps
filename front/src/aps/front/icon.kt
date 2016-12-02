@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -50,6 +52,11 @@ class faIcon(val icon: String, @Mix attrs: Attrs, @Mix val style: Style): Contro
 //    return jsFacing_elcl(me)
 //}
 
+enum class FAIcon(val string: String) {
+    ELLIPSIS_V("ellipsis-v"), BARS("bars");
+
+    override fun toString() = "fa-$string"
+}
 
 
 

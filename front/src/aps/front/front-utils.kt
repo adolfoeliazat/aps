@@ -110,7 +110,7 @@ fun asReactElement(x: Any?): ReactElement {
 
 fun Any?.asDynamicReactElement(): ReactElement = asReactElement(this)
 
-fun reactCreateElement(tag: String, attrs: Json, children: Collection<ReactElement>): ReactElement {
+fun reactCreateElement(tag: String, attrs: Json, children: Collection<ReactElement?>): ReactElement {
     return React.createElement(tag, attrs, *children.toTypedArray())
 }
 
