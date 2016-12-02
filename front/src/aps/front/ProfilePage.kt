@@ -42,11 +42,11 @@ class ProfilePage(val ui: World) {
                     },
                     ui,
                     primaryButtonTitle = primaryButtonTitle,
-                    onSuccessa = {res -> "__async"
+                    onSuccessa = {res -> async {
                         ui.setUser(res.newUser)
                         // TODO:vgrechka Simplify code await/return like below    b75d3e99-4883-4153-8777-34e568d942e1
-                        __await(ui.replaceNavigate("profile.html")) /ignora
-                    })).toReactElement())
+                        await(ui.replaceNavigate("profile.html"))
+                    }})).toReactElement())
         }
         else if (userState == UserState.PROFILE_APPROVAL_PENDING) {
             pageBody = Shitus.diva(json(),

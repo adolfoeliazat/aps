@@ -78,7 +78,7 @@ class ImposeNextRequestTimestampRequest : RequestMatumba() {
     val stamp = StringHiddenField(this, "stamp")
 
     companion object {
-        fun send(stamp: String): Promise<GenericResponse> = callDangerousMatumba(ImposeNextRequestTimestampRequest().apply {
+        fun send(stamp: String): Promise<Unit> = callDangerousMatumba(ImposeNextRequestTimestampRequest().apply {
             this.stamp.value = stamp
         })
     }
