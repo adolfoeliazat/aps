@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -30,7 +32,7 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
                 ))
         },
 
-        "onRootClick" to {e: KeyboardEvent -> "__async"
+        "onRootClick" to fun(e: KeyboardEvent): Promise<Unit> = async {
             preventAndStop(e)
 
             var dleft = 0; var dwidth = 0
@@ -42,7 +44,7 @@ fun jsFacing_TopNavItem(def: dynamic): dynamic {
 
             effects.blinkOn(json("target" to Shitus.byid(aid).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
 
-            __await<dynamic>(ui.pushNavigate(href))
+            await<dynamic>(ui.pushNavigate(href))
 
             global.setTimeout({
                 effects.blinkOff()

@@ -15,6 +15,7 @@ JavaScript
 
 F.dumpLocalStorage()
 localStorage.setItem('reloadTest', 'true')
+F.dumpShames()
 
 
 Redis

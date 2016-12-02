@@ -79,11 +79,17 @@ fun <T> dejsonizeValue(jsThing: dynamic): T? {
             }
 
             jsThing.`$$$class` != null -> {
-                val inst = eval("new _.${(jsThing.`$$$class` as String).replace("$", ".")}()")
-                for (k in jsKeys(jsThing))
-                    if (k != "\$\$\$class")
-                        jsSet(inst, k, dejsonizeValue(jsThing[k]))
-                inst
+                val clazz: String = jsThing.`$$$class`
+                when (clazz) {
+                    "kotlin.Unit" -> Unit.asDynamic()
+                    else -> {
+                        val inst = eval("new _.${clazz.replace("$", ".")}()")
+                        for (k in jsKeys(jsThing))
+                            if (k != "\$\$\$class")
+                                jsSet(inst, k, dejsonizeValue(jsThing[k]))
+                        inst
+                    }
+                }
             }
 
             jsThing.`$$$primitiveish` != null -> {

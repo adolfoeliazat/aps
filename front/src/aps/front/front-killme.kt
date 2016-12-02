@@ -318,7 +318,7 @@ fun legacy_implementControlShit(arg: dynamic) {
     }
 
     if (implementTestClick) {
-        me.testClick = {_arg: dynamic -> "__async"
+        me.testClick = fun(_arg: dynamic): Promise<Unit> = async {
             val arg: dynamic = if (_arg) _arg else json()
             val testActionHandOpts = arg.testActionHandOpts
 
@@ -326,15 +326,15 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             if (art.testSpeed == "slow") {
                 val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
-                __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
+                await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
                 val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
-                shit?.let {__await(it(stubEvent))}
-//                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
+                shit?.let {await(it(stubEvent))}
+//                await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
             } else {
                 val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
-                shit?.let {__await(it(stubEvent))}
-//                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
+                shit?.let {await(it(stubEvent))}
+//                await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
             }
         }
     }

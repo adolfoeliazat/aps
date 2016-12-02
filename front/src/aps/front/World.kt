@@ -78,6 +78,7 @@ class World {
 
         hrss.browserOld.impl = this
         KotlinShit.clientImpl = this
+        initEffects()
         __await<dynamic>(bootKillme())
 
         return __asyncResult(Unit)

@@ -68,8 +68,7 @@ sealed class TestInstruction() : DefinitionStackHolder {
 
     class AssertFuck(val tag: String, val expected: Json) : TestInstruction()
 
-    abstract class Action(override val shame: String, val timestamp: String) : TestInstruction(), ShamedTestInstruction {
-    }
+    abstract class Action(override val shame: String, val timestamp: String) : TestInstruction(), ShamedTestInstruction
 
     class SetValue(shame: String, val value: String, timestamp: String = NILS) : Action(shame, timestamp)
     class SetCheckbox(shame: String, val value: Boolean, timestamp: String = NILS) : Action(shame, timestamp)

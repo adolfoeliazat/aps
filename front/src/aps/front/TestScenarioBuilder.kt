@@ -141,6 +141,10 @@ class TestScenarioBuilder {
                    transformLine = {it})
     }
 
+    fun click(shame: String) {
+        instructions.add(TestInstruction.Click(shame))
+    }
+
 }
 
 

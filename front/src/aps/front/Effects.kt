@@ -6,6 +6,7 @@
 
 package aps.front
 
+import aps.*
 import into.kommon.*
 
 var effects: dynamic = null
@@ -44,16 +45,19 @@ fun initEffects() {
                 }
                 // dlog({left, top, width, height})
 
+                val blinkerStyle = json(
+                    "position" to if (fixed) "fixed" else "absolute",
+                    "zIndex" to 10000,
+                    "backgroundColor" to Color.BLUE_GRAY_600.toString(),
+                    "left" to left,
+                    "top" to top,
+                    "width" to width,
+                    "height" to height)
+                // clog("blinkerStyle", blinkerStyle)
+
                 blinker = Shitus.diva(json(
                     "className" to "progressTicker",
-                    "style" to json(
-                        "position" to if (fixed) "fixed" else "absolute",
-                        "zIndex" to 10000,
-                        "backgroundColor" to Color.BLUE_GRAY_600.toString(),
-                        "left" to left,
-                        "top" to top,
-                        "width" to width,
-                        "height" to height)))
+                    "style" to blinkerStyle))
                 update()
             },
 
