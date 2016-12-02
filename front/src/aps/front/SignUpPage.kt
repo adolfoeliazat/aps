@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -17,10 +19,10 @@ class SignUpPage(val ui: World) {
                     SignUpRequest(),
                     ui,
                     primaryButtonTitle = t("Proceed", "Вперед"),
-                    onSuccessa = {"__async"
+                    onSuccessa = {async{
                         ui.signedUpOK = true
-                        __await(ui.pushNavigate("sign-in.html")) /ignora
-                    }
+                        await(ui.pushNavigate("sign-in.html"))
+                    }}
                 )).toReactElement(),
 
                                                            Shitus.diva(json(),

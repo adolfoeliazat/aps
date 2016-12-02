@@ -51,9 +51,9 @@ fun igniteShit(): Promise<Unit> {"__async"
     hrss.lang = global.LANG
     hrss._t = Shitus.makeT(hrss.lang)
 
-    if (MODE == "debug") {
-        Shitus.initDebugFunctionsShit()
-    }
+//    if (MODE == "debug") {
+//        Shitus.initDebugFunctionsShit()
+//    }
 
 //    if (global.location.pathname.endsWith("/test.html")) {
     val search = window.location.search

@@ -1193,7 +1193,7 @@ fun openTestPassedPane() {
 }
 
 fun openShitPassedPane(title: String, details: ElementBuilder) {
-    DebugPanes.put("openTestPassedPane", Shitus.byid("underFooter"), kdiv(noStateContributions = true) {o ->
+    DebugPanes.put("openTestPassedPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(noStateContributions = true) {o ->
         o - Style(backgroundColor = GREEN_700, color = WHITE,
                   marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
 
@@ -1210,7 +1210,7 @@ fun openShitPassedPane(title: String, details: ElementBuilder) {
         }
     })
 
-    art.scrollRevealing("underFooter")
+    art.scrollRevealing(ELID_UNDER_FOOTER)
 }
 
 

@@ -750,6 +750,7 @@ fun <T> typeSafeURLQuery(ui: World, make: () -> T): T {
     return inst
 }
 
+val ELID_UNDER_FOOTER = "underFooter"
 
 
 

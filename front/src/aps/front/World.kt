@@ -79,6 +79,9 @@ class World {
         hrss.browserOld.impl = this
         KotlinShit.clientImpl = this
         initEffects()
+        if (MODE == "debug") {
+            Shitus.initDebugFunctionsShit()
+        }
         __await<dynamic>(bootKillme())
 
         return __asyncResult(Unit)

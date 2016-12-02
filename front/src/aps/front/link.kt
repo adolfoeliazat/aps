@@ -112,17 +112,17 @@ fun urlLink(url: String,
         attrs.copy(
             controlTypeName = attrs.controlTypeName ?: "urlLink",
             id = id,
-            onClicka = {"__async"
+            onClicka = fun(_): Promise<Unit> = async {
                 effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
                 Shitus.byid(id).css("text-decoration", "none")
 
                 if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
-                    __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
+                    await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
                 }
 
-                __await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {"__async"
-                    __await<dynamic>(ui.pushNavigate(url))
-                })))
+                await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {async<Unit>{
+                    await<dynamic>(ui.pushNavigate(url))
+                }})))
 
                 effects.blinkOff()
                 Shitus.byid(id).css("text-decoration", "")

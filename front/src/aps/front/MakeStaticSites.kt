@@ -1097,7 +1097,7 @@ object MakeStaticSites {
             }}
         </div>
     </div>
-    <div id="underFooter">
+    <div id="$ELID_UNDER_FOOTER">
     </div>
     </div>
 

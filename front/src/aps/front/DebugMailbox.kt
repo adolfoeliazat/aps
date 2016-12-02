@@ -4,23 +4,26 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
+import into.kommon.*
 
-var debugCheckEmail: dynamic = null
+var debugCheckEmail: () -> Promise<Unit> = {bitch("Debug mailbox is not initialized")}
 
 fun initDebugMailbox() {
-    DebugPanes.put("initDebugFunctions-mailbox", byid("underFooter"), oldShitAsToReactElementable(Shitus.updatableElement(json(
+    DebugPanes.put("initDebugFunctions-mailbox", byid(ELID_UNDER_FOOTER), oldShitAsToReactElementable(Shitus.updatableElement(json(
         "renderCtor" to renderCtor@{update: dynamic ->
         var content = null
 
-        debugCheckEmail = debugCheckEmail@{"__async"
+        debugCheckEmail = fun(): Promise<Unit> = async {
             val emails: List<Email>
             if (hrss.isHotReloading) {
                 emails = hrss.debugCheckEmail_cachedEmails
             } else {
-                val res = __await<GetSentEmailsRequest.Response>(GetSentEmailsRequest.send())
+                val res = await<GetSentEmailsRequest.Response>(GetSentEmailsRequest.send())
 //                console.warn("qqqqqqqqqq", res)
                 emails = res.emails
 //                if (emails.size > 0) {
@@ -31,7 +34,7 @@ fun initDebugMailbox() {
             if (emails.isEmpty()) {
                 content = null
                 update()
-                return@debugCheckEmail
+                return@async
             }
 
             content = Shitus.diva.apply(null, js("[]").concat(

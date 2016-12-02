@@ -15,7 +15,7 @@ import java.util.*
 @RemoteProcedureFactory
 fun signUp() = publicProcedure(
     SignUpRequest(),
-    runShit = void {ctx, req ->
+    runShit = fun(ctx, req): GenericResponse {
         try {
             val firstName = req.mutableSignUpFields.firstName.value
             val lastName = req.mutableSignUpFields.lastName.value
@@ -64,6 +64,7 @@ fun signUp() = publicProcedure(
                     """
                 ))
             ))
+            return GenericResponse()
         } catch (e: Throwable) {
             throw e
 //            if (e.code === '23505') {

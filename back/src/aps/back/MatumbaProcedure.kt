@@ -144,12 +144,12 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                         if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
 
                         val db = DB.apsTestOnTestServer
-                        redisLog.group("Some shit 2") {
+//                        redisLog.group("Some shit 2") {
                             db.joo {q->
                                 ctx.q = q
                                 runShitWithMaybeDB()
                             }
-                        }
+//                        }
                     } else {
                         runShitWithMaybeDB()
                     }
