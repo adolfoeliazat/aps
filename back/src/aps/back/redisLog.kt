@@ -139,6 +139,10 @@ object redisLog {
                         val keys: List<String> = cast(rmap["keys"])
                         return@run jedis.mget(*keys.toTypedArray())
                     }
+                    "del" -> {
+                        val keys: List<String> = cast(rmap["keys"])
+                        return@run jedis.del(*keys.toTypedArray())
+                    }
                     else -> wtf("command: $command")
                 }
             }

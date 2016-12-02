@@ -15,6 +15,11 @@ object fedis {
         "keys" to keys.toTypedArray()
     ))
 
+    fun del(keys: List<String>): Promise<List<String>> = sendShit(json(
+        "command" to "del",
+        "keys" to keys.toTypedArray()
+    ))
+
     fun logGroup(title: String): Promise<String> = sendShit(json(
         "command" to "logGroup",
         "title" to title

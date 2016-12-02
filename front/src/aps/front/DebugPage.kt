@@ -7,6 +7,7 @@ import aps.RedisLogMessage.*
 import aps.RedisLogMessage.Separator.Type.*
 import aps.front.Color.*
 import into.kommon.*
+import kotlin.browser.window
 
 class DebugPage(val ui: World) {
     val noise = DebugNoise("DebugPage", mute = false)
@@ -64,9 +65,11 @@ class DebugPage(val ui: World) {
                     header = pageHeader2("Fucking Log"),
 
                     headerControls = BurgerDropdownButton(Menu(listOf(
-                            MenuItem("Clear") {
+                            MenuItem("Clear") {async{
                                 clog("Clearing all fucking shit")
-                            }
+                                await(fedis.del(listOf("${RedisLogMessage.ROOT_ID}:children")))
+                                window.location.reload()
+                            }}
                         ))),
 
                     body = kdiv{o->

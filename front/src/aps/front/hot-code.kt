@@ -33,11 +33,19 @@ class InitAutoReload {
 
     fun tick() {"__async"
         if (initialCtime != __await(GetSoftwareVersionRequest.send()).ctime) {
-            var href = window.location.href
-                .replace(Regex("#.*$"), "") // Otherwise it doesn't actually reload page
-            if (realTypedStorageLocal.reloadTest) TestShit.lastTestHref?.let {href = it}
+            if (realTypedStorageLocal.reloadTest)
+                TestShit.lastTestHref?.let {
+                    window.location.href = it
+                    return
+                }
 
-            window.location.href = href
+            window.location.reload()
+
+//            var href = window.location.href
+//                .replace(Regex("#.*$"), "") // Otherwise it doesn't actually reload page
+//            if (realTypedStorageLocal.reloadTest) TestShit.lastTestHref?.let {href = it}
+//
+//            window.location.href = href
         } else {
             schedule()
         }
@@ -360,4 +368,5 @@ class InitAutoReload {
 //        }
 //    )))
 //}
+
 
