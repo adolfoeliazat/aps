@@ -12,13 +12,17 @@ import aps.*
 import into.kommon.*
 
 var debugCheckEmail: () -> Promise<Unit> = {bitch("Debug mailbox is not initialized")}
+var debugHideMailbox: () -> Unit = {bitch("Debug mailbox is not initialized")}
+
 
 fun initDebugMailbox() {
-    DebugPanes.put("initDebugFunctions-mailbox", byid(ELID_UNDER_FOOTER), oldShitAsToReactElementable(Shitus.updatableElement(json(
+    val PANE_NAME = "initDebugFunctions-mailbox"
+
+    DebugPanes.put(PANE_NAME, byid(ELID_UNDER_FOOTER), oldShitAsToReactElementable(Shitus.updatableElement(json(
         "renderCtor" to renderCtor@{update: dynamic ->
         var content = null
 
-        debugCheckEmail = fun(): Promise<Unit> = async {
+        debugCheckEmail = {async{
             val emails: List<Email>
             if (hrss.isHotReloading) {
                 emails = hrss.debugCheckEmail_cachedEmails
@@ -53,7 +57,9 @@ fun initDebugMailbox() {
                 }).toJSArray()))
 
             update()
-        }
+        }}
+
+        debugHideMailbox = {DebugPanes.remove(PANE_NAME)}
 
         return@renderCtor { Shitus.diva(json(), content) }
     }))))

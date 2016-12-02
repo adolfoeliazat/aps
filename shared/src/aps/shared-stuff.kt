@@ -238,7 +238,7 @@ class ImposeNextGeneratedPasswordRequest() : RequestMatumba() {
     val password = StringHiddenField(this, "password")
 
     companion object {
-        fun send(password: String): Promise<GenericResponse> = callDangerousMatumba(ImposeNextGeneratedPasswordRequest().apply {
+        fun send(password: String): Promise<Unit> = callDangerousMatumba(ImposeNextGeneratedPasswordRequest().apply {
             this.password.value = password
         })
     }

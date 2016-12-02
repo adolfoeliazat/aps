@@ -119,18 +119,18 @@ class World {
                         spec.req.password.value = ""
                     },
 
-                    onSuccessa = {res -> "__async"
+                    onSuccessa = {res-> async {
                         user = res.user
 //                        ui.startLiveStatusPolling()
                         token = res.token
                         typedStorageLocal.token = token
 //                        hrss.storageLocal.setItem("token", token!!)
 
-                        __await(pushNavigate(when (res.user.state) {
-                                                    UserState.COOL -> "dashboard.html"
-                                                    else -> "profile.html"
-                                                })) /ignora
-                    }
+                        await(pushNavigate(when (res.user.state) {
+                                               UserState.COOL -> "dashboard.html"
+                                               else -> "profile.html"
+                                           }))
+                    }}
                 ))
 
                 o-nif(!signedUpOK) {kdiv{o->
