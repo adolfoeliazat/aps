@@ -35,7 +35,7 @@ object redisLog {
                 }
             }
         }
-        msg.beginMillis = currentTimeMillis()
+        msg.beginMillis = tryOrDefault({msg.beginMillis}, {currentTimeMillis()})
         msg.stamp = LocalDateTime.now().format(PG_LOCAL_DATE_TIME)
         msg.stack = CaptureStackException().stackString()
 
@@ -110,6 +110,8 @@ object redisLog {
     }
 )
 
+private val idToLogGroupMessage = Collections.synchronizedMap(mutableMapOf<String, RedisLogMessage>())
+
 @RemoteProcedureFactory fun privilegedRedisCommand() = testProcedure(
     PrivilegedRedisCommandRequest(),
     needsDB = false,
@@ -118,14 +120,26 @@ object redisLog {
         val command: String = cast(rmap["command"])
 
         val res: Any = run {when (command) {
-            "logGroup" -> {
+            "beginLogGroup" -> {
                 val title: String = cast(rmap["title"])
+                val beginMillis: Long = cast(rmap["beginMillis"])
                 val rlm = RedisLogMessage.Fuck()-{o->
                     o.stage = RedisLogMessage.Fuck.Stage.PENDING
                     o.text = title
+                    o.beginMillis = beginMillis
                 }
                 redisLog.send(rlm)
+                idToLogGroupMessage[rlm.id] = rlm
                 return@run rlm.id
+            }
+            "endLogGroup" -> {
+                val id: String = cast(rmap["id"])
+                val endMillis: Long = cast(rmap["endMillis"])
+                val rlm = idToLogGroupMessage[id] ?: bitch("Unknown log group: $id")
+                idToLogGroupMessage.remove(id)
+                rlm.endMillis = endMillis
+                redisLog.amend(rlm)
+                return@run Unit
             }
             else -> jedisPool.resource.use {jedis ->
                 when (command) {

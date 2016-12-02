@@ -171,7 +171,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         else -> bitch("Cannot figure out URL for test [$testName]")
     }
 
-    Globus.rootRedisLogMessageID = await(fedis.logGroup("Test: $testName"))
+    Globus.rootRedisLogMessageID = await(fedis.beginLogGroup("Test: $testName"))
 
     try {
         hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
@@ -255,6 +255,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         return@async res
     }
     finally {
+        await(fedis.endLogGroup(Globus.rootRedisLogMessageID!!))
         Globus.rootRedisLogMessageID = null
     }
 }

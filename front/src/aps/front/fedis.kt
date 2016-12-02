@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 object fedis {
     fun lrange(key: String, start: Long, end: Long): Promise<List<String>> = sendShit(json(
@@ -20,9 +21,16 @@ object fedis {
         "keys" to keys.toTypedArray()
     ))
 
-    fun logGroup(title: String): Promise<String> = sendShit(json(
-        "command" to "logGroup",
-        "title" to title
+    fun beginLogGroup(title: String): Promise<String> = sendShit(json(
+        "command" to "beginLogGroup",
+        "title" to title,
+        "beginMillis" to currentTimeInt()
+    ))
+
+    fun endLogGroup(id: String): Promise<Unit> = sendShit(json(
+        "command" to "endLogGroup",
+        "id" to id,
+        "endMillis" to currentTimeInt()
     ))
 
     private fun <T> sendShit(request: Json): Promise<T> = async {
