@@ -58,8 +58,8 @@ val isRequestThread: Boolean get() = _requestShit.get() != null
 val requestShit: RequestShit get() = _requestShit.get()
 
 val patternsToExcludeRedisLoggingCompletely = listOf(
-    "getSoftwareVersion", "getLiveStatus", "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword",
-    "mapStack"
+    "getSoftwareVersion", "mapStack", "getLiveStatus",
+    "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword"
 )
 
 

@@ -211,7 +211,9 @@ class CaptureStackException : Exception("Hi, fucker")
 
 annotation class Dummy
 
-
+fun <T> tryOrDefault(attempt: () -> T, default: () -> T): T =
+    try {attempt()}
+    catch (e: Throwable) {default()}
 
 
 
