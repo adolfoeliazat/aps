@@ -21,6 +21,7 @@ class SignUpPage(val ui: World) {
                     primaryButtonTitle = t("Proceed", "Вперед"),
                     onSuccessa = {async{
                         ui.signedUpOK = true
+                        ui.initialEmailFieldValueAfterSignUp = req.immutableSignUpFields.email.value
                         await(ui.pushNavigate("sign-in.html"))
                     }}
                 )).toReactElement(),

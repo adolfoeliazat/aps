@@ -10,7 +10,7 @@ import aps.*
 import aps.front.*
 import kotlin.browser.*
 
-class TestWriter_Boot_InvalidToken : WriterBootTestScenario() {
+class TestWriter_Boot_InvalidToken : WriterBootTestScenario(), WriterTestUtils {
     override val path = "/"
 
     override fun fillStorageLocal() {
@@ -24,7 +24,7 @@ class TestWriter_Boot_InvalidToken : WriterBootTestScenario() {
 
     override fun buildStepsAfterWorldBoot() {
         o.state("Checked and rejected")
-        assert_staticHomePage_rightNavbarSignIn()
+        assert_staticHomePage_rightNavbarSignIn(o)
     }
 
 }

@@ -22,6 +22,7 @@ fun revealRawStack(stack: String) {
         return@ctor {
             Shitus.diva(json("noStateContributions" to true, "style" to json(
                 "position" to "fixed",
+                "fontSize" to "85%",
                 "left" to 0, "bottom" to 0, "width" to "100%", "padding" to 10, "maxHeight" to 200, "overflow" to "auto", "zIndex" to Shitus.topZIndex++,
                 "borderTop" to "3px solid ${BLACK}", "background" to WHITE.toString())),
                         renderRawStackTrace(stack, marginRight=40).toReactElement(),
@@ -56,6 +57,7 @@ fun revealStack(exception: Throwable, muteConsole: Boolean = false, skipAllForei
         return@ctor {
             Shitus.diva(json("noStateContributions" to true, "style" to json(
                         "position" to "fixed",
+                        "fontSize" to "85%",
                         "left" to 0, "bottom" to 0, "width" to "100%", "padding" to 10, "maxHeight" to 200, "overflow" to "auto", "zIndex" to Shitus.topZIndex++,
                         "borderTop" to "3px solid ${BLACK}", "background" to WHITE.toString())),
                 renderStackTrace(exception, skipAllForeignLines=skipAllForeignLines, marginRight=40).toReactElement(),

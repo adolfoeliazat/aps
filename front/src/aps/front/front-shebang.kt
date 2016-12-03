@@ -18,6 +18,7 @@ object TestGlobal {
     var minimalGertrude = false
     lateinit var loadPageForURL_href: String
     val topNavbarLinks = mutableMapOf<String, dynamic>() // TODO:vgrechka Rename to nameToTopNavbarLink
+    var testShitBeingAssertedID: String? = null
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

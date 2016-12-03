@@ -31,11 +31,6 @@ abstract class WriterBootTestScenario : BootTestScenario() {
         return __asyncResult(Unit)
     }
 
-    fun assert_staticHomePage_rightNavbarSignIn() {
-        o.assertVisibleText("Приветствуем")
-        o.assertNavbarHTML("""<nav data-reactroot="" class="navbar navbar-default navbar-fixed-top" id="75"><div class="container" id="73"><div class="navbar-header" id="67"><a id="65" class="navbar-brand" href="/">Писец</a></div><div id="71" style="text-align: left;"><ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;"><li id="55" class=""><a id="53" href="why.html"><span id="78" class="">Почему мы?</span></a></li><li id="58" class=""><a id="56" href="prices.html"><span id="83" class="">Цены</span></a></li><li id="61" class=""><a id="59" href="faq.html"><span id="88" class="">ЧаВо</span></a></li></ul><ul id="rightNavbar" class="nav navbar-nav navbar-right"><li id="64" class=""><a id="62" href="sign-in.html"><span id="93" class="">Вход</span></a></li></ul></div></div></nav>""")
-    }
-
     fun assert_staticHomePage_rightNavbarGaylord() {
         o.assertVisibleText("Приветствуем")
         assert_navbar_Gaylord_activeDashboard()

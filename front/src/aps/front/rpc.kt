@@ -34,7 +34,7 @@ fun fetchURL(url: String, method: String, data: String?): Promise<String> {"__as
     }
 }
 
-fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {"__async"
+fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {
     val stackBeforeXHR: String = CaptureStackException().stack
 
     return Promise { resolve, reject ->

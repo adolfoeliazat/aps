@@ -213,6 +213,49 @@ val backendInstanceID = "" + UUID.randomUUID()
     }
 )
 
+@RemoteProcedureFactory fun fuckingRemoteProcedure() = testProcedure(
+    FuckingRemoteProcedureRequest(),
+    needsDB = false,
+    runShit = fun (ctx, req): JSONResponse {
+        val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
+        val proc: String = cast(rmap["proc"])
+
+        val res: Any = run {when (proc) {
+            "loadTestShit" -> frp_loadTestShit(rmap)
+            "updateTestShit" -> frp_updateTestShit(rmap)
+            else -> wtf("proc: $proc")
+
+        }}
+
+        return JSONResponse(shittyObjectMapper.writeValueAsString(res))
+    }
+)
+
+fun frp_loadTestShit(rmap: Map<*, *>): String {
+    val id: String = cast(rmap["id"])
+    val file = File("$APS_HOME/front/test-shit/$id")
+    return if (file.exists()) file.readText()
+    else "[No shit yet]"
+}
+
+fun frp_updateTestShit(rmap: Map<*, *>) {
+    val id: String = cast(rmap["id"])
+    val newValue: String = cast(rmap["newValue"])
+    File("$APS_HOME/front/test-shit/$id").writeText(newValue)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

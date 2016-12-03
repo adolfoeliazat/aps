@@ -65,6 +65,7 @@ class World {
     lateinit var updatePage: () -> Unit
     lateinit var updatePageHeader: () -> Unit
     lateinit var updateRoot: () -> Unit
+    lateinit var initialEmailFieldValueAfterSignUp: String
 
     fun boot(): Promise<Unit> {"__async"
         hrss.browserOld.ui = this
@@ -111,7 +112,7 @@ class World {
                     "Cool. You have an account now. We sent you email with password.",
                     "Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.")))}
 
-                o-FormMatumba<SignInWithPasswordRequest, SignInResponse>(FormSpec(
+                val form = FormMatumba<SignInWithPasswordRequest, SignInResponse>(FormSpec(
                     SignInWithPasswordRequest(),
                     this,
                     primaryButtonTitle = t("Sign In", "Войти"),
@@ -119,19 +120,27 @@ class World {
                         spec.req.password.value = ""
                     },
 
-                    onSuccessa = {res-> async {
-                        user = res.user
+                    onSuccessa = {res ->
+                        async {
+                            user = res.user
 //                        ui.startLiveStatusPolling()
-                        token = res.token
-                        typedStorageLocal.token = token
+                            token = res.token
+                            typedStorageLocal.token = token
 //                        hrss.storageLocal.setItem("token", token!!)
 
-                        await(pushNavigate(when (res.user.state) {
-                                               UserState.COOL -> "dashboard.html"
-                                               else -> "profile.html"
-                                           }))
-                    }}
+                            await(pushNavigate(when (res.user.state) {
+                                                   UserState.COOL -> "dashboard.html"
+                                                   else -> "profile.html"
+                                               }))
+                        }
+                    }
                 ))
+
+                if (signedUpOK) {
+                    form.req.email.value = initialEmailFieldValueAfterSignUp
+                }
+
+                o- form
 
                 o-nif(!signedUpOK) {kdiv{o->
                     o-hr()

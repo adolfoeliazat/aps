@@ -395,7 +395,10 @@ interface CommonRequestFields {
     var rootRedisLogMessageID: String?
 }
 
-
+class FuckingRemoteProcedureRequest : RequestMatumba() {
+    val json = StringHiddenField(this, "json")
+}
+fun send(req: FuckingRemoteProcedureRequest): Promise<JSONResponse> = callDangerousMatumba(req)
 
 
 

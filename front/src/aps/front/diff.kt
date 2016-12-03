@@ -3,6 +3,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 import aps.front.Color.*
+import kotlin.browser.window
 
 @native interface JsDiffItem {
     val added: Boolean
@@ -10,11 +11,13 @@ import aps.front.Color.*
     val value: String
 }
 
-fun renderDiff(expected: String, actual: String,
-               actualPaste: String = actual,
-               expectedTitle: String = "Expected",
-               actualTitle: String = "Actual")
-    : ToReactElementable {
+fun renderDiff(
+    expected: String, actual: String,
+    actualTestShit: String,
+    actualPaste: String = actual,
+    expectedTitle: String = "Expected",
+    actualTitle: String = "Actual"
+): ToReactElementable {
     val noisy = false
 
     val tabs = Tabs2(initialActiveID = "diff", tabs = listOf(
@@ -120,8 +123,36 @@ fun renderDiff(expected: String, actual: String,
 //        )
 //    ))
 
-    return tabs
+    return kdiv(position = "relative"){o->
+        o- tabs
+
+        TestGlobal.testShitBeingAssertedID?.let {id->
+            o- kdiv(position = "absolute", right = 0, top = 0){o->
+                val holder = Placeholder()
+                holder.setContent(button2(span("Update Test Shit"), level = "primary") {async<Unit>{
+                    holder.setContent(span("Working like a dog..."))
+                    try {
+                        await(fuckingRemoteCall.updateTestShit(id, actualTestShit))
+                        window.location.href = TestShit.lastTestHref!!
+                    } catch(e: Throwable) {
+                        holder.setContent(kspan(color = RED_900){it-"No fucking way"})
+                        throw e
+                    }
+                }})
+                o- holder
+            }
+        }
+    }
 }
 
-
+//o- object {
+//    val holder = Placeholder()
+//
+//    init {
+//        button2(span("update test shit"), level = "primary") {
+//            clog("aaaaaaaaaa")
+//        }
+//    }
+//}.holder
+//
 

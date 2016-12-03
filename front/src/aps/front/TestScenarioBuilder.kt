@@ -4,11 +4,12 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
-import into.kommon.die
-import into.kommon.global
+import into.kommon.*
 import jquery.jq
 
 fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> {"__async"
@@ -75,17 +76,17 @@ class TestScenarioBuilder {
     private fun visibleText(under: CSSSelector) = jq("$under *:not(:has(*)):visible").text()
 
     fun assertOnAnimationFrame(stepTitle: String, test: () -> Boolean) {
-        checkOnAnimationFrame(stepTitle) {
+        checkOnAnimationFrame(stepTitle) {async{
             if (!test()) throw ArtAssertionError(stepTitle)
-        }
+        }}
     }
 
-    fun checkOnAnimationFrame(stepTitle: String, block: () -> Unit) {
+    fun checkOnAnimationFrame(stepTitle: String, block: () -> Promise<Unit>) {
         val step = TestInstruction.Step.AssertionStep(stepTitle)
         instructions.add(step)
         acta {async{
             await(tillAnimationFrame())
-            block()
+            await(block())
             step.passed = true
         }}
     }
@@ -116,17 +117,28 @@ class TestScenarioBuilder {
     }
 
     fun assertHTML(under: CSSSelector, expected: String, transformLine: ((String) -> String)? = null) {
-        val stepTitle = "HTML diff under $under"
-        checkOnAnimationFrame(stepTitle) {
+        assertHTML(under=under, transformLine=transformLine, expected = {async{expected}})
+    }
+
+    fun assertHTML(under: CSSSelector,
+                   expected: () -> Promise<String>,
+                   transformLine: ((String) -> String)? = null,
+                   descr: String? = null
+    ) {
+        var stepTitle = "HTML under `$under`"
+        descr?.let {stepTitle += ": $it"}
+        checkOnAnimationFrame(stepTitle) {async{
             val rawActual = takeHTMLForAssertion(under)
             val tidyActual = tidyHTML(rawActual, transformLine=transformLine)
-            val tidyExpected = tidyHTML(expected, transformLine=transformLine)
+            val tidyExpected = tidyHTML(await(expected()), transformLine=transformLine)
             if (tidyActual != tidyExpected) {
                 throw ArtAssertionError(stepTitle, visualPayload = renderDiff(
                     expected = tidyExpected,
-                    actual = tidyActual, actualPaste = threeQuotes + rawActual.trim() + threeQuotes))
+                    actual = tidyActual,
+                    actualTestShit = rawActual.trim(),
+                    actualPaste = threeQuotes + rawActual.trim() + threeQuotes))
             }
-        }
+        }}
     }
 
     fun assertNavbarHTML(expected: String) {
@@ -139,6 +151,16 @@ class TestScenarioBuilder {
         assertHTML(under = SELECTOR_ROOT, expected = expected, transformLine = {it})
     }
 
+    fun assertRootHTMLExt(descr: String?, id: String) {
+        act {TestGlobal.testShitBeingAssertedID = id}
+        assertHTML(under = SELECTOR_ROOT, expected = {fuckingRemoteCall.loadTestShit(id)}, transformLine = {it}, descr=descr)
+        act {TestGlobal.testShitBeingAssertedID = null}
+    }
+
+    fun assertRootHTMLExt(id: String) {
+        assertRootHTMLExt(null, id)
+    }
+
     fun assertUnderFooterHTML(expected: String) {
         assertHTML(under = "#$ELID_UNDER_FOOTER", expected = expected, transformLine = {it})
     }
@@ -147,8 +169,50 @@ class TestScenarioBuilder {
         instructions.add(TestInstruction.Click(shame))
     }
 
+    fun clickDescribingStep(shame: String) {
+        val descr = "Clicking on `$shame`"
+        val step = TestInstruction.Step.ActionStep(descr)
+        instructions.add(step)
+        click(shame)
+        act {step.passed = true}
+    }
+
     fun setValue(shame: String, value: String) {
-        instructions.add(TestInstruction.SetValue(shame, value))
+        acta {async{
+            val control = getShamedControl(shame)
+            await<dynamic>(control.testSetValue(json("value" to value)))
+        }}
+    }
+
+    fun getShamedControl(shame: String): dynamic {
+        val control = TestGlobal.shameToControl[shame]
+        if (control == null) Shitus.raiseWithMeta(json("message" to "Control shamed $shame is not found"))
+        return control
+    }
+
+    fun setValueDescribingStep(shame: String, value: String) {
+        val descr = "Typing into `$shame`: ${italicVerbatim(value)}"
+        val step = TestInstruction.Step.ActionStep(descr)
+        instructions.add(step)
+        setValue(shame, value)
+        act {step.passed = true}
+    }
+
+    fun setValueDescribingStep(shame: String, value: Boolean) {
+        val action = if (value) "Checking" else "Unchecking"
+        val descr = "$action `$shame`"
+        val step = TestInstruction.Step.ActionStep(descr)
+        instructions.add(step)
+        setValue(shame, value)
+        act {step.passed = true}
+    }
+
+    fun italicVerbatim(s: String): String {
+        return "_" + escapeMarkdown(s) + "_"
+    }
+
+    fun escapeMarkdown(s: String): String {
+        return s.replace("_", "\\_")
     }
 
     fun setValue(shame: String, value: Boolean) {
