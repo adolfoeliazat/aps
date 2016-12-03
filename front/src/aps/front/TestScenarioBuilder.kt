@@ -226,6 +226,20 @@ class TestScenarioBuilder {
             """</div></div></div></div></div></div>""")
     }
 
+    fun beginSection(descr: String) {
+        instructions.add(TestInstruction.BeginSection(descr))
+    }
+
+    fun endSection() {
+        instructions.add(TestInstruction.EndSection())
+    }
+
+    fun section(descr: String, block: () -> Unit) {
+        beginSection(descr)
+        block()
+        endSection()
+    }
+
 }
 
 

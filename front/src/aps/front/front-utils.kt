@@ -186,6 +186,21 @@ fun jsArrayLikeToJSArray(xs: Any?) {
     return js("Array").prototype.slice.call(xs)
 }
 
+inline fun currentJSFunctionName(): String {
+    val stack: String = js("Error().stack")
+    dwarnStriking(stack)
+    val lines = stack.lines()
+    check(lines.size >= 2)
+    var line = lines[1]
+    check(line.startsWith("    at "))
+    line = line.substring("    at ".length)
+    val spaceIndex = line.indexOf(" ")
+    if (spaceIndex != -1) line = line.substring(0, spaceIndex)
+    val dotIndex = line.lastIndexOf(".")
+    if (dotIndex != -1) line = line.substring(dotIndex + 1)
+    if (Regex("_......\\\$").containsMatchIn(line)) line = line.substring(0, line.lastIndexOf("_"))
+    return line
+}
 
 
 
