@@ -226,11 +226,12 @@ class TestScenarioBuilder {
         instructions.add(TestInstruction.SetCheckbox(shame, value))
     }
 
-    fun assertMail(descr: String, expected: String) {
-        assertUnderFooterHTML(
-            "Email: $descr",
-            """<div id="debugPanes-initDebugFunctions-mailbox"><div data-reactroot="" id="544"><div id="542" style="margin-top: 10px;"><div id="514" style="font-weight: bold; background: rgb(178, 223, 219);">Mailbox</div><div id="540" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 2px dotted rgb(158, 158, 158);"><div id="536" style="background: rgb(255, 255, 255); margin-bottom: 5px;"><div spacing="4" class="" id="524" style="display: flex;"><div id="520" style="margin-left: 0px;"><span id="516" class="" style="font-weight: bold;">To:</span></div><div id="522" style="margin-left: 4px;"><span id="518" class="">Франц Кафка &lt;kafka@test.shit.ua&gt;</span></div></div><div spacing="4" class="" id="534" style="display: flex;"><div id="530" style="margin-left: 0px;"><span id="526" class="" style="font-weight: bold;">Subject:</span></div><div id="532" style="margin-left: 4px;"><span id="528" class="">Пароль для Writer UA</span></div></div></div><div id="538"><div>""" +
-            dedent(expected) +
+    fun assertMailInFooter(descr: String, expectedSubject: String, expectedBody: String) {
+        assertUnderFooterHTML("Email: $descr",
+            """<div id="debugPanes-initDebugFunctions-mailbox"><div data-reactroot="" id="544"><div id="542" style="margin-top: 10px;"><div id="514" style="font-weight: bold; background: rgb(178, 223, 219);">Mailbox</div><div id="540" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 2px dotted rgb(158, 158, 158);"><div id="536" style="background: rgb(255, 255, 255); margin-bottom: 5px;"><div spacing="4" class="" id="524" style="display: flex;"><div id="520" style="margin-left: 0px;"><span id="516" class="" style="font-weight: bold;">To:</span></div><div id="522" style="margin-left: 4px;"><span id="518" class="">Франц Кафка &lt;kafka@test.shit.ua&gt;</span></div></div><div spacing="4" class="" id="534" style="display: flex;"><div id="530" style="margin-left: 0px;"><span id="526" class="" style="font-weight: bold;">Subject:</span></div><div id="532" style="margin-left: 4px;"><span id="528" class="">""" +
+            expectedSubject +
+            """</span></div></div></div><div id="538"><div>""" +
+            dedent(expectedBody) +
             """</div></div></div></div></div></div>""")
     }
 

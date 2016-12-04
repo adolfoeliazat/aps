@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 import aps.front.*
+import aps.front.TestUtils.checkAssertAndClearEmail
 import aps.front.TestUtils.bootWorld
 import aps.front.TestUtils.initNewBrowser
 import aps.front.TestUtils.pushWriterURL
@@ -17,6 +18,9 @@ import aps.front.WriterTestUtils.goto_signUpForm
 import kotlin.browser.*
 
 class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
+    lateinit var adminWorld: World
+    lateinit var initialWorldURL: String
+
     override val path = "/"
 
     override fun fillStorageLocal(tsl: TypedStorageLocal) {
@@ -40,14 +44,15 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
             o.acta {ImposeNextGeneratedPasswordRequest.send("secret-big-as-fuck")}
             o.clickDescribingStep("button-primary")
 
-            o.acta {debugCheckEmail()}
-            o.assertMail("Received password", """
-                Привет, Франц!<br><br>
-                Вот твой пароль: secret-big-as-fuck
-                <br><br>
-                <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>
-            """)
-            o.act {debugHideMailbox()}
+            checkAssertAndClearEmail(
+                o, "Received password",
+                "Пароль для Writer UA",
+                """
+                    Привет, Франц!<br><br>
+                    Вот твой пароль: secret-big-as-fuck
+                    <br><br>
+                    <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>
+                """)
             o.assertRootHTMLExt("Success message and sign in form", "6f01bc45-10c3-4c5f-9801-10d2f3fe6ebc")
 
             o.setValueDescribingStep("TextField-password.Input", "secret-big-as-fuck")
@@ -64,10 +69,14 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
 
         o.section("Admin checks shit") {
             o.actionStep("Admin opens browser") {
+                o.act {
+                    initialWorldURL = window.location.href
+                    initialWorld.unmountShit()
+                }
                 putTinyTestContextLabel(o, "Admin: Dasja")
                 initNewBrowser(o, fillStorageLocal = {fillStorageLocal(it)})
                 pushWriterURL(o, "/dashboard.html")
-                bootWorld(o)
+                bootWorld(o) {adminWorld = it}
             }
             o.assertRootHTMLExt("Sign-in page", "158c6166-2466-409c-8f24-746e30e35a6f")
 
@@ -75,6 +84,35 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
             o.setValueDescribingStep("TextField-password.Input", "secret")
             o.clickDescribingStep("button-primary")
             o.assertRootHTMLExt("Dashboard with one profile approval task", "f5f0b82d-ddc1-481f-9cbc-d53b8f9a64bf")
+
+            o.clickDescribingStep("section-workPending.profilesToApprove.link")
+            o.assertRootHTMLExt("One profile is waiting for approval", "c2ddb086-ef22-4d40-b1f8-781de197f411")
+            o.clickDescribingStep("chunk-i000.item-i000.heading.icon-edit")
+            o.assertRootHTMLExt("User editing form", "1d0cf419-658e-4753-bbc8-ad54f80d8d69")
+            o.setValueDescribingStep("chunk-i000.item-i000.SelectField-state.Select", "COOL")
+            o.setValueDescribingStep("chunk-i000.item-i000.TextField-adminNotes.Input", "Ладно, примем засранца")
+            o.clickDescribingStep("chunk-i000.item-i000.button-primary")
+            o.assertRootHTMLExt("User is updated", "cfe6d637-4ca6-42ee-9fad-1fc249a328ee")
+
+            checkAssertAndClearEmail(
+                o, "Notification is sent to writer",
+                "Тебя пустили на Writer UA",
+                """
+                    Привет, Франц!<br><br>
+                    Тебя пустили на сайт, заходи и пользуйся. Только не шали.
+                    <br><br>
+                    <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>
+                """)
+        }
+
+        o.section("Writer is able to use site") {
+            o.acta("Writer refreshes browser") {async{
+                adminWorld.unmountShit()
+                putTinyTestContextLabel(o, "Writer: Kafka")
+                window.history.pushState(null, "", initialWorldURL)
+                initialWorld.mountShit()
+                await(initialWorld.loadPageForURL())
+            }}
         }
     }
 

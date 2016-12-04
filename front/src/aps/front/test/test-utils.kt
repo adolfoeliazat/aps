@@ -1,5 +1,6 @@
 package aps.front
 
+import aps.*
 import org.w3c.dom.Storage
 import kotlin.browser.window
 
@@ -26,9 +27,11 @@ object TestUtils {
         }
     }
 
-    fun bootWorld(o: TestScenarioBuilder) {
+    fun bootWorld(o: TestScenarioBuilder, done: (World) -> Unit) {
         o.acta {async{
-            await(World().boot())
+            val world = World()
+            await(world.boot())
+            done(world)
         }}
     }
 
@@ -55,6 +58,13 @@ object TestUtils {
             ">$text</div>
         """)
         }
+    }
+
+    fun checkAssertAndClearEmail(o: TestScenarioBuilder, descr: String, expectedSubject: String, expectedBody: String) {
+        o.acta {debugCheckEmail()}
+        o.assertMailInFooter(descr, expectedSubject, expectedBody)
+        o.acta {ClearSentEmailsRequest.send()}
+        o.act {debugHideMailbox()}
     }
 
 }

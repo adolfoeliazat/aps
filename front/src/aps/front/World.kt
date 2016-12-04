@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -66,6 +68,8 @@ class World {
     lateinit var updatePageHeader: () -> Unit
     lateinit var updateRoot: () -> Unit
     lateinit var initialEmailFieldValueAfterSignUp: String
+    lateinit var rootElement: ReactElement
+    lateinit var topNavbarElement: ReactElement
 
     fun boot(): Promise<Unit> {"__async"
         hrss.browserOld.ui = this
@@ -198,7 +202,7 @@ class World {
 
             js("$")(global.document.head).append("<style id='css'>${css()}</style>")
 
-            hrss.browserOld.topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
+            topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
                 updateNavbar = update
                 return@elementCtor render@{
                     var pathname: dynamic = null
@@ -213,11 +217,11 @@ class World {
                     if (highlightedItem === "sign-up") { // XXX
                         highlightedItem = "sign-in"
                     }
-                    return@render renderTopNavbar(json("highlightedItem" to highlightedItem))
+                    return@render renderTopNavbar(this, json("highlightedItem" to highlightedItem))
                 }
             })
 
-            DOMReact.render(hrss.browserOld.topNavbarElement, Shitus.byid0("topNavbarContainer"))
+            DOMReact.render(topNavbarElement, Shitus.byid0("topNavbarContainer"))
 
             __await<dynamic>(loadPageForURL())
         } finally { Shitus.endTrain() }
@@ -340,11 +344,11 @@ class World {
         rootContent = newRootContent
 
         if (updateRoot == null) {
-            hrss.browserOld.rootElement = Shitus.updatableElement(json(), {update: dynamic ->
+            rootElement = Shitus.updatableElement(json(), {update: dynamic ->
                 updateRoot = update
                 {Shitus.diva(json(), rootContent)}
             })
-            DOMReact.render(hrss.browserOld.rootElement, Shitus.byid0("root"))
+            DOMReact.render(rootElement, Shitus.byid0("root"))
         }
 
         updateRoot()
@@ -384,8 +388,18 @@ class World {
         }
     }
 
-    fun renderTopNavbar(arg: dynamic): dynamic {
-        return KotlinShit.renderTopNavbar_calledByFuckingUI(KotlinShit.ui, arg)
+    fun renderTopNavbar(world: World, arg: dynamic): dynamic {
+        return KotlinShit.renderTopNavbar_calledByFuckingUI(world, arg)
+    }
+
+    fun unmountShit() {
+        DOMReact.unmountComponentAtNode(Shitus.byid0("topNavbarContainer"))
+        DOMReact.unmountComponentAtNode(Shitus.byid0("root"))
+    }
+
+    fun mountShit() {
+        DOMReact.render(topNavbarElement, Shitus.byid0("topNavbarContainer"))
+        DOMReact.render(rootElement, Shitus.byid0("root"))
     }
 }
 

@@ -7,29 +7,19 @@
 package aps.back
 
 import aps.*
+import aps.UserState.*
 import aps.back.generated.jooq.Tables.*
+import aps.back.generated.jooq.tables.pojos.*
+import into.kommon.*
 
 @RemoteProcedureFactory fun updateUser() = adminProcedure(
     UpdateUserRequest(),
 
     runShit = {ctx, req ->
-/*        #await tx.query(s{y: q`
-        update users set
-        updated_at = ${requestTimestamp},
-        state = ${fields.state},
-        profile_rejection_reason = ${fields.state === 'PROFILE_REJECTED' ? fields.profileRejectionReason : null},
-        ban_reason = ${fields.state === 'BANNED' ? fields.banReason : null},
-        email = ${fields.email},
-        kind = ${msg.clientKind},
-        first_name = ${fields.firstName},
-        last_name = ${fields.lastName},
-        admin_notes = ${fields.adminNotes},
-        phone = ${fields.phone},
-        about_me = ${fields.aboutMe}
-        where id = ${msg.id}`})
-
-        #await loadUserForToken(s{})
-        return traceEndHandler(s{ret: hunkyDory({newUser: pickFromUser(s{user})})})*/
+        val oldUser = ctx.q("Select user")
+            .select().from(USERS)
+            .where(USERS.ID.eq(req.id.value.toLong()))
+            .fetchOne().into(Users::class.java).toRTO(ctx.q)
 
         ctx.q("Update user")
             .update(USERS)
@@ -46,6 +36,36 @@ import aps.back.generated.jooq.Tables.*
             .set(USERS.ABOUT_ME, req.profileFields.aboutMe.value)
             .where(USERS.ID.eq(req.id.value.toLong()))
             .execute()
+
+        val newUser = ctx.q("Select user")
+            .select().from(USERS)
+            .where(USERS.ID.eq(req.id.value.toLong()))
+            .fetchOne().into(Users::class.java).toRTO(ctx.q)
+
+        if (oldUser.state != COOL && newUser.state == COOL) {
+            val signInURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/sign-in.html"
+            EmailMatumba.send(Email(
+                to = "${newUser.firstName} ${newUser.lastName} <${newUser.email}>",
+                subject = when (ctx.lang) {
+                    Language.UA -> when (ctx.clientKind) {
+                        ClientKind.CUSTOMER -> "Тебя пустили на APS"
+                        ClientKind.WRITER -> "Тебя пустили на Writer UA"
+                    }
+                    Language.EN -> imf("EN profile coolification email")
+                },
+                html = dedent(t(
+                    en = """
+                        TODO
+                    """,
+                    ua = """
+                        Привет, ${newUser.firstName}!<br><br>
+                        Тебя пустили на сайт, заходи и пользуйся. Только не шали.
+                        <br><br>
+                        <a href="$signInURL">$signInURL</a>
+                    """
+                ))
+            ))
+        }
 
         UpdateUserRequest.Response(loadUser(ctx))
     },

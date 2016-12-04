@@ -53,7 +53,9 @@ class Select<E>(
         wantNull(volatileDisabled) {"volatileDisabled conflicts with persistent disabling"}
     }
 
-    fun stringToValue(s: String) = values.find {it.name == s} ?: bitch("Select value: $s")
+    fun stringToValue(s: String) = values.find {it.name == s}
+        ?: throw FatException("Select value: $s",
+                              markdownPayload = markdownTitledList("Available values:", values.map {it.name}))
 
     override fun render(): ToReactElementable {
         return reactCreateElement("select", json(

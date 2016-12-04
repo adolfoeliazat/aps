@@ -84,11 +84,10 @@ class AdminUsersPage(val ui: World) {
                                     }
                                 },
 
-                                onSuccessa = {res -> "__async"
-                                    __await<dynamic>(refreshRecord())
+                                onSuccessa = {res -> async{
+                                    await<dynamic>(refreshRecord())
                                     scrollToHeading()
-                                    __asyncResult(Unit)
-                                },
+                                }},
 
                                 onCancel = {
                                     setPrevContent()

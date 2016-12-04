@@ -172,9 +172,15 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
                         stickException(json("exception" to Error("There is already a thing shamed ${it}")))
                     } else {
                         TestGlobal.shameToControl[it] = json(
-                            "testSetValue" to {x: dynamic -> "__async"; __await(testSetValue(x))},
-                            "testGetValue" to {testGetValue()},
-                            "testClick" to {"__async"; __await(testClick())}
+                            "testSetValue" to {x: dynamic -> async<Unit> {
+                                await(testSetValue(x))
+                            }},
+                            "testGetValue" to {
+                                testGetValue()
+                            },
+                            "testClick" to {async<Unit>{
+                                await(testClick())
+                            }}
                         )
                     }
                 }

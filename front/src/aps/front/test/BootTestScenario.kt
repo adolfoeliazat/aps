@@ -17,6 +17,8 @@ abstract class BootTestScenario : StepBasedTestScenario() {
     abstract fun buildStepsAfterWorldBoot()
     abstract val path: String
 
+    lateinit var initialWorld: World
+
     override fun buildSteps() {
         initNewBrowser(o, fillStorageLocal = {fillStorageLocal(it)})
 
@@ -39,7 +41,7 @@ abstract class BootTestScenario : StepBasedTestScenario() {
         }
         buildStepsAfterDisplayInitialShit()
 
-        bootWorld(o)
+        bootWorld(o) {initialWorld = it}
         buildStepsAfterWorldBoot()
     }
 }
