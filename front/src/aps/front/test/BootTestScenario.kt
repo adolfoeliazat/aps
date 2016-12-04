@@ -18,9 +18,10 @@ abstract class BootTestScenario : StepBasedTestScenario() {
     abstract val path: String
 
     lateinit var initialWorld: World
+    lateinit var initialStorageLocal: TypedStorageLocal
 
     override fun buildSteps() {
-        initNewBrowser(o, fillStorageLocal = {fillStorageLocal(it)})
+        initNewBrowser(o, fillStorageLocal = {initialStorageLocal = it; fillStorageLocal(it)})
 
         o.acta {async{
             val url = "http://aps-ua-writer.local:3022$path"
@@ -41,7 +42,7 @@ abstract class BootTestScenario : StepBasedTestScenario() {
         }
         buildStepsAfterDisplayInitialShit()
 
-        bootWorld(o) {initialWorld = it}
+        bootWorld(o, "initial") {initialWorld = it}
         buildStepsAfterWorldBoot()
     }
 }

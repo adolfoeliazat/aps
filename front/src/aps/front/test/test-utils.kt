@@ -27,9 +27,9 @@ object TestUtils {
         }
     }
 
-    fun bootWorld(o: TestScenarioBuilder, done: (World) -> Unit) {
+    fun bootWorld(o: TestScenarioBuilder, name: String, done: (World) -> Unit) {
         o.acta {async{
-            val world = World()
+            val world = World(name)
             await(world.boot())
             done(world)
         }}
@@ -39,25 +39,23 @@ object TestUtils {
         o.act {window.history.pushState(null, "", "http://aps-ua-writer.local:3022$path")}
     }
 
-    fun putTinyTestContextLabel(o: TestScenarioBuilder, text: String) {
-        o.act {
-            byid("tinyTextContextLabel").remove()
-            jqbody.append("""
-            <div id="tinyTextContextLabel" style="
-                position: fixed;
-                left: 50%;
-                top: 0px;
-                z-index: 1000000;
-                font-size: 75%;
-                background-color: ${Color.BROWN_300};
-                color: white;
-                padding: 0px 10px;
-                transform: translate(-50%);
-                border-bottom-left-radius: 5px;
-                border-bottom-right-radius: 5px;
-            ">$text</div>
-        """)
-        }
+    fun putTinyTestContextLabel(text: String) {
+        byid("tinyTextContextLabel").remove()
+        jqbody.append("""
+                <div id="tinyTextContextLabel" style="
+                    position: fixed;
+                    left: 50%;
+                    top: 0px;
+                    z-index: 1000000;
+                    font-size: 75%;
+                    background-color: ${Color.BROWN_300};
+                    color: white;
+                    padding: 0px 10px;
+                    transform: translate(-50%);
+                    border-bottom-left-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                ">$text</div>
+            """)
     }
 
     fun checkAssertAndClearEmail(o: TestScenarioBuilder, descr: String, expectedSubject: String, expectedBody: String) {

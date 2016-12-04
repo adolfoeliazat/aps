@@ -39,17 +39,15 @@ enum class Color(val string: String) {
 }
 
 @native interface IKotlinShit {
-//    fun ignite(hotIgnition: Boolean)
-    fun loadDebugKotlinPlaygroundPage()
-    fun loadAdminUsersPage(): Promise<Unit>
-    fun loadDashboardPage(): Promise<Unit>
-    fun loadProfilePage(): Promise<Unit>
-    fun loadSignUpPage(): Promise<Unit>
+    fun loadAdminUsersPage(ui: World): Promise<Unit>
+    fun loadDashboardPage(ui: World): Promise<Unit>
+    fun loadProfilePage(ui: World): Promise<Unit>
+    fun loadSignUpPage(ui: World): Promise<Unit>
 }
 
 
 object KotlinShit : IKotlinShit {
-    lateinit var ui: World
+//    lateinit var ui: World
     lateinit var clientImpl: World
 
     val igniteTestShit = ::jsFacing_igniteTestShit
@@ -79,19 +77,19 @@ object KotlinShit : IKotlinShit {
 //        return __asyncResult(__await(SignUpPage(ui).load()))
 //    }
 
-    override fun loadAdminUsersPage(): Promise<Unit> {"__async"
+    override fun loadAdminUsersPage(ui: World): Promise<Unit> {"__async"
         return __asyncResult(__await(AdminUsersPage(ui).load()))
     }
 
-    override fun loadProfilePage(): Promise<Unit> {"__async"
+    override fun loadProfilePage(ui: World): Promise<Unit> {"__async"
         return __asyncResult(__await(ProfilePage(ui).load()))
     }
 
-    override fun loadSignUpPage(): Promise<Unit> {"__async"
+    override fun loadSignUpPage(ui: World): Promise<Unit> {"__async"
         return __asyncResult(__await(SignUpPage(ui).load()))
     }
 
-    override fun loadDashboardPage(): Promise<Unit> {"__async"
+    override fun loadDashboardPage(ui: World): Promise<Unit> {"__async"
         return __asyncResult(__await(DashboardPage(ui).load()))
     }
 
@@ -125,12 +123,6 @@ object KotlinShit : IKotlinShit {
 //    }
 
 
-    override fun loadDebugKotlinPlaygroundPage() {
-        KotlinShit.ui.setPage(Page(
-            header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to "debug-kotlin-playground"))),
-            body = oldShitAsToReactElementable(Shitus.diva(json("tame" to "qweqwe", "style" to json("color" to "blue")), "La-la-la5"))
-        ))
-    }
 }
 
 class ReactClassShit(

@@ -15,6 +15,7 @@ import aps.front.TestUtils.pushWriterURL
 import aps.front.TestUtils.putTinyTestContextLabel
 import aps.front.WriterTestUtils.assert_staticHomePage_rightNavbarSignIn
 import aps.front.WriterTestUtils.goto_signUpForm
+import into.kommon.*
 import kotlin.browser.*
 
 class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
@@ -27,7 +28,7 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
     }
 
     override fun buildStepsAfterDisplayInitialShit() {
-        putTinyTestContextLabel(o, "Writer: Kafka")
+        o.act {putTinyTestContextLabel("Writer: Kafka")}
         assert_staticHomePage_rightNavbarSignIn(o)
     }
 
@@ -72,11 +73,11 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
                 o.act {
                     initialWorldURL = window.location.href
                     initialWorld.unmountShit()
+                    putTinyTestContextLabel("Admin: Dasja")
                 }
-                putTinyTestContextLabel(o, "Admin: Dasja")
-                initNewBrowser(o, fillStorageLocal = {fillStorageLocal(it)})
+                initNewBrowser(o, fillStorageLocal = {})
                 pushWriterURL(o, "/dashboard.html")
-                bootWorld(o) {adminWorld = it}
+                bootWorld(o, "admin") {adminWorld = it}
             }
             o.assertRootHTMLExt("Sign-in page", "158c6166-2466-409c-8f24-746e30e35a6f")
 
@@ -101,18 +102,21 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
                     Привет, Франц!<br><br>
                     Тебя пустили на сайт, заходи и пользуйся. Только не шали.
                     <br><br>
-                    <a href="http://aps-ua-writer.local:3022/sign-in.html">http://aps-ua-writer.local:3022/sign-in.html</a>
+                    <a href="http://aps-ua-writer.local:3022/dashboard.html">http://aps-ua-writer.local:3022/dashboard.html</a>
                 """)
         }
 
         o.section("Writer is able to use site") {
-            o.acta("Writer refreshes browser") {async{
-                adminWorld.unmountShit()
-                putTinyTestContextLabel(o, "Writer: Kafka")
-                window.history.pushState(null, "", initialWorldURL)
-                initialWorld.mountShit()
-                await(initialWorld.loadPageForURL())
-            }}
+            o.actionStep("Writer opens link from email") {
+                o.act {
+                    adminWorld.unmountShit()
+                    putTinyTestContextLabel("Writer: Kafka #2")
+                    window.history.pushState(null, "", "http://aps-ua-writer.local:3022/profile.html")
+                }
+            }
+            initNewBrowser(o, fillStorageLocal = {it.token = initialStorageLocal.token})
+            bootWorld(o, "writer2"){}
+            o.assertRootHTMLExt("Everything is fucking cool", "840a206b-5676-4cac-9f84-d712e7e1033c")
         }
     }
 

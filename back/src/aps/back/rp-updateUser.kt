@@ -43,7 +43,7 @@ import into.kommon.*
             .fetchOne().into(Users::class.java).toRTO(ctx.q)
 
         if (oldUser.state != COOL && newUser.state == COOL) {
-            val signInURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/sign-in.html"
+            val dashboardURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/dashboard.html"
             EmailMatumba.send(Email(
                 to = "${newUser.firstName} ${newUser.lastName} <${newUser.email}>",
                 subject = when (ctx.lang) {
@@ -61,7 +61,7 @@ import into.kommon.*
                         Привет, ${newUser.firstName}!<br><br>
                         Тебя пустили на сайт, заходи и пользуйся. Только не шали.
                         <br><br>
-                        <a href="$signInURL">$signInURL</a>
+                        <a href="$dashboardURL">$dashboardURL</a>
                     """
                 ))
             ))

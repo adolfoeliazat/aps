@@ -93,7 +93,7 @@ class DashboardPage(val ui: World) {
         )
 
         val scrollTop = js("$")(kotlin.browser.document).scrollTop()
-        KotlinShit.ui.setPage(myPage)
+        ui.setPage(myPage)
         if (preserveScroll) {
             js("$")(kotlin.browser.document).scrollTop(scrollTop)
         }
@@ -101,13 +101,13 @@ class DashboardPage(val ui: World) {
         fun scheduleUpdate() {
             timeoutSet(5000, outta@{"__async" // @ctx forgetmenot-1-1
 //                if (KotlinShit.clientImpl.stale) return@outta Unit
-                if (myPage != KotlinShit.ui.currentPage) return@outta Unit
+                if (myPage != ui.currentPage) return@outta Unit
 
                 // Automatic refreshes should be prevented while something is being investigated via revealer,
                 // otherwise elements being looked at might be removed
                 if (hrss.controlBeingRevealed) { scheduleUpdate(); return@outta Unit }
 
-                if (Shitus.isOrWasInTestScenario() && hrss.browserOld.ui != KotlinShit.ui) { scheduleUpdate(); return@outta Unit }
+                if (Shitus.isOrWasInTestScenario() && hrss.browserOld.ui != ui) { scheduleUpdate(); return@outta Unit }
 
                 dlog("Updating dashboard page")
 

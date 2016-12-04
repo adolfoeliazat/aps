@@ -185,7 +185,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
                 dlog("Navigating", hrss.browserOld.name, url)
                 global.history.replaceState(null, "", url)
 //            __await<dynamic>(makeCleanPairAndBoot())
-                __await(World().boot())
+                __await(World("killme").boot())
                 return __asyncResult(Unit)
             }
         }

@@ -90,7 +90,7 @@ class DebugPage(val ui: World) {
             else -> wtf()
         }
 
-        KotlinShit.ui.setPage(page)
+        ui.setPage(page)
     }
 
     fun getLogMessages(parentID: String): Promise<List<RedisLogMessage>> = async {

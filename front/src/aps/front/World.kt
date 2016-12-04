@@ -52,7 +52,7 @@ Fancy-Blinking Links
         then redraw page body with that
 */
 
-class World {
+class World(val name: String) {
     lateinit var rootContent: ReactElement
     lateinit var currentPage: Page
     var token: String? = null
@@ -73,7 +73,7 @@ class World {
 
     fun boot(): Promise<Unit> {"__async"
         hrss.browserOld.ui = this
-        KotlinShit.ui = this
+//        KotlinShit.ui = this
 
         global.onpopstate = {e: dynamic -> "__async"
             breatheBanner.show()
@@ -337,7 +337,7 @@ class World {
     }
 
     fun loadSignUpPage(): Promise<Unit> {"__async"
-        return __await(KotlinShit.loadSignUpPage()) /ignora
+        return __await(KotlinShit.loadSignUpPage(this)) /ignora
     }
 
     fun setRootContent(newRootContent: dynamic) {
@@ -365,23 +365,19 @@ class World {
     fun privatePageLoader(name: String): () -> Promise<Unit> {
         return when (name) {
             "dashboard" -> ({"__async"
-                __await(KotlinShit.loadDashboardPage()) /ignora
+                __await(KotlinShit.loadDashboardPage(this)) /ignora
             })
 
             "admin-users" -> ({"__async"
-                __await(KotlinShit.loadAdminUsersPage()) /ignora
+                __await(KotlinShit.loadAdminUsersPage(this)) /ignora
             })
 
             "profile" -> ({"__async"
-                __await(KotlinShit.loadProfilePage()) /ignora
-            })
-
-            "debug-kotlin-playground" -> ({"__async"
-                KotlinShit.loadDebugKotlinPlaygroundPage() /ignora
+                __await(KotlinShit.loadProfilePage(this)) /ignora
             })
 
             "debug" -> ({"__async"
-                __reawait(DebugPage(KotlinShit.ui).load())
+                __reawait(DebugPage(this).load())
             })
 
             else -> wtf("privatePageLoader for [$name]")

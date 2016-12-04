@@ -61,7 +61,7 @@ fun igniteShit(): Promise<Unit> {"__async"
         __await(jsFacing_igniteTestShit())
     } else {
         global.DB = global.sessionStorage.getItem("DB") ?: "aps-dev" // TODO:vgrechka @security
-        __await(World().boot())
+        __await(World("default").boot())
     }
 
     return __asyncResult(Unit)

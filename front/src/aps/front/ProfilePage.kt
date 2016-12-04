@@ -4,15 +4,19 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 class ProfilePage(val ui: World) {
     fun load(): Promise<Unit> {"__async"
         val primaryButtonTitle = t("TOTE", "Отправить на проверку")
 
-        var pageBody: dynamic = undefined
+        var pageBody: ReactElement
+        var headerControls: ToReactElementable? = null
         val user: UserRTO = ui.getUser()!!
         val userState = user.state
 
@@ -61,13 +65,20 @@ class ProfilePage(val ui: World) {
                     "quote" to user.banReason))
                 )
         }
+        else if (userState == UserState.COOL) {
+            pageBody = kdiv{o->
+                o- renderProfile(ui, user)
+            }.toReactElement()
+            headerControls = kdiv{it-"Edit button here"}
+        }
         else {
-            Shitus.raise("Weird user state: ${userState}")
+            wtf("Weird user state: $userState")
         }
 
         ui.setPage(Page(
             header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Profile", "Профиль")))),
-            body = oldShitAsToReactElementable(pageBody)
+            body = oldShitAsToReactElementable(pageBody),
+            headerControls = headerControls
         ))
 
         return __asyncResult(Unit)
