@@ -177,6 +177,13 @@ class TestScenarioBuilder {
         act {step.passed = true}
     }
 
+    fun actionStep(descr: String, block: () -> Unit) {
+        val step = TestInstruction.Step.ActionStep(descr)
+        instructions.add(step)
+        block()
+        act {step.passed = true}
+    }
+
     fun setValue(shame: String, value: String) {
         acta {async{
             val control = getShamedControl(shame)

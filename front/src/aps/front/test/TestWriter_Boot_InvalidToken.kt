@@ -8,13 +8,14 @@ package aps.front
 
 import aps.*
 import aps.front.*
+import aps.front.WriterTestUtils.assert_staticHomePage_rightNavbarSignIn
 import kotlin.browser.*
 
-class TestWriter_Boot_InvalidToken : WriterBootTestScenario(), WriterTestUtils {
+class TestWriter_Boot_InvalidToken : WriterBootTestScenario() {
     override val path = "/"
 
-    override fun fillStorageLocal() {
-        typedStorageLocal.token = "garbage"
+    override fun fillStorageLocal(tsl: TypedStorageLocal) {
+        tsl.token = "garbage"
     }
 
     override fun buildStepsAfterDisplayInitialShit() {

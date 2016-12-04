@@ -6,14 +6,13 @@
 
 package aps.front
 
-import aps.*
-import aps.front.*
-import kotlin.browser.*
+import aps.front.WriterTestUtils.assert_staticHomePage_rightNavbarSignIn
+import aps.front.WriterTestUtils.goto_signUpForm
 
-class TestWriter_SignUp_SignUpFormErrors : WriterBootTestScenario(), WriterTestUtils {
+class TestWriter_SignUp_SignUpFormErrors : WriterBootTestScenario() {
     override val path = "/"
 
-    override fun fillStorageLocal() {
+    override fun fillStorageLocal(tsl: TypedStorageLocal) {
     }
 
     override fun buildStepsAfterDisplayInitialShit() {

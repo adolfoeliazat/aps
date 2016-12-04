@@ -3,7 +3,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-interface WriterTestUtils {
+object WriterTestUtils {
 
     fun assert_staticHomePage_rightNavbarSignIn(o: TestScenarioBuilder) {
         o.section(currentJSFunctionName()) {

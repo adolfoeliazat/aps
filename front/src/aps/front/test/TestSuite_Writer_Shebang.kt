@@ -10,4 +10,3 @@ class TestSuite_Writer_Shebang : TestSuite {
 }
 
 
-

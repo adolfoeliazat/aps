@@ -11,8 +11,8 @@ abstract class WriterBootTestScenario_FuckerToken : WriterBootTestScenario() {
         return __reawait(prepareFucker(req))
     }
 
-    override fun fillStorageLocal() {
-        typedStorageLocal.token = fuckerToken
+    override fun fillStorageLocal(tsl: TypedStorageLocal) {
+        tsl.token = fuckerToken
     }
 
     override fun buildStepsAfterDisplayInitialShit() {
