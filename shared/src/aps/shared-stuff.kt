@@ -228,7 +228,7 @@ class GetGeneratedShitRequest : RequestMatumba() {
 
 class ClearSentEmailsRequest : RequestMatumba() {
     companion object {
-        fun send(): Promise<GenericResponse> = callDangerousMatumba(ClearSentEmailsRequest())
+        fun send(): Promise<Unit> = callDangerousMatumba(ClearSentEmailsRequest())
     }
 
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
