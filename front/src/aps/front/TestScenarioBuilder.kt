@@ -147,6 +147,15 @@ class TestScenarioBuilder {
                    transformLine = {it.replace(Regex(" id=\"MakeStaticSites-\\d+\""), "")})
     }
 
+    fun assertNavbarHTMLExt(descr: String?, id: String) {
+        act {TestGlobal.testShitBeingAssertedID = id}
+        assertHTML(inside = SELECTOR_NAVBAR,
+                   expected = {fuckingRemoteCall.loadTestShit(id)},
+                   transformLine = {it.replace(Regex(" id=\"MakeStaticSites-\\d+\""), "")},
+                   descr=descr)
+        act {TestGlobal.testShitBeingAssertedID = null}
+    }
+
     fun assertRootHTML(expected: String) {
         assertHTML(under = SELECTOR_ROOT, expected = expected, transformLine = {it})
     }

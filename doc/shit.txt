@@ -1,0 +1,20 @@
+Profile
+close
+User name
+E-Mail address
+Name:
+Gender:
+Birth date:
+1 January, 1980
+Country:
+Postal code:
+City:
+Address:
+Phone:
+Website:
+Timezone:
+Change password
+New password:
+Confirm password:
+
+

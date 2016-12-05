@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import aps.front.testutils.*
 import into.kommon.*
 import jquery.jq
 import org.w3c.dom.events.KeyboardEvent
@@ -47,17 +48,6 @@ abstract class TestScenario {
         }
         return __reawait(run0(showTestPassedPane))
     }
-
-    inline fun <T> measureAndReportToDocumentElement(name: String, block: () -> T): T {
-        docInnerHTML += "$name...."
-        val res = measure(name, block)
-        docInnerHTML += " DONE<br>"
-        return res
-    }
-
-    var docInnerHTML: String
-        get() = document.documentElement!!.innerHTML
-        set(value) {document.documentElement!!.innerHTML = value}
 
 
     companion object {
@@ -154,6 +144,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
     val testName = ctorName(scenario)
     TestShit.lastTestHref = when {
         testName.contains("Writer") -> "http://aps-ua-writer.local:3022/faq.html?test=$testName"
+        testName.contains("Customer") -> "http://aps-ua-customer.local:3012/faq.html?test=$testName"
         else -> bitch("Cannot figure out URL for test [$testName]")
     }
 
