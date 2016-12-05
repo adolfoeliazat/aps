@@ -8,13 +8,13 @@ package aps.front
 
 import aps.*
 import aps.front.*
-import aps.front.TestUtils.checkAssertAndClearEmail
 import aps.front.TestUtils.bootWorld
 import aps.front.TestUtils.initNewBrowser
 import aps.front.TestUtils.pushWriterURL
 import aps.front.TestUtils.putTinyTestContextLabel
 import aps.front.WriterTestUtils.assert_staticHomePage_rightNavbarSignIn
 import aps.front.WriterTestUtils.goto_signUpForm
+import aps.front.testutils.*
 import into.kommon.*
 import kotlin.browser.*
 
@@ -45,8 +45,9 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
             o.acta {ImposeNextGeneratedPasswordRequest.send("secret-big-as-fuck")}
             o.clickDescribingStep("button-primary")
 
-            checkAssertAndClearEmail(
-                o, "Received password",
+            o.checkAssertAndClearEmail(
+                "Received password",
+                "qwe",
                 "Пароль для Writer UA",
                 """
                     Привет, Франц!<br><br>
@@ -95,8 +96,9 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
             o.clickDescribingStep("chunk-i000.item-i000.button-primary")
             o.assertRootHTMLExt("User is updated", "cfe6d637-4ca6-42ee-9fad-1fc249a328ee")
 
-            checkAssertAndClearEmail(
-                o, "Notification is sent to writer",
+            o.checkAssertAndClearEmail(
+                "Notification is sent to writer",
+                "qwe",
                 "Тебя пустили на Writer UA",
                 """
                     Привет, Франц!<br><br>

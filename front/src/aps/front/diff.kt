@@ -14,44 +14,44 @@ import kotlin.browser.window
 fun renderDiff(
     expected: String, actual: String,
     actualTestShit: String,
-    actualPaste: String = actual,
+    actualPaste: String? = null,
     expectedTitle: String = "Expected",
     actualTitle: String = "Actual"
 ): ToReactElementable {
     val noisy = false
 
-    val tabs = Tabs2(initialActiveID = "diff", tabs = listOf(
-        TabSpec(id = "diff",
-                title = "Diff",
-                content = kdiv(whiteSpace="pre"){o->
-                    val placeholders = mutableListOf<Placeholder>()
-                    var prevLabel: String? = null
-                    val JsDiff = global.JsDiff
-                    val diffLineItems = jsArrayToList<JsDiffItem>(JsDiff.diffLines(expected, actual))
-                    for ((i, item) in diffLineItems.withIndex()) {
-                        val backgroundColor: Color
-                        val label: String?
-                        if (item.added) {
-                            backgroundColor = RED_100
-                            label = actualTitle
-                        } else if (item.removed) {
-                            backgroundColor = GREEN_100
-                            label = expectedTitle
-                        } else {
-                            backgroundColor = WHITE
-                            label = null
+    val tabSpecs = mutableListOf<TabSpec>()
+    tabSpecs.add(TabSpec(id = "diff",
+            title = "Diff",
+            content = kdiv(whiteSpace = "pre") {o ->
+                val placeholders = mutableListOf<Placeholder>()
+                var prevLabel: String? = null
+                val JsDiff = global.JsDiff
+                val diffLineItems = jsArrayToList<JsDiffItem>(JsDiff.diffLines(expected, actual))
+                for ((i, item) in diffLineItems.withIndex()) {
+                    val backgroundColor: Color
+                    val label: String?
+                    if (item.added) {
+                        backgroundColor = RED_100
+                        label = actualTitle
+                    } else if (item.removed) {
+                        backgroundColor = GREEN_100
+                        label = expectedTitle
+                    } else {
+                        backgroundColor = WHITE
+                        label = null
+                    }
+                    if (label != null && label != prevLabel) {
+                        o - kdiv(backgroundColor = backgroundColor, fontWeight = "bold") {o ->
+                            o - label
                         }
-                        if (label != null && label != prevLabel) {
-                            o- kdiv(backgroundColor=backgroundColor, fontWeight="bold"){o->
-                                o- label
-                            }
-                        }
-                        prevLabel = label
+                    }
+                    prevLabel = label
 
-                        o- kdiv(backgroundColor=backgroundColor){o->
-                            placeholders += Placeholder(span(item.value))
-                            o- placeholders.last()
-                        }
+                    o - kdiv(backgroundColor = backgroundColor) {o ->
+                        placeholders += Placeholder(span(item.value))
+                        o - placeholders.last()
+                    }
 
 //                        if (i > 0) {
 //                            val prevItem = diffLineItems[i - 1]
@@ -81,47 +81,24 @@ fun renderDiff(
 //                                }
 //                            }
 //                        }
-                    }
-                }),
+                }
+            }))
 
-        TabSpec(id = "actualPaste",
-                title = "Actual Paste",
-                content = kdiv{o->
-                    o- Input(json("initialValue" to actualPaste,
-                                  "kind" to "textarea",
-                                  "rows" to 10,
-                                  "style" to json("width" to "100%",
-                                                  "height" to "100%"),
-                                  "untested" to true))
-                })
-    ))
+    if (actualPaste != null) {
+        tabSpecs.add(TabSpec(id = "actualPaste",
+                             title = "Actual Paste",
+                             content = kdiv {o ->
+                                 o - Input(json("initialValue" to actualPaste,
+                                                "kind" to "textarea",
+                                                "rows" to 10,
+                                                "style" to json("width" to "100%",
+                                                                "height" to "100%"),
+                                                "untested" to true))
+                             }))
+    }
 
-//    val tabs = Tabs(json(
-//        "activeTab" to "diff",
-//        "tabs" to json(
-//            "diff" to json(
-//                "title" to "Diff",
-//                "content" to "qweqweqwe"
-////                "content" to kdiv(whiteSpace="pre"){o->
-////                    o+ divs
-////                }.toReactElement()
-//            )
-////            "actual" to json(
-////                "title" to "Actual",
-////                "content" to Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap")), actualString)),
-////            "expected" to json(
-////                "title" to "Expected",
-////                "content" to Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap")), expectedString)),
-////            "actualPaste" to json(
-////                "title" to "Actual Paste",
-////                "content" to Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap")),
-////                                         Shitus.Input(json("initialValue" to redString, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true))))
-////            "actualPasteWithExt" to json(
-////                "title" to "Actual Paste + ext",
-////                "content" to Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap")),
-////                                         Shitus.Input(json("initialValue" to actualStringForPastingPlusExt, "kind" to "textarea", "rows" to 10, "style" to json("width" to "100%", "height" to "100%"), "untested" to true))))
-//        )
-//    ))
+    val tabs = Tabs2(initialActiveID = "diff", tabs = tabSpecs)
+
 
     return kdiv(position = "relative"){o->
         o- tabs
@@ -145,14 +122,4 @@ fun renderDiff(
     }
 }
 
-//o- object {
-//    val holder = Placeholder()
-//
-//    init {
-//        button2(span("update test shit"), level = "primary") {
-//            clog("aaaaaaaaaa")
-//        }
-//    }
-//}.holder
-//
 

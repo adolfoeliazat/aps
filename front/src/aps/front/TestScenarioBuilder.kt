@@ -18,6 +18,14 @@ fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBui
     return __reawait(builder.runScenario(showTestPassedPane))
 }
 
+val transformNavbarLineTidy = {it: String ->
+    it.replace(Regex(" id=\"MakeStaticSites-\\d+\""), "")
+}
+
+val transformRootLineTidy = {it: String ->
+    it
+}
+
 class TestScenarioBuilder {
     val instructions = mutableListOf<TestInstruction>()
 
@@ -144,14 +152,14 @@ class TestScenarioBuilder {
     fun assertNavbarHTML(expected: String) {
         assertHTML(under = SELECTOR_NAVBAR,
                    expected = expected,
-                   transformLine = {it.replace(Regex(" id=\"MakeStaticSites-\\d+\""), "")})
+                   transformLine = transformNavbarLineTidy)
     }
 
     fun assertNavbarHTMLExt(descr: String?, id: String) {
         act {TestGlobal.testShitBeingAssertedID = id}
         assertHTML(inside = SELECTOR_NAVBAR,
                    expected = {fuckingRemoteCall.loadTestShit(id)},
-                   transformLine = {it.replace(Regex(" id=\"MakeStaticSites-\\d+\""), "")},
+                   transformLine = transformNavbarLineTidy,
                    descr=descr)
         act {TestGlobal.testShitBeingAssertedID = null}
     }
@@ -163,6 +171,36 @@ class TestScenarioBuilder {
     fun assertRootHTMLExt(descr: String?, id: String) {
         act {TestGlobal.testShitBeingAssertedID = id}
         assertHTML(inside = SELECTOR_ROOT, expected = {fuckingRemoteCall.loadTestShit(id)}, transformLine = {it}, descr=descr)
+        act {TestGlobal.testShitBeingAssertedID = null}
+    }
+
+    fun assertScreenHTML(descr: String?, id: String) {
+        act {TestGlobal.testShitBeingAssertedID = id}
+
+        val stepTitle = "HTML: $descr"
+        checkOnAnimationFrame(stepTitle) {async{
+            val expected = await(fuckingRemoteCall.loadTestShit(id))
+
+            val actual = buildString {
+                append("-------------------- NAVBAR --------------------\n\n")
+                append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
+                if (!endsWith("\n")) append("\n")
+                append("\n-------------------- ROOT --------------------\n\n")
+                append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
+            }
+
+            if (actual != expected) {
+                throw ArtAssertionError(
+                    stepTitle,
+                    visualPayload = renderDiff(
+                        expected = expected,
+                        actual = actual,
+                        actualTestShit = actual
+                    )
+                )
+            }
+        }}
+
         act {TestGlobal.testShitBeingAssertedID = null}
     }
 
@@ -235,9 +273,11 @@ class TestScenarioBuilder {
         instructions.add(TestInstruction.SetCheckbox(shame, value))
     }
 
-    fun assertMailInFooter(descr: String, expectedSubject: String, expectedBody: String) {
+    fun assertMailInFooter(descr: String, expectedTo: String, expectedSubject: String, expectedBody: String) {
         assertUnderFooterHTML("Email: $descr",
-            """<div id="debugPanes-initDebugFunctions-mailbox"><div data-reactroot="" id="544"><div id="542" style="margin-top: 10px;"><div id="514" style="font-weight: bold; background: rgb(178, 223, 219);">Mailbox</div><div id="540" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 2px dotted rgb(158, 158, 158);"><div id="536" style="background: rgb(255, 255, 255); margin-bottom: 5px;"><div spacing="4" class="" id="524" style="display: flex;"><div id="520" style="margin-left: 0px;"><span id="516" class="" style="font-weight: bold;">To:</span></div><div id="522" style="margin-left: 4px;"><span id="518" class="">Франц Кафка &lt;kafka@test.shit.ua&gt;</span></div></div><div spacing="4" class="" id="534" style="display: flex;"><div id="530" style="margin-left: 0px;"><span id="526" class="" style="font-weight: bold;">Subject:</span></div><div id="532" style="margin-left: 4px;"><span id="528" class="">""" +
+            """<div id="debugPanes-initDebugFunctions-mailbox"><div data-reactroot="" id="544"><div id="542" style="margin-top: 10px;"><div id="514" style="font-weight: bold; background: rgb(178, 223, 219);">Mailbox</div><div id="540" style="margin-top: 5px; padding-bottom: 5px; border-bottom: 2px dotted rgb(158, 158, 158);"><div id="536" style="background: rgb(255, 255, 255); margin-bottom: 5px;"><div spacing="4" class="" id="524" style="display: flex;"><div id="520" style="margin-left: 0px;"><span id="516" class="" style="font-weight: bold;">To:</span></div><div id="522" style="margin-left: 4px;"><span id="518" class="">""" +
+            expectedTo.replace("<", "&lt;").replace(">", "&gt;") +
+            """</span></div></div><div spacing="4" class="" id="534" style="display: flex;"><div id="530" style="margin-left: 0px;"><span id="526" class="" style="font-weight: bold;">Subject:</span></div><div id="532" style="margin-left: 4px;"><span id="528" class="">""" +
             expectedSubject +
             """</span></div></div></div><div id="538"><div>""" +
             dedent(expectedBody) +

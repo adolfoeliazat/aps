@@ -57,14 +57,37 @@ var docInnerHTML: String
     get() = document.documentElement!!.innerHTML
     set(value) {document.documentElement!!.innerHTML = value}
 
-fun TestScenarioBuilder.assertCustomerIndexHTML() {
+fun TestScenarioBuilder.assertCustomerIndexScreen() {
     assertNavbarHTMLExt("Customer index", "11786d8d-6681-4579-a90b-7f602a59dd2d")
     assertRootHTMLExt("Customer index", "9a386880-c709-4cbc-a97c-41bb5b559a36")
 }
 
+fun TestScenarioBuilder.assertCustomerSignInScreen() {
+    assertScreenHTML("Customer sign-in screen", "38dcedaf-5aad-43e8-ac3b-685b681fb75c")
+}
 
+fun TestScenarioBuilder.assertCustomerSignUpScreen() {
+    assertScreenHTML("Customer sign-up screen", "1de9ffb2-3215-42e0-a67c-c9c2856880b8")
+}
 
+fun TestScenarioBuilder.checkAssertAndClearEmail(descr: String, expectedTo: String, expectedSubject: String, expectedBody: String) {
+    acta {debugCheckEmail()}
+    assertMailInFooter(descr, expectedTo, expectedSubject, expectedBody)
+    acta {ClearSentEmailsRequest.send()}
+    act {debugHideMailbox()}
+}
 
+fun TestScenarioBuilder.imposeNextRequestTimestamp(stamp: String) {
+    acta {ImposeNextRequestTimestampRequest.send(stamp)}
+}
+
+fun TestScenarioBuilder.imposeNextGeneratedPassword(password: String) {
+    acta {ImposeNextGeneratedPasswordRequest.send(password)}
+}
+
+fun TestScenarioBuilder.assertFreshCustomerDashboardScreen() {
+    assertScreenHTML("Fresh customer's dashboard screen", "39ffecee-5b3f-4bf0-b9c6-43256a58a663")
+}
 
 
 

@@ -58,13 +58,6 @@ object TestUtils {
             """)
     }
 
-    fun checkAssertAndClearEmail(o: TestScenarioBuilder, descr: String, expectedSubject: String, expectedBody: String) {
-        o.acta {debugCheckEmail()}
-        o.assertMailInFooter(descr, expectedSubject, expectedBody)
-        o.acta {ClearSentEmailsRequest.send()}
-        o.act {debugHideMailbox()}
-    }
-
 }
 
 

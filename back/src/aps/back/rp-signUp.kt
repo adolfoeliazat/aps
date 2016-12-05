@@ -32,7 +32,11 @@ fun signUp() = publicProcedure(
                 .set(USERS.EMAIL, email)
                 .set(USERS.KIND, ctx.clientKind.name)
                 .set(USERS.LANG, ctx.lang.name)
-                .set(USERS.STATE, UserState.PROFILE_PENDING.name)
+                .set(USERS.STATE,
+                     when(ctx.clientKind) {
+                         ClientKind.CUSTOMER -> UserState.COOL.name
+                         ClientKind.WRITER -> UserState.PROFILE_PENDING.name
+                     })
                 .set(USERS.PASSWORD_HASH, BCrypt.hashpw(password, BCrypt.gensalt()))
                 .set(USERS.FIRST_NAME, firstName)
                 .set(USERS.LAST_NAME, lastName)
