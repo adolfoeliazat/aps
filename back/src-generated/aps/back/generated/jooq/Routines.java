@@ -4,9 +4,9 @@
 package aps.back.generated.jooq;
 
 
-import aps.back.generated.jooq.routines.OnInsert;
-import aps.back.generated.jooq.routines.OnUpdate;
-import aps.back.generated.jooq.routines.UsersTsvTrigger;
+import aps.back.generated.jooq.routines.JQOnInsert;
+import aps.back.generated.jooq.routines.JQOnUpdate;
+import aps.back.generated.jooq.routines.JQUsersTsvTrigger;
 
 import javax.annotation.Generated;
 
@@ -31,7 +31,7 @@ public class Routines {
      * Call <code>public.on_insert</code>
      */
     public static Object onInsert(Configuration configuration) {
-        OnInsert f = new OnInsert();
+        JQOnInsert f = new JQOnInsert();
 
         f.execute(configuration);
         return f.getReturnValue();
@@ -41,7 +41,7 @@ public class Routines {
      * Get <code>public.on_insert</code> as a field.
      */
     public static Field<Object> onInsert() {
-        OnInsert f = new OnInsert();
+        JQOnInsert f = new JQOnInsert();
 
         return f.asField();
     }
@@ -50,7 +50,7 @@ public class Routines {
      * Call <code>public.on_update</code>
      */
     public static Object onUpdate(Configuration configuration) {
-        OnUpdate f = new OnUpdate();
+        JQOnUpdate f = new JQOnUpdate();
 
         f.execute(configuration);
         return f.getReturnValue();
@@ -60,7 +60,7 @@ public class Routines {
      * Get <code>public.on_update</code> as a field.
      */
     public static Field<Object> onUpdate() {
-        OnUpdate f = new OnUpdate();
+        JQOnUpdate f = new JQOnUpdate();
 
         return f.asField();
     }
@@ -69,7 +69,7 @@ public class Routines {
      * Call <code>public.users_tsv_trigger</code>
      */
     public static Object usersTsvTrigger(Configuration configuration) {
-        UsersTsvTrigger f = new UsersTsvTrigger();
+        JQUsersTsvTrigger f = new JQUsersTsvTrigger();
 
         f.execute(configuration);
         return f.getReturnValue();
@@ -79,7 +79,7 @@ public class Routines {
      * Get <code>public.users_tsv_trigger</code> as a field.
      */
     public static Field<Object> usersTsvTrigger() {
-        UsersTsvTrigger f = new UsersTsvTrigger();
+        JQUsersTsvTrigger f = new JQUsersTsvTrigger();
 
         return f.asField();
     }

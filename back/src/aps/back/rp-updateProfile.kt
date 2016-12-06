@@ -8,7 +8,7 @@ package aps.back
 
 import aps.back.generated.jooq.Tables.*
 import aps.*
-import aps.back.generated.jooq.tables.pojos.Users
+import aps.back.generated.jooq.tables.pojos.JQUsers
 
 @RemoteProcedureFactory fun updateProfile() = anyUserProcedure(
     UpdateProfileRequest(),

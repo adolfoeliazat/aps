@@ -2,6 +2,8 @@
   <dictionary name="Vladimir">
     <words>
       <w>acta</w>
+      <w>bigserial</w>
+      <w>bobul</w>
       <w>browserify</w>
       <w>cancela</w>
       <w>changa</w>
@@ -52,6 +54,7 @@
       <w>mutators</w>
       <w>navbar</w>
       <w>nbsp</w>
+      <w>plpgsql</w>
       <w>postgre</w>
       <w>postgresql</w>
       <w>primitiveish</w>
@@ -68,6 +71,7 @@
       <w>successa</w>
       <w>tamy</w>
       <w>textarea</w>
+      <w>tsvector</w>
       <w>unchecking</w>
       <w>unduplicate</w>
       <w>unhardcode</w>

@@ -7,7 +7,7 @@
 package aps.back
 
 import aps.*
-import aps.back.generated.jooq.tables.pojos.Users
+import aps.back.generated.jooq.tables.pojos.JQUsers
 import aps.back.generated.jooq.Tables.*
 import org.jooq.*
 import kotlin.reflect.KClass
@@ -79,11 +79,14 @@ fun loadUser(ctx: ProcedureContext): UserRTO {
     val users = ctx.q("Select user")
         .select().from(USERS)
         .where(USERS.ID.eq(ctx.user.id.toLong()))
-        .fetch().into(Users::class.java)
+        .fetch().into(JQUsers::class.java)
 
     return users.first().toRTO(ctx.q)
 }
 
+object BackGlobus {
+    var tracingEnabled = true
+}
 
 
 

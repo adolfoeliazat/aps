@@ -1,8 +1,16 @@
-/*
- * APS
- *
- * (C) Copyright 2015-2016 Vladimir Grechka
- */
+drop table if exists ua_orders;
+drop function if exists ua_orders_tsv_trigger();
+drop table if exists user_roles;
+drop table if exists user_tokens;
+drop table if exists users;
+drop function if exists users_tsv_trigger();
+drop type if exists ua_document_type;
+drop type if exists delivery_option;
+drop type if exists ua_academic_level;
+drop type if exists order_state;
+drop function if exists on_insert();
+drop function if exists on_update();
+
 
 create function on_insert()
 returns trigger as $$
@@ -56,7 +64,7 @@ create table users(
 alter sequence users_id_seq restart with 100000;
 create trigger on_insert before insert on users for each row execute procedure on_insert();
 create trigger on_update before update on users for each row execute procedure on_update();
-create index tsv_idx on users using gin (tsv);
+create index users_tsv_idx on users using gin (tsv);
 
 create function users_tsv_trigger() returns trigger as $$
 begin
@@ -107,39 +115,6 @@ create table user_tokens(
     );
 create trigger on_insert before insert on user_tokens for each row execute procedure on_insert();
 create trigger on_update before update on user_tokens for each row execute procedure on_update();
-
-create table support_threads(
-    id bigserial primary key,
-    deleted boolean not null,
-    inserted_at timestamp not null,
-    updated_at timestamp not null,
-    tslang text not null,
-    topic text not null,
-    supportee_id bigint not null references users(id),
-    supporter_id bigint /*maybe null*/ references users(id),
-    status text not null
-    );
-alter sequence support_threads_id_seq restart with 100000;
-create trigger on_insert before insert on support_threads for each row execute procedure on_insert();
-create trigger on_update before update on support_threads for each row execute procedure on_update();
-
-create table support_thread_messages(
-    id bigserial primary key,
-    deleted boolean not null,
-    inserted_at timestamp not null,
-    updated_at timestamp not null,
-    tslang text not null,
-    thread_id bigint not null references support_threads(id),
-    sender_id bigint not null references users(id),
-    recipient_id bigint /*maybe null*/ references users(id),
-    message text not null,
-    data jsonb not null
-    );
-alter sequence support_thread_messages_id_seq restart with 100000;
-create trigger on_insert before insert on support_thread_messages for each row execute procedure on_insert();
-create trigger on_update before update on support_thread_messages for each row execute procedure on_update();
-
--- create table foobar(id bigserial primary key, foo text);
 
 
 -- ============================== ORDERS ==============================
@@ -192,12 +167,3 @@ alter sequence ua_orders_id_seq restart with 100000;
 create trigger on_insert before insert on ua_orders for each row execute procedure on_insert();
 create trigger on_update before update on ua_orders for each row execute procedure on_update();
 create index ua_orders_tsv_idx on ua_orders using gin (tsv);
-
-
-
-
-
-
-
-
-

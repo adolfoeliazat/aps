@@ -26,25 +26,30 @@ public class Sequences {
     /**
      * The sequence <code>public.support_thread_messages_id_seq</code>
      */
-    public static final Sequence<Long> SUPPORT_THREAD_MESSAGES_ID_SEQ = new SequenceImpl<Long>("support_thread_messages_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+    public static final Sequence<Long> SUPPORT_THREAD_MESSAGES_ID_SEQ = new SequenceImpl<Long>("support_thread_messages_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
      * The sequence <code>public.support_threads_id_seq</code>
      */
-    public static final Sequence<Long> SUPPORT_THREADS_ID_SEQ = new SequenceImpl<Long>("support_threads_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+    public static final Sequence<Long> SUPPORT_THREADS_ID_SEQ = new SequenceImpl<Long>("support_threads_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+    /**
+     * The sequence <code>public.ua_orders_id_seq</code>
+     */
+    public static final Sequence<Long> UA_ORDERS_ID_SEQ = new SequenceImpl<Long>("ua_orders_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
      * The sequence <code>public.user_roles_id_seq</code>
      */
-    public static final Sequence<Long> USER_ROLES_ID_SEQ = new SequenceImpl<Long>("user_roles_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+    public static final Sequence<Long> USER_ROLES_ID_SEQ = new SequenceImpl<Long>("user_roles_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
      * The sequence <code>public.user_tokens_id_seq</code>
      */
-    public static final Sequence<Long> USER_TOKENS_ID_SEQ = new SequenceImpl<Long>("user_tokens_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+    public static final Sequence<Long> USER_TOKENS_ID_SEQ = new SequenceImpl<Long>("user_tokens_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
      * The sequence <code>public.users_id_seq</code>
      */
-    public static final Sequence<Long> USERS_ID_SEQ = new SequenceImpl<Long>("users_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+    public static final Sequence<Long> USERS_ID_SEQ = new SequenceImpl<Long>("users_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 }

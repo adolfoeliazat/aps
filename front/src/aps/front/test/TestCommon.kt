@@ -64,7 +64,20 @@ val testScenarios = mutableMapOf<String, TestScenario>()
 
 
 fun tetete() {
-    global.shit = Promise.resolve("pizda")
+    val something = 10
+
+    fun qwe(name: String): () -> String =
+        when (name) {
+            "foo" -> ({"oof"})
+            "bar" -> ({
+                when (something) {
+                }
+            })
+            else -> ({"wtf"})
+        }
+
+    console.log("foo", qwe("foo")())
+    console.log("bar", qwe("bar")())
 }
 
 
@@ -142,7 +155,7 @@ private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promi
 
 private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
     val testName = ctorName(scenario)
-    TestShit.lastTestHref = when {
+    TestGlobal.lastTestHref = when {
         testName.contains("Writer") -> "http://aps-ua-writer.local:3022/faq.html?test=$testName"
         testName.contains("Customer") -> "http://aps-ua-customer.local:3012/faq.html?test=$testName"
         else -> bitch("Cannot figure out URL for test [$testName]")

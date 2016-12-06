@@ -19,7 +19,7 @@ import into.kommon.*
         val oldUser = ctx.q("Select user")
             .select().from(USERS)
             .where(USERS.ID.eq(req.id.value.toLong()))
-            .fetchOne().into(Users::class.java).toRTO(ctx.q)
+            .fetchOne().into(JQUsers::class.java).toRTO(ctx.q)
 
         ctx.q("Update user")
             .update(USERS)
@@ -40,7 +40,7 @@ import into.kommon.*
         val newUser = ctx.q("Select user")
             .select().from(USERS)
             .where(USERS.ID.eq(req.id.value.toLong()))
-            .fetchOne().into(Users::class.java).toRTO(ctx.q)
+            .fetchOne().into(JQUsers::class.java).toRTO(ctx.q)
 
         if (oldUser.state != COOL && newUser.state == COOL) {
             val dashboardURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/dashboard.html"

@@ -6,9 +6,6 @@ import jquery.jq
 val SELECTOR_NAVBAR = "#topNavbarContainer"
 val SELECTOR_ROOT = "#root"
 
-object TestShit {
-    var lastTestHref: String? = null
-}
 
 fun fillTestProfile_Gaylord(o: TestSetUserFieldsRequest) {
     o.insertedAt.value = "2016-11-23 13:15:25"

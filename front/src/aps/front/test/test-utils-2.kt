@@ -2,6 +2,7 @@ package aps.front.testutils
 
 import aps.*
 import aps.front.*
+import into.kommon.*
 import org.w3c.dom.Storage
 import kotlin.browser.document
 import kotlin.browser.window
@@ -87,6 +88,55 @@ fun TestScenarioBuilder.imposeNextGeneratedPassword(password: String) {
 
 fun TestScenarioBuilder.assertFreshCustomerDashboardScreen() {
     assertScreenHTML("Fresh customer's dashboard screen", "39ffecee-5b3f-4bf0-b9c6-43256a58a663")
+}
+
+fun TestScenarioBuilder.assertCustomerBreatheScreen() {
+    assertScreenHTML("Customer breathe screen", "5c58a466-1225-444a-abde-6d11def5c00c")
+}
+
+inline fun fiddlingWithGlobals(block: () -> Unit) {
+    val old_CLIENT_KIND = global.CLIENT_KIND
+    try {
+        block()
+    } finally {
+        global.CLIENT_KIND = old_CLIENT_KIND
+    }
+}
+
+class TestShit {
+    lateinit var bobulToken: String
+}
+
+fun TestScenarioBuilder.prepareBobul(testShit: TestShit) {
+    acta {async{
+        measureAndReportToDocumentElement("Preparing customer: Ivo Bobul") {
+            await(ImposeNextGeneratedPasswordRequest.send("bobul-secret"))
+
+            fiddlingWithGlobals {
+                global.CLIENT_KIND = ClientKind.CUSTOMER.name
+
+                await(send(null, SignUpRequest()-{o->
+                    o.agreeTerms.value = true
+                    o.immutableSignUpFields-{o->
+                        o.email.value = "bobul@test.shit.ua"
+                    }
+                    o.mutableSignUpFields-{o->
+                        o.firstName.value = "Иво"
+                        o.lastName.value = "Бобул"
+                    }
+                })).orDie
+
+                testShit.bobulToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
+                    o.email.value = "bobul@test.shit.ua"
+                    o.password.value = "bobul-secret"
+                })).orDie.token
+
+//                await(send(TestSetUserFieldsRequest()-{o->
+//                    o.email.value = "bobul@test.shit.ua"
+//                }))
+            }
+        }
+    }}
 }
 
 

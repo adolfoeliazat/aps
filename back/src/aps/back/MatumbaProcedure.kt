@@ -12,7 +12,7 @@ import org.jooq.DSLContext
 import java.sql.Timestamp
 import java.util.*
 import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.tables.pojos.Users
+import aps.back.generated.jooq.tables.pojos.JQUsers
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -124,7 +124,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                                 .select().from(USER_TOKENS, USERS)
                                 .where(USER_TOKENS.TOKEN.eq(token))
                                 .and(USERS.ID.eq(USER_TOKENS.USER_ID))
-                                .fetch().into(Users::class.java)
+                                .fetch().into(JQUsers::class.java)
                             if (rows.isEmpty()) bitch("Invalid token") // TODO:vgrechka Redirect user to sign-in page    301a55be-8bb4-4c60-ae7b-a6201f17d8e2
 
                             // TODO:vgrechka Check that user kind matches requesting client kind    fc937ee4-010c-4f5e-bece-5d7db51bf8c1
@@ -211,6 +211,19 @@ anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRe
         needsDangerousToken = false,
         needsUser = true,
         userKinds = setOf(UserKind.CUSTOMER, UserKind.WRITER, UserKind.ADMIN),
+        considerNextRequestTimestampFiddling = true,
+        logRequestJSON = true))
+
+fun <Req : RequestMatumba, Res : Any>
+customerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+    remoteProcedure(ProcedureSpec(
+        req,
+        runShit = runShit,
+        wrapInFormResponse = wrapInFormResponse ?: true,
+        needsDB = true,
+        needsDangerousToken = false,
+        needsUser = true,
+        userKinds = setOf(UserKind.CUSTOMER),
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
 

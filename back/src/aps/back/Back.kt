@@ -9,8 +9,8 @@ package aps.back
 import aps.*
 import aps.RedisLogMessage.Separator.Type.*
 import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.tables.pojos.UserRoles
-import aps.back.generated.jooq.tables.pojos.Users
+import aps.back.generated.jooq.tables.pojos.JQUserRoles
+import aps.back.generated.jooq.tables.pojos.JQUsers
 import into.kommon.*
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletHandler
@@ -79,11 +79,11 @@ fun String.toUserKind(): UserKind = UserKind.values().find{it.name == this} ?: w
 fun String.toLanguage(): Language = Language.values().find{it.name == this} ?: wtf("[$this] to Language")
 fun String.toUserState(): UserState = UserState.values().find{it.name == this} ?: wtf("[$this] to UserState")
 
-fun Users.toRTO(q: DSLContextProxyFactory): UserRTO {
+fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
     val roles = q("Select roles")
         .select().from(USER_ROLES)
         .where(USER_ROLES.USER_ID.eq(id))
-        .fetchInto(UserRoles::class.java)
+        .fetchInto(JQUserRoles::class.java)
 
     // TODO:vgrechka Double-check all secrets are excluded from UserRTO    7c2d1191-d43b-485c-af67-b95b46bbf62b
     return UserRTO(

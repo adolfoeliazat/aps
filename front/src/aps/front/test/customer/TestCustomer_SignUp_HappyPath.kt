@@ -7,7 +7,7 @@ class TestCustomer_SignUp_HappyPath : StepBasedTestScenario() {
         o.initFuckingBrowser()
         o.kindaNavigateToStaticContent(TEST_URL_CUSTOMER)
         o.acta {async{
-            val world = World(name)
+            val world = World("boobs")
             await(world.boot())
         }}
         o.assertCustomerIndexScreen()

@@ -8,7 +8,7 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.tables.pojos.Users
+import aps.back.generated.jooq.tables.pojos.JQUsers
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
 
@@ -22,7 +22,7 @@ import java.util.*
         val users = ctx.q("Select user")
             .select().from(USERS)
             .where(USERS.EMAIL.equal(req.email.value))
-            .fetch().into(Users::class.java)
+            .fetch().into(JQUsers::class.java)
         if (users.isEmpty()) bitchExpectedly(vagueMessage)
 
         val user = users[0]

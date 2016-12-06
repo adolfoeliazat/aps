@@ -6,6 +6,8 @@
 
 package aps
 
+import aps.front.*
+
 class FieldError(val field: String, val error: String)
 
 enum class UserRole {
@@ -40,7 +42,6 @@ enum class UserState(override val title: String) : Titled {
 class TimestampRTO(val value: String) {
 }
 
-// TODO:vgrechka Model profile as separate class with non-nullable props (to avoid !!)    fece17b6-5816-4b63-b687-a68b42fb2304
 class UserRTO(
     val id: String,
     val deleted: Boolean,
@@ -53,13 +54,18 @@ class UserRTO(
     val state: UserState,
     val profileRejectionReason: String?,
     val banReason: String?,
-    val adminNotes: String?,
+    val adminNotes: String,
     val firstName: String,
     val lastName: String,
     val phone: String?,
     val compactPhone: String?,
     val aboutMe: String?,
     val roles: Set<UserRole>
+)
+
+class OrderRTO(
+    val id: String,
+    val title: String
 )
 
 val SHITS = "--SHIT--"
@@ -304,6 +310,10 @@ enum class UserFilter(override val title: String): Titled {
     BANNED(t("TOTE", "Забаненые"))
 }
 
+enum class CustomerOrderFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все"))
+}
+
 class EntityRequest() : RequestMatumba() {
     val id = StringHiddenField(this, "id")
 }
@@ -367,9 +377,9 @@ class TestSetUserFieldsRequest() : RequestMatumba() {
     val banReason = MaybeStringHiddenField(this, "banReason", possiblyUnspecified = true)
     val profileUpdatedAt = StringHiddenField(this, "profileUpdatedAt ", possiblyUnspecified = true)
     val insertedAt = StringHiddenField(this, "insertedAt ", possiblyUnspecified = true)
-
-    fun send(): Promise<GenericResponse> = callDangerousMatumba(this)
 }
+
+fun send(req: TestSetUserFieldsRequest): Promise<GenericResponse> = callDangerousMatumba(req)
 
 //class GetRedisLogMessagesRequest : RequestMatumba() {
 //    class Response(val items: List<RedisLogMessage>)
@@ -400,6 +410,12 @@ class FuckingRemoteProcedureRequest : RequestMatumba() {
 }
 fun send(req: FuckingRemoteProcedureRequest): Promise<JSONResponse> = callDangerousMatumba(req)
 
+class CustomerCreateUAOrderRequest : RequestMatumba() {
+    class Response(val newOrder: OrderRTO)
+
+    val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, 5, 100)
+//    val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), )
+}
 
 
 

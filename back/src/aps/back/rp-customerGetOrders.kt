@@ -11,7 +11,7 @@ import aps.back.generated.jooq.tables.pojos.JQUsers
 import org.jooq.*
 import kotlin.reflect.KClass
 
-@RemoteProcedureFactory fun getUsers() = adminProcedure(
+@RemoteProcedureFactory fun customerGetOrders() = customerProcedure(
     ItemsRequest(UserFilter.values()),
     runShit = {ctx, req ->
         val chunk = selectChunk(

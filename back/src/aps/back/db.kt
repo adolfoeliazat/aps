@@ -10,9 +10,9 @@ import aps.*
 import aps.RedisLogMessage.SQL.Stage.*
 import into.kommon.*
 import aps.back.generated.jooq.Tables
-import aps.back.generated.jooq.tables.records.UserRolesRecord
-import aps.back.generated.jooq.tables.records.UserTokensRecord
-import aps.back.generated.jooq.tables.records.UsersRecord
+import aps.back.generated.jooq.tables.records.JQUserRolesRecord
+import aps.back.generated.jooq.tables.records.JQUserTokensRecord
+import aps.back.generated.jooq.tables.records.JQUsersRecord
 import com.zaxxer.hikari.HikariDataSource
 import org.jooq.*
 import org.jooq.SelectField
@@ -115,12 +115,14 @@ object DB {
                         .set(SQLDialect.POSTGRES_9_5)
                         .set(DefaultExecuteListenerProvider(object:DefaultExecuteListener() {
                             override fun executeStart(ctx: ExecuteContext) {
+                                if (!BackGlobus.tracingEnabled) return
+
                                 fun dumpShit(shit: String) {
                                     requestShit.actualSQLFromJOOQ = shit
                                 }
 
-                                fun dumpShit(shit: QueryPart) = dumpShit(
-                                    DSL.using(ctx.configuration().dialect(), Settings().withRenderFormatted(true))
+                                fun dumpShit(shit: QueryPart) =
+                                    dumpShit(DSL.using(ctx.configuration().dialect(), Settings().withRenderFormatted(true))
                                         .renderInlined(shit))
 
                                 ctx.query()?.let {dumpShit(it); return}
@@ -146,7 +148,7 @@ object DB {
 
             val actions = mutableListOf<Action>()
 
-            class UserSpec(val user: UsersRecord, val roles: Iterable<UserRole> = listOf())
+            class UserSpec(val user: JQUsersRecord, val roles: Iterable<UserRole> = listOf())
 
             fun addInsertUserActions(_kind: UserKind, userSpecs: Iterable<UserSpec>) {
                 for (u in userSpecs) {
@@ -162,12 +164,13 @@ object DB {
                                     lang = Language.UA.name
                                     state = UserState.COOL.name
                                     passwordHash = secretHash
+                                    adminNotes = ""
                                 })
                                 .execute()
 
                             q("Insert token for ${u.user.email}")
                                 .insertInto(Tables.USER_TOKENS)
-                                .set(UserTokensRecord().apply {
+                                .set(JQUserTokensRecord().apply {
                                     userId = u.user.id
                                     token = "temp-${u.user.id}"
                                 })
@@ -176,7 +179,7 @@ object DB {
                             for (r in u.roles) {
                                 q("Insert role ${r.name} for ${u.user.email}")
                                     .insertInto(Tables.USER_ROLES)
-                                    .set(UserRolesRecord().apply {
+                                    .set(JQUserRolesRecord().apply {
                                         userId = u.user.id
                                         role = r.name
                                     })
@@ -189,7 +192,7 @@ object DB {
 
 
             addInsertUserActions(UserKind.ADMIN, listOf(
-                UserSpec(UsersRecord().apply {firstName = "Дася"; lastName = "Админовна"; email = "dasja@test.shit.ua"; insertedAt = stringToStamp("2016-07-10 13:14:15")},listOf(UserRole.SUPPORT))
+                UserSpec(JQUsersRecord().apply {firstName = "Дася"; lastName = "Админовна"; email = "dasja@test.shit.ua"; insertedAt = stringToStamp("2016-07-10 13:14:15")},listOf(UserRole.SUPPORT))
 //                UserSpec(UsersRecord().apply {firstName = "Тодд"; lastName = "Суппортод"; email = "todd@test.shit.ua"; insertedAt = stringToStamp("2016-07-13 02:44:05")}, listOf(UserRole.SUPPORT)),
 //                UserSpec(UsersRecord().apply {firstName = "Алиса"; lastName = "Планктоновна"; email = "alice@test.shit.ua"; insertedAt = stringToStamp("2016-07-11 20:28:17")}, listOf(UserRole.SUPPORT)),
 //                UserSpec(UsersRecord().apply {firstName = "Элеанора"; lastName = "Суконская"; email = "eleanor@test.shit.ua"; insertedAt = stringToStamp("2016-07-11 20:28:17")}, listOf(UserRole.SUPPORT))
@@ -280,9 +283,9 @@ class DSLContextProxy(val activityParams: ActivityParams, val q: DSLContext) {
         return InsertSetStepProxy(activityParams, res)
     }
 
-    fun execute(sql: String): Int {
-        return executeTracing(activityParams) {q.execute(sql)}
-    }
+    fun execute(sql: String): Int =
+        if (BackGlobus.tracingEnabled) executeTracing(activityParams) {q.execute(sql)}
+        else q.execute(sql)
 }
 
 class InsertSetStepProxy<R : Record>(val activityParams: ActivityParams, val wrappee: InsertSetStep<R>) : InsertSetStep<R> {

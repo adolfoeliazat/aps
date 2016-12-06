@@ -317,19 +317,21 @@ class World(val name: String) {
             "dashboard" -> ({"__async"
                 __await(KotlinShit.loadDashboardPage(this)) /ignora
             })
-
             "admin-users" -> ({"__async"
                 __await(KotlinShit.loadAdminUsersPage(this)) /ignora
             })
-
             "profile" -> ({"__async"
                 __await(KotlinShit.loadProfilePage(this)) /ignora
             })
-
             "debug" -> ({"__async"
                 __reawait(DebugPage(this).load())
             })
-
+            "orders" -> ({
+                when (theClientKind) {
+                    ClientKind.CUSTOMER -> CustomerOrdersPage(this).load()
+                    ClientKind.WRITER -> WriterOrdersPage(this).load()
+                }
+            })
             else -> wtf("privatePageLoader for [$name]")
         }
     }

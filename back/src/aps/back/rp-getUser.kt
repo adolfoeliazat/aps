@@ -8,7 +8,7 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.tables.pojos.Users
+import aps.back.generated.jooq.tables.pojos.JQUsers
 import org.jooq.*
 import kotlin.reflect.KClass
 
@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
         GetUserRequest.Response(ctx.q("Select user")
             .select().from(USERS)
             .where(USERS.ID.eq(req.id.value.toLong()))
-            .fetchOne().into(Users::class.java).toRTO(ctx.q))
+            .fetchOne().into(JQUsers::class.java).toRTO(ctx.q))
     }
 )
 

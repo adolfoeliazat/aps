@@ -26,7 +26,7 @@ abstract class WriterBootTestScenario : BootTestScenario() {
         })).orDie.token
 
         fieldsReq.email.value = "fucker@test.shit.ua"
-        __await(fieldsReq.send())
+        __await(send(fieldsReq))
 
         return __asyncResult(Unit)
     }

@@ -34,7 +34,7 @@ class InitAutoReload {
     fun tick() {"__async"
         if (initialCtime != __await(GetSoftwareVersionRequest.send()).ctime) {
             if (realTypedStorageLocal.reloadTest)
-                TestShit.lastTestHref?.let {
+                TestGlobal.lastTestHref?.let {
                     window.location.href = it
                     return
                 }

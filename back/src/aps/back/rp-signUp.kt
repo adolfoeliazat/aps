@@ -40,6 +40,7 @@ fun signUp() = publicProcedure(
                 .set(USERS.PASSWORD_HASH, BCrypt.hashpw(password, BCrypt.gensalt()))
                 .set(USERS.FIRST_NAME, firstName)
                 .set(USERS.LAST_NAME, lastName)
+                .set(USERS.ADMIN_NOTES, "")
                 .execute()
 
             val signInURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/sign-in.html" // TODO:vgrechka Use HTTPS    a389374b-8132-44e9-a73b-fde56869d690

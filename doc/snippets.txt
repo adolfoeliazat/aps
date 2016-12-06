@@ -9,6 +9,13 @@ cd /d E:\work\aps\back\bin\dev\win
 title pg-test & pg-test-start.cmd
     | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
 
+cd /d E:\work\aps\back\bin\dev\win
+title pg-dev & pg-dev-start.cmd
+    | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
+
+cd /d e:\work\aps
+_run aps.back.GenerateJOOQKt
+
 
 JavaScript
 ==========

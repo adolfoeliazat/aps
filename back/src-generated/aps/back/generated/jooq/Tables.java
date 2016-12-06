@@ -4,11 +4,12 @@
 package aps.back.generated.jooq;
 
 
-import aps.back.generated.jooq.tables.SupportThreadMessages;
-import aps.back.generated.jooq.tables.SupportThreads;
-import aps.back.generated.jooq.tables.UserRoles;
-import aps.back.generated.jooq.tables.UserTokens;
-import aps.back.generated.jooq.tables.Users;
+import aps.back.generated.jooq.tables.JQSupportThreadMessages;
+import aps.back.generated.jooq.tables.JQSupportThreads;
+import aps.back.generated.jooq.tables.JQUaOrders;
+import aps.back.generated.jooq.tables.JQUserRoles;
+import aps.back.generated.jooq.tables.JQUserTokens;
+import aps.back.generated.jooq.tables.JQUsers;
 
 import javax.annotation.Generated;
 
@@ -29,25 +30,30 @@ public class Tables {
     /**
      * The table <code>public.support_thread_messages</code>.
      */
-    public static final SupportThreadMessages SUPPORT_THREAD_MESSAGES = aps.back.generated.jooq.tables.SupportThreadMessages.SUPPORT_THREAD_MESSAGES;
+    public static final JQSupportThreadMessages SUPPORT_THREAD_MESSAGES = aps.back.generated.jooq.tables.JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES;
 
     /**
      * The table <code>public.support_threads</code>.
      */
-    public static final SupportThreads SUPPORT_THREADS = aps.back.generated.jooq.tables.SupportThreads.SUPPORT_THREADS;
+    public static final JQSupportThreads SUPPORT_THREADS = aps.back.generated.jooq.tables.JQSupportThreads.SUPPORT_THREADS;
+
+    /**
+     * The table <code>public.ua_orders</code>.
+     */
+    public static final JQUaOrders UA_ORDERS = aps.back.generated.jooq.tables.JQUaOrders.UA_ORDERS;
 
     /**
      * The table <code>public.user_roles</code>.
      */
-    public static final UserRoles USER_ROLES = aps.back.generated.jooq.tables.UserRoles.USER_ROLES;
+    public static final JQUserRoles USER_ROLES = aps.back.generated.jooq.tables.JQUserRoles.USER_ROLES;
 
     /**
      * The table <code>public.user_tokens</code>.
      */
-    public static final UserTokens USER_TOKENS = aps.back.generated.jooq.tables.UserTokens.USER_TOKENS;
+    public static final JQUserTokens USER_TOKENS = aps.back.generated.jooq.tables.JQUserTokens.USER_TOKENS;
 
     /**
      * The table <code>public.users</code>.
      */
-    public static final Users USERS = aps.back.generated.jooq.tables.Users.USERS;
+    public static final JQUsers USERS = aps.back.generated.jooq.tables.JQUsers.USERS;
 }

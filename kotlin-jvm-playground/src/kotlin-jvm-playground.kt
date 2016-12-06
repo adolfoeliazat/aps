@@ -8,7 +8,24 @@ fun main(args: Array<String>) {
 //    shit2()
 //    testConcurrentModification()
 //    testDownTo()
-    testFinallyResult()
+//    testFinallyResult()
+    testNonExhaustiveWhen()
+}
+
+fun testNonExhaustiveWhen() {
+    fun qwe(name: String): () -> String =
+        when (name) {
+            "foo" -> ({"oof"})
+            "bar" -> ({
+                when (123) {
+                }
+            })
+            else -> ({"wtf"})
+        }
+
+    println("foo: " + qwe("foo")())
+    println("bar: " + qwe("bar")())
+    println("baz: " + qwe("baz")())
 }
 
 fun testFinallyResult() {
