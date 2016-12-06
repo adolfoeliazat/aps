@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -38,7 +40,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
     var error: String? = null
     var working: Boolean = false
     lateinit var actualVisibleFieldNames: Iterable<String>
-    var focusedField: FormFieldFront<*>? = null
+    var focusedField: FormFieldFront? = null
 
     val control = object:Control() {
         override fun defaultControlTypeName() = "FormMatumba"
@@ -76,7 +78,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                             "level" to "primary", "title" to spec.primaryButtonTitle, "disabled" to working,
                             "onClick" to {"__async"
                                 Shitus.beginTrain(json("name" to "Submit fucking form")); try {
-                                    for (field: FormFieldFront<*> in spec.req.fields) {
+                                    for (field: FormFieldFront in spec.req.fields) {
                                         field.error = null
                                         field.disabled = true
                                     }
@@ -152,11 +154,11 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         }
     }
 
-    fun fieldFocused(field: FormFieldFront<*>) {
+    fun fieldFocused(field: FormFieldFront) {
         focusedField = field
     }
 
-    fun fieldBlurred(field: FormFieldFront<*>) {
+    fun fieldBlurred(field: FormFieldFront) {
         focusedField = null
     }
 

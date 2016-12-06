@@ -9,7 +9,7 @@ class CustomerOrdersPage(val world: World) {
             ui = world,
             urlPath = "orders.html",
             procedureName = "customerGetOrders",
-            header = {pageHeader0(t("TOTE", "Заказы"))},
+            header = {pageHeader0(t("TOTE", "Мои заказы"))},
             filterSelectValues = CustomerOrderFilter.values(),
             defaultFilter = CustomerOrderFilter.ALL,
             plusFormSpec = FormSpec<CustomerCreateUAOrderRequest, GenericResponse>(
@@ -18,7 +18,7 @@ class CustomerOrdersPage(val world: World) {
                 cancelButtonTitle = defaultCancelButtonTitle),
 
             renderItem = {index, order -> kdiv {o->
-
+                o- "pizda"
             }}
         ).ignita()
     }

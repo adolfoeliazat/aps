@@ -413,13 +413,13 @@ fun send(req: FuckingRemoteProcedureRequest): Promise<JSONResponse> = callDanger
 class CustomerCreateUAOrderRequest : RequestMatumba() {
     class Response(val newOrder: OrderRTO)
 
-    val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, 5, 100)
+    val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen)
     val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), UADocumentType.values())
     val documentUrgency = SelectField(this, "documentUrgency", t("TOTE", "Срочность"), DocumentUrgency.values())
     val academicLevel = SelectField(this, "academicLevel", t("TOTE", "Академический уровень"), UAAcademicLevel.values())
-    val numPages = TextField(this, "numPages", t("TOTE", "Страниц"), TextFieldType.STRING, 5, 100)
-    val numSources = TextField(this, "numSources", t("TOTE", "Источников"), TextFieldType.STRING, 5, 100)
-    val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, 5, 100)
+    val numPages = IntField(this, "numPages", t("TOTE", "Страниц"), const.order.minPages, const.order.maxPages)
+    val numSources = IntField(this, "numSources", t("TOTE", "Источников"), const.order.minSources, const.order.maxSources)
+    val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen)
 }
 
 enum class UADocumentType(override val title: String) : Titled {

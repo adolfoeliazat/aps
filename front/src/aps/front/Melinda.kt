@@ -261,10 +261,13 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                                            if (itemsRes.items.isNotEmpty())
                                                renderMoreable(ui, itemsRes, itemsReq, renderItem)
                                            else
-                                               if (showEmptyLabel)
+                                               if (showEmptyLabel) {
                                                    Shitus.diva(json("style" to json("marginTop" to 10)),
                                                                emptyMessage?.let{it} ?: Shitus.spanc(json("tame" to "nothingLabel", "content" to t("TOTE", "Савсэм ничего нэт, да..."))))
-                                               else ""
+                                               }
+                                               else {
+                                                   ""
+                                               }
                                        }
                     )
                 }

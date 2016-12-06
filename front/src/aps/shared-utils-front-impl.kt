@@ -77,7 +77,7 @@ fun remoteProcedureNameForRequest(req: Any): String {
 
 @Front open class RequestMatumba {
     // TODO:vgrechka Why the fuck do I need `fields` in `hiddenFields` to be separate?
-    val fields = mutableListOf<FormFieldFront<*>>()
+    val fields = mutableListOf<FormFieldFront>()
     val hiddenFields = mutableListOf<HiddenFormFieldFront>()
 }
 
@@ -89,7 +89,8 @@ abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: Str
     abstract fun populateRemote(json: Json)
 }
 
-abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
+//abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
+abstract class FormFieldFront(val container: RequestMatumba, val name: String) {
     init {
         container.fields.add(this)
     }
@@ -97,7 +98,7 @@ abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: St
     lateinit var form: FormMatumba<*, *>
 
     abstract fun render(): ReactElement
-    abstract val value: Value
+//    abstract val value: Value
 
     abstract var error: String?
     abstract var disabled: Boolean
@@ -172,7 +173,7 @@ annotation class Front
     val minLen: Int,
     val maxLen: Int,
     val minDigits: Int = -1
-): FormFieldFront<String>(container, name) {
+): FormFieldFront(container, name) {
 
     override var error: String? = null
 
@@ -192,7 +193,7 @@ annotation class Front
         }
     ))
 
-    override var value: String
+    var value: String
         get() = input.getValue()
         set(value) { input.setValue(value) }
 
@@ -230,7 +231,7 @@ annotation class Front
     val title: String,
     val min: Int,
     val max: Int
-): FormFieldFront<Int>(container, name) {
+): FormFieldFront(container, name) {
 
     override var error: String? = null
 
@@ -244,9 +245,9 @@ annotation class Front
         }
     ))
 
-    override var value: Int
-        get() = imf("IntField value prop") // input.getValue()
-        set(value) { input.setValue("" + value) }
+//    var value: Int
+//        get() = imf("IntField value prop") // input.getValue()
+//        set(value) { input.setValue("" + value) }
 
     override var disabled: Boolean
         get() = input.isDisabled()
@@ -264,11 +265,11 @@ annotation class Front
     }
 
     override fun populateRemote(json: Json) {
-        json[name] = value
+        json[name] = input.getValue()
     }
 }
 
-@Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront<Boolean>(container, name) {
+@Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront(container, name) {
     override var error: String? = null
 
     val checkbox = Shitus.Checkbox(json("tamy" to true))
@@ -288,7 +289,7 @@ annotation class Front
         )
     }
 
-    override var value: Boolean
+    var value: Boolean
         get() = checkbox.getValue()
         set(value) { checkbox.setValue(value) }
 
@@ -333,7 +334,7 @@ annotation class Front
     name: String,
     val title: String,
     val values: Array<T>
-) : FormFieldFront<T>(container, name)
+) : FormFieldFront(container, name)
 where T : Enum<T>, T : Titled {
 
     override var error: String? = null
@@ -374,7 +375,7 @@ where T : Enum<T>, T : Titled {
                 if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else null))
     }
 
-    override var value: T
+    var value: T
         get() = select.value
         set(value) { select.setValue(value) }
 
