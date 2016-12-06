@@ -162,6 +162,7 @@ create type ua_academic_level as enum (
 
 create type order_state as enum (
     'CREATED',
+    'WAITING_FOR_PAYMENT',
     'WRITER_ASSIGNED'
 );
 
@@ -179,7 +180,7 @@ create table ua_orders(
     deadline timestamp /*maybe null*/,
     page_cost int not null,
     price int not null,
-    academic_level ua_academic_level not null,
+    -- academic_level ua_academic_level not null,
     num_pages int not null,
     num_sources int not null,
     details text not null,
@@ -193,6 +194,24 @@ create trigger on_insert before insert on ua_orders for each row execute procedu
 create trigger on_update before update on ua_orders for each row execute procedure on_update();
 create index ua_orders_tsv_idx on ua_orders using gin (tsv);
 
+create function ua_orders_tsv_trigger() returns trigger as $$
+begin
+  new.tsv :=
+     setweight(to_tsvector('pg_catalog.russian', ' '
+         ||' '|| coalesce(new.title,'')
+         ),'A')
+     ||
+     setweight(to_tsvector('pg_catalog.russian', ' '
+         ||' '|| coalesce(new.details,'')
+         ||' '|| coalesce(new.admin_notes,'')
+         ),'B')
+  ;
+  return new;
+end
+$$ language plpgsql;
+
+create trigger ua_orders_tsvectorupdate before insert or update
+    on ua_orders for each row execute procedure ua_orders_tsv_trigger();
 
 
 

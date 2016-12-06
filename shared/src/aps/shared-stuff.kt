@@ -411,12 +411,11 @@ class FuckingRemoteProcedureRequest : RequestMatumba() {
 fun send(req: FuckingRemoteProcedureRequest): Promise<JSONResponse> = callDangerousMatumba(req)
 
 class CustomerCreateUAOrderRequest : RequestMatumba() {
-    class Response(val newOrder: OrderRTO)
+    class Response(val id: String)
 
     val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen)
     val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), UADocumentType.values())
     val documentUrgency = SelectField(this, "documentUrgency", t("TOTE", "Срочность"), DocumentUrgency.values())
-    val academicLevel = SelectField(this, "academicLevel", t("TOTE", "Академический уровень"), UAAcademicLevel.values())
     val numPages = IntField(this, "numPages", t("TOTE", "Страниц"), const.order.minPages, const.order.maxPages)
     val numSources = IntField(this, "numSources", t("TOTE", "Источников"), const.order.minSources, const.order.maxSources)
     val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen)
@@ -442,6 +441,33 @@ enum class UAAcademicLevel(override val title: String) : Titled {
     INSTITUTE(t("TOTE", "Студень"))
 }
 
+fun uaPageCost(type: UADocumentType, urgency: DocumentUrgency): Int =
+    when (type) {
+        UADocumentType.ESSAY -> when (urgency) {
+            DocumentUrgency.D8 ->  1099
+            DocumentUrgency.D7 ->  1299
+            DocumentUrgency.D5 ->  1599
+            DocumentUrgency.D3 ->  2099
+            DocumentUrgency.H24 -> 2599
+            DocumentUrgency.H12 -> 3599
+        }
+        UADocumentType.COURSE -> when (urgency) {
+            DocumentUrgency.D8 -> 1599
+            DocumentUrgency.D7 -> 1799
+            DocumentUrgency.D5 -> 2099
+            DocumentUrgency.D3 -> 2599
+            DocumentUrgency.H24 -> 3099
+            DocumentUrgency.H12 -> 4099
+        }
+        UADocumentType.GRADUATION -> when (urgency) {
+            DocumentUrgency.D8 -> 599
+            DocumentUrgency.D7 -> 799
+            DocumentUrgency.D5 -> 1099
+            DocumentUrgency.D3 -> 1599
+            DocumentUrgency.H24 -> 2099
+            DocumentUrgency.H12 -> 3099
+        }
+    }
 
 
 

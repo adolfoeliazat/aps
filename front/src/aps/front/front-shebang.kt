@@ -27,7 +27,7 @@ fun requestAnimationFrame(block: () -> Unit) {
 }
 
 fun customerDynamicPageNames(): List<String> {
-    return listOf("test", "sign-in", "sign-up", "dashboard", "orders", "support")
+    return listOf("test", "sign-in", "sign-up", "dashboard", "orders", "order", "support")
 }
 
 fun writerDynamicPageNames(): List<String> {
@@ -640,12 +640,12 @@ enum class PaperTypeEN(override val title: String) : PaperType {
 enum class PaperTypeRU(override val title: String) : PaperType {
     ESSAY("Реферат") {
         override fun price(dopt: DeliveryOption) = when (dopt) {
-            DeliveryOption.D8 -> 1099
-            DeliveryOption.D7 -> 1299
-            DeliveryOption.D5 -> 1599
-            DeliveryOption.D3 -> 2099
-            DeliveryOption.H24 -> 2599
             DeliveryOption.H12 -> 3599
+            DeliveryOption.H24 -> 2599
+            DeliveryOption.D3 ->  2099
+            DeliveryOption.D5 ->  1599
+            DeliveryOption.D7 ->  1299
+            DeliveryOption.D8 ->  1099
         }
     },
 

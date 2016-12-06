@@ -170,23 +170,6 @@
                 <div class="form-group">
                   <label>
                     <span class="">
-                      Академический уровень
-                    </span>
-                  </label>
-                  <div style="position: relative;">
-                    <select class="form-control">
-                      <option value="SCHOOL">
-                        Школота
-                      </option>
-                      <option value="INSTITUTE">
-                        Студень
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label>
-                    <span class="">
                       Страниц
                     </span>
                   </label>

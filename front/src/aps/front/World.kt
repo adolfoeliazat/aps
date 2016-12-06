@@ -332,6 +332,12 @@ class World(val name: String) {
                     ClientKind.WRITER -> WriterOrdersPage(this).load()
                 }
             })
+            "order" -> ({
+                when (theClientKind) {
+                    ClientKind.CUSTOMER -> CustomerSingleOrderPage(this).load()
+                    ClientKind.WRITER -> imf()
+                }
+            })
             else -> wtf("privatePageLoader for [$name]")
         }
     }

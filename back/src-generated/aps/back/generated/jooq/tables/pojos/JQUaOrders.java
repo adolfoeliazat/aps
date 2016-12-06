@@ -6,7 +6,6 @@ package aps.back.generated.jooq.tables.pojos;
 
 import aps.back.generated.jooq.enums.JQDocumentUrgency;
 import aps.back.generated.jooq.enums.JQOrderState;
-import aps.back.generated.jooq.enums.JQUaAcademicLevel;
 import aps.back.generated.jooq.enums.JQUaDocumentType;
 
 import java.io.Serializable;
@@ -28,7 +27,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrders implements Serializable {
 
-    private static final long serialVersionUID = -103596686;
+    private static final long serialVersionUID = -1237932402;
 
     private Long              id;
     private Boolean           deleted;
@@ -43,7 +42,6 @@ public class JQUaOrders implements Serializable {
     private Timestamp         deadline;
     private Integer           pageCost;
     private Integer           price;
-    private JQUaAcademicLevel academicLevel;
     private Integer           numPages;
     private Integer           numSources;
     private String            details;
@@ -67,7 +65,6 @@ public class JQUaOrders implements Serializable {
         this.deadline = value.deadline;
         this.pageCost = value.pageCost;
         this.price = value.price;
-        this.academicLevel = value.academicLevel;
         this.numPages = value.numPages;
         this.numSources = value.numSources;
         this.details = value.details;
@@ -90,7 +87,6 @@ public class JQUaOrders implements Serializable {
         Timestamp         deadline,
         Integer           pageCost,
         Integer           price,
-        JQUaAcademicLevel academicLevel,
         Integer           numPages,
         Integer           numSources,
         String            details,
@@ -111,7 +107,6 @@ public class JQUaOrders implements Serializable {
         this.deadline = deadline;
         this.pageCost = pageCost;
         this.price = price;
-        this.academicLevel = academicLevel;
         this.numPages = numPages;
         this.numSources = numSources;
         this.details = details;
@@ -224,14 +219,6 @@ public class JQUaOrders implements Serializable {
         this.price = price;
     }
 
-    public JQUaAcademicLevel getAcademicLevel() {
-        return this.academicLevel;
-    }
-
-    public void setAcademicLevel(JQUaAcademicLevel academicLevel) {
-        this.academicLevel = academicLevel;
-    }
-
     public Integer getNumPages() {
         return this.numPages;
     }
@@ -297,7 +284,6 @@ public class JQUaOrders implements Serializable {
         sb.append(", ").append(deadline);
         sb.append(", ").append(pageCost);
         sb.append(", ").append(price);
-        sb.append(", ").append(academicLevel);
         sb.append(", ").append(numPages);
         sb.append(", ").append(numSources);
         sb.append(", ").append(details);

@@ -13,18 +13,14 @@ import into.kommon.*
 
 
 class AdminUsersPage(val ui: World) {
-    fun load(): Promise<Unit> {"__async"
-        __await(Melinda<UserRTO, Nothing, UserFilter>(
+    fun load(): Promise<Unit> {
+        val m = Melinda<UserRTO, Nothing, UserFilter>(
             ui,
             urlPath = "admin-users.html",
             procedureName = "getUsers",
             header = {pageHeader0(t("TOTE", "Пользователи"))},
             filterSelectValues = UserFilter.values(),
             defaultFilter = UserFilter.ALL,
-            plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
-                AdminCreateUserRequest(), ui,
-                primaryButtonTitle = t("TOTE", "Создать засранца"),
-                cancelButtonTitle = defaultCancelButtonTitle),
 
             renderItem = {index, _user -> object:Placeholder() {
                 var user = _user
@@ -154,8 +150,17 @@ class AdminUsersPage(val ui: World) {
                 }
             }
             }
-        ).ignita())
-        return __asyncResult(Unit)
+        )
+
+        m.specifyPlus(
+            plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
+                AdminCreateUserRequest(), ui,
+                primaryButtonTitle = t("TOTE", "Создать засранца"),
+                cancelButtonTitle = defaultCancelButtonTitle
+            )
+        )
+
+        return m.ignita()
     }
 }
 

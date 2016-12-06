@@ -8,7 +8,6 @@ import aps.back.generated.jooq.JQPublic;
 import aps.back.generated.jooq.Keys;
 import aps.back.generated.jooq.enums.JQDocumentUrgency;
 import aps.back.generated.jooq.enums.JQOrderState;
-import aps.back.generated.jooq.enums.JQUaAcademicLevel;
 import aps.back.generated.jooq.enums.JQUaDocumentType;
 import aps.back.generated.jooq.tables.records.JQUaOrdersRecord;
 
@@ -41,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrders extends TableImpl<JQUaOrdersRecord> {
 
-    private static final long serialVersionUID = -802776378;
+    private static final long serialVersionUID = -163390370;
 
     /**
      * The reference instance of <code>public.ua_orders</code>
@@ -120,11 +119,6 @@ public class JQUaOrders extends TableImpl<JQUaOrdersRecord> {
      * The column <code>public.ua_orders.price</code>.
      */
     public final TableField<JQUaOrdersRecord, Integer> PRICE = createField("price", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
-     * The column <code>public.ua_orders.academic_level</code>.
-     */
-    public final TableField<JQUaOrdersRecord, JQUaAcademicLevel> ACADEMIC_LEVEL = createField("academic_level", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(aps.back.generated.jooq.enums.JQUaAcademicLevel.class), this, "");
 
     /**
      * The column <code>public.ua_orders.num_pages</code>.

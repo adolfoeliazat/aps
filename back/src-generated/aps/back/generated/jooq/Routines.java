@@ -6,6 +6,7 @@ package aps.back.generated.jooq;
 
 import aps.back.generated.jooq.routines.JQOnInsert;
 import aps.back.generated.jooq.routines.JQOnUpdate;
+import aps.back.generated.jooq.routines.JQUaOrdersTsvTrigger;
 import aps.back.generated.jooq.routines.JQUsersTsvTrigger;
 
 import javax.annotation.Generated;
@@ -61,6 +62,25 @@ public class Routines {
      */
     public static Field<Object> onUpdate() {
         JQOnUpdate f = new JQOnUpdate();
+
+        return f.asField();
+    }
+
+    /**
+     * Call <code>public.ua_orders_tsv_trigger</code>
+     */
+    public static Object uaOrdersTsvTrigger(Configuration configuration) {
+        JQUaOrdersTsvTrigger f = new JQUaOrdersTsvTrigger();
+
+        f.execute(configuration);
+        return f.getReturnValue();
+    }
+
+    /**
+     * Get <code>public.ua_orders_tsv_trigger</code> as a field.
+     */
+    public static Field<Object> uaOrdersTsvTrigger() {
+        JQUaOrdersTsvTrigger f = new JQUaOrdersTsvTrigger();
 
         return f.asField();
     }

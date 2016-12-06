@@ -252,6 +252,14 @@ class TestScenarioBuilder {
         act {step.passed = true}
     }
 
+    fun <E : Enum<E>> setValueDescribingStep(shame: String, value: E) {
+        setValueDescribingStep(shame, value.name)
+    }
+
+    fun setValueDescribingStep(shame: String, value: Int) {
+        setValueDescribingStep(shame, value.toString())
+    }
+
     fun setValueDescribingStep(shame: String, value: Boolean) {
         val action = if (value) "Checking" else "Unchecking"
         val descr = "$action `$shame`"

@@ -27,6 +27,8 @@ public enum JQOrderState implements EnumType {
 
     CREATED("CREATED"),
 
+    WAITING_FOR_PAYMENT("WAITING_FOR_PAYMENT"),
+
     WRITER_ASSIGNED("WRITER_ASSIGNED");
 
     private final String literal;
