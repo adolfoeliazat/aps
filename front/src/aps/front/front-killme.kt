@@ -333,7 +333,7 @@ fun legacy_implementControlShit(arg: dynamic) {
 //                await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
             } else {
                 val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
-                shit?.let {await(it(stubEvent))}
+                shit?.let {awaitJSShit<Unit>(it(stubEvent))}
 //                await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
             }
         }

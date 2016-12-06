@@ -17,6 +17,10 @@ class TestCustomer_NewOrder_HappyPath : StepBasedTestScenario() {
             val world = World("boobs")
             await(world.boot())
         }}
+
+        o.clickDescribingStep("button-plus")
+        o.setValueDescribingStep("TextField-numPages.Input", "qwe")
+        o.clickDescribingStep("button-primary")
     }
 }
 
