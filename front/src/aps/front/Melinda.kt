@@ -29,13 +29,11 @@ class Melinda<Item, Entity, Filter>(
     val hasHeaderControls: () -> Boolean = {true},
     val urlEntityParamName: String? = null,
     val entityID: String? = null,
-    val editFormSpec: FormSpec<*, *>? = null,
     val renderItem: (Int, Item) -> ToReactElementable,
     val emptyMessage: String? = null,
     val tabsSpec: Any? = null,
     val header: (Melinda<Item, Entity, Filter>).() -> ToReactElementable,
-    val aboveItems: (Melinda<Item, Entity, Filter>).() -> ToReactElementable = {reactNull},
-    val onEditFormSuccessa: () -> Promise<Unit> = {async{}}
+    val aboveItems: (Melinda<Item, Entity, Filter>).() -> ToReactElementable = {reactNull}
 )
 where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
@@ -49,20 +47,29 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     var updateHeaderControls = {}
     var cancelForm = {}
 //    var items: dynamic = undefined
-    var plusShit: ButtonAndForm? = null
-    var editShit: ButtonAndForm? = null
+    var plusShit: IButtonAndForm? = null
+    var editShit: IButtonAndForm? = null
     var searchBox: ToReactElementable = reactNull
     var searchBoxInput: Input? = null
     var filterSelect: Select<Filter>? = null
     var orderingSelect: Select<Ordering>? = null
-    var plusFormSpec: FormSpec<*, *>? = null
-    var onPlusFormSuccessa: () -> Promise<Unit> = {async{}}
 
-    inner class ButtonAndForm(val name: String, val level: String, val icon: String, val formSpec: FormSpec<*, *>, val onSuccessa: () -> Promise<Unit>) {
+    interface IButtonAndForm {
+        fun renderButton(): ReactElement
+        fun renderForm(): ReactElement?
+    }
+
+    inner class ButtonAndForm<Req : RequestMatumba, Res>(
+        val name: String,
+        val level: String,
+        val icon: String,
+        val formSpec: FormSpec<Req, Res>,
+        val onSuccessa: (Res) -> Promise<Unit>
+    ) : IButtonAndForm {
         private var form: ReactElement? = null
         private var formClass = ""
 
-        fun button() = Shitus.button(json(
+        override fun renderButton(): ReactElement = Shitus.button(json(
             "tamyShamy" to name, "style" to json("marginLeft" to 0), "level" to level, "icon" to icon, "disabled" to headerControlsDisabled,
             "onClick" to {
                 showEmptyLabel = false
@@ -77,8 +84,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
                 form = FormMatumba(formSpec.copy(
                     onCancel = {cancelForm()},
-                    onSuccessa = {async{
-                        await(onSuccessa())
+                    onSuccessa = {res -> async{
+                        await(onSuccessa(res))
                     }}
                 )).toReactElement()
 
@@ -86,17 +93,23 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             }
         ))
 
-        fun form() = form?.let {
+        override fun renderForm(): ReactElement? = form?.let {
             Shitus.diva(json("className" to formClass, "style" to json("marginBottom" to 15)), it)
         }
     }
 
     fun <Req : RequestMatumba, Res> specifyPlus(
-        plusFormSpec: FormSpec<Req, Res>?,
-        onPlusFormSuccessa: () -> Promise<Unit> = {async{}}
+        plusFormSpec: FormSpec<Req, Res>,
+        onPlusFormSuccessa: (Res) -> Promise<Unit> = {async{}}
     ) {
-        this.plusFormSpec = plusFormSpec
-        this.onPlusFormSuccessa = onPlusFormSuccessa
+        plusShit = ButtonAndForm(name = "plus", level = "primary", icon = plusIcon, formSpec = plusFormSpec, onSuccessa = onPlusFormSuccessa)
+    }
+
+    fun <Req : RequestMatumba, Res> specifyEdit(
+        editFormSpec: FormSpec<Req, Res>,
+        onEditFormSuccessa: (Res) -> Promise<Unit> = {async{}}
+    ) {
+        editShit = ButtonAndForm(name = "edit", level = "default", icon = "edit", formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
     }
 
     fun setHeaderControlsDisappearing() {
@@ -243,12 +256,6 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 //            )
         }
 
-        if (plusFormSpec != null) {
-            plusShit = ButtonAndForm(name = "plus", level = "primary", icon = plusIcon, formSpec = plusFormSpec!!, onSuccessa = onPlusFormSuccessa)
-        }
-        if (editFormSpec != null) {
-            editShit = ButtonAndForm(name = "edit", level = "default", icon = "edit", formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
-        }
 
         val itemsReq = ItemsRequest(filterSelectValues!!)
         filterSelect?.let {itemsReq.filter.value = it.value}
@@ -269,8 +276,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 override fun toReactElement(): ReactElement {
                     return Shitus.diva(json("style" to json("marginBottom" to 15)),
                                        tabs,
-                                       editShit?.let {it.form()},
-                                       plusShit?.let {it.form()},
+                                       editShit?.let {it.renderForm()},
+                                       plusShit?.let {it.renderForm()},
                                        aboveItems().toReactElement(),
 
                                        run { // Render items
@@ -302,8 +309,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                                         searchBox.toReactElement(),
                                         filterSelect?.toReactElement(),
                                         orderingSelect?.toReactElement(),
-                                        editShit?.let {it.button()},
-                                        plusShit?.let {it.button()}
+                                        editShit?.let {it.renderButton()},
+                                        plusShit?.let {it.renderButton()}
                             )
                         }
                     })
