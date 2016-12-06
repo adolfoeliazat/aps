@@ -6,7 +6,7 @@ package aps.back.generated.jooq.tables;
 
 import aps.back.generated.jooq.JQPublic;
 import aps.back.generated.jooq.Keys;
-import aps.back.generated.jooq.enums.JQDeliveryOption;
+import aps.back.generated.jooq.enums.JQDocumentUrgency;
 import aps.back.generated.jooq.enums.JQOrderState;
 import aps.back.generated.jooq.enums.JQUaAcademicLevel;
 import aps.back.generated.jooq.enums.JQUaDocumentType;
@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrders extends TableImpl<JQUaOrdersRecord> {
 
-    private static final long serialVersionUID = -1696475842;
+    private static final long serialVersionUID = -802776378;
 
     /**
      * The reference instance of <code>public.ua_orders</code>
@@ -102,9 +102,9 @@ public class JQUaOrders extends TableImpl<JQUaOrdersRecord> {
     public final TableField<JQUaOrdersRecord, JQUaDocumentType> DOCUMENT_TYPE = createField("document_type", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(aps.back.generated.jooq.enums.JQUaDocumentType.class), this, "");
 
     /**
-     * The column <code>public.ua_orders.delivery_option</code>.
+     * The column <code>public.ua_orders.document_urgency</code>.
      */
-    public final TableField<JQUaOrdersRecord, JQDeliveryOption> DELIVERY_OPTION = createField("delivery_option", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(aps.back.generated.jooq.enums.JQDeliveryOption.class), this, "");
+    public final TableField<JQUaOrdersRecord, JQDocumentUrgency> DOCUMENT_URGENCY = createField("document_urgency", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(aps.back.generated.jooq.enums.JQDocumentUrgency.class), this, "");
 
     /**
      * The column <code>public.ua_orders.deadline</code>.

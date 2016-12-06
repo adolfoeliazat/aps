@@ -151,7 +151,7 @@ create type ua_document_type as enum (
     'GRADUATION' -- Дипломная
 );
 
-create type delivery_option as enum (
+create type document_urgency as enum (
     'H12', 'H24', 'D3', 'D5', 'D7', 'D8'
 );
 
@@ -175,7 +175,7 @@ create table ua_orders(
     customer_id bigint not null references users(id),
     title text not null,
     document_type ua_document_type not null,
-    delivery_option delivery_option not null,
+    document_urgency document_urgency not null,
     deadline timestamp /*maybe null*/,
     page_cost int not null,
     price int not null,

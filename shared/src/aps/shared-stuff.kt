@@ -414,7 +414,32 @@ class CustomerCreateUAOrderRequest : RequestMatumba() {
     class Response(val newOrder: OrderRTO)
 
     val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, 5, 100)
-//    val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), )
+    val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), UADocumentType.values())
+    val documentUrgency = SelectField(this, "documentUrgency", t("TOTE", "Срочность"), DocumentUrgency.values())
+    val academicLevel = SelectField(this, "academicLevel", t("TOTE", "Академический уровень"), UAAcademicLevel.values())
+    val numPages = TextField(this, "numPages", t("TOTE", "Страниц"), TextFieldType.STRING, 5, 100)
+    val numSources = TextField(this, "numSources", t("TOTE", "Источников"), TextFieldType.STRING, 5, 100)
+    val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, 5, 100)
+}
+
+enum class UADocumentType(override val title: String) : Titled {
+    ESSAY(t("TOTE", "Реферат")),
+    COURSE(t("TOTE", "Курсовая работа")),
+    GRADUATION(t("TOTE", "Дипломная работа"))
+}
+
+enum class DocumentUrgency(override val title: String) : Titled {
+    H12(t("TOTE", "12 часов")),
+    H24(t("TOTE", "24 часа")),
+    D3(t("TOTE", "2-3 дня")),
+    D5(t("TOTE", "4-5 дней")),
+    D7(t("TOTE", "6-7 дней")),
+    D8(t("TOTE", "8+ дней"))
+}
+
+enum class UAAcademicLevel(override val title: String) : Titled {
+    SCHOOL(t("TOTE", "Школота")),
+    INSTITUTE(t("TOTE", "Студень"))
 }
 
 
