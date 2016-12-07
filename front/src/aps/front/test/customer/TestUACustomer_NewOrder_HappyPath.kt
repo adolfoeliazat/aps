@@ -3,7 +3,7 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 
-class TestCustomer_NewOrder_HappyPath : StepBasedTestScenario() {
+class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
     val shit = TestShit()
 
     override fun buildSteps() {
@@ -21,7 +21,7 @@ class TestCustomer_NewOrder_HappyPath : StepBasedTestScenario() {
 
         o.assertScreenHTML("1", "9d4f20ac-0d7f-494c-bd94-807a4afdd2c5")
         o.clickDescribingStep("button-plus")
-        o.assertScreenHTML("2", "44a46713-621c-4a69-b6e6-b09db0965f25")
+        o.assertScreenHTML("New order form", "44a46713-621c-4a69-b6e6-b09db0965f25")
 
         o.setValueDescribingStep("TextField-title.Input", "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского")
         o.setValueDescribingStep("SelectField-documentType.Select", UADocumentType.COURSE)

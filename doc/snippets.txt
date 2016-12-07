@@ -1,6 +1,8 @@
 cd /d e:\work\aps
 title aps forever & _run aps.back.Forever
 
+ant generate-shit
+
 
 PostgreSQL
 ==========

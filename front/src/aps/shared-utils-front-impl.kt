@@ -207,9 +207,9 @@ annotation class Front
         return Shitus.diva(json("controlTypeName" to "TextField", "tamy" to name, "className" to "form-group"),
             if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else undefined,
             Shitus.diva(json("style" to json("position" to "relative")),
-                input,
-                if (error != null) errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
-                if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
+                        input,
+                        if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
+                        if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
     }
 
     override fun populateRemote(json: Json) {
@@ -259,9 +259,9 @@ annotation class Front
         return Shitus.diva(json("controlTypeName" to "IntField", "tamy" to name, "className" to "form-group"),
             if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else undefined,
             Shitus.diva(json("style" to json("position" to "relative")),
-                input,
-                if (error != null) errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
-                if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
+                        input,
+                        if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
+                        if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
     }
 
     override fun populateRemote(json: Json) {
@@ -285,7 +285,7 @@ annotation class Front
                 ),
                 if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "borderRadius" to 10, "marginTop" to 3, "marginRight" to 9, "marginLeft" to "auto", "backgroundColor" to Color.RED_300))) else null
             ),
-            if (error != null) errorLabel(json("name" to "agreeTerms", "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null
+            if (error != null) errorLabelOld(json("name" to "agreeTerms", "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null
         )
     }
 
@@ -349,20 +349,6 @@ where T : Enum<T>, T : Titled {
         onBlur = {
             form.fieldBlurred(this)
         }
-
-//        json(
-//            "values" to values.map{json("value" to it.name, "title" to it.title)}.toJSArray(),
-//            "tamy" to true,
-//            "onChange" to {
-//                form.fieldChanged()
-//            },
-//            "onFocus" to {
-//                form.fieldFocused(this)
-//            },
-//            "onBlur" to {
-//                form.fieldBlurred(this)
-//            }
-//        )
     )
 
     override fun render(): ReactElement {
@@ -370,9 +356,9 @@ where T : Enum<T>, T : Titled {
             // Can it be null?
             if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else null,
             Shitus.diva(json("style" to json("position" to "relative")),
-                select.toReactElement(),
-                if (error != null) errorLabel(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null,
-                if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else null))
+                        select.toReactElement(),
+                        if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null,
+                        if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else null))
     }
 
     var value: T
@@ -390,6 +376,7 @@ where T : Enum<T>, T : Titled {
     }
 
 }
+
 
 fun <Res> callMatumba(req: RequestMatumba, token: String?): Promise<Res> =
     callMatumba(remoteProcedureNameForRequest(req), req, token)

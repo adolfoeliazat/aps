@@ -328,13 +328,13 @@ class World(val name: String) {
             })
             "orders" -> ({
                 when (theClientKind) {
-                    ClientKind.CUSTOMER -> CustomerOrdersPage(this).load()
+                    ClientKind.CUSTOMER -> CustomerUAOrdersPage(this).load()
                     ClientKind.WRITER -> WriterOrdersPage(this).load()
                 }
             })
             "order" -> ({
                 when (theClientKind) {
-                    ClientKind.CUSTOMER -> CustomerSingleOrderPage(this).load()
+                    ClientKind.CUSTOMER -> CustomerSingleUAOrderPage(this).load()
                     ClientKind.WRITER -> imf()
                 }
             })
@@ -355,6 +355,8 @@ class World(val name: String) {
         DOMReact.render(topNavbarElement, Shitus.byid0("topNavbarContainer"))
         DOMReact.render(rootElement, Shitus.byid0("root"))
     }
+
+    val tokenSure: String get() = token!!
 }
 
 class Page(

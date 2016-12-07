@@ -7,6 +7,7 @@
 package aps
 
 import aps.front.*
+import into.kommon.*
 
 class FieldError(val field: String, val error: String)
 
@@ -415,7 +416,7 @@ class CustomerCreateUAOrderRequest : RequestMatumba() {
 
     val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen)
     val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), UADocumentType.values())
-    val documentUrgency = SelectField(this, "documentUrgency", t("TOTE", "Срочность"), DocumentUrgency.values())
+    val deadline = DateTimeField(this, "deadline", t("TOTE", "Срок"))
     val numPages = IntField(this, "numPages", t("TOTE", "Страниц"), const.order.minPages, const.order.maxPages)
     val numSources = IntField(this, "numSources", t("TOTE", "Источников"), const.order.minSources, const.order.maxSources)
     val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen)
@@ -469,6 +470,13 @@ fun uaPageCost(type: UADocumentType, urgency: DocumentUrgency): Int =
         }
     }
 
+class LoadUAOrderRequest : RequestMatumba() {
+    class Response(val order: OrderRTO)
+    val id = StringHiddenField(this, "id")
+}
+
+fun send(token: String, req: LoadUAOrderRequest): Promise<ZimbabweResponse<LoadUAOrderRequest.Response>> =
+    callZimbabwe(req, token)
 
 
 

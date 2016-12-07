@@ -19,6 +19,7 @@ val kol = ElementBuilderFactory("ol")
 val kli = ElementBuilderFactory("li")
 val ka = ElementBuilderFactory("a")
 val ki = ElementBuilderFactory("i")
+val klabel = ElementBuilderFactory("label")
 
 fun span(s: String? = null) = kspan {it-s}
 
@@ -148,7 +149,8 @@ data class Style(
     var whiteSpace: String? = null,
     var cursor: String? = null,
     var opacity: Any? = null,
-    var float: String? = null
+    var float: String? = null,
+    var borderRadius: Any? = null
 ) {
     fun toReactStyle(): dynamic {
         return dyna{o->
@@ -195,6 +197,7 @@ data class Style(
             cursor?.let {o.cursor = it}
             opacity?.let {o.opacity = it}
             float?.let {o.float = it}
+            borderRadius?.let {o.borderRadius = it}
         }
     }
 

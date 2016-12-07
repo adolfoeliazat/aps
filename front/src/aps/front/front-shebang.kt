@@ -427,7 +427,7 @@ fun img(src: dynamic, _attrs: dynamic = null): dynamic {
     return React.createElement("img", global.Object.assign(attrs, json("src" to src)))
 }
 
-fun errorLabel(def: dynamic): dynamic {
+fun errorLabelOld(def: dynamic): dynamic {
     val name: dynamic = def.name
     val title: dynamic = def.title
     val style: dynamic = def.style ?: json()
@@ -757,6 +757,28 @@ val ELID_UNDER_FOOTER = "underFooter"
 fun markdownTitledList(title: String, items: List<String>): String {
     return title + "\n" + items.map{"* $it"}.joinToString("\n")
 }
+
+fun World.setErrorPage(msg: String) {
+    setPage(Page(
+        header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
+        body = oldShitAsToReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to msg))))))
+}
+
+fun World.setShittyParamsPage() {
+    setErrorPage(t("TOTE", "Не надо мне всякую херню передавать в параметрах, OK?"))
+}
+
+fun <T> World.setShittyResponsePage(res: ZimbabweResponse.Shitty<T>) {
+    setErrorPage(res.error)
+}
+
+
+
+
+
+
+
+
 
 
 

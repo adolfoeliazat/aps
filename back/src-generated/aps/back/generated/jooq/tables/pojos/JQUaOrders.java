@@ -4,7 +4,6 @@
 package aps.back.generated.jooq.tables.pojos;
 
 
-import aps.back.generated.jooq.enums.JQDocumentUrgency;
 import aps.back.generated.jooq.enums.JQOrderState;
 import aps.back.generated.jooq.enums.JQUaDocumentType;
 
@@ -27,27 +26,26 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrders implements Serializable {
 
-    private static final long serialVersionUID = -1237932402;
+    private static final long serialVersionUID = 1112544616;
 
-    private Long              id;
-    private Boolean           deleted;
-    private Timestamp         insertedAt;
-    private Timestamp         updatedAt;
-    private Object            tsv;
-    private Long              creatorId;
-    private Long              customerId;
-    private String            title;
-    private JQUaDocumentType  documentType;
-    private JQDocumentUrgency documentUrgency;
-    private Timestamp         deadline;
-    private Integer           pageCost;
-    private Integer           price;
-    private Integer           numPages;
-    private Integer           numSources;
-    private String            details;
-    private String            adminNotes;
-    private JQOrderState      state;
-    private Long              writerId;
+    private Long             id;
+    private Boolean          deleted;
+    private Timestamp        insertedAt;
+    private Timestamp        updatedAt;
+    private Object           tsv;
+    private Long             creatorId;
+    private Long             customerId;
+    private String           title;
+    private JQUaDocumentType documentType;
+    private Timestamp        deadline;
+    private Integer          pageCost;
+    private Integer          price;
+    private Integer          numPages;
+    private Integer          numSources;
+    private String           details;
+    private String           adminNotes;
+    private JQOrderState     state;
+    private Long             writerId;
 
     public JQUaOrders() {}
 
@@ -61,7 +59,6 @@ public class JQUaOrders implements Serializable {
         this.customerId = value.customerId;
         this.title = value.title;
         this.documentType = value.documentType;
-        this.documentUrgency = value.documentUrgency;
         this.deadline = value.deadline;
         this.pageCost = value.pageCost;
         this.price = value.price;
@@ -74,25 +71,24 @@ public class JQUaOrders implements Serializable {
     }
 
     public JQUaOrders(
-        Long              id,
-        Boolean           deleted,
-        Timestamp         insertedAt,
-        Timestamp         updatedAt,
-        Object            tsv,
-        Long              creatorId,
-        Long              customerId,
-        String            title,
-        JQUaDocumentType  documentType,
-        JQDocumentUrgency documentUrgency,
-        Timestamp         deadline,
-        Integer           pageCost,
-        Integer           price,
-        Integer           numPages,
-        Integer           numSources,
-        String            details,
-        String            adminNotes,
-        JQOrderState      state,
-        Long              writerId
+        Long             id,
+        Boolean          deleted,
+        Timestamp        insertedAt,
+        Timestamp        updatedAt,
+        Object           tsv,
+        Long             creatorId,
+        Long             customerId,
+        String           title,
+        JQUaDocumentType documentType,
+        Timestamp        deadline,
+        Integer          pageCost,
+        Integer          price,
+        Integer          numPages,
+        Integer          numSources,
+        String           details,
+        String           adminNotes,
+        JQOrderState     state,
+        Long             writerId
     ) {
         this.id = id;
         this.deleted = deleted;
@@ -103,7 +99,6 @@ public class JQUaOrders implements Serializable {
         this.customerId = customerId;
         this.title = title;
         this.documentType = documentType;
-        this.documentUrgency = documentUrgency;
         this.deadline = deadline;
         this.pageCost = pageCost;
         this.price = price;
@@ -185,14 +180,6 @@ public class JQUaOrders implements Serializable {
 
     public void setDocumentType(JQUaDocumentType documentType) {
         this.documentType = documentType;
-    }
-
-    public JQDocumentUrgency getDocumentUrgency() {
-        return this.documentUrgency;
-    }
-
-    public void setDocumentUrgency(JQDocumentUrgency documentUrgency) {
-        this.documentUrgency = documentUrgency;
     }
 
     public Timestamp getDeadline() {
@@ -280,7 +267,6 @@ public class JQUaOrders implements Serializable {
         sb.append(", ").append(customerId);
         sb.append(", ").append(title);
         sb.append(", ").append(documentType);
-        sb.append(", ").append(documentUrgency);
         sb.append(", ").append(deadline);
         sb.append(", ").append(pageCost);
         sb.append(", ").append(price);

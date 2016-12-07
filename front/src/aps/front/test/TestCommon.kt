@@ -62,22 +62,7 @@ interface TestSuite {
 
 val testScenarios = mutableMapOf<String, TestScenario>()
 
-
 fun tetete() {
-    val something = 10
-
-    fun qwe(name: String): () -> String =
-        when (name) {
-            "foo" -> ({"oof"})
-            "bar" -> ({
-                when (something) {
-                }
-            })
-            else -> ({"wtf"})
-        }
-
-    console.log("foo", qwe("foo")())
-    console.log("bar", qwe("bar")())
 }
 
 

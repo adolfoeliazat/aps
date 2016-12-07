@@ -3,7 +3,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-class CustomerOrdersPage(val world: World) {
+class CustomerUAOrdersPage(val world: World) {
     fun load(): Promise<Unit> {
         val m = Melinda<OrderRTO, Nothing, CustomerOrderFilter>(
             ui = world,
@@ -25,10 +25,8 @@ class CustomerOrdersPage(val world: World) {
                 CustomerCreateUAOrderRequest(), world,
                 primaryButtonTitle = t("TOTE", "Создать"),
                 cancelButtonTitle = defaultCancelButtonTitle),
-            onPlusFormSuccessa = {
-                //res: CustomerCreateUAOrderRequest.Response ->
-//                world.pushNavigate("order?id=${res.id}")
-                Promise.resolve(Unit)
+            onPlusFormSuccessa = {res->
+                world.pushNavigate("order.html?id=${res.id}")
             }
         )
 

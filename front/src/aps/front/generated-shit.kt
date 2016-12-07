@@ -69,6 +69,7 @@ operator fun ElementBuilderFactory.invoke (
     cursor: String? = null,
     opacity: Any? = null,
     float: String? = null,
+    borderRadius: Any? = null,
     block: ((ElementBuilder) -> Unit)? = null
 ) = invoke(
     attrs = Attrs(
@@ -125,7 +126,8 @@ operator fun ElementBuilderFactory.invoke (
         whiteSpace = whiteSpace ?: baseStyle?.whiteSpace,
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
-        float = float ?: baseStyle?.float
+        float = float ?: baseStyle?.float,
+        borderRadius = borderRadius ?: baseStyle?.borderRadius
     ),
     block = block
 )
@@ -187,7 +189,8 @@ fun faIcon (
     whiteSpace: String? = null,
     cursor: String? = null,
     opacity: Any? = null,
-    float: String? = null
+    float: String? = null,
+    borderRadius: Any? = null
 ) = faIcon(
     icon = icon,
     attrs = Attrs(
@@ -244,7 +247,8 @@ fun faIcon (
         whiteSpace = whiteSpace ?: baseStyle?.whiteSpace,
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
-        float = float ?: baseStyle?.float
+        float = float ?: baseStyle?.float,
+        borderRadius = borderRadius ?: baseStyle?.borderRadius
     )
 )
 
@@ -311,7 +315,8 @@ fun urlLink (
     whiteSpace: String? = null,
     cursor: String? = null,
     opacity: Any? = null,
-    float: String? = null
+    float: String? = null,
+    borderRadius: Any? = null
 ) = urlLink(
     url = url,
     delayActionForFanciness = delayActionForFanciness,
@@ -374,7 +379,8 @@ fun urlLink (
         whiteSpace = whiteSpace ?: baseStyle?.whiteSpace,
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
-        float = float ?: baseStyle?.float
+        float = float ?: baseStyle?.float,
+        borderRadius = borderRadius ?: baseStyle?.borderRadius
     )
 )
 
@@ -438,7 +444,8 @@ fun link (
     whiteSpace: String? = null,
     cursor: String? = null,
     opacity: Any? = null,
-    float: String? = null
+    float: String? = null,
+    borderRadius: Any? = null
 ) = link(
     params = LinkParams(
         content = content ?: baseLinkParams?.content,
@@ -498,7 +505,8 @@ fun link (
         whiteSpace = whiteSpace ?: baseStyle?.whiteSpace,
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
-        float = float ?: baseStyle?.float
+        float = float ?: baseStyle?.float,
+        borderRadius = borderRadius ?: baseStyle?.borderRadius
     )
 )
 
@@ -560,6 +568,7 @@ fun hor (
     cursor: String? = null,
     opacity: Any? = null,
     float: String? = null,
+    borderRadius: Any? = null,
     block: ((ElementBuilder) -> Unit)? = null
 ) = hor(
     spacing = spacing,
@@ -617,7 +626,8 @@ fun hor (
         whiteSpace = whiteSpace ?: baseStyle?.whiteSpace,
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
-        float = float ?: baseStyle?.float
+        float = float ?: baseStyle?.float,
+        borderRadius = borderRadius ?: baseStyle?.borderRadius
     ),
     block = block
 )
@@ -679,6 +689,7 @@ fun hor1 (
     cursor: String? = null,
     opacity: Any? = null,
     float: String? = null,
+    borderRadius: Any? = null,
     block: ((ElementBuilder) -> Unit)? = null
 ) = hor1(
     attrs = Attrs(
@@ -735,7 +746,8 @@ fun hor1 (
         whiteSpace = whiteSpace ?: baseStyle?.whiteSpace,
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
-        float = float ?: baseStyle?.float
+        float = float ?: baseStyle?.float,
+        borderRadius = borderRadius ?: baseStyle?.borderRadius
     ),
     block = block
 )
@@ -797,6 +809,7 @@ fun hor2 (
     cursor: String? = null,
     opacity: Any? = null,
     float: String? = null,
+    borderRadius: Any? = null,
     block: ((ElementBuilder) -> Unit)? = null
 ) = hor2(
     attrs = Attrs(
@@ -853,7 +866,8 @@ fun hor2 (
         whiteSpace = whiteSpace ?: baseStyle?.whiteSpace,
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
-        float = float ?: baseStyle?.float
+        float = float ?: baseStyle?.float,
+        borderRadius = borderRadius ?: baseStyle?.borderRadius
     ),
     block = block
 )

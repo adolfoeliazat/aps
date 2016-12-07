@@ -64,7 +64,7 @@ fun main(args: Array<String>) {
 
 fun t(en: String, ua: String) = ua
 
-fun bitchExpectedly(msg: String) {
+fun bitchExpectedly(msg: String): Nothing {
     throw ExpectedRPCShit(msg)
 }
 
