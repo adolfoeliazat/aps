@@ -165,57 +165,6 @@ annotation class Front
     }
 }
 
-@Front class TextField(
-    container: RequestMatumba,
-    name: String,
-    val title: String,
-    type: TextFieldType,
-    val minLen: Int,
-    val maxLen: Int,
-    val minDigits: Int = -1
-): FormFieldFront(container, name) {
-
-    override var error: String? = null
-
-    val input = Shitus.Input(json(
-        "tamy" to true,
-        "type" to when (type) {
-            TextFieldType.PASSWORD -> "password"
-            else -> "text"
-        },
-        "kind" to when (type) {
-            TextFieldType.TEXTAREA -> "textarea"
-            else -> "input"
-        },
-        "volatileStyle" to {
-            if (error != null) json("paddingRight" to 30)
-            else undefined
-        }
-    ))
-
-    var value: String
-        get() = input.getValue()
-        set(value) { input.setValue(value) }
-
-    override var disabled: Boolean
-        get() = input.isDisabled()
-        set(value) { input.setDisabled(value) }
-
-    override fun focus() = input.focus()
-
-    override fun render(): ReactElement {
-        return Shitus.diva(json("controlTypeName" to "TextField", "tamy" to name, "className" to "form-group"),
-            if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else undefined,
-            Shitus.diva(json("style" to json("position" to "relative")),
-                        input,
-                        if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
-                        if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
-    }
-
-    override fun populateRemote(json: Json) {
-        json[name] = value
-    }
-}
 
 @native interface IKillMeInput {
     fun getValue(): String
@@ -225,88 +174,7 @@ annotation class Front
     fun focus()
 }
 
-@Front class IntField(
-    container: RequestMatumba,
-    name: String,
-    val title: String,
-    val min: Int,
-    val max: Int
-): FormFieldFront(container, name) {
 
-    override var error: String? = null
-
-    val input: IKillMeInput = Shitus.Input(json(
-        "tamy" to true,
-        "type" to "text",
-        "kind" to "input",
-        "volatileStyle" to {
-            if (error != null) json("paddingRight" to 30)
-            else undefined
-        }
-    ))
-
-//    var value: Int
-//        get() = imf("IntField value prop") // input.getValue()
-//        set(value) { input.setValue("" + value) }
-
-    override var disabled: Boolean
-        get() = input.isDisabled()
-        set(value) { input.setDisabled(value) }
-
-    override fun focus() = input.focus()
-
-    override fun render(): ReactElement {
-        return Shitus.diva(json("controlTypeName" to "IntField", "tamy" to name, "className" to "form-group"),
-            if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else undefined,
-            Shitus.diva(json("style" to json("position" to "relative")),
-                        input,
-                        if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
-                        if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
-    }
-
-    override fun populateRemote(json: Json) {
-        json[name] = input.getValue()
-    }
-}
-
-@Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront(container, name) {
-    override var error: String? = null
-
-    val checkbox = Shitus.Checkbox(json("tamy" to true))
-
-    override fun render(): ReactElement {
-        return Shitus.diva(json("controlTypeName" to "AgreeTermsField", "tame" to "AgreeTermsField", "className" to "form-group"),
-            Shitus.diva(json("style" to json("display" to "flex")),
-                checkbox,
-                Shitus.diva(json("style" to json("width" to 5))),
-                Shitus.diva(json(),
-                    Shitus.spanc(json("tame" to "prose", "content" to t("I’ve read and agreed with ", "Я прочитал и принял "))),
-                    Shitus.link(json("tamy" to true, "title" to t("terms and conditions", "соглашение"), "onClick" to {this.popupTerms()}))
-                ),
-                if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "borderRadius" to 10, "marginTop" to 3, "marginRight" to 9, "marginLeft" to "auto", "backgroundColor" to Color.RED_300))) else null
-            ),
-            if (error != null) errorLabelOld(json("name" to "agreeTerms", "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null
-        )
-    }
-
-    var value: Boolean
-        get() = checkbox.getValue()
-        set(value) { checkbox.setValue(value) }
-
-    override var disabled: Boolean
-        get() = checkbox.isDisabled()
-        set(value) { checkbox.setDisabled(value) }
-
-    override fun focus() = dwarn("Need focus() for CheckboxField?")
-
-    fun popupTerms() {
-        global.alert("No fucking terms. You can go crazy with this shit...")
-    }
-
-    override fun populateRemote(json: Json) {
-        json[name] = value
-    }
-}
 
 //@native interface LegacyUIShit {
 //    fun replaceNavigate(url: String): Promise<Unit>
@@ -329,53 +197,6 @@ annotation class Front
 //    var updatePageHeader: () -> Unit
 //}
 
-@Front class SelectField<T>(
-    container: RequestMatumba,
-    name: String,
-    val title: String,
-    val values: Array<T>
-) : FormFieldFront(container, name)
-where T : Enum<T>, T : Titled {
-
-    override var error: String? = null
-
-    val select = Select(Attrs(tamy=""), values, null,
-        onChange = {
-            form.fieldChanged()
-        },
-        onFocus = {
-            form.fieldFocused(this)
-        },
-        onBlur = {
-            form.fieldBlurred(this)
-        }
-    )
-
-    override fun render(): ReactElement {
-        return Shitus.diva(json("controlTypeName" to "SelectField", "tamy" to name, "className" to "form-group"),
-            // Can it be null?
-            if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else null,
-            Shitus.diva(json("style" to json("position" to "relative")),
-                        select.toReactElement(),
-                        if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null,
-                        if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else null))
-    }
-
-    var value: T
-        get() = select.value
-        set(value) { select.setValue(value) }
-
-    override var disabled: Boolean
-        get() = select.isDisabled()
-        set(value) { select.setDisabled(value) }
-
-    override fun focus() = select.focus()
-
-    override fun populateRemote(json: Json) {
-        json[name] = select.value.name
-    }
-
-}
 
 
 fun <Res> callMatumba(req: RequestMatumba, token: String?): Promise<Res> =

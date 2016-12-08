@@ -23,12 +23,10 @@ class DateTimePicker : Control2(Attrs()) {
     var dateBeforeRemountOrUpdate: Moment? = null
 
     override fun render(): ToReactElementable {
-        return kdiv(className = "form-group"){o->
-            o- kdiv(id = pickerID, className = "input-group date"){o->
-                o- React.createElement("input", json("type" to "text", "className" to "form-control"))
-                o- kspan(className = "input-group-addon"){o->
-                    o- kspan(className = "glyphicon glyphicon-calendar")
-                }
+        return kdiv(id = pickerID, className = "input-group date"){o->
+            o- React.createElement("input", json("type" to "text", "className" to "form-control"))
+            o- kspan(className = "input-group-addon"){o->
+                o- kspan(className = "glyphicon glyphicon-calendar")
             }
         }
     }
@@ -79,7 +77,7 @@ class DateTimePicker : Control2(Attrs()) {
     override fun render(): ReactElement {
         gloshit.popo = {populateRemote(json())}
         gloshit.updatePicker = {picker.update()}
-        return kdiv(className = "form-group"){o->
+        return kdiv(className = "form-group", marginBottom = if (error != null) 0 else null){o->
             o- klabel {it-title}
             o- kdiv(position = "relative"){o->
                 o- picker

@@ -1,0 +1,203 @@
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Проза
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                <span class="">
+                  Почему мы?
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                <span class="">
+                  Цены
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                <span class="">
+                  Примеры
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                <span class="">
+                  ЧаВо
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                <span class="">
+                  Связь
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                <span class="">
+                  Блог
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="orders.html">
+            <span class="">
+              Мои заказы
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="support.html">
+            <span class="">
+              Поддержка
+            </span>
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            <span class="">
+              Иво
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <span class="">
+            Мои заказы
+          </span>
+        </h3>
+      </div>
+      <div style="position: absolute; right: 14px; top: 16px;">
+        <!-- react-empty: 59 -->
+        </div>
+      </div>
+      <div style="margin-bottom: 15px;">
+        <div class="aniFadeIn" style="margin-bottom: 15px;">
+          <div>
+            <form class="">
+              <div class="form-group">
+                <label>
+                  <span class="">
+                    Название
+                  </span>
+                </label>
+                <div style="position: relative;">
+                  <input type="text" rows="5" class="form-control" value="" style="resize: none;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <span class="">
+                      Тип документа
+                    </span>
+                  </label>
+                  <div style="position: relative;">
+                    <select class="form-control">
+                      <option value="ESSAY">
+                        Реферат
+                      </option>
+                      <option value="COURSE">
+                        Курсовая работа
+                      </option>
+                      <option value="GRADUATION">
+                        Дипломная работа
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>
+                    Срок
+                  </label>
+                  <div style="position: relative;">
+                    <div class="input-group date">
+                      <input type="text" class="form-control">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar">
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>
+                      <span class="">
+                        Страниц
+                      </span>
+                    </label>
+                    <div style="position: relative;">
+                      <input type="text" rows="5" class="form-control" value="" style="resize: none;">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>
+                        <span class="">
+                          Источников
+                        </span>
+                      </label>
+                      <div style="position: relative;">
+                        <input type="text" rows="5" class="form-control" value="" style="resize: none;">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <span class="">
+                            Детали
+                          </span>
+                        </label>
+                        <div style="position: relative;">
+                          <textarea rows="5" type="text" class="form-control" style="resize: none;">
+                          </textarea>
+                        </div>
+                      </div>
+                      <div style="text-align: left;">
+                        <button class="btn btn-primary ">
+                          <span>
+                            Создать
+                          </span>
+                        </button>
+                        <button class="btn btn-default " style="margin-left: 10px;">
+                          <span>
+                            Передумал
+                          </span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
