@@ -34,11 +34,12 @@ data class Attrs(
 abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
     abstract fun render(): ToReactElementable
 
-    open fun componentDidUpdate   (){}
-    open fun componentWillUpdate  (){}
-    open fun componentWillUnmount (){}
-    open fun componentDidMount    (){}
-    open fun componentWillMount   (){}
+    open fun componentWillMount        (){}
+    open fun componentDidMount         (){}
+    open fun componentWillReceiveProps (){}
+    open fun componentDidUpdate        (){}
+    open fun componentWillUpdate       (){}
+    open fun componentWillUnmount      (){}
     open fun defaultControlTypeName() = "SomeShit"
     open fun contributeTestState(state: TestStateContributions) {}
     open fun contributeTestStateIfTamed(state: TestStateContributions) {}
@@ -203,6 +204,10 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
 
                 errorStickerID?.let {DebugPanes.remove(it)}
                 errorStickerTether?.destroy()
+            },
+
+            "componentWillReceiveProps" to {
+                componentWillReceiveProps()
             },
 
             "componentWillUpdate" to {

@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 val defaultCancelButtonTitle = t("Never Mind", "Передумал")
 
@@ -46,6 +47,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         override fun defaultControlTypeName() = "FormMatumba"
 
         override fun render(): ReactElement {
+            gloshit.updateForm = {update()}
             figureOutActualVisibleFieldNames()
 
             fun formTicker(): dynamic {
