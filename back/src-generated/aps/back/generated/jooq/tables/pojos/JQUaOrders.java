@@ -26,7 +26,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrders implements Serializable {
 
-    private static final long serialVersionUID = 1112544616;
+    private static final long serialVersionUID = -788676664;
 
     private Long             id;
     private Boolean          deleted;
@@ -38,7 +38,6 @@ public class JQUaOrders implements Serializable {
     private String           title;
     private JQUaDocumentType documentType;
     private Timestamp        deadline;
-    private Integer          pageCost;
     private Integer          price;
     private Integer          numPages;
     private Integer          numSources;
@@ -60,7 +59,6 @@ public class JQUaOrders implements Serializable {
         this.title = value.title;
         this.documentType = value.documentType;
         this.deadline = value.deadline;
-        this.pageCost = value.pageCost;
         this.price = value.price;
         this.numPages = value.numPages;
         this.numSources = value.numSources;
@@ -81,7 +79,6 @@ public class JQUaOrders implements Serializable {
         String           title,
         JQUaDocumentType documentType,
         Timestamp        deadline,
-        Integer          pageCost,
         Integer          price,
         Integer          numPages,
         Integer          numSources,
@@ -100,7 +97,6 @@ public class JQUaOrders implements Serializable {
         this.title = title;
         this.documentType = documentType;
         this.deadline = deadline;
-        this.pageCost = pageCost;
         this.price = price;
         this.numPages = numPages;
         this.numSources = numSources;
@@ -190,14 +186,6 @@ public class JQUaOrders implements Serializable {
         this.deadline = deadline;
     }
 
-    public Integer getPageCost() {
-        return this.pageCost;
-    }
-
-    public void setPageCost(Integer pageCost) {
-        this.pageCost = pageCost;
-    }
-
     public Integer getPrice() {
         return this.price;
     }
@@ -268,7 +256,6 @@ public class JQUaOrders implements Serializable {
         sb.append(", ").append(title);
         sb.append(", ").append(documentType);
         sb.append(", ").append(deadline);
-        sb.append(", ").append(pageCost);
         sb.append(", ").append(price);
         sb.append(", ").append(numPages);
         sb.append(", ").append(numSources);

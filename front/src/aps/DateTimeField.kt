@@ -14,13 +14,28 @@ import into.kommon.*
     fun destroy()
     fun date(): Moment?
     fun date(moment: Moment?)
+    fun date(s: String)
+    fun viewDate(s: String)
     fun locale(name: String)
 }
 
-class DateTimePicker : Control2(Attrs()) {
+class DateTimePicker(val key: String? = null) : Control2(Attrs()) {
+    companion object {
+        val instances = mutableMapOf<String, DateTimePicker>()
+
+        fun instance(key: String): DateTimePicker {
+            return instances[key] ?: bitch("No DateTimePicker keyed `$key`")
+        }
+    }
+
     val pickerID = puid()
     lateinit var eonasdan: EonasdanPicker
     var dateBeforeRemountOrUpdate: Moment? = null
+
+    fun setValue(s: String) {
+        eonasdan.date(s)
+        eonasdan.viewDate(s)
+    }
 
     override fun render(): ToReactElementable {
         return kdiv(id = pickerID, className = "input-group date"){o->
@@ -41,10 +56,16 @@ class DateTimePicker : Control2(Attrs()) {
 
     override fun componentDidMount() {
         initEonasdan()
+        if (key != null) {
+            instances[key] = this
+        }
     }
 
     override fun componentWillUnmount() {
         uninitEonasdan()
+        if (key != null) {
+            instances.remove(key)
+        }
     }
 
     private fun initEonasdan() {
@@ -68,11 +89,12 @@ class DateTimePicker : Control2(Attrs()) {
 @Front class DateTimeField(
     container: RequestMatumba,
     name: String,
-    val title: String
+    val title: String,
+    key: String = name
 ) : FormFieldFront(container, name) {
 
     override var error: String? = null
-    val picker = DateTimePicker()
+    val picker = DateTimePicker(key)
 
     override fun render(): ReactElement {
         gloshit.popo = {populateRemote(json())}

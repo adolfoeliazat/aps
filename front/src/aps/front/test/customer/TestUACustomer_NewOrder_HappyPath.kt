@@ -25,7 +25,7 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
 
         o.setValueDescribingStep("TextField-title.Input", "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского")
         o.setValueDescribingStep("SelectField-documentType.Select", UADocumentType.COURSE)
-        // set deadline
+        o.act {DateTimePicker.instance("deadline").setValue("15.12.2016 10:30")}
         o.setValueDescribingStep("IntField-numPages.Input", 30)
         o.setValueDescribingStep("IntField-numSources.Input", 5)
         o.setValueDescribingStep("TextField-details.Input", "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории.")
