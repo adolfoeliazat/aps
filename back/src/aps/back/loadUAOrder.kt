@@ -23,7 +23,8 @@ import org.jooq.*
         val order = rec.into(JQUaOrders::class.java)
         val rto = OrderRTO(
             id = order.id.toString(),
-            title = order.title)
+            title = order.title,
+            insertedAt = order.insertedAt.time)
 
         return LoadUAOrderRequest.Response(rto)
     }

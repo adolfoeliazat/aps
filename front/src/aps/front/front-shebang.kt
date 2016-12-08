@@ -86,6 +86,17 @@ fun renderStamp(stamp: String, includeTZ: Boolean = true): String {
     return Shitus.timestampString(stamp, json("includeTZ" to includeTZ))
 }
 
+fun formatUnixTime(ms: Long, includeTZ: Boolean = true): String =
+    when (Globus.lang) {
+        Language.UA -> {
+            val double: Double = safeParseDouble(ms.toString()) ?: wtf()
+            val s = moment(double).format("L LTS")
+            if (includeTZ) "$s (Киев)"
+            else s
+        }
+        Language.EN -> imf("formatUnixTime for EN")
+    }
+
 fun pushNavigate(ui: World, url: String): Promise<Unit> {"__async"
     __dlog.pushNavigate(url)
     ui.currentPage = null.asDynamic() // TODO:vgrechka Do something about this

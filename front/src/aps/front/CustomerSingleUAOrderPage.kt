@@ -40,7 +40,21 @@ class CustomerSingleUAOrderPage(val world: World) {
                     }},
                     tabs = listOf(
                         TabSpec("params", t("TOTE", "Параметры"), kdiv{o->
-                            o- "fucking params 2"
+                            o- kdiv(){o->
+                                o- formatUnixTime(order.insertedAt)
+                            }
+//                            creator_id bigint not null references users(id), -- Can be admin
+//                            customer_id bigint not null references users(id),
+//                            title text not null,
+//                            document_type ua_document_type not null,
+//                            deadline timestamp /*maybe null*/,
+//                            price int /*maybe null*/,
+//                            num_pages int not null,
+//                            num_sources int not null,
+//                            details text not null,
+//                            admin_notes text not null,
+//                            state order_state not null,
+//                            writer_id bigint /*maybe null*/ references users(id)
                         }),
                         TabSpec("files", t("TOTE", "Файлы"), kdiv{o->
                             o- "fucking files"

@@ -13,14 +13,15 @@ import into.kommon.*
 import jquery.JQuery
 
 object effects2 {
-    fun blinkOn(target: JQuery,
-                fixed: Boolean = false,
-                dleft: Int = 0,
-                dtop: Int = 0,
-                dwidth: Int = 0,
-                widthCountMargin: Boolean = true,
-                heightCountMargin: Boolean = true,
-                widthCalcSuffix: String? = null
+    fun blinkOn(
+        target: JQuery,
+        fixed: Boolean = false,
+        dleft: Int = 0,
+        dtop: Int = 0,
+        dwidth: Int = 0,
+        widthCountMargin: Boolean = true,
+        heightCountMargin: Boolean = true,
+        widthCalcSuffix: String? = null
     ) {
         effects.blinkOn(json(
             "target" to target,

@@ -9,7 +9,8 @@ fun main(args: Array<String>) {
 //    testConcurrentModification()
 //    testDownTo()
 //    testFinallyResult()
-    testNonExhaustiveWhen()
+//    testNonExhaustiveWhen()
+    println(System.currentTimeMillis())
 }
 
 fun testNonExhaustiveWhen() {

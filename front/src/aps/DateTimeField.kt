@@ -8,6 +8,7 @@ import into.kommon.*
 
 @native interface Moment {
     fun valueOf(): Int
+    fun format(fmt: String): String
 }
 
 @native interface EonasdanPicker {

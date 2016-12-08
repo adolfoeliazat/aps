@@ -123,3 +123,22 @@ class RealStorageLocal : StorageLocal {
         window.localStorage.removeItem(key)
     }
 }
+
+@native fun moment(ms: Double): Moment = noImpl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
