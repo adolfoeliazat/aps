@@ -433,6 +433,7 @@ object MakeStaticSites {
             global.React = require('react')
             global.ReactDOM = require('react-dom')
             global.moment = require('moment-timezone')
+            require('moment/locale/ru')
             global.Tether = require('tether')
             global.markdownIt = require('markdown-it')
 

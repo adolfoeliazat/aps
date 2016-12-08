@@ -1,5 +1,6 @@
 package aps.front
 
+import aps.*
 import into.kommon.global
 import org.w3c.dom.Storage
 import kotlin.browser.localStorage
@@ -9,12 +10,13 @@ import kotlin.reflect.KProperty
 //val storageLocal: StorageLocal get() = Globus.browser.storageLocal
 val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLocal
 
-@JsName("global")
-@native object ExternalGlobus {
-    fun displayInitialShit(): Unit = noImpl
-//    fun makeSignInNavbarLinkVisible(): Unit = noImpl
-    var storageLocalForStaticContent: Storage = noImpl
+@native interface IExternalGlobus {
+    fun displayInitialShit()
+    var storageLocalForStaticContent: Storage
+    var LANG: String
 }
+@JsName("global")
+@native val ExternalGlobus: IExternalGlobus = noImpl
 
 object Globus {
     var lastAttemptedRPCName: String? = null
@@ -30,6 +32,8 @@ object Globus {
 
     var browser = Browser(typedStorageLocal = realTypedStorageLocal)
     var rootRedisLogMessageID: String? = null
+
+    val lang: Language get() = Language.valueOf(ExternalGlobus.LANG)
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)

@@ -8,11 +8,18 @@ fun errorLabel(title: String): ToReactElementable =
         o- title
     }
 
-fun ElementBuilder.maybeFieldError(error: String?) {
+fun ElementBuilder.maybeFieldError(error: String?, circleRight: Int) {
     val o = this
     error?.let {
         o- errorLabel(it)
-        o- kdiv(width = 15, height = 15, backgroundColor = RED_300, borderRadius = 10, position = "absolute", right = 8, top = 10)
+        o- kdiv(width = 15,
+                height = 15,
+                backgroundColor = RED_300,
+                borderRadius = 10,
+                position = "absolute",
+                right = circleRight,
+                top = 10,
+                zIndex = 1000)
     }
 }
 

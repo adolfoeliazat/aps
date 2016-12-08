@@ -14,6 +14,7 @@ import into.kommon.*
     fun destroy()
     fun date(): Moment?
     fun date(moment: Moment?)
+    fun locale(name: String)
 }
 
 class DateTimePicker : Control2(Attrs()) {
@@ -52,6 +53,10 @@ class DateTimePicker : Control2(Attrs()) {
         byid(pickerID).asDynamic().datetimepicker()
         eonasdan = byid(pickerID).asDynamic().data("DateTimePicker")
         gloshit.eonasdan = eonasdan
+        eonasdan.locale(when (Globus.lang) {
+                            Language.EN -> "en"
+                            Language.UA -> "ru"
+                        })
         eonasdan.date(dateBeforeRemountOrUpdate)
     }
 
@@ -78,7 +83,7 @@ class DateTimePicker : Control2(Attrs()) {
             o- klabel {it-title}
             o- kdiv(position = "relative"){o->
                 o- picker
-                o. maybeFieldError(error)
+                o. maybeFieldError(error, circleRight = 48)
             }
         }.toReactElement()
     }

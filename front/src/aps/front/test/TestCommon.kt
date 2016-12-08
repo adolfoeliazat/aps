@@ -63,6 +63,7 @@ interface TestSuite {
 val testScenarios = mutableMapOf<String, TestScenario>()
 
 fun tetete() {
+    clog("aaaaaaaaa", ExternalGlobus.LANG)
 }
 
 

@@ -70,6 +70,7 @@ operator fun ElementBuilderFactory.invoke (
     opacity: Any? = null,
     float: String? = null,
     borderRadius: Any? = null,
+    zIndex: Any? = null,
     block: ((ElementBuilder) -> Unit)? = null
 ) = invoke(
     attrs = Attrs(
@@ -127,7 +128,8 @@ operator fun ElementBuilderFactory.invoke (
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
         float = float ?: baseStyle?.float,
-        borderRadius = borderRadius ?: baseStyle?.borderRadius
+        borderRadius = borderRadius ?: baseStyle?.borderRadius,
+        zIndex = zIndex ?: baseStyle?.zIndex
     ),
     block = block
 )
@@ -190,7 +192,8 @@ fun faIcon (
     cursor: String? = null,
     opacity: Any? = null,
     float: String? = null,
-    borderRadius: Any? = null
+    borderRadius: Any? = null,
+    zIndex: Any? = null
 ) = faIcon(
     icon = icon,
     attrs = Attrs(
@@ -248,7 +251,8 @@ fun faIcon (
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
         float = float ?: baseStyle?.float,
-        borderRadius = borderRadius ?: baseStyle?.borderRadius
+        borderRadius = borderRadius ?: baseStyle?.borderRadius,
+        zIndex = zIndex ?: baseStyle?.zIndex
     )
 )
 
@@ -316,7 +320,8 @@ fun urlLink (
     cursor: String? = null,
     opacity: Any? = null,
     float: String? = null,
-    borderRadius: Any? = null
+    borderRadius: Any? = null,
+    zIndex: Any? = null
 ) = urlLink(
     url = url,
     delayActionForFanciness = delayActionForFanciness,
@@ -380,7 +385,8 @@ fun urlLink (
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
         float = float ?: baseStyle?.float,
-        borderRadius = borderRadius ?: baseStyle?.borderRadius
+        borderRadius = borderRadius ?: baseStyle?.borderRadius,
+        zIndex = zIndex ?: baseStyle?.zIndex
     )
 )
 
@@ -445,7 +451,8 @@ fun link (
     cursor: String? = null,
     opacity: Any? = null,
     float: String? = null,
-    borderRadius: Any? = null
+    borderRadius: Any? = null,
+    zIndex: Any? = null
 ) = link(
     params = LinkParams(
         content = content ?: baseLinkParams?.content,
@@ -506,7 +513,8 @@ fun link (
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
         float = float ?: baseStyle?.float,
-        borderRadius = borderRadius ?: baseStyle?.borderRadius
+        borderRadius = borderRadius ?: baseStyle?.borderRadius,
+        zIndex = zIndex ?: baseStyle?.zIndex
     )
 )
 
@@ -569,6 +577,7 @@ fun hor (
     opacity: Any? = null,
     float: String? = null,
     borderRadius: Any? = null,
+    zIndex: Any? = null,
     block: ((ElementBuilder) -> Unit)? = null
 ) = hor(
     spacing = spacing,
@@ -627,7 +636,8 @@ fun hor (
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
         float = float ?: baseStyle?.float,
-        borderRadius = borderRadius ?: baseStyle?.borderRadius
+        borderRadius = borderRadius ?: baseStyle?.borderRadius,
+        zIndex = zIndex ?: baseStyle?.zIndex
     ),
     block = block
 )
@@ -690,6 +700,7 @@ fun hor1 (
     opacity: Any? = null,
     float: String? = null,
     borderRadius: Any? = null,
+    zIndex: Any? = null,
     block: ((ElementBuilder) -> Unit)? = null
 ) = hor1(
     attrs = Attrs(
@@ -747,7 +758,8 @@ fun hor1 (
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
         float = float ?: baseStyle?.float,
-        borderRadius = borderRadius ?: baseStyle?.borderRadius
+        borderRadius = borderRadius ?: baseStyle?.borderRadius,
+        zIndex = zIndex ?: baseStyle?.zIndex
     ),
     block = block
 )
@@ -810,6 +822,7 @@ fun hor2 (
     opacity: Any? = null,
     float: String? = null,
     borderRadius: Any? = null,
+    zIndex: Any? = null,
     block: ((ElementBuilder) -> Unit)? = null
 ) = hor2(
     attrs = Attrs(
@@ -867,7 +880,8 @@ fun hor2 (
         cursor = cursor ?: baseStyle?.cursor,
         opacity = opacity ?: baseStyle?.opacity,
         float = float ?: baseStyle?.float,
-        borderRadius = borderRadius ?: baseStyle?.borderRadius
+        borderRadius = borderRadius ?: baseStyle?.borderRadius,
+        zIndex = zIndex ?: baseStyle?.zIndex
     ),
     block = block
 )
