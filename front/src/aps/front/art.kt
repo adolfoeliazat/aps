@@ -1210,7 +1210,10 @@ fun openShitPassedPane(title: String, details: ElementBuilder) {
         }
     })
 
-    art.scrollRevealing(ELID_UNDER_FOOTER)
+    if (!Globus.realTypedStorageLocal.dontScrollOnTestPassed)
+        art.scrollRevealing(ELID_UNDER_FOOTER)
+
+    clog("----- We good -----")
 }
 
 

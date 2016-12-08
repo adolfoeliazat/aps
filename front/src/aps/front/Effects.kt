@@ -4,12 +4,53 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
 import into.kommon.*
+import jquery.JQuery
 
-var effects: dynamic = null
+object effects2 {
+    fun blinkOn(target: JQuery,
+                fixed: Boolean = false,
+                dleft: Int = 0,
+                dtop: Int = 0,
+                dwidth: Int = 0,
+                widthCountMargin: Boolean = true,
+                heightCountMargin: Boolean = true,
+                widthCalcSuffix: String? = null
+    ) {
+        effects.blinkOn(json(
+            "target" to target,
+            "fixed" to fixed,
+            "dleft" to dleft,
+            "dtop" to dtop,
+            "dwidth" to dwidth,
+            "widthCountMargin" to widthCountMargin,
+            "heightCountMargin" to heightCountMargin,
+            "widthCalcSuffix" to widthCalcSuffix
+        ))
+    }
+
+    fun blinkOff() {
+        effects.blinkOff()
+    }
+
+    fun blinkOffFadingOut() {
+        effects.blinkOffFadingOut()
+    }
+}
+
+@native interface ILegacyEffects {
+    val element: ReactElement
+    fun blinkOn(arg: dynamic)
+    fun blinkOff()
+    fun blinkOffFadingOut()
+}
+
+var effects: ILegacyEffects = null.asDynamic()
 
 fun initEffects() {
     effects = Shitus.statefulElement(ctor@{update ->
@@ -30,6 +71,7 @@ fun initEffects() {
                 val dwidth: dynamic = arg.dwidth ?: 0
                 val widthCountMargin: dynamic = arg.widthCountMargin ?: true
                 val heightCountMargin: dynamic = arg.heightCountMargin ?: true
+                val widthCalcSuffix: String? = arg.widthCalcSuffix
 
                 me.blinkOff()
 
@@ -51,11 +93,18 @@ fun initEffects() {
                     "backgroundColor" to Color.BLUE_GRAY_600.toString(),
                     "left" to left,
                     "top" to top,
-                    "width" to width,
+                    "width" to run {
+                        var s = width.toString() + "px"
+                        widthCalcSuffix?.let {
+                            s = "calc($s $it)"
+                        }
+                        s
+                    },
                     "height" to height)
                 // clog("blinkerStyle", blinkerStyle)
 
                 blinker = Shitus.diva(json(
+                    "id" to "fucking-blinker",
                     "className" to "progressTicker",
                     "style" to blinkerStyle))
                 update()
@@ -64,7 +113,16 @@ fun initEffects() {
             "blinkOff" to {
                 blinker = null
                 update()
-            }
+            },
+
+            "blinkOffFadingOut" to {async<Unit> {
+                val el = byid0("fucking-blinker")!!
+                el.className = ""
+                el.style.opacity = "0.5"
+                el.style.transition = "opacity 0.5s"
+                await(delay(0)) // XXX requestAnimationFrame doesn't help
+                el.style.opacity = "0"
+            }}
         )
 
         return@ctor me

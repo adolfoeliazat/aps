@@ -24,6 +24,7 @@ JavaScript
 
 F.dumpLocalStorage()
 localStorage.setItem('reloadTest', 'true')
+localStorage.setItem('dontScrollOnTestPassed', 'true')
 F.dumpShames()
 
 
