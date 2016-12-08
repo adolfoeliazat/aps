@@ -11,11 +11,30 @@ import aps.front.Color.*
 
     override var error: String? = null
 
+    val picker = object:Control2(Attrs()) {
+        val pickerID = puid()
+
+        override fun render(): ToReactElementable {
+            return kdiv(className = "form-group"){o->
+                o- kdiv(id = pickerID, className = "input-group date"){o->
+                    o- React.createElement("input", json("type" to "text", "className" to "form-control"))
+                    o- kspan(className = "input-group-addon"){o->
+                        o- kspan(className = "glyphicon glyphicon-calendar")
+                    }
+                }
+            }
+        }
+
+        override fun componentDidMount() {
+            byid(pickerID).asDynamic().datetimepicker()
+        }
+    }
+
     override fun render(): ReactElement {
         return kdiv(className = "form-group"){o->
             o- klabel {it-title}
             o- kdiv(position = "relative"){o->
-                o- "fucking calendar here"
+                o- picker
                 o. maybeFieldError(error)
             }
         }.toReactElement()

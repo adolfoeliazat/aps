@@ -2,6 +2,7 @@
   <dictionary name="Vladimir">
     <words>
       <w>acta</w>
+      <w>addon</w>
       <w>bigserial</w>
       <w>bobul</w>
       <w>browserify</w>
@@ -14,6 +15,7 @@
       <w>ctime</w>
       <w>cwarn</w>
       <w>dasja</w>
+      <w>datetimepicker</w>
       <w>dejsonize</w>
       <w>deps</w>
       <w>descr</w>
@@ -23,6 +25,7 @@
       <w>dwarn</w>
       <w>elementable</w>
       <w>elid</w>
+      <w>eonasdan</w>
       <w>errora</w>
       <w>expectedly</w>
       <w>fedis</w>
@@ -31,6 +34,7 @@
       <w>fuckup</w>
       <w>getenv</w>
       <w>globus</w>
+      <w>glyphicon</w>
       <w>hacky</w>
       <w>horiz</w>
       <w>ignita</w>
@@ -46,6 +50,7 @@
       <w>kommon</w>
       <w>kotlinize</w>
       <w>letoes</w>
+      <w>lodash</w>
       <w>lrange</w>
       <w>matumba</w>
       <w>mget</w>

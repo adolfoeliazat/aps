@@ -477,6 +477,8 @@ object MakeStaticSites {
         sh.cp("$nodeModules/jquery/dist/jquery.min.js", root)
         sh.cp("-r", "$nodeModules/bootstrap/dist", "$root/bootstrap")
         sh.cp("$APS_HOME/front/static/hack/bootstrap-3.3.7-hacked.js", "$root/bootstrap/js")
+        sh.cp("$APS_HOME/front/static/hack/bootstrap-datetimepicker-4.17.43-hacked.js", root)
+        sh.cp("$APS_HOME/front/static/hack/bootstrap-datetimepicker-4.17.43-hacked.css", root)
         sh.mkdir("$root/font-awesome")
         sh.cp("-r", "$nodeModules/font-awesome/css", "$root/font-awesome")
         sh.cp("-r", "$nodeModules/font-awesome/fonts", "$root/font-awesome")
@@ -1027,6 +1029,8 @@ object MakeStaticSites {
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <link href="bootstrap-datetimepicker-4.17.43-hacked.css" rel="stylesheet">
+
     <style>
         ${readStatic("style.css")}
     </style>
@@ -1105,6 +1109,7 @@ object MakeStaticSites {
 
     <script src="deps.js"></script>
     <script src="bootstrap/js/bootstrap-3.3.7-hacked.js"></script>
+    <script src="bootstrap-datetimepicker-4.17.43-hacked.js"></script>
     <script src="kotlin.js"></script>
     <!--
         <script src="kotlin-1.1-m02-eap-hacked.js"></script>

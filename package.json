@@ -25,6 +25,7 @@
     "convert-source-map": "^1.3.0",
     "deep-eql": "^1.0.0",
     "diff": "^3.0.1",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.43",
     "express": "^4.13.4",
     "font-awesome": "^4.7.0",
     "forever": "^0.15.2",

@@ -31,38 +31,21 @@
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" line="149" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" line="227" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-customerCreateUAOrder.kt" line="19" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="696" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="698" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/Melinda.kt" line="84" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" line="479" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/aps/DateTimeField.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/aps/back/loadUAOrder.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/aps/DateTimeField.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/aps/little-motherfuckers.kt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/front/src/aps/front/CustomerSingleOrderPage.kt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/front/test-shit/44a46713-621c-4a69-b6e6-b09db0965f25" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/copyright/bootstrap-datetimepicker-LICENSE" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/hack/bootstrap-datetimepicker-4.17.43-hacked.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/static/hack/bootstrap-datetimepicker-4.17.43-hacked.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/JQUaOrders.java" afterPath="$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/JQUaOrders.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/pojos/JQUaOrders.java" afterPath="$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/pojos/JQUaOrders.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/records/JQUaOrdersRecord.java" afterPath="$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/records/JQUaOrdersRecord.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/Back.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-customerCreateUAOrder.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-customerCreateUAOrder.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/schema.sql" afterPath="$PROJECT_DIR$/back/src/aps/back/schema.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/doc/snippets.txt" afterPath="$PROJECT_DIR$/doc/snippets.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/World.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/World.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/generated-shit.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/generated-shit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestSuite_Customer_Shebang.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestSuite_Customer_Shebang.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" afterPath="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/front/src/aps/front/CustomerOrdersPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/CustomerUAOrdersPage.kt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestCustomer_NewOrder_HappyPath.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_NewOrder_HappyPath.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LICENSE" afterPath="$PROJECT_DIR$/LICENSE" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/DateTimeField.kt" afterPath="$PROJECT_DIR$/front/src/aps/DateTimeField.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -122,14 +105,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="DateTimeField.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DateTimeField.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/DateTimeField.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+            <state relative-caret-position="552">
+              <caret line="27" column="8" lean-forward="false" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
               <folding>
                 <element signature="e#13#56#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Control2.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Control2.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="33" column="23" lean-forward="false" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MakeStaticSites.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="1111" column="17" lean-forward="false" selection-start-line="1111" selection-start-column="17" selection-end-line="1111" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LICENSE" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LICENSE">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="768">
+              <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -166,43 +179,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestCommon.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="64" column="0" lean-forward="false" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="shared-utils-front-impl.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="179" column="0" lean-forward="false" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="shared-utils.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="197" column="15" lean-forward="false" selection-start-line="197" selection-start-column="15" selection-end-line="197" selection-end-column="15" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="snippets.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc/snippets.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+            <state relative-caret-position="282">
+              <caret line="29" column="8" lean-forward="false" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -314,8 +295,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/kotlin-jvm-playground/src/kotlin-jvm-playground.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/WriterOrdersPage.kt" />
         <option value="$PROJECT_DIR$/back/sql/fucking-around.sql" />
         <option value="$PROJECT_DIR$/front/src/aps/front/renderProfile.kt" />
         <option value="$PROJECT_DIR$/_run.cmd" />
@@ -365,6 +344,8 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/little-motherfuckers.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/DateTimeField.kt" />
+        <option value="$PROJECT_DIR$/LICENSE" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
       </list>
     </option>
   </component>
@@ -769,7 +750,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m03/kotlin-jslib-sources.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="asdyna&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;textfield&#9;null&#9;null&#10;style&#9;null&#9;null&#10;snipp&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;errorla&#9;null&#9;null&#10;errorlabel&#9;null&#9;null&#10;labela&#9;null&#9;null&#10;selectfield&#9;null&#9;null&#10;orderspa&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/CustomerOrdersPage.kt&#10;44a&#9;FILE&#9;file://E:/work/aps/front/test-shit/44a46713-621c-4a69-b6e6-b09db0965f25&#10;customercreate&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerCreateUAOrder.kt&#10;load&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerLoadUAOrder.kt&#10;getuser&#9;null&#9;null&#10;send&#9;null&#9;null&#10;customerload&#9;null&#9;null&#10;formresponse&#9;null&#9;null&#10;rp-getuser&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-getUser.kt&#10;bitchex&#9;null&#9;null&#10;publicprocedu&#9;null&#9;null&#10;formrespo&#9;null&#9;null&#10;stringhiddenfield&#9;null&#9;null&#10;s-ut&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;f-she&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;urlq&#9;null&#9;null&#10;asdynamicreact&#9;null&#9;null&#10;asdynamic&#9;FILE&#9;jar://E:/work/vendor/gradle/gradle-core-3.1-sources.jar!/org/gradle/internal/metaobject/MixInClosurePropertiesAsMethodsDynamicObject.java&#10;privatepagel&#9;null&#9;null&#10;customerdyna&#9;null&#9;null&#10;uapagec&#9;null&#9;null&#10;s-s&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-stuff.kt&#10;shared-&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-stuff.kt&#10;MSS&#9;null&#9;null&#10;makestat&#9;RUN_CONFIGURATION&#9;make-static-sites&#10;jquaordersre&#9;PSI&#9;JAVA://aps.back.generated.jooq.tables.records.JQUaOrdersRecord&#10;rpcrea&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerCreateUAOrder.kt&#10;adminup&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt&#10;cons&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/const.kt&#10;rp-get&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerGetOrders.kt&#10;const&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/Const.kt&#10;orderreq&#9;null&#9;null&#10;delegates&#9;null&#9;null&#10;intfield&#9;null&#9;null&#10;textfieldtype&#9;null&#9;null&#10;rp-customerg&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerGetOrders.kt&#10;jqaca&#9;PSI&#9;JAVA://aps.back.generated.jooq.enums.JQUaAcademicLevel&#10;jqdocumentur&#9;PSI&#9;JAVA://aps.back.generated.jooq.enums.JQDocumentUrgency&#10;titled&#9;null&#9;null&#10;createua&#9;null&#9;null&#10;userkind&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="MSS&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;asdyna&#9;null&#9;null&#10;tetete&#9;null&#9;null&#10;textfield&#9;null&#9;null&#10;style&#9;null&#9;null&#10;snipp&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;errorla&#9;null&#9;null&#10;errorlabel&#9;null&#9;null&#10;labela&#9;null&#9;null&#10;selectfield&#9;null&#9;null&#10;orderspa&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/CustomerOrdersPage.kt&#10;44a&#9;FILE&#9;file://E:/work/aps/front/test-shit/44a46713-621c-4a69-b6e6-b09db0965f25&#10;customercreate&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerCreateUAOrder.kt&#10;load&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerLoadUAOrder.kt&#10;getuser&#9;null&#9;null&#10;send&#9;null&#9;null&#10;customerload&#9;null&#9;null&#10;formresponse&#9;null&#9;null&#10;rp-getuser&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-getUser.kt&#10;bitchex&#9;null&#9;null&#10;publicprocedu&#9;null&#9;null&#10;formrespo&#9;null&#9;null&#10;stringhiddenfield&#9;null&#9;null&#10;s-ut&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;f-she&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-shebang.kt&#10;urlq&#9;null&#9;null&#10;asdynamicreact&#9;null&#9;null&#10;asdynamic&#9;FILE&#9;jar://E:/work/vendor/gradle/gradle-core-3.1-sources.jar!/org/gradle/internal/metaobject/MixInClosurePropertiesAsMethodsDynamicObject.java&#10;privatepagel&#9;null&#9;null&#10;customerdyna&#9;null&#9;null&#10;uapagec&#9;null&#9;null&#10;s-s&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-stuff.kt&#10;shared-&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-stuff.kt&#10;makestat&#9;RUN_CONFIGURATION&#9;make-static-sites&#10;jquaordersre&#9;PSI&#9;JAVA://aps.back.generated.jooq.tables.records.JQUaOrdersRecord&#10;rpcrea&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerCreateUAOrder.kt&#10;adminup&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt&#10;cons&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/const.kt&#10;rp-get&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerGetOrders.kt&#10;const&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/Const.kt&#10;orderreq&#9;null&#9;null&#10;delegates&#9;null&#9;null&#10;intfield&#9;null&#9;null&#10;textfieldtype&#9;null&#9;null&#10;rp-customerg&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-customerGetOrders.kt&#10;jqaca&#9;PSI&#9;JAVA://aps.back.generated.jooq.enums.JQUaAcademicLevel&#10;jqdocumentur&#9;PSI&#9;JAVA://aps.back.generated.jooq.enums.JQDocumentUrgency&#10;titled&#9;null&#9;null&#10;createua&#9;null&#9;null&#10;userkind&#9;null&#9;null" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
   </component>
   <component name="Push.Settings">
@@ -1141,13 +1122,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00048" summary="vovagrechka/aps#18">
-      <created>1479723485618</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1479723485618</updated>
-    </task>
     <task id="LOCAL-00049" summary="vovagrechka/aps#18">
       <created>1479725082712</created>
       <option name="number" value="00049" />
@@ -1484,7 +1458,14 @@
       <option name="project" value="LOCAL" />
       <updated>1481053912316</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="vovagrechka/aps#30">
+      <created>1481140262080</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1481140262081</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1695,26 +1676,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="139" column="1" lean-forward="false" selection-start-line="139" selection-start-column="1" selection-end-line="139" selection-end-column="1" />
-          <folding>
-            <element signature="e#29#168#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-customerGetOrders.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="53" lean-forward="false" selection-start-line="16" selection-start-column="53" selection-end-line="16" selection-end-column="53" />
-          <folding>
-            <element signature="e#80#191#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="389">
@@ -1764,14 +1725,6 @@
           <folding>
             <element signature="e#18#69#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="708" column="47" lean-forward="false" selection-start-line="708" selection-start-column="47" selection-end-line="708" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2075,14 +2028,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="179" column="0" lean-forward="false" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="269">
@@ -2135,13 +2080,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="29" column="8" lean-forward="false" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Control2.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="33" column="23" lean-forward="false" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/DateTimeField.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        <state relative-caret-position="552">
+          <caret line="27" column="8" lean-forward="false" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
           <folding>
             <element signature="e#13#56#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="768">
+          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="1111" column="17" lean-forward="false" selection-start-line="1111" selection-start-column="17" selection-end-line="1111" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
