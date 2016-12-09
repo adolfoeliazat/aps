@@ -9,7 +9,7 @@
 package aps.front
 
 import aps.*
-import aps.front.Color.*
+import aps.Color.*
 import into.kommon.*
 
 @native val lodash: dynamic = noImpl

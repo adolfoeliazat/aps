@@ -1,6 +1,6 @@
 package aps.front
 
-import aps.front.Color.*
+import aps.Color.*
 
 class Betsy(
     val title: String,

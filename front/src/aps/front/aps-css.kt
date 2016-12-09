@@ -7,7 +7,7 @@
 package aps.front
 
 import aps.*
-import aps.front.Color.*
+import aps.Color.*
 
 fun jsFacing_apsCSS(): String {
     val zebraLight = WHITE

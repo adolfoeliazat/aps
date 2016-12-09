@@ -5,7 +5,7 @@ package aps.front
 import aps.*
 import aps.RedisLogMessage.*
 import aps.RedisLogMessage.Separator.Type.*
-import aps.front.Color.*
+import aps.Color.*
 import into.kommon.*
 import kotlin.browser.window
 

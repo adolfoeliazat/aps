@@ -16,10 +16,7 @@ import into.kommon.*
     UpdateUserRequest(),
 
     runShit = {ctx, req ->
-        val oldUser = ctx.q("Select user")
-            .select().from(USERS)
-            .where(USERS.ID.eq(req.id.value.toLong()))
-            .fetchOne().into(JQUsers::class.java).toRTO(ctx.q)
+        val oldUser = ctx.loadUser(req.id.value.toLong())
 
         ctx.q("Update user")
             .update(USERS)

@@ -7,7 +7,7 @@
 package aps.front
 
 import kotlin.browser.document
-import aps.front.Color.*
+import aps.Color.*
 import aps.*
 import into.kommon.*
 

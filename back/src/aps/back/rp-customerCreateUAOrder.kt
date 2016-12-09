@@ -33,7 +33,7 @@ import kotlin.reflect.KClass
             .set(UA_ORDERS.NUM_PAGES, req.numPages.value)
             .set(UA_ORDERS.NUM_SOURCES, req.numSources.value)
             .set(UA_ORDERS.DETAILS, req.details.value)
-            .set(UA_ORDERS.STATE, JQOrderState.WAITING_FOR_PAYMENT)
+            .set(UA_ORDERS.STATE, JQUaOrderState.LOOKING_FOR_WRITERS)
             .returning(UA_ORDERS.ID)
             .fetchOne()
         return CustomerCreateUAOrderRequest.Response(rec.getValue(UA_ORDERS.ID).toString())

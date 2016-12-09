@@ -13,8 +13,8 @@ import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun customerGetOrders() = customerProcedure(
     ItemsRequest(UserFilter.values()),
-    runShit = fun(ctx, req): ItemsResponse<OrderRTO> {
-        return ItemsResponse<OrderRTO>(listOf(), null)
+    runShit = fun(ctx, req): ItemsResponse<UAOrderRTO> {
+        return ItemsResponse(listOf(), null)
 //        val chunk = selectChunk(
 //            ctx.q, table = "users", pojoClass = JQUsers::class, loadItem = JQUsers::toRTO,
 //            fromID = req.fromID.value?.let {it.toLong()},

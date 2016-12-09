@@ -2,7 +2,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
-import aps.front.Color.*
+import aps.Color.*
 import kotlin.browser.window
 
 @native interface JsDiffItem {

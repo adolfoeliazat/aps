@@ -5,7 +5,7 @@ import into.kommon.*
 
 class CustomerUAOrdersPage(val world: World) {
     fun load(): Promise<Unit> {
-        val m = Melinda<OrderRTO, Nothing, CustomerOrderFilter>(
+        val m = Melinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
             ui = world,
             urlPath = "orders.html",
             procedureName = "customerGetOrders",

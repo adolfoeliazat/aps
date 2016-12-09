@@ -9,7 +9,7 @@
 package aps.front
 
 import aps.*
-import aps.front.Color.*
+import aps.Color.*
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
 
@@ -86,16 +86,6 @@ fun renderStamp(stamp: String, includeTZ: Boolean = true): String {
     return Shitus.timestampString(stamp, json("includeTZ" to includeTZ))
 }
 
-fun formatUnixTime(ms: Long, includeTZ: Boolean = true): String =
-    when (Globus.lang) {
-        Language.UA -> {
-            val double: Double = safeParseDouble(ms.toString()) ?: wtf()
-            val s = moment(double).format("L LTS")
-            if (includeTZ) "$s (Киев)"
-            else s
-        }
-        Language.EN -> imf("formatUnixTime for EN")
-    }
 
 fun pushNavigate(ui: World, url: String): Promise<Unit> {"__async"
     __dlog.pushNavigate(url)
@@ -581,6 +571,17 @@ fun pageHeader2(
     return kdiv(className = "page-header $className", marginTop = 0, marginBottom = 15){o->
         o- h3(marginBottom = 0){o->
             o- title
+        }
+    }
+}
+
+fun pageHeader3(
+    content: ToReactElementable,
+    className: String = ""
+): ToReactElementable {
+    return kdiv(className = "page-header $className", marginTop = 0, marginBottom = 15){o->
+        o- h3(marginBottom = 0){o->
+            o- content
         }
     }
 }

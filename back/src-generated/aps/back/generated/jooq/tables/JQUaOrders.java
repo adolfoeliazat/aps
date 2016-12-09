@@ -6,8 +6,8 @@ package aps.back.generated.jooq.tables;
 
 import aps.back.generated.jooq.JQPublic;
 import aps.back.generated.jooq.Keys;
-import aps.back.generated.jooq.enums.JQOrderState;
 import aps.back.generated.jooq.enums.JQUaDocumentType;
+import aps.back.generated.jooq.enums.JQUaOrderState;
 import aps.back.generated.jooq.tables.records.JQUaOrdersRecord;
 
 import java.sql.Timestamp;
@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrders extends TableImpl<JQUaOrdersRecord> {
 
-    private static final long serialVersionUID = 1779083420;
+    private static final long serialVersionUID = -1691379948;
 
     /**
      * The reference instance of <code>public.ua_orders</code>
@@ -132,7 +132,7 @@ public class JQUaOrders extends TableImpl<JQUaOrdersRecord> {
     /**
      * The column <code>public.ua_orders.state</code>.
      */
-    public final TableField<JQUaOrdersRecord, JQOrderState> STATE = createField("state", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(aps.back.generated.jooq.enums.JQOrderState.class), this, "");
+    public final TableField<JQUaOrdersRecord, JQUaOrderState> STATE = createField("state", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(aps.back.generated.jooq.enums.JQUaOrderState.class), this, "");
 
     /**
      * The column <code>public.ua_orders.writer_id</code>.

@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 import jquery.jq
 
 class CustomerSingleUAOrderPage(val world: World) {
@@ -23,7 +24,20 @@ class CustomerSingleUAOrderPage(val world: World) {
         }
 
         world.setPage(Page(
-            header = pageHeader0(t("TOTE", "Заказ #${order.id}")),
+            header = pageHeader3(kdiv{o->
+                o- t("TOTE", "Заказ #${order.id}")
+//                o- " "
+                o- kspan(backgroundColor = order.state.labelBackground,
+                         fontSize = "60%",
+                         padding = "0.1em 0.3em",
+                         borderRadius = "0.3em",
+                         marginLeft = "1em",
+                         position = "relative",
+                         top = "-0.2em"){o->
+                    o- order.state.title.replace(" ", nbsp)
+                }
+            }),
+
             body = kdiv{o->
                 o- h4(marginBottom = "0.7em"){o->
                     o- order.title
@@ -33,32 +47,54 @@ class CustomerSingleUAOrderPage(val world: World) {
                     initialActiveID = tab,
                     switchOnTabClick = false,
                     tabDomIdPrefix = "tab-",
+
                     onTabClicka = {id-> async {
                         effects2.blinkOn(byid("tab-$id"), widthCalcSuffix = "- 0.15em")
                         await(world.pushNavigate("order.html?id=$orderID&tab=$id"))
                         effects2.blinkOffFadingOut()
                     }},
+
                     tabs = listOf(
                         TabSpec("params", t("TOTE", "Параметры"), kdiv{o->
-                            o- kdiv(){o->
-                                o- formatUnixTime(order.insertedAt)
+                            exhaustive/when (world.userSure.kind) {
+                                UserKind.CUSTOMER -> {
+                                    o- kdiv(){o->
+                                        o- formatUnixTime(order.insertedAt)
+                                    }
+                                    o- kdiv(){o->
+                                        o- order.documentType.title
+                                    }
+                                    o- kdiv(){o->
+                                        o- formatUnixTime(order.deadline)
+                                    }
+                                    order.price?.let {
+                                        o- kdiv(){o->
+                                            o- formatUAH(it)
+                                        }
+                                    }
+                                    o- kdiv(){o->
+                                        o- order.numPages.toString()
+                                    }
+                                    o- kdiv(){o->
+                                        o- order.numSource.toString()
+                                    }
+                                    o- kdiv(){o->
+                                        o- kdiv(whiteSpace = "pre-wrap"){o->
+                                            o- order.details
+                                        }
+                                    }
+                                }
+
+                                UserKind.WRITER -> imf()
+
+                                UserKind.ADMIN -> imf()
                             }
-//                            creator_id bigint not null references users(id), -- Can be admin
-//                            customer_id bigint not null references users(id),
-//                            title text not null,
-//                            document_type ua_document_type not null,
-//                            deadline timestamp /*maybe null*/,
-//                            price int /*maybe null*/,
-//                            num_pages int not null,
-//                            num_sources int not null,
-//                            details text not null,
-//                            admin_notes text not null,
-//                            state order_state not null,
-//                            writer_id bigint /*maybe null*/ references users(id)
                         }),
+
                         TabSpec("files", t("TOTE", "Файлы"), kdiv{o->
                             o- "fucking files"
                         }),
+
                         TabSpec("messages", t("TOTE", "Сообщения"), kdiv{o->
                             o- "fucking messages"
                         })

@@ -3,7 +3,7 @@
 package aps
 
 import aps.front.*
-import aps.front.Color.*
+import aps.Color.*
 import into.kommon.*
 
 @native interface Moment {

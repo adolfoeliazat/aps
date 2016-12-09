@@ -9,7 +9,7 @@
 package aps.front
 
 import kotlin.browser.window
-import aps.front.Color.*
+import aps.Color.*
 import aps.*
 import aps.WorldPointRequest.Action.RESTORE
 import aps.WorldPointRequest.Action.SAVE

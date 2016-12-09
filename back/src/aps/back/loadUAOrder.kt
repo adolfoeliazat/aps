@@ -21,10 +21,20 @@ import org.jooq.*
             ?: bitchExpectedly(t("TOTE", "Нет такого заказа (по крайней мере, для тебя)"))
 
         val order = rec.into(JQUaOrders::class.java)
-        val rto = OrderRTO(
+        val rto = UAOrderRTO(
             id = order.id.toString(),
             title = order.title,
-            insertedAt = order.insertedAt.time)
+            insertedAt = order.insertedAt.time,
+            customer = ctx.loadUser(order.customerId),
+            documentType = order.documentType.toApp(),
+            deadline = order.deadline.time,
+            price = order.price,
+            numPages = order.numPages,
+            numSource = order.numSources,
+            details = order.details,
+            adminNotes = order.adminNotes,
+            state = order.state.toApp()
+        )
 
         return LoadUAOrderRequest.Response(rto)
     }

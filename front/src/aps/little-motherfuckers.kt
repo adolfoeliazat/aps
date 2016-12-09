@@ -1,7 +1,8 @@
 package aps
 
 import aps.front.*
-import aps.front.Color.*
+import aps.Color.*
+import into.kommon.*
 
 fun errorLabel(title: String): ToReactElementable =
     kdiv(color = RED_300, marginTop = 5, marginRight = 9, textAlign = "right"){o->
@@ -22,4 +23,21 @@ fun ElementBuilder.maybeFieldError(error: String?, circleRight: Int) {
                 zIndex = 1000)
     }
 }
+
+fun formatUAH(cents: Int): String {
+    val int = cents / 100
+    val fraction = cents - int
+    return "$int,$fraction грн."
+}
+
+fun formatUnixTime(ms: Long, includeTZ: Boolean = true): String =
+    when (Globus.lang) {
+        Language.UA -> {
+            val double: Double = safeParseDouble(ms.toString()) ?: wtf()
+            val s = moment(double).format("L LTS")
+            if (includeTZ) "$s (Киев)"
+            else s
+        }
+        Language.EN -> imf("formatUnixTime for EN")
+    }
 

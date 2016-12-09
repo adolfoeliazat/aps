@@ -4,8 +4,8 @@
 package aps.back.generated.jooq.tables.pojos;
 
 
-import aps.back.generated.jooq.enums.JQOrderState;
 import aps.back.generated.jooq.enums.JQUaDocumentType;
+import aps.back.generated.jooq.enums.JQUaOrderState;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -26,7 +26,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrders implements Serializable {
 
-    private static final long serialVersionUID = -788676664;
+    private static final long serialVersionUID = 1914808912;
 
     private Long             id;
     private Boolean          deleted;
@@ -43,7 +43,7 @@ public class JQUaOrders implements Serializable {
     private Integer          numSources;
     private String           details;
     private String           adminNotes;
-    private JQOrderState     state;
+    private JQUaOrderState   state;
     private Long             writerId;
 
     public JQUaOrders() {}
@@ -84,7 +84,7 @@ public class JQUaOrders implements Serializable {
         Integer          numSources,
         String           details,
         String           adminNotes,
-        JQOrderState     state,
+        JQUaOrderState   state,
         Long             writerId
     ) {
         this.id = id;
@@ -226,11 +226,11 @@ public class JQUaOrders implements Serializable {
         this.adminNotes = adminNotes;
     }
 
-    public JQOrderState getState() {
+    public JQUaOrderState getState() {
         return this.state;
     }
 
-    public void setState(JQOrderState state) {
+    public void setState(JQUaOrderState state) {
         this.state = state;
     }
 
