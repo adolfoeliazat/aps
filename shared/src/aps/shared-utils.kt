@@ -219,6 +219,14 @@ fun String?.nullifyBlank(): String? =
     if (this.isNullOrBlank()) null
     else this
 
+fun markdownItalicVerbatim(s: String): String {
+    return "_" + escapeMarkdown(s) + "_"
+}
+
+fun escapeMarkdown(s: String): String {
+    return s.replace("_", "\\_")
+}
+
 
 
 

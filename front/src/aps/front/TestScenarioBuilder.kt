@@ -245,7 +245,7 @@ class TestScenarioBuilder {
     }
 
     fun setValueDescribingStep(shame: String, value: String) {
-        val descr = "Typing into `$shame`: ${italicVerbatim(value)}"
+        val descr = "Typing into `$shame`: ${markdownItalicVerbatim(value)}"
         val step = TestInstruction.Step.ActionStep(descr)
         instructions.add(step)
         setValue(shame, value)
@@ -267,14 +267,6 @@ class TestScenarioBuilder {
         instructions.add(step)
         setValue(shame, value)
         act {step.passed = true}
-    }
-
-    fun italicVerbatim(s: String): String {
-        return "_" + escapeMarkdown(s) + "_"
-    }
-
-    fun escapeMarkdown(s: String): String {
-        return s.replace("_", "\\_")
     }
 
     fun setValue(shame: String, value: Boolean) {

@@ -149,7 +149,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) {
     }
 
     val ebafPlus = EvaporatingButtonAndForm(
-        ebafHost, "plus", "primary", "plus",
+        ebafHost, "plus", Button.Level.PRIMARY, "plus",
         formSpec = FormSpec<CustomerAddUAOrderFileRequest, CustomerAddUAOrderFileRequest.Response>(
             CustomerAddUAOrderFileRequest(), world,
             primaryButtonTitle = t("TOTE", "Добавить"),

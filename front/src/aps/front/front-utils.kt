@@ -140,6 +140,7 @@ fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String 
         .forEach {
             var s = (transformLine ?: {it})(it)
                 .replace(Regex("<!--.*?react-text.*?-->"), "")
+                .replace(Regex("<!-- react-empty: \\d+ -->"), "")
                 .replace(Regex(" data-reactroot=\".*?\""), "")
                 .trim()
             if (s.isBlank()) return@forEach

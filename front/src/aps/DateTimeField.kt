@@ -131,4 +131,10 @@ class DateTimePicker(val key: String? = null) : Control2(Attrs()) {
 
 }
 
+fun TestScenarioBuilder.dateTimePickerSetValue(key: String, value: String) {
+    act("Typing into `$key`: ${markdownItalicVerbatim(value)}") {
+        DateTimePicker.instance(key).setValue(value)
+    }
+}
+
 

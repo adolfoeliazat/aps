@@ -63,14 +63,14 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         plusFormSpec: FormSpec<Req, Res>,
         onPlusFormSuccessa: (Res) -> Promise<Unit> = {async{}}
     ) {
-        plusShit = EvaporatingButtonAndForm(ebafHost, name = "plus", level = "primary", icon = plusIcon, formSpec = plusFormSpec, onSuccessa = onPlusFormSuccessa)
+        plusShit = EvaporatingButtonAndForm(ebafHost, name = "plus", level = Button.Level.PRIMARY, icon = plusIcon, formSpec = plusFormSpec, onSuccessa = onPlusFormSuccessa)
     }
 
     fun <Req : RequestMatumba, Res> specifyEdit(
         editFormSpec: FormSpec<Req, Res>,
         onEditFormSuccessa: (Res) -> Promise<Unit> = {async{}}
     ) {
-        editShit = EvaporatingButtonAndForm(ebafHost, name = "edit", level = "default", icon = "edit", formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
+        editShit = EvaporatingButtonAndForm(ebafHost, name = "edit", level = Button.Level.DEFAULT, icon = "edit", formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
     }
 
 

@@ -101,61 +101,70 @@
         </h3>
       </div>
       <div style="position: absolute; right: 14px; top: 16px;">
-        <!-- react-empty: 59 -->
-        </div>
       </div>
-      <div style="margin-bottom: 15px;">
-        <div class="aniFadeIn" style="margin-bottom: 15px;">
-          <div>
-            <form class="">
+    </div>
+    <div style="margin-bottom: 15px;">
+      <div class="aniFadeIn" style="margin-bottom: 15px;">
+        <div>
+          <form class="">
+            <div class="form-group">
+              <label>
+                <span class="">
+                  Название
+                </span>
+              </label>
+              <div style="position: relative;">
+                <input type="text" rows="5" class="form-control" value="" style="resize: none;">
+                </div>
+              </div>
               <div class="form-group">
                 <label>
                   <span class="">
-                    Название
+                    Тип документа
                   </span>
                 </label>
                 <div style="position: relative;">
-                  <input type="text" rows="5" class="form-control" value="" style="resize: none;">
+                  <select class="form-control">
+                    <option value="ESSAY">
+                      Реферат
+                    </option>
+                    <option value="COURSE">
+                      Курсовая работа
+                    </option>
+                    <option value="GRADUATION">
+                      Дипломная работа
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>
+                  Срок
+                </label>
+                <div style="position: relative;">
+                  <div class="input-group date">
+                    <input type="text" class="form-control">
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar">
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <label>
                     <span class="">
-                      Тип документа
+                      Страниц
                     </span>
                   </label>
                   <div style="position: relative;">
-                    <select class="form-control">
-                      <option value="ESSAY">
-                        Реферат
-                      </option>
-                      <option value="COURSE">
-                        Курсовая работа
-                      </option>
-                      <option value="GRADUATION">
-                        Дипломная работа
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label>
-                    Срок
-                  </label>
-                  <div style="position: relative;">
-                    <div class="input-group date">
-                      <input type="text" class="form-control">
-                        <span class="input-group-addon">
-                          <span class="glyphicon glyphicon-calendar">
-                          </span>
-                        </span>
-                      </div>
+                    <input type="text" rows="5" class="form-control" value="" style="resize: none;">
                     </div>
                   </div>
                   <div class="form-group">
                     <label>
                       <span class="">
-                        Страниц
+                        Источников
                       </span>
                     </label>
                     <div style="position: relative;">
@@ -165,39 +174,29 @@
                     <div class="form-group">
                       <label>
                         <span class="">
-                          Источников
+                          Детали
                         </span>
                       </label>
                       <div style="position: relative;">
-                        <input type="text" rows="5" class="form-control" value="" style="resize: none;">
-                        </div>
+                        <textarea rows="5" type="text" class="form-control" style="resize: none;">
+                        </textarea>
                       </div>
-                      <div class="form-group">
-                        <label>
-                          <span class="">
-                            Детали
-                          </span>
-                        </label>
-                        <div style="position: relative;">
-                          <textarea rows="5" type="text" class="form-control" style="resize: none;">
-                          </textarea>
-                        </div>
-                      </div>
-                      <div style="text-align: left;">
-                        <button class="btn btn-primary ">
-                          <span>
-                            Создать
-                          </span>
-                        </button>
-                        <button class="btn btn-default " style="margin-left: 10px;">
-                          <span>
-                            Передумал
-                          </span>
-                        </button>
-                      </div>
-                    </form>
-                  </div>
+                    </div>
+                    <div style="text-align: left;">
+                      <button class="btn btn-primary ">
+                        <span>
+                          Создать
+                        </span>
+                      </button>
+                      <button class="btn btn-default " style="margin-left: 10px;">
+                        <span>
+                          Передумал
+                        </span>
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
+        </div>

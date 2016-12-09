@@ -18,6 +18,7 @@ class Tabs2(
     val tabDomIdPrefix: String? = null,
     val key: String? = "tabs"
 ): Control2(Attrs()) {
+
     companion object {
         val instances = mutableMapOf<String, Tabs2>()
 
@@ -77,3 +78,15 @@ class Tabs2(
     }
 
 }
+
+fun TestScenarioBuilder.tabsClickOnTab(key: String, id: String) {
+    acta("Choosing tab `$id`") {
+        Tabs2.instance(key).clickOnTaba(id)
+    }
+}
+
+
+
+
+
+

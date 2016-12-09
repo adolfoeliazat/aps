@@ -175,14 +175,13 @@ fun makeBasicContainerControlCtor(tag: String): (BasicContainerControlBuilder.()
 
 interface ToReactElementable {
     fun toReactElement(): ReactElement?
-
-    companion object {
-        fun from(el: ReactElement?): ToReactElementable =
-            object:ToReactElementable {
-                override fun toReactElement(): ReactElement? = el
-            }
-    }
+    companion object
 }
+
+fun ToReactElementable.Companion.from(el: ReactElement?) =
+    object:ToReactElementable {
+        override fun toReactElement(): ReactElement? = el
+    }
 
 fun ToReactElementable.Companion.from(render: () -> ToReactElementable) =
     object:ToReactElementable {
