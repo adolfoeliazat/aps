@@ -56,31 +56,60 @@ class CustomerSingleUAOrderPage(val world: World) {
 
                     tabs = listOf(
                         TabSpec("params", t("TOTE", "Параметры"), kdiv{o->
+                            fun label(title: String) = klabel(marginBottom = 0) {it-title}
+
+                            fun row(build: (ElementBuilder) -> Unit) =
+                                kdiv(className = "row", marginBottom = "0.5em"){o->
+                                    build(o)
+                                }
+
                             exhaustive/when (world.userSure.kind) {
                                 UserKind.CUSTOMER -> {
-                                    o- kdiv(){o->
-                                        o- formatUnixTime(order.insertedAt)
+                                    o- row{o->
+                                        o- kdiv(className = "col-md-4"){o->
+                                            o- label(t("TOTE", "Создан"))
+                                            o- kdiv(){o->
+                                                o- formatUnixTime(order.insertedAt)
+                                            }
+                                        }
+                                        o- kdiv(className = "col-md-4"){o->
+                                            o- label(t("TOTE", "Срок"))
+                                            o- kdiv(){o->
+                                                o- formatUnixTime(order.deadline)
+                                            }
+                                        }
                                     }
-                                    o- kdiv(){o->
-                                        o- order.documentType.title
-                                    }
-                                    o- kdiv(){o->
-                                        o- formatUnixTime(order.deadline)
+                                    o- row{o->
+                                        o- kdiv(className = "col-md-4"){o->
+                                            o- label(t("TOTE", "Тип документа"))
+                                            o- kdiv(){o->
+                                                o- order.documentType.title
+                                            }
+                                        }
+                                        o- kdiv(className = "col-md-4"){o->
+                                            o- label(t("TOTE", "Страниц"))
+                                            o- kdiv(){o->
+                                                o- order.numPages.toString()
+                                            }
+                                        }
+                                        o- kdiv(className = "col-md-4"){o->
+                                            o- label(t("TOTE", "Источников"))
+                                            o- kdiv(){o->
+                                                o- order.numSource.toString()
+                                            }
+                                        }
                                     }
                                     order.price?.let {
                                         o- kdiv(){o->
                                             o- formatUAH(it)
                                         }
                                     }
-                                    o- kdiv(){o->
-                                        o- order.numPages.toString()
-                                    }
-                                    o- kdiv(){o->
-                                        o- order.numSource.toString()
-                                    }
-                                    o- kdiv(){o->
-                                        o- kdiv(whiteSpace = "pre-wrap"){o->
-                                            o- order.details
+                                    o- row{o->
+                                        o- kdiv(className = "col-md-12"){o->
+                                            o- label(t("TOTE", "Детали"))
+                                            o- kdiv(whiteSpace = "pre-wrap"){o->
+                                                o- order.details
+                                            }
                                         }
                                     }
                                 }
