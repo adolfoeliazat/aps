@@ -24,6 +24,11 @@ import org.jooq.impl.SequenceImpl;
 public class Sequences {
 
     /**
+     * The sequence <code>public.files_id_seq</code>
+     */
+    public static final Sequence<Long> FILES_ID_SEQ = new SequenceImpl<Long>("files_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+    /**
      * The sequence <code>public.support_thread_messages_id_seq</code>
      */
     public static final Sequence<Long> SUPPORT_THREAD_MESSAGES_ID_SEQ = new SequenceImpl<Long>("support_thread_messages_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

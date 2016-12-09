@@ -142,7 +142,7 @@ create trigger on_update before update on support_thread_messages for each row e
 -- create table foobar(id bigserial primary key, foo text);
 
 
--- ============================== ORDERS ==============================
+-- ============================== UA_ORDERS ==============================
 
 
 create type ua_document_type as enum (
@@ -211,7 +211,26 @@ $$ language plpgsql;
 create trigger ua_orders_tsvectorupdate before insert or update
     on ua_orders for each row execute procedure ua_orders_tsv_trigger();
 
+-- ============================== FILES ==============================
 
+create table files(
+    id bigserial primary key,
+    deleted boolean not null,
+    inserted_at timestamp not null,
+    updated_at timestamp not null,
+    creator_id bigint not null references users(id),
+    content bytea not null,
+    name text not null,
+    title text not null,
+    mime text not null,
+    size_bytes int not null,
+    details text not null,
+    admin_notes text not null
+);
+
+alter sequence files_id_seq restart with 100000;
+create trigger on_insert before insert on files for each row execute procedure on_insert();
+create trigger on_update before update on files for each row execute procedure on_update();
 
 
 

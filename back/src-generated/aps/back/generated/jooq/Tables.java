@@ -4,6 +4,7 @@
 package aps.back.generated.jooq;
 
 
+import aps.back.generated.jooq.tables.JQFiles;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
 import aps.back.generated.jooq.tables.JQUaOrders;
@@ -26,6 +27,11 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>public.files</code>.
+     */
+    public static final JQFiles FILES = aps.back.generated.jooq.tables.JQFiles.FILES;
 
     /**
      * The table <code>public.support_thread_messages</code>.

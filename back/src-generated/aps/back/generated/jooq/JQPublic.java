@@ -4,6 +4,7 @@
 package aps.back.generated.jooq;
 
 
+import aps.back.generated.jooq.tables.JQFiles;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
 import aps.back.generated.jooq.tables.JQUaOrders;
@@ -36,12 +37,17 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQPublic extends SchemaImpl {
 
-    private static final long serialVersionUID = -1823119156;
+    private static final long serialVersionUID = -1185170865;
 
     /**
      * The reference instance of <code>public</code>
      */
     public static final JQPublic PUBLIC = new JQPublic();
+
+    /**
+     * The table <code>public.files</code>.
+     */
+    public final JQFiles FILES = aps.back.generated.jooq.tables.JQFiles.FILES;
 
     /**
      * The table <code>public.support_thread_messages</code>.
@@ -98,6 +104,7 @@ public class JQPublic extends SchemaImpl {
 
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
+            Sequences.FILES_ID_SEQ,
             Sequences.SUPPORT_THREAD_MESSAGES_ID_SEQ,
             Sequences.SUPPORT_THREADS_ID_SEQ,
             Sequences.UA_ORDERS_ID_SEQ,
@@ -115,6 +122,7 @@ public class JQPublic extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
+            JQFiles.FILES,
             JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES,
             JQSupportThreads.SUPPORT_THREADS,
             JQUaOrders.UA_ORDERS,

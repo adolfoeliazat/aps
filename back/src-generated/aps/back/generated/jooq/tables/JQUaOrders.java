@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrders extends TableImpl<JQUaOrdersRecord> {
 
-    private static final long serialVersionUID = -1691379948;
+    private static final long serialVersionUID = -2013547661;
 
     /**
      * The reference instance of <code>public.ua_orders</code>
@@ -102,7 +102,7 @@ public class JQUaOrders extends TableImpl<JQUaOrdersRecord> {
     /**
      * The column <code>public.ua_orders.deadline</code>.
      */
-    public final TableField<JQUaOrdersRecord, Timestamp> DEADLINE = createField("deadline", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<JQUaOrdersRecord, Timestamp> DEADLINE = createField("deadline", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
 
     /**
      * The column <code>public.ua_orders.price</code>.
