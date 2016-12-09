@@ -3,7 +3,12 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-class TabSpec(val id: String, val title: String, val content: ToReactElementable)
+class TabSpec(
+    val id: String,
+    val title: String,
+    val content: ToReactElementable,
+    val stripContent: ToReactElementable = kdiv()
+)
 
 class Tabs2(
     val tabs: List<TabSpec>,
@@ -32,6 +37,8 @@ class Tabs2(
     }
 
     override fun render() = kdiv{o->
+        val activeTab = tabs.first {it.id == activeID}
+
         o- kdiv(position="relative"){o->
             o- kul(className="nav nav-tabs"){o->
                 for (tab in tabs) {
@@ -46,9 +53,14 @@ class Tabs2(
                     }
                 }
             }
+
+            o- kdiv(position = "absolute", right = 0, top = 0){o->
+                o- activeTab.stripContent
+            }
         }
+
         o- kdiv(marginTop=5){o->
-            o- tabs.first{it.id == activeID}.content
+            o- activeTab.content
         }
     }
 

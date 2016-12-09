@@ -440,6 +440,13 @@ class CustomerCreateUAOrderRequest : RequestMatumba() {
     val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen)
 }
 
+class CustomerAddUAOrderFileRequest : RequestMatumba() {
+    class Response(val id: String)
+
+    val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.file.minTitleLen, const.file.maxTitleLen)
+    val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.file.minDetailsLen, const.file.maxDetailsLen)
+}
+
 enum class UADocumentType(override val title: String) : Titled {
     ESSAY(t("TOTE", "Реферат")),
     COURSE(t("TOTE", "Курсовая работа")),

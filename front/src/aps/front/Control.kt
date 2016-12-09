@@ -184,6 +184,12 @@ interface ToReactElementable {
     }
 }
 
+fun ToReactElementable.Companion.from(render: () -> ToReactElementable) =
+    object:ToReactElementable {
+        override fun toReactElement() = render().toReactElement()
+    }
+
+
 open class ControlInstanceSpec {
     var shame = ""
     var tame = ""

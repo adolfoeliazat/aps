@@ -40,12 +40,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 //    typealias Me = Melinda<Item, Entity, Filter>
 
     lateinit var entity: Entity
-    var headerControlsDisabled = false
-    var showEmptyLabel = true
-    var headerControlsVisible = true
-    var headerControlsClass = ""
     var updateHeaderControls = {}
-    var cancelForm = {}
 //    var items: dynamic = undefined
     var plusShit: IButtonAndForm? = null
     var editShit: IButtonAndForm? = null
@@ -54,80 +49,33 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     var filterSelect: Select<Filter>? = null
     var orderingSelect: Select<Ordering>? = null
 
-    interface IButtonAndForm {
-        fun renderButton(): ReactElement
-        fun renderForm(): ReactElement?
-    }
-
-    inner class ButtonAndForm<Req : RequestMatumba, Res>(
-        val name: String,
-        val level: String,
-        val icon: String,
-        val formSpec: FormSpec<Req, Res>,
-        val onSuccessa: (Res) -> Promise<Unit>
-    ) : IButtonAndForm {
-        private var form: ReactElement? = null
-        private var formClass = ""
-
-        override fun renderButton(): ReactElement = Shitus.button(json(
-            "tamyShamy" to name, "style" to json("marginLeft" to 0), "level" to level, "icon" to icon, "disabled" to headerControlsDisabled,
-            "onClick" to {
-                showEmptyLabel = false
-                setHeaderControlsDisappearing()
-                formClass = "aniFadeIn"
-
-                cancelForm = {
-                    setHeaderControlsAppearing()
-                    form = null
-                    ui.updatePage()
-                }
-
-                form = FormMatumba(formSpec.copy(
-                    onCancel = {cancelForm()},
-                    onSuccessa = {res -> async{
-                        await(onSuccessa(res))
-                    }}
-                )).toReactElement()
-
-                ui.updatePage()
-            }
-        ))
-
-        override fun renderForm(): ReactElement? = form?.let {
-            Shitus.diva(json("className" to formClass, "style" to json("marginBottom" to 15)), it)
-        }
+    private val ebafHost = EbafHost()
+    inner class EbafHost : EvaporatingButtonAndFormHost {
+        override var showEmptyLabel = true
+        override var cancelForm = {}
+        override var headerControlsDisabled = false
+        override var headerControlsVisible = true
+        override var headerControlsClass = ""
+        override fun updateShit() = ui.updatePage()
     }
 
     fun <Req : RequestMatumba, Res> specifyPlus(
         plusFormSpec: FormSpec<Req, Res>,
         onPlusFormSuccessa: (Res) -> Promise<Unit> = {async{}}
     ) {
-        plusShit = ButtonAndForm(name = "plus", level = "primary", icon = plusIcon, formSpec = plusFormSpec, onSuccessa = onPlusFormSuccessa)
+        plusShit = EvaporatingButtonAndForm(ebafHost, name = "plus", level = "primary", icon = plusIcon, formSpec = plusFormSpec, onSuccessa = onPlusFormSuccessa)
     }
 
     fun <Req : RequestMatumba, Res> specifyEdit(
         editFormSpec: FormSpec<Req, Res>,
         onEditFormSuccessa: (Res) -> Promise<Unit> = {async{}}
     ) {
-        editShit = ButtonAndForm(name = "edit", level = "default", icon = "edit", formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
+        editShit = EvaporatingButtonAndForm(ebafHost, name = "edit", level = "default", icon = "edit", formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
     }
 
-    fun setHeaderControlsDisappearing() {
-        headerControlsVisible = false
-        headerControlsClass = ""
-    }
-
-    fun setHeaderControlsAppearing() {
-        headerControlsVisible = true
-        headerControlsClass = "aniFadeIn"
-        timeoutSet(500) {
-            headerControlsClass = ""
-            ui.updatePage()
-        }
-    }
 
     fun setHeaderControlsDisabled(b: Boolean) {
-        headerControlsDisabled = b
+        ebafHost.headerControlsDisabled = b
         updateHeaderControls()
     }
 
@@ -195,7 +143,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 "tamyShamy" to "search",
                 "style" to json("paddingLeft" to 30, "width" to 160),
                 "placeholder" to t("TOTE", "Поиск..."),
-                "disabled" to { headerControlsDisabled }, // Yeah, I mean closure here
+                "disabled" to { ebafHost.headerControlsDisabled }, // Yeah, I mean closure here
                 // TODO:vgrechka Check if async below is enhanced correctly
                 "onKeyDown" to {e: KeyboardEvent -> "__async"
                     if (e.keyCode == 13) {
@@ -216,7 +164,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 filterSelectValues, filter,
                 isAction = true,
                 style = json("width" to 160),
-                volatileDisabled = {headerControlsDisabled},
+                volatileDisabled = {ebafHost.headerControlsDisabled},
                 onChanga = {"__async"
                     __await(applyHeaderControls(filterSelect!!))
                 }
@@ -239,7 +187,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 Ordering.values(), ordering,
                 isAction = true,
                 style = json("width" to 160),
-                volatileDisabled = {headerControlsDisabled},
+                volatileDisabled = {ebafHost.headerControlsDisabled},
                 onChanga = {"__async"
                     __await(applyHeaderControls(orderingSelect!!))
                 }
@@ -284,7 +232,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                                            if (itemsRes.items.isNotEmpty())
                                                renderMoreable(ui, itemsRes, itemsReq, renderItem)
                                            else
-                                               if (showEmptyLabel) {
+                                               if (ebafHost.showEmptyLabel) {
                                                    Shitus.diva(json("style" to json("marginTop" to 10)),
                                                                emptyMessage?.let{it} ?: Shitus.spanc(json("tame" to "nothingLabel", "content" to t("TOTE", "Савсэм ничего нэт, да..."))))
                                                }
@@ -301,10 +249,10 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                     return Shitus.updatableElement(js("({})"), { update: dynamic ->
                         updateHeaderControls = update
                         render@{
-                            if (!hasHeaderControls() || !headerControlsVisible) return@render null
+                            if (!hasHeaderControls() || !ebafHost.headerControlsVisible) return@render null
                             Shitus.hor2(json(
                                 "style" to json("display" to "flex", "marginTop" to if (tabsSpec != null) 55 else 0),
-                                "className" to headerControlsClass),
+                                "className" to ebafHost.headerControlsClass),
 
                                         searchBox.toReactElement(),
                                         filterSelect?.toReactElement(),
@@ -319,7 +267,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
             onKeyDown = {e: ReactEvent ->
                 if (e.keyCode == 27) {
-                    cancelForm()
+                    ebafHost.cancelForm()
                 }
             }
         ))

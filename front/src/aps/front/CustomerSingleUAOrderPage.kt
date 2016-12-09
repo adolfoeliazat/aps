@@ -1,3 +1,5 @@
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -26,7 +28,6 @@ class CustomerSingleUAOrderPage(val world: World) {
         world.setPage(Page(
             header = pageHeader3(kdiv{o->
                 o- t("TOTE", "Заказ #${order.id}")
-//                o- " "
                 o- kspan(backgroundColor = order.state.labelBackground,
                          fontSize = "60%",
                          padding = "0.1em 0.3em",
@@ -55,83 +56,148 @@ class CustomerSingleUAOrderPage(val world: World) {
                     }},
 
                     tabs = listOf(
-                        TabSpec("params", t("TOTE", "Параметры"), kdiv{o->
-                            fun label(title: String) = klabel(marginBottom = 0) {it-title}
-
-                            fun row(build: (ElementBuilder) -> Unit) =
-                                kdiv(className = "row", marginBottom = "0.5em"){o->
-                                    build(o)
-                                }
-
-                            exhaustive/when (world.userSure.kind) {
-                                UserKind.CUSTOMER -> {
-                                    o- row{o->
-                                        o- kdiv(className = "col-md-4"){o->
-                                            o- label(t("TOTE", "Создан"))
-                                            o- kdiv(){o->
-                                                o- formatUnixTime(order.insertedAt)
-                                            }
-                                        }
-                                        o- kdiv(className = "col-md-4"){o->
-                                            o- label(t("TOTE", "Срок"))
-                                            o- kdiv(){o->
-                                                o- formatUnixTime(order.deadline)
-                                            }
-                                        }
-                                    }
-                                    o- row{o->
-                                        o- kdiv(className = "col-md-4"){o->
-                                            o- label(t("TOTE", "Тип документа"))
-                                            o- kdiv(){o->
-                                                o- order.documentType.title
-                                            }
-                                        }
-                                        o- kdiv(className = "col-md-4"){o->
-                                            o- label(t("TOTE", "Страниц"))
-                                            o- kdiv(){o->
-                                                o- order.numPages.toString()
-                                            }
-                                        }
-                                        o- kdiv(className = "col-md-4"){o->
-                                            o- label(t("TOTE", "Источников"))
-                                            o- kdiv(){o->
-                                                o- order.numSource.toString()
-                                            }
-                                        }
-                                    }
-                                    order.price?.let {
-                                        o- kdiv(){o->
-                                            o- formatUAH(it)
-                                        }
-                                    }
-                                    o- row{o->
-                                        o- kdiv(className = "col-md-12"){o->
-                                            o- label(t("TOTE", "Детали"))
-                                            o- kdiv(whiteSpace = "pre-wrap"){o->
-                                                o- order.details
-                                            }
-                                        }
-                                    }
-                                }
-
-                                UserKind.WRITER -> imf()
-
-                                UserKind.ADMIN -> imf()
-                            }
-                        }),
-
-                        TabSpec("files", t("TOTE", "Файлы"), kdiv{o->
-                            o- "fucking files"
-                        }),
-
-                        TabSpec("messages", t("TOTE", "Сообщения"), kdiv{o->
-                            o- "fucking messages"
-                        })
+                        ParamsTab(world, order).tabSpec,
+                        FilesTab(world, order).tabSpec,
+                        MessagesTab(order).tabSpec
                     )
                 )
             }
         ))
     }
 }
+
+private class ParamsTab(val world: World, val order: UAOrderRTO) {
+    private val content = kdiv{o->
+        fun label(title: String) = klabel(marginBottom = 0) {it-title}
+
+        fun row(build: (ElementBuilder) -> Unit) =
+            kdiv(className = "row", marginBottom = "0.5em"){o->
+                build(o)
+            }
+
+        exhaustive/when (world.userSure.kind) {
+            UserKind.CUSTOMER -> {
+                o- row{o->
+                    o- kdiv(className = "col-md-4"){o->
+                        o- label(t("TOTE", "Создан"))
+                        o- kdiv(){o->
+                            o- formatUnixTime(order.insertedAt)
+                        }
+                    }
+                    o- kdiv(className = "col-md-4"){o->
+                        o- label(t("TOTE", "Срок"))
+                        o- kdiv(){o->
+                            o- formatUnixTime(order.deadline)
+                        }
+                    }
+                }
+                o- row{o->
+                    o- kdiv(className = "col-md-4"){o->
+                        o- label(t("TOTE", "Тип документа"))
+                        o- kdiv(){o->
+                            o- order.documentType.title
+                        }
+                    }
+                    o- kdiv(className = "col-md-4"){o->
+                        o- label(t("TOTE", "Страниц"))
+                        o- kdiv(){o->
+                            o- order.numPages.toString()
+                        }
+                    }
+                    o- kdiv(className = "col-md-4"){o->
+                        o- label(t("TOTE", "Источников"))
+                        o- kdiv(){o->
+                            o- order.numSource.toString()
+                        }
+                    }
+                }
+                order.price?.let {
+                    o- kdiv(){o->
+                        o- formatUAH(it)
+                    }
+                }
+                o- row{o->
+                    o- kdiv(className = "col-md-12"){o->
+                        o- label(t("TOTE", "Детали"))
+                        o- kdiv(whiteSpace = "pre-wrap"){o->
+                            o- order.details
+                        }
+                    }
+                }
+            }
+
+            UserKind.WRITER -> imf()
+
+            UserKind.ADMIN -> imf()
+        }
+    }
+
+    val tabSpec = TabSpec("params", t("TOTE", "Параметры"), content)
+}
+
+private class FilesTab(val world: World, val order: UAOrderRTO) {
+    val ebafHost = object:EvaporatingButtonAndFormHost {
+        override var showEmptyLabel = true
+        override var cancelForm = {}
+        override var headerControlsDisabled = false
+        override var headerControlsVisible = true
+        override var headerControlsClass = ""
+
+        override fun updateShit() {
+            world.updatePage()
+        }
+    }
+
+    val ebafPlus = EvaporatingButtonAndForm(
+        ebafHost, "plus", "primary", "plus",
+        formSpec = FormSpec<CustomerAddUAOrderFileRequest, CustomerAddUAOrderFileRequest.Response>(
+            CustomerAddUAOrderFileRequest(), world,
+            primaryButtonTitle = t("TOTE", "Добавить"),
+            cancelButtonTitle = defaultCancelButtonTitle
+        ),
+        onSuccessa = {res->
+            imf()
+//            world.pushNavigate("order.html?id=${res.id}")
+        }
+    )
+
+    val stripContent = object:Control2(Attrs()) {
+        override fun render(): ToReactElementable {
+            if (!ebafHost.headerControlsVisible) return NOTRE
+            return hor2{o->
+                o- ebafPlus.renderButton()
+            }
+        }
+    }
+
+    val content = ToReactElementable.from {kdiv{o->
+        o- ebafPlus.renderForm()
+    }}
+
+    val tabSpec = TabSpec("files", t("TOTE", "Файлы"), content, stripContent)
+}
+
+private class MessagesTab(val order: UAOrderRTO) {
+    private val content = kdiv{o->
+        o- "fucking messages"
+    }
+
+    val tabSpec = TabSpec("messages", t("TOTE", "Сообщения"), content)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
