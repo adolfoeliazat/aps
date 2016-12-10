@@ -2,6 +2,9 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.events.MouseEvent
+import org.w3c.dom.events.MouseEventInit
+import kotlin.browser.window
 
 class Button(
     val key: String? = null,
@@ -13,7 +16,8 @@ class Button(
     val iconColor: Color? = null,
     val disabled: Boolean = false,
     val hint: String? = null,
-    val onClicka: () -> Promise<Unit> = {async{}}
+    val onClicka: () -> Promise<Unit> = {async{}},
+    val onClick: () -> Unit = {}
 ) : Control2(Attrs()) {
 
     companion object {
@@ -29,12 +33,16 @@ class Button(
         override fun toString() = string
     }
 
-    fun click(): Promise<Unit> = onClicka()
+    fun click(): Promise<Unit> {
+        onClick()
+        return onClicka()
+    }
 
     override fun render(): ToReactElementable {
         return ToReactElementable.from(reactCreateElement(
             "button",
             json(
+                "id" to elementID,
                 "className" to "btn btn-$level $className",
                 "style" to style,
                 "title" to hint,
@@ -69,6 +77,26 @@ fun TestScenarioBuilder.buttonClick(key: String) {
     acta("Clicking button `$key`") {
         Button.instance(key).click()
     }
+}
+
+fun TestScenarioBuilder.buttonUserInitiatedClick(key: String) {
+    acta("Clicking button `$key`") {async{
+        val successOrTimeout = Promise<Unit> {resolve, reject ->
+            timeoutSet(1000) {reject(Exception("Timed out waiting for a fucking robot click"))}
+            window.onclick = {
+                window.onclick = null
+                Button.instance(key).click()
+                resolve(Unit)
+            }
+        }
+
+        try {
+            await(fuckingRemoteCall.robotClickOnChrome())
+            await(successOrTimeout)
+        } finally {
+            window.onclick = null
+        }
+    }}
 }
 
 

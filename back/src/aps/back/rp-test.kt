@@ -10,10 +10,13 @@ import aps.*
 import aps.back.generated.jooq.Tables.USERS
 import com.google.debugging.sourcemap.SourceMapConsumerFactory
 import com.google.debugging.sourcemap.SourceMapping
+import com.sun.jna.platform.win32.User32
 import into.kommon.*
 import org.jooq.Record
 import org.jooq.UpdateSetMoreStep
 import org.jooq.UpdateSetStep
+import java.awt.Robot
+import java.awt.event.InputEvent
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -223,6 +226,7 @@ val backendInstanceID = "" + UUID.randomUUID()
         val res: Any = run {when (proc) {
             "loadTestShit" -> frp_loadTestShit(rmap)
             "updateTestShit" -> frp_updateTestShit(rmap)
+            "robotClickOnChrome" -> frp_robotClickOnChrome(rmap)
             else -> wtf("proc: $proc")
 
         }}
@@ -244,6 +248,14 @@ fun frp_updateTestShit(rmap: Map<*, *>) {
     File("$APS_HOME/front/test-shit/$id").writeText(newValue)
 }
 
+fun frp_robotClickOnChrome(rmap: Map<*, *>) {
+    val hwnd = User32.INSTANCE.FindWindow(null, "APS UA - Google Chrome") ?: bitch("No necessary Chrome window")
+    User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Chrome to foreground")
+    val robot = Robot()
+    robot.mouseMove(18, 216)
+    robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+    robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
+}
 
 
 

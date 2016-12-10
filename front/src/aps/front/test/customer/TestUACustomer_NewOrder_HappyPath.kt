@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
+import into.kommon.*
 
 class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
     val shit = TestShit()
@@ -34,6 +35,7 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
 
         o.tabsClickOnTab("tabs", "files")
         o.buttonClick("plus")
+        o.buttonUserInitiatedClick("upload")
     }
 }
 

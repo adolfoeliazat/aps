@@ -443,6 +443,7 @@ class CustomerCreateUAOrderRequest : RequestMatumba() {
 class CustomerAddUAOrderFileRequest : RequestMatumba() {
     class Response(val id: String)
 
+    val file = FileField(this, "file", t("TOTE", "Файл"))
     val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.file.minTitleLen, const.file.maxTitleLen)
     val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.file.minDetailsLen, const.file.maxDetailsLen)
 }
