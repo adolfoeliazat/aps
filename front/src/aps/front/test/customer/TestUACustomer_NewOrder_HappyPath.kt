@@ -36,6 +36,7 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.tabsClickOnTab("tabs", "files")
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
+        o.typeIntoOpenFileDialog("C:\\Users\\Vladimir\\Desktop\\fuck you.rtf")
     }
 }
 

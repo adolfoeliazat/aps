@@ -17,6 +17,7 @@ import org.jooq.UpdateSetMoreStep
 import org.jooq.UpdateSetStep
 import java.awt.Robot
 import java.awt.event.InputEvent
+import java.awt.event.KeyEvent
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -227,6 +228,7 @@ val backendInstanceID = "" + UUID.randomUUID()
             "loadTestShit" -> frp_loadTestShit(rmap)
             "updateTestShit" -> frp_updateTestShit(rmap)
             "robotClickOnChrome" -> frp_robotClickOnChrome(rmap)
+            "robotTypeTextCRIntoWindowTitledOpen" -> frp_robotTypeTextCRIntoWindowTitledOpen(rmap)
             else -> wtf("proc: $proc")
 
         }}
@@ -257,8 +259,56 @@ fun frp_robotClickOnChrome(rmap: Map<*, *>) {
     robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
 }
 
+fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
+    val text: String = cast(rmap["text"])
 
+    (1..3).forEach {
+        val hwnd = User32.INSTANCE.FindWindow(null, "Open")
+        if (hwnd == null) {
+            Thread.sleep(500)
+            return@forEach
+        }
 
+        User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Open window to foreground")
+        robotTypeTextCR(text)
+        return
+    }
+
+    bitch("I'm sick of waiting for Open window")
+}
+
+private fun robotTypeTextCR(text: String) {
+    val robot = Robot()
+    text.forEach {c->
+        dwarnStriking("Typing key: " + c)
+        var holdShift = c.isLetter() && c.isUpperCase()
+
+        val keyCode = when {
+            c.isLetterOrDigit() -> c.toUpperCase().toInt()
+            else -> when (c) {
+                ' ' -> KeyEvent.VK_SPACE
+                ':' -> {holdShift = true; KeyEvent.VK_SEMICOLON}
+                '.' -> KeyEvent.VK_PERIOD
+                '/' -> KeyEvent.VK_SLASH
+                '\\' -> KeyEvent.VK_BACK_SLASH
+                else -> wtf("Dunno how to type key `$c`")
+            }
+        }
+
+        if (holdShift)
+            robot.keyPress(KeyEvent.VK_SHIFT)
+
+        try {
+            robot.keyPress(keyCode)
+            robot.keyRelease(keyCode)
+        } finally {
+            if (holdShift)
+                robot.keyRelease(KeyEvent.VK_SHIFT)
+        }
+    }
+    robot.keyPress(KeyEvent.VK_ENTER)
+    robot.keyRelease(KeyEvent.VK_ENTER)
+}
 
 
 

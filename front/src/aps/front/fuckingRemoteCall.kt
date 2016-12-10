@@ -19,6 +19,11 @@ object fuckingRemoteCall {
         "proc" to "robotClickOnChrome"
     ))
 
+    fun robotTypeTextCRIntoWindowTitledOpen(text: String): Promise<Unit> = sendShit(json(
+        "proc" to "robotTypeTextCRIntoWindowTitledOpen",
+        "text" to text
+    ))
+
     private fun <T> sendShit(request: Json): Promise<T> = async {
         val res = await(send(FuckingRemoteProcedureRequest()-{o->
             o.json.value = JSON.stringify(request)

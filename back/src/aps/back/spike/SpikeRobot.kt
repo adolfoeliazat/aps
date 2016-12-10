@@ -12,7 +12,8 @@ import java.awt.event.MouseEvent
 fun main(args: Array<String>) {
 //    shit1()
 //    shit2()
-    shit3()
+//    shit3()
+    shit4()
 }
 
 private fun shit1() {
@@ -34,12 +35,33 @@ private fun shit2() {
 
 private fun shit3() {
     val hwnd = User32.INSTANCE.FindWindow(null, "APS UA - Google Chrome") ?: bitch("No necessary Chrome window")
-    println("hwnd: $hwnd")
     User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Chrome to foreground")
     val robot = Robot()
     robot.mouseMove(18, 216)
     robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
     robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
+}
+
+private fun shit4() {
+    val hwnd = User32.INSTANCE.FindWindow(null, "Open") ?: bitch("No Open window")
+    User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Open window to foreground")
+    robotTypeTextCR("qwe")
+}
+
+private fun robotTypeTextCR(text: String) {
+    val robot = Robot()
+    text.forEach {c->
+        if (c.isUpperCase()) {
+            robot.keyPress(KeyEvent.VK_SHIFT)
+        }
+        robot.keyPress(c.toUpperCase().toInt())
+        robot.keyRelease(c.toUpperCase().toInt())
+        if (c.isUpperCase()) {
+            robot.keyRelease(KeyEvent.VK_SHIFT)
+        }
+    }
+    robot.keyPress(KeyEvent.VK_ENTER)
+    robot.keyRelease(KeyEvent.VK_ENTER)
 }
 
 

@@ -53,3 +53,10 @@ import into.kommon.*
     }
 }
 
+fun TestScenarioBuilder.typeIntoOpenFileDialog(text: String) {
+    acta("Typing into Open dialog: `${markdownItalicVerbatim(text)}`") {
+        fuckingRemoteCall.robotTypeTextCRIntoWindowTitledOpen(text)
+    }
+}
+
+
