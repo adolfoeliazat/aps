@@ -15,6 +15,7 @@ import into.kommon.*
 import org.jooq.Record
 import org.jooq.UpdateSetMoreStep
 import org.jooq.UpdateSetStep
+import java.awt.MouseInfo
 import java.awt.Robot
 import java.awt.event.InputEvent
 import java.awt.event.KeyEvent
@@ -253,10 +254,12 @@ fun frp_updateTestShit(rmap: Map<*, *>) {
 fun frp_robotClickOnChrome(rmap: Map<*, *>) {
     val hwnd = User32.INSTANCE.FindWindow(null, "APS UA - Google Chrome") ?: bitch("No necessary Chrome window")
     User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Chrome to foreground")
+    val origLocation = MouseInfo.getPointerInfo().location
     val robot = Robot()
-    robot.mouseMove(18, 216)
+    robot.mouseMove(18, 416)
     robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
     robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
+    robot.mouseMove(origLocation.x, origLocation.y)
 }
 
 fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
@@ -280,7 +283,7 @@ fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
 private fun robotTypeTextCR(text: String) {
     val robot = Robot()
     text.forEach {c->
-        dwarnStriking("Typing key: " + c)
+        // dwarnStriking("Typing key: " + c)
         var holdShift = c.isLetter() && c.isUpperCase()
 
         val keyCode = when {

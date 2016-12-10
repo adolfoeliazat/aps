@@ -27,6 +27,8 @@ localStorage.setItem('reloadTest', 'true')
 localStorage.setItem('dontScrollOnTestPassed', 'true')
 F.dumpShames()
 
+cd /d e:\work\aps
+node run.js runAllUnitTests
 
 Redis
 =====
