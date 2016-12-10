@@ -30,8 +30,9 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.setValueDescribingStep("IntField-numPages.Input", 30)
         o.setValueDescribingStep("IntField-numSources.Input", 5)
         o.setValueDescribingStep("TextField-details.Input", "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории.")
+        o.imposeNextRequestTimestampUTC("2016-12-10 19:16:40")
         o.clickDescribingStep("button-primary")
-        // TODO:vgrechka Assertion
+        o.assertScreenHTML("Order params tab", "799988d1-e763-4906-a860-7fbddaceff70")
 
         o.tabsClickOnTab("tabs", "files")
         o.buttonClick("plus")

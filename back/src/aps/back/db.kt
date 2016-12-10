@@ -69,6 +69,7 @@ object DB {
                 o.put("user", user)
                 password?.let {o.put("password", it)}
             }
+            o.connectionInitSql = "set time zone 'UTC'"
         }}
         val ds by dslazy
 
@@ -118,7 +119,9 @@ object DB {
                                 if (!BackGlobus.tracingEnabled) return
 
                                 fun dumpShit(shit: String) {
-                                    requestShit.actualSQLFromJOOQ = shit
+                                    if (isRequestThread) {
+                                        requestShit.actualSQLFromJOOQ = shit
+                                    }
                                 }
 
                                 fun dumpShit(shit: QueryPart) =

@@ -81,6 +81,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) {
                     o- kdiv(className = "col-md-4"){o->
                         o- label(t("TOTE", "Создан"))
                         o- kdiv(){o->
+                            dwarnStriking("insertedAt", safeParseDouble(order.insertedAt.toString()))
                             o- formatUnixTime(order.insertedAt)
                         }
                     }

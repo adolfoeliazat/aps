@@ -21,7 +21,7 @@ class TestCustomer_SignUp_HappyPath : StepBasedTestScenario() {
         o.setValueDescribingStep("TextField-firstName.Input", "Иво")
         o.setValueDescribingStep("TextField-lastName.Input", "Бобул")
         o.setValueDescribingStep("AgreeTermsField.Checkbox", true)
-        o.imposeNextRequestTimestamp("2016-12-02 12:24:32")
+        o.imposeNextRequestTimestampUTC("2016-12-02 12:24:32")
         o.imposeNextGeneratedPassword("secret-big-as-fuck")
         o.clickDescribingStep("button-primary")
         o.assertScreenHTML("Success message and sign-in form", "28d67a3e-25e8-4716-870b-705e746b8809")

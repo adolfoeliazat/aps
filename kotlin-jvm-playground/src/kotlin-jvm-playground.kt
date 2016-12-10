@@ -1,3 +1,9 @@
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.TimeZone
+
+
+
 fun main(args: Array<String>) {
 //    testOverrideWithNothing()
 //    testInitOrder()
@@ -10,7 +16,18 @@ fun main(args: Array<String>) {
 //    testDownTo()
 //    testFinallyResult()
 //    testNonExhaustiveWhen()
-    println(System.currentTimeMillis())
+//    println(System.currentTimeMillis())
+    shit3()
+}
+
+private fun shit3() {
+    val unix = 1481389170511L
+//    val unix = System.currentTimeMillis()
+
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss z")
+    sdf.timeZone = TimeZone.getTimeZone("UTC")
+    val formattedDate = sdf.format(Timestamp(unix))
+    println(formattedDate)
 }
 
 fun testNonExhaustiveWhen() {

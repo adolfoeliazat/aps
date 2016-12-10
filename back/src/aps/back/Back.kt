@@ -30,6 +30,7 @@ val THE_ADMIN_ID = 101L // TODO:vgrechka Unhardcode admin ID    17c5cc52-57c2-48
 val remoteProcedureNameToFactory: MutableMap<String, Method> = Collections.synchronizedMap(mutableMapOf())
 
 fun main(args: Array<String>) {
+    System.setProperty("user.timezone", "GMT")
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
 
     redisLog.send(RedisLogMessage.Separator()-{o->
@@ -351,7 +352,6 @@ fun compactPhone(s: String): String {
 }
 
 annotation class RemoteProcedureFactory
-
 
 
 

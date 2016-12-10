@@ -1,0 +1,196 @@
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Проза
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                <span class="">
+                  Почему мы?
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                <span class="">
+                  Цены
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                <span class="">
+                  Примеры
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                <span class="">
+                  ЧаВо
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                <span class="">
+                  Связь
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                <span class="">
+                  Блог
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="">
+          <a href="orders.html">
+            <span class="">
+              Мои заказы
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="support.html">
+            <span class="">
+              Поддержка
+            </span>
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            <span class="">
+              Иво
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <div>
+            Заказ #100000
+            <span style="top: -0.2em; position: relative; margin-left: 1em; padding: 0.1em 0.3em; background-color: rgb(179, 229, 252); font-size: 60%; border-radius: 0.3em;">
+              Ищем&nbsp;писателей
+            </span>
+          </div>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <h4 style="margin-bottom: 0.7em;">
+        Когнитивно-прагматические аспекты перевода рекламных слоганов с английского
+      </h4>
+      <div>
+        <div style="position: relative;">
+          <ul class="nav nav-tabs">
+            <li id="tab-params" class="active">
+              <a href="#">
+                Параметры
+              </a>
+            </li>
+            <li id="tab-files" class="">
+              <a href="#">
+                Файлы
+              </a>
+            </li>
+            <li id="tab-messages" class="">
+              <a href="#">
+                Сообщения
+              </a>
+            </li>
+          </ul>
+          <div style="top: 0px; right: 0px; position: absolute;">
+            <div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 5px;">
+          <div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-4">
+                <label style="margin-bottom: 0px;">
+                  Создан
+                </label>
+                <div>
+                  10.12.2016 21:16:40 (Киев)
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label style="margin-bottom: 0px;">
+                  Срок
+                </label>
+                <div>
+                  15.12.2016 10:30:00 (Киев)
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-4">
+                <label style="margin-bottom: 0px;">
+                  Тип документа
+                </label>
+                <div>
+                  Курсовая работа
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label style="margin-bottom: 0px;">
+                  Страниц
+                </label>
+                <div>
+                  30
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label style="margin-bottom: 0px;">
+                  Источников
+                </label>
+                <div>
+                  5
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-12">
+                <label style="margin-bottom: 0px;">
+                  Детали
+                </label>
+                <div style="white-space: pre-wrap;">
+                  В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

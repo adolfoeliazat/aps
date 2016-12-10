@@ -78,7 +78,7 @@ fun TestScenarioBuilder.checkAssertAndClearEmail(descr: String, expectedTo: Stri
     act {debugHideMailbox()}
 }
 
-fun TestScenarioBuilder.imposeNextRequestTimestamp(stamp: String) {
+fun TestScenarioBuilder.imposeNextRequestTimestampUTC(stamp: String) {
     acta {ImposeNextRequestTimestampRequest.send(stamp)}
 }
 

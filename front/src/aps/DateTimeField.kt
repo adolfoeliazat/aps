@@ -6,9 +6,18 @@ import aps.front.*
 import aps.Color.*
 import into.kommon.*
 
+@native val moment: MomentShit = noImpl
+
+@native interface MomentShit {
+    fun tz(unix: Double, zone: String): Moment
+}
+
+@native fun moment(ms: Double): Moment = noImpl
+
 @native interface Moment {
     fun valueOf(): Int
     fun format(fmt: String): String
+    fun tz(zone: String): Moment
 }
 
 @native interface EonasdanPicker {

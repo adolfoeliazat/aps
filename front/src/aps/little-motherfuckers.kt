@@ -34,7 +34,7 @@ fun formatUnixTime(ms: Long, includeTZ: Boolean = true): String =
     when (Globus.lang) {
         Language.UA -> {
             val double: Double = safeParseDouble(ms.toString()) ?: wtf()
-            val s = moment(double).format("L LTS")
+            val s = moment.tz(double, "UTC").tz("Europe/Kiev").format("L LTS")
             if (includeTZ) "$s (Киев)"
             else s
         }

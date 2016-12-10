@@ -227,7 +227,44 @@ fun escapeMarkdown(s: String): String {
     return s.replace("_", "\\_")
 }
 
+fun fileSizeToApproxString(lang: Language, totalBytes: Int): String {
+    val kb = 1024
+    val mb = 1024 * kb
+    val gb = 1024 * mb
 
+    if (totalBytes >= gb) bitch("You fucking crazy, I'm not dealing with gigabyte files")
+
+    val point = when (lang) {
+        Language.EN -> "."
+        Language.UA -> ","
+    }
+
+    val megs = totalBytes / mb
+    val kils = (totalBytes - megs * mb) / kb
+    val bytes = totalBytes - megs * mb * kils * kb
+
+    if (megs > 0) return "" +
+        megs +
+        (if (kils >= 100) "$point${kils / 100}" else "") +
+        when (lang) {
+            Language.EN -> " MB"
+            Language.UA -> " МБ"
+        }
+
+    if (kils > 0) return "" +
+        kils +
+        when (lang) {
+            Language.EN -> " KB"
+            Language.UA -> " КБ"
+        }
+
+    return "" +
+        bytes +
+        when (lang) {
+            Language.EN -> " B"
+            Language.UA -> " Б"
+        }
+}
 
 
 

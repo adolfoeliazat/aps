@@ -124,7 +124,6 @@ class RealStorageLocal : StorageLocal {
     }
 }
 
-@native fun moment(ms: Double): Moment = noImpl
 
 
 
