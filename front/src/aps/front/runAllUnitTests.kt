@@ -12,13 +12,13 @@ fun runAllUnitTests() {
 
 private fun runMochka.describeUtils() {
     describe("Utils") {
-        test("fileSizeToApproxString") {
-            assertEquals("244 Б", fileSizeToApproxString(Language.UA, 244))
-            assertEquals("243 КБ", fileSizeToApproxString(Language.UA, 248_987))
-            assertEquals("12,5 МБ", fileSizeToApproxString(Language.UA, 13_127_419))
-            assertEquals("2 МБ", fileSizeToApproxString(Language.UA, 2_097_152))
-            assertEquals("2 МБ", fileSizeToApproxString(Language.UA, 2_199_551))
-            assertEquals("2,1 МБ", fileSizeToApproxString(Language.UA, 2_199_552))
+        test("formatFileSizeApprox") {
+            assertEquals("244 Б", formatFileSizeApprox(Language.UA, 244))
+            assertEquals("243 КБ", formatFileSizeApprox(Language.UA, 248_987))
+            assertEquals("12,5 МБ", formatFileSizeApprox(Language.UA, 13_127_419))
+            assertEquals("2 МБ", formatFileSizeApprox(Language.UA, 2_097_152))
+            assertEquals("2 МБ", formatFileSizeApprox(Language.UA, 2_199_551))
+            assertEquals("2,1 МБ", formatFileSizeApprox(Language.UA, 2_199_552))
         }
     }
 }

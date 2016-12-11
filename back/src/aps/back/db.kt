@@ -261,9 +261,9 @@ class DSLContextProxy(val activityParams: ActivityParams, val q: DSLContext) {
         return q.insertInto(into, *fields)
     }
 
-    fun fetch(sql: String, vararg bindings: Any?): Result<Record> {
-        return q.fetch(sql, *bindings)
-    }
+    fun fetch(sql: String, vararg bindings: Any?): Result<Record> =
+        if (BackGlobus.tracingEnabled) executeTracing(activityParams) {q.fetch(sql, *bindings)}
+        else q.fetch(sql, *bindings)
 
     fun selectCount(): SelectSelectStep<Record1<Int>> {
         return q.selectCount()

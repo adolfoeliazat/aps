@@ -128,7 +128,7 @@ class DateTimePicker(val key: String? = null) : Control2(Attrs()) {
 
     override fun focus() {}
 
-    override fun populateRemote(json: Json) {
+    override fun populateRemote(json: Json): Promise<Unit> = async {
         val moment = picker.eonasdan.date()
         json[name] =
             if (moment == null) {

@@ -42,7 +42,7 @@ import into.kommon.*
         global.alert("No fucking terms. You can go crazy with this shit...")
     }
 
-    override fun populateRemote(json: Json) {
+    override fun populateRemote(json: Json): Promise<Unit> = async {
         json[name] = value
     }
 }

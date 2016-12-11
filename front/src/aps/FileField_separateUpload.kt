@@ -61,12 +61,12 @@ import org.w3c.xhr.XMLHttpRequest
                     if (uploaded) {
                         o- kdiv{o->
                             o- theFile.name
-                            o- " (${fileSizeToApproxString(Globus.lang, theFile.size)})"
+                            o- " (${formatFileSizeApprox(Globus.lang, theFile.size)})"
                         }
                     } else {
                         o- kdiv{o->
                             o- kspan(position = "relative", top = 3){o->
-                                o- (t("TOTE", "Загружаю: ") + theFile.name + " (${fileSizeToApproxString(Globus.lang, theFile.size)})...")
+                                o- (t("TOTE", "Загружаю: ") + theFile.name + " (${formatFileSizeApprox(Globus.lang, theFile.size)})...")
                             }
                             o- kdiv(className = "progressTicker", float = "right", width = 14, height = 34, backgroundColor = BLUE_GRAY_600)
                         }
@@ -88,7 +88,7 @@ import org.w3c.xhr.XMLHttpRequest
     override fun focus() = imf()
 
 
-    override fun populateRemote(json: Json) {
+    override fun populateRemote(json: Json): Promise<Unit> = async {
         imf()
 //        json[name] = value
     }

@@ -54,7 +54,7 @@ import aps.front.*
                                        if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
     }
 
-    override fun populateRemote(json: Json) {
+    override fun populateRemote(json: Json): Promise<Unit> = async {
         json[name] = value
     }
 }

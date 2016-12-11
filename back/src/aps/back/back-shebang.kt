@@ -50,9 +50,10 @@ fun <POJO : Any, RTO> selectChunk(
     appendToWhere: (QueryBuilder) -> Unit = {},
     loadItem: (POJO, DSLContextProxyFactory) -> RTO,
     ordering: Ordering,
-    fromID: Long?) : Chunk<RTO> {
-
+    fromID: Long?
+) : Chunk<RTO> {
     val theFromID = fromID?.let {it} ?: if (ordering == Ordering.ASC) 0L else Long.MAX_VALUE
+    dwarnStriking("pizdaaaaaaaaaaa", ordering, theFromID)
 
     var records = QueryBuilder("Select chunk")
         .text("select *")

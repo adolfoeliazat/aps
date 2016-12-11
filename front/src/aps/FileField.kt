@@ -26,11 +26,11 @@ import kotlin.browser.window
 
     val noise = DebugNoise("FileField", mute = false)
 
+    var file: File? = null
     var fileChanged = ResolvableShit<Unit>()
 
     val control = object:Control2(Attrs()) {
         val inputID = puid()
-        var file: File? = null
 
         override fun render(): ToReactElementable {
             return kdiv(className = "form-group", marginTop = 10){o->
@@ -56,7 +56,7 @@ import kotlin.browser.window
                     o- klabel {it-title}
                     o- kdiv{o->
                         o- kspan(position = "relative", top = 3){o->
-                            o- (theFile.name + " (${fileSizeToApproxString(Globus.lang, theFile.size)})")
+                            o- (theFile.name + " (${formatFileSizeApprox(Globus.lang, theFile.size)})")
                         }
                     }
                 }
@@ -76,17 +76,36 @@ import kotlin.browser.window
 
     override var error: String? = null
 
-
+    // TODO:vgrechka Implement
     override var disabled: Boolean
-        get() = imf()
-        set(value) {imf()}
+        get() = false
+        set(value) {}
 
-    override fun focus() = imf()
+    // TODO:vgrechka Implement
+    override fun focus() {}
 
+    override fun populateRemote(json: Json): Promise<Unit> {
+        val shit = ResolvableShit<Unit>()
+        val theFile = file
+        if (theFile == null) {
+            json[name] = null
+            shit.resolve(Unit)
+        } else {
+            val reader = FileReader()
+            reader.onload = {
+                json[name] = json(
+                    "fileName" to theFile.name,
+                    "base64" to run {
+                        val dataURL: String = reader.result
+                        dataURL.substring(dataURL.indexOf(",") + 1)
+                    }
+                )
+                shit.resolve(Unit)
+            }
+            reader.readAsDataURL(theFile)
+        }
 
-    override fun populateRemote(json: Json) {
-        imf()
-//        json[name] = value
+        return shit.promise
     }
 }
 

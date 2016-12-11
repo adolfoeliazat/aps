@@ -273,6 +273,7 @@ fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
         }
 
         User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Open window to foreground")
+        Thread.sleep(100)
         robotTypeTextCR(text)
         return
     }

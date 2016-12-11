@@ -15,7 +15,7 @@ class CustomerSingleUAOrderPage(val world: World) {
     fun load(): Promise<Unit> = async {
         val urlQuery = typeSafeURLQuery(world){URLQuery()}
         val orderID = urlQuery.id.nullifyBlank() ?: return@async world.setShittyParamsPage()
-        val tab = urlQuery.tab ?: "params"
+        val tabID = urlQuery.tab ?: "params"
 
         val res = await(send(world.tokenSure, LoadUAOrderRequest()-{o->
             o.id.value = orderID
@@ -24,6 +24,16 @@ class CustomerSingleUAOrderPage(val world: World) {
             is ZimbabweResponse.Shitty -> return@async world.setShittyResponsePage(res)
             is ZimbabweResponse.Hunky -> res.meat.order
         }
+
+        val tabs = listOf(
+            ParamsTab(world, order),
+            FilesTab(world, order),
+            MessagesTab(order)
+        )
+        val tab = tabs.find {it.tabSpec.id == tabID} ?: tabs.first()
+
+        val error = await(tab.load())
+        error?.let {return@async world.setShittyResponsePage(it)}
 
         world.setPage(Page(
             header = pageHeader3(kdiv{o->
@@ -45,7 +55,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                 }
 
                 o- Tabs2(
-                    initialActiveID = tab,
+                    initialActiveID = tab.tabSpec.id,
                     switchOnTabClick = false,
                     tabDomIdPrefix = "tab-",
 
@@ -55,18 +65,23 @@ class CustomerSingleUAOrderPage(val world: World) {
                         effects2.blinkOffFadingOut()
                     }},
 
-                    tabs = listOf(
-                        ParamsTab(world, order).tabSpec,
-                        FilesTab(world, order).tabSpec,
-                        MessagesTab(order).tabSpec
-                    )
+                    tabs = tabs.map {it.tabSpec}
                 )
             }
         ))
     }
 }
 
-private class ParamsTab(val world: World, val order: UAOrderRTO) {
+private interface FuckingTab {
+    val tabSpec: TabSpec
+    fun load(): Promise<ZimbabweResponse.Shitty<*>?>
+}
+
+private class ParamsTab(val world: World, val order: UAOrderRTO) : FuckingTab {
+    override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
+        null
+    }
+
     private val content = kdiv{o->
         fun label(title: String) = klabel(marginBottom = 0) {it-title}
 
@@ -132,10 +147,29 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) {
         }
     }
 
-    val tabSpec = TabSpec("params", t("TOTE", "Параметры"), content)
+    override val tabSpec = TabSpec("params", t("TOTE", "Параметры"), content)
 }
 
-private class FilesTab(val world: World, val order: UAOrderRTO) {
+private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
+    lateinit var meat: ItemsResponse<FileRTO>
+
+    override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
+        val res = await(sendGetFiles(world.tokenSure, ItemsRequest(FileFilter.values())-{o->
+            o.entityID.value = order.id
+            o.filter.value = FileFilter.ALL
+            o.ordering.value = Ordering.DESC
+            o.searchString.value = ""
+//            o.fromID.value = "0"
+        }))
+        when (res) {
+            is ZimbabweResponse.Shitty -> res
+            is ZimbabweResponse.Hunky -> {
+                meat = res.meat
+                null
+            }
+        }
+    }
+
     val ebafHost = object:EvaporatingButtonAndFormHost {
         override var showEmptyLabel = true
         override var cancelForm = {}
@@ -156,8 +190,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) {
             cancelButtonTitle = defaultCancelButtonTitle
         ),
         onSuccessa = {res->
-            imf()
-//            world.pushNavigate("order.html?id=${res.id}")
+            world.pushNavigate("order.html?id=${order.id}&tab=files")
         }
     )
 
@@ -172,17 +205,77 @@ private class FilesTab(val world: World, val order: UAOrderRTO) {
 
     val content = ToReactElementable.from {kdiv{o->
         o- ebafPlus.renderForm()
+
+        for (file in meat.items) {
+            dwarnStriking("rendering fucking file", file)
+            fun label(title: String) = klabel(marginBottom = 0) {it-title}
+
+            fun row(build: (ElementBuilder) -> Unit) =
+                kdiv(className = "row", marginBottom = "0.5em"){o->
+                    build(o)
+                }
+
+            exhaustive/when (world.userSure.kind) {
+                UserKind.CUSTOMER -> {
+                    o- kdiv{o->
+                        o- row{o->
+                            o- kdiv(className = "col-md-12"){o->
+                                o- kdiv(){o->
+                                    o- file.title
+                                }
+                            }
+                        }
+                        o- row{o->
+                            o- kdiv(className = "col-md-4"){o->
+                                o- label(t("TOTE", "Создан"))
+                                o- kdiv(){o->
+                                    o- formatUnixTime(file.insertedAt)
+                                }
+                            }
+                            o- kdiv(className = "col-md-4"){o->
+                                o- label(t("TOTE", "Имя"))
+                                o- kdiv(){o->
+                                    o- file.name
+                                }
+                            }
+                            o- kdiv(className = "col-md-4"){o->
+                                o- label(t("TOTE", "Размер"))
+                                o- kdiv(){o->
+                                    o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
+                                }
+                            }
+                        }
+                        o- row{o->
+                            o- kdiv(className = "col-md-12"){o->
+                                o- label(t("TOTE", "Детали"))
+                                o- kdiv(whiteSpace = "pre-wrap"){o->
+                                    o- file.details
+                                }
+                            }
+                        }
+                    }
+                }
+
+                UserKind.WRITER -> imf()
+
+                UserKind.ADMIN -> imf()
+            }
+        }
     }}
 
-    val tabSpec = TabSpec("files", t("TOTE", "Файлы"), content, stripContent)
+    override val tabSpec = TabSpec("files", t("TOTE", "Файлы"), content, stripContent)
 }
 
-private class MessagesTab(val order: UAOrderRTO) {
+private class MessagesTab(val order: UAOrderRTO) : FuckingTab {
+    override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
+        throw UnsupportedOperationException("Implement me, please, fuck you")
+    }
+
     private val content = kdiv{o->
         o- "fucking messages"
     }
 
-    val tabSpec = TabSpec("messages", t("TOTE", "Сообщения"), content)
+    override val tabSpec = TabSpec("messages", t("TOTE", "Сообщения"), content)
 }
 
 

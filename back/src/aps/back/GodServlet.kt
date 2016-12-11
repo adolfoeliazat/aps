@@ -15,7 +15,6 @@ import javax.servlet.annotation.MultipartConfig
 import javax.servlet.http.*
 import kotlin.system.exitProcess
 
-//@MultipartConfig
 class GodServlet : HttpServlet() {
     val log by logger()
 
@@ -33,11 +32,6 @@ class GodServlet : HttpServlet() {
                     @Suppress("UNCHECKED_CAST")
                     val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
                     service(servletRequest, servletResponse)
-                }
-                pathInfo == "/upload" -> {
-                    servletRequest.inputStream.use {
-
-                    }
                 }
                 else -> bitch("Weird request path: $pathInfo")
             }

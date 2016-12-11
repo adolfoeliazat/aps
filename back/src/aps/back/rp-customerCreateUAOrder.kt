@@ -7,12 +7,8 @@
 package aps.back
 
 import aps.*
-import aps.back.generated.jooq.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.enums.*
-import aps.back.generated.jooq.tables.pojos.JQUsers
-import org.jooq.*
-import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun customerCreateUAOrder() = customerProcedure(
     CustomerCreateUAOrderRequest(),

@@ -80,6 +80,15 @@ class UAOrderRTO(
     val state: UAOrderState
 )
 
+class FileRTO(
+    val id: String,
+    val name: String,
+    val title: String,
+    val details: String,
+    val sizeBytes: Int,
+    val insertedAt: Long
+)
+
 enum class UAOrderState(override val title: String, val labelBackground: Color) : Titled {
     CREATED(t("TOTE", "Создан"), GRAY_300),
     LOOKING_FOR_WRITERS(t("TOTE", "Ищем писателей"), LIGHT_BLUE_100),
@@ -329,6 +338,10 @@ enum class UserFilter(override val title: String): Titled {
     BANNED(t("TOTE", "Забаненые"))
 }
 
+enum class FileFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все"))
+}
+
 enum class CustomerOrderFilter(override val title: String): Titled {
     ALL(t("TOTE", "Все"))
 }
@@ -501,9 +514,6 @@ class LoadUAOrderRequest : RequestMatumba() {
     class Response(val order: UAOrderRTO)
     val id = StringHiddenField(this, "id")
 }
-
-fun send(token: String, req: LoadUAOrderRequest): Promise<ZimbabweResponse<LoadUAOrderRequest.Response>> =
-    callZimbabwe(req, token)
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette

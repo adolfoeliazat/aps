@@ -46,6 +46,7 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
             Теперь, я знаю, в вашей воле
             Меня презреньем наказать.
         """))
+        o.clickDescribingStep("button-primary")
     }
 }
 

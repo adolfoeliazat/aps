@@ -227,7 +227,7 @@ fun escapeMarkdown(s: String): String {
     return s.replace("_", "\\_")
 }
 
-fun fileSizeToApproxString(lang: Language, totalBytes: Int): String {
+fun formatFileSizeApprox(lang: Language, totalBytes: Int): String {
     val kb = 1024
     val mb = 1024 * kb
     val gb = 1024 * mb

@@ -13,7 +13,7 @@ import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun getUsers() = adminProcedure(
     ItemsRequest(UserFilter.values()),
-    runShit = {ctx, req ->
+    runShit = fun(ctx, req): ItemsResponse<UserRTO> {
         val chunk = selectChunk(
             ctx.q, table = "users", pojoClass = JQUsers::class, loadItem = JQUsers::toRTO,
             fromID = req.fromID.value?.let {it.toLong()},
@@ -21,7 +21,7 @@ import kotlin.reflect.KClass
             appendToWhere = {qb ->
                 run { // Search string
                     val ss = req.searchString.value
-                    when {
+                    exhaustive/when {
                         ss.isBlank() -> Unit
 
                         Regex("^p ").matches(ss) -> {
@@ -48,7 +48,7 @@ import kotlin.reflect.KClass
 
                 run { // Filter
                     val filter = req.filter.value
-                    when (filter) {
+                    exhaustive/when (filter) {
                         UserFilter.ALL -> Unit
                         else -> qb.text("and state = '$filter'")
                     }
@@ -56,7 +56,7 @@ import kotlin.reflect.KClass
             }
         )
 
-        ItemsResponse(chunk.items, chunk.moreFromId)
+        return ItemsResponse(chunk.items, chunk.moreFromId)
     }
 )
 

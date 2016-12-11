@@ -84,7 +84,7 @@ abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: Str
         container.hiddenFields.add(this)
     }
 
-    abstract fun populateRemote(json: Json)
+    abstract fun populateRemote(json: Json): Promise<Unit>
 }
 
 //abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
@@ -101,7 +101,7 @@ abstract class FormFieldFront(val container: RequestMatumba, val name: String) {
     abstract var error: String?
     abstract var disabled: Boolean
     abstract fun focus()
-    abstract fun populateRemote(json: Json)
+    abstract fun populateRemote(json: Json): Promise<Unit>
 }
 
 annotation class Front
@@ -142,7 +142,7 @@ annotation class Front
     private var specified = false
 
     // TODO:vgrechka Extract this generic toRemote()
-    override fun populateRemote(json: Json) {
+    override fun populateRemote(json: Json): Promise<Unit> = async {
         if (!possiblyUnspecified && value == null) bitch("I want field $name specified")
 
         val dynaValue: dynamic = value
@@ -200,32 +200,33 @@ annotation class Front
 fun <Res> callMatumba(req: RequestMatumba, token: String?): Promise<Res> =
     callMatumba(remoteProcedureNameForRequest(req), req, token)
 
-fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?): Promise<Res> {
-    return callRemoteProcedurePassingJSONObject(procedureName, dyna{r->
-        r.clientKind = global.CLIENT_KIND
-        r.lang = global.LANG
-        token?.let {r.token = it}
+fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?): Promise<Res> = async {
+    val payload = js("({})")
+    payload.clientKind = global.CLIENT_KIND
+    payload.lang = global.LANG
+    token?.let {payload.token = it}
 
-        r.fields = json()
-        for (field in req.fields) field.populateRemote(r.fields)
-        for (field in req.hiddenFields) field.populateRemote(r.fields)
-    })
+    payload.fields = json()
+    for (field in req.fields) await(field.populateRemote(payload.fields))
+    for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
+
+    await(callRemoteProcedurePassingJSONObject(procedureName, payload))
 }
 
 fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> =
     callZimbabwe(remoteProcedureNameForRequest(req), req, token)
 
-fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> {"__async"
-    return __asyncResult(try {
-        val res = __await<Any>(callRemoteProcedurePassingJSONObject(procedureName, dyna{r->
-            r.clientKind = global.CLIENT_KIND
-            r.lang = global.LANG
-            token?.let {r.token = it}
+fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> = async {
+    try {
+        val payload = js("({})")
+        payload.clientKind = global.CLIENT_KIND
+        payload.lang = global.LANG
+        token?.let {payload.token = it}
 
-            r.fields = json()
-            for (field in req.fields) field.populateRemote(r.fields)
-            for (field in req.hiddenFields) field.populateRemote(r.fields)
-        }))
+        payload.fields = json()
+        for (field in req.fields) await(field.populateRemote(payload.fields))
+        for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
+        val res = await<Any>(callRemoteProcedurePassingJSONObject(procedureName, payload))
         when (res) {
             is FormResponse.Hunky<*> -> ZimbabweResponse.Hunky(cast(res.meat))
             is FormResponse.Shitty -> ZimbabweResponse.Shitty<Res>(res.error, listOf())
@@ -234,7 +235,7 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
     } catch(e: Throwable) {
         spitExceptionToConsole(e)
         ZimbabweResponse.Shitty<Res>(t("TOTE", "Сервис временно в жопе, просим прощения"), listOf())
-    })
+    }
 }
 
 fun spitExceptionToConsole(e: dynamic) {
