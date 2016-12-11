@@ -25,6 +25,7 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
+import java.util.*
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.Executor
 import javax.annotation.Generated
@@ -437,23 +438,28 @@ class InsertSetStepProxy<R : Record>(val activityParams: ActivityParams, val wra
 
 class InsertSetMoreStepProxy<R : Record>(val activityParams: ActivityParams, val wrappee: InsertSetMoreStep<R>) : InsertSetMoreStep<R> {
     operator override fun <T> set(field: Field<T>, value: T): InsertSetMoreStep<R> {
-        return wrappee.set(field, value)
+        val res = wrappee.set(field, value)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     operator override fun <T> set(field: Field<T>, value: Field<T>): InsertSetMoreStep<R> {
-        return wrappee.set(field, value)
+        val res = wrappee.set(field, value)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     operator override fun <T> set(field: Field<T>, value: Select<out Record1<T>>): InsertSetMoreStep<R> {
-        return wrappee.set(field, value)
+        val res = wrappee.set(field, value)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     override fun set(map: Map<out Field<*>, *>): InsertSetMoreStep<R> {
-        return wrappee.set(map)
+        val res = wrappee.set(map)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     override fun set(record: Record): InsertSetMoreStep<R> {
-        return wrappee.set(record)
+        val res = wrappee.set(record)
+        return InsertSetMoreStepProxy(activityParams, res)
     }
 
     override fun newRecord(): InsertSetStep<R> {
@@ -473,7 +479,8 @@ class InsertSetMoreStepProxy<R : Record>(val activityParams: ActivityParams, val
     }
 
     override fun returning(fields: Array<Field<*>>): InsertResultStep<R> {
-        return wrappee.returning(*fields)
+        val res = wrappee.returning(*fields)
+        return InsertResultStepProxy(activityParams, res)
     }
 
     override fun returning(fields: Collection<Field<*>>): InsertResultStep<R> {
@@ -556,6 +563,107 @@ class InsertSetMoreStepProxy<R : Record>(val activityParams: ActivityParams, val
         wrappee.detach()
     }
 }
+
+
+class InsertResultStepProxy<R : Record>(val activityParams: ActivityParams, val wrappee: InsertResultStep<R>) : InsertResultStep<R> {
+
+    @Support
+    @Throws(DataAccessException::class)
+    override fun fetch(): Result<R> {
+        return wrappee.fetch()
+    }
+
+    @Support
+    @Throws(DataAccessException::class)
+    override fun fetchOne(): R =
+        if (BackGlobus.tracingEnabled) executeTracing(activityParams) {wrappee.fetchOne()}
+        else wrappee.fetchOne()
+
+    @Support
+    @Throws(DataAccessException::class)
+    override fun fetchOptional(): Optional<R> {
+        return wrappee.fetchOptional()
+    }
+
+    @Throws(DataAccessException::class)
+    override fun execute(): Int {
+        return wrappee.execute()
+    }
+
+    override fun executeAsync(): CompletionStage<Int> {
+        return wrappee.executeAsync()
+    }
+
+    override fun executeAsync(executor: Executor): CompletionStage<Int> {
+        return wrappee.executeAsync(executor)
+    }
+
+    override fun isExecutable(): Boolean {
+        return wrappee.isExecutable
+    }
+
+    override fun getSQL(): String {
+        return wrappee.sql
+    }
+
+    @Deprecated("")
+    override fun getSQL(inline: Boolean): String {
+        return wrappee.getSQL(inline)
+    }
+
+    override fun getSQL(paramType: ParamType): String {
+        return wrappee.getSQL(paramType)
+    }
+
+    override fun getBindValues(): List<Any> {
+        return wrappee.bindValues
+    }
+
+    override fun getParams(): Map<String, Param<*>> {
+        return wrappee.params
+    }
+
+    override fun getParam(name: String): Param<*> {
+        return wrappee.getParam(name)
+    }
+
+    @Throws(IllegalArgumentException::class, DataTypeException::class)
+    override fun bind(param: String, value: Any): Query {
+        return wrappee.bind(param, value)
+    }
+
+    @Throws(IllegalArgumentException::class, DataTypeException::class)
+    override fun bind(index: Int, value: Any): Query {
+        return wrappee.bind(index, value)
+    }
+
+    override fun queryTimeout(timeout: Int): Query {
+        return wrappee.queryTimeout(timeout)
+    }
+
+    override fun keepStatement(keepStatement: Boolean): Query {
+        return wrappee.keepStatement(keepStatement)
+    }
+
+    @Throws(DataAccessException::class)
+    override fun close() {
+        wrappee.close()
+    }
+
+    @Throws(DataAccessException::class)
+    override fun cancel() {
+        wrappee.cancel()
+    }
+
+    override fun attach(configuration: Configuration) {
+        wrappee.attach(configuration)
+    }
+
+    override fun detach() {
+        wrappee.detach()
+    }
+}
+
 
 private fun <T> executeTracing(activityParams: ActivityParams, block: () -> T): T {
     val rlm = RedisLogMessage.SQL() - {o ->

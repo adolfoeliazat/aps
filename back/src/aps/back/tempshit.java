@@ -9,34 +9,22 @@ import org.jooq.exception.DataTypeException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 
-class tempshit<R extends Record> {
+class tempshit<R extends Record> implements InsertResultStep<R> {
     @NotNull
-    private InsertSetMoreStep<R> wrappee;
+    private InsertResultStep<R> wrappee;
 
-    public <T> InsertSetMoreStep<R> set(Field<T> field, T value) {return wrappee.set(field, value);}
+    @Support
+    public Result<R> fetch() throws DataAccessException {return wrappee.fetch();}
 
-    public <T> InsertSetMoreStep<R> set(Field<T> field, Field<T> value) {return wrappee.set(field, value);}
+    @Support
+    public R fetchOne() throws DataAccessException {return wrappee.fetchOne();}
 
-    public <T> InsertSetMoreStep<R> set(Field<T> field, Select<? extends Record1<T>> value) {return wrappee.set(field, value);}
-
-    public InsertSetMoreStep<R> set(Map<? extends Field<?>, ?> map) {return wrappee.set(map);}
-
-    public InsertSetMoreStep<R> set(Record record) {return wrappee.set(record);}
-
-    public InsertSetStep<R> newRecord() {return wrappee.newRecord();}
-
-    public InsertOnDuplicateSetStep<R> onDuplicateKeyUpdate() {return wrappee.onDuplicateKeyUpdate();}
-
-    public InsertFinalStep<R> onDuplicateKeyIgnore() {return wrappee.onDuplicateKeyIgnore();}
-
-    public InsertResultStep<R> returning() {return wrappee.returning();}
-
-    public InsertResultStep<R> returning(Field<?>[] fields) {return wrappee.returning(fields);}
-
-    public InsertResultStep<R> returning(Collection<? extends Field<?>> fields) {return wrappee.returning(fields);}
+    @Support
+    public Optional<R> fetchOptional() throws DataAccessException {return wrappee.fetchOptional();}
 
     public int execute() throws DataAccessException {return wrappee.execute();}
 

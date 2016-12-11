@@ -37,7 +37,7 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.tabsClickOnTab("tabs", "files")
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
-        o.typeIntoOpenFileDialog("C:\\Users\\Vladimir\\Desktop\\fuck you.rtf")
+        o.typeIntoOpenFileDialog("${testconst.filesRoot}fuck you.rtf")
         o.fileFieldWaitTillShitChanged("file")
         o.setValueDescribingStep("TextField-title.Input", "A warm word to my writer")
         o.setValueDescribingStep("TextField-details.Input", dedent("""
@@ -47,6 +47,31 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
             Меня презреньем наказать.
         """))
         o.clickDescribingStep("button-primary")
+        // TODO:vgrechka Assert fucking screen
+
+        o.buttonClick("plus")
+        o.buttonUserInitiatedClick("upload")
+        o.typeIntoOpenFileDialog("${testconst.filesRoot}crazy monster boobs.rtf")
+        o.fileFieldWaitTillShitChanged("file")
+        o.setValueDescribingStep("TextField-title.Input", "Cool stuff")
+        o.setValueDescribingStep("TextField-details.Input", dedent("""
+             - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
+             - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
+             - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
+        """))
+        o.clickDescribingStep("button-primary")
+        // TODO:vgrechka Assert fucking screen
+
+        o.buttonClick("plus")
+        o.buttonUserInitiatedClick("upload")
+        o.typeIntoOpenFileDialog("${testconst.filesRoot}the trial.doc")
+        o.fileFieldWaitTillShitChanged("file")
+        o.setValueDescribingStep("TextField-title.Input", "Процесс by Кафка")
+        o.setValueDescribingStep("TextField-details.Input", dedent("""
+            Это чисто на почитать...
+        """))
+        o.clickDescribingStep("button-primary")
+        // TODO:vgrechka Assert fucking screen
     }
 }
 

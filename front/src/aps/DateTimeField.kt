@@ -13,9 +13,10 @@ import into.kommon.*
 }
 
 @native fun moment(ms: Double): Moment = noImpl
+@native fun moment(s: String): Moment = noImpl
 
 @native interface Moment {
-    fun valueOf(): Int
+    fun valueOf(): Double
     fun format(fmt: String): String
     fun tz(zone: String): Moment
 }
@@ -102,7 +103,7 @@ class DateTimePicker(val key: String? = null) : Control2(Attrs()) {
     val title: String,
     key: String = name
 ) : FormFieldFront(container, name) {
-
+    var killmeValue: Double? = null
     override var error: String? = null
     val picker = DateTimePicker(key)
 
@@ -129,6 +130,11 @@ class DateTimePicker(val key: String? = null) : Control2(Attrs()) {
     override fun focus() {}
 
     override fun populateRemote(json: Json): Promise<Unit> = async {
+        killmeValue?.let {
+            json[name] = it
+            return@async
+        }
+
         val moment = picker.eonasdan.date()
         json[name] =
             if (moment == null) {

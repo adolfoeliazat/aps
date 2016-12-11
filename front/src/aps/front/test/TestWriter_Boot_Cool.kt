@@ -23,44 +23,6 @@ class TestWriter_Boot_Cool : WriterBootTestScenario_FuckerToken() {
     }
 }
 
-// TODO:vgrechka Should be generated
-fun send(token: String?, req: SignUpRequest): Promise<FormResponse2<GenericResponse>> {"__async"
-    return __asyncResult(__await(_send(token, req)))
-}
-// TODO:vgrechka Should be generated
-fun sendSafe(token: String?, req: SignUpRequest): Promise<FormResponse2<GenericResponse>> {"__async"
-    return __asyncResult(__await(_sendSafe(token, req)))
-}
-// TODO:vgrechka Should be generated
-fun send(token: String?, req: SignInWithPasswordRequest): Promise<FormResponse2<SignInResponse>> {"__async"
-    return __asyncResult(__await(_send(token, req)))
-}
-// TODO:vgrechka Should be generated
-fun sendSafe(token: String?, req: SignInWithPasswordRequest): Promise<FormResponse2<SignInResponse>> {"__async"
-    return __asyncResult(__await(_sendSafe(token, req)))
-}
-
-fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"
-    Globus.lastAttemptedRPCName = ctorName(req)
-    val res: FormResponse = __await(callMatumba(req, token))
-    return __asyncResult(when (res) {
-        is FormResponse.Shitty -> {
-            FormResponse2.Shitty(res.error, res.fieldErrors)
-        }
-        is FormResponse.Hunky<*> -> {
-            FormResponse2.Hunky(res.meat as Meat)
-        }
-    })
-}
-
-fun <Req: RequestMatumba, Meat> _sendSafe(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"
-    return __asyncResult(
-        try {
-            __await(_send<Req, Meat>(token, req))
-        } catch(e: Throwable) {
-            FormResponse2.Shitty<Meat>(t("Service is temporarily fucked up, sorry", "Сервис временно в жопе, просим прощения"), listOf())
-        })
-}
 
 fun <Meat, T> FormResponse2<Meat>.switch(hunky: (meat: Meat) -> T,
                                          shitty: (error: FormResponse2.Shitty<Meat>) -> T)

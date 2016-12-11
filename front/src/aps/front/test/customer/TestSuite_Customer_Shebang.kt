@@ -5,7 +5,8 @@ class TestSuite_Customer_Shebang : TestSuite {
 
     override val scenarios by lazy {listOf<TestScenario>(
         TestCustomer_SignUp_HappyPath(),
-        TestUACustomer_NewOrder_HappyPath()
+        TestUACustomer_NewOrder_HappyPath(),
+        TestUACustomer_Order_Files_1()
     )}
 }
 

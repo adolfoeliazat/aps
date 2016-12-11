@@ -24,9 +24,7 @@ import aps.front.*
         }
     ))
 
-//    var value: Int
-//        get() = imf("IntField value prop") // input.getValue()
-//        set(value) { input.setValue("" + value) }
+    fun setValue(value: Int) { input.setValue(value.toString()) }
 
     override var disabled: Boolean
         get() = input.isDisabled()

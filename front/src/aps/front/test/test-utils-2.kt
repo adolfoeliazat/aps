@@ -139,8 +139,28 @@ fun TestScenarioBuilder.prepareBobul(testShit: TestShit) {
     }}
 }
 
+fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
+    acta {async{
+        measureAndReportToDocumentElement("Preparing some orders for Ivo Bobul") {
+            fiddlingWithGlobals {
+                global.CLIENT_KIND = ClientKind.CUSTOMER.name
 
+                send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
+                    o.title.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
+                    o.documentType.value = UADocumentType.COURSE
+                    o.deadline.killmeValue = moment("2016-12-11 18:15:00").valueOf()
+                    o.numPages.setValue(30)
+                    o.numSources.setValue(5)
+                    o.details.value = "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории."
+                })
+            }
+        }
+    }}
+}
 
+object testconst {
+    val filesRoot = "C:\\Users\\Vladimir\\Desktop\\"
+}
 
 
 

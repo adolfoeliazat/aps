@@ -207,7 +207,6 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
         o- ebafPlus.renderForm()
 
         for (file in meat.items) {
-            dwarnStriking("rendering fucking file", file)
             fun label(title: String) = klabel(marginBottom = 0) {it-title}
 
             fun row(build: (ElementBuilder) -> Unit) =
