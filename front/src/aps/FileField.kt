@@ -24,9 +24,12 @@ import kotlin.browser.window
         }
     }
 
+    class TestFileOnServer(val name: String, val path: String)
+
     val noise = DebugNoise("FileField", mute = false)
 
     var file: File? = null
+    var testFileOnServer: TestFileOnServer? = null
     var fileChanged = ResolvableShit<Unit>()
 
     val control = object:Control2(Attrs()) {
@@ -85,24 +88,34 @@ import kotlin.browser.window
     override fun focus() {}
 
     override fun populateRemote(json: Json): Promise<Unit> {
-        val shit = ResolvableShit<Unit>()
+        val theTestFileOnServer = testFileOnServer
         val theFile = file
-        if (theFile == null) {
-            json[name] = null
+
+        val shit = ResolvableShit<Unit>()
+        if (theTestFileOnServer != null) {
+            json[name] = json(
+                "fileName" to theTestFileOnServer.name,
+                "testFileOnServerPath" to theTestFileOnServer.path
+            )
             shit.resolve(Unit)
         } else {
-            val reader = FileReader()
-            reader.onload = {
-                json[name] = json(
-                    "fileName" to theFile.name,
-                    "base64" to run {
-                        val dataURL: String = reader.result
-                        dataURL.substring(dataURL.indexOf(",") + 1)
-                    }
-                )
+            if (theFile == null) {
+                json[name] = null
                 shit.resolve(Unit)
+            } else {
+                val reader = FileReader()
+                reader.onload = {
+                    json[name] = json(
+                        "fileName" to theFile.name,
+                        "base64" to run {
+                            val dataURL: String = reader.result
+                            dataURL.substring(dataURL.indexOf(",") + 1)
+                        }
+                    )
+                    shit.resolve(Unit)
+                }
+                reader.readAsDataURL(theFile)
             }
-            reader.readAsDataURL(theFile)
         }
 
         return shit.promise

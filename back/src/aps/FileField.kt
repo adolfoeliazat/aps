@@ -1,6 +1,8 @@
 package aps
 
 import into.kommon.*
+import java.io.File
+import java.util.*
 
 @Back class FileField(
     container: RequestMatumba,
@@ -15,8 +17,14 @@ import into.kommon.*
 
         run error@{
             if (value == null) return@error t("TOTE", "Файл обязателен")
+
             fileName = cast(value["fileName"])
-            base64 = cast(value["base64"])
+            val testFileOnServerPath: String? = cast(value["testFileOnServerPath"])
+            base64 =
+                if (testFileOnServerPath != null)
+                    Base64.getEncoder().encodeToString(File(testFileOnServerPath).readBytes())
+                else
+                    cast(value["base64"])
             null
         }?.let {error ->
             fieldErrors.add(FieldError(name, error))

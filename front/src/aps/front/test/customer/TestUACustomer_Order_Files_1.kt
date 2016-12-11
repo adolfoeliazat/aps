@@ -13,7 +13,7 @@ class TestUACustomer_Order_Files_1 : StepBasedTestScenario() {
         o.initFuckingBrowser(fillStorageLocal = {
             it.token = shit.bobulToken
         })
-        o.kindaNavigateToStaticContent("$TEST_URL_CUSTOMER/order.html?id=100000")
+        o.kindaNavigateToStaticContent("$TEST_URL_CUSTOMER/order.html?id=100000&tab=files")
         o.assertCustomerBreatheScreen()
 
         o.acta {async{

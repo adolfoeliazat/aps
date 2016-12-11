@@ -27,6 +27,9 @@ fun sendSafe(token: String?, req: SignInWithPasswordRequest): Promise<FormRespon
 fun send(token: String?, req: CustomerCreateUAOrderRequest): Promise<FormResponse2<CustomerCreateUAOrderRequest.Response>> =
     _send(token, req)
 
+fun send(token: String?, req: CustomerAddUAOrderFileRequest): Promise<FormResponse2<CustomerAddUAOrderFileRequest.Response>> =
+    _send(token, req)
+
 
 
 private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"

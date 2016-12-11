@@ -145,14 +145,43 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
             fiddlingWithGlobals {
                 global.CLIENT_KIND = ClientKind.CUSTOMER.name
 
-                send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
+                await(send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
                     o.title.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
                     o.documentType.value = UADocumentType.COURSE
                     o.deadline.killmeValue = moment("2016-12-11 18:15:00").valueOf()
                     o.numPages.setValue(30)
                     o.numSources.setValue(5)
                     o.details.value = "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории."
-                })
+                }))
+
+                await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+                    o.file.testFileOnServer = FileField.TestFileOnServer("fuck you.rtf", "${testconst.filesRoot}fuck you.rtf")
+                    o.title.value = "A warm word to my writer"
+                    o.details.value = dedent("""
+                        Я к вам пишу – чего же боле?
+                        Что я могу еще сказать?
+                        Теперь, я знаю, в вашей воле
+                        Меня презреньем наказать.
+                    """)
+                }))
+
+                await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+                    o.file.testFileOnServer = FileField.TestFileOnServer("crazy monster boobs.rtf", "${testconst.filesRoot}crazy monster boobs.rtf")
+                    o.title.value = "Cool stuff"
+                    o.details.value = dedent("""
+                         - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
+                         - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
+                         - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
+                    """)
+                }))
+
+                await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+                    o.file.testFileOnServer = FileField.TestFileOnServer("the trial.doc", "${testconst.filesRoot}the trial.doc")
+                    o.title.value = "Процесс by Кафка"
+                    o.details.value = dedent("""
+                        Это чисто на почитать...
+                    """)
+                }))
             }
         }
     }}

@@ -206,58 +206,62 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
     val content = ToReactElementable.from {kdiv{o->
         o- ebafPlus.renderForm()
 
-        for (file in meat.items) {
-            fun label(title: String) = klabel(marginBottom = 0) {it-title}
+        if (meat.items.isEmpty()) {
+            o- const.noItemsMessage
+        } else {
+            for (file in meat.items) {
+                fun label(title: String) = klabel(marginBottom = 0) {it-title}
 
-            fun row(build: (ElementBuilder) -> Unit) =
-                kdiv(className = "row", marginBottom = "0.5em"){o->
-                    build(o)
-                }
+                fun row(build: (ElementBuilder) -> Unit) =
+                    kdiv(className = "row", marginBottom = "0.5em"){o->
+                        build(o)
+                    }
 
-            exhaustive/when (world.userSure.kind) {
-                UserKind.CUSTOMER -> {
-                    o- kdiv{o->
-                        o- row{o->
-                            o- kdiv(className = "col-md-12"){o->
-                                o- kdiv(){o->
-                                    o- file.title
+                exhaustive/when (world.userSure.kind) {
+                    UserKind.CUSTOMER -> {
+                        o- kdiv{o->
+                            o- row{o->
+                                o- kdiv(className = "col-md-12"){o->
+                                    o- kdiv(){o->
+                                        o- file.title
+                                    }
                                 }
                             }
-                        }
-                        o- row{o->
-                            o- kdiv(className = "col-md-4"){o->
-                                o- label(t("TOTE", "Создан"))
-                                o- kdiv(){o->
-                                    o- formatUnixTime(file.insertedAt)
+                            o- row{o->
+                                o- kdiv(className = "col-md-4"){o->
+                                    o- label(t("TOTE", "Создан"))
+                                    o- kdiv(){o->
+                                        o- formatUnixTime(file.insertedAt)
+                                    }
+                                }
+                                o- kdiv(className = "col-md-4"){o->
+                                    o- label(t("TOTE", "Имя"))
+                                    o- kdiv(){o->
+                                        o- file.name
+                                    }
+                                }
+                                o- kdiv(className = "col-md-4"){o->
+                                    o- label(t("TOTE", "Размер"))
+                                    o- kdiv(){o->
+                                        o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
+                                    }
                                 }
                             }
-                            o- kdiv(className = "col-md-4"){o->
-                                o- label(t("TOTE", "Имя"))
-                                o- kdiv(){o->
-                                    o- file.name
-                                }
-                            }
-                            o- kdiv(className = "col-md-4"){o->
-                                o- label(t("TOTE", "Размер"))
-                                o- kdiv(){o->
-                                    o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
-                                }
-                            }
-                        }
-                        o- row{o->
-                            o- kdiv(className = "col-md-12"){o->
-                                o- label(t("TOTE", "Детали"))
-                                o- kdiv(whiteSpace = "pre-wrap"){o->
-                                    o- file.details
+                            o- row{o->
+                                o- kdiv(className = "col-md-12"){o->
+                                    o- label(t("TOTE", "Детали"))
+                                    o- kdiv(whiteSpace = "pre-wrap"){o->
+                                        o- file.details
+                                    }
                                 }
                             }
                         }
                     }
+
+                    UserKind.WRITER -> imf()
+
+                    UserKind.ADMIN -> imf()
                 }
-
-                UserKind.WRITER -> imf()
-
-                UserKind.ADMIN -> imf()
             }
         }
     }}
