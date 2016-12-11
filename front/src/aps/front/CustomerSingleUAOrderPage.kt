@@ -222,8 +222,11 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                         o- kdiv{o->
                             o- row{o->
                                 o- kdiv(className = "col-md-12"){o->
-                                    o- kdiv(){o->
-                                        o- file.title
+                                    o- kdiv(className = "cunt-header"){o->
+                                        o- ki(className = "cunt-header-left-icon fa fa-file")
+                                        o- (" " + file.title)
+                                        o- ki(className = "cunt-header-right-icon fa fa-cloud-download", right = 30, top = 6)
+                                        o- ki(className = "cunt-header-right-icon fa fa-pencil")
                                     }
                                 }
                             }
@@ -235,7 +238,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                                     }
                                 }
                                 o- kdiv(className = "col-md-4"){o->
-                                    o- label(t("TOTE", "Имя"))
+                                    o- label(t("TOTE", "Имя файла"))
                                     o- kdiv(){o->
                                         o- file.name
                                     }

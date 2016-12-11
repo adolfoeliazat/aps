@@ -88,6 +88,32 @@ fun jsFacing_apsCSS(): String {
         .zebra-1 .label1 {background-color: ${TEAL_100};}
 
         .hover-color-BLUE_GRAY_800:hover {color: ${BLUE_GRAY_800};}
+
+        .cunt-header {
+            font-size: 18px;
+            background-color: #eceff1;
+            border-bottom: 1px solid #cfd8dc;
+            position: relative;
+        }
+
+        .cunt-header-left-icon {
+            color: #90a4ae;
+            margin-left: 3px;
+        }
+
+        .cunt-header-right-icon {
+            color: #90a4ae;
+            margin-left: 3px;
+            position: absolute;
+            right: 3px;
+            top: 4px;
+            cursor: pointer;
+        }
+
+        .cunt-header-right-icon:hover {
+            color: #607d8b;
+        }
+
     """
 
     return res

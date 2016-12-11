@@ -1,6 +1,8 @@
 package aps
 
 object const {
+    val noItemsMessage = t("TOTE", "Савсэм ничего нэт, да...")
+
     object common {
         val minTitleLen = 5
         val maxTitleLen = 100
