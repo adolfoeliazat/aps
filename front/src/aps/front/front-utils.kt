@@ -203,6 +203,16 @@ inline fun currentJSFunctionName(): String {
     return line
 }
 
+class ResolvableShit<T> {
+    lateinit var resolve: (T) -> Unit
+    lateinit var reject: (Throwable) -> Unit
+
+    val promise = Promise<T> {resolve, reject ->
+        this.resolve = resolve
+        this.reject = reject
+    }
+
+}
 
 
 

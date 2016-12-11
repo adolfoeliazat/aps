@@ -9,27 +9,17 @@ import org.w3c.files.File
 import org.w3c.files.FileList
 import org.w3c.files.FileReader
 import org.w3c.xhr.XMLHttpRequest
-import kotlin.browser.window
 
-@Front class FileField(
+@Front class FileField_separateUpload(
     container: RequestMatumba,
-    key: String,
+    name: String,
     val title: String
-): FormFieldFront(container, key) {
-    companion object {
-        val instances = mutableMapOf<String, FileField>()
-
-        fun instance(key: String): FileField {
-            return instances[key] ?: bitch("No FileField keyed `$key`")
-        }
-    }
-
+): FormFieldFront(container, name) {
     val noise = DebugNoise("FileField", mute = false)
-
-    var fileChanged = ResolvableShit<Unit>()
 
     val control = object:Control2(Attrs()) {
         val inputID = puid()
+        var uploaded = false
         var file: File? = null
 
         override fun render(): ToReactElementable {
@@ -45,8 +35,22 @@ import kotlin.browser.window
                             file = files[0]
                             gloshit.file = file
                             noise.clog("Got file", file)
+                            uploaded = false
                             update()
-                            fileChanged.resolve(Unit)
+
+//                            val reader = FileReader()
+//                            xhr.upload.addEventListener("load", {
+//                            }, false)
+//                            reader.onload = {
+//                                xhr.send(it.target.asDynamic().result)
+//                            }
+
+                            val xhr = XMLHttpRequest()
+                            xhr.open("POST", "$backendURL/upload")
+                            xhr.upload.onload = {
+                                dwarnStriking("Uploaded shit")
+                            }
+                            xhr.send(file)
                         }
                     ), listOf())
                     o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Выбрать файл..."), onClick = {
@@ -54,21 +58,21 @@ import kotlin.browser.window
                     })
                 } else {
                     o- klabel {it-title}
-                    o- kdiv{o->
-                        o- kspan(position = "relative", top = 3){o->
-                            o- (theFile.name + " (${fileSizeToApproxString(Globus.lang, theFile.size)})")
+                    if (uploaded) {
+                        o- kdiv{o->
+                            o- theFile.name
+                            o- " (${fileSizeToApproxString(Globus.lang, theFile.size)})"
+                        }
+                    } else {
+                        o- kdiv{o->
+                            o- kspan(position = "relative", top = 3){o->
+                                o- (t("TOTE", "Загружаю: ") + theFile.name + " (${fileSizeToApproxString(Globus.lang, theFile.size)})...")
+                            }
+                            o- kdiv(className = "progressTicker", float = "right", width = 14, height = 34, backgroundColor = BLUE_GRAY_600)
                         }
                     }
                 }
             }
-        }
-
-        override fun componentDidMount() {
-            instances[key] = this@FileField
-        }
-
-        override fun componentWillUnmount() {
-            instances.remove(key)
         }
     }
 
@@ -90,27 +94,5 @@ import kotlin.browser.window
     }
 }
 
-fun TestScenarioBuilder.typeIntoOpenFileDialog(text: String) {
-    acta("Typing into Open dialog: ${markdownItalicVerbatim(text)}") {
-        fuckingRemoteCall.robotTypeTextCRIntoWindowTitledOpen(text)
-    }
-}
-
-fun TestScenarioBuilder.fileFieldWaitTillShitChanged(key: String) {
-    acta("Waiting till file in `$key` is changed") {
-        val shit = ResolvableShit<Unit>()
-
-        val fileField = FileField.instance(key)
-        fileField.fileChanged.promise.then<Nothing>({
-            shit.resolve(Unit)
-        })
-
-        timeoutSet(1000) {
-            shit.reject(Exception("Timed out waiting for a fucking file to be changed"))
-        }
-
-        shit.promise
-    }
-}
 
 

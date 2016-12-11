@@ -57,8 +57,6 @@ fun qweqwe() {
     fun <U> then(onFulfilled: (T) -> Unit,
                  onRejected: ((Throwable) -> Unit)? = null): Promise<U> = noImpl
 
-//    fun <U> then(cb: (T) -> Any?): Promise<U> = noImpl
-
     companion object {
         fun <T> resolve(value: T): Promise<T> = noImpl
     }

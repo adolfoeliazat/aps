@@ -34,12 +34,14 @@ fun fetchURL(url: String, method: String, data: String?): Promise<String> {"__as
     }
 }
 
+val backendURL = "http://127.0.0.1:8080"
+
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {
     val stackBeforeXHR: String = CaptureStackException().stack
 
     return Promise { resolve, reject ->
         val xhr = js("new XMLHttpRequest()")
-        xhr.open("POST", "http://127.0.0.1:8080/$path")
+        xhr.open("POST", "$backendURL/$path")
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
 
         xhr.onreadystatechange = {

@@ -38,8 +38,17 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
         o.typeIntoOpenFileDialog("C:\\Users\\Vladimir\\Desktop\\fuck you.rtf")
+        o.fileFieldWaitTillShitChanged("file")
+        o.setValueDescribingStep("TextField-title.Input", "A warm word to my writer")
+        o.setValueDescribingStep("TextField-details.Input", dedent("""
+            Я к вам пишу – чего же боле?
+            Что я могу еще сказать?
+            Теперь, я знаю, в вашей воле
+            Меня презреньем наказать.
+        """))
     }
 }
+
 
 
 
