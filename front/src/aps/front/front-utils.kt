@@ -189,7 +189,7 @@ fun jsArrayLikeToJSArray(xs: Any?) {
 
 inline fun currentJSFunctionName(): String {
     val stack: String = js("Error().stack")
-    dwarnStriking(stack)
+    // dwarnStriking(stack)
     val lines = stack.lines()
     check(lines.size >= 2)
     var line = lines[1]

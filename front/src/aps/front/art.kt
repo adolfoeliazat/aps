@@ -50,15 +50,23 @@ sealed class TestInstruction() : DefinitionStackHolder {
     class WorldPoint(val name: String) : TestInstruction()
     class Do(val action: () -> Promise<Unit>) : TestInstruction()
 
-    sealed class Step(val long: String) : TestInstruction() {
+    sealed class Step(val long: String, val rowBackgroundColor: Color?) : TestInstruction() {
         var executed = false
         var passed = false
 
-        class ActionStep(long: String): Step(long)
-        class StateStep(long: String): Step(long)
-        class NavigationStep(long: String): Step(long)
-        class AssertionStep(long: String): Step(long)
-        class HaltStep(long: String): Step(long)
+        class ActionStep(long: String): Step(long, rowBackgroundColor = null)
+        class StateStep(long: String): Step(long, rowBackgroundColor = null)
+        class NavigationStep(long: String): Step(long, rowBackgroundColor = null)
+        class AssertionStep(long: String): Step(long, rowBackgroundColor = null)
+        class HaltStep(long: String): Step(long, rowBackgroundColor = null)
+
+        class CustomStep(
+            long: String,
+            rowBackgroundColor: Color?,
+            val label: String,
+            val labelBackgroundColor: Color,
+            val labelColor: Color
+        ): Step(long, rowBackgroundColor)
     }
 
     class BeginSection(val long: String) : TestInstruction()
@@ -369,13 +377,21 @@ object art {
                     indent, stepRowStyle,
                     rulerContent = ("#" + (stepIndex++ + 1)).asDynamicReactElement(),
 
-                    lineContent = kdiv(display="flex"){o->
+                    lineContent = kdiv(display = "flex", backgroundColor = instr.rowBackgroundColor){o->
                         o- when (instr) { // TODO:vgrechka Use sealed class
                             is TestInstruction.Step.ActionStep -> kspan(marginRight=5, padding=3, fontSize="75%", backgroundColor=labelBack(passed=BLUE_200, failed=RED_200)) {it-"Action"}
                             is TestInstruction.Step.StateStep -> kspan(marginRight=5, padding=3, backgroundColor=ORANGE_200, fontSize="75%") {it-"State"}
                             is TestInstruction.Step.NavigationStep -> kspan(marginRight=5, padding=3, backgroundColor=BROWN_50, fontSize="75%") {it-"Navigation"}
                             is TestInstruction.Step.AssertionStep -> kspan(marginRight=5, padding=3, fontSize="75%", backgroundColor=labelBack(passed=GREEN_200, failed=RED_200, skipped=GRAY_300)) {it-"Assertion"}
                             is TestInstruction.Step.HaltStep -> kspan(marginRight=5, padding=3, fontSize="75%", backgroundColor=labelBack(passed=GREEN_200, failed=RED_200, skipped=GRAY_300)) {it-"Halt"}
+                            is TestInstruction.Step.CustomStep -> kspan(
+                                marginRight=5,
+                                padding=3,
+                                fontSize="75%",
+                                backgroundColor=instr.labelBackgroundColor,
+                                color=instr.labelColor){o->
+                                        o- instr.label
+                                    }
                         }
                         o- markdown(title, stripP=true)
                     },
@@ -1213,7 +1229,10 @@ fun openShitPassedPane(title: String, details: ElementBuilder) {
     if (!Globus.realTypedStorageLocal.dontScrollOnTestPassed)
         art.scrollRevealing(ELID_UNDER_FOOTER)
 
-    clog("----- We good -----")
+    val todoNotice =
+        if (TestGlobal.hasScenarioTODOs) "(with TODOs) "
+        else ""
+    clog("----- We good $todoNotice-----")
 }
 
 

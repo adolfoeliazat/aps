@@ -5,7 +5,7 @@ import aps.front.testutils.*
 class TestCustomer_SignUp_HappyPath : StepBasedTestScenario() {
     override fun buildSteps() {
         o.initFuckingBrowser()
-        o.kindaNavigateToStaticContent(TEST_URL_CUSTOMER)
+        o.kindaNavigateToStaticContent(testconst.url.customer)
         o.acta {async{
             val world = World("boobs")
             await(world.boot())

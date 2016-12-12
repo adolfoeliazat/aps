@@ -20,6 +20,7 @@ object TestGlobal {
     val topNavbarLinks = mutableMapOf<String, dynamic>() // TODO:vgrechka Rename to nameToTopNavbarLink
     var testShitBeingAssertedID: String? = null
     var lastTestHref: String? = null
+    var hasScenarioTODOs = false
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

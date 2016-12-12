@@ -12,7 +12,7 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.initFuckingBrowser(fillStorageLocal = {
             it.token = shit.bobulToken
         })
-        o.kindaNavigateToStaticContent("$TEST_URL_CUSTOMER/orders.html")
+        o.kindaNavigateToStaticContent("${testconst.url.customer}/orders.html")
         o.assertCustomerBreatheScreen()
 
         o.acta {async{

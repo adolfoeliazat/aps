@@ -7,7 +7,14 @@ import org.w3c.dom.Storage
 import kotlin.browser.document
 import kotlin.browser.window
 
-val TEST_URL_CUSTOMER = "http://aps-ua-customer.local:3012"
+object testconst {
+    val filesRoot = "C:\\Users\\Vladimir\\Desktop\\"
+
+    object url {
+        val customer = "http://aps-ua-customer.local:3012"
+    }
+}
+
 
 fun TestScenarioBuilder.initFuckingBrowser(fillStorageLocal: (TypedStorageLocal) -> Unit = {}) {
     act {
@@ -187,10 +194,35 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
     }}
 }
 
-object testconst {
-    val filesRoot = "C:\\Users\\Vladimir\\Desktop\\"
+fun TestScenarioBuilder.orderFiles1(shit: TestShit) {
+    val o = this
+    o.prepareBobul(shit)
+    o.prepareBobulOrders1(shit)
+    o.initFuckingBrowser(fillStorageLocal = {
+        it.token = shit.bobulToken
+    })
+    o.kindaNavigateToStaticContent("${testconst.url.customer}/order.html?id=100000&tab=files")
+    o.assertCustomerBreatheScreen()
+
+    o.acta {async{
+        val world = World("boobs")
+        await(world.boot())
+    }}
+
+    o.todo("Assert " + currentJSFunctionName() + " screen")
 }
 
+fun TestScenarioBuilder.todo(msg: String) {
+    TestGlobal.hasScenarioTODOs = true
+    val step = TestInstruction.Step.CustomStep(
+        msg,
+        rowBackgroundColor = Color.DEEP_ORANGE_100,
+        label = "TODO",
+        labelBackgroundColor = Color.DEEP_ORANGE_500,
+        labelColor = Color.WHITE)
+    step.passed = true
+    instructions.add(step)
+}
 
 
 
