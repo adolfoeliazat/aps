@@ -95,11 +95,15 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     val testName = urlQuery["test"]
     val testSuiteName = urlQuery["testSuite"]
 
-    __await(when {
-        testName != null -> runTestNamed(testName, urlQuery)
-        testSuiteName != null -> runTestSuiteFailingFast(testSuiteName, urlQuery)
-        else -> bitch("Gimme test or testSuite in URL")
-    })
+    try {
+        __await(when {
+            testName != null -> runTestNamed(testName, urlQuery)
+            testSuiteName != null -> runTestSuiteFailingFast(testSuiteName, urlQuery)
+            else -> bitch("Gimme test or testSuite in URL")
+        })
+    } finally {
+        openTestListPane()
+    }
     return __asyncResult(Unit)
 }
 
@@ -141,11 +145,8 @@ private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promi
 
 private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
     val testName = ctorName(scenario)
-    TestGlobal.lastTestHref = when {
-        testName.contains("Writer") -> "http://aps-ua-writer.local:3022/faq.html?test=$testName"
-        testName.contains("Customer") -> "http://aps-ua-customer.local:3012/faq.html?test=$testName"
-        else -> bitch("Cannot figure out URL for test [$testName]")
-    }
+    TestGlobal.lastTestName = testName
+    TestGlobal.lastTestHref = testNameToHref(testName)
 
     Globus.rootRedisLogMessageID = await(fedis.beginLogGroup("Test: $testName"))
 
@@ -233,6 +234,14 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
     finally {
         await(fedis.endLogGroup(Globus.rootRedisLogMessageID!!))
         Globus.rootRedisLogMessageID = null
+    }
+}
+
+fun testNameToHref(testName: String): String {
+    return when {
+        testName.contains("Writer") -> "http://aps-ua-writer.local:3022/faq.html?test=$testName"
+        testName.contains("Customer") -> "http://aps-ua-customer.local:3012/faq.html?test=$testName"
+        else -> bitch("Cannot figure out URL for test [$testName]")
     }
 }
 

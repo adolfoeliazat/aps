@@ -1197,6 +1197,30 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
     }
 }
 
+fun openTestListPane() {
+    DebugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv{o->
+        o- Style(backgroundColor = BROWN_500, color = WHITE,
+                 marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
+
+        o- kdiv(paddingBottom = 10){o->
+            o- "Tests"
+        }
+
+        o- kdiv{o->
+            o- Style(backgroundColor = WHITE, color = BLACK_BOOT,
+                     fontWeight = "normal", textAlign = "left", padding = 5)
+
+            fun testLink(testName: String) = link(
+                title = testName,
+                onClick = {
+                    window.location.href = testNameToHref(testName)
+                })
+
+            o- testLink(TestGlobal.lastTestName!!)
+        }
+    })
+}
+
 fun openTestPassedPane() {
     openShitPassedPane(
         title = run {
