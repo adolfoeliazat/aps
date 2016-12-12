@@ -7,6 +7,8 @@ import redis.clients.jedis.JedisPoolConfig
 import java.time.LocalDateTime
 import java.util.*
 
+val LOCAL_REDIS_LOGGING = System.getenv("APS_LOCAL_REDIS_LOGGING") == "true"
+
 val jedisPool by lazy {
     JedisPool(JedisPoolConfig(), "localhost").let {
         Runtime.getRuntime().addShutdownHook(object:Thread() {
@@ -22,6 +24,7 @@ val jedisPool by lazy {
 // TODO:vgrechka Make this asynchronous
 object redisLog {
     fun send(msg: RedisLogMessage) {
+        if (!LOCAL_REDIS_LOGGING) return
         if (shouldSkip()) return
 
         msg.id = UUID.randomUUID().toString()
@@ -46,6 +49,7 @@ object redisLog {
     }
 
     fun amend(msg: RedisLogMessage) {
+        if (!LOCAL_REDIS_LOGGING) return
         if (shouldSkip()) return
 
         jedisPool.resource.use {jedis->
@@ -141,23 +145,26 @@ private val idToLogGroupMessage = Collections.synchronizedMap(mutableMapOf<Strin
                 redisLog.amend(rlm)
                 return@run Unit
             }
-            else -> jedisPool.resource.use {jedis ->
-                when (command) {
-                    "lrange" -> {
-                        val key: String  = cast(rmap["key"])
-                        val start: Long = (rmap["start"] as String).toLong()
-                        val end: Long = (rmap["end"] as String).toLong()
-                        return@run jedis.lrange(key, start, end)
+            else -> {
+                if (!LOCAL_REDIS_LOGGING) return@run Unit
+                jedisPool.resource.use {jedis ->
+                    when (command) {
+                        "lrange" -> {
+                            val key: String  = cast(rmap["key"])
+                            val start: Long = (rmap["start"] as String).toLong()
+                            val end: Long = (rmap["end"] as String).toLong()
+                            return@run jedis.lrange(key, start, end)
+                        }
+                        "mget" -> {
+                            val keys: List<String> = cast(rmap["keys"])
+                            return@run jedis.mget(*keys.toTypedArray())
+                        }
+                        "del" -> {
+                            val keys: List<String> = cast(rmap["keys"])
+                            return@run jedis.del(*keys.toTypedArray())
+                        }
+                        else -> wtf("command: $command")
                     }
-                    "mget" -> {
-                        val keys: List<String> = cast(rmap["keys"])
-                        return@run jedis.mget(*keys.toTypedArray())
-                    }
-                    "del" -> {
-                        val keys: List<String> = cast(rmap["keys"])
-                        return@run jedis.del(*keys.toTypedArray())
-                    }
-                    else -> wtf("command: $command")
                 }
             }
 

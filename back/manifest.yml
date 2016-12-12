@@ -1,0 +1,9 @@
+---
+applications:
+- name: apsback
+  memory: 1024M
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
+  path: built/apsback.jar
+
+
+

@@ -47,7 +47,8 @@ fun main(args: Array<String>) {
         for (m in methods) remoteProcedureNameToFactory[m.name] = m
     }
 
-    Server(8080).apply {
+    val port = (System.getenv("PORT") ?: "8080").toInt()
+    Server(port).apply {
         handler = ServletHandler().apply {
             addServletWithMapping(GodServlet::class.java, "/*")
         }

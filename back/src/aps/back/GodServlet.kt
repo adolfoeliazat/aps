@@ -26,6 +26,14 @@ class GodServlet : HttpServlet() {
 
         try {
             when {
+                pathInfo == "/fuck" -> {
+                    servletResponse-{o->
+                        o.contentType = "application/json; charset=utf-8"
+                        o.writer.println("----- WELCOME AND FUCK YOU -----")
+                        o.status = HttpServletResponse.SC_OK
+                    }
+                }
+
                 pathInfo.startsWith("/rpc/") -> {
                     val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
                     val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
@@ -33,6 +41,7 @@ class GodServlet : HttpServlet() {
                     val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
                     service(servletRequest, servletResponse)
                 }
+
                 else -> bitch("Weird request path: $pathInfo")
             }
         } catch(fuckup: Throwable) {

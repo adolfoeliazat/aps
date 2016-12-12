@@ -67,6 +67,12 @@
             <arg value="SpikeJS"/>
         </exec>
     </target>
+
+    <target name="BundleForCloudFoundry">
+        <java classname="aps.back.BundleForCloudFoundry" fork="true" failonerror="true">
+            <classpath refid="cp"/>
+        </java>
+    </target>
 </project>
 
 

@@ -50,5 +50,12 @@ http://aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_ProfileRejected
 http://aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_Cool
 
 
+CloudFoundry
+============
+
+ant BundleForCloudFoundry
+cf push -f back\manifest.yml
+
+
 
 
