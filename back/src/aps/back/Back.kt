@@ -37,10 +37,12 @@ fun main(args: Array<String>) {
 }
 
 fun reallyBoot() {
-    eprintln("\n" +
-        "╔═╗╔═╗╔═╗\n" +
-        "╠═╣╠═╝╚═╗\n" +
-        "╩ ╩╩  ╚═╝ ${BackGlobus.version}\n\n")
+    eprintln(
+        """                  """+"\n"+
+        """  __   ____  ____ """+"\n"+
+        """ / _\ (  _ \/ ___)"""+"\n"+
+        """/    \ ) __/\___ \"""+"\n"+
+        """\_/\_/(__)  (____/ ${BackGlobus.version}"""+"\n\n")
 
     System.setProperty("user.timezone", "GMT")
     BackGlobus.startMoment = Date()

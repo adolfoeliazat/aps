@@ -53,7 +53,7 @@
         </java>
     </target>
 
-    <target name="make-static-sites">
+    <target name="MakeStaticSites">
         <exec executable="node" dir="${env.APS_HOME}/front">
             <arg value="run.js"/>
             <arg value="MakeStaticSites"/>
@@ -79,6 +79,13 @@
             <classpath refid="cp"/>
         </java>
     </target>
+
+    <target name="PublishStaticSitesOnGH">
+        <java classname="aps.back.PublishStaticSitesOnGH" fork="true" failonerror="true">
+            <classpath refid="cp"/>
+        </java>
+    </target>
+
 </project>
 
 

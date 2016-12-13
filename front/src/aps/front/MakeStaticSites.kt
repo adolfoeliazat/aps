@@ -21,8 +21,6 @@ object MakeStaticSites {
     class Testimonial(val name: LS, val img: String, val says: LS)
     class BlogItem(val listTitle: String, val title: String, val slug: String, val content: String)
 
-    val DEPS_JS = "$APS_HOME/front/out/deps.js"
-
     val React = nodeRequire("react")
     val ReactDOMServer = nodeRequire("react-dom/server")
     val fs = nodeRequire("fs")
@@ -31,6 +29,8 @@ object MakeStaticSites {
 
     lateinit var mode: Mode
     lateinit var lang: Language
+    lateinit var out: String
+    val DEPS_JS = "$APS_TEMP/deps.js"
 
     @JsName("runShit")
     fun runShit(argv: Array<String>) {"__async"
@@ -47,6 +47,11 @@ object MakeStaticSites {
                 "prod" -> Mode.PROD
                 else -> wtf("modeString: $modeString")
             }
+            println("Mode: $mode")
+
+            val outString: String? = margv.out
+            out = outString ?: "$APS_HOME/front/out/static"
+            println("Out directory: $out")
 
             __await(browserifyShit())
             __await(makeWriterSite(Language.UA))
@@ -70,7 +75,7 @@ object MakeStaticSites {
         print("Making $siteName... ")
         this.lang = lang
 
-        val root = "$APS_HOME/front/out/static/$siteName"
+        val root = "$out/$siteName"
         __await(remakeDirAndCopyShit(root))
 
         val tabTitle = t(en="Writer", ua="Writer UA")
@@ -512,7 +517,7 @@ object MakeStaticSites {
         print("Making $siteName... ")
         this.lang = lang
 
-        val root = "$APS_HOME/front/out/static/$siteName"
+        val root = "$out/$siteName"
         __await(remakeDirAndCopyShit(root))
 
         val tabTitle = t(en="APS", ua="APS UA")
@@ -1123,16 +1128,19 @@ object MakeStaticSites {
     </script>
 
     <script>
-        console.warn('---------- Running static script ----------')
-        // TODO:vgrechka Think about DANGEROUS_TOKEN. How it should be included into client, etc.
-        DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}'
+        ${if (mode == Mode.DEBUG) """
+            // TODO:vgrechka Think about DANGEROUS_TOKEN. How it should be included into client, etc.
+            DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}'
+        """ else ""}
 
         global = window
         Kotlin = kotlin
 
+        const scriptSuffix = ${if (mode == Mode.DEBUG) "'?' + Date.now()" else "''"}
+
         Promise.resolve()
-        .then(_=> loadScript('into-kommon-js-enhanced.js?' + Date.now()))
-        .then(_=> loadScript('front-enhanced.js?' + Date.now()))
+        .then(_=> loadScript('into-kommon-js-enhanced.js' + scriptSuffix))
+        .then(_=> loadScript('front-enhanced.js' + scriptSuffix))
         .then(_=> {
             kot = Kotlin.modules.front
             F = kot.aps.front
