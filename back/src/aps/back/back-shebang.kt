@@ -93,6 +93,7 @@ object BackGlobus {
     var tracingEnabled = true
     lateinit var startMoment: Date
     val slimJarName = "apsback-slim.jar"
+    val killResponse = "Aarrgghh..."
 
     val version by lazy {
         this::class.java.classLoader.getResource("aps/version.txt").readText()

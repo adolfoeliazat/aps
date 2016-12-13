@@ -14,53 +14,38 @@ import java.util.*
 import javax.servlet.*
 import javax.servlet.annotation.MultipartConfig
 import javax.servlet.http.*
+import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 class GodServlet : HttpServlet() {
     val log by logger()
 
-    override fun service(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse) {
-        val pathInfo = servletRequest.pathInfo
+    override fun service(req: HttpServletRequest, res: HttpServletResponse) {
+        val pathInfo = req.pathInfo
 
         _requestShit.set(RequestShit())
         requestShit.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
 
         try {
             when {
-                pathInfo == "/fuck" -> {
-                    servletResponse-{o->
-                        o.contentType = "text/plain; charset=utf-8"
-                        o.writer.println("----- WELCOME AND FUCK YOU -----")
-                        o.status = HttpServletResponse.SC_OK
-                    }
+                pathInfo == "/welcome" -> {
+                    res.spitText("FUCK YOU")
                 }
 
                 pathInfo == "/startMoment" -> {
-                    servletResponse-{o->
-                        o.contentType = "text/plain; charset=utf-8"
-                        o.writer.println(SimpleDateFormat("YYYYMMDD-hhmmss").format(BackGlobus.startMoment))
-                        o.status = HttpServletResponse.SC_OK
-                    }
+                    res.spitText(SimpleDateFormat("YYYYMMDD-hhmmss").format(BackGlobus.startMoment))
                 }
 
                 pathInfo == "/version" -> {
-                    servletResponse-{o->
-                        o.contentType = "text/plain; charset=utf-8"
-                        o.writer.println(BackGlobus.version)
-                        o.status = HttpServletResponse.SC_OK
-                    }
-                }
-
-                pathInfo == "/kill" -> {
-                    System.exit(0)
+                    res.spitText(BackGlobus.version)
                 }
 
                 pathInfo.startsWith("/rpc/") -> {
-                    val procedureName = servletRequest.pathInfo.substring("/rpc/".length)
+                    val procedureName = req.pathInfo.substring("/rpc/".length)
                     val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
                     @Suppress("UNCHECKED_CAST")
                     val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
-                    service(servletRequest, servletResponse)
+                    service(req, res)
                 }
 
                 else -> bitch("Weird request path: $pathInfo")
@@ -74,6 +59,15 @@ class GodServlet : HttpServlet() {
 
             throw ServletException(fuckup)
         }
+    }
+
+}
+
+private fun HttpServletResponse.spitText(text: String) {
+    this-{o->
+        o.contentType = "text/plain; charset=utf-8"
+        o.writer.println(text)
+        o.status = HttpServletResponse.SC_OK
     }
 }
 

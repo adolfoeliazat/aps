@@ -59,14 +59,21 @@ object PushSlimShitToCF {
             }
         }
 
-        run {
-            eprintln("Sending 'kill yourself' to the service")
-            val response = URL("http://$APS_CLOUD_BACK_HOST/kill").readText()
-            eprintln("Shit responded: " + response)
-        }
+        val exitCode = runProcessAndWait(listOf("cf", "restart", "apsback"))
+        if (exitCode != 0) bitch("Shitty exit code from cf restart: $exitCode")
 
-        eprintln("ЗАЕБИСЬ")
+        eprintln("\n\nLive version: " + URL("http://$APS_CLOUD_BACK_HOST/version").readText())
+        eprintln("COOL")
     }
+}
+
+fun runProcessAndWait(cmdPieces: List<String>): Int {
+    val pb = ProcessBuilder()
+    val cmd = pb.command()
+    cmd.addAll(cmdPieces)
+    pb.inheritIO()
+    val proc = pb.start()
+    return proc.waitFor()
 }
 
 
