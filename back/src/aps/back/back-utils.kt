@@ -45,7 +45,9 @@ inline fun <T : AutoCloseable?, R> T.use(block: (T) -> R): R {
     }
 }
 
-
+fun eprintln(msg: String) {
+    System.err.println(msg)
+}
 
 
 

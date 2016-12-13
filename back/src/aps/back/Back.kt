@@ -31,6 +31,7 @@ val remoteProcedureNameToFactory: MutableMap<String, Method> = Collections.synch
 
 fun main(args: Array<String>) {
     System.setProperty("user.timezone", "GMT")
+    BackGlobus.startMoment = Date()
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
 
     redisLog.send(RedisLogMessage.Separator()-{o->

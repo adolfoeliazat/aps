@@ -9,6 +9,7 @@ package aps.back
 import aps.*
 import aps.RedisLogMessage.Separator.Type.*
 import into.kommon.*
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.servlet.*
 import javax.servlet.annotation.MultipartConfig
@@ -28,10 +29,30 @@ class GodServlet : HttpServlet() {
             when {
                 pathInfo == "/fuck" -> {
                     servletResponse-{o->
-                        o.contentType = "application/json; charset=utf-8"
+                        o.contentType = "text/plain; charset=utf-8"
                         o.writer.println("----- WELCOME AND FUCK YOU -----")
                         o.status = HttpServletResponse.SC_OK
                     }
+                }
+
+                pathInfo == "/startMoment" -> {
+                    servletResponse-{o->
+                        o.contentType = "text/plain; charset=utf-8"
+                        o.writer.println(SimpleDateFormat("YYYYMMDD-hhmmss").format(BackGlobus.startMoment))
+                        o.status = HttpServletResponse.SC_OK
+                    }
+                }
+
+                pathInfo == "/version" -> {
+                    servletResponse-{o->
+                        o.contentType = "text/plain; charset=utf-8"
+                        o.writer.println(this::class.java.classLoader.getResource("aps/version.txt").readText())
+                        o.status = HttpServletResponse.SC_OK
+                    }
+                }
+
+                pathInfo == "/kill" -> {
+                    System.exit(0)
                 }
 
                 pathInfo.startsWith("/rpc/") -> {
@@ -71,7 +92,6 @@ val patternsToExcludeRedisLoggingCompletely = listOf(
     "getSoftwareVersion", "mapStack", "getLiveStatus",
     "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword"
 )
-
 
 
 

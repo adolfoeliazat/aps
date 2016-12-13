@@ -10,6 +10,10 @@ import aps.*
 import aps.back.generated.jooq.tables.pojos.JQUsers
 import aps.back.generated.jooq.Tables.*
 import org.jooq.*
+import java.io.File
+import java.util.*
+import kotlin.properties.Delegates
+import kotlin.properties.Delegates.notNull
 import kotlin.reflect.KClass
 
 class QueryBuilder(val shortDescription: String) {
@@ -87,6 +91,7 @@ fun loadUser(ctx: ProcedureContext): UserRTO {
 
 object BackGlobus {
     var tracingEnabled = true
+    lateinit var startMoment: Date
 }
 
 

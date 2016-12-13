@@ -1,4 +1,4 @@
-// apply plugin: 'java'
+apply plugin: 'java'
 
 repositories {
     mavenCentral()
@@ -24,6 +24,7 @@ dependencies {
     compile 'com.google.javascript:closure-compiler:v20161024'
     compile 'org.apache.ant:ant:1.9.7'
     compile 'redis.clients:jedis:2.9.0'
+    compile 'com.dropbox.core:dropbox-core-sdk:2.1.1'
 }
 
 task importDeps(type: Copy) {
