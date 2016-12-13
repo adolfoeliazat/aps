@@ -16,6 +16,8 @@ val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environm
 val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak" // TODO:vgrechka @unhardcode
 val APS_TEMP: String get() = "c:/tmp/aps-tmp" // TODO:vgrechka @unhardcode
 val IDEA_EXE: String get() = "C:/opt/idea-eap/bin/idea64.exe" // TODO:vgrechka @unhardcode
+val TMPDIR: String get() = getenv("TMPDIR") ?: die("I want TMPDIR environment variable")
+val APS_CLOUD_BACK_HOST: String get() = getenv("APS_CLOUD_BACK_HOST") ?: die("I want APS_CLOUD_BACK_HOST environment variable")
 
 class AbortException : Throwable()
 fun abort() {throw AbortException()}

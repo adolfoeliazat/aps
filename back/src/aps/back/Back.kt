@@ -8,6 +8,7 @@ package aps.back
 
 import aps.*
 import aps.RedisLogMessage.Separator.Type.*
+import aps.back.BackGlobus.slimJarName
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.JQUserRoles
 import aps.back.generated.jooq.tables.pojos.JQUsers
@@ -20,7 +21,10 @@ import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.util.ClasspathHelper
 import org.reflections.util.ConfigurationBuilder
 import org.slf4j.Logger
+import java.io.File
+import java.io.FileOutputStream
 import java.lang.reflect.Method
+import java.net.URLClassLoader
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,6 +34,14 @@ val THE_ADMIN_ID = 101L // TODO:vgrechka Unhardcode admin ID    17c5cc52-57c2-48
 val remoteProcedureNameToFactory: MutableMap<String, Method> = Collections.synchronizedMap(mutableMapOf())
 
 fun main(args: Array<String>) {
+}
+
+fun reallyBoot() {
+    eprintln("\n" +
+        "╔═╗╔═╗╔═╗\n" +
+        "╠═╣╠═╝╚═╗\n" +
+        "╩ ╩╩  ╚═╝ ${BackGlobus.version}\n\n")
+
     System.setProperty("user.timezone", "GMT")
     BackGlobus.startMoment = Date()
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
@@ -39,12 +51,13 @@ fun main(args: Array<String>) {
         o.text = "Booting fucking backend"
     })
 
-    run { // Gather meta
+    run {
+        // Gather meta
         val refl = Reflections(ConfigurationBuilder()
-            .setUrls(ClasspathHelper.forPackage("aps.back"))
-            .setScanners(MethodAnnotationsScanner()))
+                                   .setUrls(ClasspathHelper.forPackage("aps.back"))
+                                   .setScanners(MethodAnnotationsScanner()))
         val methods = refl.getMethodsAnnotatedWith(RemoteProcedureFactory::class.java)
-        debugLog.section("Remote procedure factories:", methods.map{it.name}.joinToString())
+        debugLog.section("Remote procedure factories:", methods.map {it.name}.joinToString())
         for (m in methods) remoteProcedureNameToFactory[m.name] = m
     }
 
@@ -59,10 +72,6 @@ fun main(args: Array<String>) {
         join()
     }
 }
-
-
-
-
 
 
 fun t(en: String, ua: String) = ua

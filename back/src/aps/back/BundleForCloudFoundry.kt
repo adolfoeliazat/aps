@@ -35,7 +35,7 @@ class BundleForCloudFoundry {
                 o.addConfiguredManifest(Manifest()-{o->
                     o.addConfiguredAttribute(Manifest.Attribute()-{o->
                         o.name = "Main-Class"
-                        o.value = "aps.back.BackKt"
+                        o.value = "aps.back.BackBoot"
                     })
                 })
                 // o.level = 0
@@ -61,4 +61,5 @@ class BundleForCloudFoundry {
         }
     }
 }
+
 

@@ -92,6 +92,11 @@ fun loadUser(ctx: ProcedureContext): UserRTO {
 object BackGlobus {
     var tracingEnabled = true
     lateinit var startMoment: Date
+    val slimJarName = "apsback-slim.jar"
+
+    val version by lazy {
+        this::class.java.classLoader.getResource("aps/version.txt").readText()
+    }
 }
 
 

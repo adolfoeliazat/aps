@@ -73,6 +73,12 @@
             <classpath refid="cp"/>
         </java>
     </target>
+
+    <target name="PushSlimShitToCF">
+        <java classname="aps.back.PushSlimShitToCF" fork="true" failonerror="true">
+            <classpath refid="cp"/>
+        </java>
+    </target>
 </project>
 
 

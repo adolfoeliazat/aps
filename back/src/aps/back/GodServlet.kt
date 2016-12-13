@@ -46,7 +46,7 @@ class GodServlet : HttpServlet() {
                 pathInfo == "/version" -> {
                     servletResponse-{o->
                         o.contentType = "text/plain; charset=utf-8"
-                        o.writer.println(this::class.java.classLoader.getResource("aps/version.txt").readText())
+                        o.writer.println(BackGlobus.version)
                         o.status = HttpServletResponse.SC_OK
                     }
                 }
