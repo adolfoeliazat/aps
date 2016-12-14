@@ -136,6 +136,7 @@ fun <T> dejsonizeValue(jsThing: dynamic): T? {
 fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields): Promise<Res> {"__async"
 //    __dlog.requestJSONObject(procedureName, requestJSONObject)
     requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
+    requestJSONObject.databaseID = ExternalGlobus.DB
     val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
 //    __dlog.responseJSONObject(procedureName, global.JSON.stringify(responseJSONObject, null, 2))
 

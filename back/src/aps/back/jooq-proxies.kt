@@ -3,26 +3,14 @@ package aps.back
 import aps.*
 import aps.RedisLogMessage.SQL.Stage.*
 import into.kommon.*
-import aps.back.generated.jooq.Tables
-import aps.back.generated.jooq.tables.records.JQUserRolesRecord
-import aps.back.generated.jooq.tables.records.JQUserTokensRecord
-import aps.back.generated.jooq.tables.records.JQUsersRecord
-import com.zaxxer.hikari.HikariDataSource
 import org.jooq.*
 import org.jooq.SelectField
 import org.jooq.conf.ParamType
-import org.jooq.conf.Settings
 import org.jooq.exception.DataAccessException
 import org.jooq.exception.DataTypeException
-import org.jooq.impl.*
-import java.sql.Timestamp
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
 import java.util.*
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.Executor
-import javax.annotation.Generated
 
 class DSLContextProxy(val activityParams: ActivityParams, val q: DSLContext) {
     fun <R : Record> insertInto(into: Table<R>, vararg fields: Field<*>): InsertValuesStepN<R> {

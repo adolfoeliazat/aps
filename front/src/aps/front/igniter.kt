@@ -63,7 +63,7 @@ fun igniteShit(): Promise<Unit> {"__async"
     if (search.contains("test=") || search.contains("testSuite=")) {
         __await(jsFacing_igniteTestShit())
     } else {
-        global.DB = global.sessionStorage.getItem("DB") ?: "aps-dev" // TODO:vgrechka @security
+//        global.DB = global.sessionStorage.getItem("DB") ?: "aps-dev" // TODO:vgrechka @security
 
         window.addEventListener("keydown", {e ->
             e as KeyboardEvent

@@ -183,8 +183,8 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
 
         scenario.host = sim
 
-        global.DB = "aps-test"
-        global.sessionStorage.setItem("DB", global.DB)
+//        global.DB = "aps-test"
+//        global.sessionStorage.setItem("DB", global.DB)
 
         val initialHref = window.location.pathname + window.location.search
         global.addEventListener("keydown", {e: KeyboardEvent ->

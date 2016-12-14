@@ -50,13 +50,14 @@ object DB {
     val postgresOnDevServer = Database("postgresOnDevServer", "127.0.0.1", PORT_DEV, "postgres", "postgres")
     val localDevUA = Database("localDevUA", "127.0.0.1", PORT_DEV, "aps-dev-ua", user = "postgres", password = null)
     val bmix_fuckingAround_postgres by lazy {databaseFromEnv("bmix_fuckingAround_postgres")}
+    val bmix_fuckingAround_apsdevua by lazy {databaseFromEnv("bmix_fuckingAround_apsdevua", allowRecreation = true, correspondingAdminDB = bmix_fuckingAround_postgres)}
 
     val systemDatabases = mapOf(
         PORT_DEV to postgresOnDevServer,
         PORT_TEST to postgresOnTestServer
     )
 
-    fun databaseFromEnv(id: String): Database {
+    fun databaseFromEnv(id: String, allowRecreation: Boolean = false, correspondingAdminDB: Database? = null): Database {
         val pname = "APS_DB_URI_$id"
         val uri = System.getenv(pname) ?: wtf("I want env property $pname")
         val mr = Regex("postgres://(.*?):(.*?)@(.*?):(.*?)/(.*?)").matchEntire(uri) ?: wtf("Bad database URI")
@@ -65,14 +66,18 @@ object DB {
                         password = mr.groupValues[2],
                         host = mr.groupValues[3],
                         port = mr.groupValues[4].toInt(),
-                        name = mr.groupValues[5])
+                        name = mr.groupValues[5],
+                        allowRecreation = allowRecreation,
+                        correspondingAdminDB = correspondingAdminDB)
     }
 
     fun byNameOnTestServer(name: String): Database =
         dbs.find {it.port == PORT_TEST && it.name == name} ?: wtf("No database [$name] on test server")
 
-    fun byID(id: String): Database =
-        dbs.find {it.id == id} ?: wtf("No database with UUID $id")
+    fun byID(id: String): Database = when (id) {
+        "bmix_fuckingAround_apsdevua" -> bmix_fuckingAround_apsdevua
+        else -> wtf("No database with ID $id")
+    }
 
 
     class Database(
@@ -80,7 +85,8 @@ object DB {
         val host: String, val port: Int, val name: String,
         val user: String, val password: String? = null,
         val allowRecreation: Boolean = false,
-        val populate: ((DSLContextProxyFactory) -> Unit)? = null
+        val populate: ((DSLContextProxyFactory) -> Unit)? = null,
+        val correspondingAdminDB: Database? = null
     ) {
         private val dslazy = relazy {HikariDataSource().applet {o->
             o.dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
@@ -106,8 +112,8 @@ object DB {
             close()
             template?.let {it.close()}
 
-            val sysdb = systemDatabases[port] ?: wtf("No system DB on port $port")
-            sysdb.joo {
+//            val sysdb = systemDatabases[port] ?: wtf("No system DB on port $port")
+            correspondingAdminDB!!.joo {
                 it("Recreate database $name" + template.letOrEmpty {" from ${it.name}"})
                     .execute("""
                         drop database if exists "$name";
@@ -161,7 +167,7 @@ object DB {
             }
         }
 
-        override fun toString() = "Database(host='$host', port=$port, name='$name', user='$user')"
+        override fun toString() = "Database(id='$id')"
     }
 
     fun populate_testTemplateUA1(q: DSLContextProxyFactory) {

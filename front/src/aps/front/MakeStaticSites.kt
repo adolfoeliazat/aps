@@ -1136,6 +1136,7 @@ object MakeStaticSites {
         """ else ""}
 
         global.MODE = '$mode'
+        global.DB = 'bmix_fuckingAround_apsdevua'
 
         const scriptSuffix = ${if (mode == Mode.DEBUG) "'?' + Date.now()" else "''"}
 

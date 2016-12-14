@@ -18,7 +18,7 @@ title pg-dev & pg-dev-start.cmd
 cd /d e:\work\aps
 _run aps.back.GenerateJOOQKt
 
-ant java -Dclass=aps.back.Fiddle -Dhow=RecreateDBOnBluemix
+ant java -Dclass=aps.back.Fiddle -Dhow=RecreateDB_bmix_fuckingAround_apsdevua
 
 
 JavaScript
@@ -60,6 +60,11 @@ cf push -f back\manifest.yml
 
 ant PushSlimShitToCF
 
+
+Static
+======
+
+ant PublishStaticSitesOnGH
 
 
 

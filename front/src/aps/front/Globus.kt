@@ -15,6 +15,7 @@ val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLoca
     var storageLocalForStaticContent: Storage
     var LANG: String
     var MODE: String
+    var DB: String
 }
 @JsName("global")
 @native val ExternalGlobus: IExternalGlobus = noImpl
@@ -24,6 +25,10 @@ enum class Mode { DEBUG, PROD }
 object Globus {
     val version = "____VERSION____"
     var lastAttemptedRPCName: String? = null
+    var rootRedisLogMessageID: String? = null
+    val lang: Language get() = Language.valueOf(ExternalGlobus.LANG)
+    val mode by lazy {Mode.valueOf(ExternalGlobus.MODE)}
+    var world: World? = null
 
     val realStorageLocal = object:StorageLocal {
         override fun clear() = localStorage.clear()
@@ -31,17 +36,8 @@ object Globus {
         override fun setItem(key: String, value: String) = localStorage.setItem(key, value)
         override fun removeItem(key: String) = localStorage.removeItem(key)
     }
-
     val realTypedStorageLocal = TypedStorageLocal(realStorageLocal)
-
     var browser = Browser(typedStorageLocal = realTypedStorageLocal)
-    var rootRedisLogMessageID: String? = null
-
-    val lang: Language get() = Language.valueOf(ExternalGlobus.LANG)
-
-    val mode by lazy {Mode.valueOf(ExternalGlobus.MODE)}
-
-    var world: World? = null
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)
