@@ -18,6 +18,8 @@ title pg-dev & pg-dev-start.cmd
 cd /d e:\work\aps
 _run aps.back.GenerateJOOQKt
 
+ant java -Dclass=aps.back.Fiddle -Dhow=RecreateDBOnBluemix
+
 
 JavaScript
 ==========

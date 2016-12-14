@@ -50,6 +50,7 @@ class ProcedureSpec<Req : RequestMatumba, Res : Any>(
 @JsonIgnoreProperties(ignoreUnknown = true)
 class CommonRequestFieldsHolder : CommonRequestFields {
     override var rootRedisLogMessageID: String? = null
+    override var databaseID: String? = null
 }
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
@@ -143,7 +144,9 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                     val res = if (spec.needsDB) {
                         if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
 
-                        val db = DB.apsTestOnTestServer
+//                        val db = DB.apsTestOnTestServer
+                        val db = DB.byID(requestShit.commonRequestFields.databaseID!!)
+
 //                        redisLog.group("Some shit 2") {
                             db.joo {q->
                                 ctx.q = q

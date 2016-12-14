@@ -9,8 +9,23 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
-fun jsFacing_Checkbox(def: dynamic): dynamic {
+class Checkbox(val valueSetter: (Boolean) -> Unit) {
+    companion object {
+        val instances = mutableMapOf<String, Checkbox>()
+
+        fun instance(key: String): Checkbox {
+            return instances[key] ?: bitch("No Checkbox keyed `$key`")
+        }
+    }
+
+    fun setValue(b: Boolean) {
+        valueSetter(b)
+    }
+}
+
+fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
     val onChange: (() -> Promise<Unit>)? = def.onChange
     val initialValue: dynamic = if (def.initialValue != null) def.initialValue else false
 
@@ -20,8 +35,9 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
             var value: dynamic = initialValue
 
             var me: dynamic = null
-            me = json(
-                "render" to {
+        val setValue = {x: dynamic -> value = x; update()}
+        me = json(
+            "render" to {
                     elKillme("input", json(
                         "id" to me.elementID,
                         "type" to "checkbox",
@@ -36,23 +52,23 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
                     ))
                 },
 
-                "getValue" to { value },
-                "setValue" to {x: dynamic -> value = x; update() },
-                "setDisabled" to {x: dynamic -> disabled = x; update() },
-                "isDisabled" to {x: dynamic -> disabled },
+            "getValue" to { value },
+            "setValue" to setValue,
+            "setDisabled" to {x: dynamic -> disabled = x; update() },
+            "isDisabled" to {x: dynamic -> disabled },
 
-                "contributeTestState" to {state: TestStateContributions ->
+            "contributeTestState" to {state: TestStateContributions ->
                     if (me.tame) {
                         me.noisy = true
                         state.put(me, me.getTamePath(), me.getValue())
                     }
                 },
 
-                "testGetValue" to {
+            "testGetValue" to {
                     me.getValue()
                 },
 
-                "testSetValue" to {arg: dynamic -> "__async"
+            "testSetValue" to {arg: dynamic -> "__async"
                     val value: dynamic = arg.value
 
                     if (art.testSpeed == "slow") {
@@ -63,6 +79,18 @@ fun jsFacing_Checkbox(def: dynamic): dynamic {
                     }
                 }
             )
+
+            me.componentDidMount = {
+                if (key != null) {
+                    Checkbox.instances[key] = Checkbox(setValue)
+                }
+            }
+
+            me.componentWillUnmount = {
+                if (key != null) {
+                    Checkbox.instances.remove(key)
+                }
+            }
 
             me.controlTypeName = "Checkbox"
             legacy_implementControlShit(json("me" to me, "def" to def))

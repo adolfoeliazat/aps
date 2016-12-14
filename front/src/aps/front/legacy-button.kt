@@ -53,6 +53,22 @@ fun jsFacing_button(def: dynamic): dynamic {
         }
     )
 
+    me.componentDidMount = {
+        if (def.shamy != null) {
+            Button.instances[def.shamy] = object:Button() {
+                override fun click(): Promise<Unit> = async {
+                    byid(me.elementID).click()
+                }
+            }
+        }
+    }
+
+    me.componentWillUnmount = {
+        if (def.shamy != null) {
+            Button.instances.remove(def.shamy)
+        }
+    }
+
     me.controlTypeName = "button"
     legacy_implementControlShit(json("me" to me, "def" to def, "implementTestClick" to json("onClick" to onClick)))
 

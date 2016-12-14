@@ -9,8 +9,8 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun jsFacing_Input(legacySpec: Json) {
-    val input = Input(legacySpec)
+fun jsFacing_Input(legacySpec: Json, key: String? = null) {
+    val input = Input(legacySpec, key)
     return input.legacyShit
 }
 
@@ -49,7 +49,14 @@ val inputReactClass by lazy {React.createClass(json(
 ))}
 
 
-class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
+class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable, Blinkable {
+    companion object {
+        val instances = mutableMapOf<String, Input>()
+
+        fun instance(key: String): Input {
+            return instances[key] ?: bitch("No Input keyed `$key`")
+        }
+    }
 
     fun LegacyCtor(): dynamic {
         val onChange: dynamic = legacySpec.get("onChange")
@@ -201,6 +208,18 @@ class Input(val legacySpec: Json) : ToReactElementable, Blinkable {
                         ))
                     )
                 )
+            }
+
+            me.componentDidMount = {
+                if (key != null) {
+                    instances[key] = this
+                }
+            }
+
+            me.componentWillUnmount = {
+                if (key != null) {
+                    instances.remove(key)
+                }
             }
 
             me.controlTypeName = "Input"

@@ -9,6 +9,8 @@
       <w>apsua</w>
       <w>backquote</w>
       <w>bigserial</w>
+      <w>bluemix</w>
+      <w>bmix</w>
       <w>bobul</w>
       <w>browserify</w>
       <w>bytea</w>
@@ -75,6 +77,7 @@
       <w>nbsp</w>
       <w>pizda</w>
       <w>plpgsql</w>
+      <w>pname</w>
       <w>postgre</w>
       <w>postgresql</w>
       <w>primitiveish</w>

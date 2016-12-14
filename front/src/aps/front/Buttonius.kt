@@ -6,7 +6,7 @@ import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.events.MouseEventInit
 import kotlin.browser.window
 
-class Button(
+open class Button(
     val key: String? = null,
     val style: Style = Style(),
     val className: String = "",
@@ -33,7 +33,7 @@ class Button(
         override fun toString() = string
     }
 
-    fun click(): Promise<Unit> {
+    open fun click(): Promise<Unit> {
         onClick()
         return onClicka()
     }

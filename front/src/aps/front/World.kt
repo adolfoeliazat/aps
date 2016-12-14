@@ -288,7 +288,10 @@ class World(val name: String) {
 
         if (!skipBodyRendering) {
             global.window.disposeStaticShit()
+
+            footer.setBurgerMenu(null)
             __await<dynamic>(loader())
+
             js("$")(global.document).scrollTop(0)
             global.window.initStaticShit()
         }

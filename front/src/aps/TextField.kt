@@ -30,7 +30,7 @@ import aps.front.*
             if (error != null) json("paddingRight" to 30)
             else undefined
         }
-    ))
+    ), name)
 
     var value: String
         get() = input.getValue()

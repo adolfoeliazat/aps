@@ -433,6 +433,7 @@ fun send(req: PrivilegedRedisCommandRequest): Promise<JSONResponse> = callDanger
 
 interface CommonRequestFields {
     var rootRedisLogMessageID: String?
+    var databaseID: String?
 }
 
 interface CommonResponseFields {

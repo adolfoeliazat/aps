@@ -8,7 +8,7 @@ import into.kommon.*
 @Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront(container, name) {
     override var error: String? = null
 
-    val checkbox = Shitus.Checkbox(json("tamy" to true))
+    val checkbox = Shitus.Checkbox(json("tamy" to true), name)
 
     override fun render(): ReactElement {
         return Shitus.diva(json("controlTypeName" to "AgreeTermsField", "tame" to "AgreeTermsField", "className" to "form-group",
