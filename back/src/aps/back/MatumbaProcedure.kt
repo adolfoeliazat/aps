@@ -54,7 +54,7 @@ class CommonRequestFieldsHolder : CommonRequestFields {
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
 remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServletResponse) -> Unit =
-    {servletRequest, servletResponse -> object {
+    fun(servletRequest, servletResponse) { object {
         lateinit var responseBean: CommonResponseFields
         val log = debugLog
         val ctx = ProcedureContext()
@@ -153,6 +153,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                     } else {
                         runShitWithMaybeDB()
                     }
+                    res.backendVersion = BackGlobus.version
 
                     responseBean = if (spec.wrapInFormResponse) FormResponse.Hunky(res) else res
                 }

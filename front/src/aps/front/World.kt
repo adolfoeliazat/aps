@@ -92,6 +92,7 @@ class World(val name: String) {
         __await<dynamic>(bootKillme())
 
         Globus.world = this
+        send(PingRequest())
 
         return __asyncResult(Unit)
     }

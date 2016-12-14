@@ -236,6 +236,7 @@ val backendInstanceID = "" + UUID.randomUUID()
             "updateTestShit" -> frp_updateTestShit(rmap)
             "robotClickOnChrome" -> frp_robotClickOnChrome(rmap)
             "robotTypeTextCRIntoWindowTitledOpen" -> frp_robotTypeTextCRIntoWindowTitledOpen(rmap)
+            "ping" -> frp_ping(rmap)
             else -> wtf("proc: $proc")
 
         }}
@@ -287,6 +288,17 @@ fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
     bitch("I'm sick of waiting for Open window")
 }
 
+@RemoteProcedureFactory fun ping() = publicProcedure(
+    GenericRequest(),
+    runShit = fun(ctx, req): GenericResponse {
+        return GenericResponse()
+    }
+)
+
+fun frp_ping(rmap: Map<*, *>): String {
+    return "pong"
+}
+
 private fun robotTypeTextCR(text: String) {
     val robot = Robot()
     text.forEach {c->
@@ -319,8 +331,6 @@ private fun robotTypeTextCR(text: String) {
     robot.keyPress(KeyEvent.VK_ENTER)
     robot.keyRelease(KeyEvent.VK_ENTER)
 }
-
-
 
 
 

@@ -30,6 +30,8 @@ fun send(token: String?, req: CustomerCreateUAOrderRequest): Promise<FormRespons
 fun send(token: String?, req: CustomerAddUAOrderFileRequest): Promise<FormResponse2<CustomerAddUAOrderFileRequest.Response>> =
     _send(token, req)
 
+fun send(req: PingRequest): Promise<FormResponse2<GenericResponse>> =
+    _send(Globus.world?.token, req)
 
 
 private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"

@@ -60,7 +60,7 @@ object redisLog {
     private fun shouldSkip() = isRequestThread && requestShit.skipLoggingToRedis
 
     fun <T> group(title: String, block: () -> T): T {
-        if (!LOCAL_REDIS_LOGGING) block()
+        if (!LOCAL_REDIS_LOGGING) return block()
         if (shouldSkip()) return block()
 
         val rlm = RedisLogMessage.Fuck()-{o->

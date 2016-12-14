@@ -9,6 +9,7 @@ package aps
 import aps.Color.*
 import aps.front.*
 import into.kommon.*
+import kotlin.properties.Delegates
 
 class FieldError(val field: String, val error: String)
 
@@ -106,7 +107,7 @@ open class Request {
     lateinit var clientKind: ClientKind
 }
 
-open class GenericRequest : Request()
+open class GenericRequest : RequestMatumba()
 
 class ImposeNextRequestTimestampRequest : RequestMatumba() {
     val stamp = StringHiddenField(this, "stamp")
@@ -547,7 +548,7 @@ enum class Color(val string: String) {
     override fun toString() = string
 }
 
-
+class PingRequest : RequestMatumba()
 
 
 
