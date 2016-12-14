@@ -17,8 +17,19 @@ fun main(args: Array<String>) {
 //    testFinallyResult()
 //    testNonExhaustiveWhen()
 //    println(System.currentTimeMillis())
-    shit3()
+//    shit3()
+    shit4()
 }
+
+fun shit4() {
+    val pathname = "/apsua/sign-in.html"
+//    val pathname = "/sign-in.html"
+    val highlightedItem = Regex("/([^/]*?)\\.html").find(pathname)?.let {
+        it.groupValues[1]
+    }
+    println(highlightedItem)
+}
+
 
 private fun shit3() {
     val unix = 1481389170511L

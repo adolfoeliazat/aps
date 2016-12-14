@@ -53,7 +53,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
             fun formTicker(): dynamic {
                 return jsFacing_elcl(json(
                     "render" to {
-                        Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 34, "backgroundColor" to Color.BLUE_GRAY_600)))
+                        Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 33.6, "backgroundColor" to Color.BLUE_GRAY_600)))
                     },
                     "componentDidMount" to {
 //                        TestGlobal.shitSpins = true

@@ -14,11 +14,11 @@ class InitAutoReload {
     lateinit var initialCtime: String
 
     init {
-        fun inita(): Promise<Unit> {"__async"
+        fun inita(): Promise<Unit> = async {
+            if (Globus.mode != Mode.DEBUG) return@async
 
-            initialCtime = __await(GetSoftwareVersionRequest.send()).ctime
+            initialCtime = await(GetSoftwareVersionRequest.send()).ctime
             schedule()
-            return __asyncResult(Unit)
         }
         inita()
     }

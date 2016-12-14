@@ -68,7 +68,7 @@ import org.w3c.xhr.XMLHttpRequest
                             o- kspan(position = "relative", top = 3){o->
                                 o- (t("TOTE", "Загружаю: ") + theFile.name + " (${formatFileSizeApprox(Globus.lang, theFile.size)})...")
                             }
-                            o- kdiv(className = "progressTicker", float = "right", width = 14, height = 34, backgroundColor = BLUE_GRAY_600)
+                            o- kdiv(className = "progressTicker", float = "right", width = 14, height = 33.6, backgroundColor = BLUE_GRAY_600)
                         }
                     }
                 }

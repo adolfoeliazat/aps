@@ -163,8 +163,10 @@ class World(val name: String) {
                         pathname = global.location.pathname
                     }
 
-                    var highlightedItem = pathname.slice(1, pathname.length - ".html".length)
-                    if (highlightedItem === "sign-up") { // XXX
+                    var highlightedItem = Regex("/([^/]*?)\\.html").find(pathname)?.let {
+                        it.groupValues[1]
+                    }
+                    if (highlightedItem == "sign-up") { // XXX
                         highlightedItem = "sign-in"
                     }
                     return@render renderTopNavbar(this, json("highlightedItem" to highlightedItem))
