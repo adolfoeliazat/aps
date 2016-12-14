@@ -358,7 +358,28 @@ abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
             ))
         }
     }
+
+    companion object
 }
+
+fun Control2.Companion.from(render: () -> ToReactElementable): Control2 =
+    object:Control2(Attrs()) {
+        override fun render(): ToReactElementable = render()
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

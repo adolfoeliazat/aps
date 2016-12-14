@@ -86,9 +86,9 @@ class World(val name: String) {
         hrss.browserOld.impl = this
         KotlinShit.clientImpl = this
         initEffects()
-        if (MODE == "debug") {
-            Shitus.initDebugFunctionsShit()
-        }
+//        if (MODE == "debug") {
+//            Shitus.initDebugFunctionsShit()
+//        }
         __await<dynamic>(bootKillme())
 
         Globus.world = this

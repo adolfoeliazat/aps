@@ -4,10 +4,13 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 
 @JsName("ignite")
@@ -61,6 +64,15 @@ fun igniteShit(): Promise<Unit> {"__async"
         __await(jsFacing_igniteTestShit())
     } else {
         global.DB = global.sessionStorage.getItem("DB") ?: "aps-dev" // TODO:vgrechka @security
+
+        window.addEventListener("keydown", {e ->
+            e as KeyboardEvent
+            if (e.code == "Backquote") {
+                preventAndStop(e)
+                Globus.world?.footer?.openBurger()
+            }
+        })
+
         __await(World("default").boot())
     }
 
