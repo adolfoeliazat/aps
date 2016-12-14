@@ -36,27 +36,33 @@ fun fetchURL(url: String, method: String, data: String?): Promise<String> {"__as
 
 val backendURL = "http://127.0.0.1:8080"
 
-fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> {
+fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> =
+    fetchFromURL("POST", "$backendURL/$path", global.JSON.stringify(requestJSONObject)) {
+        global.JSON.parse(it)
+    }
+
+fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String) -> T): Promise<T> {
     val stackBeforeXHR: String = CaptureStackException().stack
 
-    return Promise { resolve, reject ->
+    return Promise {resolve, reject ->
         val xhr = js("new XMLHttpRequest()")
-        xhr.open("POST", "$backendURL/$path")
+        xhr.open(method, url)
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
 
         xhr.onreadystatechange = {
             if (xhr.readyState == 4) {
                 if (xhr.status == 200) {
-                    val jsonObject = global.JSON.parse(xhr.responseText)
-                    // dlog("Got backend response for /$path", global.JSON.stringify(jsonObject, null, 4))
-                    resolve(jsonObject)
+                    val response: String = xhr.responseText
+                    val result = transform(response)
+                    // dlog("Got backend response for /$path", global.JSON.stringify(result, null, 4))
+                    resolve(result)
                 } else {
-                    reject(FatException("Got shitty backend response at /$path: status = ${xhr.status}", stackBeforeXHR))
+                    reject(FatException("Got shitty backend response from $url: status = ${xhr.status}", stackBeforeXHR))
                 }
             }
         }
 
-        xhr.send(global.JSON.stringify(requestJSONObject))
+        xhr.send(data)
     }
 }
 

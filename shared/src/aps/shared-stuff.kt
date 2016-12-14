@@ -297,11 +297,6 @@ class GetLiveStatusRequest : RequestMatumba() {
 
 class Email(val to: String, val subject: String, val html: String)
 
-object GlobalMatumba {
-    enum class Mode { DEBUG, PRODUCTION }
-
-    val mode = Mode.DEBUG
-}
 
 object ignore
 infix operator fun Any?.div(erongi: ignore) = Unit

@@ -84,8 +84,8 @@ object EmailMatumba {
     val sentEmails = Collections.synchronizedList(mutableListOf<Email>())
 
     fun send(email: Email) {
-        if (GlobalMatumba.mode == GlobalMatumba.Mode.DEBUG) {
-            return sentEmails.add(email) /ignore
+        if (BackGlobus.collectEmailsInsteadOfSending) {
+            return sentEmails.add(email).toUnit()
         }
 
         imf("Production email sending")

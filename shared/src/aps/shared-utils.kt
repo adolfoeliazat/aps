@@ -268,6 +268,8 @@ fun formatFileSizeApprox(lang: Language, totalBytes: Int): String {
         }
 }
 
+fun Any?.toUnit() {}
+
 
 
 

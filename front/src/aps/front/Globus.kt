@@ -14,9 +14,12 @@ val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLoca
     fun displayInitialShit()
     var storageLocalForStaticContent: Storage
     var LANG: String
+    var MODE: String
 }
 @JsName("global")
 @native val ExternalGlobus: IExternalGlobus = noImpl
+
+enum class Mode { DEBUG, PROD }
 
 object Globus {
     var lastAttemptedRPCName: String? = null
@@ -34,6 +37,8 @@ object Globus {
     var rootRedisLogMessageID: String? = null
 
     val lang: Language get() = Language.valueOf(ExternalGlobus.LANG)
+
+    val mode by lazy {Mode.valueOf(ExternalGlobus.MODE)}
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)

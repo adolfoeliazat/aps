@@ -19,7 +19,7 @@ fun ignite() {
     global.DEBUG_ACTION_HAND_DELAY = 1000
     global.ACTION_DELAY_FOR_FANCINESS = 1000
     global.LIVE_STATUS_POLLING_INTERVAL = 30000
-    global.MODE = "debug"
+//    global.MODE = "debug"
     global.DEBUG_SIMULATE_SLOW_NETWORK = true
     global.DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 500
     global.BOOTSTRAP_VERSION = 3

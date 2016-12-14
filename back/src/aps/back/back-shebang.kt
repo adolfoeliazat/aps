@@ -98,6 +98,8 @@ object BackGlobus {
     val version by lazy {
         this::class.java.classLoader.getResource("aps/version.txt").readText()
     }
+
+    val collectEmailsInsteadOfSending = true
 }
 
 

@@ -12,7 +12,6 @@ import aps.*
 import into.kommon.*
 
 object MakeStaticSites {
-    enum class Mode {DEBUG, PROD}
     class LocalizedShit(val en: String, val ua: String)
     typealias LS = LocalizedShit
     class Section(val title: LS, val content: LS)
@@ -1128,13 +1127,15 @@ object MakeStaticSites {
     </script>
 
     <script>
+        global = window
+        Kotlin = kotlin
+
         ${if (mode == Mode.DEBUG) """
             // TODO:vgrechka Think about DANGEROUS_TOKEN. How it should be included into client, etc.
             DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}'
         """ else ""}
 
-        global = window
-        Kotlin = kotlin
+        global.MODE = '$mode'
 
         const scriptSuffix = ${if (mode == Mode.DEBUG) "'?' + Date.now()" else "''"}
 
