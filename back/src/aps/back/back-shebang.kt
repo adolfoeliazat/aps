@@ -95,9 +95,11 @@ object BackGlobus {
     val slimJarName = "apsback-slim.jar"
     val killResponse = "Aarrgghh..."
 
-    val version by lazy {
-        this::class.java.classLoader.getResource("aps/version.txt").readText()
-    }
+//    val version by lazy {
+//        this::class.java.classLoader.getResource("aps/version.txt").readText()
+//    }
+
+    val version: String get() = this::class.java.classLoader.getResource("aps/version.txt").readText()
 
     val collectEmailsInsteadOfSending = true
 }

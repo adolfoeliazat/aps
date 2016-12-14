@@ -14,8 +14,8 @@ import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun getUser() = adminProcedure(
     GetUserRequest(),
-    runShit = {ctx, req ->
-        GetUserRequest.Response(ctx.q("Select user")
+    runShit = fun(ctx, req): GetUserRequest.Response {
+        return GetUserRequest.Response(ctx.q("Select user")
             .select().from(USERS)
             .where(USERS.ID.eq(req.id.value.toLong()))
             .fetchOne().into(JQUsers::class.java).toRTO(ctx.q))

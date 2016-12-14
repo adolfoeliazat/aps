@@ -13,8 +13,8 @@ import aps.GetLiveStatusRequest.Response as Res
 @RemoteProcedureFactory fun getLiveStatus() = anyUserProcedure(
     GetLiveStatusRequest(),
     wrapInFormResponse = false,
-    runShit = {ctx, req ->
-        when (ctx.user.kind) {
+    runShit = fun(ctx, req): GetLiveStatusRequest.Response {
+        return when (ctx.user.kind) {
             UserKind.ADMIN -> Res.ForAdmin(
                 profilesToApprove = ctx.q("Select amount of profiles to approve")
                     .selectCount().from(USERS)

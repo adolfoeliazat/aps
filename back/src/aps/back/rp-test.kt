@@ -34,7 +34,7 @@ object TestServerFiddling {
     @Volatile var nextGeneratedPassword: String? = null
 }
 
-fun <Req : RequestMatumba, Res : Any>
+fun <Req : RequestMatumba, Res : CommonResponseFields>
 testProcedure(
     req: Req,
     runShit: (ProcedureContext, Req) -> Res,
@@ -55,21 +55,23 @@ testProcedure(
 
 @RemoteProcedureFactory fun imposeNextRequestTimestamp() = testProcedure(
     ImposeNextRequestTimestampRequest(),
-    runShit = void {ctx, req ->
+    runShit = fun(ctx, req): GenericResponse {
         TestServerFiddling.nextRequestTimestamp = stringToStamp(req.stamp.value)
+        return GenericResponse()
     }
 )
 
 @RemoteProcedureFactory fun imposeNextGeneratedPassword() = testProcedure(
     ImposeNextGeneratedPasswordRequest(),
-    runShit = void {ctx, req ->
+    runShit = fun(ctx, req): GenericResponse {
         TestServerFiddling.nextGeneratedPassword = req.password.value
+        return GenericResponse()
     }
 )
 
 @RemoteProcedureFactory fun resetTestDatabase() = testProcedure(
     ResetTestDatabaseRequest(),
-    runShit = void {ctx, req ->
+    runShit = fun(ctx, req): GenericResponse {
         val templateDB = DB.byNameOnTestServer(req.templateDB.value)
 
         if (req.recreateTemplate.value) {
@@ -77,6 +79,7 @@ testProcedure(
         }
 
         DB.apsTestOnTestServer.recreate(template = templateDB)
+        return GenericResponse()
     }
 )
 
@@ -94,21 +97,22 @@ object EmailMatumba {
 
 @RemoteProcedureFactory fun getSentEmails() = testProcedure(
     RequestMatumba(),
-    runShit = {ctx, req ->
-        GetSentEmailsRequest.Response(EmailMatumba.sentEmails)
+    runShit = fun(ctx, req): GetSentEmailsRequest.Response {
+        return GetSentEmailsRequest.Response(EmailMatumba.sentEmails)
     }
 )
 
 @RemoteProcedureFactory fun clearSentEmails() = testProcedure(
     RequestMatumba(),
-    runShit = void {ctx, req ->
+    runShit = fun(ctx, req): GenericResponse {
         EmailMatumba.sentEmails.clear()
+        return GenericResponse()
     }
 )
 
 @RemoteProcedureFactory fun worldPoint() = testProcedure(
     WorldPointRequest(),
-    runShit = void {ctx, req ->
+    runShit = fun(ctx, req): GenericResponse {
         val oldRejectAllRequests = TestServerFiddling.rejectAllRequestsNeedingDB
         TestServerFiddling.rejectAllRequestsNeedingDB = true
 
@@ -137,6 +141,7 @@ object EmailMatumba {
         } finally {
             TestServerFiddling.rejectAllRequestsNeedingDB = oldRejectAllRequests
         }
+        return GenericResponse()
     }
 )
 
@@ -145,10 +150,10 @@ val backendInstanceID = "" + UUID.randomUUID()
 @RemoteProcedureFactory fun getSoftwareVersion() = testProcedure(
     GetSoftwareVersionRequest(),
     logRequestJSON = false,
-    runShit = {ctx, req ->
+    runShit = fun(ctx, req): GetSoftwareVersionRequest.Response {
         val path = Paths.get("$APS_HOME/front/out/front-enhanced.js")
         val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)
-        GetSoftwareVersionRequest.Response(
+        return GetSoftwareVersionRequest.Response(
             ctime = "" + Math.max(attrs.creationTime().toMillis(), attrs.lastModifiedTime().toMillis()),
             backendInstanceID = backendInstanceID)
     }
@@ -156,15 +161,15 @@ val backendInstanceID = "" + UUID.randomUUID()
 
 @RemoteProcedureFactory fun getGeneratedShit() = testProcedure(
     RequestMatumba(),
-    runShit = {ctx, req ->
-        GetGeneratedShitRequest.Response(GodServlet::class.java.getResource("generated-shit.js").readText())
+    runShit = fun(ctx, req): GetGeneratedShitRequest.Response {
+        return GetGeneratedShitRequest.Response(GodServlet::class.java.getResource("generated-shit.js").readText())
     }
 )
 
 
 @RemoteProcedureFactory fun openSourceCode() = testProcedure(
     OpenSourceCodeRequest(),
-    runShit = {ctx, req ->
+    runShit = fun(ctx, req): OpenSourceCodeRequest.Response {
         val sourceLocation = req.sourceLocation.value.replace("\\", "/")
         val firstColon = sourceLocation.indexOf(':')
         var afterLine = sourceLocation.indexOf(':', firstColon + 1)
@@ -192,14 +197,14 @@ val backendInstanceID = "" + UUID.randomUUID()
         val exitCode = proc.waitFor()
         dlog("External command finished with code", exitCode)
 
-        OpenSourceCodeRequest.Response(error = if (exitCode == 0) null else "Bad exit code: $exitCode")
+        return OpenSourceCodeRequest.Response(error = if (exitCode == 0) null else "Bad exit code: $exitCode")
     }
 )
 
 @RemoteProcedureFactory fun testSetUserFields() = testProcedure(
     TestSetUserFieldsRequest(),
     needsDB = true,
-    runShit = {ctx, req ->
+    runShit = fun(ctx, req): GenericResponse {
         var step = ctx.q("Update user")
             .update(USERS)
             .set(USERS.ID, USERS.ID)
@@ -215,6 +220,7 @@ val backendInstanceID = "" + UUID.randomUUID()
         step
             .where(USERS.EMAIL.eq(req.email.value))
             .execute()
+        return GenericResponse()
     }
 )
 

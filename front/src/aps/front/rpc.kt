@@ -36,10 +36,18 @@ fun fetchURL(url: String, method: String, data: String?): Promise<String> {"__as
 
 val backendURL = "http://127.0.0.1:8080"
 
-fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> =
-    fetchFromURL("POST", "$backendURL/$path", global.JSON.stringify(requestJSONObject)) {
+fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> = async {
+    val obj = await(fetchFromURL("POST", "$backendURL/$path", global.JSON.stringify(requestJSONObject)) {
         global.JSON.parse(it)
+    })
+
+    val fields: CommonResponseFields = obj
+    Globus.world?.let {
+        it.footer.setBackendVersion(fields.backendVersion)
     }
+
+    obj
+}
 
 fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String) -> T): Promise<T> {
     val stackBeforeXHR: String = CaptureStackException().stack

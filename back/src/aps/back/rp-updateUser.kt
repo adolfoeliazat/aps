@@ -15,7 +15,7 @@ import into.kommon.*
 @RemoteProcedureFactory fun updateUser() = adminProcedure(
     UpdateUserRequest(),
 
-    runShit = {ctx, req ->
+    runShit = fun(ctx, req): UpdateUserRequest.Response {
         val oldUser = ctx.loadUser(req.id.value.toLong())
 
         ctx.q("Update user")
@@ -64,7 +64,7 @@ import into.kommon.*
             ))
         }
 
-        UpdateUserRequest.Response(loadUser(ctx))
+        return UpdateUserRequest.Response(loadUser(ctx))
     },
 
     validate = {ctx, req ->

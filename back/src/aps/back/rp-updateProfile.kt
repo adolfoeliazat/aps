@@ -12,7 +12,7 @@ import aps.back.generated.jooq.tables.pojos.JQUsers
 
 @RemoteProcedureFactory fun updateProfile() = anyUserProcedure(
     UpdateProfileRequest(),
-    runShit = {ctx, req ->
+    runShit = fun(ctx, req): UpdateProfileRequest.Response {
         val q = ctx.q
         q("Update profile")
             .update(USERS)
@@ -25,7 +25,7 @@ import aps.back.generated.jooq.tables.pojos.JQUsers
             .where(USERS.ID.eq(ctx.user.id.toLong()))
             .execute()
 
-        UpdateProfileRequest.Response(loadUser(ctx))
+        return UpdateProfileRequest.Response(loadUser(ctx))
     }
 )
 

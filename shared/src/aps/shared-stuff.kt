@@ -139,14 +139,16 @@ class ResetTestDatabaseRequest() : RequestMatumba() {
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
-class GenericResponse
+class GenericResponse : CommonResponseFieldsImpl()
 
 sealed class ZimbabweResponse<T> {
     class Hunky<T>(val meat: T): ZimbabweResponse<T>()
     class Shitty<T>(val error: String, val fieldErrors: Iterable<FieldError>): ZimbabweResponse<T>()
 }
 
-sealed class FormResponse {
+sealed class FormResponse : CommonResponseFields {
+    override lateinit var backendVersion: String
+
     class Hunky<Meat>(val meat: Meat): FormResponse()
     class Shitty(val error: String, val fieldErrors: List<FieldError>): FormResponse()
 }
@@ -166,7 +168,7 @@ fun passwordField(container: RequestMatumba) =
 fun emailField(container: RequestMatumba) =
     TextField(container, "email", t("TOTE", "Почта"), TextFieldType.EMAIL, minLen = 3, maxLen = 50)
 
-class SignInResponse(val token: String, val user: UserRTO)
+class SignInResponse(val token: String, val user: UserRTO) : CommonResponseFieldsImpl()
 
 class SignInWithPasswordRequest : RequestMatumba() {
     val email = emailField(this)
@@ -186,14 +188,14 @@ class SignUpRequest : RequestMatumba() {
 }
 
 class UpdateProfileRequest() : RequestMatumba() {
-    class Response(val newUser: UserRTO)
+    class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
 
     val mutableSignUpFields = MutableSignUpFields(this)
     val profileFields = ProfileFields(this)
 }
 
 open class UpdateUserRequest() : RequestMatumba() {
-    class Response(val newUser: UserRTO)
+    class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
 
     val id = StringHiddenField(this, "id")
     val immutableSignUpFields = ImmutableSignUpFields(this)
@@ -237,7 +239,7 @@ class WorldPointRequest() : RequestMatumba() {
 }
 
 class GetSoftwareVersionRequest : RequestMatumba() {
-    class Response(val ctime: String, val backendInstanceID: String)
+    class Response(val ctime: String, val backendInstanceID: String) : CommonResponseFieldsImpl()
 
     companion object {
         fun send(): Promise<Response> = callDangerousMatumba(GetSoftwareVersionRequest())
@@ -245,7 +247,7 @@ class GetSoftwareVersionRequest : RequestMatumba() {
 }
 
 class GetSentEmailsRequest : RequestMatumba() {
-    class Response(val emails: List<Email>)
+    class Response(val emails: List<Email>) : CommonResponseFieldsImpl()
 
     companion object {
         fun send(): Promise<Response> = callDangerousMatumba(GetSentEmailsRequest())
@@ -253,7 +255,7 @@ class GetSentEmailsRequest : RequestMatumba() {
 }
 
 class GetGeneratedShitRequest : RequestMatumba() {
-    class Response(val code: String)
+    class Response(val code: String) : CommonResponseFieldsImpl()
 
     companion object {
         fun send(): Promise<Response> = callDangerousMatumba(GetGeneratedShitRequest())
@@ -282,7 +284,7 @@ class ImposeNextGeneratedPasswordRequest() : RequestMatumba() {
 
 
 class GetLiveStatusRequest : RequestMatumba() {
-    sealed class Response {
+    sealed class Response : CommonResponseFieldsImpl() {
         class ForAdmin(val profilesToApprove: String, val suka: String) : Response()
         class ForWriter(val suka: String) : Response()
         class ForCustomer(val suka: String) : Response()
@@ -314,7 +316,7 @@ infix operator fun ignora.div(any: Any?) = __asyncResult(Unit)
 class GetUserRequest() : RequestMatumba() {
     class Response (
         val user: UserRTO
-    )
+    ) : CommonResponseFieldsImpl()
 
     val id = StringHiddenField(this, "id")
 
@@ -361,7 +363,7 @@ where Filter: Enum<Filter>, Filter: Titled {
 class ItemsResponse<Item> (
     val items: List<Item>,
     val moreFromID: String?
-)
+) : CommonResponseFieldsImpl()
 
 
 enum class Ordering(override val title: String) : Titled {
@@ -372,7 +374,7 @@ enum class Ordering(override val title: String) : Titled {
 fun <T : Any> T?.orDefault(default: () -> T): T = if (this != null) this else default()
 
 class MapStackRequest : RequestMatumba() {
-    class Response(val originalStack: String)
+    class Response(val originalStack: String) : CommonResponseFieldsImpl()
 
     val mangledStack = StringHiddenField(this, "mangledStack")
 
@@ -384,7 +386,7 @@ class MapStackRequest : RequestMatumba() {
 }
 
 class OpenSourceCodeRequest : RequestMatumba() {
-    class Response(val error: String?)
+    class Response(val error: String?) : CommonResponseFieldsImpl()
 
     val sourceLocation = StringHiddenField(this, "sourceLocation")
 
@@ -421,7 +423,7 @@ class SendRedisLogMessageRequest : RequestMatumba() {
 fun send(req: SendRedisLogMessageRequest): Promise<GenericResponse> = callDangerousMatumba(req)
 
 
-class JSONResponse(val json: String)
+class JSONResponse(val json: String) : CommonResponseFieldsImpl()
 
 class PrivilegedRedisCommandRequest : RequestMatumba() {
     val json = StringHiddenField(this, "json")
@@ -432,13 +434,17 @@ interface CommonRequestFields {
     var rootRedisLogMessageID: String?
 }
 
+interface CommonResponseFields {
+    var backendVersion: String
+}
+
 class FuckingRemoteProcedureRequest : RequestMatumba() {
     val json = StringHiddenField(this, "json")
 }
 fun send(req: FuckingRemoteProcedureRequest): Promise<JSONResponse> = callDangerousMatumba(req)
 
 class CustomerCreateUAOrderRequest : RequestMatumba() {
-    class Response(val id: String)
+    class Response(val id: String) : CommonResponseFieldsImpl()
 
     val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen)
     val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), UADocumentType.values())
@@ -449,7 +455,7 @@ class CustomerCreateUAOrderRequest : RequestMatumba() {
 }
 
 class CustomerAddUAOrderFileRequest : RequestMatumba() {
-    class Response(val id: String)
+    class Response(val id: String) : CommonResponseFieldsImpl()
 
     val file = FileField(this, "file", t("TOTE", "Файл"))
     val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.file.minTitleLen, const.file.maxTitleLen)
@@ -505,8 +511,12 @@ fun uaPageCost(type: UADocumentType, urgency: DocumentUrgency): Int =
         }
     }
 
+abstract class CommonResponseFieldsImpl : CommonResponseFields {
+    override lateinit var backendVersion: String
+}
+
 class LoadUAOrderRequest : RequestMatumba() {
-    class Response(val order: UAOrderRTO)
+    class Response(val order: UAOrderRTO) : CommonResponseFieldsImpl()
     val id = StringHiddenField(this, "id")
 }
 

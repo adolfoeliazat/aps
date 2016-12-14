@@ -22,6 +22,7 @@ val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLoca
 enum class Mode { DEBUG, PROD }
 
 object Globus {
+    val version = "____VERSION____"
     var lastAttemptedRPCName: String? = null
 
     val realStorageLocal = object:StorageLocal {
@@ -39,6 +40,8 @@ object Globus {
     val lang: Language get() = Language.valueOf(ExternalGlobus.LANG)
 
     val mode by lazy {Mode.valueOf(ExternalGlobus.MODE)}
+
+    var world: World? = null
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)

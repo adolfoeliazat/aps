@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import jquery.jq
 import kotlin.browser.localStorage
 import kotlin.browser.window
 
@@ -70,6 +71,7 @@ class World(val name: String) {
     lateinit var initialEmailFieldValueAfterSignUp: String
     lateinit var rootElement: ReactElement
     lateinit var topNavbarElement: ReactElement
+    lateinit var footer: DynamicFooter
 
     fun boot(): Promise<Unit> {"__async"
         hrss.browserOld.ui = this
@@ -88,6 +90,8 @@ class World(val name: String) {
             Shitus.initDebugFunctionsShit()
         }
         __await<dynamic>(bootKillme())
+
+        Globus.world = this
 
         return __asyncResult(Unit)
     }
@@ -175,9 +179,18 @@ class World(val name: String) {
 
             DOMReact.render(topNavbarElement, Shitus.byid0("topNavbarContainer"))
 
+            initDynamicFooter()
+
             __await<dynamic>(loadPageForURL())
         } finally { Shitus.endTrain() }
         return __asyncResult(Unit)
+    }
+
+    private fun initDynamicFooter() {
+        val jqFooter = jq("#footer")
+        jqFooter.append("<div id='dynamicFooter'></div>")
+        footer = DynamicFooter(this)
+        DOMReact.render(footer.toReactElement(), byid0ForSure("dynamicFooter"))
     }
 
     fun setPage(def: Page) {
@@ -349,13 +362,14 @@ class World(val name: String) {
 
     fun unmountShit() {
         DOMReact.unmountComponentAtNode(Shitus.byid0("topNavbarContainer"))
+        DOMReact.unmountComponentAtNode(Shitus.byid0("dynamicFooter"))
         DOMReact.unmountComponentAtNode(Shitus.byid0("root"))
     }
 
-    fun mountShit() {
-        DOMReact.render(topNavbarElement, Shitus.byid0("topNavbarContainer"))
-        DOMReact.render(rootElement, Shitus.byid0("root"))
-    }
+//    fun mountShit() {
+//        DOMReact.render(topNavbarElement, Shitus.byid0("topNavbarContainer"))
+//        DOMReact.render(rootElement, Shitus.byid0("root"))
+//    }
 
     val tokenSure: String get() = token!!
 }

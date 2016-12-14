@@ -14,7 +14,7 @@ import java.util.*
 
 @RemoteProcedureFactory fun signInWithPassword() = publicProcedure(
     SignInWithPasswordRequest(),
-    runShit = {ctx, req ->
+    runShit = fun(ctx, req): SignInResponse {
         // TODO:vgrechka Peculiarly log wrong-password sign-in attempts    5e8dd00b-c96e-4991-b350-a1aa78c784a4
 
         val vagueMessage = t("Invalid email or password", "Неверная почта или пароль")
@@ -39,7 +39,7 @@ import java.util.*
 
         // TODO:vgrechka Load related user shit?
 
-        SignInResponse(token, user.toRTO(ctx.q))
+        return SignInResponse(token, user.toRTO(ctx.q))
     }
 )
 
@@ -47,8 +47,8 @@ import java.util.*
 @RemoteProcedureFactory fun signInWithToken() = anyUserProcedure(
     SignInWithTokenRequest(),
     wrapInFormResponse = false,
-    runShit = {ctx, req ->
-        SignInResponse(ctx.token, ctx.user)
+    runShit = fun(ctx, req): SignInResponse {
+        return SignInResponse(ctx.token, ctx.user)
     }
 )
 

@@ -52,10 +52,10 @@ class CommonRequestFieldsHolder : CommonRequestFields {
     override var rootRedisLogMessageID: String? = null
 }
 
-fun <Req : RequestMatumba, Res : Any>
+fun <Req : RequestMatumba, Res : CommonResponseFields>
 remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServletResponse) -> Unit =
     {servletRequest, servletResponse -> object {
-        lateinit var responseBean: Any
+        lateinit var responseBean: CommonResponseFields
         val log = debugLog
         val ctx = ProcedureContext()
 
@@ -172,22 +172,24 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                 }
             }
 
-            with (servletResponse) {
-                addHeader("Access-Control-Allow-Origin", "*")
-                contentType = "application/json; charset=utf-8"
-                writer.println(hackyObjectMapper.writeValueAsString(responseBean))
-                status = HttpServletResponse.SC_OK
+            responseBean.backendVersion = BackGlobus.version
+
+            servletResponse-{o->
+                o.addHeader("Access-Control-Allow-Origin", "*")
+                o.contentType = "application/json; charset=utf-8"
+                o.writer.println(hackyObjectMapper.writeValueAsString(responseBean))
+                o.status = HttpServletResponse.SC_OK
             }
         }
     }
 }
 
-fun <Req> void(shit: (ProcedureContext, Req) -> Unit): (ProcedureContext, Req) -> GenericResponse = {ctx, req ->
-    shit(ctx, req)
-    GenericResponse()
-}
+//fun <Req> void(shit: (ProcedureContext, Req) -> Unit): (ProcedureContext, Req) -> GenericResponse = {ctx, req ->
+//    shit(ctx, req)
+//    GenericResponse()
+//}
 
-fun <Req : RequestMatumba, Res : Any>
+fun <Req : RequestMatumba, Res : CommonResponseFields>
 publicProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
@@ -201,7 +203,7 @@ publicProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRes
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
 
-fun <Req : RequestMatumba, Res : Any>
+fun <Req : RequestMatumba, Res : CommonResponseFields>
 anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
@@ -214,7 +216,7 @@ anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRe
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
 
-fun <Req : RequestMatumba, Res : Any>
+fun <Req : RequestMatumba, Res : CommonResponseFields>
 customerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
@@ -227,7 +229,7 @@ customerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormR
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
 
-fun <Req : RequestMatumba, Res : Any>
+fun <Req : RequestMatumba, Res : CommonResponseFields>
 adminProcedure(
     req: Req,
     runShit: (ProcedureContext, Req) -> Res,

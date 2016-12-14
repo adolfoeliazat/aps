@@ -19,7 +19,7 @@ val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
 
 @RemoteProcedureFactory @Synchronized fun mapStack() = testProcedure(
     MapStackRequest(),
-    runShit = {ctx, req ->
+    runShit = fun(ctx, req): MapStackRequest.Response {
         val noisy = false
 
         // Ex:    at Object.die_61zpoe$ (http://aps-ua-writer.local:3022/into-kommon-js-enhanced.js:32:17)
@@ -102,7 +102,7 @@ val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
             }
         }
 
-        MapStackRequest.Response(resultLines.joinToString("\n"))
+        return MapStackRequest.Response(resultLines.joinToString("\n"))
     }
 )
 
