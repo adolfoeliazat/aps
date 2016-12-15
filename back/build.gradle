@@ -25,6 +25,7 @@ dependencies {
     compile 'org.apache.ant:ant:1.9.7'
     compile 'redis.clients:jedis:2.9.0'
     compile 'com.dropbox.core:dropbox-core-sdk:2.1.1'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
 }
 
 task importDeps(type: Copy) {
