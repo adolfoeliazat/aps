@@ -18,6 +18,11 @@ object Fiddle {
             override fun act() {
                 DB.bmix_fuckingAround_apsdevua.recreate()
             }
+        },
+        RecreateSchema_bmix_fuckingAround_apsdevua {
+            override fun act() {
+                DB.bmix_fuckingAround_apsdevua.recreateSchema()
+            }
         };
 
         abstract fun act()

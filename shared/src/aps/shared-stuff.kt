@@ -164,7 +164,7 @@ enum class TextFieldType {
 }
 
 fun passwordField(container: RequestMatumba) =
-    TextField(container, "password", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 30)
+    TextField(container, "password", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 50)
 
 fun emailField(container: RequestMatumba) =
     TextField(container, "email", t("TOTE", "Почта"), TextFieldType.EMAIL, minLen = 3, maxLen = 50)

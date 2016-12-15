@@ -112,7 +112,6 @@ object DB {
             close()
             template?.let {it.close()}
 
-//            val sysdb = systemDatabases[port] ?: wtf("No system DB on port $port")
             correspondingAdminDB!!.joo {
                 it("Recreate database $name" + template.letOrEmpty {" from ${it.name}"})
                     .execute("""
@@ -126,6 +125,17 @@ object DB {
                     it("schema.sql")
                         .execute(DB::class.java.getResource("schema.sql").readText())
                 }
+
+            populate?.let {joo(it)}
+        }
+
+        fun recreateSchema() {
+            check(allowRecreation) {"You crazy? I'm not recreating THIS: $this"}
+
+            joo {
+                it("drop.sql").execute(DB::class.java.getResource("drop.sql").readText())
+                it("schema.sql").execute(DB::class.java.getResource("schema.sql").readText())
+            }
 
             populate?.let {joo(it)}
         }

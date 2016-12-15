@@ -46,8 +46,7 @@ fun signUp() = publicProcedure(
                 .set(USERS.ADMIN_NOTES, "")
                 .execute()
 
-//            val signInURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/sign-in.html" // TODO:vgrechka Use HTTPS    a389374b-8132-44e9-a73b-fde56869d690
-            val signInURL = "http://${requestShit.commonRequestFields.clientURL}/sign-in.html" // TODO:vgrechka Use HTTPS    a389374b-8132-44e9-a73b-fde56869d690
+            val signInURL = "${requestShit.commonRequestFields.clientURL}/sign-in.html"
 
             EmailMatumba.send(Email(
                 to = "$firstName $lastName <$email>",
