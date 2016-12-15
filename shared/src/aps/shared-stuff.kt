@@ -126,12 +126,14 @@ class ImposeNextRequestTimestampRequest : RequestMatumba() {
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 //}
 
-class ResetTestDatabaseRequest() : RequestMatumba() {
+class ResetTestDatabaseRequest() : RequestMatumba()
+
+class ResetTestDatabaseAlongWithTemplateRequest() : RequestMatumba() {
     val templateDB = StringHiddenField(this, "templateDB")
     val recreateTemplate = BooleanHiddenField(this, "recreateTemplate")
 
     companion object {
-        fun send(templateDB: String, recreateTemplate: Boolean = false): Promise<GenericResponse> = callDangerousMatumba(ResetTestDatabaseRequest().apply {
+        fun send(templateDB: String, recreateTemplate: Boolean = false): Promise<GenericResponse> = callDangerousMatumba(ResetTestDatabaseAlongWithTemplateRequest().apply {
             this.templateDB.value = templateDB
             this.recreateTemplate.value = recreateTemplate
         })

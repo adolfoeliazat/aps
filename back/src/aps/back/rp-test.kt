@@ -72,6 +72,14 @@ testProcedure(
 @RemoteProcedureFactory fun resetTestDatabase() = testProcedure(
     ResetTestDatabaseRequest(),
     runShit = fun(ctx, req): GenericResponse {
+        DB.apsTestOnTestServer.recreate()
+        return GenericResponse()
+    }
+)
+
+@RemoteProcedureFactory fun resetTestDatabaseAlongWithTemplate() = testProcedure(
+    ResetTestDatabaseAlongWithTemplateRequest(),
+    runShit = fun(ctx, req): GenericResponse {
         val templateDB = DB.byNameOnTestServer(req.templateDB.value)
 
         if (req.recreateTemplate.value) {

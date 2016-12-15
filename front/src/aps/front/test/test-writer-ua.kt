@@ -24,7 +24,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         __await(ClearSentEmailsRequest.send())
 
 //        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
-        __await(ResetTestDatabaseRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
+        __await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
 
         val instructions = mutableListOf<TestInstruction>()
         instructions.addAll(vovchok1())

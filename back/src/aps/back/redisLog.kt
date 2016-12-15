@@ -24,7 +24,6 @@ val jedisPool by lazy {
 // TODO:vgrechka Make this asynchronous
 object redisLog {
     fun send(msg: RedisLogMessage) {
-        if (!LOCAL_REDIS_LOGGING) return
         if (shouldSkip()) return
 
         msg.id = UUID.randomUUID().toString()
@@ -49,7 +48,6 @@ object redisLog {
     }
 
     fun amend(msg: RedisLogMessage) {
-        if (!LOCAL_REDIS_LOGGING) return
         if (shouldSkip()) return
 
         jedisPool.resource.use {jedis->
@@ -57,10 +55,11 @@ object redisLog {
         }
     }
 
-    private fun shouldSkip() = isRequestThread && requestShit.skipLoggingToRedis
+    fun shouldSkip() =
+        !LOCAL_REDIS_LOGGING
+        || isRequestThread && requestShit.skipLoggingToRedis
 
     fun <T> group(title: String, block: () -> T): T {
-        if (!LOCAL_REDIS_LOGGING) return block()
         if (shouldSkip()) return block()
 
         val rlm = RedisLogMessage.Fuck()-{o->
@@ -126,6 +125,8 @@ private val idToLogGroupMessage = Collections.synchronizedMap(mutableMapOf<Strin
 
         val res: Any = run {when (command) {
             "beginLogGroup" -> {
+                if (redisLog.shouldSkip()) return@run "N/A"
+
                 val title: String = cast(rmap["title"])
                 val beginMillis: Long = cast(rmap["beginMillis"])
                 val rlm = RedisLogMessage.Fuck()-{o->
@@ -138,6 +139,8 @@ private val idToLogGroupMessage = Collections.synchronizedMap(mutableMapOf<Strin
                 return@run rlm.id
             }
             "endLogGroup" -> {
+                if (redisLog.shouldSkip()) return@run Unit
+
                 val id: String = cast(rmap["id"])
                 val endMillis: Long = cast(rmap["endMillis"])
                 val rlm = idToLogGroupMessage[id] ?: bitch("Unknown log group: $id")
@@ -147,7 +150,8 @@ private val idToLogGroupMessage = Collections.synchronizedMap(mutableMapOf<Strin
                 return@run Unit
             }
             else -> {
-                if (!LOCAL_REDIS_LOGGING) return@run Unit
+                if (redisLog.shouldSkip()) return@run Unit
+
                 jedisPool.resource.use {jedis ->
                     when (command) {
                         "lrange" -> {

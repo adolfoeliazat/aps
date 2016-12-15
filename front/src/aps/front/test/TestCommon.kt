@@ -41,7 +41,8 @@ abstract class TestScenario {
 
         docInnerHTML = "<h3>Running Test: ${ctorName(this)}</h3><hr>"
         measureAndReportToDocumentElement("Resetting database") {
-            __await(ResetTestDatabaseRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
+            __await(send(ResetTestDatabaseRequest()))
+//            __await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
         }
         measureAndReportToDocumentElement("Preparing shit") {
             __await(prepareShit())
@@ -84,6 +85,7 @@ class TestCommon(val sim: dynamic) {
 fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
 //    val urlObject = jshit.utils.url.parse(global.location.href)
 //    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
+    ExternalGlobus.DB = "apsTestOnTestServer"
     val urlQuery = parseQueryString(global.location.href)
 
     for (name in jsArrayToListOfDynamic(Shitus.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {

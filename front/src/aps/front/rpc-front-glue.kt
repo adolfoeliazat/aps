@@ -2,6 +2,9 @@ package aps.front
 
 import aps.*
 
+fun send(req: ResetTestDatabaseRequest): Promise<GenericResponse> =
+    callDangerousMatumba(req)
+
 fun send(token: String, req: LoadUAOrderRequest): Promise<ZimbabweResponse<LoadUAOrderRequest.Response>> =
     callZimbabwe(req, token)
 

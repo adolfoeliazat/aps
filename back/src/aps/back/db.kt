@@ -45,8 +45,8 @@ object DB {
 
     val dbs = mutableListOf<Database>()
     val testTemplateUA1 = Database("testTemplateUA1", "127.0.0.1", PORT_TEST, "test-template-ua-1", "postgres", allowRecreation = true, populate = {q -> populate_testTemplateUA1(q)})
-    val apsTestOnTestServer = Database("apsTestOnTestServer", "127.0.0.1", PORT_TEST, "aps-test", "postgres", allowRecreation = true)
     val postgresOnTestServer = Database("postgresOnTestServer", "127.0.0.1", PORT_TEST, "postgres", "postgres")
+    val apsTestOnTestServer = Database("apsTestOnTestServer", "127.0.0.1", PORT_TEST, "aps-test", "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
     val postgresOnDevServer = Database("postgresOnDevServer", "127.0.0.1", PORT_DEV, "postgres", "postgres")
     val localDevUA = Database("localDevUA", "127.0.0.1", PORT_DEV, "aps-dev-ua", user = "postgres", password = null)
     val bmix_fuckingAround_postgres by lazy {databaseFromEnv("bmix_fuckingAround_postgres")}
@@ -76,6 +76,7 @@ object DB {
 
     fun byID(id: String): Database = when (id) {
         "bmix_fuckingAround_apsdevua" -> bmix_fuckingAround_apsdevua
+        "apsTestOnTestServer" -> apsTestOnTestServer
         else -> wtf("No database with ID $id")
     }
 
