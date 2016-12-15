@@ -77,6 +77,14 @@ testProcedure(
     }
 )
 
+@RemoteProcedureFactory fun recreateTestDatabaseSchema() = testProcedure(
+    RecreateTestDatabaseSchemaRequest(),
+    runShit = fun(ctx, req): GenericResponse {
+        DB.apsTestOnTestServer.recreateSchema()
+        return GenericResponse()
+    }
+)
+
 @RemoteProcedureFactory fun resetTestDatabaseAlongWithTemplate() = testProcedure(
     ResetTestDatabaseAlongWithTemplateRequest(),
     runShit = fun(ctx, req): GenericResponse {

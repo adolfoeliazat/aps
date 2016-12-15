@@ -41,7 +41,8 @@ abstract class TestScenario {
 
         docInnerHTML = "<h3>Running Test: ${ctorName(this)}</h3><hr>"
         measureAndReportToDocumentElement("Resetting database") {
-            __await(send(ResetTestDatabaseRequest()))
+            __await(send(RecreateTestDatabaseSchemaRequest()))
+//            __await(send(ResetTestDatabaseRequest()))
 //            __await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
         }
         measureAndReportToDocumentElement("Preparing shit") {

@@ -2,6 +2,9 @@ package aps.front
 
 import aps.*
 
+fun send(req: RecreateTestDatabaseSchemaRequest): Promise<GenericResponse> =
+    callDangerousMatumba(req)
+
 fun send(req: ResetTestDatabaseRequest): Promise<GenericResponse> =
     callDangerousMatumba(req)
 

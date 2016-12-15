@@ -128,6 +128,8 @@ class ImposeNextRequestTimestampRequest : RequestMatumba() {
 
 class ResetTestDatabaseRequest() : RequestMatumba()
 
+class RecreateTestDatabaseSchemaRequest() : RequestMatumba()
+
 class ResetTestDatabaseAlongWithTemplateRequest() : RequestMatumba() {
     val templateDB = StringHiddenField(this, "templateDB")
     val recreateTemplate = BooleanHiddenField(this, "recreateTemplate")
