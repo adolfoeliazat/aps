@@ -57,8 +57,6 @@ fun <POJO : Any, RTO> selectChunk(
     fromID: Long?
 ) : Chunk<RTO> {
     val theFromID = fromID?.let {it} ?: if (ordering == Ordering.ASC) 0L else Long.MAX_VALUE
-    dwarnStriking("pizdaaaaaaaaaaa", ordering, theFromID)
-
     var records = QueryBuilder("Select chunk")
         .text("select *")
         .run(appendToSelect)

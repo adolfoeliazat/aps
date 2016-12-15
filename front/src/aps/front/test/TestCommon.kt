@@ -86,6 +86,7 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
 //    val urlObject = jshit.utils.url.parse(global.location.href)
 //    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
     ExternalGlobus.DB = "apsTestOnTestServer"
+    Globus.isTest = true
     val urlQuery = parseQueryString(global.location.href)
 
     for (name in jsArrayToListOfDynamic(Shitus.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {

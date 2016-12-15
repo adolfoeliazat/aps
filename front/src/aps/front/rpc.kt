@@ -139,6 +139,7 @@ fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSO
     requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
     requestJSONObject.databaseID = ExternalGlobus.DB
     requestJSONObject.clientURL = windowLocationHrefToClientURL(window.location.href)
+    requestJSONObject.fakeEmail = Globus.isTest
     val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
 //    __dlog.responseJSONObject(procedureName, global.JSON.stringify(responseJSONObject, null, 2))
 

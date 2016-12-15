@@ -5,6 +5,7 @@ import into.kommon.*
 import java.util.*
 
 object EmailMatumba {
+    val log by logger()
     val sentEmails = Collections.synchronizedList(mutableListOf<Email>())
 
     fun send(email: Email) {
@@ -12,7 +13,11 @@ object EmailMatumba {
             return sentEmails.add(email).toUnit()
         }
 
-        Postmark.send(email)
+        try {
+            Postmark.send(email)
+        } catch(e: Exception) {
+            log.error("Failed to send email: ${e.message}", e)
+        }
     }
 }
 

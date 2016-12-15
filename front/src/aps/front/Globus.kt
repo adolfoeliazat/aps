@@ -38,6 +38,7 @@ object Globus {
     }
     val realTypedStorageLocal = TypedStorageLocal(realStorageLocal)
     var browser = Browser(typedStorageLocal = realTypedStorageLocal)
+    var isTest = false
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)
