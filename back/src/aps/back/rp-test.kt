@@ -83,18 +83,6 @@ testProcedure(
     }
 )
 
-object EmailMatumba {
-    val sentEmails = Collections.synchronizedList(mutableListOf<Email>())
-
-    fun send(email: Email) {
-        if (BackGlobus.collectEmailsInsteadOfSending) {
-            return sentEmails.add(email).toUnit()
-        }
-
-        imf("Production email sending")
-    }
-}
-
 @RemoteProcedureFactory fun getSentEmails() = testProcedure(
     RequestMatumba(),
     runShit = fun(ctx, req): GetSentEmailsRequest.Response {

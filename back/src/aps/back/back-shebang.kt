@@ -100,8 +100,6 @@ object BackGlobus {
 //    }
 
     val version: String get() = this::class.java.classLoader.getResource("aps/version.txt").readText()
-
-    val collectEmailsInsteadOfSending = true
 }
 
 

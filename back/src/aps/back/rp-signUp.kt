@@ -9,7 +9,10 @@ package aps.back
 import aps.*
 import aps.back.generated.jooq.Tables.*
 import into.kommon.*
+import org.jooq.exception.DataAccessException
 import org.mindrot.jbcrypt.BCrypt
+import org.postgresql.util.PSQLException
+import java.sql.SQLException
 import java.util.*
 
 @RemoteProcedureFactory
@@ -43,7 +46,8 @@ fun signUp() = publicProcedure(
                 .set(USERS.ADMIN_NOTES, "")
                 .execute()
 
-            val signInURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/sign-in.html" // TODO:vgrechka Use HTTPS    a389374b-8132-44e9-a73b-fde56869d690
+//            val signInURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/sign-in.html" // TODO:vgrechka Use HTTPS    a389374b-8132-44e9-a73b-fde56869d690
+            val signInURL = "http://${requestShit.commonRequestFields.clientURL}/sign-in.html" // TODO:vgrechka Use HTTPS    a389374b-8132-44e9-a73b-fde56869d690
 
             EmailMatumba.send(Email(
                 to = "$firstName $lastName <$email>",
@@ -71,13 +75,13 @@ fun signUp() = publicProcedure(
             ))
             return GenericResponse()
         } catch (e: Throwable) {
+            if (e is DataAccessException) {
+                val sqlState = e.sqlState()
+                dlog("SQL state: ", sqlState)
+                if (sqlState == "23505")
+                    bitchExpectedly(t("This email is already registered", "Эта почта уже занята"))
+            }
             throw e
-//            if (e.code === '23505') {
-//                fieldErrors.email = t('This email is already registered', 'Такая почта уже зарегистрирована')
-//                return traceEndHandler(s{ret: fixErrorsResult()})
-//            } else {
-//                throw e
-//            }
         }
     },
 

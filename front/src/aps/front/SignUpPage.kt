@@ -38,7 +38,7 @@ class SignUpPage(val world: World) {
 
         world.footer.setBurgerMenu(Menu(listOf(
             MenuItem("Иво Бобул") {async{
-                Input.instance("email").setValue("ivo.bobul@mailinator.com")
+                Input.instance("email").setValue("apsua-ivo.bobul@mailinator.com")
                 Input.instance("firstName").setValue("Иво")
                 Input.instance("lastName").setValue("Бобул")
                 Checkbox.instance("agreeTerms").setValue(true)

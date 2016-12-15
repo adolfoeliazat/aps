@@ -49,7 +49,7 @@ fun eprintln(msg: String = "") {
     System.err.println(msg)
 }
 
-
+inline fun dwarnStriking(vararg xs: Any?) = dwarn("\n\n", "**********", *xs, "\n")
 
 
 

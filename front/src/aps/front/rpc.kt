@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.browser.window
 
 fun fetchURL(url: String, method: String, data: String?): Promise<String> {"__async"
     val stackBeforeXHR: String = CaptureStackException().stack
@@ -137,10 +138,28 @@ fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSO
 //    __dlog.requestJSONObject(procedureName, requestJSONObject)
     requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
     requestJSONObject.databaseID = ExternalGlobus.DB
+    requestJSONObject.clientURL = windowLocationHrefToClientURL(window.location.href)
     val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
 //    __dlog.responseJSONObject(procedureName, global.JSON.stringify(responseJSONObject, null, 2))
 
     return __asyncResult(dejsonizeValue<Res>(responseJSONObject)!!)
+}
+
+fun windowLocationHrefToClientURL(href: String): String {
+    if (href.contains(".local")) {
+        val slashIndex = href.indexOf("/", "http://".size)
+        if (slashIndex == -1) return href
+        else return href.substring(0, slashIndex)
+    }
+
+    val ghPrefix = "https://staticshit.github.io/"
+    if (href.startsWith(ghPrefix)) {
+        val slashIndex = href.indexOf("/", ghPrefix.size)
+        if (slashIndex == -1) return href
+        else return href.substring(0, slashIndex)
+    }
+
+    bitch("Fucky URL: $href")
 }
 
 @Deprecated("Old RPC")

@@ -214,6 +214,7 @@ class ResolvableShit<T> {
 
 }
 
+inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
 
 
 

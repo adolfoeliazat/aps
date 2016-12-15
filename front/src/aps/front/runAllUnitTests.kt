@@ -12,13 +12,27 @@ fun runAllUnitTests() {
 
 private fun runMochka.describeUtils() {
     describe("Utils") {
-        test("formatFileSizeApprox") {
+        test(::formatFileSizeApprox.name) {
             assertEquals("244 Б", formatFileSizeApprox(Language.UA, 244))
             assertEquals("243 КБ", formatFileSizeApprox(Language.UA, 248_987))
             assertEquals("12,5 МБ", formatFileSizeApprox(Language.UA, 13_127_419))
             assertEquals("2 МБ", formatFileSizeApprox(Language.UA, 2_097_152))
             assertEquals("2 МБ", formatFileSizeApprox(Language.UA, 2_199_551))
             assertEquals("2,1 МБ", formatFileSizeApprox(Language.UA, 2_199_552))
+        }
+
+        test(::windowLocationHrefToClientURL.name) {
+            assertEquals("http://aps-ua-customer.local:3012", windowLocationHrefToClientURL("http://aps-ua-customer.local:3012"))
+            assertEquals("http://aps-ua-customer.local:3012", windowLocationHrefToClientURL("http://aps-ua-customer.local:3012/"))
+            assertEquals("http://aps-ua-customer.local:3012", windowLocationHrefToClientURL("http://aps-ua-customer.local:3012/sign-in.html"))
+            assertEquals("http://aps-ua-customer.local:3012", windowLocationHrefToClientURL("http://aps-ua-customer.local:3012/sign-in.html?pizda=hairy"))
+            assertEquals("http://aps-ua-customer.local:3012", windowLocationHrefToClientURL("http://aps-ua-customer.local:3012/foo/bar/baz/shit.html"))
+            assertEquals("http://aps-ua-customer.local:3012", windowLocationHrefToClientURL("http://aps-ua-customer.local:3012/foo/bar/baz/shit.html?pizda=hairy"))
+
+            assertEquals("https://staticshit.github.io/apsua", windowLocationHrefToClientURL("https://staticshit.github.io/apsua"))
+            assertEquals("https://staticshit.github.io/apsua", windowLocationHrefToClientURL("https://staticshit.github.io/apsua/"))
+            assertEquals("https://staticshit.github.io/apsua", windowLocationHrefToClientURL("https://staticshit.github.io/apsua/sign-in.html"))
+            assertEquals("https://staticshit.github.io/apsua", windowLocationHrefToClientURL("https://staticshit.github.io/apsua/foo/bar/baz/shit.html"))
         }
     }
 }

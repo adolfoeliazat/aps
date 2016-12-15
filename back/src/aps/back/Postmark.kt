@@ -8,8 +8,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 
-fun send(email: Email) = Postmark.send(email)
-
 object Postmark {
     val mediaType = MediaType.parse("application/json; charset=utf-8")
     val client = OkHttpClient()

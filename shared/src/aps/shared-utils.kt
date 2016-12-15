@@ -71,7 +71,6 @@ class relazy<out T>(val initializer: () -> T) {
     }
 }
 
-inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
 
 
 class Probe<T>(val transform: (T) -> Any?)

@@ -51,6 +51,8 @@ class ProcedureSpec<Req : RequestMatumba, Res : Any>(
 class CommonRequestFieldsHolder : CommonRequestFields {
     override var rootRedisLogMessageID: String? = null
     override var databaseID: String? = null
+    override var fakeEmail = false
+    override lateinit var clientURL: String
 }
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
