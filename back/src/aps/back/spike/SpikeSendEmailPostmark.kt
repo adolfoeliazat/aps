@@ -4,7 +4,7 @@ import aps.*
 import aps.back.*
 
 fun main(args: Array<String>) {
-    Postmark.send(Email("pizdatest@mailinator.com", "Important message", "Fuck you. Importantly."))
+    send(Email("pizdatest@mailinator.com", "Important message", "Fuck you. Importantly."))
     println("\nOK")
 }
 

@@ -1,11 +1,14 @@
 package aps.back
 
 import aps.*
+import com.fasterxml.jackson.annotation.JsonProperty
 import into.kommon.*
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+
+fun send(email: Email) = Postmark.send(email)
 
 object Postmark {
     val mediaType = MediaType.parse("application/json; charset=utf-8")
@@ -31,11 +34,13 @@ object Postmark {
             .header("X-Postmark-Server-Token", apiToken)
             .post(body)
             .build()
-        val response = client.newCall(httpRequest).execute()
-        val responseJSON = response.body().string()
-        println(responseJSON)
+        val httpResponse = client.newCall(httpRequest).execute()
+        val responseJSON = httpResponse.body().string()
+        val response = objectMapper.readValue(responseJSON, PostmarkResponse::class.java)
+        if (response.ErrorCode != 0) {
+            throw Exception("Failed to send email. ErrorCode: ${response.ErrorCode}. Message: ${response.Message}")
+        }
     }
-
 }
 
 class PostmarkRequest {
@@ -46,7 +51,15 @@ class PostmarkRequest {
 }
 
 class PostmarkResponse {
+    lateinit var To: String
+    lateinit var SubmittedAt: String
+    lateinit var MessageID: String
+    @JsonProperty("ErrorCode") var ErrorCode: Int = -1 // XXX
+    lateinit var Message: String
 
+    override fun toString(): String {
+        return "PostmarkResponse(To='$To', SubmittedAt='$SubmittedAt', MessageID='$MessageID', ErrorCode=$ErrorCode, Message='$Message')"
+    }
 }
 
 
