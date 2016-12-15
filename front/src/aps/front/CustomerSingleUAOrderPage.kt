@@ -225,7 +225,9 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                                     o- kdiv(className = "cunt-header"){o->
                                         o- ki(className = "cunt-header-left-icon fa fa-file")
                                         o- (" " + file.title)
-                                        o- ki(className = "cunt-header-right-icon fa fa-cloud-download", right = 30, top = 6)
+                                        o- ki(className = "cunt-header-right-icon fa fa-cloud-download", right = 30, top = 6,
+                                              onClick = {
+                                              })
                                         o- ki(className = "cunt-header-right-icon fa fa-pencil")
                                     }
                                 }

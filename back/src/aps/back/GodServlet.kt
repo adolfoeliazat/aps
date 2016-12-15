@@ -8,6 +8,9 @@ package aps.back
 
 import aps.*
 import aps.RedisLogMessage.Separator.Type.*
+import aps.back.generated.jooq.*
+import aps.back.generated.jooq.Tables.*
+import aps.back.generated.jooq.tables.pojos.*
 import into.kommon.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,6 +51,10 @@ class GodServlet : HttpServlet() {
                     service(req, res)
                 }
 
+                pathInfo == "/file" -> {
+                    serveFile(req, res)
+                }
+
                 else -> bitch("Weird request path: $pathInfo")
             }
         } catch(fuckup: Throwable) {
@@ -60,6 +67,7 @@ class GodServlet : HttpServlet() {
             throw ServletException(fuckup)
         }
     }
+
 
 }
 
@@ -87,6 +95,28 @@ val patternsToExcludeRedisLoggingCompletely = listOf(
     "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword"
 )
 
+private fun serveFile(req: HttpServletRequest, res: HttpServletResponse) {
+    val fileID = req.getParameter("id") ?: bitch("I want `id`")
+    val databaseID = req.getHeader("databaseID") ?: req.getParameter("databaseID") ?: bitch("I want `databaseID`")
+    val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
+
+    val db = DB.byID(databaseID)
+    db.joo{q->
+        val user = userByToken(q, token)
+        // TODO:vgrechka Check permissions
+        val rows = q("Select file")
+            .select().from(FILES)
+            .where(FILES.ID.eq(fileID.toLong()))
+            .fetch().into(JQFiles::class.java)
+        if (rows.isEmpty()) bitch("No fucking file with ID $fileID")
+        val file = rows[0]
+
+        res.contentType = file.mime
+        res.setHeader("Content-disposition", "attachment; filename=${file.name}")
+        res.outputStream.write(file.content)
+        res.outputStream.flush()
+    }
+}
 
 
 
