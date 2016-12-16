@@ -1,6 +1,74 @@
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
+
+fun qwe_withoutCast_1() {
+    val d: dynamic = null // Something coming from outside
+    // .....
+    val s: String = d
+    clog("sssss", s)
+}
+
+fun qwe_withCast_1() {
+    val d: dynamic = null // Something coming from outside
+    // .....
+    val s: String = d as String
+    //                ^~~~~~~~~ Incorrect warning: No cast needed
+    clog("sssss", s)
+}
+
+fun qwe_withoutCast_2() {
+    val d: dynamic = 123 // Something coming from outside
+    // .....
+    val s: String = d
+    clog("sssss", s)
+}
+
+fun qwe_withCast_2() {
+    val d: dynamic = 123 // Something coming from outside
+    // .....
+    val s: String = d as String
+    //                ^~~~~~~~~ Incorrect warning: No cast needed
+    clog("sssss", s)
+}
+
+
+
+//fun qwe_works() {
+//    fun f(): Promise<Unit> = async {
+//        await(delay(1000))
+//        throw Exception("Aarrgghh...")
+//        await(delay(1000))
+//        console.log("OK")
+//    }
+//
+//    async<Unit> {
+//        try {
+//            await(f())
+//        } catch (e: Throwable) {
+//            console.log(e.asDynamic().stack)
+//        }
+//    }
+//}
+//
+//fun qwe_breaks() {
+//    fun f(): Promise<Unit> = async {
+//        await(delay(1000))
+//        null!!
+//        await(delay(1000))
+//        console.log("OK")
+//    }
+//
+//    async<Unit> {
+//        try {
+//            await(f())
+//        } catch (e: Throwable) {
+//            console.log(e.asDynamic().stack)
+//        }
+//    }
+//}
 
 
 //interface A

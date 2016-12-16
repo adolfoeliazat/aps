@@ -115,6 +115,8 @@ private fun serveFile(req: HttpServletRequest, res: HttpServletResponse) {
         res.setHeader("Content-disposition", "attachment; filename=${file.name}")
         res.outputStream.write(file.content)
         res.outputStream.flush()
+        BackGlobus.lastDownloadedFileID = file.id
+        dwarnStriking("sssssssssss", BackGlobus.lastDownloadedFileID )
     }
 }
 

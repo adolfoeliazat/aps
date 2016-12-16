@@ -7,7 +7,7 @@ import aps.front.testutils.*
 import org.w3c.dom.Storage
 import kotlin.browser.window
 
-fun delay(ms: Int): Promise<Unit> = Promise {resolve, reject ->
+fun delay(ms: Int): Promise<Unit> = Promise {resolve, _ ->
     window.setTimeout({resolve(Unit)}, ms)
 }
 

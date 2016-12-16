@@ -65,7 +65,10 @@ interface TestSuite {
 val testScenarios = mutableMapOf<String, TestScenario>()
 
 fun tetete() {
-    clog("aaaaaaaaa", ExternalGlobus.LANG)
+//    while (true) {
+//        123.let {break} // Error: `break` or `continue` jumps across a function or a class boundary
+//        // 123.let {return} // This works... it apparently doesn't jump across anything
+//    }
 }
 
 

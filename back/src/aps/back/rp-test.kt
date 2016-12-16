@@ -235,12 +235,14 @@ val backendInstanceID = "" + UUID.randomUUID()
         val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
         val proc: String = cast(rmap["proc"])
 
-        val res: Any = run {when (proc) {
+        val res: Any? = run {when (proc) {
             "loadTestShit" -> frp_loadTestShit(rmap)
             "updateTestShit" -> frp_updateTestShit(rmap)
             "robotClickOnChrome" -> frp_robotClickOnChrome(rmap)
             "robotTypeTextCRIntoWindowTitledOpen" -> frp_robotTypeTextCRIntoWindowTitledOpen(rmap)
             "ping" -> frp_ping(rmap)
+            "resetLastDownloadedFile" -> frp_resetLastDownloadedFile(rmap)
+            "getLastDownloadedFileID" -> frp_getLastDownloadedFileID(rmap)
             else -> wtf("proc: $proc")
 
         }}
@@ -248,6 +250,15 @@ val backendInstanceID = "" + UUID.randomUUID()
         return JSONResponse(shittyObjectMapper.writeValueAsString(res))
     }
 )
+
+fun frp_resetLastDownloadedFile(rmap: Map<*, *>) {
+    BackGlobus.lastDownloadedFileID = null
+}
+
+fun frp_getLastDownloadedFileID(rmap: Map<*, *>): String? {
+    dwarnStriking("ggggggggg", BackGlobus.lastDownloadedFileID )
+    return BackGlobus.lastDownloadedFileID?.toString()
+}
 
 fun frp_loadTestShit(rmap: Map<*, *>): String {
     val id: String = cast(rmap["id"])

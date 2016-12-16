@@ -76,15 +76,17 @@ fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String
     }
 }
 
-fun <T> dejsonize(json: String): T? = dejsonizeValue(JSON.parse(json))
+fun <T> dejsonize(json: String, descr: String? = null): T = dejsonizeValue(JSON.parse(json), descr)
 
-fun <T> dejsonizeValue(jsThing: dynamic): T? {
+fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
     try {
         val noise = DebugNoise("dejsonize", mute = true)
 
-        noise.clog("jsThing", jsThing)
+        if (descr != null) {
+            noise.clog("jsThing ($descr)", jsThing)
+        }
 
-        return when {
+        val res = when {
             jsThing == null -> null
 
             jsTypeOf(jsThing).oneOf("string", "number", "boolean") -> jsThing
@@ -123,11 +125,18 @@ fun <T> dejsonizeValue(jsThing: dynamic): T? {
                 eval(code)
             }
 
-            jsIsArray(jsThing) -> jsArrayToListOfDynamic(jsThing) {dejsonizeValue(it)} .asDynamic()
+            jsIsArray(jsThing) -> jsArrayToListOfDynamic(jsThing) {dejsonizeValue(it)}.asDynamic()
 
             else -> wtf("Dunno how to dejsonize that jsThing")
         }
-    } catch(e: Throwable) {
+
+        if (descr != null) {
+            noise.clog("res ($descr)", jsThing)
+        }
+
+        return res as T
+    }
+    catch(e: Throwable) {
         console.error(e.message)
         console.error("Offending jsThing", jsThing)
         throw e

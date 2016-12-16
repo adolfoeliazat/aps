@@ -3,6 +3,7 @@ package aps.front.testutils
 import aps.*
 import aps.front.*
 import into.kommon.*
+import into.mochka.assertEquals
 import org.w3c.dom.Storage
 import kotlin.browser.document
 import kotlin.browser.window
@@ -224,6 +225,26 @@ fun TestScenarioBuilder.todo(msg: String) {
     instructions.add(step)
 }
 
+fun TestScenarioBuilder.expectDownloadedFile(expectedFileID: String, buildStepsToDownload: () -> Unit) {
+    val o = this
+    o.acta {fuckingRemoteCall.resetLastDownloadedFile()}
+
+    buildStepsToDownload()
+
+    o.acta("Waiting for file `$expectedFileID` download") {
+        async {
+            for (i in 1..3) {
+                await(delay(500))
+                val id = await(fuckingRemoteCall.getLastDownloadedFileID())
+                if (id != null) {
+                    assertEquals(expectedFileID, id, "Downloaded file ID")
+                    return@async
+                }
+            }
+            die("Sick of waiting for file download")
+        }
+    }
+}
 
 
 

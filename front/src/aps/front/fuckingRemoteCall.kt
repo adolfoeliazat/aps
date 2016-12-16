@@ -24,11 +24,19 @@ object fuckingRemoteCall {
         "text" to text
     ))
 
+    fun resetLastDownloadedFile(): Promise<Unit> = sendShit(json(
+        "proc" to "resetLastDownloadedFile"
+    ))
+
+    fun getLastDownloadedFileID(): Promise<String?> = sendShit(json(
+        "proc" to "getLastDownloadedFileID"
+    ))
+
     private fun <T> sendShit(request: Json): Promise<T> = async {
         val res = await(send(FuckingRemoteProcedureRequest()-{o->
             o.json.value = JSON.stringify(request)
         }))
-        dejsonize(res.json)!!
+        dejsonize(res.json, "fuckingRemoteCall: ${request["proc"]}")
     }
 
 }

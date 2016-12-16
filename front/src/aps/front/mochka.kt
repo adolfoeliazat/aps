@@ -90,7 +90,10 @@ fun <T> assertEquals(expected: List<T>, actual: List<T>) {
 }
 
 fun assertEquals(expected: Any?, actual: Any?, msg: String? = null) {
-    assert(expected == actual, msg ?: "Expected <$expected>, got <$actual>")
+    assert(expected == actual, buildString {
+        msg?.let {append(it + ". ")}
+        append("Expected <$expected>, got <$actual>")
+    })
 }
 
 fun fail(msg: String? = null): Nothing {
