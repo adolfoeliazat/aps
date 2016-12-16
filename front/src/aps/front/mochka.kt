@@ -2,7 +2,7 @@
 
 package into.mochka
 
-import aps.Promise
+import aps.*
 
 class runMochka(build: runMochka.() -> Unit) {
     private var currentMochaDone: ((error: Throwable?) -> Unit)? = null

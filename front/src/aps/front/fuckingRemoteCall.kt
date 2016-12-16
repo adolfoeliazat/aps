@@ -28,7 +28,7 @@ object fuckingRemoteCall {
         "proc" to "resetLastDownloadedFile"
     ))
 
-    fun getLastDownloadedFileID(): Promise<String?> = sendShit(json(
+    fun getLastDownloadedFileID(): Promise<DownloadedPieceOfShit?> = sendShit(json(
         "proc" to "getLastDownloadedFileID"
     ))
 

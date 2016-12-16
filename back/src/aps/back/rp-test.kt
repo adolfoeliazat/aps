@@ -252,12 +252,11 @@ val backendInstanceID = "" + UUID.randomUUID()
 )
 
 fun frp_resetLastDownloadedFile(rmap: Map<*, *>) {
-    BackGlobus.lastDownloadedFileID = null
+    BackGlobus.lastDownloadedPieceOfShit = null
 }
 
-fun frp_getLastDownloadedFileID(rmap: Map<*, *>): String? {
-    dwarnStriking("ggggggggg", BackGlobus.lastDownloadedFileID )
-    return BackGlobus.lastDownloadedFileID?.toString()
+fun frp_getLastDownloadedFileID(rmap: Map<*, *>): DownloadedPieceOfShit? {
+    return BackGlobus.lastDownloadedPieceOfShit
 }
 
 fun frp_loadTestShit(rmap: Map<*, *>): String {

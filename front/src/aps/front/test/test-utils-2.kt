@@ -225,19 +225,18 @@ fun TestScenarioBuilder.todo(msg: String) {
     instructions.add(step)
 }
 
-fun TestScenarioBuilder.expectDownloadedFile(expectedFileID: String, buildStepsToDownload: () -> Unit) {
+fun TestScenarioBuilder.expectDownloadedPieceOfShit(expected: DownloadedPieceOfShit, buildStepsToDownload: () -> Unit) {
     val o = this
     o.acta {fuckingRemoteCall.resetLastDownloadedFile()}
 
     buildStepsToDownload()
 
-    o.acta("Waiting for file `$expectedFileID` download") {
+    o.acta("Waiting for file download: `${expected.name}` (`${expected.id}`)") {
         async {
             for (i in 1..3) {
                 await(delay(500))
-                val id = await(fuckingRemoteCall.getLastDownloadedFileID())
-                if (id != null) {
-                    assertEquals(expectedFileID, id, "Downloaded file ID")
+                await(fuckingRemoteCall.getLastDownloadedFileID())?.let {actual->
+                    assertEquals(expected, actual, "Downloaded file ID")
                     return@async
                 }
             }

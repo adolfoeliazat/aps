@@ -98,7 +98,7 @@ object BackGlobus {
 //    }
 
     val version: String get() = this::class.java.classLoader.getResource("aps/version.txt").readText()
-    @Volatile var lastDownloadedFileID: Long? = null
+    @Volatile var lastDownloadedPieceOfShit: DownloadedPieceOfShit? = null
 }
 
 

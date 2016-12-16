@@ -65,12 +65,12 @@ interface TestSuite {
 val testScenarios = mutableMapOf<String, TestScenario>()
 
 fun tetete() {
-//    while (true) {
-//        123.let {break} // Error: `break` or `continue` jumps across a function or a class boundary
-//        // 123.let {return} // This works... it apparently doesn't jump across anything
-//    }
+    val l1: Long = 10
+    val l2: Long = 10
+    val a = DownloadedPieceOfShit(l1, "aaaa")
+    val b = DownloadedPieceOfShit(l2, "aaaa")
+    clog(a == b)
 }
-
 
 class TestCommon(val sim: dynamic) {
     val LONG_SHIT_301 = makeLongShit(301)
