@@ -216,6 +216,10 @@ class ResolvableShit<T> {
 
 inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
 
+val numberSign: String = when (Globus.lang) {
+    Language.EN -> "#"
+    Language.UA -> "№"
+}
 
 
 

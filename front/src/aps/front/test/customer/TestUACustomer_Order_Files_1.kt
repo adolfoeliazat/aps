@@ -7,9 +7,9 @@ class TestUACustomer_Order_Files_1 : StepBasedTestScenario() {
 
     override fun buildSteps() {
         o.orderFiles1(shit)
+        o.kicClick("download-1")
     }
 }
-
 
 
 

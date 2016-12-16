@@ -41,4 +41,12 @@ class kic(
     }
 }
 
+fun TestScenarioBuilder.kicClick(key: String) {
+    acta("Clicking kic `$key`") {
+        kic.instance(key).click()
+    }
+}
+
+
+
 

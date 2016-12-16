@@ -96,7 +96,7 @@ val patternsToExcludeRedisLoggingCompletely = listOf(
 )
 
 private fun serveFile(req: HttpServletRequest, res: HttpServletResponse) {
-    val fileID = req.getParameter("id") ?: bitch("I want `id`")
+    val fileID = req.getParameter("fileID") ?: bitch("I want `fileID`")
     val databaseID = req.getHeader("databaseID") ?: req.getParameter("databaseID") ?: bitch("I want `databaseID`")
     val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
 

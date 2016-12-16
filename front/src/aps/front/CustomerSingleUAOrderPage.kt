@@ -5,6 +5,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 import jquery.jq
+import kotlin.browser.window
 
 class CustomerSingleUAOrderPage(val world: World) {
     class URLQuery {
@@ -37,7 +38,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 
         world.setPage(Page(
             header = pageHeader3(kdiv{o->
-                o- t("TOTE", "Заказ #${order.id}")
+                o- t("TOTE", "Заказ $numberSign${order.id}")
                 o- kspan(backgroundColor = order.state.labelBackground,
                          fontSize = "60%",
                          padding = "0.1em 0.3em",
@@ -209,7 +210,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
         if (meat.items.isEmpty()) {
             o- const.noItemsMessage
         } else {
-            for (file in meat.items) {
+            for ((fileIndex, file) in meat.items.withIndex()) {
                 fun label(title: String) = klabel(marginBottom = 0) {it-title}
 
                 fun row(build: (ElementBuilder) -> Unit) =
@@ -225,9 +226,12 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                                     o- kdiv(className = "cunt-header"){o->
                                         o- ki(className = "cunt-header-left-icon fa fa-file")
                                         o- (" " + file.title)
-                                        o- kic(className = "cunt-header-right-icon fa fa-cloud-download", style = Style(right = 30, top = 6),
+                                        o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                                            o- "$numberSign${file.id}"
+                                        }
+                                        o- kic("download-$fileIndex", className = "cunt-header-right-icon fa fa-cloud-download", style = Style(right = 30, top = 6),
                                               onClick = {
-                                                  dwarnStriking("pizda")
+                                                  window.location.href = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
                                               })
                                         o- ki(className = "cunt-header-right-icon fa fa-pencil")
                                     }
