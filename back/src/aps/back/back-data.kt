@@ -6,6 +6,35 @@ import aps.back.generated.jooq.tables.JQFiles.*
 import aps.back.generated.jooq.tables.JQUserRoles.*
 import aps.back.generated.jooq.tables.JQUsers.*
 import aps.back.generated.jooq.tables.pojos.*
+import org.jooq.*
+import java.sql.Timestamp
+
+@Suppress("UNCHECKED_CAST")
+fun <R : Record> ProcedureContext.insertShit(
+    descr: String,
+    table: Table<R>
+): InsertSetMoreStep<R> {
+    var step = this.q(descr)
+        .insertInto(table)
+        .set(table.field("inserted_at") as Field<Timestamp>, this.requestTimestamp)
+        .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
+
+    table.field("creator_id")?.let {
+        step = step.set(it as Field<Long>, this.user.id.toLong())
+    }
+
+    return step
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <R : Record> InsertSetMoreStep<R>.returnID(table: Table<R>): Long {
+    val idField = table.field("id") as Field<Long>
+    return this
+         .returning(idField)
+         .fetchOne()
+         .getValue(idField)
+}
+
 
 fun UAAcademicLevel.toJOOQ(): JQUaAcademicLevel = when (this) {
     UAAcademicLevel.SCHOOL -> JQUaAcademicLevel.SCHOOL
