@@ -14,7 +14,7 @@ fun jsFacing_apsCSS(): String {
     val zebraDark = BLUE_GRAY_50
 
     val res = """
-        body {overflow-x: hidden;}
+        body {overflow-x: hidden; padding-right: 0px !important;}
 
         button:disabled {cursor: default !important;}
         input:disabled {cursor: default !important;}

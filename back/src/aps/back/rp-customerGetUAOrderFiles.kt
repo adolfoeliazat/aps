@@ -13,9 +13,10 @@ import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun customerGetUAOrderFiles() = customerProcedure(
     ItemsRequest(FileFilter.values()),
-    runShit = fun(ctx, req): ItemsResponse<FileRTO> {
+    runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
         val chunk = selectChunk(
-            ctx.q, table = "files", pojoClass = JQFiles::class, loadItem = JQFiles::toRTO,
+            ctx.q, table = "ua_order_files",
+            pojoClass = JQUaOrderFiles::class, loadItem = JQUaOrderFiles::toRTO,
             fromID = req.fromID.value?.let {it.toLong()},
             ordering = req.ordering.value,
             appendToWhere = {qb ->

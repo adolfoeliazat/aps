@@ -61,6 +61,8 @@ fun igniteShit(): Promise<Unit> {"__async"
 
 //    if (global.location.pathname.endsWith("/test.html")) {
 
+    fixModalJumping()
+
     window.onmessage = {e->
         e as MessageEvent
         if (e.data == const.windowMessage.fileForbidden) {

@@ -8,6 +8,8 @@ import aps.back.generated.jooq.tables.JQFileUserPermissions;
 import aps.back.generated.jooq.tables.JQFiles;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
+import aps.back.generated.jooq.tables.JQUaOrderAreas;
+import aps.back.generated.jooq.tables.JQUaOrderFiles;
 import aps.back.generated.jooq.tables.JQUaOrders;
 import aps.back.generated.jooq.tables.JQUserRoles;
 import aps.back.generated.jooq.tables.JQUserTokens;
@@ -38,7 +40,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQPublic extends SchemaImpl {
 
-    private static final long serialVersionUID = 1610398040;
+    private static final long serialVersionUID = -829165781;
 
     /**
      * The reference instance of <code>public</code>
@@ -64,6 +66,16 @@ public class JQPublic extends SchemaImpl {
      * The table <code>public.support_threads</code>.
      */
     public final JQSupportThreads SUPPORT_THREADS = aps.back.generated.jooq.tables.JQSupportThreads.SUPPORT_THREADS;
+
+    /**
+     * The table <code>public.ua_order_areas</code>.
+     */
+    public final JQUaOrderAreas UA_ORDER_AREAS = aps.back.generated.jooq.tables.JQUaOrderAreas.UA_ORDER_AREAS;
+
+    /**
+     * The table <code>public.ua_order_files</code>.
+     */
+    public final JQUaOrderFiles UA_ORDER_FILES = aps.back.generated.jooq.tables.JQUaOrderFiles.UA_ORDER_FILES;
 
     /**
      * The table <code>public.ua_orders</code>.
@@ -115,6 +127,8 @@ public class JQPublic extends SchemaImpl {
             Sequences.FILES_ID_SEQ,
             Sequences.SUPPORT_THREAD_MESSAGES_ID_SEQ,
             Sequences.SUPPORT_THREADS_ID_SEQ,
+            Sequences.UA_ORDER_AREAS_ID_SEQ,
+            Sequences.UA_ORDER_FILES_ID_SEQ,
             Sequences.UA_ORDERS_ID_SEQ,
             Sequences.USER_ROLES_ID_SEQ,
             Sequences.USER_TOKENS_ID_SEQ,
@@ -134,6 +148,8 @@ public class JQPublic extends SchemaImpl {
             JQFiles.FILES,
             JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES,
             JQSupportThreads.SUPPORT_THREADS,
+            JQUaOrderAreas.UA_ORDER_AREAS,
+            JQUaOrderFiles.UA_ORDER_FILES,
             JQUaOrders.UA_ORDERS,
             JQUserRoles.USER_ROLES,
             JQUserTokens.USER_TOKENS,

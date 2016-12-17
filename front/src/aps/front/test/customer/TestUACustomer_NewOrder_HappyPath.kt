@@ -8,7 +8,7 @@ class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
     val shit = TestShit()
 
     override fun buildSteps() {
-        o.prepareBobul(shit)
+        o.setUpBobul(shit)
         o.initFuckingBrowser(fillStorageLocal = {
             it.token = shit.bobulToken
         })

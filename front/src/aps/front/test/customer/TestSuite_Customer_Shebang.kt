@@ -7,7 +7,8 @@ class TestSuite_Customer_Shebang : TestSuite {
         TestCustomer_SignUp_HappyPath(),
         TestUACustomer_NewOrder_HappyPath(),
         TestUACustomer_Order_Files_1(),
-        TestUACustomer_DownloadForbiddenFile()
+        TestUACustomer_DownloadForbiddenFile(),
+        TestUACustomer_LongFileList()
     )}
 }
 

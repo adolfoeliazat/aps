@@ -7,6 +7,10 @@ import jquery.jq
 private var modalShownResolvable = ResolvableShit<Unit>()
 private var modalHiddenResolvable = ResolvableShit<Unit>()
 
+fun fixModalJumping() {
+
+}
+
 fun openErrorModal(msg: String) {
     val container = byid0("modalContainer") ?: run {
         byid("root").append("<div id='modalContainer'></div>")

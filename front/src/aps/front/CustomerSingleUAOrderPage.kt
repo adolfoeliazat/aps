@@ -153,10 +153,10 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : FuckingTab {
 }
 
 private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
-    lateinit var meat: ItemsResponse<FileRTO>
+    lateinit var meat: ItemsResponse<UAOrderFileRTO>
 
     override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
-        val res = await(sendGetFiles(world.tokenSure, ItemsRequest(FileFilter.values())-{o->
+        val res = await(sendCustomerGetUAOrderFiles(world.tokenSure, ItemsRequest(FileFilter.values())-{o->
             o.entityID.value = order.id
             o.filter.value = FileFilter.ALL
             o.ordering.value = Ordering.DESC
@@ -211,7 +211,8 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
         if (meat.items.isEmpty()) {
             o- const.noItemsMessage
         } else {
-            for ((fileIndex, file) in meat.items.withIndex()) {
+            for ((fileIndex, orderFile) in meat.items.withIndex()) {
+                val file = orderFile.file
                 fun label(title: String) = klabel(marginBottom = 0) {it-title}
 
                 fun row(build: (ElementBuilder) -> Unit) =
@@ -228,7 +229,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                                         o- ki(className = "cunt-header-left-icon fa fa-file")
                                         o- (" " + file.title)
                                         o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
-                                            o- "$numberSign${file.id}"
+                                            o- "$numberSign${orderFile.id}"
                                         }
                                         o- kic("download-$fileIndex", className = "cunt-header-right-icon fa fa-cloud-download", style = Style(right = 30, top = 6),
                                               onClick = {

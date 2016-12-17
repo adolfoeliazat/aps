@@ -49,6 +49,16 @@ public class Sequences {
     public static final Sequence<Long> SUPPORT_THREADS_ID_SEQ = new SequenceImpl<Long>("support_threads_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
+     * The sequence <code>public.ua_order_areas_id_seq</code>
+     */
+    public static final Sequence<Long> UA_ORDER_AREAS_ID_SEQ = new SequenceImpl<Long>("ua_order_areas_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+    /**
+     * The sequence <code>public.ua_order_files_id_seq</code>
+     */
+    public static final Sequence<Long> UA_ORDER_FILES_ID_SEQ = new SequenceImpl<Long>("ua_order_files_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+    /**
      * The sequence <code>public.ua_orders_id_seq</code>
      */
     public static final Sequence<Long> UA_ORDERS_ID_SEQ = new SequenceImpl<Long>("ua_orders_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

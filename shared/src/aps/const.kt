@@ -3,6 +3,12 @@ package aps
 object const {
     val noItemsMessage = t("TOTE", "Савсэм ничего нэт, да...")
 
+    object orderArea {
+        val admin = "Admin"
+        val customer = "Customer"
+        val writer = "Writer"
+    }
+
     object windowMessage {
         val whatsUp = "What's up?"
         val fileForbidden = "Fucking file is forbidden"

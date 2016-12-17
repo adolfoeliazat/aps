@@ -7,7 +7,7 @@ class TestUACustomer_DownloadForbiddenFile : StepBasedTestScenario() {
     val shit = TestShit()
 
     override fun buildSteps() {
-        o.orderFiles1(shit)
+        o.setUpOrderFiles1(shit)
         o.acta {fuckingRemoteCall.executeSQL("Delete permission for crazy boobs file", """
             delete from file_user_permissions
             where

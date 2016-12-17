@@ -115,7 +115,7 @@ class TestShit {
     lateinit var bobulToken: String
 }
 
-fun TestScenarioBuilder.prepareBobul(testShit: TestShit) {
+fun TestScenarioBuilder.setUpBobul(testShit: TestShit) {
     acta {async{
         measureAndReportToDocumentElement("Preparing customer: Ivo Bobul") {
             await(ImposeNextGeneratedPasswordRequest.send("bobul-secret"))
@@ -147,7 +147,7 @@ fun TestScenarioBuilder.prepareBobul(testShit: TestShit) {
     }}
 }
 
-fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
+fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit) {
     val o = this
     o.acta {async{
         measureAndReportToDocumentElement("Preparing some orders for Ivo Bobul") {
@@ -155,7 +155,7 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
                 global.CLIENT_KIND = ClientKind.CUSTOMER.name
 
                 await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:24:32"))
-                await(send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
+                val createOrderResponse = await(send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
                     o.title.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
                     o.documentType.value = UADocumentType.COURSE
                     o.deadline.killmeValue = moment("2016-12-11 18:15:00").valueOf()
@@ -163,9 +163,12 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
                     o.numSources.setValue(5)
                     o.details.value = "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории."
                 }))
+                createOrderResponse as FormResponse2.Hunky
+                val orderID = createOrderResponse.meat.id
 
                 await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:31:15"))
                 await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+                    o.orderID.value = orderID
                     o.file.testFileOnServer = FileField.TestFileOnServer("fuck you.rtf", "${testconst.filesRoot}fuck you.rtf")
                     o.title.value = "A warm word to my writer"
                     o.details.value = dedent("""
@@ -178,6 +181,7 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
 
                 await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:42:18"))
                 await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+                    o.orderID.value = orderID
                     o.file.testFileOnServer = FileField.TestFileOnServer("crazy monster boobs.rtf", "${testconst.filesRoot}crazy monster boobs.rtf")
                     o.title.value = "Cool stuff"
                     o.details.value = dedent("""
@@ -189,6 +193,7 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
 
                 await(ImposeNextRequestTimestampRequest.send("2016-12-02 13:02:25"))
                 await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+                    o.orderID.value = orderID
                     o.file.testFileOnServer = FileField.TestFileOnServer("the trial.doc", "${testconst.filesRoot}the trial.doc")
                     o.title.value = "Процесс by Кафка"
                     o.details.value = dedent("""
@@ -206,22 +211,32 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
     }}
 }
 
-fun TestScenarioBuilder.orderFiles1(shit: TestShit) {
+fun TestScenarioBuilder.setUpOrderFiles1(shit: TestShit) {
     val o = this
-    o.prepareBobul(shit)
-    o.prepareBobulOrders1(shit)
+    o.setUpOrderFilesTestTemplate(
+        shit,
+        setUpOrders = {o.setUpBobulOrder(shit)},
+        assertScreen = {o.todo("setUpOrderFiles1 assertScreen")})
+}
+
+fun TestScenarioBuilder.setUpOrderFilesTestTemplate(shit: TestShit, setUpOrders: () -> Unit, assertScreen: () -> Unit) {
+    val o = this
+    o.setUpBobul(shit)
+    setUpOrders()
     o.initFuckingBrowser(fillStorageLocal = {
         it.token = shit.bobulToken
     })
     o.kindaNavigateToStaticContent("${testconst.url.customer}/order.html?id=100000&tab=files")
     o.assertCustomerBreatheScreen()
 
-    o.acta {async{
-        val world = World("boobs")
-        await(world.boot())
-    }}
+    o.acta {
+        async {
+            val world = World("boobs")
+            await(world.boot())
+        }
+    }
 
-    o.todo("Assert " + currentJSFunctionName() + " screen")
+    assertScreen()
 }
 
 fun TestScenarioBuilder.todo(msg: String) {

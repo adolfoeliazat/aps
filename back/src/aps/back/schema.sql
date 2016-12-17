@@ -248,6 +248,43 @@ create trigger on_insert before insert on file_user_permissions for each row exe
 create trigger on_update before update on file_user_permissions for each row execute procedure on_update();
 
 
+-- ============================== UA_ORDER_AREAS ==============================
+
+create table ua_order_areas(
+    id bigserial primary key,
+    deleted boolean not null,
+    inserted_at timestamp not null,
+    updated_at timestamp not null,
+    -- creator_id bigint not null references users(id),
+    ua_order_id bigint not null references ua_orders(id),
+    name text not null unique
+);
+
+alter sequence ua_order_areas_id_seq restart with 100000;
+create trigger on_insert before insert on ua_order_areas for each row execute procedure on_insert();
+create trigger on_update before update on ua_order_areas for each row execute procedure on_update();
+
+
+-- ============================== UA_ORDER_FILES ==============================
+
+create table ua_order_files(
+    id bigserial primary key,
+    deleted boolean not null,
+    inserted_at timestamp not null,
+    updated_at timestamp not null,
+    creator_id bigint not null references users(id),
+    ua_order_id bigint not null references ua_orders(id),
+    ua_order_area_id bigint not null references ua_order_areas(id),
+    file_id bigint not null references files(id)
+);
+
+alter sequence ua_order_files_id_seq restart with 100000;
+create trigger on_insert before insert on ua_order_files for each row execute procedure on_insert();
+create trigger on_update before update on ua_order_files for each row execute procedure on_update();
+
+
+
+
 
 
 

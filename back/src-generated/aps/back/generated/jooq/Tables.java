@@ -8,6 +8,8 @@ import aps.back.generated.jooq.tables.JQFileUserPermissions;
 import aps.back.generated.jooq.tables.JQFiles;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
+import aps.back.generated.jooq.tables.JQUaOrderAreas;
+import aps.back.generated.jooq.tables.JQUaOrderFiles;
 import aps.back.generated.jooq.tables.JQUaOrders;
 import aps.back.generated.jooq.tables.JQUserRoles;
 import aps.back.generated.jooq.tables.JQUserTokens;
@@ -48,6 +50,16 @@ public class Tables {
      * The table <code>public.support_threads</code>.
      */
     public static final JQSupportThreads SUPPORT_THREADS = aps.back.generated.jooq.tables.JQSupportThreads.SUPPORT_THREADS;
+
+    /**
+     * The table <code>public.ua_order_areas</code>.
+     */
+    public static final JQUaOrderAreas UA_ORDER_AREAS = aps.back.generated.jooq.tables.JQUaOrderAreas.UA_ORDER_AREAS;
+
+    /**
+     * The table <code>public.ua_order_files</code>.
+     */
+    public static final JQUaOrderFiles UA_ORDER_FILES = aps.back.generated.jooq.tables.JQUaOrderFiles.UA_ORDER_FILES;
 
     /**
      * The table <code>public.ua_orders</code>.

@@ -2,6 +2,7 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.enums.*
+import aps.back.generated.jooq.tables.JQFiles.*
 import aps.back.generated.jooq.tables.JQUserRoles.*
 import aps.back.generated.jooq.tables.JQUsers.*
 import aps.back.generated.jooq.tables.pojos.*
@@ -53,6 +54,13 @@ fun ProcedureContext.loadUser(id: Long): UserRTO {
         .fetchOne().into(JQUsers::class.java).toRTO(q)
 }
 
+fun loadFile(q: DSLContextProxyFactory, id: Long): FileRTO {
+    return q("Select file")
+        .select().from(FILES)
+        .where(FILES.ID.eq(id))
+        .fetchOne().into(JQFiles::class.java).toRTO(q)
+}
+
 fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
     val roles = q("Select roles")
         .select().from(USER_ROLES)
@@ -90,6 +98,13 @@ fun JQFiles.toRTO(q: DSLContextProxyFactory): FileRTO {
         details = details,
         sizeBytes = sizeBytes,
         insertedAt = insertedAt.time
+    )
+}
+
+fun JQUaOrderFiles.toRTO(q: DSLContextProxyFactory): UAOrderFileRTO {
+    return UAOrderFileRTO(
+        id = "" + id,
+        file = loadFile(q, fileId)
     )
 }
 

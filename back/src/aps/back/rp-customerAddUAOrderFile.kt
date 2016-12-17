@@ -15,7 +15,7 @@ import java.util.*
     CustomerAddUAOrderFileRequest(),
     runShit = fun(ctx, req): CustomerAddUAOrderFileRequest.Response {
         val content = Base64.getDecoder().decode(req.file.base64)
-        val rec = ctx.q("Adding UA order file")
+        val fileRec = ctx.q("Insert file")
             .insertInto(FILES)
             .set(FILES.INSERTED_AT, ctx.requestTimestamp)
             .set(FILES.UPDATED_AT, ctx.requestTimestamp)
@@ -29,7 +29,30 @@ import java.util.*
             .set(FILES.MIME, "application/octet-stream")
             .returning(FILES.ID)
             .fetchOne()
-        return CustomerAddUAOrderFileRequest.Response(rec.getValue(FILES.ID).toString())
+
+        val areaName = when (ctx.user.kind) {
+            UserKind.CUSTOMER -> const.orderArea.customer
+            UserKind.WRITER -> const.orderArea.writer
+            UserKind.ADMIN -> const.orderArea.admin
+        }
+
+        val areaRec = ctx.q("Select area")
+            .select().from(UA_ORDER_AREAS)
+            .where(UA_ORDER_AREAS.NAME.eq(areaName))
+            .fetchOne()
+
+        val orderFileRec = ctx.q("Insert order file")
+            .insertInto(UA_ORDER_FILES)
+            .set(UA_ORDER_FILES.INSERTED_AT, ctx.requestTimestamp)
+            .set(UA_ORDER_FILES.UPDATED_AT, ctx.requestTimestamp)
+            .set(UA_ORDER_FILES.CREATOR_ID, ctx.user.id.toLong())
+            .set(UA_ORDER_FILES.UA_ORDER_ID, req.orderID.value.toLong())
+            .set(UA_ORDER_FILES.FILE_ID, fileRec.getValue(FILES.ID))
+            .set(UA_ORDER_FILES.UA_ORDER_AREA_ID, areaRec.getValue(UA_ORDER_AREAS.ID))
+            .returning(UA_ORDER_FILES.ID)
+            .fetchOne()
+
+        return CustomerAddUAOrderFileRequest.Response(orderFileRec.getValue(UA_ORDER_FILES.ID).toString())
     }
 )
 
