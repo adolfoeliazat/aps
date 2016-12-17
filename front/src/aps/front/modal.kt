@@ -4,7 +4,8 @@ import aps.*
 import aps.front.*
 import jquery.jq
 
-private var modalShit = ResolvableShit<Unit>()
+private var modalShownResolvable = ResolvableShit<Unit>()
+private var modalHiddenResolvable = ResolvableShit<Unit>()
 
 fun openErrorModal(msg: String) {
     val container = byid0("modalContainer") ?: run {
@@ -31,24 +32,48 @@ fun openErrorModal(msg: String) {
         </div>
     """
 
-    jq("#fuckingModal").asDynamic().modal(json())
-    modalShit.resolve(Unit)
+    val jqModal = jq("#fuckingModal").asDynamic()
+    jqModal.modal(json())
+    jqModal.on("shown.bs.modal") {
+        modalShownResolvable.resolve(Unit)
+    }
+    jqModal.on("hidden.bs.modal") {
+        jqModal.data("bs.modal", null)
+        container.innerHTML = ""
+        modalHiddenResolvable.resolve(Unit)
+        Unit
+    }
 }
 
 fun TestScenarioBuilder.willWaitForModal() {
-    modalShit = ResolvableShit<Unit>()
+    modalShownResolvable = ResolvableShit<Unit>()
 }
 
-fun TestScenarioBuilder.waitForModal() {
+fun TestScenarioBuilder.waitForModalShown() {
     val o = this
-    o.acta("Waiting for modal") {async{
+    o.acta("Waiting for modal shown") {async{
         val shit = ResolvableShit<Unit>()
         timeoutSet(1500) {shit.reject(Exception("Sick of waiting for modal"))}
-        modalShit.promise.finally {shit.resolve(Unit)}
+        modalShownResolvable.promise.finally {shit.resolve(Unit)}
         await(shit.promise)
     }}
 }
 
+fun TestScenarioBuilder.clickModalOKAndWaitTillHidden() {
+    val o = this
+    modalHiddenResolvable = ResolvableShit<Unit>()
+
+    o.act("Clicking modal's OK") {
+        byid("fuckingModalOK").click()
+    }
+
+    o.acta("Waiting till modal is hidden") {async{
+        val shit = ResolvableShit<Unit>()
+        timeoutSet(1500) {shit.reject(Exception("Sick of waiting till modal is hidden"))}
+        modalHiddenResolvable.promise.finally {shit.resolve(Unit)}
+        await(shit.promise)
+    }}
+}
 
 
 

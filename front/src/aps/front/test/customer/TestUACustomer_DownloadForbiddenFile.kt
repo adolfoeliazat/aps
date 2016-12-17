@@ -19,8 +19,10 @@ class TestUACustomer_DownloadForbiddenFile : StepBasedTestScenario() {
         o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = true)) {
             o.kicClick("download-1")
         }
-        o.waitForModal()
+        o.waitForModalShown()
         o.assertScreenHTML("Forbidden modal", "eb1ec474-315e-4184-829e-91882afcdf87")
+        o.clickModalOKAndWaitTillHidden()
+        o.assertScreenHTML("Modal closed", "fb05d2d8-18f6-48a1-9dfc-bd18e212c498")
     }
 }
 
