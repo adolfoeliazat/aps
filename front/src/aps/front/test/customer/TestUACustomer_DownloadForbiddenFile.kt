@@ -9,8 +9,7 @@ class TestUACustomer_DownloadForbiddenFile : StepBasedTestScenario() {
     override fun buildSteps() {
         o.orderFiles1(shit)
         o.acta {fuckingRemoteCall.executeSQL("Delete permission for crazy boobs file", """
-            update file_user_permissions
-            set deleted = true
+            delete from file_user_permissions
             where
                 file_id = (select id from files where name = 'crazy monster boobs.rtf') and
                 user_id = (select id from users where first_name = 'Иво')

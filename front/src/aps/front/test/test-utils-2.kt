@@ -195,6 +195,12 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
                         Это чисто на почитать...
                     """)
                 }))
+
+                await(fuckingRemoteCall.executeSQL("Add file permissions", """
+                    insert into file_user_permissions(file_id, user_id) values(100000, 100000);
+                    insert into file_user_permissions(file_id, user_id) values(100001, 100000);
+                    insert into file_user_permissions(file_id, user_id) values(100002, 100000);
+                """))
             }
         }
     }}
@@ -241,7 +247,7 @@ fun TestScenarioBuilder.expectPieceOfShitDownload(expected: PieceOfShitDownload,
             for (i in 1..3) {
                 await(delay(500))
                 await(fuckingRemoteCall.getLastDownloadedFileID())?.let {actual->
-                    assertEquals(expected, actual, "Downloaded file ID")
+                    assertEquals(expected, actual)
                     return@async
                 }
             }
