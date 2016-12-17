@@ -1216,7 +1216,19 @@ fun openTestListPane() {
                     window.location.href = testNameToHref(testName)
                 })
 
-            o- testLink(TestGlobal.lastTestName!!)
+            o- testLink(TestGlobal.lastTest!!.name)
+
+            o- kdiv(marginTop = "1em"){o->
+                o- kdiv(fontWeight = "bold"){o->
+                    o- "TestSuite_Customer_Shebang:"
+                }
+                for (x in TestSuite_Customer_Shebang().scenarios) {
+                    o- kspan(marginRight = "1em"){o->
+                        o- testLink(x.name)
+                    }
+                    o- " "
+                }
+            }
         }
     })
 }

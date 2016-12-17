@@ -28,9 +28,16 @@ object fuckingRemoteCall {
         "proc" to "resetLastDownloadedFile"
     ))
 
-    fun getLastDownloadedFileID(): Promise<DownloadedPieceOfShit?> = sendShit(json(
+    fun getLastDownloadedFileID(): Promise<PieceOfShitDownload?> = sendShit(json(
         "proc" to "getLastDownloadedFileID"
     ))
+
+    fun executeSQL(descr: String, sql: String): Promise<Unit> = sendShit(json(
+        "proc" to "executeSQL",
+        "descr" to descr,
+        "sql" to sql
+    ))
+
 
     private fun <T> sendShit(request: Json): Promise<T> = async {
         val res = await(send(FuckingRemoteProcedureRequest()-{o->

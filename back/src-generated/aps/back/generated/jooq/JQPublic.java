@@ -4,6 +4,7 @@
 package aps.back.generated.jooq;
 
 
+import aps.back.generated.jooq.tables.JQFileUserPermissions;
 import aps.back.generated.jooq.tables.JQFiles;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
@@ -37,12 +38,17 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQPublic extends SchemaImpl {
 
-    private static final long serialVersionUID = -1185170865;
+    private static final long serialVersionUID = 1610398040;
 
     /**
      * The reference instance of <code>public</code>
      */
     public static final JQPublic PUBLIC = new JQPublic();
+
+    /**
+     * The table <code>public.file_user_permissions</code>.
+     */
+    public final JQFileUserPermissions FILE_USER_PERMISSIONS = aps.back.generated.jooq.tables.JQFileUserPermissions.FILE_USER_PERMISSIONS;
 
     /**
      * The table <code>public.files</code>.
@@ -104,6 +110,8 @@ public class JQPublic extends SchemaImpl {
 
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
+            Sequences.FILE_USER_PERMISSIONS_FILE_ID_SEQ,
+            Sequences.FILE_USER_PERMISSIONS_USER_ID_SEQ,
             Sequences.FILES_ID_SEQ,
             Sequences.SUPPORT_THREAD_MESSAGES_ID_SEQ,
             Sequences.SUPPORT_THREADS_ID_SEQ,
@@ -122,6 +130,7 @@ public class JQPublic extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
+            JQFileUserPermissions.FILE_USER_PERMISSIONS,
             JQFiles.FILES,
             JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES,
             JQSupportThreads.SUPPORT_THREADS,

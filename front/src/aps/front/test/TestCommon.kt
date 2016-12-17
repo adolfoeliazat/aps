@@ -65,11 +65,6 @@ interface TestSuite {
 val testScenarios = mutableMapOf<String, TestScenario>()
 
 fun tetete() {
-    val l1: Long = 10
-    val l2: Long = 10
-    val a = DownloadedPieceOfShit(l1, "aaaa")
-    val b = DownloadedPieceOfShit(l2, "aaaa")
-    clog(a == b)
 }
 
 class TestCommon(val sim: dynamic) {
@@ -151,11 +146,10 @@ private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promi
 }
 
 private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
-    val testName = ctorName(scenario)
-    TestGlobal.lastTestName = testName
-    TestGlobal.lastTestHref = testNameToHref(testName)
+    TestGlobal.lastTest = scenario
+    TestGlobal.lastTestHref = testNameToHref(scenario.name)
 
-    Globus.rootRedisLogMessageID = await(fedis.beginLogGroup("Test: $testName"))
+    Globus.rootRedisLogMessageID = await(fedis.beginLogGroup("Test: ${scenario.name}"))
 
     try {
         hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"

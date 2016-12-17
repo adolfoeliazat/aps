@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.MessageEvent
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 
@@ -59,6 +60,14 @@ fun igniteShit(): Promise<Unit> {"__async"
 //    }
 
 //    if (global.location.pathname.endsWith("/test.html")) {
+
+    window.onmessage = {e->
+        e as MessageEvent
+        if (e.data == const.windowMessage.fileForbidden) {
+            openErrorModal(t("TOTE", "Этот файл не для тебя"))
+        }
+    }
+
     val search = window.location.search
     if (search.contains("test=") || search.contains("testSuite=")) {
         __await(jsFacing_igniteTestShit())

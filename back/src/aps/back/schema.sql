@@ -233,6 +233,20 @@ create trigger on_insert before insert on files for each row execute procedure o
 create trigger on_update before update on files for each row execute procedure on_update();
 
 
+-- ============================== FILE_USER_PERMISSIONS ==============================
+
+create table file_user_permissions(
+    file_id bigserial not null references files(id),
+    user_id bigserial not null references users(id),
+    primary key (file_id, user_id),
+    deleted boolean not null,
+    inserted_at timestamp not null,
+    updated_at timestamp not null
+);
+
+create trigger on_insert before insert on file_user_permissions for each row execute procedure on_insert();
+create trigger on_update before update on file_user_permissions for each row execute procedure on_update();
+
 
 
 

@@ -28,6 +28,9 @@ class GodServlet : HttpServlet() {
 
         _requestShit.set(RequestShit())
         requestShit.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
+        requestShit.servletRequest = req
+
+        res.addHeader("Access-Control-Allow-Origin", "*")
 
         try {
             when {
@@ -68,6 +71,58 @@ class GodServlet : HttpServlet() {
         }
     }
 
+    private fun serveFile(req: HttpServletRequest, res: HttpServletResponse) {
+        val fileID = req.getParameter("fileID") ?: bitch("I want `fileID`")
+        val databaseID = req.getHeader("databaseID") ?: req.getParameter("databaseID") ?: bitch("I want `databaseID`")
+        val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
+
+        val db = DB.byID(databaseID)
+        db.joo{q->
+            val user = userByToken(q, token)
+            val rows = q("Select file")
+                .select().from(FILES)
+                .where(FILES.ID.eq(fileID.toLong()))
+                .fetch().into(JQFiles::class.java)
+            if (rows.isEmpty()) bitch("No fucking file with ID $fileID")
+            val file = rows[0]
+
+            val forbidden = run {
+                val rows = q("Select file-user permissions")
+                    .select().from(FILE_USER_PERMISSIONS)
+                    .where(FILE_USER_PERMISSIONS.FILE_ID.eq(fileID.toLong()))
+                    .and(FILE_USER_PERMISSIONS.USER_ID.eq(user.id.toLong()))
+                    .fetch().into(JQFileUserPermissions::class.java)
+                rows.isEmpty()
+            }
+
+            BackGlobus.lastDownloadedPieceOfShit = PieceOfShitDownload(file.id, file.name, forbidden)
+
+//        if (forbidden) bitch("Some asshole, namely ${user.id}, wants to download forbidden shit, namely ${file.id}")
+            if (forbidden) {
+                log.info("Some asshole, namely ${user.id}, wants to download forbidden shit, namely ${file.id}")
+                res.writer.println("""
+                    <html>
+                        <body>
+                            This shit is forbidden for you
+
+                            <script>
+                                window.addEventListener('message', e => {
+                                    if (e.data === '${const.windowMessage.whatsUp.escapeSingleQuotes()}') {
+                                        e.source.postMessage('${const.windowMessage.fileForbidden.escapeSingleQuotes()}', e.origin)
+                                    }
+                                })
+                            </script>
+                        </body>
+                    </html>
+                """)
+            } else {
+                res.contentType = file.mime
+                res.setHeader("Content-disposition", "attachment; filename=${file.name}")
+                res.outputStream.write(file.content)
+                res.outputStream.flush()
+            }
+        }
+    }
 
 }
 
@@ -84,6 +139,7 @@ class RequestShit {
     var actualSQLFromJOOQ: String? = null
     val redisLogParentIDs = Stack<String>()
     lateinit var commonRequestFields: CommonRequestFieldsHolder
+    lateinit var servletRequest: HttpServletRequest
 }
 
 val _requestShit = ThreadLocal<RequestShit>()
@@ -95,29 +151,6 @@ val patternsToExcludeRedisLoggingCompletely = listOf(
     "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword"
 )
 
-private fun serveFile(req: HttpServletRequest, res: HttpServletResponse) {
-    val fileID = req.getParameter("fileID") ?: bitch("I want `fileID`")
-    val databaseID = req.getHeader("databaseID") ?: req.getParameter("databaseID") ?: bitch("I want `databaseID`")
-    val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
-
-    val db = DB.byID(databaseID)
-    db.joo{q->
-        val user = userByToken(q, token)
-        // TODO:vgrechka Check permissions
-        val rows = q("Select file")
-            .select().from(FILES)
-            .where(FILES.ID.eq(fileID.toLong()))
-            .fetch().into(JQFiles::class.java)
-        if (rows.isEmpty()) bitch("No fucking file with ID $fileID")
-        val file = rows[0]
-
-        res.contentType = file.mime
-        res.setHeader("Content-disposition", "attachment; filename=${file.name}")
-        res.outputStream.write(file.content)
-        res.outputStream.flush()
-        BackGlobus.lastDownloadedPieceOfShit = DownloadedPieceOfShit(file.id, file.name)
-    }
-}
 
 
 

@@ -16,7 +16,7 @@ title pg-dev & pg-dev-start.cmd
     | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
 
 cd /d e:\work\aps
-_run aps.back.GenerateJOOQKt
+ant java -Dclass=aps.back.GenerateJOOQKt
 
 ant java -Dclass=aps.back.Fiddle -Dhow=RecreateSchema_bmix_fuckingAround_apsdevua
 

@@ -4,6 +4,7 @@
 package aps.back.generated.jooq;
 
 
+import aps.back.generated.jooq.tables.JQFileUserPermissions;
 import aps.back.generated.jooq.tables.JQFiles;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
@@ -27,6 +28,11 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>public.file_user_permissions</code>.
+     */
+    public static final JQFileUserPermissions FILE_USER_PERMISSIONS = aps.back.generated.jooq.tables.JQFileUserPermissions.FILE_USER_PERMISSIONS;
 
     /**
      * The table <code>public.files</code>.

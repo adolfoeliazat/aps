@@ -5,6 +5,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 import jquery.jq
+import org.w3c.dom.HTMLIFrameElement
 import kotlin.browser.window
 
 class CustomerSingleUAOrderPage(val world: World) {
@@ -231,7 +232,14 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                                         }
                                         o- kic("download-$fileIndex", className = "cunt-header-right-icon fa fa-cloud-download", style = Style(right = 30, top = 6),
                                               onClick = {
-                                                  window.location.href = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
+                                                  val iframeID = puid()
+                                                  jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
+                                                  val iframe = byid0(iframeID) as HTMLIFrameElement
+                                                  gloshit.iframe = iframe
+                                                  iframe.onload = {
+                                                      iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
+                                                  }
+                                                  iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
                                               })
                                         o- ki(className = "cunt-header-right-icon fa fa-pencil")
                                     }

@@ -3,6 +3,7 @@ drop table if exists user_tokens;
 drop table if exists support_thread_messages;
 drop table if exists support_threads;
 drop table if exists ua_orders;
+drop table if exists file_user_permissions;
 drop table if exists files;
 drop table if exists users;
 

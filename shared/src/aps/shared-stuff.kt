@@ -557,9 +557,10 @@ enum class Color(val string: String) {
 
 class PingRequest : RequestMatumba()
 
-data class DownloadedPieceOfShit(
+data class PieceOfShitDownload(
     val id: Long,
-    val name: String
+    val name: String,
+    val forbidden: Boolean
 )
 
 

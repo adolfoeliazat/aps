@@ -148,11 +148,13 @@ fun TestScenarioBuilder.prepareBobul(testShit: TestShit) {
 }
 
 fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
-    acta {async{
+    val o = this
+    o.acta {async{
         measureAndReportToDocumentElement("Preparing some orders for Ivo Bobul") {
             fiddlingWithGlobals {
                 global.CLIENT_KIND = ClientKind.CUSTOMER.name
 
+                await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:24:32"))
                 await(send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
                     o.title.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
                     o.documentType.value = UADocumentType.COURSE
@@ -162,6 +164,7 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
                     o.details.value = "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории."
                 }))
 
+                await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:31:15"))
                 await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
                     o.file.testFileOnServer = FileField.TestFileOnServer("fuck you.rtf", "${testconst.filesRoot}fuck you.rtf")
                     o.title.value = "A warm word to my writer"
@@ -173,6 +176,7 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
                     """)
                 }))
 
+                await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:42:18"))
                 await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
                     o.file.testFileOnServer = FileField.TestFileOnServer("crazy monster boobs.rtf", "${testconst.filesRoot}crazy monster boobs.rtf")
                     o.title.value = "Cool stuff"
@@ -183,6 +187,7 @@ fun TestScenarioBuilder.prepareBobulOrders1(testShit: TestShit) {
                     """)
                 }))
 
+                await(ImposeNextRequestTimestampRequest.send("2016-12-02 13:02:25"))
                 await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
                     o.file.testFileOnServer = FileField.TestFileOnServer("the trial.doc", "${testconst.filesRoot}the trial.doc")
                     o.title.value = "Процесс by Кафка"
@@ -225,7 +230,7 @@ fun TestScenarioBuilder.todo(msg: String) {
     instructions.add(step)
 }
 
-fun TestScenarioBuilder.expectDownloadedPieceOfShit(expected: DownloadedPieceOfShit, buildStepsToDownload: () -> Unit) {
+fun TestScenarioBuilder.expectPieceOfShitDownload(expected: PieceOfShitDownload, buildStepsToDownload: () -> Unit) {
     val o = this
     o.acta {fuckingRemoteCall.resetLastDownloadedFile()}
 
@@ -244,6 +249,7 @@ fun TestScenarioBuilder.expectDownloadedPieceOfShit(expected: DownloadedPieceOfS
         }
     }
 }
+
 
 
 

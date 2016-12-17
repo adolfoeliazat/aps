@@ -24,6 +24,16 @@ import org.jooq.impl.SequenceImpl;
 public class Sequences {
 
     /**
+     * The sequence <code>public.file_user_permissions_file_id_seq</code>
+     */
+    public static final Sequence<Long> FILE_USER_PERMISSIONS_FILE_ID_SEQ = new SequenceImpl<Long>("file_user_permissions_file_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+    /**
+     * The sequence <code>public.file_user_permissions_user_id_seq</code>
+     */
+    public static final Sequence<Long> FILE_USER_PERMISSIONS_USER_ID_SEQ = new SequenceImpl<Long>("file_user_permissions_user_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+    /**
      * The sequence <code>public.files_id_seq</code>
      */
     public static final Sequence<Long> FILES_ID_SEQ = new SequenceImpl<Long>("files_id_seq", JQPublic.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

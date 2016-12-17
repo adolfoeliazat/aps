@@ -62,6 +62,9 @@ fun qweqwe() {
     }
 }
 
+fun <T> Promise<T>.finally(onFulfilled: (T) -> Unit) =
+    this.then<Nothing>(onFulfilled, {})
+
 
 fun remoteProcedureNameForRequest(req: Any): String {
     val requestClassName = ctorName(req)

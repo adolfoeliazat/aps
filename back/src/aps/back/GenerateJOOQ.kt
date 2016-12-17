@@ -23,7 +23,7 @@ import java.io.File
 
 fun main(args: Array<String>) {
     BackGlobus.tracingEnabled = false
-    DB.apsTestOnTestServer.recreate()
+    DB.apsTestOnTestServer.recreateSchema()
 
     Mkdir()-{o->
         o.dir = File("$APS_HOME/back/bak")

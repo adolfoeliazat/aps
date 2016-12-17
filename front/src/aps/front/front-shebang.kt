@@ -21,7 +21,7 @@ object TestGlobal {
     var testShitBeingAssertedID: String? = null
     var lastTestHref: String? = null
     var hasScenarioTODOs = false
-    var lastTestName: String? = null
+    var lastTest: TestScenario? = null
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

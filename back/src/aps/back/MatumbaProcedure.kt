@@ -171,7 +171,6 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
             responseBean.backendVersion = BackGlobus.version
 
             servletResponse-{o->
-                o.addHeader("Access-Control-Allow-Origin", "*")
                 o.contentType = "application/json; charset=utf-8"
                 o.writer.println(hackyObjectMapper.writeValueAsString(responseBean))
                 o.status = HttpServletResponse.SC_OK

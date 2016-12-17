@@ -3,6 +3,11 @@ package aps
 object const {
     val noItemsMessage = t("TOTE", "Савсэм ничего нэт, да...")
 
+    object windowMessage {
+        val whatsUp = "What's up?"
+        val fileForbidden = "Fucking file is forbidden"
+    }
+
     object common {
         val minTitleLen = 5
         val maxTitleLen = 100

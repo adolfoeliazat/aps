@@ -230,7 +230,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 
 @RemoteProcedureFactory fun fuckingRemoteProcedure() = testProcedure(
     FuckingRemoteProcedureRequest(),
-    needsDB = false,
+    needsDB = true,
     runShit = fun (ctx, req): JSONResponse {
         val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
         val proc: String = cast(rmap["proc"])
@@ -243,6 +243,7 @@ val backendInstanceID = "" + UUID.randomUUID()
             "ping" -> frp_ping(rmap)
             "resetLastDownloadedFile" -> frp_resetLastDownloadedFile(rmap)
             "getLastDownloadedFileID" -> frp_getLastDownloadedFileID(rmap)
+            "executeSQL" -> frp_executeSQL(ctx, rmap)
             else -> wtf("proc: $proc")
 
         }}
@@ -255,7 +256,7 @@ fun frp_resetLastDownloadedFile(rmap: Map<*, *>) {
     BackGlobus.lastDownloadedPieceOfShit = null
 }
 
-fun frp_getLastDownloadedFileID(rmap: Map<*, *>): DownloadedPieceOfShit? {
+fun frp_getLastDownloadedFileID(rmap: Map<*, *>): PieceOfShitDownload? {
     return BackGlobus.lastDownloadedPieceOfShit
 }
 
@@ -311,6 +312,12 @@ fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
 
 fun frp_ping(rmap: Map<*, *>): String {
     return "pong"
+}
+
+fun frp_executeSQL(ctx: ProcedureContext, rmap: Map<*, *>) {
+    val descr: String = cast(rmap["descr"])
+    val sql: String = cast(rmap["sql"])
+    ctx.q(descr).execute(sql)
 }
 
 private fun robotTypeTextCR(text: String) {
