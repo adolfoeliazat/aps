@@ -147,7 +147,54 @@ fun TestScenarioBuilder.setUpBobul(testShit: TestShit) {
     }}
 }
 
-fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit) {
+//fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, addFiles: () -> Unit) {
+//
+//}
+
+fun setUpFiles1(testShit: TestShit, orderID: String): Promise<Unit> = async {
+    await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:31:15"))
+    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("fuck you.rtf", "${testconst.filesRoot}fuck you.rtf")
+        o.title.value = "A warm word to my writer"
+        o.details.value = dedent("""
+                        Я к вам пишу – чего же боле?
+                        Что я могу еще сказать?
+                        Теперь, я знаю, в вашей воле
+                        Меня презреньем наказать.
+                    """)
+    }))
+
+    await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:42:18"))
+    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("crazy monster boobs.rtf", "${testconst.filesRoot}crazy monster boobs.rtf")
+        o.title.value = "Cool stuff"
+        o.details.value = dedent("""
+                         - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
+                         - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
+                         - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
+                    """)
+    }))
+
+    await(ImposeNextRequestTimestampRequest.send("2016-12-02 13:02:25"))
+    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("the trial.doc", "${testconst.filesRoot}the trial.doc")
+        o.title.value = "Процесс by Кафка"
+        o.details.value = dedent("""
+                        Это чисто на почитать...
+                    """)
+    }))
+
+    await(fuckingRemoteCall.executeSQL("Add file permissions", """
+                    insert into file_user_permissions(file_id, user_id) values(100000, 100000);
+                    insert into file_user_permissions(file_id, user_id) values(100001, 100000);
+                    insert into file_user_permissions(file_id, user_id) values(100002, 100000);
+                """))
+}
+
+fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String) -> Promise<Unit>) {
     val o = this
     o.acta {async{
         measureAndReportToDocumentElement("Preparing some orders for Ivo Bobul") {
@@ -166,56 +213,17 @@ fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit) {
                 createOrderResponse as FormResponse2.Hunky
                 val orderID = createOrderResponse.meat.id
 
-                await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:31:15"))
-                await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-                    o.orderID.value = orderID
-                    o.file.testFileOnServer = FileField.TestFileOnServer("fuck you.rtf", "${testconst.filesRoot}fuck you.rtf")
-                    o.title.value = "A warm word to my writer"
-                    o.details.value = dedent("""
-                        Я к вам пишу – чего же боле?
-                        Что я могу еще сказать?
-                        Теперь, я знаю, в вашей воле
-                        Меня презреньем наказать.
-                    """)
-                }))
-
-                await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:42:18"))
-                await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-                    o.orderID.value = orderID
-                    o.file.testFileOnServer = FileField.TestFileOnServer("crazy monster boobs.rtf", "${testconst.filesRoot}crazy monster boobs.rtf")
-                    o.title.value = "Cool stuff"
-                    o.details.value = dedent("""
-                         - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
-                         - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
-                         - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
-                    """)
-                }))
-
-                await(ImposeNextRequestTimestampRequest.send("2016-12-02 13:02:25"))
-                await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-                    o.orderID.value = orderID
-                    o.file.testFileOnServer = FileField.TestFileOnServer("the trial.doc", "${testconst.filesRoot}the trial.doc")
-                    o.title.value = "Процесс by Кафка"
-                    o.details.value = dedent("""
-                        Это чисто на почитать...
-                    """)
-                }))
-
-                await(fuckingRemoteCall.executeSQL("Add file permissions", """
-                    insert into file_user_permissions(file_id, user_id) values(100000, 100000);
-                    insert into file_user_permissions(file_id, user_id) values(100001, 100000);
-                    insert into file_user_permissions(file_id, user_id) values(100002, 100000);
-                """))
+                await(setUpFiles(orderID))
             }
         }
     }}
 }
 
-fun TestScenarioBuilder.setUpOrderFiles1(shit: TestShit) {
+fun TestScenarioBuilder.setUpOrderAndFiles1(shit: TestShit) {
     val o = this
     o.setUpOrderFilesTestTemplate(
         shit,
-        setUpOrders = {o.setUpBobulOrder(shit)},
+        setUpOrders = {o.setUpBobulOrder(shit, {oid-> setUpFiles1(shit, oid)})},
         assertScreen = {o.todo("setUpOrderFiles1 assertScreen")})
 }
 

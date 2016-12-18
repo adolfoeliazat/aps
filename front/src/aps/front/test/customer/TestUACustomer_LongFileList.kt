@@ -9,7 +9,7 @@ class TestUACustomer_LongFileList : StepBasedTestScenario() {
     override fun buildSteps() {
         o.setUpOrderFilesTestTemplate(
             shit,
-            setUpOrders = {o.setUpBobulOrder(shit)},
+            setUpOrders = {o.setUpBobulOrder(shit, {oid-> setUpFiles1(shit, oid)})},
             assertScreen = {o.todo("setUpOrderFiles1 assertScreen")})
     }
 }

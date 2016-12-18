@@ -6,7 +6,7 @@ class TestUACustomer_Order_Files_DownloadByClickingOnIcon : StepBasedTestScenari
     val shit = TestShit()
 
     override fun buildSteps() {
-        o.setUpOrderFiles1(shit)
+        o.setUpOrderAndFiles1(shit)
     }
 }
 
