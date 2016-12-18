@@ -34,7 +34,19 @@ class TestUACustomer_LongFileList : StepBasedTestScenario() {
                     mnt.add(23, "minutes").add(14, "seconds")
                 }
             }}},
-            assertScreen = {o.todo("setUpOrderFiles1 assertScreen")})
+            assertScreen = {o.todo("TestUACustomer_LongFileList assertScreen 1")}
+        )
+
+        o.act {jqbody.scrollTop(1900)}
+        o.buttonClick("loadMore")
+        o.todo("TestUACustomer_LongFileList assertScreen 2")
+
+        o.act {jqbody.scrollTop(4224)}
+        o.buttonClick("loadMore")
+        o.todo("TestUACustomer_LongFileList assertScreen 3")
+
+        o.act {jqbody.scrollTop(4624)}
+        o.todo("TestUACustomer_LongFileList assertScreen 4")
     }
 }
 

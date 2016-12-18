@@ -176,7 +176,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
         })
     }
 
-    val ebafHost = object:EvaporatingButtonAndFormHost {
+    val ebafHost:EvaporatingButtonAndFormHost = object:EvaporatingButtonAndFormHost {
         override var showEmptyLabel = true
         override var cancelForm = {}
         override var headerControlsDisabled = false
@@ -184,7 +184,9 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
         override var headerControlsClass = ""
 
         override fun updateShit() {
-            world.updatePage() // TODO:vgrechka Don't need/want to update every-fucking-thing
+            stripContent.update()
+            plusFormContainer.update()
+//            world.updatePage() // TODO:vgrechka Don't need/want to update every-fucking-thing
         }
     }
 
@@ -209,8 +211,12 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
         }
     }
 
-    val content = ToReactElementable.from {kdiv{o->
+    val plusFormContainer = Control2.from {kdiv{o->
         o- ebafPlus.renderForm()
+    }}
+
+    val content = ToReactElementable.from {kdiv{o->
+        o- plusFormContainer
         o- renderItems(this.meat, noItemsMessage = true)
     }}
 
