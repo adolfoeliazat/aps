@@ -18,7 +18,16 @@ fun main(args: Array<String>) {
 //    testNonExhaustiveWhen()
 //    println(System.currentTimeMillis())
 //    shit3()
-    shit4()
+//    shit4()
+    qwe_enum_jvm()
+}
+
+private enum class E {
+    FIRST, SECOND
+}
+
+private fun qwe_enum_jvm() {
+    println(E.valueOf("THIRD"))
 }
 
 fun shit4() {

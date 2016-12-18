@@ -36,7 +36,7 @@ class Select<E>(
     val style: Json = json(),
     val volatileDisabled: (() -> Boolean)? = null,
     val onChange: () -> Unit = {},
-    val onChanga: () -> Promise<Unit> = {__asyncResult(Unit)},
+    var onChanga: () -> Promise<Unit> = {__asyncResult(Unit)},
     val onFocus: () -> Unit = {},
     val onFocusa: () -> Promise<Unit> = {__asyncResult(Unit)},
     val onBlur: () -> Unit = {},

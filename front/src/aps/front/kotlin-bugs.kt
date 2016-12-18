@@ -4,6 +4,13 @@ package aps.front
 
 import aps.*
 
+private enum class E {
+    FIRST, SECOND
+}
+
+fun qwe_enum_js() {
+    console.log(E.valueOf("THIRD"))
+}
 
 //fun qwe_breaks() {
 //    val obj = object {

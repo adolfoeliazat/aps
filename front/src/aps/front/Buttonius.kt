@@ -46,6 +46,7 @@ open class Button(
                 "className" to "btn btn-$level $className",
                 "style" to style,
                 "title" to hint,
+                "disabled" to disabled,
                 "onClick" to {e: ReactEvent ->
                     preventAndStop(e)
                     click()

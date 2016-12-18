@@ -273,8 +273,13 @@ class CaptureStackException : Exception("Hi, fucker")
 fun String.escapeSingleQuotes(): String =
     this.replace("'", "\\'")
 
+//inline fun <reified E : Enum<E>> relaxedStringToEnum(s: String?, default: E): E =
+//    enumValues<E>().find {it.name.toUpperCase() == s?.toUpperCase()}
+//        ?: default
 
-
+fun <E : Enum<E>> relaxedStringToEnum(s: String?, values: Array<E>, default: E): E =
+    values.find {it.name.toUpperCase() == s?.toUpperCase()}
+        ?: default
 
 
 
