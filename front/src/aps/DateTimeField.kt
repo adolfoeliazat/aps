@@ -19,7 +19,11 @@ import into.kommon.*
     fun valueOf(): Double
     fun format(fmt: String): String
     fun tz(zone: String): Moment
+    fun add(amount: Int, unit: String): Moment
 }
+
+fun Moment.formatPostgres(): String =
+    this.format("YYYY-MM-DD LTS")
 
 @native interface EonasdanPicker {
     fun destroy()

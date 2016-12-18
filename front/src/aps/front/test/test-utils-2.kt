@@ -9,7 +9,7 @@ import kotlin.browser.document
 import kotlin.browser.window
 
 object testconst {
-    val filesRoot = "C:\\Users\\Vladimir\\Desktop\\"
+    val filesRoot = "C:\\Users\\Vladimir\\Desktop\\apstestdocs\\"
 
     object url {
         val customer = "http://aps-ua-customer.local:3012"

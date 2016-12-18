@@ -16,7 +16,7 @@ open class Button(
     val iconColor: Color? = null,
     val disabled: Boolean = false,
     val hint: String? = null,
-    val onClicka: () -> Promise<Unit> = {async{}},
+    var onClicka: () -> Promise<Unit> = {async{}},
     val onClick: () -> Unit = {}
 ) : Control2(Attrs()) {
 

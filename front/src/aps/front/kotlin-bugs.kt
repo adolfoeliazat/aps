@@ -4,35 +4,57 @@ package aps.front
 
 import aps.*
 
-fun qwe_withoutCast_1() {
-    val d: dynamic = null // Something coming from outside
-    // .....
-    val s: String = d
-    clog("sssss", s)
-}
 
-fun qwe_withCast_1() {
-    val d: dynamic = null // Something coming from outside
-    // .....
-    val s: String = d as String
-    //                ^~~~~~~~~ Incorrect warning: No cast needed
-    clog("sssss", s)
-}
+//fun qwe_breaks() {
+//    val obj = object {
+//        val s: String? = "qqqqqq"
+//    }
+//
+//    obj.s?.let {
+//        console.log("In this block I don't reference argument")
+//    }
+//}
+//
+//fun qwe_works() {
+//    val obj = object {
+//        val s: String? = "qqqqqq"
+//    }
+//
+//    obj.s?.let {
+//        console.log("In this block I do reference argument: " + it)
+//    }
+//}
 
-fun qwe_withoutCast_2() {
-    val d: dynamic = 123 // Something coming from outside
-    // .....
-    val s: String = d
-    clog("sssss", s)
-}
 
-fun qwe_withCast_2() {
-    val d: dynamic = 123 // Something coming from outside
-    // .....
-    val s: String = d as String
-    //                ^~~~~~~~~ Incorrect warning: No cast needed
-    clog("sssss", s)
-}
+//fun qwe_withoutCast_1() {
+//    val d: dynamic = null // Something coming from outside
+//    // .....
+//    val s: String = d
+//    clog("sssss", s)
+//}
+//
+//fun qwe_withCast_1() {
+//    val d: dynamic = null // Something coming from outside
+//    // .....
+//    val s: String = d as String
+//    //                ^~~~~~~~~ Incorrect warning: No cast needed
+//    clog("sssss", s)
+//}
+//
+//fun qwe_withoutCast_2() {
+//    val d: dynamic = 123 // Something coming from outside
+//    // .....
+//    val s: String = d
+//    clog("sssss", s)
+//}
+//
+//fun qwe_withCast_2() {
+//    val d: dynamic = 123 // Something coming from outside
+//    // .....
+//    val s: String = d as String
+//    //                ^~~~~~~~~ Incorrect warning: No cast needed
+//    clog("sssss", s)
+//}
 
 
 

@@ -1,7 +1,10 @@
 package aps
 
 object const {
-    val noItemsMessage = t("TOTE", "Савсэм ничего нэт, да...")
+    object msg {
+        val noItems = t("TOTE", "Савсэм ничего нэт, да...")
+        val serviceFuckedUp = t("Service is temporarily fucked up, sorry", "Сервис временно в жопе, просим прощения")
+    }
 
     object orderArea {
         val admin = "Admin"

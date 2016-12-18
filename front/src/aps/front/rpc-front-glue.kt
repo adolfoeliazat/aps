@@ -58,7 +58,7 @@ private fun <Req: RequestMatumba, Meat> _sendSafe(token: String?, req: Req): Pro
         try {
             __await(_send<Req, Meat>(token, req))
         } catch(e: Throwable) {
-            FormResponse2.Shitty<Meat>(t("Service is temporarily fucked up, sorry", "Сервис временно в жопе, просим прощения"), listOf())
+            FormResponse2.Shitty<Meat>(const.msg.serviceFuckedUp, listOf())
         })
 }
 

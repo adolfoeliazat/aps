@@ -41,8 +41,6 @@ class QueryBuilder(val shortDescription: String) {
     }
 }
 
-val MORE_CHUNK = 10 + 1
-
 class Chunk<T>(val items: List<T>, val moreFromId: String?)
 
 
@@ -56,6 +54,8 @@ fun <POJO : Any, RTO> selectChunk(
     ordering: Ordering,
     fromID: Long?
 ) : Chunk<RTO> {
+    val chunkSize = 10
+
     val theFromID = fromID?.let {it} ?: if (ordering == Ordering.ASC) 0L else Long.MAX_VALUE
     var records = QueryBuilder("Select chunk")
         .text("select *")
@@ -64,13 +64,13 @@ fun <POJO : Any, RTO> selectChunk(
         .run(appendToWhere)
         .text("and id ${if (ordering == Ordering.ASC) ">=" else "<="}").arg(theFromID)
         .text("order by id $ordering")
-        .text("fetch first ${MORE_CHUNK} rows only")
+        .text("fetch first ${chunkSize + 1} rows only")
         .fetch(q)
 
     var moreFromId: String? = null
-    if (records.size == MORE_CHUNK) {
+    if (records.size == chunkSize + 1) {
         moreFromId = "" + records.last()["id"]
-        records = records.subList(0, MORE_CHUNK - 1)
+        records = records.subList(0, chunkSize)
     }
 
     val items = records.map{it.into(pojoClass.java)}.map{loadItem(it, q)}

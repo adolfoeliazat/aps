@@ -234,7 +234,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                                            else
                                                if (ebafHost.showEmptyLabel) {
                                                    Shitus.diva(json("style" to json("marginTop" to 10)),
-                                                               emptyMessage?.let{it} ?: Shitus.spanc(json("tame" to "nothingLabel", "content" to const.noItemsMessage)))
+                                                               emptyMessage?.let{it} ?: Shitus.spanc(json("tame" to "nothingLabel", "content" to const.msg.noItems)))
                                                }
                                                else {
                                                    ""

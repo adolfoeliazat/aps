@@ -237,7 +237,7 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
         }
     } catch(e: Throwable) {
         spitExceptionToConsole(e)
-        ZimbabweResponse.Shitty<Res>(t("TOTE", "Сервис временно в жопе, просим прощения"), listOf())
+        ZimbabweResponse.Shitty<Res>(const.msg.serviceFuckedUp, listOf())
     }
 }
 

@@ -156,13 +156,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
     lateinit var meat: ItemsResponse<UAOrderFileRTO>
 
     override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
-        val res = await(sendCustomerGetUAOrderFiles(world.tokenSure, ItemsRequest(FileFilter.values())-{o->
-            o.entityID.value = order.id
-            o.filter.value = FileFilter.ALL
-            o.ordering.value = Ordering.DESC
-            o.searchString.value = ""
-//            o.fromID.value = "0"
-        }))
+        val res = await(requestChunk(null))
         when (res) {
             is ZimbabweResponse.Shitty -> res
             is ZimbabweResponse.Hunky -> {
@@ -170,6 +164,16 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                 null
             }
         }
+    }
+
+    private fun requestChunk(fromID: String?): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> {
+        return sendCustomerGetUAOrderFiles(world.tokenSure, ItemsRequest(FileFilter.values())-{o->
+            o.entityID.value = order.id
+            o.filter.value = FileFilter.ALL
+            o.ordering.value = Ordering.DESC
+            o.searchString.value = ""
+            o.fromID.value = fromID
+        })
     }
 
     val ebafHost = object:EvaporatingButtonAndFormHost {
@@ -180,7 +184,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
         override var headerControlsClass = ""
 
         override fun updateShit() {
-            world.updatePage()
+            world.updatePage() // TODO:vgrechka Don't need/want to update every-fucking-thing
         }
     }
 
@@ -207,23 +211,29 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
 
     val content = ToReactElementable.from {kdiv{o->
         o- ebafPlus.renderForm()
+        o- renderItems(this.meat, noItemsMessage = true)
+    }}
 
+    private fun renderItems(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean): ToReactElementable {
         if (meat.items.isEmpty()) {
-            o- const.noItemsMessage
-        } else {
+            return if (noItemsMessage) span(const.msg.noItems)
+            else NOTRE
+        }
+
+        return kdiv{o->
             for ((fileIndex, orderFile) in meat.items.withIndex()) {
                 val file = orderFile.file
-                fun label(title: String) = klabel(marginBottom = 0) {it-title}
+                fun label(title: String) = klabel(marginBottom = 0) {it - title}
 
                 fun row(build: (ElementBuilder) -> Unit) =
                     kdiv(className = "row", marginBottom = "0.5em"){o->
                         build(o)
                     }
 
-                exhaustive/when (world.userSure.kind) {
+                exhaustive / when (world.userSure.kind) {
                     UserKind.CUSTOMER -> {
-                        o- kdiv{o->
-                            o- row{o->
+                        o- kdiv {o ->
+                            o- row {o ->
                                 o- kdiv(className = "col-md-12"){o->
                                     o- kdiv(className = "cunt-header"){o->
                                         o- ki(className = "cunt-header-left-icon fa fa-file")
@@ -232,21 +242,21 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                                             o- "$numberSign${orderFile.id}"
                                         }
                                         o- kic("download-$fileIndex", className = "cunt-header-right-icon fa fa-cloud-download", style = Style(right = 30, top = 6),
-                                              onClick = {
-                                                  val iframeID = puid()
-                                                  jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
-                                                  val iframe = byid0(iframeID) as HTMLIFrameElement
-                                                  gloshit.iframe = iframe
-                                                  iframe.onload = {
-                                                      iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
-                                                  }
-                                                  iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
-                                              })
+                                                onClick = {
+                                                    val iframeID = puid()
+                                                    jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
+                                                    val iframe = byid0(iframeID) as HTMLIFrameElement
+                                                    gloshit.iframe = iframe
+                                                    iframe.onload = {
+                                                        iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
+                                                    }
+                                                    iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
+                                                })
                                         o- ki(className = "cunt-header-right-icon fa fa-pencil")
                                     }
                                 }
                             }
-                            o- row{o->
+                            o- row {o ->
                                 o- kdiv(className = "col-md-4"){o->
                                     o- label(t("TOTE", "Создан"))
                                     o- kdiv(){o->
@@ -266,7 +276,7 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                                     }
                                 }
                             }
-                            o- row{o->
+                            o- row {o ->
                                 o- kdiv(className = "col-md-12"){o->
                                     o- label(t("TOTE", "Детали"))
                                     o- kdiv(whiteSpace = "pre-wrap"){o->
@@ -282,8 +292,34 @@ private class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                     UserKind.ADMIN -> imf()
                 }
             }
+
+            meat.moreFromID?.let {moreFromID ->
+                moreFromID
+                val placeholder = Placeholder()
+                placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
+                    val btn = Button("loadMore", title = t("TOTE", "Загрузить еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50))
+                    btn.onClicka = {
+                        async {
+                            effects2.blinkOn(byid(btn.elementID))
+                            try {
+                                val res = await(requestChunk(meat.moreFromID))
+                                exhaustive / when (res) {
+                                    is ZimbabweResponse.Shitty -> openErrorModal(res.error)
+                                    is ZimbabweResponse.Hunky -> placeholder.setContent(renderItems(res.meat, noItemsMessage = false))
+                                }
+                            } catch (e: Throwable) {
+                                openErrorModal(const.msg.serviceFuckedUp)
+                            } finally {
+                                effects2.blinkOff()
+                            }
+                        }
+                    }
+                    o- btn
+                })
+                o- placeholder
+            }
         }
-    }}
+    }
 
     override val tabSpec = TabSpec("files", t("TOTE", "Файлы"), content, stripContent)
 }
