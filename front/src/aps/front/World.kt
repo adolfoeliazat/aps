@@ -58,8 +58,8 @@ class World(val name: String) {
     lateinit var currentPage: Page
     var token: String? = null
     var signedUpOK: Boolean = false
-    var user: UserRTO? = null
-    val userSure: UserRTO get() = user.let {it ?: bitch("I want a fucking user")}
+    var maybeUser: UserRTO? = null
+    val user: UserRTO get() = maybeUser.let {it ?: bitch("I want a fucking user")}
     lateinit var urlQuery: Map<String, String>
     lateinit var updateNavbar: () -> Unit
     var prevPathname: String? = null
@@ -106,11 +106,11 @@ class World(val name: String) {
     }
 
     fun getUser(): UserRTO? {
-        return user
+        return maybeUser
     }
 
     fun setUser(x: dynamic) {
-        user = x
+        maybeUser = x
     }
 
     fun loadSignInPage() {
@@ -121,7 +121,7 @@ class World(val name: String) {
         typedStorageLocal.clear()
 //        hrss.storageLocal.clear()
         token = null
-        user = null
+        maybeUser = null
         replaceNavigate("/")
     }
 
@@ -141,7 +141,7 @@ class World(val name: String) {
             if (token != null) {
                 try {
                     val res = __await(SignInWithTokenRequest.send(token!!))
-                    user = res.user
+                    maybeUser = res.user
 //                        ui.startLiveStatusPolling()
                 } catch (e: Throwable) {
                     // Pretend no one was signed in.
@@ -219,7 +219,7 @@ class World(val name: String) {
         val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
         noise.clog(window.location.href)
 
-        val user = user
+        val user = maybeUser
         val firstRun = loadPageForURLFirstRun
         loadPageForURLFirstRun = false
         urlQuery = parseQueryString(window.location.href)

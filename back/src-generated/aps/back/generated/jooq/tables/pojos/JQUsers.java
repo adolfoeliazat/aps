@@ -4,6 +4,8 @@
 package aps.back.generated.jooq.tables.pojos;
 
 
+import aps.back.generated.jooq.enums.JQUserKind;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -23,28 +25,28 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUsers implements Serializable {
 
-    private static final long serialVersionUID = 1479086944;
+    private static final long serialVersionUID = 1032444517;
 
-    private Long      id;
-    private Boolean   deleted;
-    private Timestamp insertedAt;
-    private Timestamp updatedAt;
-    private Timestamp profileUpdatedAt;
-    private Object    tsv;
-    private String    kind;
-    private String    lang;
-    private String    email;
-    private String    passwordHash;
-    private String    state;
-    private String    profileRejectionReason;
-    private String    banReason;
-    private Long      assignedTo;
-    private String    adminNotes;
-    private String    firstName;
-    private String    lastName;
-    private String    phone;
-    private String    compactPhone;
-    private String    aboutMe;
+    private Long       id;
+    private Boolean    deleted;
+    private Timestamp  insertedAt;
+    private Timestamp  updatedAt;
+    private Timestamp  profileUpdatedAt;
+    private Object     tsv;
+    private JQUserKind kind;
+    private String     lang;
+    private String     email;
+    private String     passwordHash;
+    private String     state;
+    private String     profileRejectionReason;
+    private String     banReason;
+    private Long       assignedTo;
+    private String     adminNotes;
+    private String     firstName;
+    private String     lastName;
+    private String     phone;
+    private String     compactPhone;
+    private String     aboutMe;
 
     public JQUsers() {}
 
@@ -72,26 +74,26 @@ public class JQUsers implements Serializable {
     }
 
     public JQUsers(
-        Long      id,
-        Boolean   deleted,
-        Timestamp insertedAt,
-        Timestamp updatedAt,
-        Timestamp profileUpdatedAt,
-        Object    tsv,
-        String    kind,
-        String    lang,
-        String    email,
-        String    passwordHash,
-        String    state,
-        String    profileRejectionReason,
-        String    banReason,
-        Long      assignedTo,
-        String    adminNotes,
-        String    firstName,
-        String    lastName,
-        String    phone,
-        String    compactPhone,
-        String    aboutMe
+        Long       id,
+        Boolean    deleted,
+        Timestamp  insertedAt,
+        Timestamp  updatedAt,
+        Timestamp  profileUpdatedAt,
+        Object     tsv,
+        JQUserKind kind,
+        String     lang,
+        String     email,
+        String     passwordHash,
+        String     state,
+        String     profileRejectionReason,
+        String     banReason,
+        Long       assignedTo,
+        String     adminNotes,
+        String     firstName,
+        String     lastName,
+        String     phone,
+        String     compactPhone,
+        String     aboutMe
     ) {
         this.id = id;
         this.deleted = deleted;
@@ -163,11 +165,11 @@ public class JQUsers implements Serializable {
         this.tsv = tsv;
     }
 
-    public String getKind() {
+    public JQUserKind getKind() {
         return this.kind;
     }
 
-    public void setKind(String kind) {
+    public void setKind(JQUserKind kind) {
         this.kind = kind;
     }
 

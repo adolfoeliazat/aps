@@ -47,7 +47,8 @@ class FileRTO(
 
 class UAOrderFileRTO(
     val id: String,
-    val file: FileRTO
+    val file: FileRTO,
+    val seenAsFrom: UserKind
 )
 
 

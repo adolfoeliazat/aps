@@ -6,6 +6,7 @@ package aps.back.generated.jooq.tables;
 
 import aps.back.generated.jooq.JQPublic;
 import aps.back.generated.jooq.Keys;
+import aps.back.generated.jooq.enums.JQUserKind;
 import aps.back.generated.jooq.tables.records.JQUaOrderFilesRecord;
 
 import java.sql.Timestamp;
@@ -37,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrderFiles extends TableImpl<JQUaOrderFilesRecord> {
 
-    private static final long serialVersionUID = -557151165;
+    private static final long serialVersionUID = -1856184919;
 
     /**
      * The reference instance of <code>public.ua_order_files</code>
@@ -91,6 +92,11 @@ public class JQUaOrderFiles extends TableImpl<JQUaOrderFilesRecord> {
      * The column <code>public.ua_order_files.file_id</code>.
      */
     public final TableField<JQUaOrderFilesRecord, Long> FILE_ID = createField("file_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ua_order_files.seen_as_from</code>.
+     */
+    public final TableField<JQUaOrderFilesRecord, JQUserKind> SEEN_AS_FROM = createField("seen_as_from", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(aps.back.generated.jooq.enums.JQUserKind.class), this, "");
 
     /**
      * Create a <code>public.ua_order_files</code> table reference

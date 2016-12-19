@@ -9,6 +9,7 @@ drop table if exists file_user_permissions;
 drop table if exists files;
 drop table if exists users;
 
+drop type if exists user_kind;
 drop type if exists ua_document_type;
 drop type if exists document_urgency;
 drop type if exists ua_academic_level;

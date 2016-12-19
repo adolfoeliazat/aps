@@ -8,6 +8,7 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.Tables.*
+import aps.back.generated.jooq.enums.*
 import into.kommon.*
 import org.jooq.exception.DataAccessException
 import org.mindrot.jbcrypt.BCrypt
@@ -28,23 +29,26 @@ fun signUp() = publicProcedure(
                 it
             } ?: "" + UUID.randomUUID()
 
-            ctx.q("Insert user")
-                .insertInto(USERS)
-                .set(USERS.INSERTED_AT, ctx.requestTimestamp)
-                .set(USERS.UPDATED_AT, ctx.requestTimestamp)
-                .set(USERS.EMAIL, email)
-                .set(USERS.KIND, ctx.clientKind.name)
-                .set(USERS.LANG, ctx.lang.name)
-                .set(USERS.STATE,
-                     when(ctx.clientKind) {
-                         ClientKind.CUSTOMER -> UserState.COOL.name
-                         ClientKind.WRITER -> UserState.PROFILE_PENDING.name
-                     })
-                .set(USERS.PASSWORD_HASH, BCrypt.hashpw(password, BCrypt.gensalt()))
-                .set(USERS.FIRST_NAME, firstName)
-                .set(USERS.LAST_NAME, lastName)
-                .set(USERS.ADMIN_NOTES, "")
-                .execute()
+            USERS.let {
+                ctx.insertShit("Insert user", it)
+                    .set(it.INSERTED_AT, ctx.requestTimestamp)
+                    .set(it.UPDATED_AT, ctx.requestTimestamp)
+                    .set(it.EMAIL, email)
+                    .set(it.KIND, when (ctx.clientKind) {
+                        ClientKind.CUSTOMER -> JQUserKind.CUSTOMER
+                        ClientKind.WRITER -> JQUserKind.WRITER
+                    })
+                    .set(it.LANG, ctx.lang.name)
+                    .set(it.STATE, when(ctx.clientKind) {
+                        ClientKind.CUSTOMER -> UserState.COOL.name
+                        ClientKind.WRITER -> UserState.PROFILE_PENDING.name
+                    })
+                    .set(it.PASSWORD_HASH, BCrypt.hashpw(password, BCrypt.gensalt()))
+                    .set(it.FIRST_NAME, firstName)
+                    .set(it.LAST_NAME, lastName)
+                    .set(it.ADMIN_NOTES, "")
+                    .execute()
+            }
 
             val signInURL = "${requestShit.commonRequestFields.clientURL}/sign-in.html"
 

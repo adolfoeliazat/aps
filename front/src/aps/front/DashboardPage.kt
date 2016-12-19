@@ -15,7 +15,7 @@ import into.kommon.ifOrEmpty
 
 class DashboardPage(val ui: World) {
     fun load(preserveScroll: Boolean = false): Promise<Unit> {"__async"
-        val showWorkSection = ui.userSure.state == UserState.COOL
+        val showWorkSection = ui.user.state == UserState.COOL
         val myPage = Page(
             header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Dashboard", "Панель")))),
             body = oldShitAsToReactElementable(Shitus.diva(
@@ -80,7 +80,7 @@ class DashboardPage(val ui: World) {
                                     ui.signOut()
                                 }))
 
-                                if (ui.userSure.state != UserState.BANNED) {
+                                if (ui.user.state != UserState.BANNED) {
                                     o+= darkLink(json("tamy" to "changePassword", "title" to t("TOTE", "Сменить пароль"), "onClick" to {"__async"
                                         console.warn("// TODO:vgrechka Implement changing password    2eb6584b-4ffa-4ae8-95b4-6836b866894a")
                                     }))

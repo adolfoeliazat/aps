@@ -35,6 +35,11 @@ fun <R : Record> InsertSetMoreStep<R>.returnID(table: Table<R>): Long {
          .getValue(idField)
 }
 
+fun UserKind.toJOOQ(): JQUserKind = when (this) {
+    UserKind.CUSTOMER -> JQUserKind.CUSTOMER
+    UserKind.WRITER -> JQUserKind.WRITER
+    UserKind.ADMIN -> JQUserKind.ADMIN
+}
 
 fun UAAcademicLevel.toJOOQ(): JQUaAcademicLevel = when (this) {
     UAAcademicLevel.SCHOOL -> JQUaAcademicLevel.SCHOOL
@@ -45,6 +50,12 @@ fun UADocumentType.toJOOQ(): JQUaDocumentType = when (this) {
     UADocumentType.ESSAY -> JQUaDocumentType.ESSAY
     UADocumentType.COURSE -> JQUaDocumentType.COURSE
     UADocumentType.GRADUATION -> JQUaDocumentType.GRADUATION
+}
+
+fun JQUserKind.toApp(): UserKind = when (this) {
+    JQUserKind.CUSTOMER -> UserKind.CUSTOMER
+    JQUserKind.WRITER -> UserKind.WRITER
+    JQUserKind.ADMIN -> UserKind.ADMIN
 }
 
 fun JQUaDocumentType.toApp(): UADocumentType = when (this) {
@@ -103,7 +114,7 @@ fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
         insertedAt = insertedAt.toPortable(),
         updatedAt = updatedAt.toPortable(),
         profileUpdatedAt = profileUpdatedAt.toMaybePortable(),
-        kind = kind.toUserKind(),
+        kind = kind.toApp(),
         lang = lang.toLanguage(),
         email = email,
         state = state.toUserState(),
@@ -133,7 +144,8 @@ fun JQFiles.toRTO(q: DSLContextProxyFactory): FileRTO {
 fun JQUaOrderFiles.toRTO(q: DSLContextProxyFactory): UAOrderFileRTO {
     return UAOrderFileRTO(
         id = "" + id,
-        file = loadFile(q, fileId)
+        file = loadFile(q, fileId),
+        seenAsFrom = seenAsFrom.toApp()
     )
 }
 

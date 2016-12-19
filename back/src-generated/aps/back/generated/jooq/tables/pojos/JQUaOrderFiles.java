@@ -4,6 +4,8 @@
 package aps.back.generated.jooq.tables.pojos;
 
 
+import aps.back.generated.jooq.enums.JQUserKind;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -23,16 +25,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUaOrderFiles implements Serializable {
 
-    private static final long serialVersionUID = -1151334697;
+    private static final long serialVersionUID = -1576417709;
 
-    private Long      id;
-    private Boolean   deleted;
-    private Timestamp insertedAt;
-    private Timestamp updatedAt;
-    private Long      creatorId;
-    private Long      uaOrderId;
-    private Long      uaOrderAreaId;
-    private Long      fileId;
+    private Long       id;
+    private Boolean    deleted;
+    private Timestamp  insertedAt;
+    private Timestamp  updatedAt;
+    private Long       creatorId;
+    private Long       uaOrderId;
+    private Long       uaOrderAreaId;
+    private Long       fileId;
+    private JQUserKind seenAsFrom;
 
     public JQUaOrderFiles() {}
 
@@ -45,17 +48,19 @@ public class JQUaOrderFiles implements Serializable {
         this.uaOrderId = value.uaOrderId;
         this.uaOrderAreaId = value.uaOrderAreaId;
         this.fileId = value.fileId;
+        this.seenAsFrom = value.seenAsFrom;
     }
 
     public JQUaOrderFiles(
-        Long      id,
-        Boolean   deleted,
-        Timestamp insertedAt,
-        Timestamp updatedAt,
-        Long      creatorId,
-        Long      uaOrderId,
-        Long      uaOrderAreaId,
-        Long      fileId
+        Long       id,
+        Boolean    deleted,
+        Timestamp  insertedAt,
+        Timestamp  updatedAt,
+        Long       creatorId,
+        Long       uaOrderId,
+        Long       uaOrderAreaId,
+        Long       fileId,
+        JQUserKind seenAsFrom
     ) {
         this.id = id;
         this.deleted = deleted;
@@ -65,6 +70,7 @@ public class JQUaOrderFiles implements Serializable {
         this.uaOrderId = uaOrderId;
         this.uaOrderAreaId = uaOrderAreaId;
         this.fileId = fileId;
+        this.seenAsFrom = seenAsFrom;
     }
 
     public Long getId() {
@@ -131,6 +137,14 @@ public class JQUaOrderFiles implements Serializable {
         this.fileId = fileId;
     }
 
+    public JQUserKind getSeenAsFrom() {
+        return this.seenAsFrom;
+    }
+
+    public void setSeenAsFrom(JQUserKind seenAsFrom) {
+        this.seenAsFrom = seenAsFrom;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("JQUaOrderFiles (");
@@ -143,6 +157,7 @@ public class JQUaOrderFiles implements Serializable {
         sb.append(", ").append(uaOrderId);
         sb.append(", ").append(uaOrderAreaId);
         sb.append(", ").append(fileId);
+        sb.append(", ").append(seenAsFrom);
 
         sb.append(")");
         return sb.toString();

@@ -202,7 +202,7 @@ object DB {
                                 .insertInto(Tables.USERS)
                                 .set(u.user.apply {
                                     id = nextUserID++
-                                    kind = _kind.name
+                                    kind = _kind.toJOOQ()
                                     lang = Language.UA.name
                                     state = UserState.COOL.name
                                     passwordHash = secretHash

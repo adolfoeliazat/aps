@@ -186,7 +186,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                             build(o)
                         }
 
-                    exhaustive / when (world.userSure.kind) {
+                    exhaustive / when (world.user.kind) {
                         UserKind.CUSTOMER -> {
                             o- kdiv {o ->
                                 o- row {o ->
@@ -196,6 +196,14 @@ class CustomerSingleUAOrderPage(val world: World) {
                                             o- (" " + file.title)
                                             o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
                                                 o- "$numberSign${orderFile.id}"
+                                            }
+                                            o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                                                o- when (orderFile.seenAsFrom) {
+                                                    world.user.kind -> t("TOTE", "Мой")
+                                                    UserKind.CUSTOMER -> t("TOTE", "От заказчика")
+                                                    UserKind.WRITER -> t("TOTE", "От писателя")
+                                                    UserKind.ADMIN -> t("TOTE", "От саппорта")
+                                                }
                                             }
                                             o- kic("download-$fileIndex", className = "cunt-header-right-icon fa fa-cloud-download", style = Style(right = 30, top = 6),
                                                    onClick = {
@@ -301,7 +309,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : FuckingTab {
                 build(o)
             }
 
-        exhaustive/when (world.userSure.kind) {
+        exhaustive/when (world.user.kind) {
             UserKind.CUSTOMER -> {
                 o- row{o->
                     o- kdiv(className = "col-md-4"){o->

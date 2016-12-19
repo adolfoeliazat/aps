@@ -30,6 +30,12 @@ $$ language 'plpgsql';
 
 -- @ctx tables
 
+create type user_kind as enum (
+    'CUSTOMER',
+    'WRITER',
+    'ADMIN'
+);
+
 create table users(
     id bigserial primary key,
     deleted boolean not null,
@@ -37,7 +43,7 @@ create table users(
     updated_at timestamp not null,
     profile_updated_at timestamp,
     tsv tsvector not null,
-    kind text not null,
+    kind user_kind not null,
     lang text not null,
     email text unique not null,
     password_hash text not null,
@@ -275,7 +281,8 @@ create table ua_order_files(
     creator_id bigint not null references users(id),
     ua_order_id bigint not null references ua_orders(id),
     ua_order_area_id bigint not null references ua_order_areas(id),
-    file_id bigint not null references files(id)
+    file_id bigint not null references files(id),
+    seen_as_from user_kind not null
 );
 
 alter sequence ua_order_files_id_seq restart with 100000;

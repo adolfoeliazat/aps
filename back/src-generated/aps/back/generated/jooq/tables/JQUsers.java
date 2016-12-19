@@ -6,6 +6,7 @@ package aps.back.generated.jooq.tables;
 
 import aps.back.generated.jooq.JQPublic;
 import aps.back.generated.jooq.Keys;
+import aps.back.generated.jooq.enums.JQUserKind;
 import aps.back.generated.jooq.tables.records.JQUsersRecord;
 
 import java.sql.Timestamp;
@@ -37,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQUsers extends TableImpl<JQUsersRecord> {
 
-    private static final long serialVersionUID = 1604036774;
+    private static final long serialVersionUID = 543417333;
 
     /**
      * The reference instance of <code>public.users</code>
@@ -85,7 +86,7 @@ public class JQUsers extends TableImpl<JQUsersRecord> {
     /**
      * The column <code>public.users.kind</code>.
      */
-    public final TableField<JQUsersRecord, String> KIND = createField("kind", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<JQUsersRecord, JQUserKind> KIND = createField("kind", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(aps.back.generated.jooq.enums.JQUserKind.class), this, "");
 
     /**
      * The column <code>public.users.lang</code>.

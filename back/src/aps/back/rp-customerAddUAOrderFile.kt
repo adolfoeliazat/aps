@@ -8,6 +8,7 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.Tables.*
+import aps.back.generated.jooq.enums.*
 import java.util.*
 
 @RemoteProcedureFactory fun customerAddUAOrderFile() = customerProcedure(
@@ -38,11 +39,15 @@ import java.util.*
                 .fetchOne().getValue(it.ID)
         }
 
+        // TODO:vgrechka Vary
+        val seenAsFrom = JQUserKind.CUSTOMER
+
         val orderFileID = UA_ORDER_FILES.let {
             ctx.insertShit("Insert order file", it)
                 .set(it.UA_ORDER_ID, req.orderID.value.toLong())
                 .set(it.FILE_ID, fileID)
                 .set(it.UA_ORDER_AREA_ID, areaID)
+                .set(it.SEEN_AS_FROM, seenAsFrom)
                 .returnID(it)
         }
 
