@@ -21,7 +21,7 @@ object const {
         val minTitleLen = 5
         val maxTitleLen = 100
         val minDetailsLen = 5
-        val maxDetailsLen = 1000
+        val maxDetailsLen = 2000
     }
 
     object order {

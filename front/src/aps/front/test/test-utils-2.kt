@@ -113,6 +113,7 @@ inline fun fiddlingWithGlobals(block: () -> Unit) {
 
 class TestShit {
     lateinit var bobulToken: String
+    lateinit var fedorToken: String
 }
 
 fun TestScenarioBuilder.setUpBobul(testShit: TestShit) {
@@ -132,12 +133,12 @@ fun TestScenarioBuilder.setUpBobul(testShit: TestShit) {
                         o.firstName.value = "Иво"
                         o.lastName.value = "Бобул"
                     }
-                })).orDie
+                })).orDie()
 
                 testShit.bobulToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
                     o.email.value = "bobul@test.shit.ua"
                     o.password.value = "bobul-secret"
-                })).orDie.token
+                })).orDie().token
 
 //                await(send(TestSetUserFieldsRequest()-{o->
 //                    o.email.value = "bobul@test.shit.ua"
@@ -147,23 +148,56 @@ fun TestScenarioBuilder.setUpBobul(testShit: TestShit) {
     }}
 }
 
+fun TestScenarioBuilder.setUpFedor(testShit: TestShit) {
+    acta {async{
+        measureAndReportToDocumentElement("Preparing writer: Fedor Dostoevsky") {
+            await(ImposeNextGeneratedPasswordRequest.send("fedor-secret"))
+
+            fiddlingWithGlobals {
+                global.CLIENT_KIND = ClientKind.WRITER.name
+
+                await(send(null, SignUpRequest()-{o->
+                    o.agreeTerms.value = true
+                    o.immutableSignUpFields-{o->
+                        o.email.value = "fedor@test.shit.ua"
+                    }
+                    o.mutableSignUpFields-{o->
+                        o.firstName.value = "Федор"
+                        o.lastName.value = "Достоевский"
+                    }
+                })).orDie()
+
+                await(send(TestSetUserFieldsRequest()-{o->
+                    o.email.value = "fedor@test.shit.ua"
+                    o.state.value = UserState.COOL
+                }))
+
+                testShit.fedorToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
+                    o.email.value = "fedor@test.shit.ua"
+                    o.password.value = "fedor-secret"
+                })).orDie().token
+            }
+        }
+    }}
+}
+
 //fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, addFiles: () -> Unit) {
 //
 //}
 
-fun setUpFiles1(testShit: TestShit, orderID: String): Promise<Unit> = async {
+fun setUpFilesByBobul_1(testShit: TestShit, orderID: String): Promise<Unit> = async {
     await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:31:15"))
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("fuck you.rtf", "${testconst.filesRoot}fuck you.rtf")
         o.title.value = "A warm word to my writer"
         o.details.value = dedent("""
-                        Я к вам пишу – чего же боле?
-                        Что я могу еще сказать?
-                        Теперь, я знаю, в вашей воле
-                        Меня презреньем наказать.
-                    """)
-    }))
+            Я к вам пишу – чего же боле?
+            Что я могу еще сказать?
+            Теперь, я знаю, в вашей воле
+            Меня презреньем наказать.
+        """)
+    })).orDie()
 
     await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:42:18"))
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
@@ -171,11 +205,11 @@ fun setUpFiles1(testShit: TestShit, orderID: String): Promise<Unit> = async {
         o.file.testFileOnServer = FileField.TestFileOnServer("crazy monster boobs.rtf", "${testconst.filesRoot}crazy monster boobs.rtf")
         o.title.value = "Cool stuff"
         o.details.value = dedent("""
-                         - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
-                         - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
-                         - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
-                    """)
-    }))
+             - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
+             - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
+             - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
+        """)
+    })).orDie()
 
     await(ImposeNextRequestTimestampRequest.send("2016-12-02 13:02:25"))
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
@@ -183,15 +217,33 @@ fun setUpFiles1(testShit: TestShit, orderID: String): Promise<Unit> = async {
         o.file.testFileOnServer = FileField.TestFileOnServer("the trial.doc", "${testconst.filesRoot}the trial.doc")
         o.title.value = "Процесс by Кафка"
         o.details.value = dedent("""
-                        Это чисто на почитать...
-                    """)
-    }))
+            Это чисто на почитать...
+        """)
+    })).orDie()
 
     await(fuckingRemoteCall.executeSQL("Add file permissions", """
-                    insert into file_user_permissions(file_id, user_id) values(100000, 100000);
-                    insert into file_user_permissions(file_id, user_id) values(100001, 100000);
-                    insert into file_user_permissions(file_id, user_id) values(100002, 100000);
-                """))
+        insert into file_user_permissions(file_id, user_id) values(100000, 100000);
+        insert into file_user_permissions(file_id, user_id) values(100001, 100000);
+        insert into file_user_permissions(file_id, user_id) values(100002, 100000);
+    """))
+}
+
+fun setUpFilesByFedor_1(testShit: TestShit, orderID: String): Promise<Unit> = async {
+    await(ImposeNextRequestTimestampRequest.send("2016-12-05 10:15:42"))
+    await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("idiot.rtf", "${testconst.filesRoot}idiot.rtf")
+        o.title.value = "The Idiot"
+        o.details.value = dedent("""
+            26-летний князь **Лев Николаевич Мышкин** возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком искренним и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
+
+            В доме Епанчиных выясняется, что **Настасья Филипповна** там хорошо известна. Есть план выдать её за протеже генерала Епанчина Гаврилу Ардалионовича Иволгина, человека амбициозного, но посредственного. Князь Мышкин знакомится со всеми основными персонажами повествования. Это дочери Епанчиных — Александра, Аделаида и Аглая, на которых он производит благоприятное впечатление, оставаясь объектом их немного насмешливого внимания. Это генеральша Лизавета Прокофьевна Епанчина, которая находится в постоянном волнении из-за того, что её муж общается с Настасьей Филипповной, имеющей репутацию падшей. Это Ганя Иволгин, который очень страдает из-за предстоящей ему роли мужа Настасьи Филипповны, хотя ради денег готов на всё, и не может решиться на развитие своих пока очень слабых отношений с Аглаей. Князь Мышкин довольно простодушно рассказывает генеральше и сёстрам Епанчиным о том, что он узнал о Настасье Филипповне от Рогожина, а также поражает их своим повествованием о воспоминаниях и чувствах своего знакомого, который был приговорён к смертной казни, но в последний момент был помилован.
+        """)
+    })).orDie()
+
+    await(fuckingRemoteCall.executeSQL("Add file permissions", """
+        insert into file_user_permissions(file_id, user_id) values(100003, 100000);
+    """))
 }
 
 fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String) -> Promise<Unit>) {
@@ -221,15 +273,22 @@ fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String)
 
 fun TestScenarioBuilder.setUpOrderAndFiles1(shit: TestShit) {
     val o = this
-    o.setUpOrderFilesTestTemplate(
+    o.setUpOrderFilesTestTemplate_1(
         shit,
-        setUpOrders = {o.setUpBobulOrder(shit, {oid-> setUpFiles1(shit, oid)})},
+        setUpUsers = {
+            o.setUpBobul(shit)
+        },
+        setUpOrders = {
+            o.setUpBobulOrder(shit, {oid->
+                setUpFilesByBobul_1(shit, oid)
+            })
+        },
         assertScreen = {o.todo("setUpOrderFiles1 assertScreen")})
 }
 
-fun TestScenarioBuilder.setUpOrderFilesTestTemplate(shit: TestShit, setUpOrders: () -> Unit, assertScreen: () -> Unit) {
+fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(shit: TestShit, setUpUsers: () -> Unit, setUpOrders: () -> Unit, assertScreen: () -> Unit) {
     val o = this
-    o.setUpBobul(shit)
+    setUpUsers()
     setUpOrders()
     o.initFuckingBrowser(fillStorageLocal = {
         it.token = shit.bobulToken

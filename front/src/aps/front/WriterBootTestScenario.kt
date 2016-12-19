@@ -18,12 +18,12 @@ abstract class WriterBootTestScenario : BootTestScenario() {
                 o.firstName.value = "Gaylord"
                 o.lastName.value = "Fucker"
             }
-        })).orDie
+        })).orDie()
 
         fuckerToken = __await(sendSafe(null, SignInWithPasswordRequest()-{o->
             o.email.value = "fucker@test.shit.ua"
             o.password.value = "fucker-secret"
-        })).orDie.token
+        })).orDie().token
 
         fieldsReq.email.value = "fucker@test.shit.ua"
         __await(send(fieldsReq))

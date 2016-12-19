@@ -35,16 +35,17 @@ fun <Meat> FormResponse2<Meat>.whenShitty(shitty: (error: FormResponse2.Shitty<M
     : Unit = this.switch(hunky = {it},
                          shitty = {shitty(it)})
 
-val <Meat> FormResponse2<Meat>.orDie: Meat get() = this.switch(
+fun <Meat> FormResponse2<Meat>.orDie(): Meat = this.switch(
     hunky = {it},
     shitty = {
-        throw FatException("Got shitty response from ${Globus.lastAttemptedRPCName}: ${it.error}",
-                           markdownPayload =
-                               if (it.fieldErrors.isEmpty())
-                                   "No field errors"
-                               else
-                                   "Field errors:\n" +
-                                   it.fieldErrors.map{"* ${it.field}: ${it.error}"}.joinToString("\n"))
+        throw FatException(
+            "Got shitty response from ${Globus.lastAttemptedRPCName}: ${it.error}",
+            markdownPayload =
+                if (it.fieldErrors.isEmpty())
+                    "No field errors"
+                else
+                    "Field errors:\n" +
+                        it.fieldErrors.map{"* ${it.field}: ${it.error}"}.joinToString("\n"))
     }
 )
 

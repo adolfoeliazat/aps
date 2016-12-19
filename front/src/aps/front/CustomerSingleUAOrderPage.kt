@@ -121,7 +121,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 
         val ebafPlus = EvaporatingButtonAndForm(
             ebafHost, "plus", Button.Level.PRIMARY, "plus",
-            formSpec = FormSpec<CustomerAddUAOrderFileRequest, CustomerAddUAOrderFileRequest.Response>(
+            formSpec = FormSpec<CustomerAddUAOrderFileRequest, AddUAOrderFileRequestBase.Response>(
                 CustomerAddUAOrderFileRequest(), world,
                 primaryButtonTitle = t("TOTE", "Добавить"),
                 cancelButtonTitle = defaultCancelButtonTitle
@@ -193,6 +193,12 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     o- kdiv(className = "col-md-12"){o->
                                         o- kdiv(className = "cunt-header"){o->
                                             o- ki(className = "cunt-header-left-icon fa fa-file")
+                                            o- ki(className = "cunt-header-left-overlay-bottom-left-icon fa " +
+                                                when (orderFile.seenAsFrom) {
+                                                    UserKind.CUSTOMER -> "fa-user"
+                                                    UserKind.WRITER -> "fa-pencil"
+                                                    UserKind.ADMIN -> "fa-cog"
+                                                })
                                             o- (" " + file.title)
                                             o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
                                                 o- "$numberSign${orderFile.id}"

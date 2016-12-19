@@ -418,7 +418,7 @@ class CustomerCreateUAOrderRequest : RequestMatumba() {
     val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen)
 }
 
-class CustomerAddUAOrderFileRequest : RequestMatumba() {
+abstract class AddUAOrderFileRequestBase : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
 
     val orderID = StringHiddenField(this, "orderID")
@@ -426,6 +426,9 @@ class CustomerAddUAOrderFileRequest : RequestMatumba() {
     val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.file.minTitleLen, const.file.maxTitleLen)
     val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.file.minDetailsLen, const.file.maxDetailsLen)
 }
+
+class CustomerAddUAOrderFileRequest : AddUAOrderFileRequestBase()
+class WriterAddUAOrderFileRequest : AddUAOrderFileRequestBase()
 
 enum class UADocumentType(override val title: String) : Titled {
     ESSAY(t("TOTE", "Реферат")),

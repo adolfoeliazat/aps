@@ -101,6 +101,15 @@ fun jsFacing_apsCSS(): String {
             margin-left: 3px;
         }
 
+        .cunt-header-left-overlay-bottom-left-icon {
+            margin-left: 3px;
+            position: absolute;
+            left: 2px;
+            top: 9px;
+            color: #cfd8dc;
+            font-size: 60%;
+        }
+
         .cunt-header-right-icon {
             color: #90a4ae;
             margin-left: 3px;

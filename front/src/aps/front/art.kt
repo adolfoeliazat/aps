@@ -320,6 +320,11 @@ object art {
         } else {
             cwarn("Failed to assertion error pane -- no container for it")
             console.error(exception.asDynamic().stack)
+            if (exception is FatException) {
+                exception.markdownPayload?.let {
+                    console.error(it)
+                }
+            }
         }
 
         val stack = null

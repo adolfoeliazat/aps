@@ -33,7 +33,10 @@ fun sendSafe(token: String?, req: SignInWithPasswordRequest): Promise<FormRespon
 fun send(token: String?, req: CustomerCreateUAOrderRequest): Promise<FormResponse2<CustomerCreateUAOrderRequest.Response>> =
     _send(token, req)
 
-fun send(token: String?, req: CustomerAddUAOrderFileRequest): Promise<FormResponse2<CustomerAddUAOrderFileRequest.Response>> =
+fun send(token: String?, req: CustomerAddUAOrderFileRequest): Promise<FormResponse2<AddUAOrderFileRequestBase.Response>> =
+    _send(token, req)
+
+fun send(token: String?, req: WriterAddUAOrderFileRequest): Promise<FormResponse2<AddUAOrderFileRequestBase.Response>> =
     _send(token, req)
 
 fun send(req: PingRequest): Promise<FormResponse2<GenericResponse>> =

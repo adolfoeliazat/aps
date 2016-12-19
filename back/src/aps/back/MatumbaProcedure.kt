@@ -225,6 +225,19 @@ customerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormR
         logRequestJSON = true))
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
+writerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+    remoteProcedure(ProcedureSpec(
+        req,
+        runShit = runShit,
+        wrapInFormResponse = wrapInFormResponse ?: true,
+        needsDB = true,
+        needsDangerousToken = false,
+        needsUser = true,
+        userKinds = setOf(UserKind.WRITER),
+        considerNextRequestTimestampFiddling = true,
+        logRequestJSON = true))
+
+fun <Req : RequestMatumba, Res : CommonResponseFields>
 adminProcedure(
     req: Req,
     runShit: (ProcedureContext, Req) -> Res,
