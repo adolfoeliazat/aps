@@ -106,6 +106,7 @@
       <w>testconst</w>
       <w>textarea</w>
       <w>tmpdir</w>
+      <w>tsquery</w>
       <w>tsvector</w>
       <w>unchecking</w>
       <w>unduplicate</w>

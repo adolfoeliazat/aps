@@ -196,6 +196,7 @@ create table ua_orders(
 alter sequence ua_orders_id_seq restart with 100000;
 create trigger on_insert before insert on ua_orders for each row execute procedure on_insert();
 create trigger on_update before update on ua_orders for each row execute procedure on_update();
+
 create index ua_orders_tsv_idx on ua_orders using gin (tsv);
 
 create function ua_orders_tsv_trigger() returns trigger as $$
@@ -207,7 +208,6 @@ begin
      ||
      setweight(to_tsvector('pg_catalog.russian', ' '
          ||' '|| coalesce(new.details,'')
-         ||' '|| coalesce(new.admin_notes,'')
          ),'B')
   ;
   return new;
@@ -225,6 +225,7 @@ create table files(
     inserted_at timestamp not null,
     updated_at timestamp not null,
     creator_id bigint not null references users(id),
+    tsv tsvector not null,
     content bytea not null,
     name text not null,
     title text not null,
@@ -237,6 +238,27 @@ create table files(
 alter sequence files_id_seq restart with 100000;
 create trigger on_insert before insert on files for each row execute procedure on_insert();
 create trigger on_update before update on files for each row execute procedure on_update();
+
+create index files_tsv_idx on files using gin (tsv);
+
+create function files_tsv_trigger() returns trigger as $$
+begin
+  new.tsv :=
+     setweight(to_tsvector('pg_catalog.russian', ' '
+         ||' '|| coalesce(new.name, '')
+         ||' '|| coalesce(new.title, '')
+         ),'A')
+     ||
+     setweight(to_tsvector('pg_catalog.russian', ' '
+         ||' '|| coalesce(new.details, '')
+         ),'B')
+  ;
+  return new;
+end
+$$ language plpgsql;
+
+create trigger files_tsvectorupdate before insert or update
+    on files for each row execute procedure files_tsv_trigger();
 
 
 -- ============================== FILE_USER_PERMISSIONS ==============================

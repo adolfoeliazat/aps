@@ -49,6 +49,7 @@ fun <POJO : Any, RTO> selectChunk(
     table: String,
     pojoClass: KClass<POJO>,
     appendToSelect: (QueryBuilder) -> Unit = {},
+    appendToFrom: (QueryBuilder) -> Unit = {},
     appendToWhere: (QueryBuilder) -> Unit = {},
     loadItem: (POJO, DSLContextProxyFactory) -> RTO,
     ordering: Ordering,
@@ -60,10 +61,12 @@ fun <POJO : Any, RTO> selectChunk(
     var records = QueryBuilder("Select chunk")
         .text("select *")
         .run(appendToSelect)
-        .text("from $table where true ")
+        .text("from $table")
+        .run(appendToFrom)
+        .text("where true")
         .run(appendToWhere)
-        .text("and id ${if (ordering == Ordering.ASC) ">=" else "<="}").arg(theFromID)
-        .text("order by id $ordering")
+        .text("and $table.id ${if (ordering == Ordering.ASC) ">=" else "<="}").arg(theFromID)
+        .text("order by $table.id $ordering")
         .text("fetch first ${chunkSize + 1} rows only")
         .fetch(q)
 

@@ -19,4 +19,4 @@ drop function if exists on_insert();
 drop function if exists on_update();
 drop function if exists users_tsv_trigger();
 drop function if exists ua_orders_tsv_trigger();
-
+drop function if exists files_tsv_trigger();
