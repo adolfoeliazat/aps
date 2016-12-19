@@ -11,7 +11,7 @@ fun send(req: ResetTestDatabaseRequest): Promise<GenericResponse> =
 fun send(token: String, req: LoadUAOrderRequest): Promise<ZimbabweResponse<LoadUAOrderRequest.Response>> =
     callZimbabwe(req, token)
 
-fun sendCustomerGetUAOrderFiles(token: String, req: ItemsRequest<FileFilter>): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> =
+fun sendCustomerGetUAOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> =
     callZimbabwe("customerGetUAOrderFiles", req, token)
 
 fun send(token: String?, req: SignUpRequest): Promise<FormResponse2<GenericResponse>> {"__async"

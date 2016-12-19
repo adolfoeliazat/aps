@@ -12,16 +12,12 @@ class CustomerSingleUAOrderPage(val world: World) {
     class URLQuery {
         var id: String? = null
         var tab: String? = null
-        var ordering: String? = null
     }
-
-    lateinit var ordering: Ordering
 
     fun load(): Promise<Unit> = async {
         val urlQuery = typeSafeURLQuery(world){URLQuery()}
         val orderID = urlQuery.id.nullifyBlank() ?: return@async world.setShittyParamsPage()
         val tabID = urlQuery.tab ?: "params"
-        ordering = relaxedStringToEnum(urlQuery.ordering, Ordering.values(), default = Ordering.DESC)
 
         val res = await(send(world.tokenSure, LoadUAOrderRequest()-{o->
             o.id.value = orderID
@@ -80,11 +76,21 @@ class CustomerSingleUAOrderPage(val world: World) {
         ))
     }
 
+    class FilesTabURLQuery {
+        var ordering: String? = null
+        var filter: String? = null
+    }
 
     inner class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
+        lateinit var ordering: Ordering
+        lateinit var filter: CustomerFileFilter
         lateinit var meat: ItemsResponse<UAOrderFileRTO>
 
         override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
+            val filesTabURLQuery = typeSafeURLQuery(world){FilesTabURLQuery()}
+            ordering = relaxedStringToEnum(filesTabURLQuery.ordering, Ordering.values(), default = Ordering.DESC)
+            filter = relaxedStringToEnum(filesTabURLQuery.filter, CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
+
             val res = await(requestChunk(null))
             when (res) {
                 is ZimbabweResponse.Shitty -> res
@@ -96,9 +102,9 @@ class CustomerSingleUAOrderPage(val world: World) {
         }
 
         private fun requestChunk(fromID: String?): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> {
-            return sendCustomerGetUAOrderFiles(world.tokenSure, ItemsRequest(FileFilter.values())-{o->
+            return sendCustomerGetUAOrderFiles(world.tokenSure, ItemsRequest(CustomerFileFilter.values())-{o->
                 o.entityID.value = order.id
-                o.filter.value = FileFilter.ALL
+                o.filter.value = filter
                 o.ordering.value = ordering
                 o.searchString.value = ""
                 o.fromID.value = fromID
@@ -135,20 +141,34 @@ class CustomerSingleUAOrderPage(val world: World) {
         fun renderStripContent(): ToReactElementable {
             if (!ebafHost.headerControlsVisible) return NOTRE
             return hor2{o->
-                val orderingSelect = Select(
+                val filterSelect = Select(
                     Attrs(),
-                    Ordering.values(),
-                    ordering,
+                    CustomerFileFilter.values(),
+                    initialValue = filter,
                     isAction = true,
                     style = json("width" to 160),
                     volatileDisabled = {ebafHost.headerControlsDisabled}
                 )
-                orderingSelect.onChanga = {async{
-                    effects2.blinkOn(byid(orderingSelect.elementID))
+                val orderingSelect = Select(
+                    Attrs(),
+                    Ordering.values(),
+                    initialValue = ordering,
+                    isAction = true,
+                    style = json("width" to 160),
+                    volatileDisabled = {ebafHost.headerControlsDisabled}
+                )
+
+                fun reloadFilesTab() =
+                    world.pushNavigate("order.html?id=${order.id}&tab=files"
+                                           + "&ordering=${orderingSelect.value.name}"
+                                           + "&filter=${filterSelect.value.name}")
+
+                fun reloader(ctrl: Control2): () -> Promise<Unit> = {async{
+                    effects2.blinkOn(byid(ctrl.elementID))
                     ebafHost.headerControlsDisabled = true
                     stripContent.update()
                     try {
-                        await(world.pushNavigate("order.html?id=${order.id}&tab=files&ordering=${orderingSelect.value.name}"))
+                        await(reloadFilesTab())
                     } finally {
                         effects2.blinkOffFadingOut()
                         ebafHost.headerControlsDisabled = false
@@ -156,6 +176,10 @@ class CustomerSingleUAOrderPage(val world: World) {
                     }
                 }}
 
+                filterSelect.onChanga = reloader(filterSelect)
+                orderingSelect.onChanga = reloader(orderingSelect)
+
+                o- filterSelect
                 o- orderingSelect
                 o- ebafPlus.renderButton()
             }

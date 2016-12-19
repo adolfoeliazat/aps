@@ -7,15 +7,17 @@
 package aps.back
 
 import aps.*
+import aps.back.generated.jooq.*
+import aps.back.generated.jooq.enums.*
 import aps.back.generated.jooq.tables.pojos.*
 import org.jooq.*
 import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun customerGetUAOrderFiles() = customerProcedure(
-    ItemsRequest(FileFilter.values()),
+    ItemsRequest(CustomerFileFilter.values()),
     runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
         val chunk = selectChunk(
-            ctx.q, table = "ua_order_files",
+            ctx.q, table = Tables.UA_ORDER_FILES.name,
             pojoClass = JQUaOrderFiles::class, loadItem = JQUaOrderFiles::toRTO,
             fromID = req.fromID.value?.let {it.toLong()},
             ordering = req.ordering.value,
@@ -27,7 +29,16 @@ import kotlin.reflect.KClass
                 run { // Filter
                     val filter = req.filter.value
                     exhaustive/when (filter) {
-                        FileFilter.ALL -> Unit
+                        CustomerFileFilter.ALL -> Unit
+                        CustomerFileFilter.FROM_ME -> {
+                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = 'CUSTOMER'::user_kind")
+                        }
+                        CustomerFileFilter.FROM_WRITER -> {
+                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = 'WRITER'::user_kind")
+                        }
+                        CustomerFileFilter.FROM_SUPPORT -> {
+                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = 'ADMIN'::user_kind")
+                        }
                     }
                 }
             }

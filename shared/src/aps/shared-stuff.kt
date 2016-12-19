@@ -296,8 +296,25 @@ enum class UserFilter(override val title: String): Titled {
     BANNED(t("TOTE", "Забаненые"))
 }
 
-enum class FileFilter(override val title: String): Titled {
-    ALL(t("TOTE", "Все"))
+enum class CustomerFileFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все")),
+    FROM_ME(t("TOTE", "Мои")),
+    FROM_WRITER(t("TOTE", "От писателя")),
+    FROM_SUPPORT(t("TOTE", "От саппорта"))
+}
+
+enum class WriterFileFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все")),
+    FROM_ME(t("TOTE", "Мои")),
+    FROM_CUSTOMER(t("TOTE", "От заказчика")),
+    FROM_SUPPORT(t("TOTE", "От саппорта"))
+}
+
+enum class AdminFileFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все")),
+    FROM_CUSTOMER(t("TOTE", "От заказчика")),
+    FROM_WRITER(t("TOTE", "От писателя")),
+    FROM_SUPPORT(t("TOTE", "От саппорта"))
 }
 
 enum class CustomerOrderFilter(override val title: String): Titled {
