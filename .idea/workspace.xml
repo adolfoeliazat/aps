@@ -65,13 +65,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/rpc-front-glue.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/rpc-front-glue.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -140,7 +136,7 @@
         <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="432">
-              <caret line="39" column="91" lean-forward="false" selection-start-line="39" selection-start-column="91" selection-end-line="39" selection-end-column="91" />
+              <caret line="33" column="28" lean-forward="false" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#80#257#0" expanded="true" />
@@ -1077,13 +1073,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00107" summary="vovagrechka/aps#30 Before fucking around with file upload">
-      <created>1481282298143</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1481282298143</updated>
-    </task>
     <task id="LOCAL-00108" summary="vovagrechka/aps#30 Before fucking around with file upload">
       <created>1481291959269</created>
       <option name="number" value="00108" />
@@ -1420,7 +1409,14 @@
       <option name="project" value="LOCAL" />
       <updated>1482143386259</updated>
     </task>
-    <option name="localTasksCounter" value="156" />
+    <task id="LOCAL-00156" summary="vovagrechka/aps#32">
+      <created>1482151453399</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1482151453400</updated>
+    </task>
+    <option name="localTasksCounter" value="157" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1557,7 +1553,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="69" />
+      <option name="time" value="70" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="JetRunConfigurationType">
@@ -2077,7 +2073,7 @@
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
-          <caret line="39" column="91" lean-forward="false" selection-start-line="39" selection-start-column="91" selection-end-line="39" selection-end-column="91" />
+          <caret line="33" column="28" lean-forward="false" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#80#257#0" expanded="true" />

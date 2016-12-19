@@ -31,13 +31,13 @@ import kotlin.reflect.KClass
                     exhaustive/when (filter) {
                         CustomerFileFilter.ALL -> Unit
                         CustomerFileFilter.FROM_ME -> {
-                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = 'CUSTOMER'::user_kind")
+                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = '${JQUserKind.CUSTOMER.literal}'::${Tables.UA_ORDER_FILES.SEEN_AS_FROM.dataType.typeName}")
                         }
                         CustomerFileFilter.FROM_WRITER -> {
-                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = 'WRITER'::user_kind")
+                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = '${JQUserKind.WRITER.literal}'::${Tables.UA_ORDER_FILES.SEEN_AS_FROM.dataType.typeName}")
                         }
                         CustomerFileFilter.FROM_SUPPORT -> {
-                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = 'ADMIN'::user_kind")
+                            qb.text("and ${Tables.UA_ORDER_FILES.SEEN_AS_FROM.name} = '${JQUserKind.ADMIN.literal}'::${Tables.UA_ORDER_FILES.SEEN_AS_FROM.dataType.typeName}")
                         }
                     }
                 }
