@@ -4,10 +4,13 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.events.KeyboardEvent
 
 fun jsFacing_Input(legacySpec: Json, key: String? = null) {
     val input = Input(legacySpec, key)
@@ -58,17 +61,44 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         }
     }
 
+    constructor(
+        key: String,
+        style: Style = Style(),
+        placeholder: String = "",
+        volatileDisabled: () -> Boolean = {false},
+        onKeyDown: (KeyboardEvent) -> Unit = {},
+        onKeyDowna: (KeyboardEvent) -> Promise<Unit> = {async{}}
+    ) : this(json(
+        "style" to style.toReactStyle(),
+        "placeholder" to placeholder,
+        "disabled" to volatileDisabled,
+        "onKeyDown" to onKeyDown
+    ), key)
+    {
+        this.onKeyDowna = onKeyDowna
+    }
+
+    lateinit var elementID: String
+    lateinit var onKeyDown: (KeyboardEvent) -> Unit
+    lateinit var onKeyDowna: (KeyboardEvent) -> Promise<Unit>
+
+    fun keyDown(e: KeyboardEvent): Promise<Unit> {
+        onKeyDown(e)
+        return onKeyDowna(e)
+    }
+
     fun LegacyCtor(): dynamic {
         val onChange: dynamic = legacySpec.get("onChange")
         val style: dynamic = legacySpec.get("style")
         val volatileStyle: dynamic = legacySpec.get("volatileStyle")
         val placeholder: dynamic = legacySpec.get("placeholder")
-        val onKeyDown: dynamic = legacySpec.get("onKeyDown")
         val disabled: dynamic = legacySpec.get("disabled")
         val rows: dynamic = legacySpec.get("rows") ?: 5
         val kind: dynamic = legacySpec.get("kind") ?: "input"
         val type: dynamic = legacySpec.get("type") ?: "text"
         val initialValue: dynamic = legacySpec.get("initialValue") ?: ""
+
+        onKeyDown = legacySpec.get("onKeyDown").asDynamic()
 
         val def = global.Object.assign(js("({})"), legacySpec)
         js("delete def.onChange")
@@ -122,7 +152,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
                         },
 
                         "onKeyDown" to {e: dynamic ->
-                            shittyFov(onKeyDown, e)
+                            keyDown(e)
                         }
                     ))
                 },
@@ -224,6 +254,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
 
             me.controlTypeName = "Input"
             legacy_implementControlShit(json("me" to me, "def" to def, "implementTestKeyDown" to json("onKeyDown" to onKeyDown)))
+            elementID = me.elementID
             return@statefulElementCtor me
         })
     }
@@ -262,6 +293,21 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
 
 }
 
+fun TestScenarioBuilder.inputSetValue(key: String, value: String) {
+    act("Typing into `$key`: ${markdownItalicVerbatim(value)}") {
+        Input.instance(key).setValue(value)
+    }
+}
+
+fun TestScenarioBuilder.inputPressEnter(key: String) {
+    acta("Pressing Enter in `$key`") {
+        Input.instance(key).keyDown(json(
+            "keyCode" to 13,
+            "preventDefault" to {},
+            "stopPropagation" to {}
+        ).asDynamic())
+    }
+}
 
 
 

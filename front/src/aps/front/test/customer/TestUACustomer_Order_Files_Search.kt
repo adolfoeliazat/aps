@@ -25,6 +25,9 @@ class TestUACustomer_Order_Files_Search : StepBasedTestScenario() {
             },
             assertScreen = {o.todo("TestUACustomer_Order_Files_Search assertScreen")}
         )
+
+        o.inputSetValue("search", "мышкин")
+        o.inputPressEnter("search")
     }
 }
 

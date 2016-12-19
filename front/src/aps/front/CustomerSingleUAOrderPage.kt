@@ -6,6 +6,7 @@ import aps.*
 import into.kommon.*
 import jquery.jq
 import org.w3c.dom.HTMLIFrameElement
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 
 class CustomerSingleUAOrderPage(val world: World) {
@@ -79,17 +80,20 @@ class CustomerSingleUAOrderPage(val world: World) {
     class FilesTabURLQuery {
         var ordering: String? = null
         var filter: String? = null
+        var search: String? = null
     }
 
     inner class FilesTab(val world: World, val order: UAOrderRTO) : FuckingTab {
         lateinit var ordering: Ordering
         lateinit var filter: CustomerFileFilter
+        lateinit var search: String
         lateinit var meat: ItemsResponse<UAOrderFileRTO>
 
         override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
             val filesTabURLQuery = typeSafeURLQuery(world){FilesTabURLQuery()}
             ordering = relaxedStringToEnum(filesTabURLQuery.ordering, Ordering.values(), default = Ordering.DESC)
             filter = relaxedStringToEnum(filesTabURLQuery.filter, CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
+            search = (filesTabURLQuery.search ?: "").trim()
 
             val res = await(requestChunk(null))
             when (res) {
@@ -106,7 +110,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                 o.entityID.value = order.id
                 o.filter.value = filter
                 o.ordering.value = ordering
-                o.searchString.value = ""
+                o.searchString.value = search
                 o.fromID.value = fromID
             })
         }
@@ -149,6 +153,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                     style = json("width" to 160),
                     volatileDisabled = {ebafHost.headerControlsDisabled}
                 )
+
                 val orderingSelect = Select(
                     Attrs(),
                     Ordering.values(),
@@ -158,13 +163,22 @@ class CustomerSingleUAOrderPage(val world: World) {
                     volatileDisabled = {ebafHost.headerControlsDisabled}
                 )
 
+                val searchInput = Input(
+                    key = "search",
+                    style = Style(paddingLeft = 30, width = 160),
+                    placeholder = t("TOTE", "Поиск..."),
+                    volatileDisabled  = {ebafHost.headerControlsDisabled}
+                )
+                searchInput.setValue(search)
+
                 fun reloadFilesTab() =
                     world.pushNavigate("order.html?id=${order.id}&tab=files"
                                            + "&ordering=${orderingSelect.value.name}"
-                                           + "&filter=${filterSelect.value.name}")
+                                           + "&filter=${filterSelect.value.name}"
+                                           + "&search=${encodeURIComponent(searchInput.getValue())}")
 
-                fun reloader(ctrl: Control2): () -> Promise<Unit> = {async{
-                    effects2.blinkOn(byid(ctrl.elementID))
+                fun reload(elementID: String): Promise<Unit> = async{
+                    effects2.blinkOn(byid(elementID))
                     ebafHost.headerControlsDisabled = true
                     stripContent.update()
                     try {
@@ -174,11 +188,21 @@ class CustomerSingleUAOrderPage(val world: World) {
                         ebafHost.headerControlsDisabled = false
                         stripContent.update()
                     }
+                }
+
+                filterSelect.onChanga = {reload(filterSelect.elementID)}
+                orderingSelect.onChanga = {reload(orderingSelect.elementID)}
+                searchInput.onKeyDowna = {e-> async {
+                    if (e.keyCode == 13) {
+                        preventAndStop(e)
+                        await(reload(searchInput.elementID))
+                    }
                 }}
 
-                filterSelect.onChanga = reloader(filterSelect)
-                orderingSelect.onChanga = reloader(orderingSelect)
-
+                o- kdiv(position = "relative"){o->
+                    o- searchInput
+                    o- ki(className = "fa fa-search", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
+                }
                 o- filterSelect
                 o- orderingSelect
                 o- ebafPlus.renderButton()

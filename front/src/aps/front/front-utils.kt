@@ -221,6 +221,23 @@ val numberSign: String = when (Globus.lang) {
     Language.UA -> "№"
 }
 
+fun encodeURIComponent(s: String): String = global.encodeURIComponent(s)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
