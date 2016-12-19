@@ -65,22 +65,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/WriterBootTestScenario.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/WriterBootTestScenario.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/art.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/art.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/rpc-front-glue.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/rpc-front-glue.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_Cool.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_Cool.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_LongFileList.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_LongFileList.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_Order_Files_Search.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_Order_Files_Search.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/const.kt" afterPath="$PROJECT_DIR$/shared/src/aps/const.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-customerAddUAOrderFile.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-addUAOrderFile.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -155,11 +142,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test-utils-2.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="test-utils-2.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="241" column="11" lean-forward="false" selection-start-line="241" selection-start-column="11" selection-end-line="241" selection-end-column="11" />
+            <state relative-caret-position="288">
+              <caret line="244" column="4" lean-forward="false" selection-start-line="244" selection-start-column="4" selection-end-line="244" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -195,7 +182,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="const.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="const.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/const.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
@@ -378,10 +365,10 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_LongFileList.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_Order_Files_Search.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/WriterBootTestScenario.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_Cool.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/art.kt" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/const.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
       </list>
     </option>
   </component>
@@ -1080,13 +1067,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00105" summary="vovagrechka/aps#30">
-      <created>1481275203489</created>
-      <option name="number" value="00105" />
-      <option name="presentableId" value="LOCAL-00105" />
-      <option name="project" value="LOCAL" />
-      <updated>1481275203489</updated>
-    </task>
     <task id="LOCAL-00106" summary="vovagrechka/aps#30">
       <created>1481278089064</created>
       <option name="number" value="00106" />
@@ -1423,7 +1403,14 @@
       <option name="project" value="LOCAL" />
       <updated>1482135366980</updated>
     </task>
-    <option name="localTasksCounter" value="154" />
+    <task id="LOCAL-00154" summary="vovagrechka/aps#32">
+      <created>1482142575247</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1482142575247</updated>
+    </task>
+    <option name="localTasksCounter" value="155" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1441,7 +1428,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23927039" sideWeight="0.4918033" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
+      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23927039" sideWeight="0.4918033" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2428884" sideWeight="0.5064378" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1456,7 +1443,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17918456" sideWeight="0.52568305" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42972103" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42972103" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2027,14 +2014,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="241" column="11" lean-forward="false" selection-start-line="241" selection-start-column="11" selection-end-line="241" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_Cool.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
@@ -2079,6 +2058,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="22" column="8" lean-forward="false" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="244" column="4" lean-forward="false" selection-start-line="244" selection-start-column="4" selection-end-line="244" selection-end-column="4" />
           <folding />
         </state>
       </provider>

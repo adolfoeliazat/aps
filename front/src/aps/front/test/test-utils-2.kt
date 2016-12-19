@@ -233,7 +233,7 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String): Promise<Unit> = as
     await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("idiot.rtf", "${testconst.filesRoot}idiot.rtf")
-        o.title.value = "The Idiot"
+        o.title.value = "The (Fucking) Idiot"
         o.details.value = dedent("""
             26-летний князь **Лев Николаевич Мышкин** возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком искренним и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
 
@@ -241,8 +241,19 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
+    await(ImposeNextRequestTimestampRequest.send("2016-12-07 14:27:03"))
+    await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("crime and punishment.rtf", "${testconst.filesRoot}crime and punishment.rtf")
+        o.title.value = "Crime and Punishment"
+        o.details.value = dedent("""
+            Действие романа начинается жарким июльским днём в Петербурге. Студент Родион Романович Раскольников, вынужденный уйти из университета из-за отсутствия денег, направляется в квартиру к процентщице Алёне Ивановне, чтобы сделать «пробу своему предприятию». В сознании героя в течение последнего месяца созревает идея убийства «гадкой старушонки»; одно-единственное преступление, по мнению Раскольникова, изменит его собственную жизнь и избавит сестру Дуню от необходимости выходить замуж за «благодетеля» Петра Петровича Лужина. Несмотря на проведённую «разведку», тщательно продуманный план ломается из-за внутренней паники Родиона Романовича (который после убийства процентщицы долго не может найти у неё ни денег, ни ценных закладов), а также внезапного возвращения домой сестры Алёны Ивановны. Тихая, безобидная, «поминутно беременная» Лизавета, оказавшаяся невольной свидетельницей преступления, становится второй жертвой студента.
+        """)
+    })).orDie()
+
     await(fuckingRemoteCall.executeSQL("Add file permissions", """
         insert into file_user_permissions(file_id, user_id) values(100003, 100000);
+        insert into file_user_permissions(file_id, user_id) values(100004, 100000);
     """))
 }
 
