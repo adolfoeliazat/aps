@@ -105,8 +105,8 @@ fun darkLink(def: dynamic): ReactElement {
     return Shitus.link(Shitus.asnnoDollar(json("style" to json("color" to "#333")), def))
 }
 
-fun rawHTML(__html: String): ReactElement {
-    return React.createElement("div", json("dangerouslySetInnerHTML" to json("__html" to __html)))
+fun rawHTML(__html: String, tag: String = "div"): ReactElement {
+    return React.createElement(tag, json("dangerouslySetInnerHTML" to json("__html" to __html)))
 }
 
 fun preludeWithOrangeTriangle(def: dynamic): dynamic {

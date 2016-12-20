@@ -177,7 +177,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                            + "&filter=${filterSelect.value.name}"
                                            + "&search=${encodeURIComponent(searchInput.getValue())}")
 
-                fun reload(elementID: String): Promise<Unit> = async{
+                fun reload(elementID: String): Promise<Unit> = async {
                     effects2.blinkOn(byid(elementID))
                     ebafHost.headerControlsDisabled = true
                     stripContent.update()
@@ -298,7 +298,8 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     o- kdiv(className = "col-md-12"){o->
                                         o- label(t("TOTE", "Детали"))
                                         o- kdiv(whiteSpace = "pre-wrap"){o->
-                                            o- file.details
+                                            o- highlightedShit(file.details, listOf(31..36, 517..524))
+//                                            o- file.details
                                         }
                                     }
                                 }
