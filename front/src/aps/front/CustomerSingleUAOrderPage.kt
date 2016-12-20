@@ -294,11 +294,11 @@ class CustomerSingleUAOrderPage(val world: World) {
                                         }
                                     }
                                 }
-                                o- row {o ->
+                                o- row {o->
                                     o- kdiv(className = "col-md-12"){o->
                                         o- label(t("TOTE", "Детали"))
                                         o- kdiv(whiteSpace = "pre-wrap"){o->
-                                            o- highlightedShit(file.details, listOf(31..36, 517..524))
+                                            o- highlightedShit(file.details, file.detailsHighlightRanges)
 //                                            o- file.details
                                         }
                                     }

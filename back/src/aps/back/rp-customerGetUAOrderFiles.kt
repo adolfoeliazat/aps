@@ -10,15 +10,30 @@ import aps.*
 import aps.back.generated.jooq.*
 import aps.back.generated.jooq.enums.*
 import aps.back.generated.jooq.tables.pojos.*
+import org.apache.lucene.analysis.ru.RussianAnalyzer
 import org.jooq.*
 import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun customerGetUAOrderFiles() = customerProcedure(
     ItemsRequest(CustomerFileFilter.values()),
     runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
+        val ss = req.searchString.value
+        val searchWords = ss
+            .split(Regex("\\s+"))
+            .filter {it.contains(Regex("[a-zA-Zа-яА-Я0-9]"))}
+            .map {it.replace(Regex("[^a-zA-Zа-яА-Я0-9]"), "")}
+
         val chunk = selectChunk(
-            ctx.q, table = Tables.UA_ORDER_FILES.name,
-            pojoClass = JQUaOrderFiles::class, loadItem = JQUaOrderFiles::toRTO,
+            ctx.q,
+            table = Tables.UA_ORDER_FILES.name,
+            pojoClass = JQUaOrderFiles::class,
+            loadItem = {file, q ->
+                file.toRTO(q)-{o->
+                    if (searchWords.isNotEmpty()) {
+                        o.file.detailsHighlightRanges = luceneHighlightRanges(o.file.details, searchWords, russianAnalyzer)
+                    }
+                }
+            },
             fromID = req.fromID.value?.let {it.toLong()},
             ordering = req.ordering.value,
             appendToFrom = {qb->
@@ -28,13 +43,8 @@ import kotlin.reflect.KClass
                 qb.text("and ${Tables.FILES.name}.${Tables.FILES.ID.name} = ${Tables.UA_ORDER_FILES.name}.${Tables.UA_ORDER_FILES.FILE_ID.name}")
 
                 run { // Search string
-                    val ss = req.searchString.value
-                    val words = ss
-                        .split(Regex("\\s+"))
-                        .filter {it.contains(Regex("[a-zA-Zа-яА-Я0-9]"))}
-                        .map {it.replace(Regex("[^a-zA-Zа-яА-Я0-9]"), "")}
-                    if (words.isNotEmpty()) {
-                        val query = words.joinToString(" & ")
+                    if (searchWords.isNotEmpty()) {
+                        val query = searchWords.joinToString(" & ")
                         qb.text("and tsv @@ ").arg(query).text("::tsquery")
                     }
                 }

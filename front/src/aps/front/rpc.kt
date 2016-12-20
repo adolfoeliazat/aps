@@ -105,8 +105,9 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
                     else -> {
                         val inst = eval("new _.${clazz.replace("$", ".")}()")
                         for (k in jsKeys(jsThing))
-                            if (k != "\$\$\$class")
+                            if (k != "\$\$\$class") {
                                 jsSet(inst, k, dejsonizeValue(jsThing[k]))
+                            }
                         inst
                     }
                 }

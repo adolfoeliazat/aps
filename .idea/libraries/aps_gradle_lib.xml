@@ -82,6 +82,9 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/okio-1.11.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-core-6.3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-analyzers-common-6.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-queries-6.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-queryparser-6.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-sandbox-6.3.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

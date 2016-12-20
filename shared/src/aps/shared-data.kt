@@ -36,11 +36,17 @@ class UAOrderRTO(
     val state: UAOrderState
 )
 
+data class IntRangeRTO(
+    val start: Int,
+    val endInclusive: Int
+)
+
 class FileRTO(
     val id: String,
     val name: String,
     val title: String,
     val details: String,
+    var detailsHighlightRanges: List<IntRangeRTO> = listOf(),
     val sizeBytes: Int,
     val insertedAt: Long
 )
