@@ -2,13 +2,19 @@ package aps.back
 
 import aps.*
 import org.apache.lucene.analysis.Analyzer
+import org.apache.lucene.analysis.WordlistLoader
 import org.apache.lucene.analysis.ru.RussianAnalyzer
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute
-import kotlin.properties.Delegates.notNull
+import org.apache.lucene.util.IOUtils
+import java.nio.charset.StandardCharsets
 
-val russianAnalyzer by lazy {RussianAnalyzer()}
+val russianAnalyzer by lazy {
+    val stopWords = WordlistLoader.getSnowballWordSet(
+        IOUtils.getDecodingReader(object{}.javaClass, "aps_russian_stop.txt", StandardCharsets.UTF_8))
+    RussianAnalyzer(stopWords)
+}
 
 fun luceneHighlightRanges(text: String, searchWords: List<String>, analyzer: RussianAnalyzer): List<IntRangeRTO> {
     val searchWordsJoined = searchWords.joinToString(" ")

@@ -161,8 +161,8 @@ class CustomerSingleUAOrderPage(val world: World) {
 
         inner class StripContent : Control2(Attrs()) {
             val filterSelect = Select(
-                Attrs(),
-                CustomerFileFilter.values(),
+                key = "filter",
+                values = CustomerFileFilter.values(),
                 initialValue = filter,
                 isAction = true,
                 style = json("width" to 160),
@@ -170,8 +170,8 @@ class CustomerSingleUAOrderPage(val world: World) {
             )
 
             val orderingSelect = Select(
-                Attrs(),
-                Ordering.values(),
+                key = "ordering",
+                values = Ordering.values(),
                 initialValue = ordering,
                 isAction = true,
                 style = json("width" to 160),

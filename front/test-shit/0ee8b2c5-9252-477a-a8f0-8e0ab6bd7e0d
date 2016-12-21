@@ -1,0 +1,381 @@
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Проза
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                <span class="">
+                  Почему мы?
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                <span class="">
+                  Цены
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                <span class="">
+                  Примеры
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                <span class="">
+                  ЧаВо
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                <span class="">
+                  Связь
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                <span class="">
+                  Блог
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="">
+          <a href="orders.html">
+            <span class="">
+              Мои заказы
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="support.html">
+            <span class="">
+              Поддержка
+            </span>
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            <span class="">
+              Иво
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <div>
+            Заказ №100000
+            <span style="top: -0.2em; position: relative; margin-left: 1em; padding: 0.1em 0.3em; background-color: rgb(179, 229, 252); font-size: 60%; border-radius: 0.3em;">
+              Ищем&nbsp;писателей
+            </span>
+          </div>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <h4 style="margin-bottom: 0.7em;">
+        Когнитивно-прагматические аспекты перевода рекламных слоганов с английского
+      </h4>
+      <div>
+        <div style="position: relative;">
+          <ul class="nav nav-tabs">
+            <li id="tab-params" class="">
+              <a href="#">
+                Параметры
+              </a>
+            </li>
+            <li id="tab-files" class="active">
+              <a href="#">
+                Файлы
+              </a>
+            </li>
+            <li id="tab-messages" class="">
+              <a href="#">
+                Сообщения
+              </a>
+            </li>
+          </ul>
+          <div style="top: 0px; right: 0px; position: absolute;">
+            <div style="display: flex;">
+              <div style="margin-left: 0px;">
+                <div style="position: relative;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="искренний" style="resize: none; width: 100%; padding-left: 30px;">
+                    <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
+                    </i>
+                  </div>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control">
+                    <option value="ALL">
+                      Все
+                    </option>
+                    <option value="FROM_ME">
+                      Мои
+                    </option>
+                    <option value="FROM_WRITER">
+                      От писателя
+                    </option>
+                    <option value="FROM_SUPPORT">
+                      От саппорта
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control">
+                    <option value="ASC">
+                      Старые
+                    </option>
+                    <option value="DESC">
+                      Новые
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-primary ">
+                    <i class="fa fa-plus">
+                    </i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 5px;">
+            <div>
+              <div>
+              </div>
+              <div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header">
+                        <i class="cunt-header-left-icon fa fa-file">
+                        </i>
+                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        </i>
+                        A piece of... Trial 3
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100007
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
+                        </i>
+                        <i class="cunt-header-right-icon fa fa-pencil">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        13.12.2016 10:21:33 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        piece of trial 3.rtf
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        1 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          - Вы  не  подумали  об одном, - сказал он. - Правда, у вас могут быть неприятности, но никакая опасность вам не грозит. Вы знаете, что фрау Грубах - а в этом вопросе она играет  решающую роль,  поскольку капитан доводится ей племянником, - вы знаете, что она меня просто  обожает  и  беспрекословно  верит  каждому моему  слову.  Кстати,  она  и зависит от меня, я ей дал в долг порядочную сумму денег. Я готов принять любое предложенное вами объяснение нашей поздней встречи, если только  оно  будет  хоть немного  правдоподобно, и обязуюсь подействовать на фрау Грубах так, чтобы она не только приняла его официально, но и  поверила безоговорочно  и
+                          <span style="background-color: #ffe082;">
+                            искренне
+                          </span>
+                          .  И пожалуйста, не щадите меня. Если вам угодно распространить слух, что я к  вам  приставал,  то  я именно  так и сообщу фрау Грубах, и она все примет, не теряя ко мне уважения, настолько она меня ценит.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header">
+                        <i class="cunt-header-left-icon fa fa-file">
+                        </i>
+                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        </i>
+                        A piece of... Trial 1
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100005
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
+                        </i>
+                        <i class="cunt-header-right-icon fa fa-pencil">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        10.12.2016 11:30:11 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        piece of trial 1.rtf
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        1 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          - Вы  глубоко заблуждаетесь, - сказал К. сердито, с трудом скрывая раздражение, - и  вообще  вы  неверно  истолковали  мои слова  про  барышню,  я  совсем  не  то хотел сказать.
+                          <span style="background-color: #ffe082;">
+                            Искренне
+                          </span>
+                          советую вам ничего ей не говорить. Вы глубоко заблуждаетесь,  я ее  знаю  очень  хорошо,  и  все,  что  вы  говорите, неправда!
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header">
+                        <i class="cunt-header-left-icon fa fa-file">
+                        </i>
+                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
+                        </i>
+                        The (Fucking) Idiot
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100003
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          От писателя
+                        </span>
+                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
+                        </i>
+                        <i class="cunt-header-right-icon fa fa-pencil">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        05.12.2016 12:15:42 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        idiot.rtf
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          26-летний князь Лев Николаевич Мышкин возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком
+                          <span style="background-color: #ffe082;">
+                            искренним
+                          </span>
+                          и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
+                          В доме Епанчиных выясняется, что Настасья Филипповна там хорошо известна. Есть план выдать её за протеже генерала Епанчина Гаврилу Ардалионовича Иволгина, человека амбициозного, но посредственного. Князь Мышкин знакомится со всеми основными персонажами повествования. Это дочери Епанчиных — Александра, Аделаида и Аглая, на которых он производит благоприятное впечатление, оставаясь объектом их немного насмешливого внимания. Это генеральша Лизавета Прокофьевна Епанчина, которая находится в постоянном волнении из-за того, что её муж общается с Настасьей Филипповной, имеющей репутацию падшей. Это Ганя Иволгин, который очень страдает из-за предстоящей ему роли мужа Настасьи Филипповны, хотя ради денег готов на всё, и не может решиться на развитие своих пока очень слабых отношений с Аглаей. Князь Мышкин довольно простодушно рассказывает генеральше и сёстрам Епанчиным о том, что он узнал о Настасье Филипповне от Рогожина, а также поражает их своим повествованием о воспоминаниях и чувствах своего знакомого, который был приговорён к смертной казни, но в последний момент был помилован.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

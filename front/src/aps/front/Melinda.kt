@@ -160,8 +160,11 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
         if (filterSelectValues != null) {
-            filterSelect = Select(Attrs(tamyShamy = "filter"),
-                filterSelectValues, filter,
+            filterSelect = Select(
+                key = null,
+                attrs = Attrs(tamyShamy = "filter"),
+                values = filterSelectValues,
+                initialValue = filter,
                 isAction = true,
                 style = json("width" to 160),
                 volatileDisabled = {ebafHost.headerControlsDisabled},
@@ -183,8 +186,11 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
         if (hasOrderingSelect) {
-            orderingSelect = Select(Attrs(tamyShamy = "ordering"),
-                Ordering.values(), ordering,
+            orderingSelect = Select(
+                key = null,
+                attrs = Attrs(tamyShamy = "ordering"),
+                values = Ordering.values(),
+                initialValue = ordering,
                 isAction = true,
                 style = json("width" to 160),
                 volatileDisabled = {ebafHost.headerControlsDisabled},

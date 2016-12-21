@@ -245,7 +245,7 @@ create function files_tsv_trigger() returns trigger as $$
 begin
   new.tsv :=
      setweight(to_tsvector('pg_catalog.russian', ' '
-         ||' '|| coalesce(new.name, '')
+         ||' '|| regexp_replace(coalesce(new.name, ''), '\..*$', '')
          ||' '|| coalesce(new.title, '')
          ),'A')
      ||

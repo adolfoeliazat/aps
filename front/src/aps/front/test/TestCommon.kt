@@ -65,6 +65,11 @@ interface TestSuite {
 val testScenarios = mutableMapOf<String, TestScenario>()
 
 fun tetete() {
+    val strings = listOf("foo", "bar")
+    val inst: List<Int> = strings as List<Int>
+    val x = inst.first()
+    println(x)
+    println("ok")
 }
 
 class TestCommon(val sim: dynamic) {

@@ -236,7 +236,8 @@ val numberSign: String = when (Globus.lang) {
 
 fun encodeURIComponent(s: String): String = global.encodeURIComponent(s)
 
-
+fun arraysEquals(a: Array<*>, b: Array<*>): Boolean =
+    a.asList() == b.asList()
 
 
 

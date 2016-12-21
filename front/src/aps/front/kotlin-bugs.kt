@@ -5,36 +5,83 @@ package aps.front
 import aps.*
 import into.kommon.*
 
+private enum class E1 {FOO, BAR}
+private enum class E2 {BAZ, QUX}
 
-fun qwe_split_works_sync() {
-    val tokens = "foo:bar:baz".split(Regex(":"))
-    console.log(tokens.joinToString("-"))
+fun qwe_casts_1() {
+    val xs = listOf(E1.FOO)
+    val ys = xs as List<E2>
+    println("ok")
 }
 
-fun qwe_split_breaks() {
-    async<Unit> {
-        val tokens = "foo:bar:baz".split(Regex(":"))
-        console.log(tokens.joinToString("-"))
-    }
+fun qwe_casts_2() {
+    val x = E1.FOO
+    val y = x as E2
+    console.log("ok")
 }
 
-fun qwe_split_breaks_catch() {
-    async<Unit> {
-        try {
-            val tokens = "foo:bar:baz".split(Regex(":"))
-            console.log(tokens.joinToString("-"))
-        } catch(e: Throwable) {
-            console.log(e.asDynamic().stack)
-        }
-    }
+fun qwe_casts_3() {
+    val x = "qwe"
+    val y = x as Int
+    console.log(y)
+    console.log("ok")
 }
 
-fun qwe_split_works_async_noRegex() {
-    async<Unit> {
-        val tokens = "foo:bar:baz".split(":")
-        console.log(tokens.joinToString("-"))
-    }
+fun qwe_casts_4() {
+    val xs = listOf("qwe")
+    val ys = xs as List<Int>
+    val y = ys.first()
+    console.log(jsTypeOf(y))
+    console.log(y)
+    console.log("ok")
 }
+
+fun qwe_casts_4_1() {
+    val xs = listOf("qwe")
+    val ys = xs as List<Int>
+    val y = ys.first() as Int
+    console.log(jsTypeOf(y))
+    console.log(y)
+    console.log("ok")
+}
+
+fun qwe_casts_5() {
+    val xs = listOf(E1.FOO)
+    val ys = xs as List<E2>
+    val y = ys.first()
+    console.log(y)
+    console.log("ok")
+}
+
+//fun qwe_split_works_sync() {
+//    val tokens = "foo:bar:baz".split(Regex(":"))
+//    console.log(tokens.joinToString("-"))
+//}
+//
+//fun qwe_split_breaks() {
+//    async<Unit> {
+//        val tokens = "foo:bar:baz".split(Regex(":"))
+//        console.log(tokens.joinToString("-"))
+//    }
+//}
+//
+//fun qwe_split_breaks_catch() {
+//    async<Unit> {
+//        try {
+//            val tokens = "foo:bar:baz".split(Regex(":"))
+//            console.log(tokens.joinToString("-"))
+//        } catch(e: Throwable) {
+//            console.log(e.asDynamic().stack)
+//        }
+//    }
+//}
+//
+//fun qwe_split_works_async_noRegex() {
+//    async<Unit> {
+//        val tokens = "foo:bar:baz".split(":")
+//        console.log(tokens.joinToString("-"))
+//    }
+//}
 
 
 

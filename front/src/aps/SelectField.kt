@@ -14,7 +14,7 @@ where T : Enum<T>, T : Titled {
 
     override var error: String? = null
 
-    val select = Select(Attrs(tamy=""), values, null,
+    val select = Select(key = null, attrs = Attrs(), values = values, initialValue = null,
                         onChange = {
                             form.fieldChanged()
                         },

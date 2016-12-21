@@ -22,7 +22,6 @@ fun main(args: Array<String>) {
 //    qwe_enum_jvm()
 }
 
-
 private enum class E {
     FIRST, SECOND
 }

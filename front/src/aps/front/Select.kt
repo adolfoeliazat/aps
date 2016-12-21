@@ -29,7 +29,8 @@ class statefulElement(ctor: () -> ShitWithRenderFunction): ToReactElementable {
 }
 
 class Select<E>(
-    attrs: Attrs,
+    val key: String? = null,
+    attrs: Attrs = Attrs(),
     val values: Array<E>,
     val initialValue: E?,
     val isAction: Boolean = false,
@@ -43,6 +44,22 @@ class Select<E>(
     val onBlura: () -> Promise<Unit> = {__asyncResult(Unit)}
 
 ) : Control2(attrs), Blinkable where E : Enum<E>, E : Titled {
+
+    companion object {
+        val instances = mutableMapOf<String, Select<*>>()
+
+        @Suppress("UNCHECKED_CAST")
+        fun <E> instance(key: String, values: Array<E>): Select<E>
+            where E : Enum<E>, E : Titled {
+            val select = instances[key] as Select<E>? ?: bitch("No Select keyed `$key`")
+            val expectedEnumName = values[0]::class.js.name
+            val actualEnumName = select.values[0]::class.js.name
+            check(expectedEnumName == actualEnumName
+                      && arraysEquals(values, select.values)) {
+                "Select values mismatch. Expected $expectedEnumName, got $actualEnumName"}
+            return select
+        }
+    }
 
     var persistentDisabled: Boolean = false
     var value: E = initialValue ?: values[0]
@@ -162,8 +179,26 @@ class Select<E>(
         }
     }
 
+    override fun componentDidMount() {
+        if (key != null) {
+            instances[key] = this
+        }
+    }
+
+    override fun componentWillUnmount() {
+        if (key != null) {
+            instances.remove(key)
+        }
+    }
 }
 
+fun <E> TestScenarioBuilder.selectSetValue(key: String, values: Array<E>, value: E)
+where E : Enum<E>, E : Titled {
+    acta("Selecting in `$key`: ${markdownItalicVerbatim(value.title)}") {
+        val select = Select.instance(key, values)
+        select.setValueExt(value, notify = true)
+    }
+}
 
 
 
