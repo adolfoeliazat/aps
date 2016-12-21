@@ -27,10 +27,13 @@ class TestUACustomer_Order_Files_Search : StepBasedTestScenario() {
             assertScreen = {o.assertScreenHTML_todo("1", "0f77828b-fe22-4606-8f97-0efecc6fefde")}
         )
 
-        o.halt()
         o.inputSetValue("search", "мышкин")
         o.inputPressEnter("search")
-        o.assertScreenHTML_todo("2", "561577ab-ad4b-4bb5-bf1d-f50e9eac2c68")
+        o.assertScreenHTML("2", "561577ab-ad4b-4bb5-bf1d-f50e9eac2c68")
+
+        o.inputSetValue("search", "мышкин настасья")
+        o.inputPressEnter("search")
+        o.assertScreenHTML("3", "df1e1441-9b97-40b9-8e87-ddcad49f5c06")
     }
 }
 

@@ -88,6 +88,13 @@ class CustomerSingleUAOrderPage(val world: World) {
         lateinit var filter: CustomerFileFilter
         lateinit var search: String
         lateinit var meat: ItemsResponse<UAOrderFileRTO>
+        lateinit var content: ToReactElementable
+        lateinit var stripContent: Control2
+        lateinit var plusFormContainer: Control2
+
+        override val tabSpec = TabSpec("files", t("TOTE", "Файлы"),
+                                       ToReactElementable.from{content},
+                                       ToReactElementable.from{stripContent})
 
         override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
             val filesTabURLQuery = typeSafeURLQuery(world){FilesTabURLQuery()}
@@ -97,10 +104,21 @@ class CustomerSingleUAOrderPage(val world: World) {
 
             val res = await(requestChunk(null))
             when (res) {
-                is ZimbabweResponse.Shitty -> res
+                is ZimbabweResponse.Shitty -> return@async res
                 is ZimbabweResponse.Hunky -> {
                     meat = res.meat
-                    null
+                    stripContent = StripContent()
+
+                    plusFormContainer = Control2.from {kdiv{o->
+                        o- ebafPlus.renderForm()
+                    }}
+
+                    content = ToReactElementable.from {kdiv{o->
+                        o- plusFormContainer
+                        o- renderItems(meat, noItemsMessage = true)
+                    }}
+
+                    return@async null
                 }
             }
         }
@@ -141,54 +159,34 @@ class CustomerSingleUAOrderPage(val world: World) {
             }
         )
 
-        val stripContent = Control2.from {renderStripContent()}
-        fun renderStripContent(): ToReactElementable {
-            if (!ebafHost.headerControlsVisible) return NOTRE
-            return hor2{o->
-                val filterSelect = Select(
-                    Attrs(),
-                    CustomerFileFilter.values(),
-                    initialValue = filter,
-                    isAction = true,
-                    style = json("width" to 160),
-                    volatileDisabled = {ebafHost.headerControlsDisabled}
-                )
+        inner class StripContent : Control2(Attrs()) {
+            val filterSelect = Select(
+                Attrs(),
+                CustomerFileFilter.values(),
+                initialValue = filter,
+                isAction = true,
+                style = json("width" to 160),
+                volatileDisabled = {ebafHost.headerControlsDisabled}
+            )
 
-                val orderingSelect = Select(
-                    Attrs(),
-                    Ordering.values(),
-                    initialValue = ordering,
-                    isAction = true,
-                    style = json("width" to 160),
-                    volatileDisabled = {ebafHost.headerControlsDisabled}
-                )
+            val orderingSelect = Select(
+                Attrs(),
+                Ordering.values(),
+                initialValue = ordering,
+                isAction = true,
+                style = json("width" to 160),
+                volatileDisabled = {ebafHost.headerControlsDisabled}
+            )
 
-                val searchInput = Input(
-                    key = "search",
-                    style = Style(paddingLeft = 30, width = 160),
-                    placeholder = t("TOTE", "Поиск..."),
-                    volatileDisabled  = {ebafHost.headerControlsDisabled}
-                )
+            val searchInput = Input(
+                key = "search",
+                style = Style(paddingLeft = 30, width = 160),
+                placeholder = t("TOTE", "Поиск..."),
+                volatileDisabled  = {ebafHost.headerControlsDisabled}
+            )
+
+            init {
                 searchInput.setValue(search)
-
-                fun reloadFilesTab() =
-                    world.pushNavigate("order.html?id=${order.id}&tab=files"
-                                           + "&ordering=${orderingSelect.value.name}"
-                                           + "&filter=${filterSelect.value.name}"
-                                           + "&search=${encodeURIComponent(searchInput.getValue())}")
-
-                fun reload(elementID: String): Promise<Unit> = async {
-                    effects2.blinkOn(byid(elementID))
-                    ebafHost.headerControlsDisabled = true
-                    stripContent.update()
-                    try {
-                        await(reloadFilesTab())
-                    } finally {
-                        effects2.blinkOffFadingOut()
-                        ebafHost.headerControlsDisabled = false
-                        stripContent.update()
-                    }
-                }
 
                 filterSelect.onChanga = {reload(filterSelect.elementID)}
                 orderingSelect.onChanga = {reload(orderingSelect.elementID)}
@@ -199,24 +197,111 @@ class CustomerSingleUAOrderPage(val world: World) {
                     }
                 }}
 
-                o- kdiv(position = "relative"){o->
-                    o- searchInput
-                    o- ki(className = "fa fa-search", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
+//                gloshit.updateStripContent = {stripContent.update()}
+            }
+
+            override fun render(): ToReactElementable {
+                if (!ebafHost.headerControlsVisible) return NOTRE
+                return hor2{o->
+                    o- kdiv(position = "relative"){o->
+                        o- searchInput
+                        o- ki(className = "fa fa-search", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
+                    }
+                    o- filterSelect
+                    o- orderingSelect
+                    o- ebafPlus.renderButton()
                 }
-                o- filterSelect
-                o- orderingSelect
-                o- ebafPlus.renderButton()
+            }
+
+            fun reloadFilesTab() =
+                world.pushNavigate("order.html?id=${order.id}&tab=files"
+                                       + "&ordering=${orderingSelect.value.name}"
+                                       + "&filter=${filterSelect.value.name}"
+                                       + "&search=${encodeURIComponent(searchInput.getValue())}")
+
+            fun reload(elementID: String): Promise<Unit> = async {
+                effects2.blinkOn(byid(elementID))
+                ebafHost.headerControlsDisabled = true
+                stripContent.update()
+                try {
+                    await(reloadFilesTab())
+                } finally {
+                    effects2.blinkOffFadingOut()
+                    ebafHost.headerControlsDisabled = false
+                    stripContent.update()
+                }
             }
         }
 
-        val plusFormContainer = Control2.from {kdiv{o->
-            o- ebafPlus.renderForm()
-        }}
-
-        val content = ToReactElementable.from {kdiv{o->
-            o- plusFormContainer
-            o- renderItems(this.meat, noItemsMessage = true)
-        }}
+//        val stripContent = Control2.from {renderStripContent()}
+//        fun renderStripContent(): ToReactElementable {
+//            if (!ebafHost.headerControlsVisible) return NOTRE
+//            return hor2{o->
+//                val filterSelect = Select(
+//                    Attrs(),
+//                    CustomerFileFilter.values(),
+//                    initialValue = filter,
+//                    isAction = true,
+//                    style = json("width" to 160),
+//                    volatileDisabled = {ebafHost.headerControlsDisabled}
+//                )
+//
+//                val orderingSelect = Select(
+//                    Attrs(),
+//                    Ordering.values(),
+//                    initialValue = ordering,
+//                    isAction = true,
+//                    style = json("width" to 160),
+//                    volatileDisabled = {ebafHost.headerControlsDisabled}
+//                )
+//
+//                val searchInput = Input(
+//                    key = "search",
+//                    style = Style(paddingLeft = 30, width = 160),
+//                    placeholder = t("TOTE", "Поиск..."),
+//                    volatileDisabled  = {ebafHost.headerControlsDisabled}
+//                )
+//                searchInput.setValue(search)
+//
+//                fun reloadFilesTab() =
+//                    world.pushNavigate("order.html?id=${order.id}&tab=files"
+//                                           + "&ordering=${orderingSelect.value.name}"
+//                                           + "&filter=${filterSelect.value.name}"
+//                                           + "&search=${encodeURIComponent(searchInput.getValue())}")
+//
+//                fun reload(elementID: String): Promise<Unit> = async {
+//                    effects2.blinkOn(byid(elementID))
+//                    ebafHost.headerControlsDisabled = true
+//                    stripContent.update()
+//                    try {
+//                        await(reloadFilesTab())
+//                    } finally {
+//                        effects2.blinkOffFadingOut()
+//                        ebafHost.headerControlsDisabled = false
+//                        stripContent.update()
+//                    }
+//                }
+//
+//                filterSelect.onChanga = {reload(filterSelect.elementID)}
+//                orderingSelect.onChanga = {reload(orderingSelect.elementID)}
+//                searchInput.onKeyDowna = {e-> async {
+//                    if (e.keyCode == 13) {
+//                        preventAndStop(e)
+//                        await(reload(searchInput.elementID))
+//                    }
+//                }}
+//
+//                gloshit.updateStripContent = {stripContent.update()}
+//
+//                o- kdiv(position = "relative"){o->
+//                    o- searchInput
+//                    o- ki(className = "fa fa-search", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
+//                }
+//                o- filterSelect
+//                o- orderingSelect
+//                o- ebafPlus.renderButton()
+//            }
+//        }
 
         private fun renderItems(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean): ToReactElementable {
             if (meat.items.isEmpty()) {
@@ -339,8 +424,6 @@ class CustomerSingleUAOrderPage(val world: World) {
                 }
             }
         }
-
-        override val tabSpec = TabSpec("files", t("TOTE", "Файлы"), content, stripContent)
     }
 
 

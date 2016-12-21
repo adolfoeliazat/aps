@@ -45,7 +45,7 @@ import kotlin.reflect.KClass
                 run { // Search string
                     if (searchWords.isNotEmpty()) {
                         val query = searchWords.joinToString(" & ")
-                        qb.text("and tsv @@ ").arg(query).text("::tsquery")
+                        qb.text("and tsv @@ to_tsquery('russian', ").arg(query).text(")")
                     }
                 }
 

@@ -131,28 +131,41 @@ fun cwarnTitle(title: String) {
     cwarn("-".repeat(title.length))
 }
 
-fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String = buildString {
-    var indent = 0
-    html
+fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String {
+    val buf = StringBuilder()
+
+    val ultimateHTML = html
+        .replace("<span", "\n<span")
         .replace(">", ">\n")
         .replace("</", "\n</")
+
+    val lines = ultimateHTML
         .lines()
-        .forEach {
-            var s = (transformLine ?: {it})(it)
+        .map {
+            (transformLine ?: {it})(it)
                 .replace(Regex("<!--.*?react-text.*?-->"), "")
                 .replace(Regex("<!-- react-empty: \\d+ -->"), "")
                 .replace(Regex(" data-reactroot=\".*?\""), "")
+                .replace(Regex(" id=\"\\d+\""), "")
                 .trim()
-            if (s.isBlank()) return@forEach
-            s = s.replace(Regex(" id=\"\\d+\""), "")
-            if (s.startsWith("</")) --indent
-            if (indent < 0) {
-                cwarn("Shitty HTML", html)
-                bitch("Can't figure out indentations")
-            }
-            append(" ".repeat(indent * 2) + s + "\n")
-            if (s.startsWith("<") && !s.startsWith("</")) ++indent
         }
+        .filterNot {it.isBlank()}
+
+    var indent = 0
+    lines.forEachIndexed {i, s ->
+        if (s.startsWith("</")) --indent
+        if (indent < 0) {
+//            cwarn("Shitty HTML", lines.joinToString("\n"))
+            cwarn("buf so far", buf.toString())
+            cwarn("Shit left", lines.subList(i, lines.size).joinToString("\n"))
+            cwarn("Shitty line", i, s)
+            bitch("Can't figure out indentations")
+        }
+        buf.append(" ".repeat(indent * 2) + s + "\n")
+        if (s.startsWith("<") && !s.startsWith("</")) ++indent
+    }
+
+    return buf.toString()
 }
 
 fun stripUninterestingElements(jqel: JQuery): HTMLElement {
