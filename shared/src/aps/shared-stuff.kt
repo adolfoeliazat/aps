@@ -10,6 +10,7 @@ import aps.Color.*
 import aps.front.*
 import into.kommon.*
 import kotlin.properties.Delegates
+import kotlin.properties.Delegates.notNull
 
 class FieldError(val field: String, val error: String)
 
@@ -540,6 +541,15 @@ data class PieceOfShitDownload(
     val forbidden: Boolean
 )
 
+class LuceneParseToken {
+    var type: String by notNull()
+    var startOffset: Int by notNull()
+    var endOffset: Int by notNull()
+    var text: String by notNull()
+
+    override fun toString() =
+        "LuceneParseToken(type='$type', startOffset=$startOffset, endOffset=$endOffset, text='$text')"
+}
 
 
 

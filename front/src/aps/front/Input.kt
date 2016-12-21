@@ -53,26 +53,39 @@ val inputReactClass by lazy {React.createClass(json(
 
 
 class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable, Blinkable {
+    enum class Kind {INPUT, TEXTAREA}
+
     companion object {
         val instances = mutableMapOf<String, Input>()
 
         fun instance(key: String): Input {
             return instances[key] ?: bitch("No Input keyed `$key`")
         }
+
+        fun kindToLegacy(kind: Kind): String = when (kind) {
+            Input.Kind.INPUT -> "input"
+            Input.Kind.TEXTAREA -> "textarea"
+        }
     }
 
     constructor(
-        key: String,
+        key: String? = null,
+        kind: Kind = Kind.INPUT,
+        rows: Int = 5,
         style: Style = Style(),
         placeholder: String = "",
+        initialValue: String = "",
         volatileDisabled: () -> Boolean = {false},
         onKeyDown: (KeyboardEvent) -> Unit = {},
         onKeyDowna: (KeyboardEvent) -> Promise<Unit> = {async{}}
     ) : this(json(
         "style" to style.toReactStyle(),
         "placeholder" to placeholder,
+        "initialValue" to initialValue,
         "disabled" to volatileDisabled,
-        "onKeyDown" to onKeyDown
+        "onKeyDown" to onKeyDown,
+        "kind" to kindToLegacy(kind),
+        "rows" to rows
     ), key)
     {
         this.onKeyDowna = onKeyDowna

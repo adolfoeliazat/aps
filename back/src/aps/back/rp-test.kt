@@ -12,6 +12,7 @@ import com.google.debugging.sourcemap.SourceMapConsumerFactory
 import com.google.debugging.sourcemap.SourceMapping
 import com.sun.jna.platform.win32.User32
 import into.kommon.*
+import org.apache.lucene.analysis.ru.RussianAnalyzer
 import org.jooq.Record
 import org.jooq.UpdateSetMoreStep
 import org.jooq.UpdateSetStep
@@ -244,6 +245,7 @@ val backendInstanceID = "" + UUID.randomUUID()
             "resetLastDownloadedFile" -> frp_resetLastDownloadedFile(rmap)
             "getLastDownloadedFileID" -> frp_getLastDownloadedFileID(rmap)
             "executeSQL" -> frp_executeSQL(ctx, rmap)
+            "luceneParseRussian" -> frp_luceneParseRussian(rmap)
             else -> wtf("proc: $proc")
 
         }}
@@ -353,6 +355,10 @@ private fun robotTypeTextCR(text: String) {
     robot.keyRelease(KeyEvent.VK_ENTER)
 }
 
+fun frp_luceneParseRussian(rmap: Map<*, *>): List<LuceneParseToken> {
+    val text: String = cast(rmap["text"])
+    return luceneParse(text, russianAnalyzer)
+}
 
 
 

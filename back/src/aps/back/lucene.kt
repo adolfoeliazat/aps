@@ -1,6 +1,7 @@
 package aps.back
 
 import aps.*
+import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.ru.RussianAnalyzer
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute
@@ -19,17 +20,7 @@ fun luceneHighlightRanges(text: String, searchWords: List<String>, analyzer: Rus
     return highlightRanges
 }
 
-private class LuceneParseToken {
-    var type: String by notNull()
-    var startOffset: Int by notNull()
-    var endOffset: Int by notNull()
-    var text: String by notNull()
-
-    override fun toString() =
-        "LuceneParseToken(type='$type', startOffset=$startOffset, endOffset=$endOffset, text='$text')"
-}
-
-private fun luceneParse(text: String, analyzer: RussianAnalyzer): List<LuceneParseToken> {
+fun luceneParse(text: String, analyzer: Analyzer): List<LuceneParseToken> {
     return mutableListOf<LuceneParseToken>()-{res->
         analyzer.tokenStream("shit", text).use {stream->
             stream.reset()

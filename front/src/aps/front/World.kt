@@ -250,6 +250,7 @@ class World(val name: String) {
         var loader: dynamic = null
         fun isStaticPage(name: String) = !isDynamicPage(name)
 
+//        js("debugger")
         if (isStaticPage(ultimateName)) {
             fun staticLoader(): Promise<Unit> = async {
 //                val href = if (ultimateName == "index") "/" else "${ultimateName}.html"
@@ -270,7 +271,7 @@ class World(val name: String) {
                 loader = {loadSignInPage()}
             } else if (ultimateName == "sign-up") {
                 loader = {loadSignUpPage()}
-            } else if (user != null || (MODE == "debug" && ultimateName.startsWith("debug"))) {
+            } else if (user != null || (MODE == "DEBUG" && ultimateName.startsWith("debug"))) {
                 loader = privatePageLoader(ultimateName)
             }
         }

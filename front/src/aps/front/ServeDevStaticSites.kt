@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -18,6 +20,16 @@ object ServeDevStaticSites {
         serve("customer-ua", 3012)
         serve("writer-en", 3021)
         serve("writer-ua", 3022)
+
+        run {
+            val app = express()
+            app.use(express.static("e:/work"))
+
+            val port = 3030
+            app.listen(port) {
+                println("Serving sources on 127.0.0.1:$port")
+            }
+        }
     }
 
     fun serve(site: String, port: Int) {

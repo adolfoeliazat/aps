@@ -38,6 +38,11 @@ object fuckingRemoteCall {
         "sql" to sql
     ))
 
+    fun luceneParseRussian(text: String): Promise<List<LuceneParseToken>> = sendShit(json(
+        "proc" to "luceneParseRussian",
+        "text" to text
+    ))
+
 
     private fun <T> sendShit(request: Json): Promise<T> = async {
         val res = await(send(FuckingRemoteProcedureRequest()-{o->

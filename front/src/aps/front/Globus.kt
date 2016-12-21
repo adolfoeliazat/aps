@@ -56,6 +56,7 @@ class TypedStorageLocal(val store: StorageLocal) {
     var token by StringValue()
     var reloadTest by BooleanValue()
     var dontScrollOnTestPassed by BooleanValue()
+    var DebugWordMentionFinderPage_inputText by StringValue()
 
     inner class StringValue {
         operator fun getValue(thisRef: Any?, property: KProperty<*>): String? =

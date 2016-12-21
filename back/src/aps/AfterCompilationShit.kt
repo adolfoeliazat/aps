@@ -35,9 +35,17 @@ class AfterCompilationShit {
             copyFileToDir("$APS_HOME/front/out/front.js.map", todir)
             copyFileToDir("$KOMMON_HOME/js/out/into-kommon-js-enhanced.js", todir)
             copyFileToDir("$KOMMON_HOME/js/out/into-kommon-js.js.map", todir)
+
+            fixSourceMap("$todir/into-kommon-js.js.map")
+            fixSourceMap("$todir/front.js.map")
         }
 
         eprintln("COOL")
+    }
+
+    private fun fixSourceMap(path: String) {
+        val content = File(path).readText()
+        File(path).writeText(content.replace("file://E:/work", "http://localhost:3030"))
     }
 
     private fun copyFileToDir(file: String, todir: String) {

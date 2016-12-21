@@ -21,13 +21,16 @@ class TestUACustomer_Order_Files_Search : StepBasedTestScenario() {
                     setUpFiles = {oid-> async {
                         await(setUpFilesByBobul_1(shit, oid))
                         await(setUpFilesByFedor_1(shit, oid))
+                        await(setUpFilesByBobul_2(shit, oid))
                     }})
             },
-            assertScreen = {o.todo("TestUACustomer_Order_Files_Search assertScreen")}
+            assertScreen = {o.assertScreenHTML_todo("1", "0f77828b-fe22-4606-8f97-0efecc6fefde")}
         )
 
+        o.halt()
         o.inputSetValue("search", "мышкин")
         o.inputPressEnter("search")
+        o.assertScreenHTML_todo("2", "561577ab-ad4b-4bb5-bf1d-f50e9eac2c68")
     }
 }
 

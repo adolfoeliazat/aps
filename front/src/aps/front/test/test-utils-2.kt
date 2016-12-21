@@ -257,6 +257,57 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String): Promise<Unit> = as
     """))
 }
 
+fun setUpFilesByBobul_2(testShit: TestShit, orderID: String): Promise<Unit> = async {
+    await(ImposeNextRequestTimestampRequest.send("2016-12-10 09:30:11"))
+    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("piece of trial 1.rtf", "${testconst.filesRoot}piece of trial 1.rtf")
+        o.title.value = "A piece of... Trial 1"
+        o.details.value = dedent("""
+             - Вы  глубоко заблуждаетесь, - сказал К. сердито, с трудом скрывая раздражение, - и  вообще  вы  неверно  истолковали  мои слова  про  барышню,  я  совсем  не  то хотел сказать. Искренне советую вам ничего ей не говорить. Вы глубоко заблуждаетесь,  я ее  знаю  очень  хорошо,  и  все,  что  вы  говорите, неправда!
+        """)
+    })).orDie()
+
+    await(ImposeNextRequestTimestampRequest.send("2016-12-10 10:17:23"))
+    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("piece of trial 2.rtf", "${testconst.filesRoot}piece of trial 2.rtf")
+        o.title.value = "A piece of... Trial 2"
+        o.details.value = dedent("""
+             Когда  ему  надоело смотреть на пустую улицу, он прилег на кушетку, но сначала  приоткрыл  дверь  в  прихожую,  чтобы,  не вставая,   видеть   всех,  кто  войдет  в  квартиру.  Часов  до одиннадцати он пролежал спокойно на кушетке, покуривая  сигару. Но  потом  не выдержал и вышел в прихожую, как будто этим можно было ускорить приход фройляйн Бюрстнер. У него не было  никакой охоты  ее  видеть,  он  даже  не  мог  точно вспомнить, как она выглядит, но ему нужно было с ней поговорить, и его  раздражало что из-за ее опоздания даже конец дня вышел такой беспокойный и беспорядочный.  Виновата она была и в том, что он не поужинал и пропустил визит к Эльзе, назначенный на сегодня. Конечно, можно было  бы  наверстать  упущенное  и  пойти  в  ресторанчик,  где работала  Эльза.  Он  решил,  что  после  разговора  с фройляйн Бюрстнер он так и сделает.
+
+             Уже  пробило  половину  двенадцатого,  когда  на  лестнице раздались  чьи-то шаги. К. так ушел в свои мысли, что с громким топотом расхаживал по прихожей, как по своей комнате, но тут он торопливо нырнул к себе. В прихожую  вошла  фройляйн  Бюрстнер. Заперев  дверь,  она зябко закутала узкие плечи шелковой шалью. Еще миг, и она  скроется  в  своей  комнате,  куда  К.  в  этот полуночный час, разумеется, войти не мог. Значит, ему надо было заговорить с ней сразу; но, к несчастью, он забыл зажечь свет у себя  в комнате, и, если бы он сейчас вышел оттуда, из темноты, это походило бы на нападение. Во всяком случае,  он  мог  очень напугать   ее.
+        """)
+    })).orDie()
+
+    await(ImposeNextRequestTimestampRequest.send("2016-12-13 08:21:33"))
+    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("piece of trial 3.rtf", "${testconst.filesRoot}piece of trial 3.rtf")
+        o.title.value = "A piece of... Trial 3"
+        o.details.value = dedent("""
+             - Вы  не  подумали  об одном, - сказал он. - Правда, у вас могут быть неприятности, но никакая опасность вам не грозит. Вы знаете, что фрау Грубах - а в этом вопросе она играет  решающую роль,  поскольку капитан доводится ей племянником, - вы знаете, что она меня просто  обожает  и  беспрекословно  верит  каждому моему  слову.  Кстати,  она  и зависит от меня, я ей дал в долг порядочную сумму денег. Я готов принять любое предложенное вами объяснение нашей поздней встречи, если только  оно  будет  хоть немного  правдоподобно, и обязуюсь подействовать на фрау Грубах так, чтобы она не только приняла его официально, но и  поверила безоговорочно  и  искренне.  И пожалуйста, не щадите меня. Если вам угодно распространить слух, что я к  вам  приставал,  то  я именно  так и сообщу фрау Грубах, и она все примет, не теряя ко мне уважения, настолько она меня ценит.
+        """)
+    })).orDie()
+
+    await(ImposeNextRequestTimestampRequest.send("2016-12-15 16:43:05"))
+    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+        o.orderID.value = orderID
+        o.file.testFileOnServer = FileField.TestFileOnServer("piece of trial 4.rtf", "${testconst.filesRoot}piece of trial 4.rtf")
+        o.title.value = "A piece of... Trial 4"
+        o.details.value = dedent("""
+                 К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
+        """)
+    })).orDie()
+
+    await(fuckingRemoteCall.executeSQL("Add file permissions", """
+        insert into file_user_permissions(file_id, user_id) values(100005, 100000);
+        insert into file_user_permissions(file_id, user_id) values(100006, 100000);
+        insert into file_user_permissions(file_id, user_id) values(100007, 100000);
+        insert into file_user_permissions(file_id, user_id) values(100008, 100000);
+    """))
+}
+
 fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String) -> Promise<Unit>) {
     val o = this
     o.acta {async{
@@ -327,6 +378,10 @@ fun TestScenarioBuilder.todo(msg: String) {
         labelColor = Color.WHITE)
     step.passed = true
     instructions.add(step)
+}
+
+fun TestScenarioBuilder.assertScreenHTML_todo(descr: String?, id: String) {
+    this.todo("assertScreenHTML: $descr")
 }
 
 fun TestScenarioBuilder.expectPieceOfShitDownload(expected: PieceOfShitDownload, buildStepsToDownload: () -> Unit) {

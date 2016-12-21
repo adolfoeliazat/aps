@@ -19,8 +19,9 @@ fun main(args: Array<String>) {
 //    println(System.currentTimeMillis())
 //    shit3()
 //    shit4()
-    qwe_enum_jvm()
+//    qwe_enum_jvm()
 }
+
 
 private enum class E {
     FIRST, SECOND

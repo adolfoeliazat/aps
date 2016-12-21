@@ -45,7 +45,7 @@ val NOTRE: ToReactElementable = NORE.toToReactElementable()
     fun forceUpdate()
 }
 
-fun qweqwe() {
+fun splitTextToDocuments() {
     open class A
     class B : A()
     val p = Promise<A> {resolve, reject ->

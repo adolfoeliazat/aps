@@ -3,14 +3,59 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
-private enum class E {
-    FIRST, SECOND
+
+fun qwe_split_works_sync() {
+    val tokens = "foo:bar:baz".split(Regex(":"))
+    console.log(tokens.joinToString("-"))
 }
 
-fun qwe_enum_js() {
-    console.log(E.valueOf("THIRD"))
+fun qwe_split_breaks() {
+    async<Unit> {
+        val tokens = "foo:bar:baz".split(Regex(":"))
+        console.log(tokens.joinToString("-"))
+    }
 }
+
+fun qwe_split_breaks_catch() {
+    async<Unit> {
+        try {
+            val tokens = "foo:bar:baz".split(Regex(":"))
+            console.log(tokens.joinToString("-"))
+        } catch(e: Throwable) {
+            console.log(e.asDynamic().stack)
+        }
+    }
+}
+
+fun qwe_split_works_async_noRegex() {
+    async<Unit> {
+        val tokens = "foo:bar:baz".split(":")
+        console.log(tokens.joinToString("-"))
+    }
+}
+
+
+
+//class A(val s: String) {
+//    constructor(i: Int) : this("zzzzzzzzz " + when {
+//        else -> {
+//            console.log("Hi, I'm at top level :)")
+//            i
+//        }
+//    })
+//}
+
+
+
+//private enum class E {
+//    FIRST, SECOND
+//}
+//
+//fun qwe_enum_js() {
+//    console.log(E.valueOf("THIRD"))
+//}
 
 //fun qwe_breaks() {
 //    val obj = object {

@@ -150,21 +150,22 @@ private val idToLogGroupMessage = Collections.synchronizedMap(mutableMapOf<Strin
                 return@run Unit
             }
             else -> {
-                if (redisLog.shouldSkip()) return@run Unit
-
                 jedisPool.resource.use {jedis ->
                     when (command) {
                         "lrange" -> {
+                            if (redisLog.shouldSkip()) return@run listOf<String>()
                             val key: String  = cast(rmap["key"])
                             val start: Long = (rmap["start"] as String).toLong()
                             val end: Long = (rmap["end"] as String).toLong()
                             return@run jedis.lrange(key, start, end)
                         }
                         "mget" -> {
+                            if (redisLog.shouldSkip()) return@run listOf<String>()
                             val keys: List<String> = cast(rmap["keys"])
                             return@run jedis.mget(*keys.toTypedArray())
                         }
                         "del" -> {
+                            if (redisLog.shouldSkip()) return@run 0L
                             val keys: List<String> = cast(rmap["keys"])
                             return@run jedis.del(*keys.toTypedArray())
                         }
