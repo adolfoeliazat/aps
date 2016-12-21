@@ -346,8 +346,10 @@ class ItemsResponse<Item> (
 
 
 enum class Ordering(override val title: String) : Titled {
-    ASC(t("TOTE", "Сначала старые")),
-    DESC(t("TOTE", "Сначала новые"))
+//    ASC(t("TOTE", "Сначала старые")),
+//    DESC(t("TOTE", "Сначала новые"))
+    ASC(t("TOTE", "Старые")),
+    DESC(t("TOTE", "Новые"))
 }
 
 fun <T : Any> T?.orDefault(default: () -> T): T = if (this != null) this else default()

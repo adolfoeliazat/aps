@@ -131,7 +131,7 @@
             <div style="display: flex;">
               <div style="margin-left: 0px;">
                 <div style="position: relative;">
-                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="мышкин" style="resize: none; width: 160px; padding-left: 30px;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="мышкин" style="resize: none; width: 100%; padding-left: 30px;">
                     <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
                     </i>
                   </div>
@@ -155,10 +155,10 @@
                 <div style="margin-left: 8px;">
                   <select class="form-control">
                     <option value="ASC">
-                      Сначала старые
+                      Старые
                     </option>
                     <option value="DESC">
-                      Сначала новые
+                      Новые
                     </option>
                   </select>
                 </div>

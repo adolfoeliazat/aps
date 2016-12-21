@@ -180,7 +180,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 
             val searchInput = Input(
                 key = "search",
-                style = Style(paddingLeft = 30, width = 160),
+                style = Style(paddingLeft = 30, width = "100%"),
                 placeholder = t("TOTE", "Поиск..."),
                 volatileDisabled  = {ebafHost.headerControlsDisabled}
             )
