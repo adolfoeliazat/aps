@@ -12,10 +12,9 @@ import aps.*
 import into.kommon.*
 
 object MakeStaticSites {
-    class LocalizedShit(val en: String, val ua: String)
-    typealias LS = LocalizedShit
+    class LS(val en: String, val ua: String)
     class Section(val title: LS, val content: LS)
-    class HorizBulletItem(val glyph: String, val title: LocalizedShit)
+    class HorizBulletItem(val glyph: String, val title: LS)
     class HrefBulletItem(val href: String, val title: String)
     class Testimonial(val name: LS, val img: String, val says: LS)
     class BlogItem(val listTitle: String, val title: String, val slug: String, val content: String)
@@ -62,12 +61,12 @@ object MakeStaticSites {
         }
     }
 
-    fun t(ls: LocalizedShit): String = when (lang) {
+    fun t(ls: LS): String = when (lang) {
         Language.EN -> ls.en
         Language.UA -> ls.ua
     }
 
-    fun t(en: String, ua: String): String = t(LocalizedShit(en, ua))
+    fun t(en: String, ua: String): String = t(LS(en, ua))
 
     fun makeWriterSite(lang: Language): Promise<Unit> {"__async"
         val siteName = "writer-${lang.name.toLowerCase()}"

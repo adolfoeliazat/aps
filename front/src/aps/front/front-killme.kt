@@ -318,7 +318,7 @@ fun legacy_implementControlShit(arg: dynamic) {
     }
 
     if (implementTestClick) {
-        me.testClick = fun(_arg: dynamic): Promise<Unit> = async {
+        me.testClick = fun(_arg: dynamic): Promise<Unit> = async<Unit> {
             val arg: dynamic = if (_arg) _arg else json()
             val testActionHandOpts = arg.testActionHandOpts
 

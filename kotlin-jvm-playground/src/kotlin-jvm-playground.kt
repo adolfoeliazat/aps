@@ -1,7 +1,7 @@
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.TimeZone
-
+//import kotlin.coroutines.suspendCoroutine
 
 
 fun main(args: Array<String>) {
@@ -21,6 +21,11 @@ fun main(args: Array<String>) {
 //    shit4()
 //    qwe_enum_jvm()
 }
+
+
+//suspend fun <T> await(p: Promise<T>): T {
+//    suspendCoroutine()
+//}
 
 private enum class E {
     FIRST, SECOND

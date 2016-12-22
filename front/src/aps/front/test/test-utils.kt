@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import aps.front.testutils.*
 import org.w3c.dom.Storage
 import kotlin.browser.window
 
@@ -21,7 +22,7 @@ object TestUtils {
                 typedStorageLocal = tsl
             )
 
-            ExternalGlobus.storageLocalForStaticContent = object: Storage {
+            ExternalGlobus.storageLocalForStaticContent = object:IStorage {
                 override fun getItem(key: String) = fakeStorageLocal.getItem(key)
             }
         }

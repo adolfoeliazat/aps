@@ -45,7 +45,14 @@ import kotlin.reflect.KClass
                 run { // Search string
                     if (searchWords.isNotEmpty()) {
                         val query = searchWords.joinToString(" & ")
-                        qb.text("and tsv @@ to_tsquery('russian', ").arg(query).text(")")
+                        qb.text("and (tsv @@ to_tsquery('russian', ").arg(query).text(")")
+                        for (word in searchWords) {
+                            try {
+                                val long = word.toLong()
+                                qb.text("or ${Tables.UA_ORDER_FILES.name}.${Tables.UA_ORDER_FILES.ID.name} = ").arg(long)
+                            } catch (e: NumberFormatException) {}
+                        }
+                        qb.text(")")
                     }
                 }
 

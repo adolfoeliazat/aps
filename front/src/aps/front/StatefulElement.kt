@@ -529,17 +529,17 @@ open class FlowElementBuilder(val tag: String) {
         if (this != null) add(asReactElement(this))
     }
 
-    @Suppress("USELESS_CAST")
-    operator fun dynamic.unaryMinus() {
-        when {
-            this == null -> {}
-            this is String -> - (this as String)
-            this.`$meta` != null -> - this.meat
-            this.`$$typeof` == js("Symbol['for']('react.element')") -> -asReactElement(this)
-            this.element && this.element.`$$typeof` == js("Symbol['for']('react.element')") -> -asReactElement(this.element)
-            else -> raise("Weird shit in FlowElementBuilder child")
-        }
-    }
+//    @Suppress("USELESS_CAST")
+//    operator fun dynamic.unaryMinus() {
+//        when {
+//            this == null -> {}
+//            this is String -> - (this as String)
+//            this.`$meta` != null -> - this.meat
+//            this.`$$typeof` == js("Symbol['for']('react.element')") -> -asReactElement(this)
+//            this.element && this.element.`$$typeof` == js("Symbol['for']('react.element')") -> -asReactElement(this.element)
+//            else -> raise("Weird shit in FlowElementBuilder child")
+//        }
+//    }
 
     fun toElement(): ReactElement {
         val theStyle = if (styleKludge != null) styleKludge else style.toJSObject()

@@ -104,7 +104,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 
             val res = await(requestChunk(null))
             when (res) {
-                is ZimbabweResponse.Shitty -> return@async res
+                is ZimbabweResponse.Shitty -> res
                 is ZimbabweResponse.Hunky -> {
                     meat = res.meat
                     stripContent = StripContent()
@@ -118,7 +118,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                         o- renderItems(meat, noItemsMessage = true)
                     }}
 
-                    return@async null
+                    null
                 }
             }
         }
@@ -232,76 +232,6 @@ class CustomerSingleUAOrderPage(val world: World) {
                 }
             }
         }
-
-//        val stripContent = Control2.from {renderStripContent()}
-//        fun renderStripContent(): ToReactElementable {
-//            if (!ebafHost.headerControlsVisible) return NOTRE
-//            return hor2{o->
-//                val filterSelect = Select(
-//                    Attrs(),
-//                    CustomerFileFilter.values(),
-//                    initialValue = filter,
-//                    isAction = true,
-//                    style = json("width" to 160),
-//                    volatileDisabled = {ebafHost.headerControlsDisabled}
-//                )
-//
-//                val orderingSelect = Select(
-//                    Attrs(),
-//                    Ordering.values(),
-//                    initialValue = ordering,
-//                    isAction = true,
-//                    style = json("width" to 160),
-//                    volatileDisabled = {ebafHost.headerControlsDisabled}
-//                )
-//
-//                val searchInput = Input(
-//                    key = "search",
-//                    style = Style(paddingLeft = 30, width = 160),
-//                    placeholder = t("TOTE", "Поиск..."),
-//                    volatileDisabled  = {ebafHost.headerControlsDisabled}
-//                )
-//                searchInput.setValue(search)
-//
-//                fun reloadFilesTab() =
-//                    world.pushNavigate("order.html?id=${order.id}&tab=files"
-//                                           + "&ordering=${orderingSelect.value.name}"
-//                                           + "&filter=${filterSelect.value.name}"
-//                                           + "&search=${encodeURIComponent(searchInput.getValue())}")
-//
-//                fun reload(elementID: String): Promise<Unit> = async {
-//                    effects2.blinkOn(byid(elementID))
-//                    ebafHost.headerControlsDisabled = true
-//                    stripContent.update()
-//                    try {
-//                        await(reloadFilesTab())
-//                    } finally {
-//                        effects2.blinkOffFadingOut()
-//                        ebafHost.headerControlsDisabled = false
-//                        stripContent.update()
-//                    }
-//                }
-//
-//                filterSelect.onChanga = {reload(filterSelect.elementID)}
-//                orderingSelect.onChanga = {reload(orderingSelect.elementID)}
-//                searchInput.onKeyDowna = {e-> async {
-//                    if (e.keyCode == 13) {
-//                        preventAndStop(e)
-//                        await(reload(searchInput.elementID))
-//                    }
-//                }}
-//
-//                gloshit.updateStripContent = {stripContent.update()}
-//
-//                o- kdiv(position = "relative"){o->
-//                    o- searchInput
-//                    o- ki(className = "fa fa-search", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
-//                }
-//                o- filterSelect
-//                o- orderingSelect
-//                o- ebafPlus.renderButton()
-//            }
-//        }
 
         private fun renderItems(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean): ToReactElementable {
             if (meat.items.isEmpty()) {

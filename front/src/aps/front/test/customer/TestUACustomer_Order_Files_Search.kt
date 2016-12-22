@@ -59,6 +59,18 @@ class TestUACustomer_Order_Files_Search : StepBasedTestScenario() {
         o.inputSetValue("search", "trial")
         o.inputPressEnter("search")
         o.assertScreenHTML("10", "fde730d2-10f9-4ba0-8abf-d2a5b275a7a8")
+
+        o.inputSetValue("search", "boobs")
+        o.inputPressEnter("search")
+        o.assertScreenHTML("11", "7871923d-d3b4-4ed1-9c61-5dc2d29a269d")
+
+        o.inputSetValue("search", "100004")
+        o.inputPressEnter("search")
+        o.assertScreenHTML("12", "5db37d2c-367f-4913-b9c1-7075ebe87bbc")
+
+        o.inputSetValue("search", "100004 100000")
+        o.inputPressEnter("search")
+        o.assertScreenHTML("13", "b47d716a-9b85-4cc9-9ade-274c6e13fc32")
     }
 }
 

@@ -1,0 +1,310 @@
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Проза
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                <span class="">
+                  Почему мы?
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                <span class="">
+                  Цены
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                <span class="">
+                  Примеры
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                <span class="">
+                  ЧаВо
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                <span class="">
+                  Связь
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                <span class="">
+                  Блог
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="">
+          <a href="orders.html">
+            <span class="">
+              Мои заказы
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="support.html">
+            <span class="">
+              Поддержка
+            </span>
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            <span class="">
+              Иво
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <div>
+            Заказ №100000
+            <span style="top: -0.2em; position: relative; margin-left: 1em; padding: 0.1em 0.3em; background-color: rgb(179, 229, 252); font-size: 60%; border-radius: 0.3em;">
+              Ищем&nbsp;писателей
+            </span>
+          </div>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <h4 style="margin-bottom: 0.7em;">
+        Когнитивно-прагматические аспекты перевода рекламных слоганов с английского
+      </h4>
+      <div>
+        <div style="position: relative;">
+          <ul class="nav nav-tabs">
+            <li id="tab-params" class="">
+              <a href="#">
+                Параметры
+              </a>
+            </li>
+            <li id="tab-files" class="active">
+              <a href="#">
+                Файлы
+              </a>
+            </li>
+            <li id="tab-messages" class="">
+              <a href="#">
+                Сообщения
+              </a>
+            </li>
+          </ul>
+          <div style="top: 0px; right: 0px; position: absolute;">
+            <div style="display: flex;">
+              <div style="margin-left: 0px;">
+                <div style="position: relative;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="100004 100000" style="resize: none; width: 100%; padding-left: 30px;">
+                    <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
+                    </i>
+                  </div>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control">
+                    <option value="ALL">
+                      Все
+                    </option>
+                    <option value="FROM_ME">
+                      Мои
+                    </option>
+                    <option value="FROM_WRITER">
+                      От писателя
+                    </option>
+                    <option value="FROM_SUPPORT">
+                      От саппорта
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control">
+                    <option value="ASC">
+                      Старые
+                    </option>
+                    <option value="DESC">
+                      Новые
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-primary ">
+                    <i class="fa fa-plus">
+                    </i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 5px;">
+            <div>
+              <div>
+              </div>
+              <div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header">
+                        <i class="cunt-header-left-icon fa fa-file">
+                        </i>
+                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
+                        </i>
+                        Crime and Punishment
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100004
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          От писателя
+                        </span>
+                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
+                        </i>
+                        <i class="cunt-header-right-icon fa fa-pencil">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        07.12.2016 16:27:03 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        crime and punishment.rtf
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Действие романа начинается жарким июльским днём в Петербурге. Студент Родион Романович Раскольников, вынужденный уйти из университета из-за отсутствия денег, направляется в квартиру к процентщице Алёне Ивановне, чтобы сделать «пробу своему предприятию». В сознании героя в течение последнего месяца созревает идея убийства «гадкой старушонки»; одно-единственное преступление, по мнению Раскольникова, изменит его собственную жизнь и избавит сестру Дуню от необходимости выходить замуж за «благодетеля» Петра Петровича Лужина. Несмотря на проведённую «разведку», тщательно продуманный план ломается из-за внутренней паники Родиона Романовича (который после убийства процентщицы долго не может найти у неё ни денег, ни ценных закладов), а также внезапного возвращения домой сестры Алёны Ивановны. Тихая, безобидная, «поминутно беременная» Лизавета, оказавшаяся невольной свидетельницей преступления, становится второй жертвой студента.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header">
+                        <i class="cunt-header-left-icon fa fa-file">
+                        </i>
+                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        </i>
+                        A warm word to my writer
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100000
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
+                        </i>
+                        <i class="cunt-header-right-icon fa fa-pencil">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        02.12.2016 14:31:15 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        fuck you.rtf
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        244 Б
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Я к вам пишу – чего же боле?
+                          Что я могу еще сказать?
+                          Теперь, я знаю, в вашей воле
+                          Меня презреньем наказать.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -37,7 +37,7 @@ object fedis {
         val res = await(send(PrivilegedRedisCommandRequest()-{o->
             o.json.value = JSON.stringify(request)
         }))
-        dejsonize(res.json)!!
+        dejsonize<T>(res.json)!!
     }
 }
 

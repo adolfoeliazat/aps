@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import aps.front.testutils.*
 import into.kommon.global
 import org.w3c.dom.Storage
 import kotlin.browser.localStorage
@@ -12,7 +13,7 @@ val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLoca
 
 @native interface IExternalGlobus {
     fun displayInitialShit()
-    var storageLocalForStaticContent: Storage
+    var storageLocalForStaticContent: IStorage
     var LANG: String
     var MODE: String
     var DB: String

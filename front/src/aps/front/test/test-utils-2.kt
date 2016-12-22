@@ -16,6 +16,9 @@ object testconst {
     }
 }
 
+external interface IStorage {
+    fun getItem(key: String): String?
+}
 
 fun TestScenarioBuilder.initFuckingBrowser(fillStorageLocal: (TypedStorageLocal) -> Unit = {}) {
     act {
@@ -33,7 +36,7 @@ fun TestScenarioBuilder.initFuckingBrowser(fillStorageLocal: (TypedStorageLocal)
             typedStorageLocal = tsl
         )
 
-        ExternalGlobus.storageLocalForStaticContent = object:Storage {
+        ExternalGlobus.storageLocalForStaticContent = object:IStorage {
             override fun getItem(key: String) = fakeStorageLocal.getItem(key)
         }
     }

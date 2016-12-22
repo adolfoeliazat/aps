@@ -116,6 +116,7 @@ fun renderStackTrace(e: Throwable, onRendered: (() -> Unit)? = null, skipAllFore
 
         shit.setContent(ctx.render())
         onRendered?.invoke()
+        Unit
     }
 
     fuck()

@@ -36,7 +36,7 @@ fun el(tag: String, attrs: Json, vararg children: ReactElement?): ReactElement =
 
 fun String?.asReactElement(): ReactElement? = this.asDynamicReactElement()
 
-@native interface ReactElement
+@native class ReactElement
 
 val NORE: ReactElement = null.asDynamic()
 val NOTRE: ToReactElementable = NORE.toToReactElementable()
@@ -53,7 +53,7 @@ fun splitTextToDocuments() {
     }
 }
 
-@native class Promise<T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
+@native class Promise<out T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
     fun <U> then(onFulfilled: (T) -> Unit,
                  onRejected: ((Throwable) -> Unit)? = null): Promise<U> = noImpl
 
@@ -213,7 +213,7 @@ fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?
     for (field in req.fields) await(field.populateRemote(payload.fields))
     for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
 
-    await(callRemoteProcedurePassingJSONObject(procedureName, payload))
+    await(callRemoteProcedurePassingJSONObject<Res>(procedureName, payload))
 }
 
 fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> =

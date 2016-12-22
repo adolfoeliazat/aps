@@ -48,7 +48,7 @@ object fuckingRemoteCall {
         val res = await(send(FuckingRemoteProcedureRequest()-{o->
             o.json.value = JSON.stringify(request)
         }))
-        dejsonize(res.json, "fuckingRemoteCall: ${request["proc"]}")
+        dejsonize<T>(res.json, "fuckingRemoteCall: ${request["proc"]}")
     }
 
 }

@@ -42,7 +42,7 @@ class SignUpPage(val world: World) {
                 Input.instance("firstName").setValue("Иво")
                 Input.instance("lastName").setValue("Бобул")
                 Checkbox.instance("agreeTerms").setValue(true)
-                Button.instance("primary").click()
+                await(Button.instance("primary").click())
             }}
         )))
     }

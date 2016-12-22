@@ -56,7 +56,7 @@ fun jsFacing_button(def: dynamic): dynamic {
     me.componentDidMount = {
         if (def.shamy != null) {
             Button.instances[def.shamy] = object:Button() {
-                override fun click(): Promise<Unit> = async {
+                override fun click(): Promise<Unit> = async<Unit> {
                     byid(me.elementID).click()
                 }
             }

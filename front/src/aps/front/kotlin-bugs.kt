@@ -5,53 +5,102 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-private enum class E1 {FOO, BAR}
-private enum class E2 {BAZ, QUX}
 
-fun qwe_casts_1() {
-    val xs = listOf(E1.FOO)
-    val ys = xs as List<E2>
-    println("ok")
+fun qwe_compiles() {
+    val a: A.A2? = run {
+        val b: A = A.A2()
+        when (b) {
+            is A.A2 -> return@run b
+            else -> return@run null
+        }
+    }
 }
 
-fun qwe_casts_2() {
-    val x = E1.FOO
-    val y = x as E2
-    console.log("ok")
+private sealed class A {
+    class A1 : A()
+    class A2 : A()
 }
 
-fun qwe_casts_3() {
-    val x = "qwe"
-    val y = x as Int
-    console.log(y)
-    console.log("ok")
+//fun qwe_doesntCompile() {
+//    val a: Promise<A.A2?> = async { // Error: ...inferred type is Promise<A?> but Promise<A.A2?> was expected
+//        val b: A = A.A2()
+//        when (b) {
+//            is A.A2 -> return@async b
+//            else -> return@async null
+//        }
+//    }
+//}
+
+fun qwe_compilesOK() {
+    val a: Promise<A.A2?> = async {
+        val b: A = A.A2()
+        when (b) {
+            is A.A2 -> b
+            else -> null
+        }
+    }
 }
 
-fun qwe_casts_4() {
-    val xs = listOf("qwe")
-    val ys = xs as List<Int>
-    val y = ys.first()
-    console.log(jsTypeOf(y))
-    console.log(y)
-    console.log("ok")
+fun qwe_coroutineUnit() {
+    val f: (() -> Unit)? = null
+
+    val x: Unit = run { // OK. Figures out to ignore last evaluated value in block
+        f?.invoke()
+    }
+
+//    val p: Promise<Unit> = async { // Error: ...inferred type is Promise<Unit?> but Promise<Unit> was expected
+//        f?.invoke()
+//    }
 }
 
-fun qwe_casts_4_1() {
-    val xs = listOf("qwe")
-    val ys = xs as List<Int>
-    val y = ys.first() as Int
-    console.log(jsTypeOf(y))
-    console.log(y)
-    console.log("ok")
-}
 
-fun qwe_casts_5() {
-    val xs = listOf(E1.FOO)
-    val ys = xs as List<E2>
-    val y = ys.first()
-    console.log(y)
-    console.log("ok")
-}
+//private enum class E1 {FOO, BAR}
+//private enum class E2 {BAZ, QUX}
+
+//fun qwe_casts_1() {
+//    val xs = listOf(E1.FOO)
+//    val ys = xs as List<E2>
+//    println("ok")
+//}
+//
+//fun qwe_casts_2() {
+//    val x = E1.FOO
+//    val y = x as E2
+//    console.log("ok")
+//}
+//
+//fun qwe_casts_3() {
+//    val x = "qwe"
+//    val y = x as Int
+//    console.log(y)
+//    console.log("ok")
+//}
+//
+//fun qwe_casts_4() {
+//    val xs = listOf("qwe")
+//    val ys = xs as List<Int>
+//    val y = ys.first()
+//    console.log(jsTypeOf(y))
+//    console.log(y)
+//    console.log("ok")
+//}
+//
+//fun qwe_casts_4_1() {
+//    val xs = listOf("qwe")
+//    val ys = xs as List<Int>
+//    val y = ys.first() as Int
+//    console.log(jsTypeOf(y))
+//    console.log(y)
+//    console.log("ok")
+//}
+//
+//fun qwe_casts_5() {
+//    val xs = listOf(E1.FOO)
+//    val ys = xs as List<E2>
+//    val y = ys.first()
+//    console.log(y)
+//    console.log("ok")
+//}
 
 //fun qwe_split_works_sync() {
 //    val tokens = "foo:bar:baz".split(Regex(":"))
