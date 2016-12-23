@@ -27,12 +27,13 @@ import kotlin.reflect.KClass
             ctx.q,
             table = Tables.UA_ORDER_FILES.name,
             pojoClass = JQUaOrderFiles::class,
-            loadItem = {file, q ->
-                file.toRTO(q)-{o->
-                    if (searchWords.isNotEmpty()) {
-                        o.file.detailsHighlightRanges = luceneHighlightRanges(o.file.details, searchWords, russianAnalyzer)
-                    }
-                }
+            loadItem = {orderFile, q ->
+                UAOrderFileRTO(
+                    id = orderFile.id.toString(),
+                    file = loadFile(q, orderFile.fileId, searchWords, Language.UA),
+                    seenAsFrom = orderFile.seenAsFrom.toApp()
+
+                )
             },
             fromID = req.fromID.value?.let {it.toLong()},
             ordering = req.ordering.value,

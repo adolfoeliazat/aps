@@ -184,7 +184,9 @@
                         </i>
                         <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
                         </i>
-                        The (Fucking) Idiot
+                        <span>
+                          The (Fucking) Idiot
+                        </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100003
                         </span>
@@ -212,7 +214,9 @@
                         Имя файла
                       </label>
                       <div>
-                        idiot.rtf
+                        <span>
+                          idiot.rtf
+                        </span>
                       </div>
                     </div>
                     <div class="col-md-4">

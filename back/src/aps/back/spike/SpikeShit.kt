@@ -90,7 +90,7 @@ private suspend fun <T> await(f: CompletableFuture<T>): T =
         }
     }
 
-fun <T> async(block: suspend () -> T): CompletableFuture<T> {
+private fun <T> async(block: suspend () -> T): CompletableFuture<T> {
     val future = CompletableFuture<T>()
     block.startCoroutine(completion = object : Continuation<T> {
         override fun resume(value: T) {
@@ -130,3 +130,6 @@ private fun shit1() {
     val text = "foo bar baz"
     val docs = text.split(Regex("----*"))
 }
+
+
+

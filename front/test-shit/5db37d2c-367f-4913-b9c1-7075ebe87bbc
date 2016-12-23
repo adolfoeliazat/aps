@@ -184,8 +184,10 @@
                         </i>
                         <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
                         </i>
-                        Crime and Punishment
-                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                        <span>
+                          Crime and Punishment
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(66, 66, 66); background-color: rgb(255, 224, 130); font-size: 75%;">
                           №100004
                         </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
@@ -212,7 +214,9 @@
                         Имя файла
                       </label>
                       <div>
-                        crime and punishment.rtf
+                        <span>
+                          crime and punishment.rtf
+                        </span>
                       </div>
                     </div>
                     <div class="col-md-4">

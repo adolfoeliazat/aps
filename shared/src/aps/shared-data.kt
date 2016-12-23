@@ -44,9 +44,11 @@ data class IntRangeRTO(
 class FileRTO(
     val id: String,
     val name: String,
+    val nameHighlightRanges: List<IntRangeRTO>,
     val title: String,
+    val titleHighlightRanges: List<IntRangeRTO>,
     val details: String,
-    var detailsHighlightRanges: List<IntRangeRTO> = listOf(),
+    val detailsHighlightRanges: List<IntRangeRTO>,
     val sizeBytes: Int,
     val insertedAt: Long
 )

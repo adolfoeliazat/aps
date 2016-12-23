@@ -6,6 +6,7 @@ import aps.back.generated.jooq.tables.JQFiles.*
 import aps.back.generated.jooq.tables.JQUserRoles.*
 import aps.back.generated.jooq.tables.JQUsers.*
 import aps.back.generated.jooq.tables.pojos.*
+import into.kommon.*
 import org.jooq.*
 import java.sql.Timestamp
 
@@ -94,11 +95,34 @@ fun ProcedureContext.loadUser(id: Long): UserRTO {
         .fetchOne().into(JQUsers::class.java).toRTO(q)
 }
 
-fun loadFile(q: DSLContextProxyFactory, id: Long): FileRTO {
-    return q("Select file")
+fun loadFile(q: DSLContextProxyFactory, id: Long, searchWords: List<String>, lang: Language): FileRTO {
+    val x = q("Select file")
         .select().from(FILES)
         .where(FILES.ID.eq(id))
-        .fetchOne().into(JQFiles::class.java).toRTO(q)
+        .fetchOne().into(JQFiles::class.java)
+
+    val analyzer = when (lang) {
+        Language.UA -> russianAnalyzer
+        else -> imf("Support analyzing for $lang")
+    }
+
+    return FileRTO(
+        id = "" + x.id,
+        name = x.name,
+        nameHighlightRanges =
+            if (searchWords.isEmpty()) listOf()
+            else luceneHighlightRanges(x.name.chopOffFileExtension(), searchWords, analyzer),
+        title = x.title,
+        titleHighlightRanges =
+            if (searchWords.isEmpty()) listOf()
+            else luceneHighlightRanges(x.title, searchWords, analyzer),
+        details = x.details,
+        detailsHighlightRanges =
+            if (searchWords.isEmpty()) listOf()
+            else luceneHighlightRanges(x.details, searchWords, analyzer),
+        sizeBytes = x.sizeBytes,
+        insertedAt = x.insertedAt.time
+    )
 }
 
 fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
@@ -127,25 +151,6 @@ fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
         compactPhone = compactPhone,
         aboutMe = aboutMe,
         roles = roles.map{UserRole.valueOf(it.role)}.toSet()
-    )
-}
-
-fun JQFiles.toRTO(q: DSLContextProxyFactory): FileRTO {
-    return FileRTO(
-        id = "" + id,
-        name = name,
-        title = title,
-        details = details,
-        sizeBytes = sizeBytes,
-        insertedAt = insertedAt.time
-    )
-}
-
-fun JQUaOrderFiles.toRTO(q: DSLContextProxyFactory): UAOrderFileRTO {
-    return UAOrderFileRTO(
-        id = "" + id,
-        file = loadFile(q, fileId),
-        seenAsFrom = seenAsFrom.toApp()
     )
 }
 

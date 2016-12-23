@@ -184,7 +184,9 @@
                         </i>
                         <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
                         </i>
-                        A piece of... Trial 3
+                        <span>
+                          A piece of... Trial 3
+                        </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100007
                         </span>
@@ -212,7 +214,9 @@
                         Имя файла
                       </label>
                       <div>
-                        piece of trial 3.rtf
+                        <span>
+                          piece of trial 3.rtf
+                        </span>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -249,7 +253,9 @@
                         </i>
                         <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
                         </i>
-                        A piece of... Trial 1
+                        <span>
+                          A piece of... Trial 1
+                        </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100005
                         </span>
@@ -277,7 +283,9 @@
                         Имя файла
                       </label>
                       <div>
-                        piece of trial 1.rtf
+                        <span>
+                          piece of trial 1.rtf
+                        </span>
                       </div>
                     </div>
                     <div class="col-md-4">

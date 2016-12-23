@@ -3,12 +3,12 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun highlightedShit(text: String, ranges: List<IntRangeRTO>, backgroundColor: Color = Color.AMBER_200): ToReactElementable {
-    return highlightedShit(text, ranges.map {it.start..it.endInclusive}, backgroundColor)
+fun highlightedShit(text: String, ranges: List<IntRangeRTO>, backgroundColor: Color? = null, tag: String? = null): ToReactElementable {
+    return highlightedShit(text, ranges.map {it.start..it.endInclusive}, backgroundColor, tag)
 }
 
-fun highlightedShit(text: String, ranges: List<IntRange>, backgroundColor: Color = Color.AMBER_200): ToReactElementable {
-    return rawHTML(highlightedHTML(text, ranges, backgroundColor), "p").toToReactElementable()
+fun highlightedShit(text: String, ranges: List<IntRange>, backgroundColor: Color? = null, tag: String? = null): ToReactElementable {
+    return rawHTML(highlightedHTML(text, ranges, backgroundColor ?: Color.AMBER_200), tag ?: "p").toToReactElementable()
 }
 
 fun highlightedHTML(text: String, ranges: List<IntRange>, backgroundColor: Color): String {

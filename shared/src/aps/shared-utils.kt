@@ -281,6 +281,13 @@ fun <E : Enum<E>> relaxedStringToEnum(s: String?, values: Array<E>, default: E):
     values.find {it.name.toUpperCase() == s?.toUpperCase()}
         ?: default
 
+fun String.lastIndexOfOrNull(s: String): Int? {
+    val index = lastIndexOf(s)
+    return if (index == -1) null else index
+}
+
+fun String.chopOffFileExtension(): String =
+    substring(0, lastIndexOfOrNull(".") ?: length)
 
 
 

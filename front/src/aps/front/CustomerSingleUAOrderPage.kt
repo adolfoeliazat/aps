@@ -251,8 +251,8 @@ class CustomerSingleUAOrderPage(val world: World) {
 
                     exhaustive / when (world.user.kind) {
                         UserKind.CUSTOMER -> {
-                            o- kdiv {o ->
-                                o- row {o ->
+                            o- kdiv{o->
+                                o- row{o->
                                     o- kdiv(className = "col-md-12"){o->
                                         o- kdiv(className = "cunt-header"){o->
                                             o- ki(className = "cunt-header-left-icon fa fa-file")
@@ -262,10 +262,21 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                     UserKind.WRITER -> "fa-pencil"
                                                     UserKind.ADMIN -> "fa-cog"
                                                 })
-                                            o- (" " + file.title)
-                                            o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                                            o- " "
+                                            o- highlightedShit(file.title, file.titleHighlightRanges, tag = "span")
+
+                                            val idColor: Color?; val idBackground: Color?
+                                            if (search.split(Regex("\\s+")).contains(orderFile.id)) {
+                                                idColor = Color.GRAY_800
+                                                idBackground = Color.AMBER_200
+                                            } else {
+                                                idColor = Color.GRAY_500
+                                                idBackground = null
+                                            }
+                                            o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
                                                 o- "$numberSign${orderFile.id}"
                                             }
+
                                             o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
                                                 o- when (orderFile.seenAsFrom) {
                                                     world.user.kind -> t("TOTE", "Мой")
@@ -289,7 +300,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                         }
                                     }
                                 }
-                                o- row {o ->
+                                o- row{o->
                                     o- kdiv(className = "col-md-4"){o->
                                         o- label(t("TOTE", "Создан"))
                                         o- kdiv(){o->
@@ -299,7 +310,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     o- kdiv(className = "col-md-4"){o->
                                         o- label(t("TOTE", "Имя файла"))
                                         o- kdiv(){o->
-                                            o- file.name
+                                            o- highlightedShit(file.name, file.nameHighlightRanges, tag = "span")
                                         }
                                     }
                                     o- kdiv(className = "col-md-4"){o->

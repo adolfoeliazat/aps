@@ -184,7 +184,9 @@
                         </i>
                         <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
                         </i>
-                        Cool stuff
+                        <span>
+                          Cool stuff
+                        </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100001
                         </span>
@@ -212,7 +214,13 @@
                         Имя файла
                       </label>
                       <div>
-                        crazy monster boobs.rtf
+                        <span>
+                          crazy monster
+                          <span style="background-color: #ffe082;">
+                            boobs
+                          </span>
+                          .rtf
+                        </span>
                       </div>
                     </div>
                     <div class="col-md-4">
