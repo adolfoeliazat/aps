@@ -117,6 +117,32 @@ inline fun fiddlingWithGlobals(block: () -> Unit) {
 class TestShit {
     lateinit var bobulToken: String
     lateinit var fedorToken: String
+    var nextRequestTimestampIndex = 0
+
+    val timestamps by lazy {
+        val list = listOf(
+            "2016-12-02 12:24:32",
+            "2016-12-02 12:31:15",
+            "2016-12-02 12:42:18",
+            "2016-12-02 13:02:25",
+            "2016-12-05 10:15:42",
+            "2016-12-07 14:27:03",
+            "2016-12-10 09:30:11",
+            "2016-12-10 10:17:23",
+            "2016-12-13 08:21:33",
+            "2016-12-15 16:43:05"
+        )
+        for (i in 1..list.lastIndex) {
+            check(list[i - 1] < list[i]) {"Stamp ${i - 1} (${list[i - 1]}) is not before $i (${list[i]})"}
+        }
+        list
+    }
+
+    fun importNextRequestTimestamp(): Promise<Unit> {
+        if (nextRequestTimestampIndex > timestamps.lastIndex) bitch("Out of next request timestamps")
+        val stamp = timestamps[nextRequestTimestampIndex++]
+        return ImposeNextRequestTimestampRequest.send(stamp)
+    }
 }
 
 fun TestScenarioBuilder.setUpBobul(testShit: TestShit) {
@@ -188,8 +214,8 @@ fun TestScenarioBuilder.setUpFedor(testShit: TestShit) {
 //
 //}
 
-fun setUpFilesByBobul_1(testShit: TestShit, orderID: String): Promise<Unit> = async {
-    await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:31:15"))
+fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("fuck you.rtf", "${testconst.filesRoot}fuck you.rtf")
@@ -202,7 +228,7 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:42:18"))
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("crazy monster boobs.rtf", "${testconst.filesRoot}crazy monster boobs.rtf")
@@ -214,7 +240,7 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(ImposeNextRequestTimestampRequest.send("2016-12-02 13:02:25"))
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("the trial.doc", "${testconst.filesRoot}the trial.doc")
@@ -224,15 +250,15 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(fuckingRemoteCall.executeSQL("Add file permissions", """
-        insert into file_user_permissions(file_id, user_id) values(100000, 100000);
-        insert into file_user_permissions(file_id, user_id) values(100001, 100000);
-        insert into file_user_permissions(file_id, user_id) values(100002, 100000);
-    """))
+//    await(fuckingRemoteCall.executeSQL("Add file permissions", """
+//        insert into file_user_permissions(file_id, user_id) values(100000, 100000);
+//        insert into file_user_permissions(file_id, user_id) values(100001, 100000);
+//        insert into file_user_permissions(file_id, user_id) values(100002, 100000);
+//    """))
 }
 
-fun setUpFilesByFedor_1(testShit: TestShit, orderID: String): Promise<Unit> = async {
-    await(ImposeNextRequestTimestampRequest.send("2016-12-05 10:15:42"))
+fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("idiot.rtf", "${testconst.filesRoot}idiot.rtf")
@@ -244,7 +270,7 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(ImposeNextRequestTimestampRequest.send("2016-12-07 14:27:03"))
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("crime and punishment.rtf", "${testconst.filesRoot}crime and punishment.rtf")
@@ -254,44 +280,18 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(fuckingRemoteCall.executeSQL("Add file permissions", """
-        insert into file_user_permissions(file_id, user_id) values(100003, 100000);
-        insert into file_user_permissions(file_id, user_id) values(100004, 100000);
-    """))
+//    await(fuckingRemoteCall.executeSQL("Add file permissions", """
+//        insert into file_user_permissions(file_id, user_id) values(100003, 100000);
+//        insert into file_user_permissions(file_id, user_id) values(100004, 100000);
+//    """))
 }
 
-fun setUpFilesByFedor_2(testShit: TestShit, orderID: String): Promise<Unit> = async {
+fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
     imf()
-    await(ImposeNextRequestTimestampRequest.send("2016-12-05 10:15:42"))
-    await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.testFileOnServer = FileField.TestFileOnServer("idiot.rtf", "${testconst.filesRoot}idiot.rtf")
-        o.title.value = "The (Fucking) Idiot"
-        o.details.value = dedent("""
-            26-летний князь Лев Николаевич Мышкин возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком искренним и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
-
-            В доме Епанчиных выясняется, что Настасья Филипповна там хорошо известна. Есть план выдать её за протеже генерала Епанчина Гаврилу Ардалионовича Иволгина, человека амбициозного, но посредственного. Князь Мышкин знакомится со всеми основными персонажами повествования. Это дочери Епанчиных — Александра, Аделаида и Аглая, на которых он производит благоприятное впечатление, оставаясь объектом их немного насмешливого внимания. Это генеральша Лизавета Прокофьевна Епанчина, которая находится в постоянном волнении из-за того, что её муж общается с Настасьей Филипповной, имеющей репутацию падшей. Это Ганя Иволгин, который очень страдает из-за предстоящей ему роли мужа Настасьи Филипповны, хотя ради денег готов на всё, и не может решиться на развитие своих пока очень слабых отношений с Аглаей. Князь Мышкин довольно простодушно рассказывает генеральше и сёстрам Епанчиным о том, что он узнал о Настасье Филипповне от Рогожина, а также поражает их своим повествованием о воспоминаниях и чувствах своего знакомого, который был приговорён к смертной казни, но в последний момент был помилован.
-        """)
-    })).orDie()
-
-    await(ImposeNextRequestTimestampRequest.send("2016-12-07 14:27:03"))
-    await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.testFileOnServer = FileField.TestFileOnServer("crime and punishment.rtf", "${testconst.filesRoot}crime and punishment.rtf")
-        o.title.value = "Crime and Punishment"
-        o.details.value = dedent("""
-            Действие романа начинается жарким июльским днём в Петербурге. Студент Родион Романович Раскольников, вынужденный уйти из университета из-за отсутствия денег, направляется в квартиру к процентщице Алёне Ивановне, чтобы сделать «пробу своему предприятию». В сознании героя в течение последнего месяца созревает идея убийства «гадкой старушонки»; одно-единственное преступление, по мнению Раскольникова, изменит его собственную жизнь и избавит сестру Дуню от необходимости выходить замуж за «благодетеля» Петра Петровича Лужина. Несмотря на проведённую «разведку», тщательно продуманный план ломается из-за внутренней паники Родиона Романовича (который после убийства процентщицы долго не может найти у неё ни денег, ни ценных закладов), а также внезапного возвращения домой сестры Алёны Ивановны. Тихая, безобидная, «поминутно беременная» Лизавета, оказавшаяся невольной свидетельницей преступления, становится второй жертвой студента.
-        """)
-    })).orDie()
-
-    await(fuckingRemoteCall.executeSQL("Add file permissions", """
-        insert into file_user_permissions(file_id, user_id) values(100009, 100000);
-        insert into file_user_permissions(file_id, user_id) values(100010, 100000);
-    """))
 }
 
-fun setUpFilesByBobul_2(testShit: TestShit, orderID: String): Promise<Unit> = async {
-    await(ImposeNextRequestTimestampRequest.send("2016-12-10 09:30:11"))
+fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("piece of trial 1.rtf", "${testconst.filesRoot}piece of trial 1.rtf")
@@ -301,7 +301,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(ImposeNextRequestTimestampRequest.send("2016-12-10 10:17:23"))
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("piece of trial 2.rtf", "${testconst.filesRoot}piece of trial 2.rtf")
@@ -313,7 +313,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(ImposeNextRequestTimestampRequest.send("2016-12-13 08:21:33"))
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("piece of trial 3.rtf", "${testconst.filesRoot}piece of trial 3.rtf")
@@ -323,7 +323,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(ImposeNextRequestTimestampRequest.send("2016-12-15 16:43:05"))
+    await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.testFileOnServer = FileField.TestFileOnServer("piece of trial 4.rtf", "${testconst.filesRoot}piece of trial 4.rtf")
@@ -333,12 +333,12 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String): Promise<Unit> = as
         """)
     })).orDie()
 
-    await(fuckingRemoteCall.executeSQL("Add file permissions", """
-        insert into file_user_permissions(file_id, user_id) values(100005, 100000);
-        insert into file_user_permissions(file_id, user_id) values(100006, 100000);
-        insert into file_user_permissions(file_id, user_id) values(100007, 100000);
-        insert into file_user_permissions(file_id, user_id) values(100008, 100000);
-    """))
+//    await(fuckingRemoteCall.executeSQL("Add file permissions", """
+//        insert into file_user_permissions(file_id, user_id) values(100005, 100000);
+//        insert into file_user_permissions(file_id, user_id) values(100006, 100000);
+//        insert into file_user_permissions(file_id, user_id) values(100007, 100000);
+//        insert into file_user_permissions(file_id, user_id) values(100008, 100000);
+//    """))
 }
 
 fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String) -> Promise<Unit>) {
@@ -348,7 +348,7 @@ fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String)
             fiddlingWithGlobals {
                 global.CLIENT_KIND = ClientKind.CUSTOMER.name
 
-                await(ImposeNextRequestTimestampRequest.send("2016-12-02 12:24:32"))
+                await(testShit.importNextRequestTimestamp())
                 val createOrderResponse = await(send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
                     o.title.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
                     o.documentType.value = UADocumentType.COURSE
