@@ -91,6 +91,7 @@ class CustomerSingleUAOrderPage(val world: World) {
         lateinit var content: ToReactElementable
         lateinit var stripContent: Control2
         lateinit var plusFormContainer: Control2
+        var chunksLoaded = 0
 
         override val tabSpec = TabSpec("files", t("TOTE", "Файлы"),
                                        ToReactElementable.from{content},
@@ -115,7 +116,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 
                     content = ToReactElementable.from {kdiv{o->
                         o- plusFormContainer
-                        o- renderItems(meat, noItemsMessage = true)
+                        o- renderItems(meat, noItemsMessage = true, chunkIndex = chunksLoaded - 1)
                     }}
 
                     null
@@ -123,14 +124,16 @@ class CustomerSingleUAOrderPage(val world: World) {
             }
         }
 
-        private fun requestChunk(fromID: String?): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> {
-            return sendCustomerGetUAOrderFiles(world.tokenSure, ItemsRequest(CustomerFileFilter.values())-{o->
+        private fun requestChunk(fromID: String?): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
+            val res = await(sendCustomerGetUAOrderFiles(world.tokenSure, ItemsRequest(CustomerFileFilter.values())-{o->
                 o.entityID.value = order.id
                 o.filter.value = filter
                 o.ordering.value = ordering
                 o.searchString.value = search
                 o.fromID.value = fromID
-            })
+            }))
+            ++chunksLoaded
+            res
         }
 
         val ebafHost = EBAFHost()
@@ -152,7 +155,7 @@ class CustomerSingleUAOrderPage(val world: World) {
             formSpec = FormSpec<CustomerAddUAOrderFileRequest, AddUAOrderFileRequestBase.Response>(
                 CustomerAddUAOrderFileRequest(), world,
                 primaryButtonTitle = t("TOTE", "Добавить"),
-                cancelButtonTitle = defaultCancelButtonTitle
+                cancelButtonTitle = const.defaultCancelButtonTitle
             ),
             onSuccessa = {res->
                 world.pushNavigate("order.html?id=${order.id}&tab=files")
@@ -205,7 +208,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                 return hor2{o->
                     o- kdiv(position = "relative"){o->
                         o- searchInput
-                        o- ki(className = "fa fa-search", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
+                        o- ki(className = "${fa.search}", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
                     }
                     o- filterSelect
                     o- orderingSelect
@@ -233,108 +236,157 @@ class CustomerSingleUAOrderPage(val world: World) {
             }
         }
 
-        private fun renderItems(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean): ToReactElementable {
+        private fun renderItems(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean, chunkIndex: Int): ToReactElementable {
             if (meat.items.isEmpty()) {
                 return if (noItemsMessage) span(const.msg.noItems)
                 else NOTRE
             }
 
             return kdiv{o->
-                for ((fileIndex, orderFile) in meat.items.withIndex()) {
-                    val file = orderFile.file
-                    fun label(title: String) = klabel(marginBottom = 0) {it - title}
+                for ((fileIndex, _orderFile) in meat.items.withIndex()) {
+                    object {
+                        val holder = Placeholder()
+                        var orderFile = _orderFile
 
-                    fun row(build: (ElementBuilder) -> Unit) =
-                        kdiv(className = "row", marginBottom = "0.5em"){o->
-                            build(o)
+                        init {
+                            enterViewMode()
+                            o- holder
                         }
 
-                    exhaustive / when (world.user.kind) {
-                        UserKind.CUSTOMER -> {
-                            o- kdiv{o->
-                                o- row{o->
-                                    o- kdiv(className = "col-md-12"){o->
-                                        o- kdiv(className = "cunt-header"){o->
-                                            o- ki(className = "cunt-header-left-icon fa fa-file")
-                                            o- ki(className = "cunt-header-left-overlay-bottom-left-icon fa " +
-                                                when (orderFile.seenAsFrom) {
-                                                    UserKind.CUSTOMER -> "fa-user"
-                                                    UserKind.WRITER -> "fa-pencil"
-                                                    UserKind.ADMIN -> "fa-cog"
-                                                })
-                                            o- " "
-                                            o- highlightedShit(file.title, file.titleHighlightRanges, tag = "span")
+                        val file get() = orderFile.file
 
-                                            val idColor: Color?; val idBackground: Color?
-                                            if (search.split(Regex("\\s+")).contains(orderFile.id)) {
-                                                idColor = Color.GRAY_800
-                                                idBackground = Color.AMBER_200
-                                            } else {
-                                                idColor = Color.GRAY_500
-                                                idBackground = null
-                                            }
-                                            o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
-                                                o- "$numberSign${orderFile.id}"
-                                            }
-
-                                            o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
-                                                o- when (orderFile.seenAsFrom) {
-                                                    world.user.kind -> t("TOTE", "Мой")
-                                                    UserKind.CUSTOMER -> t("TOTE", "От заказчика")
-                                                    UserKind.WRITER -> t("TOTE", "От писателя")
-                                                    UserKind.ADMIN -> t("TOTE", "От саппорта")
+                        fun enterViewMode() {
+                            holder.setContent(when (world.user.kind) {
+                                UserKind.CUSTOMER -> {
+                                    kdiv{o->
+                                        o- row{o->
+                                            o- renderFileTitle()
+                                        }
+                                        o- row{o->
+                                            o- kdiv(className = "col-md-4"){o->
+                                                o- label(t("TOTE", "Создан"))
+                                                o- kdiv(){o->
+                                                    o- formatUnixTime(file.insertedAt)
                                                 }
                                             }
-                                            o- kic("download-$fileIndex", className = "cunt-header-right-icon fa fa-cloud-download", style = Style(right = 30, top = 6),
-                                                   onClick = {
-                                                       val iframeID = puid()
-                                                       jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
-                                                       val iframe = byid0(iframeID) as HTMLIFrameElement
-                                                       gloshit.iframe = iframe
-                                                       iframe.onload = {
-                                                           iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
-                                                       }
-                                                       iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
-                                                   })
-                                            o- kic("edit-$fileIndex", className = "cunt-header-right-icon fa fa-pencil")
+                                            o- kdiv(className = "col-md-4"){o->
+                                                o- label(t("TOTE", "Имя файла"))
+                                                o- kdiv(){o->
+                                                    o- highlightedShit(file.name, file.nameHighlightRanges, tag = "span")
+                                                }
+                                            }
+                                            o- kdiv(className = "col-md-4"){o->
+                                                o- label(t("TOTE", "Размер"))
+                                                o- kdiv(){o->
+                                                    o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                                o- row{o->
-                                    o- kdiv(className = "col-md-4"){o->
-                                        o- label(t("TOTE", "Создан"))
-                                        o- kdiv(){o->
-                                            o- formatUnixTime(file.insertedAt)
-                                        }
-                                    }
-                                    o- kdiv(className = "col-md-4"){o->
-                                        o- label(t("TOTE", "Имя файла"))
-                                        o- kdiv(){o->
-                                            o- highlightedShit(file.name, file.nameHighlightRanges, tag = "span")
-                                        }
-                                    }
-                                    o- kdiv(className = "col-md-4"){o->
-                                        o- label(t("TOTE", "Размер"))
-                                        o- kdiv(){o->
-                                            o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
-                                        }
-                                    }
-                                }
-                                o- row {o->
-                                    o- kdiv(className = "col-md-12"){o->
-                                        o- label(t("TOTE", "Детали"))
-                                        o- kdiv(whiteSpace = "pre-wrap"){o->
-                                            o- highlightedShit(file.details, file.detailsHighlightRanges)
+                                        o- row {o->
+                                            o- kdiv(className = "col-md-12"){o->
+                                                o- label(t("TOTE", "Детали"))
+                                                o- kdiv(whiteSpace = "pre-wrap"){o->
+                                                    o- highlightedShit(file.details, file.detailsHighlightRanges)
 //                                            o- file.details
+                                                }
+                                            }
                                         }
                                     }
+                                }
+
+                                UserKind.WRITER -> imf()
+
+                                UserKind.ADMIN -> imf()
+                            })
+                        }
+
+                        fun enterEditMode() {
+                            holder.setContent(when (world.user.kind) {
+                                UserKind.CUSTOMER -> {
+                                    kdiv{o->
+                                        o- row{o->
+                                            o- renderFileTitle()
+                                            o- kdiv{o->
+                                                o- kdiv(className = "col-md-12"){o->
+                                                    o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
+                                                        CustomerEditUAOrderFileRequest()-{o->
+                                                            o.orderFileID.value = orderFile.id
+                                                            o.file.existingFile = FileField.FileMeta(orderFile.file.name, orderFile.file.sizeBytes)
+                                                            o.title.value = orderFile.file.title
+                                                            o.details.value = orderFile.file.details
+                                                        },
+                                                        world,
+                                                        cancelButtonTitle = const.defaultCancelButtonTitle))
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                UserKind.WRITER -> imf()
+
+                                UserKind.ADMIN -> imf()
+                            })
+                        }
+
+                        fun renderFileTitle(): ElementBuilder {
+                            return kdiv(className = "col-md-12"){o->
+                                o- kdiv(className = css.cuntHeader.name){o->
+                                    o- ki(className = "${css.cuntHeaderLeftIcon} ${fa.file}")
+                                    o- ki(className = "${css.cuntHeaderLeftOverlayBottomLeftIcon} " +
+                                        when (orderFile.seenAsFrom) {
+                                            UserKind.CUSTOMER -> fa.user
+                                            UserKind.WRITER -> fa.pencil
+                                            UserKind.ADMIN -> fa.cog
+                                        })
+                                    o- " "
+                                    o- highlightedShit(file.title, file.titleHighlightRanges, tag = "span")
+
+                                    val idColor: Color?; val idBackground: Color?
+                                    if (search.split(Regex("\\s+")).contains(orderFile.id)) {
+                                        idColor = Color.GRAY_800
+                                        idBackground = Color.AMBER_200
+                                    } else {
+                                        idColor = Color.GRAY_500
+                                        idBackground = null
+                                    }
+                                    o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
+                                        o- "$numberSign${orderFile.id}"
+                                    }
+
+                                    o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                                        o- when (orderFile.seenAsFrom) {
+                                            world.user.kind -> t("TOTE", "Мой")
+                                            UserKind.CUSTOMER -> t("TOTE", "От заказчика")
+                                            UserKind.WRITER -> t("TOTE", "От писателя")
+                                            UserKind.ADMIN -> t("TOTE", "От саппорта")
+                                        }
+                                    }
+                                    o- kic("download-$chunkIndex-$fileIndex", className = "${css.cuntHeaderRightIcon} ${fa.cloudDownload}", style = Style(right = 30, top = 6),
+                                           onClick = {
+                                               val iframeID = puid()
+                                               jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
+                                               val iframe = byid0(iframeID) as HTMLIFrameElement
+                                               gloshit.iframe = iframe
+                                               iframe.onload = {
+                                                   iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
+                                               }
+                                               iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
+                                           })
+                                    o- kic("edit-$chunkIndex-$fileIndex", className = "${css.cuntHeaderRightIcon} ${fa.pencil}",
+                                           onClick = {
+                                               enterEditMode()
+                                           })
                                 }
                             }
                         }
 
-                        UserKind.WRITER -> imf()
+                        fun label(title: String) = klabel(marginBottom = 0) {it - title}
 
-                        UserKind.ADMIN -> imf()
+                        fun row(build: (ElementBuilder) -> Unit) =
+                            kdiv(className = "row", marginBottom = "0.5em"){o->
+                                build(o)
+                            }
                     }
                 }
 
@@ -350,7 +402,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     val res = await(requestChunk(meat.moreFromID))
                                     exhaustive / when (res) {
                                         is ZimbabweResponse.Shitty -> openErrorModal(res.error)
-                                        is ZimbabweResponse.Hunky -> placeholder.setContent(renderItems(res.meat, noItemsMessage = false))
+                                        is ZimbabweResponse.Hunky -> placeholder.setContent(renderItems(res.meat, noItemsMessage = false, chunkIndex = chunksLoaded - 1))
                                     }
                                 } catch (e: Throwable) {
                                     openErrorModal(const.msg.serviceFuckedUp)
@@ -460,7 +512,6 @@ private class MessagesTab(val order: UAOrderRTO) : FuckingTab {
 
     override val tabSpec = TabSpec("messages", t("TOTE", "Сообщения"), content)
 }
-
 
 
 

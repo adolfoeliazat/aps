@@ -14,7 +14,8 @@ import kotlin.browser.window
 @Front class FileField(
     container: RequestMatumba,
     key: String,
-    val title: String
+    val title: String,
+    val shouldBeProvided: Boolean = true
 ): FormFieldFront(container, key) {
     companion object {
         val instances = mutableMapOf<String, FileField>()
@@ -25,10 +26,12 @@ import kotlin.browser.window
     }
 
     class TestFileOnServer(val name: String, val path: String)
+    class FileMeta(val name: String, val size: Int)
 
     val noise = DebugNoise("FileField", mute = false)
 
     var file: File? = null
+    var existingFile: FileMeta? = null
     var testFileOnServer: TestFileOnServer? = null
     var fileChanged = ResolvableShit<Unit>()
 
@@ -37,29 +40,56 @@ import kotlin.browser.window
 
         override fun render(): ToReactElementable {
             return kdiv(className = "form-group", marginTop = 10){o->
-                val theFile = file
-                if (theFile == null) {
-                    o- reactCreateElement("input", json(
-                        "id" to inputID,
-                        "type" to "file",
-                        "style" to json("display" to "none"),
-                        "onChange" to {
-                            val files: FileList = byid0(inputID).asDynamic().files
-                            file = files[0]
-                            gloshit.file = file
-                            noise.clog("Got file", file)
-                            update()
-                            fileChanged.resolve(Unit)
+                val _file = file; val _existingFile = existingFile
+                when {
+                    _existingFile != null -> {
+                        o- reactCreateElement("input", json(
+                            "id" to inputID,
+                            "type" to "file",
+                            "style" to json("display" to "none"),
+                            "onChange" to {
+                                val files: FileList = byid0(inputID).asDynamic().files
+                                file = files[0]
+                                gloshit.file = file
+                                noise.clog("Got file", file)
+                                update()
+                                fileChanged.resolve(Unit)
+                            }
+                        ), listOf())
+                        o- klabel {it-title}
+                        o- kdiv(Style(display = "flex", alignItems = "center")){o->
+                            o- kspan{o->
+                                o- (_existingFile.name + " (${formatFileSizeApprox(Globus.lang, _existingFile.size)})")
+                            }
+                            o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                                byid(inputID).click()
+                            })
                         }
-                    ), listOf())
-                    o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Выбрать файл..."), onClick = {
-                        byid(inputID).click()
-                    })
-                } else {
-                    o- klabel {it-title}
-                    o- kdiv{o->
-                        o- kspan(position = "relative", top = 3){o->
-                            o- (theFile.name + " (${formatFileSizeApprox(Globus.lang, theFile.size)})")
+                    }
+                    _file == null -> {
+                        o- reactCreateElement("input", json(
+                            "id" to inputID,
+                            "type" to "file",
+                            "style" to json("display" to "none"),
+                            "onChange" to {
+                                val files: FileList = byid0(inputID).asDynamic().files
+                                file = files[0]
+                                gloshit.file = file
+                                noise.clog("Got file", file)
+                                update()
+                                fileChanged.resolve(Unit)
+                            }
+                        ), listOf())
+                        o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Выбрать файл..."), onClick = {
+                            byid(inputID).click()
+                        })
+                    }
+                    else -> {
+                        o- klabel {it-title}
+                        o- kdiv{o->
+                            o- kspan(position = "relative", top = 3){o->
+                                o- (_file.name + " (${formatFileSizeApprox(Globus.lang, _file.size)})")
+                            }
                         }
                     }
                 }
@@ -88,25 +118,28 @@ import kotlin.browser.window
     override fun focus() {}
 
     override fun populateRemote(json: Json): Promise<Unit> {
-        val theTestFileOnServer = testFileOnServer
-        val theFile = file
+        val _testFileOnServer = testFileOnServer; val _file = file
 
         val shit = ResolvableShit<Unit>()
-        if (theTestFileOnServer != null) {
+        if (_testFileOnServer != null) {
             json[name] = json(
-                "fileName" to theTestFileOnServer.name,
-                "testFileOnServerPath" to theTestFileOnServer.path
+                "provided" to true,
+                "fileName" to _testFileOnServer.name,
+                "testFileOnServerPath" to _testFileOnServer.path
             )
             shit.resolve(Unit)
         } else {
-            if (theFile == null) {
-                json[name] = null
+            if (_file == null) {
+                json[name] = json(
+                    "provided" to false
+                )
                 shit.resolve(Unit)
             } else {
                 val reader = FileReader()
                 reader.onload = {
                     json[name] = json(
-                        "fileName" to theFile.name,
+                        "provided" to true,
+                        "fileName" to _file.name,
                         "base64" to run {
                             val dataURL: String = reader.result
                             dataURL.substring(dataURL.indexOf(",") + 1)
@@ -114,7 +147,7 @@ import kotlin.browser.window
                     )
                     shit.resolve(Unit)
                 }
-                reader.readAsDataURL(theFile)
+                reader.readAsDataURL(_file)
             }
         }
 

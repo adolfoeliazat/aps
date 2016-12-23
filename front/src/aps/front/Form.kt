@@ -11,8 +11,6 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-val defaultCancelButtonTitle = t("Never Mind", "Передумал")
-
 data class FormSpec<Req: RequestMatumba, Res>(
     val req: Req,
     val ui: World,

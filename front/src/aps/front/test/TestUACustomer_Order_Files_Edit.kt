@@ -24,8 +24,11 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                         }
                     })
             },
-            assertScreen = {o.assertScreenHTML_todo("1", "ecec02be-35ab-4c44-afc4-a50b73d45b1c")}
+            assertScreen = {o.assertScreenHTML("1", "ecec02be-35ab-4c44-afc4-a50b73d45b1c")}
         )
+
+        o.act {jqbody.scrollTop(700)}
+        o.kicClick("edit-0-3")
     }
 
 }

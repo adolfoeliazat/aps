@@ -24,7 +24,7 @@ class CustomerUAOrdersPage(val world: World) {
             plusFormSpec = FormSpec<CustomerCreateUAOrderRequest, CustomerCreateUAOrderRequest.Response>(
                 CustomerCreateUAOrderRequest(), world,
                 primaryButtonTitle = t("TOTE", "Создать"),
-                cancelButtonTitle = defaultCancelButtonTitle),
+                cancelButtonTitle = const.defaultCancelButtonTitle),
             onPlusFormSuccessa = {res->
                 world.pushNavigate("order.html?id=${res.id}")
             }

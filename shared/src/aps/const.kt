@@ -1,6 +1,8 @@
 package aps
 
 object const {
+    val defaultCancelButtonTitle = t("Never Mind", "Передумал")
+
     object msg {
         val noItems = t("TOTE", "Савсэм ничего нэт, да...")
         val serviceFuckedUp = t("Service is temporarily fucked up, sorry", "Сервис временно в жопе, просим прощения")

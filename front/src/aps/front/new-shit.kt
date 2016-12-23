@@ -152,7 +152,8 @@ data class Style(
     var opacity: Any? = null,
     var float: String? = null,
     var borderRadius: Any? = null,
-    var zIndex: Any? = null
+    var zIndex: Any? = null,
+    var alignItems: String? = null
 ) {
     fun toReactStyle(): dynamic {
         return dyna{o->
@@ -201,6 +202,7 @@ data class Style(
             float?.let {o.float = it}
             borderRadius?.let {o.borderRadius = it}
             zIndex?.let {o.zIndex = it}
+            alignItems?.let {o.alignItems = it}
         }
     }
 

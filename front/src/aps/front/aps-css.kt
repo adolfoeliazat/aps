@@ -9,11 +9,61 @@ package aps.front
 import aps.*
 import aps.Color.*
 
+object css {
+    class Entry(val name: String, val style: String) {
+        init {
+            entries += this
+        }
+        override fun toString() = name
+    }
+
+    val entries = mutableListOf<Entry>()
+
+    val cuntHeader = Entry("cunt-header", """
+        font-size: 18px;
+        background-color: #eceff1;
+        border-bottom: 1px solid #cfd8dc;
+        position: relative;
+    """)
+    val cuntHeaderLeftIcon = Entry("cunt-header-left-icon", """
+        color: #90a4ae;
+        margin-left: 3px;
+    """)
+    val cuntHeaderLeftOverlayBottomLeftIcon = Entry("cunt-header-left-overlay-bottom-left-icon", """
+        margin-left: 3px;
+        position: absolute;
+        left: 2px;
+        top: 9px;
+        color: #cfd8dc;
+        font-size: 60%;
+    """)
+    val cuntHeaderRightIcon = Entry("cunt-header-right-icon", """
+        color: #90a4ae;
+        margin-left: 3px;
+        position: absolute;
+        right: 3px;
+        top: 4px;
+        cursor: pointer;
+    """)
+    val cuntHeaderRightIcon_hover = Entry("$cuntHeaderRightIcon:hover", """
+        color: #607d8b;
+    """)
+}
+
+object fa {
+    val file = "fa fa-file"
+    val user = "fa fa-user"
+    val pencil = "fa fa-pencil"
+    val cog = "fa fa-cog"
+    val cloudDownload = "fa fa-cloud-download"
+    val search = "fa fa-search"
+}
+
 fun jsFacing_apsCSS(): String {
     val zebraLight = WHITE
     val zebraDark = BLUE_GRAY_50
 
-    val res = """
+    var res = """
         body {overflow-x: hidden; padding-right: 0px !important;}
 
         button:disabled {cursor: default !important;}
@@ -88,42 +138,11 @@ fun jsFacing_apsCSS(): String {
         .zebra-1 .label1 {background-color: ${TEAL_100};}
 
         .hover-color-BLUE_GRAY_800:hover {color: ${BLUE_GRAY_800};}
-
-        .cunt-header {
-            font-size: 18px;
-            background-color: #eceff1;
-            border-bottom: 1px solid #cfd8dc;
-            position: relative;
-        }
-
-        .cunt-header-left-icon {
-            color: #90a4ae;
-            margin-left: 3px;
-        }
-
-        .cunt-header-left-overlay-bottom-left-icon {
-            margin-left: 3px;
-            position: absolute;
-            left: 2px;
-            top: 9px;
-            color: #cfd8dc;
-            font-size: 60%;
-        }
-
-        .cunt-header-right-icon {
-            color: #90a4ae;
-            margin-left: 3px;
-            position: absolute;
-            right: 3px;
-            top: 4px;
-            cursor: pointer;
-        }
-
-        .cunt-header-right-icon:hover {
-            color: #607d8b;
-        }
-
     """
+
+    for (entry in css.entries) {
+        res += ".${entry.name} {${entry.style}}"
+    }
 
     return res
 }

@@ -156,7 +156,7 @@ class AdminUsersPage(val ui: World) {
             plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
                 AdminCreateUserRequest(), ui,
                 primaryButtonTitle = t("TOTE", "Создать засранца"),
-                cancelButtonTitle = defaultCancelButtonTitle
+                cancelButtonTitle = const.defaultCancelButtonTitle
             )
         )
 

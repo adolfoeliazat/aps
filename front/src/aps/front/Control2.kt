@@ -31,7 +31,7 @@ data class Attrs(
     val onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null
 )
 
-abstract class Control2(val attrs: Attrs) : ToReactElementable, FuckingControl {
+abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, FuckingControl {
     abstract fun render(): ToReactElementable
 
     open fun componentWillMount        (){}

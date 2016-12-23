@@ -10,6 +10,7 @@ import aps.*
 import aps.back.generated.jooq.tables.pojos.JQUsers
 import aps.back.generated.jooq.Tables.*
 import org.jooq.*
+import org.jooq.impl.DSL
 import java.io.File
 import java.util.*
 import kotlin.properties.Delegates
@@ -72,7 +73,7 @@ fun <POJO : Any, RTO> selectChunk(
 
     var moreFromId: String? = null
     if (records.size == chunkSize + 1) {
-        moreFromId = "" + records.last()["id"]
+        moreFromId = "" + records.last()[DSL.field(DSL.name(table, "id"))]
         records = records.subList(0, chunkSize)
     }
 

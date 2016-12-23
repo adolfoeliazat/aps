@@ -4,6 +4,8 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("LeakingThis")
+
 package aps
 
 import aps.Color.*
@@ -438,17 +440,33 @@ class CustomerCreateUAOrderRequest : RequestMatumba() {
     val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen)
 }
 
+fun fileField(container: RequestMatumba, shouldBeProvided: Boolean = true) = FileField(container, "file", t("TOTE", "Файл"), shouldBeProvided = shouldBeProvided)
+fun fileTitleField(container: RequestMatumba) = TextField(container, "title", t("TOTE", "Название"), TextFieldType.STRING, const.file.minTitleLen, const.file.maxTitleLen)
+fun fileDetailsField(container: RequestMatumba) = TextField(container, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.file.minDetailsLen, const.file.maxDetailsLen)
+
 abstract class AddUAOrderFileRequestBase : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
 
     val orderID = StringHiddenField(this, "orderID")
-    val file = FileField(this, "file", t("TOTE", "Файл"))
-    val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.file.minTitleLen, const.file.maxTitleLen)
-    val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.file.minDetailsLen, const.file.maxDetailsLen)
+    val file = fileField(this)
+    val title = fileTitleField(this)
+    val details = fileDetailsField(this)
 }
 
 class CustomerAddUAOrderFileRequest : AddUAOrderFileRequestBase()
 class WriterAddUAOrderFileRequest : AddUAOrderFileRequestBase()
+
+abstract class EditUAOrderFileRequestBase : RequestMatumba() {
+    class Response() : CommonResponseFieldsImpl()
+
+    val orderFileID = StringHiddenField(this, "orderFileID")
+    val file = fileField(this, shouldBeProvided = false)
+    val title = fileTitleField(this)
+    val details = fileDetailsField(this)
+}
+
+class CustomerEditUAOrderFileRequest : EditUAOrderFileRequestBase()
+class WriterEditUAOrderFileRequest : EditUAOrderFileRequestBase()
 
 enum class UADocumentType(override val title: String) : Titled {
     ESSAY(t("TOTE", "Реферат")),

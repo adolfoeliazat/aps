@@ -28,6 +28,17 @@ fun <R : Record> ProcedureContext.insertShit(
 }
 
 @Suppress("UNCHECKED_CAST")
+fun <R : Record> ProcedureContext.updateShit(
+    descr: String,
+    table: Table<R>
+): UpdateSetMoreStep<R> {
+    var step = this.q(descr)
+        .update(table)
+        .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
+    return step
+}
+
+@Suppress("UNCHECKED_CAST")
 fun <R : Record> InsertSetMoreStep<R>.returnID(table: Table<R>): Long {
     val idField = table.field("id") as Field<Long>
     return this

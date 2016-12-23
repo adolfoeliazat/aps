@@ -45,6 +45,10 @@ class DSLContextProxy(val activityParams: ActivityParams, val q: DSLContext) {
     fun execute(sql: String): Int =
         if (BackGlobus.tracingEnabled) executeTracing(activityParams) {q.execute(sql)}
         else q.execute(sql)
+
+    fun <R : Record> selectFrom(table: Table<R>): SelectWhereStep<R> {
+         return q.selectFrom(table)
+    }
 }
 
 class InsertSetStepProxy<R : Record>(val activityParams: ActivityParams, val wrappee: InsertSetStep<R>) : InsertSetStep<R> {
