@@ -15,12 +15,12 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             setUpOrders = {
                 o.setUpBobulOrder(
                     shit,
-                    setUpFiles = {oid ->
+                    setUpFiles = {oid->
                         async {
                             await(setUpFilesByBobul_1(shit, oid))
                             await(setUpFilesByFedor_1(shit, oid))
                             await(setUpFilesByBobul_2(shit, oid))
-//                            await(setUpFilesByFedor_2(shit, oid))
+                            await(setUpFilesByFedor_2(shit, oid))
                         }
                     })
             },
