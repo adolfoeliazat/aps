@@ -24,8 +24,6 @@ object KotlinShit : IKotlinShit {
 //    lateinit var ui: World
     lateinit var clientImpl: World
 
-    val igniteTestShit = ::jsFacing_igniteTestShit
-
 //    val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
     val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
     val isDynamicPage = ::jsFacing_isDynamicPage

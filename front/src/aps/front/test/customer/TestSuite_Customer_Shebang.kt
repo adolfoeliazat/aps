@@ -1,5 +1,7 @@
 package aps.front
 
+import aps.front.test.*
+
 class TestSuite_Customer_Shebang : TestSuite {
     override val shortDescription = "Customer tests shebang"
 
@@ -9,7 +11,8 @@ class TestSuite_Customer_Shebang : TestSuite {
         TestUACustomer_Order_Files_1(),
         TestUACustomer_DownloadForbiddenFile(),
         TestUACustomer_LongFileList(),
-        TestUACustomer_Order_Files_Search()
+        TestUACustomer_Order_Files_Search(),
+        TestUACustomer_Order_Files_Edit()
     )}
 }
 

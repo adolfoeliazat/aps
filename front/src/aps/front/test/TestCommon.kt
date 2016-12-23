@@ -86,7 +86,7 @@ class TestCommon(val sim: dynamic) {
     }
 }
 
-fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
+fun jsFacing_igniteTestShit() = async<Unit> {
 //    val urlObject = jshit.utils.url.parse(global.location.href)
 //    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
     ExternalGlobus.DB = "apsTestOnTestServer"
@@ -103,15 +103,18 @@ fun jsFacing_igniteTestShit(): Promise<Unit> {"__async"
     val testSuiteName = urlQuery["testSuite"]
 
     try {
-        __await(when {
-            testName != null -> runTestNamed(testName, urlQuery)
-            testSuiteName != null -> runTestSuiteFailingFast(testSuiteName, urlQuery)
-            else -> bitch("Gimme test or testSuite in URL")
-        })
+        try {
+            await(when {
+                testName != null -> runTestNamed(testName, urlQuery)
+                testSuiteName != null -> runTestSuiteFailingFast(testSuiteName, urlQuery)
+                else -> bitch("Gimme test or testSuite in URL")
+            })
+        } catch(e: Throwable) {
+            console.error(e.stack)
+        }
     } finally {
         openTestListPane()
     }
-    return __asyncResult(Unit)
 }
 
 private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String, String>): Promise<Unit> {"__async"
@@ -145,9 +148,9 @@ private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String,
     return __asyncResult(Unit)
 }
 
-private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promise<Throwable?> {"__async"
+private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promise<Throwable?> {
     val scenario: TestScenario = instantiate(testName)
-    return __reawait(runTest(scenario, urlQuery, showTestPassedPane = true))
+    return runTest(scenario, urlQuery, showTestPassedPane = true)
 }
 
 private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
@@ -172,18 +175,16 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         art.respectArtPauses = urlQuery["respectArtPauses"] == "yes"
 
         val sim = object : TestHost {
-            override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> {
-                "__async"
-                dlog("Selecting browser", name)
-                hrss.browserOld = hrss.browsers.getOrPut(name) {BrowserOld(name)}
-                die("Attempt to use hrss.storageLocal")
-//            hrss.storageLocal = hrss.browserOld.storageLocal
-
-                dlog("Navigating", hrss.browserOld.name, url)
-                global.history.replaceState(null, "", url)
-//            __await<dynamic>(makeCleanPairAndBoot())
-                __await(World("killme").boot())
-                return __asyncResult(Unit)
+            override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> = async {
+                die("don't use me")
+//                dlog("Selecting browser", name)
+//                hrss.browserOld = hrss.browsers.getOrPut(name) {BrowserOld(name)}
+//                die("Attempt to use hrss.storageLocal")
+//
+//                dlog("Navigating", hrss.browserOld.name, url)
+//                global.history.replaceState(null, "", url)
+//                __await(World("killme").boot())
+//                return __asyncResult(Unit)
             }
         }
 
