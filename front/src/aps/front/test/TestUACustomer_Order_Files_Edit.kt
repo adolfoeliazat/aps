@@ -20,6 +20,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                             await(setUpFilesByBobul_1(shit, oid))
                             await(setUpFilesByFedor_1(shit, oid))
                             await(setUpFilesByBobul_2(shit, oid))
+//                            await(setUpFilesByFedor_2(shit, oid))
                         }
                     })
             },

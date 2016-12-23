@@ -296,7 +296,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                        }
                                                        iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
                                                    })
-                                            o- ki(className = "cunt-header-right-icon fa fa-pencil")
+                                            o- kic("edit-$fileIndex", className = "cunt-header-right-icon fa fa-pencil")
                                         }
                                     }
                                 }

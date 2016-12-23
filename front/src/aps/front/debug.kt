@@ -16,5 +16,6 @@ fun dumpControls() {
     for (key in DateTimePicker.instances.keys) clog("DateTimePicker: $key")
     for (key in FileField.instances.keys) clog("FileField: $key")
     for (key in Select.instances.keys) clog("Select: $key")
+    for (key in kic.instances.keys) clog("kic: $key")
 }
 
