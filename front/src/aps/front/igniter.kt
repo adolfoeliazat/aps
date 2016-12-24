@@ -61,7 +61,7 @@ fun igniteShit(): Promise<Unit> {"__async"
 
 //    if (global.location.pathname.endsWith("/test.html")) {
 
-    fixModalJumping()
+//    fixModalJumping()
 
     window.onmessage = {e->
         e as MessageEvent

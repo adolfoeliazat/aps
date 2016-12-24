@@ -88,6 +88,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         "rows" to rows
     ), key)
     {
+        this.onKeyDown = onKeyDown
         this.onKeyDowna = onKeyDowna
     }
 
@@ -111,7 +112,8 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         val type: dynamic = legacySpec.get("type") ?: "text"
         val initialValue: dynamic = legacySpec.get("initialValue") ?: ""
 
-        onKeyDown = legacySpec.get("onKeyDown").asDynamic()
+        onKeyDown = legacySpec.get("onKeyDown").asDynamic() ?: {}
+        onKeyDowna = legacySpec.get("onKeyDowna").asDynamic() ?: {async{}}
 
         val def = global.Object.assign(js("({})"), legacySpec)
         js("delete def.onChange")
@@ -294,9 +296,9 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         legacyShit.setDisabled(b)
     }
 
-//    fun focus() {
-//        legacyShit.focus()
-//    }
+    fun focus() {
+        legacyShit.focus()
+    }
 
     val value: String get() = getValue()
 
@@ -309,6 +311,24 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
 fun TestScenarioBuilder.inputSetValue(key: String, value: String) {
     act("Typing into `$key`: ${markdownItalicVerbatim(value)}") {
         Input.instance(key).setValue(value)
+    }
+}
+
+fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) {
+    act("Appending long shit to `$key`") {
+        val inst = Input.instance(key)
+        var newValue = inst.getValue()
+        var i = 0
+        while (newValue.length <= maxLen)
+            newValue += " SHIT ${++i}"
+        inst.setValue(newValue)
+    }
+}
+
+fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {
+    act("Prepending to `$key`: ${markdownItalicVerbatim(value)}") {
+        val inst = Input.instance(key)
+        inst.setValue(value + inst.getValue())
     }
 }
 

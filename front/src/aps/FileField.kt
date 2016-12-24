@@ -41,7 +41,7 @@ import kotlin.browser.window
 
         override fun render(): ToReactElementable {
             val _content = content
-            return kdiv(className = "form-group", marginTop = 10){o->
+            return kdiv(className = "form-group"/*, marginTop = 10*/){o->
                 o- klabel {it-title}
                 o- reactCreateElement("input", json(
                     "id" to inputID,
@@ -79,7 +79,7 @@ import kotlin.browser.window
                         }
                     }
                     is Content.NotProvided -> {
-                        o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Выбрать..."), onClick = {
+                        o- Button("upload" + container.fieldInstanceKeySuffix, icon = "cloud-upload", title = t("TOTE", "Выбрать..."), onClick = {
                             byid(inputID).click()
                         })
                     }
@@ -88,12 +88,14 @@ import kotlin.browser.window
         }
 
         override fun componentDidMount() {
-            instances[key] = this@FileField
+            instances[instanceKey] = this@FileField
         }
 
         override fun componentWillUnmount() {
-            instances.remove(key)
+            instances.remove(instanceKey)
         }
+
+        val instanceKey get() = key + container.fieldInstanceKeySuffix
     }
 
     override fun render() = control.toReactElement()

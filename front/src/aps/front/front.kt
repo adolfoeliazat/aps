@@ -353,7 +353,7 @@ fun jsFacing_spanc(def: dynamic): dynamic {
     // #extract {content, className='', style={}} from def
     val content = def.content
 
-    if (!def.tame) Shitus.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
+//    if (!def.tame) Shitus.raiseWithMeta(json("message" to "I want all spancs to be tamed, why use them otherwise?", "meta" to def))
 
     val isString = js("typeof content") == "string"
     val isMeaty = js("typeof content") == "object" && js("typeof content.\$meta") && js("typeof content.meat") == "string"

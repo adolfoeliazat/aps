@@ -307,9 +307,10 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     kdiv(id = topShitID){o->
                                         o- row{o->
                                             o- renderFileTitle(editing = true)
-                                            o- kdiv(className = "col-md-12"){o->
+                                            o- kdiv(className = "col-md-12", marginTop = -1){o->
                                                 o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
                                                     CustomerEditUAOrderFileRequest()-{o->
+                                                        o.fieldInstanceKeySuffix = "-$chunkIndex-$fileIndex"
                                                         o.orderFileID.value = orderFile.id
                                                         o.file.content = FileField.Content.ExistingFile(orderFile.file.name, orderFile.file.sizeBytes)
                                                         o.title.value = orderFile.file.title
@@ -320,7 +321,13 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                     containerClassName = css.cuntBodyEditing.name,
                                                     onCancel = {
                                                         enterViewMode()
-                                                    }
+                                                    },
+                                                    onSuccess = {
+                                                        enterViewMode()
+                                                    }// ,
+//                                                    onErrora = {res -> async {
+//                                                        openErrorModal(res.error)
+//                                                    }}
                                                 ))
                                             }
                                         }

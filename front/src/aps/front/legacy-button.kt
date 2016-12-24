@@ -9,7 +9,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun jsFacing_button(def: dynamic): dynamic {
+fun jsFacing_button(def: dynamic, key: String? = null): dynamic {
     val title: dynamic = def.title
     val hint: dynamic = def.hint
     val level: dynamic = if (def.level != null) def.level else "default"
@@ -54,8 +54,8 @@ fun jsFacing_button(def: dynamic): dynamic {
     )
 
     me.componentDidMount = {
-        if (def.shamy != null) {
-            Button.instances[def.shamy] = object:Button() {
+        if (key != null) {
+            Button.instances[key] = object:Button() {
                 override fun click(): Promise<Unit> = async<Unit> {
                     byid(me.elementID).click()
                 }
@@ -64,8 +64,8 @@ fun jsFacing_button(def: dynamic): dynamic {
     }
 
     me.componentWillUnmount = {
-        if (def.shamy != null) {
-            Button.instances.remove(def.shamy)
+        if (key != null) {
+            Button.instances.remove(key)
         }
     }
 

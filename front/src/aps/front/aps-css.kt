@@ -72,6 +72,7 @@ object css {
         border-left: 4px solid ${Color.BLUE_GRAY_400};
         padding-left: 0.6rem;
         margin-bottom: 1rem;
+        padding-top: 1rem;
     """)
 }
 

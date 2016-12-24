@@ -77,9 +77,10 @@ fun remoteProcedureNameForRequest(req: Any): String {
 @native fun <T> __reawait(p: Promise<T>): Promise<T> = noImpl
 
 @Front open class RequestMatumba {
-    // TODO:vgrechka Why the fuck do I need `fields` in `hiddenFields` to be separate?
+    // TODO:vgrechka Why the fuck do I need `fields` and `hiddenFields` to be separate?
     val fields = mutableListOf<FormFieldFront>()
     val hiddenFields = mutableListOf<HiddenFormFieldFront>()
+    var fieldInstanceKeySuffix: String = ""
 }
 
 abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: String) {

@@ -5,21 +5,30 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-
-fun qwe_compiles() {
-    val a: A.A2? = run {
-        val b: A = A.A2()
-        when (b) {
-            is A.A2 -> return@run b
-            else -> return@run null
-        }
+fun qwe_lateinit() {
+    val x = object {
+        lateinit var y: String
     }
+
+    console.log(x.y)
+    console.log("ok")
 }
 
-private sealed class A {
-    class A1 : A()
-    class A2 : A()
-}
+
+//fun qwe_compiles() {
+//    val a: A.A2? = run {
+//        val b: A = A.A2()
+//        when (b) {
+//            is A.A2 -> return@run b
+//            else -> return@run null
+//        }
+//    }
+//}
+//
+//private sealed class A {
+//    class A1 : A()
+//    class A2 : A()
+//}
 
 //fun qwe_doesntCompile() {
 //    val a: Promise<A.A2?> = async { // Error: ...inferred type is Promise<A?> but Promise<A.A2?> was expected
@@ -31,27 +40,27 @@ private sealed class A {
 //    }
 //}
 
-fun qwe_compilesOK() {
-    val a: Promise<A.A2?> = async {
-        val b: A = A.A2()
-        when (b) {
-            is A.A2 -> b
-            else -> null
-        }
-    }
-}
-
-fun qwe_coroutineUnit() {
-    val f: (() -> Unit)? = null
-
-    val x: Unit = run { // OK. Figures out to ignore last evaluated value in block
-        f?.invoke()
-    }
-
-//    val p: Promise<Unit> = async { // Error: ...inferred type is Promise<Unit?> but Promise<Unit> was expected
+//fun qwe_compilesOK() {
+//    val a: Promise<A.A2?> = async {
+//        val b: A = A.A2()
+//        when (b) {
+//            is A.A2 -> b
+//            else -> null
+//        }
+//    }
+//}
+//
+//fun qwe_coroutineUnit() {
+//    val f: (() -> Unit)? = null
+//
+//    val x: Unit = run { // OK. Figures out to ignore last evaluated value in block
 //        f?.invoke()
 //    }
-}
+//
+////    val p: Promise<Unit> = async { // Error: ...inferred type is Promise<Unit?> but Promise<Unit> was expected
+////        f?.invoke()
+////    }
+//}
 
 
 //private enum class E1 {FOO, BAR}

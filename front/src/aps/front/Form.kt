@@ -76,7 +76,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                         .toJSArray(),
 
                     Shitus.diva(json("style" to json("textAlign" to "left")),
-                                Shitus.button(json(/*"tamy" to "primary", "shamy" to if (spec.dontShameButtons) undefined else "primary",*/
+                                jsFacing_button(json(/*"tamy" to "primary", "shamy" to if (spec.dontShameButtons) undefined else "primary",*/
                                                    "level" to "primary", "title" to spec.primaryButtonTitle, "disabled" to working,
                                                    "onClick" to {"__async"
                                                        Shitus.beginTrain(json("name" to "Submit fucking form")); try {
@@ -120,15 +120,15 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                                            update()
                                                        } finally { Shitus.endTrain() }
                                                    }
-                                )),
+                                ), key = "primary" + req.fieldInstanceKeySuffix),
 
                                 if (spec.cancelButtonTitle != null)
-                                    Shitus.button(json(/*"tamy" to "cancel", "shamy" to if (spec.dontShameButtons) undefined else "cancel",*/
+                                    jsFacing_button(json(/*"tamy" to "cancel", "shamy" to if (spec.dontShameButtons) undefined else "cancel",*/
                                                        "title" to spec.cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10),
                                                        "onClick" to {"__async"
                                                            (spec.onCancel)()
                                                            __await((spec.onCancela)())
-                                                       })) else undefined,
+                                                       }), key = "cancel" + req.fieldInstanceKeySuffix) else undefined,
 
                                 working && formTicker()
                     )
