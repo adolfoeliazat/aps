@@ -9,6 +9,7 @@ package aps.back
 import aps.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.enums.*
+import com.google.common.hash.Hashing
 import java.util.*
 
 @RemoteProcedureFactory fun customerAddUAOrderFile() = customerProcedure(
@@ -36,6 +37,7 @@ private fun runShit(callingUserKind: UserKind, ctx: ProcedureContext, req: AddUA
             .set(it.CONTENT, content)
             .set(it.SIZE_BYTES, content.size)
             .set(it.MIME, "application/octet-stream")
+            .set(it.SHA1, Hashing.sha1().hashBytes(content).toString())
             .returnID(it)
     }
 

@@ -558,7 +558,8 @@ class PingRequest : RequestMatumba()
 data class PieceOfShitDownload(
     val id: Long,
     val name: String,
-    val forbidden: Boolean
+    val forbidden: Boolean,
+    val sha1: String
 )
 
 class LuceneParseToken {

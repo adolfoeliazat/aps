@@ -232,7 +232,8 @@ create table files(
     mime text not null,
     size_bytes int not null,
     details text not null,
-    admin_notes text not null
+    admin_notes text not null,
+    sha1 text not null
 );
 
 alter sequence files_id_seq restart with 100000;

@@ -23,13 +23,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQFiles implements Serializable {
 
-    private static final long serialVersionUID = 869355217;
+    private static final long serialVersionUID = 995646243;
 
     private Long      id;
     private Boolean   deleted;
     private Timestamp insertedAt;
     private Timestamp updatedAt;
     private Long      creatorId;
+    private Object    tsv;
     private byte[]    content;
     private String    name;
     private String    title;
@@ -37,6 +38,7 @@ public class JQFiles implements Serializable {
     private Integer   sizeBytes;
     private String    details;
     private String    adminNotes;
+    private String    sha1;
 
     public JQFiles() {}
 
@@ -46,6 +48,7 @@ public class JQFiles implements Serializable {
         this.insertedAt = value.insertedAt;
         this.updatedAt = value.updatedAt;
         this.creatorId = value.creatorId;
+        this.tsv = value.tsv;
         this.content = value.content;
         this.name = value.name;
         this.title = value.title;
@@ -53,6 +56,7 @@ public class JQFiles implements Serializable {
         this.sizeBytes = value.sizeBytes;
         this.details = value.details;
         this.adminNotes = value.adminNotes;
+        this.sha1 = value.sha1;
     }
 
     public JQFiles(
@@ -61,19 +65,22 @@ public class JQFiles implements Serializable {
         Timestamp insertedAt,
         Timestamp updatedAt,
         Long      creatorId,
+        Object    tsv,
         byte[]    content,
         String    name,
         String    title,
         String    mime,
         Integer   sizeBytes,
         String    details,
-        String    adminNotes
+        String    adminNotes,
+        String    sha1
     ) {
         this.id = id;
         this.deleted = deleted;
         this.insertedAt = insertedAt;
         this.updatedAt = updatedAt;
         this.creatorId = creatorId;
+        this.tsv = tsv;
         this.content = content;
         this.name = name;
         this.title = title;
@@ -81,6 +88,7 @@ public class JQFiles implements Serializable {
         this.sizeBytes = sizeBytes;
         this.details = details;
         this.adminNotes = adminNotes;
+        this.sha1 = sha1;
     }
 
     public Long getId() {
@@ -121,6 +129,14 @@ public class JQFiles implements Serializable {
 
     public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public Object getTsv() {
+        return this.tsv;
+    }
+
+    public void setTsv(Object tsv) {
+        this.tsv = tsv;
     }
 
     public byte[] getContent() {
@@ -179,6 +195,14 @@ public class JQFiles implements Serializable {
         this.adminNotes = adminNotes;
     }
 
+    public String getSha1() {
+        return this.sha1;
+    }
+
+    public void setSha1(String sha1) {
+        this.sha1 = sha1;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("JQFiles (");
@@ -188,6 +212,7 @@ public class JQFiles implements Serializable {
         sb.append(", ").append(insertedAt);
         sb.append(", ").append(updatedAt);
         sb.append(", ").append(creatorId);
+        sb.append(", ").append(tsv);
         sb.append(", ").append("[binary...]");
         sb.append(", ").append(name);
         sb.append(", ").append(title);
@@ -195,6 +220,7 @@ public class JQFiles implements Serializable {
         sb.append(", ").append(sizeBytes);
         sb.append(", ").append(details);
         sb.append(", ").append(adminNotes);
+        sb.append(", ").append(sha1);
 
         sb.append(")");
         return sb.toString();

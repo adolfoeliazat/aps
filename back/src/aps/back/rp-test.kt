@@ -243,7 +243,7 @@ val backendInstanceID = "" + UUID.randomUUID()
             "robotTypeTextCRIntoWindowTitledOpen" -> frp_robotTypeTextCRIntoWindowTitledOpen(rmap)
             "ping" -> frp_ping(rmap)
             "resetLastDownloadedFile" -> frp_resetLastDownloadedFile(rmap)
-            "getLastDownloadedFileID" -> frp_getLastDownloadedFileID(rmap)
+            "getLastDownloadedPieceOfShit" -> frp_getLastDownloadedPieceOfShit(rmap)
             "executeSQL" -> frp_executeSQL(ctx, rmap)
             "luceneParseRussian" -> frp_luceneParseRussian(rmap)
             else -> wtf("proc: $proc")
@@ -258,7 +258,7 @@ fun frp_resetLastDownloadedFile(rmap: Map<*, *>) {
     BackGlobus.lastDownloadedPieceOfShit = null
 }
 
-fun frp_getLastDownloadedFileID(rmap: Map<*, *>): PieceOfShitDownload? {
+fun frp_getLastDownloadedPieceOfShit(rmap: Map<*, *>): PieceOfShitDownload? {
     return BackGlobus.lastDownloadedPieceOfShit
 }
 

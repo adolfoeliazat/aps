@@ -81,3 +81,16 @@ Kotlin Version Upgrade Procedure
 * Fix shit
 
 
+Misc
+====
+
+Hash file
+
+    PS> $(CertUtil -hashfile "e:\work\aps\back\testfiles\piece of trial 2.rtf" SHA1)[1] -replace " ", ""
+
+
+
+
+
+
+

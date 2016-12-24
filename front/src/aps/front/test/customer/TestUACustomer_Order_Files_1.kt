@@ -10,7 +10,7 @@ class TestUACustomer_Order_Files_1 : StepBasedTestScenario() {
 
     override fun buildSteps() {
         o.setUpOrderAndFiles1(shit)
-        o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = false)) {
+        o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = false, sha1 = "pizda3")) {
             o.kicClick("download-1")
         }
     }

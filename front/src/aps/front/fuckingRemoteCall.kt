@@ -28,8 +28,8 @@ object fuckingRemoteCall {
         "proc" to "resetLastDownloadedFile"
     ))
 
-    fun getLastDownloadedFileID(): Promise<PieceOfShitDownload?> = sendShit(json(
-        "proc" to "getLastDownloadedFileID"
+    fun getLastDownloadedPieceOfShit(): Promise<PieceOfShitDownload?> = sendShit(json(
+        "proc" to "getLastDownloadedPieceOfShit"
     ))
 
     fun executeSQL(descr: String, sql: String): Promise<Unit> = sendShit(json(

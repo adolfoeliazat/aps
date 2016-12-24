@@ -4,6 +4,7 @@
 package aps.back.generated.jooq;
 
 
+import aps.back.generated.jooq.routines.JQFilesTsvTrigger;
 import aps.back.generated.jooq.routines.JQOnInsert;
 import aps.back.generated.jooq.routines.JQOnUpdate;
 import aps.back.generated.jooq.routines.JQUaOrdersTsvTrigger;
@@ -27,6 +28,25 @@ import org.jooq.Field;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Routines {
+
+    /**
+     * Call <code>public.files_tsv_trigger</code>
+     */
+    public static Object filesTsvTrigger(Configuration configuration) {
+        JQFilesTsvTrigger f = new JQFilesTsvTrigger();
+
+        f.execute(configuration);
+        return f.getReturnValue();
+    }
+
+    /**
+     * Get <code>public.files_tsv_trigger</code> as a field.
+     */
+    public static Field<Object> filesTsvTrigger() {
+        JQFilesTsvTrigger f = new JQFilesTsvTrigger();
+
+        return f.asField();
+    }
 
     /**
      * Call <code>public.on_insert</code>

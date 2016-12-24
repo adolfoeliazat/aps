@@ -95,7 +95,7 @@ class GodServlet : HttpServlet() {
                 rows.isEmpty()
             }
 
-            BackGlobus.lastDownloadedPieceOfShit = PieceOfShitDownload(file.id, file.name, forbidden)
+            BackGlobus.lastDownloadedPieceOfShit = PieceOfShitDownload(file.id, file.name, forbidden, file.sha1)
 
 //        if (forbidden) bitch("Some asshole, namely ${user.id}, wants to download forbidden shit, namely ${file.id}")
             if (forbidden) {

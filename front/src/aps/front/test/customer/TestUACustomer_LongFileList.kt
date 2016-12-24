@@ -22,7 +22,7 @@ class TestUACustomer_LongFileList : StepBasedTestScenario() {
                         await(ImposeNextRequestTimestampRequest.send(mnt.formatPostgres()))
                         await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
                             o.orderID.value = oid
-                            o.file.content = FileField.Content.TestFileOnServer("shitty document $i.rtf", "${testconst.filesRoot}shitty document $i.rtf")
+                            o.file.content = FileField.Content.TestFileOnServer("shitty document $i.rtf")
                             o.title.value = "Some shitty document $i"
                             o.details.value = dedent("""
                                         This is shitty text $i.

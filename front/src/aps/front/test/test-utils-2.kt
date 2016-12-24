@@ -9,10 +9,12 @@ import kotlin.browser.document
 import kotlin.browser.window
 
 object testconst {
-    val filesRoot = "C:\\Users\\Vladimir\\Desktop\\apstestdocs\\"
-
     object url {
         val customer = "http://aps-ua-customer.local:3012"
+    }
+    val filesRoot = "E:\\work\\aps\\back\\testfiles\\"
+    object sha1 {
+        val pieceOfTrial2 = "75509ed6012db7b99db0ba5051e306bef5760f75"
     }
 }
 
@@ -229,7 +231,7 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("fuck you.rtf", "${testconst.filesRoot}fuck you.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("fuck you.rtf")
         o.title.value = "A warm word to my writer"
         o.details.value = dedent("""
             Я к вам пишу – чего же боле?
@@ -242,7 +244,7 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("crazy monster boobs.rtf", "${testconst.filesRoot}crazy monster boobs.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("crazy monster boobs.rtf")
         o.title.value = "Cool stuff"
         o.details.value = dedent("""
              - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
@@ -254,7 +256,7 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("the trial.doc", "${testconst.filesRoot}the trial.doc")
+        o.file.content = FileField.Content.TestFileOnServer("the trial.doc")
         o.title.value = "Процесс by Кафка"
         o.details.value = dedent("""
             Это чисто на почитать...
@@ -272,7 +274,7 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("idiot.rtf", "${testconst.filesRoot}idiot.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("idiot.rtf")
         o.title.value = "The (Fucking) Idiot"
         o.details.value = dedent("""
             26-летний князь Лев Николаевич Мышкин возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком искренним и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
@@ -284,7 +286,7 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("crime and punishment.rtf", "${testconst.filesRoot}crime and punishment.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("crime and punishment.rtf")
         o.title.value = "Crime and Punishment"
         o.details.value = dedent("""
             Действие романа начинается жарким июльским днём в Петербурге. Студент Родион Романович Раскольников, вынужденный уйти из университета из-за отсутствия денег, направляется в квартиру к процентщице Алёне Ивановне, чтобы сделать «пробу своему предприятию». В сознании героя в течение последнего месяца созревает идея убийства «гадкой старушонки»; одно-единственное преступление, по мнению Раскольникова, изменит его собственную жизнь и избавит сестру Дуню от необходимости выходить замуж за «благодетеля» Петра Петровича Лужина. Несмотря на проведённую «разведку», тщательно продуманный план ломается из-за внутренней паники Родиона Романовича (который после убийства процентщицы долго не может найти у неё ни денег, ни ценных закладов), а также внезапного возвращения домой сестры Алёны Ивановны. Тихая, безобидная, «поминутно беременная» Лизавета, оказавшаяся невольной свидетельницей преступления, становится второй жертвой студента.
@@ -301,7 +303,7 @@ fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("crappy release 1.rtf", "${testconst.filesRoot}crappy release 1.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("crappy release 1.rtf")
         o.title.value = "Crappy release 1"
         o.details.value = dedent("""
             К. прошел дальше по улочке медленным шагом, будто  у  него времени   сколько   угодно;   если  следователь  видит  его  из какого-нибудь окна, значит он знает, что К. явился. Только  что пробило девять. Дом оказался довольно далеко, он был необычайно длинный;   особенно   ворота  были  очень  высокие  и  широкие. Очевидно, они предназначались для фургонов,  развозивших  товар по  разным складам. Сейчас все склады во дворе были заперты, но по вывескам К. узнал некоторые фирмы -  его  банк  вел  с  ними дела.  Вопреки  своему  обыкновению  он  пристально разглядывал окружающее, даже остановился у входа  во  двор.  Неподалеку  на ящике  сидел  босоногий  человек и читал газету. Двое мальчишек качались на тачке.  У  колонки  стояла  болезненная  девушка  в ночной  кофточке,  и,  пока  вода  набиралась  в кувшин, она не сводила глаз с К. В углу двора между  двумя  окнами  натягивали веревку,  на  ней  уже  висело  выстиранное  белье. Внизу стоял человек и, покрикивая, руководил работой.
@@ -311,7 +313,7 @@ fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("crappy release 2.rtf", "${testconst.filesRoot}crappy release 2.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("crappy release 2.rtf")
         o.title.value = "Crappy release 2"
         o.details.value = dedent("""
             К. пошел  было  к  лестнице,  чтобы  подняться  в  кабинет следователя,  но  остановился:  кроме этой лестницы, со двора в дом было еще три входа, а в глубине  двора  виднелся  неширокий проход  во  второй  двор.  К.  рассердился,  оттого  что ему не указали точнее, где этот кабинет; все-таки к нему  отнеслись  с удивительным  невниманием и равнодушием, и он решил, что заявит об этом громко и отчетливо.  Наконец  он  все  же  поднялся  по лестнице,   мысленно  повторяя  выражение  Виллема,  одного  из стражей, что вина сама притягивает к себе правосудие, из  чего, собственно  говоря,  вытекало,  что  кабинет следователя должен находиться именно на той лестнице, куда случайно поднялся К.
@@ -321,7 +323,7 @@ fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.fedorToken, WriterAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("crappy release 3.rtf", "${testconst.filesRoot}crappy release 3.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("crappy release 3.rtf")
         o.title.value = "Crappy release 3"
         o.details.value = dedent("""
             Подымаясь по лестнице, он все время мешал детям,  игравшим там,  и  они  провожали его злыми взглядами. В другой раз, если придется  сюда  идти,  надо  будет  взять  либо  конфет,  чтобы подкупить их, либо палку, чтобы их отколотить, сказал он себе.У второго этажа ему даже пришлось переждать, пока мячик докатится донизу:  двое  мальчишек с хитроватыми лицами взрослых бандитов вцепились в его брюки; стряхнуть их можно было только силой, но К. боялся, что они завопят, если им сделать больно.
@@ -333,7 +335,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("piece of trial 1.rtf", "${testconst.filesRoot}piece of trial 1.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("piece of trial 1.rtf")
         o.title.value = "A piece of... Trial 1"
         o.details.value = dedent("""
              - Вы  глубоко заблуждаетесь, - сказал К. сердито, с трудом скрывая раздражение, - и  вообще  вы  неверно  истолковали  мои слова  про  барышню,  я  совсем  не  то хотел сказать. Искренне советую вам ничего ей не говорить. Вы глубоко заблуждаетесь,  я ее  знаю  очень  хорошо,  и  все,  что  вы  говорите, неправда!
@@ -343,7 +345,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("piece of trial 2.rtf", "${testconst.filesRoot}piece of trial 2.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("piece of trial 2.rtf")
         o.title.value = "A piece of... Trial 2"
         o.details.value = dedent("""
              Когда  ему  надоело смотреть на пустую улицу, он прилег на кушетку, но сначала  приоткрыл  дверь  в  прихожую,  чтобы,  не вставая,   видеть   всех,  кто  войдет  в  квартиру.  Часов  до одиннадцати он пролежал спокойно на кушетке, покуривая  сигару. Но  потом  не выдержал и вышел в прихожую, как будто этим можно было ускорить приход фройляйн Бюрстнер. У него не было  никакой охоты  ее  видеть,  он  даже  не  мог  точно вспомнить, как она выглядит, но ему нужно было с ней поговорить, и его  раздражало что из-за ее опоздания даже конец дня вышел такой беспокойный и беспорядочный.  Виновата она была и в том, что он не поужинал и пропустил визит к Эльзе, назначенный на сегодня. Конечно, можно было  бы  наверстать  упущенное  и  пойти  в  ресторанчик,  где работала  Эльза.  Он  решил,  что  после  разговора  с фройляйн Бюрстнер он так и сделает.
@@ -355,7 +357,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("piece of trial 3.rtf", "${testconst.filesRoot}piece of trial 3.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("piece of trial 3.rtf")
         o.title.value = "A piece of... Trial 3"
         o.details.value = dedent("""
              - Вы  не  подумали  об одном, - сказал он. - Правда, у вас могут быть неприятности, но никакая опасность вам не грозит. Вы знаете, что фрау Грубах - а в этом вопросе она играет  решающую роль,  поскольку капитан доводится ей племянником, - вы знаете, что она меня просто  обожает  и  беспрекословно  верит  каждому моему  слову.  Кстати,  она  и зависит от меня, я ей дал в долг порядочную сумму денег. Я готов принять любое предложенное вами объяснение нашей поздней встречи, если только  оно  будет  хоть немного  правдоподобно, и обязуюсь подействовать на фрау Грубах так, чтобы она не только приняла его официально, но и  поверила безоговорочно  и  искренне.  И пожалуйста, не щадите меня. Если вам угодно распространить слух, что я к  вам  приставал,  то  я именно  так и сообщу фрау Грубах, и она все примет, не теряя ко мне уважения, настолько она меня ценит.
@@ -365,7 +367,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.importNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("piece of trial 4.rtf", "${testconst.filesRoot}piece of trial 4.rtf")
+        o.file.content = FileField.Content.TestFileOnServer("piece of trial 4.rtf")
         o.title.value = "A piece of... Trial 4"
         o.details.value = dedent("""
                  К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
@@ -466,7 +468,7 @@ fun TestScenarioBuilder.expectPieceOfShitDownload(expected: PieceOfShitDownload,
         async {
             for (i in 1..3) {
                 await(delay(500))
-                await(fuckingRemoteCall.getLastDownloadedFileID())?.let {actual->
+                await(fuckingRemoteCall.getLastDownloadedPieceOfShit())?.let {actual->
                     assertEquals(expected, actual)
                     return@async
                 }

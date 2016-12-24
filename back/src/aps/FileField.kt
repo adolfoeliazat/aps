@@ -24,10 +24,10 @@ import kotlin.properties.Delegates.notNull
 
             if (provided) {
                 fileName = cast(value["fileName"])
-                val testFileOnServerPath: String? = cast(value["testFileOnServerPath"])
+                val testFileOnServerName: String? = cast(value["testFileOnServerName"])
                 base64 =
-                    if (testFileOnServerPath != null)
-                        Base64.getEncoder().encodeToString(File(testFileOnServerPath).readBytes())
+                    if (testFileOnServerName != null)
+                        Base64.getEncoder().encodeToString(File(APS_HOME + "/back/testfiles/" + testFileOnServerName).readBytes())
                     else
                         cast(value["base64"])
             }

@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQFiles extends TableImpl<JQFilesRecord> {
 
-    private static final long serialVersionUID = -572261197;
+    private static final long serialVersionUID = 2084672113;
 
     /**
      * The reference instance of <code>public.files</code>
@@ -78,6 +78,11 @@ public class JQFiles extends TableImpl<JQFilesRecord> {
     public final TableField<JQFilesRecord, Long> CREATOR_ID = createField("creator_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
+     * The column <code>public.files.tsv</code>.
+     */
+    public final TableField<JQFilesRecord, Object> TSV = createField("tsv", org.jooq.impl.DefaultDataType.getDefaultDataType("tsvector"), this, "");
+
+    /**
      * The column <code>public.files.content</code>.
      */
     public final TableField<JQFilesRecord, byte[]> CONTENT = createField("content", org.jooq.impl.SQLDataType.BLOB.nullable(false), this, "");
@@ -111,6 +116,11 @@ public class JQFiles extends TableImpl<JQFilesRecord> {
      * The column <code>public.files.admin_notes</code>.
      */
     public final TableField<JQFilesRecord, String> ADMIN_NOTES = createField("admin_notes", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+
+    /**
+     * The column <code>public.files.sha1</code>.
+     */
+    public final TableField<JQFilesRecord, String> SHA1 = createField("sha1", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
 
     /**
      * Create a <code>public.files</code> table reference

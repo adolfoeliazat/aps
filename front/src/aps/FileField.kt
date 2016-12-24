@@ -29,7 +29,7 @@ import kotlin.browser.window
         class FileToUpload(val file: File) : Content()
         class ExistingFile(val name: String, val size: Int) : Content()
         class NotProvided : Content()
-        class TestFileOnServer(val name: String, val path: String) : Content()
+        class TestFileOnServer(val name: String) : Content()
     }
 
     val noise = DebugNoise("FileField", mute = false)
@@ -140,7 +140,7 @@ import kotlin.browser.window
                 json[name] = json(
                     "provided" to true,
                     "fileName" to _content.name,
-                    "testFileOnServerPath" to _content.path
+                    "testFileOnServerName" to _content.name
                 )
                 shit.resolve(Unit)
             }
