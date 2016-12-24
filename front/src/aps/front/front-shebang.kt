@@ -436,7 +436,7 @@ fun errorLabelOld(def: dynamic): dynamic {
     val style: dynamic = def.style ?: json()
 
     return Shitus.diva(json("controlTypeName" to "errorLabel", "style" to global.Object.assign(json("color" to Color.RED_300.toString()), style)),
-        Shitus.spanc(json("tame" to "errorLabel", "content" to title)))
+        Shitus.spanc(json(/*"tame" to "errorLabel",*/ "content" to title)))
 }
 
 fun ObjectViewer(def: dynamic): dynamic {

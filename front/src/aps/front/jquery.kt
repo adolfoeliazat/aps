@@ -8,6 +8,7 @@
 
 package aps.front
 
+import aps.*
 import org.w3c.dom.*
 import jquery.*
 import kotlin.browser.*
@@ -42,7 +43,9 @@ fun byid0ForSure(id: String): HTMLElement {
 
 fun JQuery.not(selector: String): JQuery = this.asDynamic().not(selector)
 
-
+fun JQuery.scrollBodyToShit(dy: Int = 0) {
+    jqbody.scrollTop(this.offset().top - 50 + dy)
+}
 
 
 

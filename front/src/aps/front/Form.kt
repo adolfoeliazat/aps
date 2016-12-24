@@ -15,6 +15,8 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val req: Req,
     val ui: World,
     val className: String = "",
+    val containerClassName: String = "",
+    val containerStyle: Style = Style(),
     val errorBannerStyle: dynamic = js("undefined"),
     val primaryButtonTitle: String = t("Post", "Запостить"),
     val cancelButtonTitle: String? = null,
@@ -62,8 +64,8 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                 ))
             }
 
-            return Shitus.diva(json(),
-                Shitus.forma.apply(null, js("[]").concat(
+            return kdiv(attrs = Attrs(className = spec.containerClassName), style = spec.containerStyle){o->
+                val form: ReactElement = Shitus.forma.apply(null, js("[]").concat(
                     jsArrayOf(
                         json("className" to spec.className),
                         if (error != null) Shitus.errorBanner(json("content" to error, "style" to spec.errorBannerStyle)) else undefined),
@@ -74,33 +76,33 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                         .toJSArray(),
 
                     Shitus.diva(json("style" to json("textAlign" to "left")),
-                        Shitus.button(json("tamy" to "primary", "shamy" to if (spec.dontShameButtons) undefined else "primary",
-                            "level" to "primary", "title" to spec.primaryButtonTitle, "disabled" to working,
-                            "onClick" to {"__async"
-                                Shitus.beginTrain(json("name" to "Submit fucking form")); try {
-                                    for (field: FormFieldFront in spec.req.fields) {
-                                        field.error = null
-                                        field.disabled = true
-                                    }
-                                    error = null
-                                    working = true
-                                    update()
+                                Shitus.button(json(/*"tamy" to "primary", "shamy" to if (spec.dontShameButtons) undefined else "primary",*/
+                                                   "level" to "primary", "title" to spec.primaryButtonTitle, "disabled" to working,
+                                                   "onClick" to {"__async"
+                                                       Shitus.beginTrain(json("name" to "Submit fucking form")); try {
+                                                           for (field: FormFieldFront in spec.req.fields) {
+                                                               field.error = null
+                                                               field.disabled = true
+                                                           }
+                                                           error = null
+                                                           working = true
+                                                           update()
 
-                                    val res: FormResponse = __await(callMatumba(spec.req, spec.ui.token))
+                                                           val res: FormResponse = __await(callMatumba(spec.req, spec.ui.token))
 
-                                    when (res) {
-                                        is FormResponse.Shitty -> {
-                                            error = res.error
-                                            (spec.onError)(res)
-                                            __await((spec.onErrora)(res))
-                                        }
-                                        is FormResponse.Hunky<*> -> {
-                                            error = null
-                                            val meat = res.meat as Res
-                                            (spec.onSuccess)(meat)
-                                            __await((spec.onSuccessa)(meat))
-                                        }
-                                    }
+                                                           when (res) {
+                                                               is FormResponse.Shitty -> {
+                                                                   error = res.error
+                                                                   (spec.onError)(res)
+                                                                   __await((spec.onErrora)(res))
+                                                               }
+                                                               is FormResponse.Hunky<*> -> {
+                                                                   error = null
+                                                                   val meat = res.meat as Res
+                                                                   (spec.onSuccess)(meat)
+                                                                   __await((spec.onSuccessa)(meat))
+                                                               }
+                                                           }
 
 //                                    if (res is FormResponse.Shitty) {
 //                                        for (fe in res.fieldErrors) {
@@ -108,29 +110,31 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 //                                        }
 //                                    }
 
-                                    for (field in spec.req.fields) {
-                                        field.error = if (res !is FormResponse.Shitty) null else
-                                            res.fieldErrors.find{it.field == field.name}?.error
-                                        field.disabled = false
-                                    }
+                                                           for (field in spec.req.fields) {
+                                                               field.error = if (res !is FormResponse.Shitty) null else
+                                                                   res.fieldErrors.find{it.field == field.name}?.error
+                                                               field.disabled = false
+                                                           }
 
-                                    working = false
-                                    update()
-                                } finally { Shitus.endTrain() }
-                            }
-                        )),
+                                                           working = false
+                                                           update()
+                                                       } finally { Shitus.endTrain() }
+                                                   }
+                                )),
 
-                        if (spec.cancelButtonTitle != null)
-                            Shitus.button(json("tamy" to "cancel", "shamy" to if (spec.dontShameButtons) undefined else "cancel",
-                                "title" to spec.cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10),
-                                "onClick" to {"__async"
-                                    (spec.onCancel)()
-                                    __await((spec.onCancela)())
-                                })) else undefined,
+                                if (spec.cancelButtonTitle != null)
+                                    Shitus.button(json(/*"tamy" to "cancel", "shamy" to if (spec.dontShameButtons) undefined else "cancel",*/
+                                                       "title" to spec.cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10),
+                                                       "onClick" to {"__async"
+                                                           (spec.onCancel)()
+                                                           __await((spec.onCancela)())
+                                                       })) else undefined,
 
-                        working && formTicker()
+                                working && formTicker()
                     )
-                )))
+                ))
+                o- form
+            }.toReactElement()
         }
 
         override fun componentDidMount() {

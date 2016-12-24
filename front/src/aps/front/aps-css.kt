@@ -25,12 +25,32 @@ object css {
         border-bottom: 1px solid #cfd8dc;
         position: relative;
     """)
+    val cuntHeaderEditing = Entry("cunt-header-editing", """
+        font-size: 18px;
+        background-color: #eceff1;
+        border-bottom: 1px solid #cfd8dc;
+        position: relative;
+        border-left: 4px solid ${Color.BLUE_GRAY_400};
+        padding-left: 0.6rem;
+    """)
     val cuntHeaderLeftIcon = Entry("cunt-header-left-icon", """
         color: #90a4ae;
         margin-left: 3px;
     """)
+    val cuntHeaderLeftIconEditing = Entry("cunt-header-left-icon-editing", """
+        color: #90a4ae;
+        margin-left: 0px;
+    """)
     val cuntHeaderLeftOverlayBottomLeftIcon = Entry("cunt-header-left-overlay-bottom-left-icon", """
         margin-left: 3px;
+        position: absolute;
+        left: 2px;
+        top: 9px;
+        color: #cfd8dc;
+        font-size: 60%;
+    """)
+    val cuntHeaderLeftOverlayBottomLeftIconEditing = Entry("cunt-header-left-overlay-bottom-left-icon-editing", """
+        margin-left: 0.6rem;
         position: absolute;
         left: 2px;
         top: 9px;
@@ -47,6 +67,11 @@ object css {
     """)
     val cuntHeaderRightIcon_hover = Entry("$cuntHeaderRightIcon:hover", """
         color: #607d8b;
+    """)
+    val cuntBodyEditing = Entry("cunt-body-editing", """
+        border-left: 4px solid ${Color.BLUE_GRAY_400};
+        padding-left: 0.6rem;
+        margin-bottom: 1rem;
     """)
 }
 

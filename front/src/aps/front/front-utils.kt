@@ -239,7 +239,18 @@ fun encodeURIComponent(s: String): String = global.encodeURIComponent(s)
 fun arraysEquals(a: Array<*>, b: Array<*>): Boolean =
     a.asList() == b.asList()
 
+fun scrollBodyToShitGradually(dy: Int = 0, bursts: Int = 8, getShit: () -> JQuery): Promise<Unit> = async {
+    await(tillAnimationFrame())
+    val shit = getShit()
 
+    val targetTop = shit.offset().top - const.pageHeaderHeight + dy
+    val startTop = jqbody.scrollTop()
+    for (i in 1..bursts) {
+        await(tillAnimationFrame())
+        jqbody.scrollTop(startTop + (targetTop - startTop) / bursts * i)
+    }
+    jqbody.scrollTop(targetTop)
+}
 
 
 

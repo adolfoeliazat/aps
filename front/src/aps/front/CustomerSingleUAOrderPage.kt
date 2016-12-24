@@ -260,7 +260,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                 UserKind.CUSTOMER -> {
                                     kdiv{o->
                                         o- row{o->
-                                            o- renderFileTitle()
+                                            o- renderFileTitle(editing = false)
                                         }
                                         o- row{o->
                                             o- kdiv(className = "col-md-4"){o->
@@ -300,24 +300,28 @@ class CustomerSingleUAOrderPage(val world: World) {
                             })
                         }
 
-                        fun enterEditMode() {
+                        fun enterEditMode(): Promise<Unit> = async {
+                            val topShitID = puid()
                             holder.setContent(when (world.user.kind) {
                                 UserKind.CUSTOMER -> {
-                                    kdiv{o->
+                                    kdiv(id = topShitID){o->
                                         o- row{o->
-                                            o- renderFileTitle()
-                                            o- kdiv{o->
-                                                o- kdiv(className = "col-md-12"){o->
-                                                    o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
-                                                        CustomerEditUAOrderFileRequest()-{o->
-                                                            o.orderFileID.value = orderFile.id
-                                                            o.file.content = FileField.Content.ExistingFile(orderFile.file.name, orderFile.file.sizeBytes)
-                                                            o.title.value = orderFile.file.title
-                                                            o.details.value = orderFile.file.details
-                                                        },
-                                                        world,
-                                                        cancelButtonTitle = const.defaultCancelButtonTitle))
-                                                }
+                                            o- renderFileTitle(editing = true)
+                                            o- kdiv(className = "col-md-12"){o->
+                                                o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
+                                                    CustomerEditUAOrderFileRequest()-{o->
+                                                        o.orderFileID.value = orderFile.id
+                                                        o.file.content = FileField.Content.ExistingFile(orderFile.file.name, orderFile.file.sizeBytes)
+                                                        o.title.value = orderFile.file.title
+                                                        o.details.value = orderFile.file.details
+                                                    },
+                                                    world,
+                                                    cancelButtonTitle = const.defaultCancelButtonTitle,
+                                                    containerClassName = css.cuntBodyEditing.name,
+                                                    onCancel = {
+                                                        enterViewMode()
+                                                    }
+                                                ))
                                             }
                                         }
                                     }
@@ -327,13 +331,15 @@ class CustomerSingleUAOrderPage(val world: World) {
 
                                 UserKind.ADMIN -> imf()
                             })
+
+                            await(scrollBodyToShitGradually(dy = -5){byid(topShitID)})
                         }
 
-                        fun renderFileTitle(): ElementBuilder {
+                        fun renderFileTitle(editing: Boolean): ElementBuilder {
                             return kdiv(className = "col-md-12"){o->
-                                o- kdiv(className = css.cuntHeader.name){o->
-                                    o- ki(className = "${css.cuntHeaderLeftIcon} ${fa.file}")
-                                    o- ki(className = "${css.cuntHeaderLeftOverlayBottomLeftIcon} " +
+                                o- kdiv(className = if (editing) css.cuntHeaderEditing.name else css.cuntHeader.name){o->
+                                    o- ki(className = "${if (editing) css.cuntHeaderLeftIconEditing else css.cuntHeaderLeftIcon} ${fa.file}")
+                                    o- ki(className = "${if (editing) css.cuntHeaderLeftOverlayBottomLeftIconEditing else css.cuntHeaderLeftOverlayBottomLeftIcon} " +
                                         when (orderFile.seenAsFrom) {
                                             UserKind.CUSTOMER -> fa.user
                                             UserKind.WRITER -> fa.pencil
@@ -362,21 +368,24 @@ class CustomerSingleUAOrderPage(val world: World) {
                                             UserKind.ADMIN -> t("TOTE", "От саппорта")
                                         }
                                     }
-                                    o- kic("download-$chunkIndex-$fileIndex", className = "${css.cuntHeaderRightIcon} ${fa.cloudDownload}", style = Style(right = 30, top = 6),
-                                           onClick = {
-                                               val iframeID = puid()
-                                               jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
-                                               val iframe = byid0(iframeID) as HTMLIFrameElement
-                                               gloshit.iframe = iframe
-                                               iframe.onload = {
-                                                   iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
-                                               }
-                                               iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
-                                           })
-                                    o- kic("edit-$chunkIndex-$fileIndex", className = "${css.cuntHeaderRightIcon} ${fa.pencil}",
-                                           onClick = {
-                                               enterEditMode()
-                                           })
+
+                                    if (!editing) {
+                                        o- kic("download-$chunkIndex-$fileIndex", className = "${css.cuntHeaderRightIcon} ${fa.cloudDownload}", style = Style(right = 30, top = 6),
+                                                   onClick = {
+                                                   val iframeID = puid()
+                                                   jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
+                                                   val iframe = byid0(iframeID) as HTMLIFrameElement
+                                                   gloshit.iframe = iframe
+                                                   iframe.onload = {
+                                                       iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
+                                                   }
+                                                   iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
+                                               })
+                                        o- kic("edit-$chunkIndex-$fileIndex", className = "${css.cuntHeaderRightIcon} ${fa.pencil}",
+                                               onClicka = {
+                                                   enterEditMode()
+                                               })
+                                    }
                                 }
                             }
                         }

@@ -43,5 +43,7 @@ object const {
         val minDetailsLen = common.minDetailsLen
         val maxDetailsLen = common.maxDetailsLen
     }
+
+    val pageHeaderHeight = 50
 }
 

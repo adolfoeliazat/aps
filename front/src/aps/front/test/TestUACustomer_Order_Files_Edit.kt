@@ -29,6 +29,9 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
         o.act {jqbody.scrollTop(700)}
         o.kicClick("edit-0-3")
+
+        o.act {jqbody.scrollTop(900)}
+        o.kicClick("edit-0-5")
     }
 
 }
