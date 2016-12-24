@@ -311,7 +311,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                     o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
                                                         CustomerEditUAOrderFileRequest()-{o->
                                                             o.orderFileID.value = orderFile.id
-                                                            o.file.existingFile = FileField.FileMeta(orderFile.file.name, orderFile.file.sizeBytes)
+                                                            o.file.content = FileField.Content.ExistingFile(orderFile.file.name, orderFile.file.sizeBytes)
                                                             o.title.value = orderFile.file.title
                                                             o.details.value = orderFile.file.details
                                                         },

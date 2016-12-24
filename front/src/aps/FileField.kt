@@ -25,72 +25,63 @@ import kotlin.browser.window
         }
     }
 
-    class TestFileOnServer(val name: String, val path: String)
-    class FileMeta(val name: String, val size: Int)
+    sealed class Content {
+        class FileToUpload(val file: File) : Content()
+        class ExistingFile(val name: String, val size: Int) : Content()
+        class NotProvided : Content()
+        class TestFileOnServer(val name: String, val path: String) : Content()
+    }
 
     val noise = DebugNoise("FileField", mute = false)
-
-    var file: File? = null
-    var existingFile: FileMeta? = null
-    var testFileOnServer: TestFileOnServer? = null
+    var content: Content = Content.NotProvided()
     var fileChanged = ResolvableShit<Unit>()
 
     val control = object:Control2(Attrs()) {
         val inputID = puid()
 
         override fun render(): ToReactElementable {
+            val _content = content
             return kdiv(className = "form-group", marginTop = 10){o->
-                val _file = file; val _existingFile = existingFile
-                when {
-                    _existingFile != null -> {
-                        o- reactCreateElement("input", json(
-                            "id" to inputID,
-                            "type" to "file",
-                            "style" to json("display" to "none"),
-                            "onChange" to {
-                                val files: FileList = byid0(inputID).asDynamic().files
-                                file = files[0]
-                                gloshit.file = file
-                                noise.clog("Got file", file)
-                                update()
-                                fileChanged.resolve(Unit)
-                            }
-                        ), listOf())
-                        o- klabel {it-title}
+                o- klabel {it-title}
+                o- reactCreateElement("input", json(
+                    "id" to inputID,
+                    "type" to "file",
+                    "style" to json("display" to "none"),
+                    "onChange" to {
+                        val files: FileList = byid0(inputID).asDynamic().files
+                        val file = files[0]!!
+                        gloshit.file = file
+                        noise.clog("Got file", file)
+                        content = Content.FileToUpload(file)
+                        update()
+                        fileChanged.resolve(Unit)
+                    }
+                ), listOf())
+                when (_content) {
+                    is Content.ExistingFile -> {
                         o- kdiv(Style(display = "flex", alignItems = "center")){o->
                             o- kspan{o->
-                                o- (_existingFile.name + " (${formatFileSizeApprox(Globus.lang, _existingFile.size)})")
+                                o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
                             }
                             o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }
                     }
-                    _file == null -> {
-                        o- reactCreateElement("input", json(
-                            "id" to inputID,
-                            "type" to "file",
-                            "style" to json("display" to "none"),
-                            "onChange" to {
-                                val files: FileList = byid0(inputID).asDynamic().files
-                                file = files[0]
-                                gloshit.file = file
-                                noise.clog("Got file", file)
-                                update()
-                                fileChanged.resolve(Unit)
+                    is Content.FileToUpload -> {
+                        o- kdiv(Style(display = "flex", alignItems = "center")){o->
+                            o- kspan{o->
+                                o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
                             }
-                        ), listOf())
-                        o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Выбрать файл..."), onClick = {
+                            o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                                byid(inputID).click()
+                            })
+                        }
+                    }
+                    is Content.NotProvided -> {
+                        o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Выбрать..."), onClick = {
                             byid(inputID).click()
                         })
-                    }
-                    else -> {
-                        o- klabel {it-title}
-                        o- kdiv{o->
-                            o- kspan(position = "relative", top = 3){o->
-                                o- (_file.name + " (${formatFileSizeApprox(Globus.lang, _file.size)})")
-                            }
-                        }
                     }
                 }
             }
@@ -118,28 +109,15 @@ import kotlin.browser.window
     override fun focus() {}
 
     override fun populateRemote(json: Json): Promise<Unit> {
-        val _testFileOnServer = testFileOnServer; val _file = file
-
+        val _content = content
         val shit = ResolvableShit<Unit>()
-        if (_testFileOnServer != null) {
-            json[name] = json(
-                "provided" to true,
-                "fileName" to _testFileOnServer.name,
-                "testFileOnServerPath" to _testFileOnServer.path
-            )
-            shit.resolve(Unit)
-        } else {
-            if (_file == null) {
-                json[name] = json(
-                    "provided" to false
-                )
-                shit.resolve(Unit)
-            } else {
+        exhaustive/when (_content) {
+            is FileField.Content.FileToUpload -> {
                 val reader = FileReader()
                 reader.onload = {
                     json[name] = json(
                         "provided" to true,
-                        "fileName" to _file.name,
+                        "fileName" to _content.file.name,
                         "base64" to run {
                             val dataURL: String = reader.result
                             dataURL.substring(dataURL.indexOf(",") + 1)
@@ -147,7 +125,22 @@ import kotlin.browser.window
                     )
                     shit.resolve(Unit)
                 }
-                reader.readAsDataURL(_file)
+                reader.readAsDataURL(_content.file)
+            }
+            is FileField.Content.NotProvided,
+            is FileField.Content.ExistingFile  -> {
+                json[name] = json(
+                    "provided" to false
+                )
+                shit.resolve(Unit)
+            }
+            is FileField.Content.TestFileOnServer -> {
+                json[name] = json(
+                    "provided" to true,
+                    "fileName" to _content.name,
+                    "testFileOnServerPath" to _content.path
+                )
+                shit.resolve(Unit)
             }
         }
 
