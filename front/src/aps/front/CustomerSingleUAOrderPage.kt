@@ -322,12 +322,10 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                     onCancel = {
                                                         enterViewMode()
                                                     },
-                                                    onSuccess = {
+                                                    onSuccess = {res->
+                                                        orderFile = res.updatedOrderFile
                                                         enterViewMode()
-                                                    }// ,
-//                                                    onErrora = {res -> async {
-//                                                        openErrorModal(res.error)
-//                                                    }}
+                                                    }
                                                 ))
                                             }
                                         }

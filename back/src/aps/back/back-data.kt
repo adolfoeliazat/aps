@@ -165,6 +165,17 @@ fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
     )
 }
 
+fun JQUaOrderFiles.toRTO(q: DSLContextProxyFactory, searchWords: List<String> = listOf()): UAOrderFileRTO {
+    return UAOrderFileRTO(
+        id = this.id.toString(),
+        file = loadFile(q, this.fileId, searchWords, Language.UA),
+        seenAsFrom = this.seenAsFrom.toApp()
+    )
+}
+
+
+
+
 
 
 

@@ -457,7 +457,7 @@ class CustomerAddUAOrderFileRequest : AddUAOrderFileRequestBase()
 class WriterAddUAOrderFileRequest : AddUAOrderFileRequestBase()
 
 abstract class EditUAOrderFileRequestBase : RequestMatumba() {
-    class Response() : CommonResponseFieldsImpl()
+    class Response(val updatedOrderFile: UAOrderFileRTO) : CommonResponseFieldsImpl()
 
     val orderFileID = StringHiddenField(this, "orderFileID")
     val file = fileField(this, shouldBeProvided = false)

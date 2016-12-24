@@ -8,6 +8,8 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.Tables.*
+import aps.back.generated.jooq.tables.pojos.*
+import into.kommon.*
 import java.util.*
 
 @RemoteProcedureFactory fun customerEditUAOrderFile() = customerProcedure(
@@ -25,9 +27,11 @@ import java.util.*
 )
 
 private fun runShit(callingUserKind: UserKind, ctx: ProcedureContext, req: EditUAOrderFileRequestBase): EditUAOrderFileRequestBase.Response {
+    val orderFileID = req.orderFileID.value.toLong()
+
     val orderFile = ctx.q("Select order file")
         .selectFrom(UA_ORDER_FILES)
-        .where(UA_ORDER_FILES.ID.eq(req.orderFileID.value.toLong()))
+        .where(UA_ORDER_FILES.ID.eq(orderFileID))
         .fetchOne()
 
     FILES.let {t->
@@ -50,11 +54,16 @@ private fun runShit(callingUserKind: UserKind, ctx: ProcedureContext, req: EditU
 
     UA_ORDER_FILES.let {t-> // Just change updated_at
         ctx.updateShit("Update order file", t)
-            .where(t.ID.eq(req.orderFileID.value.toLong()))
+            .where(t.ID.eq(orderFileID))
             .execute()
     }
 
-    return EditUAOrderFileRequestBase.Response()
+    val updatedOrderFile = ctx.q("Select updated order file")
+        .selectFrom(UA_ORDER_FILES)
+        .where(UA_ORDER_FILES.ID.eq(orderFileID))
+        .fetchOne().into(JQUaOrderFiles::class.java).toRTO(ctx.q)
+
+    return EditUAOrderFileRequestBase.Response(updatedOrderFile)
 }
 
 

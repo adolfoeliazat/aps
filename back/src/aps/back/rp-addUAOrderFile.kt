@@ -62,6 +62,13 @@ private fun runShit(callingUserKind: UserKind, ctx: ProcedureContext, req: AddUA
             .returnID(it)
     }
 
+    FILE_USER_PERMISSIONS.let {
+        ctx.insertShit("Insert file permission", it)
+            .set(it.FILE_ID, fileID)
+            .set(it.USER_ID, ctx.user.id.toLong())
+            .execute()
+    }
+
     return AddUAOrderFileRequestBase.Response(orderFileID.toString())
 }
 

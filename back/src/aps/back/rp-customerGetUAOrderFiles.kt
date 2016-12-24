@@ -28,12 +28,7 @@ import kotlin.reflect.KClass
             table = Tables.UA_ORDER_FILES.name,
             pojoClass = JQUaOrderFiles::class,
             loadItem = {orderFile, q ->
-                UAOrderFileRTO(
-                    id = orderFile.id.toString(),
-                    file = loadFile(q, orderFile.fileId, searchWords, Language.UA),
-                    seenAsFrom = orderFile.seenAsFrom.toApp()
-
-                )
+                orderFile.toRTO(q, searchWords)
             },
             fromID = req.fromID.value?.let {it.toLong()},
             ordering = req.ordering.value,
