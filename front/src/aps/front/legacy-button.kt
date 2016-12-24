@@ -19,6 +19,8 @@ fun jsFacing_button(def: dynamic, key: String? = null): dynamic {
     val className: dynamic = if (def.className != null) def.className else ""
     val style: dynamic = def.style
 
+    val fuckingLegacyClick = onClick
+
     var me: dynamic = null
     me = json(
         "render" to render@{
@@ -57,7 +59,8 @@ fun jsFacing_button(def: dynamic, key: String? = null): dynamic {
         if (key != null) {
             Button.instances[key] = object:Button() {
                 override fun click(): Promise<Unit> = async<Unit> {
-                    byid(me.elementID).click()
+                    awaitJSShit<dynamic>(fuckingLegacyClick())
+//                    byid(me.elementID).click()
                 }
             }
         }

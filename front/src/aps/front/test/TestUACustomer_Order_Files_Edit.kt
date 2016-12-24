@@ -47,7 +47,9 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             o.assertScreenHTML_todo("Title and details changed", "7e053deb-06da-40f0-918a-c2166a858f83")
 
             o.section("Check that file remains unchanged") {
-                o.assertScreenHTML_todo("10", "ed306a5c-ba62-43b2-afe9-c5747393ecdd")
+                o.expectPieceOfShitDownload(PieceOfShitDownload(100006, "piece of trial 2.rtf", forbidden = false)) {
+                    o.kicClick("download-0-5")
+                }
             }
         }
     }
