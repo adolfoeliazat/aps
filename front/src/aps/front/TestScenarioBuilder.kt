@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import aps.front.testutils.*
 import into.kommon.*
 import jquery.jq
 
@@ -295,6 +296,12 @@ class TestScenarioBuilder {
     fun section(descr: String, block: () -> Unit) {
         beginSection(descr)
         block()
+        endSection()
+    }
+
+    fun section_rem(descr: String, block: () -> Unit) {
+        beginSection(descr)
+        todo("This section is commented out")
         endSection()
     }
 

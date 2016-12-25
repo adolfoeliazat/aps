@@ -151,7 +151,7 @@ class CustomerSingleUAOrderPage(val world: World) {
         }
 
         val ebafPlus = EvaporatingButtonAndForm(
-            ebafHost, "plus", Button.Level.PRIMARY, "plus",
+            ebafHost, "plus", Button.Level.PRIMARY, fa.plus,
             formSpec = FormSpec<CustomerAddUAOrderFileRequest, AddUAOrderFileRequestBase.Response>(
                 CustomerAddUAOrderFileRequest(), world,
                 primaryButtonTitle = t("TOTE", "Добавить"),

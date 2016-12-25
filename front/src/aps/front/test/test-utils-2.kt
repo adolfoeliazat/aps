@@ -5,8 +5,13 @@ import aps.front.*
 import into.kommon.*
 import into.mochka.assertEquals
 import org.w3c.dom.Storage
+import org.w3c.dom.events.Event
+import org.w3c.dom.events.EventTarget
 import kotlin.browser.document
 import kotlin.browser.window
+import kotlin.properties.Delegates
+import kotlin.properties.Delegates.notNull
+import kotlin.reflect.KProperty
 
 object testconst {
     object url {
@@ -120,20 +125,10 @@ class TestShit {
     lateinit var bobulToken: String
     lateinit var fedorToken: String
     var nextRequestTimestampIndex = 0
+    var slow = false
 
     val timestamps by lazy {
         val list = listOf(
-//            "2016-12-02 12:24:32",
-//            "2016-12-02 12:31:15",
-//            "2016-12-02 12:42:18",
-//            "2016-12-02 13:02:25",
-//            "2016-12-05 10:15:42",
-//            "2016-12-07 14:27:03",
-//            "2016-12-10 09:30:11",
-//            "2016-12-10 10:17:23",
-//            "2016-12-13 08:21:33",
-//            "2016-12-15 16:43:05"
-
             "2015-12-18 01:18:05", "2015-12-20 02:14:05", "2015-12-22 06:45:05", "2015-12-24 20:58:05", "2015-12-27 05:45:05",
             "2015-12-28 07:19:05", "2015-12-30 12:02:05", "2016-01-02 01:21:05", "2016-01-02 22:24:05", "2016-01-03 05:18:05",
             "2016-01-06 04:37:05", "2016-01-08 18:50:05", "2016-01-11 03:56:05", "2016-01-13 15:02:05", "2016-01-15 07:50:05",
@@ -478,6 +473,37 @@ fun TestScenarioBuilder.expectPieceOfShitDownload(expected: PieceOfShitDownload,
     }
 }
 
+fun TestScenarioBuilder.pause(shit: TestShit, descr: String) {
+    acta {Promise<Unit> {resolve, _ ->
+        if (shit.slow) {
+            val paneName = "TestScenarioBuilder.pause"
+
+            val onContinue = {
+                DebugPanes.remove(paneName)
+                resolve(Unit)
+            }
+
+            DebugPanes.put(paneName, kdiv(className = css.testScenarioPauseBanner){o->
+                o- descr
+                o- Button(icon = fa.play, style = Style(marginLeft = "1rem"), onClick = onContinue)
+            })
+
+            window.addEventLis("keydown", selfy {lis-> {
+                window.removeEventListener("keydown", lis())
+                onContinue()
+            }})
+
+//            var keydownListener by notNull<(Event) -> Unit>()
+//            keydownListener = {
+//                window.removeEventListener("keydown", keydownListener)
+//                onContinue()
+//            }
+//            window.addEventListener("keydown", keydownListener)
+        } else {
+            resolve(Unit)
+        }
+    }}
+}
 
 
 

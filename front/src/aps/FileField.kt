@@ -63,7 +63,7 @@ import kotlin.browser.window
                             o- kspan{o->
                                 o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
                             }
-                            o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button("upload", icon = fa.cloudUpload, title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -73,13 +73,13 @@ import kotlin.browser.window
                             o- kspan{o->
                                 o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
                             }
-                            o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button("upload", icon = fa.cloudUpload, title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }
                     }
                     is Content.NotProvided -> {
-                        o- Button("upload" + container.fieldInstanceKeySuffix, icon = "cloud-upload", title = t("TOTE", "Выбрать..."), onClick = {
+                        o- Button("upload" + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("TOTE", "Выбрать..."), onClick = {
                             byid(inputID).click()
                         })
                     }

@@ -74,15 +74,36 @@ object css {
         margin-bottom: 1rem;
         padding-top: 1rem;
     """)
+
+    val testScenarioPauseBanner = Entry("testScenarioPauseBanner", """
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 40rem;
+        min-height: 10rem;
+        background-color: #f0f4c3;
+        border: 0.4rem solid #827717;
+        color: black;
+        font-weight: bold;
+        padding: 0.2rem;
+    """)
+}
+
+class IconClass(val className: String) {
+    override fun toString() = className
 }
 
 object fa {
-    val file = "fa fa-file"
-    val user = "fa fa-user"
-    val pencil = "fa fa-pencil"
-    val cog = "fa fa-cog"
-    val cloudDownload = "fa fa-cloud-download"
-    val search = "fa fa-search"
+    val file = IconClass("fa fa-file")
+    val user = IconClass("fa fa-user")
+    val pencil = IconClass("fa fa-pencil")
+    val cog = IconClass("fa fa-cog")
+    val cloudDownload = IconClass("fa fa-cloud-download")
+    val search = IconClass("fa fa-search")
+    val play = IconClass("fa fa-play")
+    val cloudUpload = IconClass("fa fa-cloud-upload")
+    val plus = IconClass("fa fa-plus")
+    val edit = IconClass("fa fa-edit")
 }
 
 fun jsFacing_apsCSS(): String {

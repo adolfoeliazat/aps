@@ -22,7 +22,7 @@ class Melinda<Item, Entity, Filter>(
     val entityProcedureName: String? = null,
     val filterSelectValues: Array<Filter>? = null,
     val defaultFilter: Filter,
-    val plusIcon: String = "plus",
+    val plusIcon: IconClass = fa.plus,
     val defaultOrdering: Ordering = Ordering.DESC,
     val hasSearchBox: Boolean = true,
     val hasOrderingSelect: Boolean = true,
@@ -70,7 +70,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         editFormSpec: FormSpec<Req, Res>,
         onEditFormSuccessa: (Res) -> Promise<Unit> = {async{}}
     ) {
-        editShit = EvaporatingButtonAndForm(ebafHost, name = "edit", level = Button.Level.DEFAULT, icon = "edit", formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
+        editShit = EvaporatingButtonAndForm(ebafHost, name = "edit", level = Button.Level.DEFAULT, icon = fa.edit, formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
     }
 
 

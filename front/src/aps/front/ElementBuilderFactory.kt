@@ -21,5 +21,14 @@ class ElementBuilderFactory(val tag: String) {
                         block: ((ElementBuilder) -> Unit)? = null
     ): ElementBuilder = invoke(Attrs(), style, block)
 
+    operator fun invoke(className: css.Entry,
+                        block: ((ElementBuilder) -> Unit)? = null
+    ): ElementBuilder = invoke(Attrs(className = className.name), Style(), block)
+
+    operator fun invoke(id: String,
+                        className: css.Entry,
+                        block: ((ElementBuilder) -> Unit)? = null
+    ): ElementBuilder = invoke(Attrs(id = id, className = className.name), Style(), block)
+
 }
 

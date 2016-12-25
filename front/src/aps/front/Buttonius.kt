@@ -12,7 +12,7 @@ open class Button(
     val className: String = "",
     val level: Level = Button.Level.DEFAULT,
     val title: String? = null,
-    val icon: String? = null,
+    val icon: IconClass? = null,
     val iconColor: Color? = null,
     val disabled: Boolean = false,
     val hint: String? = null,
@@ -53,7 +53,8 @@ open class Button(
                 }
             ),
             listOf(
-                icon?.let {ki(className = "fa fa-$it", color = iconColor).toReactElement()},
+//                icon?.let {ki(className = "fa fa-$it", color = iconColor).toReactElement()},
+                icon?.let {ki(className = it.className, color = iconColor).toReactElement()},
                 ifornull(icon != null && title != null) {nbsp.asReactElement()},
                 title?.asReactElement()
             )

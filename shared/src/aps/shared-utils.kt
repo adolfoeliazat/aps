@@ -10,6 +10,7 @@ package aps
 
 import aps.DebugNoise.Style.*
 import into.kommon.*
+import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
 val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environment variable")
@@ -289,6 +290,14 @@ fun String.lastIndexOfOrNull(s: String): Int? {
 fun String.chopOffFileExtension(): String =
     substring(0, lastIndexOfOrNull(".") ?: length)
 
+fun <T: Any> selfy(make: (() -> T) -> T): T {
+    val obj = object {
+        var prop by Delegates.notNull<T>()
+    }
+    val value = make(obj::prop)
+    obj.prop = value
+    return value
+}
 
 
 

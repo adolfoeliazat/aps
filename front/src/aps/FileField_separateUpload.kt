@@ -53,7 +53,7 @@ import org.w3c.xhr.XMLHttpRequest
                             xhr.send(file)
                         }
                     ), listOf())
-                    o- Button("upload", icon = "cloud-upload", title = t("TOTE", "Выбрать файл..."), onClick = {
+                    o- Button("upload", icon = fa.cloudUpload, title = t("TOTE", "Выбрать файл..."), onClick = {
                         byid(inputID).click()
                     })
                 } else {

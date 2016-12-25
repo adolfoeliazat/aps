@@ -5,13 +5,16 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun qwe_lateinit() {
-    val x = object {
-        lateinit var y: String
+fun qwe_qwe() {
+    class qwe {
+        val x get() = 123
+        init {
+            val p = this::x
+            val i: Int = p()
+            clog("iiiii", i)
+        }
     }
-
-    console.log(x.y)
-    console.log("ok")
+    qwe()
 }
 
 

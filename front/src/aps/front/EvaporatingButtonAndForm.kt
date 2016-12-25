@@ -22,7 +22,7 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
     private val host: EvaporatingButtonAndFormHost,
     val name: String,
     val level: Button.Level,
-    val icon: String,
+    val icon: IconClass,
     val formSpec: FormSpec<Req, Res>,
     val onSuccessa: (Res) -> Promise<Unit>
 ) : IButtonAndForm {

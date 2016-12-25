@@ -32,10 +32,10 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
         o.kicClick("edit-0-3")
         o.assertScreenHTML_todo("Piece of shit 0-3 is opened for editing", "31c57c9d-06e2-43ee-beef-106f1689b954")
 
-        o.section("Edit some shit without changing file") {
+        o.section_rem("Edit some shit without changing file") {
             o.act {jqbody.scrollTop(900)}
             o.kicClick("edit-0-5")
-            o.assertScreenHTML_todo("Piece of shit 0-5 is opened for editing", "51df826f-59d4-4287-a3ab-4dc90358eeea")
+            o.assertScreenHTML_todo("Piece of shit is opened for editing", "51df826f-59d4-4287-a3ab-4dc90358eeea")
 
             o.inputAppendShitToExceedLength("title-0-5", const.file.maxTitleLen)
             o.inputPrependValue("details-0-5", "Fuck. ")
@@ -52,8 +52,22 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                 }
             }
         }
+
+        o.act {shit.slow = true}
+        o.section("Cancelling editing") {
+            o.act {jqbody.scrollTop(1200)}
+            o.kicClick("edit-0-7")
+            o.assertScreenHTML_todo("Piece of shit is opened for editing", "34672ca0-c212-40a7-84e5-3cc53715041a")
+
+            o.inputSetValue("title-0-7", "Fuck you")
+            o.inputSetValue("details-0-7", "bitch")
+            o.pause(shit, "Will click Cancel...")
+            o.buttonClick("cancel-0-7")
+            o.assertScreenHTML_todo("Piece of shit is closed, nothing changed", "55b183c9-d6c7-489f-90be-4bc3c0c7550d")
+        }
     }
 
 }
+
 
 

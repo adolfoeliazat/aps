@@ -12,6 +12,8 @@ import aps.*
 import into.kommon.*
 import jquery.*
 import org.w3c.dom.*
+import org.w3c.dom.events.Event
+import org.w3c.dom.events.EventTarget
 import kotlin.browser.window
 import kotlin.dom.asList
 
@@ -252,7 +254,9 @@ fun scrollBodyToShitGradually(dy: Int = 0, bursts: Int = 8, getShit: () -> JQuer
     jqbody.scrollTop(targetTop)
 }
 
-
+fun EventTarget.addEventLis(type: String, callback: ((Event) -> Unit)?) {
+    addEventListener(type, callback)
+}
 
 
 
