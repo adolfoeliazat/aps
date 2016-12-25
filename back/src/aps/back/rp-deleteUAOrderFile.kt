@@ -14,8 +14,8 @@ import java.util.*
 
 @RemoteProcedureFactory fun deleteUAOrderFile() = anyUserProcedure(
     DeleteUAOrderFileRequest(),
-    runShit = fun(ctx, req): DeleteUAOrderFileRequest.Response {
-        val orderFileID = req.orderFileID.value.toLong()
+    runShit = fun(ctx, req): DeleteRequest.Response {
+        val orderFileID = req.id.value.toLong()
 
         UA_ORDER_FILES.let {t->
             ctx.updateShit("Deleting order file", t)
@@ -24,7 +24,7 @@ import java.util.*
                 .execute()
         }
 
-        return DeleteUAOrderFileRequest.Response()
+        return DeleteRequest.Response()
     }
 )
 

@@ -787,6 +787,12 @@ fun <T> World.setShittyResponsePage(res: ZimbabweResponse.Shitty<T>) {
     setErrorPage(res.error)
 }
 
+fun renderTicker(float: String): ToReactElementable =
+    kdiv(Attrs(className = "progressTicker"),
+         Style(float = float,
+               width = 14,
+               height = 33.6,
+               backgroundColor = Color.BLUE_GRAY_600))
 
 
 

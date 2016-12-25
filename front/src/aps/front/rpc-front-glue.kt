@@ -42,7 +42,7 @@ fun send(token: String?, req: WriterAddUAOrderFileRequest): Promise<FormResponse
 fun send(req: PingRequest): Promise<FormResponse2<GenericResponse>> =
     _send(Globus.worldMaybe?.tokenMaybe, req)
 
-fun send(req: DeleteUAOrderFileRequest): Promise<ZimbabweResponse<DeleteUAOrderFileRequest.Response>> =
+fun send(req: DeleteUAOrderFileRequest): Promise<ZimbabweResponse<DeleteRequest.Response>> =
     callZimbabwe(req, Globus.world.token)
 
 

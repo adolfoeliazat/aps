@@ -231,10 +231,12 @@ class ResolvableShit<T> {
 
 inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
 
-val numberSign: String by lazy {when (Globus.lang) {
-    Language.EN -> "#"
-    Language.UA -> "№"
-}}
+object frontSymbols {
+    val numberSign: String by lazy {when (Globus.lang) {
+        Language.EN -> "#"
+        Language.UA -> "№"
+    }}
+}
 
 fun encodeURIComponent(s: String): String = global.encodeURIComponent(s)
 

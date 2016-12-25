@@ -3,6 +3,7 @@
 package aps.front
 
 import aps.*
+import aps.front.frontSymbols.numberSign
 import into.kommon.*
 import jquery.jq
 import org.w3c.dom.HTMLIFrameElement
@@ -340,7 +341,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                             await(scrollBodyToShitGradually(dy = -5){byid(topShitID)})
                         }
 
-                        fun enterVanishedMode(): Promise<Unit> = async {
+                        fun enterVanishedMode() {
                             holder.setContent(NOTRE)
                         }
 
@@ -392,14 +393,8 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                })
                                         o- kic("delete-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.trash}", style = Style(right = "3.3rem"),
                                                onClicka = {async{
-                                                   if (await(modalConfirmDeletion(t("TOTE", "Удаляю файл ${orderFile.id}: ${orderFile.file.title}")))) {
-                                                       val res = await(send(DeleteUAOrderFileRequest()-{o->
-                                                           o.orderFileID.value = orderFile.id
-                                                       }))
-                                                       exhaustive/when (res) {
-                                                           is ZimbabweResponse.Shitty -> openErrorModal(res.error)
-                                                           is ZimbabweResponse.Hunky -> await(enterVanishedMode())
-                                                       }
+                                                   if (await(modalConfirmAndPerformDeletion(t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.file.title}")))) {
+                                                       enterVanishedMode()
                                                    }
                                                }})
                                         o- kic("edit-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.pencil}", style = Style(right = "0.3rem"),

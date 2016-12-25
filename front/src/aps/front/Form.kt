@@ -52,20 +52,6 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
             gloshit.updateForm = {update()}
             figureOutActualVisibleFieldNames()
 
-            fun formTicker(): dynamic {
-                return jsFacing_elcl(json(
-                    "render" to {
-                        Shitus.diva(json("className" to "progressTicker", "style" to json("float" to "right", "width" to 14, "height" to 33.6, "backgroundColor" to Color.BLUE_GRAY_600)))
-                    },
-                    "componentDidMount" to {
-//                        TestGlobal.shitSpins = true
-                    },
-                    "componentWillUnmount" to {
-//                        TestGlobal.shitSpins = false
-                    }
-                ))
-            }
-
             return kdiv(attrs = Attrs(className = spec.containerClassName), style = spec.containerStyle){o->
                 val form: ReactElement = Shitus.forma.apply(null, js("[]").concat(
                     jsArrayOf(
@@ -138,7 +124,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 //                                    })
 //                                },
 
-                                working && formTicker()
+                                if (working) renderTicker("right").toReactElement() else null
                     )
                 ))
                 o- form

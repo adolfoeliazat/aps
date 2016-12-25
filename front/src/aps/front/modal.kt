@@ -93,6 +93,67 @@ fun modalConfirmDeletion(msg: String): Promise<Boolean> {
     return shit.promise
 }
 
+fun modalConfirmAndPerformDeletion(msg: String): Promise<Boolean> {
+    val shit = ResolvableShit<Boolean>()
+    var result = false
+
+    val modalID = puid()
+    val timesButtonID = puid()
+    val pane = panes.put(kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
+        o- kdiv(className = "modal-dialog"){o->
+            o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${Color.RED_300}"){o->
+                o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
+                    o- Button(id = timesButtonID, title = symbols.times, className = "close", dataDismiss = "modal")
+                    o- h4(className = "modal-title"){o->
+                        o- t("TOTE", "Внимание")
+                    }
+                }
+                o- kdiv(className = "modal-body"){o->
+                    o- msg
+                }
+                o- kdiv(className = "modal-footer"){o->
+                    val tickerHolder = Placeholder()
+                    o- tickerHolder
+                    o- Button(key = "modal-yes", title = t("TOTE", "Мочи!"), level = Button.Level.DANGER) {
+                        tickerHolder.setContent(renderTicker("left"))
+//                        result = true
+//                        byid(timesButtonID).click()
+                    }
+                    o- Button(key = "modal-no", title = t("TOTE", "Я очкую"), dataDismiss = "modal") {
+                        result = false
+                        byid(timesButtonID).click()
+                    }
+                }
+            }
+        }
+    })
+
+    val jqModal = byid(modalID).asDynamic()
+    jqModal.modal(json())
+    jqModal.on("shown.bs.modal") {
+        modalShownResolvable.resolve(Unit)
+    }
+    jqModal.on("hidden.bs.modal") {
+        jqModal.data("bs.modal", null)
+        panes.remove(pane)
+        modalHiddenResolvable.resolve(Unit)
+        shit.resolve(result)
+        Unit
+    }
+
+    return shit.promise
+}
+
+//if (await(modalConfirmAndPerformDeletion(t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.file.title}")))) {
+//    val res = await(send(DeleteUAOrderFileRequest()-{o->
+//        o.id.value = orderFile.id
+//    }))
+//    exhaustive/when (res) {
+//        is ZimbabweResponse.Shitty -> openErrorModal(res.error)
+//        is ZimbabweResponse.Hunky -> await(enterVanishedMode())
+//    }
+//}
+
 fun TestScenarioBuilder.willWaitForModalShown() {
     act {
         modalShownResolvable = ResolvableShit<Unit>()

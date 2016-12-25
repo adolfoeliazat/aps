@@ -78,7 +78,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                 },
                 assertModal = {
                     o.assertScreenHTML_todo("Warning modal", "7f6f306f-23a5-430e-ab6e-4b3231989fae")
-                    o.pause(shit, only = true)
+                    o.pause(shit, only = false)
                 },
                 modalAction = {
                     o.buttonClick("modal-no")
@@ -87,7 +87,25 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                     o.assertScreenHTML_todo("Item is alive", "ef5083bd-971d-4ef9-a6e5-223ed706a05c")
                 }
             )
+
+            o.modalSequence(
+                action = {
+                    o.kicClickNoWait("delete-100001")
+                },
+                assertModal = {
+                    o.assertScreenHTML_todo("Warning modal", "8b94712e-8a32-4769-aa88-f38c61ae83c0")
+                    o.pause(shit, only = false)
+                },
+                modalAction = {
+                    o.buttonClick("modal-yes")
+                },
+                assertAfterModal = {
+                    o.assertScreenHTML_todo("Item vanished", "b06e4d3c-9bfa-4397-8d4d-76044c7bd9d6")
+                }
+            )
         }
+
+        // TODO:vgrechka Reload page and check modifications
     }
 
 }

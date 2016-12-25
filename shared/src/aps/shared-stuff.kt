@@ -468,10 +468,12 @@ abstract class EditUAOrderFileRequestBase : RequestMatumba() {
 class CustomerEditUAOrderFileRequest : EditUAOrderFileRequestBase()
 class WriterEditUAOrderFileRequest : EditUAOrderFileRequestBase()
 
-class DeleteUAOrderFileRequest : RequestMatumba() {
+abstract class DeleteRequest : RequestMatumba() {
     class Response : CommonResponseFieldsImpl()
-    val orderFileID = StringHiddenField(this, "orderFileID")
+    val id = StringHiddenField(this, "id")
 }
+
+class DeleteUAOrderFileRequest : DeleteRequest()
 
 enum class UADocumentType(override val title: String) : Titled {
     ESSAY(t("TOTE", "Реферат")),
