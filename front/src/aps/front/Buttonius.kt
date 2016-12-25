@@ -8,6 +8,7 @@ import kotlin.browser.window
 
 open class Button(
     val key: String? = null,
+    id: String? = null,
     val style: Style = Style(),
     val className: String = "",
     val level: Level = Button.Level.DEFAULT,
@@ -16,9 +17,10 @@ open class Button(
     val iconColor: Color? = null,
     val disabled: Boolean = false,
     val hint: String? = null,
+    val dataDismiss: String? = null,
     var onClicka: () -> Promise<Unit> = {async{}},
     val onClick: () -> Unit = {}
-) : Control2(Attrs()) {
+) : Control2(Attrs(id = id)) {
 
     companion object {
         val instances = mutableMapOf<String, Button>()
@@ -29,7 +31,7 @@ open class Button(
     }
 
     enum class Level(val string: String) {
-        DEFAULT("default"), PRIMARY("primary");
+        DEFAULT("default"), PRIMARY("primary"), DANGER("danger");
         override fun toString() = string
     }
 
@@ -39,23 +41,26 @@ open class Button(
     }
 
     override fun render(): ToReactElementable {
+        val jsAttrs = json(
+            "id" to elementID,
+            "className" to "btn btn-$level $className",
+            "style" to style,
+            "title" to hint,
+            "disabled" to disabled,
+            "onClick" to {e: ReactEvent ->
+                preventAndStop(e)
+                click()
+            }
+        )
+        dataDismiss?.let {jsAttrs["data-dismiss"] = it}
+
         return ToReactElementable.from(reactCreateElement(
             "button",
-            json(
-                "id" to elementID,
-                "className" to "btn btn-$level $className",
-                "style" to style,
-                "title" to hint,
-                "disabled" to disabled,
-                "onClick" to {e: ReactEvent ->
-                    preventAndStop(e)
-                    click()
-                }
-            ),
+            jsAttrs,
             listOf(
 //                icon?.let {ki(className = "fa fa-$it", color = iconColor).toReactElement()},
                 icon?.let {ki(className = it.className, color = iconColor).toReactElement()},
-                ifornull(icon != null && title != null) {nbsp.asReactElement()},
+                ifornull(icon != null && title != null) {symbols.nbsp.asReactElement()},
                 title?.asReactElement()
             )
         ))

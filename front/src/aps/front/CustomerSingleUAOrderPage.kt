@@ -20,7 +20,7 @@ class CustomerSingleUAOrderPage(val world: World) {
         val orderID = urlQuery.id.nullifyBlank() ?: return@async world.setShittyParamsPage()
         val tabID = urlQuery.tab ?: "params"
 
-        val res = await(send(world.tokenSure, LoadUAOrderRequest()-{o->
+        val res = await(send(world.token, LoadUAOrderRequest()-{o->
             o.id.value = orderID
         }))
         val order = when (res) {
@@ -48,7 +48,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                          marginLeft = "1em",
                          position = "relative",
                          top = "-0.2em"){o->
-                    o- order.state.title.replace(" ", nbsp)
+                    o- order.state.title.replace(" ", symbols.nbsp)
                 }
             }),
 
@@ -125,7 +125,7 @@ class CustomerSingleUAOrderPage(val world: World) {
         }
 
         private fun requestChunk(fromID: String?): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
-            val res = await(sendCustomerGetUAOrderFiles(world.tokenSure, ItemsRequest(CustomerFileFilter.values())-{o->
+            val res = await(sendCustomerGetUAOrderFiles(world.token, ItemsRequest(CustomerFileFilter.values())-{o->
                 o.entityID.value = order.id
                 o.filter.value = filter
                 o.ordering.value = ordering
@@ -310,7 +310,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                             o- kdiv(className = "col-md-12", marginTop = -1){o->
                                                 o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
                                                     CustomerEditUAOrderFileRequest()-{o->
-                                                        o.fieldInstanceKeySuffix = "-$chunkIndex-$fileIndex"
+                                                        o.fieldInstanceKeySuffix = "-${orderFile.id}"
                                                         o.orderFileID.value = orderFile.id
                                                         o.file.content = FileField.Content.ExistingFile(orderFile.file.name, orderFile.file.sizeBytes)
                                                         o.title.value = orderFile.file.title
@@ -338,6 +338,10 @@ class CustomerSingleUAOrderPage(val world: World) {
                             })
 
                             await(scrollBodyToShitGradually(dy = -5){byid(topShitID)})
+                        }
+
+                        fun enterVanishedMode(): Promise<Unit> = async {
+                            holder.setContent(NOTRE)
                         }
 
                         fun renderFileTitle(editing: Boolean): ElementBuilder {
@@ -375,8 +379,8 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     }
 
                                     if (!editing) {
-                                        o- kic("download-$chunkIndex-$fileIndex", className = "${css.cuntHeaderRightIcon} ${fa.cloudDownload}", style = Style(right = 30, top = 6),
-                                                   onClick = {
+                                        o- kic("download-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.cloudDownload}", style = Style(right = "6.3rem", top = "0.5rem"),
+                                               onClick = {
                                                    val iframeID = puid()
                                                    jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
                                                    val iframe = byid0(iframeID) as HTMLIFrameElement
@@ -384,9 +388,21 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                    iframe.onload = {
                                                        iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
                                                    }
-                                                   iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.token}"
+                                                   iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.tokenMaybe}"
                                                })
-                                        o- kic("edit-$chunkIndex-$fileIndex", className = "${css.cuntHeaderRightIcon} ${fa.pencil}",
+                                        o- kic("delete-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.trash}", style = Style(right = "3.3rem"),
+                                               onClicka = {async{
+                                                   if (await(modalConfirmDeletion(t("TOTE", "Удаляю файл ${orderFile.id}: ${orderFile.file.title}")))) {
+                                                       val res = await(send(DeleteUAOrderFileRequest()-{o->
+                                                           o.orderFileID.value = orderFile.id
+                                                       }))
+                                                       exhaustive/when (res) {
+                                                           is ZimbabweResponse.Shitty -> openErrorModal(res.error)
+                                                           is ZimbabweResponse.Hunky -> await(enterVanishedMode())
+                                                       }
+                                                   }
+                                               }})
+                                        o- kic("edit-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.pencil}", style = Style(right = "0.3rem"),
                                                onClicka = {
                                                    enterEditMode()
                                                })

@@ -28,10 +28,10 @@ class SignInPage(val ui: World) {
 
                     onSuccessa = {res ->
                         async {
-                            ui.maybeUser = res.user
+                            ui.userMaybe = res.user
 //                        ui.startLiveStatusPolling()
-                            ui.token = res.token
-                            typedStorageLocal.token = ui.token
+                            ui.tokenMaybe = res.token
+                            typedStorageLocal.token = ui.tokenMaybe
 //                        hrss.storageLocal.setItem("token", token!!)
 
                             await(ui.pushNavigate(when (res.user.state) {

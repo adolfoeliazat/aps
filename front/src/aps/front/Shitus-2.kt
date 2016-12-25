@@ -18,7 +18,7 @@ var revealStackCalledTimes = 0
 val Throwable.stack: String get() = this.asDynamic().stack
 
 fun revealRawStack(stack: String) {
-    DebugPanes.put("revealStack", oldShitAsToReactElementable(Shitus.updatableElement(json(), ctor@{ update: dynamic ->
+    debugPanes.put("revealStack", oldShitAsToReactElementable(Shitus.updatableElement(json(), ctor@{update: dynamic ->
         return@ctor {
             Shitus.diva(json("noStateContributions" to true, "style" to json(
                 "position" to "fixed",
@@ -49,11 +49,11 @@ fun revealStack(exception: Throwable, muteConsole: Boolean = false, skipAllForei
         console.error(errorToLog)
     }
 
-    if (DebugPanes.contains("revealStack")) {
+    if (debugPanes.contains("revealStack")) {
         return console.warn("Some other stack is already revealed, so not showing") /ignora
     }
 
-    DebugPanes.put("revealStack", oldShitAsToReactElementable(Shitus.updatableElement(json(), ctor@{ update: dynamic ->
+    debugPanes.put("revealStack", oldShitAsToReactElementable(Shitus.updatableElement(json(), ctor@{update: dynamic ->
         return@ctor {
             Shitus.diva(json("noStateContributions" to true, "style" to json(
                         "position" to "fixed",
@@ -154,13 +154,13 @@ class RenderStackTraceContext(val marginRight: Int?, val skipAllForeignLines: Bo
                 val suffix = m.groupValues[3]
                 val link = OpenSourceCodeLink(json("where" to json("\$sourceLocation" to m.groupValues[2])))
                 lineEls += kdiv(display="flex"){o->
-                    o- ("" + prefix.replace(Regex("\\s"), nbsp))
+                    o- ("" + prefix.replace(Regex("\\s"), symbols.nbsp))
                     o- link
-                    o- ("" + suffix.replace(Regex("\\s"), nbsp))
+                    o- ("" + suffix.replace(Regex("\\s"), symbols.nbsp))
                 }
             } else {
                 lineEls += kdiv {o->
-                    o- ("" + line.replace(Regex("\\s"), nbsp))
+                    o- ("" + line.replace(Regex("\\s"), symbols.nbsp))
                 }
             }
         }

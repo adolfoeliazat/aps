@@ -27,7 +27,7 @@ fun button(build: ButtonBuilder.() -> Unit): Control {
                 "title" to cis.hint),
 
                 if (cis.icon != null) Shitus.glyph(cis.icon, glyphAttrs) else null,
-                if (cis.icon != null && cis.title != null) Shitus.spana(js("({})"), nbsp) else null,
+                if (cis.icon != null && cis.title != null) Shitus.spana(js("({})"), symbols.nbsp) else null,
                 Shitus.spana(js("({})"), cis.title)
             )
         }

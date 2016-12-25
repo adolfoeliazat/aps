@@ -80,7 +80,7 @@ fun igniteShit(): Promise<Unit> {"__async"
             e as KeyboardEvent
             if (e.code == "Backquote") {
                 preventAndStop(e)
-                Globus.world?.footer?.openBurger()
+                Globus.worldMaybe?.footer?.openBurger()
             }
         })
 

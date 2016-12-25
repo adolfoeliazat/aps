@@ -23,6 +23,7 @@ data class Attrs(
     val noStateContributions: Boolean? = null,
     val className: String? = null,
     val href: String? = null,
+    val tabIndex: Int? = null,
     val onClick: ((MouseEvent) -> Unit)? = null,
     val onClicka: ((MouseEvent) -> Promise<Unit>)? = null,
     val onMouseEnter: ((MouseEvent) -> Unit)? = null,
@@ -202,7 +203,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
 
                 effectiveShame?.let {TestGlobal.shameToControl.remove(it)}
 
-                errorStickerID?.let {DebugPanes.remove(it)}
+                errorStickerID?.let {debugPanes.remove(it)}
                 errorStickerTether?.destroy()
             },
 
@@ -334,7 +335,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
 
         val errorStickerID = puid(); this.errorStickerID = errorStickerID
 
-        DebugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
+        debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
             "id" to errorStickerID,
             "style" to json(
                 "width" to 10,

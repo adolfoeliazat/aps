@@ -29,7 +29,9 @@ object Globus {
     var rootRedisLogMessageID: String? = null
     val lang: Language get() = Language.valueOf(ExternalGlobus.LANG)
     val mode by lazy {Mode.valueOf(ExternalGlobus.MODE)}
-    var world: World? = null
+    var worldMaybe: World? = null
+
+    val world get() = worldMaybe!!
 
     val realStorageLocal = object:StorageLocal {
         override fun clear() = localStorage.clear()

@@ -56,10 +56,9 @@ Fancy-Blinking Links
 class World(val name: String) {
     lateinit var rootContent: ReactElement
     lateinit var currentPage: Page
-    var token: String? = null
+    var tokenMaybe: String? = null
     var signedUpOK: Boolean = false
-    var maybeUser: UserRTO? = null
-    val user: UserRTO get() = maybeUser.let {it ?: bitch("I want a fucking user")}
+    var userMaybe: UserRTO? = null
     lateinit var urlQuery: Map<String, String>
     lateinit var updateNavbar: () -> Unit
     var prevPathname: String? = null
@@ -72,6 +71,9 @@ class World(val name: String) {
     lateinit var rootElement: ReactElement
     lateinit var topNavbarElement: ReactElement
     lateinit var footer: DynamicFooter
+
+    val token: String get() = tokenMaybe!!
+    val user: UserRTO get() = userMaybe.let {it ?: bitch("I want a fucking user")}
 
     fun boot(): Promise<Unit> {"__async"
         hrss.browserOld.ui = this
@@ -91,7 +93,7 @@ class World(val name: String) {
 //        }
         __await<dynamic>(bootKillme())
 
-        Globus.world = this
+        Globus.worldMaybe = this
         send(PingRequest())
 
         return __asyncResult(Unit)
@@ -106,11 +108,11 @@ class World(val name: String) {
     }
 
     fun getUser(): UserRTO? {
-        return maybeUser
+        return userMaybe
     }
 
     fun setUser(x: dynamic) {
-        maybeUser = x
+        userMaybe = x
     }
 
     fun loadSignInPage() {
@@ -120,8 +122,8 @@ class World(val name: String) {
     fun signOut() {
         typedStorageLocal.clear()
 //        hrss.storageLocal.clear()
-        token = null
-        maybeUser = null
+        tokenMaybe = null
+        userMaybe = null
         replaceNavigate("/")
     }
 
@@ -136,18 +138,18 @@ class World(val name: String) {
 
     fun bootKillme(): Promise<Unit> {"__async"
         Shitus.beginTrain(json("name" to "boot()")); try {
-            token = typedStorageLocal.token
+            tokenMaybe = typedStorageLocal.token
 //            token = hrss.storageLocal.getItem("token")
-            if (token != null) {
+            if (tokenMaybe != null) {
                 try {
-                    val res = __await(SignInWithTokenRequest.send(token!!))
-                    maybeUser = res.user
+                    val res = __await(SignInWithTokenRequest.send(tokenMaybe!!))
+                    userMaybe = res.user
 //                        ui.startLiveStatusPolling()
                 } catch (e: Throwable) {
                     // Pretend no one was signed in.
                     // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
                     console.warn("Failed to private_getUserInfo", e)
-                    token = undefined
+                    tokenMaybe = undefined
                     typedStorageLocal.clear()
 //                    hrss.storageLocal.clear()
                 } finally {
@@ -219,7 +221,7 @@ class World(val name: String) {
         val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
         noise.clog(window.location.href)
 
-        val user = maybeUser
+        val user = userMaybe
         val firstRun = loadPageForURLFirstRun
         loadPageForURLFirstRun = false
         urlQuery = parseQueryString(window.location.href)
@@ -376,7 +378,6 @@ class World(val name: String) {
 //        DOMReact.render(rootElement, Shitus.byid0("root"))
 //    }
 
-    val tokenSure: String get() = token!!
 }
 
 class Page(

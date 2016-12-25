@@ -18,7 +18,7 @@ var debugHideMailbox: () -> Unit = {bitch("Debug mailbox is not initialized")}
 fun initDebugMailbox() {
     val PANE_NAME = "initDebugFunctions-mailbox"
 
-    DebugPanes.put(PANE_NAME, byid(ELID_UNDER_FOOTER), oldShitAsToReactElementable(Shitus.updatableElement(json(
+    debugPanes.put(PANE_NAME, byid(ELID_UNDER_FOOTER), oldShitAsToReactElementable(Shitus.updatableElement(json(
         "renderCtor" to renderCtor@{update: dynamic ->
         var content = null
 
@@ -59,7 +59,7 @@ fun initDebugMailbox() {
             update()
         }}
 
-        debugHideMailbox = {DebugPanes.remove(PANE_NAME)}
+        debugHideMailbox = {debugPanes.remove(PANE_NAME)}
 
         return@renderCtor { Shitus.diva(json(), content) }
     }))))

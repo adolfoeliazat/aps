@@ -233,7 +233,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                 TestGlobal.shameToControl.remove(me.effectiveShame)
             }
 
-            shit.errorStickerID?.let {DebugPanes.remove(it)}
+            shit.errorStickerID?.let {debugPanes.remove(it)}
             shit.errorStickerTether?.destroy()
         }
     ))
@@ -255,7 +255,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         val errorStickerID = puid()
         shit.errorStickerID = errorStickerID
 
-        DebugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
+        debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
             "id" to errorStickerID,
             "style" to json(
                 "width" to 10,

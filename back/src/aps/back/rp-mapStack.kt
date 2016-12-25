@@ -84,7 +84,7 @@ val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
                 } catch (e: Exception) {}
 
                 val result = "$prefix ($shortPath:${orig.lineNumber}:${orig.columnPosition})" +
-                             nbsp.repeat(5) + marginNotes.joinToString(nbsp.repeat(3))
+                             symbols.nbsp.repeat(5) + marginNotes.joinToString(symbols.nbsp.repeat(3))
                 resultLines.add(result)
             }
             catch (e: Skip) {

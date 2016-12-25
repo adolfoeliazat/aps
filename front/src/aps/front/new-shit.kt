@@ -91,6 +91,7 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
                     "style" to style.toReactStyle()
                 )
                 attrs.className?.let {jsAttrs["className"] = it}
+                attrs.tabIndex?.let {jsAttrs["tabIndex"] = it}
                 attrs.href?.let {jsAttrs["href"] = it}
                 attrs.onClick?.let {jsAttrs["onClick"] = it}
 
@@ -152,6 +153,8 @@ data class Style(
     var opacity: Any? = null,
     var float: String? = null,
     var borderRadius: Any? = null,
+    var borderTopLeftRadius: Any? = null,
+    var borderTopRightRadius: Any? = null,
     var zIndex: Any? = null,
     var alignItems: String? = null
 ) {
@@ -201,6 +204,8 @@ data class Style(
             opacity?.let {o.opacity = it}
             float?.let {o.float = it}
             borderRadius?.let {o.borderRadius = it}
+            borderTopLeftRadius?.let {o.borderTopLeftRadius = it}
+            borderTopRightRadius?.let {o.borderTopRightRadius = it}
             zIndex?.let {o.zIndex = it}
             alignItems?.let {o.alignItems = it}
         }
@@ -467,7 +472,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
 
             me.effectiveShame?.let {TestGlobal.shameToControl.remove(it)}
 
-            shit.errorStickerID?.let {DebugPanes.remove(it)}
+            shit.errorStickerID?.let {debugPanes.remove(it)}
             shit.errorStickerTether?.destroy()
         }
     ))
@@ -489,7 +494,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
         val errorStickerID = puid()
         shit.errorStickerID = errorStickerID
 
-        DebugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
+        debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
             "id" to errorStickerID,
             "style" to json(
                 "width" to 10,

@@ -6,19 +6,23 @@
 
 package aps.front
 
+import aps.*
 import jquery.JQuery
 import jquery.jq
 import kotlin.browser.document
 
-object DebugPanes {
+val panes = Panes("pane-")
+val debugPanes = Panes("debugPane-")
+
+class Panes(val idPrefix: String) {
     val names = mutableSetOf<String>()
 
     fun put(name: String, parent: JQuery = jq(document.body!!), tre: ToReactElementable) {
         remove(name)
 
-        val id = "debugPanes-${name}"
+        val id = "$idPrefix$name"
         val container = byid0(id) ?: run {
-            parent.append("<div id='${id}'></div>")
+            parent.append("<div id='$id'></div>")
             byid0ForSure(id)
         }
 
@@ -31,8 +35,14 @@ object DebugPanes {
         put(name, jq(document.body!!), tre)
     }
 
+    fun put(tre: ToReactElementable): String {
+        val name = puid()
+        put(name, tre)
+        return name
+    }
+
     fun remove(name: String) {
-        val id = "debugPanes-${name}"
+        val id = "$idPrefix$name"
         val container = byid0(id)
         if (container != null) {
             DOMReact.unmountComponentAtNode(container)
@@ -46,4 +56,5 @@ object DebugPanes {
 
     fun contains(name: String) = names.contains(name)
 }
+
 

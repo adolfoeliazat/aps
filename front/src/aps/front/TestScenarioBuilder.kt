@@ -145,7 +145,7 @@ class TestScenarioBuilder {
                     expected = tidyExpected,
                     actual = tidyActual,
                     actualTestShit = rawActual.trim(),
-                    actualPaste = threeQuotes + rawActual.trim() + threeQuotes))
+                    actualPaste = symbols.threeQuotes + rawActual.trim() + symbols.threeQuotes))
             }
         }}
     }
@@ -300,6 +300,7 @@ class TestScenarioBuilder {
     }
 
     fun section_rem(descr: String, block: () -> Unit) {
+        TestGlobal.hasScenarioRems = true
         beginSection(descr)
         todo("This section is commented out")
         endSection()

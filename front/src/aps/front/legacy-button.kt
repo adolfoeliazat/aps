@@ -36,7 +36,7 @@ fun jsFacing_button(def: dynamic, key: String? = null): dynamic {
                 "title" to if (hint != null) textMeat(hint) else null)),
 
                 if (icon != null) Shitus.glyph(icon, glyphAttrs) else null,
-                if (icon != null && title != null) Shitus.spana(json(), nbsp) else null,
+                if (icon != null && title != null) Shitus.spana(json(), symbols.nbsp) else null,
                 Shitus.spana(json(), title)
             )
         },

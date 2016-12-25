@@ -47,6 +47,12 @@ fun TestScenarioBuilder.kicClick(key: String) {
     }
 }
 
+fun TestScenarioBuilder.kicClickNoWait(key: String) {
+    act("Clicking kic `$key`") {
+        kic.instance(key).click()
+    }
+}
+
 
 
 

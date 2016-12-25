@@ -130,8 +130,8 @@ fun initEffects() {
     })
 
     global.requestAnimationFrame({
-        DebugPanes.remove("initEffects")
-        DebugPanes.put("initEffects", oldShitAsToReactElementable(effects.element))
+        debugPanes.remove("initEffects")
+        debugPanes.put("initEffects", oldShitAsToReactElementable(effects.element))
     })
 }
 

@@ -112,7 +112,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     fun ignita(): Promise<Unit> {"__async"
         if (entityProcedureName != null) {
             val entityReq = EntityRequest()
-            val res = __await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.token))
+            val res = __await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.tokenMaybe))
             entity = when (res) {
                 is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(Page(
                     header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
@@ -214,7 +214,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         val itemsReq = ItemsRequest(filterSelectValues!!)
         filterSelect?.let {itemsReq.filter.value = it.value}
         orderingSelect?.let {itemsReq.ordering.value = it.value}
-        val res = __await(callZimbabwe<ItemsResponse<Item>>(procedureName, itemsReq, ui.token))
+        val res = __await(callZimbabwe<ItemsResponse<Item>>(procedureName, itemsReq, ui.tokenMaybe))
         val itemsRes = when (res) {
             is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(Page(
                 header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),

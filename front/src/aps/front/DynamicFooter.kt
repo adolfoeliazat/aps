@@ -11,7 +11,7 @@ class DynamicFooter(val world: World) : Control2(Attrs()) {
     val versions = Control2.from {kdiv{o->
         o- "Frontend: ${Globus.version}"
         backendVersion?.let {
-            o- (nbsp+nbsp+nbsp)
+            o- (symbols.nbsp+symbols.nbsp+symbols.nbsp)
             o- "Backend: $it"
         }
     }}

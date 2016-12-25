@@ -14,7 +14,7 @@ class TestUACustomer_DownloadForbiddenFile : StepBasedTestScenario() {
                 file_id = (select id from files where name = 'crazy monster boobs.rtf') and
                 user_id = (select id from users where first_name = 'Иво')
         """)}
-        o.willWaitForModal()
+        o.willWaitForModalShown()
         o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = true, sha1 = "pizda2")) {
             o.kicClick("download-1")
         }

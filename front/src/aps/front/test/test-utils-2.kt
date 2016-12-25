@@ -122,10 +122,12 @@ inline fun fiddlingWithGlobals(block: () -> Unit) {
 }
 
 class TestShit {
+    enum class Pauses {NONE, ALL, ONLY}
+
     lateinit var bobulToken: String
     lateinit var fedorToken: String
     var nextRequestTimestampIndex = 0
-    var slow = false
+    var pauses = Pauses.NONE
 
     val timestamps by lazy {
         val list = listOf(
@@ -473,17 +475,23 @@ fun TestScenarioBuilder.expectPieceOfShitDownload(expected: PieceOfShitDownload,
     }
 }
 
-fun TestScenarioBuilder.pause(shit: TestShit, descr: String) {
+fun TestScenarioBuilder.pause(shit: TestShit, descr: String = "Cool shit, huh?..", only: Boolean = false) {
     acta {Promise<Unit> {resolve, _ ->
-        if (shit.slow) {
+        val shouldPause = when (shit.pauses) {
+            TestShit.Pauses.NONE -> false
+            TestShit.Pauses.ALL -> true
+            TestShit.Pauses.ONLY -> only
+        }
+
+        if (shouldPause) {
             val paneName = "TestScenarioBuilder.pause"
 
             val onContinue = {
-                DebugPanes.remove(paneName)
+                debugPanes.remove(paneName)
                 resolve(Unit)
             }
 
-            DebugPanes.put(paneName, kdiv(className = css.testScenarioPauseBanner){o->
+            debugPanes.put(paneName, kdiv(className = css.testScenarioPauseBanner){o->
                 o- descr
                 o- Button(icon = fa.play, style = Style(marginLeft = "1rem"), onClick = onContinue)
             })
@@ -492,19 +500,11 @@ fun TestScenarioBuilder.pause(shit: TestShit, descr: String) {
                 window.removeEventListener("keydown", lis())
                 onContinue()
             }})
-
-//            var keydownListener by notNull<(Event) -> Unit>()
-//            keydownListener = {
-//                window.removeEventListener("keydown", keydownListener)
-//                onContinue()
-//            }
-//            window.addEventListener("keydown", keydownListener)
         } else {
             resolve(Unit)
         }
     }}
 }
-
 
 
 

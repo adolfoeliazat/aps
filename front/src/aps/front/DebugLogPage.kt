@@ -171,7 +171,7 @@ class DebugLogPage(val world: World) {
 
     fun renderInTitle(o: ElementBuilder, msg: RedisLogMessage) {
         msg.endMillis?.let {
-            o- "${nbsp+nbsp+nbsp}${it - msg.beginMillis}ms"
+            o- "${symbols.nbsp+symbols.nbsp+symbols.nbsp}${it - msg.beginMillis}ms"
         }
     }
 

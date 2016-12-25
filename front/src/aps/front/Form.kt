@@ -20,6 +20,7 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val errorBannerStyle: dynamic = js("undefined"),
     val primaryButtonTitle: String = t("Post", "Запостить"),
     val cancelButtonTitle: String? = null,
+//    val deleteButtonTitle: String? = null,
     val dontShameButtons: Boolean = false,
 
     val onCancel: FormMatumba<Req, Res>.() -> Unit = {},
@@ -28,6 +29,7 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val onErrora: FormMatumba<Req, Res>.(res: FormResponse.Shitty) -> Promise<Unit> = {"__async"; __asyncResult(Unit)},
     val onSuccess: FormMatumba<Req, Res>.(res: Res) -> Unit = {},
     val onSuccessa: FormMatumba<Req, Res>.(res: Res) -> Promise<Unit> = {"__async"; __asyncResult(Unit)},
+//    val onDeleta: FormMatumba<Req, Res>.() -> Promise<Unit> = {async{}},
     val getInvisibleFieldNames: FormMatumba<Req, Res>.() -> Iterable<String> = {listOf()}
 )
 
@@ -88,7 +90,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                                            working = true
                                                            update()
 
-                                                           val res: FormResponse = __await(callMatumba(spec.req, spec.ui.token))
+                                                           val res: FormResponse = __await(callMatumba(spec.req, spec.ui.tokenMaybe))
 
                                                            when (res) {
                                                                is FormResponse.Shitty -> {
@@ -129,6 +131,12 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                                            (spec.onCancel)()
                                                            __await((spec.onCancela)())
                                                        }), key = "cancel" + req.fieldInstanceKeySuffix) else undefined,
+
+//                                spec.deleteButtonTitle?.let {
+//                                    Button(key = "delete" + req.fieldInstanceKeySuffix, title = it, onClicka = {
+//                                        (spec.onDeleta)()
+//                                    })
+//                                },
 
                                 working && formTicker()
                     )

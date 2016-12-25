@@ -329,7 +329,7 @@ object art {
 
         val stack = null
         assertionErrorPane.set(json(
-            "message" to (message ?: "No fucking message") + mdash + hrss.currentTestScenario!!.name,
+            "message" to (message ?: "No fucking message") + symbols.mdash + hrss.currentTestScenario!!.name,
             "stack" to stack,
             "detailsUI" to kdiv(backgroundColor = WHITE){it-detailsUI}.toReactElement(),
             "scrollThere" to true))
@@ -594,7 +594,7 @@ object art {
         hrss.onUnhandledRejection = ::shit
         global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)
 
-        DebugPanes.put("initDebugFunctions-shit", oldShitAsToReactElementable(Shitus.updatableElement(json(), paneCtor@{ updateShit: dynamic ->
+        debugPanes.put("initDebugFunctions-shit", oldShitAsToReactElementable(Shitus.updatableElement(json(), paneCtor@{updateShit: dynamic ->
             var shitVisible = false
             var shitToRender: dynamic= null
 
@@ -1203,7 +1203,7 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 }
 
 fun openTestListPane() {
-    DebugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv{o->
+    debugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv{o->
         o- Style(backgroundColor = BROWN_500, color = WHITE,
                  marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
 
@@ -1250,7 +1250,7 @@ fun openTestPassedPane() {
 }
 
 fun openShitPassedPane(title: String, details: ElementBuilder) {
-    DebugPanes.put("openTestPassedPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(noStateContributions = true) {o ->
+    debugPanes.put("openTestPassedPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(noStateContributions = true) {o ->
         o - Style(backgroundColor = GREEN_700, color = WHITE,
                   marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
 
@@ -1270,10 +1270,10 @@ fun openShitPassedPane(title: String, details: ElementBuilder) {
     if (!Globus.realTypedStorageLocal.dontScrollOnTestPassed)
         art.scrollRevealing(ELID_UNDER_FOOTER)
 
-    val todoNotice =
-        if (TestGlobal.hasScenarioTODOs) "(with TODOs) "
-        else ""
-    clog("----- We good $todoNotice-----")
+    var notice = ""
+    if (TestGlobal.hasScenarioTODOs) notice += " (with TODOs)"
+    if (TestGlobal.hasScenarioRems) notice += " (with rems)"
+    clog("----- We good $notice-----")
 }
 
 

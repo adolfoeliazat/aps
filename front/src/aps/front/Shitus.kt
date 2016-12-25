@@ -206,7 +206,7 @@ object Shitus {
     val elementIDToControls: dynamic = json()
 
     val hideStackRevelation: dynamic = {
-        DebugPanes.remove("revealStack")
+        debugPanes.remove("revealStack")
         revealStackCalledTimes = 0
     }
 

@@ -136,7 +136,7 @@ class AdminUsersPage(val ui: World) {
 
 
                 fun refreshRecord(): Promise<Unit> {"__async"
-                    val res = __await(GetUserRequest.send(ui.token!!, user.id))
+                    val res = __await(GetUserRequest.send(ui.tokenMaybe!!, user.id))
                     return ignora/when (res) {
                         is ZimbabweResponse.Shitty -> setShit(
                             headingActionItems = listOf(),

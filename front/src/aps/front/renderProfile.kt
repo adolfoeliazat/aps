@@ -20,7 +20,7 @@ fun userKindIcon(kind: UserKind): ReactElement {
 }
 
 fun renderProfile(ui: World, user: UserRTO): ReactElement {
-    val adminLooks = ui.maybeUser!!.kind == UserKind.ADMIN
+    val adminLooks = ui.userMaybe!!.kind == UserKind.ADMIN
 
     return Shitus.diva(json("controlTypeName" to "renderProfile", "tame" to "profile"),
         Shitus.diva(json("className" to "row"),

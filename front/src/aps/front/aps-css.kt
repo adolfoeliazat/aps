@@ -86,6 +86,7 @@ object css {
         color: black;
         font-weight: bold;
         padding: 0.2rem;
+        z-index: 100000;
     """)
 }
 
@@ -104,6 +105,7 @@ object fa {
     val cloudUpload = IconClass("fa fa-cloud-upload")
     val plus = IconClass("fa fa-plus")
     val edit = IconClass("fa fa-edit")
+    val trash = IconClass("fa fa-trash")
 }
 
 fun jsFacing_apsCSS(): String {

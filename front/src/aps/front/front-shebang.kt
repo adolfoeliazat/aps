@@ -21,6 +21,7 @@ object TestGlobal {
     var testShitBeingAssertedID: String? = null
     var lastTestHref: String? = null
     var hasScenarioTODOs = false
+    var hasScenarioRems = false
     var lastTest: TestScenario? = null
 }
 
@@ -60,7 +61,7 @@ fun userKindTitle(kind: UserKind) = when (kind) {
     UserKind.ADMIN -> t("TOTE", "Админ")
 }
 
-fun requiredToken(ui: World): String = ui.token ?: bitch("I want a token")
+fun requiredToken(ui: World): String = ui.tokenMaybe ?: bitch("I want a token")
 
 fun oldShitAsToReactElementable(someShit: Any?): ToReactElementable =
     object:ToReactElementable {
@@ -121,7 +122,7 @@ fun preludeWithOrangeTriangle(def: dynamic): dynamic {
 
     return Shitus.diva(json("controlTypeName" to "preludeWithOrangeTriangle", "tame" to "preludeWithOrangeTriangle", "style" to style),
         Shitus.ia(json("className" to "fa fa-exclamation-triangle", "style" to json("color" to Color.AMBER_900.toString()))),
-        nbsp, nbsp,
+        symbols.nbsp, symbols.nbsp,
         Shitus.spancTitle(json("title" to title)))
 }
 
@@ -137,7 +138,7 @@ fun preludeWithGreenCheck(def: dynamic): ReactElement {
 
     return Shitus.diva(json("controlTypeName" to "preludeWithGreenCheck", "tame" to "preludeWithGreenCheck", "style" to style),
         Shitus.ia(json("className" to "fa fa-check", "style" to json("color" to Color.LIGHT_GREEN_700.toString()))),
-        nbsp, nbsp,
+        symbols.nbsp, symbols.nbsp,
         Shitus.spancTitle(json("title" to title)))
 }
 
@@ -203,7 +204,7 @@ fun preludeWithHourglass(def: dynamic): dynamic {
 
         return Shitus.diva(json("tame" to "preludeWithHourglass", "style" to style),
             Shitus.glyph("hourglass-half", json("style" to json("color" to hourglassColor))),
-            nbsp, nbsp, content)
+            symbols.nbsp, symbols.nbsp, content)
 }
 
 fun hr(): ReactElement {
