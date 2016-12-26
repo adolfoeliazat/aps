@@ -429,7 +429,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
 
     fun addEventListeners() {
         fun onClick(e: ReactEvent) {
-            if (MODE == "debug" && e.ctrlKey) {
+            if (Globus.mode == Mode.DEBUG && e.ctrlKey) {
                 if (e.shiftKey) {
                     if (ignoreDebugCtrlShiftClick) return
 

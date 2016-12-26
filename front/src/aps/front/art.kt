@@ -1215,13 +1215,13 @@ fun openTestListPane() {
             o- Style(backgroundColor = WHITE, color = BLACK_BOOT,
                      fontWeight = "normal", textAlign = "left", padding = 5)
 
-            fun testLink(testName: String) = link(
+            fun testLink(testName: String, opts: TestRunnerOptions) = link(
                 title = testName,
                 onClick = {
-                    window.location.href = testNameToHref(testName)
+                    window.location.href = testNameToHref(testName, opts)
                 })
 
-            o- testLink(TestGlobal.lastTest!!.name)
+            o- testLink(TestGlobal.lastTest.name, TestGlobal.lastTestOpts)
 
             o- kdiv(marginTop = "1em"){o->
                 o- kdiv(fontWeight = "bold"){o->
@@ -1229,7 +1229,7 @@ fun openTestListPane() {
                 }
                 for (x in TestSuite_Customer_Shebang().scenarios) {
                     o- kspan(marginRight = "1em"){o->
-                        o- testLink(x.name)
+                        o- testLink(x.name, TestRunnerOptions())
                     }
                     o- " "
                 }

@@ -45,5 +45,12 @@ object const {
     }
 
     val pageHeaderHeight = 50
+
+    object urlq {
+        object test {
+            val test = "test"
+            val stopOnAssertions = "stopOnAssertions"
+        }
+    }
 }
 

@@ -587,12 +587,6 @@ fun simpleButton(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement
     fun stopPropagation()
 }
 
-//fun puid(): String {
-//    return jshit.utils.puid()
-//}
-
-@native val MODE: String = noImpl
-
 fun preventAndStop(e: ReactEvent) {
     e.preventDefault()
     e.stopPropagation()

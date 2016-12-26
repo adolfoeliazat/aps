@@ -508,6 +508,18 @@ fun TestScenarioBuilder.pause(shit: TestShit, descr: String = "Cool shit, huh?..
     }}
 }
 
+fun TestScenarioBuilder.requestSequence(action: () -> Unit, beforeResponse: () -> Unit, afterResponse: () -> Unit) {
+    val o = this
+    o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
+    action()
+    beforeResponse()
+
+    o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
+    o.act {TestGlobal.requestPause!!.resolve(Unit)}
+    o.await {TestGlobal.responseArrived!!.promise.orTimeout(testconst.defaultResponseTimeout)}
+    afterResponse()
+}
+
 
 
 

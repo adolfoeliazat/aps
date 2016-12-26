@@ -69,8 +69,6 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
         o.buttonClick("loadMore")
         o.assertScreenHTML_todo("More items", "ab5858fe-82b0-4bbc-abce-eb8c2645c2aa")
 
-//        val stack = js("Error('pizda').stack")
-//        dwarnStriking("sssssssss", stack)
         o.instructions.add(TestInstruction.Step.ActionStep("pizda"))
         o.section("Delete some shit") {
             o.act {jqbody.scrollTop(2500)}
@@ -101,21 +99,16 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                 },
                 modalAction = {
                     o.acta {send(ImposeNextRequestErrorRequest())}
-                    o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
-                    o.buttonClick("modal-yes")
-                    o.assertScreenHTML_todo("Shit blinks", "4b6e09ea-f0a7-4bfb-a4d7-e1785889cc9c")
-
-                    o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
-                    o.act {TestGlobal.requestPause!!.resolve(Unit)}
-                    o.await {TestGlobal.responseArrived!!.promise.orTimeout(testconst.defaultResponseTimeout)}
-
-                    o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
-                    o.buttonClick("modal-yes")
-                    o.assertScreenHTML_todo("Shit blinks", "b970e0b2-ef64-4aa5-a96a-f901b7a43111")
-
-                    o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
-                    o.act {TestGlobal.requestPause!!.resolve(Unit)}
-                    o.await {TestGlobal.responseArrived!!.promise.orTimeout(testconst.defaultResponseTimeout)}
+                    o.requestSequence(
+                        action = {o.buttonClick("modal-yes")},
+                        beforeResponse = {o.assertScreenHTML_todo("Shit blinks", "4b6e09ea-f0a7-4bfb-a4d7-e1785889cc9c")},
+                        afterResponse = {o.assertScreenHTML_todo("Got error", "5a0cdafa-37b0-45dc-86fb-b4645636a129")}
+                    )
+                    o.requestSequence(
+                        action = {o.buttonClick("modal-yes")},
+                        beforeResponse = {o.assertScreenHTML_todo("Shit blinks", "ddfede30-0595-43cb-a460-9c07d75a7920")},
+                        afterResponse = {o.assertScreenHTML_todo("lalala", "fed7570a-bdda-42f9-b1d3-756b68451f43")}
+                    )
                 },
                 assertAfterModal = {
                     o.assertScreenHTML_todo("Item vanished", "b06e4d3c-9bfa-4397-8d4d-76044c7bd9d6")

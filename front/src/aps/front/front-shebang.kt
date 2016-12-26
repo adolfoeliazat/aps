@@ -12,6 +12,8 @@ import aps.*
 import aps.Color.*
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.properties.Delegates
+import kotlin.properties.Delegates.notNull
 
 object TestGlobal {
     val shameToControl = mutableMapOf<String, dynamic>()
@@ -19,12 +21,22 @@ object TestGlobal {
     lateinit var loadPageForURL_href: String
     val topNavbarLinks = mutableMapOf<String, dynamic>() // TODO:vgrechka Rename to nameToTopNavbarLink
     var testShitBeingAssertedID: String? = null
-    var lastTestHref: String? = null
     var hasScenarioTODOs = false
     var hasScenarioRems = false
-    var lastTest: TestScenario? = null
+    var lastTestMaybe: TestScenario? = null
+    var lastTestOptsMaybe: TestRunnerOptions? = null
     var requestPause: ResolvableShit<Unit>? = null
     var responseArrived: ResolvableShit<Unit>? = null
+
+    val lastTest get() = lastTestMaybe!!
+    val lastTestOpts get() = lastTestOptsMaybe!!
+
+    val lastTestHrefMaybe
+        get() = lastTestMaybe?.let {
+            testNameToHref(it.name, lastTestOpts)
+        }
+
+    val lastTestHref get() = lastTestHrefMaybe!!
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

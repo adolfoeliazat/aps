@@ -260,6 +260,16 @@ fun EventTarget.addEventLis(type: String, callback: ((Event) -> Unit)?) {
     addEventListener(type, callback)
 }
 
+fun String?.relaxedToBoolean(default: Boolean): Boolean {
+    return when (this) {
+        null -> default
+        else -> when (this.toLowerCase()) {
+            "true", "yes" -> true
+            "false", "no" -> false
+            else -> wtf("relaxedToBoolean for [$this]")
+        }
+    }
+}
 
 
 

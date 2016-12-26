@@ -250,7 +250,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
 
     private fun addEventListeners() {
         fun onClick(e: ReactEvent) {
-            if (MODE == "debug" && e.ctrlKey) {
+            if (Globus.mode == Mode.DEBUG && e.ctrlKey) {
                 if (e.shiftKey) {
                     if (ignoreDebugCtrlShiftClick) return
 

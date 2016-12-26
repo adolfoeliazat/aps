@@ -326,7 +326,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
     fun addEventListeners() {
         Shitus.byid(me.elementID).off() // Several controls can be on same element, and we don't want to handle click several times
         Shitus.byid(me.elementID).on("click", onClick@{e: KeyboardEvent -> "__async"
-            if (MODE == "debug" && e.ctrlKey) {
+            if (Globus.mode == Mode.DEBUG && e.ctrlKey) {
                 if (e.shiftKey) {
                     if (me.ignoreDebugCtrlShiftClick) return@onClick Unit
 

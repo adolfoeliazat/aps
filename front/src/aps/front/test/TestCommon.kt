@@ -154,8 +154,12 @@ private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promi
 }
 
 private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
-    TestGlobal.lastTest = scenario
-    TestGlobal.lastTestHref = testNameToHref(scenario.name)
+    val opts = TestRunnerOptions(
+        stopOnAssertions = urlQuery[const.urlq.test.stopOnAssertions].relaxedToBoolean(default = false)
+    )
+
+    TestGlobal.lastTestMaybe = scenario
+    TestGlobal.lastTestOptsMaybe = opts
 
     Globus.rootRedisLogMessageID = await(fedis.beginLogGroup("Test: ${scenario.name}"))
 
@@ -244,11 +248,21 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
     }
 }
 
-fun testNameToHref(testName: String): String {
-    return when {
-        testName.contains("Writer") -> "http://aps-ua-writer.local:3022/faq.html?test=$testName"
-        testName.contains("Customer") -> "http://aps-ua-customer.local:3012/faq.html?test=$testName"
-        else -> bitch("Cannot figure out URL for test [$testName]")
+class TestRunnerOptions(
+    val stopOnAssertions: Boolean = false
+)
+
+fun testNameToHref(testName: String, opts: TestRunnerOptions): String {
+    val hostPort = when {
+        testName.contains("Writer") -> "aps-ua-writer.local:3022"
+        testName.contains("Customer") -> "aps-ua-customer.local:3012"
+        else -> bitch("Cannot figure out test URL hostPort for [$testName]")
+    }
+
+    return buildString {
+        append("http://$hostPort/faq.html")
+        append("?" + const.urlq.test.test + "=" + testName)
+        append("&" + const.urlq.test.stopOnAssertions + "=" + opts.stopOnAssertions)
     }
 }
 

@@ -273,7 +273,7 @@ class World(val name: String) {
                 loader = {loadSignInPage()}
             } else if (ultimateName == "sign-up") {
                 loader = {loadSignUpPage()}
-            } else if (user != null || (MODE == "DEBUG" && ultimateName.startsWith("debug"))) {
+            } else if (user != null || (Globus.mode == Mode.DEBUG && ultimateName.startsWith("debug"))) {
                 loader = privatePageLoader(ultimateName)
             }
         }

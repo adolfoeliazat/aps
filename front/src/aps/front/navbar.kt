@@ -160,7 +160,7 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
                         e.stopPropagation()
                     }
 
-                    if (MODE == "debug" && e && e.ctrlKey && e.shiftKey) {
+                    if (Globus.mode == Mode.DEBUG && e && e.ctrlKey && e.shiftKey) {
                         console.warn("TODO:vgrechka Implement top navbar action capturing in Kotlin    de9fd7c7-2bf1-4ce1-ad97-229635093e58")
 //                        val cp = getCapturePane()
 //                        cp.show()

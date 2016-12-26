@@ -274,7 +274,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
     fun addEventListeners() {
         Shitus.byid(elementID).off() // Several controls can be on same element, and we don't want to handle click several times
         Shitus.byid(elementID).on("click", {e: MouseEvent -> async<Unit> {
-            if (MODE == "debug" && e.ctrlKey) {
+            if (Globus.mode == Mode.DEBUG && e.ctrlKey) {
                 if (e.shiftKey) {
                     if (ignoreDebugCtrlShiftClick()) return@async Unit
 
