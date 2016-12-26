@@ -104,6 +104,16 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
                     o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
                     o.act {TestGlobal.requestPause!!.resolve(Unit)}
+                    // TODO:vgrechka Timeout
+                    o.await {TestGlobal.responseArrived!!.promise}
+
+                    o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
+                    o.buttonClick("modal-yes")
+                    o.assertScreenHTML_todo("Shit blinks", "b970e0b2-ef64-4aa5-a96a-f901b7a43111")
+
+                    o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
+                    o.act {TestGlobal.requestPause!!.resolve(Unit)}
+                    // TODO:vgrechka Timeout
                     o.await {TestGlobal.responseArrived!!.promise}
                 },
                 assertAfterModal = {
@@ -116,6 +126,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
     }
 
 }
+
 
 
 
