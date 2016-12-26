@@ -107,7 +107,6 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
                     o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
                     o.act {TestGlobal.requestPause!!.resolve(Unit)}
-                    // TODO:vgrechka Timeout
                     o.await {TestGlobal.responseArrived!!.promise.orTimeout(testconst.defaultResponseTimeout)}
 
                     o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
@@ -116,8 +115,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
                     o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
                     o.act {TestGlobal.requestPause!!.resolve(Unit)}
-                    // TODO:vgrechka Timeout
-                    o.await {TestGlobal.responseArrived!!.promise}
+                    o.await {TestGlobal.responseArrived!!.promise.orTimeout(testconst.defaultResponseTimeout)}
                 },
                 assertAfterModal = {
                     o.assertScreenHTML_todo("Item vanished", "b06e4d3c-9bfa-4397-8d4d-76044c7bd9d6")
