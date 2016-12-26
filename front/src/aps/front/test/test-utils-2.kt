@@ -63,6 +63,8 @@ fun TestScenarioBuilder.kindaNavigateToStaticContent(url: String) {
         val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
         docInnerHTML = innerHTMLContent
 
+        loadCSS()
+
         ExternalGlobus.displayInitialShit()
     }}
 }

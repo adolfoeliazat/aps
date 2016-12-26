@@ -194,6 +194,16 @@ class TestScenarioBuilder {
                 append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
             }
 
+            if (TestGlobal.lastTestOpts.stopOnAssertions) {
+                val shit = ResolvableShit<Unit>()
+                val pane = debugPanes.put(kdiv(className = css.testScenarioAssertionUnknownBanner){o->
+                    o- "Assertion: $descr"
+                    o- Button(icon = fa.play, style = Style(marginLeft = "1rem"), onClick = {shit.resolve(Unit)})
+                })
+                await(shit.promise)
+                debugPanes.remove(pane)
+            }
+
             if (actual != expected) {
                 throw ArtAssertionError(
                     stepTitle,

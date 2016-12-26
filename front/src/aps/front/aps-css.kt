@@ -8,24 +8,36 @@ package aps.front
 
 import aps.*
 import aps.Color.*
+import into.kommon.*
+import kotlin.properties.Delegates.notNull
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 object css {
-    class Entry(val name: String, val style: String) {
-        init {
-            entries += this
+    private class Entry(val style: String? = null, val hover: String? = null) {
+        var name by notNull<String>()
+
+        operator fun provideDelegate(thiz: Any?, prop: KProperty<*>): ReadOnlyProperty<css, String> {
+            name = prop.name
+            style?.let {allShit += ".$name {$it}"}
+            hover?.let {allShit += ".$name:hover {$it}"}
+
+            return object:ReadOnlyProperty<css, String> {
+                override fun getValue(thisRef: css, property: KProperty<*>) = name
+            }
         }
-        override fun toString() = name
     }
 
-    val entries = mutableListOf<Entry>()
+    var allShit = ""
 
-    val cuntHeader = Entry("cunt-header", """
+    val cuntHeader by Entry("""
         font-size: 18px;
         background-color: #eceff1;
         border-bottom: 1px solid #cfd8dc;
         position: relative;
     """)
-    val cuntHeaderEditing = Entry("cunt-header-editing", """
+
+    val cuntHeaderEditing by Entry("""
         font-size: 18px;
         background-color: #eceff1;
         border-bottom: 1px solid #cfd8dc;
@@ -33,15 +45,18 @@ object css {
         border-left: 4px solid ${Color.BLUE_GRAY_400};
         padding-left: 0.6rem;
     """)
-    val cuntHeaderLeftIcon = Entry("cunt-header-left-icon", """
+
+    val cuntHeaderLeftIcon by Entry("""
         color: #90a4ae;
         margin-left: 3px;
     """)
-    val cuntHeaderLeftIconEditing = Entry("cunt-header-left-icon-editing", """
+
+    val cuntHeaderLeftIconEditing by Entry("""
         color: #90a4ae;
         margin-left: 0px;
     """)
-    val cuntHeaderLeftOverlayBottomLeftIcon = Entry("cunt-header-left-overlay-bottom-left-icon", """
+
+    val cuntHeaderLeftOverlayBottomLeftIcon by Entry("""
         margin-left: 3px;
         position: absolute;
         left: 2px;
@@ -49,7 +64,8 @@ object css {
         color: #cfd8dc;
         font-size: 60%;
     """)
-    val cuntHeaderLeftOverlayBottomLeftIconEditing = Entry("cunt-header-left-overlay-bottom-left-icon-editing", """
+
+    val cuntHeaderLeftOverlayBottomLeftIconEditing by Entry("""
         margin-left: 0.6rem;
         position: absolute;
         left: 2px;
@@ -57,39 +73,57 @@ object css {
         color: #cfd8dc;
         font-size: 60%;
     """)
-    val cuntHeaderRightIcon = Entry("cunt-header-right-icon", """
-        color: #90a4ae;
-        margin-left: 3px;
-        position: absolute;
-        right: 3px;
-        top: 4px;
-        cursor: pointer;
-    """)
-    val cuntHeaderRightIcon_hover = Entry("$cuntHeaderRightIcon:hover", """
-        color: #607d8b;
-    """)
-    val cuntBodyEditing = Entry("cunt-body-editing", """
+
+    val cuntHeaderRightIcon by Entry(
+        style = """
+            color: #90a4ae;
+            margin-left: 3px;
+            position: absolute;
+            right: 3px;
+            top: 4px;
+            cursor: pointer;
+        """,
+        hover = """
+            color: #607d8b;
+        """
+    )
+
+    val cuntBodyEditing by Entry("""
         border-left: 4px solid ${Color.BLUE_GRAY_400};
         padding-left: 0.6rem;
         margin-bottom: 1rem;
         padding-top: 1rem;
     """)
 
-    val testScenarioPauseBanner = Entry("testScenarioPauseBanner", """
+    val testScenarioPauseBanner by Entry("""
         position: fixed;
         bottom: 0px;
         left: 0px;
         width: 40rem;
         min-height: 10rem;
-        background-color: #f0f4c3;
-        border: 0.4rem solid #827717;
+        background-color: $LIME_100;
+        border: 0.4rem solid $LIME_900;
         color: black;
         font-weight: bold;
         padding: 0.2rem;
         z-index: 100000;
     """)
 
-    val errorBanner = Entry("errorBanner", """
+    val testScenarioAssertionUnknownBanner by Entry("""
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 40rem;
+        min-height: 10rem;
+        background-color: $GRAY_300;
+        border: 0.4rem solid $GRAY_700;
+        color: black;
+        font-weight: bold;
+        padding: 0.2rem;
+        z-index: 100000;
+    """)
+
+    val errorBanner by Entry("""
         background-color: $RED_50;
         border-left: 3px solid $RED_300;
         font-size: 14px;
@@ -115,7 +149,11 @@ object fa {
     val trash = IconClass("fa fa-trash")
 }
 
-fun jsFacing_apsCSS(): String {
+fun loadCSS() {
+    js("$")(global.document.head).append("<style id='css'>${apsCSS()}</style>")
+}
+
+fun apsCSS(): String {
     val zebraLight = WHITE
     val zebraDark = BLUE_GRAY_50
 
@@ -196,9 +234,7 @@ fun jsFacing_apsCSS(): String {
         .hover-color-BLUE_GRAY_800:hover {color: ${BLUE_GRAY_800};}
     """
 
-    for (entry in css.entries) {
-        res += ".${entry.name} {${entry.style}}"
-    }
+    res += css.allShit
 
     return res
 }

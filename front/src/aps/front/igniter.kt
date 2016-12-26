@@ -63,6 +63,8 @@ fun igniteShit(): Promise<Unit> {"__async"
 
 //    fixModalJumping()
 
+    loadCSS()
+
     window.onmessage = {e->
         e as MessageEvent
         if (e.data == const.windowMessage.fileForbidden) {

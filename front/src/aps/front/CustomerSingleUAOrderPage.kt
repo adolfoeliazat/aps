@@ -319,7 +319,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                     },
                                                     world,
                                                     cancelButtonTitle = const.defaultCancelButtonTitle,
-                                                    containerClassName = css.cuntBodyEditing.name,
+                                                    containerClassName = css.cuntBodyEditing,
                                                     onCancel = {
                                                         enterViewMode()
                                                     },
@@ -347,7 +347,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 
                         fun renderFileTitle(editing: Boolean): ElementBuilder {
                             return kdiv(className = "col-md-12"){o->
-                                o- kdiv(className = if (editing) css.cuntHeaderEditing.name else css.cuntHeader.name){o->
+                                o- kdiv(className = if (editing) css.cuntHeaderEditing else css.cuntHeader){o->
                                     o- ki(className = "${if (editing) css.cuntHeaderLeftIconEditing else css.cuntHeaderLeftIcon} ${fa.file}")
                                     o- ki(className = "${if (editing) css.cuntHeaderLeftOverlayBottomLeftIconEditing else css.cuntHeaderLeftOverlayBottomLeftIcon} " +
                                         when (orderFile.seenAsFrom) {

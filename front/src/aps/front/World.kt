@@ -157,7 +157,7 @@ class World(val name: String) {
                 }
             }
 
-            js("$")(global.document.head).append("<style id='css'>${css()}</style>")
+//            js("$")(global.document.head).append("<style id='css'>${apsCSS()}</style>")
 
             topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
                 updateNavbar = update
@@ -327,10 +327,6 @@ class World(val name: String) {
 
     fun isDynamicPage(name: String): Boolean {
         return KotlinShit.isDynamicPage(name)
-    }
-
-    fun css(): String {
-        return KotlinShit.apsCSS()
     }
 
     fun privatePageLoader(name: String): () -> Promise<Unit> {

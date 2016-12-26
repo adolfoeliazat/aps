@@ -32,7 +32,7 @@ object KotlinShit : IKotlinShit {
     val jsFacing_puid = ::puid
 
 //    val jsFacing_art_invokeStateContributions = ::invokeStateContributions
-    val apsCSS = ::jsFacing_apsCSS
+//    val apsCSS = ::jsFacing_apsCSS
     val pollLiveStatus = ::jsFacing_pollLiveStatus
 //    val startLiveStatusPolling = ::jsFacing_startLiveStatusPolling
 //    val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
