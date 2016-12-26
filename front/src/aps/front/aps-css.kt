@@ -109,14 +109,36 @@ object css {
         z-index: 100000;
     """)
 
-    val testScenarioAssertionUnknownBanner by Entry("""
+    val testScenarioAssertionNotHardenedBanner by Entry("""
         position: fixed;
-        bottom: 0px;
-        left: 0px;
         width: 40rem;
         min-height: 10rem;
         background-color: $GRAY_300;
         border: 0.4rem solid $GRAY_700;
+        color: black;
+        font-weight: bold;
+        padding: 0.2rem;
+        z-index: 100000;
+    """)
+
+    val testScenarioAssertionCorrectBanner by Entry("""
+        position: fixed;
+        width: 40rem;
+        min-height: 10rem;
+        background-color: $GREEN_200;
+        border: 0.4rem solid $GREEN_700;
+        color: black;
+        font-weight: bold;
+        padding: 0.2rem;
+        z-index: 100000;
+    """)
+
+    val testScenarioAssertionIncorrectBanner by Entry("""
+        position: fixed;
+        width: 40rem;
+        min-height: 10rem;
+        background-color: $RED_200;
+        border: 0.4rem solid $RED_700;
         color: black;
         font-weight: bold;
         padding: 0.2rem;
@@ -128,6 +150,9 @@ object css {
         border-left: 3px solid $RED_300;
         font-size: 14px;
         margin-bottom: 15px;
+    """)
+
+    val testAssertionErrorPane by Entry("""
     """)
 }
 
@@ -147,6 +172,11 @@ object fa {
     val plus = IconClass("fa fa-plus")
     val edit = IconClass("fa fa-edit")
     val trash = IconClass("fa fa-trash")
+    val bomb = IconClass("fa fa-bomb")
+    val arrowUp = IconClass("fa fa-arrow-up")
+    val arrowDown = IconClass("fa fa-arrow-down")
+    val arrowLeft = IconClass("fa fa-arrow-left")
+    val arrowRight = IconClass("fa fa-arrow-right")
 }
 
 fun loadCSS() {

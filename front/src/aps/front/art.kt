@@ -289,7 +289,7 @@ object art {
                         "borderBottom" to "2px solid white")
                     )
                 }
-                return oldShitAsToReactElementable(Shitus.diva(json("style" to json("backgroundColor" to backgroundColor, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
+                return oldShitAsToReactElementable(Shitus.diva(json("className" to css.testAssertionErrorPane, "style" to json("backgroundColor" to backgroundColor, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
                                                                Shitus.diva(json("style" to messageStyle), content.message),
                                                                content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
                                                                content.detailsUI

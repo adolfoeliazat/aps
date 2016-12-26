@@ -271,11 +271,11 @@ fun frp_getLastDownloadedPieceOfShit(rmap: Map<*, *>): PieceOfShitDownload? {
     return BackGlobus.lastDownloadedPieceOfShit
 }
 
-fun frp_loadTestShit(rmap: Map<*, *>): String {
+fun frp_loadTestShit(rmap: Map<*, *>): String? {
     val id: String = cast(rmap["id"])
     val file = File("$APS_HOME/front/test-shit/$id")
     return if (file.exists()) file.readText()
-    else "[No shit yet]"
+    else null
 }
 
 fun frp_updateTestShit(rmap: Map<*, *>) {

@@ -17,12 +17,12 @@ val debugPanes = Panes("debugPane-")
 class Panes(val idPrefix: String) {
     val names = mutableSetOf<String>()
 
-    fun put(name: String, parent: JQuery = jq(document.body!!), tre: ToReactElementable) {
+    fun put(name: String, parent: JQuery? = null, tre: ToReactElementable) {
         remove(name)
 
         val id = "$idPrefix$name"
         val container = byid0(id) ?: run {
-            parent.append("<div id='$id'></div>")
+            (parent ?: jq(document.body!!)).append("<div id='$id'></div>")
             byid0ForSure(id)
         }
 
@@ -35,6 +35,12 @@ class Panes(val idPrefix: String) {
         put(name, jq(document.body!!), tre)
     }
 
+    fun put(parent: JQuery, tre: ToReactElementable): String {
+        val name = puid()
+        put(name, parent, tre)
+        return name
+
+    }
     fun put(tre: ToReactElementable): String {
         val name = puid()
         put(name, tre)

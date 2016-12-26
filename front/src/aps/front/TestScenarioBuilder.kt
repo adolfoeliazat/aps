@@ -9,9 +9,15 @@
 package aps.front
 
 import aps.*
+import aps.Color.*
 import aps.front.testutils.*
 import into.kommon.*
 import jquery.jq
+import org.w3c.dom.events.Event
+import org.w3c.dom.events.KeyboardEvent
+import kotlin.browser.window
+import kotlin.properties.Delegates
+import kotlin.properties.Delegates.notNull
 
 fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> = async {
     val builder = TestScenarioBuilder()
@@ -163,7 +169,7 @@ class TestScenarioBuilder {
     fun assertNavbarHTMLExt(descr: String?, id: String) {
         act {TestGlobal.testShitBeingAssertedID = id}
         assertHTML(inside = SELECTOR_NAVBAR,
-                   expected = {fuckingRemoteCall.loadTestShit(id)},
+                   expected = {async{await(fuckingRemoteCall.loadTestShit(id)) ?: "--- kill me ---"}},
                    transformLine = transformNavbarLineTidy,
                    descr=descr)
         act {TestGlobal.testShitBeingAssertedID = null}
@@ -175,7 +181,7 @@ class TestScenarioBuilder {
 
     fun assertRootHTMLExt(descr: String?, id: String) {
         act {TestGlobal.testShitBeingAssertedID = id}
-        assertHTML(inside = SELECTOR_ROOT, expected = {fuckingRemoteCall.loadTestShit(id)}, transformLine = {it}, descr=descr)
+        assertHTML(inside = SELECTOR_ROOT, expected = {async{await(fuckingRemoteCall.loadTestShit(id)) ?: "--- kill me ---"}}, transformLine = {it}, descr=descr)
         act {TestGlobal.testShitBeingAssertedID = null}
     }
 
@@ -183,7 +189,7 @@ class TestScenarioBuilder {
         act {TestGlobal.testShitBeingAssertedID = id}
 
         val stepTitle = "HTML: $descr"
-        checkOnAnimationFrame(stepTitle) {async{
+        checkOnAnimationFrame(stepTitle) {async<Unit>{
             val expected = await(fuckingRemoteCall.loadTestShit(id))
 
             val actual = buildString {
@@ -195,24 +201,139 @@ class TestScenarioBuilder {
             }
 
             if (TestGlobal.lastTestOpts.stopOnAssertions) {
-                val shit = ResolvableShit<Unit>()
-                val pane = debugPanes.put(kdiv(className = css.testScenarioAssertionUnknownBanner){o->
-                    o- "Assertion: $descr"
-                    o- Button(icon = fa.play, style = Style(marginLeft = "1rem"), onClick = {shit.resolve(Unit)})
-                })
-                await(shit.promise)
-                debugPanes.remove(pane)
-            }
+                await(object {
+                    var banner by notNull<Control2>()
+                    var verticalPosition = VerticalPosition.BOTTOM
+                    var horizontalPosition = HorizontalPosition.LEFT
 
-            if (actual != expected) {
-                throw ArtAssertionError(
-                    stepTitle,
-                    visualPayload = renderDiff(
-                        expected = expected,
-                        actual = actual,
-                        actualTestShit = actual
+                    val shit = async {
+                        when {
+                            expected == null -> {
+                                await(showBanner(css.testScenarioAssertionNotHardenedBanner))
+                            }
+
+                            actual == expected -> {
+                                await(showBanner(css.testScenarioAssertionCorrectBanner))
+                            }
+
+                            actual != expected -> {
+                                val pane = debugPanes.put(byid(ELID_UNDER_FOOTER), kdiv(
+                                    id = "fuckingDiff",
+                                    backgroundColor = RED_700, color = WHITE, marginTop = 10, padding = "10px 10px",
+                                    textAlign = "center", fontWeight = "bold"
+                                ){o->
+                                    o- kdiv(paddingBottom = 10){o->
+                                        o- "Diff"
+                                    }
+
+                                    o- kdiv(
+                                        backgroundColor = WHITE, color = BLACK_BOOT,
+                                        fontWeight = "normal", textAlign = "left", padding = 5
+                                    ){o->
+                                        o- "fuck you"
+                                    }
+                                })
+
+                                try {
+                                    await(showBanner(
+                                        css.testScenarioAssertionIncorrectBanner,
+                                        renderSpecificButtons = {o->
+                                            o- Button(title = "Diff", style = Style(marginRight = "1rem"), onClick = {
+                                                verticalPosition = VerticalPosition.TOP
+                                                horizontalPosition = HorizontalPosition.LEFT
+                                                banner.update()
+                                                byid("fuckingDiff").scrollBodyToShit()
+                                            })
+                                        }))
+                                } finally {
+                                    debugPanes.remove(pane)
+                                }
+                            }
+
+                            else -> wtf()
+                        }
+                    }
+
+                    fun showBanner(className: String, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
+                        val shit = ResolvableShit<Unit>()
+                        banner = Control2.from {
+                            val style = Style()
+                            exhaustive/when (verticalPosition) {
+                                VerticalPosition.TOP -> style.top = 0
+                                VerticalPosition.BOTTOM -> style.bottom = 0
+                            }
+                            exhaustive/when (horizontalPosition) {
+                                HorizontalPosition.LEFT -> style.left = 0
+                                HorizontalPosition.RIGHT -> style.right = 0
+                            }
+                            kdiv(className = className, baseStyle = style){o->
+                                o- kdiv(marginBottom = "0.5rem"){o->
+                                    o- Button(icon = fa.play, style = Style(marginRight = "1rem"), onClick = {
+                                        shit.resolve(Unit)
+                                    })
+                                    o- Button(icon = fa.bomb, style = Style(marginRight = "1rem"), onClick = {
+                                        shit.reject(Exception("Fucking killed"))
+                                    })
+                                    o- Button(
+                                        icon = when (verticalPosition) {
+                                            VerticalPosition.TOP -> fa.arrowDown
+                                            VerticalPosition.BOTTOM -> fa.arrowUp
+                                        },
+                                        style = Style(marginRight = "1rem"),
+                                        onClick = {
+                                            verticalPosition = when (verticalPosition) {
+                                                VerticalPosition.TOP -> VerticalPosition.BOTTOM
+                                                VerticalPosition.BOTTOM -> VerticalPosition.TOP
+                                            }
+                                            banner.update()
+                                        })
+                                    o- Button(
+                                        icon = when (horizontalPosition) {
+                                            HorizontalPosition.LEFT -> fa.arrowRight
+                                            HorizontalPosition.RIGHT -> fa.arrowLeft
+                                        },
+                                        style = Style(marginRight = "1rem"),
+                                        onClick = {
+                                            horizontalPosition = when (horizontalPosition) {
+                                                HorizontalPosition.LEFT -> HorizontalPosition.RIGHT
+                                                HorizontalPosition.RIGHT -> HorizontalPosition.LEFT
+                                            }
+                                            banner.update()
+                                        })
+                                    renderSpecificButtons(o)
+                                }
+                                o- "Assertion: $descr"
+                            }
+                        }
+                        val pane = debugPanes.put(banner)
+
+                        fun keyListener(e: Event) {
+                            e as KeyboardEvent
+                            if (e.key == " ") {
+                                shit.resolve(Unit)
+                            }
+                        }
+                        window.addEventListener("keydown", ::keyListener)
+
+                        try {
+                            await(shit.promise)
+                        } finally {
+                            window.removeEventListener("keydown", ::keyListener)
+                            debugPanes.remove(pane)
+                        }
+                    }
+                }.shit)
+            } else {
+                if (actual != expected) {
+                    throw ArtAssertionError(
+                        stepTitle,
+                        visualPayload = renderDiff(
+                            expected = expected ?: "--- Not yet hardened ---",
+                            actual = actual,
+                            actualTestShit = actual
+                        )
                     )
-                )
+                }
             }
         }}
 
@@ -322,6 +443,12 @@ class TestScenarioBuilder {
 
 }
 
+private enum class VerticalPosition {
+    TOP, BOTTOM
+}
 
+private enum class HorizontalPosition {
+    LEFT, RIGHT
+}
 
 

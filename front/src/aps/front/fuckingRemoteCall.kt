@@ -4,7 +4,7 @@ import aps.*
 
 object fuckingRemoteCall {
 
-    fun loadTestShit(id: String): Promise<String> = sendShit(json(
+    fun loadTestShit(id: String): Promise<String?> = sendShit(json(
         "proc" to "loadTestShit",
         "id" to id
     ))
