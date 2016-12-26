@@ -1215,13 +1215,26 @@ fun openTestListPane() {
             o- Style(backgroundColor = WHITE, color = BLACK_BOOT,
                      fontWeight = "normal", textAlign = "left", padding = 5)
 
-            fun testLink(testName: String, opts: TestRunnerOptions) = link(
-                title = testName,
+            fun testLink(testName: String, opts: TestRunnerOptions, title: String) = link(
+                title = title,
                 onClick = {
                     window.location.href = testNameToHref(testName, opts)
                 })
 
-            o- testLink(TestGlobal.lastTest.name, TestGlobal.lastTestOpts)
+            val lastName = TestGlobal.lastTest.name
+            o- kdiv{o->
+                o- testLink(lastName, TestGlobal.lastTestOpts, title = "$lastName: ${TestGlobal.lastTestOpts}")
+            }
+            o- kdiv(marginTop = "0.5rem", paddingTop = "0.5rem", borderTop = "1px dashed $GRAY_600")
+            val optsBunch = setOf(
+                TestRunnerOptions(),
+                TestRunnerOptions(stopOnAssertions = true)
+            )
+            for (opts in optsBunch - TestGlobal.lastTestOpts) {
+                o- kdiv {o->
+                    o- testLink(lastName, opts, title = "$lastName: $opts")
+                }
+            }
 
             o- kdiv(marginTop = "1em"){o->
                 o- kdiv(fontWeight = "bold"){o->
@@ -1229,7 +1242,7 @@ fun openTestListPane() {
                 }
                 for (x in TestSuite_Customer_Shebang().scenarios) {
                     o- kspan(marginRight = "1em"){o->
-                        o- testLink(x.name, TestRunnerOptions())
+                        o- testLink(x.name, TestRunnerOptions(), title = x.name)
                     }
                     o- " "
                 }

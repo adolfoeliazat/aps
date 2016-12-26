@@ -248,9 +248,11 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
     }
 }
 
-class TestRunnerOptions(
+data class TestRunnerOptions(
     val stopOnAssertions: Boolean = false
-)
+) {
+    override fun toString(): String = "stopOnAssertions=$stopOnAssertions"
+}
 
 fun testNameToHref(testName: String, opts: TestRunnerOptions): String {
     val hostPort = when {
