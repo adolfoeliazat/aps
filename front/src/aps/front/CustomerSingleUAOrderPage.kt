@@ -393,7 +393,11 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                })
                                         o- kic("delete-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.trash}", style = Style(right = "3.3rem"),
                                                onClicka = {async{
-                                                   if (await(modalConfirmAndPerformDeletion(t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.file.title}")))) {
+                                                   if (await(modalConfirmAndPerformDeletion(
+                                                           t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.file.title}"),
+                                                           DeleteUAOrderFileRequest()-{o->
+                                                               o.id.value = orderFile.id
+                                                           }))) {
                                                        enterVanishedMode()
                                                    }
                                                }})

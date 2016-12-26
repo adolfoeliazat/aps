@@ -21,6 +21,7 @@ val kli = ElementBuilderFactory("li")
 val ka = ElementBuilderFactory("a")
 val ki = ElementBuilderFactory("i")
 val klabel = ElementBuilderFactory("label")
+val kblockquote = ElementBuilderFactory("blockquote")
 
 fun span(s: String? = null) = kspan {it-s}
 

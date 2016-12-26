@@ -8,13 +8,15 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.tables.pojos.*
-import into.kommon.*
-import java.util.*
 
 @RemoteProcedureFactory fun deleteUAOrderFile() = anyUserProcedure(
     DeleteUAOrderFileRequest(),
     runShit = fun(ctx, req): DeleteRequest.Response {
+        TestServerFiddling.nextRequestError?.let {
+            TestServerFiddling.nextRequestError = null
+            bitchExpectedly(it)
+        }
+
         val orderFileID = req.id.value.toLong()
 
         UA_ORDER_FILES.let {t->

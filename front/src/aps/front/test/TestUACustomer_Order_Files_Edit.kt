@@ -97,7 +97,14 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                     o.pause(shit, only = false)
                 },
                 modalAction = {
+                    o.acta {send(ImposeNextRequestErrorRequest())}
+                    o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
                     o.buttonClick("modal-yes")
+                    o.assertScreenHTML_todo("Shit blinks", "4b6e09ea-f0a7-4bfb-a4d7-e1785889cc9c")
+
+                    o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
+                    o.act {TestGlobal.requestPause!!.resolve(Unit)}
+                    o.await {TestGlobal.responseArrived!!.promise}
                 },
                 assertAfterModal = {
                     o.assertScreenHTML_todo("Item vanished", "b06e4d3c-9bfa-4397-8d4d-76044c7bd9d6")

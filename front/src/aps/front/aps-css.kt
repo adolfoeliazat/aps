@@ -88,6 +88,13 @@ object css {
         padding: 0.2rem;
         z-index: 100000;
     """)
+
+    val errorBanner = Entry("errorBanner", """
+        background-color: $RED_50;
+        border-left: 3px solid $RED_300;
+        font-size: 14px;
+        margin-bottom: 15px;
+    """)
 }
 
 class IconClass(val className: String) {

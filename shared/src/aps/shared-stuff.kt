@@ -80,6 +80,10 @@ class ImposeNextRequestTimestampRequest : RequestMatumba() {
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
+class ImposeNextRequestErrorRequest : RequestMatumba() {
+    val error = MaybeStringHiddenField(this, "error")
+}
+
 //class ImposeNextRequestTimestampRequest(val stamp: String) : Request() {
 //    constructor() : this(SHITS) // For fucking Jackson
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)

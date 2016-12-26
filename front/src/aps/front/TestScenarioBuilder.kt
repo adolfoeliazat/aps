@@ -53,7 +53,7 @@ class TestScenarioBuilder {
         }})
     }
 
-    fun acta(descr: String? = null, block: () -> Promise<Unit>) {
+    fun <T> acta(descr: String? = null, block: () -> Promise<T>) {
         var step: TestInstruction.Step? = null
         if (descr != null) {
             step = TestInstruction.Step.ActionStep(descr)
@@ -65,6 +65,10 @@ class TestScenarioBuilder {
             step?.passed = true
             __asyncResult(Unit)
         })
+    }
+
+    fun <T> await(block: () -> Promise<T>) {
+        acta(null, block)
     }
 
     fun assertVisibleText(expected: String, under: CSSSelector = "body") {

@@ -23,6 +23,8 @@ object TestGlobal {
     var hasScenarioTODOs = false
     var hasScenarioRems = false
     var lastTest: TestScenario? = null
+    var requestPause: ResolvableShit<Unit>? = null
+    var responseArrived: ResolvableShit<Unit>? = null
 }
 
 fun requestAnimationFrame(block: () -> Unit) {
@@ -793,6 +795,12 @@ fun renderTicker(float: String): ToReactElementable =
                width = 14,
                height = 33.6,
                backgroundColor = Color.BLUE_GRAY_600))
+
+fun renderErrorBanner(msg: String): ToReactElementable =
+    kblockquote(className = css.errorBanner){o->
+        o- msg
+    }
+
 
 
 

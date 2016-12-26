@@ -230,7 +230,11 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
         payload.fields = json()
         for (field in req.fields) await(field.populateRemote(payload.fields))
         for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
+
+        TestGlobal.requestPause?.let {await(it.promise)}
         val res = await<Any>(callRemoteProcedurePassingJSONObject(procedureName, payload))
+        TestGlobal.responseArrived?.let {it.resolve(Unit)}
+
         when (res) {
             is FormResponse.Hunky<*> -> ZimbabweResponse.Hunky(cast(res.meat))
             is FormResponse.Shitty -> ZimbabweResponse.Shitty<Res>(res.error, listOf())

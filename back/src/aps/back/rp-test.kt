@@ -33,6 +33,7 @@ object TestServerFiddling {
     @Volatile var nextRequestTimestamp: Timestamp? = null
     @Volatile var rejectAllRequestsNeedingDB: Boolean = false
     @Volatile var nextGeneratedPassword: String? = null
+    @Volatile var nextRequestError: String? = null
 }
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
@@ -58,6 +59,14 @@ testProcedure(
     ImposeNextRequestTimestampRequest(),
     runShit = fun(ctx, req): GenericResponse {
         TestServerFiddling.nextRequestTimestamp = stringToStamp(req.stamp.value)
+        return GenericResponse()
+    }
+)
+
+@RemoteProcedureFactory fun imposeNextRequestError() = testProcedure(
+    ImposeNextRequestErrorRequest(),
+    runShit = fun(ctx, req): GenericResponse {
+        TestServerFiddling.nextRequestError = req.error.value ?: const.msg.serviceFuckedUp
         return GenericResponse()
     }
 )
