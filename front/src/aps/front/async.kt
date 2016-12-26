@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import kotlin.browser.window
 import kotlin.coroutines.*
 
 fun <T> async(block: suspend () -> T): Promise<T> =
@@ -27,6 +28,16 @@ suspend fun <T> awaitJSShit(p: Any?): T =
     if (p is Promise<*>) await(p as Promise<T>)
     else p as T
 
+fun <T> Promise<T>.finally(onFulfilled: (T) -> Unit) =
+    this.then<Nothing>(onFulfilled, {})
+
+
+fun <T> Promise<T>.orTimeout(ms: Int, msg: String = "Sick of waiting"): Promise<T> {
+    val shit = ResolvableShit<T>()
+    window.setTimeout({shit.reject(Exception(msg))}, ms)
+    this.finally {shit.resolve(it)}
+    return shit.promise
+}
 
 
 

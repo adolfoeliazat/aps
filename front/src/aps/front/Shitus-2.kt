@@ -43,6 +43,7 @@ fun revealStack(exception: Throwable, muteConsole: Boolean = false, skipAllForei
     }
 
     val stack = __await(errorToMappedClientStackString(exception))
+    console.error(stack)
     if (!muteConsole) {
         var errorToLog = "revealStack: " + stack
         errorToLog += "\n\n----- Raw -----\n\n" + exception.stack

@@ -21,6 +21,8 @@ object testconst {
     object sha1 {
         val pieceOfTrial2 = "75509ed6012db7b99db0ba5051e306bef5760f75"
     }
+
+    val defaultResponseTimeout = 3000
 }
 
 external interface IStorage {

@@ -593,6 +593,7 @@ fun pageHeader3(
 
 fun errorToMappedClientStackString(shit: Throwable): Promise<String> {
     val mangledStack: String = shit.asDynamic().stack
+    // dwarnStriking("mangledStack", mangledStack)
     return stackToMappedClientStackString(mangledStack)
 }
 
@@ -752,6 +753,7 @@ fun markdown(md: String, stripP: Boolean = false): ToReactElementable {
 
 fun renderStackLink(e: Throwable, title: String = "Show stack"): ToReactElementable =
     link(title=title, onClick = {
+//        console.error(e.stack)
         revealStack(e, muteConsole = true)
     })
 

@@ -69,6 +69,9 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
         o.buttonClick("loadMore")
         o.assertScreenHTML_todo("More items", "ab5858fe-82b0-4bbc-abce-eb8c2645c2aa")
 
+//        val stack = js("Error('pizda').stack")
+//        dwarnStriking("sssssssss", stack)
+        o.instructions.add(TestInstruction.Step.ActionStep("pizda"))
         o.section("Delete some shit") {
             o.act {jqbody.scrollTop(2500)}
 
@@ -105,7 +108,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                     o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
                     o.act {TestGlobal.requestPause!!.resolve(Unit)}
                     // TODO:vgrechka Timeout
-                    o.await {TestGlobal.responseArrived!!.promise}
+                    o.await {TestGlobal.responseArrived!!.promise.orTimeout(testconst.defaultResponseTimeout)}
 
                     o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
                     o.buttonClick("modal-yes")

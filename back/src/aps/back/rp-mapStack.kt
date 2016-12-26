@@ -7,15 +7,27 @@
 package aps.back
 
 import aps.*
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
+import com.google.common.cache.LoadingCache
 import into.kommon.*
 import com.google.debugging.sourcemap.SourceMapConsumerFactory
 import com.google.debugging.sourcemap.SourceMapping
 import java.io.File
 
-val mapPathToSourceMapping = mutableMapOf<String, SourceMapping>()
+private val CACHE_MAPPINGS_BETWEEN_REQUESTS = false
+private val sharedMappingCache by lazy {makeMappingCache()}
 
-val NORMAL_APS_HOME = normalizePath(APS_HOME)
-val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
+private val NORMAL_APS_HOME = normalizePath(APS_HOME)
+private val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
+
+private fun makeMappingCache(): LoadingCache<String, SourceMapping> {
+    return CacheBuilder.newBuilder().build(object:CacheLoader<String, SourceMapping>() {
+        override fun load(mapPath: String): SourceMapping {
+            return SourceMapConsumerFactory.parse(File(mapPath).readText())
+        }
+    })
+}
 
 @RemoteProcedureFactory @Synchronized fun mapStack() = testProcedure(
     MapStackRequest(),
@@ -26,6 +38,10 @@ val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
         // Ex:    at http://aps-ua-writer.local:3022/front-enhanced.js:12225:48
         // Ex:    at Generator.next (<anonymous>)
         // Ex:    at __awaiter (http://aps-ua-writer.local:3022/into-kommon-js-enhanced.js:1:138)
+
+        val mappingCache =
+            if (CACHE_MAPPINGS_BETWEEN_REQUESTS) sharedMappingCache
+            else makeMappingCache()
 
         val mangledStack = req.mangledStack.value
         val resultLines = mutableListOf<String>()
@@ -55,9 +71,9 @@ val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
                     resource.contains("/into-kommon-js-enhanced.js") -> "$KOMMON_HOME/js/out/into-kommon-js.js.map"
                     else -> throw Verbatim("No map file for $resource")
                 }
-                val sourceMapping = mapPathToSourceMapping.getOrPut(mapPath) {
-                    SourceMapConsumerFactory.parse(File(mapPath).readText())
-                }
+
+                val sourceMapping = mappingCache[mapPath]
+
                 val orig = sourceMapping.getMappingForLine(line, column)
                     ?: throw Verbatim("No mapping for line")
 

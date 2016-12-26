@@ -62,10 +62,6 @@ fun splitTextToDocuments() {
     }
 }
 
-fun <T> Promise<T>.finally(onFulfilled: (T) -> Unit) =
-    this.then<Nothing>(onFulfilled, {})
-
-
 fun remoteProcedureNameForRequest(req: Any): String {
     val requestClassName = ctorName(req)
     return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()

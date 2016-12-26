@@ -12,6 +12,7 @@ import aps.back.generated.jooq.Tables.*
 @RemoteProcedureFactory fun deleteUAOrderFile() = anyUserProcedure(
     DeleteUAOrderFileRequest(),
     runShit = fun(ctx, req): DeleteRequest.Response {
+        Thread.sleep(5000)
         TestServerFiddling.nextRequestError?.let {
             TestServerFiddling.nextRequestError = null
             bitchExpectedly(it)

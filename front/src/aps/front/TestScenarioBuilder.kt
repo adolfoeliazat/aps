@@ -13,10 +13,10 @@ import aps.front.testutils.*
 import into.kommon.*
 import jquery.jq
 
-fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> {"__async"
+fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> = async {
     val builder = TestScenarioBuilder()
     block(builder)
-    return __reawait(builder.runScenario(showTestPassedPane))
+    await(builder.runScenario(showTestPassedPane))
 }
 
 val transformNavbarLineTidy = {it: String ->
@@ -30,8 +30,8 @@ val transformRootLineTidy = {it: String ->
 class TestScenarioBuilder {
     val instructions = mutableListOf<TestInstruction>()
 
-    fun runScenario(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
-        return __reawait(art.run(instructions, showTestPassedPane))
+    fun runScenario(showTestPassedPane: Boolean): Promise<Throwable?> = async {
+        await(art.run(instructions, showTestPassedPane))
     }
 
     fun state(descr: String) {
