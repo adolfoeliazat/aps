@@ -271,6 +271,14 @@ fun String?.relaxedToBoolean(default: Boolean): Boolean {
     }
 }
 
+fun touchObjectGraph(parent: dynamic) {
+    if (jsTypeOf(parent) != "object") return
+
+    val names: Array<String> = js("Object.getOwnPropertyNames(parent.__proto__)")
+    for (name in names) {
+        touchObjectGraph(parent[name])
+    }
+}
 
 
 

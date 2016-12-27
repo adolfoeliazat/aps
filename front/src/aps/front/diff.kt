@@ -4,6 +4,8 @@ import aps.*
 import into.kommon.*
 import aps.Color.*
 import kotlin.browser.window
+import kotlin.properties.Delegates
+import kotlin.properties.Delegates.notNull
 
 @native interface JsDiffItem {
     val added: Boolean
@@ -30,11 +32,16 @@ fun renderDiff(
                              val diffLineItems = jsArrayToList<JsDiffItem>(JsDiff.diffLines(expected, actual))
                              for ((i, item) in diffLineItems.withIndex()) {
                                  val backgroundColor: Color
+                                 var titleClass by notNull<String>()
+                                 val contentClass: String
                                  val label: String?
+
                                  if (item.added) {
+                                     titleClass = css.diff.actual.title
                                      backgroundColor = RED_100
                                      label = actualTitle
                                  } else if (item.removed) {
+                                     titleClass = css.diff.expected.title
                                      backgroundColor = GREEN_100
                                      label = expectedTitle
                                  } else {
@@ -42,7 +49,8 @@ fun renderDiff(
                                      label = null
                                  }
                                  if (label != null && label != prevLabel) {
-                                     o - kdiv(backgroundColor = backgroundColor, fontWeight = "bold") {o ->
+//                                     o - kdiv(backgroundColor = backgroundColor, fontWeight = "bold") {o ->
+                                     o - kdiv(className = titleClass) {o ->
                                          o - label
                                      }
                                  }

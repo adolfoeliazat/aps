@@ -230,7 +230,7 @@ class TestScenarioBuilder {
                                         backgroundColor = WHITE, color = BLACK_BOOT,
                                         fontWeight = "normal", textAlign = "left", padding = 5
                                     ){o->
-                                        o- "fuck you"
+                                        o- renderDiff(expected = expected, actual = actual, actualTestShit = actual)
                                     }
                                 })
 

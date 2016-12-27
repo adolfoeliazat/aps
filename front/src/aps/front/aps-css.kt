@@ -9,21 +9,20 @@ package aps.front
 import aps.*
 import aps.Color.*
 import into.kommon.*
-import kotlin.properties.Delegates.notNull
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 object css {
-    private class Entry(val style: String? = null, val hover: String? = null) {
-        var name by notNull<String>()
 
-        operator fun provideDelegate(thiz: Any?, prop: KProperty<*>): ReadOnlyProperty<css, String> {
-            name = prop.name
-            style?.let {allShit += ".$name {$it}"}
-            hover?.let {allShit += ".$name:hover {$it}"}
+    private class Entry(val style: String? = null, val hover: String? = null) {
+        operator fun provideDelegate(thisGroup: css, prop: KProperty<*>): ReadOnlyProperty<css, String> {
+            val name = prop.name
+            val fullName = name
+            style?.let {allShit += ".$fullName {$it}"}
+            hover?.let {allShit += ".$fullName:hover {$it}"}
 
             return object:ReadOnlyProperty<css, String> {
-                override fun getValue(thisRef: css, property: KProperty<*>) = name
+                override fun getValue(thisRef: css, property: KProperty<*>) = fullName
             }
         }
     }
@@ -154,6 +153,53 @@ object css {
 
     val testAssertionErrorPane by Entry("""
     """)
+
+    abstract class Group2(val parent: Group2? = null) {
+        init {
+            dwarnStriking("Group2 init")
+        }
+    }
+
+    private class Entry2(val style: String? = null, val hover: String? = null) {
+        operator fun provideDelegate(thisGroup: Group2, prop: KProperty<*>): ReadOnlyProperty<Group2, String> {
+            var name = prop.name
+            var group: Group2? = thisGroup
+            while (group != null) {
+                val groupName = group::class.simpleName
+                dwarnStriking("groupName", groupName)
+                name = groupName + "-" + name
+                group = group.parent
+            }
+
+            style?.let {allShit += ".$name {$it}"}
+            hover?.let {allShit += ".$name:hover {$it}"}
+
+            return object:ReadOnlyProperty<Group2, String> {
+                override fun getValue(thisRef: Group2, property: KProperty<*>) = name
+            }
+        }
+    }
+
+    object diff : Group2() {
+        object expected : Group2(this) {
+            val title by Entry2("""
+                background-color: lime;
+                font-weight: bold;
+                font-style: italic;
+            """)
+        }
+
+        object actual : Group2(this) {
+            val title by Entry2("""
+                background-color: pink;
+                font-weight: bold;
+                font-style: italic;
+            """)
+        }
+    }
+
+    init {touchObjectGraph(this)}
+
 }
 
 class IconClass(val className: String) {
