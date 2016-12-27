@@ -6,200 +6,186 @@
 
 package aps.front
 
-import aps.*
 import aps.Color.*
 import into.kommon.*
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 object css {
+    abstract class Group(val parent: Group?)
 
-    private class Entry(val style: String? = null, val hover: String? = null) {
-        operator fun provideDelegate(thisGroup: css, prop: KProperty<*>): ReadOnlyProperty<css, String> {
-            val name = prop.name
-            val fullName = name
-            style?.let {allShit += ".$fullName {$it}"}
-            hover?.let {allShit += ".$fullName:hover {$it}"}
+    private class Style(val style: String? = null, val hover: String? = null) {
+        var name: String? = null
 
-            return object:ReadOnlyProperty<css, String> {
-                override fun getValue(thisRef: css, property: KProperty<*>) = fullName
+        operator fun getValue(thiz: Any, prop: KProperty<*>): String {
+            if (name == null) {
+                name = prop.name
+
+                var group: Group? = thiz as? Group
+                while (group != null) {
+                    val groupName = group::class.simpleName
+                    name = groupName + "-" + name
+                    group = group.parent
+                }
+
+                style?.let {allShit += ".$name {$it}"}
+                hover?.let {allShit += ".$name:hover {$it}"}
             }
+            return name!!
         }
     }
 
     var allShit = ""
 
-    val cuntHeader by Entry("""
-        font-size: 18px;
-        background-color: #eceff1;
-        border-bottom: 1px solid #cfd8dc;
-        position: relative;
-    """)
+    object cunt : Group(null) {
+        object header : Group(this) {
+            val viewing by Style("""
+                font-size: 18px;
+                background-color: #eceff1;
+                border-bottom: 1px solid #cfd8dc;
+                position: relative;""")
 
-    val cuntHeaderEditing by Entry("""
-        font-size: 18px;
-        background-color: #eceff1;
-        border-bottom: 1px solid #cfd8dc;
-        position: relative;
-        border-left: 4px solid ${Color.BLUE_GRAY_400};
-        padding-left: 0.6rem;
-    """)
+            val editing by Style("""
+                font-size: 18px;
+                background-color: #eceff1;
+                border-bottom: 1px solid #cfd8dc;
+                position: relative;
+                border-left: 4px solid $BLUE_GRAY_400;
+                padding-left: 0.6rem;""")
 
-    val cuntHeaderLeftIcon by Entry("""
-        color: #90a4ae;
-        margin-left: 3px;
-    """)
+            object leftIcon : Group(this) {
+                val viewing by Style("""
+                    color: #90a4ae;
+                    margin-left: 3px;""")
 
-    val cuntHeaderLeftIconEditing by Entry("""
-        color: #90a4ae;
-        margin-left: 0px;
-    """)
+                val editing by Style("""
+                    color: #90a4ae;
+                    margin-left: 0px;""")
+            }
 
-    val cuntHeaderLeftOverlayBottomLeftIcon by Entry("""
-        margin-left: 3px;
-        position: absolute;
-        left: 2px;
-        top: 9px;
-        color: #cfd8dc;
-        font-size: 60%;
-    """)
+            object leftOverlayBottomLeftIcon : Group(this) {
+                val viewing by Style("""
+                    margin-left: 3px;
+                    position: absolute;
+                    left: 2px;
+                    top: 9px;
+                    color: #cfd8dc;
+                    font-size: 60%;""")
 
-    val cuntHeaderLeftOverlayBottomLeftIconEditing by Entry("""
-        margin-left: 0.6rem;
-        position: absolute;
-        left: 2px;
-        top: 9px;
-        color: #cfd8dc;
-        font-size: 60%;
-    """)
+                val editing by Style("""
+                    margin-left: 0.6rem;
+                    position: absolute;
+                    left: 2px;
+                    top: 9px;
+                    color: #cfd8dc;
+                    font-size: 60%;""")
+            }
 
-    val cuntHeaderRightIcon by Entry(
-        style = """
-            color: #90a4ae;
-            margin-left: 3px;
-            position: absolute;
-            right: 3px;
-            top: 4px;
-            cursor: pointer;
-        """,
-        hover = """
-            color: #607d8b;
-        """
-    )
+            val rightIcon by Style(
+                style = """
+                    color: #90a4ae;
+                    margin-left: 3px;
+                    position: absolute;
+                    right: 3px;
+                    top: 4px;
+                    cursor: pointer;""",
+                hover = """
+                    color: #607d8b;""")
+        }
 
-    val cuntBodyEditing by Entry("""
-        border-left: 4px solid ${Color.BLUE_GRAY_400};
-        padding-left: 0.6rem;
-        margin-bottom: 1rem;
-        padding-top: 1rem;
-    """)
+        val bodyEditing by Style("""
+            border-left: 4px solid $BLUE_GRAY_400;
+            padding-left: 0.6rem;
+            margin-bottom: 1rem;
+            padding-top: 1rem;""")
+    }
 
-    val testScenarioPauseBanner by Entry("""
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        width: 40rem;
-        min-height: 10rem;
-        background-color: $LIME_100;
-        border: 0.4rem solid $LIME_900;
-        color: black;
-        font-weight: bold;
-        padding: 0.2rem;
-        z-index: 100000;
-    """)
+    object test : Group(null) {
+        object popup : Group(this) {
+            val pause by Style("""
+                position: fixed;
+                bottom: 0px;
+                left: 0px;
+                width: 40rem;
+                min-height: 10rem;
+                background-color: $LIME_100;
+                border: 0.4rem solid $LIME_900;
+                color: black;
+                font-weight: bold;
+                padding: 0.2rem;
+                z-index: 100000;""")
 
-    val testScenarioAssertionNotHardenedBanner by Entry("""
-        position: fixed;
-        width: 40rem;
-        min-height: 10rem;
-        background-color: $GRAY_300;
-        border: 0.4rem solid $GRAY_700;
-        color: black;
-        font-weight: bold;
-        padding: 0.2rem;
-        z-index: 100000;
-    """)
+            object assertion : Group(this) {
+                val notHardened by Style("""
+                    position: fixed;
+                    width: 40rem;
+                    min-height: 10rem;
+                    background-color: $GRAY_300;
+                    border: 0.4rem solid $GRAY_700;
+                    color: black;
+                    font-weight: bold;
+                    padding: 0.2rem;
+                    z-index: 100000;""")
 
-    val testScenarioAssertionCorrectBanner by Entry("""
-        position: fixed;
-        width: 40rem;
-        min-height: 10rem;
-        background-color: $GREEN_200;
-        border: 0.4rem solid $GREEN_700;
-        color: black;
-        font-weight: bold;
-        padding: 0.2rem;
-        z-index: 100000;
-    """)
+                val correct by Style("""
+                    position: fixed;
+                    width: 40rem;
+                    min-height: 10rem;
+                    background-color: $GREEN_200;
+                    border: 0.4rem solid $GREEN_700;
+                    color: black;
+                    font-weight: bold;
+                    padding: 0.2rem;
+                    z-index: 100000;""")
 
-    val testScenarioAssertionIncorrectBanner by Entry("""
-        position: fixed;
-        width: 40rem;
-        min-height: 10rem;
-        background-color: $RED_200;
-        border: 0.4rem solid $RED_700;
-        color: black;
-        font-weight: bold;
-        padding: 0.2rem;
-        z-index: 100000;
-    """)
+                val incorrect by Style("""
+                    position: fixed;
+                    width: 40rem;
+                    min-height: 10rem;
+                    background-color: $RED_200;
+                    border: 0.4rem solid $RED_700;
+                    color: black;
+                    font-weight: bold;
+                    padding: 0.2rem;
+                    z-index: 100000;""")
+            }
+        }
 
-    val errorBanner by Entry("""
+        val assertionErrorPane by Style("""
+        """)
+    }
+
+    val errorBanner by Style("""
         background-color: $RED_50;
         border-left: 3px solid $RED_300;
         font-size: 14px;
-        margin-bottom: 15px;
-    """)
+        margin-bottom: 15px;""")
 
-    val testAssertionErrorPane by Entry("""
-    """)
+    object diff : Group(null) {
+        object expected : Group(this) {
+            val title by Style("""
+                background-color: $GREEN_100;
+                font-weight: bold;""")
 
-    abstract class Group2(val parent: Group2? = null) {
-        init {
-            dwarnStriking("Group2 init")
-        }
-    }
-
-    private class Entry2(val style: String? = null, val hover: String? = null) {
-        operator fun provideDelegate(thisGroup: Group2, prop: KProperty<*>): ReadOnlyProperty<Group2, String> {
-            var name = prop.name
-            var group: Group2? = thisGroup
-            while (group != null) {
-                val groupName = group::class.simpleName
-                dwarnStriking("groupName", groupName)
-                name = groupName + "-" + name
-                group = group.parent
-            }
-
-            style?.let {allShit += ".$name {$it}"}
-            hover?.let {allShit += ".$name:hover {$it}"}
-
-            return object:ReadOnlyProperty<Group2, String> {
-                override fun getValue(thisRef: Group2, property: KProperty<*>) = name
-            }
-        }
-    }
-
-    object diff : Group2() {
-        object expected : Group2(this) {
-            val title by Entry2("""
-                background-color: lime;
-                font-weight: bold;
-                font-style: italic;
-            """)
+            val content by Style("""
+                background-color: $GREEN_100;""")
         }
 
-        object actual : Group2(this) {
-            val title by Entry2("""
-                background-color: pink;
-                font-weight: bold;
-                font-style: italic;
-            """)
+        object actual : Group(this) {
+            val title by Style("""
+                background-color: $RED_100;
+                font-weight: bold;""")
+
+            val content by Style("""
+                background-color: $RED_100;""")
+        }
+
+        object same : Group(this) {
+            val content by Style("""
+                background-color: $WHITE;""")
         }
     }
 
     init {touchObjectGraph(this)}
-
 }
 
 class IconClass(val className: String) {
@@ -314,4 +300,27 @@ fun apsCSS(): String {
 
     return res
 }
+
+
+
+
+
+
+
+
+
+
+
+//    private class Entry0(val style: String? = null, val hover: String? = null) {
+//        operator fun provideDelegate(thisGroup: css, prop: KProperty<*>): ReadOnlyProperty<css, String> {
+//            val name = prop.name
+//            val fullName = name
+//            style?.let {allShit += ".$fullName {$it}"}
+//            hover?.let {allShit += ".$fullName:hover {$it}"}
+//
+//            return object:ReadOnlyProperty<css, String> {
+//                override fun getValue(thisRef: css, property: KProperty<*>) = fullName
+//            }
+//        }
+//    }
 

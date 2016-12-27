@@ -31,32 +31,31 @@ fun renderDiff(
                              val JsDiff = global.JsDiff
                              val diffLineItems = jsArrayToList<JsDiffItem>(JsDiff.diffLines(expected, actual))
                              for ((i, item) in diffLineItems.withIndex()) {
-                                 val backgroundColor: Color
+//                                 val backgroundColor: Color
                                  var titleClass by notNull<String>()
                                  val contentClass: String
                                  val label: String?
 
                                  if (item.added) {
                                      titleClass = css.diff.actual.title
-                                     backgroundColor = RED_100
+                                     contentClass = css.diff.actual.content
                                      label = actualTitle
                                  } else if (item.removed) {
                                      titleClass = css.diff.expected.title
-                                     backgroundColor = GREEN_100
+                                     contentClass = css.diff.expected.content
                                      label = expectedTitle
                                  } else {
-                                     backgroundColor = WHITE
+                                     contentClass = css.diff.same.content
                                      label = null
                                  }
                                  if (label != null && label != prevLabel) {
-//                                     o - kdiv(backgroundColor = backgroundColor, fontWeight = "bold") {o ->
                                      o - kdiv(className = titleClass) {o ->
                                          o - label
                                      }
                                  }
                                  prevLabel = label
 
-                                 o - kdiv(backgroundColor = backgroundColor) {o ->
+                                 o - kdiv(className = contentClass) {o ->
                                      placeholders += Placeholder(span(item.value))
                                      o - placeholders.last()
                                  }

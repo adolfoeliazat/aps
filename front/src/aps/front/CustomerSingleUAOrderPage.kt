@@ -319,7 +319,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                     },
                                                     world,
                                                     cancelButtonTitle = const.defaultCancelButtonTitle,
-                                                    containerClassName = css.cuntBodyEditing,
+                                                    containerClassName = css.cunt.bodyEditing,
                                                     onCancel = {
                                                         enterViewMode()
                                                     },
@@ -347,9 +347,9 @@ class CustomerSingleUAOrderPage(val world: World) {
 
                         fun renderFileTitle(editing: Boolean): ElementBuilder {
                             return kdiv(className = "col-md-12"){o->
-                                o- kdiv(className = if (editing) css.cuntHeaderEditing else css.cuntHeader){o->
-                                    o- ki(className = "${if (editing) css.cuntHeaderLeftIconEditing else css.cuntHeaderLeftIcon} ${fa.file}")
-                                    o- ki(className = "${if (editing) css.cuntHeaderLeftOverlayBottomLeftIconEditing else css.cuntHeaderLeftOverlayBottomLeftIcon} " +
+                                o- kdiv(className = if (editing) css.cunt.header.editing else css.cunt.header.viewing){o->
+                                    o- ki(className = "${if (editing) css.cunt.header.leftIcon.editing else css.cunt.header.leftIcon.viewing} ${fa.file}")
+                                    o- ki(className = "${if (editing) css.cunt.header.leftOverlayBottomLeftIcon.editing else css.cunt.header.leftOverlayBottomLeftIcon.viewing} " +
                                         when (orderFile.seenAsFrom) {
                                             UserKind.CUSTOMER -> fa.user
                                             UserKind.WRITER -> fa.pencil
@@ -380,7 +380,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     }
 
                                     if (!editing) {
-                                        o- kic("download-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.cloudDownload}", style = Style(right = "6.3rem", top = "0.5rem"),
+                                        o- kic("download-${orderFile.id}", className = "${css.cunt.header.rightIcon} ${fa.cloudDownload}", style = Style(right = "6.3rem", top = "0.5rem"),
                                                onClick = {
                                                    val iframeID = puid()
                                                    jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
@@ -391,7 +391,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                    }
                                                    iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.tokenMaybe}"
                                                })
-                                        o- kic("delete-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.trash}", style = Style(right = "3.3rem"),
+                                        o- kic("delete-${orderFile.id}", className = "${css.cunt.header.rightIcon} ${fa.trash}", style = Style(right = "3.3rem"),
                                                onClicka = {async{
                                                    if (await(modalConfirmAndPerformDeletion(
                                                            t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.file.title}"),
@@ -401,7 +401,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                        enterVanishedMode()
                                                    }
                                                }})
-                                        o- kic("edit-${orderFile.id}", className = "${css.cuntHeaderRightIcon} ${fa.pencil}", style = Style(right = "0.3rem"),
+                                        o- kic("edit-${orderFile.id}", className = "${css.cunt.header.rightIcon} ${fa.pencil}", style = Style(right = "0.3rem"),
                                                onClicka = {
                                                    enterEditMode()
                                                })

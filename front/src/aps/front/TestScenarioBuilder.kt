@@ -209,11 +209,11 @@ class TestScenarioBuilder {
                     val shit = async {
                         when {
                             expected == null -> {
-                                await(showBanner(css.testScenarioAssertionNotHardenedBanner))
+                                await(showBanner(css.test.popup.assertion.notHardened))
                             }
 
                             actual == expected -> {
-                                await(showBanner(css.testScenarioAssertionCorrectBanner))
+                                await(showBanner(css.test.popup.assertion.correct))
                             }
 
                             actual != expected -> {
@@ -236,7 +236,7 @@ class TestScenarioBuilder {
 
                                 try {
                                     await(showBanner(
-                                        css.testScenarioAssertionIncorrectBanner,
+                                        css.test.popup.assertion.incorrect,
                                         renderSpecificButtons = {o->
                                             o- Button(title = "Diff", style = Style(marginRight = "1rem"), onClick = {
                                                 verticalPosition = VerticalPosition.TOP

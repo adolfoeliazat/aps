@@ -495,7 +495,7 @@ fun TestScenarioBuilder.pause(shit: TestShit, descr: String = "Cool shit, huh?..
                 resolve(Unit)
             }
 
-            debugPanes.put(paneName, kdiv(className = css.testScenarioPauseBanner){o->
+            debugPanes.put(paneName, kdiv(className = css.test.popup.pause){o->
                 o- descr
                 o- Button(icon = fa.play, style = Style(marginLeft = "1rem"), onClick = onContinue)
             })
