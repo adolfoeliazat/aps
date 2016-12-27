@@ -12,6 +12,7 @@ import aps.*
 import aps.Color.*
 import aps.front.testutils.*
 import into.kommon.*
+import jquery.JQuery
 import jquery.jq
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
@@ -242,7 +243,8 @@ class TestScenarioBuilder {
                                                 verticalPosition = VerticalPosition.TOP
                                                 horizontalPosition = HorizontalPosition.LEFT
                                                 banner.update()
-                                                byid("fuckingDiff").scrollBodyToShit()
+//                                                byid("fuckingDiff").scrollBodyToShit()
+                                                nextDiff().scrollBodyToShit(dy = -70)
                                             })
                                         }))
                                 } finally {
@@ -252,6 +254,20 @@ class TestScenarioBuilder {
 
                             else -> wtf()
                         }
+                    }
+
+                    var diffIndex = -1
+                    val diffElements by lazy {
+                        val shit = jq(".${css.diff.expected.title}, .${css.diff.actual.title}")
+                        check(shit.length > 0)
+                        shit
+                    }
+
+                    fun nextDiff(): JQuery {
+                        if (++diffIndex > diffElements.length - 1) {
+                            diffIndex = 0
+                        }
+                        return jq(diffElements[diffIndex]!!)
                     }
 
                     fun showBanner(className: String, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {

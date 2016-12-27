@@ -24,6 +24,7 @@ fun JQuery.scrollTop(): Int = this.asDynamic().scrollTop()
 fun JQuery.offset(): JQueryPosition = this.asDynamic().offset()
 fun JQuery.text(): String = this.asDynamic().text()
 fun JQuery.remove(): String = this.asDynamic().remove()
+val JQuery.length: Int get() = this.asDynamic().length
 
 val jqbody: JQuery get() = jq(document.body!!)
 
