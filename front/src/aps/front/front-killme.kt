@@ -489,7 +489,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                 },
 
                 "onClose" to {
-                    jsFacing_deleteKey(hrss.thingsToDoAfterHotUpdate, "control_captureAction")
+                    jsDeleteKey(hrss.thingsToDoAfterHotUpdate, "control_captureAction")
                 }
             )))
         }
@@ -503,9 +503,9 @@ fun jsFacing_horiza(vararg ignored: dynamic): dynamic {
     val items = js("Array.prototype.slice.call(arguments, 1)")
 
     val itemStyle = arg.itemStyle
-    jsFacing_deleteKey(arg, "itemStyle")
+    jsDeleteKey(arg, "itemStyle")
     val spacing = if (arg.spacing == null) 10 else arg.spacing
-    jsFacing_deleteKey(arg, "spacing")
+    jsDeleteKey(arg, "spacing")
 
 
     return Shitus.diva(global.Object.assign(arg, json(

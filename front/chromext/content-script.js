@@ -9,5 +9,6 @@ window.addEventListener('message', event => {
 
 port.onMessage.addListener(msg => {
     console.log("Holy fuck, I've got a message from background", msg)
+    window.postMessage(msg, "*")
 })
 

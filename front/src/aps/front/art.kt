@@ -1486,7 +1486,7 @@ fun sortObjectBy(o: dynamic, f: dynamic) {
         pairs.forEach {arg: dynamic ->
             val k = arg[0]
             val v = arg[1]
-            jsFacing_deleteKey(o, k)
+            jsDeleteKey(o, k)
         }
         pairs.forEach {arg: dynamic ->
             val k = arg[0]
@@ -1508,7 +1508,7 @@ fun sortKeys(o: dynamic) {
         pairs.forEach {arg: dynamic ->
             val k = arg[0]
             val v = arg[1]
-            jsFacing_deleteKey(o, k)
+            jsDeleteKey(o, k)
         }
         pairs.forEach {arg: dynamic ->
             val k = arg[0]

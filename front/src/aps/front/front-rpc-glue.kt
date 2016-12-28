@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 fun send(req: RecreateTestDatabaseSchemaRequest): Promise<GenericResponse> =
     callDangerousMatumba(req)
@@ -47,6 +48,18 @@ fun send(req: PingRequest): Promise<FormResponse2<GenericResponse>> =
 
 fun send(req: DeleteRequest): Promise<ZimbabweResponse<DeleteRequest.Response>> =
     callZimbabwe(req, Globus.world.token)
+
+fun send(req: VisualShitCapturedRequest): Promise<VisualShitCapturedRequest.Reponse> =
+    sendDangerousJSONProcedure(req)
+
+
+private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {
+    val jpreq = JsonProcedureRequest()-{o->
+        o.json.value = jsonize(req)
+    }
+    val jpres: JsonProcedureRequest.Response = await(callDangerousMatumba(jpreq))
+    dejsonize<R>(jpres.json)
+}
 
 
 private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"

@@ -144,6 +144,42 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
     }
 }
 
+fun jsonize(shit: Any?): String {
+    val out = jsonizeToObject(shit)
+    // clog("json", js("JSON").stringify(out, null, 2))
+    val json = js("JSON").stringify(out)
+    return json
+}
+
+fun jsonizeToObject(shit: Any?): Any? {
+    gloshit.jsonizeToObject_shit = shit
+    if (shit == null) return null
+    val jsType = jsTypeOf(shit)
+    if (jsType.oneOf("string", "number", "boolean")) return shit
+    if (jsType != "object") wtf("jsType: $jsType")
+
+    when (shit) {
+        is List<*> -> {
+            return Array(shit.size) {i->
+                jsonizeToObject(shit[i])
+            }
+        }
+
+        else -> {
+            val out = json()
+            out["\$\$\$class"] = "aps." + shit::class.simpleName
+
+            val protoProps = JSObject.getOwnPropertyNames(shit.asDynamic().__proto__).toSet() - setOf("constructor")
+            for (protoProp in protoProps) {
+                val value = shit.asDynamic()[protoProp]
+                out[protoProp] = jsonizeToObject(value)
+            }
+
+            return out
+        }
+    }
+}
+
 fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields): Promise<Res> {"__async"
 //    __dlog.requestJSONObject(procedureName, requestJSONObject)
     requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID

@@ -387,7 +387,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
             art.uiStateContributions.remove(controlID)
 
             if (effectiveShame != "") {
-                jsFacing_deleteKey(TestGlobal.shameToControl, effectiveShame)
+                jsDeleteKey(TestGlobal.shameToControl, effectiveShame)
             }
         }
 

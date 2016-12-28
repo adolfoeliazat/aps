@@ -729,7 +729,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                 },
 
                     "onClose" to {
-                        jsFacing_deleteKey(hrss.thingsToDoAfterHotUpdate, "control_captureAction")
+                        jsDeleteKey(hrss.thingsToDoAfterHotUpdate, "control_captureAction")
                     }
                 )))
         }

@@ -16,17 +16,17 @@ fun main(args: Array<String>) {
 //    qwe_doesntCompile()
 //    qwe_coroutines_unit()
 //    qwe_1()
-    qwe_jvm_lateinit()
+//    qwe_jvm_lateinit()
 }
 
-fun qwe_jvm_lateinit() {
-    val x = object {
-        lateinit var y: String
-    }
-
-    println(x.y)
-    println("ok")
-}
+//fun qwe_jvm_lateinit() {
+//    val x = object {
+//        lateinit var y: String
+//    }
+//
+//    println(x.y)
+//    println("ok")
+//}
 
 
 //private fun qwe_1() {

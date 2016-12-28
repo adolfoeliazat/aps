@@ -278,7 +278,7 @@ object Shitus {
 fun jsFacing_spancTitle(def: dynamic): ReactElement {
     // #extract {title} from def
     val title = def.title
-    jsFacing_deleteKey(def, "title")
+    jsDeleteKey(def, "title")
     return Shitus.spanc(global.Object.assign(def, json("tame" to "title", "content" to title)))
 }
 
@@ -292,7 +292,7 @@ fun jsFacing_arrayDeleteFirstThat(arr: dynamic, pred: dynamic): dynamic {
     return arr
 }
 
-fun jsFacing_deleteKey(obj: dynamic, key: dynamic) {
+fun jsDeleteKey(obj: Any, key: String) {
     js("delete obj[key]")
 }
 
@@ -382,7 +382,7 @@ fun jsFacing_sortKeys(o: dynamic) {
         pairs = global.lodash.sortBy(pairs, {x: dynamic -> x[0]})
         pairs.forEach({arg: dynamic ->
             val k = arg[0]
-            jsFacing_deleteKey(o, k)
+            jsDeleteKey(o, k)
         })
         pairs.forEach({arg: dynamic ->
             val k = arg[0]
@@ -869,8 +869,8 @@ fun jsFacing_glyph(_name: dynamic, _def: dynamic): ReactElement {
     val className: dynamic = def.className ?: ""
 
     val attrs: dynamic = global.Object.assign(js("({})"), def)
-    jsFacing_deleteKey(attrs, "hint")
-    jsFacing_deleteKey(attrs, "className")
+    jsDeleteKey(attrs, "hint")
+    jsDeleteKey(attrs, "className")
 //    val attrs: dynamic = lodash.omit(def, "hint", "className")
 
     val names: dynamic = Shitus.tokens(name)

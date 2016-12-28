@@ -11,6 +11,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 import org.w3c.dom.MessageEvent
+import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 
@@ -65,11 +66,20 @@ fun igniteShit(): Promise<Unit> {"__async"
 
     loadCSS()
 
-    window.onmessage = {e->
+    window.onmessage = fun(e: Event) {
         e as MessageEvent
-        if (e.data == const.windowMessage.fileForbidden) {
-            openErrorModal(t("TOTE", "Этот файл не для тебя"))
+
+        if (e.data == const.windowMessage.fileForbidden) return openErrorModal(t("TOTE", "Этот файл не для тебя"))
+
+        val type: String? = e.data?.asDynamic().type
+        if (type != null) {
+            when (type) {
+                "visualShitCaptured" -> return visualShitCaptured(e.data.asDynamic())
+            }
         }
+
+        console.error("Obscure message", e.data)
+        wtf("Some asshole has sent me an obscure message")
     }
 
     val search = window.location.search
@@ -87,7 +97,8 @@ fun igniteShit(): Promise<Unit> {"__async"
         })
 
         __await(World("default").boot())
-        spikeCaptureShit()
+
+        spikeCaptureVisualShit()
     }
 
     return __asyncResult(Unit)

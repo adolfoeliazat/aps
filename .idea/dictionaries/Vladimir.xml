@@ -67,6 +67,8 @@
       <w>interop</w>
       <w>jedis</w>
       <w>jooq</w>
+      <w>jpreq</w>
+      <w>jsonize</w>
       <w>jsons</w>
       <w>junky</w>
       <w>keydown</w>
@@ -88,6 +90,8 @@
       <w>nbsp</w>
       <w>ndash</w>
       <w>pizda</w>
+      <w>pizdashot</w>
+      <w>pizdature</w>
       <w>plpgsql</w>
       <w>pname</w>
       <w>postgre</w>
@@ -102,6 +106,7 @@
       <w>renderable</w>
       <w>resulta</w>
       <w>rmap</w>
+      <w>rosybrown</w>
       <w>runtimes</w>
       <w>scuko</w>
       <w>selfy</w>

@@ -218,7 +218,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
             art.uiStateContributions.remove(controlID)
 
             if (effectiveShame != null) {
-                jsFacing_deleteKey(TestGlobal.shameToControl, effectiveShame)
+                jsDeleteKey(TestGlobal.shameToControl, effectiveShame!!)
             }
         }
 

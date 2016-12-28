@@ -64,6 +64,38 @@ private fun runMochka.describeUtils() {
 
             assertEquals(expected, actual)
         }
+
+        describe("dejsonize") {
+            ArrayList<String>()
+            test("1") {
+                val json = """{"${'$'}${'$'}${'$'}class":"aps.VisualShitCapturedRequest","id":"fucking id","shots":[{"${'$'}${'$'}${'$'}class":"aps.VisualShitCapturedRequest${'$'}Shot","dataURL":"fucking data 1","windowScrollY":10},{"${'$'}${'$'}${'$'}class":"aps.VisualShitCapturedRequest${'$'}Shot","dataURL":"fucking data 2","windowScrollY":20}]}"""
+                val obj = dejsonize<VisualShitCapturedRequest>(json)
+                if (false) {
+                    clog("id", obj.id)
+                    for ((i, shot) in obj.shots.withIndex()) {
+                        clog("shot $i:")
+                        clog("  dataURL", shot.dataURL)
+                        clog("  windowScrollY", shot.windowScrollY)
+                    }
+                }
+                assertEqualsStructurally(
+                    expected = VisualShitCapturedRequest()-{o->
+                        o.id = "fucking id"
+                        o.shots = listOf(
+                            BrowserShot()-{o->
+                                o.dataURL = "fucking data 1"
+                                o.windowScrollY = 101
+                            },
+                            BrowserShot()-{o->
+                                o.dataURL = "fucking data 2"
+                                o.windowScrollY = 20
+                            }
+                        )
+                    },
+                    actual = obj
+                )
+            }
+        }
     }
 }
 

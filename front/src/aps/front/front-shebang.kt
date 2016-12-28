@@ -484,7 +484,7 @@ object Preloader {
 
 fun decorate(def: dynamic) {
     val target = def.target
-    jsFacing_deleteKey(def, "target")
+    jsDeleteKey(def, "target")
 
     for (name in jsArrayToListOfDynamic(global.Object.keys(def))) {
         val origName = name.slice(name.indexOf("_") + 1)
@@ -775,7 +775,7 @@ fun renderRawStackLink(stack: String, title: String = "Show stack"): ToReactElem
     })
 
 
-fun <T> typeSafeURLQuery(ui: World, make: () -> T): T {
+fun <T : Any> typeSafeURLQuery(ui: World, make: () -> T): T {
     val inst = make()
     for (k in JSObject.keys(inst)) {
         inst.asDynamic()[k] = ui.urlQuery[k]

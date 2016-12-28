@@ -3,6 +3,8 @@
 package into.mochka
 
 import aps.*
+import aps.front.*
+import into.kommon.*
 
 class runMochka(build: runMochka.() -> Unit) {
     private var currentMochaDone: ((error: Throwable?) -> Unit)? = null
@@ -93,6 +95,36 @@ fun assertEquals(expected: Any?, actual: Any?, msg: String? = null) {
     assert(expected == actual, buildString {
         msg?.let {append(it + ". ")}
         append("Expected <$expected>, got <$actual>")
+    })
+}
+
+fun assertEqualsStructurally(expected: Any?, actual: Any?, msg: String? = null) {
+    val lodash: dynamic = js("require")("lodash")
+    val deepEql: (Any?, Any?) -> Boolean = js("require")("deep-eql")
+    val inspect: (Any?, opts: Json) -> String = js("require")("util").inspect
+
+    fun prepare(x: dynamic): dynamic {
+        val clone = lodash.cloneDeep(x)
+        fun descend(x: dynamic) {
+            if (jsTypeOf(x) != "object") return
+            if (x is ArrayList<*>) {
+                jsDeleteKey(x, "modCount")
+            }
+            for (key in JSObject.keys(x)) {
+                descend(x[key])
+            }
+        }
+        descend(clone)
+        return clone
+    }
+
+    val preparedExpected = prepare(expected)
+    val preparedActual = prepare(actual)
+
+    assert(deepEql(preparedExpected, preparedActual), buildString {
+        msg?.let {append("\n" + it + ".")}
+        append("\nExpected: <${inspect(preparedExpected, json("depth" to null))}>\n")
+        append("\nActual: <${inspect(preparedActual, json("depth" to null))}>")
     })
 }
 

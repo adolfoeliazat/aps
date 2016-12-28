@@ -7,10 +7,40 @@ import into.kommon.*
 
 fun main(args: Array<String>) {
 //    test1()
-    test2()
+//    test2()
+    test3()
 }
 
-fun test2() {
+private fun test3() {
+    val om = shittyObjectMapper
+
+    val obj = VisualShitCapturedRequest()-{o->
+        o.id = "fucking id"
+        o.shots = listOf(
+            BrowserShot()-{o->
+                o.dataURL = "fucking data 1"
+                o.windowScrollY = 10
+            },
+            BrowserShot()-{o->
+                o.dataURL = "fucking data 2"
+                o.windowScrollY = 20
+            }
+        )
+    }
+
+    val json = om.writeValueAsString(obj)
+    clog("json", json)
+
+    val obj2 = om.readValue(json, VisualShitCapturedRequest::class.java)
+    clog("id", obj2.id)
+    for ((i, shot) in obj2.shots.withIndex()) {
+        clog("shot $i:")
+        clog("  dataURL", shot.dataURL)
+        clog("  windowScrollY", shot.windowScrollY)
+    }
+}
+
+private fun test2() {
     val om = shittyObjectMapper
 //    val om = objectMapper
 

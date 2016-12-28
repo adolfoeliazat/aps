@@ -1,0 +1,21 @@
+package aps.back
+
+import aps.*
+import into.kommon.*
+
+@RemoteProcedureFactory fun jsonProcedure() = testProcedure(
+    JsonProcedureRequest(),
+    runShit = fun(ctx, req): JsonProcedureRequest.Response {
+        val reqJSON = req.json.value
+        val mr = Regex("^\\{\"\\\$\\\$\\\$class\":\\s*\"([^\"]*)\"").find(reqJSON) ?: wtf("Cannot figure out request class name from JSON")
+        val requestClassName = mr.groupValues[1]
+        val requestClass = Class.forName(requestClassName)
+        val res = when (requestClass) {
+            VisualShitCapturedRequest::class.java -> serveVisualShitCapturedRequest(shittyObjectMapper.readValue(reqJSON, VisualShitCapturedRequest::class.java))
+            else -> wtf("requestClass: $requestClass")
+        }
+        val resJSON = shittyObjectMapper.writeValueAsString(res)
+        return JsonProcedureRequest.Response(resJSON)
+    }
+)
+
