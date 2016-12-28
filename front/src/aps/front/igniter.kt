@@ -87,6 +87,7 @@ fun igniteShit(): Promise<Unit> {"__async"
         })
 
         __await(World("default").boot())
+        spikeCaptureShit()
     }
 
     return __asyncResult(Unit)
