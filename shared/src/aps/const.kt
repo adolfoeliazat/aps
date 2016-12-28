@@ -52,5 +52,10 @@ object const {
             val stopOnAssertions = "stopOnAssertions"
         }
     }
+
+    object elementID {
+        val dynamicFooter = "dynamicFooter"
+    }
 }
+
 

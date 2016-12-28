@@ -18,11 +18,29 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
                 }
             )
         }))
+        byid(const.elementID.dynamicFooter).css("display", "")
         clog("Sent captured shit to backend")
     }
 }
 
-fun spikeCaptureVisualShit() {
-    window.postMessage(json("fun" to "captureVisualShit"), "*")
+fun captureVisualShit() {
+    byid(const.elementID.dynamicFooter).css("display", "none")
+    window.postMessage(json("type" to "captureVisualShit"), "*")
 }
+
+
+fun spikeCaptureVisualShit() {
+    captureVisualShit()
+}
+
+
+
+
+
+
+
+
+
+
+
 

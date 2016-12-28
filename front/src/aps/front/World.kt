@@ -191,7 +191,7 @@ class World(val name: String) {
 
     private fun initDynamicFooter() {
         val jqFooter = jq("#footer")
-        jqFooter.append("<div id='dynamicFooter'></div>")
+        jqFooter.append("<div id='${const.elementID.dynamicFooter}'></div>")
         footer = DynamicFooter(this)
         DOMReact.render(footer.toReactElement(), byid0ForSure("dynamicFooter"))
     }

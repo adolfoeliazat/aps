@@ -74,6 +74,7 @@ fun igniteShit(): Promise<Unit> {"__async"
         val type: String? = e.data?.asDynamic().type
         if (type != null) {
             when (type) {
+                "captureVisualShit" -> return // Page -> chromext content script -> chromext background
                 "visualShitCaptured" -> return visualShitCaptured(e.data.asDynamic())
             }
         }
