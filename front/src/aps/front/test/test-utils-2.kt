@@ -113,7 +113,8 @@ fun TestScenarioBuilder.assertFreshCustomerDashboardScreen() {
 }
 
 fun TestScenarioBuilder.assertCustomerBreatheScreen() {
-    assertScreenHTML("Customer breathe screen", "5c58a466-1225-444a-abde-6d11def5c00c")
+//    assertScreenHTML("Customer breathe screen", "5c58a466-1225-444a-abde-6d11def5c00c")
+    assertScreenHTML("Customer breathe screen", "92db9a5b-0fa7-4991-a6b6-80dbec02be50")
 }
 
 inline fun fiddlingWithGlobals(block: () -> Unit) {

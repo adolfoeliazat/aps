@@ -187,6 +187,7 @@ class TestScenarioBuilder {
     }
 
     fun assertScreenHTML(descr: String?, id: String) {
+        val assertionID = id
         act {TestGlobal.testShitBeingAssertedID = id}
 
         val stepTitle = "HTML: $descr"
@@ -236,6 +237,7 @@ class TestScenarioBuilder {
                                 })
 
                                 try {
+                                    await(captureVisualShit(assertionID))
                                     await(showBanner(
                                         css.test.popup.assertion.incorrect,
                                         renderSpecificButtons = {o->

@@ -1,0 +1,121 @@
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="">
+          <a href="why.html">
+            <span class="">
+              Почему мы?
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="prices.html">
+            <span class="">
+              Цены
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="samples.html">
+            <span class="">
+              Примеры
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="faq.html">
+            <span class="">
+              ЧаВо
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="contact.html">
+            <span class="">
+              Связь
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="blog.html">
+            <span class="">
+              Блог
+            </span>
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="sign-in.html" style="display: none;">
+            <span class="">
+              Вход
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div id="staticShit" style="display: none;">
+  <!-- BEGIN CONTENT -->
+    <div id="MakeStaticSites-2818" class="container">
+      <div>
+        <div class="container">
+          <div style="display:  flex;  align-items:  center;  justify-content:  center;  position:  absolute;  left:  0px;  top:  200px;  width:  100%;">
+            <span style="margin-left:  10">
+              Дышите глубоко...
+            </span>
+            <div id="wholePageTicker" class="progressTicker" style="background-color:  #546e7a;  width:  14px;  height:  28px;  margin-left:  10px;  margin-top:  -5px">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END CONTENT -->
+    </div>
+    <div id="ticker">
+      <div>
+        <div class="container">
+          <div style="display:  flex;  align-items:  center;  justify-content:  center;  position:  absolute;  left:  0px;  top:  200px;  width:  100%;">
+            <span style="margin-left:  10">
+              Дышите глубоко...
+            </span>
+            <div id="wholePageTicker" class="progressTicker" style="background-color:  #546e7a;  width:  14px;  height:  28px;  margin-left:  10px;  margin-top:  -5px">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="jquery.min.js">
+    </script>
+    <script>
+      window.storageLocalForStaticContent = localStorage
+      function displayInitialShit() {
+      if (window.storageLocalForStaticContent.getItem('token')) {
+      console.log('displayInitialShit -- token')
+      document.getElementById('ticker').style.display = ''
+      } else {
+      console.log('displayInitialShit -- no token')
+      makeSignInNavbarLinkVisible()
+      document.getElementById('staticShit').style.display = ''
+      window.staticShitIsRenderedStatically = true
+      }
+      }
+      function makeSignInNavbarLinkVisible() {
+      $('a[href="sign-in.html"]').css('display', '')
+      }
+      if (!/test=|testSuite=/.test(location.href)) {
+      displayInitialShit()
+      }
+    </script>

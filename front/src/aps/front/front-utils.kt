@@ -16,6 +16,7 @@ import org.w3c.dom.events.Event
 import org.w3c.dom.events.EventTarget
 import kotlin.browser.window
 import kotlin.dom.asList
+import kotlin.properties.Delegates.notNull
 
 val REALLY_BIG_Z_INDEX = 2147483647
 
@@ -219,14 +220,20 @@ inline fun currentJSFunctionName(): String {
 }
 
 class ResolvableShit<T> {
-    lateinit var resolve: (T) -> Unit
-    lateinit var reject: (Throwable) -> Unit
+    var resolve by notNull<(T) -> Unit>()
+    var reject by notNull<(Throwable) -> Unit>()
+    var promise by notNull<Promise<T>>()
 
-    val promise = Promise<T> {resolve, reject ->
-        this.resolve = resolve
-        this.reject = reject
+    init {
+        reset()
     }
 
+    fun reset() {
+        promise = Promise<T> {resolve, reject ->
+            this.resolve = resolve
+            this.reject = reject
+        }
+    }
 }
 
 inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)

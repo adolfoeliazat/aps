@@ -1075,8 +1075,10 @@ object MakeStaticSites {
 
         function displayInitialShit() {
             if (window.storageLocalForStaticContent.getItem('token')) {
+                console.log('displayInitialShit -- token')
                 document.getElementById('ticker').style.display = ''
             } else {
+                console.log('displayInitialShit -- no token')
                 makeSignInNavbarLinkVisible()
                 document.getElementById('staticShit').style.display = ''
                 window.staticShitIsRenderedStatically = true
