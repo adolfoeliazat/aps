@@ -30,18 +30,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/back-visual-capture.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/back-visual-capture.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/chromext/background.js" afterPath="$PROJECT_DIR$/front/chromext/background.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/runAllUnitTests.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/runAllUnitTests.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/const.kt" afterPath="$PROJECT_DIR$/shared/src/aps/const.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-rpc.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-rpc.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -107,11 +100,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="visual-capture.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="visual-capture.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/visual-capture.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="21" column="4" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
+            <state relative-caret-position="312">
+              <caret line="29" column="4" lean-forward="false" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
               <folding>
                 <element signature="e#60#196#0" expanded="true" />
               </folding>
@@ -164,9 +157,22 @@
       <file leaf-file-name="const.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/const.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="632">
-              <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+            <state relative-caret-position="696">
+              <caret line="55" column="4" lean-forward="false" selection-start-line="55" selection-start-column="4" selection-end-line="55" selection-end-column="4" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aps-css.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="155" column="8" lean-forward="false" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#81#152#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -181,7 +187,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestScenarioBuilder.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestScenarioBuilder.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="144">
@@ -190,16 +196,6 @@
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#122#420#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpikeShit.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/spike/SpikeShit.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -323,7 +319,6 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/art.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/diff.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
         <option value="$PROJECT_DIR$/front/chromext/manifest.json" />
         <option value="$PROJECT_DIR$/front/chromext/popup.js" />
         <option value="$PROJECT_DIR$/front/chromext/popup.html" />
@@ -349,14 +344,15 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
         <option value="$PROJECT_DIR$/front/chromext/background.js" />
         <option value="$PROJECT_DIR$/back/src/aps/back/spike/SpikeShit.kt" />
-        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/const.kt" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-rpc.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/back-visual-capture.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/runAllUnitTests.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
+        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/const.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" />
       </list>
     </option>
   </component>
@@ -761,7 +757,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="back-vi&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-visual-capture.kt&#10;front-util&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;spikeshi&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/spike/SpikeShit.kt&#10;capturevisu&#9;null&#9;null&#10;backg&#9;FILE&#9;file://E:/work/aps/front/chromext/background.js&#10;shitid&#9;null&#9;null&#10;righticon&#9;null&#9;null&#10;antmss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;fa&#9;null&#9;null&#10;diffkt&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/diff.kt&#10;spike&#9;null&#9;null&#10;TMP&#9;null&#9;null&#10;serve&#9;null&#9;null&#10;ant-&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;jsonize&#9;null&#9;null&#10;visual&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/visual-capture.kt&#10;ctorna&#9;null&#9;null&#10;jsarray&#9;null&#9;null&#10;jsobject&#9;null&#9;null&#10;privile&#9;null&#9;null&#10;front-&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/rpc-front-glue.kt&#10;jsonprocedure&#9;null&#9;null&#10;privilegedredis&#9;null&#9;null&#10;genericresponse&#9;null&#9;null&#10;back-&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-visual-capture.kt&#10;s-rpc&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-rpc.kt&#10;rp-test&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-test.kt&#10;shared-stu&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-stuff.kt&#10;rpc-g&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/rpc-front-glue.kt&#10;shared-rpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;snippets&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;dejsoni&#9;null&#9;null&#10;alltests&#9;null&#9;null&#10;s-rp&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;frec&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fuckingRemoteCall.kt&#10;remoteproce&#9;null&#9;null&#10;hiddenfield&#9;null&#9;null&#10;fuck&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fuckingRemoteCall.kt&#10;frp_&#9;null&#9;null&#10;jq&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/jquery.kt&#10;htmlelement&#9;null&#9;null&#10;buttonius&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Buttonius.kt&#10;igniteshit&#9;null&#9;null&#10;bufferedimage&#9;PSI&#9;JAVA://java.awt.image.BufferedImage&#10;jquery&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/jquery.kt&#10;diff&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/diff.kt&#10;new-shit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/new-shit.kt&#10;scrollto&#9;null&#9;null&#10;opentestpa&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="elementid&#9;null&#9;null&#10;css&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/aps-css.kt&#10;back-vi&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-visual-capture.kt&#10;front-util&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;spikeshi&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/spike/SpikeShit.kt&#10;capturevisu&#9;null&#9;null&#10;backg&#9;FILE&#9;file://E:/work/aps/front/chromext/background.js&#10;shitid&#9;null&#9;null&#10;righticon&#9;null&#9;null&#10;antmss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;fa&#9;null&#9;null&#10;diffkt&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/diff.kt&#10;spike&#9;null&#9;null&#10;TMP&#9;null&#9;null&#10;serve&#9;null&#9;null&#10;ant-&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;jsonize&#9;null&#9;null&#10;visual&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/visual-capture.kt&#10;ctorna&#9;null&#9;null&#10;jsarray&#9;null&#9;null&#10;jsobject&#9;null&#9;null&#10;privile&#9;null&#9;null&#10;front-&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/rpc-front-glue.kt&#10;jsonprocedure&#9;null&#9;null&#10;privilegedredis&#9;null&#9;null&#10;genericresponse&#9;null&#9;null&#10;back-&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-visual-capture.kt&#10;s-rpc&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-rpc.kt&#10;rp-test&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-test.kt&#10;shared-stu&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-stuff.kt&#10;rpc-g&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/rpc-front-glue.kt&#10;shared-rpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;snippets&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;dejsoni&#9;null&#9;null&#10;alltests&#9;null&#9;null&#10;s-rp&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;frec&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fuckingRemoteCall.kt&#10;remoteproce&#9;null&#9;null&#10;hiddenfield&#9;null&#9;null&#10;fuck&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fuckingRemoteCall.kt&#10;frp_&#9;null&#9;null&#10;jq&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/jquery.kt&#10;htmlelement&#9;null&#9;null&#10;buttonius&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Buttonius.kt&#10;igniteshit&#9;null&#9;null&#10;bufferedimage&#9;PSI&#9;JAVA://java.awt.image.BufferedImage&#10;jquery&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/jquery.kt&#10;diff&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/diff.kt&#10;new-shit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/new-shit.kt" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
   </component>
   <component name="Push.Settings">
@@ -1155,13 +1151,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00150" summary="vovagrechka/aps#32">
-      <created>1482074959263</created>
-      <option name="number" value="00150" />
-      <option name="presentableId" value="LOCAL-00150" />
-      <option name="project" value="LOCAL" />
-      <updated>1482074959264</updated>
-    </task>
     <task id="LOCAL-00151" summary="vovagrechka/aps#32">
       <created>1482078825634</created>
       <option name="number" value="00151" />
@@ -1498,7 +1487,14 @@
       <option name="project" value="LOCAL" />
       <updated>1483001581713</updated>
     </task>
-    <option name="localTasksCounter" value="199" />
+    <task id="LOCAL-00199" summary="Fucking around with automated visual testing">
+      <created>1483011586677</created>
+      <option name="number" value="00199" />
+      <option name="presentableId" value="LOCAL-00199" />
+      <option name="project" value="LOCAL" />
+      <updated>1483011586679</updated>
+    </task>
+    <option name="localTasksCounter" value="200" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2031,17 +2027,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1824">
-          <caret line="82" column="16" lean-forward="false" selection-start-line="82" selection-start-column="16" selection-end-line="82" selection-end-column="16" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#81#152#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -2073,14 +2058,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
           <caret line="231" column="13" lean-forward="false" selection-start-line="231" selection-start-column="13" selection-end-line="231" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/const.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2131,16 +2108,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/visual-capture.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="21" column="4" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
-          <folding>
-            <element signature="e#60#196#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -2148,6 +2115,35 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#122#420#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/const.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="696">
+          <caret line="55" column="4" lean-forward="false" selection-start-line="55" selection-start-column="4" selection-end-line="55" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="155" column="8" lean-forward="false" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#81#152#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/visual-capture.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="29" column="4" lean-forward="false" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
+          <folding>
+            <element signature="e#60#196#0" expanded="true" />
           </folding>
         </state>
       </provider>

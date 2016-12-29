@@ -55,6 +55,7 @@ object const {
 
     object elementID {
         val dynamicFooter = "dynamicFooter"
+        val cutLineContainer = "cutLineContainer"
     }
 }
 

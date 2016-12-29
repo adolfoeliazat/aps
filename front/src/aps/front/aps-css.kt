@@ -152,6 +152,15 @@ object css {
 
         val assertionErrorPane by Style("""
         """)
+
+        val cutLine by Style("""
+            width: 100vw;
+            height: 1px;
+            position: absolute;
+            left: 0px;
+            background-color: #ff00ff;
+            z-index: 100000;
+        """)
     }
 
     val errorBanner by Style("""

@@ -20,12 +20,24 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
 }
 
 fun captureVisualShit(id: String): Promise<Unit> = async {
-    byid(const.elementID.dynamicFooter).css("display", "none")
-    val origScrollY = window.scrollY
-
     val documentHeight: Double = document.documentElement!!.asDynamic().offsetHeight
     val windowHeight: Double = window.asDynamic().innerHeight
     clog("documentHeight = $documentHeight; windowHeight = $windowHeight")
+
+    byid(const.elementID.dynamicFooter).css("display", "none")
+    val origScrollY = window.scrollY
+
+    run { // Purple cut lines
+        jqbody.append("<div id='${const.elementID.cutLineContainer}'></div>")
+        var y = 0.0
+        while (y < documentHeight) {
+            byid(const.elementID.cutLineContainer).append(
+                // Moving from bottom in order to prevent accidental document height growth
+                "<div class='${css.test.cutLine}' style='bottom: ${y}px;'></div>")
+            y += windowHeight
+        }
+    }
+
     val shots = mutableListOf<BrowserShot>()
 
     while (true) {
@@ -57,6 +69,7 @@ fun captureVisualShit(id: String): Promise<Unit> = async {
     }))
     clog("Sent captured shit to backend")
 
+    byid(const.elementID.cutLineContainer).remove()
     window.scroll(0.0, origScrollY)
     byid(const.elementID.dynamicFooter).css("display", "")
     Unit
