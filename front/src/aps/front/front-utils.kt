@@ -254,7 +254,7 @@ fun scrollBodyToShitGradually(dy: Int = 0, bursts: Int = 8, getShit: () -> JQuer
     await(tillAnimationFrame())
     val shit = getShit()
 
-    val targetTop = shit.offset().top - const.pageHeaderHeight + dy
+    val targetTop = shit.offset().top - const.topNavbarHeight + dy
     val startTop = jqbody.scrollTop()
     for (i in 1..bursts) {
         await(tillAnimationFrame())

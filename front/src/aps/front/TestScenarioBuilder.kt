@@ -219,6 +219,8 @@ class TestScenarioBuilder {
                             }
 
                             actual != expected -> {
+                                await(captureVisualShit(assertionID))
+
                                 val pane = debugPanes.put(byid(ELID_UNDER_FOOTER), kdiv(
                                     id = "fuckingDiff",
                                     backgroundColor = RED_700, color = WHITE, marginTop = 10, padding = "10px 10px",
@@ -237,7 +239,6 @@ class TestScenarioBuilder {
                                 })
 
                                 try {
-                                    await(captureVisualShit(assertionID))
                                     await(showBanner(
                                         css.test.popup.assertion.incorrect,
                                         renderSpecificButtons = {o->

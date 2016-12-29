@@ -19,11 +19,11 @@ private fun test3() {
         o.shots = listOf(
             BrowserShot()-{o->
                 o.dataURL = "fucking data 1"
-                o.windowScrollY = 10
+                o.windowScrollY = 10.0
             },
             BrowserShot()-{o->
                 o.dataURL = "fucking data 2"
-                o.windowScrollY = 20
+                o.windowScrollY = 20.0
             }
         )
     }

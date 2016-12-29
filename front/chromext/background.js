@@ -5,7 +5,7 @@ chrome.runtime.onConnect.addListener(port => {
         // Ex: window.postMessage({type: 'captureVisualShit'}, '*')
         if (msg.type === 'captureVisualShit') {
             chrome.tabs.captureVisibleTab({format: 'png'}, dataURL => {
-                console.log('A piece of captured shit', dataURL.slice(0, 100))
+                // console.log('A piece of captured shit', dataURL.slice(0, 100))
                 port.postMessage({type: 'visualShitCaptured', dataURL})
             })
         }

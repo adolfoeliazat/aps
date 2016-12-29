@@ -84,11 +84,11 @@ private fun runMochka.describeUtils() {
                         o.shots = listOf(
                             BrowserShot()-{o->
                                 o.dataURL = "fucking data 1"
-                                o.windowScrollY = 101
+                                o.windowScrollY = 101.0
                             },
                             BrowserShot()-{o->
                                 o.dataURL = "fucking data 2"
-                                o.windowScrollY = 20
+                                o.windowScrollY = 20.0
                             }
                         )
                     },

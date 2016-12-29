@@ -4,7 +4,7 @@ import kotlin.properties.Delegates.notNull
 
 class BrowserShot {
     var dataURL by notNull<String>()
-    var windowScrollY by notNull<Int>()
+    var windowScrollY by notNull<Double>()
 }
 
 class VisualShitCapturedRequest {
