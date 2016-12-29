@@ -287,8 +287,11 @@ fun touchObjectGraph(parent: dynamic) {
     }
 }
 
+fun Double.toPhysicalPixels(): Int = Math.round(this * window.devicePixelRatio)
 
+fun Int.toLayoutPixels(): Double = this / window.devicePixelRatio
 
+fun tillHourPasses(): Promise<Unit> = delay(1000 * 60 * 60)
 
 
 

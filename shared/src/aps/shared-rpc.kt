@@ -5,14 +5,18 @@ import kotlin.properties.Delegates.notNull
 class BrowserShot {
     var dataURL by notNull<String>()
     var windowScrollY by notNull<Double>()
+    var windowScrollYPhysical by notNull<Int>()
 }
 
 class VisualShitCapturedRequest {
-
     class Reponse
 
     var id by notNull<String>()
     var shots by notNull<List<BrowserShot>>()
+    var devicePixelRatio by notNull<Double>()
+    var headerHeight by notNull<Double>()
+    var contentWidth by notNull<Double>()
+    var contentLeft by notNull<Double>()
 }
 
 class JsonProcedureRequest : RequestMatumba() {

@@ -28,6 +28,7 @@ fun JQuery.remove(): String = this.asDynamic().remove()
 val JQuery.length: Int get() = this.asDynamic().length
 fun JQuery.css(prop: String, value: Any?): JQuery = this.asDynamic().css(prop, value)
 fun JQuery.setVal(value: String?): JQuery = this.asDynamic().`val`(value)
+fun JQuery.outerWidth(): Double = this.asDynamic().outerWidth()
 
 val jqbody: JQuery get() = jq(document.body!!)
 
