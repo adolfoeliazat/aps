@@ -19,8 +19,9 @@ import kotlin.browser.*
 }
 
 operator fun JQuery.get(index: Int): HTMLElement? = this.asDynamic()[index]
+fun JQuery.scrollTop(value: Double): Unit = this.asDynamic().scrollTop(value)
 fun JQuery.scrollTop(value: Int): Unit = this.asDynamic().scrollTop(value)
-fun JQuery.scrollTop(): Int = this.asDynamic().scrollTop()
+fun JQuery.scrollTop(): Double = this.asDynamic().scrollTop()
 fun JQuery.offset(): JQueryPosition = this.asDynamic().offset()
 fun JQuery.text(): String = this.asDynamic().text()
 fun JQuery.remove(): String = this.asDynamic().remove()

@@ -19,33 +19,43 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
     visualShitCaptured.resolve(data)
 }
 
+fun Double.toPhysicalPixels(): Int = Math.round(this * window.devicePixelRatio)
+
+fun Int.toLayoutPixels(): Double = this / window.devicePixelRatio
+
 fun captureVisualShit(id: String): Promise<Unit> = async {
     val documentHeight: Double = document.documentElement!!.asDynamic().offsetHeight
+    val documentHeightPhysical: Int = documentHeight.toPhysicalPixels()
     val windowHeight: Double = window.asDynamic().innerHeight
-    clog("documentHeight = $documentHeight; windowHeight = $windowHeight")
+    val windowHeightPhysical: Int = windowHeight.toPhysicalPixels()
+    val topNavbarHeightPhysical: Int = const.topNavbarHeight.toPhysicalPixels()
+    val scrollStepPhysical: Int = windowHeightPhysical - topNavbarHeightPhysical
+    clog("documentHeight = $documentHeight; documentHeightPhysical = $documentHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
 
     byid(const.elementID.dynamicFooter).css("display", "none")
     val origScrollY = window.scrollY
 
     run { // Purple cut lines
         jqbody.append("<div id='${const.elementID.cutLineContainer}'></div>")
-        var y = 0.0
-        while (y < documentHeight) {
+        var yPhysical = topNavbarHeightPhysical
+        while (yPhysical < documentHeightPhysical) {
             byid(const.elementID.cutLineContainer).append(
-                // Moving from bottom in order to prevent accidental document height growth
-                "<div class='${css.test.cutLine}' style='bottom: ${y}px;'></div>")
-            y += windowHeight
+                "<div class='${css.test.cutLine}' style='top: ${yPhysical.toLayoutPixels()}px; height: ${1.0 / window.devicePixelRatio}px'></div>")
+            byid(const.elementID.cutLineContainer).append(
+                "<div class='${css.test.cutLine}' style='top: ${(yPhysical + scrollStepPhysical - 1).toLayoutPixels()}px; height: ${1.0 / window.devicePixelRatio}px'></div>")
+            yPhysical += scrollStepPhysical
         }
     }
+    await(delay(60 * 60 * 1000))
 
     val shots = mutableListOf<BrowserShot>()
 
     while (true) {
-        // await(delay(5000))
         if (shots.size == 10) bitch("Too many fucking chunks to shoot")
 
         var requestedY = shots.size * windowHeight
         if (shots.size > 0) requestedY -= const.topNavbarHeight
+        requestedY -= 10 // killme
         window.scroll(0.0, requestedY)
         clog("Shooting at $requestedY (${window.scrollY})")
 

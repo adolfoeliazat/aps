@@ -44,7 +44,7 @@ object const {
         val maxDetailsLen = common.maxDetailsLen
     }
 
-    val topNavbarHeight = 50
+    val topNavbarHeight = 50.0
 
     object urlq {
         object test {
