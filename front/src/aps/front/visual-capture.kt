@@ -30,6 +30,7 @@ fun captureVisualShit(id: String): Promise<Unit> = async {
     clog("documentHeight = $documentHeight; documentHeightPhysical = $documentHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
 
     byid(const.elementID.dynamicFooter).css("display", "none")
+    jq("#footer div").css("border-color", "purple") // killme
     val origScrollY = window.scrollY
 
     val drawPurpleLines = false

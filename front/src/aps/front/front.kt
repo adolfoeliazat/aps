@@ -678,12 +678,12 @@ fun span(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
 }
 
 
-@native val console: NativeConsole
-@native interface NativeConsole {
-    fun log(vararg args: Any?)
-    fun warn(vararg args: Any?)
-    fun error(vararg args: Any?)
-}
+//@native val console: NativeConsole = noImpl
+//@native interface NativeConsole {
+//    fun log(vararg args: Any?)
+//    fun warn(vararg args: Any?)
+//    fun error(vararg args: Any?)
+//}
 
 fun Map<String, Any?>.toJSObject(): dynamic {
     val obj = js("({})")
