@@ -21,7 +21,11 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
 }
 
 fun captureVisualShit(id: String): Promise<Unit> = async {
-    jqbody.css("padding-bottom", "1px") // killme
+    check(window.devicePixelRatio == 1.25 && window.innerWidth == 1008) {
+        "I am designed for window.devicePixelRatio = 1.25 && window.innerWidth == 1008. " +
+        "Otherwise there are tiny little differences in rendering of, for example, rounded corners, etc."
+    }
+
     var documentHeight by notNull<Double>()
     var documentHeightPhysicalDouble by notNull<Double>()
     var isHeightGood by notNull<Boolean>()
@@ -54,7 +58,6 @@ fun captureVisualShit(id: String): Promise<Unit> = async {
     clog("documentHeight = $documentHeight; documentHeightPhysicalDouble = $documentHeightPhysicalDouble; documentHeightPhysical = $documentHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
 
     byid(const.elementID.dynamicFooter).css("display", "none")
-//    jq("#footer div").css("border-color", "purple") // killme
     val origScrollY = window.scrollY
 
     val drawPurpleLines = false
@@ -97,6 +100,7 @@ fun captureVisualShit(id: String): Promise<Unit> = async {
         clog("oldY = $oldY; window.scrollY = ${window.scrollY}; dy = $dy")
         if (dy < 0.001) break
     }
+
     await(send(VisualShitCapturedRequest()-{o->
         o.id = shitID
         o.shots = shots
