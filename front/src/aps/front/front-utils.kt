@@ -287,7 +287,9 @@ fun touchObjectGraph(parent: dynamic) {
     }
 }
 
-fun Double.toPhysicalPixels(): Int = Math.round(this * window.devicePixelRatio)
+fun Double.toPhysicalPixelsDouble(): Double = this * window.devicePixelRatio
+
+fun Double.toPhysicalPixels(): Int = Math.round(toPhysicalPixelsDouble())
 
 fun Int.toLayoutPixels(): Double = this / window.devicePixelRatio
 

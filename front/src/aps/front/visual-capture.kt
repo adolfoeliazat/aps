@@ -21,16 +21,40 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
 }
 
 fun captureVisualShit(id: String): Promise<Unit> = async {
-    val documentHeight: Double = document.documentElement!!.asDynamic().offsetHeight
+    jqbody.css("padding-bottom", "1px") // killme
+    var documentHeight by notNull<Double>()
+    var documentHeightPhysicalDouble by notNull<Double>()
+    var isHeightGood by notNull<Boolean>()
+
+    fun determineHeight(original: Boolean = false) {
+        documentHeight = document.documentElement!!.asDynamic().offsetHeight
+        documentHeightPhysicalDouble = documentHeight.toPhysicalPixelsDouble()
+        isHeightGood = Math.floor(documentHeightPhysicalDouble) == Math.ceil(documentHeightPhysicalDouble)
+        if (original) {
+            clog("Original: documentHeight = $documentHeight; documentHeightPhysicalDouble = $documentHeightPhysicalDouble; isHeightGood = $isHeightGood")
+        }
+    }
+
+    determineHeight(original = true)
+    if (!isHeightGood) {
+        for (extraBottomMargin in 1..10) {
+            jqbody.css("margin-bottom", "${extraBottomMargin}px")
+            determineHeight()
+            if (isHeightGood)
+                break
+        }
+    }
+    check(isHeightGood) {"Fucky document height"}
+
     val documentHeightPhysical: Int = documentHeight.toPhysicalPixels()
     val windowHeight: Double = window.asDynamic().innerHeight
     val windowHeightPhysical: Int = windowHeight.toPhysicalPixels()
     val topNavbarHeightPhysical: Int = const.topNavbarHeight.toPhysicalPixels()
     val scrollStepPhysical: Int = windowHeightPhysical - topNavbarHeightPhysical
-    clog("documentHeight = $documentHeight; documentHeightPhysical = $documentHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
+    clog("documentHeight = $documentHeight; documentHeightPhysicalDouble = $documentHeightPhysicalDouble; documentHeightPhysical = $documentHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
 
     byid(const.elementID.dynamicFooter).css("display", "none")
-    jq("#footer div").css("border-color", "purple") // killme
+//    jq("#footer div").css("border-color", "purple") // killme
     val origScrollY = window.scrollY
 
     val drawPurpleLines = false
@@ -80,9 +104,11 @@ fun captureVisualShit(id: String): Promise<Unit> = async {
         o.headerHeight = const.topNavbarHeight
         o.contentWidth = jq("#topNavbarContainer > nav > .container").outerWidth()
         o.contentLeft = jq("#topNavbarContainer > nav > .container").offset().left.toDouble()
+        o.documentHeightPhysical = documentHeightPhysical
     }))
     clog("Sent captured shit to backend")
 
+    jqbody.css("margin-bottom", "0px")
     byid(const.elementID.cutLineContainer).remove()
     window.scroll(0.0, origScrollY)
     byid(const.elementID.dynamicFooter).css("display", "")

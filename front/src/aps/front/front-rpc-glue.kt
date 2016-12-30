@@ -49,7 +49,7 @@ fun send(req: PingRequest): Promise<FormResponse2<GenericResponse>> =
 fun send(req: DeleteRequest): Promise<ZimbabweResponse<DeleteRequest.Response>> =
     callZimbabwe(req, Globus.world.token)
 
-fun send(req: VisualShitCapturedRequest): Promise<VisualShitCapturedRequest.Reponse> =
+fun send(req: VisualShitCapturedRequest): Promise<VisualShitCapturedRequest.Response> =
     sendDangerousJSONProcedure(req)
 
 
