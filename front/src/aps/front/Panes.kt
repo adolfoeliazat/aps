@@ -12,7 +12,7 @@ import jquery.jq
 import kotlin.browser.document
 
 val panes = Panes("pane-")
-val debugPanes = Panes("debugPane-")
+val debugPanes = Panes("debugPane-") // TODO:vgrechka Add some option to prevent accidental showing of this in release builds
 
 class Panes(val idPrefix: String) {
     val names = mutableSetOf<String>()

@@ -210,6 +210,7 @@ class TestScenarioBuilder {
                     var bannerPause by notNull<ResolvableShit<Unit>>()
                     var verticalPosition = VerticalPosition.BOTTOM
                     var horizontalPosition = HorizontalPosition.LEFT
+                    var visualDiffPane by notNull<String>()
 
                     val shit = async {
                         when {
@@ -285,7 +286,20 @@ class TestScenarioBuilder {
                     }
 
                     fun openVisualDiff() {
-                        dwarnStriking("viiiiiiiiiiiiiiiiiiii")
+                        visualDiffPane = debugPanes.put(kdiv(className = css.test.popup.imageViewer.pane){o->
+                            o- kdiv(className = css.test.popup.imageViewer.title){o->
+                                o- kdiv(marginBottom = "0.5rem"){o->
+                                    o- Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
+                                        bannerPause.resolve()
+                                    })
+                                    o- Button(icon = fa.bomb, style = bannerButtonStyle, onClick = {
+                                        bannerPause.reject(Exception("Fucking killed"))
+                                    })
+                                }
+                            }
+                            o- kdiv(className = css.test.popup.imageViewer.content){o->
+                            }
+                        })
                     }
 
                     fun showBanner(className: String, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
