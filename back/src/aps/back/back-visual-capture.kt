@@ -11,12 +11,18 @@ import java.util.*
 import javax.imageio.ImageIO
 import kotlin.properties.Delegates.notNull
 
+private class CapturedShit(
+    val id: String,
+    val image: BufferedImage
+)
+
+private @Volatile var capturedShit: CapturedShit? = null
+
 fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCapturedRequest.Response {
-    // TODO:vgrechka Think about width
     fun toPhysicalPixels(x: Double) = Math.round(x * req.devicePixelRatio).toInt()
 
     val imgs = mutableListOf<BufferedImage>()
-    val shebangWidth = toPhysicalPixels(req.contentWidth) // TODO:vgrechka Determine visually
+    val shebangWidth = toPhysicalPixels(req.contentWidth)
     var headerHeightPhysical by notNull<Int>()
     for ((i, shot) in req.shots.withIndex()) {
         val dataURL = shot.dataURL
@@ -26,7 +32,7 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
             ImageIO.read(it)
         }
         imgs += img
-        File("$APS_TEMP/visual-capture/${req.id}--$i.png").writeBytes(bytes)
+        // File("$APS_TEMP/visual-capture/${req.id}--$i.png").writeBytes(bytes)
 
         if (i == 0) {
             headerHeightPhysical = 0
@@ -37,14 +43,17 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
         }
     }
 
-    val shebang = BufferedImage(shebangWidth, req.documentHeightPhysical, imgs.first().type)
+    val shebang = BufferedImage(shebangWidth, req.documentHeightPhysical, BufferedImage.TYPE_INT_ARGB)
     val g = shebang.createGraphics()
-    g.color = Color.PINK
-    g.fillRect(0, 0, shebangWidth - 1, req.documentHeightPhysical - 1)
-    g.stroke = BasicStroke(3F)
-    g.color = Color.GREEN
-    g.drawLine(0, 0, shebangWidth - 1, req.documentHeightPhysical - 1)
-    g.drawLine(shebangWidth - 1, 0, 0, req.documentHeightPhysical - 1)
+    val drawSomeShit = true
+    if (drawSomeShit) {
+        g.color = Color.PINK
+        g.fillRect(0, 0, shebangWidth - 1, req.documentHeightPhysical - 1)
+        g.stroke = BasicStroke(3F)
+        g.color = Color.GREEN
+        g.drawLine(0, 0, shebangWidth - 1, req.documentHeightPhysical - 1)
+        g.drawLine(shebangWidth - 1, 0, 0, req.documentHeightPhysical - 1)
+    }
 
     var targetY = 0
     var heightLeft = req.documentHeightPhysical
@@ -73,9 +82,34 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
         heightLeft -= cropHeight
     }
 
-    ImageIO.write(shebang, "PNG", File("$APS_TEMP/visual-capture/shebang.png"))
-    return VisualShitCapturedRequest.Response()
+    capturedShit = CapturedShit(req.id, shebang)
+
+    return VisualShitCapturedRequest.Response(
+        prevCaptureExists = imageFile(req.id).exists()
+    )
 }
+
+fun serveSaveCapturedVisualShitRequest(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequest.Response {
+    val shit = capturedShit ?: bitch("No shit was captured")
+    ImageIO.write(shit.image, "PNG", imageFile(shit.id))
+    return SaveCapturedVisualShitRequest.Response()
+}
+
+private fun imageFile(id: String) = File("$APS_TEMP/visual-capture/$id.png")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

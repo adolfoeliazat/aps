@@ -10,8 +10,9 @@ import into.kommon.*
         val mr = Regex("^\\{\"\\\$\\\$\\\$class\":\\s*\"([^\"]*)\"").find(reqJSON) ?: wtf("Cannot figure out request class name from JSON")
         val requestClassName = mr.groupValues[1]
         val requestClass = Class.forName(requestClassName)
-        val res = when (requestClass) {
+        val res: Any = when (requestClass) {
             VisualShitCapturedRequest::class.java -> serveVisualShitCapturedRequest(shittyObjectMapper.readValue(reqJSON, VisualShitCapturedRequest::class.java))
+            SaveCapturedVisualShitRequest::class.java -> serveSaveCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, SaveCapturedVisualShitRequest::class.java))
             else -> wtf("requestClass: $requestClass")
         }
         val resJSON = shittyObjectMapper.writeValueAsString(res)

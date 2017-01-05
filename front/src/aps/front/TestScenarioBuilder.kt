@@ -204,7 +204,10 @@ class TestScenarioBuilder {
 
             if (TestGlobal.lastTestOpts.stopOnAssertions) {
                 await(object {
+                    val bannerButtonStyle = Style(marginRight = "0.5rem")
+
                     var banner by notNull<Control2>()
+                    var bannerPause by notNull<ResolvableShit<Unit>>()
                     var verticalPosition = VerticalPosition.BOTTOM
                     var horizontalPosition = HorizontalPosition.LEFT
 
@@ -219,7 +222,7 @@ class TestScenarioBuilder {
                             }
 
                             actual != expected -> {
-                                await(captureVisualShit(assertionID))
+                                val cap = await(captureVisualShit(assertionID))
 
                                 val pane = debugPanes.put(byid(ELID_UNDER_FOOTER), kdiv(
                                     id = "fuckingDiff",
@@ -242,13 +245,21 @@ class TestScenarioBuilder {
                                     await(showBanner(
                                         css.test.popup.assertion.incorrect,
                                         renderSpecificButtons = {o->
-                                            o- Button(title = "Diff", style = Style(marginRight = "1rem"), onClick = {
+                                            o- Button(title = "Diff", style = bannerButtonStyle, onClick = {
                                                 verticalPosition = VerticalPosition.TOP
                                                 horizontalPosition = HorizontalPosition.LEFT
                                                 banner.update()
 //                                                byid("fuckingDiff").scrollBodyToShit()
                                                 nextDiff().scrollBodyToShit(dy = -70)
                                             })
+                                            o- Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {async<Unit>{
+                                                openVisualDiff()
+                                            }})
+                                            o- Button(title = "Accept", style = bannerButtonStyle, onClicka = {async<Unit>{
+                                                await(send(SaveCapturedVisualShitRequest()))
+                                                clog("Saved captured visual shit")
+                                                bannerPause.resolve()
+                                            }})
                                         }))
                                 } finally {
                                     debugPanes.remove(pane)
@@ -273,8 +284,12 @@ class TestScenarioBuilder {
                         return jq(diffElements[diffIndex]!!)
                     }
 
+                    fun openVisualDiff() {
+                        dwarnStriking("viiiiiiiiiiiiiiiiiiii")
+                    }
+
                     fun showBanner(className: String, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
-                        val shit = ResolvableShit<Unit>()
+                        bannerPause = ResolvableShit<Unit>()
                         banner = Control2.from {
                             val style = Style()
                             exhaustive/when (verticalPosition) {
@@ -287,18 +302,18 @@ class TestScenarioBuilder {
                             }
                             kdiv(className = className, baseStyle = style){o->
                                 o- kdiv(marginBottom = "0.5rem"){o->
-                                    o- Button(icon = fa.play, style = Style(marginRight = "1rem"), onClick = {
-                                        shit.resolve(Unit)
+                                    o- Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
+                                        bannerPause.resolve()
                                     })
-                                    o- Button(icon = fa.bomb, style = Style(marginRight = "1rem"), onClick = {
-                                        shit.reject(Exception("Fucking killed"))
+                                    o- Button(icon = fa.bomb, style = bannerButtonStyle, onClick = {
+                                        bannerPause.reject(Exception("Fucking killed"))
                                     })
                                     o- Button(
                                         icon = when (verticalPosition) {
                                             VerticalPosition.TOP -> fa.arrowDown
                                             VerticalPosition.BOTTOM -> fa.arrowUp
                                         },
-                                        style = Style(marginRight = "1rem"),
+                                        style = bannerButtonStyle,
                                         onClick = {
                                             verticalPosition = when (verticalPosition) {
                                                 VerticalPosition.TOP -> VerticalPosition.BOTTOM
@@ -311,7 +326,7 @@ class TestScenarioBuilder {
                                             HorizontalPosition.LEFT -> fa.arrowRight
                                             HorizontalPosition.RIGHT -> fa.arrowLeft
                                         },
-                                        style = Style(marginRight = "1rem"),
+                                        style = bannerButtonStyle,
                                         onClick = {
                                             horizontalPosition = when (horizontalPosition) {
                                                 HorizontalPosition.LEFT -> HorizontalPosition.RIGHT
@@ -329,13 +344,13 @@ class TestScenarioBuilder {
                         fun keyListener(e: Event) {
                             e as KeyboardEvent
                             if (e.key == " ") {
-                                shit.resolve(Unit)
+                                bannerPause.resolve()
                             }
                         }
                         window.addEventListener("keydown", ::keyListener)
 
                         try {
-                            await(shit.promise)
+                            await(bannerPause.promise)
                         } finally {
                             window.removeEventListener("keydown", ::keyListener)
                             debugPanes.remove(pane)

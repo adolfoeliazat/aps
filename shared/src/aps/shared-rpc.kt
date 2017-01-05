@@ -9,7 +9,7 @@ class BrowserShot {
 }
 
 class VisualShitCapturedRequest {
-    class Response
+    class Response(prevCaptureExists: Boolean)
 
     var id by notNull<String>()
     var shots by notNull<List<BrowserShot>>()
@@ -18,6 +18,10 @@ class VisualShitCapturedRequest {
     var contentWidth by notNull<Double>()
     var contentLeft by notNull<Double>()
     var documentHeightPhysical by notNull<Int>()
+}
+
+class SaveCapturedVisualShitRequest {
+    class Response
 }
 
 class JsonProcedureRequest : RequestMatumba() {

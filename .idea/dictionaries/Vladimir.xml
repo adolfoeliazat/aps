@@ -15,6 +15,7 @@
       <w>bmix</w>
       <w>bobul</w>
       <w>browserify</w>
+      <w>byid</w>
       <w>bytea</w>
       <w>cancela</w>
       <w>ceiled</w>
@@ -133,6 +134,7 @@
       <w>uninit</w>
       <w>unrendered</w>
       <w>userprofile</w>
+      <w>vdiff</w>
       <w>wrappee</w>
       <w>yaml</w>
     </words>

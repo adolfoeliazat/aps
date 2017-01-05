@@ -52,6 +52,9 @@ fun send(req: DeleteRequest): Promise<ZimbabweResponse<DeleteRequest.Response>> 
 fun send(req: VisualShitCapturedRequest): Promise<VisualShitCapturedRequest.Response> =
     sendDangerousJSONProcedure(req)
 
+fun send(req: SaveCapturedVisualShitRequest): Promise<SaveCapturedVisualShitRequest.Response> =
+    sendDangerousJSONProcedure(req)
+
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {
     val jpreq = JsonProcedureRequest()-{o->

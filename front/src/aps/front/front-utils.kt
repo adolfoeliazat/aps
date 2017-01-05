@@ -236,6 +236,8 @@ class ResolvableShit<T> {
     }
 }
 
+fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
+
 inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
 
 object frontSymbols {

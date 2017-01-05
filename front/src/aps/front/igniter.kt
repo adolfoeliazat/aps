@@ -48,6 +48,7 @@ fun ignite() {
     global.Shitus = Shitus
 
     igniteShit()
+    igniteDebugShit()
 }
 
 fun igniteShit(): Promise<Unit> {"__async"

@@ -1,6 +1,8 @@
 package aps.front
 
 import aps.*
+import kotlin.browser.document
+import kotlin.browser.window
 
 fun dumpShames() {
     for ((shame, ctrl) in TestGlobal.shameToControl) {
@@ -18,4 +20,27 @@ fun dumpControls() {
     for (key in Select.instances.keys) clog("Select: $key")
     for (key in kic.instances.keys) clog("kic: $key")
 }
+
+fun igniteDebugShit() = async {
+    await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
+    Button.instance("assertionBanner-play").click()
+    await(tillBodyHTMLContains("Assertion: 1"))
+    Button.instance("assertionBanner-vdiff").click()
+}
+
+private fun tillBodyHTMLContains(needle: String): Promise<Unit> = async {
+    while (true) {
+        if (document.body!!.innerHTML.contains(needle))
+            break
+        else
+            await(delay(500))
+    }
+}
+
+
+
+
+
+
+
 

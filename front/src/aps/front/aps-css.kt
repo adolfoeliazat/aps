@@ -148,6 +148,16 @@ object css {
                     padding: 0.2rem;
                     z-index: 100000;""")
             }
+
+            val popupImageViewer by Style("""
+                position: fixed;
+                width: 90vw;
+                height: 100px;
+                left: 5vw;
+                top: 2rem;
+                background-color: pink;
+                z-index: 1000000;
+            """)
         }
 
         val assertionErrorPane by Style("""

@@ -157,7 +157,8 @@ data class Style(
     var borderTopLeftRadius: Any? = null,
     var borderTopRightRadius: Any? = null,
     var zIndex: Any? = null,
-    var alignItems: String? = null
+    var alignItems: String? = null,
+    var transform: String? = null
 ) {
     fun toReactStyle(): dynamic {
         return dyna{o->
@@ -209,6 +210,7 @@ data class Style(
             borderTopRightRadius?.let {o.borderTopRightRadius = it}
             zIndex?.let {o.zIndex = it}
             alignItems?.let {o.alignItems = it}
+            transform?.let {o.transform = it}
         }
     }
 

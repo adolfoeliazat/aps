@@ -17,7 +17,7 @@ import into.kommon.*
 //fun die(msg: String = "You killed me, motherfucker..."): Nothing = throw JSException(msg)
 
 inline fun clog(vararg xs: Any?): Unit = global.console.log.apply(global.console, xs.toList().toJSArray())
-inline fun cwarn(vararg xs: dynamic) = global.console.warn.apply(global.console, xs.toList().toJSArray())
+inline fun cwarn(vararg xs: dynamic): Unit = global.console.warn.apply(global.console, xs.toList().toJSArray())
 
 inline fun dlog(vararg xs: dynamic) = clog("[DEBUG]", *xs)
 inline fun dwarn(vararg xs: dynamic) = cwarn("[DEBUG]", *xs)

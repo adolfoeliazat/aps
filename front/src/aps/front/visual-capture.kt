@@ -20,7 +20,7 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
     visualShitCaptured.resolve(data)
 }
 
-fun captureVisualShit(id: String): Promise<Unit> = async {
+fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> = async {
     check(window.devicePixelRatio == 1.25 && window.innerWidth == 1008) {
         "I am designed for window.devicePixelRatio = 1.25 && window.innerWidth == 1008. " +
         "Otherwise there are tiny little differences in rendering of, for example, rounded corners, etc."
@@ -82,6 +82,7 @@ fun captureVisualShit(id: String): Promise<Unit> = async {
         val requestedYPhysical = shots.size * scrollStepPhysical
         val requestedY = requestedYPhysical.toLayoutPixels()
         window.scroll(0.0, requestedY)
+        await(delay(100)) // Fucking Chrome...
         clog("Shooting at $requestedY (window.scrollY = ${window.scrollY}; requestedYPhysical = $requestedYPhysical)")
 
         visualShitCaptured.reset()
@@ -98,10 +99,11 @@ fun captureVisualShit(id: String): Promise<Unit> = async {
         window.scroll(0.0, oldY + 1)
         val dy = Math.abs(oldY - window.scrollY)
         clog("oldY = $oldY; window.scrollY = ${window.scrollY}; dy = $dy")
-        if (dy < 0.001) break
+        if (dy < 0.001)
+            break
     }
 
-    await(send(VisualShitCapturedRequest()-{o->
+    val res = await(send(VisualShitCapturedRequest()-{o->
         o.id = shitID
         o.shots = shots
         o.devicePixelRatio = window.devicePixelRatio
@@ -116,14 +118,11 @@ fun captureVisualShit(id: String): Promise<Unit> = async {
     byid(const.elementID.cutLineContainer).remove()
     window.scroll(0.0, origScrollY)
     byid(const.elementID.dynamicFooter).css("display", "")
-    Unit
+
+    res
 }
 
 
-
-//fun spikeCaptureVisualShit() {
-//    captureVisualShit()
-//}
 
 
 
