@@ -209,6 +209,12 @@ class TestScenarioBuilder {
                     var verticalPosition = VerticalPosition.BOTTOM
                     var horizontalPosition = HorizontalPosition.LEFT
 
+                    fun acceptCurrentShit(): Promise<Unit> = async {
+                        await(send(SaveCapturedVisualShitRequest()))
+                        clog("Saved captured visual shit")
+                        bannerPause.resolve()
+                    }
+
                     val shit = async {
                         when {
                             expected == null -> {
@@ -220,8 +226,6 @@ class TestScenarioBuilder {
                             }
 
                             actual != expected -> {
-                                val cap = await(captureVisualShit(assertionID))
-
                                 val pane = debugPanes.put(byid(ELID_UNDER_FOOTER), kdiv(
                                     id = "fuckingDiff",
                                     backgroundColor = RED_700, color = WHITE, marginTop = 10, padding = "10px 10px",
@@ -253,11 +257,7 @@ class TestScenarioBuilder {
                                             o- Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {async<Unit>{
                                                 openVisualDiff()
                                             }})
-                                            o- Button(icon = fa.check, style = bannerButtonStyle, onClicka = {async<Unit>{
-                                                await(send(SaveCapturedVisualShitRequest()))
-                                                clog("Saved captured visual shit")
-                                                bannerPause.resolve()
-                                            }})
+                                            o- Button(key = "assertionBanner-accept", icon = fa.check, style = bannerButtonStyle, onClicka = this::acceptCurrentShit)
                                             o- rerunTestButton()
                                         }))
                                 } finally {
@@ -404,7 +404,10 @@ class TestScenarioBuilder {
                         }}
 
                         init {
-                            visualDiffPane = debugPanes.put(ctrl)
+                            async {
+                                await(captureVisualShit(assertionID))
+                                visualDiffPane = debugPanes.put(ctrl)
+                            }
                         }
                     }
 

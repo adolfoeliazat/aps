@@ -20,7 +20,7 @@ class Panes(val idPrefix: String) {
     fun put(name: String, parent: JQuery? = null, tre: ToReactElementable) {
         remove(name)
 
-        val id = "$idPrefix$name"
+        val id = nameToContainerID(name)
         val container = byid0(id) ?: run {
             (parent ?: jq(document.body!!)).append("<div id='$id'></div>")
             byid0ForSure(id)
@@ -48,7 +48,7 @@ class Panes(val idPrefix: String) {
     }
 
     fun remove(name: String) {
-        val id = "$idPrefix$name"
+        val id = nameToContainerID(name)
         val container = byid0(id)
         if (container != null) {
             DOMReact.unmountComponentAtNode(container)
@@ -58,9 +58,25 @@ class Panes(val idPrefix: String) {
         names.remove(name)
     }
 
-    fun removeAll() = names.forEach { remove(it)}
+    private fun nameToContainerID(name: String) = "$idPrefix$name"
+
+    fun removeAll() = names.forEach {remove(it)}
 
     fun contains(name: String) = names.contains(name)
+
+    fun hideAll() = setEachDisplay("none")
+    fun showAll() = setEachDisplay("")
+
+    private fun setEachDisplay(value: String) {
+        for (name in names) {
+            byid0(nameToContainerID(name))!!.style.display = value
+        }
+    }
 }
+
+
+
+
+
 
 

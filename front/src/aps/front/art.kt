@@ -289,7 +289,7 @@ object art {
                         "borderBottom" to "2px solid white")
                     )
                 }
-                return oldShitAsToReactElementable(Shitus.diva(json("className" to css.test.assertionErrorPane, "style" to json("backgroundColor" to backgroundColor, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
+                return oldShitAsToReactElementable(Shitus.diva(json("id" to "debug_assertionErrorPane", "className" to css.test.assertionErrorPane, "style" to json("backgroundColor" to backgroundColor, "marginTop" to 10, "padding" to "10px 10px", "textAlign" to "left")),
                                                                Shitus.diva(json("style" to messageStyle), content.message),
                                                                content.stack && Shitus.diva(json("style" to json("whiteSpace" to "pre-wrap", "color" to WHITE.toString())), content.stack),
                                                                content.detailsUI
@@ -308,24 +308,26 @@ object art {
             }
         }
 
-        val existingDiv = Shitus.byid("debug_assertionErrorPane")
-        if (existingDiv[0]) {
-            global.ReactDOM.unmountComponentAtNode(existingDiv[0])
-            existingDiv.remove()
-        }
-        Shitus.byid("footer").after("<div id='debug_assertionErrorPane'></div>")
-        val container = Shitus.byid0("debug_assertionErrorPane")
-        if (container != null) {
-            DOMReact.render(assertionErrorPane.toReactElement(), container)
-        } else {
-            cwarn("Failed to assertion error pane -- no container for it")
-            console.error(exception.asDynamic().stack)
-            if (exception is FatException) {
-                exception.markdownPayload?.let {
-                    console.error(it)
-                }
-            }
-        }
+        debugPanes.put(byid(ELID_UNDER_FOOTER), assertionErrorPane)
+
+//        val existingDiv = Shitus.byid("debug_assertionErrorPane")
+//        if (existingDiv[0]) {
+//            global.ReactDOM.unmountComponentAtNode(existingDiv[0])
+//            existingDiv.remove()
+//        }
+//        Shitus.byid("footer").after("<div id='debug_assertionErrorPane'></div>")
+//        val container = Shitus.byid0("debug_assertionErrorPane")
+//        if (container != null) {
+//            DOMReact.render(assertionErrorPane.toReactElement(), container)
+//        } else {
+//            cwarn("Failed to assertion error pane -- no container for it")
+//            console.error(exception.asDynamic().stack)
+//            if (exception is FatException) {
+//                exception.markdownPayload?.let {
+//                    console.error(it)
+//                }
+//            }
+//        }
 
         val stack = null
         assertionErrorPane.set(json(

@@ -4,6 +4,7 @@ import aps.*
 import kotlin.browser.document
 import kotlin.browser.window
 
+@Suppress("Unused")
 fun dumpShames() {
     for ((shame, ctrl) in TestGlobal.shameToControl) {
         clog("Shame: $shame")
@@ -11,6 +12,7 @@ fun dumpShames() {
     }
 }
 
+@Suppress("Unused")
 fun dumpControls() {
     for (key in Input.instances.keys) clog("Input: $key")
     for (key in Button.instances.keys) clog("Button: $key")
@@ -21,13 +23,24 @@ fun dumpControls() {
     for (key in kic.instances.keys) clog("kic: $key")
 }
 
-fun igniteDebugShit() = async {
-    await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
-    Button.instance("assertionBanner-play").click()
-    await(tillBodyHTMLContains("Assertion: 1"))
-    Button.instance("assertionBanner-vdiff").click()
+fun igniteDebugShit(): Promise<*> = DebugShitToIgnite.shit1()
+private object DebugShitToIgnite {
+    fun shit1() = async {
+        await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
+        Button.instance("assertionBanner-play").click()
+        await(tillBodyHTMLContains("Assertion: 1"))
+        Button.instance("assertionBanner-vdiff").click()
+    }
+
+    fun shit2() = async {
+        await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
+        Button.instance("assertionBanner-play").click()
+        await(tillBodyHTMLContains("Assertion: 1"))
+//        Button.instance("assertionBanner-accept").click()
+    }
 }
 
+@Suppress("Unused")
 fun runLastTest() {
     val url = Globus.realTypedStorageLocal.lastTestURL!!
     window.location.href = url
