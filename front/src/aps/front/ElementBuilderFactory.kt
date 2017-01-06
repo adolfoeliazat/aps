@@ -25,6 +25,10 @@ class ElementBuilderFactory(val tag: String) {
                         block: ((ElementBuilder) -> Unit)? = null
     ): ElementBuilder = invoke(Attrs(className = className), Style(), block)
 
+    operator fun invoke(iconClass: IconClass,
+                        block: ((ElementBuilder) -> Unit)? = null
+    ): ElementBuilder = invoke(Attrs(className = iconClass.className), Style(), block)
+
     operator fun invoke(id: String,
                         className: String,
                         block: ((ElementBuilder) -> Unit)? = null

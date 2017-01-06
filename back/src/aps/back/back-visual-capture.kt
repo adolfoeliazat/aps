@@ -90,13 +90,41 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
 }
 
 fun serveSaveCapturedVisualShitRequest(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequest.Response {
-    val shit = capturedShit ?: bitch("No shit was captured")
-    ImageIO.write(shit.image, "PNG", imageFile(shit.id))
-    return SaveCapturedVisualShitRequest.Response()
+    return saveCaptureTo(imageFile(capturedShit!!.id))
 }
 
-private fun imageFile(id: String) = File("$APS_TEMP/visual-capture/$id.png")
+fun serveGetCapturedVisualShitRequest(req: GetCapturedVisualShitRequest): GetCapturedVisualShitRequest.Response {
+    return GetCapturedVisualShitRequest.Response(
+        Base64.getEncoder().encodeToString(
+            imageFile(req.id).readBytes()))
+}
 
+fun serveDiffCapturedVisualShitWithSavedRequest(req: DiffCapturedVisualShitWithSavedRequest): DiffCapturedVisualShitWithSavedRequest.Response {
+    val current = File("${bconst.visualCaptureDir}/current.png")
+    saveCaptureTo(current)
+
+    val diff = File("${bconst.visualCaptureDir}/diff.png")
+    if (diff.exists()) diff.delete() // Due to some bug in Magick, return code is 1, even if OK, so we just check if file appears
+    runProcessAndWait(listOf(
+        bconst.magick,
+        "compare",
+        imageFile(req.id).absolutePath,
+        current.absolutePath,
+        diff.absolutePath))
+    if (!diff.exists()) bitch("Magick said us fuck you")
+
+    return DiffCapturedVisualShitWithSavedRequest.Response(
+        Base64.getEncoder().encodeToString(
+            diff.readBytes()))
+}
+
+
+private fun imageFile(id: String) = File("${bconst.visualCaptureDir}/$id.png")
+
+private fun saveCaptureTo(file: File): SaveCapturedVisualShitRequest.Response {
+    ImageIO.write(capturedShit!!.image, "PNG", file)
+    return SaveCapturedVisualShitRequest.Response()
+}
 
 
 

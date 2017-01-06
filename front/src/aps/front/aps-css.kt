@@ -158,11 +158,27 @@ object css {
                     width: calc(100vw - 2rem - 17px);
                     height: calc(100vh - 7rem);
                     border: 0.3rem solid $BROWN_300;
-                    z-index: 1000000;""")
+                    z-index: 1000000;
+                    display: flex;
+                    flex-direction: column;""")
+
+                val titleBar by Style("""
+                    background: $BROWN_300;
+                    padding: 0.2rem;
+                    padding-bottom: 0.5rem;""")
+
                 val title by Style("""
-                    """)
+                    float: left;
+                    font-weight: normal;
+                    color: $WHITE;
+                    font-size: 125%;
+                    margin-top: 0.4rem;
+                    margin-left: 0.4rem;""")
+
                 val content by Style("""
-                    """)
+                    flex-grow: 1;
+                    position: relative;
+                    margin: 0.5rem;""")
             }
         }
 
@@ -986,7 +1002,7 @@ object fa {
     val wheelchairAlt = IconClass("fa fa-wheelchair-alt")
     val cog = IconClass("fa fa-cog fa-spinner")
     val gear = IconClass("fa fa-gear fa-spinner")
-    val refresh = IconClass("fa fa-refresh fa-spinner")
+    val refresh = IconClass("fa fa-refresh")
     val spinner = IconClass("fa fa-spinner fa-spinner")
 
 }

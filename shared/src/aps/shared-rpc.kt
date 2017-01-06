@@ -10,7 +10,6 @@ class BrowserShot {
 
 class VisualShitCapturedRequest {
     class Response(prevCaptureExists: Boolean)
-
     var id by notNull<String>()
     var shots by notNull<List<BrowserShot>>()
     var devicePixelRatio by notNull<Double>()
@@ -23,6 +22,17 @@ class VisualShitCapturedRequest {
 class SaveCapturedVisualShitRequest {
     class Response
 }
+
+class GetCapturedVisualShitRequest {
+    class Response(val base64: String)
+    var id by notNull<String>()
+}
+
+class DiffCapturedVisualShitWithSavedRequest {
+    class Response(val base64: String)
+    var id by notNull<String>()
+}
+
 
 class JsonProcedureRequest : RequestMatumba() {
     class Response(val json: String): CommonResponseFieldsImpl()

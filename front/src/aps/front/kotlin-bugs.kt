@@ -5,19 +5,6 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun qwe_qwe() {
-    class qwe {
-        val x get() = 123
-        init {
-            val p = this::x
-            val i: Int = p()
-            clog("iiiii", i)
-        }
-    }
-    qwe()
-}
-
-
 //fun qwe_compiles() {
 //    val a: A.A2? = run {
 //        val b: A = A.A2()

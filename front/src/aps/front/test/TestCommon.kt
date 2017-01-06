@@ -158,6 +158,8 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         stopOnAssertions = urlQuery[const.urlq.test.stopOnAssertions].relaxedToBoolean(default = false)
     )
 
+    Globus.realTypedStorageLocal.lastTestURL = window.location.href
+
     TestGlobal.lastTestMaybe = scenario
     TestGlobal.lastTestOptsMaybe = opts
 
@@ -254,7 +256,7 @@ data class TestRunnerOptions(
     override fun toString(): String = "stopOnAssertions=$stopOnAssertions"
 }
 
-fun testNameToHref(testName: String, opts: TestRunnerOptions): String {
+fun testNameToURL(testName: String, opts: TestRunnerOptions): String {
     val hostPort = when {
         testName.contains("Writer") -> "aps-ua-writer.local:3022"
         testName.contains("Customer") -> "aps-ua-customer.local:3012"

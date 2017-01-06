@@ -28,6 +28,11 @@ fun igniteDebugShit() = async {
     Button.instance("assertionBanner-vdiff").click()
 }
 
+fun runLastTest() {
+    val url = Globus.realTypedStorageLocal.lastTestURL!!
+    window.location.href = url
+}
+
 private fun tillBodyHTMLContains(needle: String): Promise<Unit> = async {
     while (true) {
         if (document.body!!.innerHTML.contains(needle))

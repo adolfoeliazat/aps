@@ -186,13 +186,12 @@ class TestScenarioBuilder {
         act {TestGlobal.testShitBeingAssertedID = null}
     }
 
-    fun assertScreenHTML(descr: String?, id: String) {
-        val assertionID = id
-        act {TestGlobal.testShitBeingAssertedID = id}
+    fun assertScreenHTML(descr: String?, assertionID: String) {
+        act {TestGlobal.testShitBeingAssertedID = assertionID}
 
         val stepTitle = "HTML: $descr"
         checkOnAnimationFrame(stepTitle) {async<Unit>{
-            val expected = await(fuckingRemoteCall.loadTestShit(id))
+            val expected = await(fuckingRemoteCall.loadTestShit(assertionID))
 
             val actual = buildString {
                 append("-------------------- NAVBAR --------------------\n\n")
@@ -204,13 +203,12 @@ class TestScenarioBuilder {
 
             if (TestGlobal.lastTestOpts.stopOnAssertions) {
                 await(object {
-                    val bannerButtonStyle = Style(marginRight = "0.5rem")
+                    val bannerButtonStyle = Style()
 
                     var banner by notNull<Control2>()
                     var bannerPause by notNull<ResolvableShit<Unit>>()
                     var verticalPosition = VerticalPosition.BOTTOM
                     var horizontalPosition = HorizontalPosition.LEFT
-                    var visualDiffPane by notNull<String>()
 
                     val shit = async {
                         when {
@@ -256,11 +254,12 @@ class TestScenarioBuilder {
                                             o- Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {async<Unit>{
                                                 openVisualDiff()
                                             }})
-                                            o- Button(title = "Accept", style = bannerButtonStyle, onClicka = {async<Unit>{
+                                            o- Button(icon = fa.check, style = bannerButtonStyle, onClicka = {async<Unit>{
                                                 await(send(SaveCapturedVisualShitRequest()))
                                                 clog("Saved captured visual shit")
                                                 bannerPause.resolve()
                                             }})
+                                            o- rerunTestButton()
                                         }))
                                 } finally {
                                     debugPanes.remove(pane)
@@ -286,21 +285,62 @@ class TestScenarioBuilder {
                     }
 
                     fun openVisualDiff() {
-                        visualDiffPane = debugPanes.put(kdiv(className = css.test.popup.imageViewer.pane){o->
-                            o- kdiv(className = css.test.popup.imageViewer.title){o->
-                                o- kdiv(marginBottom = "0.5rem"){o->
-                                    o- Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
-                                        bannerPause.resolve()
+                        var visualDiffPane by notNull<String>()
+                        var imgPlace by notNull<Placeholder>()
+
+                        val mycss = css.test.popup.imageViewer
+                        visualDiffPane = debugPanes.put(kdiv(className = mycss.pane){o->
+                            o- kdiv(className = mycss.titleBar){o->
+                                o- kdiv(className = mycss.title){o->
+                                    o- "Visual Diff"
+                                }
+                                o- hor1(baseStyle = Style(justifyContent = "flex-end")){o->
+                                    o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {
+                                        imf()
                                     })
-                                    o- Button(icon = fa.bomb, style = bannerButtonStyle, onClick = {
-                                        bannerPause.reject(Exception("Fucking killed"))
+                                    o- Button(icon = fa.close, style = bannerButtonStyle, onClick = {
+                                        debugPanes.remove(visualDiffPane)
                                     })
                                 }
                             }
-                            o- kdiv(className = css.test.popup.imageViewer.content){o->
+                            o- kdiv(className = mycss.content){o->
+                                imgPlace = Placeholder(kdiv{o->
+                                    o- hor2{o->
+                                        o- kdiv(marginTop = "0.7rem"){o->
+                                            o- "Diffing shit..."
+                                        }
+                                        o- renderTicker(float = null)
+                                    }
+                                })
+                                o- imgPlace
+
+                                async {
+                                    try {
+                                        val res = await(send(DiffCapturedVisualShitWithSavedRequest()-{o->
+                                            o.id = assertionID
+                                        }))
+                                        imgPlace.setContent(kdiv(style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
+                                            val imgURL = "data:image/png;base64,${res.base64}"
+                                            o- img2(src = imgURL, style = Style(width = "100%"))
+                                        })
+                                    } catch (e: dynamic) {
+                                        imgPlace.setContent(kdiv{o->
+                                            o- hor2{o->
+                                                o- ki(iconClass = fa.frownO)
+                                                o- "Shit, it didn't work. See your fucking server log..."
+                                            }
+                                        })
+                                    }
+                                }
                             }
                         })
                     }
+
+                    fun rerunTestButton() = Button(
+                        icon = fa.refresh, style = bannerButtonStyle,
+                        onClick = {
+                            window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
+                        })
 
                     fun showBanner(className: String, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
                         bannerPause = ResolvableShit<Unit>()
@@ -315,7 +355,7 @@ class TestScenarioBuilder {
                                 HorizontalPosition.RIGHT -> style.right = 0
                             }
                             kdiv(className = className, baseStyle = style){o->
-                                o- kdiv(marginBottom = "0.5rem"){o->
+                                o- hor1(marginBottom = "0.5rem"){o->
                                     o- Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
                                         bannerPause.resolve()
                                     })

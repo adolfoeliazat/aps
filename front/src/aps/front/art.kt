@@ -1218,7 +1218,7 @@ fun openTestListPane() {
             fun testLink(testName: String, opts: TestRunnerOptions, title: String) = link(
                 title = title,
                 onClick = {
-                    window.location.href = testNameToHref(testName, opts)
+                    window.location.href = testNameToURL(testName, opts)
                 })
 
             val lastName = TestGlobal.lastTest.name

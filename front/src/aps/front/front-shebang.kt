@@ -33,7 +33,7 @@ object TestGlobal {
 
     val lastTestHrefMaybe
         get() = lastTestMaybe?.let {
-            testNameToHref(it.name, lastTestOpts)
+            testNameToURL(it.name, lastTestOpts)
         }
 
     val lastTestHref get() = lastTestHrefMaybe!!
@@ -445,6 +445,10 @@ fun img(src: dynamic, _attrs: dynamic = null): dynamic {
     return React.createElement("img", global.Object.assign(attrs, json("src" to src)))
 }
 
+fun img2(id: String? = null, src: String, style: Style = Style()): ReactElement {
+    return React.createElement("img", json("id" to id, "src" to src, "style" to style.toReactStyle()))
+}
+
 fun errorLabelOld(def: dynamic): dynamic {
     val name: dynamic = def.name
     val title: dynamic = def.title
@@ -803,7 +807,7 @@ fun <T> World.setShittyResponsePage(res: ZimbabweResponse.Shitty<T>) {
     setErrorPage(res.error)
 }
 
-fun renderTicker(float: String): ToReactElementable =
+fun renderTicker(float: String?): ToReactElementable =
     kdiv(Attrs(className = "progressTicker"),
          Style(float = float,
                width = 14,

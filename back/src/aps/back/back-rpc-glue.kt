@@ -13,6 +13,8 @@ import into.kommon.*
         val res: Any = when (requestClass) {
             VisualShitCapturedRequest::class.java -> serveVisualShitCapturedRequest(shittyObjectMapper.readValue(reqJSON, VisualShitCapturedRequest::class.java))
             SaveCapturedVisualShitRequest::class.java -> serveSaveCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, SaveCapturedVisualShitRequest::class.java))
+            GetCapturedVisualShitRequest::class.java -> serveGetCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, GetCapturedVisualShitRequest::class.java))
+            DiffCapturedVisualShitWithSavedRequest::class.java -> serveDiffCapturedVisualShitWithSavedRequest(shittyObjectMapper.readValue(reqJSON, DiffCapturedVisualShitWithSavedRequest::class.java))
             else -> wtf("requestClass: $requestClass")
         }
         val resJSON = shittyObjectMapper.writeValueAsString(res)
