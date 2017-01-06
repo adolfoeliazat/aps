@@ -281,11 +281,10 @@ fun frp_loadTestShit(rmap: Map<*, *>): String? {
 fun frp_updateTestShit(rmap: Map<*, *>) {
     val id: String = cast(rmap["id"])
     val newValue: String = cast(rmap["newValue"])
-    val file = File("$APS_HOME/front/test-shit/$id")
-    if (file.exists()) {
-        file.copyTo(File(bconst.tempBakDir), true)
-    }
-    file.writeText(newValue)
+    serveHardenScreenHTMLRequest(HardenScreenHTMLRequest()-{o->
+        o.assertionID = id
+        o.html = newValue
+    })
 }
 
 fun frp_robotClickOnChrome(rmap: Map<*, *>) {
@@ -373,6 +372,13 @@ fun frp_luceneParseRussian(rmap: Map<*, *>): List<LuceneParseToken> {
     return luceneParse(text, russianAnalyzer)
 }
 
+fun serveHardenScreenHTMLRequest(req: HardenScreenHTMLRequest) {
+    val file = File("$APS_HOME/front/test-shit/${req.assertionID}")
+    if (file.exists()) {
+        file.copyTo(File("${bconst.tempBakDir}/${req.assertionID}"), true)
+    }
+    file.writeText(req.html)
+}
 
 
 

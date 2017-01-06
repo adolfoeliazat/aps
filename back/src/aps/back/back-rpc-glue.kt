@@ -18,6 +18,7 @@ import into.kommon.*
             DiffCapturedVisualShitWithSavedRequest::class.java -> serveDiffCapturedVisualShitWithSavedRequest(shittyObjectMapper.readValue(reqJSON, DiffCapturedVisualShitWithSavedRequest::class.java))
             MoveMouseAwayFromPageRequest::class.java -> serveMoveMouseAwayFromPageRequest(shittyObjectMapper.readValue(reqJSON, MoveMouseAwayFromPageRequest::class.java))
             ReturnMouseWhereItWasRequest::class.java -> serveReturnMouseWhereItWasRequest(shittyObjectMapper.readValue(reqJSON, ReturnMouseWhereItWasRequest::class.java))
+            HardenScreenHTMLRequest::class.java -> serveHardenScreenHTMLRequest(shittyObjectMapper.readValue(reqJSON, HardenScreenHTMLRequest::class.java))
             else -> wtf("requestClass: $requestClass")
         }
         val resJSON = shittyObjectMapper.writeValueAsString(res)

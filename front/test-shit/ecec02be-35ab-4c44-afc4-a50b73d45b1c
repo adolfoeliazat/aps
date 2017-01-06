@@ -179,10 +179,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
                         </i>
                         <span>
                           Crappy release 3
@@ -193,11 +193,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -246,10 +246,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
                         </i>
                         <span>
                           Crappy release 2
@@ -260,11 +260,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -313,10 +313,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
                         </i>
                         <span>
                           Crappy release 1
@@ -327,11 +327,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -380,10 +380,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
                           A piece of... Trial 4
@@ -394,11 +394,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -447,10 +447,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
                           A piece of... Trial 3
@@ -461,11 +461,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -514,10 +514,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
                           A piece of... Trial 2
@@ -528,11 +528,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -582,10 +582,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
                           A piece of... Trial 1
@@ -596,11 +596,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -649,10 +649,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
                         </i>
                         <span>
                           Crime and Punishment
@@ -663,11 +663,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -716,10 +716,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-pencil">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
                         </i>
                         <span>
                           The (Fucking) Idiot
@@ -730,11 +730,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -784,10 +784,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
                           Процесс by Кафка
@@ -798,11 +798,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-trash" style="right: 3.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil" style="right: 0.3rem;">
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>

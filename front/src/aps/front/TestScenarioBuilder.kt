@@ -213,7 +213,10 @@ class TestScenarioBuilder {
                     fun acceptCurrentShit(): Promise<Unit> = async {
                         await(captureVisualShitIfNeeded())
                         await(send(SaveCapturedVisualShitRequest()))
-                        clog("Saved captured visual shit")
+                        await(send(HardenScreenHTMLRequest()-{o->
+                            o.assertionID = assertionID
+                            o.html = actual
+                        }))
                         bannerPause.resolve()
                     }
 
@@ -260,7 +263,6 @@ class TestScenarioBuilder {
                                                 openVisualDiff()
                                             }})
                                             o- Button(key = "assertionBanner-accept", icon = fa.check, style = bannerButtonStyle, onClicka = this::acceptCurrentShit)
-                                            o- rerunTestButton()
                                         }))
                                 } finally {
                                     debugPanes.remove(pane)
@@ -478,6 +480,7 @@ class TestScenarioBuilder {
                                             }
                                             banner.update()
                                         })
+                                    o- rerunTestButton()
                                     renderSpecificButtons(o)
                                 }
                                 o- "Assertion: $descr"

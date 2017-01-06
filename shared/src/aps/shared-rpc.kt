@@ -45,6 +45,12 @@ class MoveMouseAwayFromPageRequest {
     class Response
 }
 
+class HardenScreenHTMLRequest {
+    class Response
+    var assertionID by notNull<String>()
+    var html by notNull<String>()
+}
+
 class JsonProcedureRequest : RequestMatumba() {
     class Response(val json: String): CommonResponseFieldsImpl()
     val json = StringHiddenField(this, "json")

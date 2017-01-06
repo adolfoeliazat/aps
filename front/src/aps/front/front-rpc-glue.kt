@@ -70,6 +70,9 @@ fun send(req: MoveMouseAwayFromPageRequest): Promise<MoveMouseAwayFromPageReques
 fun send(req: ReturnMouseWhereItWasRequest): Promise<ReturnMouseWhereItWasRequest.Response> =
     sendDangerousJSONProcedure(req)
 
+fun send(req: HardenScreenHTMLRequest): Promise<HardenScreenHTMLRequest.Response> =
+    sendDangerousJSONProcedure(req)
+
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {
     val jpreq = JsonProcedureRequest()-{o->
