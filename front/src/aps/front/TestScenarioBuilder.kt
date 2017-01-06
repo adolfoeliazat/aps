@@ -284,57 +284,87 @@ class TestScenarioBuilder {
                         return jq(diffElements[diffIndex]!!)
                     }
 
-                    fun openVisualDiff() {
-                        var visualDiffPane by notNull<String>()
-                        var imgPlace by notNull<Placeholder>()
-
+                    inner class openVisualDiff {
+                        var mode = VisualDiffMode.DIFF
                         val mycss = css.test.popup.imageViewer
-                        visualDiffPane = debugPanes.put(kdiv(className = mycss.pane){o->
-                            o- kdiv(className = mycss.titleBar){o->
-                                o- kdiv(className = mycss.title){o->
-                                    o- "Visual Diff"
-                                }
-                                o- hor1(baseStyle = Style(justifyContent = "flex-end")){o->
-                                    o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {
-                                        imf()
-                                    })
-                                    o- Button(icon = fa.close, style = bannerButtonStyle, onClick = {
-                                        debugPanes.remove(visualDiffPane)
-                                    })
-                                }
-                            }
-                            o- kdiv(className = mycss.content){o->
-                                imgPlace = Placeholder(kdiv{o->
-                                    o- hor2{o->
-                                        o- kdiv(marginTop = "0.7rem"){o->
-                                            o- "Diffing shit..."
-                                        }
-                                        o- renderTicker(float = null)
-                                    }
-                                })
-                                o- imgPlace
+                        var visualDiffPane by notNull<String>()
 
-                                async {
-                                    try {
-                                        val res = await(send(DiffCapturedVisualShitWithSavedRequest()-{o->
-                                            o.id = assertionID
-                                        }))
-                                        imgPlace.setContent(kdiv(style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
-                                            val imgURL = "data:image/png;base64,${res.base64}"
-                                            o- img2(src = imgURL, style = Style(width = "100%"))
+                        val diffView: Placeholder by lazy {
+                            async {
+                                try {
+                                    val res = await(send(DiffCapturedVisualShitWithSavedRequest()-{o->
+                                        o.id = assertionID
+                                    }))
+                                    diffView.setContent(kdiv(style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
+                                        val imgURL = "data:image/png;base64,${res.base64}"
+                                        o- img2(src = imgURL, style = Style(width = "100%"))
+                                    })
+                                } catch (e: dynamic) {
+                                    diffView.setContent(kdiv{o->
+                                        o- hor2{o->
+                                            o- ki(iconClass = fa.frownO)
+                                            o- "Shit, it didn't work. See your fucking server log..."
+                                        }
+                                    })
+                                }
+                            }
+
+                            Placeholder(kdiv{o->
+                                o- hor2{o->
+                                    o- kdiv(marginTop = "0.7rem"){o->
+                                        o- "Diffing shit..."
+                                    }
+                                    o- renderTicker(float = null)
+                                }
+                            })
+                        }
+
+                        val ctrl = Control2.from {
+                            kdiv(className = mycss.pane){o->
+                                o- kdiv(className = mycss.titleBar){o->
+                                    o- kdiv(className = mycss.title){o->
+                                        o- "Visual Diff"
+                                    }
+                                    o- hor1(baseStyle = Style(justifyContent = "flex-end")){o->
+                                        for (m in VisualDiffMode.values()) {
+                                            o- Button(
+                                                title = m.title,
+                                                style = bannerButtonStyle.copy(
+                                                    borderLeft = if (mode != m) null else
+                                                        "1rem solid $ORANGE_300"
+                                                ),
+                                                onClick = {
+                                                    imf()
+                                                })
+                                        }
+                                        o- kdiv(width = "2rem")
+                                        o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {
+                                            imf()
                                         })
-                                    } catch (e: dynamic) {
-                                        imgPlace.setContent(kdiv{o->
-                                            o- hor2{o->
-                                                o- ki(iconClass = fa.frownO)
-                                                o- "Shit, it didn't work. See your fucking server log..."
-                                            }
+                                        o- Button(icon = fa.close, style = bannerButtonStyle, onClick = {
+                                            debugPanes.remove(visualDiffPane)
                                         })
                                     }
                                 }
+                                o- kdiv(className = mycss.content){o->
+                                    o- when (mode) {
+                                        VisualDiffMode.DIFF -> diffView
+                                        VisualDiffMode.HARDENED -> TODO()
+                                        VisualDiffMode.CURRENT -> TODO()
+                                    }
+                                }
                             }
-                        })
+                        }
+
+                        init {
+                            visualDiffPane = debugPanes.put(ctrl)
+                        }
+
+                        fun changeViewButton() {
+
+                        }
                     }
+
 
                     fun rerunTestButton() = Button(
                         icon = fa.refresh, style = bannerButtonStyle,
@@ -539,4 +569,7 @@ private enum class HorizontalPosition {
     LEFT, RIGHT
 }
 
+private enum class VisualDiffMode(val title: String) {
+    DIFF("Diff"), HARDENED("Hardened"), CURRENT("Current")
+}
 
