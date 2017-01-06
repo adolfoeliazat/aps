@@ -28,6 +28,10 @@ class GetCapturedVisualShitRequest {
     var id by notNull<String>()
 }
 
+class GetCurrentCapturedVisualShitRequest {
+    class Response(val base64: String)
+}
+
 class DiffCapturedVisualShitWithSavedRequest {
     class Response(val base64: String)
     var id by notNull<String>()

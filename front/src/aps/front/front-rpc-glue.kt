@@ -58,6 +58,9 @@ fun send(req: SaveCapturedVisualShitRequest): Promise<SaveCapturedVisualShitRequ
 fun send(req: GetCapturedVisualShitRequest): Promise<GetCapturedVisualShitRequest.Response> =
     sendDangerousJSONProcedure(req)
 
+fun send(req: GetCurrentCapturedVisualShitRequest): Promise<GetCurrentCapturedVisualShitRequest.Response> =
+    sendDangerousJSONProcedure(req)
+
 fun send(req: DiffCapturedVisualShitWithSavedRequest): Promise<DiffCapturedVisualShitWithSavedRequest.Response> =
     sendDangerousJSONProcedure(req)
 

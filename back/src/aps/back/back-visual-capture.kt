@@ -99,6 +99,15 @@ fun serveGetCapturedVisualShitRequest(req: GetCapturedVisualShitRequest): GetCap
             imageFile(req.id).readBytes()))
 }
 
+fun serveGetCurrentCapturedVisualShitRequest(req: GetCurrentCapturedVisualShitRequest): GetCurrentCapturedVisualShitRequest.Response {
+    val current = File("${bconst.visualCaptureDir}/current.png")
+    saveCaptureTo(current)
+
+    return GetCurrentCapturedVisualShitRequest.Response(
+        Base64.getEncoder().encodeToString(
+            current.readBytes()))
+}
+
 fun serveDiffCapturedVisualShitWithSavedRequest(req: DiffCapturedVisualShitWithSavedRequest): DiffCapturedVisualShitWithSavedRequest.Response {
     val current = File("${bconst.visualCaptureDir}/current.png")
     saveCaptureTo(current)

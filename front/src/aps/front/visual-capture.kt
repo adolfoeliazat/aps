@@ -9,7 +9,7 @@ import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
-private val visualShitCaptured = ResolvableShit<VisualShitCapturedMessageData>()
+val visualShitCaptured = ResolvableShit<VisualShitCapturedMessageData>()
 private var shitID by notNull<String>()
 
 external interface VisualShitCapturedMessageData {

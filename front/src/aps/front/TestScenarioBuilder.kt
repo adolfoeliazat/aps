@@ -285,57 +285,81 @@ class TestScenarioBuilder {
                     }
 
                     inner class openVisualDiff {
-                        var mode = VisualDiffMode.DIFF
                         val mycss = css.test.popup.imageViewer
                         var visualDiffPane by notNull<String>()
 
-                        val diffView by lazy {
-                            makeView(async {
+                        inner abstract class Mode {
+                            abstract val buttonTitle: String
+
+                            val scrollerID: String = puid()
+                            var scrollLeft: Double = 0.0
+                            var scrollTop: Double = 0.0
+
+                            val view by lazy {
+                                val place = Placeholder(kdiv {o ->
+                                    o - hor2 {o ->
+                                        o - kdiv(marginTop = "0.7rem") {o ->
+                                            o - "Loading shit..."
+                                        }
+                                        o - renderTicker(float = null)
+                                    }
+                                })
+
+                                async {
+                                    try {
+                                        val base64 = await(promiseBase64())
+                                        place.setContent(kdiv(style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
+                                            val imgURL = "data:image/png;base64,$base64"
+                                            o- img2(src = imgURL, style = Style(width = "100%"))
+                                        })
+                                    } catch (e: dynamic) {
+                                        place.setContent(kdiv{o->
+                                            o- hor2 {o ->
+                                                o- ki(iconClass = fa.frownO)
+                                                o- "It didn't work. See your fucking server log..."
+                                            }
+                                        })
+                                    }
+                                }
+
+                                return@lazy place
+                            }
+
+                            abstract fun promiseBase64(): Promise<String>
+                        }
+
+                        val diffMode = object:Mode() {
+                            override val buttonTitle = "Diff"
+
+                            override fun promiseBase64() = async {
                                 val res = await(send(DiffCapturedVisualShitWithSavedRequest()-{o->
                                     o.id = assertionID
                                 }))
                                 res.base64
-                            })
+                            }
                         }
 
-                        val hardenedView by lazy {
-                            makeView(async {
+                        val hardenedMode = object:Mode() {
+                            override val buttonTitle = "Hardened"
+
+                            override fun promiseBase64() = async {
                                 val res = await(send(GetCapturedVisualShitRequest()-{o->
                                     o.id = assertionID
                                 }))
                                 res.base64
-                            })
-                        }
-
-                        fun makeView(base64Promise: Promise<String>): Placeholder {
-                            val place = Placeholder(kdiv {o ->
-                                o - hor2 {o ->
-                                    o - kdiv(marginTop = "0.7rem") {o ->
-                                        o - "Loading shit..."
-                                    }
-                                    o - renderTicker(float = null)
-                                }
-                            })
-
-                            async {
-                                try {
-                                    val base64 = await(base64Promise)
-                                    place.setContent(kdiv(style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
-                                        val imgURL = "data:image/png;base64,$base64"
-                                        o- img2(src = imgURL, style = Style(width = "100%"))
-                                    })
-                                } catch (e: dynamic) {
-                                    place.setContent(kdiv{o->
-                                        o- hor2 {o ->
-                                            o- ki(iconClass = fa.frownO)
-                                            o- "It didn't work. See your fucking server log..."
-                                        }
-                                    })
-                                }
                             }
-
-                            return place
                         }
+
+                        val currentMode = object:Mode() {
+                            override val buttonTitle = "Current"
+
+                            override fun promiseBase64() = async {
+                                val res = await(send(GetCurrentCapturedVisualShitRequest()))
+                                res.base64
+                            }
+                        }
+
+                        var mode: Mode = diffMode
 
                         val ctrl: Control2 by lazy {Control2.from {
                             kdiv(className = mycss.pane){o->
@@ -344,9 +368,9 @@ class TestScenarioBuilder {
                                         o- "Visual Diff"
                                     }
                                     o- hor1(baseStyle = Style(justifyContent = "flex-end")){o->
-                                        for (m in VisualDiffMode.values()) {
+                                        for (m in listOf(diffMode, hardenedMode, currentMode)) {
                                             o- Button(
-                                                title = m.title,
+                                                title = m.buttonTitle,
                                                 style = bannerButtonStyle.copy(
                                                     borderLeft = if (mode != m) null else
                                                         "1rem solid $ORANGE_300"
@@ -356,7 +380,7 @@ class TestScenarioBuilder {
                                                     ctrl.update()
                                                 })
                                         }
-                                        o- kdiv(width = "2rem")
+                                        o- kdiv(width = "1rem")
                                         o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {
                                             imf()
                                         })
@@ -366,11 +390,7 @@ class TestScenarioBuilder {
                                     }
                                 }
                                 o- kdiv(className = mycss.content){o->
-                                    o- when (mode) {
-                                        VisualDiffMode.DIFF -> diffView
-                                        VisualDiffMode.HARDENED -> hardenedView
-                                        VisualDiffMode.CURRENT -> TODO()
-                                    }
+                                    o- mode.view
                                 }
                             }
                         }}
@@ -583,8 +603,3 @@ private enum class VerticalPosition {
 private enum class HorizontalPosition {
     LEFT, RIGHT
 }
-
-private enum class VisualDiffMode(val title: String) {
-    DIFF("Diff"), HARDENED("Hardened"), CURRENT("Current")
-}
-
