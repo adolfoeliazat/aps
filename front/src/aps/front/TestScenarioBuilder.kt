@@ -208,8 +208,10 @@ class TestScenarioBuilder {
                     var bannerPause by notNull<ResolvableShit<Unit>>()
                     var verticalPosition = VerticalPosition.BOTTOM
                     var horizontalPosition = HorizontalPosition.LEFT
+                    var capturedVisualShit = false
 
                     fun acceptCurrentShit(): Promise<Unit> = async {
+                        await(captureVisualShitIfNeeded())
                         await(send(SaveCapturedVisualShitRequest()))
                         clog("Saved captured visual shit")
                         bannerPause.resolve()
@@ -333,13 +335,18 @@ class TestScenarioBuilder {
                                         "1rem solid $ORANGE_300"
                                 ),
                                 onClick = {
-                                    mode.scrollLeft = byid0(mode.scrollerID)!!.scrollLeft
-                                    mode.scrollTop = byid0(mode.scrollerID)!!.scrollTop
+                                    val scroller = byid0(mode.scrollerID)!!
+                                    mode.scrollLeft = scroller.scrollLeft
+                                    mode.scrollTop = scroller.scrollTop
+
                                     mode = this
                                     ctrl.update()
+
                                     timeoutSet(0) {
-                                        byid0(mode.scrollerID)!!.scrollLeft = mode.scrollLeft
-                                        byid0(mode.scrollerID)!!.scrollTop = mode.scrollTop
+                                        byid0(mode.scrollerID)?.let {scroller -> // May be loading, so no scroller yet
+                                            scroller.scrollLeft = mode.scrollLeft
+                                            scroller.scrollTop = mode.scrollTop
+                                        }
                                     }
                                 }
                             )
@@ -405,9 +412,16 @@ class TestScenarioBuilder {
 
                         init {
                             async {
-                                await(captureVisualShit(assertionID))
+                                await(captureVisualShitIfNeeded())
                                 visualDiffPane = debugPanes.put(ctrl)
                             }
+                        }
+                    }
+
+                    fun captureVisualShitIfNeeded() = async {
+                        if (!capturedVisualShit) {
+                            captureVisualShit(assertionID)
+                            capturedVisualShit = true
                         }
                     }
 

@@ -11,6 +11,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.PrintWriter
 import java.io.StringWriter
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 fun <T: Any> T.logger(): Lazy<Logger> {
     return lazy { LoggerFactory.getLogger(this.javaClass) }
@@ -51,5 +53,17 @@ fun eprintln(msg: String = "") {
 
 inline fun dwarnStriking(vararg xs: Any?) = dwarn("\n\n", "**********", *xs, "\n")
 
+fun <T: Any> volatileNotNull(): ReadWriteProperty<Any?, T> = VolatileNotNullVar()
 
+private class VolatileNotNullVar<T: Any>() : ReadWriteProperty<Any?, T> {
+    private @Volatile var value: T? = null
+
+    public override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return value ?: throw IllegalStateException("Property ${property.name} should be initialized before get.")
+    }
+
+    public override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        this.value = value
+    }
+}
 

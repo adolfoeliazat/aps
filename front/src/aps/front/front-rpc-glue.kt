@@ -64,6 +64,12 @@ fun send(req: GetCurrentCapturedVisualShitRequest): Promise<GetCurrentCapturedVi
 fun send(req: DiffCapturedVisualShitWithSavedRequest): Promise<DiffCapturedVisualShitWithSavedRequest.Response> =
     sendDangerousJSONProcedure(req)
 
+fun send(req: MoveMouseAwayFromPageRequest): Promise<MoveMouseAwayFromPageRequest.Response> =
+    sendDangerousJSONProcedure(req)
+
+fun send(req: ReturnMouseWhereItWasRequest): Promise<ReturnMouseWhereItWasRequest.Response> =
+    sendDangerousJSONProcedure(req)
+
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {
     val jpreq = JsonProcedureRequest()-{o->

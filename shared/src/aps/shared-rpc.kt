@@ -37,6 +37,13 @@ class DiffCapturedVisualShitWithSavedRequest {
     var id by notNull<String>()
 }
 
+class ReturnMouseWhereItWasRequest {
+    class Response
+}
+
+class MoveMouseAwayFromPageRequest {
+    class Response
+}
 
 class JsonProcedureRequest : RequestMatumba() {
     class Response(val json: String): CommonResponseFieldsImpl()

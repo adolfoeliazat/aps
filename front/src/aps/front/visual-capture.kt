@@ -21,10 +21,11 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
 }
 
 fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> = async {
+    await(send(MoveMouseAwayFromPageRequest()))
     debugPanes.hideAll()
     try {
         check(window.devicePixelRatio == 1.25 && window.innerWidth == 1008) {
-            "I am designed for window.devicePixelRatio = 1.25 && window.innerWidth == 1008. " +
+            "Visual testing is designed for window.devicePixelRatio == 1.25 && window.innerWidth == 1008. " +
             "Otherwise there are tiny little differences in rendering of, for example, rounded corners, etc."
         }
 
@@ -123,6 +124,7 @@ fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> =
         res
     } finally {
         debugPanes.showAll()
+        await(send(ReturnMouseWhereItWasRequest()))
     }
 }
 

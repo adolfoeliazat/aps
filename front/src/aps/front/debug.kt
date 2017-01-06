@@ -23,7 +23,7 @@ fun dumpControls() {
     for (key in kic.instances.keys) clog("kic: $key")
 }
 
-fun igniteDebugShit(): Promise<*> = DebugShitToIgnite.shit1()
+fun igniteDebugShit(): Promise<Unit> = DebugShitToIgnite.shit2()
 private object DebugShitToIgnite {
     fun shit1() = async {
         await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
@@ -55,6 +55,9 @@ private fun tillBodyHTMLContains(needle: String): Promise<Unit> = async {
     }
 }
 
+fun blowUp() {
+    throw Exception("fuck you")
+}
 
 
 

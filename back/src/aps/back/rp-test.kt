@@ -281,7 +281,11 @@ fun frp_loadTestShit(rmap: Map<*, *>): String? {
 fun frp_updateTestShit(rmap: Map<*, *>) {
     val id: String = cast(rmap["id"])
     val newValue: String = cast(rmap["newValue"])
-    File("$APS_HOME/front/test-shit/$id").writeText(newValue)
+    val file = File("$APS_HOME/front/test-shit/$id")
+    if (file.exists()) {
+        file.copyTo(File(bconst.tempBakDir), true)
+    }
+    file.writeText(newValue)
 }
 
 fun frp_robotClickOnChrome(rmap: Map<*, *>) {
