@@ -289,37 +289,55 @@ class TestScenarioBuilder {
                         val mycss = css.test.popup.imageViewer
                         var visualDiffPane by notNull<String>()
 
-                        val diffView: Placeholder by lazy {
+                        val diffView by lazy {
+                            makeView(async {
+                                val res = await(send(DiffCapturedVisualShitWithSavedRequest()-{o->
+                                    o.id = assertionID
+                                }))
+                                res.base64
+                            })
+                        }
+
+                        val hardenedView by lazy {
+                            makeView(async {
+                                val res = await(send(GetCapturedVisualShitRequest()-{o->
+                                    o.id = assertionID
+                                }))
+                                res.base64
+                            })
+                        }
+
+                        fun makeView(base64Promise: Promise<String>): Placeholder {
+                            val place = Placeholder(kdiv {o ->
+                                o - hor2 {o ->
+                                    o - kdiv(marginTop = "0.7rem") {o ->
+                                        o - "Loading shit..."
+                                    }
+                                    o - renderTicker(float = null)
+                                }
+                            })
+
                             async {
                                 try {
-                                    val res = await(send(DiffCapturedVisualShitWithSavedRequest()-{o->
-                                        o.id = assertionID
-                                    }))
-                                    diffView.setContent(kdiv(style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
-                                        val imgURL = "data:image/png;base64,${res.base64}"
+                                    val base64 = await(base64Promise)
+                                    place.setContent(kdiv(style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
+                                        val imgURL = "data:image/png;base64,$base64"
                                         o- img2(src = imgURL, style = Style(width = "100%"))
                                     })
                                 } catch (e: dynamic) {
-                                    diffView.setContent(kdiv{o->
-                                        o- hor2{o->
+                                    place.setContent(kdiv{o->
+                                        o- hor2 {o ->
                                             o- ki(iconClass = fa.frownO)
-                                            o- "Shit, it didn't work. See your fucking server log..."
+                                            o- "It didn't work. See your fucking server log..."
                                         }
                                     })
                                 }
                             }
 
-                            Placeholder(kdiv{o->
-                                o- hor2{o->
-                                    o- kdiv(marginTop = "0.7rem"){o->
-                                        o- "Diffing shit..."
-                                    }
-                                    o- renderTicker(float = null)
-                                }
-                            })
+                            return place
                         }
 
-                        val ctrl = Control2.from {
+                        val ctrl: Control2 by lazy {Control2.from {
                             kdiv(className = mycss.pane){o->
                                 o- kdiv(className = mycss.titleBar){o->
                                     o- kdiv(className = mycss.title){o->
@@ -334,7 +352,8 @@ class TestScenarioBuilder {
                                                         "1rem solid $ORANGE_300"
                                                 ),
                                                 onClick = {
-                                                    imf()
+                                                    mode = m
+                                                    ctrl.update()
                                                 })
                                         }
                                         o- kdiv(width = "2rem")
@@ -349,19 +368,15 @@ class TestScenarioBuilder {
                                 o- kdiv(className = mycss.content){o->
                                     o- when (mode) {
                                         VisualDiffMode.DIFF -> diffView
-                                        VisualDiffMode.HARDENED -> TODO()
+                                        VisualDiffMode.HARDENED -> hardenedView
                                         VisualDiffMode.CURRENT -> TODO()
                                     }
                                 }
                             }
-                        }
+                        }}
 
                         init {
                             visualDiffPane = debugPanes.put(ctrl)
-                        }
-
-                        fun changeViewButton() {
-
                         }
                     }
 
