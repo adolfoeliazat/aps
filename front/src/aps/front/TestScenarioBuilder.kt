@@ -17,7 +17,6 @@ import jquery.jq
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
-import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
 
 fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> = async {
@@ -296,19 +295,19 @@ class TestScenarioBuilder {
                             var scrollTop: Double = 0.0
 
                             val view by lazy {
-                                val place = Placeholder(kdiv {o ->
-                                    o - hor2 {o ->
-                                        o - kdiv(marginTop = "0.7rem") {o ->
-                                            o - "Loading shit..."
+                                val place = Placeholder(kdiv{o->
+                                    o- hor2{o->
+                                        o- kdiv(marginTop = "0.7rem"){o->
+                                            o- "Loading shit..."
                                         }
-                                        o - renderTicker(float = null)
+                                        o- renderTicker(float = null)
                                     }
                                 })
 
                                 async {
                                     try {
                                         val base64 = await(promiseBase64())
-                                        place.setContent(kdiv(style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
+                                        place.setContent(kdiv(id = scrollerID, style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
                                             val imgURL = "data:image/png;base64,$base64"
                                             o- img2(src = imgURL, style = Style(width = "100%"))
                                         })
@@ -326,6 +325,24 @@ class TestScenarioBuilder {
                             }
 
                             abstract fun promiseBase64(): Promise<String>
+
+                            fun renderButton() = Button(
+                                title = buttonTitle,
+                                style = bannerButtonStyle.copy(
+                                    borderLeft = if (mode != this) null else
+                                        "1rem solid $ORANGE_300"
+                                ),
+                                onClick = {
+                                    mode.scrollLeft = byid0(mode.scrollerID)!!.scrollLeft
+                                    mode.scrollTop = byid0(mode.scrollerID)!!.scrollTop
+                                    mode = this
+                                    ctrl.update()
+                                    timeoutSet(0) {
+                                        byid0(mode.scrollerID)!!.scrollLeft = mode.scrollLeft
+                                        byid0(mode.scrollerID)!!.scrollTop = mode.scrollTop
+                                    }
+                                }
+                            )
                         }
 
                         val diffMode = object:Mode() {
@@ -369,16 +386,7 @@ class TestScenarioBuilder {
                                     }
                                     o- hor1(baseStyle = Style(justifyContent = "flex-end")){o->
                                         for (m in listOf(diffMode, hardenedMode, currentMode)) {
-                                            o- Button(
-                                                title = m.buttonTitle,
-                                                style = bannerButtonStyle.copy(
-                                                    borderLeft = if (mode != m) null else
-                                                        "1rem solid $ORANGE_300"
-                                                ),
-                                                onClick = {
-                                                    mode = m
-                                                    ctrl.update()
-                                                })
+                                            o- m.renderButton()
                                         }
                                         o- kdiv(width = "1rem")
                                         o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {

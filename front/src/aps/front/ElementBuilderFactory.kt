@@ -34,5 +34,10 @@ class ElementBuilderFactory(val tag: String) {
                         block: ((ElementBuilder) -> Unit)? = null
     ): ElementBuilder = invoke(Attrs(id = id, className = className), Style(), block)
 
+    operator fun invoke(id: String,
+                        style: Style,
+                        block: ((ElementBuilder) -> Unit)? = null
+    ): ElementBuilder = invoke(Attrs(id = id), style, block)
+
 }
 
