@@ -235,7 +235,11 @@ class TestScenarioBuilder {
                     val shit = async {
                         when {
                             expected == null -> {
-                                await(showBanner(AssertionBannerKind.NOT_HARDENED))
+                                await(showBanner(
+                                    AssertionBannerKind.NOT_HARDENED,
+                                    renderSpecificButtons = {o->
+                                        o- acceptButton()
+                                    }))
                             }
 
                             actual == expected -> {
@@ -276,7 +280,7 @@ class TestScenarioBuilder {
                                             o- Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {async<Unit>{
                                                 openVisualDiff()
                                             }})
-                                            o- Button(key = "assertionBanner-accept", icon = fa.check, style = bannerButtonStyle, onClicka = this::acceptCurrentShit)
+                                            o- acceptButton()
                                         }))
                                 } finally {
                                     debugPanes.remove(pane)
@@ -441,10 +445,24 @@ class TestScenarioBuilder {
                         }
                     }
 
+                    fun acceptButton() = Button(
+                        key = "assertionBanner-accept",
+                        icon = fa.check,
+                        style = bannerButtonStyle,
+                        onClicka = this::acceptCurrentShit)
 
                     fun rerunTestButton() = Button(
-                        icon = fa.refresh, style = bannerButtonStyle,
+                        icon = fa.refresh,
+                        style = bannerButtonStyle,
                         onClick = {
+                            window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
+                        })
+
+                    fun rerunTestSlowlyButton() = Button(
+                        icon = fa.spinner,
+                        style = bannerButtonStyle,
+                        onClick = {
+                            Globus.realTypedStorageLocal.subsequentTestSlowdown = 2
                             window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
                         })
 
@@ -497,6 +515,7 @@ class TestScenarioBuilder {
                                             banner.update()
                                         })
                                     o- rerunTestButton()
+                                    o- rerunTestSlowlyButton()
                                     renderSpecificButtons(o)
                                 }
                                 o- link(title = "Assertion: $descr", color = BLACK, onClick = {

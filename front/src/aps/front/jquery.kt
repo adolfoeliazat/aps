@@ -14,8 +14,8 @@ import jquery.*
 import kotlin.browser.*
 
 @native interface JQueryPosition {
-    val left: Int
-    val top: Int
+    val left: Double
+    val top: Double
 }
 
 operator fun JQuery.get(index: Int): HTMLElement? = this.asDynamic()[index]
@@ -28,7 +28,8 @@ fun JQuery.remove(): String = this.asDynamic().remove()
 val JQuery.length: Int get() = this.asDynamic().length
 fun JQuery.css(prop: String, value: Any?): JQuery = this.asDynamic().css(prop, value)
 fun JQuery.setVal(value: String?): JQuery = this.asDynamic().`val`(value)
-fun JQuery.outerWidth(): Double = this.asDynamic().outerWidth()
+fun JQuery.outerWidth(includeMargin: Boolean = false): Double = this.asDynamic().outerWidth(includeMargin)
+fun JQuery.outerHeight(includeMargin: Boolean = false): Double = this.asDynamic().outerHeight(includeMargin)
 
 val jqbody: JQuery get() = jq(document.body!!)
 

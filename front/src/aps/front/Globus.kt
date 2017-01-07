@@ -61,6 +61,7 @@ class TypedStorageLocal(val store: StorageLocal) {
     var dontScrollOnTestPassed by BooleanValue()
     var DebugWordMentionFinderPage_inputText by StringValue()
     var lastTestURL by StringValue()
+    var subsequentTestSlowdown by IntValue()
 
     inner class StringValue {
         operator fun getValue(thisRef: Any?, property: KProperty<*>): String? =
@@ -69,6 +70,17 @@ class TypedStorageLocal(val store: StorageLocal) {
         operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String?) {
             if (value == null) store.removeItem(property.name)
             else store.setItem(property.name, value)
+        }
+    }
+
+    inner class IntValue {
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): Int? {
+            return store.getItem(property.name)?.let {parseInt(it)}
+        }
+
+        operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Int?) {
+            if (value == null) store.removeItem(property.name)
+            else store.setItem(property.name, value.toString())
         }
     }
 

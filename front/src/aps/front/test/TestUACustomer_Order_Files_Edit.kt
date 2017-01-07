@@ -28,12 +28,12 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             assertScreen = {o.assertScreenHTML("1", "ecec02be-35ab-4c44-afc4-a50b73d45b1c")}
         )
 
-        o.act {jqbody.scrollTop(700)}
+        o.acta {TestUserActionAnimation.scroll(700)}
         o.kicClick("edit-100008")
         o.assertScreenHTML("Piece of shit #100008 is opened for editing", "31c57c9d-06e2-43ee-beef-106f1689b954")
 
         o.section_rem("Edit some shit without changing file") {
-            o.act {jqbody.scrollTop(900)}
+            o.acta {TestUserActionAnimation.scroll(900)}
             o.kicClick("edit-100006")
             o.assertScreenHTML("Piece of shit is opened for editing", "51df826f-59d4-4287-a3ab-4dc90358eeea")
 
@@ -55,7 +55,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
         o.act {shit.pauses = TestShit.Pauses.ONLY}
         o.section("Cancelling editing") {
-            o.act {jqbody.scrollTop(1200)}
+            o.acta {TestUserActionAnimation.scroll(1200)}
             o.kicClick("edit-100004")
             o.assertScreenHTML("Piece of shit #100004 is opened for editing", "34672ca0-c212-40a7-84e5-3cc53715041a")
 
@@ -71,7 +71,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
         o.instructions.add(TestInstruction.Step.ActionStep("pizda"))
         o.section("Delete some shit") {
-            o.act {jqbody.scrollTop(2500)}
+            o.acta {TestUserActionAnimation.scroll(2500)}
 
             o.modalSequence(
                 action = {

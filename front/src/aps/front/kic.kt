@@ -26,7 +26,7 @@ class kic(
     }
 
     override fun render(): ToReactElementable =
-        ki(className = className, baseStyle = style, onClick = {click()})
+        ki(id = elementID, className = className, baseStyle = style, onClick = {click()})
 
     override fun componentDidMount() {
         if (key != null) {
@@ -42,9 +42,11 @@ class kic(
 }
 
 fun TestScenarioBuilder.kicClick(key: String) {
-    acta("Clicking kic `$key`") {
-        kic.instance(key).click()
-    }
+    acta("Clicking kic `$key`") {async{
+        val target = kic.instance(key)
+        await(TestUserActionAnimation.hand(target))
+        target.click()
+    }}
 }
 
 fun TestScenarioBuilder.kicClickNoWait(key: String) {

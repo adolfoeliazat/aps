@@ -34,6 +34,26 @@ object css {
         }
     }
 
+    private class KeyFrames(val spec: String) {
+        var name: String? = null
+
+        operator fun getValue(thiz: Any, prop: KProperty<*>): String {
+            if (name == null) {
+                name = prop.name
+
+                var group: Group? = thiz as? Group
+                while (group != null) {
+                    val groupName = group::class.simpleName
+                    name = groupName + "-" + name
+                    group = group.parent
+                }
+
+                allShit += "@keyframes $name {$spec}"
+            }
+            return name!!
+        }
+    }
+
     var allShit = ""
 
     object cunt : Group(null) {
@@ -193,6 +213,36 @@ object css {
             background-color: #ff00ff;
             z-index: 100000;
         """)
+
+        object animateUserActions : Group(this) {
+            object hand : Group(this) {
+                val pane by Style("""
+                    position: absolute;
+                    top: 10rem;
+                    left: 10rem;
+                    width: 3rem;
+                    height: 3rem;
+                    z-index: 1000000;
+                """)
+
+                val blink by KeyFrames("""
+                    0% {
+                        opacity: 1;
+                    }
+                    50% {
+                        opacity: 0;
+                    }
+                """)
+
+                val handIcon by Style("""
+                    font-size: 3rem;
+                    margin-left: -1rem; /* Fingertip is on left edge of pane */
+                    color: $BROWN_500;
+
+                    animation: $blink 300ms step-end infinite;
+                """)
+            }
+        }
     }
 
     val errorBanner by Style("""
@@ -1003,7 +1053,8 @@ object fa {
     val cog = IconClass("fa fa-cog fa-spinner")
     val gear = IconClass("fa fa-gear fa-spinner")
     val refresh = IconClass("fa fa-refresh")
-    val spinner = IconClass("fa fa-spinner fa-spinner")
+    val spinner = IconClass("fa fa-spinner")
+    val spinnerAnimated = IconClass("fa fa-spinner fa-spinner")
 
 }
 
