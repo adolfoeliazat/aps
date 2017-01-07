@@ -417,7 +417,8 @@ class TestScenarioBuilder {
                                         }
                                         o- kdiv(width = "1rem")
                                         o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {
-                                            imf()
+                                            debugPanes.remove(visualDiffPane)
+                                            acceptCurrentShit()
                                         })
                                         o- Button(icon = fa.close, style = bannerButtonStyle, onClick = {
                                             debugPanes.remove(visualDiffPane)

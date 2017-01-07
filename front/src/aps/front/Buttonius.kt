@@ -15,6 +15,7 @@ open class Button(
     val title: String? = null,
     val icon: IconClass? = null,
     val iconColor: Color? = null,
+    val volatileDisabled: (() -> Boolean)? = null,
     val disabled: Boolean = false,
     val hint: String? = null,
     val dataDismiss: String? = null,
@@ -46,7 +47,7 @@ open class Button(
             "className" to "btn btn-$level $className",
             "style" to style,
             "title" to hint,
-            "disabled" to disabled,
+            "disabled" to (volatileDisabled?.let {it()} ?: disabled),
             "onClick" to {e: ReactEvent ->
                 preventAndStop(e)
                 click()
@@ -80,10 +81,12 @@ open class Button(
 
 }
 
-fun TestScenarioBuilder.buttonClick(key: String) {
-    acta("Clicking button `$key`") {
-        Button.instance(key).click()
-    }
+fun TestScenarioBuilder.buttonClick(key: String, handOpts: HandOpts = HandOpts()) {
+    acta("Clicking button `$key`") {async{
+        val target = Button.instance(key)
+        await(TestUserActionAnimation.hand(target, handOpts))
+        target.click()
+    }}
 }
 
 fun TestScenarioBuilder.buttonUserInitiatedClick(key: String) {

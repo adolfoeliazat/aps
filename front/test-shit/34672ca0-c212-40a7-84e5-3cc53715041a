@@ -652,10 +652,10 @@
                     <div>
                       <div class="row" style="margin-bottom: 0.5em;">
                         <div class="col-md-12">
-                          <div class="cunt-header-viewing">
-                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                          <div class="cunt-header-editing">
+                            <i class="cunt-header-leftIcon-editing fa fa-file">
                             </i>
-                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-editing fa fa-pencil">
                             </i>
                             <span>
                               Crime and Punishment
@@ -666,200 +666,203 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               От писателя
                             </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
                           </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top: -1px;">
+                          <div class="cunt-bodyEditing">
+                            <form class="">
+                              <div class="form-group">
+                                <label>
+                                  Файл
+                                </label>
+                                <input type="file" style="display: none;">
+                                  <div style="display: flex; align-items: center;">
+                                    <span>
+                                      crime and punishment.rtf (2 КБ)
+                                    </span>
+                                    <button class="btn btn-default " style="margin-left: 1em;">
+                                      <i class="fa fa-cloud-upload">
+                                      </i>
+                                      &nbsp;
+                                      Изменить...
+                                    </button>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label>
+                                    Название
+                                  </label>
+                                  <div style="position: relative;">
+                                    <input type="text" rows="5" class="form-control" value="Crime and Punishment" style="resize: none;">
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>
+                                      Детали
+                                    </label>
+                                    <div style="position: relative;">
+                                      <textarea rows="5" type="text" class="form-control" style="resize: none;">
+                                        Действие романа начинается жарким июльским днём в Петербурге. Студент Родион Романович Раскольников, вынужденный уйти из университета из-за отсутствия денег, направляется в квартиру к процентщице Алёне Ивановне, чтобы сделать «пробу своему предприятию». В сознании героя в течение последнего месяца созревает идея убийства «гадкой старушонки»; одно-единственное преступление, по мнению Раскольникова, изменит его собственную жизнь и избавит сестру Дуню от необходимости выходить замуж за «благодетеля» Петра Петровича Лужина. Несмотря на проведённую «разведку», тщательно продуманный план ломается из-за внутренней паники Родиона Романовича (который после убийства процентщицы долго не может найти у неё ни денег, ни ценных закладов), а также внезапного возвращения домой сестры Алёны Ивановны. Тихая, безобидная, «поминутно беременная» Лизавета, оказавшаяся невольной свидетельницей преступления, становится второй жертвой студента.
+                                      </textarea>
+                                    </div>
+                                  </div>
+                                  <div style="text-align: left;">
+                                    <button class="btn btn-primary ">
+                                      Запостить
+                                    </button>
+                                    <button class="btn btn-default " style="margin-left: 10px;">
+                                      Передумал
+                                    </button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="row" style="margin-bottom: 0.5em;">
+                            <div class="col-md-12">
+                              <div class="cunt-header-viewing">
+                                <i class="cunt-header-leftIcon-viewing fa fa-file">
+                                </i>
+                                <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                                </i>
+                                <span>
+                                  The (Fucking) Idiot
+                                </span>
+                                <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                                  №100003
+                                </span>
+                                <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                                  От писателя
+                                </span>
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                                </i>
+                                <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                                </i>
+                                <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row" style="margin-bottom: 0.5em;">
+                            <div class="col-md-4">
+                              <label style="margin-bottom: 0px;">
+                                Создан
+                              </label>
+                              <div>
+                                27.12.2015 07:45:05 (Киев)
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <label style="margin-bottom: 0px;">
+                                Имя файла
+                              </label>
+                              <div>
+                                <span>
+                                  idiot.rtf
+                                </span>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <label style="margin-bottom: 0px;">
+                                Размер
+                              </label>
+                              <div>
+                                2 КБ
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row" style="margin-bottom: 0.5em;">
+                            <div class="col-md-12">
+                              <label style="margin-bottom: 0px;">
+                                Детали
+                              </label>
+                              <div style="white-space: pre-wrap;">
+                                <p>
+                                  26-летний князь Лев Николаевич Мышкин возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком искренним и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
+                                  В доме Епанчиных выясняется, что Настасья Филипповна там хорошо известна. Есть план выдать её за протеже генерала Епанчина Гаврилу Ардалионовича Иволгина, человека амбициозного, но посредственного. Князь Мышкин знакомится со всеми основными персонажами повествования. Это дочери Епанчиных — Александра, Аделаида и Аглая, на которых он производит благоприятное впечатление, оставаясь объектом их немного насмешливого внимания. Это генеральша Лизавета Прокофьевна Епанчина, которая находится в постоянном волнении из-за того, что её муж общается с Настасьей Филипповной, имеющей репутацию падшей. Это Ганя Иволгин, который очень страдает из-за предстоящей ему роли мужа Настасьи Филипповны, хотя ради денег готов на всё, и не может решиться на развитие своих пока очень слабых отношений с Аглаей. Князь Мышкин довольно простодушно рассказывает генеральше и сёстрам Епанчиным о том, что он узнал о Настасье Филипповне от Рогожина, а также поражает их своим повествованием о воспоминаниях и чувствах своего знакомого, который был приговорён к смертной казни, но в последний момент был помилован.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="row" style="margin-bottom: 0.5em;">
+                            <div class="col-md-12">
+                              <div class="cunt-header-viewing">
+                                <i class="cunt-header-leftIcon-viewing fa fa-file">
+                                </i>
+                                <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                                </i>
+                                <span>
+                                  Процесс by Кафка
+                                </span>
+                                <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                                  №100002
+                                </span>
+                                <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                                  Мой
+                                </span>
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                                </i>
+                                <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                                </i>
+                                <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row" style="margin-bottom: 0.5em;">
+                            <div class="col-md-4">
+                              <label style="margin-bottom: 0px;">
+                                Создан
+                              </label>
+                              <div>
+                                24.12.2015 22:58:05 (Киев)
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <label style="margin-bottom: 0px;">
+                                Имя файла
+                              </label>
+                              <div>
+                                <span>
+                                  the trial.doc
+                                </span>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <label style="margin-bottom: 0px;">
+                                Размер
+                              </label>
+                              <div>
+                                993 КБ
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row" style="margin-bottom: 0.5em;">
+                            <div class="col-md-12">
+                              <label style="margin-bottom: 0px;">
+                                Детали
+                              </label>
+                              <div style="white-space: pre-wrap;">
+                                <p>
+                                  Это чисто на почитать...
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div style="width: 100%; margin: 1em auto;">
+                          <button class="btn btn-default btn btn-default" style="width: 100%; background-color: rgb(236, 239, 241);">
+                            Загрузить еще
+                          </button>
                         </div>
                       </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Создан
-                          </label>
-                          <div>
-                            28.12.2015 09:19:05 (Киев)
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Имя файла
-                          </label>
-                          <div>
-                            <span>
-                              crime and punishment.rtf
-                            </span>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Размер
-                          </label>
-                          <div>
-                            2 КБ
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <label style="margin-bottom: 0px;">
-                            Детали
-                          </label>
-                          <div style="white-space: pre-wrap;">
-                            <p>
-                              Действие романа начинается жарким июльским днём в Петербурге. Студент Родион Романович Раскольников, вынужденный уйти из университета из-за отсутствия денег, направляется в квартиру к процентщице Алёне Ивановне, чтобы сделать «пробу своему предприятию». В сознании героя в течение последнего месяца созревает идея убийства «гадкой старушонки»; одно-единственное преступление, по мнению Раскольникова, изменит его собственную жизнь и избавит сестру Дуню от необходимости выходить замуж за «благодетеля» Петра Петровича Лужина. Несмотря на проведённую «разведку», тщательно продуманный план ломается из-за внутренней паники Родиона Романовича (который после убийства процентщицы долго не может найти у неё ни денег, ни ценных закладов), а также внезапного возвращения домой сестры Алёны Ивановны. Тихая, безобидная, «поминутно беременная» Лизавета, оказавшаяся невольной свидетельницей преступления, становится второй жертвой студента.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <div class="cunt-header-viewing">
-                            <i class="cunt-header-leftIcon-viewing fa fa-file">
-                            </i>
-                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
-                            </i>
-                            <span>
-                              The (Fucking) Idiot
-                            </span>
-                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                              №100003
-                            </span>
-                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                              От писателя
-                            </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Создан
-                          </label>
-                          <div>
-                            27.12.2015 07:45:05 (Киев)
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Имя файла
-                          </label>
-                          <div>
-                            <span>
-                              idiot.rtf
-                            </span>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Размер
-                          </label>
-                          <div>
-                            2 КБ
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <label style="margin-bottom: 0px;">
-                            Детали
-                          </label>
-                          <div style="white-space: pre-wrap;">
-                            <p>
-                              26-летний князь Лев Николаевич Мышкин возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком искренним и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
-                              В доме Епанчиных выясняется, что Настасья Филипповна там хорошо известна. Есть план выдать её за протеже генерала Епанчина Гаврилу Ардалионовича Иволгина, человека амбициозного, но посредственного. Князь Мышкин знакомится со всеми основными персонажами повествования. Это дочери Епанчиных — Александра, Аделаида и Аглая, на которых он производит благоприятное впечатление, оставаясь объектом их немного насмешливого внимания. Это генеральша Лизавета Прокофьевна Епанчина, которая находится в постоянном волнении из-за того, что её муж общается с Настасьей Филипповной, имеющей репутацию падшей. Это Ганя Иволгин, который очень страдает из-за предстоящей ему роли мужа Настасьи Филипповны, хотя ради денег готов на всё, и не может решиться на развитие своих пока очень слабых отношений с Аглаей. Князь Мышкин довольно простодушно рассказывает генеральше и сёстрам Епанчиным о том, что он узнал о Настасье Филипповне от Рогожина, а также поражает их своим повествованием о воспоминаниях и чувствах своего знакомого, который был приговорён к смертной казни, но в последний момент был помилован.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <div class="cunt-header-viewing">
-                            <i class="cunt-header-leftIcon-viewing fa fa-file">
-                            </i>
-                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
-                            </i>
-                            <span>
-                              Процесс by Кафка
-                            </span>
-                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                              №100002
-                            </span>
-                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                              Мой
-                            </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Создан
-                          </label>
-                          <div>
-                            24.12.2015 22:58:05 (Киев)
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Имя файла
-                          </label>
-                          <div>
-                            <span>
-                              the trial.doc
-                            </span>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Размер
-                          </label>
-                          <div>
-                            993 КБ
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <label style="margin-bottom: 0px;">
-                            Детали
-                          </label>
-                          <div style="white-space: pre-wrap;">
-                            <p>
-                              Это чисто на почитать...
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div style="width: 100%; margin: 1em auto;">
-                      <button class="btn btn-default btn btn-default" style="width: 100%; background-color: rgb(236, 239, 241);">
-                        Загрузить еще
-                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
