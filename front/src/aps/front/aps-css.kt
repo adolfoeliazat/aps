@@ -216,15 +216,6 @@ object css {
 
         object animateUserActions : Group(this) {
             object hand : Group(this) {
-                val pane by Style("""
-                    position: absolute;
-                    top: 10rem;
-                    left: 10rem;
-                    width: 3rem;
-                    height: 3rem;
-                    z-index: 1000000;
-                """)
-
                 val blink by KeyFrames("""
                     0% {
                         opacity: 1;
@@ -234,13 +225,57 @@ object css {
                     }
                 """)
 
+                val pane by Style("""
+                    position: absolute;
+                    top: 10rem;
+                    left: 10rem;
+                    width: 3rem;
+                    height: 3rem;
+                    z-index: 1000000;
+                    animation: $blink 300ms step-end infinite;
+                """)
+
                 val handIcon by Style("""
                     font-size: 3rem;
                     margin-left: -1rem; /* Fingertip is on left edge of pane */
                     color: $BROWN_500;
-
-                    animation: $blink 300ms step-end infinite;
+                    position: absolute; /* Otherwise it appears below handIconFill */
                 """)
+
+                val fillPointingFinger by Style("""
+                    position: absolute;
+                    background: $WHITE;
+                    left: -0.15em;
+                    top: 0.1em;
+                    width: 0.4em;
+                    height: 1em;""")
+
+                val fillWrist by Style("""
+                    position: absolute;
+                    background: $WHITE;
+                    left: -0.09em;
+                    top: 1em;
+                    width: 1em;
+                    height: 1em;""")
+
+                val fillFist by Style("""
+                    position: absolute;
+                    background: $WHITE;
+                    left: 0em;
+                    top: 0.67em;
+                    width: 1em;
+                    height: 0.9em;
+                    transform: rotate(18deg);""")
+
+                val fillBigFinger by Style("""
+                    position: absolute;
+                    background: $WHITE;
+                    left: -0.35em;
+                    top: 0.65em;
+                    width: 0.4em;
+                    height: 1em;
+                    transform: rotate(-60deg);""")
+
             }
         }
     }

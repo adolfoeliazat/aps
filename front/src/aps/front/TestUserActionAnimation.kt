@@ -49,13 +49,18 @@ object TestUserActionAnimation {
             clog("left = $left; top = $top; marginTop = $marginTop")
 
             val pane = debugPanes.put(kdiv(className = mycss.pane, left = left, top = top, marginTop = marginTop){o->
+                o- kdiv(className = mycss.fillBigFinger)
+                o- kdiv(className = mycss.fillFist)
+                o- kdiv(className = mycss.fillPointingFinger)
+                o- kdiv(className = mycss.fillWrist)
+
                 val icon = when (opts.direction) {
                     HandDirection.UP -> fa.handOUp
                     HandDirection.DOWN -> fa.handODown
                     HandDirection.LEFT -> fa.handOLeft
                     HandDirection.RIGHT -> fa.handORight
                 }
-                o - ki(className = mycss.handIcon + " " + icon.className)
+                o- ki(className = mycss.handIcon + " " + icon.className)
             })
 
             await(delay(opts.ms * testOpts.slowdown))
