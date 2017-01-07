@@ -440,7 +440,7 @@ class TestScenarioBuilder {
 
                     fun captureVisualShitIfNeeded() = async {
                         if (!capturedVisualShit) {
-                            captureVisualShit(assertionID)
+                            await(captureVisualShit(assertionID))
                             capturedVisualShit = true
                         }
                     }
@@ -519,7 +519,7 @@ class TestScenarioBuilder {
                                     renderSpecificButtons(o)
                                 }
                                 o- link(title = "Assertion: $descr", color = BLACK, onClick = {
-                                    revealStack(stackCapture)
+                                    revealStack(stackCapture, muteConsole = true)
                                 })
 //                                o- "Assertion: $descr"
                             }

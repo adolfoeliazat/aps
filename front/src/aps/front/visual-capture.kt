@@ -34,19 +34,20 @@ fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> =
         var isHeightGood by notNull<Boolean>()
 
         fun determineHeight(original: Boolean = false) {
-            documentHeight = document.documentElement!!.asDynamic().offsetHeight
+//            documentHeight = document.documentElement!!.asDynamic().offsetHeight
+            documentHeight = document.documentElement!!.getBoundingClientRect().height
             documentHeightPhysicalDouble = documentHeight.toPhysicalPixelsDouble()
-            isHeightGood = Math.floor(documentHeightPhysicalDouble) == Math.ceil(documentHeightPhysicalDouble)
-            if (original) {
-                clog("Original: documentHeight = $documentHeight; documentHeightPhysicalDouble = $documentHeightPhysicalDouble; isHeightGood = $isHeightGood")
-            }
+//            isHeightGood = Math.floor(documentHeightPhysicalDouble) == Math.ceil(documentHeightPhysicalDouble)
+            isHeightGood = Math.abs(documentHeightPhysicalDouble - documentHeightPhysicalDouble) < 0.001
+            clog("${ifOrEmpty(original){"Original: "}}documentHeight = $documentHeight; documentHeightPhysicalDouble = $documentHeightPhysicalDouble; isHeightGood = $isHeightGood")
         }
 
         determineHeight(original = true)
         if (!isHeightGood) {
             val shouldBePhysical = Math.ceil(documentHeightPhysicalDouble)
-            val deltaPhysical = documentHeightPhysicalDouble - shouldBePhysical
+            val deltaPhysical = shouldBePhysical - documentHeightPhysicalDouble
             val deltaPixels = deltaPhysical / window.devicePixelRatio // ph = px * ratio  -->  px = ph / ratio
+            clog("shouldBePhysical = $shouldBePhysical; deltaPhysical = $deltaPhysical; deltaPixels = $deltaPixels")
             jqbody.css("margin-bottom", "${deltaPixels}px")
             determineHeight()
         }

@@ -55,8 +55,8 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
         o.act {shit.pauses = TestShit.Pauses.ONLY}
         o.section("Cancelling editing") {
-            o.acta {TestUserActionAnimation.scroll(1200)}
-            o.kicClick("edit-100004")
+            o.acta {TestUserActionAnimation.scroll(1413)}
+            o.kicClick("edit-100004", HandOpts(direction = HandDirection.DOWN))
             o.assertScreenHTML("Piece of shit #100004 is opened for editing", "34672ca0-c212-40a7-84e5-3cc53715041a")
 
             o.inputSetValue("title-100004", "Fuck you")

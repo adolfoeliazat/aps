@@ -338,7 +338,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                 UserKind.ADMIN -> imf()
                             })
 
-                            await(scrollBodyToShitGradually(dy = -5){byid(topShitID)})
+                            await(scrollBodyToShitGradually(dy = -10){byid(topShitID)})
                         }
 
                         fun enterVanishedMode() {

@@ -90,7 +90,9 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
 }
 
 fun serveSaveCapturedVisualShitRequest(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequest.Response {
-    return saveCaptureTo(imageFile(capturedShit!!.id))
+    saveCaptureTo(imageFile(capturedShit!!.id))
+    capturedShit = null
+    return SaveCapturedVisualShitRequest.Response()
 }
 
 fun serveGetCapturedVisualShitRequest(req: GetCapturedVisualShitRequest): GetCapturedVisualShitRequest.Response {
@@ -130,9 +132,8 @@ fun serveDiffCapturedVisualShitWithSavedRequest(req: DiffCapturedVisualShitWithS
 
 private fun imageFile(id: String) = File("${bconst.visualCaptureDir}/$id.png")
 
-private fun saveCaptureTo(file: File): SaveCapturedVisualShitRequest.Response {
+private fun saveCaptureTo(file: File) {
     ImageIO.write(capturedShit!!.image, "PNG", file)
-    return SaveCapturedVisualShitRequest.Response()
 }
 
 
