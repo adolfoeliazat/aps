@@ -677,6 +677,14 @@ fun tillPausedOnAssertion() = pausedOnAssertion.promise
 
 fun resumePausedAssertion() = assertionBannerPause.resolve()
 
+fun TestScenarioBuilder.forceFastestTillHere() {
+    instructions.add(0, TestInstruction.Do {async{
+        TestGlobal.forcedFastest = true
+    }})
+    instructions.add(TestInstruction.Do {async{
+        TestGlobal.forcedFastest = false
+    }})
+}
 
 
 

@@ -62,6 +62,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             o.inputSetValue("title-100004", "Fuck you")
             o.inputSetValue("details-100004", "bitch")
             o.pause(shit, "Will click Cancel...")
+            o.forceFastestTillHere()
             o.buttonClick("cancel-100004")
             o.assertScreenHTML("Piece of shit is closed, nothing changed", "55b183c9-d6c7-489f-90be-4bc3c0c7550d")
         }

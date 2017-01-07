@@ -37,6 +37,7 @@ object TestGlobal {
         }
 
     val lastTestHref get() = lastTestHrefMaybe!!
+    var forcedFastest = false
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

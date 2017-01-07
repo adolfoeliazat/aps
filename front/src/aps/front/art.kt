@@ -226,7 +226,7 @@ object art {
                                 }
                                 __await<dynamic>(control.testKeyDown(instr))
                             }
-                            else -> wtf("Test instruction: $instr")
+                            is TestInstruction.Action -> {} // This is label?
                         }
                     }
                 }
