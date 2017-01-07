@@ -154,9 +154,7 @@ private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promi
 }
 
 private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
-    val opts = TestRunnerOptions(
-        stopOnAssertions = urlQuery[const.urlq.test.stopOnAssertions].relaxedToBoolean(default = false)
-    )
+    val opts = TestRunnerOptions.parse(urlQuery)
 
     Globus.realTypedStorageLocal.lastTestURL = window.location.href
 
@@ -251,9 +249,17 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
 }
 
 data class TestRunnerOptions(
-    val stopOnAssertions: Boolean = false
+    val stopOnAssertions: Boolean = false,
+    val dontStopOnCorrectAssertions: Boolean = false
 ) {
-    override fun toString(): String = "stopOnAssertions=$stopOnAssertions"
+    companion object {
+        fun parse(urlQuery: Map<String, String>): TestRunnerOptions {
+            return TestRunnerOptions(
+                stopOnAssertions = urlQuery[const.urlq.test.stopOnAssertions].relaxedToBoolean(default = false),
+                dontStopOnCorrectAssertions = urlQuery[const.urlq.test.dontStopOnCorrectAssertions].relaxedToBoolean(default = false)
+            )
+        }
+    }
 }
 
 fun testNameToURL(testName: String, opts: TestRunnerOptions): String {
@@ -267,6 +273,7 @@ fun testNameToURL(testName: String, opts: TestRunnerOptions): String {
         append("http://$hostPort/faq.html")
         append("?" + const.urlq.test.test + "=" + testName)
         append("&" + const.urlq.test.stopOnAssertions + "=" + opts.stopOnAssertions)
+        append("&" + const.urlq.test.dontStopOnCorrectAssertions + "=" + opts.dontStopOnCorrectAssertions)
     }
 }
 

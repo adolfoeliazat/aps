@@ -9,5 +9,6 @@ object bconst {
     val magick by lazy {getenv("APS_MAGICK") ?: "C:\\opt\\ImageMagick-7.0.4-Q16\\magick.exe"}
     val visualCaptureDir = "$APS_TEMP/visual-capture"
     val tempBakDir = "$APS_TEMP/bak"
+    val ideaExe = "C:/opt/idea-2017/bin/idea64.exe"
 }
 

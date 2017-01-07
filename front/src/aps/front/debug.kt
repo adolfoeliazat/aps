@@ -23,7 +23,7 @@ fun dumpControls() {
     for (key in kic.instances.keys) clog("kic: $key")
 }
 
-fun igniteDebugShit(): Promise<Unit> = DebugShitToIgnite.skipCorrectAssertions()
+fun igniteDebugShit(): Promise<Unit> = DebugShitToIgnite.nothing()
 private object DebugShitToIgnite {
     fun nothing() = async {}
 

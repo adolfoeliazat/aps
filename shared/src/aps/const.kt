@@ -50,6 +50,7 @@ object const {
         object test {
             val test = "test"
             val stopOnAssertions = "stopOnAssertions"
+            val dontStopOnCorrectAssertions  = "dontStopOnCorrectAssertions"
         }
     }
 

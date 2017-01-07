@@ -204,7 +204,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 
         val pb = ProcessBuilder()
         val cmd = pb.command()
-        cmd.addAll(listOf(IDEA_EXE, APS_HOME, "--line", line, file))
+        cmd.addAll(listOf(bconst.ideaExe, APS_HOME, "--line", line, file))
         dlog("Executing external command:", cmd.joinToString(" "))
         pb.inheritIO()
         val proc = pb.start()
