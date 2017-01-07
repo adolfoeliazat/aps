@@ -238,7 +238,9 @@ class TestScenarioBuilder {
                             }
 
                             actual == expected -> {
-                                await(showBanner(AssertionBannerKind.CORRECT))
+                                if (!TestGlobal.lastTestOpts.dontStopOnCorrectAssertions) {
+                                    await(showBanner(AssertionBannerKind.CORRECT))
+                                }
                             }
 
                             actual != expected -> {
