@@ -19,6 +19,18 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
+private var pausedOnAssertion = ResolvableShit<Unit>()
+private var assertionBannerPause by notNull<ResolvableShit<Unit>>()
+private var _currentAssertionBannerKind by notNull<AssertionBannerKind>()
+
+val currentAssertionBannerKind get() = _currentAssertionBannerKind
+
+enum class AssertionBannerKind(val className: String) {
+    NOT_HARDENED(css.test.popup.assertion.notHardened),
+    CORRECT(css.test.popup.assertion.correct),
+    INCORRECT(css.test.popup.assertion.incorrect)
+}
+
 fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> = async {
     val builder = TestScenarioBuilder()
     block(builder)
@@ -205,7 +217,6 @@ class TestScenarioBuilder {
                     val bannerButtonStyle = Style()
 
                     var banner by notNull<Control2>()
-                    var bannerPause by notNull<ResolvableShit<Unit>>()
                     var verticalPosition = VerticalPosition.BOTTOM
                     var horizontalPosition = HorizontalPosition.LEFT
                     var capturedVisualShit = false
@@ -217,17 +228,17 @@ class TestScenarioBuilder {
                             o.assertionID = assertionID
                             o.html = actual
                         }))
-                        bannerPause.resolve()
+                        assertionBannerPause.resolve()
                     }
 
                     val shit = async {
                         when {
                             expected == null -> {
-                                await(showBanner(css.test.popup.assertion.notHardened))
+                                await(showBanner(AssertionBannerKind.NOT_HARDENED))
                             }
 
                             actual == expected -> {
-                                await(showBanner(css.test.popup.assertion.correct))
+                                await(showBanner(AssertionBannerKind.CORRECT))
                             }
 
                             actual != expected -> {
@@ -250,7 +261,7 @@ class TestScenarioBuilder {
 
                                 try {
                                     await(showBanner(
-                                        css.test.popup.assertion.incorrect,
+                                        AssertionBannerKind.INCORRECT,
                                         renderSpecificButtons = {o->
                                             o- Button(title = "Diff", style = bannerButtonStyle, onClick = {
                                                 verticalPosition = VerticalPosition.TOP
@@ -434,8 +445,10 @@ class TestScenarioBuilder {
                             window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
                         })
 
-                    fun showBanner(className: String, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
-                        bannerPause = ResolvableShit<Unit>()
+                    fun showBanner(kind: AssertionBannerKind, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
+                        _currentAssertionBannerKind = kind
+                        val className = kind.className
+                        assertionBannerPause = ResolvableShit<Unit>()
                         banner = Control2.from {
                             val style = Style()
                             exhaustive/when (verticalPosition) {
@@ -449,10 +462,10 @@ class TestScenarioBuilder {
                             kdiv(className = className, baseStyle = style){o->
                                 o- hor1(marginBottom = "0.5rem"){o->
                                     o- Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
-                                        bannerPause.resolve()
+                                        assertionBannerPause.resolve()
                                     })
                                     o- Button(icon = fa.bomb, style = bannerButtonStyle, onClick = {
-                                        bannerPause.reject(Exception("Fucking killed"))
+                                        assertionBannerPause.reject(Exception("Fucking killed"))
                                     })
                                     o- Button(
                                         icon = when (verticalPosition) {
@@ -491,14 +504,16 @@ class TestScenarioBuilder {
                         fun keyListener(e: Event) {
                             e as KeyboardEvent
                             if (e.key == " ") {
-                                bannerPause.resolve()
+                                assertionBannerPause.resolve()
                             }
                         }
                         window.addEventListener("keydown", ::keyListener)
 
                         try {
-                            await(bannerPause.promise)
+                            pausedOnAssertion.resolve()
+                            await(assertionBannerPause.promise)
                         } finally {
+                            pausedOnAssertion = ResolvableShit()
                             window.removeEventListener("keydown", ::keyListener)
                             debugPanes.remove(pane)
                         }
@@ -631,3 +646,20 @@ private enum class VerticalPosition {
 private enum class HorizontalPosition {
     LEFT, RIGHT
 }
+
+fun tillPausedOnAssertion() = pausedOnAssertion.promise
+
+fun resumePausedAssertion() = assertionBannerPause.resolve()
+
+
+
+
+
+
+
+
+
+
+
+
+

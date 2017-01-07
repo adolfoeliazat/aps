@@ -23,8 +23,24 @@ fun dumpControls() {
     for (key in kic.instances.keys) clog("kic: $key")
 }
 
-fun igniteDebugShit(): Promise<Unit> = DebugShitToIgnite.shit2()
+fun igniteDebugShit(): Promise<Unit> = DebugShitToIgnite.skipCorrectAssertions()
 private object DebugShitToIgnite {
+    fun nothing() = async {}
+
+    fun skipNonFailedAssertions() = skipAssertionsUntil {currentAssertionBannerKind == AssertionBannerKind.INCORRECT}
+    fun skipCorrectAssertions() = skipAssertionsUntil {currentAssertionBannerKind != AssertionBannerKind.CORRECT}
+
+    private fun skipAssertionsUntil(condition: () -> Boolean): Promise<Unit> {
+        return async<Unit> {
+            while (true) {
+                await(tillPausedOnAssertion())
+                if (condition())
+                    break
+                resumePausedAssertion()
+            }
+        }
+    }
+
     fun shit1() = async {
         await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
         Button.instance("assertionBanner-play").click()
