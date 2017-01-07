@@ -1205,14 +1205,6 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 }
 
 fun openTestListPane() {
-    class Opts(val title: String, val opts: TestRunnerOptions)
-
-    val optsBunch = setOf(
-        Opts("Usual", TestRunnerOptions()),
-        Opts("Stop on assertions", TestRunnerOptions(stopOnAssertions = true)),
-        Opts("Stop on assertions except correct", TestRunnerOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true))
-    )
-
     debugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv{o->
         o- Style(backgroundColor = BROWN_500, color = WHITE,
                  marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
@@ -1234,12 +1226,12 @@ fun openTestListPane() {
             val lastName = TestGlobal.lastTest.name
             o- kdiv{o->
                 val opts = TestGlobal.lastTestOpts
-                val descr = optsBunch.find {it.opts == opts}?.title ?: opts.toString()
+                val descr = TestRunnerOptions.optionSets.find {it.opts == opts}?.title ?: opts.toString()
                 o- testLink(lastName, opts, title = "$lastName: $descr")
             }
             o- kdiv(marginTop = "0.5rem", paddingTop = "0.5rem", borderTop = "1px dashed $GRAY_600")
 
-            for (opts in optsBunch.filter {it.opts != TestGlobal.lastTestOpts}) {
+            for (opts in TestRunnerOptions.optionSets.filter {it.opts != TestGlobal.lastTestOpts}) {
                 o- kdiv {o->
                     o- testLink(lastName, opts.opts, title = "$lastName: ${opts.title}")
                 }

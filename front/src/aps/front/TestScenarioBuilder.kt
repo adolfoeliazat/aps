@@ -198,6 +198,7 @@ class TestScenarioBuilder {
     }
 
     fun assertScreenHTML(descr: String?, assertionID: String) {
+        val stackCapture = CaptureStackException()
         act {TestGlobal.testShitBeingAssertedID = assertionID}
 
         val stepTitle = "HTML: $descr"
@@ -498,7 +499,10 @@ class TestScenarioBuilder {
                                     o- rerunTestButton()
                                     renderSpecificButtons(o)
                                 }
-                                o- "Assertion: $descr"
+                                o- link(title = "Assertion: $descr", color = BLACK, onClick = {
+                                    revealStack(stackCapture)
+                                })
+//                                o- "Assertion: $descr"
                             }
                         }
                         val pane = debugPanes.put(banner)

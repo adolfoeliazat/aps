@@ -51,6 +51,7 @@ object const {
             val test = "test"
             val stopOnAssertions = "stopOnAssertions"
             val dontStopOnCorrectAssertions  = "dontStopOnCorrectAssertions"
+            val animateUserActions = "animateUserActions"
         }
     }
 

@@ -250,13 +250,33 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
 
 data class TestRunnerOptions(
     val stopOnAssertions: Boolean = false,
-    val dontStopOnCorrectAssertions: Boolean = false
+    val dontStopOnCorrectAssertions: Boolean = false,
+    val animateUserActions: Boolean = false
 ) {
+    fun toURLQuery(): String {
+        return buildString {
+            append(const.urlq.test.stopOnAssertions + "=" + stopOnAssertions)
+            append("&" + const.urlq.test.dontStopOnCorrectAssertions + "=" + dontStopOnCorrectAssertions)
+            append("&" + const.urlq.test.animateUserActions + "=" + animateUserActions)
+        }
+    }
+
     companion object {
+        class OptionSet(val title: String, val opts: TestRunnerOptions)
+
+        val optionSets = setOf(
+            OptionSet("Usual", TestRunnerOptions()),
+            OptionSet("Stop on assertions", TestRunnerOptions(stopOnAssertions = true)),
+            OptionSet("Stop on assertions, animate", TestRunnerOptions(stopOnAssertions = true, animateUserActions = true)),
+            OptionSet("Stop on assertions except correct", TestRunnerOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)),
+            OptionSet("Stop on assertions except correct, animate", TestRunnerOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = true))
+        )
+
         fun parse(urlQuery: Map<String, String>): TestRunnerOptions {
             return TestRunnerOptions(
                 stopOnAssertions = urlQuery[const.urlq.test.stopOnAssertions].relaxedToBoolean(default = false),
-                dontStopOnCorrectAssertions = urlQuery[const.urlq.test.dontStopOnCorrectAssertions].relaxedToBoolean(default = false)
+                dontStopOnCorrectAssertions = urlQuery[const.urlq.test.dontStopOnCorrectAssertions].relaxedToBoolean(default = false),
+                animateUserActions = urlQuery[const.urlq.test.animateUserActions].relaxedToBoolean(default = false)
             )
         }
     }
@@ -272,8 +292,7 @@ fun testNameToURL(testName: String, opts: TestRunnerOptions): String {
     return buildString {
         append("http://$hostPort/faq.html")
         append("?" + const.urlq.test.test + "=" + testName)
-        append("&" + const.urlq.test.stopOnAssertions + "=" + opts.stopOnAssertions)
-        append("&" + const.urlq.test.dontStopOnCorrectAssertions + "=" + opts.dontStopOnCorrectAssertions)
+        append("&" + opts.toURLQuery())
     }
 }
 
