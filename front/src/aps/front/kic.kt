@@ -45,7 +45,7 @@ fun TestScenarioBuilder.kicClick(key: String, handOpts: HandOpts = HandOpts()) {
     acta("Clicking kic `$key`") {async{
         val target = kic.instance(key)
         await(TestUserActionAnimation.hand(target, handOpts))
-        target.click()
+        await(target.click())
     }}
 }
 

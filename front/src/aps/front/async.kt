@@ -1,8 +1,10 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 import kotlin.browser.window
 import kotlin.coroutines.*
+import kotlin.properties.Delegates.notNull
 
 fun <T> async(block: suspend () -> T): Promise<T> =
     Promise {resolve, reject ->
@@ -32,61 +34,35 @@ fun <T> Promise<T>.finally(onFulfilled: (T) -> Unit) =
     this.then<Nothing>(onFulfilled, {})
 
 
-fun <T> Promise<T>.orTimeout(ms: Int, msg: String = "Sick of waiting"): Promise<T> {
+fun <T> Promise<T>.orTimeout(ms: Int, descr: String = "shit"): Promise<T> {
     val shit = ResolvableShit<T>()
-    window.setTimeout({shit.reject(Exception(msg))}, ms)
+    window.setTimeout({shit.reject(Exception("Sick of waiting for $descr"))}, ms)
     this.finally {shit.resolve(it)}
     return shit.promise
 }
 
+class ResolvableShit<T> {
+    var resolve by notNull<(T) -> Unit>()
+    var reject by notNull<(Throwable) -> Unit>()
+    var promise by notNull<Promise<T>>()
 
+    init {
+        reset()
+    }
 
-// ------------------------------ PRE-1.1-M04 ------------------------------
+    fun reset() {
+        promise = Promise<T> {resolve, reject ->
+            this.resolve = resolve
+            this.reject = reject
+        }
+    }
+}
 
-//fun <T> async(
-//    coroutine c: PromiseController<T>.() -> Continuation<Unit>
-//): Promise<T> =
-//    Promise {resolve, reject ->
-//        c(PromiseController(resolve, reject)).resume(Unit)
-//    }
+fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
+
+//class Signal<T> {
 //
-//class PromiseController<T>(
-//    private val resolve: (T) -> Unit,
-//    private val reject: (Throwable) -> Unit
-//) {
-//    suspend fun <V> await(p: Promise<V>, machine: Continuation<V>) {
-//        p.then<Any?>(
-//            onFulfilled = {value->
-//                machine.resume(value)
-//            },
-//            onRejected = {throwable->
-//                machine.resumeWithException(throwable)
-//            }
-//        )
-//    }
-//
-//    @Suppress("UnsafeCastFromDynamic")
-//    suspend fun <V> awaitJSShit(p: dynamic, machine: Continuation<V>) {
-//        if (p is Promise<*>) {
-//            await<V>(p, machine)
-//        } else {
-//            machine.resume(p)
-//        }
-//    }
-//
-//    operator fun handleResult(value: T, c: Continuation<Nothing>) {
-//        resolve(value)
-//    }
-//
-//    operator fun handleException(t: Throwable, c: Continuation<Nothing>) {
-//        reject(t)
-//    }
 //}
-
-
-
-
-
 
 
 

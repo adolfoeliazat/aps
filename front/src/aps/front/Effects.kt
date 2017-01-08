@@ -48,25 +48,67 @@ object effects2 {
             byid0(elementID)!!.style.opacity = value.toString()
         }
 
-        val animationTime = 250
-        val startTime = dateNow()
-        val endTime = startTime + animationTime
-        while (true) {
+        var frames = 16
+        check(frames % 2 == 0) {"frames is even"}
+
+        val dopacity = 1.0 / frames
+        var opacity = 1.0
+
+        var midpoint = opacity
+        for (i in 1..frames/2) midpoint -= dopacity
+        check("$midpoint" == "0.5") {"fadeOut midpoint"}
+
+        var midpointReached = false
+        while (frames-- > 0) {
             await(tillAnimationFrame())
 
-            val now = dateNow()
-            if (now > endTime) {
-                setOpacity(0.0)
-                break
+            opacity -= dopacity
+            dlog("opacity = $opacity")
+
+            if (opacity == midpoint) {
+                if (TestGlobal.lastTestMaybe != null) {
+                    TestGlobal.animationHalfwaySignal!!.resolve()
+                    await(TestGlobal.animationHalfwaySignalProcessedSignal!!.promise)
+                }
+                midpointReached = true
             }
 
-            val advancedInTimeFraction = (now - startTime).toDouble() / (endTime - startTime)
-            val opacity = 1.0 - advancedInTimeFraction
-            // dlog("opacity = $opacity")
             setOpacity(opacity)
         }
+        check(midpointReached) {"midpointReached"}
     }
 }
+
+fun TestScenarioBuilder.animatedActionSequence(
+    buildAction: () -> Unit,
+    assertionDescr: String,
+    halfwayAssertionID: String,
+    finalAssertionID: String
+) {
+    val o = this
+    o.act {
+        check(TestGlobal.animationHalfwaySignal == null)
+        TestGlobal.animationHalfwaySignal = ResolvableShit()
+
+        check(TestGlobal.animationHalfwaySignalProcessedSignal == null)
+        TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
+
+        check(TestGlobal.actionSignal == null)
+        TestGlobal.actionSignal = ResolvableShit()
+    }
+
+    buildAction()
+
+    o.acta {TestGlobal.animationHalfwaySignal!!.promise.orTimeout(1000, "animationHalfway")}
+    o.act {TestGlobal.animationHalfwaySignal = null}
+    o.assertScreenHTML(assertionDescr + " (animation halfway)", halfwayAssertionID)
+    o.act {TestGlobal.animationHalfwaySignalProcessedSignal!!.resolve()}
+
+    o.acta {TestGlobal.actionSignal!!.promise}
+    o.act {TestGlobal.actionSignal = null}
+    o.assertScreenHTML(assertionDescr, finalAssertionID)
+}
+
 
 @native interface ILegacyEffects {
     val element: ReactElement

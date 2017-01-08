@@ -27,6 +27,9 @@ object TestGlobal {
     var lastTestOptsMaybe: TestRunnerOptions? = null
     var requestPause: ResolvableShit<Unit>? = null
     var responseArrived: ResolvableShit<Unit>? = null
+    var animationHalfwaySignal: ResolvableShit<Unit>? = null
+    var animationHalfwaySignalProcessedSignal: ResolvableShit<Unit>? = null
+    var actionSignal: ResolvableShit<Unit>? = null
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

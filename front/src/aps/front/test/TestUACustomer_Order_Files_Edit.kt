@@ -63,8 +63,14 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             o.inputSetValue("details-100004", "bitch")
             o.pause(shit, "Will click Cancel...")
             o.forceFastestTillHere()
-            o.buttonClick("cancel-100004")
-            o.assertScreenHTML("Piece of shit is closed, nothing changed", "55b183c9-d6c7-489f-90be-4bc3c0c7550d")
+            o.animatedActionSequence(
+                buildAction = {
+                    o.buttonClick("cancel-100004")
+                },
+                assertionDescr = "Piece of shit is closed, nothing changed",
+                halfwayAssertionID = "16e1707d-3c9f-4f6a-934b-ced0620d364e",
+                finalAssertionID = "55b183c9-d6c7-489f-90be-4bc3c0c7550d"
+            )
         }
 
         o.buttonClick("loadMore")

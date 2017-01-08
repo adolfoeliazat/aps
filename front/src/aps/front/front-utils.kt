@@ -219,24 +219,6 @@ inline fun currentJSFunctionName(): String {
     return line
 }
 
-class ResolvableShit<T> {
-    var resolve by notNull<(T) -> Unit>()
-    var reject by notNull<(Throwable) -> Unit>()
-    var promise by notNull<Promise<T>>()
-
-    init {
-        reset()
-    }
-
-    fun reset() {
-        promise = Promise<T> {resolve, reject ->
-            this.resolve = resolve
-            this.reject = reject
-        }
-    }
-}
-
-fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
 
 inline fun dwarnStriking(vararg xs: Any?) = dwarn("**********", *xs)
 

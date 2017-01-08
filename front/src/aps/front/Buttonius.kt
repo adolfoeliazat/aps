@@ -36,9 +36,9 @@ open class Button(
         override fun toString() = string
     }
 
-    open fun click(): Promise<Unit> {
+    open fun click(): Promise<Unit> = async {
         onClick()
-        return onClicka()
+        await(onClicka())
     }
 
     override fun render(): ToReactElementable {
@@ -85,7 +85,9 @@ fun TestScenarioBuilder.buttonClick(key: String, handOpts: HandOpts = HandOpts()
     acta("Clicking button `$key`") {async{
         val target = Button.instance(key)
         await(TestUserActionAnimation.hand(target, handOpts))
-        target.click()
+        target.click().finally {
+            TestGlobal.actionSignal!!.resolve()
+        }
     }}
 }
 
