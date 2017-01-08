@@ -320,9 +320,10 @@ class CustomerSingleUAOrderPage(val world: World) {
                                                     world,
                                                     cancelButtonTitle = const.defaultCancelButtonTitle,
                                                     containerClassName = css.cunt.bodyEditing,
-                                                    onCancel = {
+                                                    onCancela = {async{
+                                                        await(effects2.fadeOut(topShitID))
                                                         enterViewMode()
-                                                    },
+                                                    }},
                                                     onSuccess = {res->
                                                         orderFile = res.updatedOrderFile
                                                         enterViewMode()

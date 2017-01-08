@@ -42,6 +42,30 @@ object effects2 {
     fun blinkOffFadingOut() {
         effects.blinkOffFadingOut()
     }
+
+    fun fadeOut(elementID: String): Promise<Unit> = async {
+        fun setOpacity(value: Double) {
+            byid0(elementID)!!.style.opacity = value.toString()
+        }
+
+        val animationTime = 250
+        val startTime = dateNow()
+        val endTime = startTime + animationTime
+        while (true) {
+            await(tillAnimationFrame())
+
+            val now = dateNow()
+            if (now > endTime) {
+                setOpacity(0.0)
+                break
+            }
+
+            val advancedInTimeFraction = (now - startTime).toDouble() / (endTime - startTime)
+            val opacity = 1.0 - advancedInTimeFraction
+            // dlog("opacity = $opacity")
+            setOpacity(opacity)
+        }
+    }
 }
 
 @native interface ILegacyEffects {

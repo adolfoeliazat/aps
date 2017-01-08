@@ -297,7 +297,7 @@ fun Int.toLayoutPixels(): Double = this / window.devicePixelRatio
 
 fun tillHourPasses(): Promise<Unit> = delay(1000 * 60 * 60)
 
-
+fun dateNow(): Int = js("Date.now()")
 
 
 
