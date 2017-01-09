@@ -288,6 +288,24 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         legacyShit.setValue(value)
     }
 
+    fun testSetValue(value: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
+        if (TestGlobal.lastTestOpts.animateUserActions) {
+            await(TestUserActionAnimation.hand(
+                legacyShit.elementID,
+                handOpts.copy(direction = HandDirection.RIGHT),
+                whileHandVisible = {async{
+                    setValue("")
+                    for (chars in 0 until value.length) {
+                        await(delay(50))
+                        setValue(value.substring(0, chars + 1))
+                    }
+                }}
+            ))
+        } else {
+            setValue(value)
+        }
+    }
+
     fun isDisabled(): Boolean {
         return legacyShit.isDisabled()
     }
@@ -309,9 +327,9 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
 }
 
 fun TestScenarioBuilder.inputSetValue(key: String, value: String) {
-    act("Typing into `$key`: ${markdownItalicVerbatim(value)}") {
-        Input.instance(key).setValue(value)
-    }
+    acta("Typing into `$key`: ${markdownItalicVerbatim(value)}") {async{
+        await(Input.instance(key).testSetValue(value))
+    }}
 }
 
 fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) {

@@ -264,12 +264,32 @@ fun String?.relaxedToBoolean(default: Boolean): Boolean {
     }
 }
 
-fun touchObjectGraph(parent: dynamic) {
-    if (jsTypeOf(parent) != "object") return
+fun jsProto(x: Any): Any? = x.asDynamic().__proto__
 
-    val names: Array<String> = js("Object.getOwnPropertyNames(parent.__proto__)")
-    for (name in names) {
-        touchObjectGraph(parent[name])
+fun touchObjectGraph(parent: Any?, debugParentPath: String = "root", visited: MutableSet<Any> = mutableSetOf()) {
+    if (parent == null || jsTypeOf(parent) != "object") return
+
+    if (parent in visited) return
+    visited += parent
+
+    val ownNames = JSObject.getOwnPropertyNames(parent)
+
+    val protoChainNames = mutableListOf<String>()
+    var proto = jsProto(parent)
+    while (proto != null) {
+        val protoNames = JSObject.getOwnPropertyNames(proto)
+        protoChainNames += protoNames
+        proto = jsProto(proto)
+    }
+
+    for (name in ownNames + protoChainNames) {
+        // dlog("Touching property: $debugParentPath.$name")
+        val value = try {
+            parent.asDynamic()[name]
+        } catch(e: dynamic) { // Various obscure shit do happen when traversing objects like that...
+            continue
+        }
+        touchObjectGraph(value, "$debugParentPath.$name", visited)
     }
 }
 

@@ -72,7 +72,7 @@ class ResolvableShit<T> {
 
 fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
 
-
+fun tillEndOfTime(): Promise<Unit> = delay(Int.MAX_VALUE)
 
 
 

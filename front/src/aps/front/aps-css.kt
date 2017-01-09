@@ -6,8 +6,10 @@
 
 package aps.front
 
+import aps.*
 import aps.Color.*
 import into.kommon.*
+import kotlin.properties.Delegates.notNull
 import kotlin.reflect.KProperty
 
 object css {
@@ -215,36 +217,49 @@ object css {
         """)
 
         object animateUserActions : Group(this) {
-            object hand : Group(this) {
+            val debug = false
+            val fillColor = if (!debug) WHITE else PINK_200
+
+            abstract class HandGroup(
+                parent: Group?,
+                dir: HandDirection,
+                iconMarginLeft: String = "0",
+                iconMarginTop: String = "0",
+                fillContainerTransform: String = "none"
+            ) : Group(parent) {
                 val blink by KeyFrames("""
                     0% {
                         opacity: 1;
                     }
                     50% {
-                        opacity: 0;
-                    }
-                """)
+                        opacity: ${if (!debug) 0 else 1};
+                    }""")
 
                 val pane by Style("""
+                    ${ifOrEmpty(debug){"border: 1px solid green;"}}
                     position: absolute;
                     top: 10rem;
                     left: 10rem;
                     width: 3rem;
                     height: 3rem;
                     z-index: 1000000;
-                    animation: $blink 300ms step-end infinite;
-                """)
+                    animation: $blink 300ms step-end infinite;""")
 
                 val handIcon by Style("""
                     font-size: 3rem;
-                    margin-left: -1rem; /* Fingertip is on left edge of pane */
+                    margin-left: $iconMarginLeft; /* Fingertip is on the     */
+                    margin-top: $iconMarginTop;   /* left top corner of pane */
                     color: $BROWN_500;
-                    position: absolute; /* Otherwise it appears below handIconFill */
+                    position: absolute; /* Otherwise it appears below handIconFill */""")
+
+                val fillContainer by Style("""
+                    position: absolute;
+                    transform: $fillContainerTransform;
                 """)
 
                 val fillPointingFinger by Style("""
                     position: absolute;
-                    background: $WHITE;
+                    background: $fillColor;
                     left: -0.15em;
                     top: 0.1em;
                     width: 0.4em;
@@ -252,7 +267,7 @@ object css {
 
                 val fillWrist by Style("""
                     position: absolute;
-                    background: $WHITE;
+                    background: $fillColor;
                     left: -0.09em;
                     top: 1em;
                     width: 1em;
@@ -260,7 +275,7 @@ object css {
 
                 val fillFist by Style("""
                     position: absolute;
-                    background: $WHITE;
+                    background: $fillColor;
                     left: 0em;
                     top: 0.67em;
                     width: 1em;
@@ -269,7 +284,7 @@ object css {
 
                 val fillBigFinger by Style("""
                     position: absolute;
-                    background: $WHITE;
+                    background: $fillColor;
                     left: -0.35em;
                     top: 0.65em;
                     width: 0.4em;
@@ -277,6 +292,14 @@ object css {
                     transform: rotate(-60deg);""")
 
             }
+
+            object handUp : HandGroup(this, HandDirection.UP, iconMarginLeft = "-1rem")
+            object handDown : HandGroup(this, HandDirection.DOWN, iconMarginLeft = "-1rem")
+            object handLeft : HandGroup(this, HandDirection.LEFT)
+            object handRight : HandGroup(this, HandDirection.RIGHT,
+                                         iconMarginLeft = "-3rem",
+                                         iconMarginTop = "-1.2rem",
+                                         fillContainerTransform = "rotate(90deg)")
         }
     }
 
