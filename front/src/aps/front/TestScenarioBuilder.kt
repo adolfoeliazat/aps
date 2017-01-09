@@ -459,13 +459,19 @@ class TestScenarioBuilder {
                             window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
                         })
 
-                    fun rerunTestSlowlyButton() = Button(
-                        icon = fa.spinner,
-                        style = bannerButtonStyle,
-                        onClick = {
-                            Globus.realTypedStorageLocal.subsequentTestSlowdown = 2
+                    fun rerunTestSlowlyButton(): Button {
+                        fun go() {
+                            Globus.realTypedStorageLocal.oneOffTestOptionsTemplateTitle = TestOptionsTemplates.slowish.title
                             window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
-                        })
+                        }
+
+                        return Button(
+                            icon = fa.spinner,
+                            style = bannerButtonStyle,
+                            onClick = {
+                                go()
+                            })
+                    }
 
                     fun showBanner(kind: AssertionBannerKind, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
                         _currentAssertionBannerKind = kind
@@ -678,7 +684,7 @@ fun tillPausedOnAssertion() = pausedOnAssertion.promise
 fun resumePausedAssertion() = assertionBannerPause.resolve()
 
 fun TestScenarioBuilder.forceOptsTillHere_fastest() {
-    forceOptsTillHere(TestRunnerOptions(
+    forceOptsTillHere(TestOptions(
         stopOnAssertions = false,
         dontStopOnCorrectAssertions = false,
         animateUserActions = false,
@@ -688,7 +694,7 @@ fun TestScenarioBuilder.forceOptsTillHere_fastest() {
 }
 
 fun TestScenarioBuilder.forceOptsTillHere_fastestExceptStopOnNonCorrectAssertions() {
-    forceOptsTillHere(TestRunnerOptions(
+    forceOptsTillHere(TestOptions(
         stopOnAssertions = true,
         dontStopOnCorrectAssertions = true,
         animateUserActions = false,
@@ -697,7 +703,7 @@ fun TestScenarioBuilder.forceOptsTillHere_fastestExceptStopOnNonCorrectAssertion
     ))
 }
 
-fun TestScenarioBuilder.forceOptsTillHere(opts: TestRunnerOptions) {
+fun TestScenarioBuilder.forceOptsTillHere(opts: TestOptions) {
     instructions.add(0, TestInstruction.Do {
         async {
             TestGlobal.forcedTestOpts = opts

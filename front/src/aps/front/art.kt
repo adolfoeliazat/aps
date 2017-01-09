@@ -1217,7 +1217,7 @@ fun openTestListPane() {
             o- Style(backgroundColor = WHITE, color = BLACK_BOOT,
                      fontWeight = "normal", textAlign = "left", padding = 5)
 
-            fun testLink(testName: String, opts: TestRunnerOptions, title: String) = link(
+            fun testLink(testName: String, opts: TestOptions, title: String) = link(
                 title = title,
                 onClick = {
                     window.location.href = testNameToURL(testName, opts)
@@ -1226,12 +1226,12 @@ fun openTestListPane() {
             val lastName = TestGlobal.lastTest.name
             o- kdiv{o->
                 val opts = TestGlobal.lastTestOpts
-                val descr = TestRunnerOptions.optionSets.find {it.opts == opts}?.title ?: opts.toString()
+                val descr = TestOptionsTemplates.all.find {it.opts == opts}?.title ?: opts.toString()
                 o- testLink(lastName, opts, title = "$lastName: $descr")
             }
             o- kdiv(marginTop = "0.5rem", paddingTop = "0.5rem", borderTop = "1px dashed $GRAY_600")
 
-            for (opts in TestRunnerOptions.optionSets.filter {it.opts != TestGlobal.lastTestOpts}) {
+            for (opts in TestOptionsTemplates.all.filter {it.opts != TestGlobal.lastTestOpts}) {
                 o- kdiv {o->
                     o- testLink(lastName, opts.opts, title = "$lastName: ${opts.title}")
                 }
@@ -1243,7 +1243,7 @@ fun openTestListPane() {
                 }
                 for (x in TestSuite_Customer_Shebang().scenarios) {
                     o- kspan(marginRight = "1em"){o->
-                        o- testLink(x.name, TestRunnerOptions(), title = x.name)
+                        o- testLink(x.name, TestOptions(), title = x.name)
                     }
                     o- " "
                 }

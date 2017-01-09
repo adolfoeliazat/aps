@@ -13,7 +13,7 @@ enum class HandDirection {
 
 data class HandOpts(
     val direction: HandDirection = HandDirection.UP,
-    val ms: Int = 1500,
+    val ms: Int = 1000,
     val pauseDescr: String? = null
 )
 

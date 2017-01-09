@@ -24,13 +24,13 @@ object TestGlobal {
     var hasScenarioTODOs = false
     var hasScenarioRems = false
     var lastTestMaybe: TestScenario? = null
-    var lastTestOptsMaybe: TestRunnerOptions? = null
+    var lastTestOptsMaybe: TestOptions? = null
     var requestPause: ResolvableShit<Unit>? = null
     var responseArrived: ResolvableShit<Unit>? = null
     var animationHalfwaySignal by notNullNamed<ResolvableShit<Unit>>()
     var animationHalfwaySignalProcessedSignal by notNull<ResolvableShit<Unit>>()
     var actionSignal by notNull<ResolvableShit<Unit>>()
-    var forcedTestOpts: TestRunnerOptions? = null
+    var forcedTestOpts: TestOptions? = null
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

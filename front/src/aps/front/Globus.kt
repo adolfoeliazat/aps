@@ -61,7 +61,7 @@ class TypedStorageLocal(val store: StorageLocal) {
     var dontScrollOnTestPassed by BooleanValue()
     var DebugWordMentionFinderPage_inputText by StringValue()
     var lastTestURL by StringValue()
-    var subsequentTestSlowdown by IntValue()
+    var oneOffTestOptionsTemplateTitle by StringValue()
 
     inner class StringValue {
         operator fun getValue(thisRef: Any?, property: KProperty<*>): String? =
