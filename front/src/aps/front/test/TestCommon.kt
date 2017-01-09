@@ -252,13 +252,15 @@ data class TestRunnerOptions(
     val _stopOnAssertions: Boolean = false,
     val dontStopOnCorrectAssertions: Boolean = false,
     val _animateUserActions: Boolean = false,
-    val _slowdown: Int = 1
+    val _slowdown: Int = 1,
+    val _handPauses: Boolean = false
 ) {
     fun toURLQuery(): String {
         return buildString {
             append(const.urlq.test.stopOnAssertions + "=" + _stopOnAssertions)
             append("&" + const.urlq.test.dontStopOnCorrectAssertions + "=" + dontStopOnCorrectAssertions)
             append("&" + const.urlq.test.animateUserActions + "=" + _animateUserActions)
+            append("&" + const.urlq.test.handPauses + "=" + _handPauses)
         }
     }
 
@@ -274,6 +276,10 @@ data class TestRunnerOptions(
         if (TestGlobal.forcedFastest) false
         else _animateUserActions
 
+    val handPauses get() =
+        if (TestGlobal.forcedFastest) false
+        else _handPauses
+
     companion object {
         class OptionSet(val title: String, val opts: TestRunnerOptions)
 
@@ -282,14 +288,16 @@ data class TestRunnerOptions(
             OptionSet("Stop on assertions", TestRunnerOptions(_stopOnAssertions = true)),
             OptionSet("Stop on assertions, animate", TestRunnerOptions(_stopOnAssertions = true, _animateUserActions = true)),
             OptionSet("Stop on assertions except correct", TestRunnerOptions(_stopOnAssertions = true, dontStopOnCorrectAssertions = true)),
-            OptionSet("Stop on assertions except correct, animate", TestRunnerOptions(_stopOnAssertions = true, dontStopOnCorrectAssertions = true, _animateUserActions = true))
+            OptionSet("Stop on assertions except correct, animate", TestRunnerOptions(_stopOnAssertions = true, dontStopOnCorrectAssertions = true, _animateUserActions = true)),
+            OptionSet("Stop on assertions except correct, animate, hand pauses", TestRunnerOptions(_stopOnAssertions = true, dontStopOnCorrectAssertions = true, _animateUserActions = true, _handPauses = true))
         )
 
         fun load(urlQuery: Map<String, String>): TestRunnerOptions {
             var res = TestRunnerOptions(
                 _stopOnAssertions = urlQuery[const.urlq.test.stopOnAssertions].relaxedToBoolean(default = false),
                 dontStopOnCorrectAssertions = urlQuery[const.urlq.test.dontStopOnCorrectAssertions].relaxedToBoolean(default = false),
-                _animateUserActions = urlQuery[const.urlq.test.animateUserActions].relaxedToBoolean(default = false)
+                _animateUserActions = urlQuery[const.urlq.test.animateUserActions].relaxedToBoolean(default = false),
+                _handPauses = urlQuery[const.urlq.test.handPauses].relaxedToBoolean(default = false)
             )
 
             Globus.realTypedStorageLocal.subsequentTestSlowdown?.let {

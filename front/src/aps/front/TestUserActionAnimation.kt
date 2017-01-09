@@ -2,6 +2,9 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.events.Event
+import org.w3c.dom.events.KeyboardEvent
+import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
 enum class HandDirection {
@@ -10,7 +13,8 @@ enum class HandDirection {
 
 class HandOpts(
     val direction: HandDirection = HandDirection.UP,
-    val ms: Int = 1500
+    val ms: Int = 1500,
+    val pauseDescr: String? = null
 )
 
 object TestUserActionAnimation {
@@ -46,9 +50,9 @@ object TestUserActionAnimation {
                     imf("hand left/top for RIGHT")
                 }
             }
-            clog("left = $left; top = $top; marginTop = $marginTop")
+            // clog("left = $left; top = $top; marginTop = $marginTop")
 
-            val pane = debugPanes.put(kdiv(className = mycss.pane, left = left, top = top, marginTop = marginTop){o->
+            val handPane = debugPanes.put(kdiv(className = mycss.pane, left = left, top = top, marginTop = marginTop){o->
                 o- kdiv(className = mycss.fillBigFinger)
                 o- kdiv(className = mycss.fillFist)
                 o- kdiv(className = mycss.fillPointingFinger)
@@ -63,9 +67,33 @@ object TestUserActionAnimation {
                 o- ki(className = mycss.handIcon + " " + icon.className)
             })
 
-            await(delay(opts.ms * testOpts.slowdown))
+            if (testOpts.handPauses && opts.pauseDescr != null) {
+                val pause = ResolvableShit<Unit>()
+                val bannerPane = debugPanes.put(kdiv(className = css.test.popup.pause){o->
+                    o- opts.pauseDescr
+                    o- Button(icon = fa.play, style = Style(marginLeft = "0.5em")) {
+                        pause.resolve()
+                    }
+                })
+                fun keyListener(e: Event) {
+                    e as KeyboardEvent
+                    if (e.key == "n") {
+                        pause.resolve()
+                    }
+                }
+                window.addEventListener("keydown", ::keyListener)
 
-            debugPanes.remove(pane)
+                try {
+                    await(pause.promise)
+                } finally {
+                    window.removeEventListener("keydown", ::keyListener)
+                    debugPanes.remove(bannerPane)
+                }
+            } else {
+                await(delay(opts.ms * testOpts.slowdown))
+            }
+
+            debugPanes.remove(handPane)
         }
     }
 

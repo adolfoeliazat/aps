@@ -529,7 +529,7 @@ class TestScenarioBuilder {
 
                         fun keyListener(e: Event) {
                             e as KeyboardEvent
-                            if (e.key == " ") {
+                            if (e.key == "n") {
                                 assertionBannerPause.resolve()
                             }
                         }
