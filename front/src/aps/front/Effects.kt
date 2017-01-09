@@ -65,15 +65,15 @@ object effects2 {
             opacity -= dopacity
             // dlog("opacity = $opacity")
 
+            setOpacity(opacity)
+
             if (opacity == midpoint) {
                 if (isTest()) {
-                    TestGlobal.animationHalfwaySignal!!.resolve()
-                    await(TestGlobal.animationHalfwaySignalProcessedSignal!!.promise)
+                    TestGlobal.animationHalfwaySignal.resolve()
+                    await(TestGlobal.animationHalfwaySignalProcessedSignal.promise)
                 }
                 midpointReached = true
             }
-
-            setOpacity(opacity)
         }
         check(midpointReached) {"midpointReached"}
     }

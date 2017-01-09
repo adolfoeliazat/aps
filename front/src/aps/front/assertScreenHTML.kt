@@ -33,6 +33,12 @@ fun tillPausedOnAssertion() = pausedOnAssertion.promise
 
 fun resumePausedAssertion() = assertionBannerPause.resolve()
 
+fun killTestButton(): Button {
+    return Button(icon = fa.bomb, onClick = {
+        assertionBannerPause.reject(Exception("Fucking killed"))
+    })
+}
+
 fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String) {
     val stackCapture = CaptureStackException()
     act {TestGlobal.testShitBeingAssertedID = assertionID}
@@ -288,32 +294,6 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String) {
                     style = bannerButtonStyle,
                     onClicka = this::acceptCurrentShit)
 
-                fun rerunTestButton() = Button(
-                    icon = fa.refresh,
-                    style = bannerButtonStyle,
-                    onClick = {
-                        window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
-                    })
-
-                fun rerunTestSlowlyButton(): Button {
-                    fun go(templateTitle: String) {
-                        Globus.realTypedStorageLocal.oneOffTestOptionsTemplateTitle = templateTitle
-                        window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
-                    }
-
-                    return Button(
-                        icon = fa.spinner,
-                        style = bannerButtonStyle,
-                        dropDownMenu = Menu(TestOptionsTemplates.all.map {
-                            MenuItem(it.title) {async {go(it.title)}}
-                        }),
-                        separateDropDownMenuButton = true,
-                        dropDownMenuDirection = Button.MenuDirection.UP,
-                        narrowCaret = true,
-                        onClick = {
-                            go(TestOptionsTemplates.slowish.title)
-                        })
-                }
 
                 fun showTestBanner(kind: AssertionBannerKind, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
                     _currentAssertionBannerKind = kind
@@ -334,9 +314,7 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String) {
                                 o- Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
                                     assertionBannerPause.resolve()
                                 })
-                                o- Button(icon = fa.bomb, style = bannerButtonStyle, onClick = {
-                                    assertionBannerPause.reject(Exception("Fucking killed"))
-                                })
+                                o- killTestButton()
                                 o- Button(
                                     icon = when (verticalPosition) {
                                         VerticalPosition.TOP -> fa.arrowDown

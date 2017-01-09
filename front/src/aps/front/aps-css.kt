@@ -122,12 +122,14 @@ object css {
     }
 
     object test : Group(null) {
+        val width = "45rem"
+
         object popup : Group(this) {
             val pause by Style("""
                 position: fixed;
                 bottom: 0px;
                 left: 0px;
-                width: 40rem;
+                width: $width;
                 min-height: 10rem;
                 background-color: $LIME_100;
                 border: 0.4rem solid $LIME_900;
@@ -139,7 +141,7 @@ object css {
             object assertion : Group(this) {
                 val notHardened by Style("""
                     position: fixed;
-                    width: 40rem;
+                    width: $width;
                     min-height: 10rem;
                     background-color: $GRAY_300;
                     border: 0.4rem solid $GRAY_700;
@@ -150,7 +152,7 @@ object css {
 
                 val correct by Style("""
                     position: fixed;
-                    width: 40rem;
+                    width: $width;
                     min-height: 10rem;
                     background-color: $GREEN_200;
                     border: 0.4rem solid $GREEN_700;
@@ -161,7 +163,7 @@ object css {
 
                 val incorrect by Style("""
                     position: fixed;
-                    width: 40rem;
+                    width: $width;
                     min-height: 10rem;
                     background-color: $RED_200;
                     border: 0.4rem solid $RED_700;

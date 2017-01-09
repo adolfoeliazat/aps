@@ -308,14 +308,49 @@ fun TestScenarioBuilder.beginWorkRegion() {
 
 fun TestScenarioBuilder.endWorkRegion() {
     instructions.add(TestInstruction.Do {async{
-        debugPanes.put(kdiv(className = css.test.popup.pause){o->
+        val signal = ResolvableShit<Unit>()
+
+        var pane by notNull<String>()
+        pane = debugPanes.put(kdiv(className = css.test.popup.pause){o->
+            o- hor1(marginBottom = "0.5rem"){o->
+                o- Button(icon = fa.bomb, onClick = {
+                    debugPanes.remove(pane)
+                    signal.reject(Exception("Fucking killed"))
+                })
+                o- rerunTestButton()
+                o- rerunTestSlowlyButton()
+            }
             o- "End of work region"
         })
-        await(tillEndOfTime())
+
+        await(signal.promise)
     }})
 }
 
+fun rerunTestButton() = Button(
+    icon = fa.refresh,
+    onClick = {
+        window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
+    })
 
+fun rerunTestSlowlyButton(): Button {
+    fun go(templateTitle: String) {
+        Globus.realTypedStorageLocal.oneOffTestOptionsTemplateTitle = templateTitle
+        window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
+    }
+
+    return Button(
+        icon = fa.spinner,
+        dropDownMenu = Menu(TestOptionsTemplates.all.map {
+            MenuItem(it.title) {async {go(it.title)}}
+        }),
+        separateDropDownMenuButton = true,
+        dropDownMenuDirection = Button.MenuDirection.UP,
+        narrowCaret = true,
+        onClick = {
+            go(TestOptionsTemplates.slowish.title)
+        })
+}
 
 
 
