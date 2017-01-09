@@ -19,9 +19,18 @@ open class Button(
     val disabled: Boolean = false,
     val hint: String? = null,
     val dataDismiss: String? = null,
+    val dropDownMenu: Menu? = null,
+    val separateDropDownMenuButton: Boolean = false,
+    val dropDownMenuDirection: MenuDirection = Button.MenuDirection.DOWN,
+    val narrowCaret: Boolean = false,
     var onClicka: () -> Promise<Unit> = {async{}},
     val onClick: () -> Unit = {}
 ) : Control2(Attrs(id = id)) {
+
+    enum class MenuDirection(val string: String) {
+        DOWN("down"),
+        UP("up")
+    }
 
     companion object {
         val instances = mutableMapOf<String, Button>()
@@ -42,7 +51,7 @@ open class Button(
     }
 
     override fun render(): ToReactElementable {
-        val jsAttrs = json(
+        val buttonJSAttrs = json(
             "id" to elementID,
             "className" to "btn btn-$level $className",
             "style" to style,
@@ -53,18 +62,77 @@ open class Button(
                 click()
             }
         )
-        dataDismiss?.let {jsAttrs["data-dismiss"] = it}
+        dataDismiss?.let {buttonJSAttrs["data-dismiss"] = it}
 
-        return ToReactElementable.from(reactCreateElement(
+        val button = ToReactElementable.from(reactCreateElement(
             "button",
-            jsAttrs,
+            buttonJSAttrs,
             listOf(
-//                icon?.let {ki(className = "fa fa-$it", color = iconColor).toReactElement()},
                 icon?.let {ki(className = it.className, color = iconColor).toReactElement()},
                 ifornull(icon != null && title != null) {symbols.nbsp.asReactElement()},
                 title?.asReactElement()
             )
         ))
+
+        if (dropDownMenu == null) {
+            return button
+        } else {
+            if (!separateDropDownMenuButton) imf("separateDropDownMenuButton == false")
+            return ToReactElementable.from(reactCreateElement(
+                "div",
+                json("className" to "btn-group ${ifOrEmpty(dropDownMenuDirection == MenuDirection.UP){"dropup"}}"),
+                listOf(
+                    button.toReactElement(),
+                    reactCreateElement(
+                        "button",
+                        json("type" to "button",
+                             "className" to "btn btn-$level dropdown-toggle",
+                             "data-toggle" to "dropdown",
+                             "aria-haspopup" to "true",
+                             "aria-expanded" to "false",
+                             "style" to json()-{o->
+                                 if (narrowCaret) {
+                                     o["paddingLeft"] = "0.5rem"
+                                     o["paddingRight"] = "0.5rem"
+                                 }
+                             }),
+                        listOf(
+                            reactCreateElement(
+                                "span",
+                                json("className" to "caret"),
+                                listOf()),
+                            reactCreateElement(
+                                "span",
+                                json("className" to "sr-only"),
+                                listOf(
+                                    asReactElement("Toggle Dropdown")
+                                ))
+                        )),
+                    reactCreateElement(
+                        "ul",
+                        json("className" to "dropdown-menu"),
+                        dropDownMenu.items.map {item->
+                            reactCreateElement(
+                                "li",
+                                json(),
+                                listOf(
+                                    reactCreateElement(
+                                        "a",
+                                        json("href" to "#",
+                                             "onClick" to {
+                                                 item.act()
+                                             }),
+                                        listOf(
+                                            asReactElement(item.title)
+                                        )
+                                    )
+                                )
+                            )
+                        }
+                    )
+                )
+            ))
+        }
     }
 
     override fun componentDidMount() {

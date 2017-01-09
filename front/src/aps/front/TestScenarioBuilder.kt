@@ -460,16 +460,22 @@ class TestScenarioBuilder {
                         })
 
                     fun rerunTestSlowlyButton(): Button {
-                        fun go() {
-                            Globus.realTypedStorageLocal.oneOffTestOptionsTemplateTitle = TestOptionsTemplates.slowish.title
+                        fun go(templateTitle: String) {
+                            Globus.realTypedStorageLocal.oneOffTestOptionsTemplateTitle = templateTitle
                             window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
                         }
 
                         return Button(
                             icon = fa.spinner,
                             style = bannerButtonStyle,
+                            dropDownMenu = Menu(TestOptionsTemplates.all.map {
+                                MenuItem(it.title) {async {go(it.title)}}
+                            }),
+                            separateDropDownMenuButton = true,
+                            dropDownMenuDirection = Button.MenuDirection.UP,
+                            narrowCaret = true,
                             onClick = {
-                                go()
+                                go(TestOptionsTemplates.slowish.title)
                             })
                     }
 
