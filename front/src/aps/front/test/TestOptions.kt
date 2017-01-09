@@ -8,7 +8,8 @@ data class TestOptions(
     val dontStopOnCorrectAssertions: Boolean = false,
     val animateUserActions: Boolean = false,
     val slowdown: Int = 1,
-    val handPauses: Boolean = false
+    val handPauses: Boolean = false,
+    val ignoreNotHardened: Boolean = false
 ) {
     fun toURLQuery(): String {
         return buildString {
@@ -37,9 +38,14 @@ class TestOptionsTemplate(val title: String, val opts: TestOptions)
 
 object TestOptionsTemplates {
     val slowish = TestOptionsTemplate("Slowish", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = false, animateUserActions = true, slowdown = 2, handPauses = true))
+    val fastest = TestOptionsTemplate("Fastest", TestOptions(stopOnAssertions = false, dontStopOnCorrectAssertions = false, animateUserActions = false, slowdown = 1, handPauses = false))
+    val fastestIgnoreNotHardened = TestOptionsTemplate("Fastest, ignore not-hardened assertions", TestOptions(stopOnAssertions = false, dontStopOnCorrectAssertions = false, animateUserActions = false, slowdown = 1, handPauses = false, ignoreNotHardened = true))
+    val fastestExceptShowBannerOnNonCorrectAssertions = TestOptionsTemplate("Fastest except show banner on non-correct assertions", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = false, slowdown = 1, handPauses = false))
 
     val all = setOf(
-        TestOptionsTemplate("Usual", TestOptions()),
+        TestOptionsTemplate("Default", TestOptions()),
+        fastest,
+        fastestExceptShowBannerOnNonCorrectAssertions,
         TestOptionsTemplate("Stop on assertions", TestOptions(stopOnAssertions = true)),
         TestOptionsTemplate("Stop on assertions, animate", TestOptions(stopOnAssertions = true, animateUserActions = true)),
         TestOptionsTemplate("Stop on assertions except correct", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)),
@@ -57,10 +63,14 @@ val oneOffTestOptionsTemplateTitle: String? by lazy {
 }
 
 @Suppress("UnsafeCastFromDynamic")
-fun testOpts(): TestOptions =
-    oneOffTestOptionsTemplateTitle?.let {requested -> TestOptionsTemplates.all.find {it.title == requested}!!.opts}
-    ?: TestGlobal.forcedTestOpts?.let {it}
-    ?: TestGlobal.lastTestOpts
+fun testOpts(): TestOptions {
+    TestGlobal.forcedTestOpts?.let {return it}
+
+    oneOffTestOptionsTemplateTitle?.let {requested->
+        return TestOptionsTemplates.all.find {it.title == requested}!!.opts}
+
+    return TestGlobal.lastTestOpts
+}
 
 
 

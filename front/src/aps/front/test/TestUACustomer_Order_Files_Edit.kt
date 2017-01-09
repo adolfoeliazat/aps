@@ -71,7 +71,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             )
         }
 
-        o.forceOptsTillHere_fastestExceptStopOnNonCorrectAssertions()
+        o.forceOptsTillHere(TestOptionsTemplates.fastestIgnoreNotHardened.opts)
         o.buttonClick("loadMore")
         o.assertScreenHTML("More items", "ab5858fe-82b0-4bbc-abce-eb8c2645c2aa")
 

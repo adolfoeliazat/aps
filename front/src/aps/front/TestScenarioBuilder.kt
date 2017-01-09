@@ -558,8 +558,9 @@ class TestScenarioBuilder {
                     }
                 }.shit)
             } else {
-                if (actual != expected) {
-                    throw ArtAssertionError(
+                when {
+                    expected == null && testOpts().ignoreNotHardened -> {}
+                    actual != expected -> throw ArtAssertionError(
                         stepTitle,
                         visualPayload = renderDiff(
                             expected = expected ?: "--- Not yet hardened ---",
@@ -688,26 +689,6 @@ private enum class HorizontalPosition {
 fun tillPausedOnAssertion() = pausedOnAssertion.promise
 
 fun resumePausedAssertion() = assertionBannerPause.resolve()
-
-fun TestScenarioBuilder.forceOptsTillHere_fastest() {
-    forceOptsTillHere(TestOptions(
-        stopOnAssertions = false,
-        dontStopOnCorrectAssertions = false,
-        animateUserActions = false,
-        slowdown = 1,
-        handPauses = false
-    ))
-}
-
-fun TestScenarioBuilder.forceOptsTillHere_fastestExceptStopOnNonCorrectAssertions() {
-    forceOptsTillHere(TestOptions(
-        stopOnAssertions = true,
-        dontStopOnCorrectAssertions = true,
-        animateUserActions = false,
-        slowdown = 1,
-        handPauses = false
-    ))
-}
 
 fun TestScenarioBuilder.forceOptsTillHere(opts: TestOptions) {
     instructions.add(0, TestInstruction.Do {
