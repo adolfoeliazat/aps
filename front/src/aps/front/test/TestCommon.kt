@@ -249,59 +249,43 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
 }
 
 data class TestRunnerOptions(
-    val _stopOnAssertions: Boolean = false,
+    val stopOnAssertions: Boolean = false,
     val dontStopOnCorrectAssertions: Boolean = false,
-    val _animateUserActions: Boolean = false,
-    val _slowdown: Int = 1,
-    val _handPauses: Boolean = false
+    val animateUserActions: Boolean = false,
+    val slowdown: Int = 1,
+    val handPauses: Boolean = false
 ) {
     fun toURLQuery(): String {
         return buildString {
-            append(const.urlq.test.stopOnAssertions + "=" + _stopOnAssertions)
+            append(const.urlq.test.stopOnAssertions + "=" + stopOnAssertions)
             append("&" + const.urlq.test.dontStopOnCorrectAssertions + "=" + dontStopOnCorrectAssertions)
-            append("&" + const.urlq.test.animateUserActions + "=" + _animateUserActions)
-            append("&" + const.urlq.test.handPauses + "=" + _handPauses)
+            append("&" + const.urlq.test.animateUserActions + "=" + animateUserActions)
+            append("&" + const.urlq.test.handPauses + "=" + handPauses)
         }
     }
-
-    val stopOnAssertions get() =
-        if (TestGlobal.forcedFastest) false
-        else _stopOnAssertions
-
-    val slowdown get() =
-        if (TestGlobal.forcedFastest) 1
-        else _slowdown
-
-    val animateUserActions get() =
-        if (TestGlobal.forcedFastest) false
-        else _animateUserActions
-
-    val handPauses get() =
-        if (TestGlobal.forcedFastest) false
-        else _handPauses
 
     companion object {
         class OptionSet(val title: String, val opts: TestRunnerOptions)
 
         val optionSets = setOf(
             OptionSet("Usual", TestRunnerOptions()),
-            OptionSet("Stop on assertions", TestRunnerOptions(_stopOnAssertions = true)),
-            OptionSet("Stop on assertions, animate", TestRunnerOptions(_stopOnAssertions = true, _animateUserActions = true)),
-            OptionSet("Stop on assertions except correct", TestRunnerOptions(_stopOnAssertions = true, dontStopOnCorrectAssertions = true)),
-            OptionSet("Stop on assertions except correct, animate", TestRunnerOptions(_stopOnAssertions = true, dontStopOnCorrectAssertions = true, _animateUserActions = true)),
-            OptionSet("Stop on assertions except correct, animate, hand pauses", TestRunnerOptions(_stopOnAssertions = true, dontStopOnCorrectAssertions = true, _animateUserActions = true, _handPauses = true))
+            OptionSet("Stop on assertions", TestRunnerOptions(stopOnAssertions = true)),
+            OptionSet("Stop on assertions, animate", TestRunnerOptions(stopOnAssertions = true, animateUserActions = true)),
+            OptionSet("Stop on assertions except correct", TestRunnerOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)),
+            OptionSet("Stop on assertions except correct, animate", TestRunnerOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = true)),
+            OptionSet("Stop on assertions except correct, animate, hand pauses", TestRunnerOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = true, handPauses = true))
         )
 
         fun load(urlQuery: Map<String, String>): TestRunnerOptions {
             var res = TestRunnerOptions(
-                _stopOnAssertions = urlQuery[const.urlq.test.stopOnAssertions].relaxedToBoolean(default = false),
+                stopOnAssertions = urlQuery[const.urlq.test.stopOnAssertions].relaxedToBoolean(default = false),
                 dontStopOnCorrectAssertions = urlQuery[const.urlq.test.dontStopOnCorrectAssertions].relaxedToBoolean(default = false),
-                _animateUserActions = urlQuery[const.urlq.test.animateUserActions].relaxedToBoolean(default = false),
-                _handPauses = urlQuery[const.urlq.test.handPauses].relaxedToBoolean(default = false)
+                animateUserActions = urlQuery[const.urlq.test.animateUserActions].relaxedToBoolean(default = false),
+                handPauses = urlQuery[const.urlq.test.handPauses].relaxedToBoolean(default = false)
             )
 
             Globus.realTypedStorageLocal.subsequentTestSlowdown?.let {
-                res = res.copy(_slowdown = it)
+                res = res.copy(slowdown = it)
                 Globus.realTypedStorageLocal.subsequentTestSlowdown = null
             }
 

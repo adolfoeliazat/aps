@@ -213,7 +213,7 @@ class TestScenarioBuilder {
                 append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
             }
 
-            if (TestGlobal.lastTestOpts.stopOnAssertions) {
+            if (testOpts().stopOnAssertions) {
                 await(object {
                     val bannerButtonStyle = Style()
 
@@ -243,7 +243,7 @@ class TestScenarioBuilder {
                             }
 
                             actual == expected -> {
-                                if (!TestGlobal.lastTestOpts.dontStopOnCorrectAssertions) {
+                                if (!testOpts().dontStopOnCorrectAssertions) {
                                     await(showBanner(AssertionBannerKind.CORRECT))
                                 }
                             }
@@ -677,15 +677,38 @@ fun tillPausedOnAssertion() = pausedOnAssertion.promise
 
 fun resumePausedAssertion() = assertionBannerPause.resolve()
 
-fun TestScenarioBuilder.forceFastestTillHere() {
-    instructions.add(0, TestInstruction.Do {async{
-        TestGlobal.forcedFastest = true
-    }})
-    instructions.add(TestInstruction.Do {async{
-        TestGlobal.forcedFastest = false
-    }})
+fun TestScenarioBuilder.forceOptsTillHere_fastest() {
+    forceOptsTillHere(TestRunnerOptions(
+        stopOnAssertions = false,
+        dontStopOnCorrectAssertions = false,
+        animateUserActions = false,
+        slowdown = 1,
+        handPauses = false
+    ))
 }
 
+fun TestScenarioBuilder.forceOptsTillHere_fastestExceptStopOnNonCorrectAssertions() {
+    forceOptsTillHere(TestRunnerOptions(
+        stopOnAssertions = true,
+        dontStopOnCorrectAssertions = true,
+        animateUserActions = false,
+        slowdown = 1,
+        handPauses = false
+    ))
+}
+
+fun TestScenarioBuilder.forceOptsTillHere(opts: TestRunnerOptions) {
+    instructions.add(0, TestInstruction.Do {
+        async {
+            TestGlobal.forcedTestOpts = opts
+        }
+    })
+    instructions.add(TestInstruction.Do {
+        async {
+            TestGlobal.forcedTestOpts = null
+        }
+    })
+}
 
 
 

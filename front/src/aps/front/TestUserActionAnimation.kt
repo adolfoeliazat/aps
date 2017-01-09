@@ -18,8 +18,6 @@ data class HandOpts(
 )
 
 object TestUserActionAnimation {
-    private val testOpts get() = TestGlobal.lastTestOpts
-
     fun hand(target: Control2, opts: HandOpts = HandOpts()): Promise<Unit> = hand(target.elementID, opts)
 
     @JsName("hand")
@@ -28,7 +26,7 @@ object TestUserActionAnimation {
         opts: HandOpts = HandOpts(),
         doWhileHandVisible: () -> Promise<Unit> = {async{}}
     ): Promise<Unit> = async {
-        if (!testOpts.animateUserActions) return@async
+        if (!testOpts().animateUserActions) return@async
 
         val mycss = when (opts.direction) {
             HandDirection.UP -> css.test.animateUserActions.handUp
@@ -80,7 +78,7 @@ object TestUserActionAnimation {
             o- ki(className = mycss.handIcon + " " + icon.className)
         })
 
-        if (testOpts.handPauses && opts.pauseDescr != null) {
+        if (testOpts().handPauses && opts.pauseDescr != null) {
             val pause = ResolvableShit<Unit>()
             val bannerPane = debugPanes.put(kdiv(className = css.test.popup.pause){o->
                 o- opts.pauseDescr
@@ -103,7 +101,7 @@ object TestUserActionAnimation {
                 debugPanes.remove(bannerPane)
             }
         } else {
-            await(delay(opts.ms * testOpts.slowdown))
+            await(delay(opts.ms * testOpts().slowdown))
         }
 
         await(doWhileHandVisible())
@@ -112,9 +110,9 @@ object TestUserActionAnimation {
     }
 
     fun scroll(finalY: Int): Promise<Unit> = async {
-        if (testOpts.animateUserActions) {
+        if (testOpts().animateUserActions) {
             var y = jqbody.scrollTop()
-            var steps = 30 * testOpts.slowdown
+            var steps = 30 * testOpts().slowdown
             val dy = (finalY - y) / steps
             while (steps-- > 0) {
                 y += dy

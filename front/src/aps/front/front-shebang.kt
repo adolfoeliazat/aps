@@ -30,6 +30,7 @@ object TestGlobal {
     var animationHalfwaySignal by notNullNamed<ResolvableShit<Unit>>()
     var animationHalfwaySignalProcessedSignal by notNull<ResolvableShit<Unit>>()
     var actionSignal by notNull<ResolvableShit<Unit>>()
+    var forcedTestOpts: TestRunnerOptions? = null
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!
@@ -40,7 +41,6 @@ object TestGlobal {
         }
 
     val lastTestHref get() = lastTestHrefMaybe!!
-    var forcedFastest = false
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

@@ -289,7 +289,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
     }
 
     fun testSetValue(value: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
-        if (TestGlobal.lastTestOpts.animateUserActions) {
+        if (testOpts().animateUserActions) {
             await(TestUserActionAnimation.hand(
                 legacyShit.elementID,
                 handOpts.copy(direction = HandDirection.RIGHT),

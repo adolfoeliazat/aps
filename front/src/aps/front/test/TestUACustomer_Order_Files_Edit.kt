@@ -61,7 +61,6 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
             o.inputSetValue("title-100004", "Fuck you")
             o.inputSetValue("details-100004", "bitch")
-            o.forceFastestTillHere()
             o.animatedActionSequence(
                 buildAction = {
                     o.buttonClick("cancel-100004", HandOpts(pauseDescr = "Will discard edits..."))
@@ -72,6 +71,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             )
         }
 
+        o.forceOptsTillHere_fastestExceptStopOnNonCorrectAssertions()
         o.buttonClick("loadMore")
         o.assertScreenHTML("More items", "ab5858fe-82b0-4bbc-abce-eb8c2645c2aa")
 
