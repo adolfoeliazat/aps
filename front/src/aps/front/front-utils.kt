@@ -17,6 +17,8 @@ import org.w3c.dom.events.EventTarget
 import kotlin.browser.window
 import kotlin.dom.asList
 import kotlin.properties.Delegates.notNull
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 val REALLY_BIG_Z_INDEX = 2147483647
 
@@ -281,7 +283,50 @@ fun tillHourPasses(): Promise<Unit> = delay(1000 * 60 * 60)
 
 fun dateNow(): Int = js("Date.now()")
 
+object NamesOfThings {
+    private val thingToName = WeakMap<Any, String>()
+    private val sourceToSinks = WeakMap<Any, MutableList<Any>>()
 
+    operator fun set(thing: Any, name: String) {
+        thingToName[thing] = name
+        val sinks = sourceToSinks[thing]
+        sinks?.forEach {set(it, name)}
+    }
+
+    operator fun get(thing: Any): String? {
+        return thingToName[thing]
+    }
+
+    fun flow(from: Any, to: Any) {
+        val sinks = sourceToSinks.getOrPut(from) {mutableListOf()}
+        sinks += to
+
+        get(from)?.let {name->
+            sinks.forEach {set(it, name)}
+        }
+    }
+
+    fun unflow(from: Any, to: Any) {
+        sourceToSinks[from]?.let {sinks->
+            sinks -= to
+        }
+    }
+}
+
+fun <T: Any> notNullNamed(): ReadWriteProperty<Any?, T> = NotNullNamedVar()
+
+private class NotNullNamedVar<T: Any> : ReadWriteProperty<Any?, T> {
+    private var value: T? = null
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return value ?: throw IllegalStateException("Property ${property.name} should be initialized before get.")
+    }
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        this.value = value
+        NamesOfThings[value] = property.name
+    }
+}
 
 
 

@@ -34,35 +34,43 @@ fun <T> Promise<T>.finally(onFulfilled: (T) -> Unit) =
     this.then<Nothing>(onFulfilled, {})
 
 
-fun <T> Promise<T>.orTimeout(ms: Int, descr: String = "shit"): Promise<T> {
+fun <T> Promise<T>.orTimeout(ms: Int, promiseName: String? = null): Promise<T> {
     val shit = ResolvableShit<T>()
-    window.setTimeout({shit.reject(Exception("Sick of waiting for $descr"))}, ms)
+    val _promiseName = promiseName ?: NamesOfThings[this] ?: "shit"
+    window.setTimeout({shit.reject(Exception("Sick of waiting for $_promiseName"))}, ms)
     this.finally {shit.resolve(it)}
     return shit.promise
 }
 
 class ResolvableShit<T> {
-    var resolve by notNull<(T) -> Unit>()
-    var reject by notNull<(Throwable) -> Unit>()
-    var promise by notNull<Promise<T>>()
+    private var _resolve by notNull<(T) -> Unit>()
+    private var _reject by notNull<(Throwable) -> Unit>()
+    private var _promise by notNull<Promise<T>>()
+    private var hasPromise = false
 
     init {
         reset()
     }
 
+    val promise: Promise<T> get() = _promise
+    fun resolve(value: T) = _resolve(value)
+    fun reject(e: Throwable) = _reject(e)
+
     fun reset() {
-        promise = Promise<T> {resolve, reject ->
-            this.resolve = resolve
-            this.reject = reject
+        if (hasPromise) {
+            NamesOfThings.unflow(this, promise)
         }
+
+        _promise = Promise<T> {resolve, reject ->
+            this._resolve = resolve
+            this._reject = reject
+        }
+        hasPromise = true
+        NamesOfThings.flow(this, promise)
     }
 }
 
 fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
-
-//class Signal<T> {
-//
-//}
 
 
 

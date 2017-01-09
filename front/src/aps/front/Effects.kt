@@ -63,10 +63,10 @@ object effects2 {
             await(tillAnimationFrame())
 
             opacity -= dopacity
-            dlog("opacity = $opacity")
+            // dlog("opacity = $opacity")
 
             if (opacity == midpoint) {
-                if (TestGlobal.lastTestMaybe != null) {
+                if (isTest()) {
                     TestGlobal.animationHalfwaySignal!!.resolve()
                     await(TestGlobal.animationHalfwaySignalProcessedSignal!!.promise)
                 }
@@ -83,29 +83,23 @@ fun TestScenarioBuilder.animatedActionSequence(
     buildAction: () -> Unit,
     assertionDescr: String,
     halfwayAssertionID: String,
-    finalAssertionID: String
+    finalAssertionID: String,
+    actionTimeout: Int = 5000
 ) {
     val o = this
     o.act {
-        check(TestGlobal.animationHalfwaySignal == null)
         TestGlobal.animationHalfwaySignal = ResolvableShit()
-
-        check(TestGlobal.animationHalfwaySignalProcessedSignal == null)
         TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
-
-        check(TestGlobal.actionSignal == null)
         TestGlobal.actionSignal = ResolvableShit()
     }
 
     buildAction()
 
-    o.acta {TestGlobal.animationHalfwaySignal!!.promise.orTimeout(1000, "animationHalfway")}
-    o.act {TestGlobal.animationHalfwaySignal = null}
+    o.acta {TestGlobal.animationHalfwaySignal.promise.orTimeout(1000)}
     o.assertScreenHTML(assertionDescr + " (animation halfway)", halfwayAssertionID)
-    o.act {TestGlobal.animationHalfwaySignalProcessedSignal!!.resolve()}
+    o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
 
-    o.acta {TestGlobal.actionSignal!!.promise}
-    o.act {TestGlobal.actionSignal = null}
+    o.acta {TestGlobal.actionSignal.promise.orTimeout(actionTimeout)}
     o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
