@@ -26,7 +26,7 @@ object TestUserActionAnimation {
     fun hand(
         elementID: String,
         opts: HandOpts = HandOpts(),
-        whileHandVisible: () -> Promise<Unit> = {async{}}
+        doWhileHandVisible: () -> Promise<Unit> = {async{}}
     ): Promise<Unit> = async {
         if (!testOpts.animateUserActions) return@async
 
@@ -57,9 +57,8 @@ object TestUserActionAnimation {
                 imf("hand left/top for LEFT")
             }
             HandDirection.RIGHT -> {
-                left = el.offset().left
-                top = el.offset().top
-//                top = el.offset().top + el.outerHeight() / 2
+                left = el.offset().left - horizontalGap
+                top = el.offset().top + el.outerHeight() / 2
             }
         }
         // clog("left = $left; top = $top; marginTop = $marginTop")
@@ -107,8 +106,7 @@ object TestUserActionAnimation {
             await(delay(opts.ms * testOpts.slowdown))
         }
 
-        await(tillEndOfTime())
-        await(whileHandVisible())
+        await(doWhileHandVisible())
 
         debugPanes.remove(handPane)
     }

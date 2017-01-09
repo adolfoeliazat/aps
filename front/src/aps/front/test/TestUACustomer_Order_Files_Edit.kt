@@ -59,12 +59,12 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             o.kicClick("edit-100004", HandOpts(direction = HandDirection.DOWN))
             o.assertScreenHTML("Piece of shit #100004 is opened for editing", "34672ca0-c212-40a7-84e5-3cc53715041a")
 
-            o.forceFastestTillHere()
             o.inputSetValue("title-100004", "Fuck you")
             o.inputSetValue("details-100004", "bitch")
+            o.forceFastestTillHere()
             o.animatedActionSequence(
                 buildAction = {
-                    o.buttonClick("cancel-100004", HandOpts(pauseDescr = "Will click Cancel..."))
+                    o.buttonClick("cancel-100004", HandOpts(pauseDescr = "Will discard edits..."))
                 },
                 assertionDescr = "Piece of shit is closed, nothing changed",
                 halfwayAssertionID = "16e1707d-3c9f-4f6a-934b-ced0620d364e",

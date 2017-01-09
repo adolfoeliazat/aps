@@ -293,7 +293,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
             await(TestUserActionAnimation.hand(
                 legacyShit.elementID,
                 handOpts.copy(direction = HandDirection.RIGHT),
-                whileHandVisible = {async{
+                doWhileHandVisible = {async{
                     setValue("")
                     for (chars in 0 until value.length) {
                         await(delay(50))

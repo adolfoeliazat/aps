@@ -217,6 +217,7 @@ object css {
         """)
 
         object animateUserActions : Group(this) {
+            // TODO:vgrechka Tune fill for DOWN and LEFT directions
             val debug = false
             val fillColor = if (!debug) WHITE else PINK_200
 
