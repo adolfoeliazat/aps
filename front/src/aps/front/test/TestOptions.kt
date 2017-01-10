@@ -37,7 +37,7 @@ data class TestOptions(
 class TestOptionsTemplate(val title: String, val opts: TestOptions)
 
 object TestOptionsTemplates {
-    val slowish = TestOptionsTemplate("Slowish", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = false, animateUserActions = true, slowdown = 2, handPauses = true))
+    val slower = TestOptionsTemplate("Slower", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = false, animateUserActions = true, slowdown = 2, handPauses = true))
     val fastest = TestOptionsTemplate("Fastest", TestOptions(stopOnAssertions = false, dontStopOnCorrectAssertions = false, animateUserActions = false, slowdown = 1, handPauses = false))
     val fastestIgnoreNotHardened = TestOptionsTemplate("Fastest, ignore not-hardened assertions", TestOptions(stopOnAssertions = false, dontStopOnCorrectAssertions = false, animateUserActions = false, slowdown = 1, handPauses = false, ignoreNotHardened = true))
     val fastestExceptShowBannerOnNonCorrectAssertions = TestOptionsTemplate("Fastest except show banner on non-correct assertions", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = false, slowdown = 1, handPauses = false))
@@ -46,12 +46,13 @@ object TestOptionsTemplates {
         TestOptionsTemplate("Default", TestOptions()),
         fastest,
         fastestExceptShowBannerOnNonCorrectAssertions,
+        TestOptionsTemplate("Slow", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = false, animateUserActions = true, slowdown = 1, handPauses = true)),
         TestOptionsTemplate("Stop on assertions", TestOptions(stopOnAssertions = true)),
         TestOptionsTemplate("Stop on assertions, animate", TestOptions(stopOnAssertions = true, animateUserActions = true)),
         TestOptionsTemplate("Stop on assertions except correct", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)),
         TestOptionsTemplate("Stop on assertions except correct, animate", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = true)),
         TestOptionsTemplate("Stop on assertions except correct, animate, hand pauses", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = true, handPauses = true)),
-        slowish
+        slower
     )
 }
 

@@ -19,12 +19,14 @@ fun <T> async(block: suspend () -> T): Promise<T> =
         })
     }
 
-suspend fun <T> await(p: Promise<T>): T =
-    CoroutineIntrinsics.suspendCoroutineOrReturn {c: Continuation<T> ->
+suspend fun <T> await(p: Promise<T>): T {
+    if (TestGlobal.killAwait) die()
+    return CoroutineIntrinsics.suspendCoroutineOrReturn {c: Continuation<T> ->
         p.then<Any?>(onFulfilled = {c.resume(it)},
                      onRejected = {c.resumeWithException(it)})
         CoroutineIntrinsics.SUSPENDED
     }
+}
 
 suspend fun <T> awaitJSShit(p: Any?): T =
     if (p is Promise<*>) await(p as Promise<T>)

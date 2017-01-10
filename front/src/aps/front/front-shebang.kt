@@ -32,6 +32,7 @@ object TestGlobal {
     var actionSignal by notNullNamed<ResolvableShit<Unit>>()
     var shitVanished by notNullNamed<ResolvableShit<Unit>>()
     var forcedTestOpts: TestOptions? = null
+    var killAwait = false
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

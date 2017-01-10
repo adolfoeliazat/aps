@@ -99,6 +99,14 @@ fun jsFacing_igniteTestShit() = async<Unit> {
         }
     }
 
+    window.addEventListener("keydown", {e ->
+        e as KeyboardEvent
+        if (e.code == "KeyX") {
+            preventAndStop(e)
+            TestGlobal.killAwait = true
+        }
+    })
+
     val testName = urlQuery["test"]
     val testSuiteName = urlQuery["testSuite"]
 

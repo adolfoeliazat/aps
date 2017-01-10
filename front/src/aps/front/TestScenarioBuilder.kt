@@ -348,7 +348,7 @@ fun rerunTestSlowlyButton(): Button {
         dropDownMenuDirection = Button.MenuDirection.UP,
         narrowCaret = true,
         onClick = {
-            go(TestOptionsTemplates.slowish.title)
+            go(TestOptionsTemplates.slower.title)
         })
 }
 

@@ -79,7 +79,8 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             halfwayOpts = AssertScreenOpts(bannerVerticalPosition = VerticalPosition.TOP)
         )
 
-        o.beginWorkRegion()
+//        o.beginWorkRegion()
+//        o.endWorkRegion()
         o.section("Delete some shit") {
 //            o.acta {TestUserActionAnimation.scroll(2200)}
 
@@ -136,7 +137,6 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                 }
             )
         }
-        o.endWorkRegion()
 
         // TODO:vgrechka Reload page and check modifications
     }
