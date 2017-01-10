@@ -63,7 +63,7 @@ import kotlin.browser.window
                             o- kspan{o->
                                 o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
                             }
-                            o- Button("upload", icon = fa.cloudUpload, title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button("upload" + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -73,7 +73,7 @@ import kotlin.browser.window
                             o- kspan{o->
                                 o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
                             }
-                            o- Button("upload", icon = fa.cloudUpload, title = t("TOTE", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button("upload" + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }

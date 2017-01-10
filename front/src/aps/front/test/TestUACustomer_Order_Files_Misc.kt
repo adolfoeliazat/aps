@@ -52,6 +52,28 @@ class TestUACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
     }
 }
 
+class TestUACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
+    override fun buildSteps0() {
+        o.kicClick("edit-100010")
+        o.assertScreenHTML("Piece of shit #100010 is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
+        o.buttonUserInitiatedClick("upload-100010")
+        o.typeIntoOpenFileDialog("${testconst.filesRoot}fuck you.rtf")
+        o.fileFieldWaitTillShitChanged("file-100010")
+        o.assertScreenHTML("File changed", "b3afb796-7115-4f11-a980-acd48e898052")
+        o.inputSetValue("title-100010", "The Fuck You")
+        o.inputPrependValue("details-100010", "A fucky piece of text. ")
+
+        o.formSequence(
+            buildAction = {
+                 o.buttonClick("primary-100010")
+            },
+            assertionDescr = "Shit is saved",
+            halfwayAssertionID = "485b79d2-0cb5-48ce-937e-3843b1b71f89",
+            finalAssertionID = "a34b038f-3578-411e-9aad-e8011755e0cb"
+        )
+    }
+}
+
 class TestUACustomer_Order_Files_Misc : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
         o.acta {TestUserActionAnimation.scroll(700)}

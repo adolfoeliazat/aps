@@ -62,6 +62,11 @@ fun runLastTest() {
     window.location.href = url
 }
 
+@Suppress("Unused")
+fun showLastTestURL() {
+    console.log(Globus.realTypedStorageLocal.lastTestURL!!)
+}
+
 private fun tillBodyHTMLContains(needle: String): Promise<Unit> = async {
     while (true) {
         if (document.body!!.innerHTML.contains(needle))

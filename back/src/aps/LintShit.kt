@@ -7,13 +7,19 @@
 package aps
 
 import into.kommon.*
+import org.jetbrains.kotlin.incremental.makeModuleFile
 import java.io.File
 import kotlin.system.exitProcess
 
 class LintShit {
+    data class GUIDEntry(val guid: String, val file: File, val lineIndex: Int)
+
     init {
         print("Linting your shit... ")
-        visitSources("$APS_HOME/front/src") { f->
+
+        val guids = mutableMapOf<String, GUIDEntry>()
+
+        visitSources("$APS_HOME/front/src") {f->
             f.useLines {it.forEachIndexed {lineIndex, line ->
                 class Shit(message: String): Exception(message)
                 try {
@@ -28,6 +34,18 @@ class LintShit {
                     if (Regex("\\Wrun \\{\\s*\"__async\"").containsMatchIn(line)) {
                         throw Shit("Don't pass async lambdas to inline functions. Use [runni]")
                     }
+
+                    Regex("\"([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})\"")
+                        .findAll(line)
+                        .map {GUIDEntry(it.groupValues[1], f, lineIndex)}
+                        .forEach {thiz->
+                            guids[thiz.guid]?.let {prev->
+                                throw Shit("\nGUID duplication:\n" +
+                                           "1) ${prev.file.name}:${prev.lineIndex}    $prev\n" +
+                                           "2) ${thiz.file.name}:${thiz.lineIndex}    $thiz\n")
+                            }
+                            guids[thiz.guid] = thiz
+                        }
                 } catch (e: Shit) {
                     println("SHIT")
                     val fname = f.path.substring(APS_HOME.length)
