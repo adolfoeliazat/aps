@@ -42,18 +42,18 @@ class kic(
 }
 
 fun TestScenarioBuilder.kicClick(key: String, handOpts: HandOpts = HandOpts()) {
-    acta("Clicking kic `$key`") {async{
+    acta("Clicking kic `$key`") {async<Unit>{
         val target = kic.instance(key)
         await(TestUserActionAnimation.hand(target, handOpts))
-        await(target.click())
+        target.click() // Not await
     }}
 }
 
-fun TestScenarioBuilder.kicClickNoWait(key: String) {
-    act("Clicking kic `$key`") {
-        kic.instance(key).click()
-    }
-}
+//fun TestScenarioBuilder.kicClickNoWait(key: String) {
+//    act("Clicking kic `$key`") {
+//        kic.instance(key).click()
+//    }
+//}
 
 
 

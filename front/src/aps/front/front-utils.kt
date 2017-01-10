@@ -241,8 +241,10 @@ fun arraysEquals(a: Array<*>, b: Array<*>): Boolean =
 fun scrollBodyToShitGradually(dy: Int = -10, bursts: Int = 8, getShit: () -> JQuery): Promise<Unit> = async {
     await(tillAnimationFrame())
     val shit = getShit()
+    check(shit[0] != null) {"Shit to scroll to is not found"}
 
-    val targetTop = shit.offset().top - const.topNavbarHeight + dy
+    val targetTop: Double
+    targetTop = shit.offset().top - const.topNavbarHeight + dy
     val startTop = jqbody.scrollTop()
     for (i in 1..bursts) {
         await(tillAnimationFrame())
@@ -397,5 +399,24 @@ fun freezeProgressTicker() {
 fun unfreezeProgressTicker() {
     progressTickerKeyframe100RuleStyle.opacity = "0"
 }
+
+fun isModalShown() = jq(".modal-backdrop").length > 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

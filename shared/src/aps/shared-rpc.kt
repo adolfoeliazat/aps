@@ -17,6 +17,7 @@ class VisualShitCapturedRequest {
     var contentWidth by notNull<Double>()
     var contentLeft by notNull<Double>()
     var documentHeightPhysical by notNull<Int>()
+    var modal by notNull<Boolean>()
 }
 
 class SaveCapturedVisualShitRequest {

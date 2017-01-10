@@ -534,7 +534,7 @@ fun TestScenarioBuilder.requestSequence(
     halfwayAssertionID: String,
     finalAssertionID: String,
     responseTimeout: Int = testconst.defaultResponseTimeout,
-    bannerOpts: TestBannerOpts = TestBannerOpts()
+    bannerOpts: AssertScreenOpts = AssertScreenOpts()
 ) {
     val o = this
     o.genericRequestSequence(

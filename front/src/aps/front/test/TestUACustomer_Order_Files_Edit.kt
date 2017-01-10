@@ -70,26 +70,25 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             )
         }
 
-        o.beginWorkRegion()
         o.acta {TestUserActionAnimation.scroll(2290)}
         o.requestSequence(
             buildAction = {o.buttonClick("loadMore", HandOpts(direction = HandDirection.DOWN))},
             assertionDescr = "Got more items",
             halfwayAssertionID = "7783b7fa-55eb-4972-a506-09e9f9d17371",
             finalAssertionID = "665b1fb9-7021-4bd0-8ba8-59e4a3cc5af6",
-            bannerOpts = TestBannerOpts(verticalPosition = VerticalPosition.TOP)
+            bannerOpts = AssertScreenOpts(bannerVerticalPosition = VerticalPosition.TOP)
         )
 
+        o.beginWorkRegion()
         o.section("Delete some shit") {
-            o.acta {TestUserActionAnimation.scroll(2500)}
+//            o.acta {TestUserActionAnimation.scroll(2200)}
 
             o.modalSequence(
                 action = {
-                    o.kicClickNoWait("delete-100001")
+                    o.kicClick("delete-100001")
                 },
                 assertModal = {
                     o.assertScreenHTML("Warning modal", "7f6f306f-23a5-430e-ab6e-4b3231989fae")
-                    o.pause(shit, only = false)
                 },
                 modalAction = {
                     o.buttonClick("modal-no")
@@ -101,7 +100,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
             o.modalSequence(
                 action = {
-                    o.kicClickNoWait("delete-100001")
+                    o.kicClick("delete-100001")
                 },
                 assertModal = {
                     o.assertScreenHTML("Warning modal", "8b94712e-8a32-4769-aa88-f38c61ae83c0")

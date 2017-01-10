@@ -429,21 +429,27 @@ class CustomerSingleUAOrderPage(val world: World) {
                             async {
                                 effects2.blinkOn(byid(btn.elementID))
                                 try {
-                                    val res = await(requestChunk(meat.moreFromID))
-                                    exhaustive / when (res) {
-                                        is ZimbabweResponse.Shitty -> openErrorModal(res.error)
-                                        is ZimbabweResponse.Hunky -> {
-                                            val newChunkContainerID = puid()
-                                            placeholder.setContent(
-                                                renderItems(res.meat,
-                                                            noItemsMessage = false,
-                                                            chunkIndex = chunksLoaded - 1,
-                                                            containerID = containerID))
-                                            await(scrollBodyToShitGradually{byid(newChunkContainerID)})
+                                    val res = try {
+                                        await(requestChunk(meat.moreFromID))
+                                    } catch(e: Exception) {
+                                        openErrorModal(const.msg.serviceFuckedUp)
+                                        null
+                                    }
+
+                                    if (res != null) {
+                                        exhaustive / when (res) {
+                                            is ZimbabweResponse.Shitty -> openErrorModal(res.error)
+                                            is ZimbabweResponse.Hunky -> {
+                                                val newChunkContainerID = puid()
+                                                placeholder.setContent(
+                                                    renderItems(res.meat,
+                                                                noItemsMessage = false,
+                                                                chunkIndex = chunksLoaded - 1,
+                                                                containerID = newChunkContainerID))
+                                                await(scrollBodyToShitGradually {byid(newChunkContainerID)})
+                                            }
                                         }
                                     }
-                                } catch (e: Throwable) {
-                                    openErrorModal(const.msg.serviceFuckedUp)
                                 } finally {
                                     effects2.blinkOff()
                                 }

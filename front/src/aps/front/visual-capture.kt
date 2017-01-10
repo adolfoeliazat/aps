@@ -85,7 +85,9 @@ fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> =
 
             val requestedYPhysical = shots.size * scrollStepPhysical
             val requestedY = requestedYPhysical.toLayoutPixels()
-            window.scroll(0.0, requestedY)
+            if (!isModalShown()) {
+                window.scroll(0.0, requestedY)
+            }
             await(delay(100)) // Fucking Chrome...
             clog("Shooting at $requestedY (window.scrollY = ${window.scrollY}; requestedYPhysical = $requestedYPhysical)")
 
@@ -103,8 +105,9 @@ fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> =
             window.scroll(0.0, oldY + 1)
             val dy = Math.abs(oldY - window.scrollY)
             clog("oldY = $oldY; window.scrollY = ${window.scrollY}; dy = $dy")
-            if (dy < 0.001)
-                break
+
+            if (dy < 0.001) break
+            if (isModalShown()) break
         }
         unfreezeProgressTicker()
 
@@ -116,6 +119,7 @@ fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> =
             o.contentWidth = jq("#topNavbarContainer > nav > .container").outerWidth()
             o.contentLeft = jq("#topNavbarContainer > nav > .container").offset().left.toDouble()
             o.documentHeightPhysical = documentHeightPhysical
+            o.modal = isModalShown()
         }))
         clog("Sent captured shit to backend")
 

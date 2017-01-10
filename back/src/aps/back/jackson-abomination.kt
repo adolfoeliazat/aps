@@ -20,6 +20,9 @@ val objectMapper = ObjectMapper()-{o->
 
 val shittyObjectMapper = object:ObjectMapper() {
 
+    // TODO:vgrechka Doesn't work: var modal = false
+    //               Works:        var modal by notNull<Boolean>()
+
     override fun createDeserializationContext(p: JsonParser, cfg: DeserializationConfig): DefaultDeserializationContext {
         class FuckingContext : DefaultDeserializationContext {
 

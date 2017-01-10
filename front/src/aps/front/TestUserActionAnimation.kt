@@ -110,6 +110,7 @@ object TestUserActionAnimation {
     }
 
     fun scroll(finalY: Int): Promise<Unit> = async {
+        // TODO:vgrechka Take into account devicePixelRatio
         if (testOpts().animateUserActions) {
             var y = jqbody.scrollTop()
             var steps = 30 * testOpts().slowdown

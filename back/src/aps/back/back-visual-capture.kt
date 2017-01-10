@@ -21,6 +21,8 @@ private @Volatile var capturedShit: CapturedShit? = null
 fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCapturedRequest.Response {
     fun toPhysicalPixels(x: Double) = Math.round(x * req.devicePixelRatio).toInt()
 
+    if (req.modal) check(req.shots.size == 1) {"Modal capture should have one shot"}
+
     val imgs = mutableListOf<BufferedImage>()
     val shebangWidth = toPhysicalPixels(req.contentWidth)
     var headerHeightPhysical by notNull<Int>()
@@ -34,29 +36,33 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
         imgs += img
         // File("$APS_TEMP/visual-capture/${req.id}--$i.png").writeBytes(bytes)
 
-        if (i == 0) {
+        if (i == 0 && !req.modal) {
             headerHeightPhysical = 0
             while (Color(img.getRGB(0, headerHeightPhysical)) != Color.WHITE) {
                 headerHeightPhysical = headerHeightPhysical + 1
-                if (headerHeightPhysical > img.height) wtf("Supposed header is so fucking long")
+                if (headerHeightPhysical >= img.height) wtf("Supposed header is so fucking long")
             }
         }
     }
 
-    val shebang = BufferedImage(shebangWidth, req.documentHeightPhysical, BufferedImage.TYPE_INT_ARGB)
+    val imageHeight =
+        if (!req.modal) req.documentHeightPhysical
+        else imgs.first().height
+
+    val shebang = BufferedImage(shebangWidth, imageHeight, BufferedImage.TYPE_INT_ARGB)
     val g = shebang.createGraphics()
     val drawSomeShit = true
     if (drawSomeShit) {
         g.color = Color.PINK
-        g.fillRect(0, 0, shebangWidth - 1, req.documentHeightPhysical - 1)
+        g.fillRect(0, 0, shebangWidth - 1, imageHeight - 1)
         g.stroke = BasicStroke(3F)
         g.color = Color.GREEN
-        g.drawLine(0, 0, shebangWidth - 1, req.documentHeightPhysical - 1)
-        g.drawLine(shebangWidth - 1, 0, 0, req.documentHeightPhysical - 1)
+        g.drawLine(0, 0, shebangWidth - 1, imageHeight - 1)
+        g.drawLine(shebangWidth - 1, 0, 0, imageHeight - 1)
     }
 
     var targetY = 0
-    var heightLeft = req.documentHeightPhysical
+    var heightLeft = imageHeight
     for ((i, img) in imgs.withIndex()) {
         val cropTop: Int; val cropHeight: Int
         when (i) {
