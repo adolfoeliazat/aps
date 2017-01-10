@@ -35,6 +35,7 @@ object TestGlobal {
     var formActionCompleted by notNullNamed<ResolvableShit<Unit>>()
     var formActionHalfway by notNullNamed<ResolvableShit<Unit>>()
     var formActionHalfwayConsidered by notNullNamed<ResolvableShit<Unit>>()
+    var testRunning = false
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

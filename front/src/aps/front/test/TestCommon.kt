@@ -171,6 +171,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
 
     Globus.rootRedisLogMessageID = await(fedis.beginLogGroup("Test: ${scenario.name}"))
 
+    TestGlobal.testRunning = true
     try {
         hrss.preventScrollToBottomOnAssertionError = urlQuery["scrollToBottom"] == "no"
         hrss.preventExceptionRevelation = urlQuery["revealException"] == "no"
@@ -251,6 +252,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         return@async res
     }
     finally {
+        TestGlobal.testRunning = false
         await(fedis.endLogGroup(Globus.rootRedisLogMessageID!!))
         Globus.rootRedisLogMessageID = null
     }
