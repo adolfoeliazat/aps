@@ -288,21 +288,44 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         legacyShit.setValue(value)
     }
 
-    fun testSetValue(value: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
+    fun testSetValue(newValue: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
+        await(testSetValueAlgo(
+            initialValue = "",
+            subsequentValues = (0 until newValue.length).map {newValue.substring(0, it + 1)},
+            finalValue = newValue,
+            handOpts = handOpts))
+    }
+
+    fun testPrependValue(prefix: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
+        await(testSetValueAlgo(
+            initialValue = value,
+            subsequentValues = (1..prefix.length).map {prefix.substring(0, it) + value},
+            finalValue = prefix + value,
+            handOpts = handOpts))
+    }
+
+    private fun testSetValueAlgo(
+        initialValue: String,
+        subsequentValues: List<String>,
+        finalValue: String,
+        handOpts: HandOpts
+    ) = async {
         if (testOpts().animateUserActions) {
             await(TestUserActionAnimation.hand(
                 legacyShit.elementID,
                 handOpts.copy(direction = HandDirection.RIGHT),
-                doWhileHandVisible = {async{
-                    setValue("")
-                    for (chars in 0 until value.length) {
-                        await(delay(50))
-                        setValue(value.substring(0, chars + 1))
+                doWhileHandVisible = {
+                    async {
+                        setValue(initialValue)
+                        for (newValue in subsequentValues) {
+                            await(delay(50))
+                            setValue(newValue)
+                        }
                     }
-                }}
+                }
             ))
         } else {
-            setValue(value)
+            setValue(finalValue)
         }
     }
 
@@ -332,6 +355,12 @@ fun TestScenarioBuilder.inputSetValue(key: String, value: String) {
     }}
 }
 
+fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {
+    acta("Prepending to `$key`: ${markdownItalicVerbatim(value)}") {async{
+        await(Input.instance(key).testPrependValue(value))
+    }}
+}
+
 fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) {
     act("Appending long shit to `$key`") {
         val inst = Input.instance(key)
@@ -343,12 +372,12 @@ fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) 
     }
 }
 
-fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {
-    act("Prepending to `$key`: ${markdownItalicVerbatim(value)}") {
-        val inst = Input.instance(key)
-        inst.setValue(value + inst.getValue())
-    }
-}
+//fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {
+//    act("Prepending to `$key`: ${markdownItalicVerbatim(value)}") {
+//        val inst = Input.instance(key)
+//        inst.setValue(value + inst.getValue())
+//    }
+//}
 
 fun TestScenarioBuilder.inputPressEnter(key: String) {
     acta("Pressing Enter in `$key`") {

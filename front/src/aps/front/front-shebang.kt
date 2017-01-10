@@ -27,12 +27,14 @@ object TestGlobal {
     var lastTestOptsMaybe: TestOptions? = null
     var requestPause: ResolvableShit<Unit>? = null
     var responseProcessedSignal by notNullNamed<ResolvableShit<Unit>>()
-    var animationHalfwaySignal by notNull<ResolvableShit<Unit>>()
-    var animationHalfwaySignalProcessedSignal by notNull<ResolvableShit<Unit>>()
-    var actionSignal by notNullNamed<ResolvableShit<Unit>>()
+    var animationHalfwaySignal by notNullNamed<ResolvableShit<Unit>>()
+    var animationHalfwaySignalProcessedSignal by notNullNamed<ResolvableShit<Unit>>()
     var shitVanished by notNullNamed<ResolvableShit<Unit>>()
     var forcedTestOpts: TestOptions? = null
     var killAwait = false
+    var formActionCompleted by notNullNamed<ResolvableShit<Unit>>()
+    var formActionHalfway by notNullNamed<ResolvableShit<Unit>>()
+    var formActionHalfwayConsidered by notNullNamed<ResolvableShit<Unit>>()
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

@@ -12,7 +12,7 @@ class TestSuite_Customer_Shebang : TestSuite {
         TestUACustomer_DownloadForbiddenFile(),
         TestUACustomer_LongFileList(),
         TestUACustomer_Order_Files_Search(),
-        TestUACustomer_Order_Files_Edit()
+        TestUACustomer_Order_Files_Misc()
     )}
 }
 

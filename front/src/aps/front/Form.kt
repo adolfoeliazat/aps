@@ -83,6 +83,8 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                     update()
 
                                     val res: FormResponse = await(callMatumba(spec.req, spec.ui.tokenMaybe))
+                                    TestGlobal.formActionHalfway.resolve()
+                                    await(TestGlobal.formActionHalfwayConsidered.promise)
 
                                     when (res) {
                                         is FormResponse.Shitty -> {
@@ -98,12 +100,6 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                         }
                                     }
 
-//                                    if (res is FormResponse.Shitty) {
-//                                        for (fe in res.fieldErrors) {
-//                                            console.warn(fe.field + " --> " + fe.error)
-//                                        }
-//                                    }
-
                                     for (field in spec.req.fields) {
                                         field.error = if (res !is FormResponse.Shitty) null else
                                             res.fieldErrors.find{it.field == field.name}?.error
@@ -112,59 +108,13 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 
                                     working = false
                                     update()
-                                    TestGlobal.actionSignal.resolve()
+                                    TestGlobal.formActionCompleted.resolve()
                                 } finally {
                                     Shitus.endTrain()
                                 }
                             }}
                         ).toReactElement(),
 
-//                        jsFacing_button(json(
-//                            /*"tamy" to "primary", "shamy" to if (spec.dontShameButtons) undefined else "primary",*/
-//                            "level" to "primary", "title" to spec.primaryButtonTitle, "disabled" to working,
-//                            "onClick" to {"__async"
-//                                Shitus.beginTrain(json("name" to "Submit fucking form")); try {
-//                                    for (field: FormFieldFront in spec.req.fields) {
-//                                        field.error = null
-//                                        field.disabled = true
-//                                    }
-//                                    error = null
-//                                    working = true
-//                                    update()
-//
-//                                    val res: FormResponse = __await(callMatumba(spec.req, spec.ui.tokenMaybe))
-//
-//                                    when (res) {
-//                                        is FormResponse.Shitty -> {
-//                                            error = res.error
-//                                            (spec.onError)(res)
-//                                            __await((spec.onErrora)(res))
-//                                        }
-//                                        is FormResponse.Hunky<*> -> {
-//                                            error = null
-//                                            val meat = res.meat as Res
-//                                            (spec.onSuccess)(meat)
-//                                            __await((spec.onSuccessa)(meat))
-//                                        }
-//                                    }
-//
-////                                    if (res is FormResponse.Shitty) {
-////                                        for (fe in res.fieldErrors) {
-////                                            console.warn(fe.field + " --> " + fe.error)
-////                                        }
-////                                    }
-//
-//                                    for (field in spec.req.fields) {
-//                                        field.error = if (res !is FormResponse.Shitty) null else
-//                                            res.fieldErrors.find{it.field == field.name}?.error
-//                                        field.disabled = false
-//                                    }
-//
-//                                    working = false
-//                                    update()
-//                                } finally { Shitus.endTrain() }
-//                            }
-//                        ), key = "primary" + req.fieldInstanceKeySuffix),
 
                         if (spec.cancelButtonTitle != null) {
                             Button(
@@ -175,23 +125,11 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                 onClicka = {async{
                                     (spec.onCancel)()
                                     await((spec.onCancela)())
-                                    TestGlobal.actionSignal.resolve()
+                                    TestGlobal.formActionCompleted.resolve()
                                 }}
                             ).toReactElement()
 
-//                                    jsFacing_button(json(/*"tamy" to "cancel", "shamy" to if (spec.dontShameButtons) undefined else "cancel",*/
-//                                        "title" to spec.cancelButtonTitle, "disabled" to working, "style" to json("marginLeft" to 10),
-//                                        "onClick" to {"__async"
-//                                            (spec.onCancel)()
-//                                            __await((spec.onCancela)())
-//                                        }), key = "cancel" + req.fieldInstanceKeySuffix)
                         } else undefined,
-
-                        //                                spec.deleteButtonTitle?.let {
-//                                    Button(key = "delete" + req.fieldInstanceKeySuffix, title = it, onClicka = {
-//                                        (spec.onDeleta)()
-//                                    })
-//                                },
 
                         if (working) renderTicker("right").toReactElement() else null
                     )
@@ -233,6 +171,51 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         return control.toReactElement()
     }
 }
+
+fun TestScenarioBuilder.formSequence(
+    buildAction: () -> Unit,
+    assertionDescr: String,
+    halfwayAssertionID: String,
+    finalAssertionID: String,
+    halfwayTimeout: Int = 5000,
+    completedTimeout: Int = 1000
+) {
+    val o = this
+    o.act {
+        TestGlobal.formActionCompleted = ResolvableShit()
+        TestGlobal.formActionHalfway = ResolvableShit()
+        TestGlobal.formActionHalfwayConsidered = ResolvableShit()
+    }
+
+    buildAction()
+
+    o.acta {TestGlobal.formActionHalfway.promise.orTimeout(halfwayTimeout)}
+    o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
+    o.act {TestGlobal.formActionHalfwayConsidered.resolve()}
+
+    o.acta {TestGlobal.formActionCompleted.promise.orTimeout(completedTimeout)}
+    o.assertScreenHTML(assertionDescr, finalAssertionID)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

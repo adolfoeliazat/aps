@@ -3,7 +3,9 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 
-class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
+abstract class TestUACustomer_Order_Files_Base : StepBasedTestScenario() {
+    abstract fun buildSteps0()
+
     val shit = TestShit()
 
     override fun buildSteps() {
@@ -28,6 +30,30 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             assertScreen = {o.assertScreenHTML("1", "ecec02be-35ab-4c44-afc4-a50b73d45b1c")}
         )
 
+        buildSteps0()
+    }
+}
+
+class TestUACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
+    override fun buildSteps0() {
+        o.kicClick("edit-100010")
+        o.assertScreenHTML("Piece of shit #100010 is opened for editing", "234d53c3-19ae-4d2d-9172-61b37c5c4b29")
+        o.inputSetValue("title-100010", "The Cunt")
+        o.inputPrependValue("details-100010", "A story about cunt follows. ")
+
+        o.formSequence(
+            buildAction = {
+                o.buttonClick("primary-100010")
+            },
+            assertionDescr = "Shit is saved",
+            halfwayAssertionID = "7a4fb403-1698-45a8-931c-b66491e03c79",
+            finalAssertionID = "86ca87fc-eed0-4da1-813c-8b9a8998c8ce"
+        )
+    }
+}
+
+class TestUACustomer_Order_Files_Misc : TestUACustomer_Order_Files_Base() {
+    override fun buildSteps0() {
         o.acta {TestUserActionAnimation.scroll(700)}
         o.kicClick("edit-100008")
         o.assertScreenHTML("Piece of shit #100008 is opened for editing", "31c57c9d-06e2-43ee-beef-106f1689b954")
@@ -79,10 +105,8 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             halfwayOpts = AssertScreenOpts(bannerVerticalPosition = VerticalPosition.TOP)
         )
 
-//        o.beginWorkRegion()
-//        o.endWorkRegion()
         o.section("Delete some shit") {
-//            o.acta {TestUserActionAnimation.scroll(2200)}
+            //            o.acta {TestUserActionAnimation.scroll(2200)}
 
             o.modalSequence(
                 action = {
@@ -143,6 +167,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
 
 }
 
-
+//        o.beginWorkRegion()
+//        o.endWorkRegion()
 
 
