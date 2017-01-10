@@ -71,8 +71,14 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
         }
 
         o.beginWorkRegion()
-        o.buttonClick("loadMore")
-        o.assertScreenHTML("More items", "ab5858fe-82b0-4bbc-abce-eb8c2645c2aa")
+        o.acta {TestUserActionAnimation.scroll(2290)}
+        o.requestSequence(
+            buildAction = {o.buttonClick("loadMore", HandOpts(direction = HandDirection.DOWN))},
+            assertionDescr = "Got more items",
+            halfwayAssertionID = "7783b7fa-55eb-4972-a506-09e9f9d17371",
+            finalAssertionID = "665b1fb9-7021-4bd0-8ba8-59e4a3cc5af6",
+            bannerOpts = TestBannerOpts(verticalPosition = VerticalPosition.TOP)
+        )
 
         o.section("Delete some shit") {
             o.acta {TestUserActionAnimation.scroll(2500)}
@@ -103,13 +109,17 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                 },
                 modalAction = {
                     o.acta {send(ImposeNextRequestErrorRequest())}
-                    o.requestSequence(
-                        action = {o.buttonClick("modal-yes")},
+                    o.genericRequestSequence(
+                        buildAction = {o.buttonClick("modal-yes")},
                         beforeResponse = {o.assertScreenHTML("Shit blinks", "4b6e09ea-f0a7-4bfb-a4d7-e1785889cc9c")},
                         afterResponse = {o.assertScreenHTML("Got error", "5a0cdafa-37b0-45dc-86fb-b4645636a129")}
                     )
-                    o.requestSequence(
-                        action = {o.buttonClick("modal-yes")},
+//                    assertionDescr = "Piece of shit is closed, nothing changed",
+//                    halfwayAssertionID = "16e1707d-3c9f-4f6a-934b-ced0620d364e",
+//                    finalAssertionID = "55b183c9-d6c7-489f-90be-4bc3c0c7550d"
+
+                    o.genericRequestSequence(
+                        buildAction = {o.buttonClick("modal-yes")},
                         beforeResponse = {o.assertScreenHTML("Shit blinks", "ddfede30-0595-43cb-a460-9c07d75a7920")},
                         afterResponse = {o.assertScreenHTML("lalala", "fed7570a-bdda-42f9-b1d3-756b68451f43")}
                     )

@@ -21,11 +21,11 @@ enum class AssertionBannerKind(val className: String) {
     INCORRECT(css.test.popup.assertion.incorrect)
 }
 
-private enum class VerticalPosition {
+enum class VerticalPosition {
     TOP, BOTTOM
 }
 
-private enum class HorizontalPosition {
+enum class HorizontalPosition {
     LEFT, RIGHT
 }
 
@@ -39,7 +39,12 @@ fun killTestButton(): Button {
     })
 }
 
-fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String) {
+class TestBannerOpts(
+    val verticalPosition: VerticalPosition = VerticalPosition.BOTTOM,
+    val horizontalPosition: HorizontalPosition = HorizontalPosition.LEFT
+)
+
+fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, opts: TestBannerOpts = TestBannerOpts()) {
     val stackCapture = CaptureStackException()
     act {TestGlobal.testShitBeingAssertedID = assertionID}
 
@@ -60,8 +65,8 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String) {
                 val bannerButtonStyle = Style()
 
                 var banner by notNull<Control2>()
-                var verticalPosition = VerticalPosition.BOTTOM
-                var horizontalPosition = HorizontalPosition.LEFT
+                var verticalPosition = opts.verticalPosition
+                var horizontalPosition = opts.horizontalPosition
                 var capturedVisualShit = false
 
                 fun acceptCurrentShit(): Promise<Unit> = async {
@@ -113,8 +118,8 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String) {
                                     AssertionBannerKind.INCORRECT,
                                     renderSpecificButtons = {o->
                                         o- Button(title = "Diff", style = bannerButtonStyle, onClick = {
-                                            verticalPosition = VerticalPosition.TOP
-                                            horizontalPosition = HorizontalPosition.LEFT
+                                            verticalPosition = opts.verticalPosition
+                                            horizontalPosition = opts.horizontalPosition
                                             banner.update()
 //                                                byid("fuckingDiff").scrollBodyToShit()
                                             nextDiff().scrollBodyToShit(dy = -70)

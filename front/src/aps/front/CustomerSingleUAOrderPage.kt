@@ -424,11 +424,10 @@ class CustomerSingleUAOrderPage(val world: World) {
                     moreFromID
                     val placeholder = Placeholder()
                     placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
-                        val btn = Button("loadMore", title = t("TOTE", "Загрузить еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50))
+                        val btn = Button("loadMore", title = t("Load more", "Загрузить еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50))
                         btn.onClicka = {
                             async {
                                 effects2.blinkOn(byid(btn.elementID))
-                                await(tillEndOfTime())
                                 try {
                                     val res = await(requestChunk(meat.moreFromID))
                                     exhaustive / when (res) {

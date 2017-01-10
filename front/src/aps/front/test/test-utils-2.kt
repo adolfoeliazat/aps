@@ -22,7 +22,7 @@ object testconst {
         val pieceOfTrial2 = "75509ed6012db7b99db0ba5051e306bef5760f75"
     }
 
-    val defaultResponseTimeout = 3000
+    val defaultResponseTimeout = 5000
 }
 
 external interface IStorage {
@@ -511,20 +511,41 @@ fun TestScenarioBuilder.pause(shit: TestShit, descr: String = "Cool shit, huh?..
     }}
 }
 
-fun TestScenarioBuilder.requestSequence(action: () -> Unit, beforeResponse: () -> Unit, afterResponse: () -> Unit) {
+fun TestScenarioBuilder.genericRequestSequence(
+    buildAction: () -> Unit,
+    beforeResponse: () -> Unit,
+    afterResponse: () -> Unit,
+    responseTimeout: Int = testconst.defaultResponseTimeout
+) {
     val o = this
     o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
-    action()
+    buildAction()
     beforeResponse()
 
     o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
     o.act {TestGlobal.requestPause!!.resolve(Unit)}
-    o.await {TestGlobal.responseArrived!!.promise.orTimeout(testconst.defaultResponseTimeout)}
+    o.await {TestGlobal.responseArrived!!.promise.orTimeout(responseTimeout)}
     afterResponse()
 }
 
-
-
+fun TestScenarioBuilder.requestSequence(
+    buildAction: () -> Unit,
+    assertionDescr: String,
+    halfwayAssertionID: String,
+    finalAssertionID: String,
+    responseTimeout: Int = testconst.defaultResponseTimeout,
+    bannerOpts: TestBannerOpts = TestBannerOpts()
+) {
+    val o = this
+    o.genericRequestSequence(
+        buildAction = buildAction,
+        beforeResponse = {
+            o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID, bannerOpts)
+        },
+        afterResponse = {o.assertScreenHTML(assertionDescr, finalAssertionID, bannerOpts)},
+        responseTimeout = responseTimeout
+    )
+}
 
 
 

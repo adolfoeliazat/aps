@@ -79,6 +79,7 @@ fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> =
 
         val shots = mutableListOf<BrowserShot>()
 
+        freezeProgressTicker()
         while (true) {
             if (shots.size == 10) bitch("Too many fucking chunks to shoot")
 
@@ -105,6 +106,7 @@ fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> =
             if (dy < 0.001)
                 break
         }
+        unfreezeProgressTicker()
 
         val res = await(send(VisualShitCapturedRequest()-{o->
             o.id = shitID

@@ -12,8 +12,10 @@ import aps.*
 import into.kommon.*
 import jquery.*
 import org.w3c.dom.*
+import org.w3c.dom.css.*
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.EventTarget
+import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.asList
 import kotlin.properties.Delegates.notNull
@@ -348,7 +350,52 @@ private class NotNullNamedVar<T: Any> : ReadWriteProperty<Any?, T> {
     }
 }
 
+val CSSRule.Companion.KEYFRAMES_RULE: Short get() = 7
+val CSSRule.Companion.KEYFRAME_RULE: Short get() = 8
 
+val progressTickerKeyframe100RuleStyle: CSSStyleDeclaration by lazy {
+    for (sheetIndex in 0 until document.styleSheets.length) {
+        val styleSheet = document.styleSheets[sheetIndex] as CSSStyleSheet
+        val rules = styleSheet.cssRules
+        for (ruleIndex in 0 until rules.length) {
+            val rule = rules[ruleIndex]!!
+            if (rule.type == CSSRule.KEYFRAMES_RULE) {
+                if (rule.asDynamic().name == "progressTicker") {
+                    val subRules: CSSRuleList = rule.asDynamic().cssRules
+                    val rule100 = subRules[1]!!
+                    check(rule100.asDynamic().keyText == "100%") {"keyText"}
+                    val rule100Style: CSSStyleDeclaration = rule100.asDynamic().style
+                    return@lazy rule100Style
+                }
+            }
+        }
+    }
+    bitch("Cannot find progressTickerKeyframe100RuleStyle")
+}
 
+val progressTickerRuleStyle: CSSStyleDeclaration by lazy {
+    for (sheetIndex in 0 until document.styleSheets.length) {
+        val styleSheet = document.styleSheets[sheetIndex] as CSSStyleSheet
+        val rules = styleSheet.cssRules
+        for (ruleIndex in 0 until rules.length) {
+            val rule = rules[ruleIndex]!!
+            if (rule.type == CSSRule.STYLE_RULE) {
+                val styleRule = rule as CSSStyleRule
+                if (styleRule.selectorText == ".progressTicker") {
+                    return@lazy styleRule.style
+                }
+            }
+        }
+    }
+    bitch("Cannot find .progressTicker rule")
+}
+
+fun freezeProgressTicker() {
+    progressTickerKeyframe100RuleStyle.opacity = "1"
+}
+
+fun unfreezeProgressTicker() {
+    progressTickerKeyframe100RuleStyle.opacity = "0"
+}
 
 
