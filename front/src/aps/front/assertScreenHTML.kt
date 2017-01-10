@@ -41,7 +41,8 @@ fun killTestButton(): Button {
 
 class AssertScreenOpts(
     val bannerVerticalPosition: VerticalPosition = VerticalPosition.BOTTOM,
-    val bannerHorizontalPosition: HorizontalPosition = HorizontalPosition.LEFT
+    val bannerHorizontalPosition: HorizontalPosition = HorizontalPosition.LEFT,
+    val spoilActual: Boolean = false
 )
 
 fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, opts: AssertScreenOpts = AssertScreenOpts()) {
@@ -56,7 +57,7 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
             append("-------------------- NAVBAR --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
             if (!endsWith("\n")) append("\n")
-            append("\n-------------------- ROOT --------------------\n\n")
+            append("\n-------------------- ${if (!opts.spoilActual) "ROOT" else "FUCKROOT"} --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
         }
 

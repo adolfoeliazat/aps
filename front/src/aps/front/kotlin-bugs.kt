@@ -5,103 +5,105 @@ package aps.front
 import aps.*
 import into.kommon.*
 import kotlin.browser.window
-
-
-fun qwe_breaks() {
-    123.let {
-        val x = run {
-            return@let
-        }
-    }
-}
-
-fun qwe_zzzz() {
-    fun showProgress() {}
-    fun hideProgress() {}
-
-    async {
-        showProgress()
-        // try {                                     // <-- Try uncommenting this
-            val stuff = try {
-                val promise = async {"Maybe I'll throw, maybe not"}
-                await(promise)
-            } catch(e: Exception) {
-                console.log("No stuff")
-                return@async
-            }
-
-            console.log("Got stuff: $stuff")
-        // } finally { hideProgress() }              // <-- Try uncommenting this
-    }
-}
+import kotlin.properties.Delegates.notNull
 
 
 
-fun qwe_works_sync() {
-    try {
-        js("undefined").lalala
-    } catch (e: dynamic) {
-        console.log("Aaarrgghh", e.message)
-    } finally {
-        console.log("Finally")
-    }
-}
-
-fun qwe_works_async_simple() {
-    val promise = async {
-        js("undefined").lalala
-    }
-
-    async {
-        try {
-            await(promise)
-        } catch (e: dynamic) {
-            console.log("Aaarrgghh", e.message)
-        } finally {
-            console.log("Finally")
-        }
-    }
-}
-
-fun qwe_breaks_async_addedDelay() {
-    val promise = async {
-        await(Promise<Unit> {resolve, _ -> window.setTimeout(resolve, 100)}) // <-- Added this line
-        console.log("After delay")
-        js("undefined").lalala
-    }
-
-    async {
-        try {
-            await(promise)
-        } catch (e: dynamic) {
-            console.log("Aaarrgghh", e.message)
-        } finally {
-            console.log("Finally")
-        }
-    }
-}
-
-fun qwe_works_async_wrappedNativeError() {
-    val promise = async {
-        await(Promise<Unit> {resolve, _ -> window.setTimeout(resolve, 100)}) // <-- Added this line
-        console.log("After delay")
-        try {
-            js("undefined").lalala
-        } catch (e: dynamic) {
-            throw Exception("Wrapped: ${e.message}")
-        }
-    }
-
-    async {
-        try {
-            await(promise)
-        } catch (e: dynamic) {
-            console.log("Aaarrgghh", e.message)
-        } finally {
-            console.log("Finally")
-        }
-    }
-}
+//fun qwe_breaks() {
+//    123.let {
+//        val x = run {
+//            return@let
+//        }
+//    }
+//}
+//
+//fun qwe_zzzz() {
+//    fun showProgress() {}
+//    fun hideProgress() {}
+//
+//    async {
+//        showProgress()
+//        // try {                                     // <-- Try uncommenting this
+//            val stuff = try {
+//                val promise = async {"Maybe I'll throw, maybe not"}
+//                await(promise)
+//            } catch(e: Exception) {
+//                console.log("No stuff")
+//                return@async
+//            }
+//
+//            console.log("Got stuff: $stuff")
+//        // } finally { hideProgress() }              // <-- Try uncommenting this
+//    }
+//}
+//
+//
+//
+//fun qwe_works_sync() {
+//    try {
+//        js("undefined").lalala
+//    } catch (e: dynamic) {
+//        console.log("Aaarrgghh", e.message)
+//    } finally {
+//        console.log("Finally")
+//    }
+//}
+//
+//fun qwe_works_async_simple() {
+//    val promise = async {
+//        js("undefined").lalala
+//    }
+//
+//    async {
+//        try {
+//            await(promise)
+//        } catch (e: dynamic) {
+//            console.log("Aaarrgghh", e.message)
+//        } finally {
+//            console.log("Finally")
+//        }
+//    }
+//}
+//
+//fun qwe_breaks_async_addedDelay() {
+//    val promise = async {
+//        await(Promise<Unit> {resolve, _ -> window.setTimeout(resolve, 100)}) // <-- Added this line
+//        console.log("After delay")
+//        js("undefined").lalala
+//    }
+//
+//    async {
+//        try {
+//            await(promise)
+//        } catch (e: dynamic) {
+//            console.log("Aaarrgghh", e.message)
+//        } finally {
+//            console.log("Finally")
+//        }
+//    }
+//}
+//
+//fun qwe_works_async_wrappedNativeError() {
+//    val promise = async {
+//        await(Promise<Unit> {resolve, _ -> window.setTimeout(resolve, 100)}) // <-- Added this line
+//        console.log("After delay")
+//        try {
+//            js("undefined").lalala
+//        } catch (e: dynamic) {
+//            throw Exception("Wrapped: ${e.message}")
+//        }
+//    }
+//
+//    async {
+//        try {
+//            await(promise)
+//        } catch (e: dynamic) {
+//            console.log("Aaarrgghh", e.message)
+//        } finally {
+//            console.log("Finally")
+//        }
+//    }
+//}
 
 //fun qwe_compiles() {
 //    val a: A.A2? = run {

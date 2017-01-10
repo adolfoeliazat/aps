@@ -229,7 +229,6 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
 
         TestGlobal.requestPause?.let {await(it.promise)}
         val res = await<Any>(callRemoteProcedurePassingJSONObject(procedureName, payload))
-        TestGlobal.responseArrived?.let {it.resolve(Unit)}
 
         when (res) {
             is FormResponse.Hunky<*> -> ZimbabweResponse.Hunky(cast(res.meat))

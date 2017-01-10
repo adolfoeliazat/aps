@@ -130,6 +130,7 @@ fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promise<Boo
                                     byid(timesButtonID).click()
                                 }
                             }
+                            responseProcessed()
                         }
                     }
                     o- Button(key = "modal-no", title = t("TOTE", "Я очкую"), dataDismiss = "modal") {

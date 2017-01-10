@@ -248,6 +248,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                     object {
                         val holder = Placeholder()
                         var orderFile = _orderFile
+                        val viewRootID = puid()
 
                         init {
                             enterViewMode()
@@ -259,7 +260,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                         fun enterViewMode() {
                             holder.setContent(when (world.user.kind) {
                                 UserKind.CUSTOMER -> {
-                                    kdiv{o->
+                                    kdiv(id = viewRootID){o->
                                         o- row{o->
                                             o- renderFileTitle(editing = false)
                                         }
@@ -342,8 +343,10 @@ class CustomerSingleUAOrderPage(val world: World) {
                             await(scrollBodyToShitGradually{byid(topShitID)})
                         }
 
-                        fun enterVanishedMode() {
+                        fun enterVanishedMode() = async {
+                            await(effects2.fadeOut(viewRootID))
                             holder.setContent(NOTRE)
+                            TestGlobal.shitVanished.resolve()
                         }
 
                         fun renderFileTitle(editing: Boolean): ElementBuilder {
@@ -452,6 +455,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     }
                                 } finally {
                                     effects2.blinkOff()
+                                    responseProcessed()
                                 }
                             }
                         }

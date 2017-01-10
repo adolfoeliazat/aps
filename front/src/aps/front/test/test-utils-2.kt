@@ -522,9 +522,9 @@ fun TestScenarioBuilder.genericRequestSequence(
     buildAction()
     beforeResponse()
 
-    o.act {TestGlobal.responseArrived = ResolvableShit<Unit>()}
+    o.act {TestGlobal.responseProcessedSignal = ResolvableShit<Unit>()}
     o.act {TestGlobal.requestPause!!.resolve(Unit)}
-    o.await {TestGlobal.responseArrived!!.promise.orTimeout(responseTimeout)}
+    o.await {TestGlobal.responseProcessedSignal.promise.orTimeout(responseTimeout)}
     afterResponse()
 }
 
@@ -534,15 +534,34 @@ fun TestScenarioBuilder.requestSequence(
     halfwayAssertionID: String,
     finalAssertionID: String,
     responseTimeout: Int = testconst.defaultResponseTimeout,
-    bannerOpts: AssertScreenOpts = AssertScreenOpts()
+    halfwayOpts: AssertScreenOpts = AssertScreenOpts(),
+    finalOpts: AssertScreenOpts = AssertScreenOpts()
 ) {
     val o = this
     o.genericRequestSequence(
         buildAction = buildAction,
         beforeResponse = {
-            o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID, bannerOpts)
+            o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID, halfwayOpts)
         },
-        afterResponse = {o.assertScreenHTML(assertionDescr, finalAssertionID, bannerOpts)},
+        afterResponse = {o.assertScreenHTML(assertionDescr, finalAssertionID, finalOpts)},
+        responseTimeout = responseTimeout
+    )
+}
+
+fun TestScenarioBuilder.requestSequenceNoFinalAssertion(
+    buildAction: () -> Unit,
+    assertionDescr: String,
+    halfwayAssertionID: String,
+    responseTimeout: Int = testconst.defaultResponseTimeout,
+    halfwayOpts: AssertScreenOpts = AssertScreenOpts()
+) {
+    val o = this
+    o.genericRequestSequence(
+        buildAction = buildAction,
+        beforeResponse = {
+            o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID, halfwayOpts)
+        },
+        afterResponse = {},
         responseTimeout = responseTimeout
     )
 }
