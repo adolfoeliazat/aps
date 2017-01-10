@@ -53,7 +53,6 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
             }
         }
 
-        o.beginWorkRegion()
         o.section("Cancelling editing") {
             o.acta {TestUserActionAnimation.scroll(1413)}
             o.kicClick("edit-100004", HandOpts(direction = HandDirection.DOWN))
@@ -70,13 +69,11 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                 finalAssertionID = "55b183c9-d6c7-489f-90be-4bc3c0c7550d"
             )
         }
-        o.endWorkRegion()
 
-//        o.forceOptsTillHere(TestOptionsTemplates.fastest.opts)
+        o.beginWorkRegion()
         o.buttonClick("loadMore")
         o.assertScreenHTML("More items", "ab5858fe-82b0-4bbc-abce-eb8c2645c2aa")
 
-        o.instructions.add(TestInstruction.Step.ActionStep("pizda"))
         o.section("Delete some shit") {
             o.acta {TestUserActionAnimation.scroll(2500)}
 
@@ -122,6 +119,7 @@ class TestUACustomer_Order_Files_Edit : StepBasedTestScenario() {
                 }
             )
         }
+        o.endWorkRegion()
 
         // TODO:vgrechka Reload page and check modifications
     }

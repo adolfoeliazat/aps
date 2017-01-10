@@ -428,6 +428,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                         btn.onClicka = {
                             async {
                                 effects2.blinkOn(byid(btn.elementID))
+                                await(tillEndOfTime())
                                 try {
                                     val res = await(requestChunk(meat.moreFromID))
                                     exhaustive / when (res) {

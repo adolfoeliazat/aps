@@ -71,7 +71,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                             level = Button.Level.PRIMARY,
                             title = spec.primaryButtonTitle,
                             disabled = working,
-                            onClick = {async{
+                            onClicka = {async{
                                 Shitus.beginTrain(json("name" to "Submit fucking form"))
                                 try {
                                     for (field: FormFieldFront in spec.req.fields) {
@@ -112,6 +112,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 
                                     working = false
                                     update()
+                                    TestGlobal.actionSignal.resolve()
                                 } finally {
                                     Shitus.endTrain()
                                 }
@@ -171,9 +172,10 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                 title = spec.cancelButtonTitle,
                                 disabled = working,
                                 style = Style(marginLeft = 10),
-                                onClick = {async{
+                                onClicka = {async{
                                     (spec.onCancel)()
                                     await((spec.onCancela)())
+                                    TestGlobal.actionSignal.resolve()
                                 }}
                             ).toReactElement()
 

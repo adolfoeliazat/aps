@@ -299,7 +299,7 @@ fun TestScenarioBuilder.forceOptsTillHere(opts: TestOptions) {
 
 fun TestScenarioBuilder.beginWorkRegion() {
     instructions.add(0, TestInstruction.Do {async{
-        TestGlobal.forcedTestOpts = TestOptionsTemplates.fastest.opts
+        TestGlobal.forcedTestOpts = TestOptionsTemplates.fastestExceptShowBannerOnNonCorrectAssertions .opts
     }})
     instructions.add(TestInstruction.Do {async{
         TestGlobal.forcedTestOpts = null

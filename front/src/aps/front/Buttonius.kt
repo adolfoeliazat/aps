@@ -151,12 +151,10 @@ open class Button(
 }
 
 fun TestScenarioBuilder.buttonClick(key: String, handOpts: HandOpts = HandOpts()) {
-    acta("Clicking button `$key`") {async{
+    acta("Clicking button `$key`") {async<Unit>{
         val target = Button.instance(key)
         await(TestUserActionAnimation.hand(target, handOpts))
-        target.click().finally {
-            TestGlobal.actionSignal!!.resolve()
-        }
+        target.click() // Not await
     }}
 }
 
