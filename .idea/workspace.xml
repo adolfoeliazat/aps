@@ -9,18 +9,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/aps/front/front-spikes.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/test-shit/7783b7fa-55eb-4972-a506-09e9f9d17371" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/test-shit/665b1fb9-7021-4bd0-8ba8-59e4a3cc5af6" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Effects.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Effects.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files_Edit.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files_Edit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/static/style.css" afterPath="$PROJECT_DIR$/front/static/style.css" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,11 +79,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="TestUACustomer_Order_Files_Edit.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TestUACustomer_Order_Files_Edit.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files_Edit.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="79" column="12" lean-forward="false" selection-start-line="79" selection-start-column="12" selection-end-line="79" selection-end-column="12" />
+            <state relative-caret-position="168">
+              <caret line="83" column="12" lean-forward="false" selection-start-line="83" selection-start-column="12" selection-end-line="83" selection-end-column="12" />
               <folding>
                 <element signature="e#19#60#0" expanded="true" />
               </folding>
@@ -108,11 +101,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="front-utils.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="front-utils.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="624">
-              <caret line="392" column="0" lean-forward="false" selection-start-line="392" selection-start-column="0" selection-end-line="392" selection-end-column="0" />
+            <state relative-caret-position="282">
+              <caret line="240" column="4" lean-forward="false" selection-start-line="240" selection-start-column="4" selection-end-line="240" selection-end-column="4" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#122#490#0" expanded="true" />
@@ -179,8 +172,8 @@
       <file leaf-file-name="CustomerSingleUAOrderPage.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="429" column="41" lean-forward="false" selection-start-line="429" selection-start-column="41" selection-end-line="429" selection-end-column="41" />
+            <state relative-caret-position="264">
+              <caret line="434" column="44" lean-forward="false" selection-start-line="434" selection-start-column="44" selection-end-line="434" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -332,11 +325,11 @@
         <option value="$PROJECT_DIR$/front/static/style.css" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-spikes.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files_Edit.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Effects.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" />
       </list>
     </option>
   </component>
@@ -741,7 +734,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="freeze&#9;null&#9;null&#10;visual-cap&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/visual-capture.kt&#10;animationse&#9;PSI&#9;JAVA://com.sun.scenario.animation.AnimationPulseMBean#getAnimationMaxIn1Sec&#10;requestpause&#9;null&#9;null&#10;front-util&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;cssruleli&#9;null&#9;null&#10;ant-ms&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;testglo&#9;null&#9;null&#10;filestab&#9;null&#9;null&#10;effe&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Effects.kt&#10;beginwork&#9;null&#9;null&#10;killtest&#9;null&#9;null&#10;showbanner&#9;null&#9;null&#10;verticalposi&#9;null&#9;null&#10;butto&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Buttonius.kt&#10;burger&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/BurgerDropdownButton.kt&#10;menuitem&#9;null&#9;null&#10;TRO&#9;null&#9;null&#10;testglob&#9;null&#9;null&#10;testop&#9;null&#9;null&#10;jsobje&#9;null&#9;null&#10;async&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/async.kt&#10;testac&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/TestUserActionAnimation.kt&#10;showbann&#9;null&#9;null&#10;getorset&#9;null&#9;null&#10;animase&#9;null&#9;null&#10;namesof&#9;null&#9;null&#10;delegates&#9;null&#9;null&#10;delegate&#9;FILE&#9;jar://E:/work/into-kommon/lib/kotlin/1.1-m04/kotlin-jslib.jar!/kotlin/kotlin/properties/Delegates.kjsm&#10;volati&#9;null&#9;null&#10;test-utils&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/test-utils.kt&#10;test-u&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/test-utils-2.kt&#10;istest&#9;null&#9;null&#10;buttonius&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Buttonius.kt&#10;isintest&#9;null&#9;null&#10;button&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Buttonius.kt&#10;animatese&#9;null&#9;null&#10;Testglo&#9;null&#9;null&#10;testglobal&#9;null&#9;null&#10;formmat&#9;null&#9;null&#10;assertscreen&#9;null&#9;null&#10;signa&#9;null&#9;null&#10;resol&#9;null&#9;null&#10;promise&#9;null&#9;null&#10;front-ut&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;effec&#9;null&#9;null&#10;kiccli&#9;null&#9;null&#10;testanim&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/TestUserActionAnimation.kt&#10;TROp&#9;null&#9;null&#10;runtest&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="filestab&#9;null&#9;null&#10;freeze&#9;null&#9;null&#10;visual-cap&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/visual-capture.kt&#10;animationse&#9;PSI&#9;JAVA://com.sun.scenario.animation.AnimationPulseMBean#getAnimationMaxIn1Sec&#10;requestpause&#9;null&#9;null&#10;front-util&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;cssruleli&#9;null&#9;null&#10;ant-ms&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;testglo&#9;null&#9;null&#10;effe&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Effects.kt&#10;beginwork&#9;null&#9;null&#10;killtest&#9;null&#9;null&#10;showbanner&#9;null&#9;null&#10;verticalposi&#9;null&#9;null&#10;butto&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Buttonius.kt&#10;burger&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/BurgerDropdownButton.kt&#10;menuitem&#9;null&#9;null&#10;TRO&#9;null&#9;null&#10;testglob&#9;null&#9;null&#10;testop&#9;null&#9;null&#10;jsobje&#9;null&#9;null&#10;async&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/async.kt&#10;testac&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/TestUserActionAnimation.kt&#10;showbann&#9;null&#9;null&#10;getorset&#9;null&#9;null&#10;animase&#9;null&#9;null&#10;namesof&#9;null&#9;null&#10;delegates&#9;null&#9;null&#10;delegate&#9;FILE&#9;jar://E:/work/into-kommon/lib/kotlin/1.1-m04/kotlin-jslib.jar!/kotlin/kotlin/properties/Delegates.kjsm&#10;volati&#9;null&#9;null&#10;test-utils&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/test-utils.kt&#10;test-u&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/test-utils-2.kt&#10;istest&#9;null&#9;null&#10;buttonius&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Buttonius.kt&#10;isintest&#9;null&#9;null&#10;button&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Buttonius.kt&#10;animatese&#9;null&#9;null&#10;Testglo&#9;null&#9;null&#10;testglobal&#9;null&#9;null&#10;formmat&#9;null&#9;null&#10;assertscreen&#9;null&#9;null&#10;signa&#9;null&#9;null&#10;resol&#9;null&#9;null&#10;promise&#9;null&#9;null&#10;front-ut&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;effec&#9;null&#9;null&#10;kiccli&#9;null&#9;null&#10;testanim&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/TestUserActionAnimation.kt&#10;TROp&#9;null&#9;null&#10;runtest&#9;null&#9;null" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
   </component>
   <component name="Push.Settings">
@@ -1132,13 +1125,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00190" summary="vovagrechka/aps#32">
-      <created>1482838580645</created>
-      <option name="number" value="00190" />
-      <option name="presentableId" value="LOCAL-00190" />
-      <option name="project" value="LOCAL" />
-      <updated>1482838580645</updated>
-    </task>
     <task id="LOCAL-00191" summary="vovagrechka/aps#32">
       <created>1482842648405</created>
       <option name="number" value="00191" />
@@ -1475,7 +1461,14 @@
       <option name="project" value="LOCAL" />
       <updated>1484036030417</updated>
     </task>
-    <option name="localTasksCounter" value="239" />
+    <task id="LOCAL-00239" summary="Fucking around with automated visual testing">
+      <created>1484044625234</created>
+      <option name="number" value="00239" />
+      <option name="presentableId" value="LOCAL-00239" />
+      <option name="project" value="LOCAL" />
+      <updated>1484044625235</updated>
+    </task>
+    <option name="localTasksCounter" value="240" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2064,16 +2057,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files_Edit.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="79" column="12" lean-forward="false" selection-start-line="79" selection-start-column="12" selection-end-line="79" selection-end-column="12" />
-          <folding>
-            <element signature="e#19#60#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
@@ -2108,14 +2091,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="429" column="41" lean-forward="false" selection-start-line="429" selection-start-column="41" selection-end-line="429" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/visual-capture.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="624">
@@ -2126,11 +2101,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="392" column="0" lean-forward="false" selection-start-line="392" selection-start-column="0" selection-end-line="392" selection-end-column="0" />
+        <state relative-caret-position="282">
+          <caret line="240" column="4" lean-forward="false" selection-start-line="240" selection-start-column="4" selection-end-line="240" selection-end-column="4" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#122#490#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="434" column="44" lean-forward="false" selection-start-line="434" selection-start-column="44" selection-end-line="434" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files_Edit.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="83" column="12" lean-forward="false" selection-start-line="83" selection-start-column="12" selection-end-line="83" selection-end-column="12" />
+          <folding>
+            <element signature="e#19#60#0" expanded="true" />
           </folding>
         </state>
       </provider>

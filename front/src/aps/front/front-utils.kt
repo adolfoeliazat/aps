@@ -238,7 +238,7 @@ fun encodeURIComponent(s: String): String = global.encodeURIComponent(s)
 fun arraysEquals(a: Array<*>, b: Array<*>): Boolean =
     a.asList() == b.asList()
 
-fun scrollBodyToShitGradually(dy: Int = 0, bursts: Int = 8, getShit: () -> JQuery): Promise<Unit> = async {
+fun scrollBodyToShitGradually(dy: Int = -10, bursts: Int = 8, getShit: () -> JQuery): Promise<Unit> = async {
     await(tillAnimationFrame())
     val shit = getShit()
 

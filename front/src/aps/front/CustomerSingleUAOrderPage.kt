@@ -237,13 +237,13 @@ class CustomerSingleUAOrderPage(val world: World) {
             }
         }
 
-        private fun renderItems(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean, chunkIndex: Int): ToReactElementable {
+        private fun renderItems(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean, chunkIndex: Int, containerID: String? = null): ToReactElementable {
             if (meat.items.isEmpty()) {
                 return if (noItemsMessage) span(const.msg.noItems)
                 else NOTRE
             }
 
-            return kdiv{o->
+            return kdiv(id = containerID){o->
                 for ((fileIndex, _orderFile) in meat.items.withIndex()) {
                     object {
                         val holder = Placeholder()
@@ -339,7 +339,7 @@ class CustomerSingleUAOrderPage(val world: World) {
                                 UserKind.ADMIN -> imf()
                             })
 
-                            await(scrollBodyToShitGradually(dy = -10){byid(topShitID)})
+                            await(scrollBodyToShitGradually{byid(topShitID)})
                         }
 
                         fun enterVanishedMode() {
@@ -432,7 +432,15 @@ class CustomerSingleUAOrderPage(val world: World) {
                                     val res = await(requestChunk(meat.moreFromID))
                                     exhaustive / when (res) {
                                         is ZimbabweResponse.Shitty -> openErrorModal(res.error)
-                                        is ZimbabweResponse.Hunky -> placeholder.setContent(renderItems(res.meat, noItemsMessage = false, chunkIndex = chunksLoaded - 1))
+                                        is ZimbabweResponse.Hunky -> {
+                                            val newChunkContainerID = puid()
+                                            placeholder.setContent(
+                                                renderItems(res.meat,
+                                                            noItemsMessage = false,
+                                                            chunkIndex = chunksLoaded - 1,
+                                                            containerID = containerID))
+                                            await(scrollBodyToShitGradually{byid(newChunkContainerID)})
+                                        }
                                     }
                                 } catch (e: Throwable) {
                                     openErrorModal(const.msg.serviceFuckedUp)
