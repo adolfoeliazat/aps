@@ -14,7 +14,7 @@ import org.apache.lucene.analysis.ru.RussianAnalyzer
 import org.jooq.*
 import kotlin.reflect.KClass
 
-@RemoteProcedureFactory fun customerGetUAOrderFiles() = customerProcedure(
+@RemoteProcedureFactory fun serveCustomerGetUAOrderFiles() = customerProcedure(
     ItemsRequest(CustomerFileFilter.values()),
     runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
         val ss = req.searchString.value
@@ -22,6 +22,14 @@ import kotlin.reflect.KClass
             .split(Regex("\\s+"))
             .filter {it.contains(Regex("[a-zA-Zа-яА-Я0-9]"))}
             .map {it.replace(Regex("[^a-zA-Zа-яА-Я0-9]"), "")}
+
+        val areaID = Tables.UA_ORDER_AREAS.let {t->
+            ctx.q("Select area")
+                .selectFrom(t)
+                .where(t.UA_ORDER_ID.eq(req.entityID.value!!.toLong()))
+                .and(t.NAME.eq(userKindToAreaName(ctx.user.kind)))
+                .fetchOne().id
+        }
 
         val chunk = selectChunk(
             ctx.q,
@@ -37,6 +45,7 @@ import kotlin.reflect.KClass
             },
             appendToWhere = {qb->
                 qb.text("and ${Tables.FILES.name}.${Tables.FILES.ID.name} = ${Tables.UA_ORDER_FILES.name}.${Tables.UA_ORDER_FILES.FILE_ID.name}")
+                qb.text("and ${Tables.UA_ORDER_FILES.name}.${Tables.UA_ORDER_FILES.UA_ORDER_AREA_ID.name} = ").arg(areaID)
 
                 run { // Search string
                     if (searchWords.isNotEmpty()) {

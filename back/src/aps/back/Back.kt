@@ -60,7 +60,12 @@ fun reallyBoot() {
                                    .setScanners(MethodAnnotationsScanner()))
         val methods = refl.getMethodsAnnotatedWith(RemoteProcedureFactory::class.java)
         debugLog.section("Remote procedure factories:", methods.map {it.name}.joinToString())
-        for (m in methods) remoteProcedureNameToFactory[m.name] = m
+        for (m in methods) {
+            val procName =
+                if (m.name.startsWith("serve")) m.name.substring("serve".length).decapitalize()
+                else m.name
+            remoteProcedureNameToFactory[procName] = m
+        }
     }
 
     val port = (System.getenv("PORT") ?: "8080").toInt()

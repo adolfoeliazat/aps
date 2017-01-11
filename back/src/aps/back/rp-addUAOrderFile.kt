@@ -12,21 +12,21 @@ import aps.back.generated.jooq.enums.*
 import com.google.common.hash.Hashing
 import java.util.*
 
-@RemoteProcedureFactory fun customerAddUAOrderFile() = customerProcedure(
+@RemoteProcedureFactory fun serveCustomerAddUAOrderFile() = customerProcedure(
     CustomerAddUAOrderFileRequest(),
     runShit = fun(ctx, req): AddUAOrderFileRequestBase.Response {
-        return runShit(UserKind.CUSTOMER, ctx, req)
+        return serveAddUAOrderFile(UserKind.CUSTOMER, ctx, req)
     }
 )
 
-@RemoteProcedureFactory fun writerAddUAOrderFile() = writerProcedure(
+@RemoteProcedureFactory fun serveWriterAddUAOrderFile() = writerProcedure(
     WriterAddUAOrderFileRequest(),
     runShit = fun(ctx, req): AddUAOrderFileRequestBase.Response {
-        return runShit(UserKind.WRITER, ctx, req)
+        return serveAddUAOrderFile(UserKind.WRITER, ctx, req)
     }
 )
 
-private fun runShit(callingUserKind: UserKind, ctx: ProcedureContext, req: AddUAOrderFileRequestBase): AddUAOrderFileRequestBase.Response {
+private fun serveAddUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContext, req: AddUAOrderFileRequestBase): AddUAOrderFileRequestBase.Response {
     val content = Base64.getDecoder().decode(req.file.base64)
     val fileID = FILES.let {
         ctx.insertShit("Insert file", it)
@@ -45,11 +45,7 @@ private fun runShit(callingUserKind: UserKind, ctx: ProcedureContext, req: AddUA
         ctx.q("Select area")
             .select().from(it)
             .where(it.NAME.eq(
-                when (ctx.user.kind) {
-                    UserKind.CUSTOMER -> const.orderArea.customer
-                    UserKind.WRITER -> const.orderArea.writer
-                    UserKind.ADMIN -> const.orderArea.admin
-                }))
+                userKindToAreaName(ctx.user.kind)))
             .fetchOne().getValue(it.ID)
     }
 
@@ -64,15 +60,11 @@ private fun runShit(callingUserKind: UserKind, ctx: ProcedureContext, req: AddUA
             .returnID(it)
     }
 
-    FILE_USER_PERMISSIONS.let {
-        ctx.insertShit("Insert file permission", it)
-            .set(it.FILE_ID, fileID)
-            .set(it.USER_ID, ctx.user.id.toLong())
-            .execute()
-    }
+    insertFileUserPermission(ctx, fileID, ctx.user.id.toLong())
 
     return AddUAOrderFileRequestBase.Response(orderFileID.toString())
 }
+
 
 
 

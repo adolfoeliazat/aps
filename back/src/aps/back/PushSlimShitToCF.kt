@@ -59,8 +59,8 @@ object PushSlimShitToCF {
             }
         }
 
-        val exitCode = runProcessAndWait(listOf("cf", "restart", "apsback"))
-        if (exitCode != 0) bitch("Shitty exit code from cf restart: $exitCode")
+        val res = runProcessAndWait(listOf("cf", "restart", "apsback"))
+        if (res.exitValue != 0) bitch("Shitty exit code from cf restart: ${res.exitValue}")
 
         eprintln("\n\nLive version: " + URL("http://$APS_CLOUD_BACK_HOST/version").readText())
         eprintln("COOL")

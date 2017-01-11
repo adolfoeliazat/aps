@@ -2,6 +2,7 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.enums.*
+import aps.back.generated.jooq.tables.JQFileUserPermissions.*
 import aps.back.generated.jooq.tables.JQFiles.*
 import aps.back.generated.jooq.tables.JQUserRoles.*
 import aps.back.generated.jooq.tables.JQUsers.*
@@ -173,7 +174,22 @@ fun JQUaOrderFiles.toRTO(q: DSLContextProxyFactory, searchWords: List<String> = 
     )
 }
 
+fun insertFileUserPermission(ctx: ProcedureContext, fileID: Long, userID: Long) {
+    FILE_USER_PERMISSIONS.let {
+        ctx.insertShit("Insert file permission", it)
+            .set(it.FILE_ID, fileID)
+            .set(it.USER_ID, userID)
+            .execute()
+    }
+}
 
+fun userKindToAreaName(userKind: UserKind): String {
+    return when (userKind) {
+        UserKind.CUSTOMER -> const.orderArea.customer
+        UserKind.WRITER -> const.orderArea.writer
+        UserKind.ADMIN -> const.orderArea.admin
+    }
+}
 
 
 

@@ -209,9 +209,10 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
                                     "1rem solid $ORANGE_300"
                             ),
                             onClick = {
-                                val scroller = byid0(mode.scrollerID)!!
-                                mode.scrollLeft = scroller.scrollLeft
-                                mode.scrollTop = scroller.scrollTop
+                                byid0(mode.scrollerID)?.let {
+                                    mode.scrollLeft = it.scrollLeft
+                                    mode.scrollTop = it.scrollTop
+                                }
 
                                 mode = this
                                 ctrl.update()

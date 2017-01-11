@@ -128,13 +128,17 @@ fun serveDiffCapturedVisualShitWithSavedRequest(req: DiffCapturedVisualShitWithS
 
     val diff = File("${bconst.visualCaptureDir}/diff.png")
     if (diff.exists()) diff.delete() // Due to some bug in Magick, return code is 1, even if OK, so we just check if file appears
-    runProcessAndWait(listOf(
+    val res = runProcessAndWait(listOf(
         bconst.magick,
         "compare",
         imageFile(req.id).absolutePath,
         current.absolutePath,
         diff.absolutePath))
-    if (!diff.exists()) bitch("Magick said us fuck you")
+    if (!diff.exists()) {
+        dlog("Magick stdout:\n${res.stdout}")
+        dlog("Magick stderr:\n${res.stderr}")
+        bitch("Magick said us fuck you")
+    }
 
     return DiffCapturedVisualShitWithSavedRequest.Response(
         Base64.getEncoder().encodeToString(
