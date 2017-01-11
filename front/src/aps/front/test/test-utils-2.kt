@@ -409,40 +409,6 @@ fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String)
     }}
 }
 
-fun TestScenarioBuilder.setUpOrderAndFiles1(shit: TestShit) {
-    val o = this
-    o.setUpOrderFilesTestTemplate_1(
-        shit,
-        setUpUsers = {
-            o.setUpBobul(shit)
-        },
-        setUpOrders = {
-            o.setUpBobulOrder(shit, {oid->
-                setUpFilesByBobul_1(shit, oid)
-            })
-        },
-        assertScreen = {o.todo("setUpOrderFiles1 assertScreen")})
-}
-
-fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(shit: TestShit, setUpUsers: () -> Unit, setUpOrders: () -> Unit, assertScreen: () -> Unit) {
-    val o = this
-    setUpUsers()
-    setUpOrders()
-    o.initFuckingBrowser(fillStorageLocal = {
-        it.token = shit.bobulToken
-    })
-    o.kindaNavigateToStaticContent("${testconst.url.customer}/order.html?id=100000&tab=files")
-    o.assertCustomerBreatheScreen()
-
-    o.acta {
-        async {
-            val world = World("boobs")
-            await(world.boot())
-        }
-    }
-
-    assertScreen()
-}
 
 fun TestScenarioBuilder.todo(msg: String) {
     TestGlobal.hasScenarioTODOs = true

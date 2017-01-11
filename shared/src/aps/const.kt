@@ -49,6 +49,7 @@ object const {
     object urlq {
         object test {
             val test = "test"
+            val testSuite = "testSuite"
             val stopOnAssertions = "stopOnAssertions"
             val dontStopOnCorrectAssertions  = "dontStopOnCorrectAssertions"
             val animateUserActions = "animateUserActions"

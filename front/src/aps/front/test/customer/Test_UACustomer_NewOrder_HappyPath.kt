@@ -4,7 +4,7 @@ import aps.*
 import aps.front.testutils.*
 import into.kommon.*
 
-class TestUACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
+class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
     val shit = TestShit()
 
     override fun buildSteps() {

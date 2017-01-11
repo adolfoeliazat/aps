@@ -206,6 +206,31 @@ object css {
             }
         }
 
+        object pane : Group(this) {
+            object testList : Group(this) {
+                val pane by Style("""
+                    background-color: $BROWN_500;
+                    color: $WHITE;
+                    margin-top: 1rem;
+                    padding: 10px 10px;
+                    text-align: center;
+                    font-weight: bold;""")
+
+                val content by Style("""
+                    background-color: $WHITE;
+                    color: $BLACK_BOOT;
+                    font-weight: normal;
+                    text-align: left;
+                    padding: 0.5rem; """)
+
+                val separator by Style("""
+                    margin-top: 0.5rem;
+                    padding-top: 0.5rem;
+                    border-top: 1px dashed $GRAY_600;""")
+            }
+
+        }
+
         val assertionErrorPane by Style("""
         """)
 

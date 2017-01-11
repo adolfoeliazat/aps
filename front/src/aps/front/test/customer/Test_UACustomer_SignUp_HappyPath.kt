@@ -2,7 +2,7 @@ package aps.front
 
 import aps.front.testutils.*
 
-class TestCustomer_SignUp_HappyPath : StepBasedTestScenario() {
+class Test_UACustomer_SignUp_HappyPath : StepBasedTestScenario() {
     override fun buildSteps() {
         o.initFuckingBrowser()
         o.kindaNavigateToStaticContent(testconst.url.customer)

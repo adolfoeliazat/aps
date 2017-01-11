@@ -46,6 +46,7 @@ object TestGlobal {
         }
 
     val lastTestHref get() = lastTestHrefMaybe!!
+    var lastTestSuite: TestSuite? = null
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

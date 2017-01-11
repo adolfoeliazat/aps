@@ -58,13 +58,22 @@ private object DebugShitToIgnite {
 
 @Suppress("Unused")
 fun runLastTest() {
-    val url = Globus.realTypedStorageLocal.lastTestURL!!
-    window.location.href = url
+    window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
+}
+
+@Suppress("Unused")
+fun runLastTestSuite() {
+    window.location.href = Globus.realTypedStorageLocal.lastTestSuiteURL!!
 }
 
 @Suppress("Unused")
 fun showLastTestURL() {
-    console.log(Globus.realTypedStorageLocal.lastTestURL!!)
+    console.dir(Globus.realTypedStorageLocal.lastTestURL!!)
+}
+
+@Suppress("Unused")
+fun showLastTestSuiteURL() {
+    console.dir(Globus.realTypedStorageLocal.lastTestSuiteURL!!)
 }
 
 private fun tillBodyHTMLContains(needle: String): Promise<Unit> = async {

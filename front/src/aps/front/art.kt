@@ -1205,18 +1205,14 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 }
 
 fun openTestListPane() {
-    debugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv{o->
-        o- Style(backgroundColor = BROWN_500, color = WHITE,
-                 marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
+    val defaultOpts = TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)
 
+    debugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(className = css.test.pane.testList.pane){o->
         o- kdiv(paddingBottom = 10){o->
             o- "Tests"
         }
 
-        o- kdiv{o->
-            o- Style(backgroundColor = WHITE, color = BLACK_BOOT,
-                     fontWeight = "normal", textAlign = "left", padding = 5)
-
+        o- kdiv(className = css.test.pane.testList.content){o->
             fun testLink(testName: String, opts: TestOptions, title: String) = link(
                 title = title,
                 onClick = {
@@ -1229,7 +1225,7 @@ fun openTestListPane() {
                 val descr = TestOptionsTemplates.all.find {it.opts == opts}?.title ?: opts.toString()
                 o- testLink(lastName, opts, title = "$lastName: $descr")
             }
-            o- kdiv(marginTop = "0.5rem", paddingTop = "0.5rem", borderTop = "1px dashed $GRAY_600")
+            o- kdiv(className = css.test.pane.testList.separator)
 
             for (opts in TestOptionsTemplates.all.filter {it.opts != TestGlobal.lastTestOpts}) {
                 o- kdiv {o->
@@ -1237,17 +1233,23 @@ fun openTestListPane() {
                 }
             }
 
-            o- kdiv(marginTop = "1em"){o->
+            fun renderSuite(suite: TestSuite) = kdiv(marginTop = "1em"){o->
                 o- kdiv(fontWeight = "bold"){o->
-                    o- "TestSuite_Customer_Shebang:"
+                    val testSuiteName = suite::class.simpleName!!
+                    o- link(title = testSuiteName, color = BLACK_BOOT, onClick = {
+                        window.location.href = testSuiteNameToURL(testSuiteName, defaultOpts)
+                    })
                 }
-                for (x in TestSuite_Customer_Shebang().scenarios) {
+                for (x in suite.scenarios) {
                     o- kspan(marginRight = "1em"){o->
-                        o- testLink(x.name, TestOptions(), title = x.name)
+                        o- testLink(x.name, defaultOpts, title = x.name)
                     }
                     o- " "
                 }
             }
+
+            o- renderSuite(TestSuite_UACustomer_Order_Files())
+            o- renderSuite(TestSuite_UACustomer_Shebang())
         }
     })
 }

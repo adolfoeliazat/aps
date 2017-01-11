@@ -61,6 +61,7 @@ class TypedStorageLocal(val store: StorageLocal) {
     var dontScrollOnTestPassed by BooleanValue()
     var DebugWordMentionFinderPage_inputText by StringValue()
     var lastTestURL by StringValue()
+    var lastTestSuiteURL by StringValue()
     var oneOffTestOptionsTemplateTitle by StringValue()
 
     inner class StringValue {

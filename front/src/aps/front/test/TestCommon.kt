@@ -59,7 +59,7 @@ abstract class TestScenario {
 
 interface TestSuite {
     val scenarios: List<TestScenario>
-    val shortDescription: String
+    val shortDescription: String?
 }
 
 val testScenarios = mutableMapOf<String, TestScenario>()
@@ -127,6 +127,8 @@ fun jsFacing_igniteTestShit() = async<Unit> {
 
 private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String, String>): Promise<Unit> {"__async"
     val suite: TestSuite = instantiate(testSuiteName)
+    TestGlobal.lastTestSuite = suite
+    Globus.realTypedStorageLocal.lastTestSuiteURL = window.location.href
     for (scenario in suite.scenarios) {
         clog("=====", "Running scenario", ctorName(scenario), "=====")
         val res = __await(runTest(scenario, urlQuery, showTestPassedPane = false))
@@ -138,7 +140,7 @@ private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String,
     }
 
     openShitPassedPane(
-        title = "$testSuiteName. ${suite.shortDescription}",
+        title = testSuiteName + suite.shortDescription.letOrEmpty {". $it"},
         details = kdiv{o->
             o- "Following motherfuckers have executed and kind of passed:"
             o- kol{o->
@@ -259,15 +261,23 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
 }
 
 fun testNameToURL(testName: String, opts: TestOptions): String {
+    return testSomethingToURL(testName, const.urlq.test.test, opts)
+}
+
+fun testSuiteNameToURL(testSuiteName: String, opts: TestOptions): String {
+    return testSomethingToURL(testSuiteName, const.urlq.test.testSuite, opts)
+}
+
+private fun testSomethingToURL(name: String, nameParam: String, opts: TestOptions): String {
     val hostPort = when {
-        testName.contains("Writer") -> "aps-ua-writer.local:3022"
-        testName.contains("Customer") -> "aps-ua-customer.local:3012"
-        else -> bitch("Cannot figure out test URL hostPort for [$testName]")
+        name.contains("Writer") -> "aps-ua-writer.local:3022"
+        name.contains("Customer") -> "aps-ua-customer.local:3012"
+        else -> bitch("Cannot figure out test URL hostPort for [$name]")
     }
 
     return buildString {
         append("http://$hostPort/faq.html")
-        append("?" + const.urlq.test.test + "=" + testName)
+        append("?$nameParam=$name")
         append("&" + opts.toURLQuery())
     }
 }
