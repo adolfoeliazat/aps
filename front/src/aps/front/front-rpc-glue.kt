@@ -18,7 +18,7 @@ fun send(token: String, req: LoadUAOrderRequest): Promise<ZimbabweResponse<LoadU
 fun sendCustomerGetUAOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> =
     callZimbabwe("customerGetUAOrderFiles", req, token)
 
-fun send(token: String?, req: SignUpRequest): Promise<FormResponse2<GenericResponse>> {"__async"
+fun send(token: String?, req: SignUpRequest): Promise<FormResponse2<SignUpRequest.Response>> {"__async"
     return __asyncResult(__await(_send(token, req)))
 }
 
@@ -75,6 +75,9 @@ fun send(req: ReturnMouseWhereItWasRequest): Promise<ReturnMouseWhereItWasReques
 
 fun send(req: HardenScreenHTMLRequest): Promise<HardenScreenHTMLRequest.Response> =
     sendDangerousJSONProcedure(req)
+
+fun send(token: String, req: TestCopyOrderFileToAreaRequest): Promise<FormResponse2<TestCopyOrderFileToAreaRequest.Response>> =
+    _send(token, req)
 
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {

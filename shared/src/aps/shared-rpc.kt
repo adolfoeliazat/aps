@@ -57,6 +57,14 @@ class HardenScreenHTMLRequest {
     var html by notNull<String>()
 }
 
+class TestCopyOrderFileToAreaRequest: RequestMatumba() {
+    class Response(val orderFileID: String) : CommonResponseFieldsImpl()
+    val orderFileID = StringHiddenField(this, "orderFileID")
+    val areaName = StringHiddenField(this, "areaName")
+    val permissionForUserID = StringHiddenField(this, "permissionForUserID")
+}
+
+
 class JsonProcedureRequest : RequestMatumba() {
     class Response(val json: String): CommonResponseFieldsImpl()
     val json = StringHiddenField(this, "json")

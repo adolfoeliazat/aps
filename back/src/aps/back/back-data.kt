@@ -4,9 +4,12 @@ import aps.*
 import aps.back.generated.jooq.enums.*
 import aps.back.generated.jooq.tables.JQFileUserPermissions.*
 import aps.back.generated.jooq.tables.JQFiles.*
+import aps.back.generated.jooq.tables.JQUaOrderAreas.*
+import aps.back.generated.jooq.tables.JQUaOrderFiles.*
 import aps.back.generated.jooq.tables.JQUserRoles.*
 import aps.back.generated.jooq.tables.JQUsers.*
 import aps.back.generated.jooq.tables.pojos.*
+import aps.back.generated.jooq.tables.records.*
 import into.kommon.*
 import org.jooq.*
 import java.sql.Timestamp
@@ -166,7 +169,16 @@ fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
     )
 }
 
+fun JQUaOrderFilesRecord.toRTO(q: DSLContextProxyFactory, searchWords: List<String> = listOf()): UAOrderFileRTO {
+    return UAOrderFileRTO(
+        id = this.id.toString(),
+        file = loadFile(q, this.fileId, searchWords, Language.UA),
+        seenAsFrom = this.seenAsFrom.toApp()
+    )
+}
+
 fun JQUaOrderFiles.toRTO(q: DSLContextProxyFactory, searchWords: List<String> = listOf()): UAOrderFileRTO {
+    // TODO:vgrechka @kill
     return UAOrderFileRTO(
         id = this.id.toString(),
         file = loadFile(q, this.fileId, searchWords, Language.UA),
@@ -191,6 +203,22 @@ fun userKindToAreaName(userKind: UserKind): String {
     }
 }
 
+fun selectUAOrderFile(ctx: ProcedureContext, orderFileID: Long): JQUaOrderFilesRecord {
+    return ctx.q("Select updated order file")
+        .selectFrom(UA_ORDER_FILES)
+        .where(UA_ORDER_FILES.ID.eq(orderFileID))
+        .fetchOne()!!
+}
+
+fun selectUAOrderAreaByName(ctx: ProcedureContext, orderID: Long, name: String): JQUaOrderAreasRecord {
+    return UA_ORDER_AREAS.let {
+        ctx.q("Select area")
+            .selectFrom(it)
+            .where(it.NAME.eq(name))
+            .and(it.UA_ORDER_ID.eq(orderID))
+            .fetchOne()!!
+    }
+}
 
 
 

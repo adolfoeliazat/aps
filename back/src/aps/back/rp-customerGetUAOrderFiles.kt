@@ -34,7 +34,7 @@ import kotlin.reflect.KClass
         val chunk = selectChunk(
             ctx.q,
             table = Tables.UA_ORDER_FILES.name,
-            pojoClass = JQUaOrderFiles::class,
+            pojoClass = JQUaOrderFiles::class, // TODO:vgrechka Use record instead of POJO
             loadItem = {orderFile, q ->
                 orderFile.toRTO(q, searchWords)
             },

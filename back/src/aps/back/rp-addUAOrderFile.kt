@@ -9,6 +9,7 @@ package aps.back
 import aps.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.enums.*
+import aps.back.generated.jooq.tables.records.*
 import com.google.common.hash.Hashing
 import java.util.*
 
@@ -41,19 +42,15 @@ private fun serveAddUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContext
             .returnID(it)
     }
 
-    val areaID = UA_ORDER_AREAS.let {
-        ctx.q("Select area")
-            .select().from(it)
-            .where(it.NAME.eq(
-                userKindToAreaName(ctx.user.kind)))
-            .fetchOne().getValue(it.ID)
-    }
+    val orderID = req.orderID.value.toLong()
+
+    val areaID = selectUAOrderAreaByName(ctx, orderID, userKindToAreaName(ctx.user.kind)).id
 
     val seenAsFrom = callingUserKind.toJOOQ()
 
     val orderFileID = UA_ORDER_FILES.let {
         ctx.insertShit("Insert order file", it)
-            .set(it.UA_ORDER_ID, req.orderID.value.toLong())
+            .set(it.UA_ORDER_ID, orderID)
             .set(it.FILE_ID, fileID)
             .set(it.UA_ORDER_AREA_ID, areaID)
             .set(it.SEEN_AS_FROM, seenAsFrom)

@@ -17,9 +17,9 @@ import java.sql.SQLException
 import java.util.*
 
 @RemoteProcedureFactory
-fun signUp() = publicProcedure(
+fun serveSignUp() = publicProcedure(
     SignUpRequest(),
-    runShit = fun(ctx, req): GenericResponse {
+    runShit = fun(ctx, req): SignUpRequest.Response {
         try {
             val firstName = req.mutableSignUpFields.firstName.value
             val lastName = req.mutableSignUpFields.lastName.value
@@ -29,7 +29,7 @@ fun signUp() = publicProcedure(
                 it
             } ?: "" + UUID.randomUUID()
 
-            USERS.let {
+            val userID = USERS.let {
                 ctx.insertShit("Insert user", it)
                     .set(it.INSERTED_AT, ctx.requestTimestamp)
                     .set(it.UPDATED_AT, ctx.requestTimestamp)
@@ -47,7 +47,7 @@ fun signUp() = publicProcedure(
                     .set(it.FIRST_NAME, firstName)
                     .set(it.LAST_NAME, lastName)
                     .set(it.ADMIN_NOTES, "")
-                    .execute()
+                    .returnID(it)
             }
 
             val signInURL = "${requestShit.commonRequestFields.clientURL}/sign-in.html"
@@ -76,7 +76,7 @@ fun signUp() = publicProcedure(
                     """
                 ))
             ))
-            return GenericResponse()
+            return SignUpRequest.Response(userID.toString())
         } catch (e: Throwable) {
             if (e is DataAccessException) {
                 val sqlState = e.sqlState()

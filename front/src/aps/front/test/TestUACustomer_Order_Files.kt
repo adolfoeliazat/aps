@@ -190,6 +190,7 @@ abstract class TestUACustomer_Order_Files_Base : StepBasedTestScenario() {
             setUpUsers = {
                 o.setUpBobul(shit)
                 o.setUpFedor(shit)
+                o.setUpDasja(shit)
             },
             setUpOrders = {
                 o.setUpBobulOrder(

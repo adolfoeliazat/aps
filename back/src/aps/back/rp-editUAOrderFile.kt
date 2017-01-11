@@ -58,10 +58,7 @@ private fun serveEditUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContex
             .execute()
     }
 
-    val updatedOrderFile = ctx.q("Select updated order file")
-        .selectFrom(UA_ORDER_FILES)
-        .where(UA_ORDER_FILES.ID.eq(orderFileID))
-        .fetchOne().into(JQUaOrderFiles::class.java).toRTO(ctx.q)
+    val updatedOrderFile = selectUAOrderFile(ctx, orderFileID).toRTO(ctx.q)
 
     return EditUAOrderFileRequestBase.Response(updatedOrderFile)
 }

@@ -8,6 +8,9 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.Tables.USERS
+import aps.back.generated.jooq.enums.*
+import aps.back.generated.jooq.tables.JQUaOrderFiles.*
+import aps.back.generated.jooq.tables.records.*
 import com.google.debugging.sourcemap.SourceMapConsumerFactory
 import com.google.debugging.sourcemap.SourceMapping
 import com.sun.jna.platform.win32.User32
@@ -16,6 +19,7 @@ import org.apache.lucene.analysis.ru.RussianAnalyzer
 import org.jooq.Record
 import org.jooq.UpdateSetMoreStep
 import org.jooq.UpdateSetStep
+import org.mindrot.jbcrypt.BCrypt
 import java.awt.MouseInfo
 import java.awt.Robot
 import java.awt.event.InputEvent
@@ -87,10 +91,28 @@ testProcedure(
     }
 )
 
-@RemoteProcedureFactory fun recreateTestDatabaseSchema() = testProcedure(
+@RemoteProcedureFactory fun serveRecreateTestDatabaseSchema() = testProcedure(
     RecreateTestDatabaseSchemaRequest(),
     runShit = fun(ctx, req): GenericResponse {
-        DB.apsTestOnTestServer.recreateSchema()
+        val db = DB.apsTestOnTestServer
+        db.recreateSchema()
+        db.joo {q->
+            USERS.let {
+                q("Insert Dasja")
+                    .insertInto(USERS)
+                    .set(it.INSERTED_AT, ctx.requestTimestamp)
+                    .set(it.UPDATED_AT, ctx.requestTimestamp)
+                    .set(it.EMAIL, "dasja@test.shit.ua")
+                    .set(it.KIND, JQUserKind.ADMIN)
+                    .set(it.LANG, ctx.lang.name)
+                    .set(it.STATE, UserState.COOL.name)
+                    .set(it.PASSWORD_HASH, BCrypt.hashpw("dasjasecret", BCrypt.gensalt()))
+                    .set(it.FIRST_NAME, "Дася")
+                    .set(it.LAST_NAME, "Админовна")
+                    .set(it.ADMIN_NOTES, "")
+                    .execute()
+            }
+        }
         return GenericResponse()
     }
 )
@@ -380,6 +402,27 @@ fun serveHardenScreenHTMLRequest(req: HardenScreenHTMLRequest) {
     file.writeText(req.html)
 }
 
+@RemoteProcedureFactory
+fun serveTestCopyOrderFileToArea() = adminProcedure(
+    TestCopyOrderFileToAreaRequest(),
+    runShit = fun(ctx, req): TestCopyOrderFileToAreaRequest.Response {
+        val protoOrderFile: JQUaOrderFilesRecord = selectUAOrderFile(ctx, req.orderFileID.value.toLong())
+        val area: JQUaOrderAreasRecord = selectUAOrderAreaByName(ctx, protoOrderFile.uaOrderId, req.areaName.value)
+
+        val orderFileID = UA_ORDER_FILES.let {
+            ctx.insertShit("Insert order file", it)
+                .set(it.UA_ORDER_ID, protoOrderFile.uaOrderId)
+                .set(it.FILE_ID, protoOrderFile.fileId)
+                .set(it.UA_ORDER_AREA_ID, area.id)
+                .set(it.SEEN_AS_FROM, protoOrderFile.seenAsFrom)
+                .returnID(it)
+        }
+
+        insertFileUserPermission(ctx, protoOrderFile.fileId, req.permissionForUserID.value.toLong())
+
+        return TestCopyOrderFileToAreaRequest.Response(orderFileID.toString())
+    }
+)
 
 
 
