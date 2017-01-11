@@ -130,179 +130,256 @@
           <div style="top: 0px; right: 0px; position: absolute;">
             <div style="display: flex;">
               <div style="margin-left: 0px;">
-                <button class="btn btn-primary ">
-                  <i class="fa fa-plus">
-                  </i>
-                </button>
+                <div style="position: relative;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="" style="resize: none; width: 100%; padding-left: 30px;">
+                    <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
+                    </i>
+                  </div>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control">
+                    <option value="ALL">
+                      Все
+                    </option>
+                    <option value="FROM_ME">
+                      Мои
+                    </option>
+                    <option value="FROM_WRITER">
+                      От писателя
+                    </option>
+                    <option value="FROM_SUPPORT">
+                      От саппорта
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control">
+                    <option value="ASC">
+                      Старые
+                    </option>
+                    <option value="DESC">
+                      Новые
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-primary ">
+                    <i class="fa fa-plus">
+                    </i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div style="margin-top: 5px;">
-          <div>
+          <div style="margin-top: 5px;">
             <div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-12">
-                  <div class="cunt-header">
-                    <i class="cunt-header-left-icon fa fa-file">
-                    </i>
-                    Процесс by Кафка
-                    <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                      №100002
-                    </span>
-                    <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
-                    </i>
-                    <i class="cunt-header-right-icon fa fa-pencil">
-                    </i>
-                  </div>
-                </div>
+              <div>
               </div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Создан
-                  </label>
-                  <div>
-                    02.12.2016 15:02:25 (Киев)
+              <div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Процесс by Кафка
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100002
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        24.12.2015 22:58:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          the trial.doc
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        993 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Это чисто на почитать...
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Имя файла
-                  </label>
-                  <div>
-                    the trial.doc
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Cool stuff
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100001
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        22.12.2015 08:45:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          crazy monster boobs.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
+                          - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
+                          - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Размер
-                  </label>
-                  <div>
-                    993 КБ
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          A warm word to my writer
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100000
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                        </i>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-12">
-                  <label style="margin-bottom: 0px;">
-                    Детали
-                  </label>
-                  <div style="white-space: pre-wrap;">
-                    Это чисто на почитать...
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        20.12.2015 04:14:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          fuck you.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        244 Б
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-12">
-                  <div class="cunt-header">
-                    <i class="cunt-header-left-icon fa fa-file">
-                    </i>
-                    Cool stuff
-                    <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                      №100001
-                    </span>
-                    <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
-                    </i>
-                    <i class="cunt-header-right-icon fa fa-pencil">
-                    </i>
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Создан
-                  </label>
-                  <div>
-                    02.12.2016 14:42:18 (Киев)
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Имя файла
-                  </label>
-                  <div>
-                    crazy monster boobs.rtf
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Размер
-                  </label>
-                  <div>
-                    2 КБ
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-12">
-                  <label style="margin-bottom: 0px;">
-                    Детали
-                  </label>
-                  <div style="white-space: pre-wrap;">
-                    - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
-                    - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
-                    - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-12">
-                  <div class="cunt-header">
-                    <i class="cunt-header-left-icon fa fa-file">
-                    </i>
-                    A warm word to my writer
-                    <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                      №100000
-                    </span>
-                    <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
-                    </i>
-                    <i class="cunt-header-right-icon fa fa-pencil">
-                    </i>
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Создан
-                  </label>
-                  <div>
-                    02.12.2016 14:31:15 (Киев)
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Имя файла
-                  </label>
-                  <div>
-                    fuck you.rtf
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <label style="margin-bottom: 0px;">
-                    Размер
-                  </label>
-                  <div>
-                    244 Б
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="margin-bottom: 0.5em;">
-                <div class="col-md-12">
-                  <label style="margin-bottom: 0px;">
-                    Детали
-                  </label>
-                  <div style="white-space: pre-wrap;">
-                    Я к вам пишу – чего же боле?
-                    Что я могу еще сказать?
-                    Теперь, я знаю, в вашей воле
-                    Меня презреньем наказать.
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Я к вам пишу – чего же боле?
+                          Что я могу еще сказать?
+                          Теперь, я знаю, в вашей воле
+                          Меня презреньем наказать.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -312,6 +389,5 @@
       </div>
     </div>
   </div>
-</div>
-<div id="modalContainer">
-</div>
+  <div id="modalContainer">
+  </div>

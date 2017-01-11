@@ -179,10 +179,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header">
-                        <i class="cunt-header-left-icon fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-left-overlay-bottom-left-icon fa fa-user">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
                           Cool stuff
@@ -193,9 +193,11 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-right-icon fa fa-cloud-download" style="top: 6px; right: 30px;">
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
                         </i>
-                        <i class="cunt-header-right-icon fa fa-pencil">
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
                         </i>
                       </div>
                     </div>
@@ -206,7 +208,7 @@
                         Создан
                       </label>
                       <div>
-                        02.12.2016 14:42:18 (Киев)
+                        22.12.2015 08:45:05 (Киев)
                       </div>
                     </div>
                     <div class="col-md-4">

@@ -14,6 +14,7 @@ import into.kommon.*
             VisualShitCapturedRequest::class.java -> serveVisualShitCapturedRequest(shittyObjectMapper.readValue(reqJSON, VisualShitCapturedRequest::class.java))
             SaveCapturedVisualShitRequest::class.java -> serveSaveCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, SaveCapturedVisualShitRequest::class.java))
             GetCapturedVisualShitRequest::class.java -> serveGetCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, GetCapturedVisualShitRequest::class.java))
+            CapturedVisualShitExistsRequest::class.java -> serveCapturedVisualShitExistsRequest(shittyObjectMapper.readValue(reqJSON, CapturedVisualShitExistsRequest::class.java))
             GetCurrentCapturedVisualShitRequest::class.java -> serveGetCurrentCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, GetCurrentCapturedVisualShitRequest::class.java))
             DiffCapturedVisualShitWithSavedRequest::class.java -> serveDiffCapturedVisualShitWithSavedRequest(shittyObjectMapper.readValue(reqJSON, DiffCapturedVisualShitWithSavedRequest::class.java))
             MoveMouseAwayFromPageRequest::class.java -> serveMoveMouseAwayFromPageRequest(shittyObjectMapper.readValue(reqJSON, MoveMouseAwayFromPageRequest::class.java))

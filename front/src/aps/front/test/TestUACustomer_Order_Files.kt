@@ -74,33 +74,39 @@ class Test_UACustomer_LongFileList : StepBasedTestScenario() {
                             o.title.value = "Some shitty document $i"
                             o.details.value = dedent("""
                                         This is shitty text $i.
-                                        Фрау Грубах, у которой вид был вовсе не виноватый, отперла
-                                        двери в  прихожей  перед  всей  компанией,  и  К.  по  привычке
-                                        взглянул  на завязки фартука, которые слишком глубоко врезались
-                                        в ее мощный стан. На улице К. поглядел на часы  и  решил  взять
+                                        Фрау Грубах, у которой вид был вовсе не виноватый, отперла двери в  прихожей  перед  всей  компанией,  и  К.  по  привычке
+                                        взглянул  на завязки фартука, которые слишком глубоко врезались в ее мощный стан. На улице К. поглядел на часы  и  решил  взять
                                         такси,  чтобы  не  затягивать еще больше получасовое опоздание.
                                     """)
                         }))
-                        await(fuckingRemoteCall.executeSQL("Add file permissions", """
-                                    insert into file_user_permissions(file_id, user_id) values(${100002 + i}, 100000)
-                                """))
+//                        await(fuckingRemoteCall.executeSQL("Add file permissions", """
+//                                    insert into file_user_permissions(file_id, user_id) values(${100002 + i}, 100000)
+//                                """))
                         mnt.add(23, "minutes").add(14, "seconds")
                     }
                 }})
             },
-            assertScreen = {o.todo("TestUACustomer_LongFileList assertScreen 1")}
+            assertScreen = {o.assertScreenHTML("1", "acbe3d9e-32cc-426a-bb6a-f03b6c9a4a55")}
         )
 
-        o.act {jqbody.scrollTop(1900)}
-        o.buttonClick("loadMore")
-        o.todo("TestUACustomer_LongFileList assertScreen 2")
+        o.acta {TestUserActionAnimation.scroll(1570)}
+        o.requestSequence(
+            buildAction = {o.buttonClick("loadMore")},
+            assertionDescr = "More stuff",
+            halfwayAssertionID = "84a08d13-314d-4a8e-87e7-e04d34c54462",
+            halfwayOpts = AssertScreenOpts(bannerVerticalPosition = VerticalPosition.TOP),
+            finalAssertionID = "57da20ff-c245-4780-92fb-a432dd5956f8"
+        )
 
-        o.act {jqbody.scrollTop(4224)}
-        o.buttonClick("loadMore")
-        o.todo("TestUACustomer_LongFileList assertScreen 3")
+        o.acta {TestUserActionAnimation.scroll(3620)}
+        o.requestSequence(
+            buildAction = {o.buttonClick("loadMore")},
+            assertionDescr = "Even more stuff",
+            halfwayAssertionID = "ae824d97-58ac-4ec1-8f05-ebdfe1907928",
+            halfwayOpts = AssertScreenOpts(bannerVerticalPosition = VerticalPosition.TOP),
+            finalAssertionID = "cdd171b3-bc05-481f-8bf0-15f6253b88a6"
+        )
 
-        o.act {jqbody.scrollTop(4624)}
-        o.todo("TestUACustomer_LongFileList assertScreen 4")
     }
 }
 
@@ -123,7 +129,7 @@ class Test_UACustomer_Order_Files_Search : StepBasedTestScenario() {
                         await(setUpFilesByBobul_2(shit, oid))
                     }})
             },
-            assertScreen = {o.assertScreenHTML_todo("1", "0f77828b-fe22-4606-8f97-0efecc6fefde")}
+            assertScreen = {o.assertScreenHTML("1", "0f77828b-fe22-4606-8f97-0efecc6fefde")}
         )
 
         o.inputSetValue("search", "мышкин")
@@ -241,6 +247,10 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
             halfwayAssertionID = "485b79d2-0cb5-48ce-937e-3843b1b71f89",
             finalAssertionID = "a34b038f-3578-411e-9aad-e8011755e0cb"
         )
+
+        o.expectPieceOfShitDownload(PieceOfShitDownload(100010, "fuck you.rtf", forbidden = false, sha1 = "c5c1b6c8b457f80f1aaee2ebc625edfcdd1212a6")) {
+            o.kicClick("download-100010")
+        }
     }
 }
 

@@ -15,18 +15,18 @@ import java.util.*
 @RemoteProcedureFactory fun customerEditUAOrderFile() = customerProcedure(
     CustomerEditUAOrderFileRequest(),
     runShit = fun(ctx, req): EditUAOrderFileRequestBase.Response {
-        return runShit(UserKind.CUSTOMER, ctx, req)
+        return serveEditUAOrderFileRequest(UserKind.CUSTOMER, ctx, req)
     }
 )
 
 @RemoteProcedureFactory fun writerEditUAOrderFile() = writerProcedure(
     WriterEditUAOrderFileRequest(),
     runShit = fun(ctx, req): EditUAOrderFileRequestBase.Response {
-        return runShit(UserKind.WRITER, ctx, req)
+        return serveEditUAOrderFileRequest(UserKind.WRITER, ctx, req)
     }
 )
 
-private fun runShit(callingUserKind: UserKind, ctx: ProcedureContext, req: EditUAOrderFileRequestBase): EditUAOrderFileRequestBase.Response {
+private fun serveEditUAOrderFileRequest(callingUserKind: UserKind, ctx: ProcedureContext, req: EditUAOrderFileRequestBase): EditUAOrderFileRequestBase.Response {
     val orderFileID = req.orderFileID.value.toLong()
 
     val orderFile = ctx.q("Select order file")

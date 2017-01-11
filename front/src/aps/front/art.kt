@@ -1205,7 +1205,8 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 }
 
 fun openTestListPane() {
-    val defaultOpts = TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)
+//    val defaultOpts = TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)
+    val defaultOpts = TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = true, handPauses = true)
 
     debugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(className = css.test.pane.testList.pane){o->
         o- kdiv(paddingBottom = 10){o->

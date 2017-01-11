@@ -131,7 +131,7 @@
             <div style="display: flex;">
               <div style="margin-left: 0px;">
                 <div style="position: relative;">
-                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="trial" style="resize: none; width: 100%; padding-left: 30px;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="" style="resize: none; width: 100%; padding-left: 30px;">
                     <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
                     </i>
                   </div>
@@ -185,11 +185,7 @@
                         <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
-                          A piece of...
-                          <span style="background-color: #ffe082;">
-                            Trial
-                          </span>
-                          4
+                          A piece of... Trial 4
                         </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100008
@@ -221,11 +217,7 @@
                       </label>
                       <div>
                         <span>
-                          piece of
-                          <span style="background-color: #ffe082;">
-                            trial
-                          </span>
-                          4.rtf
+                          piece of trial 4.rtf
                         </span>
                       </div>
                     </div>
@@ -260,11 +252,7 @@
                         <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
-                          A piece of...
-                          <span style="background-color: #ffe082;">
-                            Trial
-                          </span>
-                          3
+                          A piece of... Trial 3
                         </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100007
@@ -296,11 +284,7 @@
                       </label>
                       <div>
                         <span>
-                          piece of
-                          <span style="background-color: #ffe082;">
-                            trial
-                          </span>
-                          3.rtf
+                          piece of trial 3.rtf
                         </span>
                       </div>
                     </div>
@@ -335,11 +319,7 @@
                         <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
-                          A piece of...
-                          <span style="background-color: #ffe082;">
-                            Trial
-                          </span>
-                          2
+                          A piece of... Trial 2
                         </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100006
@@ -371,11 +351,7 @@
                       </label>
                       <div>
                         <span>
-                          piece of
-                          <span style="background-color: #ffe082;">
-                            trial
-                          </span>
-                          2.rtf
+                          piece of trial 2.rtf
                         </span>
                       </div>
                     </div>
@@ -411,11 +387,7 @@
                         <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
-                          A piece of...
-                          <span style="background-color: #ffe082;">
-                            Trial
-                          </span>
-                          1
+                          A piece of... Trial 1
                         </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100005
@@ -447,11 +419,7 @@
                       </label>
                       <div>
                         <span>
-                          piece of
-                          <span style="background-color: #ffe082;">
-                            trial
-                          </span>
-                          1.rtf
+                          piece of trial 1.rtf
                         </span>
                       </div>
                     </div>
@@ -472,6 +440,141 @@
                       <div style="white-space: pre-wrap;">
                         <p>
                           - Вы  глубоко заблуждаетесь, - сказал К. сердито, с трудом скрывая раздражение, - и  вообще  вы  неверно  истолковали  мои слова  про  барышню,  я  совсем  не  то хотел сказать. Искренне советую вам ничего ей не говорить. Вы глубоко заблуждаетесь,  я ее  знаю  очень  хорошо,  и  все,  что  вы  говорите, неправда!
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                        </i>
+                        <span>
+                          Crime and Punishment
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100004
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          От писателя
+                        </span>
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        28.12.2015 09:19:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          crime and punishment.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Действие романа начинается жарким июльским днём в Петербурге. Студент Родион Романович Раскольников, вынужденный уйти из университета из-за отсутствия денег, направляется в квартиру к процентщице Алёне Ивановне, чтобы сделать «пробу своему предприятию». В сознании героя в течение последнего месяца созревает идея убийства «гадкой старушонки»; одно-единственное преступление, по мнению Раскольникова, изменит его собственную жизнь и избавит сестру Дуню от необходимости выходить замуж за «благодетеля» Петра Петровича Лужина. Несмотря на проведённую «разведку», тщательно продуманный план ломается из-за внутренней паники Родиона Романовича (который после убийства процентщицы долго не может найти у неё ни денег, ни ценных закладов), а также внезапного возвращения домой сестры Алёны Ивановны. Тихая, безобидная, «поминутно беременная» Лизавета, оказавшаяся невольной свидетельницей преступления, становится второй жертвой студента.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                        </i>
+                        <span>
+                          The (Fucking) Idiot
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100003
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          От писателя
+                        </span>
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        27.12.2015 07:45:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          idiot.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          26-летний князь Лев Николаевич Мышкин возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком искренним и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
+                          В доме Епанчиных выясняется, что Настасья Филипповна там хорошо известна. Есть план выдать её за протеже генерала Епанчина Гаврилу Ардалионовича Иволгина, человека амбициозного, но посредственного. Князь Мышкин знакомится со всеми основными персонажами повествования. Это дочери Епанчиных — Александра, Аделаида и Аглая, на которых он производит благоприятное впечатление, оставаясь объектом их немного насмешливого внимания. Это генеральша Лизавета Прокофьевна Епанчина, которая находится в постоянном волнении из-за того, что её муж общается с Настасьей Филипповной, имеющей репутацию падшей. Это Ганя Иволгин, который очень страдает из-за предстоящей ему роли мужа Настасьи Филипповны, хотя ради денег готов на всё, и не может решиться на развитие своих пока очень слабых отношений с Аглаей. Князь Мышкин довольно простодушно рассказывает генеральше и сёстрам Епанчиным о том, что он узнал о Настасье Филипповне от Рогожина, а также поражает их своим повествованием о воспоминаниях и чувствах своего знакомого, который был приговорён к смертной казни, но в последний момент был помилован.
                         </p>
                       </div>
                     </div>
@@ -518,11 +621,7 @@
                       </label>
                       <div>
                         <span>
-                          the
-                          <span style="background-color: #ffe082;">
-                            trial
-                          </span>
-                          .doc
+                          the trial.doc
                         </span>
                       </div>
                     </div>
@@ -543,6 +642,145 @@
                       <div style="white-space: pre-wrap;">
                         <p>
                           Это чисто на почитать...
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Cool stuff
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100001
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        22.12.2015 08:45:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          crazy monster boobs.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
+                          - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
+                          - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          A warm word to my writer
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100000
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
+                        </i>
+                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        20.12.2015 04:14:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          fuck you.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        244 Б
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Я к вам пишу – чего же боле?
+                          Что я могу еще сказать?
+                          Теперь, я знаю, в вашей воле
+                          Меня презреньем наказать.
                         </p>
                       </div>
                     </div>

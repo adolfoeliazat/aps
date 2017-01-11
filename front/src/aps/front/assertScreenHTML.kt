@@ -115,6 +115,10 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
                             })
 
                             try {
+                                val captureExists = await(send(CapturedVisualShitExistsRequest()-{o->
+                                    o.id = assertionID
+                                })).exists
+
                                 await(showTestBanner(
                                     AssertionBannerKind.INCORRECT,
                                     renderSpecificButtons = {o->
@@ -125,9 +129,11 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
 //                                                byid("fuckingDiff").scrollBodyToShit()
                                             nextDiff().scrollBodyToShit(dy = -70)
                                         })
-                                        o- Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {async<Unit>{
-                                            openVisualDiff()
-                                        }})
+                                        if (captureExists) {
+                                            o- Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {async<Unit>{
+                                                openVisualDiff()
+                                            }})
+                                        }
                                         o- acceptButton()
                                     }))
                             } finally {

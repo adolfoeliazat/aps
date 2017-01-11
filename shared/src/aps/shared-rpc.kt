@@ -24,6 +24,11 @@ class SaveCapturedVisualShitRequest {
     class Response
 }
 
+class CapturedVisualShitExistsRequest {
+    class Response(val exists: Boolean)
+    var id by notNull<String>()
+}
+
 class GetCapturedVisualShitRequest {
     class Response(val base64: String)
     var id by notNull<String>()

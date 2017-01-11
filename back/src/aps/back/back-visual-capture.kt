@@ -101,6 +101,12 @@ fun serveSaveCapturedVisualShitRequest(req: SaveCapturedVisualShitRequest): Save
     return SaveCapturedVisualShitRequest.Response()
 }
 
+fun serveCapturedVisualShitExistsRequest(req: CapturedVisualShitExistsRequest): CapturedVisualShitExistsRequest.Response {
+    return CapturedVisualShitExistsRequest.Response(
+        imageFile(req.id).exists()
+    )
+}
+
 fun serveGetCapturedVisualShitRequest(req: GetCapturedVisualShitRequest): GetCapturedVisualShitRequest.Response {
     return GetCapturedVisualShitRequest.Response(
         Base64.getEncoder().encodeToString(
