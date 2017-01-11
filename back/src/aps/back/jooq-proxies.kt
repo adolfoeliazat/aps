@@ -18,15 +18,15 @@ class DSLContextProxy(val activityParams: ActivityParams, val q: DSLContext) {
     }
 
     fun fetch(sql: String, vararg bindings: Any?): Result<Record> =
-        if (BackGlobus.tracingEnabled) executeTracing(activityParams) {q.fetch(sql, *bindings)}
-        else q.fetch(sql, *bindings)
+        executeTracing(activityParams) {q.fetch(sql, *bindings)}
 
     fun selectCount(): SelectSelectStep<Record1<Int>> {
         return q.selectCount()
     }
 
     fun <R : Record> update(table: Table<R>): UpdateSetFirstStep<R> {
-        return q.update(table)
+        val res: UpdateSetFirstStep<R> = q.update(table)
+        return UpdateSetFirstStepProxy(activityParams, res)
     }
 
     fun select(vararg fields: SelectField<*>): SelectSelectStep<Record> {
@@ -43,13 +43,13 @@ class DSLContextProxy(val activityParams: ActivityParams, val q: DSLContext) {
     }
 
     fun execute(sql: String): Int =
-        if (BackGlobus.tracingEnabled) executeTracing(activityParams) {q.execute(sql)}
-        else q.execute(sql)
+        executeTracing(activityParams) {q.execute(sql)}
 
     fun <R : Record> selectFrom(table: Table<R>): SelectWhereStep<R> {
          return q.selectFrom(table)
     }
 }
+
 
 class InsertSetStepProxy<R : Record>(val activityParams: ActivityParams, val wrappee: InsertSetStep<R>) : InsertSetStep<R> {
 
@@ -252,11 +252,11 @@ class InsertSetMoreStepProxy<R : Record>(val activityParams: ActivityParams, val
     }
 
     override fun executeAsync(): CompletionStage<Int> {
-        return wrappee.executeAsync()
+        return executeTracing(activityParams) {wrappee.executeAsync()}
     }
 
     override fun executeAsync(executor: Executor): CompletionStage<Int> {
-        return wrappee.executeAsync(executor)
+        return executeTracing(activityParams) {wrappee.executeAsync(executor)}
     }
 
     override fun isExecutable(): Boolean {
@@ -335,8 +335,7 @@ class InsertResultStepProxy<R : Record>(val activityParams: ActivityParams, val 
     @Support
     @Throws(DataAccessException::class)
     override fun fetchOne(): R =
-        if (BackGlobus.tracingEnabled) executeTracing(activityParams) {wrappee.fetchOne()}
-        else wrappee.fetchOne()
+        executeTracing(activityParams) {wrappee.fetchOne()}
 
     @Support
     @Throws(DataAccessException::class)
@@ -346,15 +345,15 @@ class InsertResultStepProxy<R : Record>(val activityParams: ActivityParams, val 
 
     @Throws(DataAccessException::class)
     override fun execute(): Int {
-        return wrappee.execute()
+        return executeTracing(activityParams) {wrappee.execute()}
     }
 
     override fun executeAsync(): CompletionStage<Int> {
-        return wrappee.executeAsync()
+        return executeTracing(activityParams) {wrappee.executeAsync()}
     }
 
     override fun executeAsync(executor: Executor): CompletionStage<Int> {
-        return wrappee.executeAsync(executor)
+        return executeTracing(activityParams) {wrappee.executeAsync(executor)}
     }
 
     override fun isExecutable(): Boolean {
@@ -423,8 +422,741 @@ class InsertResultStepProxy<R : Record>(val activityParams: ActivityParams, val 
     }
 }
 
+class UpdateSetFirstStepProxy<R : Record>(private val activityParams: ActivityParams, private val wrappee: UpdateSetFirstStep<R>) : UpdateSetFirstStep<R> {
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1> set(row: Row1<T1>, value: Row1<T1>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2> set(row: Row2<T1, T2>, value: Row2<T1, T2>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3> set(row: Row3<T1, T2, T3>, value: Row3<T1, T2, T3>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4> set(row: Row4<T1, T2, T3, T4>, value: Row4<T1, T2, T3, T4>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5> set(row: Row5<T1, T2, T3, T4, T5>, value: Row5<T1, T2, T3, T4, T5>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6> set(row: Row6<T1, T2, T3, T4, T5, T6>, value: Row6<T1, T2, T3, T4, T5, T6>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7> set(row: Row7<T1, T2, T3, T4, T5, T6, T7>, value: Row7<T1, T2, T3, T4, T5, T6, T7>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8> set(row: Row8<T1, T2, T3, T4, T5, T6, T7, T8>, value: Row8<T1, T2, T3, T4, T5, T6, T7, T8>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9> set(row: Row9<T1, T2, T3, T4, T5, T6, T7, T8, T9>, value: Row9<T1, T2, T3, T4, T5, T6, T7, T8, T9>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> set(row: Row10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, value: Row10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> set(row: Row11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, value: Row11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> set(row: Row12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, value: Row12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> set(row: Row13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, value: Row13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> set(row: Row14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, value: Row14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> set(row: Row15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, value: Row15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> set(row: Row16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, value: Row16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> set(row: Row17<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>, value: Row17<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> set(row: Row18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>, value: Row18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> set(row: Row19<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>, value: Row19<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> set(row: Row20<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>, value: Row20<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> set(row: Row21<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>, value: Row21<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> set(row: Row22<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>, value: Row22<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES)
+    override fun set(row: RowN, value: RowN): UpdateFromStep<R> {
+        return wrappee.set(row, value)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1> set(row: Row1<T1>, select: Select<out Record1<T1>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2> set(row: Row2<T1, T2>, select: Select<out Record2<T1, T2>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3> set(row: Row3<T1, T2, T3>, select: Select<out Record3<T1, T2, T3>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4> set(row: Row4<T1, T2, T3, T4>, select: Select<out Record4<T1, T2, T3, T4>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5> set(row: Row5<T1, T2, T3, T4, T5>, select: Select<out Record5<T1, T2, T3, T4, T5>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6> set(row: Row6<T1, T2, T3, T4, T5, T6>, select: Select<out Record6<T1, T2, T3, T4, T5, T6>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7> set(row: Row7<T1, T2, T3, T4, T5, T6, T7>, select: Select<out Record7<T1, T2, T3, T4, T5, T6, T7>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8> set(row: Row8<T1, T2, T3, T4, T5, T6, T7, T8>, select: Select<out Record8<T1, T2, T3, T4, T5, T6, T7, T8>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9> set(row: Row9<T1, T2, T3, T4, T5, T6, T7, T8, T9>, select: Select<out Record9<T1, T2, T3, T4, T5, T6, T7, T8, T9>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> set(row: Row10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, select: Select<out Record10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> set(row: Row11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, select: Select<out Record11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> set(row: Row12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, select: Select<out Record12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> set(row: Row13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, select: Select<out Record13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> set(row: Row14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, select: Select<out Record14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> set(row: Row15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, select: Select<out Record15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> set(row: Row16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, select: Select<out Record16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> set(row: Row17<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>, select: Select<out Record17<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> set(row: Row18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>, select: Select<out Record18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> set(row: Row19<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>, select: Select<out Record19<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> set(row: Row20<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>, select: Select<out Record20<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> set(row: Row21<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>, select: Select<out Record21<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> set(row: Row22<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>, select: Select<out Record22<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support(SQLDialect.H2, SQLDialect.HSQLDB, SQLDialect.POSTGRES_9_5)
+    override fun set(row: RowN, select: Select<*>): UpdateFromStep<R> {
+        return wrappee.set(row, select)
+    }
+
+    @Support
+    override fun <T> set(field: Field<T>, value: T): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(field, value))
+    }
+
+    @Support
+    override fun <T> set(field: Field<T>, value: Field<T>): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(field, value))
+    }
+
+    @Support
+    override fun <T> set(field: Field<T>, value: Select<out Record1<T>>): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(field, value))
+    }
+
+    @Support
+    override fun set(map: Map<out Field<*>, *>): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(map))
+    }
+
+    @Support
+    override fun set(record: Record): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(record))
+    }
+}
+
+internal class UpdateSetMoreStepProxy<R : Record>(private val activityParams: ActivityParams, private val wrappee: UpdateSetMoreStep<R>) : UpdateSetMoreStep<R> {
+
+    @Support
+    override fun <T> set(field: Field<T>, value: T): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(field, value))
+    }
+
+    @Support
+    override fun <T> set(field: Field<T>, value: Field<T>): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(field, value))
+    }
+
+    @Support
+    override fun <T> set(field: Field<T>, value: Select<out Record1<T>>): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(field, value))
+    }
+
+    @Support
+    override fun set(map: Map<out Field<*>, *>): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(map))
+    }
+
+    @Support
+    override fun set(record: Record): UpdateSetMoreStep<R> {
+        return UpdateSetMoreStepProxy(activityParams, wrappee.set(record))
+    }
+
+    @Support(SQLDialect.POSTGRES)
+    override fun from(table: TableLike<*>): UpdateWhereStep<R> {
+        return wrappee.from(table)
+    }
+
+    @Support(SQLDialect.POSTGRES)
+    override fun from(table: Array<TableLike<*>>): UpdateWhereStep<R> {
+        return wrappee.from(*table)
+    }
+
+    @Support(SQLDialect.POSTGRES)
+    override fun from(tables: Collection<TableLike<*>>): UpdateWhereStep<R> {
+        return wrappee.from(tables)
+    }
+
+    @Support(SQLDialect.POSTGRES)
+    @PlainSQL
+    override fun from(sql: SQL): UpdateWhereStep<R> {
+        return wrappee.from(sql)
+    }
+
+    @Support(SQLDialect.POSTGRES)
+    @PlainSQL
+    override fun from(sql: String): UpdateWhereStep<R> {
+        return wrappee.from(sql)
+    }
+
+    @Support(SQLDialect.POSTGRES)
+    @PlainSQL
+    override fun from(sql: String, vararg bindings: Any): UpdateWhereStep<R> {
+        return wrappee.from(sql, *bindings)
+    }
+
+    @Support(SQLDialect.POSTGRES)
+    @PlainSQL
+    override fun from(sql: String, vararg parts: QueryPart): UpdateWhereStep<R> {
+        return wrappee.from(sql, *parts)
+    }
+
+    @Support(SQLDialect.POSTGRES)
+    override fun from(name: Name): UpdateWhereStep<R> {
+        return wrappee.from(name)
+    }
+
+    @Support
+    override fun where(vararg conditions: Condition): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.where(*conditions))
+    }
+
+    @Support
+    override fun where(conditions: Collection<Condition>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.where(conditions))
+    }
+
+    @Support
+    override fun where(condition: Field<Boolean>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.where(condition))
+    }
+
+    @Deprecated("")
+    @Support
+    override fun where(condition: Boolean?): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.where(condition))
+    }
+
+    @Support
+    @PlainSQL
+    override fun where(sql: SQL): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.where(sql))
+    }
+
+    @Support
+    @PlainSQL
+    override fun where(sql: String): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.where(sql))
+    }
+
+    @Support
+    @PlainSQL
+    override fun where(sql: String, vararg bindings: Any): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.where(sql, *bindings))
+    }
+
+    @Support
+    @PlainSQL
+    override fun where(sql: String, vararg parts: QueryPart): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.where(sql, *parts))
+    }
+
+    @Support
+    override fun whereExists(select: Select<*>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.whereExists(select))
+    }
+
+    @Support
+    override fun whereNotExists(select: Select<*>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.whereNotExists(select))
+    }
+
+    @Throws(DataAccessException::class)
+    override fun execute(): Int {
+        return executeTracing(activityParams) {wrappee.execute()}
+    }
+
+    override fun executeAsync(): CompletionStage<Int> {
+        return executeTracing(activityParams) {wrappee.executeAsync()}
+    }
+
+    override fun executeAsync(executor: Executor): CompletionStage<Int> {
+        return executeTracing(activityParams) {wrappee.executeAsync(executor)}
+    }
+
+    override fun isExecutable(): Boolean {
+        return wrappee.isExecutable
+    }
+
+    override fun getSQL(): String {
+        return wrappee.sql
+    }
+
+    @Deprecated("")
+    override fun getSQL(inline: Boolean): String {
+        return wrappee.getSQL(inline)
+    }
+
+    override fun getSQL(paramType: ParamType): String {
+        return wrappee.getSQL(paramType)
+    }
+
+    override fun getBindValues(): List<Any> {
+        return wrappee.bindValues
+    }
+
+    override fun getParams(): Map<String, Param<*>> {
+        return wrappee.params
+    }
+
+    override fun getParam(name: String): Param<*> {
+        return wrappee.getParam(name)
+    }
+
+    @Throws(IllegalArgumentException::class, DataTypeException::class)
+    override fun bind(param: String, value: Any): Query {
+        return wrappee.bind(param, value)
+    }
+
+    @Throws(IllegalArgumentException::class, DataTypeException::class)
+    override fun bind(index: Int, value: Any): Query {
+        return wrappee.bind(index, value)
+    }
+
+    override fun queryTimeout(timeout: Int): Query {
+        return wrappee.queryTimeout(timeout)
+    }
+
+    override fun keepStatement(keepStatement: Boolean): Query {
+        return wrappee.keepStatement(keepStatement)
+    }
+
+    @Throws(DataAccessException::class)
+    override fun close() {
+        wrappee.close()
+    }
+
+    @Throws(DataAccessException::class)
+    override fun cancel() {
+        wrappee.cancel()
+    }
+
+    override fun toString(): String {
+        return wrappee.toString()
+    }
+
+    override fun equals(`object`: Any?): Boolean {
+        return wrappee == `object`
+    }
+
+    override fun hashCode(): Int {
+        return wrappee.hashCode()
+    }
+
+    override fun attach(configuration: Configuration) {
+        wrappee.attach(configuration)
+    }
+
+    override fun detach() {
+        wrappee.detach()
+    }
+
+    @Support(SQLDialect.FIREBIRD, SQLDialect.POSTGRES)
+    override fun returning(): UpdateResultStep<R> {
+        return wrappee.returning()
+    }
+
+    @Support(SQLDialect.FIREBIRD, SQLDialect.POSTGRES)
+    override fun returning(fields: Array<Field<*>>): UpdateResultStep<R> {
+        return wrappee.returning(*fields)
+    }
+
+    @Support(SQLDialect.FIREBIRD, SQLDialect.POSTGRES)
+    override fun returning(fields: Collection<Field<*>>): UpdateResultStep<R> {
+        return wrappee.returning(fields)
+    }
+}
+
+internal class UpdateConditionStepProxy<R : Record>(private val activityParams: ActivityParams, private val wrappee: UpdateConditionStep<R>) : UpdateConditionStep<R> {
+
+    @Support
+    override fun and(condition: Condition): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.and(condition))
+    }
+
+    @Support
+    override fun and(condition: Field<Boolean>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.and(condition))
+    }
+
+    @Deprecated("")
+    @Support
+    override fun and(condition: Boolean?): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.and(condition))
+    }
+
+    @Support
+    @PlainSQL
+    override fun and(sql: SQL): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.and(sql))
+    }
+
+    @Support
+    @PlainSQL
+    override fun and(sql: String): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.and(sql))
+    }
+
+    @Support
+    @PlainSQL
+    override fun and(sql: String, vararg bindings: Any): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.and(sql, *bindings))
+    }
+
+    @Support
+    @PlainSQL
+    override fun and(sql: String, vararg parts: QueryPart): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.and(sql, *parts))
+    }
+
+    @Support
+    override fun andNot(condition: Condition): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.andNot(condition))
+    }
+
+    @Support
+    override fun andNot(condition: Field<Boolean>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.andNot(condition))
+    }
+
+    @Deprecated("")
+    @Support
+    override fun andNot(condition: Boolean?): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.andNot(condition))
+    }
+
+    @Support
+    override fun andExists(select: Select<*>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.andExists(select))
+    }
+
+    @Support
+    override fun andNotExists(select: Select<*>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.andNotExists(select))
+    }
+
+    @Support
+    override fun or(condition: Condition): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.or(condition))
+    }
+
+    @Support
+    override fun or(condition: Field<Boolean>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.or(condition))
+    }
+
+    @Deprecated("")
+    @Support
+    override fun or(condition: Boolean?): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.or(condition))
+    }
+
+    @Support
+    @PlainSQL
+    override fun or(sql: SQL): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.or(sql))
+    }
+
+    @Support
+    @PlainSQL
+    override fun or(sql: String): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.or(sql))
+    }
+
+    @Support
+    @PlainSQL
+    override fun or(sql: String, vararg bindings: Any): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.or(sql, *bindings))
+    }
+
+    @Support
+    @PlainSQL
+    override fun or(sql: String, vararg parts: QueryPart): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.or(sql, *parts))
+    }
+
+    @Support
+    override fun orNot(condition: Condition): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.orNot(condition))
+    }
+
+    @Support
+    override fun orNot(condition: Field<Boolean>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.orNot(condition))
+    }
+
+    @Deprecated("")
+    @Support
+    override fun orNot(condition: Boolean?): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.orNot(condition))
+    }
+
+    @Support
+    override fun orExists(select: Select<*>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.orExists(select))
+    }
+
+    @Support
+    override fun orNotExists(select: Select<*>): UpdateConditionStep<R> {
+        return UpdateConditionStepProxy(activityParams, wrappee.orNotExists(select))
+    }
+
+    @Throws(DataAccessException::class)
+    override fun execute(): Int {
+        return executeTracing(activityParams) {wrappee.execute()}
+    }
+
+    override fun executeAsync(): CompletionStage<Int> {
+        return executeTracing(activityParams) {wrappee.executeAsync()}
+    }
+
+    override fun executeAsync(executor: Executor): CompletionStage<Int> {
+        return executeTracing(activityParams) {wrappee.executeAsync(executor)}
+    }
+
+    override fun isExecutable(): Boolean {
+        return wrappee.isExecutable
+    }
+
+    override fun getSQL(): String {
+        return wrappee.sql
+    }
+
+    @Deprecated("")
+    override fun getSQL(inline: Boolean): String {
+        return wrappee.getSQL(inline)
+    }
+
+    override fun getSQL(paramType: ParamType): String {
+        return wrappee.getSQL(paramType)
+    }
+
+    override fun getBindValues(): List<Any> {
+        return wrappee.bindValues
+    }
+
+    override fun getParams(): Map<String, Param<*>> {
+        return wrappee.params
+    }
+
+    override fun getParam(name: String): Param<*> {
+        return wrappee.getParam(name)
+    }
+
+    @Throws(IllegalArgumentException::class, DataTypeException::class)
+    override fun bind(param: String, value: Any): Query {
+        return wrappee.bind(param, value)
+    }
+
+    @Throws(IllegalArgumentException::class, DataTypeException::class)
+    override fun bind(index: Int, value: Any): Query {
+        return wrappee.bind(index, value)
+    }
+
+    override fun queryTimeout(timeout: Int): Query {
+        return wrappee.queryTimeout(timeout)
+    }
+
+    override fun keepStatement(keepStatement: Boolean): Query {
+        return wrappee.keepStatement(keepStatement)
+    }
+
+    @Throws(DataAccessException::class)
+    override fun close() {
+        wrappee.close()
+    }
+
+    @Throws(DataAccessException::class)
+    override fun cancel() {
+        wrappee.cancel()
+    }
+
+    override fun toString(): String {
+        return wrappee.toString()
+    }
+
+    override fun equals(`object`: Any?): Boolean {
+        return wrappee == `object`
+    }
+
+    override fun hashCode(): Int {
+        return wrappee.hashCode()
+    }
+
+    override fun attach(configuration: Configuration) {
+        wrappee.attach(configuration)
+    }
+
+    override fun detach() {
+        wrappee.detach()
+    }
+
+    @Support(SQLDialect.FIREBIRD, SQLDialect.POSTGRES)
+    override fun returning(): UpdateResultStep<R> {
+        return wrappee.returning()
+    }
+
+    @Support(SQLDialect.FIREBIRD, SQLDialect.POSTGRES)
+    override fun returning(fields: Array<Field<*>>): UpdateResultStep<R> {
+        return wrappee.returning(*fields)
+    }
+
+    @Support(SQLDialect.FIREBIRD, SQLDialect.POSTGRES)
+    override fun returning(fields: Collection<Field<*>>): UpdateResultStep<R> {
+        return wrappee.returning(fields)
+    }
+}
+
+
 
 private fun <T> executeTracing(activityParams: ActivityParams, block: () -> T): T {
+    if (!BackGlobus.tracingEnabled) return block()
+
     val rlm = RedisLogMessage.SQL() - {o ->
         o.shortDescription = activityParams.shortDescription
         o.stage = PENDING
@@ -448,3 +1180,5 @@ private fun <T> executeTracing(activityParams: ActivityParams, block: () -> T): 
         redisLog.amend(rlm)
     }
 }
+
+

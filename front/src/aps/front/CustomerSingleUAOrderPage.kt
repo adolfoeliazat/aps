@@ -376,10 +376,10 @@ class CustomerSingleUAOrderPage(val world: World) {
 
                                     o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
                                         o- when (orderFile.seenAsFrom) {
-                                            world.user.kind -> t("TOTE", "Мой")
-                                            UserKind.CUSTOMER -> t("TOTE", "От заказчика")
-                                            UserKind.WRITER -> t("TOTE", "От писателя")
-                                            UserKind.ADMIN -> t("TOTE", "От саппорта")
+                                            world.user.kind -> t("Mine", "Мой")
+                                            UserKind.CUSTOMER -> t("From customer", "От заказчика")
+                                            UserKind.WRITER -> t("From writer", "От писателя")
+                                            UserKind.ADMIN -> t("From support", "От саппорта")
                                         }
                                     }
 

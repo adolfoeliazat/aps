@@ -150,6 +150,7 @@ class SignInWithTokenRequest : RequestMatumba() {
 }
 
 class SignUpRequest : RequestMatumba() {
+    class Response(val userID: String) : CommonResponseFieldsImpl()
     val immutableSignUpFields = ImmutableSignUpFields(this)
     val mutableSignUpFields = MutableSignUpFields(this)
     val agreeTerms = CheckboxField(this, "agreeTerms")

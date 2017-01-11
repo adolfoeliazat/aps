@@ -7,7 +7,7 @@ import redis.clients.jedis.JedisPoolConfig
 import java.time.LocalDateTime
 import java.util.*
 
-val LOCAL_REDIS_LOGGING = System.getenv("APS_LOCAL_REDIS_LOGGING") == "true"
+
 
 val jedisPool by lazy {
     JedisPool(JedisPoolConfig(), "localhost").let {
@@ -56,7 +56,7 @@ object redisLog {
     }
 
     fun shouldSkip() =
-        !LOCAL_REDIS_LOGGING
+        !bconst.localRedisLoggingEnabled
         || isRequestThread && requestShit.skipLoggingToRedis
 
     fun <T> group(title: String, block: () -> T): T {
@@ -116,7 +116,7 @@ object redisLog {
 
 private val idToLogGroupMessage = Collections.synchronizedMap(mutableMapOf<String, RedisLogMessage>())
 
-@RemoteProcedureFactory fun privilegedRedisCommand() = testProcedure(
+@RemoteProcedureFactory fun servePrivilegedRedisCommand() = testProcedure(
     PrivilegedRedisCommandRequest(),
     needsDB = false,
     runShit = fun (ctx, req): JSONResponse {
