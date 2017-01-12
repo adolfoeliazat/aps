@@ -280,8 +280,8 @@ fun String.escapeSingleQuotes(): String =
 //    enumValues<E>().find {it.name.toUpperCase() == s?.toUpperCase()}
 //        ?: default
 
-fun <E : Enum<E>> relaxedStringToEnum(s: String?, values: Array<E>, default: E): E =
-    values.find {it.name.toUpperCase() == s?.toUpperCase()}
+fun <E : Enum<E>> String?.relaxedToEnum(values: Array<E>, default: E): E =
+    values.find {it.name.toUpperCase() == this?.toUpperCase()}
         ?: default
 
 fun String.lastIndexOfOrNull(s: String): Int? {

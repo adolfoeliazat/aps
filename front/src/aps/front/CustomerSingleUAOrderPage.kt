@@ -100,8 +100,8 @@ class CustomerSingleUAOrderPage(val world: World) {
 
         override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
             val filesTabURLQuery = typeSafeURLQuery(world){FilesTabURLQuery()}
-            ordering = relaxedStringToEnum(filesTabURLQuery.ordering, Ordering.values(), default = Ordering.DESC)
-            filter = relaxedStringToEnum(filesTabURLQuery.filter, CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
+            ordering = filesTabURLQuery.ordering.relaxedToEnum(Ordering.values(), default = Ordering.DESC)
+            filter = filesTabURLQuery.filter.relaxedToEnum(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
             search = (filesTabURLQuery.search ?: "").trim()
 
             val res = await(requestChunk(null))

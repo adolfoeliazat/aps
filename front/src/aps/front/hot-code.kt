@@ -29,11 +29,12 @@ class InitAutoReload {
 
     private fun tick() {"__async"
         if (initialCtime != __await(GetSoftwareVersionRequest.send()).ctime) {
-            if (realTypedStorageLocal.reloadTest)
+            if (realTypedStorageLocal.reloadTest) {
                 TestGlobal.lastTestHrefMaybe?.let {
                     window.location.href = it
                     return
                 }
+            }
 
             window.location.reload()
 

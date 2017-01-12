@@ -45,7 +45,8 @@ del logRoot:children
 Links
 =====
 
-http://aps-ua-writer.local:3022/debug.html?page=log&cut=lastBoot
+http://aps-ua-writer.local:3022/debug.html?page=log&cut=last_boot
+http://aps-ua-writer.local:3022/debug.html?page=log&cut=last_boot&skipCrap=true
 
 http://aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_ProfileRejected
 http://aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_Cool

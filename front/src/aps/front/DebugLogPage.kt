@@ -6,18 +6,40 @@ import aps.RedisLogMessage.Separator.Type.*
 import aps.Color.*
 import into.kommon.*
 import kotlin.browser.window
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
+
+abstract class URLQueryBase(val world: World)
+
+fun booleanURLParam(default: Boolean = false) =
+    object:ReadOnlyProperty<URLQueryBase, Boolean> {
+        override fun getValue(thisRef: URLQueryBase, property: KProperty<*>): Boolean {
+            return thisRef.world.urlQuery[property.name].relaxedToBoolean(default)
+        }
+    }
+
+fun <E : Enum<E>> enumURLParam(values: Array<E>, default: E) =
+    object:ReadOnlyProperty<URLQueryBase, E> {
+        override fun getValue(thisRef: URLQueryBase, property: KProperty<*>): E {
+            return thisRef.world.urlQuery[property.name].relaxedToEnum(values, default)
+        }
+    }
 
 class DebugLogPage(val world: World) {
     val noise = DebugNoise("DebugPage", mute = false)
-    val urlQuery = typeSafeURLQuery(world){URLQuery()}
     val MAX_LEN = 200L
     val CN_ROW = "cn" + puid()
     val CN_HOVER_HIGHLIGHT = "cn" + puid()
     val CN_OPAQUE = "cn" + puid()
 
-    class URLQuery {
-        var cut: String? = null
+    enum class Cut {NONE, LAST_BOOT, LAST_NON_EMPTY_BOOT}
+
+    inner class URLQuery : URLQueryBase(world) {
+        val cut by enumURLParam(Cut.values(), Cut.NONE)
+        val skipCrap by booleanURLParam()
     }
+
+    val urlQuery = URLQuery()
 
     fun load(): Promise<Unit> = async {
         var rootMessages = await(getLogMessages(RedisLogMessage.ROOT_ID))
@@ -32,13 +54,12 @@ class DebugLogPage(val world: World) {
                 }
             }
 
-            val cut = urlQuery.cut
-            exhaustive/when (cut) {
-                null -> {}
-                "lastBoot" -> {
+            exhaustive/when (urlQuery.cut) {
+                Cut.NONE -> {}
+                Cut.LAST_BOOT -> {
                     cutFromLastBoot(rootMessages.lastIndex)
                 }
-                "lastNonEmptyBoot" -> {
+                Cut.LAST_NON_EMPTY_BOOT -> {
                     var bottomIndex = rootMessages.lastIndex
                     loopNotTooLong {
                         cutFromLastBoot(bottomIndex)
@@ -52,7 +73,6 @@ class DebugLogPage(val world: World) {
                         }
                     }
                 }
-                else -> wtf("cut: $cut")
             }
         }
 
@@ -95,12 +115,19 @@ class DebugLogPage(val world: World) {
     }
 
     fun renderLogMessages(messages: List<RedisLogMessage>): ToReactElementable {
-        if (messages.isEmpty()) return kdiv {o->
+        var ultimateMessages = messages
+        if (urlQuery.skipCrap) {
+            ultimateMessages = ultimateMessages.filterNot {
+                it.text.contains("/rpc/ping")
+            }
+        }
+
+        if (ultimateMessages.isEmpty()) return kdiv {o->
             o- "No shit here..."
         }
 
         return kdiv {o->
-            o+ messages.map {msg->
+            o+ ultimateMessages.map {msg->
                 fun renderMsgText() = kdiv(whiteSpace = "pre", fontFamily = "monospace"){o->
                     o- msg.text
                 }
