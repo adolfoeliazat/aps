@@ -22,7 +22,8 @@ fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die
 // typealias ServletService = (HttpServletRequest, HttpServletResponse) -> Unit
 
 class ProcedureContext {
-    lateinit var q: DSLContextProxyFactory
+    lateinit var q: DSLContext
+    lateinit var qshit: DSLContextProxyFactory
     lateinit var clientKind: ClientKind
     lateinit var lang: Language
     lateinit var requestTimestamp: Timestamp
@@ -122,7 +123,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 
                         if (spec.needsUser) {
                             ctx.token = rmap["token"] as String
-                            ctx.user = userByToken(ctx.q, ctx.token)
+                            ctx.user = userByToken(ctx.qshit, ctx.token)
 
                             if (!spec.userKinds.contains(ctx.user.kind)) bitch("User kind not allowed: ${ctx.user.kind}")
                         }
@@ -142,6 +143,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 //                        redisLog.group("Some shit 2") {
                             db.joo {q->
                                 ctx.q = q
+                                ctx.qshit = DSLContextProxyFactory(q)
                                 runShitWithMaybeDB()
                             }
 //                        }

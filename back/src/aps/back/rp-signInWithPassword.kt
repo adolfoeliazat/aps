@@ -19,7 +19,7 @@ import java.util.*
 
         val vagueMessage = t("Invalid email or password", "Неверная почта или пароль")
 
-        val users = ctx.q("Select user")
+        val users = ctx.qshit("Select user")
             .select().from(USERS)
             .where(USERS.EMAIL.equal(req.email.value))
             .fetch().into(JQUsers::class.java)
@@ -32,14 +32,14 @@ import java.util.*
 
         // TODO:vgrechka Store tokens in Redis instead of DB    c51fe75c-f55e-4a68-9a7b-465e44db6235
         val token = "" + UUID.randomUUID()
-        ctx.q("Insert token")
+        ctx.qshit("Insert token")
             .insertInto(USER_TOKENS, USER_TOKENS.USER_ID, USER_TOKENS.TOKEN)
             .values(user.id, token)
             .execute()
 
         // TODO:vgrechka Load related user shit?
 
-        return SignInResponse(token, user.toRTO(ctx.q))
+        return SignInResponse(token, user.toRTO(ctx.qshit))
     }
 )
 

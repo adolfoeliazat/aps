@@ -23,7 +23,7 @@ object ScratchBack {
     }
 
     private fun shit2() {
-        DB.apsTestOnTestServer.joo {q ->
+        DB.apsTestOnTestServer.jooshit {q ->
             val rec: Record = q("Select UA order")
                 .select().from(UA_ORDERS)
                 // .where(UA_ORDERS.ID.eq(req.id.value.toLong()))
@@ -46,7 +46,7 @@ object ScratchBack {
         //        val query = "select * from users"
         //        val query = "select * from user_tokens"
 
-        DB.apsTestOnTestServer.joo {q ->
+        DB.apsTestOnTestServer.jooshit {q ->
             val res = q("Fucking around").fetch(query)
             res.forEachIndexed {recordIndex, record ->
                 println("Record $recordIndex:")

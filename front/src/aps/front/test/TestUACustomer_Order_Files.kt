@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
+import kotlin.properties.Delegates.notNull
 
 class TestSuite_UACustomer_Order_Files : TestSuite {
     override val shortDescription = null
@@ -391,8 +392,12 @@ fun TestScenarioBuilder.setUpOrderAndFiles1(shit: TestShit) {
 
 fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(shit: TestShit, setUpUsers: () -> Unit, setUpOrders: () -> Unit, assertScreen: () -> Unit) {
     val o = this
+
+    o.acta {fedis.pushLogGroup("Prepare test shit")}
     setUpUsers()
     setUpOrders()
+    o.acta {fedis.popLogGroup()}
+
     o.initFuckingBrowser(fillStorageLocal = {
         it.token = shit.bobulToken
     })

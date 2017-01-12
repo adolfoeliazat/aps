@@ -13,7 +13,7 @@ import aps.back.generated.jooq.tables.pojos.JQUsers
 @RemoteProcedureFactory fun updateProfile() = anyUserProcedure(
     UpdateProfileRequest(),
     runShit = fun(ctx, req): UpdateProfileRequest.Response {
-        val q = ctx.q
+        val q = ctx.qshit
         q("Update profile")
             .update(USERS)
             .set(USERS.PROFILE_UPDATED_AT, ctx.requestTimestamp)

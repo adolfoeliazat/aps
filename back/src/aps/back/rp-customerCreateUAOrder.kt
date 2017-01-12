@@ -15,7 +15,7 @@ import aps.back.generated.jooq.enums.*
     runShit = fun(ctx, req): CustomerCreateUAOrderRequest.Response {
         val documentType = req.documentType.value
 
-        val orderRec = ctx.q("Insert UA order")
+        val orderRec = ctx.qshit("Insert UA order")
             .insertInto(UA_ORDERS)
             .set(UA_ORDERS.INSERTED_AT, ctx.requestTimestamp)
             .set(UA_ORDERS.UPDATED_AT, ctx.requestTimestamp)
@@ -33,7 +33,7 @@ import aps.back.generated.jooq.enums.*
             .fetchOne()
 
         fun createArea(name: String) {
-            ctx.q("Insert order area: $name")
+            ctx.qshit("Insert order area: $name")
                 .insertInto(UA_ORDER_AREAS)
                 .set(UA_ORDER_AREAS.INSERTED_AT, ctx.requestTimestamp)
                 .set(UA_ORDER_AREAS.UPDATED_AT, ctx.requestTimestamp)

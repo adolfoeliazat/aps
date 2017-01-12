@@ -96,7 +96,7 @@ testProcedure(
     runShit = fun(ctx, req): GenericResponse {
         val db = DB.apsTestOnTestServer
         db.recreateSchema()
-        db.joo {q->
+        db.jooshit {q->
             USERS.let {
                 q("Insert Dasja")
                     .insertInto(USERS)
@@ -168,7 +168,7 @@ testProcedure(
             }
 
             DB.apsTestOnTestServer.close()
-            DB.postgresOnTestServer.joo {
+            DB.postgresOnTestServer.jooshit {
                 it("Recreate database").execute(""""
                     drop database if exists "$databaseToCreate";
                     create database "$databaseToCreate" template = "$databaseToUseAsTemplate";
@@ -241,7 +241,7 @@ val backendInstanceID = "" + UUID.randomUUID()
     TestSetUserFieldsRequest(),
     needsDB = true,
     runShit = fun(ctx, req): GenericResponse {
-        var step = ctx.q("Update user")
+        var step = ctx.qshit("Update user")
             .update(USERS)
             .set(USERS.ID, USERS.ID)
 
@@ -353,7 +353,7 @@ fun frp_ping(rmap: Map<*, *>): String {
 fun frp_executeSQL(ctx: ProcedureContext, rmap: Map<*, *>) {
     val descr: String = cast(rmap["descr"])
     val sql: String = cast(rmap["sql"])
-    ctx.q(descr).execute(sql)
+    ctx.qshit(descr).execute(sql)
 }
 
 private fun robotTypeTextCR(text: String) {

@@ -29,7 +29,7 @@ object Fiddle {
     }
 
     fun selectNow(db: DB.Database) {
-        db.joo{q->
+        db.jooshit {q->
             val res = q("Fiddling").fetch("select now()")
             printFetchResult(res)
         }

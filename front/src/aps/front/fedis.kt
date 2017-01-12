@@ -4,6 +4,10 @@ import aps.*
 import into.kommon.*
 
 object fedis {
+    class LogGroup(val id: String, val prevID: String?)
+
+    val groups = mutableListOf<LogGroup>()
+
     fun lrange(key: String, start: Long, end: Long): Promise<List<String>> = sendShit(json(
         "command" to "lrange",
         "key" to key,
@@ -39,6 +43,22 @@ object fedis {
         }))
         dejsonize<T>(res.json)!!
     }
+
+    fun pushLogGroup(title: String): Promise<Unit> = async {
+        val group = LogGroup(
+            id = await(fedis.beginLogGroup(title)),
+            prevID = Globus.rootRedisLogMessageID
+        )
+        groups += group
+        Globus.rootRedisLogMessageID = group.id
+    }
+
+    fun popLogGroup(): Promise<Unit> = async {
+        val group = groups.removeAt(groups.lastIndex)
+        await(fedis.endLogGroup(group.id))
+        Globus.rootRedisLogMessageID = group.prevID
+    }
+
 }
 
 

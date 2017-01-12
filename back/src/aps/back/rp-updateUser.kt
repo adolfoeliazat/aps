@@ -18,7 +18,7 @@ import into.kommon.*
     runShit = fun(ctx, req): UpdateUserRequest.Response {
         val oldUser = ctx.loadUser(req.id.value.toLong())
 
-        ctx.q("Update user")
+        ctx.qshit("Update user")
             .update(USERS)
             .set(USERS.UPDATED_AT, ctx.requestTimestamp)
             .set(USERS.STATE, req.state.value.name)
@@ -34,10 +34,10 @@ import into.kommon.*
             .where(USERS.ID.eq(req.id.value.toLong()))
             .execute()
 
-        val newUser = ctx.q("Select user")
+        val newUser = ctx.qshit("Select user")
             .select().from(USERS)
             .where(USERS.ID.eq(req.id.value.toLong()))
-            .fetchOne().into(JQUsers::class.java).toRTO(ctx.q)
+            .fetchOne().into(JQUsers::class.java).toRTO(ctx.qshit)
 
         if (oldUser.state != COOL && newUser.state == COOL) {
             val dashboardURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/dashboard.html"

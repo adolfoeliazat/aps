@@ -12,14 +12,14 @@ import aps.back.generated.jooq.tables.pojos.*
 import into.kommon.*
 import java.util.*
 
-@RemoteProcedureFactory fun customerEditUAOrderFile() = customerProcedure(
+@RemoteProcedureFactory fun serveCustomerEditUAOrderFile() = customerProcedure(
     CustomerEditUAOrderFileRequest(),
     runShit = fun(ctx, req): EditUAOrderFileRequestBase.Response {
         return serveEditUAOrderFile(UserKind.CUSTOMER, ctx, req)
     }
 )
 
-@RemoteProcedureFactory fun writerEditUAOrderFile() = writerProcedure(
+@RemoteProcedureFactory fun serveWriterEditUAOrderFile() = writerProcedure(
     WriterEditUAOrderFileRequest(),
     runShit = fun(ctx, req): EditUAOrderFileRequestBase.Response {
         return serveEditUAOrderFile(UserKind.WRITER, ctx, req)
@@ -29,7 +29,7 @@ import java.util.*
 private fun serveEditUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContext, req: EditUAOrderFileRequestBase): EditUAOrderFileRequestBase.Response {
     val orderFileID = req.orderFileID.value.toLong()
 
-    val orderFile = ctx.q("Select order file")
+    val orderFile = ctx.qshit("Select order file")
         .selectFrom(UA_ORDER_FILES)
         .where(UA_ORDER_FILES.ID.eq(orderFileID))
         .fetchOne()
@@ -58,7 +58,7 @@ private fun serveEditUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContex
             .execute()
     }
 
-    val updatedOrderFile = selectUAOrderFile(ctx, orderFileID).toRTO(ctx.q)
+    val updatedOrderFile = selectUAOrderFile(ctx, orderFileID).toRTO(ctx.qshit)
 
     return EditUAOrderFileRequestBase.Response(updatedOrderFile)
 }

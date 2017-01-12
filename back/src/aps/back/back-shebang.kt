@@ -83,12 +83,12 @@ fun <POJO : Any, RTO> selectChunk(
 }
 
 fun loadUser(ctx: ProcedureContext): UserRTO {
-    val users = ctx.q("Select user")
+    val users = ctx.qshit("Select user")
         .select().from(USERS)
         .where(USERS.ID.eq(ctx.user.id.toLong()))
         .fetch().into(JQUsers::class.java)
 
-    return users.first().toRTO(ctx.q)
+    return users.first().toRTO(ctx.qshit)
 }
 
 object BackGlobus {

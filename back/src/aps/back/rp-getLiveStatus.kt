@@ -16,7 +16,7 @@ import aps.GetLiveStatusRequest.Response as Res
     runShit = fun(ctx, req): GetLiveStatusRequest.Response {
         return when (ctx.user.kind) {
             UserKind.ADMIN -> Res.ForAdmin(
-                profilesToApprove = ctx.q("Select amount of profiles to approve")
+                profilesToApprove = ctx.qshit("Select amount of profiles to approve")
                     .selectCount().from(USERS)
                     .where(USERS.STATE.eq(UserState.PROFILE_APPROVAL_PENDING.name))
                     .and(USERS.ASSIGNED_TO.eq(ctx.user.id.toLong()))

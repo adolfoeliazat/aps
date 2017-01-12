@@ -19,7 +19,7 @@ fun <R : Record> ProcedureContext.insertShit(
     descr: String,
     table: Table<R>
 ): InsertSetMoreStep<R> {
-    var step = this.q(descr)
+    var step = this.qshit(descr)
         .insertInto(table)
         .set(table.field("inserted_at") as Field<Timestamp>, this.requestTimestamp)
         .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
@@ -36,7 +36,7 @@ fun <R : Record> ProcedureContext.updateShit(
     descr: String,
     table: Table<R>
 ): UpdateSetMoreStep<R> {
-    var step = this.q(descr)
+    var step = this.qshit(descr)
         .update(table)
         .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
     return step
@@ -104,10 +104,10 @@ fun UAOrderState.toJOOQ(): JQUaOrderState = when (this) {
 }
 
 fun ProcedureContext.loadUser(id: Long): UserRTO {
-    return q("Select user")
+    return qshit("Select user")
         .select().from(USERS)
         .where(USERS.ID.eq(id))
-        .fetchOne().into(JQUsers::class.java).toRTO(q)
+        .fetchOne().into(JQUsers::class.java).toRTO(qshit)
 }
 
 fun loadFile(q: DSLContextProxyFactory, id: Long, searchWords: List<String>, lang: Language): FileRTO {
@@ -204,15 +204,16 @@ fun userKindToAreaName(userKind: UserKind): String {
 }
 
 fun selectUAOrderFile(ctx: ProcedureContext, orderFileID: Long): JQUaOrderFilesRecord {
-    return ctx.q("Select updated order file")
+    return tracingSQL("Select updated order file") {ctx.q
         .selectFrom(UA_ORDER_FILES)
         .where(UA_ORDER_FILES.ID.eq(orderFileID))
         .fetchOne()!!
+    }
 }
 
 fun selectUAOrderAreaByName(ctx: ProcedureContext, orderID: Long, name: String): JQUaOrderAreasRecord {
     return UA_ORDER_AREAS.let {
-        ctx.q("Select area")
+        ctx.qshit("Select area")
             .selectFrom(it)
             .where(it.NAME.eq(name))
             .and(it.UA_ORDER_ID.eq(orderID))

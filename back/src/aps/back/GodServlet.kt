@@ -77,7 +77,7 @@ class GodServlet : HttpServlet() {
         val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
 
         val db = DB.byID(databaseID)
-        db.joo{q->
+        db.jooshit {q->
             val user = userByToken(q, token)
             val rows = q("Select file")
                 .select().from(FILES)

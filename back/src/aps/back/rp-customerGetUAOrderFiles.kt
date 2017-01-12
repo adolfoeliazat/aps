@@ -24,7 +24,7 @@ import kotlin.reflect.KClass
             .map {it.replace(Regex("[^a-zA-Zа-яА-Я0-9]"), "")}
 
         val areaID = Tables.UA_ORDER_AREAS.let {t->
-            ctx.q("Select area")
+            ctx.qshit("Select area")
                 .selectFrom(t)
                 .where(t.UA_ORDER_ID.eq(req.entityID.value!!.toLong()))
                 .and(t.NAME.eq(userKindToAreaName(ctx.user.kind)))
@@ -32,7 +32,7 @@ import kotlin.reflect.KClass
         }
 
         val chunk = selectChunk(
-            ctx.q,
+            ctx.qshit,
             table = Tables.UA_ORDER_FILES.name,
             pojoClass = JQUaOrderFiles::class, // TODO:vgrechka Use record instead of POJO
             loadItem = {orderFile, q ->

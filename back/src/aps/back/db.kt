@@ -113,7 +113,7 @@ object DB {
             close()
             template?.let {it.close()}
 
-            correspondingAdminDB!!.joo {
+            correspondingAdminDB!!.jooshit {
                 it("Recreate database $name" + template.letOrEmpty {" from ${it.name}"})
                     .execute("""
                         drop database if exists "$name";
@@ -122,23 +122,23 @@ object DB {
             }
 
             if (template == null)
-                joo {
+                jooshit {
                     it("schema.sql")
                         .execute(DB::class.java.getResource("schema.sql").readText())
                 }
 
-            populate?.let {joo(it)}
+            populate?.let {jooshit(it)}
         }
 
         fun recreateSchema() {
             check(allowRecreation) {"You crazy? I'm not recreating THIS: $this"}
 
-            joo {
+            jooshit {
                 it("drop.sql").execute(DB::class.java.getResource("drop.sql").readText())
                 it("schema.sql").execute(DB::class.java.getResource("schema.sql").readText())
             }
 
-            populate?.let {joo(it)}
+            populate?.let {jooshit(it)}
         }
 
         fun close() {
@@ -146,7 +146,7 @@ object DB {
             dslazy.reset()
         }
 
-        fun <T> joo(act: (DSLContextProxyFactory) -> T): T {
+        fun <T> jooshit(act: (DSLContextProxyFactory) -> T): T {
             ds.connection.use {con->
                 // TODO:vgrechka Cache jOOQ DSLContext
                 val q = DSL.using(
@@ -175,6 +175,38 @@ object DB {
                 )
 
                 return act(DSLContextProxyFactory(q))
+            }
+        }
+
+        fun <T> joo(act: (DSLContext) -> T): T {
+            ds.connection.use {con->
+                // TODO:vgrechka Cache jOOQ DSLContext
+                val q = DSL.using(
+                    DefaultConfiguration()
+                        .set(con)
+                        .set(SQLDialect.POSTGRES_9_5)
+                        .set(DefaultExecuteListenerProvider(object:DefaultExecuteListener() {
+                            override fun executeStart(ctx: ExecuteContext) {
+                                if (!BackGlobus.tracingEnabled) return
+
+                                fun dumpShit(shit: String) {
+                                    if (isRequestThread) {
+                                        requestShit.actualSQLFromJOOQ = shit
+                                    }
+                                }
+
+                                fun dumpShit(shit: QueryPart) =
+                                    dumpShit(DSL.using(ctx.configuration().dialect(), Settings().withRenderFormatted(true))
+                                        .renderInlined(shit))
+
+                                ctx.query()?.let {dumpShit(it); return}
+                                ctx.routine()?.let {dumpShit(it); return}
+                                ctx.sql()?.let {dumpShit(it); return}
+                            }
+                        }))
+                )
+
+                return act(q)
             }
         }
 

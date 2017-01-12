@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
     ItemsRequest(UserFilter.values()),
     runShit = fun(ctx, req): ItemsResponse<UserRTO> {
         val chunk = selectChunk(
-            ctx.q, table = "users", pojoClass = JQUsers::class, loadItem = JQUsers::toRTO,
+            ctx.qshit, table = "users", pojoClass = JQUsers::class, loadItem = JQUsers::toRTO,
             fromID = req.fromID.value?.let {it.toLong()},
             ordering = req.ordering.value,
             appendToWhere = {qb ->
