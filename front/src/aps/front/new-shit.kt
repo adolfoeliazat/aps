@@ -769,6 +769,9 @@ fun hor1(@Mix attrs: Attrs, @Mix style: Style, block: ((ElementBuilder) -> Unit)
 fun hor2(@Mix attrs: Attrs, @Mix style: Style, block: ((ElementBuilder) -> Unit)? = null) =
     hor(8, attrs, style.copy(display="flex"), block)
 
+fun hor3(attrs: Attrs = Attrs(), style: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
+    hor(12, attrs, style.copy(display="flex"), block)
+
 fun pageHeader0(title: String, className: String = "") =
     kdiv(className="page-header $className", marginTop=0, marginBottom=15){o->
         o- h3(tame="pageHeader", marginBottom=0){o->

@@ -105,10 +105,10 @@ object css {
             val rightIcon by Style(
                 style = """
                     color: #90a4ae;
-                    margin-left: 3px;
+                    /*margin-left: 3px;
                     position: absolute;
                     right: 3px;
-                    top: 4px;
+                    top: 4px;*/
                     cursor: pointer;""",
                 hover = """
                     color: #607d8b;""")

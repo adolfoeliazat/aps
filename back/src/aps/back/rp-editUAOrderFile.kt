@@ -64,7 +64,7 @@ private fun serveEditUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContex
         }
     }
 
-    val updatedOrderFile = selectUAOrderFile(ctx, orderFileID).toRTO(ctx.q)
+    val updatedOrderFile = selectUAOrderFile(ctx, orderFileID).toRTO(ctx)
 
     return EditUAOrderFileRequestBase.Response(updatedOrderFile)
 }

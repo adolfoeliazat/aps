@@ -178,20 +178,12 @@ fun JQUsers.toRTO(q: DSLContext): UserRTO {
     )
 }
 
-fun JQUaOrderFilesRecord.toRTO(q: DSLContext, searchWords: List<String> = listOf()): UAOrderFileRTO {
+fun JQUaOrderFilesRecord.toRTO(ctx: ProcedureContext, searchWords: List<String> = listOf()): UAOrderFileRTO {
     return UAOrderFileRTO(
         id = this.id.toString(),
-        file = loadFile(q, this.fileId, searchWords, Language.UA),
-        seenAsFrom = this.seenAsFrom.toApp()
-    )
-}
-
-fun JQUaOrderFiles.toRTO(q: DSLContext, searchWords: List<String> = listOf()): UAOrderFileRTO {
-    // TODO:vgrechka @kill
-    return UAOrderFileRTO(
-        id = this.id.toString(),
-        file = loadFile(q, this.fileId, searchWords, Language.UA),
-        seenAsFrom = this.seenAsFrom.toApp()
+        file = loadFile(ctx.q, this.fileId, searchWords, Language.UA),
+        seenAsFrom = this.seenAsFrom.toApp(),
+        editable = this.creatorId == ctx.user.id.toLong()
     )
 }
 

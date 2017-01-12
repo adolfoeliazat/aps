@@ -93,7 +93,7 @@ import kotlin.reflect.KClass
                 records = records.subList(0, chunkSize)
             }
 
-            val items = records.map {it.toRTO(ctx.q, searchWords)}
+            val items = records.map {it.toRTO(ctx, searchWords)}
 
             return@run Chunk(items, moreFromId)
         }

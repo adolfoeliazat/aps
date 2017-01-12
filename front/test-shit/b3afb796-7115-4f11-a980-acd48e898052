@@ -193,12 +193,12 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -246,10 +246,10 @@
                 <div>
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
-                      <div class="cunt-header-editing">
-                        <i class="cunt-header-leftIcon-editing fa fa-file">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
                         </i>
-                        <i class="cunt-header-leftOverlayBottomLeftIcon-editing fa fa-pencil">
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
                         </i>
                         <span>
                           Crappy release 2
@@ -259,6 +259,140 @@
                         </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        08.01.2016 20:50:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          crappy release 2.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          К. пошел  было  к  лестнице,  чтобы  подняться  в  кабинет следователя,  но  остановился:  кроме этой лестницы, со двора в дом было еще три входа, а в глубине  двора  виднелся  неширокий проход  во  второй  двор.  К.  рассердился,  оттого  что ему не указали точнее, где этот кабинет; все-таки к нему  отнеслись  с удивительным  невниманием и равнодушием, и он решил, что заявит об этом громко и отчетливо.  Наконец  он  все  же  поднялся  по лестнице,   мысленно  повторяя  выражение  Виллема,  одного  из стражей, что вина сама притягивает к себе правосудие, из  чего, собственно  говоря,  вытекало,  что  кабинет следователя должен находиться именно на той лестнице, куда случайно поднялся К.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                        </i>
+                        <span>
+                          Crappy release 1
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100012
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          От писателя
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        06.01.2016 06:37:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          crappy release 1.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          К. прошел дальше по улочке медленным шагом, будто  у  него времени   сколько   угодно;   если  следователь  видит  его  из какого-нибудь окна, значит он знает, что К. явился. Только  что пробило девять. Дом оказался довольно далеко, он был необычайно длинный;   особенно   ворота  были  очень  высокие  и  широкие. Очевидно, они предназначались для фургонов,  развозивших  товар по  разным складам. Сейчас все склады во дворе были заперты, но по вывескам К. узнал некоторые фирмы -  его  банк  вел  с  ними дела.  Вопреки  своему  обыкновению  он  пристально разглядывал окружающее, даже остановился у входа  во  двор.  Неподалеку  на ящике  сидел  босоногий  человек и читал газету. Двое мальчишек качались на тачке.  У  колонки  стояла  болезненная  девушка  в ночной  кофточке,  и,  пока  вода  набиралась  в кувшин, она не сводила глаз с К. В углу двора между  двумя  окнами  натягивали веревку,  на  ней  уже  висело  выстиранное  белье. Внизу стоял человек и, покрикивая, руководил работой.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-editing">
+                        <i class="cunt-header-leftIcon-editing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-editing fa fa-user">
+                        </i>
+                        <span>
+                          A piece of... Trial 4
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №100010
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
                         </span>
                       </div>
                     </div>
@@ -287,7 +421,7 @@
                                 Название
                               </label>
                               <div style="position: relative;">
-                                <input type="text" rows="5" class="form-control" value="Crappy release 2" style="resize: none;">
+                                <input type="text" rows="5" class="form-control" value="A piece of... Trial 4" style="resize: none;">
                                 </div>
                               </div>
                               <div class="form-group">
@@ -296,7 +430,7 @@
                                 </label>
                                 <div style="position: relative;">
                                   <textarea rows="5" type="text" class="form-control" style="resize: none;">
-                                    К. пошел  было  к  лестнице,  чтобы  подняться  в  кабинет следователя,  но  остановился:  кроме этой лестницы, со двора в дом было еще три входа, а в глубине  двора  виднелся  неширокий проход  во  второй  двор.  К.  рассердился,  оттого  что ему не указали точнее, где этот кабинет; все-таки к нему  отнеслись  с удивительным  невниманием и равнодушием, и он решил, что заявит об этом громко и отчетливо.  Наконец  он  все  же  поднялся  по лестнице,   мысленно  повторяя  выражение  Виллема,  одного  из стражей, что вина сама притягивает к себе правосудие, из  чего, собственно  говоря,  вытекало,  что  кабинет следователя должен находиться именно на той лестнице, куда случайно поднялся К.
+                                    К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
                                   </textarea>
                                 </div>
                               </div>
@@ -319,140 +453,6 @@
                           <div class="cunt-header-viewing">
                             <i class="cunt-header-leftIcon-viewing fa fa-file">
                             </i>
-                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
-                            </i>
-                            <span>
-                              Crappy release 1
-                            </span>
-                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                              №100012
-                            </span>
-                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                              От писателя
-                            </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Создан
-                          </label>
-                          <div>
-                            06.01.2016 06:37:05 (Киев)
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Имя файла
-                          </label>
-                          <div>
-                            <span>
-                              crappy release 1.rtf
-                            </span>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Размер
-                          </label>
-                          <div>
-                            2 КБ
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <label style="margin-bottom: 0px;">
-                            Детали
-                          </label>
-                          <div style="white-space: pre-wrap;">
-                            <p>
-                              К. прошел дальше по улочке медленным шагом, будто  у  него времени   сколько   угодно;   если  следователь  видит  его  из какого-нибудь окна, значит он знает, что К. явился. Только  что пробило девять. Дом оказался довольно далеко, он был необычайно длинный;   особенно   ворота  были  очень  высокие  и  широкие. Очевидно, они предназначались для фургонов,  развозивших  товар по  разным складам. Сейчас все склады во дворе были заперты, но по вывескам К. узнал некоторые фирмы -  его  банк  вел  с  ними дела.  Вопреки  своему  обыкновению  он  пристально разглядывал окружающее, даже остановился у входа  во  двор.  Неподалеку  на ящике  сидел  босоногий  человек и читал газету. Двое мальчишек качались на тачке.  У  колонки  стояла  болезненная  девушка  в ночной  кофточке,  и,  пока  вода  набиралась  в кувшин, она не сводила глаз с К. В углу двора между  двумя  окнами  натягивали веревку,  на  ней  уже  висело  выстиранное  белье. Внизу стоял человек и, покрикивая, руководил работой.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <div class="cunt-header-viewing">
-                            <i class="cunt-header-leftIcon-viewing fa fa-file">
-                            </i>
-                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
-                            </i>
-                            <span>
-                              A piece of... Trial 4
-                            </span>
-                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                              №100010
-                            </span>
-                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                              Мой
-                            </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Создан
-                          </label>
-                          <div>
-                            03.01.2016 07:18:05 (Киев)
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Имя файла
-                          </label>
-                          <div>
-                            <span>
-                              piece of trial 4.rtf
-                            </span>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <label style="margin-bottom: 0px;">
-                            Размер
-                          </label>
-                          <div>
-                            1 КБ
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <label style="margin-bottom: 0px;">
-                            Детали
-                          </label>
-                          <div style="white-space: pre-wrap;">
-                            <p>
-                              К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-12">
-                          <div class="cunt-header-viewing">
-                            <i class="cunt-header-leftIcon-viewing fa fa-file">
-                            </i>
                             <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                             </i>
                             <span>
@@ -464,12 +464,20 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               Мой
                             </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-trash">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-pencil">
+                                </i>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -531,12 +539,20 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               Мой
                             </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-trash">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-pencil">
+                                </i>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -599,12 +615,20 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               Мой
                             </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-trash">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-pencil">
+                                </i>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -666,12 +690,12 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               От писателя
                             </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -733,12 +757,12 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               От писателя
                             </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -801,12 +825,20 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               Мой
                             </span>
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                            </i>
-                            <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                            </i>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-trash">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-pencil">
+                                </i>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

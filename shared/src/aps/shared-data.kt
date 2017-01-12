@@ -56,7 +56,8 @@ class FileRTO(
 class UAOrderFileRTO(
     val id: String,
     val file: FileRTO,
-    val seenAsFrom: UserKind
+    val seenAsFrom: UserKind,
+    val editable: Boolean
 )
 
 
