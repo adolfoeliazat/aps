@@ -23,12 +23,13 @@ object ScratchBack {
     }
 
     private fun shit2() {
-        DB.apsTestOnTestServer.jooshit {q ->
-            val rec: Record = q("Select UA order")
+        DB.apsTestOnTestServer.joo {q->
+            val rec: Record = tracingSQL("Select UA order") {q
                 .select().from(UA_ORDERS)
                 // .where(UA_ORDERS.ID.eq(req.id.value.toLong()))
                 .fetchOne()
                 ?: bitchExpectedly(t("TOTE", "Нет такого заказа (по крайней мере, для тебя)"))
+            }
 
             val order = rec.into(JQUaOrders::class.java)
             println(order.insertedAt)
@@ -46,8 +47,8 @@ object ScratchBack {
         //        val query = "select * from users"
         //        val query = "select * from user_tokens"
 
-        DB.apsTestOnTestServer.jooshit {q ->
-            val res = q("Fucking around").fetch(query)
+        DB.apsTestOnTestServer.joo {q->
+            val res = tracingSQL("Fucking around") {q.fetch(query)}
             res.forEachIndexed {recordIndex, record ->
                 println("Record $recordIndex:")
                 for (fieldIndex in 0 until res.fieldsRow().size()) {

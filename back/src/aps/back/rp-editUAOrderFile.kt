@@ -29,13 +29,14 @@ import java.util.*
 private fun serveEditUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContext, req: EditUAOrderFileRequestBase): EditUAOrderFileRequestBase.Response {
     val orderFileID = req.orderFileID.value.toLong()
 
-    val orderFile = ctx.qshit("Select order file")
+    val orderFile = tracingSQL("Select order file") {ctx.q
         .selectFrom(UA_ORDER_FILES)
         .where(UA_ORDER_FILES.ID.eq(orderFileID))
         .fetchOne()
+    }
 
     FILES.let {t->
-        ctx.updateShit("Update file", t)
+        ctx.updateShit("Update file", t) {it
             .set(t.TITLE, req.title.value)
             .set(t.DETAILS, req.details.value)
             .let {
@@ -50,15 +51,17 @@ private fun serveEditUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContex
             }
             .where(t.ID.eq(orderFile.fileId))
             .execute()
+        }
     }
 
     UA_ORDER_FILES.let {t-> // Just change updated_at
-        ctx.updateShit("Update order file", t)
+        ctx.updateShit("Update order file", t) {it
             .where(t.ID.eq(orderFileID))
             .execute()
+        }
     }
 
-    val updatedOrderFile = selectUAOrderFile(ctx, orderFileID).toRTO(ctx.qshit)
+    val updatedOrderFile = selectUAOrderFile(ctx, orderFileID).toRTO(ctx.q)
 
     return EditUAOrderFileRequestBase.Response(updatedOrderFile)
 }

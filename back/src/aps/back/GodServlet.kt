@@ -77,21 +77,23 @@ class GodServlet : HttpServlet() {
         val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
 
         val db = DB.byID(databaseID)
-        db.jooshit {q->
+        db.joo {q->
             val user = userByToken(q, token)
-            val rows = q("Select file")
+            val rows = tracingSQL("Select file") {q
                 .select().from(FILES)
                 .where(FILES.ID.eq(fileID.toLong()))
                 .fetch().into(JQFiles::class.java)
+            }
             if (rows.isEmpty()) bitch("No fucking file with ID $fileID")
             val file = rows[0]
 
             val forbidden = run {
-                val rows = q("Select file-user permissions")
+                val rows = tracingSQL("Select file-user permissions") {q
                     .select().from(FILE_USER_PERMISSIONS)
                     .where(FILE_USER_PERMISSIONS.FILE_ID.eq(fileID.toLong()))
                     .and(FILE_USER_PERMISSIONS.USER_ID.eq(user.id.toLong()))
                     .fetch().into(JQFileUserPermissions::class.java)
+                }
                 rows.isEmpty()
             }
 

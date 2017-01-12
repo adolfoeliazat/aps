@@ -15,31 +15,37 @@ import org.jooq.*
 import java.sql.Timestamp
 
 @Suppress("UNCHECKED_CAST")
-fun <R : Record> ProcedureContext.insertShit(
+fun <Res, R : Record> ProcedureContext.insertShit(
     descr: String,
-    table: Table<R>
-): InsertSetMoreStep<R> {
-    var step = this.qshit(descr)
-        .insertInto(table)
-        .set(table.field("inserted_at") as Field<Timestamp>, this.requestTimestamp)
-        .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
+    table: Table<R>,
+    block: (InsertSetMoreStep<R>) -> Res
+): Res {
+    return tracingSQL(descr) {
+        var step = q
+            .insertInto(table)
+            .set(table.field("inserted_at") as Field<Timestamp>, this.requestTimestamp)
+            .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
 
-    table.field("creator_id")?.let {
-        step = step.set(it as Field<Long>, this.user.id.toLong())
+        table.field("creator_id")?.let {
+            step = step.set(it as Field<Long>, this.user.id.toLong())
+        }
+
+        block(step)
     }
-
-    return step
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <R : Record> ProcedureContext.updateShit(
+fun <Res, R : Record> ProcedureContext.updateShit(
     descr: String,
-    table: Table<R>
-): UpdateSetMoreStep<R> {
-    var step = this.qshit(descr)
-        .update(table)
-        .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
-    return step
+    table: Table<R>,
+    block: (UpdateSetMoreStep<R>) -> Res
+): Res {
+    return tracingSQL(descr) {
+        val step = q
+            .update(table)
+            .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
+        block(step)
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -104,17 +110,19 @@ fun UAOrderState.toJOOQ(): JQUaOrderState = when (this) {
 }
 
 fun ProcedureContext.loadUser(id: Long): UserRTO {
-    return qshit("Select user")
+    return tracingSQL("Select user") {q
         .select().from(USERS)
         .where(USERS.ID.eq(id))
-        .fetchOne().into(JQUsers::class.java).toRTO(qshit)
+        .fetchOne().into(JQUsers::class.java).toRTO(q)
+    }
 }
 
-fun loadFile(q: DSLContextProxyFactory, id: Long, searchWords: List<String>, lang: Language): FileRTO {
-    val x = q("Select file")
+fun loadFile(q: DSLContext, id: Long, searchWords: List<String>, lang: Language): FileRTO {
+    val x = tracingSQL("Select file") {q
         .select().from(FILES)
         .where(FILES.ID.eq(id))
         .fetchOne().into(JQFiles::class.java)
+    }
 
     val analyzer = when (lang) {
         Language.UA -> russianAnalyzer
@@ -140,11 +148,12 @@ fun loadFile(q: DSLContextProxyFactory, id: Long, searchWords: List<String>, lan
     )
 }
 
-fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
-    val roles = q("Select roles")
+fun JQUsers.toRTO(q: DSLContext): UserRTO {
+    val roles = tracingSQL("Select roles") {q
         .select().from(USER_ROLES)
         .where(USER_ROLES.USER_ID.eq(id))
         .fetchInto(JQUserRoles::class.java)
+    }
 
     // TODO:vgrechka Double-check all secrets are excluded from UserRTO    7c2d1191-d43b-485c-af67-b95b46bbf62b
     return UserRTO(
@@ -169,7 +178,7 @@ fun JQUsers.toRTO(q: DSLContextProxyFactory): UserRTO {
     )
 }
 
-fun JQUaOrderFilesRecord.toRTO(q: DSLContextProxyFactory, searchWords: List<String> = listOf()): UAOrderFileRTO {
+fun JQUaOrderFilesRecord.toRTO(q: DSLContext, searchWords: List<String> = listOf()): UAOrderFileRTO {
     return UAOrderFileRTO(
         id = this.id.toString(),
         file = loadFile(q, this.fileId, searchWords, Language.UA),
@@ -177,7 +186,7 @@ fun JQUaOrderFilesRecord.toRTO(q: DSLContextProxyFactory, searchWords: List<Stri
     )
 }
 
-fun JQUaOrderFiles.toRTO(q: DSLContextProxyFactory, searchWords: List<String> = listOf()): UAOrderFileRTO {
+fun JQUaOrderFiles.toRTO(q: DSLContext, searchWords: List<String> = listOf()): UAOrderFileRTO {
     // TODO:vgrechka @kill
     return UAOrderFileRTO(
         id = this.id.toString(),
@@ -187,11 +196,12 @@ fun JQUaOrderFiles.toRTO(q: DSLContextProxyFactory, searchWords: List<String> = 
 }
 
 fun insertFileUserPermission(ctx: ProcedureContext, fileID: Long, userID: Long) {
-    FILE_USER_PERMISSIONS.let {
-        ctx.insertShit("Insert file permission", it)
-            .set(it.FILE_ID, fileID)
-            .set(it.USER_ID, userID)
+    FILE_USER_PERMISSIONS.let {t->
+        ctx.insertShit("Insert file permission", t) {it
+            .set(t.FILE_ID, fileID)
+            .set(t.USER_ID, userID)
             .execute()
+        }
     }
 }
 
@@ -213,11 +223,12 @@ fun selectUAOrderFile(ctx: ProcedureContext, orderFileID: Long): JQUaOrderFilesR
 
 fun selectUAOrderAreaByName(ctx: ProcedureContext, orderID: Long, name: String): JQUaOrderAreasRecord {
     return UA_ORDER_AREAS.let {
-        ctx.qshit("Select area")
+        tracingSQL("Select area") {ctx.q
             .selectFrom(it)
             .where(it.NAME.eq(name))
             .and(it.UA_ORDER_ID.eq(orderID))
             .fetchOne()!!
+        }
     }
 }
 

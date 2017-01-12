@@ -21,10 +21,11 @@ import aps.back.generated.jooq.Tables.*
         val orderFileID = req.id.value.toLong()
 
         UA_ORDER_FILES.let {t->
-            ctx.updateShit("Deleting order file", t)
+            ctx.updateShit("Deleting order file", t) {it
                 .set(t.DELETED, true)
                 .where(t.ID.eq(orderFileID))
                 .execute()
+            }
         }
 
         return DeleteRequest.Response()

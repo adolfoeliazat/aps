@@ -19,10 +19,11 @@ import java.util.*
 
         val vagueMessage = t("Invalid email or password", "Неверная почта или пароль")
 
-        val users = ctx.qshit("Select user")
+        val users = tracingSQL("Select user") {ctx.q
             .select().from(USERS)
             .where(USERS.EMAIL.equal(req.email.value))
             .fetch().into(JQUsers::class.java)
+        }
         if (users.isEmpty()) bitchExpectedly(vagueMessage)
 
         val user = users[0]
@@ -32,14 +33,15 @@ import java.util.*
 
         // TODO:vgrechka Store tokens in Redis instead of DB    c51fe75c-f55e-4a68-9a7b-465e44db6235
         val token = "" + UUID.randomUUID()
-        ctx.qshit("Insert token")
+        tracingSQL("Insert token") {ctx.q
             .insertInto(USER_TOKENS, USER_TOKENS.USER_ID, USER_TOKENS.TOKEN)
             .values(user.id, token)
             .execute()
+        }
 
         // TODO:vgrechka Load related user shit?
 
-        return SignInResponse(token, user.toRTO(ctx.qshit))
+        return SignInResponse(token, user.toRTO(ctx.q))
     }
 )
 

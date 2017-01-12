@@ -15,7 +15,7 @@ import aps.back.generated.jooq.enums.*
     runShit = fun(ctx, req): CustomerCreateUAOrderRequest.Response {
         val documentType = req.documentType.value
 
-        val orderRec = ctx.qshit("Insert UA order")
+        val orderRec = tracingSQL("Insert UA order") {ctx.q
             .insertInto(UA_ORDERS)
             .set(UA_ORDERS.INSERTED_AT, ctx.requestTimestamp)
             .set(UA_ORDERS.UPDATED_AT, ctx.requestTimestamp)
@@ -31,15 +31,17 @@ import aps.back.generated.jooq.enums.*
             .set(UA_ORDERS.STATE, JQUaOrderState.LOOKING_FOR_WRITERS)
             .returning(UA_ORDERS.ID)
             .fetchOne()
+        }
 
         fun createArea(name: String) {
-            ctx.qshit("Insert order area: $name")
+            tracingSQL("Insert order area: $name") {ctx.q
                 .insertInto(UA_ORDER_AREAS)
                 .set(UA_ORDER_AREAS.INSERTED_AT, ctx.requestTimestamp)
                 .set(UA_ORDER_AREAS.UPDATED_AT, ctx.requestTimestamp)
                 .set(UA_ORDER_AREAS.UA_ORDER_ID, orderRec.getValue(UA_ORDERS.ID))
                 .set(UA_ORDER_AREAS.NAME, name)
                 .execute()
+            }
         }
 
         createArea(const.orderArea.customer)

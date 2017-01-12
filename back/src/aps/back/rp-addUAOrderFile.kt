@@ -29,17 +29,18 @@ import java.util.*
 
 private fun serveAddUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContext, req: AddUAOrderFileRequestBase): AddUAOrderFileRequestBase.Response {
     val content = Base64.getDecoder().decode(req.file.base64)
-    val fileID = FILES.let {
-        ctx.insertShit("Insert file", it)
-            .set(it.NAME, req.file.fileName)
-            .set(it.TITLE, req.title.value)
-            .set(it.ADMIN_NOTES, "")
-            .set(it.DETAILS, req.details.value)
-            .set(it.CONTENT, content)
-            .set(it.SIZE_BYTES, content.size)
-            .set(it.MIME, "application/octet-stream")
-            .set(it.SHA1, Hashing.sha1().hashBytes(content).toString())
-            .returnID(it)
+    val fileID = FILES.let {t->
+        ctx.insertShit("Insert file", t) {it
+            .set(t.NAME, req.file.fileName)
+            .set(t.TITLE, req.title.value)
+            .set(t.ADMIN_NOTES, "")
+            .set(t.DETAILS, req.details.value)
+            .set(t.CONTENT, content)
+            .set(t.SIZE_BYTES, content.size)
+            .set(t.MIME, "application/octet-stream")
+            .set(t.SHA1, Hashing.sha1().hashBytes(content).toString())
+            .returnID(t)
+        }
     }
 
     val orderID = req.orderID.value.toLong()
@@ -48,13 +49,14 @@ private fun serveAddUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContext
 
     val seenAsFrom = callingUserKind.toJOOQ()
 
-    val orderFileID = UA_ORDER_FILES.let {
-        ctx.insertShit("Insert order file", it)
-            .set(it.UA_ORDER_ID, orderID)
-            .set(it.FILE_ID, fileID)
-            .set(it.UA_ORDER_AREA_ID, areaID)
-            .set(it.SEEN_AS_FROM, seenAsFrom)
-            .returnID(it)
+    val orderFileID = UA_ORDER_FILES.let {t->
+        ctx.insertShit("Insert order file", t) {it
+            .set(t.UA_ORDER_ID, orderID)
+            .set(t.FILE_ID, fileID)
+            .set(t.UA_ORDER_AREA_ID, areaID)
+            .set(t.SEEN_AS_FROM, seenAsFrom)
+            .returnID(t)
+        }
     }
 
     insertFileUserPermission(ctx, fileID, ctx.user.id.toLong())

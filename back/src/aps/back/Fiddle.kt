@@ -29,8 +29,8 @@ object Fiddle {
     }
 
     fun selectNow(db: DB.Database) {
-        db.jooshit {q->
-            val res = q("Fiddling").fetch("select now()")
+        db.joo {q->
+            val res = tracingSQL("Fiddling") {q.fetch("select now()")}
             printFetchResult(res)
         }
     }

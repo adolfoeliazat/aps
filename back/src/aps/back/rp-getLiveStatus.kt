@@ -16,11 +16,12 @@ import aps.GetLiveStatusRequest.Response as Res
     runShit = fun(ctx, req): GetLiveStatusRequest.Response {
         return when (ctx.user.kind) {
             UserKind.ADMIN -> Res.ForAdmin(
-                profilesToApprove = ctx.qshit("Select amount of profiles to approve")
+                profilesToApprove = tracingSQL("Select amount of profiles to approve") {ctx.q
                     .selectCount().from(USERS)
                     .where(USERS.STATE.eq(UserState.PROFILE_APPROVAL_PENDING.name))
                     .and(USERS.ASSIGNED_TO.eq(ctx.user.id.toLong()))
-                    .fetchOne(0, java.lang.Long.TYPE).toString(),
+                    .fetchOne(0, java.lang.Long.TYPE).toString()
+                },
                 suka = "blia-" + puid()
             )
             UserKind.WRITER -> Res.ForWriter(

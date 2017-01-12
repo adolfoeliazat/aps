@@ -86,7 +86,7 @@ object DB {
         val host: String, val port: Int, val name: String,
         val user: String, val password: String? = null,
         val allowRecreation: Boolean = false,
-        val populate: ((DSLContextProxyFactory) -> Unit)? = null,
+        val populate: ((DSLContext) -> Unit)? = null,
         val correspondingAdminDB: Database? = null
     ) {
         private val dslazy = relazy {HikariDataSource().applet {o->
@@ -113,32 +113,34 @@ object DB {
             close()
             template?.let {it.close()}
 
-            correspondingAdminDB!!.jooshit {
-                it("Recreate database $name" + template.letOrEmpty {" from ${it.name}"})
+            correspondingAdminDB!!.joo {
+                tracingSQL("Recreate database $name" + template.letOrEmpty {" from ${it.name}"}) {it
                     .execute("""
                         drop database if exists "$name";
                         create database "$name" ${template.letOrEmpty {"template = \"${it.name}\""}};
                     """)
+                }
             }
 
             if (template == null)
-                jooshit {
-                    it("schema.sql")
+                joo {
+                    tracingSQL("schema.sql") {it
                         .execute(DB::class.java.getResource("schema.sql").readText())
+                    }
                 }
 
-            populate?.let {jooshit(it)}
+            populate?.let {joo(it)}
         }
 
         fun recreateSchema() {
             check(allowRecreation) {"You crazy? I'm not recreating THIS: $this"}
 
-            jooshit {
-                it("drop.sql").execute(DB::class.java.getResource("drop.sql").readText())
-                it("schema.sql").execute(DB::class.java.getResource("schema.sql").readText())
+            joo {
+                tracingSQL("drop.sql") {it.execute(DB::class.java.getResource("drop.sql").readText())}
+                tracingSQL("schema.sql") {it.execute(DB::class.java.getResource("schema.sql").readText())}
             }
 
-            populate?.let {jooshit(it)}
+            populate?.let {joo(it)}
         }
 
         fun close() {
@@ -146,37 +148,37 @@ object DB {
             dslazy.reset()
         }
 
-        fun <T> jooshit(act: (DSLContextProxyFactory) -> T): T {
-            ds.connection.use {con->
-                // TODO:vgrechka Cache jOOQ DSLContext
-                val q = DSL.using(
-                    DefaultConfiguration()
-                        .set(con)
-                        .set(SQLDialect.POSTGRES_9_5)
-                        .set(DefaultExecuteListenerProvider(object:DefaultExecuteListener() {
-                            override fun executeStart(ctx: ExecuteContext) {
-                                if (!BackGlobus.tracingEnabled) return
-
-                                fun dumpShit(shit: String) {
-                                    if (isRequestThread) {
-                                        requestShit.actualSQLFromJOOQ = shit
-                                    }
-                                }
-
-                                fun dumpShit(shit: QueryPart) =
-                                    dumpShit(DSL.using(ctx.configuration().dialect(), Settings().withRenderFormatted(true))
-                                        .renderInlined(shit))
-
-                                ctx.query()?.let {dumpShit(it); return}
-                                ctx.routine()?.let {dumpShit(it); return}
-                                ctx.sql()?.let {dumpShit(it); return}
-                            }
-                        }))
-                )
-
-                return act(DSLContextProxyFactory(q))
-            }
-        }
+//        fun <T> jooshit(act: (DSLContextProxyFactory) -> T): T {
+//            ds.connection.use {con->
+//                // TODO:vgrechka Cache jOOQ DSLContext
+//                val q = DSL.using(
+//                    DefaultConfiguration()
+//                        .set(con)
+//                        .set(SQLDialect.POSTGRES_9_5)
+//                        .set(DefaultExecuteListenerProvider(object:DefaultExecuteListener() {
+//                            override fun executeStart(ctx: ExecuteContext) {
+//                                if (!BackGlobus.tracingEnabled) return
+//
+//                                fun dumpShit(shit: String) {
+//                                    if (isRequestThread) {
+//                                        requestShit.actualSQLFromJOOQ = shit
+//                                    }
+//                                }
+//
+//                                fun dumpShit(shit: QueryPart) =
+//                                    dumpShit(DSL.using(ctx.configuration().dialect(), Settings().withRenderFormatted(true))
+//                                        .renderInlined(shit))
+//
+//                                ctx.query()?.let {dumpShit(it); return}
+//                                ctx.routine()?.let {dumpShit(it); return}
+//                                ctx.sql()?.let {dumpShit(it); return}
+//                            }
+//                        }))
+//                )
+//
+//                return act(DSLContextProxyFactory(q))
+//            }
+//        }
 
         fun <T> joo(act: (DSLContext) -> T): T {
             ds.connection.use {con->
@@ -213,7 +215,7 @@ object DB {
         override fun toString() = "Database(id='$id')"
     }
 
-    fun populate_testTemplateUA1(q: DSLContextProxyFactory) {
+    fun populate_testTemplateUA1(q: DSLContext) {
         redisLog.group("populate_testTemplateUA1") {
             val secretHash = "\$2a\$10\$x5bq4zVvcyTb2oUb5.fhreJfl/2NqsaH3TcAwm/C1apAazlBJX2t6" // secret
             var nextUserID = 101L
@@ -230,7 +232,7 @@ object DB {
                         dlog("Inserting ${_kind.name} ${u.user.firstName} at ${u.user.insertedAt}")
 
                         redisLog.group("Make user: ${u.user.email}") {
-                            q("Insert user ${u.user.email}")
+                            tracingSQL("Insert user ${u.user.email}") {q
                                 .insertInto(Tables.USERS)
                                 .set(u.user.apply {
                                     id = nextUserID++
@@ -241,23 +243,26 @@ object DB {
                                     adminNotes = ""
                                 })
                                 .execute()
+                            }
 
-                            q("Insert token for ${u.user.email}")
+                            tracingSQL("Insert token for ${u.user.email}") {q
                                 .insertInto(Tables.USER_TOKENS)
                                 .set(JQUserTokensRecord().apply {
                                     userId = u.user.id
                                     token = "temp-${u.user.id}"
                                 })
                                 .execute()
+                            }
 
                             for (r in u.roles) {
-                                q("Insert role ${r.name} for ${u.user.email}")
+                                tracingSQL("Insert role ${r.name} for ${u.user.email}") {q
                                     .insertInto(Tables.USER_ROLES)
                                     .set(JQUserRolesRecord().apply {
                                         userId = u.user.id
                                         role = r.name
                                     })
                                     .execute()
+                                }
                             }
                         }
                     })
@@ -319,14 +324,14 @@ class ActivityParams {
     lateinit var shortDescription: String
 }
 
-class DSLContextProxyFactory(val q: DSLContext) {
-    operator fun invoke(shortDescription: String): DSLContextProxy {
-        val activityParams = ActivityParams()-{o->
-            o.shortDescription = shortDescription
-        }
-        return DSLContextProxy(activityParams, q)
-    }
-}
+//class DSLContextProxyFactory(val q: DSLContext) {
+//    operator fun invoke(shortDescription: String): DSLContextProxy {
+//        val activityParams = ActivityParams()-{o->
+//            o.shortDescription = shortDescription
+//        }
+//        return DSLContextProxy(activityParams, q)
+//    }
+//}
 
 
 

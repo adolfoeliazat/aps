@@ -29,25 +29,26 @@ fun serveSignUp() = publicProcedure(
                 it
             } ?: "" + UUID.randomUUID()
 
-            val userID = USERS.let {
-                ctx.insertShit("Insert user", it)
-                    .set(it.INSERTED_AT, ctx.requestTimestamp)
-                    .set(it.UPDATED_AT, ctx.requestTimestamp)
-                    .set(it.EMAIL, email)
-                    .set(it.KIND, when (ctx.clientKind) {
+            val userID = USERS.let {t->
+                ctx.insertShit("Insert user", t) {it
+                    .set(t.INSERTED_AT, ctx.requestTimestamp)
+                    .set(t.UPDATED_AT, ctx.requestTimestamp)
+                    .set(t.EMAIL, email)
+                    .set(t.KIND, when (ctx.clientKind) {
                         ClientKind.CUSTOMER -> JQUserKind.CUSTOMER
                         ClientKind.WRITER -> JQUserKind.WRITER
                     })
-                    .set(it.LANG, ctx.lang.name)
-                    .set(it.STATE, when(ctx.clientKind) {
+                    .set(t.LANG, ctx.lang.name)
+                    .set(t.STATE, when(ctx.clientKind) {
                         ClientKind.CUSTOMER -> UserState.COOL.name
                         ClientKind.WRITER -> UserState.PROFILE_PENDING.name
                     })
-                    .set(it.PASSWORD_HASH, BCrypt.hashpw(password, BCrypt.gensalt()))
-                    .set(it.FIRST_NAME, firstName)
-                    .set(it.LAST_NAME, lastName)
-                    .set(it.ADMIN_NOTES, "")
-                    .returnID(it)
+                    .set(t.PASSWORD_HASH, BCrypt.hashpw(password, BCrypt.gensalt()))
+                    .set(t.FIRST_NAME, firstName)
+                    .set(t.LAST_NAME, lastName)
+                    .set(t.ADMIN_NOTES, "")
+                    .returnID(t)
+                }
             }
 
             val signInURL = "${requestShit.commonRequestFields.clientURL}/sign-in.html"

@@ -96,9 +96,9 @@ testProcedure(
     runShit = fun(ctx, req): GenericResponse {
         val db = DB.apsTestOnTestServer
         db.recreateSchema()
-        db.jooshit {q->
+        db.joo {q->
             USERS.let {
-                q("Insert Dasja")
+                tracingSQL("Insert Dasja") {q
                     .insertInto(USERS)
                     .set(it.INSERTED_AT, ctx.requestTimestamp)
                     .set(it.UPDATED_AT, ctx.requestTimestamp)
@@ -111,6 +111,7 @@ testProcedure(
                     .set(it.LAST_NAME, "Админовна")
                     .set(it.ADMIN_NOTES, "")
                     .execute()
+                }
             }
         }
         return GenericResponse()
@@ -168,11 +169,11 @@ testProcedure(
             }
 
             DB.apsTestOnTestServer.close()
-            DB.postgresOnTestServer.jooshit {
-                it("Recreate database").execute(""""
+            DB.postgresOnTestServer.joo {
+                tracingSQL("Recreate database") {it.execute(""""
                     drop database if exists "$databaseToCreate";
                     create database "$databaseToCreate" template = "$databaseToUseAsTemplate";
-                """)
+                """)}
             }
         } finally {
             TestServerFiddling.rejectAllRequestsNeedingDB = oldRejectAllRequests
@@ -241,9 +242,10 @@ val backendInstanceID = "" + UUID.randomUUID()
     TestSetUserFieldsRequest(),
     needsDB = true,
     runShit = fun(ctx, req): GenericResponse {
-        var step = ctx.qshit("Update user")
+        var step = tracingSQL("Update user") {ctx.q
             .update(USERS)
             .set(USERS.ID, USERS.ID)
+        }
 
         req.state.let {if (it.specified) step = step.set(USERS.STATE, it.value.name)}
         req.profileRejectionReason.let {if (it.specified) step = step.set(USERS.PROFILE_REJECTION_REASON, it.value)}
@@ -353,7 +355,7 @@ fun frp_ping(rmap: Map<*, *>): String {
 fun frp_executeSQL(ctx: ProcedureContext, rmap: Map<*, *>) {
     val descr: String = cast(rmap["descr"])
     val sql: String = cast(rmap["sql"])
-    ctx.qshit(descr).execute(sql)
+    tracingSQL(descr) {ctx.q.execute(sql)}
 }
 
 private fun robotTypeTextCR(text: String) {
@@ -409,13 +411,14 @@ fun serveTestCopyOrderFileToArea() = adminProcedure(
         val protoOrderFile: JQUaOrderFilesRecord = selectUAOrderFile(ctx, req.orderFileID.value.toLong())
         val area: JQUaOrderAreasRecord = selectUAOrderAreaByName(ctx, protoOrderFile.uaOrderId, req.areaName.value)
 
-        val orderFileID = UA_ORDER_FILES.let {
-            ctx.insertShit("Insert order file", it)
-                .set(it.UA_ORDER_ID, protoOrderFile.uaOrderId)
-                .set(it.FILE_ID, protoOrderFile.fileId)
-                .set(it.UA_ORDER_AREA_ID, area.id)
-                .set(it.SEEN_AS_FROM, protoOrderFile.seenAsFrom)
-                .returnID(it)
+        val orderFileID = UA_ORDER_FILES.let {t->
+            ctx.insertShit("Insert order file", t) {it
+                .set(t.UA_ORDER_ID, protoOrderFile.uaOrderId)
+                .set(t.FILE_ID, protoOrderFile.fileId)
+                .set(t.UA_ORDER_AREA_ID, area.id)
+                .set(t.SEEN_AS_FROM, protoOrderFile.seenAsFrom)
+                .returnID(t)
+            }
         }
 
         insertFileUserPermission(ctx, protoOrderFile.fileId, req.permissionForUserID.value.toLong())

@@ -37,8 +37,8 @@ class QueryBuilder(val shortDescription: String) {
         return this
     }
 
-    fun fetch(q: DSLContextProxyFactory): List<Record> {
-        return q(shortDescription).fetch("" + sql, *bindings.toTypedArray())
+    fun fetch(q: DSLContext): List<Record> {
+        return tracingSQL(shortDescription) {q.fetch("" + sql, *bindings.toTypedArray())}
     }
 }
 
@@ -46,13 +46,13 @@ class Chunk<T>(val items: List<T>, val moreFromId: String?)
 
 
 fun <POJO : Any, RTO> selectChunk(
-    q: DSLContextProxyFactory,
+    q: DSLContext,
     table: String,
     pojoClass: KClass<POJO>,
     appendToSelect: (QueryBuilder) -> Unit = {},
     appendToFrom: (QueryBuilder) -> Unit = {},
     appendToWhere: (QueryBuilder) -> Unit = {},
-    loadItem: (POJO, DSLContextProxyFactory) -> RTO,
+    loadItem: (POJO, DSLContext) -> RTO,
     ordering: Ordering,
     fromID: Long?
 ) : Chunk<RTO> {
@@ -83,12 +83,13 @@ fun <POJO : Any, RTO> selectChunk(
 }
 
 fun loadUser(ctx: ProcedureContext): UserRTO {
-    val users = ctx.qshit("Select user")
+    val users = tracingSQL("Select user") {ctx.q
         .select().from(USERS)
         .where(USERS.ID.eq(ctx.user.id.toLong()))
         .fetch().into(JQUsers::class.java)
+    }
 
-    return users.first().toRTO(ctx.qshit)
+    return users.first().toRTO(ctx.q)
 }
 
 object BackGlobus {

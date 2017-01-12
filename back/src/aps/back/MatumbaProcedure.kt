@@ -23,7 +23,7 @@ fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die
 
 class ProcedureContext {
     lateinit var q: DSLContext
-    lateinit var qshit: DSLContextProxyFactory
+//    lateinit var qshit: DSLContextProxyFactory
     lateinit var clientKind: ClientKind
     lateinit var lang: Language
     lateinit var requestTimestamp: Timestamp
@@ -123,7 +123,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 
                         if (spec.needsUser) {
                             ctx.token = rmap["token"] as String
-                            ctx.user = userByToken(ctx.qshit, ctx.token)
+                            ctx.user = userByToken(ctx.q, ctx.token)
 
                             if (!spec.userKinds.contains(ctx.user.kind)) bitch("User kind not allowed: ${ctx.user.kind}")
                         }
@@ -143,7 +143,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 //                        redisLog.group("Some shit 2") {
                             db.joo {q->
                                 ctx.q = q
-                                ctx.qshit = DSLContextProxyFactory(q)
+//                                ctx.qshit = DSLContextProxyFactory(q)
                                 runShitWithMaybeDB()
                             }
 //                        }
@@ -258,12 +258,13 @@ adminProcedure(
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
 
-fun userByToken(q: DSLContextProxyFactory, token: String): UserRTO {
-    val rows = q("Select token")
+fun userByToken(q: DSLContext, token: String): UserRTO {
+    val rows = tracingSQL("Select token") {q
         .select().from(USER_TOKENS, USERS)
         .where(USER_TOKENS.TOKEN.eq(token))
         .and(USERS.ID.eq(USER_TOKENS.USER_ID))
         .fetch().into(JQUsers::class.java)
+    }
     if (rows.isEmpty()) bitch("Invalid token") // TODO:vgrechka Redirect user to sign-in page    301a55be-8bb4-4c60-ae7b-a6201f17d8e2
 
     // TODO:vgrechka Check that user kind matches requesting client kind    fc937ee4-010c-4f5e-bece-5d7db51bf8c1

@@ -15,10 +15,11 @@ import kotlin.reflect.KClass
 @RemoteProcedureFactory fun getUser() = adminProcedure(
     GetUserRequest(),
     runShit = fun(ctx, req): GetUserRequest.Response {
-        return GetUserRequest.Response(ctx.qshit("Select user")
+        return GetUserRequest.Response(tracingSQL("Select user") {ctx.q
             .select().from(USERS)
             .where(USERS.ID.eq(req.id.value.toLong()))
-            .fetchOne().into(JQUsers::class.java).toRTO(ctx.qshit))
+            .fetchOne().into(JQUsers::class.java).toRTO(ctx.q)
+        })
     }
 )
 
