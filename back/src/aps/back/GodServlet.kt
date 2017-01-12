@@ -12,6 +12,7 @@ import aps.back.generated.jooq.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.*
 import into.kommon.*
+import org.jooq.Result
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.servlet.*
@@ -139,6 +140,7 @@ private fun HttpServletResponse.spitText(text: String) {
 class RequestShit {
     var skipLoggingToRedis = false
     var actualSQLFromJOOQ: String? = null
+    var resultFromJOOQ: Result<*>? = null
     val redisLogParentIDs = Stack<String>()
     lateinit var commonRequestFields: CommonRequestFieldsHolder
     lateinit var servletRequest: HttpServletRequest

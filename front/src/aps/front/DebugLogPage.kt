@@ -173,11 +173,28 @@ class DebugLogPage(val world: World) {
                         is SQL -> {
                             val short = msg.shortDescription
                             if (short != null) {
-                                o- Betsy("SQL: $short",
-                                         renderMsgText(),
-                                         className = CN_HOVER_HIGHLIGHT,
-                                         renderInTitle = {renderInTitle(it, msg)},
-                                         renderInHeader = {renderStamp(it, msg)})
+                                o- Betsy(
+                                    "SQL: $short",
+                                    kdiv{o->
+                                        o- renderMsgText()
+                                        msg.result?.let {
+                                            o- line()
+                                            for ((i, rec) in it.withIndex()) {
+                                                o- Betsy(
+                                                    "Record $i",
+                                                    kul{o->
+                                                        for (fv in rec.fieldValues) {
+                                                            o- kli{o->
+                                                                o- "${fv.fieldName} = ${fv.value}"
+                                                            }
+                                                        }
+                                                    })
+                                            }
+                                        }
+                                    },
+                                    className = CN_HOVER_HIGHLIGHT,
+                                    renderInTitle = {renderInTitle(it, msg)},
+                                    renderInHeader = {renderStamp(it, msg)})
                             }
                             else
                                 o- renderMsgText()
@@ -220,4 +237,28 @@ class DebugLogPage(val world: World) {
         }
     }
 }
+
+private fun line() = reactCreateElement(
+    "hr",
+    json(
+        "style" to json(
+            "marginTop" to "1rem",
+            "marginBottom" to "1rem",
+            "borderTop" to "1px solid $GRAY_500"
+        )
+    )
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
 

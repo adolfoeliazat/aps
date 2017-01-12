@@ -76,7 +76,10 @@ fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String
     }
 }
 
-fun <T> dejsonize(json: String, descr: String? = null): T = dejsonizeValue(JSON.parse(json), descr)
+fun <T> dejsonize(json: String, descr: String? = null): T {
+    gloshit.dejsonize_json = json
+    return dejsonizeValue(JSON.parse(json), descr)
+}
 
 fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
     try {
@@ -124,6 +127,10 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
                     }
                 noise.clog("code", code)
                 eval(code)
+            }
+
+            jsThing.`$$$mapOfStringToAnyQuestion` == true -> {
+
             }
 
             jsIsArray(jsThing) -> jsArrayToListOfDynamic(jsThing) {dejsonizeValue(it)}.asDynamic()

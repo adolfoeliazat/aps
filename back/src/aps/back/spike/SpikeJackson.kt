@@ -4,11 +4,47 @@ import aps.*
 import aps.RedisLogMessage.Separator.Type.*
 import aps.back.*
 import into.kommon.*
+import org.jetbrains.kotlin.incremental.makeModuleFile
 
 fun main(args: Array<String>) {
 //    test1()
 //    test2()
-    test3()
+//    test3()
+    test4()
+}
+
+private fun test4() {
+    class Cunt(val name: String)
+
+    val om = shittyObjectMapper
+
+//    val obj = mutableListOf<Any>()-{o->
+//        o += mutableMapOf<String, Any?>()-{o->
+//            o["foo"] = 10
+//            o["bar"] = "cunt"
+//        }
+//        o += mutableMapOf<String, Any?>()-{o->
+//            o["foo"] = 20
+//            o["bar"] = "boobs"
+//        }
+//    }
+
+    val obj = mutableListOf<Any>()-{o->
+        o += RecordRTO(mutableListOf<FieldValueRTO>()-{o->
+            o += FieldValueRTO("pussy", "hairy")
+        })
+    }
+
+    val json = om.writeValueAsString(obj)
+    clog("json", json)
+
+//    val obj2 = om.readValue(json, VisualShitCapturedRequest::class.java)
+//    clog("id", obj2.id)
+//    for ((i, shot) in obj2.shots.withIndex()) {
+//        clog("shot $i:")
+//        clog("  dataURL", shot.dataURL)
+//        clog("  windowScrollY", shot.windowScrollY)
+//    }
 }
 
 private fun test3() {

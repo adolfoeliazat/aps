@@ -189,21 +189,26 @@ object DB {
                         .set(SQLDialect.POSTGRES_9_5)
                         .set(DefaultExecuteListenerProvider(object:DefaultExecuteListener() {
                             override fun executeStart(ctx: ExecuteContext) {
-                                if (!BackGlobus.tracingEnabled) return
+                                if (!BackGlobus.tracingEnabled || !isRequestThread) return
 
                                 fun dumpShit(shit: String) {
-                                    if (isRequestThread) {
-                                        requestShit.actualSQLFromJOOQ = shit
-                                    }
+                                    requestShit.actualSQLFromJOOQ = shit
                                 }
 
-                                fun dumpShit(shit: QueryPart) =
+                                fun dumpShit(shit: QueryPart) {
                                     dumpShit(DSL.using(ctx.configuration().dialect(), Settings().withRenderFormatted(true))
-                                        .renderInlined(shit))
+                                                 .renderInlined(shit))
+                                }
 
                                 ctx.query()?.let {dumpShit(it); return}
                                 ctx.routine()?.let {dumpShit(it); return}
                                 ctx.sql()?.let {dumpShit(it); return}
+                            }
+
+                            override fun fetchEnd(ctx: ExecuteContext) {
+                                if (!BackGlobus.tracingEnabled || !isRequestThread) return
+
+                                requestShit.resultFromJOOQ = ctx.result()
                             }
                         }))
                 )
