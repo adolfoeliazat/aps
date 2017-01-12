@@ -70,6 +70,9 @@ class JsonProcedureRequest : RequestMatumba() {
     val json = StringHiddenField(this, "json")
 }
 
+class FieldValueRTO(val fieldName: String, val value: Any?)
+
+class RecordRTO(val fieldValues: List<FieldValueRTO>)
 
 
 
@@ -80,41 +83,4 @@ class JsonProcedureRequest : RequestMatumba() {
 
 
 
-
-
-//        override fun equals(other: Any?): Boolean {
-//            if (this === other) return true
-//            if (other !is Shot) return false
-//            if (dataURL != other.dataURL) return false
-//            if (windowScrollY != other.windowScrollY) return false
-//            return true
-//        }
-//
-//        override fun hashCode(): Int {
-//            var result = dataURL.hashCode()
-//            result = 31 * result + windowScrollY.hashCode()
-//            return result
-//        }
-//
-//        override fun toString(): String {
-//            return "Shot(windowScrollY=$windowScrollY, dataURL='$dataURL')"
-//        }
-
-//    override fun equals(other: Any?): Boolean {
-//        if (this === other) return true
-//        if (other !is VisualShitCapturedRequest) return false
-//        if (id != other.id) return false
-//        if (shots != other.shots) return false
-//        return true
-//    }
-//
-//    override fun hashCode(): Int {
-//        var result = id.hashCode()
-//        result = 31 * result + shots.hashCode()
-//        return result
-//    }
-//
-//    override fun toString(): String {
-//        return "VisualShitCapturedRequest(id='$id', shots=$shots)"
-//    }
 

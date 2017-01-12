@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
+import into.kommon.*
 import kotlin.properties.Delegates.notNull
 
 class TestSuite_UACustomer_Order_Files : TestSuite {
@@ -14,6 +15,7 @@ class TestSuite_UACustomer_Order_Files : TestSuite {
         Test_UACustomer_Order_Files_Search(),
         Test_UACustomer_Order_Files_EditMeta(),
         Test_UACustomer_Order_Files_EditFile(),
+        Test_UACustomer_Order_Files_EditFile_Error(),
         Test_UACustomer_Order_Files_Misc()
     )}
 }
@@ -232,27 +234,35 @@ class Test_UACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
 
 class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
-        o.kicClick("edit-100014")
-        o.assertScreenHTML("Piece of shit #100014 is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
-        o.buttonUserInitiatedClick("upload-100014")
+        val id = 100010L
+        o.acta {TestUserActionAnimation.scroll(700)}
+        o.kicClick("edit-$id")
+        o.assertScreenHTML("Piece of shit #$id is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
+        o.buttonUserInitiatedClick("upload-$id")
         o.typeIntoOpenFileDialog("${testconst.filesRoot}fuck you.rtf")
-        o.fileFieldWaitTillShitChanged("file-100014")
+        o.fileFieldWaitTillShitChanged("file-$id")
         o.assertScreenHTML("File changed", "b3afb796-7115-4f11-a980-acd48e898052")
-        o.inputSetValue("title-100014", "The Fuck You")
-        o.inputPrependValue("details-100014", "A fucky piece of text. ")
+        o.inputSetValue("title-$id", "The Fuck You")
+        o.inputPrependValue("details-$id", "A fucky piece of text. ")
 
         o.formSequence(
             buildAction = {
-                 o.buttonClick("primary-100014")
+                 o.buttonClick("primary-$id")
             },
             assertionDescr = "Shit is saved",
             halfwayAssertionID = "485b79d2-0cb5-48ce-937e-3843b1b71f89",
             finalAssertionID = "a34b038f-3578-411e-9aad-e8011755e0cb"
         )
 
-        o.expectPieceOfShitDownload(PieceOfShitDownload(100014, "fuck you.rtf", forbidden = false, sha1 = "c5c1b6c8b457f80f1aaee2ebc625edfcdd1212a6")) {
-            o.kicClick("download-100014")
+        o.expectPieceOfShitDownload(PieceOfShitDownload(id, "fuck you.rtf", forbidden = false, sha1 = "c5c1b6c8b457f80f1aaee2ebc625edfcdd1212a6")) {
+            o.kicClick("download-$id")
         }
+    }
+}
+
+class Test_UACustomer_Order_Files_EditFile_Error : TestUACustomer_Order_Files_Base() {
+    override fun buildSteps0() {
+        imf()
     }
 }
 

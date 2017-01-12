@@ -35,6 +35,9 @@ private fun serveEditUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContex
         .fetchOne()
     }
 
+    // TODO:vgrechka Check permissions
+    orderFile.uaOrderAreaId
+
     FILES.let {t->
         ctx.updateShit("Update file", t) {it
             .set(t.TITLE, req.title.value)

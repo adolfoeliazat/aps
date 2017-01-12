@@ -34,6 +34,7 @@ sealed class RedisLogMessage {
         enum class Stage {PENDING, SUCCESS, FAILURE}
         lateinit var stage: Stage
         var exceptionStack: String? = null
+        var result: List<RecordRTO>? = null
     }
 }
 
