@@ -6,6 +6,8 @@ import into.kommon.*
 import jquery.jq
 import org.w3c.dom.HTMLIFrameElement
 
+private val moveItemToTopOnEdit = true
+
 private class FilesTabURLQuery {
     var ordering: String? = null
     var filter: String? = null
@@ -172,6 +174,9 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
         }
 
         return kdiv(id = containerID){o->
+            var topPlace = Placeholder()
+            o- topPlace
+
             for ((fileIndex, _orderFile) in meat.items.withIndex()) {
                 object {
                     val holder = Placeholder()
@@ -186,55 +191,58 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                     val file get() = orderFile.file
 
                     fun enterViewMode() {
-                        holder.setContent(
-                            when (world.user.kind) {
-                                UserKind.CUSTOMER -> {
-                                    kdiv(id = viewRootID){o->
-                                        o- row{o->
-                                            o- renderFileTitle(editing = false)
-                                        }
-                                        o- row{o->
-                                            o- kdiv(className = "col-md-3"){o->
-                                                o- label(t("Created", "Создан"))
-                                                o- kdiv(){o->
-                                                    o- formatUnixTime(orderFile.insertedAt)
-                                                }
-                                            }
-                                            o- kdiv(className = "col-md-3"){o->
-                                                o- label(t("Updated", "Изменен"))
-                                                o- kdiv(){o->
-                                                    o- formatUnixTime(orderFile.updatedAt)
-                                                }
-                                            }
-                                            o- kdiv(className = "col-md-3"){o->
-                                                o- label(t("File name", "Имя файла"))
-                                                o- kdiv(){o->
-                                                    o- highlightedShit(file.name, file.nameHighlightRanges, tag = "span")
-                                                }
-                                            }
-                                            o- kdiv(className = "col-md-3"){o->
-                                                o- label(t("Size", "Размер"))
-                                                o- kdiv(){o->
-                                                    o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
-                                                }
+                        holder.setContent(renderView())
+                    }
+
+                    fun renderView(): ElementBuilder {
+                        return when (world.user.kind) {
+                            UserKind.CUSTOMER -> {
+                                kdiv(id = viewRootID){o->
+                                    o- row{o->
+                                        o- renderFileTitle(editing = false)
+                                    }
+                                    o- row{o->
+                                        o- kdiv(className = "col-md-3"){o->
+                                            o- label(t("Created", "Создан"))
+                                            o- kdiv(){o->
+                                                o- formatUnixTime(orderFile.insertedAt)
                                             }
                                         }
-                                        o- row {o->
-                                            o- kdiv(className = "col-md-12"){o->
-                                                o- label(t("Details", "Детали"))
-                                                o- kdiv(whiteSpace = "pre-wrap"){o->
-                                                    o- highlightedShit(file.details, file.detailsHighlightRanges)
-//                                                o- file.details
-                                                }
+                                        o- kdiv(className = "col-md-3"){o->
+                                            o- label(t("Updated", "Изменен"))
+                                            o- kdiv(){o->
+                                                o- formatUnixTime(orderFile.updatedAt)
+                                            }
+                                        }
+                                        o- kdiv(className = "col-md-3"){o->
+                                            o- label(t("File name", "Имя файла"))
+                                            o- kdiv(){o->
+                                                o- highlightedShit(file.name, file.nameHighlightRanges, tag = "span")
+                                            }
+                                        }
+                                        o- kdiv(className = "col-md-3"){o->
+                                            o- label(t("Size", "Размер"))
+                                            o- kdiv(){o->
+                                                o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
+                                            }
+                                        }
+                                    }
+                                    o- row{o->
+                                        o- kdiv(className = "col-md-12"){o->
+                                            o- label(t("Details", "Детали"))
+                                            o- kdiv(whiteSpace = "pre-wrap"){o->
+                                                o- highlightedShit(file.details, file.detailsHighlightRanges)
+                    //                                                o- file.details
                                             }
                                         }
                                     }
                                 }
+                            }
 
-                                UserKind.WRITER -> imf()
+                            UserKind.WRITER -> imf()
 
-                                UserKind.ADMIN -> imf()
-                            })
+                            UserKind.ADMIN -> imf()
+                        }
                     }
 
                     fun enterEditMode(): Promise<Unit> = async {
@@ -261,10 +269,22 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                                                         await(effects2.fadeOut(topShitID))
                                                         enterViewMode()
                                                     }},
-                                                    onSuccess = {res->
+                                                    onSuccessa = {res-> async<Unit> {
                                                         orderFile = res.updatedOrderFile
-                                                        enterViewMode()
-                                                    }
+
+                                                        if (moveItemToTopOnEdit) {
+                                                            holder.setContent(NOTRE)
+                                                            await(scrollBodyGradually(0.0))
+                                                            val newTopPlace = Placeholder()
+                                                            topPlace.setContent(kdiv{o->
+                                                                o- newTopPlace
+                                                                o- renderView()
+                                                            })
+                                                            topPlace = newTopPlace
+                                                        } else {
+                                                            enterViewMode()
+                                                        }
+                                                    }}
                                                 ))
                                             }
                                         }
