@@ -234,28 +234,32 @@ class Test_UACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
 
 class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
-        val id = 100010L
+        val orderFileID = 100010L
+        val fileID = 100008L
+
         o.acta {TestUserActionAnimation.scroll(700)}
-        o.kicClick("edit-$id")
-        o.assertScreenHTML("Piece of shit #$id is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
-        o.buttonUserInitiatedClick("upload-$id")
+        o.kicClick("edit-$orderFileID")
+        o.assertScreenHTML("Piece of shit #$orderFileID is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
+        o.buttonUserInitiatedClick("upload-$orderFileID")
         o.typeIntoOpenFileDialog("${testconst.filesRoot}fuck you.rtf")
-        o.fileFieldWaitTillShitChanged("file-$id")
+        o.fileFieldWaitTillShitChanged("file-$orderFileID")
         o.assertScreenHTML("File changed", "b3afb796-7115-4f11-a980-acd48e898052")
-        o.inputSetValue("title-$id", "The Fuck You")
-        o.inputPrependValue("details-$id", "A fucky piece of text. ")
+        o.inputSetValue("title-$orderFileID", "The Fuck You")
+        o.inputPrependValue("details-$orderFileID", "A fucky piece of text. ")
 
         o.formWithAnimationOnCompletionSequence(
             buildAction = {
-                 o.buttonClick("primary-$id")
+                o.acta {shit.imposeNextRequestTimestamp()}
+                o.buttonClick("primary-$orderFileID")
             },
             assertionDescr = "Shit is saved",
             halfwayAssertionID = "485b79d2-0cb5-48ce-937e-3843b1b71f89",
+            completionAnimationHalfwayAssertionID = "3402503d-c9ca-4fff-b9ab-1ef44896bd4f",
             finalAssertionID = "a34b038f-3578-411e-9aad-e8011755e0cb"
         )
 
-        o.expectPieceOfShitDownload(PieceOfShitDownload(id, "fuck you.rtf", forbidden = false, sha1 = "c5c1b6c8b457f80f1aaee2ebc625edfcdd1212a6")) {
-            o.kicClick("download-$id")
+        o.expectPieceOfShitDownload(PieceOfShitDownload(fileID, "fuck you.rtf", forbidden = false, sha1 = "1f378c5775314852bb2f45fd52611b28812978e3")) {
+            o.kicClick("download-$orderFileID")
         }
     }
 }

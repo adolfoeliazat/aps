@@ -201,9 +201,10 @@ fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
     buildAction: () -> Unit,
     assertionDescr: String,
     halfwayAssertionID: String,
+    completionAnimationHalfwayAssertionID: String,
     finalAssertionID: String,
     halfwayTimeout: Int = 5000,
-    completedTimeout: Int = 1000
+    completedTimeout: Int = 5000
 ) {
     val o = this
     o.act {
@@ -221,7 +222,7 @@ fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
     o.act {TestGlobal.formActionHalfwayConsidered.resolve()}
 
     o.acta {TestGlobal.animationHalfwaySignal.promise.orTimeout(fconst.test.default.animationHalfwaySignalTimeout)}
-    o.assertScreenHTML(assertionDescr + " (completion animation halfway)", halfwayAssertionID)
+    o.assertScreenHTML(assertionDescr + " (completion animation halfway)", completionAnimationHalfwayAssertionID)
     o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
 
     o.acta {TestGlobal.formActionCompleted.promise.orTimeout(completedTimeout)}

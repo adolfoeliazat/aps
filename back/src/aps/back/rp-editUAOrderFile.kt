@@ -9,6 +9,7 @@ package aps.back
 import aps.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.*
+import com.google.common.hash.Hashing
 import into.kommon.*
 import java.util.*
 
@@ -50,6 +51,7 @@ private fun serveEditUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContex
                         .set(t.CONTENT, content)
                         .set(t.SIZE_BYTES, content.size)
                         .set(t.MIME, "application/octet-stream")
+                        .set(t.SHA1, Hashing.sha1().hashBytes(content).toString())
                 } else it
             }
             .where(t.ID.eq(orderFile.fileId))

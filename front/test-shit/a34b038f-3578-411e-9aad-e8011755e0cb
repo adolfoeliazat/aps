@@ -177,6 +177,93 @@
               </div>
               <div>
                 <div>
+                  <span>
+                  </span>
+                  <div style="opacity: 1;">
+                    <div class="row" style="margin-bottom: 0.5em;">
+                      <div class="col-md-12">
+                        <div class="cunt-header-viewing">
+                          <i class="cunt-header-leftIcon-viewing fa fa-file">
+                          </i>
+                          <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                          </i>
+                          <span>
+                            The Fuck You
+                          </span>
+                          <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                            №100010
+                          </span>
+                          <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                            Мой
+                          </span>
+                          <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                            <div style="margin-left: 0px;">
+                              <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                              </i>
+                            </div>
+                            <div style="margin-left: 12px;">
+                              <i class="cunt-header-rightIcon fa fa-trash">
+                              </i>
+                            </div>
+                            <div style="margin-left: 12px;">
+                              <i class="cunt-header-rightIcon fa fa-pencil">
+                              </i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 0.5em;">
+                      <div class="col-md-3">
+                        <label style="margin-bottom: 0px;">
+                          Создан
+                        </label>
+                        <div>
+                          08.01.2016 20:50:05 (Киев)
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label style="margin-bottom: 0px;">
+                          Изменен
+                        </label>
+                        <div>
+                          17.01.2016 21:51:05 (Киев)
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label style="margin-bottom: 0px;">
+                          Имя файла
+                        </label>
+                        <div>
+                          <span>
+                            fuck you.rtf
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label style="margin-bottom: 0px;">
+                          Размер
+                        </label>
+                        <div>
+                          244 Б
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 0.5em;">
+                      <div class="col-md-12">
+                        <label style="margin-bottom: 0px;">
+                          Детали
+                        </label>
+                        <div style="white-space: pre-wrap;">
+                          <p>
+                            A fucky piece of text. К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -193,25 +280,33 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        11.01.2016 05:56:05 (Киев)
+                        17.01.2016 17:39:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        17.01.2016 17:39:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -221,7 +316,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -243,7 +338,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -252,7 +347,7 @@
                         <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
                         </i>
                         <span>
-                          The Fuck You
+                          Crappy release 2
                         </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №100014
@@ -260,40 +355,48 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        08.01.2016 20:50:05 (Киев)
+                        15.01.2016 11:34:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        15.01.2016 11:34:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
                       <div>
                         <span>
-                          fuck you.rtf
+                          crappy release 2.rtf
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
                       <div>
-                        244 Б
+                        2 КБ
                       </div>
                     </div>
                   </div>
@@ -304,13 +407,13 @@
                       </label>
                       <div style="white-space: pre-wrap;">
                         <p>
-                          A fucky piece of text. К. пошел  было  к  лестнице,  чтобы  подняться  в  кабинет следователя,  но  остановился:  кроме этой лестницы, со двора в дом было еще три входа, а в глубине  двора  виднелся  неширокий проход  во  второй  двор.  К.  рассердился,  оттого  что ему не указали точнее, где этот кабинет; все-таки к нему  отнеслись  с удивительным  невниманием и равнодушием, и он решил, что заявит об этом громко и отчетливо.  Наконец  он  все  же  поднялся  по лестнице,   мысленно  повторяя  выражение  Виллема,  одного  из стражей, что вина сама притягивает к себе правосудие, из  чего, собственно  говоря,  вытекало,  что  кабинет следователя должен находиться именно на той лестнице, куда случайно поднялся К.
+                          К. пошел  было  к  лестнице,  чтобы  подняться  в  кабинет следователя,  но  остановился:  кроме этой лестницы, со двора в дом было еще три входа, а в глубине  двора  виднелся  неширокий проход  во  второй  двор.  К.  рассердился,  оттого  что ему не указали точнее, где этот кабинет; все-таки к нему  отнеслись  с удивительным  невниманием и равнодушием, и он решил, что заявит об этом громко и отчетливо.  Наконец  он  все  же  поднялся  по лестнице,   мысленно  повторяя  выражение  Виллема,  одного  из стражей, что вина сама притягивает к себе правосудие, из  чего, собственно  говоря,  вытекало,  что  кабинет следователя должен находиться именно на той лестнице, куда случайно поднялся К.
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -327,25 +430,33 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        06.01.2016 06:37:05 (Киев)
+                        13.01.2016 17:02:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        13.01.2016 17:02:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -355,7 +466,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -377,74 +488,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
-                  <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-12">
-                      <div class="cunt-header-viewing">
-                        <i class="cunt-header-leftIcon-viewing fa fa-file">
-                        </i>
-                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
-                        </i>
-                        <span>
-                          A piece of... Trial 4
-                        </span>
-                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                          №100010
-                        </span>
-                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                          Мой
-                        </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
-                      <label style="margin-bottom: 0px;">
-                        Создан
-                      </label>
-                      <div>
-                        03.01.2016 07:18:05 (Киев)
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <label style="margin-bottom: 0px;">
-                        Имя файла
-                      </label>
-                      <div>
-                        <span>
-                          piece of trial 4.rtf
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <label style="margin-bottom: 0px;">
-                        Размер
-                      </label>
-                      <div>
-                        1 КБ
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-12">
-                      <label style="margin-bottom: 0px;">
-                        Детали
-                      </label>
-                      <div style="white-space: pre-wrap;">
-                        <p>
-                          К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -461,25 +505,41 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        03.01.2016 00:24:05 (Киев)
+                        06.01.2016 06:37:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        06.01.2016 06:37:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -489,7 +549,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -511,7 +571,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -528,25 +588,41 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        02.01.2016 03:21:05 (Киев)
+                        03.01.2016 07:18:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        03.01.2016 07:18:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -556,7 +632,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -579,7 +655,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -596,25 +672,41 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        30.12.2015 14:02:05 (Киев)
+                        03.01.2016 00:24:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        03.01.2016 00:24:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -624,7 +716,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -646,7 +738,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -663,25 +755,33 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        28.12.2015 09:19:05 (Киев)
+                        02.01.2016 03:21:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        02.01.2016 03:21:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -691,7 +791,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -713,7 +813,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -730,25 +830,33 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        27.12.2015 07:45:05 (Киев)
+                        28.12.2015 09:19:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        28.12.2015 09:19:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -758,7 +866,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -781,7 +889,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div style="opacity: 1;">
                   <div class="row" style="margin-bottom: 0.5em;">
                     <div class="col-md-12">
                       <div class="cunt-header-viewing">
@@ -798,17 +906,25 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           Мой
                         </span>
-                        <i class="cunt-header-rightIcon fa fa-cloud-download" style="top: 0.5rem; right: 6.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-trash" style="right: 3.3rem;">
-                        </i>
-                        <i class="cunt-header-rightIcon fa fa-pencil" style="right: 0.3rem;">
-                        </i>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
@@ -816,7 +932,15 @@
                         24.12.2015 22:58:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        24.12.2015 22:58:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -826,7 +950,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>

@@ -76,7 +76,7 @@ object effects2 {
                     TestGlobal.animationHalfwaySignal.resolve()
                     await(TestGlobal.animationHalfwaySignalProcessedSignal.promise)
                 }
-                midpointReached = decreaseOpacity
+                midpointReached = true
             }
         }
         check(midpointReached) {"midpointReached"}

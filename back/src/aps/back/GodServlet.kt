@@ -77,6 +77,9 @@ class GodServlet : HttpServlet() {
         val databaseID = req.getHeader("databaseID") ?: req.getParameter("databaseID") ?: bitch("I want `databaseID`")
         val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
 
+        requestShit.commonRequestFields = CommonRequestFieldsHolder()-{o->
+        }
+
         val db = DB.byID(databaseID)
         db.joo {q->
             val user = userByToken(q, token)

@@ -157,7 +157,7 @@ class TestShit {
         list
     }
 
-    fun importNextRequestTimestamp(): Promise<Unit> {
+    fun imposeNextRequestTimestamp(): Promise<Unit> {
         if (nextRequestTimestampIndex > timestamps.lastIndex) bitch("Out of next request timestamps")
         val stamp = timestamps[nextRequestTimestampIndex++]
         return ImposeNextRequestTimestampRequest.send(stamp)
@@ -254,7 +254,7 @@ fun TestScenarioBuilder.setUpDasja(testShit: TestShit) {
 //}
 
 fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
-    await(testShit.importNextRequestTimestamp())
+    await(testShit.imposeNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("fuck you.rtf")
@@ -267,7 +267,7 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
         """)
     })).orDie()
 
-    await(testShit.importNextRequestTimestamp())
+    await(testShit.imposeNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("crazy monster boobs.rtf")
@@ -279,7 +279,7 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
         """)
     })).orDie()
 
-    await(testShit.importNextRequestTimestamp())
+    await(testShit.imposeNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("the trial.doc")
@@ -321,9 +321,9 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
 
 private fun testAddFileByFedorAndApproveForBobul(testShit: TestShit, req: WriterAddUAOrderFileRequest): Promise<Unit> {
     return async<Unit> {
-        await(testShit.importNextRequestTimestamp())
+        await(testShit.imposeNextRequestTimestamp())
         val res = await(send(testShit.fedorToken, req)).orDie()
-        await(testShit.importNextRequestTimestamp())
+        await(testShit.imposeNextRequestTimestamp())
         await(testCopyFileToBobul(testShit, res.id))
     }
 }
@@ -366,7 +366,7 @@ fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
 }
 
 fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
-    await(testShit.importNextRequestTimestamp())
+    await(testShit.imposeNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("piece of trial 1.rtf")
@@ -376,7 +376,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
         """)
     })).orDie()
 
-    await(testShit.importNextRequestTimestamp())
+    await(testShit.imposeNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("piece of trial 2.rtf")
@@ -388,7 +388,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
         """)
     })).orDie()
 
-    await(testShit.importNextRequestTimestamp())
+    await(testShit.imposeNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("piece of trial 3.rtf")
@@ -398,7 +398,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
         """)
     })).orDie()
 
-    await(testShit.importNextRequestTimestamp())
+    await(testShit.imposeNextRequestTimestamp())
     await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("piece of trial 4.rtf")
@@ -423,7 +423,7 @@ fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String)
             fiddlingWithGlobals {
                 global.CLIENT_KIND = ClientKind.CUSTOMER.name
 
-                await(testShit.importNextRequestTimestamp())
+                await(testShit.imposeNextRequestTimestamp())
                 val createOrderResponse = await(send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
                     o.title.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
                     o.documentType.value = UADocumentType.COURSE
