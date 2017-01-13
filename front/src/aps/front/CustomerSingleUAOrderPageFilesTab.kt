@@ -194,20 +194,26 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                                             o- renderFileTitle(editing = false)
                                         }
                                         o- row{o->
-                                            o- kdiv(className = "col-md-4"){o->
-                                                o- label(t("TOTE", "Создан"))
+                                            o- kdiv(className = "col-md-3"){o->
+                                                o- label(t("Created", "Создан"))
                                                 o- kdiv(){o->
-                                                    o- formatUnixTime(file.insertedAt)
+                                                    o- formatUnixTime(orderFile.insertedAt)
                                                 }
                                             }
-                                            o- kdiv(className = "col-md-4"){o->
-                                                o- label(t("TOTE", "Имя файла"))
+                                            o- kdiv(className = "col-md-3"){o->
+                                                o- label(t("Updated", "Изменен"))
+                                                o- kdiv(){o->
+                                                    o- formatUnixTime(orderFile.updatedAt)
+                                                }
+                                            }
+                                            o- kdiv(className = "col-md-3"){o->
+                                                o- label(t("File name", "Имя файла"))
                                                 o- kdiv(){o->
                                                     o- highlightedShit(file.name, file.nameHighlightRanges, tag = "span")
                                                 }
                                             }
-                                            o- kdiv(className = "col-md-4"){o->
-                                                o- label(t("TOTE", "Размер"))
+                                            o- kdiv(className = "col-md-3"){o->
+                                                o- label(t("Size", "Размер"))
                                                 o- kdiv(){o->
                                                     o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
                                                 }
@@ -215,7 +221,7 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                                         }
                                         o- row {o->
                                             o- kdiv(className = "col-md-12"){o->
-                                                o- label(t("TOTE", "Детали"))
+                                                o- label(t("Details", "Детали"))
                                                 o- kdiv(whiteSpace = "pre-wrap"){o->
                                                     o- highlightedShit(file.details, file.detailsHighlightRanges)
 //                                                o- file.details
@@ -314,7 +320,7 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                                 }
 
                                 if (!editing) {
-                                    o- hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.3rem", marginTop = "0.1rem")) {o->
+                                    o- hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")) {o->
                                         o- kic("download-${orderFile.id}", className = "${css.cunt.header.rightIcon} ${fa.cloudDownload}", style = Style(marginTop = "0.45rem"),
                                                onClick = {
                                                    val iframeID = puid()

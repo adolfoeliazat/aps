@@ -323,6 +323,7 @@ private fun testAddFileByFedorAndApproveForBobul(testShit: TestShit, req: Writer
     return async<Unit> {
         await(testShit.importNextRequestTimestamp())
         val res = await(send(testShit.fedorToken, req)).orDie()
+        await(testShit.importNextRequestTimestamp())
         await(testCopyFileToBobul(testShit, res.id))
     }
 }

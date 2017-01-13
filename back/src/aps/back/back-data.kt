@@ -144,7 +144,8 @@ fun loadFile(q: DSLContext, id: Long, searchWords: List<String>, lang: Language)
             if (searchWords.isEmpty()) listOf()
             else luceneHighlightRanges(x.details, searchWords, analyzer),
         sizeBytes = x.sizeBytes,
-        insertedAt = x.insertedAt.time
+        insertedAt = x.insertedAt.time,
+        updatedAt = x.updatedAt.time
     )
 }
 
@@ -180,10 +181,12 @@ fun JQUsers.toRTO(q: DSLContext): UserRTO {
 
 fun JQUaOrderFilesRecord.toRTO(ctx: ProcedureContext, searchWords: List<String> = listOf()): UAOrderFileRTO {
     return UAOrderFileRTO(
-        id = this.id.toString(),
-        file = loadFile(ctx.q, this.fileId, searchWords, Language.UA),
-        seenAsFrom = this.seenAsFrom.toApp(),
-        editable = this.creatorId == ctx.user.id.toLong()
+        id = id.toString(),
+        file = loadFile(ctx.q, fileId, searchWords, Language.UA),
+        seenAsFrom = seenAsFrom.toApp(),
+        editable = creatorId == ctx.user.id.toLong(),
+        insertedAt = insertedAt.time,
+        updatedAt = updatedAt.time
     )
 }
 

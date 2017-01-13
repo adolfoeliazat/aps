@@ -50,14 +50,17 @@ class FileRTO(
     val details: String,
     val detailsHighlightRanges: List<IntRangeRTO>,
     val sizeBytes: Int,
-    val insertedAt: Long
+    val insertedAt: Long,
+    val updatedAt: Long
 )
 
 class UAOrderFileRTO(
     val id: String,
     val file: FileRTO,
     val seenAsFrom: UserKind,
-    val editable: Boolean
+    val editable: Boolean,
+    val insertedAt: Long,
+    val updatedAt: Long
 )
 
 

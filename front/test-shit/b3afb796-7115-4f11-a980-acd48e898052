@@ -193,7 +193,7 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
                             <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                             </i>
@@ -203,15 +203,23 @@
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        11.01.2016 05:56:05 (Киев)
+                        17.01.2016 17:39:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        17.01.2016 17:39:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -221,7 +229,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -260,7 +268,7 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
                             <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                             </i>
@@ -270,15 +278,23 @@
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        08.01.2016 20:50:05 (Киев)
+                        15.01.2016 11:34:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        15.01.2016 11:34:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -288,7 +304,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -327,7 +343,7 @@
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           От писателя
                         </span>
-                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
                             <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                             </i>
@@ -337,15 +353,23 @@
                     </div>
                   </div>
                   <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Создан
                       </label>
                       <div>
-                        06.01.2016 06:37:05 (Киев)
+                        13.01.2016 17:02:05 (Киев)
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        13.01.2016 17:02:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Имя файла
                       </label>
@@ -355,7 +379,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label style="margin-bottom: 0px;">
                         Размер
                       </label>
@@ -464,7 +488,7 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               Мой
                             </span>
-                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                               <div style="margin-left: 0px;">
                                 <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                                 </i>
@@ -482,15 +506,23 @@
                         </div>
                       </div>
                       <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Создан
                           </label>
                           <div>
-                            03.01.2016 00:24:05 (Киев)
+                            06.01.2016 06:37:05 (Киев)
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            06.01.2016 06:37:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Имя файла
                           </label>
@@ -500,7 +532,7 @@
                             </span>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Размер
                           </label>
@@ -539,7 +571,7 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               Мой
                             </span>
-                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                               <div style="margin-left: 0px;">
                                 <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                                 </i>
@@ -557,15 +589,23 @@
                         </div>
                       </div>
                       <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Создан
                           </label>
                           <div>
-                            02.01.2016 03:21:05 (Киев)
+                            03.01.2016 07:18:05 (Киев)
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            03.01.2016 07:18:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Имя файла
                           </label>
@@ -575,7 +615,7 @@
                             </span>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Размер
                           </label>
@@ -615,7 +655,7 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               Мой
                             </span>
-                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                               <div style="margin-left: 0px;">
                                 <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                                 </i>
@@ -633,15 +673,23 @@
                         </div>
                       </div>
                       <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Создан
                           </label>
                           <div>
-                            30.12.2015 14:02:05 (Киев)
+                            03.01.2016 00:24:05 (Киев)
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            03.01.2016 00:24:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Имя файла
                           </label>
@@ -651,7 +699,7 @@
                             </span>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Размер
                           </label>
@@ -690,7 +738,7 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               От писателя
                             </span>
-                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                               <div style="margin-left: 0px;">
                                 <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                                 </i>
@@ -700,15 +748,23 @@
                         </div>
                       </div>
                       <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Создан
                           </label>
                           <div>
-                            28.12.2015 09:19:05 (Киев)
+                            02.01.2016 03:21:05 (Киев)
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            02.01.2016 03:21:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Имя файла
                           </label>
@@ -718,7 +774,7 @@
                             </span>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Размер
                           </label>
@@ -757,7 +813,7 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               От писателя
                             </span>
-                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                               <div style="margin-left: 0px;">
                                 <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                                 </i>
@@ -767,15 +823,23 @@
                         </div>
                       </div>
                       <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Создан
                           </label>
                           <div>
-                            27.12.2015 07:45:05 (Киев)
+                            28.12.2015 09:19:05 (Киев)
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            28.12.2015 09:19:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Имя файла
                           </label>
@@ -785,7 +849,7 @@
                             </span>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Размер
                           </label>
@@ -825,7 +889,7 @@
                             <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                               Мой
                             </span>
-                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.3rem; display: flex;">
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                               <div style="margin-left: 0px;">
                                 <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
                                 </i>
@@ -843,7 +907,7 @@
                         </div>
                       </div>
                       <div class="row" style="margin-bottom: 0.5em;">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Создан
                           </label>
@@ -851,7 +915,15 @@
                             24.12.2015 22:58:05 (Киев)
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            24.12.2015 22:58:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Имя файла
                           </label>
@@ -861,7 +933,7 @@
                             </span>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <label style="margin-bottom: 0px;">
                             Размер
                           </label>
