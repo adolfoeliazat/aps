@@ -368,8 +368,15 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
 
                     fun keyListener(e: Event) {
                         e as KeyboardEvent
-                        if (e.key == "n") {
-                            assertionBannerPause.resolve()
+                        when (e.key) {
+                            "n" -> assertionBannerPause.resolve()
+                            "N" -> {
+                                TestGlobal.forcedTestOpts = testOpts().copy(
+                                    stopOnAssertions = false,
+                                    ignoreIncorrect = true,
+                                    ignoreNotHardened = true)
+                                assertionBannerPause.resolve()
+                            }
                         }
                     }
                     window.addEventListener("keydown", ::keyListener)
@@ -387,14 +394,18 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
         } else {
             when {
                 expected == null && testOpts().ignoreNotHardened -> {}
-                actual != expected -> throw ArtAssertionError(
-                    stepTitle,
-                    visualPayload = renderDiff(
-                        expected = expected ?: "--- Not yet hardened ---",
-                        actual = actual,
-                        actualTestShit = actual
-                    )
-                )
+                actual != expected -> {
+                    if (!testOpts().ignoreIncorrect) {
+                        throw ArtAssertionError(
+                            stepTitle,
+                            visualPayload = renderDiff(
+                                expected = expected ?: "--- Not yet hardened ---",
+                                actual = actual,
+                                actualTestShit = actual
+                            )
+                        )
+                    }
+                }
             }
         }
     }}

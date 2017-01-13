@@ -43,26 +43,30 @@ object effects2 {
         effects.blinkOffFadingOut()
     }
 
-    fun fadeOut(elementID: String): Promise<Unit> = async {
+    fun fadeOut(elementID: String): Promise<Unit> = fade(elementID, decreaseOpacity = true)
+    fun fadeIn(elementID: String): Promise<Unit> = fade(elementID, decreaseOpacity = false)
+
+    fun fade(elementID: String, decreaseOpacity: Boolean): Promise<Unit> = async {
+        val frames = 16
+        check(frames % 2 == 0) {"frames should be even"}
+        val initialOpacity = if (decreaseOpacity) 1.0 else 0.0
+        val dopacity = 1.0 / frames * if (decreaseOpacity) -1 else 1
+
         fun setOpacity(value: Double) {
             byid0(elementID)!!.style.opacity = value.toString()
         }
 
-        var frames = 16
-        check(frames % 2 == 0) {"frames is even"}
-
-        val dopacity = 1.0 / frames
-        var opacity = 1.0
-
+        var framesLeft = frames
+        var opacity = initialOpacity
         var midpoint = opacity
-        for (i in 1..frames/2) midpoint -= dopacity
-        check("$midpoint" == "0.5") {"fadeOut midpoint"}
+        for (i in 1..framesLeft / 2) midpoint += dopacity
+        check("$midpoint" == "0.5") {"fade midpoint"}
 
         var midpointReached = false
-        while (frames-- > 0) {
+        while (framesLeft-- > 0) {
             await(tillAnimationFrame())
 
-            opacity -= dopacity
+            opacity += dopacity
             // dlog("opacity = $opacity")
 
             setOpacity(opacity)
@@ -72,7 +76,7 @@ object effects2 {
                     TestGlobal.animationHalfwaySignal.resolve()
                     await(TestGlobal.animationHalfwaySignalProcessedSignal.promise)
                 }
-                midpointReached = true
+                midpointReached = decreaseOpacity
             }
         }
         check(midpointReached) {"midpointReached"}

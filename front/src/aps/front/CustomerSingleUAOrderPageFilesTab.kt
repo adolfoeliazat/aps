@@ -194,10 +194,12 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                         holder.setContent(renderView())
                     }
 
-                    fun renderView(): ElementBuilder {
+                    fun renderView(initiallyTransparent: Boolean = false): ElementBuilder {
                         return when (world.user.kind) {
                             UserKind.CUSTOMER -> {
-                                kdiv(id = viewRootID){o->
+                                kdiv(id = viewRootID,
+                                     opacity = if (initiallyTransparent) 0.0
+                                               else 1.0){o->
                                     o- row{o->
                                         o- renderFileTitle(editing = false)
                                     }
@@ -278,9 +280,10 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                                                             val newTopPlace = Placeholder()
                                                             topPlace.setContent(kdiv{o->
                                                                 o- newTopPlace
-                                                                o- renderView()
+                                                                o- renderView(initiallyTransparent = true)
                                                             })
                                                             topPlace = newTopPlace
+                                                            await(effects2.fadeIn(viewRootID))
                                                         } else {
                                                             enterViewMode()
                                                         }

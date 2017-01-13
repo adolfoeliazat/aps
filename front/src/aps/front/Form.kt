@@ -197,6 +197,37 @@ fun TestScenarioBuilder.formSequence(
     o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
+fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
+    buildAction: () -> Unit,
+    assertionDescr: String,
+    halfwayAssertionID: String,
+    finalAssertionID: String,
+    halfwayTimeout: Int = 5000,
+    completedTimeout: Int = 1000
+) {
+    val o = this
+    o.act {
+        TestGlobal.formActionCompleted = ResolvableShit()
+        TestGlobal.formActionHalfway = ResolvableShit()
+        TestGlobal.formActionHalfwayConsidered = ResolvableShit()
+        TestGlobal.animationHalfwaySignal = ResolvableShit()
+        TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
+    }
+
+    buildAction()
+
+    o.acta {TestGlobal.formActionHalfway.promise.orTimeout(halfwayTimeout)}
+    o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
+    o.act {TestGlobal.formActionHalfwayConsidered.resolve()}
+
+    o.acta {TestGlobal.animationHalfwaySignal.promise.orTimeout(fconst.test.default.animationHalfwaySignalTimeout)}
+    o.assertScreenHTML(assertionDescr + " (completion animation halfway)", halfwayAssertionID)
+    o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
+
+    o.acta {TestGlobal.formActionCompleted.promise.orTimeout(completedTimeout)}
+    o.assertScreenHTML(assertionDescr, finalAssertionID)
+}
+
 
 
 

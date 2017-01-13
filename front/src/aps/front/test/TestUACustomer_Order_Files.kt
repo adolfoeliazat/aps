@@ -245,7 +245,7 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         o.inputSetValue("title-$id", "The Fuck You")
         o.inputPrependValue("details-$id", "A fucky piece of text. ")
 
-        o.formSequence(
+        o.formWithAnimationOnCompletionSequence(
             buildAction = {
                  o.buttonClick("primary-$id")
             },

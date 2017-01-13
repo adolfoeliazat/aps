@@ -41,6 +41,7 @@ title redis-cli & redis-cli
 llen logRoot:children
 del logRoot:children
 
+flushall
 
 Links
 =====

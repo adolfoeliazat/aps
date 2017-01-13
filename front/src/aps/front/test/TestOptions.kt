@@ -9,7 +9,8 @@ data class TestOptions(
     val animateUserActions: Boolean = false,
     val slowdown: Int = 1,
     val handPauses: Boolean = false,
-    val ignoreNotHardened: Boolean = false
+    val ignoreNotHardened: Boolean = false,
+    val ignoreIncorrect: Boolean = false
 ) {
     fun toURLQuery(): String {
         return buildString {
