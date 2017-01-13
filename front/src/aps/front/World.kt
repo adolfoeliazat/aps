@@ -221,9 +221,7 @@ class World(val name: String) {
         val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
         noise.clog(window.location.href)
 
-        dwarnStriking(111)
         await(TestGlobal.loadPageForURLLock.sutPause1())
-        dwarnStriking(222)
 
         try {
             val user = userMaybe
@@ -311,9 +309,6 @@ class World(val name: String) {
             updateNavbar()
             return@async Unit
         } finally {
-            dwarnStriking(333)
-            await(TestGlobal.loadPageForURLLock.sutPause2())
-            dwarnStriking(444)
         }
     }
 

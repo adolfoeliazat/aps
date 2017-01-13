@@ -36,17 +36,23 @@ fun <T> Promise<T>.finally(onFulfilled: (T) -> Unit) =
     this.then<Nothing>(onFulfilled, {})
 
 
-fun <T> Promise<T>.orTimeout(ms: Int, getPromiseName: (() -> String?)? = null): Promise<T> {
+fun <T> Promise<T>.orTestTimeout(ms: Int, getPromiseName: (() -> String?)? = null): Promise<T> {
     val shit = ResolvableShit<T>()
     val thePromiseName = getPromiseName?.invoke() ?: "shit"
-//    val thePromiseName = promiseName ?: NamesOfThings[this] ?: "shit"
-    window.setTimeout({shit.reject(Exception("Sick of waiting for $thePromiseName"))}, ms)
+    timeoutSet(ms) {
+        val msg = "Sick of waiting for $thePromiseName"
+        if (isTestPausedOnAssertion()) {
+            console.warn("--- $msg, but not dying because test is paused on assertion ---")
+        } else {
+            shit.reject(Exception(msg))
+        }
+    }
     this.finally {shit.resolve(it)}
     return shit.promise
 }
 
-fun <T> Promise<T>.orTimeoutWithNameBearer(ms: Int, getPromiseNameBearer: () -> Any): Promise<T> {
-    return this.orTimeout(ms, getPromiseName = {NamesOfThings[getPromiseNameBearer()]})
+fun <T> Promise<T>.orTestTimeoutNamedAfter(ms: Int, getPromiseNameBearer: () -> Any): Promise<T> {
+    return this.orTestTimeout(ms, getPromiseName = {NamesOfThings[getPromiseNameBearer()]})
 }
 
 
@@ -109,11 +115,11 @@ class TestLock(
     }
 
     fun testPause1(): Promise<Unit> = async {
-        await(testPause1.promise.orTimeoutWithNameBearer(testPause1Timeout, {testPause1}))
+        await(testPause1.promise.orTestTimeoutNamedAfter(testPause1Timeout, {testPause1}))
     }
 
     fun testPause2(): Promise<Unit> = async {
-        await(testPause2.promise.orTimeoutWithNameBearer(testPause2Timeout, {testPause2}))
+        await(testPause2.promise.orTestTimeoutNamedAfter(testPause2Timeout, {testPause2}))
     }
 
     fun testResume1() {
@@ -126,12 +132,12 @@ class TestLock(
 
     fun sutPause1(): Promise<Unit> = async {
         testPause1.resolve()
-        await(sutPause1.promise.orTimeoutWithNameBearer(sutPause1Timeout, {sutPause1}))
+        await(sutPause1.promise.orTestTimeoutNamedAfter(sutPause1Timeout, {sutPause1}))
     }
 
     fun sutPause2(): Promise<Unit> = async {
         testPause2.resolve()
-        await(sutPause2.promise.orTimeoutWithNameBearer(sutPause2Timeout, {sutPause2}))
+        await(sutPause2.promise.orTestTimeoutNamedAfter(sutPause2Timeout, {sutPause2}))
     }
 }
 

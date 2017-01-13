@@ -9,6 +9,7 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
+private var testPausedOnAssertion = false
 private var pausedOnAssertion = ResolvableShit<Unit>()
 private var assertionBannerPause by notNull<ResolvableShit<Unit>>()
 private var _currentAssertionBannerKind by notNull<AssertionBannerKind>()
@@ -28,6 +29,8 @@ enum class VerticalPosition {
 enum class HorizontalPosition {
     LEFT, RIGHT
 }
+
+fun isTestPausedOnAssertion() = testPausedOnAssertion
 
 fun tillPausedOnAssertion() = pausedOnAssertion.promise
 
@@ -364,7 +367,7 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
 //                                o- "Assertion: $descr"
                         }
                     }
-                    val pane = debugPanes.put(banner)
+                    val bannerPane = debugPanes.put(banner)
 
                     fun keyListener(e: Event) {
                         e as KeyboardEvent
@@ -382,12 +385,14 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
                     window.addEventListener("keydown", ::keyListener)
 
                     try {
+                        testPausedOnAssertion = true
                         pausedOnAssertion.resolve()
                         await(assertionBannerPause.promise)
                     } finally {
+                        testPausedOnAssertion = false
                         pausedOnAssertion = ResolvableShit()
                         window.removeEventListener("keydown", ::keyListener)
-                        debugPanes.remove(pane)
+                        debugPanes.remove(bannerPane)
                     }
                 }
             }.shit)

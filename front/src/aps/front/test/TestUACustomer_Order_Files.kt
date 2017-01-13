@@ -282,7 +282,6 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
 
         expectChangedFileDownload()
 
-        o.beginWorkRegion()
         o.twoStepLockSequence(
             buildAction = {
                 o.buttonClick(fconst.test.key.refreshPage)
@@ -401,11 +400,11 @@ class Test_UACustomer_Order_Files_Misc : TestUACustomer_Order_Files_Base() {
                     )
                 },
                 assertAfterModal = {
-                    o.acta {TestGlobal.animationHalfwaySignal.promise.orTimeout(1000)}
+                    o.acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(1000)}
                     o.assertScreenHTML("Item vanishes (halfway)", "b06e4d3c-9bfa-4397-8d4d-76044c7bd9d6")
                     o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
 
-                    o.acta {TestGlobal.shitVanished.promise.orTimeout(1000)}
+                    o.acta {TestGlobal.shitVanished.promise.orTestTimeout(1000)}
                     o.assertScreenHTML("Item vanished", "04d13114-4773-43aa-8370-7213ac3651b1")
                 }
             )

@@ -522,7 +522,7 @@ fun TestScenarioBuilder.genericRequestSequence(
 
     o.act {TestGlobal.responseProcessedSignal = ResolvableShit<Unit>()}
     o.act {TestGlobal.requestPause!!.resolve(Unit)}
-    o.await {TestGlobal.responseProcessedSignal.promise.orTimeout(responseTimeout)}
+    o.await {TestGlobal.responseProcessedSignal.promise.orTestTimeout(responseTimeout)}
     afterResponse()
 }
 

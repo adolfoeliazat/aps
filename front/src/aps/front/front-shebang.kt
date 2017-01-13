@@ -37,6 +37,7 @@ object TestGlobal {
     var formActionHalfwayConsidered by notNullNamed<ResolvableShit<Unit>>()
     var testRunning = false
     val loadPageForURLLock by notNullNamed(TestLock())
+    var testIsPausedByBanner = false
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

@@ -154,7 +154,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
             }
         }
 
-        fun reloadFilesTab() =
+        fun reloadFilesTab(): Promise<Unit> =
             world.pushNavigate("order.html?id=${order.id}&tab=files"
                                    + "&ordering=${orderingSelect.value.name}"
                                    + "&filter=${filterSelect.value.name}"
@@ -170,6 +170,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                 effects2.blinkOffFadingOut()
                 ebafHost.headerControlsDisabled = false
                 stripContent.update() // TODO:vgrechka Redundant?
+                await(TestGlobal.loadPageForURLLock.sutPause2())
             }
         }
     }

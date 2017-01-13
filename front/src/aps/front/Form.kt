@@ -189,11 +189,11 @@ fun TestScenarioBuilder.formSequence(
 
     buildAction()
 
-    o.acta {TestGlobal.formActionHalfway.promise.orTimeout(halfwayTimeout)}
+    o.acta {TestGlobal.formActionHalfway.promise.orTestTimeout(halfwayTimeout)}
     o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
     o.act {TestGlobal.formActionHalfwayConsidered.resolve()}
 
-    o.acta {TestGlobal.formActionCompleted.promise.orTimeout(completedTimeout)}
+    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(completedTimeout)}
     o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
@@ -217,15 +217,15 @@ fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
 
     buildAction()
 
-    o.acta {TestGlobal.formActionHalfway.promise.orTimeout(halfwayTimeout)}
+    o.acta {TestGlobal.formActionHalfway.promise.orTestTimeout(halfwayTimeout)}
     o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
     o.act {TestGlobal.formActionHalfwayConsidered.resolve()}
 
-    o.acta {TestGlobal.animationHalfwaySignal.promise.orTimeout(fconst.test.default.animationHalfwaySignalTimeout)}
+    o.acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(fconst.test.default.animationHalfwaySignalTimeout)}
     o.assertScreenHTML(assertionDescr + " (completion animation halfway)", completionAnimationHalfwayAssertionID)
     o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
 
-    o.acta {TestGlobal.formActionCompleted.promise.orTimeout(completedTimeout)}
+    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(completedTimeout)}
     o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 

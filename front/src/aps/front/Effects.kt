@@ -99,11 +99,11 @@ fun TestScenarioBuilder.animatedActionSequence(
 
     buildAction()
 
-    o.acta {TestGlobal.animationHalfwaySignal.promise.orTimeout(1000)}
+    o.acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(1000)}
     o.assertScreenHTML(assertionDescr + " (animation halfway)", halfwayAssertionID)
     o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
 
-    o.acta {TestGlobal.formActionCompleted.promise.orTimeout(actionTimeout)}
+    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(actionTimeout)}
     o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
