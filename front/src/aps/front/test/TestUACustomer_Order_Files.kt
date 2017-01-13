@@ -246,16 +246,17 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         o.acta {TestUserActionAnimation.scroll(700)}
         o.kicClick("edit-$orderFileID")
         o.assertScreenHTML("Piece of shit #$orderFileID is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
-        o.buttonUserInitiatedClick("upload-$orderFileID")
-        o.typeIntoOpenFileDialog("${testconst.filesRoot}fuck you.rtf")
-        o.fileFieldWaitTillShitChanged("file-$orderFileID")
-        o.assertScreenHTML("File changed", "b3afb796-7115-4f11-a980-acd48e898052")
+        o.fileFieldChoose(
+            assertionDescr = "File changed",
+            assertionID = "b3afb796-7115-4f11-a980-acd48e898052",
+            keySuffix = "-$orderFileID",
+            fileName = "fuck you.rtf")
         o.inputSetValue("title-$orderFileID", "The Fuck You")
         o.inputPrependValue("details-$orderFileID", "A fucky piece of text. ")
 
         o.formWithAnimationOnCompletionSequence(
+            shit,
             buildAction = {
-                o.acta {shit.imposeNextRequestTimestamp()}
                 o.buttonClick("primary-$orderFileID")
             },
             assertionDescr = "Shit is saved",
@@ -270,8 +271,8 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         o.assertScreenHTML("Piece of shit #$orderFileID is opened at new position", "166e3d38-e981-42fc-92ab-47e5fce8eca1")
         o.inputAppendValue("title-$orderFileID", " (yes, you)")
         o.formWithAnimationOnCompletionSequence(
+            shit,
             buildAction = {
-                o.acta {shit.imposeNextRequestTimestamp()}
                 o.buttonClick("primary-$orderFileID")
             },
             assertionDescr = "Shit is saved again",
@@ -292,6 +293,7 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
             assertionID2 = "36acd3be-3e16-4bc3-9968-4269fdb03fce"
         )
     }
+
 }
 
 class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
@@ -300,11 +302,29 @@ class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
             buildAction = {
                 o.buttonClick(fconst.test.key.plus)
             },
-            assertionDescr = "Add file",
+            assertionDescr = "Opened plus form",
             steps = listOf(
                 TestSequenceStep(TestGlobal.fadeHalfwayLock, "b77d83ed-9e60-4499-81a3-850cfde79b31"),
                 TestSequenceStep(TestGlobal.fadeDoneLock, "368b8d25-1b31-4636-9951-64078ef4acc9")
             )
+        )
+
+        o.fileFieldChoose(
+            assertionDescr = "Chose file",
+            assertionID = "a3fd26ed-fb9e-4c31-b770-c68cba350a82",
+            keySuffix = "",
+            fileName = "fuck you.rtf")
+
+        o.inputAppendValue("title", "Monster Pussy")
+        o.inputAppendValue("details", "Details? What kind of fucking details?")
+        o.submitForm(
+            shit,
+            assertionDescr = "Shit is added",
+            buildAction = {
+                o.buttonClick("primary")
+            },
+            tickingAssertionID = "b69c0d17-2653-41a3-923a-856b28eaa7f2",
+            doneAssertionID = "3f63dbe5-bdce-44ad-a22b-dd35e05e8d7c"
         )
     }
 }

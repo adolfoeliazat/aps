@@ -395,6 +395,18 @@ fun TestScenarioBuilder.sequence(
     }
 }
 
+fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: String, keySuffix: String, fileName: String) {
+    sequence(
+        assertionDescr = assertionDescr,
+        buildAction = {
+            buttonUserInitiatedClick("${fconst.test.key.upload}$keySuffix")
+            typeIntoOpenFileDialog(testconst.filesRoot + fileName)
+        },
+        steps = listOf(
+            TestSequenceStep(TestGlobal.fileFieldChangedLock, assertionID)
+        )
+    )
+}
 
 
 

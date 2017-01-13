@@ -11,6 +11,8 @@ object fconst {
         object key {
             val refreshPage = "refreshPage"
             val plus = "plus"
+            val upload = "upload"
+            val file = "file"
         }
     }
 }

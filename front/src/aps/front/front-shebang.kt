@@ -40,6 +40,9 @@ object TestGlobal {
     val plusSequenceLock by notNullNamed(TwoStepTestLock())
     val fadeHalfwayLock by notNullNamed(TestLock())
     val fadeDoneLock by notNullNamed(TestLock())
+    val fileFieldChangedLock by notNullNamed(TestLock())
+    val formTickingLock by notNullNamed(TestLock())
+    val formDoneLock by notNullNamed(TestLock())
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

@@ -34,7 +34,7 @@ import kotlin.browser.window
 
     val noise = DebugNoise("FileField", mute = false)
     var content: Content = Content.NotProvided()
-    var fileChanged = ResolvableShit<Unit>()
+//    var fileChanged = ResolvableShit<Unit>()
 
     val control = object:Control2(Attrs()) {
         val inputID = puid()
@@ -54,7 +54,7 @@ import kotlin.browser.window
                         noise.clog("Got file", file)
                         content = Content.FileToUpload(file)
                         update()
-                        fileChanged.resolve(Unit)
+                        TestGlobal.fileFieldChangedLock.sutPause()
                     }
                 ), listOf())
                 when (_content) {
@@ -63,7 +63,7 @@ import kotlin.browser.window
                             o- kspan{o->
                                 o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
                             }
-                            o- Button("upload" + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button(fconst.test.key.upload + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -73,14 +73,14 @@ import kotlin.browser.window
                             o- kspan{o->
                                 o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
                             }
-                            o- Button("upload" + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button(fconst.test.key.upload + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }
                     }
                     is Content.NotProvided -> {
                         o- kdiv{o->
-                            o- Button("upload" + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), onClick = {
+                            o- Button(fconst.test.key.upload + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -158,21 +158,21 @@ fun TestScenarioBuilder.typeIntoOpenFileDialog(text: String) {
     }
 }
 
-fun TestScenarioBuilder.fileFieldWaitTillShitChanged(key: String) {
-    acta("Waiting till file in `$key` is changed") {
-        val shit = ResolvableShit<Unit>()
-
-        val fileField = FileField.instance(key)
-        fileField.fileChanged.promise.then<Nothing>({
-            shit.resolve(Unit)
-        })
-
-        timeoutSet(1000) {
-            shit.reject(Exception("Timed out waiting for a fucking file to be changed"))
-        }
-
-        shit.promise
-    }
-}
+//fun TestScenarioBuilder.fileFieldWaitTillShitChanged(key: String) {
+//    acta("Waiting till file in `$key` is changed") {
+//        val shit = ResolvableShit<Unit>()
+//
+//        val fileField = FileField.instance(key)
+//        fileField.fileChanged.promise.then<Nothing>({
+//            shit.resolve(Unit)
+//        })
+//
+//        timeoutSet(1000) {
+//            shit.reject(Exception("Timed out waiting for a fucking file to be changed"))
+//        }
+//
+//        shit.promise
+//    }
+//}
 
 

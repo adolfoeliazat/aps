@@ -38,7 +38,8 @@ class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
         o.typeIntoOpenFileDialog("${testconst.filesRoot}fuck you.rtf")
-        o.fileFieldWaitTillShitChanged("file")
+        imf("fix me")
+        // o.fileFieldWaitTillShitChanged("file")
         o.setValueDescribingStep("TextField-title.Input", "A warm word to my writer")
         o.setValueDescribingStep("TextField-details.Input", dedent("""
             Я к вам пишу – чего же боле?
@@ -52,7 +53,8 @@ class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
         o.typeIntoOpenFileDialog("${testconst.filesRoot}crazy monster boobs.rtf")
-        o.fileFieldWaitTillShitChanged("file")
+        imf("fix me")
+//        o.fileFieldWaitTillShitChanged("file")
         o.setValueDescribingStep("TextField-title.Input", "Cool stuff")
         o.setValueDescribingStep("TextField-details.Input", dedent("""
              - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
@@ -65,7 +67,8 @@ class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
         o.typeIntoOpenFileDialog("${testconst.filesRoot}the trial.doc")
-        o.fileFieldWaitTillShitChanged("file")
+        imf("fix me")
+        // o.fileFieldWaitTillShitChanged("file")
         o.setValueDescribingStep("TextField-title.Input", "Процесс by Кафка")
         o.setValueDescribingStep("TextField-details.Input", dedent("""
             Это чисто на почитать...

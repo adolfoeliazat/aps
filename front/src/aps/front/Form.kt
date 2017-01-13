@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import aps.front.testutils.*
 import into.kommon.*
 
 data class FormSpec<Req: RequestMatumba, Res>(
@@ -84,9 +85,11 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                     working = true
                                     update()
 
+                                    await(TestGlobal.formTickingLock.sutPause())
+
                                     val res: FormResponse = await(callMatumba(spec.req, spec.ui.tokenMaybe))
-                                    TestGlobal.formActionHalfway.resolve()
-                                    await(TestGlobal.formActionHalfwayConsidered.promise)
+//                                    TestGlobal.formActionHalfway.resolve()
+//                                    await(TestGlobal.formActionHalfwayConsidered.promise)
 
                                     when (res) {
                                         is FormResponse.Shitty -> {
@@ -110,7 +113,9 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 
                                     working = false
                                     update()
-                                    TestGlobal.formActionCompleted.resolve()
+
+                                    await(TestGlobal.formDoneLock.sutPause())
+//                                    TestGlobal.formActionCompleted.resolve()
                                 } finally {
                                     Shitus.endTrain()
                                 }
@@ -200,6 +205,7 @@ fun TestScenarioBuilder.formSequence(
 }
 
 fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
+    shit: TestShit,
     buildAction: () -> Unit,
     assertionDescr: String,
     halfwayAssertionID: String,
@@ -208,8 +214,7 @@ fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
     halfwayTimeout: Int = 5000,
     completedTimeout: Int = 5000
 ) {
-    val o = this
-    o.act {
+    act {
         TestGlobal.formActionCompleted = ResolvableShit()
         TestGlobal.formActionHalfway = ResolvableShit()
         TestGlobal.formActionHalfwayConsidered = ResolvableShit()
@@ -217,18 +222,39 @@ fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
         TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
     }
 
+    acta {shit.imposeNextRequestTimestamp()}
     buildAction()
 
-    o.acta {TestGlobal.formActionHalfway.promise.orTestTimeout(halfwayTimeout)}
-    o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
-    o.act {TestGlobal.formActionHalfwayConsidered.resolve()}
+    acta {TestGlobal.formActionHalfway.promise.orTestTimeout(halfwayTimeout)}
+    assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
+    act {TestGlobal.formActionHalfwayConsidered.resolve()}
 
-    o.acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(fconst.test.default.animationHalfwaySignalTimeout)}
-    o.assertScreenHTML(assertionDescr + " (completion animation halfway)", completionAnimationHalfwayAssertionID)
-    o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
+    acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(fconst.test.default.animationHalfwaySignalTimeout)}
+    assertScreenHTML(assertionDescr + " (completion animation halfway)", completionAnimationHalfwayAssertionID)
+    act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
 
-    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(completedTimeout)}
-    o.assertScreenHTML(assertionDescr, finalAssertionID)
+    acta {TestGlobal.formActionCompleted.promise.orTestTimeout(completedTimeout)}
+    assertScreenHTML(assertionDescr, finalAssertionID)
+}
+
+fun TestScenarioBuilder.submitForm(
+    shit: TestShit,
+    assertionDescr: String,
+    buildAction: () -> Unit,
+    tickingAssertionID: String,
+    doneAssertionID: String
+) {
+    sequence(
+        buildAction = {
+            acta {shit.imposeNextRequestTimestamp()}
+            buildAction()
+        },
+        assertionDescr = assertionDescr,
+        steps = listOf(
+            TestSequenceStep(TestGlobal.formTickingLock, tickingAssertionID),
+            TestSequenceStep(TestGlobal.formDoneLock, doneAssertionID)
+        )
+    )
 }
 
 

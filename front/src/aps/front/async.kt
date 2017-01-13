@@ -142,8 +142,8 @@ class TwoStepTestLock(
 }
 
 class TestLock(
-    val testPauseTimeout: Int = 5000,
-    val sutPauseTimeout: Int = 5000
+    val testPauseTimeout: Int = 10000,
+    val sutPauseTimeout: Int = 10000
 ) {
     private val testPause by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
     private val sutPause by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
