@@ -63,7 +63,7 @@ import kotlin.browser.window
                             o- kspan{o->
                                 o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
                             }
-                            o- Button(fconst.test.key.upload + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button(fconst.key.upload.decl + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -73,14 +73,14 @@ import kotlin.browser.window
                             o- kspan{o->
                                 o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
                             }
-                            o- Button(fconst.test.key.upload + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button(fconst.key.upload.decl + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
                                 byid(inputID).click()
                             })
                         }
                     }
                     is Content.NotProvided -> {
                         o- kdiv{o->
-                            o- Button(fconst.test.key.upload + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), onClick = {
+                            o- Button(fconst.key.upload.decl + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), onClick = {
                                 byid(inputID).click()
                             })
                         }

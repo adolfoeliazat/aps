@@ -83,7 +83,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
     }
 
     val ebafPlus = EvaporatingButtonAndForm(
-        host = ebafHost, key = fconst.test.key.plus, level = Button.Level.PRIMARY, icon = fa.plus,
+        host = ebafHost, key = fconst.key.plus.decl, level = Button.Level.PRIMARY, icon = fa.plus,
         formSpec = FormSpec<CustomerAddUAOrderFileRequest, AddUAOrderFileRequestBase.Response>(
             CustomerAddUAOrderFileRequest()-{o->
                 o.orderID.value = order.id
@@ -98,7 +98,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
 
     inner class StripContent : Control2(Attrs()) {
         val filterSelect = Select(
-            key = "filter",
+            key = fconst.key.filter.decl,
             values = CustomerFileFilter.values(),
             initialValue = filter,
             isAction = true,
@@ -107,7 +107,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         )
 
         val orderingSelect = Select(
-            key = "ordering",
+            key = fconst.key.ordering.decl,
             values = Ordering.values(),
             initialValue = ordering,
             isAction = true,
@@ -116,7 +116,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         )
 
         val searchInput = Input(
-            key = "search",
+            key = fconst.key.search.decl,
             style = Style(paddingLeft = 30, width = "100%"),
             placeholder = t("TOTE", "Поиск..."),
             volatileDisabled  = {ebafHost.headerControlsDisabled}
@@ -148,7 +148,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                 o- orderingSelect
 
                 val refreshButtonID = puid()
-                o- Button(key = fconst.test.key.refreshPage, id = refreshButtonID, icon = fa.refresh, volatileDisabled = {ebafHost.headerControlsDisabled}) {
+                o- Button(key = fconst.key.refreshPage.decl, id = refreshButtonID, icon = fa.refresh, volatileDisabled = {ebafHost.headerControlsDisabled}) {
                     reload(refreshButtonID)
                 }
 

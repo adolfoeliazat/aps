@@ -399,7 +399,7 @@ fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: Str
     sequence(
         assertionDescr = assertionDescr,
         buildAction = {
-            buttonUserInitiatedClick("${fconst.test.key.upload}$keySuffix")
+            buttonUserInitiatedClick("${fconst.key.upload.testRef}$keySuffix")
             typeIntoOpenFileDialog(testconst.filesRoot + fileName)
         },
         steps = listOf(

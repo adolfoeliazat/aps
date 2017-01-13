@@ -285,7 +285,7 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
 
         o.twoStepLockSequence(
             buildAction = {
-                o.buttonClick(fconst.test.key.refreshPage)
+                o.buttonClick(fconst.key.refreshPage.testRef)
             },
             lock = TestGlobal.loadPageForURLLock,
             assertionDescr = "Page refresh",
@@ -298,35 +298,47 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
 
 class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
-        o.sequence(
-            buildAction = {
-                o.buttonClick(fconst.test.key.plus)
-            },
-            assertionDescr = "Opened plus form",
-            steps = listOf(
-                TestSequenceStep(TestGlobal.fadeHalfwayLock, "b77d83ed-9e60-4499-81a3-850cfde79b31"),
-                TestSequenceStep(TestGlobal.fadeDoneLock, "368b8d25-1b31-4636-9951-64078ef4acc9")
-            )
-        )
+        o.addFile(shit, "b31dc136-68f4-417c-bc2c-9e4088b28ac4", fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?")
+        o.addFile(shit, "fcbe57dc-5984-421c-9d27-32b50f0d3cbc", fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows")
+        o.addFile(shit, "808d747e-bd63-44d4-880e-84f2e2a10736", fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here")
+        o.beginWorkRegion()
 
-        o.fileFieldChoose(
-            assertionDescr = "Chose file",
-            assertionID = "a3fd26ed-fb9e-4c31-b770-c68cba350a82",
-            keySuffix = "",
-            fileName = "fuck you.rtf")
-
-        o.inputAppendValue("title", "Monster Pussy")
-        o.inputAppendValue("details", "Details? What kind of fucking details?")
-        o.submitForm(
-            shit,
-            assertionDescr = "Shit is added",
-            buildAction = {
-                o.buttonClick("primary")
-            },
-            tickingAssertionID = "b69c0d17-2653-41a3-923a-856b28eaa7f2",
-            doneAssertionID = "3f63dbe5-bdce-44ad-a22b-dd35e05e8d7c"
-        )
+//        o.search(
+//            assertionDescr = "Search newly added stuff"
+//        )
     }
+
+}
+
+private fun TestScenarioBuilder.addFile(shit: TestShit, aid: String, fileName: String, title: String, details: String) {
+    sequence(
+        buildAction = {
+            buttonClick(fconst.key.plus.testRef)
+        },
+        assertionDescr = "Opened plus form",
+        steps = listOf(
+            TestSequenceStep(TestGlobal.fadeHalfwayLock, "$aid--1"),
+            TestSequenceStep(TestGlobal.fadeDoneLock, "$aid--2")
+        )
+    )
+
+    fileFieldChoose(
+        assertionDescr = "Chose file",
+        assertionID = "$aid--3",
+        keySuffix = "",
+        fileName = fileName)
+
+    inputAppendValue("title", title)
+    inputAppendValue("details", details)
+    submitForm(
+        shit,
+        assertionDescr = "Shit is added",
+        buildAction = {
+            buttonClick("primary")
+        },
+        tickingAssertionID = "$aid--4",
+        doneAssertionID = "$aid--5"
+    )
 }
 
 class Test_UACustomer_Order_Files_EditFile_Error : TestUACustomer_Order_Files_Base() {
