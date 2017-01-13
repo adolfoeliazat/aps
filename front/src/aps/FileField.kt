@@ -79,9 +79,11 @@ import kotlin.browser.window
                         }
                     }
                     is Content.NotProvided -> {
-                        o- Button("upload" + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("TOTE", "Выбрать..."), onClick = {
-                            byid(inputID).click()
-                        })
+                        o- kdiv{o->
+                            o- Button("upload" + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), onClick = {
+                                byid(inputID).click()
+                            })
+                        }
                     }
                 }
             }

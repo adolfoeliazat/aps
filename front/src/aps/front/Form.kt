@@ -45,6 +45,8 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
     lateinit var actualVisibleFieldNames: Iterable<String>
     var focusedField: FormFieldFront? = null
 
+    val elementID get() = control.elementID
+
     val control = object:Control() {
         override fun defaultControlTypeName() = "FormMatumba"
 
@@ -52,7 +54,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
             gloshit.updateForm = {update()}
             figureOutActualVisibleFieldNames()
 
-            return kdiv(attrs = Attrs(className = spec.containerClassName), style = spec.containerStyle){o->
+            return kdiv(attrs = Attrs(className = spec.containerClassName, id = elementID), style = spec.containerStyle){o->
                 val form: ReactElement = Shitus.forma.apply(null, js("[]").concat(
                     jsArrayOf(
                         json("className" to spec.className),

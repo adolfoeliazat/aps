@@ -20,54 +20,24 @@ interface IButtonAndForm {
 
 class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
     private val host: EvaporatingButtonAndFormHost,
-    val name: String,
+    val key: String,
     val level: Button.Level,
     val icon: IconClass,
     val formSpec: FormSpec<Req, Res>,
     val onSuccessa: (Res) -> Promise<Unit>
 ) : IButtonAndForm {
-    private var form: ReactElement? = null
+    private var form: FormMatumba<*, *>? = null
     private var formClass = ""
 
-//    override fun renderButton(): ReactElement = Shitus.button(json(
-//        "tamyShamy" to name,
-//        "style" to json("marginLeft" to 0),
-//        "level" to level,
-//        "icon" to icon,
-//        "disabled" to host.headerControlsDisabled,
-//        "onClick" to {
-//            host.showEmptyLabel = false
-//            setHeaderControlsDisappearing()
-//            formClass = "aniFadeIn"
-//
-//            host.cancelForm = {
-//                setHeaderControlsAppearing()
-//                form = null
-//                host.updateShit()
-//            }
-//
-//            form = FormMatumba(formSpec.copy(
-//                onCancel = {host.cancelForm()},
-//                onSuccessa = {res ->
-//                    async {
-//                        await(onSuccessa(res))
-//                    }
-//                }
-//            )).toReactElement()
-//
-//            host.updateShit()
-//        }
-//    ))
-
     override fun renderButton() = Button(
-        key = name,
+        key = key,
         level = level,
         icon = icon,
         disabled = host.headerControlsDisabled,
-        onClicka = {async{
+        onClicka = {async<Unit>{
             host.showEmptyLabel = false
             setHeaderControlsDisappearing()
-            formClass = "aniFadeIn"
+            // formClass = "aniFadeIn"
 
             host.cancelForm = {
                 setHeaderControlsAppearing()
@@ -82,14 +52,16 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
                         await(onSuccessa(res))
                     }
                 }
-            )).toReactElement()
+            ))
 
             host.updateShit()
+
+            await(effects2.fadeIn(form!!.elementID))
         }}
     ).toReactElement()
 
     override fun renderForm(): ReactElement? = form?.let {
-        Shitus.diva(json("className" to formClass, "style" to json("marginBottom" to 15)), it)
+        Shitus.diva(json("className" to formClass, "style" to json("marginBottom" to 15)), it.toReactElement())
     }
 
     fun setHeaderControlsDisappearing() {

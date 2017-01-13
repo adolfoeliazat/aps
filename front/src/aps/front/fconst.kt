@@ -10,6 +10,7 @@ object fconst {
 
         object key {
             val refreshPage = "refreshPage"
+            val plus = "plus"
         }
     }
 }

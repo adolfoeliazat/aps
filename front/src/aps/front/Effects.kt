@@ -52,6 +52,8 @@ object effects2 {
         val initialOpacity = if (decreaseOpacity) 1.0 else 0.0
         val dopacity = 1.0 / frames * if (decreaseOpacity) -1 else 1
 
+//        await(tillAnimationFrame())
+
         fun setOpacity(value: Double) {
             byid0(elementID)!!.style.opacity = value.toString()
         }
@@ -72,14 +74,16 @@ object effects2 {
             setOpacity(opacity)
 
             if (opacity == midpoint) {
-                if (isTest()) {
-                    TestGlobal.animationHalfwaySignal.resolve()
-                    await(TestGlobal.animationHalfwaySignalProcessedSignal.promise)
-                }
+                await(TestGlobal.fadeHalfwayLock.sutPause())
+//                if (isTest()) {
+//                    TestGlobal.animationHalfwaySignal.resolve()
+//                    await(TestGlobal.animationHalfwaySignalProcessedSignal.promise)
+//                }
                 midpointReached = true
             }
         }
         check(midpointReached) {"midpointReached"}
+        await(TestGlobal.fadeDoneLock.sutPause())
     }
 }
 

@@ -294,6 +294,21 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
     }
 }
 
+class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
+    override fun buildSteps0() {
+        o.sequence(
+            buildAction = {
+                o.buttonClick(fconst.test.key.plus)
+            },
+            assertionDescr = "Add file",
+            steps = listOf(
+                TestSequenceStep(TestGlobal.fadeHalfwayLock, "b77d83ed-9e60-4499-81a3-850cfde79b31"),
+                TestSequenceStep(TestGlobal.fadeDoneLock, "368b8d25-1b31-4636-9951-64078ef4acc9")
+            )
+        )
+    }
+}
+
 class Test_UACustomer_Order_Files_EditFile_Error : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
         imf()

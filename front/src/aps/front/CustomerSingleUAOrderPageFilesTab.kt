@@ -83,10 +83,10 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
     }
 
     val ebafPlus = EvaporatingButtonAndForm(
-        ebafHost, "plus", Button.Level.PRIMARY, fa.plus,
+        host = ebafHost, key = fconst.test.key.plus, level = Button.Level.PRIMARY, icon = fa.plus,
         formSpec = FormSpec<CustomerAddUAOrderFileRequest, AddUAOrderFileRequestBase.Response>(
             CustomerAddUAOrderFileRequest(), world,
-            primaryButtonTitle = t("TOTE", "Добавить"),
+            primaryButtonTitle = t("Add", "Добавить"),
             cancelButtonTitle = const.defaultCancelButtonTitle
         ),
         onSuccessa = {res->

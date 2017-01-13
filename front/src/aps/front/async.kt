@@ -88,7 +88,7 @@ fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
 
 fun tillEndOfTime(): Promise<Unit> = delay(Int.MAX_VALUE)
 
-class TestLock(
+class TwoStepTestLock(
     val testPause1Timeout: Int = 5000,
     val testPause2Timeout: Int = 5000,
     val sutPause1Timeout: Int = 5000,
@@ -141,9 +141,37 @@ class TestLock(
     }
 }
 
+class TestLock(
+    val testPauseTimeout: Int = 5000,
+    val sutPauseTimeout: Int = 5000
+) {
+    private val testPause by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
+    private val sutPause by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
 
+    init {
+        // Initially everything is resolved, so if not in test, shit just works
+        testPause.resolve()
+        sutPause.resolve()
+    }
 
+    fun reset() {
+        testPause.reset()
+        sutPause.reset()
+    }
 
+    fun testPause(): Promise<Unit> = async {
+        await(testPause.promise.orTestTimeoutNamedAfter(testPauseTimeout, {testPause}))
+    }
+
+    fun testResume() {
+        sutPause.resolve()
+    }
+
+    fun sutPause(): Promise<Unit> = async {
+        testPause.resolve()
+        await(sutPause.promise.orTestTimeoutNamedAfter(sutPauseTimeout, {sutPause}))
+    }
+}
 
 
 
