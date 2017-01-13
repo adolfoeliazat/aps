@@ -1,0 +1,975 @@
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Проза
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                <span class="">
+                  Почему мы?
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                <span class="">
+                  Цены
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                <span class="">
+                  Примеры
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                <span class="">
+                  ЧаВо
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                <span class="">
+                  Связь
+                </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                <span class="">
+                  Блог
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="">
+          <a href="orders.html">
+            <span class="">
+              Мои заказы
+            </span>
+          </a>
+        </li>
+        <li class="">
+          <a href="support.html">
+            <span class="">
+              Поддержка
+            </span>
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            <span class="">
+              Иво
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <div>
+            Заказ №100000
+            <span style="top: -0.2em; position: relative; margin-left: 1em; padding: 0.1em 0.3em; background-color: rgb(179, 229, 252); font-size: 60%; border-radius: 0.3em;">
+              Ищем&nbsp;писателей
+            </span>
+          </div>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <h4 style="margin-bottom: 0.7em;">
+        Когнитивно-прагматические аспекты перевода рекламных слоганов с английского
+      </h4>
+      <div>
+        <div style="position: relative;">
+          <ul class="nav nav-tabs">
+            <li id="tab-params" class="">
+              <a href="#">
+                Параметры
+              </a>
+            </li>
+            <li id="tab-files" class="active">
+              <a href="#">
+                Файлы
+              </a>
+            </li>
+            <li id="tab-messages" class="">
+              <a href="#">
+                Сообщения
+              </a>
+            </li>
+          </ul>
+          <div style="top: 0px; right: 0px; position: absolute;">
+            <div style="display: flex;">
+              <div style="margin-left: 0px;">
+                <div style="position: relative;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="" style="resize: none; width: 100%; padding-left: 30px;">
+                    <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
+                    </i>
+                  </div>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control">
+                    <option value="ALL">
+                      Все
+                    </option>
+                    <option value="FROM_ME">
+                      Мои
+                    </option>
+                    <option value="FROM_WRITER">
+                      От писателя
+                    </option>
+                    <option value="FROM_SUPPORT">
+                      От саппорта
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control">
+                    <option value="ASC">
+                      Старые
+                    </option>
+                    <option value="DESC">
+                      Новые
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-primary ">
+                    <i class="fa fa-plus">
+                    </i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 5px;">
+            <div>
+              <div>
+              </div>
+              <div>
+                <div>
+                  <span>
+                  </span>
+                  <div class="item">
+                    <div class="row" style="margin-bottom: 0.5em;">
+                      <div class="col-md-12">
+                        <div class="cunt-header-editing">
+                          <i class="cunt-header-leftIcon-editing fa fa-file">
+                          </i>
+                          <i class="cunt-header-leftOverlayBottomLeftIcon-editing fa fa-user">
+                          </i>
+                          <span>
+                            The Fuck You
+                          </span>
+                          <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                            №100010
+                          </span>
+                          <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                            Мой
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-12" style="margin-top: -1px;">
+                        <div class="cunt-bodyEditing">
+                          <form class="">
+                            <div class="form-group">
+                              <label>
+                                Файл
+                              </label>
+                              <input type="file" style="display: none;">
+                                <div style="display: flex; align-items: center;">
+                                  <span>
+                                    fuck you.rtf (244 Б)
+                                  </span>
+                                  <button class="btn btn-default " style="margin-left: 1em;">
+                                    <i class="fa fa-cloud-upload">
+                                    </i>
+                                    &nbsp;
+                                    Изменить...
+                                  </button>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label>
+                                  Название
+                                </label>
+                                <div style="position: relative;">
+                                  <input type="text" rows="5" class="form-control" disabled="" value="The Fuck You (yes, you)" style="resize: none;">
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label>
+                                    Детали
+                                  </label>
+                                  <div style="position: relative;">
+                                    <textarea rows="5" type="text" class="form-control" disabled="" style="resize: none;">
+                                      A fucky piece of text. К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
+                                    </textarea>
+                                  </div>
+                                </div>
+                                <div style="text-align: left;">
+                                  <button class="btn btn-primary " disabled="">
+                                    Запостить
+                                  </button>
+                                  <button class="btn btn-default " disabled="" style="margin-left: 10px;">
+                                    Передумал
+                                  </button>
+                                  <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122); float: right;">
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                            </i>
+                            <span>
+                              Crappy release 3
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100016
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              От писателя
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            17.01.2016 17:39:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            17.01.2016 17:39:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              crappy release 3.rtf
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            2 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              Подымаясь по лестнице, он все время мешал детям,  игравшим там,  и  они  провожали его злыми взглядами. В другой раз, если придется  сюда  идти,  надо  будет  взять  либо  конфет,  чтобы подкупить их, либо палку, чтобы их отколотить, сказал он себе.У второго этажа ему даже пришлось переждать, пока мячик докатится донизу:  двое  мальчишек с хитроватыми лицами взрослых бандитов вцепились в его брюки; стряхнуть их можно было только силой, но К. боялся, что они завопят, если им сделать больно.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                            </i>
+                            <span>
+                              Crappy release 2
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100014
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              От писателя
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            15.01.2016 11:34:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            15.01.2016 11:34:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              crappy release 2.rtf
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            2 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              К. пошел  было  к  лестнице,  чтобы  подняться  в  кабинет следователя,  но  остановился:  кроме этой лестницы, со двора в дом было еще три входа, а в глубине  двора  виднелся  неширокий проход  во  второй  двор.  К.  рассердился,  оттого  что ему не указали точнее, где этот кабинет; все-таки к нему  отнеслись  с удивительным  невниманием и равнодушием, и он решил, что заявит об этом громко и отчетливо.  Наконец  он  все  же  поднялся  по лестнице,   мысленно  повторяя  выражение  Виллема,  одного  из стражей, что вина сама притягивает к себе правосудие, из  чего, собственно  говоря,  вытекало,  что  кабинет следователя должен находиться именно на той лестнице, куда случайно поднялся К.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                            </i>
+                            <span>
+                              Crappy release 1
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100012
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              От писателя
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            13.01.2016 17:02:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            13.01.2016 17:02:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              crappy release 1.rtf
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            2 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              К. прошел дальше по улочке медленным шагом, будто  у  него времени   сколько   угодно;   если  следователь  видит  его  из какого-нибудь окна, значит он знает, что К. явился. Только  что пробило девять. Дом оказался довольно далеко, он был необычайно длинный;   особенно   ворота  были  очень  высокие  и  широкие. Очевидно, они предназначались для фургонов,  развозивших  товар по  разным складам. Сейчас все склады во дворе были заперты, но по вывескам К. узнал некоторые фирмы -  его  банк  вел  с  ними дела.  Вопреки  своему  обыкновению  он  пристально разглядывал окружающее, даже остановился у входа  во  двор.  Неподалеку  на ящике  сидел  босоногий  человек и читал газету. Двое мальчишек качались на тачке.  У  колонки  стояла  болезненная  девушка  в ночной  кофточке,  и,  пока  вода  набиралась  в кувшин, она не сводила глаз с К. В углу двора между  двумя  окнами  натягивали веревку,  на  ней  уже  висело  выстиранное  белье. Внизу стоял человек и, покрикивая, руководил работой.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                            </i>
+                            <span>
+                              A piece of... Trial 3
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100009
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              Мой
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-trash">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-pencil">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            06.01.2016 06:37:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            06.01.2016 06:37:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              piece of trial 3.rtf
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            1 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              - Вы  не  подумали  об одном, - сказал он. - Правда, у вас могут быть неприятности, но никакая опасность вам не грозит. Вы знаете, что фрау Грубах - а в этом вопросе она играет  решающую роль,  поскольку капитан доводится ей племянником, - вы знаете, что она меня просто  обожает  и  беспрекословно  верит  каждому моему  слову.  Кстати,  она  и зависит от меня, я ей дал в долг порядочную сумму денег. Я готов принять любое предложенное вами объяснение нашей поздней встречи, если только  оно  будет  хоть немного  правдоподобно, и обязуюсь подействовать на фрау Грубах так, чтобы она не только приняла его официально, но и  поверила безоговорочно  и  искренне.  И пожалуйста, не щадите меня. Если вам угодно распространить слух, что я к  вам  приставал,  то  я именно  так и сообщу фрау Грубах, и она все примет, не теряя ко мне уважения, настолько она меня ценит.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                            </i>
+                            <span>
+                              A piece of... Trial 2
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100008
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              Мой
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-trash">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-pencil">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            03.01.2016 07:18:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            03.01.2016 07:18:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              piece of trial 2.rtf
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            1 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              Когда  ему  надоело смотреть на пустую улицу, он прилег на кушетку, но сначала  приоткрыл  дверь  в  прихожую,  чтобы,  не вставая,   видеть   всех,  кто  войдет  в  квартиру.  Часов  до одиннадцати он пролежал спокойно на кушетке, покуривая  сигару. Но  потом  не выдержал и вышел в прихожую, как будто этим можно было ускорить приход фройляйн Бюрстнер. У него не было  никакой охоты  ее  видеть,  он  даже  не  мог  точно вспомнить, как она выглядит, но ему нужно было с ней поговорить, и его  раздражало что из-за ее опоздания даже конец дня вышел такой беспокойный и беспорядочный.  Виновата она была и в том, что он не поужинал и пропустил визит к Эльзе, назначенный на сегодня. Конечно, можно было  бы  наверстать  упущенное  и  пойти  в  ресторанчик,  где работала  Эльза.  Он  решил,  что  после  разговора  с фройляйн Бюрстнер он так и сделает.
+                              Уже  пробило  половину  двенадцатого,  когда  на  лестнице раздались  чьи-то шаги. К. так ушел в свои мысли, что с громким топотом расхаживал по прихожей, как по своей комнате, но тут он торопливо нырнул к себе. В прихожую  вошла  фройляйн  Бюрстнер. Заперев  дверь,  она зябко закутала узкие плечи шелковой шалью. Еще миг, и она  скроется  в  своей  комнате,  куда  К.  в  этот полуночный час, разумеется, войти не мог. Значит, ему надо было заговорить с ней сразу; но, к несчастью, он забыл зажечь свет у себя  в комнате, и, если бы он сейчас вышел оттуда, из темноты, это походило бы на нападение. Во всяком случае,  он  мог  очень напугать   ее.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                            </i>
+                            <span>
+                              A piece of... Trial 1
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100007
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              Мой
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-trash">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-pencil">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            03.01.2016 00:24:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            03.01.2016 00:24:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              piece of trial 1.rtf
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            1 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              - Вы  глубоко заблуждаетесь, - сказал К. сердито, с трудом скрывая раздражение, - и  вообще  вы  неверно  истолковали  мои слова  про  барышню,  я  совсем  не  то хотел сказать. Искренне советую вам ничего ей не говорить. Вы глубоко заблуждаетесь,  я ее  знаю  очень  хорошо,  и  все,  что  вы  говорите, неправда!
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                            </i>
+                            <span>
+                              Crime and Punishment
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100006
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              От писателя
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            02.01.2016 03:21:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            02.01.2016 03:21:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              crime and punishment.rtf
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            2 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              Действие романа начинается жарким июльским днём в Петербурге. Студент Родион Романович Раскольников, вынужденный уйти из университета из-за отсутствия денег, направляется в квартиру к процентщице Алёне Ивановне, чтобы сделать «пробу своему предприятию». В сознании героя в течение последнего месяца созревает идея убийства «гадкой старушонки»; одно-единственное преступление, по мнению Раскольникова, изменит его собственную жизнь и избавит сестру Дуню от необходимости выходить замуж за «благодетеля» Петра Петровича Лужина. Несмотря на проведённую «разведку», тщательно продуманный план ломается из-за внутренней паники Родиона Романовича (который после убийства процентщицы долго не может найти у неё ни денег, ни ценных закладов), а также внезапного возвращения домой сестры Алёны Ивановны. Тихая, безобидная, «поминутно беременная» Лизавета, оказавшаяся невольной свидетельницей преступления, становится второй жертвой студента.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-pencil">
+                            </i>
+                            <span>
+                              The (Fucking) Idiot
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100004
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              От писателя
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            28.12.2015 09:19:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            28.12.2015 09:19:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              idiot.rtf
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            2 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              26-летний князь Лев Николаевич Мышкин возвращается из санатория в Швейцарии, где провёл несколько лет, лечась от эпилепсии. Князь предстаёт человеком искренним и невинным, хотя и прилично разбирающимся в отношениях между людьми. Он едет в Россию к единственным оставшимся у него родственникам — семье Епанчиных. В поезде он знакомится с молодым купцом Парфёном Рогожиным и отставным чиновником Лебедевым, которым бесхитростно рассказывает свою историю. В ответ он узнаёт подробности жизни Рогожина, который влюблён в Настасью Филипповну, бывшую содержанку богатого дворянина Афанасия Ивановича Тоцкого.
+                              В доме Епанчиных выясняется, что Настасья Филипповна там хорошо известна. Есть план выдать её за протеже генерала Епанчина Гаврилу Ардалионовича Иволгина, человека амбициозного, но посредственного. Князь Мышкин знакомится со всеми основными персонажами повествования. Это дочери Епанчиных — Александра, Аделаида и Аглая, на которых он производит благоприятное впечатление, оставаясь объектом их немного насмешливого внимания. Это генеральша Лизавета Прокофьевна Епанчина, которая находится в постоянном волнении из-за того, что её муж общается с Настасьей Филипповной, имеющей репутацию падшей. Это Ганя Иволгин, который очень страдает из-за предстоящей ему роли мужа Настасьи Филипповны, хотя ради денег готов на всё, и не может решиться на развитие своих пока очень слабых отношений с Аглаей. Князь Мышкин довольно простодушно рассказывает генеральше и сёстрам Епанчиным о том, что он узнал о Настасье Филипповне от Рогожина, а также поражает их своим повествованием о воспоминаниях и чувствах своего знакомого, который был приговорён к смертной казни, но в последний момент был помилован.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item" style="opacity: 1;">
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <div class="cunt-header-viewing">
+                            <i class="cunt-header-leftIcon-viewing fa fa-file">
+                            </i>
+                            <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                            </i>
+                            <span>
+                              Процесс by Кафка
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              №100002
+                            </span>
+                            <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                              Мой
+                            </span>
+                            <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                              <div style="margin-left: 0px;">
+                                <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-trash">
+                                </i>
+                              </div>
+                              <div style="margin-left: 12px;">
+                                <i class="cunt-header-rightIcon fa fa-pencil">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Создан
+                          </label>
+                          <div>
+                            24.12.2015 22:58:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Изменен
+                          </label>
+                          <div>
+                            24.12.2015 22:58:05 (Киев)
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Имя файла
+                          </label>
+                          <div>
+                            <span>
+                              the trial.doc
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label style="margin-bottom: 0px;">
+                            Размер
+                          </label>
+                          <div>
+                            993 КБ
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-bottom: 0.5em;">
+                        <div class="col-md-12">
+                          <label style="margin-bottom: 0px;">
+                            Детали
+                          </label>
+                          <div style="white-space: pre-wrap;">
+                            <p>
+                              Это чисто на почитать...
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="width: 100%; margin: 1em auto;">
+                      <button class="btn btn-default btn btn-default" style="width: 100%; background-color: rgb(236, 239, 241);">
+                        Загрузить еще
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
