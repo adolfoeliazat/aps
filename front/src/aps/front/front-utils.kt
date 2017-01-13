@@ -238,10 +238,26 @@ fun encodeURIComponent(s: String): String = global.encodeURIComponent(s)
 fun arraysEquals(a: Array<*>, b: Array<*>): Boolean =
     a.asList() == b.asList()
 
-fun scrollBodyToShitGradually(dy: Int = -10, bursts: Int = fconst.defaultScrollBursts, getShit: () -> JQuery): Promise<Unit> = async {
+fun scrollBodyToShitGradually(
+    dy: Int = -10,
+    bursts: Int = fconst.defaultScrollBursts,
+    dontScrollToTopItem: Boolean = false,
+    getShit: () -> JQuery
+): Promise<Unit> = async {
     await(tillAnimationFrame())
     val shit = getShit()
     check(shit[0] != null) {"Shit to scroll to is not found"}
+
+    if (dontScrollToTopItem) {
+        if (shit.hasClass(css.item)) {
+            var topItem = shit[0]!!
+            jq(".${css.item}").each {_, el ->
+                if (el.offsetTop < topItem.offsetTop)
+                    topItem = el
+            }
+            if (shit[0] == topItem) return@async
+        }
+    }
 
     val targetTop: Double
     targetTop = shit.offset().top - const.topNavbarHeight + dy

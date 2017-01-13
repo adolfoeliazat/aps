@@ -237,6 +237,12 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         val orderFileID = 100010L
         val fileID = 100008L
 
+        fun expectChangedFileDownload() {
+            o.expectPieceOfShitDownload(PieceOfShitDownload(fileID, "fuck you.rtf", forbidden = false, sha1 = "1f378c5775314852bb2f45fd52611b28812978e3")) {
+                o.kicClick("download-$orderFileID")
+            }
+        }
+
         o.acta {TestUserActionAnimation.scroll(700)}
         o.kicClick("edit-$orderFileID")
         o.assertScreenHTML("Piece of shit #$orderFileID is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
@@ -258,9 +264,23 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
             finalAssertionID = "a34b038f-3578-411e-9aad-e8011755e0cb"
         )
 
-        o.expectPieceOfShitDownload(PieceOfShitDownload(fileID, "fuck you.rtf", forbidden = false, sha1 = "1f378c5775314852bb2f45fd52611b28812978e3")) {
-            o.kicClick("download-$orderFileID")
-        }
+        expectChangedFileDownload()
+
+        o.kicClick("edit-$orderFileID")
+        o.assertScreenHTML("Piece of shit #$orderFileID is opened at new position", "166e3d38-e981-42fc-92ab-47e5fce8eca1")
+        o.inputAppendValue("title-$orderFileID", " (yes, you)")
+        o.formWithAnimationOnCompletionSequence(
+            buildAction = {
+                o.acta {shit.imposeNextRequestTimestamp()}
+                o.buttonClick("primary-$orderFileID")
+            },
+            assertionDescr = "Shit is saved again",
+            halfwayAssertionID = "633010c2-2015-461c-850b-2aea3a74e7de",
+            completionAnimationHalfwayAssertionID = "05837cd7-998e-4daa-aa11-4a04892e4458",
+            finalAssertionID = "ac35950e-bfcf-4d18-8275-4fba17afd8fd"
+        )
+
+        expectChangedFileDownload()
     }
 }
 

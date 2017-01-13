@@ -362,6 +362,8 @@ object css {
         }
     }
 
+    val item by Style("")
+
     init {touchObjectGraph(this)}
 }
 

@@ -304,6 +304,14 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
             handOpts = handOpts))
     }
 
+    fun testAppendValue(suffix: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
+        await(testSetValueAlgo(
+            initialValue = value,
+            subsequentValues = (1..suffix.length).map {value + suffix.substring(0, it)},
+            finalValue = value + suffix,
+            handOpts = handOpts))
+    }
+
     private fun testSetValueAlgo(
         initialValue: String,
         subsequentValues: List<String>,
@@ -358,6 +366,12 @@ fun TestScenarioBuilder.inputSetValue(key: String, value: String) {
 fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {
     acta("Prepending to `$key`: ${markdownItalicVerbatim(value)}") {async{
         await(Input.instance(key).testPrependValue(value))
+    }}
+}
+
+fun TestScenarioBuilder.inputAppendValue(key: String, value: String) {
+    acta("Appending to `$key`: ${markdownItalicVerbatim(value)}") {async{
+        await(Input.instance(key).testAppendValue(value))
     }}
 }
 

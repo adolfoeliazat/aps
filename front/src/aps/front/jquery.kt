@@ -30,6 +30,7 @@ fun JQuery.css(prop: String, value: Any?): JQuery = this.asDynamic().css(prop, v
 fun JQuery.setVal(value: String?): JQuery = this.asDynamic().`val`(value)
 fun JQuery.outerWidth(includeMargin: Boolean = false): Double = this.asDynamic().outerWidth(includeMargin)
 fun JQuery.outerHeight(includeMargin: Boolean = false): Double = this.asDynamic().outerHeight(includeMargin)
+fun JQuery.each(block: (index: Int, element: HTMLElement) -> Unit): Unit = this.asDynamic().each(block)
 
 val jqbody: JQuery get() = jq(document.body!!)
 

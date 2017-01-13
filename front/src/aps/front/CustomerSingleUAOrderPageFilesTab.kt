@@ -5,6 +5,7 @@ import aps.front.frontSymbols.numberSign
 import into.kommon.*
 import jquery.jq
 import org.w3c.dom.HTMLIFrameElement
+import kotlin.properties.Delegates.notNull
 
 private val moveItemToTopOnEdit = true
 
@@ -179,25 +180,26 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
 
             for ((fileIndex, _orderFile) in meat.items.withIndex()) {
                 object {
-                    val holder = Placeholder()
+                    var itemPlace = Placeholder()
                     var orderFile = _orderFile
                     val viewRootID = puid()
 
                     init {
                         enterViewMode()
-                        o- holder
+                        o- itemPlace
                     }
 
                     val file get() = orderFile.file
 
                     fun enterViewMode() {
-                        holder.setContent(renderView())
+                        itemPlace.setContent(renderView())
                     }
 
                     fun renderView(initiallyTransparent: Boolean = false): ElementBuilder {
                         return when (world.user.kind) {
                             UserKind.CUSTOMER -> {
                                 kdiv(id = viewRootID,
+                                     className = css.item,
                                      opacity = if (initiallyTransparent) 0.0
                                                else 1.0){o->
                                     o- row{o->
@@ -249,10 +251,10 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
 
                     fun enterEditMode(): Promise<Unit> = async {
                         val topShitID = puid()
-                        holder.setContent(
+                        itemPlace.setContent(
                             when (world.user.kind) {
                                 UserKind.CUSTOMER -> {
-                                    kdiv(id = topShitID){o->
+                                    kdiv(id = topShitID, className = css.item){o->
                                         o- row{o->
                                             o- renderFileTitle(editing = true)
                                             o- kdiv(className = "col-md-12", marginTop = -1){o->
@@ -275,12 +277,14 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                                                         orderFile = res.updatedOrderFile
 
                                                         if (moveItemToTopOnEdit) {
-                                                            holder.setContent(NOTRE)
+                                                            itemPlace.setContent(NOTRE)
+                                                            itemPlace = Placeholder(renderView(initiallyTransparent = true))
+
                                                             await(scrollBodyGradually(0.0))
                                                             val newTopPlace = Placeholder()
                                                             topPlace.setContent(kdiv{o->
                                                                 o- newTopPlace
-                                                                o- renderView(initiallyTransparent = true)
+                                                                o- itemPlace
                                                             })
                                                             topPlace = newTopPlace
                                                             await(effects2.fadeIn(viewRootID))
@@ -299,12 +303,12 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                                 UserKind.ADMIN -> imf()
                             })
 
-                        await(scrollBodyToShitGradually{byid(topShitID)})
+                        await(scrollBodyToShitGradually(dontScrollToTopItem = true){byid(topShitID)})
                     }
 
                     fun enterVanishedMode() = async {
                         await(effects2.fadeOut(viewRootID))
-                        holder.setContent(NOTRE)
+                        itemPlace.setContent(NOTRE)
                         TestGlobal.shitVanished.resolve()
                     }
 
