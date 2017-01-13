@@ -352,6 +352,27 @@ fun rerunTestSlowlyButton(): Button {
         })
 }
 
+fun TestScenarioBuilder.twoStepLockSequence(
+    buildAction: () -> Unit,
+    lock: TestLock,
+    assertionDescr: String,
+    assertionID1: String,
+    assertionID2: String
+) {
+    val o = this
+    o.act {lock.reset()}
+
+    buildAction()
+
+    o.acta {lock.testPause1()}
+    o.assertScreenHTML("$assertionDescr (1)", assertionID1)
+    o.act {lock.testResume1()}
+
+    o.acta {lock.testPause2()}
+    o.assertScreenHTML("$assertionDescr (2)", assertionID2)
+    o.act {lock.testResume2()}
+}
+
 
 
 

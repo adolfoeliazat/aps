@@ -36,13 +36,19 @@ fun <T> Promise<T>.finally(onFulfilled: (T) -> Unit) =
     this.then<Nothing>(onFulfilled, {})
 
 
-fun <T> Promise<T>.orTimeout(ms: Int, promiseName: String? = null): Promise<T> {
+fun <T> Promise<T>.orTimeout(ms: Int, getPromiseName: (() -> String?)? = null): Promise<T> {
     val shit = ResolvableShit<T>()
-    val _promiseName = promiseName ?: NamesOfThings[this] ?: "shit"
-    window.setTimeout({shit.reject(Exception("Sick of waiting for $_promiseName"))}, ms)
+    val thePromiseName = getPromiseName?.invoke() ?: "shit"
+//    val thePromiseName = promiseName ?: NamesOfThings[this] ?: "shit"
+    window.setTimeout({shit.reject(Exception("Sick of waiting for $thePromiseName"))}, ms)
     this.finally {shit.resolve(it)}
     return shit.promise
 }
+
+fun <T> Promise<T>.orTimeoutWithNameBearer(ms: Int, getPromiseNameBearer: () -> Any): Promise<T> {
+    return this.orTimeout(ms, getPromiseName = {NamesOfThings[getPromiseNameBearer()]})
+}
+
 
 class ResolvableShit<T> {
     private var _resolve by notNull<(T) -> Unit>()
@@ -76,6 +82,58 @@ fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
 
 fun tillEndOfTime(): Promise<Unit> = delay(Int.MAX_VALUE)
 
+class TestLock(
+    val testPause1Timeout: Int = 5000,
+    val testPause2Timeout: Int = 5000,
+    val sutPause1Timeout: Int = 5000,
+    val sutPause2Timeout: Int = 5000
+) {
+    private val testPause1 by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
+    private val testPause2 by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
+    private val sutPause1 by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
+    private val sutPause2 by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
+
+    init {
+        // Initially everything is resolved, so if not in test, shit just works
+        testPause1.resolve()
+        testPause2.resolve()
+        sutPause1.resolve()
+        sutPause2.resolve()
+    }
+
+    fun reset() {
+        testPause1.reset()
+        testPause2.reset()
+        sutPause1.reset()
+        sutPause2.reset()
+    }
+
+    fun testPause1(): Promise<Unit> = async {
+        await(testPause1.promise.orTimeoutWithNameBearer(testPause1Timeout, {testPause1}))
+    }
+
+    fun testPause2(): Promise<Unit> = async {
+        await(testPause2.promise.orTimeoutWithNameBearer(testPause2Timeout, {testPause2}))
+    }
+
+    fun testResume1() {
+        sutPause1.resolve()
+    }
+
+    fun testResume2() {
+        sutPause2.resolve()
+    }
+
+    fun sutPause1(): Promise<Unit> = async {
+        testPause1.resolve()
+        await(sutPause1.promise.orTimeoutWithNameBearer(sutPause1Timeout, {sutPause1}))
+    }
+
+    fun sutPause2(): Promise<Unit> = async {
+        testPause2.resolve()
+        await(sutPause2.promise.orTimeoutWithNameBearer(sutPause2Timeout, {sutPause2}))
+    }
+}
 
 
 

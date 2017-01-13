@@ -5,6 +5,7 @@ package aps.front
 import aps.*
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
+import kotlin.properties.Delegates.notNull
 
 interface CustomerSingleUAOrderPageTab {
     val tabSpec: TabSpec
@@ -18,9 +19,11 @@ class CustomerSingleUAOrderPage(val world: World) {
         var tab: String? = null
     }
 
+    var orderID by notNull<String>()
+
     fun load(): Promise<Unit> = async {
         val urlQuery = typeSafeURLQuery(world){URLQuery()}
-        val orderID = urlQuery.id.nullifyBlank() ?: return@async world.setShittyParamsPage()
+        orderID = urlQuery.id.nullifyBlank() ?: return@async world.setShittyParamsPage()
         val tabID = urlQuery.tab ?: "params"
 
         val res = await(send(world.token, LoadUAOrderRequest()-{o->
@@ -33,7 +36,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 
         val tabs = listOf(
             ParamsTab(world, order),
-            CustomerSingleUAOrderPageFilesTab(world, order),
+            CustomerSingleUAOrderPageFilesTab(this, world, order),
             MessagesTab(order)
         )
         val tab = tabs.find {it.tabSpec.id == tabID} ?: tabs.first()
@@ -64,20 +67,20 @@ class CustomerSingleUAOrderPage(val world: World) {
                     initialActiveID = tab.tabSpec.id,
                     switchOnTabClick = false,
                     tabDomIdPrefix = "tab-",
-
-                    onTabClicka = {id-> async {
-                        effects2.blinkOn(byid("tab-$id"), widthCalcSuffix = "- 0.15em")
-                        try {
-                            await(world.pushNavigate("order.html?id=$orderID&tab=$id"))
-                        } finally {
-                            effects2.blinkOffFadingOut()
-                        }
-                    }},
-
+                    onTabClicka = this::clickOnTab,
                     tabs = tabs.map {it.tabSpec}
                 )
             }
         ))
+    }
+
+    fun clickOnTab(id: String): Promise<Unit> = async {
+        effects2.blinkOn(byid("tab-$id"), widthCalcSuffix = "- 0.15em")
+        try {
+            await(world.pushNavigate("order.html?id=$orderID&tab=$id"))
+        } finally {
+            effects2.blinkOffFadingOut()
+        }
     }
 
 }

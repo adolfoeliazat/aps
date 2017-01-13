@@ -15,7 +15,7 @@ private class FilesTabURLQuery {
     var search: String? = null
 }
 
-class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
+class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
     lateinit var ordering: Ordering
     lateinit var filter: CustomerFileFilter
     lateinit var search: String
@@ -25,7 +25,7 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
     lateinit var plusFormContainer: Control2
     var chunksLoaded = 0
 
-    override val tabSpec = TabSpec("files", t("TOTE", "Файлы"),
+    override val tabSpec = TabSpec("files", t("Files", "Файлы"),
                                    ToReactElementable.from{content},
                                    ToReactElementable.from{stripContent})
 
@@ -144,6 +144,12 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
                 }
                 o- filterSelect
                 o- orderingSelect
+
+                val refreshButtonID = puid()
+                o- Button(key = fconst.test.key.refreshPage, id = refreshButtonID, icon = fa.refresh, volatileDisabled = {ebafHost.headerControlsDisabled}) {
+                    reload(refreshButtonID)
+                }
+
                 o- ebafPlus.renderButton()
             }
         }
@@ -163,7 +169,7 @@ class CustomerSingleUAOrderPageFilesTab(val world: World, val order: UAOrderRTO)
             } finally {
                 effects2.blinkOffFadingOut()
                 ebafHost.headerControlsDisabled = false
-                stripContent.update()
+                stripContent.update() // TODO:vgrechka Redundant?
             }
         }
     }

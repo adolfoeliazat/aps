@@ -281,6 +281,17 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         )
 
         expectChangedFileDownload()
+
+        o.beginWorkRegion()
+        o.twoStepLockSequence(
+            buildAction = {
+                o.buttonClick(fconst.test.key.refreshPage)
+            },
+            lock = TestGlobal.loadPageForURLLock,
+            assertionDescr = "Page refresh",
+            assertionID1 = "9e3aaafd-8fc0-4580-9eb7-5319496c6278",
+            assertionID2 = "36acd3be-3e16-4bc3-9968-4269fdb03fce"
+        )
     }
 }
 

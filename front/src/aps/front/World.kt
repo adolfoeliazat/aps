@@ -217,94 +217,104 @@ class World(val name: String) {
         currentPage = def
     }
 
-    fun loadPageForURL(): Promise<Unit> {"__async"
+    fun loadPageForURL(): Promise<Unit> = async {
         val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
         noise.clog(window.location.href)
 
-        val user = userMaybe
-        val firstRun = loadPageForURLFirstRun
-        loadPageForURLFirstRun = false
-        urlQuery = parseQueryString(window.location.href)
-        val pathname = window.location.pathname
+        dwarnStriking(111)
+        await(TestGlobal.loadPageForURLLock.sutPause1())
+        dwarnStriking(222)
 
-        var ultimateName =
-            if (pathname.endsWith(".html"))
-                pathname.substring(pathname.lastIndexOf("/") + 1, pathname.lastIndexOf("."))
-            else { // Root of the site (/), otherwise we wouldn't have reached here because of 404
-                when (user) {
-                    null -> "index"
-                    else -> when (user.state) {
-                        UserState.COOL -> {
-                            window.history.pushState(null, "", "/dashboard.html")
-                            "dashboard"
-                        }
-                        UserState.PROFILE_REJECTED,
-                        UserState.PROFILE_PENDING,
-                        UserState.PROFILE_APPROVAL_PENDING,
-                        UserState.BANNED -> {
-                            window.history.pushState(null, "", "/profile.html")
-                            "profile"
+        try {
+            val user = userMaybe
+            val firstRun = loadPageForURLFirstRun
+            loadPageForURLFirstRun = false
+            urlQuery = parseQueryString(window.location.href)
+            val pathname = window.location.pathname
+
+            var ultimateName =
+                if (pathname.endsWith(".html"))
+                    pathname.substring(pathname.lastIndexOf("/") + 1, pathname.lastIndexOf("."))
+                else { // Root of the site (/), otherwise we wouldn't have reached here because of 404
+                    when (user) {
+                        null -> "index"
+                        else -> when (user.state) {
+                            UserState.COOL -> {
+                                window.history.pushState(null, "", "/dashboard.html")
+                                "dashboard"
+                            }
+                            UserState.PROFILE_REJECTED,
+                            UserState.PROFILE_PENDING,
+                            UserState.PROFILE_APPROVAL_PENDING,
+                            UserState.BANNED -> {
+                                window.history.pushState(null, "", "/profile.html")
+                                "profile"
+                            }
                         }
                     }
                 }
-            }
 
-        var loader: dynamic = null
-        fun isStaticPage(name: String) = !isDynamicPage(name)
+            var loader: dynamic = null
+            fun isStaticPage(name: String) = !isDynamicPage(name)
 
 //        js("debugger")
-        if (isStaticPage(ultimateName)) {
-            fun staticLoader(): Promise<Unit> = async {
-//                val href = if (ultimateName == "index") "/" else "${ultimateName}.html"
-                val href = "${ultimateName}.html"
+            if (isStaticPage(ultimateName)) {
+                fun staticLoader(): Promise<Unit> = async {
+                    //                val href = if (ultimateName == "index") "/" else "${ultimateName}.html"
+                    val href = "${ultimateName}.html"
 //                var content: dynamic = (await<dynamic>(global.superagent.get(href).send())).text
-                var content = await(fetchFromURL("GET", href, null, {it}))
-                content = content.substring(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
-                setRootContent(rawHTML(content))
-            }
-            loader = ::staticLoader
-        } else {
-            if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
-                window.history.replaceState(null, "", "sign-in.html")
-                ultimateName = "sign-in"
+                    var content = await(fetchFromURL("GET", href, null, {it}))
+                    content = content.substring(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
+                    setRootContent(rawHTML(content))
+                }
+                loader = ::staticLoader
+            } else {
+                if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
+                    window.history.replaceState(null, "", "sign-in.html")
+                    ultimateName = "sign-in"
+                }
+
+                if (ultimateName == "sign-in") {
+                    loader = {loadSignInPage()}
+                } else if (ultimateName == "sign-up") {
+                    loader = {loadSignUpPage()}
+                } else if (user != null || (Globus.mode == Mode.DEBUG && ultimateName.startsWith("debug"))) {
+                    loader = privatePageLoader(ultimateName)
+                }
             }
 
-            if (ultimateName == "sign-in") {
-                loader = {loadSignInPage()}
-            } else if (ultimateName == "sign-up") {
-                loader = {loadSignUpPage()}
-            } else if (user != null || (Globus.mode == Mode.DEBUG && ultimateName.startsWith("debug"))) {
-                loader = privatePageLoader(ultimateName)
+            if (!loader) {
+                console.error("Can't figure out fucking loader")
+                return@async Unit
             }
-        }
 
-        if (!loader) {
-            console.error("Can't figure out fucking loader")
-            return __asyncResult(Unit)
-        }
-
-        val skipBodyRendering =
-            firstRun && // JS has just loaded
-            isStaticPage(ultimateName) &&
-            typedStorageLocal.token == null
+            val skipBodyRendering =
+                firstRun && // JS has just loaded
+                    isStaticPage(ultimateName) &&
+                    typedStorageLocal.token == null
 //            localStorage.getItem("token") == null
 
-        if (!skipBodyRendering) {
-            global.window.disposeStaticShit()
+            if (!skipBodyRendering) {
+                global.window.disposeStaticShit()
 
-            footer.setBurgerMenu(null)
-            __await<dynamic>(loader())
+                footer.setBurgerMenu(null)
+                await<dynamic>(loader())
 
-            js("$")(global.document).scrollTop(0)
-            global.window.initStaticShit()
-        }
+                js("$")(global.document).scrollTop(0)
+                global.window.initStaticShit()
+            }
 
 //            if (token != null) {
-//                __await<dynamic>(ui.pollLiveStatus())
+//                await<dynamic>(ui.pollLiveStatus())
 //            }
 
-        updateNavbar()
-        return __asyncResult(Unit)
+            updateNavbar()
+            return@async Unit
+        } finally {
+            dwarnStriking(333)
+            await(TestGlobal.loadPageForURLLock.sutPause2())
+            dwarnStriking(444)
+        }
     }
 
     fun loadSignUpPage(): Promise<Unit> {"__async"

@@ -7,6 +7,10 @@ object fconst {
         object default {
             val animationHalfwaySignalTimeout = 1000
         }
+
+        object key {
+            val refreshPage = "refreshPage"
+        }
     }
 }
 

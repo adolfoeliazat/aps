@@ -357,18 +357,22 @@ object NamesOfThings {
     }
 }
 
-fun <T: Any> notNullNamed(): ReadWriteProperty<Any?, T> = NotNullNamedVar()
+fun <T: Any> notNullNamed(): ReadWriteProperty<Any?, T> = NotNullNamedVar(null)
 
-private class NotNullNamedVar<T: Any> : ReadWriteProperty<Any?, T> {
-    private var value: T? = null
+fun <T: Any> notNullNamed(initial: T, parentNamed: Any? = null): ReadWriteProperty<Any?, T> = NotNullNamedVar(initial, parentNamed)
+
+private class NotNullNamedVar<T: Any>(initial: T?, val parentNamed: Any? = null) : ReadWriteProperty<Any?, T> {
+    private var value: T? = initial
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return value ?: throw IllegalStateException("Property ${property.name} should be initialized before get.")
+        val res = value ?: throw IllegalStateException("Property ${property.name} should be initialized before get.")
+        val namePrefix = parentNamed?.let {NamesOfThings[it]}?.let {"$it."} ?: ""
+        NamesOfThings[res] = namePrefix + property.name
+        return res
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         this.value = value
-        NamesOfThings[value] = property.name
     }
 }
 
