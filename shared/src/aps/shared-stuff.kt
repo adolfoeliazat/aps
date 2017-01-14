@@ -91,7 +91,9 @@ class ImposeNextRequestErrorRequest : RequestMatumba() {
 
 class ResetTestDatabaseRequest() : RequestMatumba()
 
-class RecreateTestDatabaseSchemaRequest() : RequestMatumba()
+class RecreateTestDatabaseSchemaRequest() : RequestMatumba() {
+    val templateDB by maybeStringHiddenField()
+}
 
 class ResetTestDatabaseAlongWithTemplateRequest() : RequestMatumba() {
     val templateDB = StringHiddenField(this, "templateDB")

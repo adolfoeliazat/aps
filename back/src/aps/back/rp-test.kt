@@ -94,25 +94,31 @@ testProcedure(
 @RemoteProcedureFactory fun serveRecreateTestDatabaseSchema() = testProcedure(
     RecreateTestDatabaseSchemaRequest(),
     runShit = fun(ctx, req): GenericResponse {
+        val templateDB = req.templateDB.value?.let {DB.byID(it)}
+
         val db = DB.apsTestOnTestServer
-        db.recreateSchema()
-        db.joo {q->
-            USERS.let {
-                tracingSQL("Insert Dasja") {q
-                    .insertInto(USERS)
-                    .set(it.INSERTED_AT, ctx.requestTimestamp)
-                    .set(it.UPDATED_AT, ctx.requestTimestamp)
-                    .set(it.EMAIL, "dasja@test.shit.ua")
-                    .set(it.KIND, JQUserKind.ADMIN)
-                    .set(it.LANG, ctx.lang.name)
-                    .set(it.STATE, UserState.COOL.name)
-                    .set(it.PASSWORD_HASH, BCrypt.hashpw("dasjasecret", BCrypt.gensalt()))
-                    .set(it.FIRST_NAME, "Дася")
-                    .set(it.LAST_NAME, "Админовна")
-                    .set(it.ADMIN_NOTES, "")
-                    .execute()
+        if (templateDB == null) {
+            db.recreateSchema()
+            db.joo {q->
+                USERS.let {
+                    tracingSQL("Insert Dasja") {q
+                        .insertInto(USERS)
+                        .set(it.INSERTED_AT, ctx.requestTimestamp)
+                        .set(it.UPDATED_AT, ctx.requestTimestamp)
+                        .set(it.EMAIL, "dasja@test.shit.ua")
+                        .set(it.KIND, JQUserKind.ADMIN)
+                        .set(it.LANG, ctx.lang.name)
+                        .set(it.STATE, UserState.COOL.name)
+                        .set(it.PASSWORD_HASH, BCrypt.hashpw("dasjasecret", BCrypt.gensalt()))
+                        .set(it.FIRST_NAME, "Дася")
+                        .set(it.LAST_NAME, "Админовна")
+                        .set(it.ADMIN_NOTES, "")
+                        .execute()
+                    }
                 }
             }
+        } else {
+            db.recreate(template = templateDB)
         }
         return GenericResponse()
     }

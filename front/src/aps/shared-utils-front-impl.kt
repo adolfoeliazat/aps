@@ -135,6 +135,10 @@ annotation class Front
     return HiddenField(container, name, possiblyUnspecified=true)
 }
 
+@Front fun maybeStringHiddenField() = eagerEx<RequestMatumba, HiddenField<String?>> {thisRef, property ->
+    MaybeStringHiddenField(thisRef, property.name)
+}
+
 @Front fun BooleanHiddenField(container: RequestMatumba, name: String): HiddenField<Boolean> {
     return HiddenField(container, name)
 }

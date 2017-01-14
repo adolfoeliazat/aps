@@ -28,6 +28,7 @@ abstract class TestScenario {
     open fun prepareShit(): Promise<Unit> = __asyncResult(Unit)
     open val name: String get() = ctorName(this)
     open val longDescription: String? = null
+//    open val useSnapshot = false
 
     lateinit var host: TestHost
     val testCommon by lazy { TestCommon(host) }
@@ -41,7 +42,11 @@ abstract class TestScenario {
 
         docInnerHTML = "<h3>Running Test: ${ctorName(this)}</h3><hr>"
         measureAndReportToDocumentElement("Resetting database") {
-            __await(send(RecreateTestDatabaseSchemaRequest()))
+            __await(send(RecreateTestDatabaseSchemaRequest()-{o->
+//                if (useSnapshot) {
+//                    o.templateDB.value = "apsTestSnapshotOnTestServer"
+//                }
+            }))
 //            __await(send(ResetTestDatabaseRequest()))
 //            __await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
         }

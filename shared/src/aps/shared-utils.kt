@@ -236,8 +236,8 @@ object symbols {
     val times = "×"
 }
 
-fun String.indexOfOrDie(needle: String): Int {
-    val idx = this.indexOf(needle)
+fun String.indexOfOrDie(needle: String, startIndex: Int = 0): Int {
+    val idx = this.indexOf(needle, startIndex)
     if (idx == -1) die("Needle not found: [$needle]")
     return idx
 }

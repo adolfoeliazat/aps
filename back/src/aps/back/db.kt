@@ -84,6 +84,7 @@ object DB {
     fun byID(id: String): Database = when (id) {
         "bmix_fuckingAround_apsdevua" -> bmix_fuckingAround_apsdevua
         "apsTestOnTestServer" -> apsTestOnTestServer
+        "apsTestSnapshotOnTestServer" -> apsTestSnapshotOnTestServer
         else -> wtf("No database with ID $id")
     }
 

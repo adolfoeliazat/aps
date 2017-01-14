@@ -52,7 +52,11 @@ fun TestScenarioBuilder.initFuckingBrowser(fillStorageLocal: (TypedStorageLocal)
 }
 
 fun TestScenarioBuilder.kindaNavigateToStaticContent(url: String) {
-    acta {async{
+    acta {kindaNavigateToStaticContentBody(url)}
+}
+
+fun kindaNavigateToStaticContentBody(url: String): Promise<Unit> {
+    return async {
         val content = measureAndReportToDocumentElement("Loading $url") {
             await(fetchURL(url, "GET", null))
         }
@@ -66,7 +70,7 @@ fun TestScenarioBuilder.kindaNavigateToStaticContent(url: String) {
         loadCSS()
 
         ExternalGlobus.displayInitialShit()
-    }}
+    }
 }
 
 inline fun <T> measureAndReportToDocumentElement(name: String, block: () -> T): T {

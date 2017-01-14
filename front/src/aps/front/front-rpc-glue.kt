@@ -82,6 +82,9 @@ fun send(token: String, req: TestCopyOrderFileToAreaRequest): Promise<FormRespon
 fun send(req: TestTakeSnapshotRequest): Promise<TestTakeSnapshotRequest.Response> =
     callDangerousMatumba(req)
 
+fun send(req: TestLoadSnapshotRequest): Promise<TestLoadSnapshotRequest.Response> =
+    callDangerousMatumba(req)
+
 
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {

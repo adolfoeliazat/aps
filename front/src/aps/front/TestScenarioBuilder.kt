@@ -19,8 +19,8 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
-fun buildAndRunTestScenario(showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> = async {
-    val builder = TestScenarioBuilder()
+fun buildAndRunTestScenario(scenario: StepBasedTestScenario, showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> = async {
+    val builder = TestScenarioBuilder(scenario)
     block(builder)
     await(builder.runScenario(showTestPassedPane))
 }
@@ -33,7 +33,7 @@ val transformRootLineTidy = {it: String ->
     it
 }
 
-class TestScenarioBuilder {
+class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     val instructions = mutableListOf<TestInstruction>()
 
     fun runScenario(showTestPassedPane: Boolean): Promise<Throwable?> = async {
@@ -408,14 +408,28 @@ fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: Str
     )
 }
 
-fun TestScenarioBuilder.snapshot(name: String) {
-    acta {async{
-        await(send(TestTakeSnapshotRequest()-{o->
-            o.name.value = name
-            o.url.value = window.location.href
-        }))
-    }}
-}
+//fun TestScenarioBuilder.snapshot(name: String) {
+//    if (scenario.useSnapshot) {
+//        instructions.clear()
+//        acta {async{
+//            val res = measureAndReportToDocumentElement("Loading snapshot") {
+//                await(send(TestLoadSnapshotRequest()-{o->
+//                    o.name.value = name
+//                }))
+//            }
+//            await(kindaNavigateToStaticContentBody(res.url))
+//            val world = World("boobs")
+//            await(world.boot())
+//        }}
+//    } else {
+//        acta {async{
+//            await(send(TestTakeSnapshotRequest()-{o->
+//                o.name.value = name
+//                o.url.value = window.location.href
+//            }))
+//        }}
+//    }
+//}
 
 
 

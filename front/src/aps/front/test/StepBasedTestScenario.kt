@@ -8,7 +8,7 @@ abstract class StepBasedTestScenario : TestScenario() {
     lateinit var o: TestScenarioBuilder
 
     override fun run0(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
-        return __reawait(buildAndRunTestScenario(showTestPassedPane) {
+        return __reawait(buildAndRunTestScenario(this, showTestPassedPane) {
             o = it
             buildSteps()
         })

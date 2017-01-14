@@ -57,6 +57,11 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
         val expected = await(fuckingRemoteCall.loadTestShit(assertionID))
 
         val actual = buildString {
+            append("-------------------- URL --------------------\n\n")
+            val url = window.location.href
+            val doubleSlash = url.indexOfOrDie("//")
+            val nextSlash = url.indexOfOrDie("/", doubleSlash + 2)
+            append("ROOT" + url.substring(nextSlash) + "\n\n")
             append("-------------------- NAVBAR --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
             if (!endsWith("\n")) append("\n")
@@ -379,6 +384,9 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
                                     ignoreIncorrect = true,
                                     ignoreNotHardened = true)
                                 assertionBannerPause.resolve()
+                            }
+                            "y" -> {
+                                acceptCurrentShit()
                             }
                         }
                     }

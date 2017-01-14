@@ -24,4 +24,17 @@ import com.fasterxml.jackson.databind.JsonNode
     }
 )
 
+@RemoteProcedureFactory fun serveTestLoadSnapshot() = testProcedure(
+    TestLoadSnapshotRequest(),
+    needsDB = true,
+    runShit = fun(ctx, req): TestLoadSnapshotRequest.Response {
+        val rec = tracingSQL("Load snapshot") {
+            ctx.q.fetchOne(KEY_VALUE_STORE, KEY_VALUE_STORE.KEY.eq(bconst.kvs.test.snapshotURL))
+        }
+        val url = objectMapper.treeToValue(rec.value, String::class.java)
+        dwarnStriking("Snapshot URL: $url")
+        return TestLoadSnapshotRequest.Response(url)
+    }
+)
+
 

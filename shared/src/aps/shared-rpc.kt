@@ -76,10 +76,13 @@ class RecordRTO(val fieldValues: List<FieldValueRTO>)
 
 class TestTakeSnapshotRequest: RequestMatumba() {
     class Response : CommonResponseFieldsImpl()
-//    val name = StringHiddenField(this, "name")
-//    val url = StringHiddenField(this, "url")
     val name by stringHiddenField()
     val url by stringHiddenField()
+}
+
+class TestLoadSnapshotRequest: RequestMatumba() {
+    class Response(val url: String) : CommonResponseFieldsImpl()
+    val name by stringHiddenField()
 }
 
 
