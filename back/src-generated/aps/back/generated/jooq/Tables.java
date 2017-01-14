@@ -6,6 +6,7 @@ package aps.back.generated.jooq;
 
 import aps.back.generated.jooq.tables.JQFileUserPermissions;
 import aps.back.generated.jooq.tables.JQFiles;
+import aps.back.generated.jooq.tables.JQKeyValueStore;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
 import aps.back.generated.jooq.tables.JQUaOrderAreas;
@@ -40,6 +41,11 @@ public class Tables {
      * The table <code>public.files</code>.
      */
     public static final JQFiles FILES = aps.back.generated.jooq.tables.JQFiles.FILES;
+
+    /**
+     * The table <code>public.key_value_store</code>.
+     */
+    public static final JQKeyValueStore KEY_VALUE_STORE = aps.back.generated.jooq.tables.JQKeyValueStore.KEY_VALUE_STORE;
 
     /**
      * The table <code>public.support_thread_messages</code>.

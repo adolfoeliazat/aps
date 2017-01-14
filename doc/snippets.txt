@@ -15,8 +15,12 @@ cd /d E:\work\aps\back\bin\dev\win
 title pg-dev & pg-dev-start.cmd
     | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
 
+// cd /d e:\work\aps
+// ant java -Dclass=aps.back.GenerateJOOQKt
+
 cd /d e:\work\aps
-ant java -Dclass=aps.back.GenerateJOOQKt
+(Don't forget to compile code before this, as schema.sql should end up in resources)
+_run aps.back.GenerateJOOQKt
 
 ant java -Dclass=aps.back.Fiddle -Dhow=RecreateSchema_bmix_fuckingAround_apsdevua
 

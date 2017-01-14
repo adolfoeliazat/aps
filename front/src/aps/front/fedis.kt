@@ -1,3 +1,5 @@
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -6,6 +8,7 @@ import into.kommon.*
 object fedis {
     class LogGroup(val id: String, val prevID: String?)
 
+    var died = false
     val groups = mutableListOf<LogGroup>()
 
     fun lrange(key: String, start: Long, end: Long): Promise<List<String>> = sendShit(json(
@@ -38,10 +41,17 @@ object fedis {
     ))
 
     private fun <T> sendShit(request: Json): Promise<T> = async {
-        val res = await(send(PrivilegedRedisCommandRequest()-{o->
-            o.json.value = JSON.stringify(request)
-        }))
-        dejsonize<T>(res.json)!!
+        if (died) return@async js("'Redis is dead'") // TODO:vgrechka Devise something better. Should return T...
+
+        try {
+            val res = await(send(PrivilegedRedisCommandRequest()-{o->
+                o.json.value = JSON.stringify(request)
+            }))
+            dejsonize<T>(res.json)!!
+        } catch(e: dynamic) {
+            died = true
+            dwarnStriking("Redis is dead now, thank you everyone")
+        }
     }
 
     fun pushLogGroup(title: String): Promise<Unit> = async {

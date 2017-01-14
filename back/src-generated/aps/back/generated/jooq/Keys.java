@@ -6,6 +6,7 @@ package aps.back.generated.jooq;
 
 import aps.back.generated.jooq.tables.JQFileUserPermissions;
 import aps.back.generated.jooq.tables.JQFiles;
+import aps.back.generated.jooq.tables.JQKeyValueStore;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
 import aps.back.generated.jooq.tables.JQUaOrderAreas;
@@ -16,6 +17,7 @@ import aps.back.generated.jooq.tables.JQUserTokens;
 import aps.back.generated.jooq.tables.JQUsers;
 import aps.back.generated.jooq.tables.records.JQFileUserPermissionsRecord;
 import aps.back.generated.jooq.tables.records.JQFilesRecord;
+import aps.back.generated.jooq.tables.records.JQKeyValueStoreRecord;
 import aps.back.generated.jooq.tables.records.JQSupportThreadMessagesRecord;
 import aps.back.generated.jooq.tables.records.JQSupportThreadsRecord;
 import aps.back.generated.jooq.tables.records.JQUaOrderAreasRecord;
@@ -53,6 +55,7 @@ public class Keys {
 
     public static final Identity<JQFileUserPermissionsRecord, Long> IDENTITY_FILE_USER_PERMISSIONS = Identities0.IDENTITY_FILE_USER_PERMISSIONS;
     public static final Identity<JQFilesRecord, Long> IDENTITY_FILES = Identities0.IDENTITY_FILES;
+    public static final Identity<JQKeyValueStoreRecord, Long> IDENTITY_KEY_VALUE_STORE = Identities0.IDENTITY_KEY_VALUE_STORE;
     public static final Identity<JQSupportThreadMessagesRecord, Long> IDENTITY_SUPPORT_THREAD_MESSAGES = Identities0.IDENTITY_SUPPORT_THREAD_MESSAGES;
     public static final Identity<JQSupportThreadsRecord, Long> IDENTITY_SUPPORT_THREADS = Identities0.IDENTITY_SUPPORT_THREADS;
     public static final Identity<JQUaOrderAreasRecord, Long> IDENTITY_UA_ORDER_AREAS = Identities0.IDENTITY_UA_ORDER_AREAS;
@@ -68,6 +71,8 @@ public class Keys {
 
     public static final UniqueKey<JQFileUserPermissionsRecord> FILE_USER_PERMISSIONS_PKEY = UniqueKeys0.FILE_USER_PERMISSIONS_PKEY;
     public static final UniqueKey<JQFilesRecord> FILES_PKEY = UniqueKeys0.FILES_PKEY;
+    public static final UniqueKey<JQKeyValueStoreRecord> KEY_VALUE_STORE_PKEY = UniqueKeys0.KEY_VALUE_STORE_PKEY;
+    public static final UniqueKey<JQKeyValueStoreRecord> KEY_VALUE_STORE_KEY_KEY = UniqueKeys0.KEY_VALUE_STORE_KEY_KEY;
     public static final UniqueKey<JQSupportThreadMessagesRecord> SUPPORT_THREAD_MESSAGES_PKEY = UniqueKeys0.SUPPORT_THREAD_MESSAGES_PKEY;
     public static final UniqueKey<JQSupportThreadsRecord> SUPPORT_THREADS_PKEY = UniqueKeys0.SUPPORT_THREADS_PKEY;
     public static final UniqueKey<JQUaOrderAreasRecord> UA_ORDER_AREAS_PKEY = UniqueKeys0.UA_ORDER_AREAS_PKEY;
@@ -111,6 +116,7 @@ public class Keys {
     private static class Identities0 extends AbstractKeys {
         public static Identity<JQFileUserPermissionsRecord, Long> IDENTITY_FILE_USER_PERMISSIONS = createIdentity(JQFileUserPermissions.FILE_USER_PERMISSIONS, JQFileUserPermissions.FILE_USER_PERMISSIONS.FILE_ID);
         public static Identity<JQFilesRecord, Long> IDENTITY_FILES = createIdentity(JQFiles.FILES, JQFiles.FILES.ID);
+        public static Identity<JQKeyValueStoreRecord, Long> IDENTITY_KEY_VALUE_STORE = createIdentity(JQKeyValueStore.KEY_VALUE_STORE, JQKeyValueStore.KEY_VALUE_STORE.ID);
         public static Identity<JQSupportThreadMessagesRecord, Long> IDENTITY_SUPPORT_THREAD_MESSAGES = createIdentity(JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES, JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES.ID);
         public static Identity<JQSupportThreadsRecord, Long> IDENTITY_SUPPORT_THREADS = createIdentity(JQSupportThreads.SUPPORT_THREADS, JQSupportThreads.SUPPORT_THREADS.ID);
         public static Identity<JQUaOrderAreasRecord, Long> IDENTITY_UA_ORDER_AREAS = createIdentity(JQUaOrderAreas.UA_ORDER_AREAS, JQUaOrderAreas.UA_ORDER_AREAS.ID);
@@ -124,6 +130,8 @@ public class Keys {
     private static class UniqueKeys0 extends AbstractKeys {
         public static final UniqueKey<JQFileUserPermissionsRecord> FILE_USER_PERMISSIONS_PKEY = createUniqueKey(JQFileUserPermissions.FILE_USER_PERMISSIONS, "file_user_permissions_pkey", JQFileUserPermissions.FILE_USER_PERMISSIONS.FILE_ID, JQFileUserPermissions.FILE_USER_PERMISSIONS.USER_ID);
         public static final UniqueKey<JQFilesRecord> FILES_PKEY = createUniqueKey(JQFiles.FILES, "files_pkey", JQFiles.FILES.ID);
+        public static final UniqueKey<JQKeyValueStoreRecord> KEY_VALUE_STORE_PKEY = createUniqueKey(JQKeyValueStore.KEY_VALUE_STORE, "key_value_store_pkey", JQKeyValueStore.KEY_VALUE_STORE.ID);
+        public static final UniqueKey<JQKeyValueStoreRecord> KEY_VALUE_STORE_KEY_KEY = createUniqueKey(JQKeyValueStore.KEY_VALUE_STORE, "key_value_store_key_key", JQKeyValueStore.KEY_VALUE_STORE.KEY);
         public static final UniqueKey<JQSupportThreadMessagesRecord> SUPPORT_THREAD_MESSAGES_PKEY = createUniqueKey(JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES, "support_thread_messages_pkey", JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES.ID);
         public static final UniqueKey<JQSupportThreadsRecord> SUPPORT_THREADS_PKEY = createUniqueKey(JQSupportThreads.SUPPORT_THREADS, "support_threads_pkey", JQSupportThreads.SUPPORT_THREADS.ID);
         public static final UniqueKey<JQUaOrderAreasRecord> UA_ORDER_AREAS_PKEY = createUniqueKey(JQUaOrderAreas.UA_ORDER_AREAS, "ua_order_areas_pkey", JQUaOrderAreas.UA_ORDER_AREAS.ID);

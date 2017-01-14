@@ -91,6 +91,10 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     }
 }
 
+@Back fun stringHiddenField() = eagerEx<RequestMatumba, StringHiddenField> {thisRef, property ->
+    StringHiddenField(thisRef, property.name)
+}
+
 @Back class MaybeStringHiddenField(
     container: RequestMatumba,
     name: String,

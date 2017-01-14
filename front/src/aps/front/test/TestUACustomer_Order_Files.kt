@@ -299,9 +299,10 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
 class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
         o.addFile(shit, "b31dc136-68f4-417c-bc2c-9e4088b28ac4", fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?")
-        o.addFile(shit, "fcbe57dc-5984-421c-9d27-32b50f0d3cbc", fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows")
-        o.addFile(shit, "808d747e-bd63-44d4-880e-84f2e2a10736", fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here")
-        o.beginWorkRegion()
+        o.snapshot("1")
+//        o.addFile(shit, "fcbe57dc-5984-421c-9d27-32b50f0d3cbc", fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows")
+//        o.addFile(shit, "808d747e-bd63-44d4-880e-84f2e2a10736", fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here")
+
 
 //        o.search(
 //            assertionDescr = "Search newly added stuff"

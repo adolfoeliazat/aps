@@ -312,6 +312,21 @@ alter sequence ua_order_files_id_seq restart with 100000;
 create trigger on_insert before insert on ua_order_files for each row execute procedure on_insert();
 create trigger on_update before update on ua_order_files for each row execute procedure on_update();
 
+-- ============================== KEY_VALUE_STORE ==============================
+
+create table key_value_store(
+    id bigserial primary key,
+    deleted boolean not null,
+    inserted_at timestamp not null,
+    updated_at timestamp not null,
+    key text not null unique,
+    value jsonb not null
+);
+
+alter sequence key_value_store_id_seq restart with 100000;
+create trigger on_insert before insert on key_value_store for each row execute procedure on_insert();
+create trigger on_update before update on key_value_store for each row execute procedure on_update();
+
 
 
 

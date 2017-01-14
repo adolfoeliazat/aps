@@ -8,6 +8,7 @@ drop table if exists ua_orders;
 drop table if exists file_user_permissions;
 drop table if exists files;
 drop table if exists users;
+drop table if exists key_value_store;
 
 drop type if exists user_kind;
 drop type if exists ua_document_type;

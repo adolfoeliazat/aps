@@ -16,8 +16,7 @@ import org.postgresql.util.PSQLException
 import java.sql.SQLException
 import java.util.*
 
-@RemoteProcedureFactory
-fun serveSignUp() = publicProcedure(
+@RemoteProcedureFactory fun serveSignUp() = publicProcedure(
     SignUpRequest(),
     runShit = fun(ctx, req): SignUpRequest.Response {
         try {

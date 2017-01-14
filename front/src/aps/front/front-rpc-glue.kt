@@ -79,6 +79,10 @@ fun send(req: HardenScreenHTMLRequest): Promise<HardenScreenHTMLRequest.Response
 fun send(token: String, req: TestCopyOrderFileToAreaRequest): Promise<FormResponse2<TestCopyOrderFileToAreaRequest.Response>> =
     _send(token, req)
 
+fun send(req: TestTakeSnapshotRequest): Promise<TestTakeSnapshotRequest.Response> =
+    callDangerousMatumba(req)
+
+
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {
     val jpreq = JsonProcedureRequest()-{o->

@@ -6,6 +6,7 @@ package aps.back.generated.jooq;
 
 import aps.back.generated.jooq.tables.JQFileUserPermissions;
 import aps.back.generated.jooq.tables.JQFiles;
+import aps.back.generated.jooq.tables.JQKeyValueStore;
 import aps.back.generated.jooq.tables.JQSupportThreadMessages;
 import aps.back.generated.jooq.tables.JQSupportThreads;
 import aps.back.generated.jooq.tables.JQUaOrderAreas;
@@ -40,7 +41,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JQPublic extends SchemaImpl {
 
-    private static final long serialVersionUID = -829165781;
+    private static final long serialVersionUID = -1902292272;
 
     /**
      * The reference instance of <code>public</code>
@@ -56,6 +57,11 @@ public class JQPublic extends SchemaImpl {
      * The table <code>public.files</code>.
      */
     public final JQFiles FILES = aps.back.generated.jooq.tables.JQFiles.FILES;
+
+    /**
+     * The table <code>public.key_value_store</code>.
+     */
+    public final JQKeyValueStore KEY_VALUE_STORE = aps.back.generated.jooq.tables.JQKeyValueStore.KEY_VALUE_STORE;
 
     /**
      * The table <code>public.support_thread_messages</code>.
@@ -125,6 +131,7 @@ public class JQPublic extends SchemaImpl {
             Sequences.FILE_USER_PERMISSIONS_FILE_ID_SEQ,
             Sequences.FILE_USER_PERMISSIONS_USER_ID_SEQ,
             Sequences.FILES_ID_SEQ,
+            Sequences.KEY_VALUE_STORE_ID_SEQ,
             Sequences.SUPPORT_THREAD_MESSAGES_ID_SEQ,
             Sequences.SUPPORT_THREADS_ID_SEQ,
             Sequences.UA_ORDER_AREAS_ID_SEQ,
@@ -146,6 +153,7 @@ public class JQPublic extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             JQFileUserPermissions.FILE_USER_PERMISSIONS,
             JQFiles.FILES,
+            JQKeyValueStore.KEY_VALUE_STORE,
             JQSupportThreadMessages.SUPPORT_THREAD_MESSAGES,
             JQSupportThreads.SUPPORT_THREADS,
             JQUaOrderAreas.UA_ORDER_AREAS,

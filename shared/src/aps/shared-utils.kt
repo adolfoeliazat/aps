@@ -11,6 +11,8 @@ package aps
 import aps.DebugNoise.Style.*
 import into.kommon.*
 import kotlin.properties.Delegates
+import kotlin.properties.Delegates.notNull
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environment variable")
@@ -300,6 +302,41 @@ fun <T: Any> selfy(make: (() -> T) -> T): T {
     obj.prop = value
     return value
 }
+
+fun <This, Value : Any> lazyEx(makeValue: (This, KProperty<*>) -> Value): ReadOnlyProperty<This, Value> =
+    object : ReadOnlyProperty<This, Value> {
+        private var value: Value? = null
+
+        override fun getValue(thisRef: This, property: KProperty<*>): Value {
+            if (value == null) {
+                value = makeValue(thisRef, property)
+            }
+            return value!!
+        }
+    }
+
+class eagerEx<in This, out Value : Any>(val makeValue: (This, KProperty<*>) -> Value) {
+    private var value by notNull<Value>()
+
+    operator fun provideDelegate(thisRef: This, property: KProperty<*>): ReadOnlyProperty<This, Value> {
+        value = makeValue(thisRef, property)
+        return object : ReadOnlyProperty<This, Value> {
+            override fun getValue(thisRef: This, property: KProperty<*>): Value {
+                return value
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

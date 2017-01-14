@@ -408,6 +408,22 @@ fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: Str
     )
 }
 
+fun TestScenarioBuilder.snapshot(name: String) {
+    acta {async{
+        await(send(TestTakeSnapshotRequest()-{o->
+            o.name.value = name
+            o.url.value = window.location.href
+        }))
+    }}
+}
+
+
+
+
+
+
+
+
 
 
 
