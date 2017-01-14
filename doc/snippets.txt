@@ -1,8 +1,12 @@
-cd /d e:\work\aps
-title aps forever & _run aps.back.Forever
+Java
+====
 
-ant generate-shit
+Import Gradle dependencies
 
+    cd /d e:\work\aps\back
+    import-deps
+    File -> Project Structure -> Libraries -> aps-gradle-lib
+    Remove/add necessary shit from aps/back/lib-gradle
 
 PostgreSQL
 ==========
@@ -38,14 +42,26 @@ node run.js runAllUnitTests
 Redis
 =====
 
-cd /d C:\opt\Redis
-title redis-server & redis-server redis.windows.conf
-title redis-cli & redis-cli
+Configure redis.windows.conf
 
-llen logRoot:children
-del logRoot:children
+    maxmemory 512mb
+    maxmemory-policy allkeys-lru
 
-flushall
+Start
+
+    cd /d C:\opt\Redis
+    title redis-server & redis-server redis.windows.conf
+    title redis-cli & redis-cli
+
+
+Delete everything
+
+    flushall
+
+Misc
+
+    llen logRoot:children
+    del logRoot:children
 
 Links
 =====
@@ -99,6 +115,12 @@ Compare images
     magick compare shebang.png shit-1008.png diff.png
 
 
+
+
+cd /d e:\work\aps
+title aps forever & _run aps.back.Forever
+
+ant generate-shit
 
 
 

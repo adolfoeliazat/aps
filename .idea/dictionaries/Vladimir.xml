@@ -6,6 +6,7 @@
       <w>actiona</w>
       <w>addon</w>
       <w>algo</w>
+      <w>allkeys</w>
       <w>apsback</w>
       <w>apsdevua</w>
       <w>apsua</w>
@@ -90,6 +91,7 @@
       <w>lodash</w>
       <w>lrange</w>
       <w>matumba</w>
+      <w>maxmemory</w>
       <w>mdash</w>
       <w>mget</w>
       <w>mochka</w>

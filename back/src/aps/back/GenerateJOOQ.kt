@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import com.fasterxml.jackson.databind.JsonNode
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.taskdefs.Copy
 import org.apache.tools.ant.taskdefs.Delete
@@ -63,6 +64,19 @@ fun main(args: Array<String>) {
                 o.database = Database()-{o->
                     o.inputSchema = "public"
                     o.includes = ".*"
+                    o.customTypes = listOf(
+                        CustomType()-{o->
+                            o.name = PostgresJSONBJacksonJsonNodeBinding::class.qualifiedName
+                            o.type = JsonNode::class.qualifiedName
+                            o.binding = PostgresJSONBJacksonJsonNodeBinding::class.qualifiedName
+                        }
+                    )
+                    o.forcedTypes = listOf(
+                        ForcedType()-{o->
+                            o.name = PostgresJSONBJacksonJsonNodeBinding::class.qualifiedName
+                            o.types = "jsonb"
+                        }
+                    )
                 }
                 o.target = Target()-{o->
                     o.packageName = "aps.back.generated.jooq"

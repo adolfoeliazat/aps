@@ -117,13 +117,7 @@ class DebugLogPage(val world: World) {
     fun renderLogMessages(messages: List<RedisLogMessage>): ToReactElementable {
         var ultimateMessages = messages
         if (urlQuery.skipCrap) {
-            ultimateMessages = ultimateMessages.filterNot {msg->
-                listOf(
-                    "/rpc/ping", "/rpc/jsonProcedure", "/rpc/fuckingRemoteProcedure", "/rpc/impose", "/rpc/test"
-                ).any {
-                    msg.text.contains(it)
-                }
-            }
+            ultimateMessages = ultimateMessages.filterNot(this::isCrap)
         }
 
         if (ultimateMessages.isEmpty()) return kdiv {o->
@@ -202,6 +196,15 @@ class DebugLogPage(val world: World) {
                     }
                 }
             }
+        }
+    }
+
+    private fun isCrap(msg: RedisLogMessage): Boolean {
+        if (msg.text.contains("/rpc/testTakeSnapshot")) return false
+        return listOf(
+            "/rpc/ping", "/rpc/jsonProcedure", "/rpc/fuckingRemoteProcedure", "/rpc/impose", "/rpc/test"
+        ).any {
+            msg.text.contains(it)
         }
     }
 

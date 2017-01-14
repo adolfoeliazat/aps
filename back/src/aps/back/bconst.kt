@@ -11,6 +11,12 @@ object bconst {
     val tempBakDir = "$APS_TEMP/bak"
     val ideaExe = "C:/opt/idea-2017/bin/idea64.exe"
     val localRedisLoggingEnabled = System.getenv("APS_LOCAL_REDIS_LOGGING") == "true"
+
+    object kvs {
+        object test {
+            val snapshotURL = "test:snapshotURL"
+        }
+    }
 }
 
 

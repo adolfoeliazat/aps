@@ -54,9 +54,6 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-util-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-webapp-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-xml-9.3.11.v20160721.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-3.8.4.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-codegen-3.8.4.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-meta-3.8.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/kryo-4.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/kryo-serializers-0.38.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/LatencyUtils-2.0.3.jar!/" />
@@ -85,15 +82,15 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-queries-6.3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-queryparser-6.3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-sandbox-6.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-3.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-codegen-3.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-meta-3.9.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/quasar-core-0.7.6-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/javax.servlet-api-3.1.0-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/jooq-codegen-3.8.4-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/jooq-meta-3.8.4-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/HikariCP-2.5.1-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/jooq-3.8.4-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/slf4j-api-1.7.21-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/annotations-2.0.1.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/reflections-0.9.10-sources.jar!/" />
@@ -111,6 +108,7 @@
       <root url="jar://$USER_HOME$/.ideaLibSources/postgresql-9.4.1211-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/lucene-analyzers-common-6.3.0-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/lucene-core-6.3.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
