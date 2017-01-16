@@ -29,33 +29,52 @@ external interface IStorage {
     fun getItem(key: String): String?
 }
 
-fun TestScenarioBuilder.initFuckingBrowser(fillStorageLocal: (TypedStorageLocal) -> Unit = {}) {
+fun TestScenarioBuilder.initFuckingBrowser(fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {}) {
     act {
-        val fakeStorageLocal = object:StorageLocal {
-            val map = mutableMapOf<String, String>()
-            override fun clear() = map.clear()
-            override fun getItem(key: String) = map[key]
-            override fun setItem(key: String, value: String) {map[key] = value}
-            override fun removeItem(key: String) {map.remove(key)}
-        }
+        _initFuckingBrowser(fillTypedStorageLocal)
+    }
+}
 
-        val tsl = TypedStorageLocal(fakeStorageLocal)
-        fillStorageLocal(tsl)
-        Globus.browser = Browser(
-            typedStorageLocal = tsl
-        )
+class FakeStorageLocal : StorageLocal {
+    val map = mutableMapOf<String, String>()
 
-        ExternalGlobus.storageLocalForStaticContent = object:IStorage {
-            override fun getItem(key: String) = fakeStorageLocal.getItem(key)
-        }
+    override val length get() = map.size
+
+    override fun key(index: Int) = map.keys.toList()[index]
+
+    override fun clear() = map.clear()
+    override fun getItem(key: String) = map[key]
+    override fun setItem(key: String, value: String) {
+        map[key] = value
+    }
+
+    override fun removeItem(key: String) {
+        map.remove(key)
+    }
+}
+
+fun _initFuckingBrowser(fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {}, fillRawStorageLocal: (StorageLocal) -> Unit = {}) {
+    val fakeStorageLocal = FakeStorageLocal()
+
+    fillRawStorageLocal(fakeStorageLocal)
+    val tsl = TypedStorageLocal(fakeStorageLocal)
+    fillTypedStorageLocal(tsl)
+
+    Globus.browser = Browser(
+        typedStorageLocal = tsl
+    )
+    TestGlobal.browser = Globus.browser
+
+    ExternalGlobus.storageLocalForStaticContent = object : IStorage {
+        override fun getItem(key: String) = fakeStorageLocal.getItem(key)
     }
 }
 
 fun TestScenarioBuilder.kindaNavigateToStaticContent(url: String) {
-    acta {kindaNavigateToStaticContentBody(url)}
+    acta {_kindaNavigateToStaticContent(url)}
 }
 
-fun kindaNavigateToStaticContentBody(url: String): Promise<Unit> {
+fun _kindaNavigateToStaticContent(url: String): Promise<Unit> {
     return async {
         val content = measureAndReportToDocumentElement("Loading $url") {
             await(fetchURL(url, "GET", null))
@@ -130,6 +149,11 @@ inline fun fiddlingWithGlobals(block: () -> Unit) {
     }
 }
 
+class Snapshot(
+    val name: String,
+    val id: String
+)
+
 class TestShit {
     enum class Pauses {NONE, ALL, ONLY}
 
@@ -141,6 +165,8 @@ class TestShit {
     var dasjaToken by notNull<String>()
     var nextRequestTimestampIndex = 0
     var pauses = Pauses.NONE
+    val snapshots = mutableListOf<Snapshot>()
+    var nextInstructionIndex by notNull<Int>()
 
     val timestamps by lazy {
         val list = listOf(

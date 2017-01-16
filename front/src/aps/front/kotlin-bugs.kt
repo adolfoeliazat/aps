@@ -7,6 +7,7 @@ import into.kommon.*
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
+
 //fun qwe_breaks() {
 //    123.let {
 //        val x = run {

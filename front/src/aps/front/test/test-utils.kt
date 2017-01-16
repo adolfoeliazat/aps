@@ -8,13 +8,7 @@ import kotlin.browser.window
 object TestUtils {
     fun initNewBrowser(o: TestScenarioBuilder, fillStorageLocal: (TypedStorageLocal) -> Unit) {
         o.act {
-            val fakeStorageLocal = object : StorageLocal {
-                val map = mutableMapOf<String, String>()
-                override fun clear() = map.clear()
-                override fun getItem(key: String) = map[key]
-                override fun setItem(key: String, value: String) {map[key] = value}
-                override fun removeItem(key: String) {map.remove(key)}
-            }
+            val fakeStorageLocal = FakeStorageLocal()
 
             val tsl = TypedStorageLocal(fakeStorageLocal)
             fillStorageLocal(tsl)

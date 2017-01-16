@@ -28,6 +28,7 @@ abstract class TestScenario {
     open fun prepareShit(): Promise<Unit> = __asyncResult(Unit)
     open val name: String get() = ctorName(this)
     open val longDescription: String? = null
+    val shit = TestShit()
 //    open val useSnapshot = false
 
     lateinit var host: TestHost
@@ -38,21 +39,21 @@ abstract class TestScenario {
 
 //        byid0("topNavbarContainer")?.let {ReactDOM.unmountComponentAtNode(it)}
 //        byid0("root")?.let {ReactDOM.unmountComponentAtNode(it)}
-        DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
-
-        docInnerHTML = "<h3>Running Test: ${ctorName(this)}</h3><hr>"
-        measureAndReportToDocumentElement("Resetting database") {
-            __await(send(RecreateTestDatabaseSchemaRequest()-{o->
-//                if (useSnapshot) {
-//                    o.templateDB.value = "apsTestSnapshotOnTestServer"
-//                }
-            }))
-//            __await(send(ResetTestDatabaseRequest()))
-//            __await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
-        }
-        measureAndReportToDocumentElement("Preparing shit") {
-            __await(prepareShit())
-        }
+//        DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
+//
+//        docInnerHTML = "<h3>Running Test: ${ctorName(this)}</h3><hr>"
+//        measureAndReportToDocumentElement("Resetting database") {
+//            __await(send(RecreateTestDatabaseSchemaRequest()-{o->
+////                if (useSnapshot) {
+////                    o.templateDB.value = "apsTestSnapshotOnTestServer"
+////                }
+//            }))
+////            __await(send(ResetTestDatabaseRequest()))
+////            __await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
+//        }
+//        measureAndReportToDocumentElement("Preparing shit") {
+//            __await(prepareShit())
+//        }
         return __reawait(run0(showTestPassedPane))
     }
 

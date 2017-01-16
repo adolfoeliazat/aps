@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="186" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="192" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/Effects.kt" line="105" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/modal.kt" line="122" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/modal.kt" line="199" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/Form.kt" line="190" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" line="267" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/art.kt" line="1240" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" line="268" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/art.kt" line="1249" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" line="31" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/back-visual-capture.kt" line="130" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" line="219" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" line="303" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" line="230" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" line="329" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-test.kt" line="411" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" line="211" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" line="237" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/jooq-proxies.kt" line="1159" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/back-data.kt" line="201" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/db.kt" line="150" />
@@ -28,49 +28,58 @@
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPageFilesTab.kt" line="314" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" line="38" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/World.kt" line="219" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="354" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="360" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPageFilesTab.kt" line="164" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="380" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="386" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/Effects.kt" line="76" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/async.kt" line="96" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/async.kt" line="143" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/async.kt" line="99" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/async.kt" line="146" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/EvaporatingButtonAndForm.kt" line="58" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="410" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="565" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/fedis.kt" line="43" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" line="6" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt" line="298" />
-    <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" line="93" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" line="44" />
-    <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" line="26" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" line="57" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt" line="293" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt" line="182" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="589" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="416" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/art.kt" line="39" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="106" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" line="504" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/test-shit/b497b9a7-5c1b-45f0-9902-299637667887" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/1.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/1.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/db.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/db.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" afterPath="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Globus.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Globus.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/art.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/art.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/async.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/async.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/fconst.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/fconst.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/kotlin-bugs.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/kotlin-bugs.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/StepBasedTestScenario.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/StepBasedTestScenario.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_Order_Files_DownloadByClickingOnIcon.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_Order_Files_DownloadByClickingOnIcon.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_NewOrder_HappyPath.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_NewOrder_HappyPath.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" afterPath="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/92db9a5b-0fa7-4991-a6b6-80dbec02be50" afterPath="$PROJECT_DIR$/front/test-shit/92db9a5b-0fa7-4991-a6b6-80dbec02be50" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--1" afterPath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--2" afterPath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--2" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--3" afterPath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--4" afterPath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--4" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--5" afterPath="$PROJECT_DIR$/front/test-shit/b31dc136-68f4-417c-bc2c-9e4088b28ac4--5" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/ecec02be-35ab-4c44-afc4-a50b73d45b1c" afterPath="$PROJECT_DIR$/front/test-shit/ecec02be-35ab-4c44-afc4-a50b73d45b1c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-rpc.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-rpc.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-utils.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-utils.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-writer-ua.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-writer-ua.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--1" afterPath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--1" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--2" afterPath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--2" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--3" afterPath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--4" afterPath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--4" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--5" afterPath="$PROJECT_DIR$/front/test-shit/808d747e-bd63-44d4-880e-84f2e2a10736--5" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--1" afterPath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--1" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--2" afterPath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--2" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--3" afterPath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--4" afterPath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--4" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--5" afterPath="$PROJECT_DIR$/front/test-shit/fcbe57dc-5984-421c-9d27-32b50f0d3cbc--5" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -136,61 +145,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="art.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
+      <file leaf-file-name="MakeStaticSites.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="263" column="70" lean-forward="false" selection-start-line="263" selection-start-column="70" selection-end-line="263" selection-end-column="70" />
+            <state relative-caret-position="312">
+              <caret line="1163" column="75" lean-forward="false" selection-start-line="1163" selection-start-column="75" selection-end-line="1163" selection-end-column="75" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestUACustomer_Order_Files.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestUACustomer_Order_Files.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="302" column="8" lean-forward="false" selection-start-line="302" selection-start-column="8" selection-end-line="302" selection-end-column="8" />
+            <state relative-caret-position="384">
+              <caret line="489" column="7" lean-forward="false" selection-start-line="489" selection-start-column="7" selection-end-line="489" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="assertScreenHTML.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt">
+      <file leaf-file-name="Form.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Form.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="546">
-              <caret line="63" column="12" lean-forward="false" selection-start-line="63" selection-start-column="12" selection-end-line="63" selection-end-column="12" />
+            <state relative-caret-position="461">
+              <caret line="246" column="4" lean-forward="false" selection-start-line="246" selection-start-column="4" selection-end-line="246" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shared-utils.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt">
+      <file leaf-file-name="TestScenarioBuilder.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="238" column="66" lean-forward="false" selection-start-line="238" selection-start-column="66" selection-end-line="238" selection-end-column="66" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Strings.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/kotlin/text/Strings.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="956" column="24" lean-forward="false" selection-start-line="956" selection-start-column="24" selection-end-line="956" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StepBasedTestScenario.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/StepBasedTestScenario.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="4" column="39" lean-forward="false" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
+            <state relative-caret-position="402">
+              <caret line="513" column="49" lean-forward="false" selection-start-line="513" selection-start-column="49" selection-end-line="513" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -199,38 +188,60 @@
       <file leaf-file-name="test-utils-2.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="75" column="15" lean-forward="false" selection-start-line="75" selection-start-column="15" selection-end-line="75" selection-end-column="15" />
+            <state relative-caret-position="288">
+              <caret line="65" column="4" lean-forward="false" selection-start-line="65" selection-start-column="4" selection-end-line="65" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestScenarioBuilder.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt">
+      <file leaf-file-name="async.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/async.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="709">
-              <caret line="431" column="0" lean-forward="false" selection-start-line="431" selection-start-column="0" selection-end-line="431" selection-end-column="0" />
+            <state relative-caret-position="317">
+              <caret line="89" column="4" lean-forward="false" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rp-test-2.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt">
+      <file leaf-file-name="front-utils.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+            <state relative-caret-position="474">
+              <caret line="127" column="4" lean-forward="false" selection-start-line="127" selection-start-column="4" selection-end-line="127" selection-end-column="4" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="art.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="293">
+              <caret line="41" column="8" lean-forward="false" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestCommon.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt">
+      <file leaf-file-name="assertScreenHTML.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="44" column="12" lean-forward="false" selection-start-line="44" selection-start-column="12" selection-end-line="44" selection-end-column="12" />
+            <state relative-caret-position="72">
+              <caret line="50" column="4" lean-forward="false" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Globus.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Globus.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="140" column="17" lean-forward="false" selection-start-line="140" selection-start-column="17" selection-end-line="140" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -326,29 +337,16 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage_FilesTab.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
-        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-data.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/back-data.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/test/TestOptions.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-editUAOrderFile.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/jquery.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Input.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPage.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/World.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Effects.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/EvaporatingButtonAndForm.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_NewOrder_HappyPath.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/Form.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/async.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/FileField.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPageFilesTab.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/fconst.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/drop.sql" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-signUp.kt" />
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-rpc.kt" />
@@ -366,17 +364,30 @@
         <option value="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/test/StepBasedTestScenario.kt" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-rpc.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/db.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" />
+        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_Order_Files_DownloadByClickingOnIcon.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_NewOrder_HappyPath.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/art.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/test-writer-ua.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/StepBasedTestScenario.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/fconst.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/test-utils.kt" />
+        <option value="$PROJECT_DIR$/kotlin-js-playground/src/kotlin-js-playground.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/kotlin-bugs.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/async.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/Globus.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" />
-        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt" />
       </list>
     </option>
   </component>
@@ -397,79 +408,13 @@
             <id />
           </State>
           <State>
-            <id>CollectionsScala</id>
-          </State>
-          <State>
             <id>Abstraction issuesJava</id>
-          </State>
-          <State>
-            <id>Assignment issuesGroovy</id>
-          </State>
-          <State>
-            <id>Assignment issuesJava</id>
-          </State>
-          <State>
-            <id>Class structureJava</id>
-          </State>
-          <State>
-            <id>Cloning issuesJava</id>
-          </State>
-          <State>
-            <id>Code maturity issuesJava</id>
           </State>
           <State>
             <id>Code style issuesJava</id>
           </State>
           <State>
-            <id>Comparing CollectionsScala</id>
-          </State>
-          <State>
-            <id>Control FlowGroovy</id>
-          </State>
-          <State>
             <id>Control flow issuesJava</id>
-          </State>
-          <State>
-            <id>Data flow issuesJava</id>
-          </State>
-          <State>
-            <id>Declaration redundancyJava</id>
-          </State>
-          <State>
-            <id>Error handlingJava</id>
-          </State>
-          <State>
-            <id>GPath inspectionsGroovy</id>
-          </State>
-          <State>
-            <id>General</id>
-          </State>
-          <State>
-            <id>GeneralScala</id>
-          </State>
-          <State>
-            <id>Gradle</id>
-          </State>
-          <State>
-            <id>Groovy</id>
-          </State>
-          <State>
-            <id>Indices CollectionsScala</id>
-          </State>
-          <State>
-            <id>Inheritance issuesJava</id>
-          </State>
-          <State>
-            <id>Internationalization issues</id>
-          </State>
-          <State>
-            <id>Internationalization issuesJava</id>
-          </State>
-          <State>
-            <id>J2ME issuesJava</id>
-          </State>
-          <State>
-            <id>JUnit issuesJava</id>
           </State>
           <State>
             <id>Java</id>
@@ -478,93 +423,15 @@
             <id>Java language level migration aidsJava</id>
           </State>
           <State>
-            <id>Javadoc issuesJava</id>
-          </State>
-          <State>
             <id>Kotlin</id>
-          </State>
-          <State>
-            <id>Maps CollectionsScala</id>
-          </State>
-          <State>
-            <id>Memory issuesJava</id>
-          </State>
-          <State>
-            <id>Method signatureScala</id>
-          </State>
-          <State>
-            <id>Numeric issuesJava</id>
-          </State>
-          <State>
-            <id>Options CollectionsScala</id>
-          </State>
-          <State>
-            <id>Other CollectionsScala</id>
           </State>
           <State>
             <id>Performance issuesJava</id>
           </State>
-          <State>
-            <id>Portability issuesJava</id>
-          </State>
-          <State>
-            <id>Potentially confusing code constructsGroovy</id>
-          </State>
-          <State>
-            <id>Probable bugsGradle</id>
-          </State>
-          <State>
-            <id>Probable bugsGroovy</id>
-          </State>
-          <State>
-            <id>Probable bugsJava</id>
-          </State>
-          <State>
-            <id>Resource management issuesJava</id>
-          </State>
-          <State>
-            <id>SBT</id>
-          </State>
-          <State>
-            <id>Scala</id>
-          </State>
-          <State>
-            <id>Security issuesJava</id>
-          </State>
-          <State>
-            <id>Serialization issuesJava</id>
-          </State>
-          <State>
-            <id>Simplifications: filter and exists CollectionsScala</id>
-          </State>
-          <State>
-            <id>Simplifications: find and map to apply CollectionsScala</id>
-          </State>
-          <State>
-            <id>Simplifications: other CollectionsScala</id>
-          </State>
-          <State>
-            <id>Size CollectionsScala</id>
-          </State>
-          <State>
-            <id>StyleGroovy</id>
-          </State>
-          <State>
-            <id>Syntactic ClarificationScala</id>
-          </State>
-          <State>
-            <id>Syntactic SimplificationScala</id>
-          </State>
-          <State>
-            <id>TestNGJava</id>
-          </State>
-          <State>
-            <id>Threading issuesJava</id>
-          </State>
         </expanded-state>
         <selected-state>
           <State>
-            <id>Ant inspections</id>
+            <id>LoopToCallChain</id>
           </State>
         </selected-state>
       </profile-state>
@@ -675,20 +542,47 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="front" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="front" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="front" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Kotlin" />
     <property name="settings.editor.splitter.proportion" value="0.21995465" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15407854" />
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib-gradle/jooq-meta-3.9.0.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="byid&#9;null&#9;null&#10;servetestta&#9;null&#9;null&#10;stepbase&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/StepBasedTestScenario.kt&#10;pushna&#9;null&#9;null&#10;stringhidden&#9;null&#9;null&#10;stringhi&#9;null&#9;null&#10;serverecreate&#9;null&#9;null&#10;logpa&#9;null&#9;null&#10;jqkeyvaluestor&#9;FILE&#9;file://E:/work/aps/back/src-generated/aps/back/generated/jooq/tables/JQKeyValueStore.java&#10;jqkey&#9;PSI&#9;JAVA://aps.back.generated.jooq.tables.pojos.JQKeyValueStore&#10;jqk&#9;FILE&#9;file://E:/work/aps/back/src-generated/aps/back/generated/jooq/tables/records/JQKeyValueStoreRecord.java&#10;generatejoo&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/GenerateJOOQ.kt&#10;hackyo&#9;null&#9;null&#10;objectmapper&#9;null&#9;null&#10;db.&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/db.kt&#10;ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;insertonduplicatestep&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/InsertOnDuplicateStep.java&#10;servetest&#9;null&#9;null&#10;ant-ms&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;import&#9;FILE&#9;file://E:/work/aps/back/import-deps.cmd&#10;snip&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;build.g&#9;FILE&#9;file://E:/work/aps/back/build.gradle&#10;servete&#9;null&#9;null&#10;string&#9;null&#9;null&#10;privile&#9;null&#9;null&#10;shared-rp&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;rpc.kt&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/rpc.kt&#10;testproce&#9;null&#9;null&#10;stringhiddenfield&#9;null&#9;null&#10;rp-te&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-test.kt&#10;front-glu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-rpc-glue.kt&#10;testprocedu&#9;null&#9;null&#10;dwarnstr&#9;null&#9;null&#10;shared-util&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;lazy&#9;null&#9;null&#10;shared-utils&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-utils.kt&#10;r&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;shared-rpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;drop.&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/drop.sql&#10;snipp&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;schema.sql&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/schema.sql&#10;test&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/TestScenarioBuilder.kt&#10;fcon&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fconst.kt&#10;formma&#9;null&#9;null&#10;filefield&#9;FILE&#9;file://E:/work/aps/front/src/aps/FileField.kt&#10;testglo&#9;null&#9;null&#10;evap&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/EvaporatingButtonAndForm.kt&#10;testlock&#9;null&#9;null&#10;formspe&#9;null&#9;null&#10;testglobal&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="bobul&#9;null&#9;null&#10;assert&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/assertScreenHTML.kt&#10;makes&#9;null&#9;null&#10;jquery&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/jquery.kt&#10;igniteshit&#9;null&#9;null&#10;reactdom&#9;null&#9;null&#10;reactelement&#9;null&#9;null&#10;react&#9;null&#9;null&#10;minus&#9;null&#9;null&#10;bugs&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;snipp&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;kotlin-bu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;exha&#9;null&#9;null&#10;dedent&#9;null&#9;null&#10;linkedhashset&#9;null&#9;null&#10;front-u&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils.kt&#10;storagelo&#9;null&#9;null&#10;_initfu&#9;null&#9;null&#10;initfucking&#9;null&#9;null&#10;initialshi&#9;null&#9;null&#10;initial&#9;null&#9;null&#10;handpause&#9;null&#9;null&#10;showhand&#9;null&#9;null&#10;beginwo&#9;null&#9;null&#10;testshit&#9;null&#9;null&#10;byid&#9;null&#9;null&#10;servetestta&#9;null&#9;null&#10;stepbase&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/StepBasedTestScenario.kt&#10;pushna&#9;null&#9;null&#10;stringhidden&#9;null&#9;null&#10;stringhi&#9;null&#9;null&#10;serverecreate&#9;null&#9;null&#10;logpa&#9;null&#9;null&#10;jqkeyvaluestor&#9;FILE&#9;file://E:/work/aps/back/src-generated/aps/back/generated/jooq/tables/JQKeyValueStore.java&#10;jqkey&#9;PSI&#9;JAVA://aps.back.generated.jooq.tables.pojos.JQKeyValueStore&#10;jqk&#9;FILE&#9;file://E:/work/aps/back/src-generated/aps/back/generated/jooq/tables/records/JQKeyValueStoreRecord.java&#10;generatejoo&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/GenerateJOOQ.kt&#10;hackyo&#9;null&#9;null&#10;objectmapper&#9;null&#9;null&#10;db.&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/db.kt&#10;ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;insertonduplicatestep&#9;FILE&#9;jar://C:/Users/Vladimir/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/InsertOnDuplicateStep.java&#10;servetest&#9;null&#9;null&#10;ant-ms&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;import&#9;FILE&#9;file://E:/work/aps/back/import-deps.cmd&#10;snip&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;build.g&#9;FILE&#9;file://E:/work/aps/back/build.gradle&#10;servete&#9;null&#9;null&#10;string&#9;null&#9;null&#10;privile&#9;null&#9;null" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
   </component>
   <component name="Push.Settings">
@@ -1079,13 +973,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00222" summary="Fucking around with automated visual testing">
-      <created>1483818959724</created>
-      <option name="number" value="00222" />
-      <option name="presentableId" value="LOCAL-00222" />
-      <option name="project" value="LOCAL" />
-      <updated>1483818959724</updated>
-    </task>
     <task id="LOCAL-00223" summary="Fucking around with automated visual testing">
       <created>1483822300283</created>
       <option name="number" value="00223" />
@@ -1422,7 +1309,14 @@
       <option name="project" value="LOCAL" />
       <updated>1484415016290</updated>
     </task>
-    <option name="localTasksCounter" value="271" />
+    <task id="LOCAL-00271" summary="vovagrechka/aps#32">
+      <created>1484427306827</created>
+      <option name="number" value="00271" />
+      <option name="presentableId" value="LOCAL-00271" />
+      <option name="project" value="LOCAL" />
+      <updated>1484427306827</updated>
+    </task>
+    <option name="localTasksCounter" value="272" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1439,7 +1333,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23952739" sideWeight="0.4918033" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
+      <window_info id="Messages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24436091" sideWeight="0.4918033" order="6" side_tool="false" content_ui="tabs" x="677" y="43" width="762" height="943" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2428884" sideWeight="0.5064378" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1647,347 +1541,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/lang/Class.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="118" column="19" lean-forward="false" selection-start-line="118" selection-start-column="19" selection-end-line="118" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/node/NullNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/Converter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="83" column="17" lean-forward="false" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/jackson-abomination.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="17" column="6" lean-forward="false" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/Binding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="69" column="17" lean-forward="false" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/jooq-codegen-3.9.0.jar!/org/jooq/util/GenerationTool.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="128" column="0" lean-forward="false" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-codegen-3.9.0-sources.jar!/org/jooq/util/GenerationTool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2900">
-          <caret line="202" column="16" lean-forward="false" selection-start-line="202" selection-start-column="16" selection-end-line="202" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/jooq-meta-3.9.0.jar!/org/jooq/util/jaxb/Configuration.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="31" column="11" lean-forward="false" selection-start-line="31" selection-start-column="11" selection-end-line="31" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/jooq-meta-3.9.0.jar!/org/jooq/util/jaxb/ForcedType.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="91" column="16" lean-forward="false" selection-start-line="91" selection-start-column="16" selection-end-line="91" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-meta-3.9.0-sources.jar!/org/jooq/util/jaxb/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-meta-3.9.0-sources.jar!/org/jooq/util/jaxb/ForcedType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/impl/DefaultDataType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="729" column="19" lean-forward="false" selection-start-line="729" selection-start-column="19" selection-end-line="729" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/pojos/JQKeyValueStore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding>
-            <marker date="1484407824031" expanded="true" signature="2692:2755" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/JsonNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="316" column="0" lean-forward="false" selection-start-line="316" selection-start-column="0" selection-end-line="316" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/GenerateJOOQ.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="76" column="24" lean-forward="false" selection-start-line="76" selection-start-column="24" selection-end-line="76" selection-end-column="24" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/records/JQKeyValueStoreRecord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="32" column="43" lean-forward="false" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#587#640#0" expanded="true" />
-            <element signature="e#974#975#0" expanded="true" />
-            <element signature="e#1003#1004#0" expanded="true" />
-            <element signature="e#1104#1105#0" expanded="true" />
-            <element signature="e#1140#1141#0" expanded="true" />
-            <element signature="e#1264#1265#0" expanded="true" />
-            <element signature="e#1293#1294#0" expanded="true" />
-            <element signature="e#1407#1408#0" expanded="true" />
-            <element signature="e#1446#1447#0" expanded="true" />
-            <element signature="e#1579#1580#0" expanded="true" />
-            <element signature="e#1608#1609#0" expanded="true" />
-            <element signature="e#1731#1732#0" expanded="true" />
-            <element signature="e#1772#1773#0" expanded="true" />
-            <element signature="e#1903#1904#0" expanded="true" />
-            <element signature="e#1932#1933#0" expanded="true" />
-            <element signature="e#2053#2054#0" expanded="true" />
-            <element signature="e#2094#2095#0" expanded="true" />
-            <element signature="e#2209#2210#0" expanded="true" />
-            <element signature="e#2238#2239#0" expanded="true" />
-            <element signature="e#2343#2344#0" expanded="true" />
-            <element signature="e#2381#2382#0" expanded="true" />
-            <element signature="e#2502#2503#0" expanded="true" />
-            <element signature="e#2531#2532#0" expanded="true" />
-            <element signature="e#2642#2643#0" expanded="true" />
-            <element signature="e#2682#2683#0" expanded="true" />
-            <element signature="e#2961#2962#0" expanded="true" />
-            <element signature="e#3005#3006#0" expanded="true" />
-            <element signature="e#3340#3341#0" expanded="true" />
-            <element signature="e#3387#3388#0" expanded="true" />
-            <element signature="e#3524#3525#0" expanded="true" />
-            <element signature="e#3571#3572#0" expanded="true" />
-            <element signature="e#3657#3658#0" expanded="true" />
-            <element signature="e#3714#3715#0" expanded="true" />
-            <element signature="e#3803#3804#0" expanded="true" />
-            <element signature="e#3865#3866#0" expanded="true" />
-            <element signature="e#3956#3957#0" expanded="true" />
-            <element signature="e#4022#4023#0" expanded="true" />
-            <element signature="e#4113#4114#0" expanded="true" />
-            <element signature="e#4178#4179#0" expanded="true" />
-            <element signature="e#4266#4267#0" expanded="true" />
-            <element signature="e#4324#4325#0" expanded="true" />
-            <element signature="e#4414#4415#0" expanded="true" />
-            <element signature="e#4474#4475#0" expanded="true" />
-            <element signature="e#4553#4554#0" expanded="true" />
-            <element signature="e#4583#4584#0" expanded="true" />
-            <element signature="e#4665#4666#0" expanded="true" />
-            <element signature="e#4700#4701#0" expanded="true" />
-            <element signature="e#4784#4785#0" expanded="true" />
-            <element signature="e#4822#4823#0" expanded="true" />
-            <element signature="e#4906#4907#0" expanded="true" />
-            <element signature="e#4943#4944#0" expanded="true" />
-            <element signature="e#5024#5025#0" expanded="true" />
-            <element signature="e#5055#5056#0" expanded="true" />
-            <element signature="e#5138#5139#0" expanded="true" />
-            <element signature="e#5171#5172#0" expanded="true" />
-            <element signature="e#6790#6791#0" expanded="true" />
-            <element signature="e#6844#6845#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/impl/Tools.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="524" column="35" lean-forward="false" selection-start-line="524" selection-start-column="35" selection-end-line="524" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/tables/JQKeyValueStore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="46" column="40" lean-forward="false" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/impl/DefaultDSLContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="3740" column="42" lean-forward="false" selection-start-line="3740" selection-start-column="42" selection-end-line="3740" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/impl/InsertImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="663" column="8" lean-forward="false" selection-start-line="663" selection-start-column="8" selection-end-line="663" selection-end-column="8" />
-          <folding>
-            <element signature="e#36925#36926#0" expanded="true" />
-            <element signature="e#36985#36986#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/InsertSetMoreStep.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11">
-          <caret line="103" column="25" lean-forward="false" selection-start-line="103" selection-start-column="25" selection-end-line="103" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/com/fasterxml/jackson/databind/ObjectMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11">
-          <caret line="2616" column="34" lean-forward="false" selection-start-line="2616" selection-start-column="34" selection-end-line="2616" selection-end-column="34" />
-          <folding>
-            <element signature="e#101539#101585#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/org/jooq/InsertOnConflictDoUpdateStep.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11">
-          <caret line="68" column="32" lean-forward="false" selection-start-line="68" selection-start-column="32" selection-end-line="68" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugLogPage.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11">
-          <caret line="201" column="8" lean-forward="false" selection-start-line="201" selection-start-column="8" selection-end-line="201" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc/snippets.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/redisLog.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11">
-          <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="94" column="4" lean-forward="false" selection-start-line="94" selection-start-column="4" selection-end-line="94" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="95" column="8" lean-forward="false" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_SignUp_HappyPath.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/World.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="129" column="8" lean-forward="false" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/WriterBootTestScenario_FuckerToken.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-rpc.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="487">
@@ -2036,50 +1589,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="263" column="70" lean-forward="false" selection-start-line="263" selection-start-column="70" selection-end-line="263" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="75" column="15" lean-forward="false" selection-start-line="75" selection-start-column="15" selection-end-line="75" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="709">
-          <caret line="431" column="0" lean-forward="false" selection-start-line="431" selection-start-column="0" selection-end-line="431" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/StepBasedTestScenario.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="39" lean-forward="false" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="44" column="12" lean-forward="false" selection-start-line="44" selection-start-column="12" selection-end-line="44" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -2092,26 +1605,352 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt">
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="63" column="12" lean-forward="false" selection-start-line="63" selection-start-column="12" selection-end-line="63" selection-end-column="12" />
+        <state relative-caret-position="293">
+          <caret line="267" column="17" lean-forward="false" selection-start-line="267" selection-start-column="17" selection-end-line="267" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/const.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="55" column="16" lean-forward="false" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestOptions.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="10" column="8" lean-forward="false" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestUserActionAnimation.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="140" column="12" lean-forward="false" selection-start-line="140" selection-start-column="12" selection-end-line="140" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_NewOrder_HappyPath.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/customer/TestUACustomer_Order_Files_DownloadByClickingOnIcon.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/core/generated/_CollectionsJs.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="276" column="30" lean-forward="false" selection-start-line="276" selection-start-column="30" selection-end-line="276" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/StepBasedTestScenario.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="5" column="39" lean-forward="false" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
+          <folding>
+            <element signature="e#19#60#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="22" column="15" lean-forward="false" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-writer-ua.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="12" column="30" lean-forward="false" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/fconst.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="23" column="4" lean-forward="false" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/core/json.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="744">
+          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-runtime-sources.jar!/kotlin/ArrayIntrinsics.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="23" column="45" lean-forward="false" selection-start-line="23" selection-start-column="45" selection-end-line="23" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/core/collections.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="28" column="8" lean-forward="false" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-shebang.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="45" column="8" lean-forward="false" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/generated/org.w3c.dom.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="3532" column="8" lean-forward="false" selection-start-line="3532" selection-start-column="8" selection-end-line="3532" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/native/kotlin/Collections.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="278" column="15" lean-forward="false" selection-start-line="278" selection-start-column="15" selection-end-line="278" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/core/collections/LinkedHashSet.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="22" column="18" lean-forward="false" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="4" lean-forward="false" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../into-kommon/lib/kotlin/1.1-m04/kotlin-jslib-sources.jar!/core/debug.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="11" column="20" lean-forward="false" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kotlin-js-playground/src/kotlin-js-playground.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kotlin-js-playground/kotlin-js-playground.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/front.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/run.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/snippets.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="113" column="32" lean-forward="false" selection-start-line="113" selection-start-column="32" selection-end-line="113" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/kotlin-bugs.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-utils.kt">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="112" column="0" lean-forward="false" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/igniter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="100" column="33" lean-forward="false" selection-start-line="100" selection-start-column="33" selection-end-line="100" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/World.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="318" column="4" lean-forward="false" selection-start-line="318" selection-start-column="4" selection-end-line="318" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/jquery.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="1163" column="75" lean-forward="false" selection-start-line="1163" selection-start-column="75" selection-end-line="1163" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
-          <caret line="238" column="66" lean-forward="false" selection-start-line="238" selection-start-column="66" selection-end-line="238" selection-end-column="66" />
+          <caret line="41" column="8" lean-forward="false" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Form.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="246" column="4" lean-forward="false" selection-start-line="246" selection-start-column="4" selection-end-line="246" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="50" column="4" lean-forward="false" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="127" column="4" lean-forward="false" selection-start-line="127" selection-start-column="4" selection-end-line="127" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/async.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="89" column="4" lean-forward="false" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestUACustomer_Order_Files.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="302" column="8" lean-forward="false" selection-start-line="302" selection-start-column="8" selection-end-line="302" selection-end-column="8" />
+        <state relative-caret-position="384">
+          <caret line="489" column="7" lean-forward="false" selection-start-line="489" selection-start-column="7" selection-end-line="489" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Globus.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="140" column="17" lean-forward="false" selection-start-line="140" selection-start-column="17" selection-end-line="140" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="65" column="4" lean-forward="false" selection-start-line="65" selection-start-column="4" selection-end-line="65" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="513" column="49" lean-forward="false" selection-start-line="513" selection-start-column="49" selection-end-line="513" selection-end-column="49" />
           <folding />
         </state>
       </provider>
@@ -2180,7 +2019,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>into-kommon-js</last-edited>
+          <last-edited>front</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -2204,7 +2043,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>aps-gradle-lib</last-edited>
+          <last-edited>KotlinJavaRuntime</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

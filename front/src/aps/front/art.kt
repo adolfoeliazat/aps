@@ -13,6 +13,7 @@ import aps.Color.*
 import aps.*
 import aps.WorldPointRequest.Action.RESTORE
 import aps.WorldPointRequest.Action.SAVE
+import aps.front.testutils.*
 import into.kommon.*
 import jquery.jq
 import org.w3c.dom.events.KeyboardEvent
@@ -38,6 +39,8 @@ val String.there: Boolean get() = this !== NILS
 
 sealed class TestInstruction() : DefinitionStackHolder {
     val definitionStackCapture = CaptureStackException()
+    var isAssertion = false
+    var snapshot = null as Snapshot?
 
     override fun promiseDefinitionStack(): Promise<dynamic> {
         throw UnsupportedOperationException("Implement me, please, fuck you")
@@ -121,7 +124,7 @@ object art {
     }
 
 
-    fun run(instructions: Iterable<TestInstruction>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+    fun run(shit: TestShit, instructions: List<TestInstruction>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
         try {
             testInstructions = instructions
 
@@ -132,7 +135,11 @@ object art {
             var skipping = from != "start"
 
             var stepIndex = 0
-            instructions.forEachIndexed {instrIndex, instr ->
+//            instructions.forEachIndexed {instrIndex, instr ->
+            var instrIndex = 0
+            while (instrIndex <= instructions.lastIndex) {
+                shit.nextInstructionIndex = instrIndex + 1
+                val instr = instructions[instrIndex]
                 fun getControlForAction(arg: dynamic): dynamic {
                     if (instr !is ShamedTestInstruction) throw FatException("I want ShamedTestInstruction, got $instr")
 
@@ -230,6 +237,8 @@ object art {
                         }
                     }
                 }
+
+                instrIndex = shit.nextInstructionIndex
             }
 
             if (skipping) {

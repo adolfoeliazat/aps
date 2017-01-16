@@ -48,13 +48,24 @@ class AssertScreenOpts(
     val spoilActual: Boolean = false
 )
 
-fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, opts: AssertScreenOpts = AssertScreenOpts()) {
-    val stackCapture = CaptureStackException()
-    act {TestGlobal.testShitBeingAssertedID = assertionID}
+data class AssertScreenHTMLParams(
+    val descr: String?,
+    val assertionID: String,
+    val opts: AssertScreenOpts = AssertScreenOpts()
+)
 
-    val stepTitle = "HTML: $descr"
+fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, opts: AssertScreenOpts = AssertScreenOpts()) {
+    return assertScreenHTML(AssertScreenHTMLParams(descr, assertionID, opts))
+}
+
+fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
+    val stackCapture = CaptureStackException()
+    lastAssertScreenHTMLParams = p
+    act {TestGlobal.testShitBeingAssertedID = p.assertionID}
+
+    val stepTitle = "HTML: $p.descr"
     checkOnAnimationFrame(stepTitle) {async<Unit>{
-        val expected = await(fuckingRemoteCall.loadTestShit(assertionID))
+        val expected = await(fuckingRemoteCall.loadTestShit(p.assertionID))
 
         val actual = buildString {
             append("-------------------- URL --------------------\n\n")
@@ -65,7 +76,7 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
             append("-------------------- NAVBAR --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
             if (!endsWith("\n")) append("\n")
-            append("\n-------------------- ${if (!opts.spoilActual) "ROOT" else "FUCKROOT"} --------------------\n\n")
+            append("\n-------------------- ${if (!p.opts.spoilActual) "ROOT" else "FUCKROOT"} --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
         }
 
@@ -74,15 +85,15 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
                 val bannerButtonStyle = Style()
 
                 var banner by notNull<Control2>()
-                var verticalPosition = opts.bannerVerticalPosition
-                var horizontalPosition = opts.bannerHorizontalPosition
+                var verticalPosition = p.opts.bannerVerticalPosition
+                var horizontalPosition = p.opts.bannerHorizontalPosition
                 var capturedVisualShit = false
 
                 fun acceptCurrentShit(): Promise<Unit> = async {
                     await(captureVisualShitIfNeeded())
                     await(send(SaveCapturedVisualShitRequest()))
                     await(send(HardenScreenHTMLRequest()-{o->
-                        o.assertionID = assertionID
+                        o.assertionID = p.assertionID
                         o.html = actual
                     }))
                     assertionBannerPause.resolve()
@@ -124,15 +135,15 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
 
                             try {
                                 val captureExists = await(send(CapturedVisualShitExistsRequest()-{o->
-                                    o.id = assertionID
+                                    o.id = p.assertionID
                                 })).exists
 
                                 await(showTestBanner(
                                     AssertionBannerKind.INCORRECT,
                                     renderSpecificButtons = {o->
                                         o- Button(title = "Diff", style = bannerButtonStyle, onClick = {
-                                            verticalPosition = opts.bannerVerticalPosition
-                                            horizontalPosition = opts.bannerHorizontalPosition
+                                            verticalPosition = p.opts.bannerVerticalPosition
+                                            horizontalPosition = p.opts.bannerHorizontalPosition
                                             banner.update()
 //                                                byid("fuckingDiff").scrollBodyToShit()
                                             nextDiff().scrollBodyToShit(dy = -70)
@@ -240,7 +251,7 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
 
                         override fun promiseBase64() = async {
                             val res = await(send(DiffCapturedVisualShitWithSavedRequest()-{o->
-                                o.id = assertionID
+                                o.id = p.assertionID
                             }))
                             res.base64
                         }
@@ -251,7 +262,7 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
 
                         override fun promiseBase64() = async {
                             val res = await(send(GetCapturedVisualShitRequest()-{o->
-                                o.id = assertionID
+                                o.id = p.assertionID
                             }))
                             res.base64
                         }
@@ -304,7 +315,7 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
 
                 fun captureVisualShitIfNeeded() = async {
                     if (!capturedVisualShit) {
-                        await(captureVisualShit(assertionID))
+                        await(captureVisualShit(p.assertionID))
                         capturedVisualShit = true
                     }
                 }
@@ -366,7 +377,7 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
                                 o- rerunTestSlowlyButton()
                                 renderSpecificButtons(o)
                             }
-                            o- link(title = "Assertion: $descr", color = BLACK, onClick = {
+                            o- link(title = "Assertion: $p.descr", color = BLACK, onClick = {
                                 revealStack(stackCapture, muteConsole = true)
                             })
 //                                o- "Assertion: $descr"

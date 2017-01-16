@@ -426,6 +426,9 @@ fun unfreezeProgressTicker() {
 
 fun isModalShown() = jq(".modal-backdrop").length > 0
 
+fun <T> Array<T>.jsPush(item: T) {
+    this.asDynamic().push(item)
+}
 
 
 

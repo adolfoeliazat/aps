@@ -20,6 +20,10 @@ object fconst {
             val animationHalfwaySignalTimeout = 1000
         }
     }
+
+    object storage {
+        val clientStateSnapshotPrefix = "clientStateSnapshot-"
+    }
 }
 
 abstract class KeyDef {

@@ -2,7 +2,7 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
-import into.kommon.global
+import into.kommon.*
 import org.w3c.dom.Storage
 import kotlin.browser.localStorage
 import kotlin.browser.window
@@ -34,6 +34,8 @@ object Globus {
     val world get() = worldMaybe!!
 
     val realStorageLocal = object:StorageLocal {
+        override val length get() = localStorage.length
+        override fun key(index: Int) = localStorage.key(index)
         override fun clear() = localStorage.clear()
         override fun getItem(key: String): String? = localStorage.getItem(key)
         override fun setItem(key: String, value: String) = localStorage.setItem(key, value)
@@ -48,10 +50,12 @@ class Browser(val typedStorageLocal: TypedStorageLocal)
 
 
 interface StorageLocal {
+    val length: Int
     fun clear()
     fun getItem(key: String): String?
     fun setItem(key: String, value: String)
     fun removeItem(key: String)
+    fun key(index: Int): String?
 }
 
 
@@ -109,6 +113,10 @@ class BrowserOld(val name: String) {
 //    val typedStorageLocal = TypedStorageLocal(_storageLocal)
 
     val storageLocal = object : StorageLocal {
+        override val length get() = JSObject.keys(storageLocalItems).size
+
+        override fun key(index: Int) = JSObject.keys(storageLocalItems)[index]
+
         override fun removeItem(key: String) {
             throw UnsupportedOperationException("Implement me, please, fuck you")
         }
@@ -130,6 +138,10 @@ class BrowserOld(val name: String) {
 
 // TODO:vgrechka Use class delegate
 class RealStorageLocal : StorageLocal {
+    override val length get() = window.localStorage.length
+
+    override fun key(index: Int) = window.localStorage.key(index)
+
     override fun clear() {
         window.localStorage.clear()
     }

@@ -43,6 +43,7 @@ object TestGlobal {
     val fileFieldChangedLock by notNullNamed(TestLock())
     val formTickingLock by notNullNamed(TestLock())
     val formDoneLock by notNullNamed(TestLock())
+    var browser by notNull<Browser>()
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

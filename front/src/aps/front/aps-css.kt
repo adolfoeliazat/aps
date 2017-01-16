@@ -138,6 +138,19 @@ object css {
                 padding: 0.2rem;
                 z-index: 100000;""")
 
+            val chooseSnapshot by Style("""
+                position: fixed;
+                bottom: 0px;
+                left: 0px;
+                width: $width;
+                min-height: 10rem;
+                background-color: $INDIGO_100;
+                border: 0.4rem solid $INDIGO_900;
+                color: black;
+                font-weight: bold;
+                padding: 0.2rem;
+                z-index: 100000;""")
+
             object assertion : Group(this) {
                 val notHardened by Style("""
                     position: fixed;

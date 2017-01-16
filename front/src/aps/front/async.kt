@@ -86,7 +86,10 @@ class ResolvableShit<T> {
 
 fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
 
-fun tillEndOfTime(): Promise<Unit> = delay(Int.MAX_VALUE)
+fun tillEndOfTime(): Promise<Unit> {
+    dlog("--- Waiting till end of time ---")
+    return delay(Int.MAX_VALUE)
+}
 
 class TwoStepTestLock(
     val testPause1Timeout: Int = 5000,

@@ -16,14 +16,13 @@ class TestSuite_UACustomer_Order_Files : TestSuite {
         Test_UACustomer_Order_Files_EditMeta(),
         Test_UACustomer_Order_Files_EditFile(),
         Test_UACustomer_Order_Files_EditFile_Error(),
+        Test_UACustomer_Order_Files_AddFile(),
         Test_UACustomer_Order_Files_Misc()
     )}
 }
 
 
 class Test_UACustomer_Order_Files_1 : StepBasedTestScenario() {
-    val shit = TestShit()
-
     override fun buildSteps() {
         o.setUpOrderAndFiles1(shit)
         o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = false, sha1 = "16428e392350fc2e0ea8dda708fdd4ed61f423d5")) {
@@ -33,8 +32,6 @@ class Test_UACustomer_Order_Files_1 : StepBasedTestScenario() {
 }
 
 class Test_UACustomer_DownloadForbiddenFile : StepBasedTestScenario() {
-    val shit = TestShit()
-
     override fun buildSteps() {
         o.setUpOrderAndFiles1(shit)
         o.acta {fuckingRemoteCall.executeSQL("Delete permission for crazy boobs file", """
@@ -114,8 +111,6 @@ class Test_UACustomer_LongFileList : StepBasedTestScenario() {
 }
 
 class Test_UACustomer_Order_Files_Search : StepBasedTestScenario() {
-    val shit = TestShit()
-
     override fun buildSteps() {
         o.setUpOrderFilesTestTemplate_1(
             shit,
@@ -185,9 +180,8 @@ class Test_UACustomer_Order_Files_Search : StepBasedTestScenario() {
 abstract class TestUACustomer_Order_Files_Base : StepBasedTestScenario() {
     abstract fun buildSteps0()
 
-    val shit = TestShit()
-
     override fun buildSteps() {
+        o.initialShit(this)
         o.setUpOrderFilesTestTemplate_1(
             shit,
             setUpUsers = {
@@ -213,6 +207,7 @@ abstract class TestUACustomer_Order_Files_Base : StepBasedTestScenario() {
         buildSteps0()
     }
 }
+
 
 class Test_UACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
@@ -301,8 +296,8 @@ class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
 
     override fun buildSteps0() {
         o.addFile(shit, "b31dc136-68f4-417c-bc2c-9e4088b28ac4", fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?")
-//        o.snapshot("1")
         o.addFile(shit, "fcbe57dc-5984-421c-9d27-32b50f0d3cbc", fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows")
+        o.snapshot(Snapshot("1", "29ae913d-a54b-4ff5-a072-f8439e275cce"))
         o.addFile(shit, "808d747e-bd63-44d4-880e-84f2e2a10736", fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here")
         o.beginWorkRegion()
 
@@ -492,7 +487,7 @@ fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(shit: TestShit, setUpUsers
     setUpOrders()
     o.acta {fedis.popLogGroup()}
 
-    o.initFuckingBrowser(fillStorageLocal = {
+    o.initFuckingBrowser(fillTypedStorageLocal = {
         it.token = shit.bobulToken
     })
     o.kindaNavigateToStaticContent("${testconst.url.customer}/order.html?id=100000&tab=files")
@@ -507,3 +502,7 @@ fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(shit: TestShit, setUpUsers
 
     assertScreen()
 }
+
+
+
+

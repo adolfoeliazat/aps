@@ -5,11 +5,9 @@ import aps.front.testutils.*
 import into.kommon.*
 
 class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
-    val shit = TestShit()
-
     override fun buildSteps() {
         o.setUpBobul(shit)
-        o.initFuckingBrowser(fillStorageLocal = {
+        o.initFuckingBrowser(fillTypedStorageLocal = {
             it.token = shit.bobulToken
         })
         o.kindaNavigateToStaticContent("${testconst.url.customer}/orders.html")

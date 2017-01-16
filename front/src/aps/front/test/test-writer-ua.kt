@@ -40,7 +40,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         instructions.add(TestInstruction.WorldPoint("4"))
         instructions.addAll(dasja4())
 
-        return __reawait(art.run(instructions, showTestPassedPane))
+        return __reawait(art.run(shit, instructions, showTestPassedPane))
     }
 
     fun vovchok1(): Iterable<TestInstruction> {

@@ -35,9 +35,11 @@ val transformRootLineTidy = {it: String ->
 
 class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     val instructions = mutableListOf<TestInstruction>()
+    val shit get() = scenario.shit
+    var lastAssertScreenHTMLParams by notNull<AssertScreenHTMLParams>()
 
     fun runScenario(showTestPassedPane: Boolean): Promise<Throwable?> = async {
-        await(art.run(instructions, showTestPassedPane))
+        await(art.run(shit, instructions, showTestPassedPane))
     }
 
     fun state(descr: String) {
@@ -59,18 +61,20 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
         }})
     }
 
-    fun <T> acta(descr: String? = null, block: () -> Promise<T>) {
+    fun <T> acta(descr: String? = null, block: () -> Promise<T>): TestInstruction.Do {
         var step: TestInstruction.Step? = null
         if (descr != null) {
             step = TestInstruction.Step.ActionStep(descr)
             instructions.add(step)
         }
 
-        instructions.add(TestInstruction.Do {"__async"
+        val instr = TestInstruction.Do {"__async"
             __await(block())
             step?.passed = true
             __asyncResult(Unit)
-        })
+        }
+        instructions.add(instr)
+        return instr
     }
 
     fun <T> await(block: () -> Promise<T>) {
@@ -107,7 +111,9 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
             await(tillAnimationFrame())
             await(block())
             step.passed = true
-        }}
+        }}-{i->
+            i.isAssertion = true
+        }
     }
 
     fun halt() {
@@ -408,6 +414,155 @@ fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: Str
     )
 }
 
+fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
+    check(snapshot.name.length == 1 && snapshot.name[0] >= '1' && snapshot.name[0] <= '9') {"Snapshot name corresponds to a numeric key"}
+
+    shit.snapshots.add(snapshot)
+
+    instructions.add(0, TestInstruction.Do {async<Unit>{
+        val snapshotChoice = ResolvableShit<Snapshot?>()
+        val bannerPane = debugPanes.put(kdiv(className = css.test.popup.chooseSnapshot){o->
+            o- "Choose snapshot:"
+            o- Button(title = "0", style = Style(marginLeft = "0.5em")) {
+                snapshotChoice.resolve(null)
+            }
+            for (snap in shit.snapshots) {
+                o- Button(title = snap.name, style = Style(marginLeft = "0.5em")) {
+                    snapshotChoice.resolve(snap)
+                }
+            }
+        })
+        fun keyListener(e: Event) {
+            e as KeyboardEvent
+            if (e.key == "0") {
+                snapshotChoice.resolve(null)
+            }
+            for (snap in shit.snapshots) {
+                if (e.key == snap.name) {
+                    snapshotChoice.resolve(snap)
+                }
+            }
+        }
+        window.addEventListener("keydown", ::keyListener)
+
+        try {
+            await(snapshotChoice.promise)?.let {useSnapshot->
+                dlog("Using snapshot ${useSnapshot.id}")
+                val useSnapshotIndex = instructions.indexOfFirst {
+                    it.snapshot?.id == useSnapshot.id
+                }
+                if (useSnapshotIndex == -1) bitch("Snapshot not found: ${useSnapshot.id}")
+                val assertion = instructions[useSnapshotIndex - 1]
+                check(assertion.isAssertion) {"Instruction before snapshot (usage) should be assertion"}
+                instructions.subList(0, useSnapshotIndex + 1).clear()
+                instructions.add(TestInstruction.Do {async<Unit>{
+                    DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
+
+                    docInnerHTML = "<h3>Running Test: ${ctorName(scenario)} (snapshot: ${useSnapshot.name})</h3><hr>"
+                    measureAndReportToDocumentElement("Restoring snapshot database") {
+                        await(send(RecreateTestDatabaseSchemaRequest()-{o->
+                            o.templateDB.value = "apsTestSnapshotOnTestServer"
+                        }))
+                    }
+
+                    val clientState = JSON.parse<ClientStateSnapshot>(
+                        Globus.realStorageLocal.getItem(
+                            fconst.storage.clientStateSnapshotPrefix + useSnapshot.id)!!)
+                    dlog("clientState", clientState)
+
+                    _initFuckingBrowser(fillRawStorageLocal = {store->
+                        for (item in clientState.storageItems) {
+                            item.value?.let {
+                                store.setItem(item.key, it)
+                            }
+                        }
+                    })
+                    await(_kindaNavigateToStaticContent(clientState.url))
+
+                    val world = World("boobs")
+                    await(world.boot())
+                }})
+                instructions.add(assertion)
+                shit.nextInstructionIndex = 0
+
+            }
+        } finally {
+            window.removeEventListener("keydown", ::keyListener)
+            debugPanes.remove(bannerPane)
+        }
+    }})
+
+    lastAssertScreenHTMLParams.let {
+        assertScreenHTML(it.copy(descr = "Before snapshot: " + it.descr))}
+
+    instructions.add(TestInstruction.Do {async<Unit> {
+        dlog("Taking snapshot ${snapshot.id}")
+        await(send(TestTakeSnapshotRequest()-{o->
+            o.name.value = snapshot.id
+            o.url.value = window.location.href // TODO:vgrechka @kill
+        }))
+
+        val store = TestGlobal.browser.typedStorageLocal.store
+        gloshit.store = store
+        val clientState = ClientStateSnapshot(
+            url = window.location.href,
+            storageItems = (mutableListOf<ClientStateSnapshot.StorageItem>()-{o->
+                for (i in 0 until store.length) {
+                    val key = store.key(i)!!
+                    o += ClientStateSnapshot.StorageItem(
+                        key = key,
+                        value = store.getItem(key)
+                    )
+                }
+            }).toTypedArray()
+        )
+        gloshit.clientState = clientState
+
+//        val clientState = ClientStateSnapshot()-{o->
+//            o.url = window.location.href
+//
+//            val store = TestGlobal.browser.typedStorageLocal.store
+//            o.storageItems = (mutableListOf<ClientStateSnapshot_StorageItem>()-{o->
+//                for (i in 0 until store.length) {
+//                    o += ClientStateSnapshot_StorageItem()-{o->
+//                        o.key = store.key(i)!!
+//                        o.value = store.getItem(o.key)
+//                    }
+//                }
+//            }).toTypedArray()
+//        }
+
+        val clientStateJSON = JSON.stringify(clientState)
+        dlog("clientStateJSON", clientStateJSON)
+        Globus.realStorageLocal.setItem(
+            fconst.storage.clientStateSnapshotPrefix + snapshot.id,
+            clientStateJSON)
+    }}-{m->
+        m.snapshot = snapshot
+    })
+}
+
+class ClientStateSnapshot (
+    val url: String,
+    val storageItems: Array<StorageItem>
+) {
+    class StorageItem(
+        val key: String,
+        val value: String?
+    )
+}
+
+//class ClientStateSnapshot_StorageItem {
+//    var key: String
+//    var value: String?
+//}
+//
+//class ClientStateSnapshot {
+//    var url: String
+//    var storageItems: Array<ClientStateSnapshot_StorageItem>
+//}
+
+
 //fun TestScenarioBuilder.snapshot(name: String) {
 //    if (scenario.useSnapshot) {
 //        instructions.clear()
@@ -431,6 +586,26 @@ fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: Str
 //    }
 //}
 
+
+fun TestScenarioBuilder.initialShit(test: TestScenario) {
+    acta {async{
+        DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
+
+        docInnerHTML = "<h3>Running Test: ${ctorName(test)}</h3><hr>"
+        measureAndReportToDocumentElement("Resetting database") {
+            await(send(RecreateTestDatabaseSchemaRequest()-{o->
+//                if (useSnapshot) {
+//                    o.templateDB.value = "apsTestSnapshotOnTestServer"
+//                }
+            }))
+//            await(send(ResetTestDatabaseRequest()))
+//            await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
+        }
+//        measureAndReportToDocumentElement("Preparing shit") {
+//            await(prepareShit())
+//        }
+    }}
+}
 
 
 
