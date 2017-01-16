@@ -48,16 +48,19 @@ fun stringToStamp(s: String): Timestamp = Timestamp.valueOf(LocalDateTime.parse(
 object DB {
     val PORT_DEV = 5432   // On disk
     val PORT_TEST = 5433  // On memory drive
+    val snapshotPrefix = "apsTestSnapshotOnTestServer-"
 
     val dbs = mutableListOf<Database>()
     val testTemplateUA1 = Database("testTemplateUA1", "127.0.0.1", PORT_TEST, "test-template-ua-1", "postgres", allowRecreation = true, populate = {q -> populate_testTemplateUA1(q)})
     val postgresOnTestServer = Database("postgresOnTestServer", "127.0.0.1", PORT_TEST, "postgres", "postgres")
     val apsTestOnTestServer = Database("apsTestOnTestServer", "127.0.0.1", PORT_TEST, "aps-test", "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
-    val apsTestSnapshotOnTestServer = Database("apsTestSnapshotOnTestServer", "127.0.0.1", PORT_TEST, "aps-test-snapshot", "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
     val postgresOnDevServer = Database("postgresOnDevServer", "127.0.0.1", PORT_DEV, "postgres", "postgres")
     val localDevUA = Database("localDevUA", "127.0.0.1", PORT_DEV, "aps-dev-ua", user = "postgres", password = null)
     val bmix_fuckingAround_postgres by lazy {databaseFromEnv("bmix_fuckingAround_postgres")}
     val bmix_fuckingAround_apsdevua by lazy {databaseFromEnv("bmix_fuckingAround_apsdevua", allowRecreation = true, correspondingAdminDB = bmix_fuckingAround_postgres)}
+
+    fun apsTestSnapshotOnTestServer(id: String) =
+        Database(snapshotPrefix + id, "127.0.0.1", PORT_TEST, snapshotPrefix + id, "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
 
     val systemDatabases = mapOf(
         PORT_DEV to postgresOnDevServer,
@@ -81,10 +84,9 @@ object DB {
     fun byNameOnTestServer(name: String): Database =
         dbs.find {it.port == PORT_TEST && it.name == name} ?: wtf("No database [$name] on test server")
 
-    fun byID(id: String): Database = when (id) {
-        "bmix_fuckingAround_apsdevua" -> bmix_fuckingAround_apsdevua
-        "apsTestOnTestServer" -> apsTestOnTestServer
-        "apsTestSnapshotOnTestServer" -> apsTestSnapshotOnTestServer
+    fun byID(id: String): Database = when {
+        id == "bmix_fuckingAround_apsdevua" -> bmix_fuckingAround_apsdevua
+        id == "apsTestOnTestServer" -> apsTestOnTestServer
         else -> wtf("No database with ID $id")
     }
 

@@ -188,7 +188,7 @@ class TestShit {
     }
 
     fun imposeNextRequestTimestamp(): Promise<Unit> {
-        if (nextRequestTimestampIndex > timestamps.lastIndex) bitch("Out of next request timestamps")
+        if (nextRequestTimestampIndex > timestamps.lastIndex) bitch("Out of timestamps")
         val stamp = timestamps[nextRequestTimestampIndex++]
         return ImposeNextRequestTimestampRequest.send(stamp)
     }

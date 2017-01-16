@@ -94,7 +94,9 @@ testProcedure(
 @RemoteProcedureFactory fun serveRecreateTestDatabaseSchema() = testProcedure(
     RecreateTestDatabaseSchemaRequest(),
     runShit = fun(ctx, req): GenericResponse {
-        val templateDB = req.templateDB.value?.let {DB.byID(it)}
+        val templateDB =
+            req.snapshotID.value?.let {DB.apsTestSnapshotOnTestServer(it)}
+            ?: req.templateDB.value?.let {DB.byID(it)}
 
         val db = DB.apsTestOnTestServer
         if (templateDB == null) {

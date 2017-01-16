@@ -40,7 +40,8 @@ val String.there: Boolean get() = this !== NILS
 sealed class TestInstruction() : DefinitionStackHolder {
     val definitionStackCapture = CaptureStackException()
     var isAssertion = false
-    var snapshot = null as Snapshot?
+    var snapshot: Snapshot? = null
+    var debugDescription: String? = null
 
     override fun promiseDefinitionStack(): Promise<dynamic> {
         throw UnsupportedOperationException("Implement me, please, fuck you")

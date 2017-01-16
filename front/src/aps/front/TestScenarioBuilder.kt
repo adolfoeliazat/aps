@@ -111,8 +111,8 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
             await(tillAnimationFrame())
             await(block())
             step.passed = true
-        }}-{i->
-            i.isAssertion = true
+        }}-{m->
+            m.isAssertion = true
         }
     }
 
@@ -451,24 +451,28 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
                 val useSnapshotIndex = instructions.indexOfFirst {
                     it.snapshot?.id == useSnapshot.id
                 }
-                if (useSnapshotIndex == -1) bitch("Snapshot not found: ${useSnapshot.id}")
+                if (useSnapshotIndex == -1) bitch("Snapshot instruction not found: ${useSnapshot.id}")
                 val assertion = instructions[useSnapshotIndex - 1]
-                check(assertion.isAssertion) {"Instruction before snapshot (usage) should be assertion"}
+                gloshit.instructions = instructions
+                gloshit.useSnapshotIndex = useSnapshotIndex
+                gloshit.assertion = assertion
+                check(assertion.isAssertion) {"Instruction before snapshot should be assertion"}
                 instructions.subList(0, useSnapshotIndex + 1).clear()
-                instructions.add(TestInstruction.Do {async<Unit>{
+                instructions.add(0, TestInstruction.Do {async<Unit>{
+                    dlog("Restoring shit from snapshot ${useSnapshot.id}")
                     DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
 
-                    docInnerHTML = "<h3>Running Test: ${ctorName(scenario)} (snapshot: ${useSnapshot.name})</h3><hr>"
+                    docInnerHTML = "<h3>Restoring test: ${ctorName(scenario)} (snapshot: ${useSnapshot.name})</h3><hr>"
                     measureAndReportToDocumentElement("Restoring snapshot database") {
                         await(send(RecreateTestDatabaseSchemaRequest()-{o->
-                            o.templateDB.value = "apsTestSnapshotOnTestServer"
+                            o.snapshotID.value = useSnapshot.id
                         }))
                     }
 
                     val clientState = JSON.parse<ClientStateSnapshot>(
                         Globus.realStorageLocal.getItem(
                             fconst.storage.clientStateSnapshotPrefix + useSnapshot.id)!!)
-                    dlog("clientState", clientState)
+                    dlog("Restored clientState", clientState)
 
                     _initFuckingBrowser(fillRawStorageLocal = {store->
                         for (item in clientState.storageItems) {
@@ -477,12 +481,15 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
                             }
                         }
                     })
+                    shit.nextRequestTimestampIndex = clientState.nextRequestTimestampIndex
                     await(_kindaNavigateToStaticContent(clientState.url))
 
                     val world = World("boobs")
                     await(world.boot())
-                }})
-                instructions.add(assertion)
+                }}-{m->
+                    m.debugDescription = "Restore shit from snapshot"
+                })
+                instructions.add(1, assertion)
                 shit.nextInstructionIndex = 0
 
             }
@@ -506,6 +513,7 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
         gloshit.store = store
         val clientState = ClientStateSnapshot(
             url = window.location.href,
+            nextRequestTimestampIndex = shit.nextRequestTimestampIndex,
             storageItems = (mutableListOf<ClientStateSnapshot.StorageItem>()-{o->
                 for (i in 0 until store.length) {
                     val key = store.key(i)!!
@@ -517,20 +525,6 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
             }).toTypedArray()
         )
         gloshit.clientState = clientState
-
-//        val clientState = ClientStateSnapshot()-{o->
-//            o.url = window.location.href
-//
-//            val store = TestGlobal.browser.typedStorageLocal.store
-//            o.storageItems = (mutableListOf<ClientStateSnapshot_StorageItem>()-{o->
-//                for (i in 0 until store.length) {
-//                    o += ClientStateSnapshot_StorageItem()-{o->
-//                        o.key = store.key(i)!!
-//                        o.value = store.getItem(o.key)
-//                    }
-//                }
-//            }).toTypedArray()
-//        }
 
         val clientStateJSON = JSON.stringify(clientState)
         dlog("clientStateJSON", clientStateJSON)
@@ -544,6 +538,7 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
 
 class ClientStateSnapshot (
     val url: String,
+    val nextRequestTimestampIndex: Int,
     val storageItems: Array<StorageItem>
 ) {
     class StorageItem(
@@ -552,39 +547,6 @@ class ClientStateSnapshot (
     )
 }
 
-//class ClientStateSnapshot_StorageItem {
-//    var key: String
-//    var value: String?
-//}
-//
-//class ClientStateSnapshot {
-//    var url: String
-//    var storageItems: Array<ClientStateSnapshot_StorageItem>
-//}
-
-
-//fun TestScenarioBuilder.snapshot(name: String) {
-//    if (scenario.useSnapshot) {
-//        instructions.clear()
-//        acta {async{
-//            val res = measureAndReportToDocumentElement("Loading snapshot") {
-//                await(send(TestLoadSnapshotRequest()-{o->
-//                    o.name.value = name
-//                }))
-//            }
-//            await(kindaNavigateToStaticContentBody(res.url))
-//            val world = World("boobs")
-//            await(world.boot())
-//        }}
-//    } else {
-//        acta {async{
-//            await(send(TestTakeSnapshotRequest()-{o->
-//                o.name.value = name
-//                o.url.value = window.location.href
-//            }))
-//        }}
-//    }
-//}
 
 
 fun TestScenarioBuilder.initialShit(test: TestScenario) {

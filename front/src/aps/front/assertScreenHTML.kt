@@ -63,7 +63,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
     lastAssertScreenHTMLParams = p
     act {TestGlobal.testShitBeingAssertedID = p.assertionID}
 
-    val stepTitle = "HTML: $p.descr"
+    val stepTitle = "HTML: ${p.descr}"
     checkOnAnimationFrame(stepTitle) {async<Unit>{
         val expected = await(fuckingRemoteCall.loadTestShit(p.assertionID))
 
@@ -377,7 +377,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                 o- rerunTestSlowlyButton()
                                 renderSpecificButtons(o)
                             }
-                            o- link(title = "Assertion: $p.descr", color = BLACK, onClick = {
+                            o- link(title = "Assertion: ${p.descr}", color = BLACK, onClick = {
                                 revealStack(stackCapture, muteConsole = true)
                             })
 //                                o- "Assertion: $descr"
@@ -432,8 +432,8 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                 }
             }
         }
-    }}
 
-    act {TestGlobal.testShitBeingAssertedID = null}
+        TestGlobal.testShitBeingAssertedID = null
+    }}
 }
 
