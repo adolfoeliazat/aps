@@ -9,31 +9,39 @@ import kotlin.properties.Delegates.notNull
 
 private val moveItemToTopOnEdit = true
 
-private class FilesTabURLQuery {
-    var ordering: String? = null
-    var filter: String? = null
-    var search: String? = null
-}
+//private class FilesTabURLQuery {
+//    var ordering: String? = null
+//    var filter: String? = null
+//    var search: String? = null
+//}
 
 class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
-    lateinit var ordering: Ordering
-    lateinit var filter: CustomerFileFilter
-    lateinit var search: String
+//    lateinit var ordering: Ordering
+//    lateinit var filter: CustomerFileFilter
+//    lateinit var search: String
     lateinit var meat: ItemsResponse<UAOrderFileRTO>
     lateinit var content: ToReactElementable
     lateinit var stripContent: Control2
     lateinit var plusFormContainer: Control2
     var chunksLoaded = 0
+    var urlQuery by notNull<FilesTabURLQuery>()
 
     override val tabSpec = TabSpec("files", t("Files", "Файлы"),
                                    ToReactElementable.from{content},
                                    ToReactElementable.from{stripContent})
 
+    inner class FilesTabURLQuery : URLQueryBase(world) {
+        val ordering by enumURLParam(Ordering.values(), default = Ordering.DESC)
+        val filter by enumURLParam(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
+        val search by stringURLParam()
+    }
+
     override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
-        val filesTabURLQuery = typeSafeURLQuery(world){FilesTabURLQuery()}
-        ordering = filesTabURLQuery.ordering.relaxedToEnum(Ordering.values(), default = Ordering.DESC)
-        filter = filesTabURLQuery.filter.relaxedToEnum(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
-        search = (filesTabURLQuery.search ?: "").trim()
+        urlQuery = FilesTabURLQuery()
+//        val filesTabURLQuery = typeSafeURLQuery(world){FilesTabURLQuery()}
+//        ordering = filesTabURLQuery.ordering.relaxedToEnum(Ordering.values(), default = Ordering.DESC)
+//        filter = filesTabURLQuery.filter.relaxedToEnum(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
+//        search = (filesTabURLQuery.search ?: "").trim()
 
         val res = await(requestChunk(null))
         when (res) {
@@ -59,9 +67,9 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
     private fun requestChunk(fromID: String?): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
         val res = await(sendCustomerGetUAOrderFiles(world.token, ItemsRequest(CustomerFileFilter.values())-{o->
             o.entityID.value = order.id
-            o.filter.value = filter
-            o.ordering.value = ordering
-            o.searchString.value = search
+            o.filter.value = urlQuery.filter
+            o.ordering.value = urlQuery.ordering
+            o.searchString.value = urlQuery.search
             o.fromID.value = fromID
         }))
         ++chunksLoaded
@@ -100,7 +108,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         val filterSelect = Select(
             key = fconst.key.filter.decl,
             values = CustomerFileFilter.values(),
-            initialValue = filter,
+            initialValue = urlQuery.filter,
             isAction = true,
             style = json("width" to 160),
             volatileDisabled = {ebafHost.headerControlsDisabled}
@@ -109,7 +117,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         val orderingSelect = Select(
             key = fconst.key.ordering.decl,
             values = Ordering.values(),
-            initialValue = ordering,
+            initialValue = urlQuery.ordering,
             isAction = true,
             style = json("width" to 160),
             volatileDisabled = {ebafHost.headerControlsDisabled}
@@ -118,12 +126,12 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         val searchInput = Input(
             key = fconst.key.search.decl,
             style = Style(paddingLeft = 30, width = "100%"),
-            placeholder = t("TOTE", "Поиск..."),
+            placeholder = t("Search...", "Поиск..."),
             volatileDisabled  = {ebafHost.headerControlsDisabled}
         )
 
         init {
-            searchInput.setValue(search)
+            searchInput.setValue(urlQuery.search)
 
             filterSelect.onChanga = {reload(filterSelect.elementID)}
             orderingSelect.onChanga = {reload(orderingSelect.elementID)}
@@ -164,9 +172,9 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
 
         fun reload(elementID: String): Promise<Unit> = async {
             effects2.blinkOn(byid(elementID))
-            await(TestGlobal.pageRefreshTickingLock.sutPause())
             ebafHost.headerControlsDisabled = true
             stripContent.update()
+            await(TestGlobal.reloadPageTickingLock.sutPause())
             try {
                 await(reloadFilesTab())
             } finally {
@@ -174,7 +182,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                 ebafHost.headerControlsDisabled = false
                 stripContent.update() // TODO:vgrechka Redundant?
                 await(TestGlobal.loadPageForURLLock.sutPause2())
-                await(TestGlobal.pageRefreshDoneLock.sutPause())
+                await(TestGlobal.reloadPageDoneLock.sutPause())
             }
         }
     }
@@ -337,7 +345,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                 o- highlightedShit(file.title, file.titleHighlightRanges, tag = "span")
 
                                 val idColor: Color?; val idBackground: Color?
-                                if (search.split(Regex("\\s+")).contains(orderFile.id)) {
+                                if (urlQuery.search.split(Regex("\\s+")).contains(orderFile.id)) {
                                     idColor = Color.GRAY_800
                                     idBackground = Color.AMBER_200
                                 } else {

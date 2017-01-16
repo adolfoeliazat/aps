@@ -107,7 +107,7 @@ fun jsFacing_igniteTestShit() = async<Unit> {
 
     window.addEventListener("keydown", {e ->
         e as KeyboardEvent
-        if (e.code == "KeyX") {
+        if (e.code == "KeyX" && e.altKey) {
             preventAndStop(e)
             TestGlobal.killAwait = true
         }

@@ -1,6 +1,6 @@
 -------------------- URL --------------------
 
-ROOT/order.html?id=100000&tab=files
+ROOT/order.html?id=100000&tab=files&ordering=DESC&filter=ALL&search=
 
 -------------------- NAVBAR --------------------
 
@@ -135,13 +135,13 @@ ROOT/order.html?id=100000&tab=files
             <div style="display: flex;">
               <div style="margin-left: 0px;">
                 <div style="position: relative;">
-                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" disabled="" value="" style="resize: none; width: 100%; padding-left: 30px;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="" style="resize: none; width: 100%; padding-left: 30px;">
                     <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
                     </i>
                   </div>
                 </div>
                 <div style="margin-left: 8px;">
-                  <select class="form-control" disabled="">
+                  <select class="form-control">
                     <option value="ALL">
                       Все
                     </option>
@@ -157,7 +157,7 @@ ROOT/order.html?id=100000&tab=files
                   </select>
                 </div>
                 <div style="margin-left: 8px;">
-                  <select class="form-control" disabled="">
+                  <select class="form-control">
                     <option value="ASC">
                       Старые
                     </option>
@@ -167,13 +167,13 @@ ROOT/order.html?id=100000&tab=files
                   </select>
                 </div>
                 <div style="margin-left: 8px;">
-                  <button class="btn btn-default " disabled="">
+                  <button class="btn btn-default ">
                     <i class="fa fa-refresh">
                     </i>
                   </button>
                 </div>
                 <div style="margin-left: 8px;">
-                  <button class="btn btn-primary " disabled="">
+                  <button class="btn btn-primary ">
                     <i class="fa fa-plus">
                     </i>
                   </button>

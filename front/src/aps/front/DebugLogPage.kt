@@ -9,22 +9,6 @@ import kotlin.browser.window
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-abstract class URLQueryBase(val world: World)
-
-fun booleanURLParam(default: Boolean = false) =
-    object:ReadOnlyProperty<URLQueryBase, Boolean> {
-        override fun getValue(thisRef: URLQueryBase, property: KProperty<*>): Boolean {
-            return thisRef.world.urlQuery[property.name].relaxedToBoolean(default)
-        }
-    }
-
-fun <E : Enum<E>> enumURLParam(values: Array<E>, default: E) =
-    object:ReadOnlyProperty<URLQueryBase, E> {
-        override fun getValue(thisRef: URLQueryBase, property: KProperty<*>): E {
-            return thisRef.world.urlQuery[property.name].relaxedToEnum(values, default)
-        }
-    }
-
 class DebugLogPage(val world: World) {
     val noise = DebugNoise("DebugPage", mute = false)
     val MAX_LEN = 200L

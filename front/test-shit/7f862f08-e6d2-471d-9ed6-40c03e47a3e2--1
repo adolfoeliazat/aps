@@ -1,6 +1,6 @@
 -------------------- URL --------------------
 
-ROOT/order.html?id=100000&tab=files
+ROOT/order.html?id=100000&tab=files&ordering=DESC&filter=ALL&search=
 
 -------------------- NAVBAR --------------------
 
@@ -135,7 +135,7 @@ ROOT/order.html?id=100000&tab=files
             <div style="display: flex;">
               <div style="margin-left: 0px;">
                 <div style="position: relative;">
-                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" disabled="" value="" style="resize: none; width: 100%; padding-left: 30px;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" disabled="" value="pussy" style="resize: none; width: 100%; padding-left: 30px;">
                     <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
                     </i>
                   </div>

@@ -394,7 +394,7 @@ fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) 
 //}
 
 fun TestScenarioBuilder.inputPressEnter(key: String) {
-    acta("Pressing Enter in `$key`") {
+    act("Pressing Enter in `$key`") {
         Input.instance(key).keyDown(json(
             "keyCode" to 13,
             "preventDefault" to {},

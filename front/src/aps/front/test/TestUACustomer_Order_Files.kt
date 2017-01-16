@@ -292,19 +292,20 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
 }
 
 class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
-//    override val useSnapshot = true
-
     override fun buildSteps0() {
-        o.addFile(shit, "b31dc136-68f4-417c-bc2c-9e4088b28ac4", fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?")
-        o.addFile(shit, "fcbe57dc-5984-421c-9d27-32b50f0d3cbc", fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows")
-        o.addFile(shit, "808d747e-bd63-44d4-880e-84f2e2a10736", fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here")
+        o.addFile(shit, fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?", aid = "b31dc136-68f4-417c-bc2c-9e4088b28ac4")
+        o.addFile(shit, fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows", aid = "fcbe57dc-5984-421c-9d27-32b50f0d3cbc")
+        o.addFile(shit, fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here", aid = "808d747e-bd63-44d4-880e-84f2e2a10736")
         o.snapshot(Snapshot("1", "29ae913d-a54b-4ff5-a072-f8439e275cce"))
         o.refreshPage(aid = "2c6d4566-1041-435d-984c-64a814e76183")
-        o.beginWorkRegion()
+        o.search(text = "pussy", aid = "7f862f08-e6d2-471d-9ed6-40c03e47a3e2")
+        o.search(text = "pussy вход", aid = "3ab9af0c-9ed5-4c60-9585-3ae6d6c6ddd9")
+        o.search(text = "pussy | вход", aid = "bd15b896-b060-4ea3-aef5-6cc707520308")
+        o.search(text = "pussy & little | вход", aid = "9e309e71-d8c0-425c-933e-aa53be69c3c4")
+        o.search(text = "вход глубина", aid = "b4140546-fdef-4bef-aad1-f4f1f8a53184")
+        o.search(text = "", aid = "e29466da-4c32-450a-afbb-c6c5b95b50a3")
 
-//        o.search(
-//            assertionDescr = "Search newly added stuff"
-//        )
+        o.beginWorkRegion()
     }
 
 }

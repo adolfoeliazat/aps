@@ -570,7 +570,7 @@ fun TestScenarioBuilder.initialShit(test: TestScenario) {
 }
 
 
-fun TestScenarioBuilder.addFile(shit: TestShit, aid: String, fileName: String, title: String, details: String) {
+fun TestScenarioBuilder.addFile(shit: TestShit, fileName: String, title: String, details: String, aid: String) {
     sequence(
         buildAction = {
             buttonClick(fconst.key.plus.testRef)
@@ -608,8 +608,22 @@ fun TestScenarioBuilder.refreshPage(aid: String) {
             buttonClick(fconst.key.refreshPage.testRef)
         },
         steps = listOf(
-            TestSequenceStep(TestGlobal.pageRefreshTickingLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.pageRefreshDoneLock, "$aid--2")
+            TestSequenceStep(TestGlobal.reloadPageTickingLock, "$aid--1"),
+            TestSequenceStep(TestGlobal.reloadPageDoneLock, "$aid--2")
+        )
+    )
+}
+
+fun TestScenarioBuilder.search(text: String, aid: String) {
+    sequence(
+        assertionDescr = "Search",
+        buildAction = {
+            inputSetValue(fconst.key.search.testRef, text)
+            inputPressEnter(fconst.key.search.testRef)
+        },
+        steps = listOf(
+            TestSequenceStep(TestGlobal.reloadPageTickingLock, "$aid--1"),
+            TestSequenceStep(TestGlobal.reloadPageDoneLock, "$aid--2")
         )
     )
 }
