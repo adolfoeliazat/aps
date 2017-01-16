@@ -570,6 +570,49 @@ fun TestScenarioBuilder.initialShit(test: TestScenario) {
 }
 
 
+fun TestScenarioBuilder.addFile(shit: TestShit, aid: String, fileName: String, title: String, details: String) {
+    sequence(
+        buildAction = {
+            buttonClick(fconst.key.plus.testRef)
+        },
+        assertionDescr = "Opened plus form",
+        steps = listOf(
+            TestSequenceStep(TestGlobal.fadeHalfwayLock, "$aid--1"),
+            TestSequenceStep(TestGlobal.fadeDoneLock, "$aid--2")
+        )
+    )
+
+    fileFieldChoose(
+        assertionDescr = "Chose file",
+        assertionID = "$aid--3",
+        keySuffix = "",
+        fileName = fileName)
+
+    inputAppendValue("title", title)
+    inputAppendValue("details", details)
+    submitForm(
+        shit,
+        assertionDescr = "Shit is added",
+        buildAction = {
+            buttonClick("primary")
+        },
+        tickingAssertionID = "$aid--4",
+        doneAssertionID = "$aid--5"
+    )
+}
+
+fun TestScenarioBuilder.refreshPage(aid: String) {
+    sequence(
+        assertionDescr = "Refresh page",
+        buildAction = {
+            buttonClick(fconst.key.refreshPage.testRef)
+        },
+        steps = listOf(
+            TestSequenceStep(TestGlobal.pageRefreshTickingLock, "$aid--1"),
+            TestSequenceStep(TestGlobal.pageRefreshDoneLock, "$aid--2")
+        )
+    )
+}
 
 
 

@@ -30,11 +30,6 @@ abstract class KeyDef {
     protected val name = this::class.simpleName!!
 }
 
-fun qwe() {
-    clog("decl", fconst.key.refreshPage.decl)
-    clog("testRef", fconst.key.refreshPage.testRef)
-}
-
 //class Key(
 //    val decl: String,
 //    val testRef: String

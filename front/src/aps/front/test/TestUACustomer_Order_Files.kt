@@ -297,8 +297,9 @@ class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
         o.addFile(shit, "b31dc136-68f4-417c-bc2c-9e4088b28ac4", fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?")
         o.addFile(shit, "fcbe57dc-5984-421c-9d27-32b50f0d3cbc", fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows")
-        o.snapshot(Snapshot("1", "29ae913d-a54b-4ff5-a072-f8439e275cce"))
         o.addFile(shit, "808d747e-bd63-44d4-880e-84f2e2a10736", fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here")
+        o.snapshot(Snapshot("1", "29ae913d-a54b-4ff5-a072-f8439e275cce"))
+        o.refreshPage(aid = "2c6d4566-1041-435d-984c-64a814e76183")
         o.beginWorkRegion()
 
 //        o.search(
@@ -308,36 +309,6 @@ class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
 
 }
 
-private fun TestScenarioBuilder.addFile(shit: TestShit, aid: String, fileName: String, title: String, details: String) {
-    sequence(
-        buildAction = {
-            buttonClick(fconst.key.plus.testRef)
-        },
-        assertionDescr = "Opened plus form",
-        steps = listOf(
-            TestSequenceStep(TestGlobal.fadeHalfwayLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.fadeDoneLock, "$aid--2")
-        )
-    )
-
-    fileFieldChoose(
-        assertionDescr = "Chose file",
-        assertionID = "$aid--3",
-        keySuffix = "",
-        fileName = fileName)
-
-    inputAppendValue("title", title)
-    inputAppendValue("details", details)
-    submitForm(
-        shit,
-        assertionDescr = "Shit is added",
-        buildAction = {
-            buttonClick("primary")
-        },
-        tickingAssertionID = "$aid--4",
-        doneAssertionID = "$aid--5"
-    )
-}
 
 class Test_UACustomer_Order_Files_EditFile_Error : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {

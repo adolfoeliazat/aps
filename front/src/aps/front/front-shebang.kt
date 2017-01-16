@@ -44,6 +44,8 @@ object TestGlobal {
     val formTickingLock by notNullNamed(TestLock())
     val formDoneLock by notNullNamed(TestLock())
     var browser by notNull<Browser>()
+    val pageRefreshTickingLock by notNullNamed(TestLock())
+    val pageRefreshDoneLock by notNullNamed(TestLock())
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

@@ -164,6 +164,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
 
         fun reload(elementID: String): Promise<Unit> = async {
             effects2.blinkOn(byid(elementID))
+            await(TestGlobal.pageRefreshTickingLock.sutPause())
             ebafHost.headerControlsDisabled = true
             stripContent.update()
             try {
@@ -173,6 +174,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                 ebafHost.headerControlsDisabled = false
                 stripContent.update() // TODO:vgrechka Redundant?
                 await(TestGlobal.loadPageForURLLock.sutPause2())
+                await(TestGlobal.pageRefreshDoneLock.sutPause())
             }
         }
     }
