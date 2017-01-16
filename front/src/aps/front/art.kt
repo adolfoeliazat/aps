@@ -1261,6 +1261,7 @@ fun openTestListPane() {
 
             o- renderSuite(TestSuite_UACustomer_Order_Files())
             o- renderSuite(TestSuite_UACustomer_Shebang())
+            o- renderSuite(TestSuite_UA_CrazyLong())
         }
     })
 }

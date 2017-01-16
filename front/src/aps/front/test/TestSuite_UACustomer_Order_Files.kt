@@ -296,7 +296,7 @@ class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
         o.addFile(shit, fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?", aid = "b31dc136-68f4-417c-bc2c-9e4088b28ac4")
         o.addFile(shit, fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows", aid = "fcbe57dc-5984-421c-9d27-32b50f0d3cbc")
         o.addFile(shit, fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here", aid = "808d747e-bd63-44d4-880e-84f2e2a10736")
-        o.snapshot(Snapshot("1", "29ae913d-a54b-4ff5-a072-f8439e275cce"))
+//        o.snapshot(Snapshot("1", "29ae913d-a54b-4ff5-a072-f8439e275cce"))
         o.refreshPage(aid = "2c6d4566-1041-435d-984c-64a814e76183")
         o.search(text = "pussy", aid = "7f862f08-e6d2-471d-9ed6-40c03e47a3e2")
         o.search(text = "pussy вход", aid = "3ab9af0c-9ed5-4c60-9585-3ae6d6c6ddd9")
