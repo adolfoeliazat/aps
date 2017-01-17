@@ -241,13 +241,14 @@ fun TestScenarioBuilder.submitForm(
     shit: TestShit,
     descr: String,
     buildAction: (() -> Unit)? = null,
-    aid: String
+    aid: String,
+    buttonKey: String? = null
 ) {
     sequence(
         buildAction = {
             acta {shit.imposeNextRequestTimestamp()}
             (buildAction ?: {
-                buttonClick(fconst.key.primary.testRef)
+                buttonClick(buttonKey ?: fconst.key.primary.testRef)
             })()
         },
         assertionDescr = descr,

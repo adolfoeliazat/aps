@@ -5,10 +5,10 @@ package aps
 import aps.front.*
 import into.kommon.*
 
-@Front class CheckboxField(container: RequestMatumba, name: String) : FormFieldFront(container, name) {
+@Front class CheckboxField(container: RequestMatumba, spec: CheckboxFieldSpec) : FormFieldFront(container, spec.name) {
     override var error: String? = null
 
-    val checkbox = Shitus.Checkbox(json("tamy" to true), name)
+    val checkbox = jsFacing_Checkbox(json("tamy" to true), name)
 
     override fun render(): ReactElement {
         return Shitus.diva(json("controlTypeName" to "AgreeTermsField", "tame" to "AgreeTermsField", "className" to "form-group",

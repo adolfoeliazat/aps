@@ -6,9 +6,9 @@ import into.kommon.*
 
 class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
     override fun buildSteps() {
-        o.setUpBobul(shit)
+        o.setUpBobul(testShit)
         o.initFuckingBrowser(fillTypedStorageLocal = {
-            it.token = shit.bobulToken
+            it.token = testShit.bobulToken
         })
         o.kindaNavigateToStaticContent("${fconst.test.url.customer}/orders.html")
         o.assertCustomerBreatheScreen()

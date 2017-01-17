@@ -11,7 +11,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-class Checkbox(val valueSetter: (Boolean) -> Unit) {
+class Checkbox(val valueSetter: (Boolean) -> Unit, val elementID: String) {
     companion object {
         val instances = mutableMapOf<String, Checkbox>()
 
@@ -82,7 +82,7 @@ fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
 
             me.componentDidMount = {
                 if (key != null) {
-                    Checkbox.instances[key] = Checkbox(setValue)
+                    Checkbox.instances[key] = Checkbox(setValue, me.elementID)
                 }
             }
 
@@ -97,5 +97,19 @@ fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
             return@ctor me
         })
 }
+
+
+fun TestScenarioBuilder.checkboxSet(key: String, value: Boolean, handOpts: HandOpts = HandOpts()) {
+    acta("Setting checkbox `$key` to `$value`") {async<Unit>{
+        val target = Checkbox.instance(key)
+        await(TestUserActionAnimation.hand(target.elementID, handOpts))
+        target.setValue(value) // Not await
+    }}
+}
+
+
+
+
+
 
 

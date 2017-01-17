@@ -1095,12 +1095,12 @@ fun gertrude(def: dynamic) {
                 }
             }
 
-            unifyIndicesCheck = Shitus.Checkbox(json("initialValue" to stripFuckingIndices, "onChange" to {
+            unifyIndicesCheck = jsFacing_Checkbox(json("initialValue" to stripFuckingIndices, "onChange" to {
                 stripFuckingIndices = unifyIndicesCheck.getValue()
                 makeFuckingTabs()
                 updateWholeShit()
             }))
-            hideKeyRepetitionsCheck = Shitus.Checkbox(json("initialValue" to hideFuckingKeyRepetitions, "onChange" to {
+            hideKeyRepetitionsCheck = jsFacing_Checkbox(json("initialValue" to hideFuckingKeyRepetitions, "onChange" to {
                 hideFuckingKeyRepetitions = hideKeyRepetitionsCheck.getValue()
                 makeFuckingTabs()
                 updateWholeShit()

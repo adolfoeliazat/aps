@@ -129,15 +129,11 @@ sealed class FormResponse2<Meat> {
     class Shitty<Meat>(val error: String, val fieldErrors: List<FieldError>): FormResponse2<Meat>()
 }
 
-enum class TextFieldType {
-    STRING, TEXTAREA, PASSWORD, PHONE, EMAIL
-}
-
 fun passwordField(container: RequestMatumba) =
-    TextField(container, "password", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 50)
+    TextField(container, fieldSpecs.password)
 
 fun emailField(container: RequestMatumba) =
-    TextField(container, "email", t("TOTE", "Почта"), TextFieldType.EMAIL, minLen = 3, maxLen = 50)
+    TextField(container, fieldSpecs.email)
 
 class SignInResponse(val token: String, val user: UserRTO) : CommonResponseFieldsImpl()
 
@@ -156,7 +152,7 @@ class SignUpRequest : RequestMatumba() {
     class Response(val userID: String) : CommonResponseFieldsImpl()
     val immutableSignUpFields = ImmutableSignUpFields(this)
     val mutableSignUpFields = MutableSignUpFields(this)
-    val agreeTerms = CheckboxField(this, "agreeTerms")
+    val agreeTerms = CheckboxField(this, fieldSpecs.agreeTerms)
 }
 
 class UpdateProfileRequest() : RequestMatumba() {
@@ -174,9 +170,9 @@ open class UpdateUserRequest() : RequestMatumba() {
     val mutableSignUpFields = MutableSignUpFields(this)
     val profileFields = ProfileFields(this)
     val state = SelectField(this, "state", t("TOTE", "Статус"), UserState.values())
-    val profileRejectionReason = TextField(this, "profileRejectionReason", t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000)
-    val banReason = TextField(this, "banReason", t("TOTE", "Причина бана"), TextFieldType.TEXTAREA, 0, 5000)
-    val adminNotes = TextField(this, "adminNotes", t("TOTE", "Заметки админа"), TextFieldType.TEXTAREA, 0, 5000)
+    val profileRejectionReason = TextField(this, fieldSpecs.profileRejectionReason)
+    val banReason = TextField(this, fieldSpecs.banReason)
+    val adminNotes = TextField(this, fieldSpecs.adminNotes)
 }
 
 class AdminCreateUserRequest: UpdateUserRequest()
@@ -186,13 +182,13 @@ class ImmutableSignUpFields(container: RequestMatumba) {
 }
 
 class MutableSignUpFields(container: RequestMatumba) {
-    val firstName = TextField(container, "firstName", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50)
-    val lastName = TextField(container, "lastName", t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50)
+    val firstName = TextField(container, fieldSpecs.firstName)
+    val lastName = TextField(container, fieldSpecs.lastName)
 }
 
 class ProfileFields(container: RequestMatumba) {
-    val phone = TextField(container, "phone", t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 20, minDigits = 6)
-    val aboutMe = TextField(container, "aboutMe", t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300)
+    val phone = TextField(container, fieldSpecs.phone)
+    val aboutMe = TextField(container, fieldSpecs.aboutMe)
 }
 
 
@@ -345,7 +341,7 @@ where Filter: Enum<Filter>, Filter: Titled {
     val entityID = MaybeStringHiddenField(this, "entityID")
     val filter = EnumHiddenField(this, "filter", filterValues)
     val ordering = EnumHiddenField(this, "ordering", Ordering.values())
-    val searchString = TextField(this, "searchString", "", TextFieldType.STRING, 0, 50)
+    val searchString = TextField(this, fieldSpecs.searchString)
     val fromID = MaybeStringHiddenField(this, "fromID")
 }
 
@@ -440,17 +436,17 @@ fun send(req: FuckingRemoteProcedureRequest): Promise<JSONResponse> = callDanger
 class CustomerCreateUAOrderRequest : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
 
-    val title = TextField(this, "title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen)
+    val title = TextField(this, fieldSpecs.title)
     val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), UADocumentType.values())
     val deadline = DateTimeField(this, "deadline", t("TOTE", "Срок"))
     val numPages = IntField(this, "numPages", t("TOTE", "Страниц"), const.order.minPages, const.order.maxPages)
     val numSources = IntField(this, "numSources", t("TOTE", "Источников"), const.order.minSources, const.order.maxSources)
-    val details = TextField(this, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen)
+    val details = TextField(this, fieldSpecs.details)
 }
 
 fun fileField(container: RequestMatumba, shouldBeProvided: Boolean = true) = FileField(container, "file", t("TOTE", "Файл"), shouldBeProvided = shouldBeProvided)
-fun fileTitleField(container: RequestMatumba) = TextField(container, "title", t("TOTE", "Название"), TextFieldType.STRING, const.file.minTitleLen, const.file.maxTitleLen)
-fun fileDetailsField(container: RequestMatumba) = TextField(container, "details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.file.minDetailsLen, const.file.maxDetailsLen)
+fun fileTitleField(container: RequestMatumba) = TextField(container, fieldSpecs.title)
+fun fileDetailsField(container: RequestMatumba) = TextField(container, fieldSpecs.details)
 
 abstract class AddUAOrderFileRequestBase : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()

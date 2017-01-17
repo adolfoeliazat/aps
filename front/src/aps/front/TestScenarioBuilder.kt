@@ -35,7 +35,7 @@ val transformRootLineTidy = {it: String ->
 
 class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     val instructions = mutableListOf<TestInstruction>()
-    val shit get() = scenario.shit
+    val shit get() = scenario.testShit
     var lastAssertScreenHTMLParams by notNull<AssertScreenHTMLParams>()
 
     fun runScenario(showTestPassedPane: Boolean): Promise<Throwable?> = async {

@@ -24,7 +24,7 @@ class TestSuite_UACustomer_Order_Files : TestSuite {
 
 class Test_UACustomer_Order_Files_1 : StepBasedTestScenario() {
     override fun buildSteps() {
-        o.setUpOrderAndFiles1(shit)
+        o.setUpOrderAndFiles1(testShit)
         o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = false, sha1 = "16428e392350fc2e0ea8dda708fdd4ed61f423d5")) {
             o.kicClick("download-100001")
         }
@@ -33,7 +33,7 @@ class Test_UACustomer_Order_Files_1 : StepBasedTestScenario() {
 
 class Test_UACustomer_DownloadForbiddenFile : StepBasedTestScenario() {
     override fun buildSteps() {
-        o.setUpOrderAndFiles1(shit)
+        o.setUpOrderAndFiles1(testShit)
         o.acta {fuckingRemoteCall.executeSQL("Delete permission for crazy boobs file", """
             delete from file_user_permissions
             where
@@ -52,23 +52,23 @@ class Test_UACustomer_DownloadForbiddenFile : StepBasedTestScenario() {
 }
 
 class Test_UACustomer_LongFileList : StepBasedTestScenario() {
-    val testShit = TestShit()
+    val testShit0 = TestShit()
 
     override fun buildSteps() {
         o.setUpOrderFilesTestTemplate_1(
-            testShit,
+            testShit0,
             setUpUsers = {
-                o.setUpBobul(testShit)
+                o.setUpBobul(testShit0)
             },
             setUpOrders = {o.setUpBobulOrder(
-                testShit,
+                testShit0,
                 setUpFiles = {oid-> async {
-                    await(setUpFilesByBobul_1(testShit, oid))
+                    await(setUpFilesByBobul_1(testShit0, oid))
 
                     val mnt = moment("2016-12-02 13:17:08")
                     for (i in 1..20) {
                         await(ImposeNextRequestTimestampRequest.send(mnt.formatPostgres()))
-                        await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+                        await(send(testShit0.bobulToken, CustomerAddUAOrderFileRequest()-{o->
                             o.orderID.value = oid
                             o.file.content = FileField.Content.TestFileOnServer("shitty document $i.rtf")
                             o.title.value = "Some shitty document $i"
@@ -113,18 +113,18 @@ class Test_UACustomer_LongFileList : StepBasedTestScenario() {
 class Test_UACustomer_Order_Files_Search : StepBasedTestScenario() {
     override fun buildSteps() {
         o.setUpOrderFilesTestTemplate_1(
-            shit,
+            testShit,
             setUpUsers = {
-                o.setUpBobul(shit)
-                o.setUpFedor(shit)
+                o.setUpBobul(testShit)
+                o.setUpFedor(testShit)
             },
             setUpOrders = {
                 o.setUpBobulOrder(
-                    shit,
+                    testShit,
                     setUpFiles = {oid-> async {
-                        await(setUpFilesByBobul_1(shit, oid))
-                        await(setUpFilesByFedor_1(shit, oid))
-                        await(setUpFilesByBobul_2(shit, oid))
+                        await(setUpFilesByBobul_1(testShit, oid))
+                        await(setUpFilesByFedor_1(testShit, oid))
+                        await(setUpFilesByBobul_2(testShit, oid))
                     }})
             },
             assertScreen = {o.assertScreenHTML("1", "0f77828b-fe22-4606-8f97-0efecc6fefde")}
@@ -183,21 +183,21 @@ abstract class TestUACustomer_Order_Files_Base : StepBasedTestScenario() {
     override fun buildSteps() {
         o.initialShit(this)
         o.setUpOrderFilesTestTemplate_1(
-            shit,
+            testShit,
             setUpUsers = {
-                o.setUpBobul(shit)
-                o.setUpFedor(shit)
-                o.setUpDasja(shit)
+                o.setUpBobul(testShit)
+                o.setUpFedor(testShit)
+                o.setUpDasja(testShit)
             },
             setUpOrders = {
                 o.setUpBobulOrder(
-                    shit,
+                    testShit,
                     setUpFiles = {oid->
                         async {
-                            await(setUpFilesByBobul_1(shit, oid))
-                            await(setUpFilesByFedor_1(shit, oid))
-                            await(setUpFilesByBobul_2(shit, oid))
-                            await(setUpFilesByFedor_2(shit, oid))
+                            await(setUpFilesByBobul_1(testShit, oid))
+                            await(setUpFilesByFedor_1(testShit, oid))
+                            await(setUpFilesByBobul_2(testShit, oid))
+                            await(setUpFilesByFedor_2(testShit, oid))
                         }
                     })
             },
@@ -250,7 +250,7 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         o.inputPrependValue("details-$orderFileID", "A fucky piece of text. ")
 
         o.formWithAnimationOnCompletionSequence_killme(
-            shit,
+            testShit,
             buildAction = {
                 o.buttonClick("primary-$orderFileID")
             },
@@ -266,7 +266,7 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         o.assertScreenHTML("Piece of shit #$orderFileID is opened at new position", "166e3d38-e981-42fc-92ab-47e5fce8eca1")
         o.inputAppendValue("title-$orderFileID", " (yes, you)")
         o.formWithAnimationOnCompletionSequence_killme(
-            shit,
+            testShit,
             buildAction = {
                 o.buttonClick("primary-$orderFileID")
             },
@@ -293,9 +293,9 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
 
 class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
-        o.addFile(shit, fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?", aid = "b31dc136-68f4-417c-bc2c-9e4088b28ac4")
-        o.addFile(shit, fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows", aid = "fcbe57dc-5984-421c-9d27-32b50f0d3cbc")
-        o.addFile(shit, fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here", aid = "808d747e-bd63-44d4-880e-84f2e2a10736")
+        o.addFile(testShit, fileName = "tiny pussy.rtf", title = "The Tiny Little Pussy", details = "Details? What kind of fucking details?", aid = "b31dc136-68f4-417c-bc2c-9e4088b28ac4")
+        o.addFile(testShit, fileName = "little pussy.rtf", title = "Our Little Pussy", details = "The pussy grows", aid = "fcbe57dc-5984-421c-9d27-32b50f0d3cbc")
+        o.addFile(testShit, fileName = "monster pussy.rtf", title = "The Monster Pussy", details = "This is really serious pussy here", aid = "808d747e-bd63-44d4-880e-84f2e2a10736")
 //        o.snapshot(Snapshot("1", "29ae913d-a54b-4ff5-a072-f8439e275cce"))
         o.refreshPage(aid = "2c6d4566-1041-435d-984c-64a814e76183")
         o.search(text = "pussy", aid = "7f862f08-e6d2-471d-9ed6-40c03e47a3e2")

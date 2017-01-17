@@ -6,22 +6,18 @@ import aps.front.*
 
 @Front class TextField(
     container: RequestMatumba,
-    name: String,
-    val title: String,
-    type: TextFieldType,
-    val minLen: Int,
-    val maxLen: Int,
-    val minDigits: Int = -1
-): FormFieldFront(container, name) {
+    spec: TextFieldSpec
+): FormFieldFront(container, spec.name) {
+    val _spec = spec
 
     override var error: String? = null
 
     val input by lazy {Input(json(
-        "type" to when (type) {
+        "type" to when (spec.type) {
             TextFieldType.PASSWORD -> "password"
             else -> "text"
         },
-        "kind" to when (type) {
+        "kind" to when (spec.type) {
             TextFieldType.TEXTAREA -> "textarea"
             else -> "input"
         },
@@ -43,7 +39,7 @@ import aps.front.*
 
     override fun render(): ReactElement {
         return kdiv(className = "form-group", marginBottom = if (error != null) 0 else null){o->
-            o- klabel {it-title}
+            o- klabel {it-_spec.title}
             o- kdiv(position = "relative"){o->
                 o- input
                 if (error != null) {

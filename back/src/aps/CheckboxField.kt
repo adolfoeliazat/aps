@@ -2,8 +2,8 @@ package aps
 
 @Back class CheckboxField(
     container: RequestMatumba,
-    name: String
-) : FormFieldBack(container, name) {
+    spec: CheckboxFieldSpec
+) : FormFieldBack(container, spec.name) {
     lateinit var _yes: java.lang.Boolean
 
     val yes: Boolean get() = _yes.booleanValue()

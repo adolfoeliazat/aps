@@ -1,16 +1,12 @@
 package aps
 
 import into.kommon.*
+import org.apache.commons.validator.routines.EmailValidator
 
 @Back class TextField(
     container: RequestMatumba,
-    name: String,
-    @Dummy val title: String,
-    val type: TextFieldType,
-    val minLen: Int,
-    val maxLen: Int,
-    val minDigits: Int = -1
-): FormFieldBack(container, name) {
+    val spec: TextFieldSpec
+): FormFieldBack(container, spec.name) {
 
     // TODO:vgrechka Maybe use PASSWORD here as a reason to hide value from log?
 //    @Dummy enum class Type { TEXT, PASSWORD }
@@ -23,19 +19,24 @@ import into.kommon.*
         value = value.trim()
 
         run error@{
-            if (value.length < minLen)
+            if (value.length < spec.minLen)
                 return@error if (value.length == 0) t("TOTE", "Поле обязательно")
-                else t("TOTE", "Не менее $minLen символов")
-            if (value.length > maxLen) return@error t("TOTE", "Не более $maxLen символов")
+                else t("TOTE", "Не менее $spec.minLen символов")
+            if (value.length > spec.maxLen) return@error t("TOTE", "Не более ${spec.maxLen} символов")
 
-            if (type == TextFieldType.PHONE) {
-                var digitCount = 0
-                for (c in value.toCharArray()) {
-                    if (!Regex("(\\d| |-|\\+|\\(|\\))+").matches("$c")) return@error t("TOTE", "Странный телефон какой-то")
-                    if (Regex("\\d").matches("$c")) ++digitCount
+            when (spec.type) {
+                TextFieldType.PHONE -> {
+                    var digitCount = 0
+                    for (c in value.toCharArray()) {
+                        if (!Regex("(\\d| |-|\\+|\\(|\\))+").matches("$c")) return@error t("TOTE", "Странный телефон какой-то")
+                        if (Regex("\\d").matches("$c")) ++digitCount
+                    }
+
+                    if (digitCount < spec.minDigits) return@error t("TOTE", "Не менее ${spec.minDigits} цифр")
                 }
-
-                if (digitCount < minDigits) return@error t("TOTE", "Не менее $minDigits цифр")
+                TextFieldType.EMAIL -> {
+                    if (!EmailValidator.getInstance().isValid(value)) return@error t("TOTE", "Странная почта какая-то")
+                }
             }
 
             null

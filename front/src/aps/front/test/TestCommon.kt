@@ -28,7 +28,7 @@ abstract class TestScenario {
     open fun prepareShit(): Promise<Unit> = __asyncResult(Unit)
     open val name: String get() = ctorName(this)
     open val longDescription: String? = null
-    val shit = TestShit()
+    val testShit = TestShit()
 //    open val useSnapshot = false
 
     lateinit var host: TestHost
@@ -79,17 +79,8 @@ fun tetete() {
 }
 
 class TestCommon(val sim: dynamic) {
-    val LONG_SHIT_301 = makeLongShit(301)
+    val LONG_SHIT_301 = TestData.generateShit(301)
 
-    fun makeLongShit(len: Int): String {
-        val bunchOfShit = buildString {
-            while (length < len) {
-                append("iamlongshit")
-            }
-        }
-
-        return bunchOfShit.substring(0, len)
-    }
 }
 
 fun jsFacing_igniteTestShit() = async<Unit> {
