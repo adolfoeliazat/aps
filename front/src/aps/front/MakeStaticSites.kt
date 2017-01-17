@@ -1056,7 +1056,7 @@ object MakeStaticSites {
     </head>
     <body style="padding-top: 50px; padding-bottom: 0px; overflow-y: scroll;">
     <div id="topNavbarContainer">
-    ${renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, json("highlightedItem" to highlightedItem, "rightNavbarItemAStyle" to json("display" to "none"))))}
+    ${renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, highlightedItem = highlightedItem, rightNavbarItemAStyle = Style(display = "none")))}
     </div>
 
     <div id="root" style="min-height: calc(100vh - 28px - 50px);">

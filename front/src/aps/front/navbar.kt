@@ -8,86 +8,60 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import org.w3c.dom.events.KeyboardEvent
 
-fun jsFacing_renderTopNavbar_calledByFuckingUI(ui: World, arg: dynamic): dynamic {
-    // {highlightedItem}
-    val highlightedItem = arg.highlightedItem
+fun renderTopNavbar(clientKind: ClientKind,
+                    t: (String, String) -> String,
+                    highlightedItem: String? = null,
+                    ui: World? = null,
+                    rightNavbarItemAStyle: Style = Style()
+): ReactElement {
+    val user: UserRTO? = ui?.getUser()
 
-    fun _t(en: String, ua: String) = ua
-    return renderTopNavbar(Globus.clientKind, ::_t, json("highlightedItem" to highlightedItem, "ui" to ui))
-}
-
-fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: dynamic): dynamic {
-    // {highlightedItem, t, ui}
-    val highlightedItem = arg.highlightedItem
-    val ui: World? = arg.ui
-    val rightNavbarItemAStyle = arg.rightNavbarItemAStyle
-
-    val user: UserRTO? = if (ui != null) ui.getUser() else null
-
-    fun TopNavItem(def: dynamic): dynamic {
-        // #extract {counter} from def
-        val counter = def.counter
-        val aStyle = def.aStyle
-
-        val active = highlightedItem == def.name
-        val res = Shitus.TopNavItem(global.Object.assign(def, json(
-            "shame" to "TopNavItem-${def.name}",
-            "tame" to "${sufindex("TopNavItem", counter[0]++)}",
-            "tattrs" to json("active" to (active || js("undefined"))),
-            "ui" to ui,
-            "active" to active,
-            "aStyle" to aStyle)))
-        // res.name = def.name
-        return res
+    fun item(name: String, title: String, aStyle: Style = Style()): ReactElement {
+        return TopNavItem(ui = ui, name = name, title = title, aStyle = aStyle,
+                          active = highlightedItem == name
+        ).toReactElement()
     }
 
     var proseItems: dynamic = undefined
-    val proseCounter = jsArrayOf(0)
     if (clientKind == ClientKind.UA_CUSTOMER) {
         proseItems = jsArrayOf(
-        TopNavItem(json("name" to "why", "title" to t("Why Us?", "Почему мы?"), "counter" to proseCounter)),
-        TopNavItem(json("name" to "prices", "title" to t("Prices", "Цены"), "counter" to proseCounter)),
-        TopNavItem(json("name" to "samples", "title" to t("Samples", "Примеры"), "counter" to proseCounter)),
-        TopNavItem(json("name" to "faq", "title" to t("FAQ", "ЧаВо"), "counter" to proseCounter)),
-        TopNavItem(json("name" to "contact", "title" to t("Contact Us", "Связь"), "counter" to proseCounter)),
-        TopNavItem(json("name" to "blog", "title" to t("Blog", "Блог"), "counter" to proseCounter))
+        item(name = "why", title = t("Why Us?", "Почему мы?")),
+        item(name = "prices", title = t("Prices", "Цены")),
+        item(name = "samples", title = t("Samples", "Примеры")),
+        item(name = "faq", title = t("FAQ", "ЧаВо")),
+        item(name = "contact", title = t("Contact Us", "Связь")),
+        item(name = "blog", title = t("Blog", "Блог"))
         )
     } else {
         if (user == null || user.kind != UserKind.ADMIN) {
             proseItems = jsArrayOf(
-            TopNavItem(json("name" to "why", "title" to t("Why Us?", "Почему мы?"), "counter" to proseCounter)),
-            TopNavItem(json("name" to "prices", "title" to t("Prices", "Цены"), "counter" to proseCounter)),
-            TopNavItem(json("name" to "faq", "title" to t("FAQ", "ЧаВо"), "counter" to proseCounter))
+            item(name = "why", title = t("Why Us?", "Почему мы?")),
+            item(name = "prices", title = t("Prices", "Цены")),
+            item(name = "faq", title = t("FAQ", "ЧаВо"))
             )
         }
     }
 
     var privateItems: dynamic = undefined
-    val privateCounter = jsArrayOf(0)
     if (user != null) {
         if (clientKind == ClientKind.UA_CUSTOMER) {
             privateItems = jsArrayOf(
-            TopNavItem(json("name" to "orders", "title" to t("My Orders", "Мои заказы"), "counter" to privateCounter)),
-            TopNavItem(json("name" to "support", "title" to t("Support", "Поддержка"), "liveStatusFieldName" to "supportMenuBadge", "counter" to privateCounter))
-            )
+            item(name = "orders", title = t("My Orders", "Мои заказы")),
+            item(name = "support", title = t("Support", "Поддержка")))
         } else {
             if (user.kind == UserKind.WRITER) {
                 privateItems = lodash.compact(jsArrayOf(
-                user.state == UserState.COOL && TopNavItem(json("name" to "orders", "title" to t("My Orders", "Мои заказы"), "counter" to privateCounter)),
-                user.state == UserState.COOL && TopNavItem(json("name" to "store", "title" to t("Store", "Аукцион"), "counter" to privateCounter)),
-                TopNavItem(json("name" to "profile", "title" to t("Profile", "Профиль"), "counter" to privateCounter))
-
-                // TODO:vgrechka Reenable Support navitem...    11a150ac-97fd-48ce-8ba6-67d0559a2768
-                // TopNavItem(json("name" to "support", "title" to t("Support", "Поддержка"), "liveStatusFieldName" to "supportMenuBadge", "counter" to privateCounter))
+                if (user.state == UserState.COOL) item(name = "orders", title = t("My Orders", "Мои заказы")) else null,
+                if (user.state == UserState.COOL) item(name = "store", title = t("Store", "Аукцион")) else null,
+                item(name = "profile", title = t("Profile", "Профиль"))
                 ))
             } else if (user.kind == UserKind.ADMIN) {
                 privateItems = jsArrayOf()
-                // privateItems.push(TopNavItem(json("name" to "admin-heap", "title" to t("TOTE", "Куча"), "liveStatusFieldName" to "heapSize", "counter" to privateCounter)))
-                privateItems.push(TopNavItem(json("name" to "admin-users", "title" to t("Users", "Юзеры"), "counter" to privateCounter)))
+                privateItems.push(item(name = "admin-users", title = t("Users", "Юзеры")))
                 if (user.roles.contains(UserRole.SUPPORT)) {
                     // TODO:vgrechka Reenable Support navitem...    9c49cfeb-86c1-4d86-85ed-6430e14946d8
-                    // privateItems.push(TopNavItem(json("name" to "support", "title" to t("Support", "Поддержка"), "liveStatusFieldName" to "supportMenuBadge", "counter" to privateCounter)))
                 }
             }
         }
@@ -111,10 +85,10 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
         }
         leftNavbarItems.push.apply(leftNavbarItems, privateItems)
         // @wip rejection
-        rightNavbarItem = TopNavItem(json("name" to "dashboard", "title" to user.firstName, "counter" to jsArrayOf(0), "aStyle" to rightNavbarItemAStyle))
+        rightNavbarItem = item(name = "dashboard", title = user.firstName, aStyle = rightNavbarItemAStyle)
     } else {
         leftNavbarItems = proseItems
-        rightNavbarItem = TopNavItem(json("name" to "sign-in", "title" to t("Sign In", "Вход"), "counter" to jsArrayOf(0), "aStyle" to rightNavbarItemAStyle))
+        rightNavbarItem = item(name = "sign-in", title = t("Sign In", "Вход"), aStyle = rightNavbarItemAStyle)
     }
 
     var brand: dynamic = undefined
@@ -202,16 +176,16 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
                             __await<dynamic>(onClick(js("undefined")))
                         }
                     }
-                    "showHand" to {_arg: dynamic ->
-                        // {testActionHandOpts}={}
-                        val arg = if (_arg) arg else js("({})")
-                        val testActionHandOpts = arg.testActionHandOpts
-
-                        testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(id)), testActionHandOpts))
-                    }
-                    "hideHand" to {
-                        testActionHand.delete()
-                    }
+//                    "showHand" to {_arg: dynamic ->
+//                        // {testActionHandOpts}={}
+//                        val arg = if (_arg) arg else js("({})")
+//                        val testActionHandOpts = arg.testActionHandOpts
+//
+//                        testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(id)), testActionHandOpts))
+//                    }
+//                    "hideHand" to {
+//                        testActionHand.delete()
+//                    }
                 }
                 TestGlobal.topNavbarLinks[name] = me
 
@@ -240,4 +214,88 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
             rightNavbarItem && Shitus.ula(json("tame" to "topNavRight", "id" to "rightNavbar", "className" to "nav navbar-nav navbar-right"),
                 rightNavbarItem))))
 }
+
+private class OldSpec(
+    val name: String,
+    val title: String,
+    val active: Boolean,
+    val ui: World?,
+    val aStyle: Style
+)
+
+class TopNavItem(
+    val ui: World?,
+    val name: String,
+    val title: String,
+    val aStyle: Style,
+    val active: Boolean
+) : Control2() {
+    val oldElement: ReactElement = jsFacing_TopNavItem(OldSpec(
+        name = name,
+        title = title,
+        active = active,
+        ui = ui,
+        aStyle = aStyle
+    ))
+
+    override fun render(): ToReactElementable {
+        return oldElement.toToReactElementable()
+    }
+}
+
+private fun jsFacing_TopNavItem(def: OldSpec): dynamic {
+    val title: String = def.title
+    val active: Boolean = def.active
+    val ui: World? = def.ui
+    val aStyle: Style = def.aStyle
+
+    val href = if (def.name == "home") "/" else "/${def.name}.html"
+    val aid = puid()
+
+    var me: dynamic = null
+    me = json(
+        "render" to {
+            Shitus.lia(json("id" to me.elementID, "className" to (if (active) "active" else "")),
+                       Shitus.aa(json("id" to aid, "href" to href, "style" to aStyle.toReactStyle()),
+                                 Shitus.spancTitle(json("title" to title))
+//                    if (liveStatusFieldName != null) ui.liveBadge2(json("liveStatusFieldName" to liveStatusFieldName)) else null
+                       ))
+        },
+
+        "onRootClick" to fun(e: KeyboardEvent): Promise<Unit> = async {
+            preventAndStop(e)
+
+            var dleft = 0; var dwidth = 0
+            if (def.name == "home") { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
+                // @revisit
+                dleft = -15
+                dwidth = 15
+            }
+
+            effects.blinkOn(json("target" to Shitus.byid(aid).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
+
+            await<dynamic>(ui!!.pushNavigate(href))
+
+            global.setTimeout({
+                                  effects.blinkOff()
+                                  global.bsClearMenus()
+                              }, 250)
+        }
+    )
+
+    me.controlTypeName = "TopNavItem"
+    legacy_implementControlShit(json("me" to me, "def" to def, "implementTestClick" to json("onClick" to me.onRootClick)))
+
+    return elcl(me)
+}
+
+fun TestScenarioBuilder.topNavItemClick(key: String, handOpts: HandOpts = HandOpts()) {
+    imf("topNavItemClick")
+//    acta("Clicking top nav item `$key`") {async<Unit>{
+//        val target = TopNavItem.instance(key)
+//        await(TestUserActionAnimation.hand(target, handOpts))
+//        target.click() // Not await
+//    }}
+}
+
 

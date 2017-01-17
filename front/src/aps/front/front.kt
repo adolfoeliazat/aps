@@ -25,10 +25,10 @@ object KotlinShit : IKotlinShit {
     lateinit var clientImpl: World
 
 //    val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
-    val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
+//    val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
     val isDynamicPage = ::jsFacing_isDynamicPage
 
-    val jsFacing_pushNavigate = ::pushNavigate
+//    val jsFacing_pushNavigate = ::pushNavigate
     val jsFacing_puid = ::puid
 
 //    val jsFacing_art_invokeStateContributions = ::invokeStateContributions

@@ -55,7 +55,7 @@ object Shitus {
 //    val liveBadge2: dynamic = ::jsFacing_liveBadge2
     val Checkbox: dynamic = ::jsFacing_Checkbox
     val button: dynamic = ::jsFacing_button
-    val TopNavItem: dynamic = ::jsFacing_TopNavItem
+//    val TopNavItem: dynamic = ::jsFacing_TopNavItem
     val spanc: dynamic = ::jsFacing_spanc
     val Input: dynamic = ::jsFacing_Input
 

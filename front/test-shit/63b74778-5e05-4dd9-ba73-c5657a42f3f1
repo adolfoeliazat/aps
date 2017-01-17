@@ -14,42 +14,42 @@
     <div style="text-align: left;">
       <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
         <li class="">
-          <a href="why.html">
+          <a href="/why.html">
             <span class="">
               Почему мы?
             </span>
           </a>
         </li>
         <li class="">
-          <a href="prices.html">
+          <a href="/prices.html">
             <span class="">
               Цены
             </span>
           </a>
         </li>
         <li class="">
-          <a href="samples.html">
+          <a href="/samples.html">
             <span class="">
               Примеры
             </span>
           </a>
         </li>
         <li class="">
-          <a href="faq.html">
+          <a href="/faq.html">
             <span class="">
               ЧаВо
             </span>
           </a>
         </li>
         <li class="">
-          <a href="contact.html">
+          <a href="/contact.html">
             <span class="">
               Связь
             </span>
           </a>
         </li>
         <li class="">
-          <a href="blog.html">
+          <a href="/blog.html">
             <span class="">
               Блог
             </span>
@@ -58,7 +58,7 @@
       </ul>
       <ul id="rightNavbar" class="nav navbar-nav navbar-right">
         <li class="">
-          <a href="sign-in.html">
+          <a href="/sign-in.html">
             <span class="">
               Вход
             </span>

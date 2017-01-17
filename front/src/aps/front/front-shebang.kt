@@ -125,14 +125,6 @@ fun renderStamp(stamp: String, includeTZ: Boolean = true): String {
 }
 
 
-fun pushNavigate(ui: World, url: String): Promise<Unit> {"__async"
-    __dlog.pushNavigate(url)
-    ui.currentPage = null.asDynamic() // TODO:vgrechka Do something about this
-
-    Globus.location.pushState(null, "", url)
-    return __await(ui.loadPageForURL()) /ignora
-}
-
 interface Blinkable {
     fun setBlinking(b: Boolean)
 }

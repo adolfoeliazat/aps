@@ -13,45 +13,7 @@ import into.kommon.*
 import jquery.jq
 import kotlin.browser.localStorage
 import kotlin.browser.window
-
-/*
-Boot Sequence
--------------
-
-- HTML is loaded
-- If there's a token in localStorage
-      - Display breathe banner regardless of whether the page in address bar is static,
-        because returning user expects her name to be in the top right corner (and we don't know that name yet)
-      - We can store user's name in localStorage too, but it's still not known which non-static menu items
-        should be visible to her. Also the user may be banned, etc.
-      - Until JS is loaded and user credentials are fetched from backend, top right corner should be empty
-        (i.e. no "Sign In" link)
-- If page is static, display its content immediately and allow user to browse
-- Otherwise display breathe banner
-- Start loading JS
-- If user clicks any link until JS is loaded and ignited, everything will just start over
-  TODO:vgrechka Think about possibility to load and cache JS in separate thread
-                (investigate web workers, "progressive" web apps, and all that trendy stuff)
-- JS is loaded
-- Navbar is updated
-- If static content is being displayed, page body shouldn't be redrawn because user may be in the middle
-  of scrolling or watching animation, etc. But all links on page are replaced with fancy-blinking ones
-- If breathe banner is being displayed, do usual dynamic loading of page corresponding to URL in address bar
-
-Fancy-Blinking Links
---------------------
-
-- Before JS is loaded, all links are usual links
-- After JS is loaded and ignited and until manual page reload, all links are fancy-blinking
-- Clicking on a fancy-blinking link to a dynamic page:
-      - Show fancy blinking underline
-      - Make necessary request(s) to backend
-      - On retrieving necessary data, hide fancy blinking and redraw page
-- Clicking on a fancy-blinking link to a static page:
-      - Should be consistent with the look and feel of dynamic page loading
-      - Load corresponding static HTML via simple XHR and convert usual links there into fancy-blinking ones,
-        then redraw page body with that
-*/
+import kotlin.properties.Delegates.notNull
 
 class World(val name: String) {
     lateinit var rootContent: ReactElement
@@ -94,6 +56,9 @@ class World(val name: String) {
         __await<dynamic>(bootKillme())
 
         Globus.worldMaybe = this
+        if (isTest()) {
+            crossWorld.locationControl.update()
+        }
         send(PingRequest())
 
         return __asyncResult(Unit)
@@ -115,9 +80,7 @@ class World(val name: String) {
         userMaybe = x
     }
 
-    fun loadSignInPage() {
-        SignInPage(this).load()
-    }
+    fun loadSignInPage(): Promise<Unit> = SignInPage(this).load()
 
     fun signOut() {
         typedStorageLocal.clear()
@@ -127,8 +90,10 @@ class World(val name: String) {
         replaceNavigate("/")
     }
 
-    fun pushNavigate(url: String): Promise<Unit> {"__async"
-        return __reawait(KotlinShit.jsFacing_pushNavigate(this, url))
+    fun pushNavigate(url: String): Promise<Unit> = async {
+        //        ui.currentPage = null.asDynamic() // TODO:vgrechka Do something about this
+        Globus.location.pushState(null, "", url)
+        await(loadPageForURL())
     }
 
     fun replaceNavigate(where: dynamic): Promise<Unit> {"__async"
@@ -176,7 +141,7 @@ class World(val name: String) {
                     if (highlightedItem == "sign-up") { // XXX
                         highlightedItem = "sign-in"
                     }
-                    return@render renderTopNavbar(this, json("highlightedItem" to highlightedItem))
+                    return@render renderTopNavbar(highlightedItem = highlightedItem)
                 }
             })
 
@@ -199,7 +164,7 @@ class World(val name: String) {
     fun setPage(def: Page) {
         js("$")(global.document).scrollTop(0)
         setRootContent(Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
-//                            TestGlobal.updatePage = update
+            //                            TestGlobal.updatePage = update
 //                            ui.updatePage = TestGlobal.updatePage
             updatePage = update
 
@@ -223,90 +188,83 @@ class World(val name: String) {
 
         await(TestGlobal.loadPageForURLLock.sutPause1())
 
-        try {
-            val user = userMaybe
-            val firstRun = loadPageForURLFirstRun
-            loadPageForURLFirstRun = false
-            urlQuery = parseQueryString(Globus.location.href)
-            val pathname = Globus.location.pathname
+        val user = userMaybe
+        val firstRun = loadPageForURLFirstRun
+        loadPageForURLFirstRun = false
+        urlQuery = parseQueryString(Globus.location.href)
+        val pathname = Globus.location.pathname
 
-            var ultimateName =
-                if (pathname.endsWith(".html"))
-                    pathname.substring(pathname.lastIndexOf("/") + 1, pathname.lastIndexOf("."))
-                else { // Root of the site (/), otherwise we wouldn't have reached here because of 404
-                    when (user) {
-                        null -> "index"
-                        else -> when (user.state) {
-                            UserState.COOL -> {
-                                Globus.location.pushState(null, "", "/dashboard.html")
-                                "dashboard"
-                            }
-                            UserState.PROFILE_REJECTED,
-                            UserState.PROFILE_PENDING,
-                            UserState.PROFILE_APPROVAL_PENDING,
-                            UserState.BANNED -> {
-                                Globus.location.pushState(null, "", "/profile.html")
-                                "profile"
-                            }
+        var ultimateName =
+            if (pathname.endsWith(".html"))
+                pathname.substring(pathname.lastIndexOf("/") + 1, pathname.lastIndexOf("."))
+            else { // Root of the site (/), otherwise we wouldn't have reached here because of 404
+                when (user) {
+                    null -> "index"
+                    else -> when (user.state) {
+                        UserState.COOL -> {
+                            Globus.location.pushState(null, "", "/dashboard.html")
+                            "dashboard"
+                        }
+                        UserState.PROFILE_REJECTED,
+                        UserState.PROFILE_PENDING,
+                        UserState.PROFILE_APPROVAL_PENDING,
+                        UserState.BANNED -> {
+                            Globus.location.pushState(null, "", "/profile.html")
+                            "profile"
                         }
                     }
                 }
-
-            var loader: dynamic = null
-            fun isStaticPage(name: String) = !isDynamicPage(name)
-
-            if (isStaticPage(ultimateName)) {
-                fun staticLoader(): Promise<Unit> = async {
-                    val url = Globus.location.baseWithoutSlash + "/$ultimateName.html"
-                    var content = await(fetchFromURL("GET", url, null, {it}))
-                    content = content.substring(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
-                    setRootContent(rawHTML(content))
-                }
-                loader = ::staticLoader
-            } else {
-                if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
-                    Globus.location.replaceState(null, "", "sign-in.html")
-                    ultimateName = "sign-in"
-                }
-
-                if (ultimateName == "sign-in") {
-                    loader = {loadSignInPage()}
-                } else if (ultimateName == "sign-up") {
-                    loader = {loadSignUpPage()}
-                } else if (user != null || (Globus.mode == Mode.DEBUG && ultimateName.startsWith("debug"))) {
-                    loader = privatePageLoader(ultimateName)
-                }
             }
 
-            if (!loader) {
-                console.error("Can't figure out fucking loader")
-                return@async Unit
+        var loader by notNull<() -> Promise<Unit>>()
+
+        fun isStaticPage(name: String) = !isDynamicPage(name)
+
+        if (isStaticPage(ultimateName)) {
+            fun staticLoader(): Promise<Unit> = async {
+                val url = Globus.location.baseWithoutSlash + "/$ultimateName.html"
+                var content = await(fetchFromURL("GET", url, null, {it}))
+                content = content.substring(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
+                setRootContent(rawHTML(content))
+            }
+            loader = ::staticLoader
+        } else {
+            if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
+                Globus.location.replaceState(null, "", "sign-in.html")
+                ultimateName = "sign-in"
             }
 
-            val skipBodyRendering =
-                firstRun && // JS has just loaded
-                    isStaticPage(ultimateName) &&
-                    typedStorageLocal.token == null
+            if (ultimateName == "sign-in") {
+                loader = this::loadSignInPage
+            } else if (ultimateName == "sign-up") {
+                loader = {loadSignUpPage()}
+            } else if (user != null || (Globus.mode == Mode.DEBUG && ultimateName.startsWith("debug"))) {
+                loader = privatePageLoader(ultimateName)
+            }
+        }
+
+        val skipBodyRendering =
+            firstRun && // JS has just loaded
+                isStaticPage(ultimateName) &&
+                typedStorageLocal.token == null
 //            localStorage.getItem("token") == null
 
-            if (!skipBodyRendering) {
-                global.window.disposeStaticShit()
+        if (!skipBodyRendering) {
+            global.window.disposeStaticShit()
 
-                footer.setBurgerMenu(null)
-                await<dynamic>(loader())
+            footer.setBurgerMenu(null)
+            await<dynamic>(loader())
 
-                js("$")(global.document).scrollTop(0)
-                global.window.initStaticShit()
-            }
+            js("$")(global.document).scrollTop(0)
+            global.window.initStaticShit()
+        }
 
 //            if (token != null) {
 //                await<dynamic>(ui.pollLiveStatus())
 //            }
 
-            updateNavbar()
-            return@async Unit
-        } finally {
-        }
+        updateNavbar()
+        return@async Unit
     }
 
     fun loadSignUpPage(): Promise<Unit> {"__async"
@@ -361,8 +319,9 @@ class World(val name: String) {
         }
     }
 
-    fun renderTopNavbar(world: World, arg: dynamic): dynamic {
-        return KotlinShit.renderTopNavbar_calledByFuckingUI(world, arg)
+    fun renderTopNavbar(highlightedItem: String?): dynamic {
+        fun _t(en: String, ua: String) = ua
+        return renderTopNavbar(Globus.clientKind, ::_t, highlightedItem = highlightedItem, ui = this)
     }
 
     fun unmountShit() {
