@@ -328,6 +328,11 @@ class eagerEx<in This, out Value : Any>(val makeValue: (This, KProperty<*>) -> V
     }
 }
 
+abstract class KeyDef {
+    @Suppress("LeakingThis")
+    protected val name = this::class.simpleName!!
+}
+
 
 
 

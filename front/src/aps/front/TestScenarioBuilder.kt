@@ -593,12 +593,8 @@ fun TestScenarioBuilder.addFile(shit: TestShit, fileName: String, title: String,
     inputAppendValue("details", details)
     submitForm(
         shit,
-        assertionDescr = "Shit is added",
-        buildAction = {
-            buttonClick("primary")
-        },
-        tickingAssertionID = "$aid--4",
-        doneAssertionID = "$aid--5"
+        descr = "Shit is added",
+        aid = "$aid--submit"
     )
 }
 

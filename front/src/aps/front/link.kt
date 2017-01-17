@@ -97,38 +97,46 @@ fun jsFacing_pageLink(ui: World, def: dynamic) {
 }
 
 @GenerateSignatureMixes
-fun urlLink(url: String,
-            delayActionForFanciness: Boolean = false,
-            blinkOpts: dynamic = null,
-            @Mix linkParams: LinkParams,
-            @Mix attrs: Attrs = Attrs(),
-            @Mix style: Style = Style()
+fun urlLink(
+    key: String? = null,
+    url: String,
+    delayActionForFanciness: Boolean = false,
+    blinkOpts: dynamic = null,
+    @Mix linkParams: LinkParams,
+    @Mix attrs: Attrs = Attrs(),
+    @Mix style: Style = Style()
 ): ToReactElementable {
     val ui = hrss.browserOld.ui
     val id = puid()
+
+    fun doClick(): Promise<Unit> = async {
+        effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
+        await(TestGlobal.linkTickingLock.sutPause())
+        Shitus.byid(id).css("text-decoration", "none")
+
+        if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
+            await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
+        }
+
+        await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {async<Unit>{
+            await<dynamic>(ui.pushNavigate(url))
+        }})))
+
+        effects.blinkOff()
+        Shitus.byid(id).css("text-decoration", "")
+        await(TestGlobal.linkDoneLock.sutPause())
+    }
 
     return link(
         linkParams,
         attrs.copy(
             controlTypeName = attrs.controlTypeName ?: "urlLink",
             id = id,
-            onClicka = fun(_): Promise<Unit> = async {
-                effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
-                Shitus.byid(id).css("text-decoration", "none")
-
-                if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
-                    await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
-                }
-
-                await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {async<Unit>{
-                    await<dynamic>(ui.pushNavigate(url))
-                }})))
-
-                effects.blinkOff()
-                Shitus.byid(id).css("text-decoration", "")
-            }
+            onClicka = fun(_): Promise<Unit> = doClick()
         ),
-        style
+        style,
+        key = key,
+        doClick = ::doClick
     )
 }
 
@@ -138,43 +146,103 @@ data class LinkParams(
     val title: String? = null
 )
 
-@GenerateSignatureMixes
-fun link(@Mix params: LinkParams,
-         @Mix attrs: Attrs = Attrs(),
-         @Mix style: Style = Style()
-): ToReactElementable {
-    check(params.content != null || params.title != null) {"Either content or title"}
+class Link(
+    val params: LinkParams,
+    attrs: Attrs = Attrs(),
+    val style: Style = Style(),
+    val key: String? = null,
+    val doClick: (() -> Promise<Unit>)? = null
+) : Control2(attrs) {
+    init {
+        check(params.content != null || params.title != null) {"Either content or title"}
+    }
 
     val content = params.content ?: oldShitAsToReactElementable(jsFacing_spancTitle(json("title" to params.title)))
-    return object:Control2(attrs) {
-        override fun defaultControlTypeName() = "link"
-        override fun simpleOnRootClickImpl() = true
-        override fun simpleTestClickImpl() = true
 
-        override fun render(): ToReactElementable {
-            return oldShitAsToReactElementable(Shitus.aa(
-                json("id" to elementID,
-                     "className" to attrs.className,
-                     "style" to style.toReactStyle(),
-                     "href" to "#",
-                     "onMouseEnter" to {e: MouseEvent -> "__async"
-                         attrs.onMouseEnter?.let {it(e)}
-                         attrs.onMouseEntera?.let {__await(it(e))}
-                     },
-                     "onMouseLeave" to {e: MouseEvent -> "__async"
-                         attrs.onMouseLeave?.let {it(e)}
-                         attrs.onMouseLeava?.let {__await(it(e))}
-                     }),
-                content.toReactElement()
-            ))
+    companion object {
+        val instances = mutableMapOf<String, Link>()
+
+        fun instance(key: String): Link {
+            return instances[key] ?: bitch("No Link keyed `$key`")
         }
-
     }
+
+    override fun componentDidMount() {
+        if (key != null) {
+            instances[key] = this
+        }
+    }
+
+    override fun componentWillUnmount() {
+        if (key != null) {
+            instances.remove(key)
+        }
+    }
+
+    fun click() {
+        doClick!!()
+    }
+
+    override fun defaultControlTypeName() = "link"
+    override fun simpleOnRootClickImpl() = true
+    override fun simpleTestClickImpl() = true
+
+    override fun render(): ToReactElementable {
+        return oldShitAsToReactElementable(Shitus.aa(
+            json("id" to elementID,
+                 "className" to attrs.className,
+                 "style" to style.toReactStyle(),
+                 "href" to "#",
+                 "onMouseEnter" to {e: MouseEvent -> "__async"
+                     attrs.onMouseEnter?.let {it(e)}
+                     attrs.onMouseEntera?.let {__await(it(e))}
+                 },
+                 "onMouseLeave" to {e: MouseEvent -> "__async"
+                     attrs.onMouseLeave?.let {it(e)}
+                     attrs.onMouseLeava?.let {__await(it(e))}
+                 }),
+            content.toReactElement()
+        ))
+    }
+}
+
+@GenerateSignatureMixes
+fun link(
+    @Mix params: LinkParams,
+    @Mix attrs: Attrs = Attrs(),
+    @Mix style: Style = Style(),
+    key: String? = null,
+    doClick: (() -> Promise<Unit>)? = null
+): ToReactElementable {
+    return Link(params, attrs, style, key = key, doClick = doClick)
 }
 
 fun DummyMouseEvent() = MouseEvent("dummyTypeArg")
 
+fun TestScenarioBuilder.linkClick(key: String, handOpts: HandOpts = HandOpts()) {
+    acta("Clicking link `$key`") {async<Unit>{
+        val target = Link.instance(key)
+        await(TestUserActionAnimation.hand(target, handOpts))
+        target.click() // Not await
+    }}
+}
 
+fun TestScenarioBuilder.linkSequence(
+    descr: String,
+    key: String,
+    aid: String
+) {
+    sequence(
+        buildAction = {
+            linkClick(key)
+        },
+        assertionDescr = descr,
+        steps = listOf(
+            TestSequenceStep(TestGlobal.linkTickingLock, "$aid--1"),
+            TestSequenceStep(TestGlobal.linkDoneLock, "$aid--2")
+        )
+    )
+}
 
 
 

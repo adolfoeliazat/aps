@@ -216,7 +216,7 @@ class Test_UACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
         o.inputSetValue("title-100010", "The Cunt")
         o.inputPrependValue("details-100010", "A story about cunt follows. ")
 
-        o.formSequence(
+        o.formSequence_killme(
             buildAction = {
                 o.buttonClick("primary-100010")
             },
@@ -249,7 +249,7 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         o.inputSetValue("title-$orderFileID", "The Fuck You")
         o.inputPrependValue("details-$orderFileID", "A fucky piece of text. ")
 
-        o.formWithAnimationOnCompletionSequence(
+        o.formWithAnimationOnCompletionSequence_killme(
             shit,
             buildAction = {
                 o.buttonClick("primary-$orderFileID")
@@ -265,7 +265,7 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
         o.kicClick("edit-$orderFileID")
         o.assertScreenHTML("Piece of shit #$orderFileID is opened at new position", "166e3d38-e981-42fc-92ab-47e5fce8eca1")
         o.inputAppendValue("title-$orderFileID", " (yes, you)")
-        o.formWithAnimationOnCompletionSequence(
+        o.formWithAnimationOnCompletionSequence_killme(
             shit,
             buildAction = {
                 o.buttonClick("primary-$orderFileID")

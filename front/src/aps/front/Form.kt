@@ -70,7 +70,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                         json("style" to json("textAlign" to "left")),
 
                         Button(
-                            key = "primary" + req.fieldInstanceKeySuffix,
+                            key = fconst.key.primary.decl + req.fieldInstanceKeySuffix,
                             level = Button.Level.PRIMARY,
                             title = spec.primaryButtonTitle,
                             disabled = working,
@@ -125,7 +125,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 
                         if (spec.cancelButtonTitle != null) {
                             Button(
-                                key = "cancel" + req.fieldInstanceKeySuffix,
+                                key = fconst.key.cancel.decl + req.fieldInstanceKeySuffix,
                                 title = spec.cancelButtonTitle,
                                 disabled = working,
                                 style = Style(marginLeft = 10),
@@ -179,7 +179,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
     }
 }
 
-fun TestScenarioBuilder.formSequence(
+fun TestScenarioBuilder.formSequence_killme(
     buildAction: () -> Unit,
     assertionDescr: String,
     halfwayAssertionID: String,
@@ -204,7 +204,7 @@ fun TestScenarioBuilder.formSequence(
     o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
-fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
+fun TestScenarioBuilder.formWithAnimationOnCompletionSequence_killme(
     shit: TestShit,
     buildAction: () -> Unit,
     assertionDescr: String,
@@ -239,20 +239,21 @@ fun TestScenarioBuilder.formWithAnimationOnCompletionSequence(
 
 fun TestScenarioBuilder.submitForm(
     shit: TestShit,
-    assertionDescr: String,
-    buildAction: () -> Unit,
-    tickingAssertionID: String,
-    doneAssertionID: String
+    descr: String,
+    buildAction: (() -> Unit)? = null,
+    aid: String
 ) {
     sequence(
         buildAction = {
             acta {shit.imposeNextRequestTimestamp()}
-            buildAction()
+            (buildAction ?: {
+                buttonClick(fconst.key.primary.testRef)
+            })()
         },
-        assertionDescr = assertionDescr,
+        assertionDescr = descr,
         steps = listOf(
-            TestSequenceStep(TestGlobal.formTickingLock, tickingAssertionID),
-            TestSequenceStep(TestGlobal.formDoneLock, doneAssertionID)
+            TestSequenceStep(TestGlobal.formTickingLock, "$aid--1"),
+            TestSequenceStep(TestGlobal.formDoneLock, "$aid--2")
         )
     )
 }

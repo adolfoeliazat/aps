@@ -49,6 +49,8 @@ object TestGlobal {
     var overriddenClientKind: ClientKind? = null
     val topNavItemTickingLock by notNullNamed(TestLock())
     val topNavItemDoneLock by notNullNamed(TestLock())
+    val linkTickingLock by notNullNamed(TestLock())
+    val linkDoneLock by notNullNamed(TestLock())
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

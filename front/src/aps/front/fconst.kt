@@ -29,6 +29,17 @@ object fconst {
         object search : KeyDef() {val decl = name; val testRef = name}
         object filter : KeyDef() {val decl = name; val testRef = name}
         object ordering : KeyDef() {val decl = name; val testRef = name}
+        object primary : KeyDef() {val decl = name; val testRef = name}
+        object cancel : KeyDef() {val decl = name; val testRef = name}
+
+        object formInput {
+            object email {private val name = emailField(RequestMatumba()).name; val testRef = name}
+            object password {private val name = passwordField(RequestMatumba()).name; val testRef = name}
+        }
+
+        object link {
+            object createAccount : KeyDef() {val decl = name; val testRef = name}
+        }
     }
 
     object test {
@@ -53,12 +64,4 @@ object fconst {
     }
 }
 
-abstract class KeyDef {
-    protected val name = this::class.simpleName!!
-}
-
-//class Key(
-//    val decl: String,
-//    val testRef: String
-//)
 
