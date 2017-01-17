@@ -19,7 +19,10 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
             o.assertCustomerStaticIndexScreen()
             o.boot(worldName = "ivo1", aid = "63b74778-5e05-4dd9-ba73-c5657a42f3f1")
 
-            o.topNavItemClick(fconst.key.topNavItem.signIn.testRef)
+            o.topNavItemSequence(
+                descr = "Navigate sign-in page",
+                key = fconst.key.topNavItem.signIn.testRef,
+                aid = "c951e45d-3174-4d0f-8ec6-f4c4293754f1")
         }
     }
 }

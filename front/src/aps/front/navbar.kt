@@ -193,7 +193,7 @@ class TopNavItem(
         ).toToReactElementable()
     }
 
-    fun click(): Promise<dynamic> = async {
+    fun click(): Promise<Unit> = async {
         var dleft = 0
         var dwidth = 0
         if (pageName == "home") { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
@@ -202,13 +202,14 @@ class TopNavItem(
         }
 
         effects.blinkOn(json("target" to Shitus.byid(aid).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
+        await(TestGlobal.topNavItemTickingLock.sutPause())
 
-        await<dynamic>(ui!!.pushNavigate(href))
+        await(ui!!.pushNavigate(href))
 
-        timeoutSet(250) {
-            effects.blinkOff()
-            ExternalGlobus.bsClearMenus()
-        }
+        await(delay(250))
+        effects.blinkOff()
+        ExternalGlobus.bsClearMenus()
+        await(TestGlobal.topNavItemDoneLock.sutPause())
     }
 
     override fun componentDidMount() {
@@ -228,6 +229,22 @@ fun TestScenarioBuilder.topNavItemClick(key: String, handOpts: HandOpts = HandOp
     }}
 }
 
+fun TestScenarioBuilder.topNavItemSequence(
+    descr: String,
+    key: String,
+    aid: String
+) {
+    sequence(
+        buildAction = {
+            topNavItemClick(key)
+        },
+        assertionDescr = descr,
+        steps = listOf(
+            TestSequenceStep(TestGlobal.topNavItemTickingLock, "$aid--1"),
+            TestSequenceStep(TestGlobal.topNavItemDoneLock, "$aid--2")
+        )
+    )
+}
 
 
 

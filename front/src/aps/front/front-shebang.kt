@@ -47,6 +47,8 @@ object TestGlobal {
     val reloadPageTickingLock by notNullNamed(TestLock())
     val reloadPageDoneLock by notNullNamed(TestLock())
     var overriddenClientKind: ClientKind? = null
+    val topNavItemTickingLock by notNullNamed(TestLock())
+    val topNavItemDoneLock by notNullNamed(TestLock())
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!
