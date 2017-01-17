@@ -117,7 +117,7 @@ fun renderDiff(
                     holder.setContent(span("Working like a dog..."))
                     try {
                         await(fuckingRemoteCall.updateTestShit(id, actualTestShit))
-                        window.location.href = TestGlobal.lastTestHref
+                        Globus.realLocation.href = TestGlobal.lastTestHref
                     } catch(e: Throwable) {
                         holder.setContent(kspan(color = RED_900){it-"No fucking way"})
                         throw e

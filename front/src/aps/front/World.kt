@@ -132,7 +132,7 @@ class World(val name: String) {
     }
 
     fun replaceNavigate(where: dynamic): Promise<Unit> {"__async"
-        global.history.replaceState(null, "", where)
+        Globus.location.replaceState(null, "", where)
         return __await<dynamic>(loadPageForURL()) /ignora
     }
 
@@ -163,11 +163,11 @@ class World(val name: String) {
                 updateNavbar = update
                 return@elementCtor render@{
                     var pathname: dynamic = null
-                    if (global.location.pathname == "/test.html") {
+                    if (Globus.location.pathname == "/test.html") {
                         if (prevPathname == null) Shitus.raise("I want prevPathname")
                         pathname = prevPathname
                     } else {
-                        pathname = global.location.pathname
+                        pathname = Globus.location.pathname
                     }
 
                     var highlightedItem = Regex("/([^/]*?)\\.html").find(pathname)?.let {
@@ -219,7 +219,7 @@ class World(val name: String) {
 
     fun loadPageForURL(): Promise<Unit> = async {
         val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
-        noise.clog(window.location.href)
+        noise.clog(Globus.location.href)
 
         await(TestGlobal.loadPageForURLLock.sutPause1())
 
@@ -227,8 +227,8 @@ class World(val name: String) {
             val user = userMaybe
             val firstRun = loadPageForURLFirstRun
             loadPageForURLFirstRun = false
-            urlQuery = parseQueryString(window.location.href)
-            val pathname = window.location.pathname
+            urlQuery = parseQueryString(Globus.location.href)
+            val pathname = Globus.location.pathname
 
             var ultimateName =
                 if (pathname.endsWith(".html"))
@@ -238,14 +238,14 @@ class World(val name: String) {
                         null -> "index"
                         else -> when (user.state) {
                             UserState.COOL -> {
-                                window.history.pushState(null, "", "/dashboard.html")
+                                Globus.location.pushState(null, "", "/dashboard.html")
                                 "dashboard"
                             }
                             UserState.PROFILE_REJECTED,
                             UserState.PROFILE_PENDING,
                             UserState.PROFILE_APPROVAL_PENDING,
                             UserState.BANNED -> {
-                                window.history.pushState(null, "", "/profile.html")
+                                Globus.location.pushState(null, "", "/profile.html")
                                 "profile"
                             }
                         }
@@ -268,7 +268,7 @@ class World(val name: String) {
                 loader = ::staticLoader
             } else {
                 if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
-                    window.history.replaceState(null, "", "sign-in.html")
+                    Globus.location.replaceState(null, "", "sign-in.html")
                     ultimateName = "sign-in"
                 }
 

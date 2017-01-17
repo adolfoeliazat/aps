@@ -13,17 +13,6 @@ import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
 import kotlin.reflect.KProperty
 
-object testconst {
-    object url {
-        val customer = "http://aps-ua-customer.local:3012"
-    }
-    val filesRoot = "E:\\work\\aps\\back\\testfiles\\"
-    object sha1 {
-        val pieceOfTrial2 = "75509ed6012db7b99db0ba5051e306bef5760f75"
-    }
-
-    val defaultResponseTimeout = 5000
-}
 
 external interface IStorage {
     fun getItem(key: String): String?
@@ -80,14 +69,14 @@ fun _kindaNavigateToStaticContent(url: String): Promise<Unit> {
             await(fetchURL(url, "GET", null))
         }
 
-        window.history.pushState(null, "", url)
         val openingHeadTagIndex = content.indexOfOrDie("<head")
         val closingHTMLTagIndex = content.indexOfOrDie("</html>")
         val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
+
+        killEverythingVisual()
         docInnerHTML = innerHTMLContent
-
         loadCSS()
-
+        Globus.location.replaceWholeURL(url)
         ExternalGlobus.displayInitialShit()
     }
 }
@@ -103,9 +92,10 @@ var docInnerHTML: String
     get() = document.documentElement!!.innerHTML
     set(value) {document.documentElement!!.innerHTML = value}
 
-fun TestScenarioBuilder.assertCustomerIndexScreen() {
-    assertNavbarHTMLExt("Customer index", "11786d8d-6681-4579-a90b-7f602a59dd2d")
-    assertRootHTMLExt("Customer index", "9a386880-c709-4cbc-a97c-41bb5b559a36")
+fun TestScenarioBuilder.assertCustomerStaticIndexScreen() {
+    assertScreenHTML("Customer index", "aead9163-e41b-4ec1-9967-47670291dadc")
+//    assertNavbarHTMLExt("Customer index", "11786d8d-6681-4579-a90b-7f602a59dd2d")
+//    assertRootHTMLExt("Customer index", "9a386880-c709-4cbc-a97c-41bb5b559a36")
 }
 
 fun TestScenarioBuilder.assertCustomerSignInScreen() {
@@ -543,7 +533,7 @@ fun TestScenarioBuilder.genericRequestSequence(
     buildAction: () -> Unit,
     beforeResponse: () -> Unit,
     afterResponse: () -> Unit,
-    responseTimeout: Int = testconst.defaultResponseTimeout
+    responseTimeout: Int = fconst.test.defaultResponseTimeout
 ) {
     val o = this
     o.act {TestGlobal.requestPause = ResolvableShit<Unit>()}
@@ -561,7 +551,7 @@ fun TestScenarioBuilder.requestSequence(
     assertionDescr: String,
     halfwayAssertionID: String,
     finalAssertionID: String,
-    responseTimeout: Int = testconst.defaultResponseTimeout,
+    responseTimeout: Int = fconst.test.defaultResponseTimeout,
     halfwayOpts: AssertScreenOpts = AssertScreenOpts(),
     finalOpts: AssertScreenOpts = AssertScreenOpts()
 ) {
@@ -580,7 +570,7 @@ fun TestScenarioBuilder.requestSequenceNoFinalAssertion(
     buildAction: () -> Unit,
     assertionDescr: String,
     halfwayAssertionID: String,
-    responseTimeout: Int = testconst.defaultResponseTimeout,
+    responseTimeout: Int = fconst.test.defaultResponseTimeout,
     halfwayOpts: AssertScreenOpts = AssertScreenOpts()
 ) {
     val o = this
@@ -594,6 +584,13 @@ fun TestScenarioBuilder.requestSequenceNoFinalAssertion(
     )
 }
 
+fun TestScenarioBuilder.boot(worldName: String, aid: String) {
+    acta {async{
+        val world = World(worldName)
+        await(world.boot())
+    }}
+    assertScreenHTML("Boot: $worldName", aid)
+}
 
 
 

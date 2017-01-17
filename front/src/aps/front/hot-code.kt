@@ -31,18 +31,12 @@ class InitAutoReload {
         if (initialCtime != __await(GetSoftwareVersionRequest.send()).ctime) {
             if (realTypedStorageLocal.reloadTest) {
                 TestGlobal.lastTestHrefMaybe?.let {
-                    window.location.href = it
+                    Globus.realLocation.href = it
                     return
                 }
             }
 
-            window.location.reload()
-
-//            var href = window.location.href
-//                .replace(Regex("#.*$"), "") // Otherwise it doesn't actually reload page
-//            if (realTypedStorageLocal.reloadTest) TestShit.lastTestHref?.let {href = it}
-//
-//            window.location.href = href
+            Globus.realLocation.reload()
         } else {
             schedule()
         }

@@ -10,7 +10,7 @@ class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.initFuckingBrowser(fillTypedStorageLocal = {
             it.token = shit.bobulToken
         })
-        o.kindaNavigateToStaticContent("${testconst.url.customer}/orders.html")
+        o.kindaNavigateToStaticContent("${fconst.test.url.customer}/orders.html")
         o.assertCustomerBreatheScreen()
 
         o.acta {async{
@@ -35,7 +35,7 @@ class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
         o.tabsClickOnTab("tabs", "files")
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
-        o.typeIntoOpenFileDialog("${testconst.filesRoot}fuck you.rtf")
+        o.typeIntoOpenFileDialog("${fconst.test.filesRoot}fuck you.rtf")
         imf("fix me")
         // o.fileFieldWaitTillShitChanged("file")
         o.setValueDescribingStep("TextField-title.Input", "A warm word to my writer")
@@ -50,7 +50,7 @@ class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
 
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
-        o.typeIntoOpenFileDialog("${testconst.filesRoot}crazy monster boobs.rtf")
+        o.typeIntoOpenFileDialog("${fconst.test.filesRoot}crazy monster boobs.rtf")
         imf("fix me")
 //        o.fileFieldWaitTillShitChanged("file")
         o.setValueDescribingStep("TextField-title.Input", "Cool stuff")
@@ -64,7 +64,7 @@ class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
 
         o.buttonClick("plus")
         o.buttonUserInitiatedClick("upload")
-        o.typeIntoOpenFileDialog("${testconst.filesRoot}the trial.doc")
+        o.typeIntoOpenFileDialog("${fconst.test.filesRoot}the trial.doc")
         imf("fix me")
         // o.fileFieldWaitTillShitChanged("file")
         o.setValueDescribingStep("TextField-title.Input", "Процесс by Кафка")

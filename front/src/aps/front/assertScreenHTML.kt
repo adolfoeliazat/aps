@@ -69,9 +69,13 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
 
         val actual = buildString {
             append("-------------------- URL --------------------\n\n")
-            val url = window.location.href
+            var url = Globus.location.href
             val doubleSlash = url.indexOfOrDie("//")
-            val nextSlash = url.indexOfOrDie("/", doubleSlash + 2)
+            var nextSlash = url.indexOf("/", doubleSlash + 2)
+            if (nextSlash == -1) {
+                url += "/"
+                nextSlash = url.indexOf("/", doubleSlash + 2)
+            }
             append("ROOT" + url.substring(nextSlash) + "\n\n")
             append("-------------------- NAVBAR --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))

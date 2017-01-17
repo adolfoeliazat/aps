@@ -128,7 +128,7 @@ fun pushNavigate(ui: World, url: String): Promise<Unit> {"__async"
     __dlog.pushNavigate(url)
     ui.currentPage = null.asDynamic() // TODO:vgrechka Do something about this
 
-    global.history.pushState(null, "", url)
+    Globus.location.pushState(null, "", url)
     return __await(ui.loadPageForURL()) /ignora
 }
 
@@ -251,7 +251,7 @@ val elKillme: dynamic = {
 }
 
 fun getURLQuery(): Map<String, String> {
-    return parseQueryString(global.location.href)
+    return parseQueryString(Globus.location.href)
 }
 
 fun labe(def: dynamic): dynamic {

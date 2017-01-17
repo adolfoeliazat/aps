@@ -72,7 +72,7 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
         o.section("Admin checks shit") {
             o.actionStep("Admin opens browser") {
                 o.act {
-                    initialWorldURL = window.location.href
+                    initialWorldURL = Globus.realLocation.href
                     initialWorld.unmountShit()
                     putTinyTestContextLabel("Admin: Dasja")
                 }
@@ -113,7 +113,7 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
                 o.act {
                     adminWorld.unmountShit()
                     putTinyTestContextLabel("Writer: Kafka #2")
-                    window.history.pushState(null, "", "http://aps-ua-writer.local:3022/profile.html")
+                    Globus.location.pushState(null, "", "http://aps-ua-writer.local:3022/profile.html")
                 }
             }
             initNewBrowser(o, fillStorageLocal = {it.token = initialStorageLocal.token})

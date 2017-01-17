@@ -19,6 +19,17 @@ object fconst {
         object default {
             val animationHalfwaySignalTimeout = 1000
         }
+
+        object url {
+            val customer = "http://aps-ua-customer.local:3012"
+        }
+
+        object sha1 {
+            val pieceOfTrial2 = "75509ed6012db7b99db0ba5051e306bef5760f75"
+        }
+
+        val filesRoot = "E:\\work\\aps\\back\\testfiles\\"
+        val defaultResponseTimeout = 5000
     }
 
     object storage {

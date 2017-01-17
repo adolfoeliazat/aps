@@ -93,11 +93,9 @@ class TestCommon(val sim: dynamic) {
 }
 
 fun jsFacing_igniteTestShit() = async<Unit> {
-//    val urlObject = jshit.utils.url.parse(global.location.href)
-//    val urlQuery = jshit.utils.querystring.parse(urlObject.query)
     ExternalGlobus.DB = "apsTestOnTestServer"
     Globus.isTest = true
-    val urlQuery = parseQueryString(global.location.href)
+    val urlQuery = parseQueryString(Globus.realLocation.href)
 
     for (name in jsArrayToListOfDynamic(Shitus.tokens("DEBUG_RPC_LAG_FOR_MANUAL_TESTS"))) {
         if (urlQuery[name] != undefined) {
@@ -134,7 +132,7 @@ fun jsFacing_igniteTestShit() = async<Unit> {
 private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String, String>): Promise<Unit> {"__async"
     val suite: TestSuite = instantiate(testSuiteName)
     TestGlobal.lastTestSuite = suite
-    Globus.realTypedStorageLocal.lastTestSuiteURL = window.location.href
+    Globus.realTypedStorageLocal.lastTestSuiteURL = Globus.realLocation.href
     for (scenario in suite.scenarios) {
         clog("=====", "Running scenario", ctorName(scenario), "=====")
         val res = __await(runTest(scenario, urlQuery, showTestPassedPane = false))
@@ -172,7 +170,7 @@ private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promi
 private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
     val opts = TestOptions.load(urlQuery)
 
-    Globus.realTypedStorageLocal.lastTestURL = window.location.href
+    Globus.realTypedStorageLocal.lastTestURL = Globus.realLocation.href
 
     TestGlobal.lastTestMaybe = scenario
     TestGlobal.lastTestOptsMaybe = opts
@@ -214,11 +212,11 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
 //        global.DB = "aps-test"
 //        global.sessionStorage.setItem("DB", global.DB)
 
-        val initialHref = window.location.pathname + window.location.search
+        val initialHref = Globus.realLocation.pathname + Globus.realLocation.search
         global.addEventListener("keydown", {e: KeyboardEvent ->
             if (e.altKey && e.code == "KeyR") {
                 preventAndStop(e)
-                window.location.href = initialHref
+                Globus.realLocation.href = initialHref
             }
         })
 
@@ -278,7 +276,8 @@ private fun testSomethingToURL(name: String, nameParam: String, opts: TestOption
     val hostPort = when {
         name.contains("Writer") -> "aps-ua-writer.local:3022"
         name.contains("Customer") -> "aps-ua-customer.local:3012"
-        else -> bitch("Cannot figure out test URL hostPort for [$name]")
+        else -> "aps-ua-writer.local:3022"
+//        else -> bitch("Cannot figure out test URL hostPort for [$name]")
     }
 
     return buildString {

@@ -336,13 +336,13 @@ fun TestScenarioBuilder.endWorkRegion() {
 fun rerunTestButton() = Button(
     icon = fa.refresh,
     onClick = {
-        window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
+        Globus.realLocation.href = Globus.realTypedStorageLocal.lastTestURL!!
     })
 
 fun rerunTestSlowlyButton(): Button {
     fun go(templateTitle: String) {
         Globus.realTypedStorageLocal.oneOffTestOptionsTemplateTitle = templateTitle
-        window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
+        Globus.realLocation.href = Globus.realTypedStorageLocal.lastTestURL!!
     }
 
     return Button(
@@ -406,7 +406,7 @@ fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: Str
         assertionDescr = assertionDescr,
         buildAction = {
             buttonUserInitiatedClick("${fconst.key.upload.testRef}$keySuffix")
-            typeIntoOpenFileDialog(testconst.filesRoot + fileName)
+            typeIntoOpenFileDialog(fconst.test.filesRoot + fileName)
         },
         steps = listOf(
             TestSequenceStep(TestGlobal.fileFieldChangedLock, assertionID)
@@ -506,13 +506,13 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
         dlog("Taking snapshot ${snapshot.id}")
         await(send(TestTakeSnapshotRequest()-{o->
             o.name.value = snapshot.id
-            o.url.value = window.location.href // TODO:vgrechka @kill
+            o.url.value = Globus.realLocation.href // TODO:vgrechka @kill
         }))
 
         val store = TestGlobal.browser.typedStorageLocal.store
         gloshit.store = store
         val clientState = ClientStateSnapshot(
-            url = window.location.href,
+            url = Globus.realLocation.href,
             nextRequestTimestampIndex = shit.nextRequestTimestampIndex,
             storageItems = (mutableListOf<ClientStateSnapshot.StorageItem>()-{o->
                 for (i in 0 until store.length) {
@@ -551,7 +551,8 @@ class ClientStateSnapshot (
 
 fun TestScenarioBuilder.initialShit(test: TestScenario) {
     acta {async{
-        DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
+        killEverythingVisual()
+        Globus.location = FakeLocationProxy(Globus.realLocation.href)
 
         docInnerHTML = "<h3>Running Test: ${ctorName(test)}</h3><hr>"
         measureAndReportToDocumentElement("Resetting database") {

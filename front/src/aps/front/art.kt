@@ -108,7 +108,7 @@ object art {
     var testInstructions: Iterable<TestInstruction> by HotReloadSurvivingFuckingShit("art_testInstructions")
 
     fun uiState(def: dynamic): Promise<Unit> {"__async"
-        val url: String = global.location.href // Capture location for reassertion on hot reload, as it will be changed to "/test.html..."
+        val url: String = Globus.location.href // Capture location for reassertion on hot reload, as it will be changed to "/test.html..."
 
         hrss.reassertUIState = {arg: dynamic -> "__async"
             val scrollThere: dynamic = arg.scrollThere
@@ -416,11 +416,11 @@ object art {
                     actions = listOf(
                         // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 1
                         jsLink(json("title" to "Run until " + untilParamValue, "onClick" to {
-                            var href = window.location.href
+                            var href = Globus.realLocation.href
                             href = href.replace(Regex("&from[^&]*"), "")
                             href = href.replace(Regex("&until[^&]*"), "")
                             href += "&until=" + untilParamValue
-                            window.location.href = href
+                            Globus.realLocation.href = href
                         }))
                     )
                 )
@@ -443,11 +443,11 @@ object art {
                     // TODO:vgrechka @duplication 4dfaa71f-4eaa-4ce9-992f-60f9587f69ae 2
                     actions = listOf(
                         jsLink(json("title" to "Run from", "onClick" to {
-                            var href = window.location.href
+                            var href = Globus.realLocation.href
                             href = href.replace(Regex("&from[^&]*"), "")
                             href = href.replace(Regex("&until[^&]*"), "")
                             href += "&from=" + instr.name
-                            window.location.href = href
+                            Globus.realLocation.href = href
                         }))
                     )
                 )
@@ -1227,7 +1227,7 @@ fun openTestListPane() {
             fun testLink(testName: String, opts: TestOptions, title: String) = link(
                 title = title,
                 onClick = {
-                    window.location.href = testNameToURL(testName, opts)
+                    Globus.realLocation.href = testNameToURL(testName, opts)
                 })
 
             val lastName = TestGlobal.lastTest.name
@@ -1248,7 +1248,7 @@ fun openTestListPane() {
                 o- kdiv(fontWeight = "bold"){o->
                     val testSuiteName = suite::class.simpleName!!
                     o- link(title = testSuiteName, color = BLACK_BOOT, onClick = {
-                        window.location.href = testSuiteNameToURL(testSuiteName, defaultOpts)
+                        Globus.realLocation.href = testSuiteNameToURL(testSuiteName, defaultOpts)
                     })
                 }
                 for (x in suite.scenarios) {

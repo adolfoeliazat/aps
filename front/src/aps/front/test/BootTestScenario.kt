@@ -31,7 +31,7 @@ abstract class BootTestScenario : StepBasedTestScenario() {
             }
 
             if (SLOWISH) await(delay(1000))
-            window.history.pushState(null, "", url)
+            Globus.location.pushState(null, "", url)
             val openingHeadTagIndex = content.indexOfOrDie("<head")
             val closingHTMLTagIndex = content.indexOfOrDie("</html>")
             val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)

@@ -67,7 +67,7 @@ class DebugLogPage(val world: World) {
                 MenuItem("Clear") {async{
                     clog("Clearing all fucking shit")
                     await(fedis.del(listOf("${RedisLogMessage.ROOT_ID}:children")))
-                    window.location.reload()
+                    Globus.realLocation.reload()
                 }}
             ))),
 

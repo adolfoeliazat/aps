@@ -72,7 +72,7 @@ fun parseQueryString(href: String): Map<String, String> {
     var match: dynamic = null
     val store = mutableMapOf<String, String>()
 
-    var haystack = global.location.search
+    var haystack = Globus.location.search
     haystack = haystack.substring(haystack.indexOf('?') + 1, haystack.length)
 
     while (true) {

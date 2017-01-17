@@ -338,7 +338,7 @@ class Test_UACustomer_Order_Files_Misc : TestUACustomer_Order_Files_Base() {
             o.assertScreenHTML("Title and details changed", "7e053deb-06da-40f0-918a-c2166a858f83")
 
             o.section("Check that file remains unchanged") {
-                o.expectPieceOfShitDownload(PieceOfShitDownload(100006, "piece of trial 2.rtf", forbidden = false, sha1 = testconst.sha1.pieceOfTrial2)) {
+                o.expectPieceOfShitDownload(PieceOfShitDownload(100006, "piece of trial 2.rtf", forbidden = false, sha1 = fconst.test.sha1.pieceOfTrial2)) {
                     o.kicClick("download-100006")
                 }
             }
@@ -462,7 +462,7 @@ fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(shit: TestShit, setUpUsers
     o.initFuckingBrowser(fillTypedStorageLocal = {
         it.token = shit.bobulToken
     })
-    o.kindaNavigateToStaticContent("${testconst.url.customer}/order.html?id=100000&tab=files")
+    o.kindaNavigateToStaticContent("${fconst.test.url.customer}/order.html?id=100000&tab=files")
     o.assertCustomerBreatheScreen()
 
     o.acta {

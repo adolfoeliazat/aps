@@ -124,6 +124,34 @@ object css {
     object test : Group(null) {
         val width = "45rem"
 
+        object crossWorld : Group(this) {
+            val locationPane by Style("""
+                position: fixed;
+                top: -0.1rem;
+                left: 0rem;
+                width: 100%;
+                background-color: transparent;
+                border: none;
+                color: #999;
+                font-weight: normal;
+                font-size: 1rem;
+                font-family: arial narrow;
+                z-index: 100000;
+                padding: 0rem;
+                text-align: center;
+            """)
+
+            val label by Style("""
+                border-bottom: 1px solid #bbb;
+                border-right: 1px solid #bbb;
+                border-left: 1px solid #bbb;
+                padding: 0rem 0.3rem;
+                border-bottom-right-radius: 0.4rem;
+                border-bottom-left-radius: 0.4rem;
+                background-color: #eee;
+            """)
+        }
+
         object popup : Group(this) {
             val pause by Style("""
                 position: fixed;

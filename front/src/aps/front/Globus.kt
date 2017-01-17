@@ -6,6 +6,7 @@ import into.kommon.*
 import org.w3c.dom.Storage
 import kotlin.browser.localStorage
 import kotlin.browser.window
+import kotlin.properties.Delegates.notNull
 import kotlin.reflect.KProperty
 
 //val storageLocal: StorageLocal get() = Globus.browser.storageLocal
@@ -30,6 +31,8 @@ object Globus {
     val lang: Language get() = Language.valueOf(ExternalGlobus.LANG)
     val mode by lazy {Mode.valueOf(ExternalGlobus.MODE)}
     var worldMaybe: World? = null
+    val realLocation = RealLocationProxy()
+    var location: LocationProxy = realLocation
 
     val world get() = worldMaybe!!
 

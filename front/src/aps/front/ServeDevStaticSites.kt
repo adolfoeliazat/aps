@@ -34,6 +34,11 @@ object ServeDevStaticSites {
 
     fun serve(site: String, port: Int) {
         val app = express()
+        app.use {req: dynamic, res: dynamic, next: dynamic ->
+            res.header("Access-Control-Allow-Origin", "*")
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+            next()
+        }
         app.use(express.static("$APS_HOME/front/out/static/$site"))
 
         app.listen(port) {

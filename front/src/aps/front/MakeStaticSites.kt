@@ -1073,12 +1073,16 @@ object MakeStaticSites {
     <script>
         window.storageLocalForStaticContent = localStorage
 
+        function dlog(...args) {
+            console.log.apply(console.log, args)
+        }
+
         function displayInitialShit() {
             if (window.storageLocalForStaticContent.getItem('token')) {
-                console.log('displayInitialShit -- token')
+                dlog('displayInitialShit -- token')
                 document.getElementById('ticker').style.display = ''
             } else {
-                console.log('displayInitialShit -- no token')
+                dlog('displayInitialShit -- no token')
                 makeSignInNavbarLinkVisible()
                 document.getElementById('staticShit').style.display = ''
                 window.staticShitIsRenderedStatically = true
@@ -1157,7 +1161,7 @@ object MakeStaticSites {
                 script.type = 'text/javascript'
                 script.async = true
                 script.onload = _=> {
-                    console.log('Loaded ' + src)
+                    dlog('Loaded ' + src)
                     resolve()
                 }
                 script.src = src

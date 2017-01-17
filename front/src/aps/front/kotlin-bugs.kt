@@ -7,6 +7,23 @@ import into.kommon.*
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
+//fun lousyRoutine1() {
+//    throw Exception("I am a regular exception")
+//}
+//
+//fun lousyRoutine2() {
+//    var notInitialized by notNull<Int>()
+//    console.log(notInitialized)
+//}
+//
+//fun qwe_goodStack() {
+//    lousyRoutine1()
+//}
+//
+//fun qwe_badStack() {
+//    lousyRoutine2()
+//}
+
 
 //fun qwe_breaks() {
 //    123.let {

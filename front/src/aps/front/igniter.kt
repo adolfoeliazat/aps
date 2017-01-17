@@ -57,14 +57,6 @@ fun igniteShit(): Promise<Unit> {"__async"
     hrss.lang = global.LANG
     hrss._t = Shitus.makeT(hrss.lang)
 
-//    if (MODE == "debug") {
-//        Shitus.initDebugFunctionsShit()
-//    }
-
-//    if (global.location.pathname.endsWith("/test.html")) {
-
-//    fixModalJumping()
-
     loadCSS()
 
     window.onmessage = fun(e: Event) {
@@ -84,7 +76,7 @@ fun igniteShit(): Promise<Unit> {"__async"
         wtf("Some asshole has sent me an obscure message")
     }
 
-    val search = window.location.search
+    val search = Globus.realLocation.search
     if (search.contains("test=") || search.contains("testSuite=")) {
         __await(jsFacing_igniteTestShit())
     } else {

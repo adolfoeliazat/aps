@@ -58,12 +58,12 @@ private object DebugShitToIgnite {
 
 @Suppress("Unused")
 fun runLastTest() {
-    window.location.href = Globus.realTypedStorageLocal.lastTestURL!!
+    Globus.realLocation.href = Globus.realTypedStorageLocal.lastTestURL!!
 }
 
 @Suppress("Unused")
 fun runLastTestSuite() {
-    window.location.href = Globus.realTypedStorageLocal.lastTestSuiteURL!!
+    Globus.realLocation.href = Globus.realTypedStorageLocal.lastTestSuiteURL!!
 }
 
 @Suppress("Unused")

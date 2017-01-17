@@ -14,6 +14,8 @@ fun <T> async(block: suspend () -> T): Promise<T> =
             }
 
             override fun resumeWithException(exception: Throwable) {
+                console.error("----- resumeWithException -----")
+                console.error(exception.stack)
                 reject(exception)
             }
         })
