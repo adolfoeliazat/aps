@@ -65,6 +65,7 @@ fun TestScenarioBuilder.kindaNavigateToStaticContent(url: String) {
 
 fun _kindaNavigateToStaticContent(url: String): Promise<Unit> {
     return async {
+        dlog("_kindaNavigateToStaticContent: $url")
         val content = measureAndReportToDocumentElement("Loading $url") {
             await(fetchURL(url, "GET", null))
         }

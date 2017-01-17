@@ -86,7 +86,6 @@ fun isDynamicPage(clientKind: ClientKind, name: String): Boolean =
         ClientKind.WRITER -> writerDynamicPageNames().indexOf(name) != -1
     }
 
-val theClientKind: ClientKind get() = ClientKind.valueOf(global.CLIENT_KIND)
 
 
 fun userKindTitle(kind: UserKind) = when (kind) {

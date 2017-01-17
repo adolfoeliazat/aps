@@ -255,13 +255,10 @@ class World(val name: String) {
             var loader: dynamic = null
             fun isStaticPage(name: String) = !isDynamicPage(name)
 
-//        js("debugger")
             if (isStaticPage(ultimateName)) {
                 fun staticLoader(): Promise<Unit> = async {
-                    //                val href = if (ultimateName == "index") "/" else "${ultimateName}.html"
-                    val href = "${ultimateName}.html"
-//                var content: dynamic = (await<dynamic>(global.superagent.get(href).send())).text
-                    var content = await(fetchFromURL("GET", href, null, {it}))
+                    val url = Globus.location.baseWithoutSlash + "/$ultimateName.html"
+                    var content = await(fetchFromURL("GET", url, null, {it}))
                     content = content.substring(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
                     setRootContent(rawHTML(content))
                 }
@@ -349,13 +346,13 @@ class World(val name: String) {
                 __reawait(DebugPage(this).load())
             })
             "orders" -> ({
-                when (theClientKind) {
+                when (Globus.clientKind) {
                     ClientKind.CUSTOMER -> CustomerUAOrdersPage(this).load()
                     ClientKind.WRITER -> WriterOrdersPage(this).load()
                 }
             })
             "order" -> ({
-                when (theClientKind) {
+                when (Globus.clientKind) {
                     ClientKind.CUSTOMER -> CustomerSingleUAOrderPage(this).load()
                     ClientKind.WRITER -> imf()
                 }

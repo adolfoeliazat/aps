@@ -9,6 +9,8 @@ interface LocationProxy {
     val href: String
     val pathname: String
     val search: String
+    val baseWithoutSlash: String
+    val host: String
     fun pushState(data: Any?, title: String, newURL: String)
     fun replaceState(data: Any?, title: String, newURL: String)
     fun replaceWholeURL(newURL: String)
@@ -25,6 +27,12 @@ class RealLocationProxy : LocationProxy {
 
     override val search: String
         get() = window.location.search
+
+    override val baseWithoutSlash: String
+        get() = window.location.protocol + "//" + window.location.host
+
+    override val host: String
+        get() = window.location.host
 
     override fun reload() {
         window.location.reload()
@@ -53,6 +61,8 @@ class FakeLocationProxy(initialHref: String) : LocationProxy {
     override val href get() = url.href
     override val pathname get() = url.pathname
     override val search get() = url.search
+    override val baseWithoutSlash get() = url.protocol + "//" + url.host
+    override val host get() = url.host
 
     override fun pushState(data: Any?, title: String, newURL: String) {
         replaceState(data, title, newURL)
@@ -60,7 +70,7 @@ class FakeLocationProxy(initialHref: String) : LocationProxy {
 
     override fun replaceState(data: Any?, title: String, newURL: String) {
         check(newURL.startsWith("/")) {"newURL should start with /"}
-        url = URL(url.protocol + "//" + url.host + newURL)
+        url = URL(baseWithoutSlash + newURL)
         crossWorld.locationControl.update()
     }
 

@@ -34,6 +34,14 @@ object Globus {
     val realLocation = RealLocationProxy()
     var location: LocationProxy = realLocation
 
+    val clientKind: ClientKind get() {
+        return when {
+            location.host.contains("customer") -> ClientKind.CUSTOMER
+            location.host.contains("writer") -> ClientKind.WRITER
+            else -> wtf("clientKind")
+        }
+    }
+
     val world get() = worldMaybe!!
 
     val realStorageLocal = object:StorageLocal {

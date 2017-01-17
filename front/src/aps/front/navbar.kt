@@ -14,7 +14,7 @@ fun jsFacing_renderTopNavbar_calledByFuckingUI(ui: World, arg: dynamic): dynamic
     val highlightedItem = arg.highlightedItem
 
     fun _t(en: String, ua: String) = ua
-    return renderTopNavbar(theClientKind, ::_t, json("highlightedItem" to highlightedItem, "ui" to ui))
+    return renderTopNavbar(Globus.clientKind, ::_t, json("highlightedItem" to highlightedItem, "ui" to ui))
 }
 
 fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: dynamic): dynamic {
