@@ -210,7 +210,7 @@ fun <Res> callMatumba(req: RequestMatumba, token: String?): Promise<Res> =
 
 fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?): Promise<Res> = async {
     val payload = js("({})")
-    payload.clientKind = global.CLIENT_KIND
+    payload.clientKind = Globus.clientKind.name
     payload.lang = global.LANG
     token?.let {payload.token = it}
 
@@ -227,7 +227,7 @@ fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promise<ZimbabweRes
 fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> = async {
     try {
         val payload = js("({})")
-        payload.clientKind = global.CLIENT_KIND
+        payload.clientKind = Globus.clientKind.name
         payload.lang = global.LANG
         token?.let {payload.token = it}
 

@@ -76,7 +76,11 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                 url += "/"
                 nextSlash = url.indexOf("/", doubleSlash + 2)
             }
-            append("ROOT" + url.substring(nextSlash) + "\n\n")
+            val base = when (Globus.clientKind) {
+                ClientKind.UA_CUSTOMER -> "[uac]"
+                ClientKind.UA_WRITER -> "[uaw]"
+            }
+            append(base + url.substring(nextSlash) + "\n\n")
             append("-------------------- NAVBAR --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
             if (!endsWith("\n")) append("\n")

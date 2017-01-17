@@ -12,7 +12,9 @@
 
   "content_scripts": [
     {
-      "matches": ["http://aps-ua-customer.local:3012/*"],
+      "matches": [
+        "http://aps-ua-customer.local:3012/*",
+        "http://aps-ua-writer.local:3022/*"],
       "run_at": "document_start",
       "js": ["content-script.js"]
     }

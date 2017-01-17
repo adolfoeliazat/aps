@@ -565,12 +565,13 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
     }
 
     fun selectBrowser(clientKind: String, browserName: String, stateDescription: String): Iterable<TestInstruction> {
+        die("Old shit: selectBrowser")
         val res = mutableListOf(
             TestInstruction.Step.NavigationStep("Trying to open dashboard page as " + browserName),
             //            jsonTestItem("step" to json("kind" to "navigation", "long" to "Trying to open dashboard page as " + browserName)),
 
             TestInstruction.Do({"__async"
-                global.CLIENT_KIND = clientKind
+//                global.CLIENT_KIND = clientKind
                 __await(host.selectNewBrowserAndNavigate(browserName, "dashboard.html")) /ignora
             }),
 

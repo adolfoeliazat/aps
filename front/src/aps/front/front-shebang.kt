@@ -46,6 +46,7 @@ object TestGlobal {
     var browser by notNull<Browser>()
     val reloadPageTickingLock by notNullNamed(TestLock())
     val reloadPageDoneLock by notNullNamed(TestLock())
+    var overriddenClientKind: ClientKind? = null
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!
@@ -76,14 +77,15 @@ fun writerDynamicPageNames(): List<String> {
 }
 
 fun jsFacing_isDynamicPage(name: String): Boolean {
-    if (global.CLIENT_KIND == UserKind.CUSTOMER.name) return customerDynamicPageNames().indexOf(name) != -1
+    if (Globus.clientKind == ClientKind.UA_CUSTOMER) return customerDynamicPageNames().indexOf(name) != -1
+//    if (global.CLIENT_KIND == UserKind.CUSTOMER.name) return customerDynamicPageNames().indexOf(name) != -1
     return writerDynamicPageNames().indexOf(name) != -1
 }
 
 fun isDynamicPage(clientKind: ClientKind, name: String): Boolean =
     when (clientKind) {
-        ClientKind.CUSTOMER -> customerDynamicPageNames().indexOf(name) != -1
-        ClientKind.WRITER -> writerDynamicPageNames().indexOf(name) != -1
+        ClientKind.UA_CUSTOMER -> customerDynamicPageNames().indexOf(name) != -1
+        ClientKind.UA_WRITER -> writerDynamicPageNames().indexOf(name) != -1
     }
 
 

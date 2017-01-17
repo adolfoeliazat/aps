@@ -86,27 +86,37 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                         }
                     }
 
-                    ctx.clientDomain = when (ctx.lang) {
-                        Language.EN -> when (ctx.clientKind) {
-                            ClientKind.CUSTOMER -> "aps-en-customer.local"
-                            ClientKind.WRITER -> "aps-en-writer.local"
-                        }
-                        Language.UA -> when (ctx.clientKind) {
-                            ClientKind.CUSTOMER -> "aps-ua-customer.local"
-                            ClientKind.WRITER -> "aps-ua-writer.local"
-                        }
+                    ctx.clientDomain = when (ctx.clientKind) {
+                        ClientKind.UA_CUSTOMER -> "aps-ua-customer.local"
+                        ClientKind.UA_WRITER -> "aps-ua-writer.local"
                     }
 
-                    ctx.clientPortSuffix = when (ctx.lang) {
-                        Language.EN -> when (ctx.clientKind) {
-                            ClientKind.CUSTOMER -> ":3011"
-                            ClientKind.WRITER -> ":3021"
-                        }
-                        Language.UA -> when (ctx.clientKind) {
-                            ClientKind.CUSTOMER -> ":3012"
-                            ClientKind.WRITER -> ":3022"
-                        }
+//                    ctx.clientDomain = when (ctx.lang) {
+//                        Language.EN -> when (ctx.clientKind) {
+//                            ClientKind.CUSTOMER -> "aps-en-customer.local"
+//                            ClientKind.WRITER -> "aps-en-writer.local"
+//                        }
+//                        Language.UA -> when (ctx.clientKind) {
+//                            ClientKind.CUSTOMER -> "aps-ua-customer.local"
+//                            ClientKind.WRITER -> "aps-ua-writer.local"
+//                        }
+//                    }
+
+                    ctx.clientPortSuffix = when (ctx.clientKind) {
+                        ClientKind.UA_CUSTOMER -> ":3012"
+                        ClientKind.UA_WRITER -> ":3022"
                     }
+
+//                    ctx.clientPortSuffix = when (ctx.lang) {
+//                        Language.EN -> when (ctx.clientKind) {
+//                            ClientKind.CUSTOMER -> ":3011"
+//                            ClientKind.WRITER -> ":3021"
+//                        }
+//                        Language.UA -> when (ctx.clientKind) {
+//                            ClientKind.CUSTOMER -> ":3012"
+//                            ClientKind.WRITER -> ":3022"
+//                        }
+//                    }
 
                     fun runShitWithMaybeDB(): Res {
                         // TODO:vgrechka Wrap each RPC in transaction    5928def7-392e-433f-99a8-9decfe959971

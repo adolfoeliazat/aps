@@ -44,7 +44,7 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
 
     var proseItems: dynamic = undefined
     val proseCounter = jsArrayOf(0)
-    if (clientKind == ClientKind.CUSTOMER) {
+    if (clientKind == ClientKind.UA_CUSTOMER) {
         proseItems = jsArrayOf(
         TopNavItem(json("name" to "why", "title" to t("Why Us?", "Почему мы?"), "counter" to proseCounter)),
         TopNavItem(json("name" to "prices", "title" to t("Prices", "Цены"), "counter" to proseCounter)),
@@ -66,7 +66,7 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
     var privateItems: dynamic = undefined
     val privateCounter = jsArrayOf(0)
     if (user != null) {
-        if (clientKind == ClientKind.CUSTOMER) {
+        if (clientKind == ClientKind.UA_CUSTOMER) {
             privateItems = jsArrayOf(
             TopNavItem(json("name" to "orders", "title" to t("My Orders", "Мои заказы"), "counter" to privateCounter)),
             TopNavItem(json("name" to "support", "title" to t("Support", "Поддержка"), "liveStatusFieldName" to "supportMenuBadge", "counter" to privateCounter))
@@ -118,7 +118,7 @@ fun renderTopNavbar(clientKind: ClientKind, t: (String, String) -> String, arg: 
     }
 
     var brand: dynamic = undefined
-    if (clientKind == ClientKind.CUSTOMER) {
+    if (clientKind == ClientKind.UA_CUSTOMER) {
         brand = "APS"
     } else {
         brand = t("Writer", "Писец")

@@ -25,7 +25,7 @@ enum class UserKind() {
 }
 
 enum class ClientKind {
-    CUSTOMER, WRITER
+    UA_CUSTOMER, UA_WRITER
 }
 
 enum class Language(val decimalPoint: String) {

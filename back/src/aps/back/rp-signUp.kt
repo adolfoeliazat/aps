@@ -34,13 +34,13 @@ import java.util.*
                     .set(t.UPDATED_AT, ctx.requestTimestamp)
                     .set(t.EMAIL, email)
                     .set(t.KIND, when (ctx.clientKind) {
-                        ClientKind.CUSTOMER -> JQUserKind.CUSTOMER
-                        ClientKind.WRITER -> JQUserKind.WRITER
+                        ClientKind.UA_CUSTOMER -> JQUserKind.CUSTOMER
+                        ClientKind.UA_WRITER -> JQUserKind.WRITER
                     })
                     .set(t.LANG, ctx.lang.name)
                     .set(t.STATE, when(ctx.clientKind) {
-                        ClientKind.CUSTOMER -> UserState.COOL.name
-                        ClientKind.WRITER -> UserState.PROFILE_PENDING.name
+                        ClientKind.UA_CUSTOMER -> UserState.COOL.name
+                        ClientKind.UA_WRITER -> UserState.PROFILE_PENDING.name
                     })
                     .set(t.PASSWORD_HASH, BCrypt.hashpw(password, BCrypt.gensalt()))
                     .set(t.FIRST_NAME, firstName)
@@ -54,16 +54,20 @@ import java.util.*
 
             EmailMatumba.send(Email(
                 to = "$firstName $lastName <$email>",
-                subject = when (ctx.lang) {
-                    Language.UA -> when (ctx.clientKind) {
-                        ClientKind.CUSTOMER -> "Пароль для APS"
-                        ClientKind.WRITER -> "Пароль для Writer UA"
-                    }
-                    Language.EN -> when (ctx.clientKind) {
-                        ClientKind.CUSTOMER -> imf("Email title for en-customer")
-                        ClientKind.WRITER -> imf("Email title for en-writer")
-                    }
+                subject = when (ctx.clientKind) {
+                    ClientKind.UA_CUSTOMER -> "Пароль для APS"
+                    ClientKind.UA_WRITER -> "Пароль для Writer UA"
                 },
+//                subject = when (ctx.lang) {
+//                    Language.UA -> when (ctx.clientKind) {
+//                        ClientKind.CUSTOMER -> "Пароль для APS"
+//                        ClientKind.WRITER -> "Пароль для Writer UA"
+//                    }
+//                    Language.EN -> when (ctx.clientKind) {
+//                        ClientKind.CUSTOMER -> imf("Email title for en-customer")
+//                        ClientKind.WRITER -> imf("Email title for en-writer")
+//                    }
+//                },
                 html = dedent(t(
                     en = """
                         TODO

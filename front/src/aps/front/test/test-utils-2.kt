@@ -132,12 +132,19 @@ fun TestScenarioBuilder.assertCustomerBreatheScreen() {
 }
 
 inline fun fiddlingWithGlobals(block: () -> Unit) {
-    val old_CLIENT_KIND = global.CLIENT_KIND
+    val old_overriddenClientKind = TestGlobal.overriddenClientKind
     try {
         block()
     } finally {
-        global.CLIENT_KIND = old_CLIENT_KIND
+        TestGlobal.overriddenClientKind = old_overriddenClientKind
     }
+
+//    val old_CLIENT_KIND = global.CLIENT_KIND
+//    try {
+//        block()
+//    } finally {
+//        global.CLIENT_KIND = old_CLIENT_KIND
+//    }
 }
 
 class Snapshot(
@@ -192,7 +199,7 @@ fun TestScenarioBuilder.setUpBobul(testShit: TestShit) {
             await(ImposeNextGeneratedPasswordRequest.send("bobul-secret"))
 
             fiddlingWithGlobals {
-                global.CLIENT_KIND = ClientKind.CUSTOMER.name
+                TestGlobal.overriddenClientKind = ClientKind.UA_CUSTOMER
 
                 testShit.bobulID = await(send(null, SignUpRequest()-{o->
                     o.agreeTerms.value = true
@@ -224,7 +231,7 @@ fun TestScenarioBuilder.setUpFedor(testShit: TestShit) {
             await(ImposeNextGeneratedPasswordRequest.send("fedor-secret"))
 
             fiddlingWithGlobals {
-                global.CLIENT_KIND = ClientKind.WRITER.name
+                TestGlobal.overriddenClientKind = ClientKind.UA_WRITER
 
                 testShit.fedorID = await(send(null, SignUpRequest()-{o->
                     o.agreeTerms.value = true
@@ -257,7 +264,7 @@ fun TestScenarioBuilder.setUpDasja(testShit: TestShit) {
             await(ImposeNextGeneratedPasswordRequest.send("fedor-secret"))
 
             fiddlingWithGlobals {
-                global.CLIENT_KIND = ClientKind.WRITER.name
+                TestGlobal.overriddenClientKind = ClientKind.UA_WRITER
 
                 testShit.dasjaID = "100000"
 
@@ -442,7 +449,7 @@ fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String)
     o.acta {async{
         measureAndReportToDocumentElement("Preparing some orders for Ivo Bobul") {
             fiddlingWithGlobals {
-                global.CLIENT_KIND = ClientKind.CUSTOMER.name
+                TestGlobal.overriddenClientKind = ClientKind.UA_CUSTOMER
 
                 await(testShit.imposeNextRequestTimestamp())
                 val createOrderResponse = await(send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->

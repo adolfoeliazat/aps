@@ -45,12 +45,9 @@ import into.kommon.*
             val dashboardURL = "http://${ctx.clientDomain}${ctx.clientPortSuffix}/dashboard.html"
             EmailMatumba.send(Email(
                 to = "${newUser.firstName} ${newUser.lastName} <${newUser.email}>",
-                subject = when (ctx.lang) {
-                    Language.UA -> when (ctx.clientKind) {
-                        ClientKind.CUSTOMER -> "Тебя пустили на APS"
-                        ClientKind.WRITER -> "Тебя пустили на Writer UA"
-                    }
-                    Language.EN -> imf("EN profile coolification email")
+                subject = when (ctx.clientKind) {
+                    ClientKind.UA_CUSTOMER -> "Тебя пустили на APS"
+                    ClientKind.UA_WRITER -> "Тебя пустили на Writer UA"
                 },
                 html = dedent(t(
                     en = """

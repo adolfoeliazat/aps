@@ -3,7 +3,7 @@ package aps.front
 import aps.*
 
 abstract class WriterBootTestScenario : BootTestScenario() {
-    override val clientKind = ClientKind.WRITER
+    override val clientKind = ClientKind.UA_WRITER
     lateinit var fuckerToken: String
 
     fun prepareFucker(fieldsReq: TestSetUserFieldsRequest): Promise<Unit> {"__async"

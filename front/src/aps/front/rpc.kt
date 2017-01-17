@@ -241,34 +241,6 @@ fun <Res> callRemoteProcedure(procedureName: String, req: Request): Promise<Res>
 
 
 
-//fun <Res> callRemoteProcedure(procedureName: String, req: RequestMatumba, token: String?): Promise<Res> {"__async"
-//    return __await(callRemoteProcedurePassingJSONObject(procedureName, dyna {r ->
-//        r.clientKind = global.CLIENT_KIND
-//        r.lang = global.LANG
-//        token?.let {r.token = it}
-//
-//        r.fields = js("({})")
-//
-////        r.arg = dyna {arg ->
-////            val dynamicReq: dynamic = req
-////            for (k in jsArrayToList(global.Object.keys(req))) {
-////                val dynamicValue = dynamicReq[k]
-////                arg[k] = when {
-////                    dynamicValue == null -> null
-////
-////                    // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    94315462-a862-4148-95a0-e45a0f73212d
-////                    dynamicValue.`name$` != null -> dynamicValue.`name$` // Kinda enum
-////
-//////                    global.Array.isArray(dynamicValue.array) -> {
-//////                        jsArrayToList(dynamicValue.array)
-//////                    }
-////
-////                    else -> dynamicValue
-////                }
-////            }
-////        }
-//    }))
-//}
 
 
 

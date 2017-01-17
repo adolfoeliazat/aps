@@ -35,9 +35,14 @@ object Globus {
     var location: LocationProxy = realLocation
 
     val clientKind: ClientKind get() {
+        if (isTest()) {
+            TestGlobal.overriddenClientKind?.let {return it}
+        }
+
+        val host = location.host
         return when {
-            location.host.contains("customer") -> ClientKind.CUSTOMER
-            location.host.contains("writer") -> ClientKind.WRITER
+            host.contains("ua") && host.contains("customer") -> ClientKind.UA_CUSTOMER
+            host.contains("ua") && host.contains("writer") -> ClientKind.UA_WRITER
             else -> wtf("clientKind")
         }
     }

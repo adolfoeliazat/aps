@@ -84,7 +84,7 @@ object MakeStaticSites {
                              root=root,
                              tabTitle=tabTitle,
                              lang=lang,
-                             clientKind=ClientKind.WRITER,
+                             clientKind=ClientKind.UA_WRITER,
                              content=kdiv(className="container"){o->
                                  o- content
                              }.toReactElement())
@@ -149,7 +149,7 @@ object MakeStaticSites {
                     AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.
                 """)
 
-            o- renderTestimonials(ClientKind.WRITER)
+            o- renderTestimonials(ClientKind.UA_WRITER)
 
             o- pageHeader(t(en="What We Offer", ua="Мы предлагаем"))
             o- horizBulletsRow(listOf(
@@ -527,7 +527,7 @@ object MakeStaticSites {
                              root=root,
                              tabTitle=tabTitle,
                              lang=lang,
-                             clientKind=ClientKind.CUSTOMER,
+                             clientKind=ClientKind.UA_CUSTOMER,
                              content=kdiv(className="container"){o->
                                  o- content
                              }.toReactElement())
@@ -592,7 +592,7 @@ object MakeStaticSites {
                     AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.
                 """)
 
-            o- renderTestimonials(ClientKind.CUSTOMER)
+            o- renderTestimonials(ClientKind.UA_CUSTOMER)
 
             o- pageHeader(t(en="What We Offer", ua="What We Offer"))
             o- horizBulletsRow(listOf(
@@ -1043,7 +1043,7 @@ object MakeStaticSites {
     <script>
     LANG = '${lang}'
     CLIENT_KIND = '${clientKind.name}'
-    setFavicon('${if (clientKind == ClientKind.CUSTOMER) "favicon-customer.ico" else "favicon-writer.ico"}')
+    setFavicon('${if (clientKind == ClientKind.UA_CUSTOMER) "favicon-customer.ico" else "favicon-writer.ico"}')
 
     function setFavicon(src) {
         var link = document.createElement('link')
@@ -1107,8 +1107,8 @@ object MakeStaticSites {
     <div style="background-color: #f8f8f8; border: 1px solid #e7e7e7; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding-top: 5px; padding-bottom: 5px; height: 28px;">
         <div class="container">
             ${when (clientKind) {
-                ClientKind.CUSTOMER -> "© Copyright 2015-2016 AcademicPaperServed. All rights reserved"
-                ClientKind.WRITER -> "© Copyright 2015-2016 Writer UA. All rights reserved"
+                ClientKind.UA_CUSTOMER -> "© Copyright 2015-2016 AcademicPaperServed. All rights reserved"
+                ClientKind.UA_WRITER -> "© Copyright 2015-2016 Writer UA. All rights reserved"
             }}
         </div>
     </div>

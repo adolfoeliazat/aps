@@ -61,6 +61,7 @@ fun igniteShit(): Promise<Unit> {"__async"
 
     window.onmessage = fun(e: Event) {
         e as MessageEvent
+        // dlog("Got window message", e)
 
         if (e.data == const.windowMessage.fileForbidden) return openErrorModal(t("TOTE", "Этот файл не для тебя"))
 

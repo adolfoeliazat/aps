@@ -347,14 +347,14 @@ class World(val name: String) {
             })
             "orders" -> ({
                 when (Globus.clientKind) {
-                    ClientKind.CUSTOMER -> CustomerUAOrdersPage(this).load()
-                    ClientKind.WRITER -> WriterOrdersPage(this).load()
+                    ClientKind.UA_CUSTOMER -> CustomerUAOrdersPage(this).load()
+                    ClientKind.UA_WRITER -> WriterOrdersPage(this).load()
                 }
             })
             "order" -> ({
                 when (Globus.clientKind) {
-                    ClientKind.CUSTOMER -> CustomerSingleUAOrderPage(this).load()
-                    ClientKind.WRITER -> imf()
+                    ClientKind.UA_CUSTOMER -> CustomerSingleUAOrderPage(this).load()
+                    ClientKind.UA_WRITER -> imf()
                 }
             })
             else -> wtf("privatePageLoader for [$name]")
