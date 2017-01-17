@@ -13,11 +13,12 @@ import kotlin.reflect.KProperty
 val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLocal
 
 @native interface IExternalGlobus {
-    fun displayInitialShit()
     var storageLocalForStaticContent: IStorage
     var LANG: String
     var MODE: String
     var DB: String
+    fun displayInitialShit()
+    fun bsClearMenus()
 }
 @JsName("global")
 @native val ExternalGlobus: IExternalGlobus = noImpl

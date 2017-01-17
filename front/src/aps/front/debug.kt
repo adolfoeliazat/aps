@@ -21,6 +21,7 @@ fun dumpControls() {
     for (key in FileField.instances.keys) clog("FileField: $key")
     for (key in Select.instances.keys) clog("Select: $key")
     for (key in kic.instances.keys) clog("kic: $key")
+    for (key in TopNavItem.instances.keys) clog("TopNavItem: $key")
 }
 
 fun igniteDebugShit(): Promise<Unit> = DebugShitToIgnite.nothing()

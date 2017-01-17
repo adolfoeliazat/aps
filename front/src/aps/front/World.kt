@@ -319,7 +319,7 @@ class World(val name: String) {
         }
     }
 
-    fun renderTopNavbar(highlightedItem: String?): dynamic {
+    fun renderTopNavbar(highlightedItem: String?): ReactElement {
         fun _t(en: String, ua: String) = ua
         return renderTopNavbar(Globus.clientKind, ::_t, highlightedItem = highlightedItem, ui = this)
     }

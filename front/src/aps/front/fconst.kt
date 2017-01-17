@@ -6,6 +6,22 @@ object fconst {
     val defaultScrollBursts = 8
 
     object key {
+        object topNavItem {
+            object why : KeyDef() {val decl = name; val testRef = name}
+            object prices : KeyDef() {val decl = name; val testRef = name}
+            object samples : KeyDef() {val decl = name; val testRef = name}
+            object faq : KeyDef() {val decl = name; val testRef = name}
+            object contact : KeyDef() {val decl = name; val testRef = name}
+            object blog : KeyDef() {val decl = name; val testRef = name}
+            object orders : KeyDef() {val decl = name; val testRef = name}
+            object support : KeyDef() {val decl = name; val testRef = name}
+            object store : KeyDef() {val decl = name; val testRef = name}
+            object profile : KeyDef() {val decl = name; val testRef = name}
+            object adminUsers : KeyDef() {val decl = name; val testRef = name}
+            object dashboard : KeyDef() {val decl = name; val testRef = name}
+            object signIn : KeyDef() {val decl = name; val testRef = name}
+        }
+
         object refreshPage : KeyDef() {val decl = name; val testRef = name}
         object plus : KeyDef() {val decl = name; val testRef = name}
         object upload : KeyDef() {val decl = name; val testRef = name}
