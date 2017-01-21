@@ -43,7 +43,7 @@ sealed class TestInstruction() : DefinitionStackHolder {
     var snapshot: Snapshot? = null
     var debugDescription: String? = null
 
-    override fun promiseDefinitionStack(): Promise<dynamic> {
+    override fun promiseDefinitionStack(): Promisoid<dynamic> {
         throw UnsupportedOperationException("Implement me, please, fuck you")
     }
 
@@ -52,7 +52,7 @@ sealed class TestInstruction() : DefinitionStackHolder {
     }
 
     class WorldPoint(val name: String) : TestInstruction()
-    class Do(val action: () -> Promise<Unit>) : TestInstruction()
+    class Do(val action: () -> Promisoid<Unit>) : TestInstruction()
 
     sealed class Step(val long: String, val rowBackgroundColor: Color?) : TestInstruction() {
         var executed = false
@@ -107,25 +107,25 @@ object art {
     var actionPlaceholderTag: String? = null
     var testInstructions: Iterable<TestInstruction> by HotReloadSurvivingFuckingShit("art_testInstructions")
 
-    fun uiState(def: dynamic): Promise<Unit> {"__async"
+    fun uiState(def: dynamic): Promisoid<Unit> = async {
         val url: String = Globus.location.href // Capture location for reassertion on hot reload, as it will be changed to "/test.html..."
 
-        hrss.reassertUIState = {arg: dynamic -> "__async"
+        hrss.reassertUIState = {arg: dynamic -> async {
             val scrollThere: dynamic = arg.scrollThere
-            __await<dynamic>(debugCheckEmail())
+            await<dynamic>(debugCheckEmail())
 
 //            val actual = json("url" to url)
             val actual = mutableMapOf<String, Any>("url" to url)
             invokeStateContributions(actual)
             gertrude(global.Object.assign(def, json("actual" to actual, "scrollThere" to scrollThere)))
-        }
+        }}
 
-        __await<dynamic>(hrss.reassertUIState(json("scrollThere" to true)))
-        return __asyncResult(Unit)
+        await<dynamic>(hrss.reassertUIState(json("scrollThere" to true)))
+        return@async Unit
     }
 
 
-    fun run(shit: TestShit, instructions: List<TestInstruction>, showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+    fun run(shit: TestShit, instructions: List<TestInstruction>, showTestPassedPane: Boolean): Promisoid<Throwable?> = async {
         try {
             testInstructions = instructions
 
@@ -152,24 +152,13 @@ object art {
                     return control
                 }
 
-                fun executeSetValueLike(): Promise<Unit> {"__async"
-                    val instr = instr as TestInstruction.Action
-                    val control = getControlForAction(json("implementing" to "testSetValue"))
-                    if (instr.timestamp.there) {
-                        __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
-                    }
-
-                    __await<dynamic>(control.testSetValue(json("value" to when (instr) {
-                        is TestInstruction.SetValue -> instr.value
-                        is TestInstruction.SetCheckbox -> instr.value
-                        else -> wtf()
-                    })))
-                    return __asyncResult(Unit)
+                fun executeSetValueLike(): Promisoid<Unit> {
+                    die("@kill executeSetValueLike")
                 }
 
                 if (instrIndex == until) {
                     dlog("Stopping test before instruction ${instrIndex}")
-                    return __asyncResult(null)
+                    return@async null
                 }
 
                 when {
@@ -179,7 +168,7 @@ object art {
                                 val wpname: String = fullWorldPointName(instr)
                                 if (instr.name == from) {
                                     dlog("Restoring world point ${wpname}")
-                                    __await(WorldPointRequest.send(wpname, RESTORE))
+                                    await(WorldPointRequest.send(wpname, RESTORE))
                                     skipping = false
                                 }
                             }
@@ -190,49 +179,49 @@ object art {
                             is TestInstruction.WorldPoint -> {
                                 val wpname: String = fullWorldPointName(instr)
                                 dlog("Saving world point ${wpname}")
-                                __await(WorldPointRequest.send(wpname, SAVE))
+                                await(WorldPointRequest.send(wpname, SAVE))
                             }
 
                             is TestInstruction.BeginSection -> {}
                             is TestInstruction.EndSection -> {}
                             is TestInstruction.Do -> {
-                                __await(instr.action())
+                                await(instr.action())
                             }
                             is TestInstruction.Step -> {
                                 instr.executed = true
                             }
                             is TestInstruction.AssertGenerated -> {
-                                __await(art.uiState(json(
+                                await(art.uiState(json(
                                     "\$tag" to instr.tag,
                                     "expected" to "---generated-shit---",
                                     "expectedExtender" to instr.expectedExtender
                                 )))
                             }
                             is TestInstruction.AssertFuck -> {
-                                __await(art.uiState(json(
+                                await(art.uiState(json(
                                     "\$tag" to instr.tag,
                                     "expected" to instr.expected
                                 )))
                             }
                             is TestInstruction.SetValue -> {
-                                __await(executeSetValueLike())
+                                await(executeSetValueLike())
                             }
                             is TestInstruction.SetCheckbox -> {
-                                __await(executeSetValueLike())
+                                await(executeSetValueLike())
                             }
                             is TestInstruction.Click -> {
                                 val control = getControlForAction(json("implementing" to "testClick"))
                                 if (instr.timestamp.there) {
-                                    __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                                    await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                                 }
-                                __await<dynamic>(control.testClick(instr))
+                                await<dynamic>(control.testClick(instr))
                             }
                             is TestInstruction.KeyDown -> {
                                 val control = getControlForAction(json("implementing" to "testKeyDown"))
                                 if (instr.timestamp.there) {
-                                    __await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+                                    await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
                                 }
-                                __await<dynamic>(control.testKeyDown(instr))
+                                await<dynamic>(control.testKeyDown(instr))
                             }
                             is TestInstruction.Action -> {} // This is label?
                         }
@@ -249,11 +238,11 @@ object art {
             }
 
             if (showTestPassedPane) openTestPassedPane()
-            return __asyncResult(null)
+            return@async null
         }
         catch (e: ArtFuckingError) {
             showAssertionErrorPane(e, e.detailsUI)
-            return __asyncResult(e)
+            return@async e
         }
         catch (e: Throwable) {
             showAssertionErrorPane(e,
@@ -267,7 +256,7 @@ object art {
                                        is ArtAssertionError -> RED_700
                                        else -> RED_700
                                    })
-            return __asyncResult(e)
+            return@async e
         }
     }
 
@@ -283,6 +272,9 @@ object art {
     }
 
     fun showAssertionErrorPane(exception: Throwable, detailsUI: ToReactElementable, backgroundColor: Color = RED_700) {
+        async {
+            console.error(await(errorToMappedClientStackString(exception)))
+        }
         val message = exception.message
         val assertionErrorPane = object : Control2(Attrs()) {
             override fun defaultControlTypeName() = "assertionErrorPane"
@@ -318,7 +310,7 @@ object art {
             }
         }
 
-        debugPanes.put(byid(ELID_UNDER_FOOTER), assertionErrorPane)
+        old_debugPanes.put(byid(ELID_UNDER_FOOTER), assertionErrorPane)
 
 //        val existingDiv = Shitus.byid("debug_assertionErrorPane")
 //        if (existingDiv[0]) {
@@ -484,217 +476,10 @@ object art {
 
     fun showTestActionHand(arg: dynamic): dynamic {
         imf("showTestActionHand")
-        //export function showTestActionHand({target, pointingFrom='bottom', dleft=0, dtop=0, noBlinking}={}) {
-        //    const targetOffset = target.offset()
-        //    const targetWidth = target.outerWidth(true)
-        //    const targetHeight = target.outerHeight(true)
-        //    const paneID = 'testIndicatorOfLinkToClick-' + puid()
-        //    debugPanes.set({name: paneID, element: updatableElement(s{}, update => {
-        //        let glyph, left, top
-        //        if (pointingFrom === 'bottom') {
-        //            const handWidth = 24
-        //            glyph = 'fa-hand-o-up'
-        //            left = targetOffset.left + targetWidth / 2 - handWidth / 2 + dleft
-        //            top = targetOffset.top + targetHeight + 10 + dtop
-        //        } else if (pointingFrom === 'top') {
-        //            const handWidth = 24, handHeight = 28
-        //            glyph = 'fa-hand-o-down'
-        //            left = targetOffset.left + targetWidth / 2 - handWidth / 2 + dleft
-        //            top = targetOffset.top - 10 - handHeight + dtop
-        //        } else if (pointingFrom === 'right') {
-        //            const handWidth = 28, handHeight = 28
-        //            glyph = 'fa-hand-o-left'
-        //            left = targetOffset.left + targetWidth + 10 + dleft
-        //            top = targetOffset.top + targetHeight / 2 - handHeight / 2 + dtop
-        //        } else if (pointingFrom === 'left') {
-        //            const handWidth = 28, handHeight = 28
-        //            glyph = 'fa-hand-o-right'
-        //            left = targetOffset.left - handWidth - 10 + dleft
-        //            top = targetOffset.top + targetHeight / 2 - handHeight / 2 + dtop
-        //        } else {
-        //            Shitus.raise(`Weird pointingFrom: ${pointingFrom}`)
-        //        }
-        //
-        //        let clazz = 'aniBlinkingFast'
-        //        if (noBlinking) clazz = ''
-        //
-        //        if (pointingFrom === 'right') {
-        //            return _=> Shitus.diva({id: 'testActionHand', className: clazz, style: {zIndex: 100000, position: 'absolute', left, top}},
-        //                Shitus.diva({style: {position: 'relative', width: '2em', width: '2em'}},
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.9)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.8)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.7)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.6)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.55)'}}),
-        //                    ia({className: `fa fa-2x fa-circle`, style: {color: WHITE, position: 'absolute', left: '0.04em', top: '0em', transform: 'scale(0.5)'}}),
-        //                    ia({className: `fa fa-2x fa-circle`, style: {color: WHITE, position: 'absolute', left: '0.07em', top: '0.03em', transform: 'scale(0.5)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: BROWN_500, position: 'absolute', left: '0em', top: '0em'}}),
-        //                    ))
-        //        } else if (pointingFrom === 'bottom') {
-        //            return _=> Shitus.diva({id: 'testActionHand', className: clazz, style: {zIndex: 100000, position: 'absolute', left, top}},
-        //                Shitus.diva({style: {position: 'relative', width: '2em', width: '2em'}},
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.9)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.8)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.7)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.6)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: WHITE, position: 'absolute', left: '0em', top: '0em', transform: 'scale(0.55)'}}),
-        //                    ia({className: `fa fa-2x fa-circle`, style: {color: WHITE, position: 'absolute', left: '0.01em', top: '-0.05em', transform: 'scale(0.5)'}}),
-        //                    ia({className: `fa fa-2x fa-circle`, style: {color: WHITE, position: 'absolute', left: '0.07em', top: '0.03em', transform: 'scale(0.5)'}}),
-        //                    ia({className: `fa fa-2x ${glyph}`, style: {color: BROWN_500, position: 'absolute', left: '0em', top: '0em'}}),
-        //                    ))
-        //        } else {
-        //            return _=> ia({id: 'testActionHand', className: `${clazz} fa fa-2x ${glyph}`, style: {color: BROWN_500, zIndex: 100000, position: 'absolute', left, top}})
-        //        }
-        //    })})
-        //
-        //    return {
-        //        delete() {
-        //            if (!tinkeringWithTestActionHand) {
-        //                debugPanes.delete({name: paneID})
-        //            } else {
-        //                haltTheWorld()
-        //
-        //                let movingHand, startScreenX, startScreenY, dx, dy, startOffset
-        //
-        //                document.addEventListener('mousemove', e => {
-        //                    if (movingHand) {
-        //                        if (!e.ctrlKey) {
-        //                            movingHand = false
-        //                            dleft = dleft + dx
-        //                            dtop = dtop + dy
-        //                            return
-        //                        }
-        //
-        //                        dx = e.screenX - startScreenX
-        //                        dy = e.screenY - startScreenY
-        //                        Shitus.byid('testActionHand').offset({left: startOffset.left + dx, top: startOffset.top + dy})
-        //                        dlogs({dleft: dleft + dx, dtop: dtop + dy})
-        //                    } else {
-        //                        if (e.ctrlKey) {
-        //                            movingHand = true
-        //                            startScreenX = e.screenX
-        //                            startScreenY = e.screenY
-        //                            startOffset = Shitus.byid('testActionHand').offset()
-        //                            return
-        //                        }
-        //                    }
-        //                })
-        //            }
-        //        }
-        //    }
-        //}
     }
 
     fun initDebugFunctionsShit() {
-        global.window.removeEventListener("unhandledrejection", hrss.onUnhandledRejection)
-        fun shit(event: dynamic): Promise<Unit> {"__async"
-            val reason: Throwable = event.reason
-            if (!hrss.preventExceptionRevelation && reason.message != "UI assertion failed") {
-                console.error("Unhandled rejection: ${reason.message}")
-                console.error(reason.asDynamic().stack)
-                try {
-                    val stack = __await(errorToMappedClientStackString(reason))
-                    console.error("---------- Mapped Stack ----------")
-                    console.error(stack)
-                } catch (e: Throwable) {
-                    console.error("Failed to map stack: ${e.message}")
-                    console.error(e.asDynamic().stack)
-                }
-            }
-            return __asyncResult(Unit)
-        }
-        hrss.onUnhandledRejection = ::shit
-        global.window.addEventListener("unhandledrejection", hrss.onUnhandledRejection)
-
-        debugPanes.put("initDebugFunctions-shit", oldShitAsToReactElementable(Shitus.updatableElement(json(), paneCtor@{updateShit: dynamic ->
-            var shitVisible = false
-            var shitToRender: dynamic= null
-
-            global.removeEventListener("keydown", hrss.debugFunctionsKeydownListener)
-            hrss.debugFunctionsKeydownListener = { e: dynamic ->
-                if (e.code == "Backquote") {
-                    e.preventDefault()
-                    e.stopPropagation()
-
-                    shitVisible = !shitVisible
-                    if (shitVisible) {
-                        global.lightStateContributions()
-                    } else {
-                        shitToRender = null
-                    }
-
-                    updateShit()
-                }
-            }
-            global.addEventListener("keydown", hrss.debugFunctionsKeydownListener)
-
-//            Object.assign(testGlobal, {
-//                printCurrentStamp() {
-//                    clog(moment.tz("UTC").format("YYYY/MM/DD HH:mm:ss"))
-//                },
-//            })
-
-//            global.hideSomeAssertionDiffKeys = function({includesAny=[]}={}) {
-//                global.assertionPane.setLineHideFilter(lineValue => {
-//                    for (const includes of includesAny) {
-//                    if (lineValue.includes(includes)) return true
-//                }
-//                })
-//            }
-
-            global.lightStateContributions = lightStateContributions@{
-                console.log("Lighting state contributions")
-
-                shitToRender = makeHrundels(json(
-                    "controls" to art.stateContributionsByControl.keys.toTypedArray(),
-                    "borderColor" to PURPLE_500.toString(),
-                    "normalBorderWidth" to 1,
-                    "thickBorderWidth" to 3,
-                    "hoverStyleString" to "background: rgba(156, 39, 176, 0.1);",
-                    "onClick" to {arg: dynamic ->
-                        val control = arg.control
-                        dumpContributionsByControlAndChildren(control, js("({})"))
-                    },
-                    "onLens" to {arg: dynamic ->
-                        val control = arg.control
-                        val contribs = art.stateContributionsByControl[control] ?: mutableMapOf()
-                        global.assertionPane.highlightStuff(json("keys" to contribs.keys, "scrollThere" to true))
-                    },
-                    "onMouseEnter" to {arg: dynamic ->
-                        val control = arg.control
-                        console.log("--------------------")
-                        console.log("CONTRIBS: ${controlDisplayNameForDumping(control)}")
-                        console.log("--------------------")
-
-                        val jsObject = js("({})")
-                        val contribs = art.stateContributionsByControl[control] ?: mutableMapOf()
-                        for ((k, v) in contribs) jsObject[k] = v
-                        console.log(global.nodeUtil.inspect(jsObject))
-                    }
-                ))
-
-                updateShit()
-            }
-
-//            global.dumpStateContributionKeysShortestToLongest = function({unifyIndices}={}) {
-//                const actual = {}
-//                art.invokeStateContributions({actual})
-//                let items = Object.keys(actual)
-//                if (unifyIndices) {
-//                    items = items.map(x => x.replace(/-i\d\d\d/g, "-ω")) // omega
-//                }
-//                items = sortBy(items, x => x.length)
-//                items = uniq(items)
-//                console.log("===================================================")
-//                console.log("Contribution keys, shortest key to longest:")
-//                console.log(global.nodeUtil.inspect(items))
-//                console.log("title", actual.title)
-//            }
-
-            return@paneCtor {shitToRender}
-        })))
-
-        initDebugMailbox()
+        die("@kill initDebugFunctionsShit")
     }
 
     fun fail(message: String) {
@@ -1159,12 +944,12 @@ fun gertrude(def: dynamic) {
 
 //val stateContributionsByControl = mutableMapOf<LegacyControl, MutableMap<String, dynamic>>()
 
-@native class TestUIStateContribution(
-    val value: String,
-    val control: LegacyControl,
-    val definitionStack: LegacyDefinitionStack,
-    val callStack: LegacyCallStack
-)
+//@native class TestUIStateContribution(
+//    val value: String,
+//    val control: LegacyControl,
+//    val definitionStack: LegacyDefinitionStack,
+//    val callStack: LegacyCallStack
+//)
 
 fun invokeStateContributions(actual: MutableMap<String, Any>?) {
     // println("--- invokeStateContributions ---")
@@ -1176,13 +961,15 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
                 if (actual != null && actual.containsKey(key)) {
                     val message = "uiStateContribution put duplication: key=${key}, value=${value}"
 
-                    runni {"__async"
-                        val thisDefinitionStackString = __await(anyControlDefinitionStackString(control, sep = "\n"))
-                        val existingDefinitionStackString = __await(anyControlDefinitionStackString(actual!![key].asDynamic().control, sep = "\n"))
-                        console.error(
-                            "$message\n\n" +
-                                "This: $thisDefinitionStackString\n\n" +
-                                "Existing: $existingDefinitionStackString")
+                    runni {
+                        async {
+                            val thisDefinitionStackString = await(anyControlDefinitionStackString(control, sep = "\n"))
+                            val existingDefinitionStackString = await(anyControlDefinitionStackString(actual!![key].asDynamic().control, sep = "\n"))
+                            console.error(
+                                "$message\n\n" +
+                                    "This: $thisDefinitionStackString\n\n" +
+                                    "Existing: $existingDefinitionStackString")
+                        }
                     }
 
                     Shitus.raiseWithMeta(json(
@@ -1218,7 +1005,7 @@ fun openTestListPane() {
 //    val defaultOpts = TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)
     val defaultOpts = TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = true, handPauses = true)
 
-    debugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(className = css.test.pane.testList.pane){o->
+    old_debugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(className = css.test.pane.testList.pane){o->
         o- kdiv(paddingBottom = 10){o->
             o- "Tests"
         }
@@ -1278,7 +1065,7 @@ fun openTestPassedPane() {
 }
 
 fun openShitPassedPane(title: String, details: ElementBuilder) {
-    debugPanes.put("openTestPassedPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(noStateContributions = true) {o ->
+    old_debugPanes.put("openTestPassedPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(noStateContributions = true) {o ->
         o - Style(backgroundColor = GREEN_700, color = WHITE,
                   marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
 
@@ -1636,56 +1423,6 @@ fun isInTestScenario(): Boolean {
 fun renderStacks(def: dynamic): dynamic {
     return "Implement renderStacks, please, fuck you"
 
-//export function renderStacks(def) {
-//    #extract {definitionStack, callStack} from def
-//
-//    return updatableElement(s{}, update => {
-//        let thinking = true
-//
-//        Shitus.run(async function() {
-//            if (callStack) {
-//                if (callStack instanceof Error) {
-//                    const stackString = await Shitus.errorToMappedClientStackString(callStack)
-//                    callStack = []
-//                    for (const line of stackString.split('\n')) {
-//                        if (line.startsWith('    at ') && !line.includes('__awaiter')) {
-//                            // dlog('Stack line', line)
-//                            const m = line.match(/(.*?)\(([^()]+?:\d+:\d+)\)/)
-//                            if (m) {
-//                                callStack.push({title: m[1].trim(), location: m[2]})
-//                            }
-//                        }
-//                    }
-//                    callStack.shift() // Remove stack capturing function
-//                }
-//                if (!isArray(callStack)) Shitus.raise('I want callStack to be an array or Error')
-//            }
-//
-//            update(thinking = false)
-//        })
-//
-//        return _=> {
-//        const ctn = 'renderStacks'
-//        if (thinking) return Shitus.spana({ctn, style: {fontStyle: 'italic'}}, t('Thinking deeply...'))
-//
-//        if (definitionStack && !definitionStack.length) definitionStack = undefined
-//        if (callStack && !callStack.length) callStack = undefined
-//        if (!(definitionStack || callStack)) return Shitus.spana({ctn, style: {fontStyle: 'italic'}}, t('No fucking stacks'))
-//
-//        return Shitus.diva({controlTypeName: 'renderStacks', style: {display: 'flex'}},
-//            definitionStack && Shitus.diva({},
-//                Shitus.diva({style: {fontWeight: 'bold', textDecoration: ''}}, t('Definitions:')),
-//                ...definitionStack.map(stackItem => OpenSourceCodeLink({where: {$sourceLocation: stackItem.loc}}))),
-//
-//        callStack && Shitus.diva({style: {marginLeft: 15}},
-//            Shitus.diva({style: {fontWeight: 'bold', textDecoration: ''}}, t('Locations:')),
-//            ...callStack.map(item => Shitus.diva({style: {display: 'flex'}},
-//        Shitus.diva({style: {marginRight: 10}}, item.title),
-//        OpenSourceCodeLink({where: {$sourceLocation: item.location}})))),
-//        )
-//    }
-//    })
-//}
 }
 
 fun openDebugPane(def: dynamic) {

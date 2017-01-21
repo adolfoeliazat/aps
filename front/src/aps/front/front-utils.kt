@@ -72,7 +72,8 @@ fun parseQueryString(href: String): Map<String, String> {
     var match: dynamic = null
     val store = mutableMapOf<String, String>()
 
-    var haystack = Globus.location.search
+//    var haystack = Globus.location.search
+    var haystack = href
     haystack = haystack.substring(haystack.indexOf('?') + 1, haystack.length)
 
     while (true) {
@@ -84,24 +85,6 @@ fun parseQueryString(href: String): Map<String, String> {
     return store
 }
 
-object DOMReact {
-    val containers = mutableListOf<HTMLElement>()
-
-    fun render(rel: ReactElement?, container: HTMLElement) {
-        ReactDOM.render(rel, container)
-        containers += container
-    }
-
-    fun unmountComponentAtNode(container: HTMLElement) {
-        ReactDOM.unmountComponentAtNode(container)
-        containers -= container
-    }
-}
-
-@native object ReactDOM {
-    fun render(rel: ReactElement?, container: HTMLElement): Unit = noImpl
-    fun unmountComponentAtNode(container: HTMLElement): Unit = noImpl
-}
 
 inline fun <T> measure(what: String, block: () -> T): T {
     val m = jsFacing_beginLogTime(what)
@@ -125,7 +108,7 @@ annotation class MixableType
 annotation class GenerateSignatureMixes
 annotation class Mix
 
-fun tillAnimationFrame(): Promise<Unit> = Promise {resolve, reject ->
+fun tillAnimationFrame(): Promisoid<Unit> = Promisoid {resolve, reject ->
     requestAnimationFrame {
         resolve(Unit)
     }
@@ -243,7 +226,7 @@ fun scrollBodyToShitGradually(
     bursts: Int = fconst.defaultScrollBursts,
     dontScrollToTopItem: Boolean = false,
     getShit: () -> JQuery
-): Promise<Unit> = async {
+): Promisoid<Unit> = async {
     await(tillAnimationFrame())
     val shit = getShit()
     check(shit[0] != null) {"Shit to scroll to is not found"}
@@ -264,7 +247,7 @@ fun scrollBodyToShitGradually(
     await(scrollBodyGradually(targetTop, bursts))
 }
 
-fun scrollBodyGradually(targetTop: Double, bursts: Int = fconst.defaultScrollBursts): Promise<Unit> = async {
+fun scrollBodyGradually(targetTop: Double, bursts: Int = fconst.defaultScrollBursts): Promisoid<Unit> = async {
     val startTop = jqbody.scrollTop()
     for (i in 1..bursts) {
         await(tillAnimationFrame())
@@ -323,7 +306,7 @@ fun Double.toPhysicalPixels(): Int = Math.round(toPhysicalPixelsDouble())
 
 fun Int.toLayoutPixels(): Double = this / window.devicePixelRatio
 
-fun tillHourPasses(): Promise<Unit> = delay(1000 * 60 * 60)
+fun tillHourPasses(): Promisoid<Unit> = delay(1000 * 60 * 60)
 
 fun dateNow(): Int = js("Date.now()")
 

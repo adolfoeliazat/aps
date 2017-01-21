@@ -51,7 +51,19 @@ fun ignite() {
     igniteDebugShit()
 }
 
-fun igniteShit(): Promise<Unit> {"__async"
+fun igniteShit(): Promisoid<Unit> = async {
+    window.addEventListener("unhandledrejection", {event-> async {
+        console.log("pizda")
+//        val reason = event.asDynamic().reason
+//        console.error("Unhandled rejection: ${reason.message}")
+//        try {
+//            val stack = await(errorToMappedClientStackString(reason))
+//            console.error("Unhandled rejection stack:\n$stack")
+//        } catch (e: dynamic) {
+//            console.error("Failed to map unhandled rejection. Raw shit:\n${reason.stack}")
+//        }
+    }})
+
     hrss.browserOld = BrowserOld("default") // Kind of production
 
     hrss.lang = global.LANG
@@ -79,7 +91,7 @@ fun igniteShit(): Promise<Unit> {"__async"
 
     val search = Globus.realLocation.search
     if (search.contains("test=") || search.contains("testSuite=")) {
-        __await(jsFacing_igniteTestShit())
+        await(jsFacing_igniteTestShit())
     } else {
 //        global.DB = global.sessionStorage.getItem("DB") ?: "aps-dev" // TODO:vgrechka @security
 
@@ -91,10 +103,8 @@ fun igniteShit(): Promise<Unit> {"__async"
             }
         })
 
-        __await(World("default").boot())
+        await(World("default").boot())
     }
-
-    return __asyncResult(Unit)
 }
 
 val breatheBanner: dynamic by lazy {

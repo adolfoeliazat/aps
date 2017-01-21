@@ -50,7 +50,7 @@ import kotlin.browser.window
                     "onChange" to {
                         val files: FileList = byid0(inputID).asDynamic().files
                         val file = files[0]!!
-                        gloshit.file = file
+                        aps.gloshit.file = file
                         noise.clog("Got file", file)
                         content = Content.FileToUpload(file)
                         update()
@@ -112,7 +112,7 @@ import kotlin.browser.window
     // TODO:vgrechka Implement
     override fun focus() {}
 
-    override fun populateRemote(json: Json): Promise<Unit> {
+    override fun populateRemote(json: Json): Promisoid<Unit> {
         val _content = content
         val shit = ResolvableShit<Unit>()
         exhaustive/when (_content) {

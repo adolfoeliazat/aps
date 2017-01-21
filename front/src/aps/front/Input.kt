@@ -29,10 +29,10 @@ val inputReactClass by lazy {React.createClass(json(
 
         val rest = lodash.omit( self.props, "kind", "value", "onChange", "onMount", "style")
 
-        return@render React.createElement(kind ?: "input", global.Object.assign(json(
+        return@render React.createElement(kind ?: "input", aps.global.Object.assign(json(
             "ref" to "input",
             "defaultValue" to defaultValue,
-            "style" to global.Object.assign(json("resize" to "none"), style),
+            "style" to aps.global.Object.assign(json("resize" to "none"), style),
             "onChange" to {e: dynamic ->
                 self.manualValue = e.target.value
                 onChange && onChange(e)
@@ -42,7 +42,7 @@ val inputReactClass by lazy {React.createClass(json(
 
     "componentDidUpdate" to {
         if (js("this").props.value !== js("this").manualValue) {
-            global.ReactDOM.findDOMNode(js("this").refs.input).value = js("this").props.value
+            aps.global.ReactDOM.findDOMNode(js("this").refs.input).value = js("this").props.value
         }
     },
 
@@ -77,7 +77,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         initialValue: String = "",
         volatileDisabled: () -> Boolean = {false},
         onKeyDown: (KeyboardEvent) -> Unit = {},
-        onKeyDowna: (KeyboardEvent) -> Promise<Unit> = {async{}}
+        onKeyDowna: (KeyboardEvent) -> Promisoid<Unit> = {async{}}
     ) : this(json(
         "style" to style.toReactStyle(),
         "placeholder" to placeholder,
@@ -94,9 +94,9 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
 
     lateinit var elementID: String
     lateinit var onKeyDown: (KeyboardEvent) -> Unit
-    lateinit var onKeyDowna: (KeyboardEvent) -> Promise<Unit>
+    lateinit var onKeyDowna: (KeyboardEvent) -> Promisoid<Unit>
 
-    fun keyDown(e: KeyboardEvent): Promise<Unit> {
+    fun keyDown(e: KeyboardEvent): Promisoid<Unit> {
         onKeyDown(e)
         return onKeyDowna(e)
     }
@@ -115,7 +115,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         onKeyDown = legacySpec.get("onKeyDown").asDynamic() ?: {}
         onKeyDowna = legacySpec.get("onKeyDowna").asDynamic() ?: {async{}}
 
-        val def = global.Object.assign(js("({})"), legacySpec)
+        val def = aps.global.Object.assign(js("({})"), legacySpec)
         js("delete def.onChange")
         js("delete def.style")
         js("delete def.volatileStyle")
@@ -150,11 +150,11 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
                         "className" to "form-control",
                         "disabled" to isRenderingDisabled,
                         "onClick" to me.onPhysicalClick,
-                        "style" to global.Object.assign(json(),
-                            shittyFov(volatileStyle),
-                            style,
+                        "style" to aps.global.Object.assign(json(),
+                                                            shittyFov(volatileStyle),
+                                                            style,
                             // TODO:vgrechka Implement new-style spinner for Input    d39c80df-fc4e-4b83-8318-c79963b6a010
-                            if (loading) json(
+                                                            if (loading) json(
                                 "background" to "url('${Preloader.srcDefault32()}') no-repeat right center",
                                 "paddingRight" to 36
                             ) else null
@@ -192,33 +192,33 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
                 "setDisabled" to {x: dynamic -> _isDisabled = x; update() },
                 "isDisabled" to { _isDisabled },
 
-                "setValue" to {x: dynamic -> "__async"
+                "setValue" to {x: dynamic -> async {
                     me.setValueExt(json("value" to x))
-                },
+                }},
 
-                "setValueExt" to {def: dynamic -> "__async"
+                "setValueExt" to {def: dynamic -> async {
                     val newValue: dynamic = def.value
                     val notify: dynamic = def.notify
 
                     value = newValue
                     update()
                     if (notify && onChange != null) {
-                        __await<dynamic>(onChange())
+                        await<dynamic>(onChange())
                     }
-                },
+                }},
 
-                "testSetValue" to {arg: dynamic -> "__async"
+                "testSetValue" to {arg: dynamic -> async {
                     val value: dynamic = arg.value
                     if (art.testSpeed == "slow") {
                         me.setValue("")
                         for (len in 1 until value.length) {
-                            __await<dynamic>(Shitus.delay(50))
+                            await<dynamic>(Shitus.delay(50))
                             me.setValue(value.slice(0, len))
                         }
                     } else {
                         me.setValue(value)
                     }
-                },
+                }},
 
 
                 "testGetValue" to { me.getValue() },
@@ -244,8 +244,8 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
                                 if (!primaryButton) return@onClick console.warn("No primary control to click on")
 
                                 var descriptiveName = me.effectiveShame
-                                descriptiveName = descriptiveName.replace(global.RegExp("^TextField-"), "")
-                                descriptiveName = descriptiveName.replace(global.RegExp("\\.Input\$"), "")
+                                descriptiveName = descriptiveName.replace(aps.global.RegExp("^TextField-"), "")
+                                descriptiveName = descriptiveName.replace(aps.global.RegExp("\\.Input\$"), "")
                                 primaryButton.captureAction(json(
                                     "includeShames" to jsArrayOf(me.effectiveShame),
                                     "todoActionDescription" to "Entering ${descriptiveName}: TODO"))
@@ -288,7 +288,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
         legacyShit.setValue(value)
     }
 
-    fun testSetValue(newValue: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
+    fun testSetValue(newValue: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> = async {
         await(testSetValueAlgo(
             initialValue = "",
             subsequentValues = (0 until newValue.length).map {newValue.substring(0, it + 1)},
@@ -296,7 +296,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
             handOpts = handOpts))
     }
 
-    fun testPrependValue(prefix: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
+    fun testPrependValue(prefix: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> = async {
         await(testSetValueAlgo(
             initialValue = value,
             subsequentValues = (1..prefix.length).map {prefix.substring(0, it) + value},
@@ -304,7 +304,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
             handOpts = handOpts))
     }
 
-    fun testAppendValue(suffix: String, handOpts: HandOpts = HandOpts()): Promise<Unit> = async {
+    fun testAppendValue(suffix: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> = async {
         await(testSetValueAlgo(
             initialValue = value,
             subsequentValues = (1..suffix.length).map {value + suffix.substring(0, it)},

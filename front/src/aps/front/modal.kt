@@ -45,13 +45,13 @@ fun openErrorModal(msg: String) {
     }
 }
 
-fun modalConfirmDeletion(msg: String): Promise<Boolean> {
+fun modalConfirmDeletion(msg: String): Promisoid<Boolean> {
     val shit = ResolvableShit<Boolean>()
     var result = false
 
     val modalID = puid()
     val timesButtonID = puid()
-    val pane = panes.put(kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
+    val pane = old_panes.put(kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
         o- kdiv(className = "modal-dialog"){o->
             o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${Color.RED_300}"){o->
                 o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
@@ -84,7 +84,7 @@ fun modalConfirmDeletion(msg: String): Promise<Boolean> {
     }
     jqModal.on("hidden.bs.modal") {
         jqModal.data("bs.modal", null)
-        panes.remove(pane)
+        old_panes.remove(pane)
         modalHiddenResolvable.resolve(Unit)
         shit.resolve(result)
         Unit
@@ -93,13 +93,13 @@ fun modalConfirmDeletion(msg: String): Promise<Boolean> {
     return shit.promise
 }
 
-fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promise<Boolean> {
+fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promisoid<Boolean> {
     val shit = ResolvableShit<Boolean>()
     var result = false
 
     val modalID = puid()
     val timesButtonID = puid()
-    val pane = panes.put(kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
+    val pane = old_panes.put(kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
         o- kdiv(className = "modal-dialog"){o->
             o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${Color.RED_300}"){o->
                 val errorPlace = Placeholder()
@@ -149,7 +149,7 @@ fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promise<Boo
     }
     jqModal.on("hidden.bs.modal") {
         jqModal.data("bs.modal", null)
-        panes.remove(pane)
+        old_panes.remove(pane)
         modalHiddenResolvable.resolve(Unit)
         shit.resolve(result)
         Unit
@@ -175,7 +175,7 @@ fun TestScenarioBuilder.waitForModalShown() {
     acta("Waiting for modal shown") {async{
         val shit = ResolvableShit<Unit>()
         timeoutSet(1500) {shit.reject(Exception("Sick of waiting for modal"))}
-        modalShownResolvable.promise.finally {shit.resolve(Unit)}
+        modalShownResolvable.promise.then {shit.resolve(Unit)}
         await(shit.promise)
     }}
 }
@@ -184,7 +184,7 @@ fun TestScenarioBuilder.waitForModalHidden() {
     acta("Waiting till modal is hidden") {async{
         val shit = ResolvableShit<Unit>()
         timeoutSet(1500) {shit.reject(Exception("Sick of waiting till modal is hidden"))}
-        modalHiddenResolvable.promise.finally {shit.resolve(Unit)}
+        modalHiddenResolvable.promise.then {shit.resolve(Unit)}
         await(shit.promise)
     }}
 }

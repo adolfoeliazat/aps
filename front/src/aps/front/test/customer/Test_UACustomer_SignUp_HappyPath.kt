@@ -26,7 +26,7 @@ class Test_UACustomer_SignUp_HappyPath : StepBasedTestScenario() {
         o.clickDescribingStep("button-primary")
         o.assertScreenHTML("Success message and sign-in form", "28d67a3e-25e8-4716-870b-705e746b8809")
 
-        o.checkAssertAndClearEmail(
+        o.assertEmailThenClear(
             "Got email with password",
             "Иво Бобул <bobul@test.shit.ua>",
             "Пароль для APS",

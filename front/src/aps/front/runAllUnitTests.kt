@@ -57,7 +57,7 @@ private fun runMochka.describeUtils() {
                         clog(i,
                              "Expected: [${expected[i]}] (${expected[i].toInt()})",
                              "Actual: [${actual[i]}] (${actual[i].toInt()})")
-                        into.kommon.process.exit(1)
+                        process.exit(1)
                     }
                 }
             }

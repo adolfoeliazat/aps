@@ -49,7 +49,7 @@ where T : Enum<T>, T : Titled {
 
     override fun focus() = select.focus()
 
-    override fun populateRemote(json: Json): Promise<Unit> = async {
+    override fun populateRemote(json: Json): Promisoid<Unit> = async {
         json[name] = select.value.name
     }
 

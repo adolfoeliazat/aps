@@ -61,14 +61,14 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
     fun <Req : RequestMatumba, Res> specifyPlus(
         plusFormSpec: FormSpec<Req, Res>,
-        onPlusFormSuccessa: (Res) -> Promise<Unit> = {async{}}
+        onPlusFormSuccessa: (Res) -> Promisoid<Unit> = {async{}}
     ) {
         plusShit = EvaporatingButtonAndForm(ebafHost, key = "plus", level = Button.Level.PRIMARY, icon = plusIcon, formSpec = plusFormSpec, onSuccessa = onPlusFormSuccessa)
     }
 
     fun <Req : RequestMatumba, Res> specifyEdit(
         editFormSpec: FormSpec<Req, Res>,
-        onEditFormSuccessa: (Res) -> Promise<Unit> = {async{}}
+        onEditFormSuccessa: (Res) -> Promisoid<Unit> = {async{}}
     ) {
         editShit = EvaporatingButtonAndForm(ebafHost, key = "edit", level = Button.Level.DEFAULT, icon = fa.edit, formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
     }
@@ -80,7 +80,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     }
 
 
-    fun applyHeaderControls(controlToBlink: Blinkable): Promise<dynamic> {"__async"
+    fun applyHeaderControls(controlToBlink: Blinkable): Promisoid<dynamic> = async {
         setHeaderControlsDisabled(true)
         controlToBlink.setBlinking(true)
 
@@ -101,20 +101,18 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
         val url = "${urlPath}?${urlParamParts.join("&")}"
-        __await<dynamic>(ui.pushNavigate(url))
+        await<dynamic>(ui.pushNavigate(url))
 
         setHeaderControlsDisabled(false)
         controlToBlink.setBlinking(false)
-
-        return js("undefined") // Dummy
     }
 
-    fun ignita(): Promise<Unit> {"__async"
+    fun ignita(): Promisoid<Unit> = async {
         if (entityProcedureName != null) {
             val entityReq = EntityRequest()
-            val res = __await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.tokenMaybe))
+            val res = await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.tokenMaybe))
             entity = when (res) {
-                is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(Page(
+                is ZimbabweResponse.Shitty -> return@async ui.setPage(Page(
                     header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
                     body = oldShitAsToReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
 
@@ -145,12 +143,12 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 "placeholder" to t("TOTE", "Поиск..."),
                 "disabled" to { ebafHost.headerControlsDisabled }, // Yeah, I mean closure here
                 // TODO:vgrechka Check if async below is enhanced correctly
-                "onKeyDown" to {e: KeyboardEvent -> "__async"
+                "onKeyDown" to {e: KeyboardEvent -> async {
                     if (e.keyCode == 13) {
                         preventAndStop(e)
-                        __await(applyHeaderControls(searchBoxInput!!))
+                        await(applyHeaderControls(searchBoxInput!!))
                     }
-                }
+                }}
             ))
 
             searchBox = oldShitAsToReactElementable(Shitus.diva(json("style" to json("position" to "relative")),
@@ -168,20 +166,11 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 isAction = true,
                 style = json("width" to 160),
                 volatileDisabled = {ebafHost.headerControlsDisabled},
-                onChanga = {"__async"
-                    __await(applyHeaderControls(filterSelect!!))
-                }
+                onChanga = {async{
+                    await(applyHeaderControls(filterSelect!!))
+                }}
             )
 
-//            filterSelect = Select(filterSelectValues, filter,
-//                tamyShamy = "filter",
-//                isAction = true,
-//                style = json("width" to 160),
-//                volatileDisabled = {headerControlsDisabled},
-//                onChanga = {"__async"
-//                    __await(applyHeaderControls(filterSelect!!))
-//                }
-//            )
 
         }
 
@@ -194,29 +183,20 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 isAction = true,
                 style = json("width" to 160),
                 volatileDisabled = {ebafHost.headerControlsDisabled},
-                onChanga = {"__async"
-                    __await(applyHeaderControls(orderingSelect!!))
-                }
+                onChanga = {async{
+                    await(applyHeaderControls(orderingSelect!!))
+                }}
             )
 
-//            orderingSelect = Select(Ordering.values(), ordering,
-//                tamyShamy = "ordering",
-//                isAction = true,
-//                style = json("width" to 160),
-//                volatileDisabled = {headerControlsDisabled},
-//                onChanga = {"__async"
-//                    __await(applyHeaderControls(orderingSelect!!))
-//                }
-//            )
         }
 
 
         val itemsReq = ItemsRequest(filterSelectValues!!)
         filterSelect?.let {itemsReq.filter.value = it.value}
         orderingSelect?.let {itemsReq.ordering.value = it.value}
-        val res = __await(callZimbabwe<ItemsResponse<Item>>(procedureName, itemsReq, ui.tokenMaybe))
+        val res = await(callZimbabwe<ItemsResponse<Item>>(procedureName, itemsReq, ui.tokenMaybe))
         val itemsRes = when (res) {
-            is ZimbabweResponse.Shitty -> return ignora/ ui.setPage(Page(
+            is ZimbabweResponse.Shitty -> return@async ui.setPage(Page(
                 header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
                 body = oldShitAsToReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
 
@@ -224,7 +204,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
 
-        return ignora/ ui.setPage(Page(
+        return@async ui.setPage(Page(
             header = header(),
             body = object:ToReactElementable {
                 override fun toReactElement(): ReactElement {
@@ -306,7 +286,7 @@ where Filter : Enum<Filter>, Filter : Titled {
                 "tamyShamy" to "showMore",
                 "title" to t("Show More", "Показать еще"),
                 "style" to json("background" to Color.BLUE_GRAY_50, "width" to "100%", "marginTop" to 15),
-                "onClick" to onClick@{"__async"
+                "onClick" to onClick@{async{
                     effects.blinkOn(json("target" to Shitus.byid(moreButtonID), "dtop" to -16))
                     // testGlobal['button_showMore_blinks'] = true
 
@@ -321,7 +301,7 @@ where Filter : Enum<Filter>, Filter : Titled {
 //                    thing = jshit.ui.renderMoreable(json("itemsRes" to moreRes, "itemsReq" to itemsReq, "renderItem" to renderItem, "chunkName" to chunkName, "chunkIndex" to chunkIndex + 1))
 
                     update()
-                }
+                }}
             )))
 
             return@updatableElementCtor {thing}

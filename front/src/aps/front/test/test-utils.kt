@@ -2,24 +2,27 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
+import into.kommon.*
 import org.w3c.dom.Storage
 import kotlin.browser.window
 
 object TestUtils {
     fun initNewBrowser(o: TestScenarioBuilder, fillStorageLocal: (TypedStorageLocal) -> Unit) {
-        o.act {
-            val fakeStorageLocal = FakeStorageLocal()
-
-            val tsl = TypedStorageLocal(fakeStorageLocal)
-            fillStorageLocal(tsl)
-            Globus.browser = Browser(
-                typedStorageLocal = tsl
-            )
-
-            ExternalGlobus.storageLocalForStaticContent = object:IStorage {
-                override fun getItem(key: String) = fakeStorageLocal.getItem(key)
-            }
-        }
+        imf()
+//        o.act {
+//            val fakeStorageLocal = FakeStorageLocal()
+//
+//            val tsl = TypedStorageLocal(fakeStorageLocal)
+//            fillStorageLocal(tsl)
+//            die("reimplement me")
+////            Globus.browser = Browser(
+////                typedStorageLocal = tsl
+////            )
+//
+//            ExternalGlobus.storageLocalForStaticContent = object:IStorage {
+//                override fun getItem(key: String) = fakeStorageLocal.getItem(key)
+//            }
+//        }
     }
 
     fun bootWorld(o: TestScenarioBuilder, name: String, done: (World) -> Unit) {

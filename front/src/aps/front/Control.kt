@@ -18,7 +18,7 @@ fun button(build: ButtonBuilder.() -> Unit): Control {
 
         override fun render(): ReactElement {
             val glyphAttrs = js("({})")
-            cis.iconColor?.let { global.Object.assign(glyphAttrs, json("style" to json("color" to it))) }
+            cis.iconColor?.let { aps.global.Object.assign(glyphAttrs, json("style" to json("color" to it))) }
 
             return React.createElement("button", json(
                 "id" to elementID,
@@ -39,9 +39,9 @@ fun button(build: ButtonBuilder.() -> Unit): Control {
     }
 }
 
-val NIL_AsyncReactEventHandler: (ReactEvent) -> Promise<Unit> = js("({})")
+val NIL_AsyncReactEventHandler: (ReactEvent) -> Promisoid<Unit> = js("({})")
 
-inline fun y(areh: (ReactEvent) -> Promise<Unit>) = areh !== NIL_AsyncReactEventHandler
+inline fun y(areh: (ReactEvent) -> Promisoid<Unit>) = areh !== NIL_AsyncReactEventHandler
 
 
 inline fun ifs(cond: String, then: () -> String): String = if (cond != "") then() else ""
@@ -49,15 +49,14 @@ inline fun ifs(cond: String, then: () -> String): String = if (cond != "") then(
 inline fun y(x: String) = x != ""
 inline fun n(x: String) = x == ""
 
-fun anyControlDefinitionStackString(control: dynamic, sep: String): Promise<String> {"__async"
-    return __asyncResult(
-        if (control is StatefulElement)
-            __await(control.definitionStackString(sep))
+fun anyControlDefinitionStackString(control: dynamic, sep: String): Promisoid<String> = async {
+    return@async if (control is StatefulElement)
+            await(control.definitionStackString(sep))
         else if (control is Control)
-            __await(control.definitionStackString(sep))
+            await(control.definitionStackString(sep))
         else
             "Some legacy shit: " + control.`$definitionStack`.map { x -> x.loc }.join(sep)
-    )
+
 }
 
 
@@ -205,13 +204,12 @@ open class ControlInstanceSpec {
         shamy = value
     }
 
-    fun onClicka(handler: (ReactEvent) -> Promise<Unit>) { onClick = handler }
+    fun onClicka(handler: (ReactEvent) -> Promisoid<Unit>) { onClick = handler }
 
     fun onClick(handler: (ReactEvent) -> Unit) {
-        onClick = {e -> "__async"
+        onClick = {e -> async {
             handler(e)
-            __asyncResult(Unit)
-        }
+        }}
     }
 
     fun onClickp(handler: () -> Unit) {
@@ -319,9 +317,9 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
             if (tame != null) {
                 for (other in jsArrayToListOfDynamic(elementControls)) {
                     if (other.tame) {
-                        runni {"__async"
-                            val otherDescription = __await(anyControlDefinitionStackString(other, "  "))
-                            val thisDescription = __await(this@Control.definitionStackString("  "))
+                        runni {async{
+                            val otherDescription = await(anyControlDefinitionStackString(other, "  "))
+                            val thisDescription = await(this@Control.definitionStackString("  "))
 
                             val shortMessage = "Control ${debugDisplayName} conflicts with ${other.debugDisplayName}, because both are tamed"
                             val longMessage = buildString {
@@ -332,7 +330,7 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
                             }
                             console.error(longMessage)
                             Shitus.raise(shortMessage)
-                        }
+                        }}
                     }
                 }
             }
@@ -398,33 +396,29 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
     }
 
 
-    open fun onRootClick(e: ReactEvent): Promise<Unit> {"__async"
+    open fun onRootClick(e: ReactEvent): Promisoid<Unit> = async {
         if (y(cis.onClick)) {
             preventAndStop(e)
-            __await(cis.onClick(e))
+            await(cis.onClick(e))
         }
-
-        return __asyncResult(Unit)
     }
 
-    fun testClick(spec: dynamic): Promise<Unit> {"__async"
+    fun testClick(spec: dynamic): Promisoid<Unit> = async {
         val testActionHandOpts: dynamic = if (spec) spec.testActionHandOpts else undefined
 
         if (art.testSpeed == "slow") {
-            val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(elementID)), testActionHandOpts))
-            __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
+            val testActionHand = art.showTestActionHand(aps.global.Object.assign(json("target" to Shitus.byid(elementID)), testActionHandOpts))
+            await<dynamic>(Shitus.delay(aps.global.DEBUG_ACTION_HAND_DELAY))
             testActionHand.delete()
         }
 
-        __await(onRootClick(object : ReactEvent {
+        await(onRootClick(object : ReactEvent {
             override val keyCode = 0
             override val ctrlKey = false
             override val shiftKey = false
             override fun preventDefault() {}
             override fun stopPropagation() {}
         }))
-
-        return __asyncResult(Unit)
     }
 
     fun addEventListeners() {
@@ -458,31 +452,21 @@ abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : T
         Shitus.byid(elementID).off()
     }
 
-    val `$sourceLocation`: Promise<String?> by lazy {
-        Promise<String?>({resolve, reject ->
-            `$definitionStack`.then<Nothing>({jsArray ->
+    val `$sourceLocation`: Promisoid<String?> by lazy {
+        Promisoid<String?>({resolve, reject ->
+            `$definitionStack`.then({jsArray ->
                 resolve(if (jsArray[0]) jsArray[0].loc else null)
             })
         })
     }
 
-    val `$definitionStack`: Promise<dynamic> by lazy {
+    val `$definitionStack`: Promisoid<dynamic> by lazy {
         promiseDefinitionStack(constructionStackAsError, firstSignificantStackLine())
     }
 
-    fun definitionStackString(sep: String): Promise<String> {"__async"
-        val jsarray = __await(this.`$definitionStack`)
-        return __asyncResult(jsArrayToListOfDynamic(jsarray).joinToString(sep) { it.loc })
-
-//        return __asyncResult(buildString {
-//            jsArrayToIterable(jsarray).joinToString(sep) { it.loc }
-//
-//        })
-//
-//        jsArrayToIterable(jsarray).forEachIndexed { i, item ->
-//            if (i > 0) append(sep)
-//            append("" + item.loc)
-//        }
+    fun definitionStackString(sep: String): Promisoid<String> = async {
+        val jsarray = await(this.`$definitionStack`)
+        return@async jsArrayToListOfDynamic(jsarray).joinToString(sep) { it.loc }
     }
 
     fun stickException(exception: Exception) {

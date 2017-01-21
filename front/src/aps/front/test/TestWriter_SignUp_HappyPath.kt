@@ -45,7 +45,7 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
             o.acta {ImposeNextGeneratedPasswordRequest.send("secret-big-as-fuck")}
             o.clickDescribingStep("button-primary")
 
-            o.checkAssertAndClearEmail(
+            o.assertEmailThenClear(
                 "Received password",
                 "qwe",
                 "Пароль для Writer UA",
@@ -96,7 +96,7 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
             o.clickDescribingStep("chunk-i000.item-i000.button-primary")
             o.assertRootHTMLExt("User is updated", "cfe6d637-4ca6-42ee-9fad-1fc249a328ee")
 
-            o.checkAssertAndClearEmail(
+            o.assertEmailThenClear(
                 "Notification is sent to writer",
                 "qwe",
                 "Тебя пустили на Writer UA",

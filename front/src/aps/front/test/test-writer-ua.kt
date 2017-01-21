@@ -13,7 +13,7 @@ import into.kommon.*
 class TS_UA_Writer_SignUp_1 : TestScenario() {
     override val shortDescription = "TS_UA_Writer_SignUp_1"
 
-    override fun run0(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+    override fun run0(showTestPassedPane: Boolean): Promisoid<Throwable?> = async {
         val slowly = false
 
         if (slowly) {
@@ -21,10 +21,9 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
             art.respectArtPauses = true
         }
 
-        __await(ClearSentEmailsRequest.send())
+        await(ClearSentEmailsRequest.send())
 
-//        __await<dynamic>(jshit.art.resetTestDatabase(json("templateDB" to "test-template-ua-1", "alsoRecreateTemplate" to true)))
-        __await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
+        await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
 
         val instructions = mutableListOf<TestInstruction>()
         instructions.addAll(vovchok1())
@@ -40,7 +39,7 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
         instructions.add(TestInstruction.WorldPoint("4"))
         instructions.addAll(dasja4())
 
-        return __reawait(art.run(testShit, instructions, showTestPassedPane))
+        await(art.run(testShit, instructions, showTestPassedPane))
     }
 
     fun vovchok1(): Iterable<TestInstruction> {
@@ -99,10 +98,10 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
 
                     action("Entering last name") {
                         setValue("TextField-lastName.Input", "Вовчок")
-                        - TestInstruction.Do({"__async"
-                            __await(ImposeNextGeneratedPasswordRequest.send("fucking-big-generated-secret")) /ignora
+                        - TestInstruction.Do({async{
+                            await(ImposeNextGeneratedPasswordRequest.send("fucking-big-generated-secret"))
 //                            __await<dynamic>(drpc(json("fun" to "danger_imposeNextGeneratedPassword", "password" to "fucking-big-generated-secret")))
-                        })
+                        }})
 
                         click("button-primary", "2016-08-14 17:48:51")
                     }
@@ -110,10 +109,9 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
                         assertGen("0b7e96bf-4f42-41dc-b658-7b60e863356e")
                     }
 
-                    - TestInstruction.Do({"__async"
-                        __await(ClearSentEmailsRequest.send()) /ignora
-//                        __await<dynamic>(drpc(json("fun" to "danger_clearSentEmails")))
-                    })
+                    - TestInstruction.Do({async{
+                        await(ClearSentEmailsRequest.send())
+                    }})
                 }
 
                 section("Submitting sign-in form") {
@@ -570,10 +568,10 @@ class TS_UA_Writer_SignUp_1 : TestScenario() {
             TestInstruction.Step.NavigationStep("Trying to open dashboard page as " + browserName),
             //            jsonTestItem("step" to json("kind" to "navigation", "long" to "Trying to open dashboard page as " + browserName)),
 
-            TestInstruction.Do({"__async"
+            TestInstruction.Do({async{
 //                global.CLIENT_KIND = clientKind
-                __await(host.selectNewBrowserAndNavigate(browserName, "dashboard.html")) /ignora
-            }),
+                await(host.selectNewBrowserAndNavigate(browserName, "dashboard.html"))
+            }}),
 
             TestInstruction.Step.StateStep(stateDescription)
         )

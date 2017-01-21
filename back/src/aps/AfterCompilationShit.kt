@@ -22,21 +22,22 @@ class AfterCompilationShit {
         versionSourceFile.writeText(newVersion.toString())
         File("$APS_HOME/back/out/aps/version.txt").writeText(newVersion.toString())
 
-        val frontJSPath = "$APS_HOME/front/out/front-enhanced.js"
-        var frontJS = File(frontJSPath).readText()
+        val frontJSInPath = "$APS_HOME/front/out/front.js"
+        val frontJSOutPath = "$APS_HOME/front/out/front-enhanced.js"
+        var frontJS = File(frontJSInPath).readText()
         val versionIndex = frontJS.indexOfOrDie("____VERSION____")
         frontJS = frontJS.replaceRange(versionIndex, versionIndex + "____VERSION____".length, newVersion.toString())
-        File(frontJSPath).writeText(frontJS)
+        File(frontJSOutPath).writeText(frontJS)
 
         for (site in listOf("customer-ua", "writer-ua")) {
             // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
             val todir = "$APS_HOME/front/out/static/$site"
-            copyFileToDir(frontJSPath, todir)
+            copyFileToDir(frontJSOutPath, todir)
             copyFileToDir("$APS_HOME/front/out/front.js.map", todir)
-            copyFileToDir("$KOMMON_HOME/js/out/into-kommon-js-enhanced.js", todir)
-            copyFileToDir("$KOMMON_HOME/js/out/into-kommon-js.js.map", todir)
+//            copyFileToDir("$KOMMON_HOME/js/out/into-kommon-js-enhanced.js", todir)
+//            copyFileToDir("$KOMMON_HOME/js/out/into-kommon-js.js.map", todir)
 
-            fixSourceMap("$todir/into-kommon-js.js.map")
+//            fixSourceMap("$todir/into-kommon-js.js.map")
             fixSourceMap("$todir/front.js.map")
         }
 

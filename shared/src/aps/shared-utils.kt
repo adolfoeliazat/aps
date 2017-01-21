@@ -9,6 +9,7 @@
 package aps
 
 import aps.DebugNoise.Style.*
+import aps.front.*
 import into.kommon.*
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
@@ -273,7 +274,8 @@ class DebugNoise(val tag: String, val mute: Boolean, val style: Style = IN_THREE
     }
 }
 
-class CaptureStackException : Exception("Hi, fucker")
+class CaptureStackException : Exception("Hi, fucker") {
+}
 
 fun String.escapeSingleQuotes(): String =
     this.replace("'", "\\'")
@@ -333,6 +335,13 @@ abstract class KeyDef {
     protected val name = this::class.simpleName!!
 }
 
+fun StringBuilder.appendln(s: String) {
+    append(s + "\n")
+}
+
+fun StringBuilder.lnappendln2(s: String) {
+    append("\n" + s + "\n\n")
+}
 
 
 

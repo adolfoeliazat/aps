@@ -8,17 +8,19 @@ import kotlin.properties.Delegates.notNull
 class TestSuite_UACustomer_Order_Files : TestSuite {
     override val shortDescription = null
 
-    override val scenarios by lazy {listOf<TestScenario>(
-        Test_UACustomer_Order_Files_1(),
-        Test_UACustomer_DownloadForbiddenFile(),
-        Test_UACustomer_LongFileList(),
-        Test_UACustomer_Order_Files_Search(),
-        Test_UACustomer_Order_Files_EditMeta(),
-        Test_UACustomer_Order_Files_EditFile(),
-        Test_UACustomer_Order_Files_EditFile_Error(),
-        Test_UACustomer_Order_Files_AddFile(),
-        Test_UACustomer_Order_Files_Misc()
-    )}
+    override val scenarios by lazy {
+        listOf<TestScenario>(
+            Test_UACustomer_Order_Files_1(),
+            Test_UACustomer_DownloadForbiddenFile(),
+            Test_UACustomer_LongFileList(),
+            Test_UACustomer_Order_Files_Search(),
+            Test_UACustomer_Order_Files_EditMeta(),
+            Test_UACustomer_Order_Files_EditFile(),
+            Test_UACustomer_Order_Files_EditFile_Error(),
+            Test_UACustomer_Order_Files_AddFile(),
+            Test_UACustomer_Order_Files_Misc()
+        )
+    }
 }
 
 
@@ -34,12 +36,14 @@ class Test_UACustomer_Order_Files_1 : StepBasedTestScenario() {
 class Test_UACustomer_DownloadForbiddenFile : StepBasedTestScenario() {
     override fun buildSteps() {
         o.setUpOrderAndFiles1(testShit)
-        o.acta {fuckingRemoteCall.executeSQL("Delete permission for crazy boobs file", """
+        o.acta {
+            fuckingRemoteCall.executeSQL("Delete permission for crazy boobs file", """
             delete from file_user_permissions
             where
                 file_id = (select id from files where name = 'crazy monster boobs.rtf') and
                 user_id = (select id from users where first_name = 'Иво')
-        """)}
+        """)
+        }
         o.willWaitForModalShown()
         o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = true, sha1 = "16428e392350fc2e0ea8dda708fdd4ed61f423d5")) {
             o.kicClick("download-100001")
@@ -60,31 +64,34 @@ class Test_UACustomer_LongFileList : StepBasedTestScenario() {
             setUpUsers = {
                 o.setUpBobul(testShit0)
             },
-            setUpOrders = {o.setUpBobulOrder(
-                testShit0,
-                setUpFiles = {oid-> async {
-                    await(setUpFilesByBobul_1(testShit0, oid))
+            setUpOrders = {
+                o.setUpBobulOrder(
+                    testShit0,
+                    setUpFiles = {oid ->
+                        async {
+                            await(setUpFilesByBobul_1(testShit0, oid))
 
-                    val mnt = moment("2016-12-02 13:17:08")
-                    for (i in 1..20) {
-                        await(ImposeNextRequestTimestampRequest.send(mnt.formatPostgres()))
-                        await(send(testShit0.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-                            o.orderID.value = oid
-                            o.file.content = FileField.Content.TestFileOnServer("shitty document $i.rtf")
-                            o.title.value = "Some shitty document $i"
-                            o.details.value = dedent("""
+                            val mnt = moment("2016-12-02 13:17:08")
+                            for (i in 1..20) {
+                                await(ImposeNextRequestTimestampRequest.send(mnt.formatPostgres()))
+                                await(send(testShit0.bobulToken, CustomerAddUAOrderFileRequest() - {o ->
+                                    o.orderID.value = oid
+                                    o.file.content = FileField.Content.TestFileOnServer("shitty document $i.rtf")
+                                    o.title.value = "Some shitty document $i"
+                                    o.details.value = dedent("""
                                         This is shitty text $i.
                                         Фрау Грубах, у которой вид был вовсе не виноватый, отперла двери в  прихожей  перед  всей  компанией,  и  К.  по  привычке
                                         взглянул  на завязки фартука, которые слишком глубоко врезались в ее мощный стан. На улице К. поглядел на часы  и  решил  взять
                                         такси,  чтобы  не  затягивать еще больше получасовое опоздание.
                                     """)
-                        }))
+                                }))
 //                        await(fuckingRemoteCall.executeSQL("Add file permissions", """
 //                                    insert into file_user_permissions(file_id, user_id) values(${100002 + i}, 100000)
 //                                """))
-                        mnt.add(23, "minutes").add(14, "seconds")
-                    }
-                }})
+                                mnt.add(23, "minutes").add(14, "seconds")
+                            }
+                        }
+                    })
             },
             assertScreen = {o.assertScreenHTML("1", "acbe3d9e-32cc-426a-bb6a-f03b6c9a4a55")}
         )
@@ -121,11 +128,13 @@ class Test_UACustomer_Order_Files_Search : StepBasedTestScenario() {
             setUpOrders = {
                 o.setUpBobulOrder(
                     testShit,
-                    setUpFiles = {oid-> async {
-                        await(setUpFilesByBobul_1(testShit, oid))
-                        await(setUpFilesByFedor_1(testShit, oid))
-                        await(setUpFilesByBobul_2(testShit, oid))
-                    }})
+                    setUpFiles = {oid ->
+                        async {
+                            await(setUpFilesByBobul_1(testShit, oid))
+                            await(setUpFilesByFedor_1(testShit, oid))
+                            await(setUpFilesByBobul_2(testShit, oid))
+                        }
+                    })
             },
             assertScreen = {o.assertScreenHTML("1", "0f77828b-fe22-4606-8f97-0efecc6fefde")}
         )
@@ -181,33 +190,36 @@ abstract class TestUACustomer_Order_Files_Base : StepBasedTestScenario() {
     abstract fun buildSteps0()
 
     override fun buildSteps() {
-        o.initialShit(this)
-        o.setUpOrderFilesTestTemplate_1(
-            testShit,
-            setUpUsers = {
-                o.setUpBobul(testShit)
-                o.setUpFedor(testShit)
-                o.setUpDasja(testShit)
-            },
-            setUpOrders = {
-                o.setUpBobulOrder(
-                    testShit,
-                    setUpFiles = {oid->
-                        async {
-                            await(setUpFilesByBobul_1(testShit, oid))
-                            await(setUpFilesByFedor_1(testShit, oid))
-                            await(setUpFilesByBobul_2(testShit, oid))
-                            await(setUpFilesByFedor_2(testShit, oid))
-                        }
-                    })
-            },
-            assertScreen = {o.assertScreenHTML("1", "ecec02be-35ab-4c44-afc4-a50b73d45b1c")}
-        )
-
+        o.commonFuckingShit(this)
         buildSteps0()
     }
 }
 
+fun TestScenarioBuilder.commonFuckingShit(scenario: StepBasedTestScenario, buildInitFuckingBrowser: (() -> Unit)? = null) {
+    initialShit(scenario)
+    setUpOrderFilesTestTemplate_1(
+        scenario.testShit,
+        setUpUsers = {
+            setUpBobul(scenario.testShit)
+            setUpFedor(scenario.testShit)
+            setUpDasja(scenario.testShit)
+        },
+        setUpOrders = {
+            setUpBobulOrder(
+                scenario.testShit,
+                setUpFiles = {oid ->
+                    async {
+                        await(setUpFilesByBobul_1(scenario.testShit, oid))
+                        await(setUpFilesByFedor_1(scenario.testShit, oid))
+                        await(setUpFilesByBobul_2(scenario.testShit, oid))
+                        await(setUpFilesByFedor_2(scenario.testShit, oid))
+                    }
+                })
+        },
+        assertScreen = {assertScreenHTML("1", "ecec02be-35ab-4c44-afc4-a50b73d45b1c")},
+        initFuckingBrowser = buildInitFuckingBrowser
+    )
+}
 
 class Test_UACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
     override fun buildSteps0() {
@@ -227,20 +239,107 @@ class Test_UACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
     }
 }
 
-class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
-    override fun buildSteps0() {
+class Test_UACustomer_Order_Files_EditFile : StepBasedTestScenario() {
+    override fun buildSteps() {
+        o.commonFuckingShit(this, buildInitFuckingBrowser = {
+            val browseroidName = "ivo1"
+            val url = "${fconst.test.url.customer}/order.html?id=100000&tab=files"
+            val fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {
+                it.token = testShit.bobulToken
+            }
+            val fillRawStorageLocal: (StorageLocal) -> Unit = {}
+            val buildStaticAssertion = {o.assertCustomerWithTokenStaticIndexScreen()}
+            val buildDynamicAssertion = {o.assertScreenHTML("pipiska 1", "70ff5b21-f1d7-4d0b-ac02-3bc394d2cc98")}
+            o.acta {async{
+                val bro = TestBrowseroid(browseroidName, url)
+                fillTypedStorageLocal(bro.typedStorageLocal)
+                fillRawStorageLocal(bro.typedStorageLocal.store)
+                currentBrowseroid = bro
+
+                ExternalGlobus.storageLocalForStaticContent = object : IStorage {
+                    override fun getItem(key: String) = bro.typedStorageLocal.store.getItem(key)
+                }
+
+                dlog("Navigating to static content: $url")
+                val content = measureAndReportToDocumentElement("Loading $url") {
+                    await(fetchURL(url, "GET", null))
+                }
+
+                val openingHeadTagIndex = content.indexOfOrDie("<head")
+                val closingHTMLTagIndex = content.indexOfOrDie("</html>")
+                val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
+
+                killEverythingVisual()
+                setDocInnerHTML(innerHTMLContent)
+                jqbody.scrollTop(0)
+                loadCSS()
+                (currentBrowseroid as TestBrowseroid).replaceWholeURL(url)
+                ExternalGlobus.displayInitialShit()
+            }}
+
+            buildStaticAssertion()
+            o.acta {async {
+                val world = World(browseroidName)
+                await(world.boot())
+            }}
+            buildDynamicAssertion()
+        })
+
         val orderFileID = 100010L
         val fileID = 100008L
-
         fun expectChangedFileDownload() {
             o.expectPieceOfShitDownload(PieceOfShitDownload(fileID, "fuck you.rtf", forbidden = false, sha1 = "1f378c5775314852bb2f45fd52611b28812978e3")) {
                 o.kicClick("download-$orderFileID")
             }
         }
-
         o.acta {TestUserActionAnimation.scroll(700)}
         o.kicClick("edit-$orderFileID")
         o.assertScreenHTML("Piece of shit #$orderFileID is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
+        val kludge = true
+        if (kludge) {
+            val browseroidName = "fedor1"
+            val url = "http://aps-ua-writer.local:3022"
+            val fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {}
+            val fillRawStorageLocal: (StorageLocal) -> Unit = {}
+            val buildStaticAssertion = {o.assertAnonymousWriterStaticIndexScreen()}
+            val buildDynamicAssertion = {o.assertAnonymousWriterDynamicIndexScreen()}
+            o.acta {async{
+                val bro = TestBrowseroid(browseroidName, url)
+                fillTypedStorageLocal(bro.typedStorageLocal)
+                fillRawStorageLocal(bro.typedStorageLocal.store)
+                currentBrowseroid = bro
+
+                ExternalGlobus.storageLocalForStaticContent = object : IStorage {
+                    override fun getItem(key: String) = bro.typedStorageLocal.store.getItem(key)
+                }
+
+                dlog("Navigating to static content: $url")
+                val content = measureAndReportToDocumentElement("Loading $url") {
+                    await(fetchURL(url, "GET", null))
+                }
+
+                val openingHeadTagIndex = content.indexOfOrDie("<head")
+                val closingHTMLTagIndex = content.indexOfOrDie("</html>")
+                val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
+
+                killEverythingVisual()
+                setDocInnerHTML(innerHTMLContent)
+                jqbody.scrollTop(0)
+                loadCSS()
+                (currentBrowseroid as TestBrowseroid).replaceWholeURL(url)
+                ExternalGlobus.displayInitialShit()
+            }}
+
+            buildStaticAssertion()
+            o.acta {async {
+                val world = World(browseroidName)
+                await(world.boot())
+            }}
+            buildDynamicAssertion()
+
+            o.topNavItemSequence(descr = "Navigate sign-in page", key = fconst.key.topNavItem.signIn.testRef, aid = "e80010be-2bc9-4d8f-8170-46cc8b250515")
+        }
+
         o.fileFieldChoose(
             assertionDescr = "File changed",
             assertionID = "b3afb796-7115-4f11-a980-acd48e898052",
@@ -248,45 +347,46 @@ class Test_UACustomer_Order_Files_EditFile : TestUACustomer_Order_Files_Base() {
             fileName = "fuck you.rtf")
         o.inputSetValue("title-$orderFileID", "The Fuck You")
         o.inputPrependValue("details-$orderFileID", "A fucky piece of text. ")
+        if (!kludge) {
+            o.formWithAnimationOnCompletionSequence_killme(
+                testShit,
+                buildAction = {
+                    o.buttonClick("primary-$orderFileID")
+                },
+                assertionDescr = "Shit is saved",
+                halfwayAssertionID = "485b79d2-0cb5-48ce-937e-3843b1b71f89",
+                completionAnimationHalfwayAssertionID = "3402503d-c9ca-4fff-b9ab-1ef44896bd4f",
+                finalAssertionID = "a34b038f-3578-411e-9aad-e8011755e0cb"
+            )
 
-        o.formWithAnimationOnCompletionSequence_killme(
-            testShit,
-            buildAction = {
-                o.buttonClick("primary-$orderFileID")
-            },
-            assertionDescr = "Shit is saved",
-            halfwayAssertionID = "485b79d2-0cb5-48ce-937e-3843b1b71f89",
-            completionAnimationHalfwayAssertionID = "3402503d-c9ca-4fff-b9ab-1ef44896bd4f",
-            finalAssertionID = "a34b038f-3578-411e-9aad-e8011755e0cb"
-        )
+            expectChangedFileDownload()
 
-        expectChangedFileDownload()
+            o.kicClick("edit-$orderFileID")
+            o.assertScreenHTML("Piece of shit #$orderFileID is opened at new position", "166e3d38-e981-42fc-92ab-47e5fce8eca1")
+            o.inputAppendValue("title-$orderFileID", " (yes, you)")
+            o.formWithAnimationOnCompletionSequence_killme(
+                testShit,
+                buildAction = {
+                    o.buttonClick("primary-$orderFileID")
+                },
+                assertionDescr = "Shit is saved again",
+                halfwayAssertionID = "633010c2-2015-461c-850b-2aea3a74e7de",
+                completionAnimationHalfwayAssertionID = "05837cd7-998e-4daa-aa11-4a04892e4458",
+                finalAssertionID = "ac35950e-bfcf-4d18-8275-4fba17afd8fd"
+            )
 
-        o.kicClick("edit-$orderFileID")
-        o.assertScreenHTML("Piece of shit #$orderFileID is opened at new position", "166e3d38-e981-42fc-92ab-47e5fce8eca1")
-        o.inputAppendValue("title-$orderFileID", " (yes, you)")
-        o.formWithAnimationOnCompletionSequence_killme(
-            testShit,
-            buildAction = {
-                o.buttonClick("primary-$orderFileID")
-            },
-            assertionDescr = "Shit is saved again",
-            halfwayAssertionID = "633010c2-2015-461c-850b-2aea3a74e7de",
-            completionAnimationHalfwayAssertionID = "05837cd7-998e-4daa-aa11-4a04892e4458",
-            finalAssertionID = "ac35950e-bfcf-4d18-8275-4fba17afd8fd"
-        )
+            expectChangedFileDownload()
 
-        expectChangedFileDownload()
-
-        o.twoStepLockSequence(
-            buildAction = {
-                o.buttonClick(fconst.key.refreshPage.testRef)
-            },
-            lock = TestGlobal.loadPageForURLLock,
-            assertionDescr = "Page refresh",
-            assertionID1 = "9e3aaafd-8fc0-4580-9eb7-5319496c6278",
-            assertionID2 = "36acd3be-3e16-4bc3-9968-4269fdb03fce"
-        )
+            o.twoStepLockSequence(
+                buildAction = {
+                    o.buttonClick(fconst.key.refreshPage.testRef)
+                },
+                lock = TestGlobal.loadPageForURLLock,
+                assertionDescr = "Page refresh",
+                assertionID1 = "9e3aaafd-8fc0-4580-9eb7-5319496c6278",
+                assertionID2 = "36acd3be-3e16-4bc3-9968-4269fdb03fce"
+            )
+        }
     }
 
 }
@@ -444,14 +544,20 @@ fun TestScenarioBuilder.setUpOrderAndFiles1(shit: TestShit) {
             o.setUpBobul(shit)
         },
         setUpOrders = {
-            o.setUpBobulOrder(shit, {oid->
+            o.setUpBobulOrder(shit, {oid ->
                 setUpFilesByBobul_1(shit, oid)
             })
         },
         assertScreen = {o.assertScreenHTML("setUpOrderAndFiles1", "f2c21456-9c7c-4fbf-94ca-ccc4544837a9")})
 }
 
-fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(shit: TestShit, setUpUsers: () -> Unit, setUpOrders: () -> Unit, assertScreen: () -> Unit) {
+fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(
+    shit: TestShit,
+    setUpUsers: () -> Unit,
+    setUpOrders: () -> Unit,
+    assertScreen: () -> Unit,
+    initFuckingBrowser: (() -> Unit)? = null
+) {
     val o = this
 
     o.acta {fedis.pushLogGroup("Prepare test shit")}
@@ -459,18 +565,20 @@ fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(shit: TestShit, setUpUsers
     setUpOrders()
     o.acta {fedis.popLogGroup()}
 
-    o.initFuckingBrowser(fillTypedStorageLocal = {
-        it.token = shit.bobulToken
-    })
-    o.kindaNavigateToStaticContent("${fconst.test.url.customer}/order.html?id=100000&tab=files")
-    o.assertCustomerBreatheScreen()
+    (initFuckingBrowser ?: {
+        o.initFuckingBrowser(fillTypedStorageLocal = {
+            it.token = shit.bobulToken
+        })
+        o.kindaNavigateToStaticContent("${fconst.test.url.customer}/order.html?id=100000&tab=files")
+        o.assertCustomerWithTokenStaticIndexScreen()
 
-    o.acta {
-        async {
-            val world = World("boobs")
-            await(world.boot())
+        o.acta {
+            async {
+                val world = World("boobs")
+                await(world.boot())
+            }
         }
-    }
+    })()
 
     assertScreen()
 }

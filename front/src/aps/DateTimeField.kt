@@ -86,7 +86,7 @@ class DateTimePicker(val key: String? = null) : Control2(Attrs()) {
     private fun initEonasdan() {
         byid(pickerID).asDynamic().datetimepicker()
         eonasdan = byid(pickerID).asDynamic().data("DateTimePicker")
-        gloshit.eonasdan = eonasdan
+        aps.gloshit.eonasdan = eonasdan
         eonasdan.locale(when (Globus.lang) {
                             Language.EN -> "en"
                             Language.UA -> "ru"
@@ -112,8 +112,8 @@ class DateTimePicker(val key: String? = null) : Control2(Attrs()) {
     val picker = DateTimePicker(key)
 
     override fun render(): ReactElement {
-        gloshit.popo = {populateRemote(json())}
-        gloshit.updatePicker = {picker.update()}
+        aps.gloshit.popo = {populateRemote(json())}
+        aps.gloshit.updatePicker = {picker.update()}
         return kdiv(className = "form-group", marginBottom = if (error != null) 0 else null){o->
             o- klabel {it-title}
             o- kdiv(position = "relative"){o->
@@ -133,7 +133,7 @@ class DateTimePicker(val key: String? = null) : Control2(Attrs()) {
 
     override fun focus() {}
 
-    override fun populateRemote(json: Json): Promise<Unit> = async {
+    override fun populateRemote(json: Json): Promisoid<Unit> = async {
         killmeValue?.let {
             json[name] = it
             return@async

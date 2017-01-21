@@ -10,7 +10,7 @@ import aps.*
 
 class SignInPage(val ui: World) {
 
-    fun load(): Promise<Unit> = async {
+    fun load(): Promisoid<Unit> = async {
         ui.setPage(Page(
             header = oldShitAsToReactElementable(pageHeader(t("Sign In", "Вход"))),
             body = kdiv{o->
@@ -31,7 +31,7 @@ class SignInPage(val ui: World) {
                             ui.userMaybe = res.user
 //                        ui.startLiveStatusPolling()
                             ui.tokenMaybe = res.token
-                            typedStorageLocal.token = ui.tokenMaybe
+                            Browseroid.current.typedStorageLocal.token = ui.tokenMaybe
 //                        hrss.storageLocal.setItem("token", token!!)
 
                             await(ui.pushNavigate(when (res.user.state) {

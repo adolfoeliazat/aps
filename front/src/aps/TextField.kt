@@ -51,7 +51,7 @@ import aps.front.*
         }.toReactElement()
     }
 
-    override fun populateRemote(json: Json): Promise<Unit> = async {
+    override fun populateRemote(json: Json): Promisoid<Unit> = async {
         json[name] = value
     }
 }

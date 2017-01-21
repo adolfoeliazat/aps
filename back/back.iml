@@ -14,9 +14,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="aps-gradle-lib" level="project" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
-    <orderEntry type="module" module-name="into-kommon-jvm" />
-    <orderEntry type="library" name="kotlinc" level="project" />
+    <orderEntry type="library" name="aps-deps" level="project" />
   </component>
 </module>

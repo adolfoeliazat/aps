@@ -11,11 +11,14 @@ package aps.front
 import aps.*
 import into.kommon.*
 import jquery.jq
+import org.w3c.dom.HTMLElement
 import kotlin.browser.localStorage
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
 class World(val name: String) {
+    private val typedStorageLocal get() = Browseroid.current.typedStorageLocal
+
     lateinit var rootContent: ReactElement
     lateinit var currentPage: Page
     var tokenMaybe: String? = null
@@ -37,15 +40,15 @@ class World(val name: String) {
     val token: String get() = tokenMaybe!!
     val user: UserRTO get() = userMaybe.let {it ?: bitch("I want a fucking user")}
 
-    fun boot(): Promise<Unit> {"__async"
+    fun boot() = async<Unit> {
         hrss.browserOld.ui = this
 //        KotlinShit.ui = this
 
-        global.onpopstate = {e: dynamic -> "__async"
+        global.onpopstate = {e: dynamic -> async{
             breatheBanner.show()
-            __await<dynamic>(loadPageForURL())
+            await<dynamic>(loadPageForURL())
             breatheBanner.hide()
-        }
+        }}
 
         hrss.browserOld.impl = this
         KotlinShit.clientImpl = this
@@ -53,15 +56,13 @@ class World(val name: String) {
 //        if (MODE == "debug") {
 //            Shitus.initDebugFunctionsShit()
 //        }
-        __await<dynamic>(bootKillme())
+        await<dynamic>(bootKillme())
 
         Globus.worldMaybe = this
         if (isTest()) {
-            crossWorld.locationControl.update()
+            crossWorld.createOrUpdate()
         }
         send(PingRequest())
-
-        return __asyncResult(Unit)
     }
 
     fun urlLink(def: dynamic): dynamic {
@@ -80,7 +81,7 @@ class World(val name: String) {
         userMaybe = x
     }
 
-    fun loadSignInPage(): Promise<Unit> = SignInPage(this).load()
+    fun loadSignInPage(): Promisoid<Unit> = SignInPage(this).load()
 
     fun signOut() {
         typedStorageLocal.clear()
@@ -90,24 +91,24 @@ class World(val name: String) {
         replaceNavigate("/")
     }
 
-    fun pushNavigate(url: String): Promise<Unit> = async {
+    fun pushNavigate(url: String): Promisoid<Unit> = async {
         //        ui.currentPage = null.asDynamic() // TODO:vgrechka Do something about this
         Globus.location.pushState(null, "", url)
         await(loadPageForURL())
     }
 
-    fun replaceNavigate(where: dynamic): Promise<Unit> {"__async"
+    fun replaceNavigate(where: dynamic): Promisoid<Unit> = async {
         Globus.location.replaceState(null, "", where)
-        return __await<dynamic>(loadPageForURL()) /ignora
+        await<dynamic>(loadPageForURL())
     }
 
-    fun bootKillme(): Promise<Unit> {"__async"
+    fun bootKillme(): Promisoid<Unit> = async {
         Shitus.beginTrain(json("name" to "boot()")); try {
             tokenMaybe = typedStorageLocal.token
 //            token = hrss.storageLocal.getItem("token")
             if (tokenMaybe != null) {
                 try {
-                    val res = __await(SignInWithTokenRequest.send(tokenMaybe!!))
+                    val res = await(SignInWithTokenRequest.send(tokenMaybe!!))
                     userMaybe = res.user
 //                        ui.startLiveStatusPolling()
                 } catch (e: Throwable) {
@@ -145,20 +146,19 @@ class World(val name: String) {
                 }
             })
 
-            DOMReact.render(topNavbarElement, Shitus.byid0("topNavbarContainer"))
+            Browseroid.current.reactoid.mount(topNavbarElement, Globus.topNavbarContainer!!)
 
             initDynamicFooter()
 
-            __await<dynamic>(loadPageForURL())
+            await<dynamic>(loadPageForURL())
         } finally { Shitus.endTrain() }
-        return __asyncResult(Unit)
     }
 
     private fun initDynamicFooter() {
         val jqFooter = jq("#footer")
         jqFooter.append("<div id='${const.elementID.dynamicFooter}'></div>")
         footer = DynamicFooter(this)
-        DOMReact.render(footer.toReactElement(), byid0ForSure("dynamicFooter"))
+        Browseroid.current.reactoid.mount(footer.toReactElement(), byid0ForSure("dynamicFooter"))
     }
 
     fun setPage(def: Page) {
@@ -182,7 +182,7 @@ class World(val name: String) {
         currentPage = def
     }
 
-    fun loadPageForURL(): Promise<Unit> = async {
+    fun loadPageForURL(): Promisoid<Unit> = async {
         val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
         noise.clog(Globus.location.href)
 
@@ -216,30 +216,32 @@ class World(val name: String) {
                 }
             }
 
-        var loader by notNull<() -> Promise<Unit>>()
+        val my = object {
+            var loader by notNull<() -> Promisoid<Unit>>()
+        }
 
         fun isStaticPage(name: String) = !isDynamicPage(name)
 
         if (isStaticPage(ultimateName)) {
-            fun staticLoader(): Promise<Unit> = async {
+            fun staticLoader(): Promisoid<Unit> = async {
                 val url = Globus.location.baseWithoutSlash + "/$ultimateName.html"
                 var content = await(fetchFromURL("GET", url, null, {it}))
                 content = content.substring(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
                 setRootContent(rawHTML(content))
             }
-            loader = ::staticLoader
+            my.loader = ::staticLoader
         } else {
             if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
-                Globus.location.replaceState(null, "", "sign-in.html")
+                Globus.location.replaceState(null, "", "/sign-in.html")
                 ultimateName = "sign-in"
             }
 
             if (ultimateName == "sign-in") {
-                loader = this::loadSignInPage
+                my.loader = this::loadSignInPage
             } else if (ultimateName == "sign-up") {
-                loader = {loadSignUpPage()}
+                my.loader = {loadSignUpPage()}
             } else if (user != null || (Globus.mode == Mode.DEBUG && ultimateName.startsWith("debug"))) {
-                loader = privatePageLoader(ultimateName)
+                my.loader = privatePageLoader(ultimateName)
             }
         }
 
@@ -253,7 +255,7 @@ class World(val name: String) {
             global.window.disposeStaticShit()
 
             footer.setBurgerMenu(null)
-            await<dynamic>(loader())
+            await<dynamic>(my.loader())
 
             js("$")(global.document).scrollTop(0)
             global.window.initStaticShit()
@@ -267,8 +269,8 @@ class World(val name: String) {
         return@async Unit
     }
 
-    fun loadSignUpPage(): Promise<Unit> {"__async"
-        return __await(KotlinShit.loadSignUpPage(this)) /ignora
+    fun loadSignUpPage(): Promisoid<Unit> = async {
+        await(KotlinShit.loadSignUpPage(this))
     }
 
     fun setRootContent(newRootContent: dynamic) {
@@ -279,7 +281,7 @@ class World(val name: String) {
                 updateRoot = update
                 {Shitus.diva(json(), rootContent)}
             })
-            DOMReact.render(rootElement, Shitus.byid0("root"))
+            Browseroid.current.reactoid.mount(rootElement, Shitus.byid0("root"))
         }
 
         updateRoot()
@@ -289,20 +291,20 @@ class World(val name: String) {
         return KotlinShit.isDynamicPage(name)
     }
 
-    fun privatePageLoader(name: String): () -> Promise<Unit> {
+    fun privatePageLoader(name: String): () -> Promisoid<Unit> {
         return when (name) {
-            "dashboard" -> ({"__async"
-                __await(KotlinShit.loadDashboardPage(this)) /ignora
-            })
-            "admin-users" -> ({"__async"
-                __await(KotlinShit.loadAdminUsersPage(this)) /ignora
-            })
-            "profile" -> ({"__async"
-                __await(KotlinShit.loadProfilePage(this)) /ignora
-            })
-            "debug" -> ({"__async"
-                __reawait(DebugPage(this).load())
-            })
+            "dashboard" -> ({async{
+                await(KotlinShit.loadDashboardPage(this))
+            }})
+            "admin-users" -> ({async{
+                await(KotlinShit.loadAdminUsersPage(this))
+            }})
+            "profile" -> ({async{
+                await(KotlinShit.loadProfilePage(this))
+            }})
+            "debug" -> ({async{
+                await(DebugPage(this).load())
+            }})
             "orders" -> ({
                 when (Globus.clientKind) {
                     ClientKind.UA_CUSTOMER -> CustomerUAOrdersPage(this).load()
@@ -325,9 +327,10 @@ class World(val name: String) {
     }
 
     fun unmountShit() {
-        DOMReact.unmountComponentAtNode(Shitus.byid0("topNavbarContainer"))
-        DOMReact.unmountComponentAtNode(Shitus.byid0("dynamicFooter"))
-        DOMReact.unmountComponentAtNode(Shitus.byid0("root"))
+        die("reimplement me")
+//        DOMReact.unmountComponentAtNode(Shitus.byid0("topNavbarContainer"))
+//        DOMReact.unmountComponentAtNode(Shitus.byid0("dynamicFooter"))
+//        DOMReact.unmountComponentAtNode(Shitus.byid0("root"))
     }
 
 //    fun mountShit() {

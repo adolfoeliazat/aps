@@ -25,14 +25,14 @@ fun dumpControls() {
     for (key in Link.instances.keys) clog("Link: $key")
 }
 
-fun igniteDebugShit(): Promise<Unit> = DebugShitToIgnite.nothing()
+fun igniteDebugShit(): Promisoid<Unit> = DebugShitToIgnite.nothing()
 private object DebugShitToIgnite {
     fun nothing() = async {}
 
     fun skipNonFailedAssertions() = skipAssertionsUntil {currentAssertionBannerKind == AssertionBannerKind.INCORRECT}
     fun skipCorrectAssertions() = skipAssertionsUntil {currentAssertionBannerKind != AssertionBannerKind.CORRECT}
 
-    private fun skipAssertionsUntil(condition: () -> Boolean): Promise<Unit> {
+    private fun skipAssertionsUntil(condition: () -> Boolean): Promisoid<Unit> {
         return async<Unit> {
             while (true) {
                 await(tillPausedOnAssertion())
@@ -78,7 +78,7 @@ fun showLastTestSuiteURL() {
     console.dir(Globus.realTypedStorageLocal.lastTestSuiteURL!!)
 }
 
-private fun tillBodyHTMLContains(needle: String): Promise<Unit> = async {
+private fun tillBodyHTMLContains(needle: String): Promisoid<Unit> = async {
     while (true) {
         if (document.body!!.innerHTML.contains(needle))
             break
@@ -91,6 +91,9 @@ fun blowUp() {
     throw Exception("fuck you")
 }
 
+fun haltShit() {
+
+}
 
 
 

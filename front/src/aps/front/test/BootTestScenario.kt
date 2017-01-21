@@ -1,3 +1,5 @@
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
@@ -7,8 +9,8 @@ import aps.front.testutils.*
 import org.w3c.dom.Storage
 import kotlin.browser.window
 
-fun delay(ms: Int): Promise<Unit> = Promise {resolve, _ ->
-    window.setTimeout({resolve(Unit)}, ms)
+fun delay(ms: Int): Promisoid<Unit> = Promisoid {resolve, _ ->
+    global.setTimeout({resolve(Unit)}, ms)
 }
 
 abstract class BootTestScenario : StepBasedTestScenario() {
@@ -35,7 +37,7 @@ abstract class BootTestScenario : StepBasedTestScenario() {
             val openingHeadTagIndex = content.indexOfOrDie("<head")
             val closingHTMLTagIndex = content.indexOfOrDie("</html>")
             val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
-            docInnerHTML = innerHTMLContent
+            setDocInnerHTML(innerHTMLContent)
         }}
 
         o.act {

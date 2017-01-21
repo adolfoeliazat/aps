@@ -16,6 +16,7 @@ import aps.back.generated.jooq.tables.pojos.JQUsers
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import kotlin.properties.Delegates.notNull
 
 fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die("I want APS_DANGEROUS_TOKEN environment variable")
 
@@ -24,6 +25,7 @@ fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die
 class ProcedureContext {
     lateinit var q: DSLContext
 //    lateinit var qshit: DSLContextProxyFactory
+    var wideClientKind by notNull<WideClientKind>()
     lateinit var clientKind: ClientKind
     lateinit var lang: Language
     lateinit var requestTimestamp: Timestamp
@@ -75,7 +77,26 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                 // log.section("rmap:", rmap)
 
                 fun serviceShit() {
-                    ctx.clientKind = ClientKind.valueOf(rmap["clientKind"] as String)
+                    (rmap["wideClientKind"] as String).let {
+                        when (it) {
+                            WideClientKind.User::class.simpleName -> {
+                                ctx.clientKind = ClientKind.valueOf(rmap["clientKind"] as String)
+                                ctx.wideClientKind = WideClientKind.User(ctx.clientKind)
+                                ctx.clientDomain = when (ctx.clientKind) {
+                                    ClientKind.UA_CUSTOMER -> "aps-ua-customer.local"
+                                    ClientKind.UA_WRITER -> "aps-ua-writer.local"
+                                }
+                                ctx.clientPortSuffix = when (ctx.clientKind) {
+                                    ClientKind.UA_CUSTOMER -> ":3012"
+                                    ClientKind.UA_WRITER -> ":3022"
+                                }
+                            }
+                            WideClientKind.Test::class.simpleName -> {
+                                ctx.wideClientKind = WideClientKind.Test()
+                            }
+                            else -> wtf("wideClientKind: $it")
+                        }
+                    }
                     ctx.lang = Language.valueOf(rmap["lang"] as String)
 
                     ctx.requestTimestamp = Timestamp(Date().time)
@@ -84,11 +105,6 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                             TestServerFiddling.nextRequestTimestamp = null
                             ctx.requestTimestamp = it
                         }
-                    }
-
-                    ctx.clientDomain = when (ctx.clientKind) {
-                        ClientKind.UA_CUSTOMER -> "aps-ua-customer.local"
-                        ClientKind.UA_WRITER -> "aps-ua-writer.local"
                     }
 
 //                    ctx.clientDomain = when (ctx.lang) {
@@ -101,11 +117,6 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 //                            ClientKind.WRITER -> "aps-ua-writer.local"
 //                        }
 //                    }
-
-                    ctx.clientPortSuffix = when (ctx.clientKind) {
-                        ClientKind.UA_CUSTOMER -> ":3012"
-                        ClientKind.UA_WRITER -> ":3022"
-                    }
 
 //                    ctx.clientPortSuffix = when (ctx.lang) {
 //                        Language.EN -> when (ctx.clientKind) {

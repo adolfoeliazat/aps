@@ -11,36 +11,36 @@ object fedis {
     var died = false
     val groups = mutableListOf<LogGroup>()
 
-    fun lrange(key: String, start: Long, end: Long): Promise<List<String>> = sendShit(json(
+    fun lrange(key: String, start: Long, end: Long): Promisoid<List<String>> = sendShit(json(
         "command" to "lrange",
         "key" to key,
         "start" to "" + start,
         "end" to "" + end
     ))
 
-    fun mget(keys: List<String>): Promise<List<String>> = sendShit(json(
+    fun mget(keys: List<String>): Promisoid<List<String>> = sendShit(json(
         "command" to "mget",
         "keys" to keys.toTypedArray()
     ))
 
-    fun del(keys: List<String>): Promise<List<String>> = sendShit(json(
+    fun del(keys: List<String>): Promisoid<List<String>> = sendShit(json(
         "command" to "del",
         "keys" to keys.toTypedArray()
     ))
 
-    fun beginLogGroup(title: String): Promise<String> = sendShit(json(
+    fun beginLogGroup(title: String): Promisoid<String> = sendShit(json(
         "command" to "beginLogGroup",
         "title" to title,
         "beginMillis" to currentTimeInt()
     ))
 
-    fun endLogGroup(id: String): Promise<Unit> = sendShit(json(
+    fun endLogGroup(id: String): Promisoid<Unit> = sendShit(json(
         "command" to "endLogGroup",
         "id" to id,
         "endMillis" to currentTimeInt()
     ))
 
-    private fun <T> sendShit(request: Json): Promise<T> = async {
+    private fun <T> sendShit(request: Json): Promisoid<T> = async {
         if (died) return@async js("'Redis is dead'") // TODO:vgrechka Devise something better. Should return T...
 
         try {
@@ -54,7 +54,7 @@ object fedis {
         }
     }
 
-    fun pushLogGroup(title: String): Promise<Unit> = async {
+    fun pushLogGroup(title: String): Promisoid<Unit> = async {
         val group = LogGroup(
             id = await(fedis.beginLogGroup(title)),
             prevID = Globus.rootRedisLogMessageID
@@ -63,7 +63,7 @@ object fedis {
         Globus.rootRedisLogMessageID = group.id
     }
 
-    fun popLogGroup(): Promise<Unit> = async {
+    fun popLogGroup(): Promisoid<Unit> = async {
         val group = groups.removeAt(groups.lastIndex)
         await(fedis.endLogGroup(group.id))
         Globus.rootRedisLogMessageID = group.prevID

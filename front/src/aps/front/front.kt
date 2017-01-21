@@ -13,10 +13,10 @@ import org.w3c.dom.events.Event
 
 
 @native interface IKotlinShit {
-    fun loadAdminUsersPage(ui: World): Promise<Unit>
-    fun loadDashboardPage(ui: World): Promise<Unit>
-    fun loadProfilePage(ui: World): Promise<Unit>
-    fun loadSignUpPage(ui: World): Promise<Unit>
+    fun loadAdminUsersPage(ui: World): Promisoid<Unit>
+    fun loadDashboardPage(ui: World): Promisoid<Unit>
+    fun loadProfilePage(ui: World): Promisoid<Unit>
+    fun loadSignUpPage(ui: World): Promisoid<Unit>
 }
 
 
@@ -38,31 +38,21 @@ object KotlinShit : IKotlinShit {
 //    val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
     val urlLink = ::jsFacing_urlLink
     val pageLink = ::jsFacing_pageLink
-//    val initHotCodeShit: dynamic = ::jsFacing_initHotCodeShit
-//    val parseQueryString = ::jsFacing_parseQueryString
 
-//    val shittyShit = json(
-//        "tests_UA_Writer" to ::jsFacing_tests_UA_Writer
-//    )
-
-//    override fun loadSignUpPage(): Promise<Unit> {"__async"
-//        return __asyncResult(__await(SignUpPage(ui).load()))
-//    }
-
-    override fun loadAdminUsersPage(ui: World): Promise<Unit> {"__async"
-        return __asyncResult(__await(AdminUsersPage(ui).load()))
+    override fun loadAdminUsersPage(ui: World): Promisoid<Unit> = async {
+        await(AdminUsersPage(ui).load())
     }
 
-    override fun loadProfilePage(ui: World): Promise<Unit> {"__async"
-        return __asyncResult(__await(ProfilePage(ui).load()))
+    override fun loadProfilePage(ui: World): Promisoid<Unit> = async {
+        await(ProfilePage(ui).load())
     }
 
-    override fun loadSignUpPage(ui: World): Promise<Unit> {"__async"
-        return __asyncResult(__await(SignUpPage(ui).load()))
+    override fun loadSignUpPage(ui: World): Promisoid<Unit> = async {
+        await(SignUpPage(ui).load())
     }
 
-    override fun loadDashboardPage(ui: World): Promise<Unit> {"__async"
-        return __asyncResult(__await(DashboardPage(ui).load()))
+    override fun loadDashboardPage(ui: World): Promisoid<Unit> = async {
+        await(DashboardPage(ui).load())
     }
 
 //    val kot_melinda = ::jsFacing_melinda
@@ -470,25 +460,25 @@ fun <T> ifornull(cond: Boolean, f: () -> T): T? {
     return if (cond) f() else null
 }
 
-class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit) {
-    val promise: Promise<Unit>
+//class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit) {
+//    val promise: Promisoid<Unit>
+//
+//    init {
+//        promise = Promisoid<Unit> {resolve, reject ->
+//            f({ resolve(Unit) }, reject)
+//        }
+//    }
+//
+//    fun then(cb: () -> Unit) {
+//        promise.then<Nothing>({cb()})
+//    }
+//}
 
-    init {
-        promise = Promise<Unit> { resolve, reject ->
-            f({ resolve(Unit) }, reject)
-        }
-    }
-
-    fun then(cb: () -> Unit) {
-        promise.then<Nothing>({cb()})
-    }
-}
-
-fun promiseUnit(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit): Promise<Unit> {
-    return Promise { resolve, reject ->
-        f({ resolve(Unit) }, reject)
-    }
-}
+//fun promiseUnit(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit): Promisoid<Unit> {
+//    return Promisoid {resolve, reject ->
+//        f({ resolve(Unit) }, reject)
+//    }
+//}
 
 // typealias Voidy = () -> Unit
 
@@ -504,14 +494,6 @@ class SimpleEventHandlerBuilder {
     }
 }
 
-
-fun timeoutSet(ms: Int, cb: () -> Unit) {
-    kotlin.browser.window.setTimeout(cb, ms)
-}
-
-fun intervalSet(ms: Int, cb: () -> Unit) {
-    kotlin.browser.window.setInterval(cb, ms)
-}
 
 @Suppress("UNUSED_PARAMETER")
 fun simpleButton(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement {
@@ -602,8 +584,8 @@ fun <R> runni(f: () -> R): R {
 }
 
 
-fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promise<dynamic> {
-    return Promise {resolve, reject ->
+fun promiseDefinitionStack(constructionStackAsError: Any?, firstSignificantStackLine: Int): Promisoid<dynamic> {
+    return Promisoid {resolve, reject ->
         console.warn("Implement promiseDefinitionStack")
         resolve(jsArrayOf())
     }
@@ -786,112 +768,6 @@ class StyleBuilder {
     var padding: String? = null; set(value) { if (value == null) attrs.remove("padding") else attrs["padding"] = value }
     fun padding(value: Int) { padding = "${value}px" }
 }
-
-
-
-
-
-
-
-// ------------------------- Async Playground -------------------------
-
-
-fun testAsyncShit() {"__async"
-    println("Begin testAsyncShit")
-
-    val methodRes: Int = __await(SomeClass().someAsyncShit_method())
-    println("Async method result: $methodRes")
-
-    val topLevelRes: Int = __await(someAsyncShit_topLevel())
-    println("Top-level function result: $topLevelRes")
-
-    val closureRes: Int = __await(someAsyncShit_closure())
-    println("Closure result: $closureRes")
-
-    someAsyncShit_localContainer()
-
-    println("End testAsyncShit")
-}
-
-fun promise10(): Promise<Int> {
-    return Promise { resolve, reject ->
-        timeoutSet(500) {
-            resolve(10)
-        }
-    }
-}
-
-fun promise20(): Promise<Int> {
-    return Promise { resolve, reject ->
-        timeoutSet(1000) {
-            resolve(20)
-        }
-    }
-}
-
-val someAsyncShit_closure = {"__async"
-    println("Begin someAsyncShit_closure")
-    val a = __await(promise10())
-    println("Got someAsyncShit_closure a: $a")
-    val b = __await(promise20())
-    println("Got someAsyncShit_closure b: $b")
-    __asyncResult(a + b)
-}
-
-class SomeClass {
-    fun someAsyncShit_method(): Promise<Int> {"__async"
-        println("Begin someAsyncShit_method")
-        val a = __await(promise10())
-        println("Got someAsyncShit_method a: $a")
-        val b = __await(promise20())
-        println("Got someAsyncShit_method b: $b")
-        return __asyncResult(a + b)
-    }
-}
-
-fun someAsyncShit_topLevel(): Promise<Int> {"__async"
-    println("Begin someAsyncShit_topLevel")
-    val a = __await(promise10())
-    println("Got someAsyncShit_topLevel a: $a")
-    val b = __await(promise20())
-    println("Got someAsyncShit_topLevel b: $b")
-    return __asyncResult(a + b)
-}
-
-fun someAsyncShit_localContainer() {
-    fun someAsyncShit_local(): Promise<Int> {"__async"
-        println("Begin someAsyncShit_local")
-        val a = __await(promise10())
-        println("Got someAsyncShit_local a: $a")
-        val b = __await(promise20())
-        println("Got someAsyncShit_local b: $b")
-        return __asyncResult(a + b)
-    }
-
-    someAsyncShit_local().then<Nothing>({res: Int ->
-        println("Got result in `then`: $res")
-    })
-}
-
-//fun initTestShit() {
-//    fun testDynamicVarargs() {
-//    }
-//
-//    global.testAsyncShit = ::testAsyncShit
-//    global.testDynamicVarargs = ::testDynamicVarargs
-//}
-
-//fun t(en: String) = t(en, en)
-//fun t(en: String, ru: String) = ru
-
-
-
-
-
-
-
-
-
 
 
 

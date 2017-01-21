@@ -140,14 +140,14 @@ testProcedure(
     }
 )
 
-@RemoteProcedureFactory fun getSentEmails() = testProcedure(
+@RemoteProcedureFactory fun serveGetSentEmails() = testProcedure(
     RequestMatumba(),
     runShit = fun(ctx, req): GetSentEmailsRequest.Response {
         return GetSentEmailsRequest.Response(EmailMatumba.sentEmails)
     }
 )
 
-@RemoteProcedureFactory fun clearSentEmails() = testProcedure(
+@RemoteProcedureFactory fun serveClearSentEmails() = testProcedure(
     RequestMatumba(),
     runShit = fun(ctx, req): GenericResponse {
         EmailMatumba.sentEmails.clear()

@@ -3,9 +3,75 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
-import kotlin.browser.window
-import kotlin.properties.Delegates.notNull
+
+fun qweeeeee() {
+
+}
+
+fun qwe_1() = async {
+    fun f() = Promisoid<Unit> {_, _ -> console.log("I will never end")}
+
+    val promise = async<Unit> {
+        f()
+    }
+
+    console.log(1)
+    console.log("res", await(promise))
+    console.log(2)
+}
+
+//fun qwe_2() = async {
+//    val promise: Promisoid<Promisoid<Unit>> = async {
+//        Promisoid<Unit> {_, _ -> console.log("I will never end")}
+//    }
+//
+//    console.log(1)
+//    promise.then<Nothing>(
+//        onFulfilled = {res: Promisoid<Unit> ->
+//            console.log("Fulfilled")    // <-- This never executes, but it should
+//        }
+//    )
+//    await(promise)
+//    console.log(2)
+//}
+//
+//fun qwe_3() {
+//    val promise: Promisoid<Promisoid<Unit>> = Promisoid<Promisoid<Unit>> {resolve, _ ->
+//        resolve(Promisoid<Unit> {_, _ -> console.log("I will never end")})
+//    }
+//
+//    console.log(1)
+//    promise.then<Nothing>(
+//        onFulfilled = {res: Promisoid<Unit> ->
+//            console.log("Fulfilled")    // <-- This never executes, but it should
+//        }
+//    )
+//    console.log(2)
+//}
+
+
+//fun qwe_works() {
+//    var x by notNull<Int>()
+//    x = 10
+//    console.log(x)
+//}
+//
+//fun qwe_breaks(): Promise<Unit> = async {
+//    var x by notNull<Int>()
+//    "aaaaaaaaaaa"    // <-- Marker for generated code
+//    x = 10
+//    "bbbbbbbbbbb"    // <-- Marker for generated code
+//    console.log(x)
+//}
+//
+//fun qwe_fix(): Promise<Unit> = async {
+//    val shit = object {
+//        var x by notNull<Int>()
+//    }
+//    shit.x = 10
+//    console.log(shit.x)
+//}
+
 
 
 //fun qwe_breaks() {

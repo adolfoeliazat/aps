@@ -1,3 +1,7 @@
+-------------------- URL --------------------
+
+[uac]/order.html?id=100000&tab=files
+
 -------------------- NAVBAR --------------------
 
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -18,69 +22,51 @@
           <ul class="dropdown-menu">
             <li class="">
               <a href="why.html">
-                <span class="">
-                  Почему мы?
-                </span>
+                Почему мы?
               </a>
             </li>
             <li class="">
               <a href="prices.html">
-                <span class="">
-                  Цены
-                </span>
+                Цены
               </a>
             </li>
             <li class="">
               <a href="samples.html">
-                <span class="">
-                  Примеры
-                </span>
+                Примеры
               </a>
             </li>
             <li class="">
               <a href="faq.html">
-                <span class="">
-                  ЧаВо
-                </span>
+                ЧаВо
               </a>
             </li>
             <li class="">
               <a href="contact.html">
-                <span class="">
-                  Связь
-                </span>
+                Связь
               </a>
             </li>
             <li class="">
               <a href="blog.html">
-                <span class="">
-                  Блог
-                </span>
+                Блог
               </a>
             </li>
           </ul>
         </li>
         <li class="">
           <a href="orders.html">
-            <span class="">
-              Мои заказы
-            </span>
+            Мои заказы
           </a>
         </li>
         <li class="">
           <a href="support.html">
-            <span class="">
-              Поддержка
-            </span>
+            Поддержка
           </a>
         </li>
       </ul>
       <ul id="rightNavbar" class="nav navbar-nav navbar-right">
         <li class="">
           <a href="dashboard.html">
-            <span class="">
-              Иво
-            </span>
+            Иво
           </a>
         </li>
       </ul>

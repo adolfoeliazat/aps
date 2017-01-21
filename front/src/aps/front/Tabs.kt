@@ -14,7 +14,7 @@ class Tabs2(
     val tabs: List<TabSpec>,
     initialActiveID: String? = null,
     val switchOnTabClick: Boolean = true,
-    val onTabClicka: (id: String) -> Promise<Unit> = {async{}},
+    val onTabClicka: (id: String) -> Promisoid<Unit> = {async{}},
     val tabDomIdPrefix: String? = null,
     val key: String? = "tabs"
 ): Control2(Attrs()) {
@@ -29,7 +29,7 @@ class Tabs2(
 
     private var activeID = initialActiveID ?: tabs[0].id
 
-    fun clickOnTaba(id: String): Promise<Unit> = async {
+    fun clickOnTaba(id: String): Promisoid<Unit> = async {
         if (switchOnTabClick) {
             activeID = id
             update()

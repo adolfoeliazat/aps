@@ -2,6 +2,7 @@ package aps.front.testutils
 
 import aps.*
 import aps.front.*
+import aps.front.Globus.effectsPane
 import into.kommon.*
 import into.mochka.assertEquals
 import org.w3c.dom.Storage
@@ -24,38 +25,15 @@ fun TestScenarioBuilder.initFuckingBrowser(fillTypedStorageLocal: (TypedStorageL
     }
 }
 
-class FakeStorageLocal : StorageLocal {
-    val map = mutableMapOf<String, String>()
-
-    override val length get() = map.size
-
-    override fun key(index: Int) = map.keys.toList()[index]
-
-    override fun clear() = map.clear()
-    override fun getItem(key: String) = map[key]
-    override fun setItem(key: String, value: String) {
-        map[key] = value
-    }
-
-    override fun removeItem(key: String) {
-        map.remove(key)
-    }
-}
 
 fun _initFuckingBrowser(fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {}, fillRawStorageLocal: (StorageLocal) -> Unit = {}) {
-    val fakeStorageLocal = FakeStorageLocal()
-
-    fillRawStorageLocal(fakeStorageLocal)
-    val tsl = TypedStorageLocal(fakeStorageLocal)
-    fillTypedStorageLocal(tsl)
-
-    Globus.browser = Browser(
-        typedStorageLocal = tsl
-    )
-    TestGlobal.browser = Globus.browser
+    val bro = TestBrowseroid("shit", "http://pizda.com")
+    fillTypedStorageLocal(bro.typedStorageLocal)
+    fillRawStorageLocal(bro.typedStorageLocal.store)
+    currentBrowseroid = bro
 
     ExternalGlobus.storageLocalForStaticContent = object : IStorage {
-        override fun getItem(key: String) = fakeStorageLocal.getItem(key)
+        override fun getItem(key: String) = bro.typedStorageLocal.store.getItem(key)
     }
 }
 
@@ -63,7 +41,7 @@ fun TestScenarioBuilder.kindaNavigateToStaticContent(url: String) {
     acta {_kindaNavigateToStaticContent(url)}
 }
 
-fun _kindaNavigateToStaticContent(url: String): Promise<Unit> {
+fun _kindaNavigateToStaticContent(url: String): Promisoid<Unit> {
     return async {
         dlog("_kindaNavigateToStaticContent: $url")
         val content = measureAndReportToDocumentElement("Loading $url") {
@@ -75,23 +53,46 @@ fun _kindaNavigateToStaticContent(url: String): Promise<Unit> {
         val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
 
         killEverythingVisual()
-        docInnerHTML = innerHTMLContent
+        setDocInnerHTML(innerHTMLContent)
         loadCSS()
-        Globus.location.replaceWholeURL(url)
+        (currentBrowseroid as TestBrowseroid).replaceWholeURL(url)
         ExternalGlobus.displayInitialShit()
     }
 }
 
 inline fun <T> measureAndReportToDocumentElement(name: String, block: () -> T): T {
-    docInnerHTML += "$name...."
+    setDocInnerHTML(getDocInnerHTML() + "$name....")
     val res = measure(name, block)
-    docInnerHTML += " DONE<br>"
+    setDocInnerHTML(getDocInnerHTML() + " DONE<br>")
     return res
 }
 
-var docInnerHTML: String
-    get() = document.documentElement!!.innerHTML
-    set(value) {document.documentElement!!.innerHTML = value}
+fun getDocInnerHTML() = document.documentElement!!.innerHTML
+
+fun setDocInnerHTML(value: String) {
+    effectsPane?.let {
+        old_panes.remove(it)
+        effectsPane = null
+    }
+    crossWorld.dispose()
+    _DOMReact.roots.forEach {_DOMReact.unmountComponentAtNode(it.hel)}
+
+    val roots = _DOMReact.roots
+    if (roots.isNotEmpty()) {
+        async {
+            console.error(buildString {
+                appendln("${roots.size} leftover React root(s):")
+                for ((i, root) in roots.withIndex()) {
+                    lnappendln2("${i + 1}) Shit")
+                    appendln(await(root.stackCapture.prettyCapturedStack))
+                }
+            })
+        }
+        die("Leftover React roots")
+    }
+
+    document.documentElement!!.innerHTML = value
+}
 
 fun TestScenarioBuilder.assertCustomerStaticIndexScreen() {
     assertScreenHTML("Customer index", "aead9163-e41b-4ec1-9967-47670291dadc")
@@ -107,7 +108,8 @@ fun TestScenarioBuilder.assertCustomerSignUpScreen() {
     assertScreenHTML("Customer sign-up screen", "1de9ffb2-3215-42e0-a67c-c9c2856880b8")
 }
 
-fun TestScenarioBuilder.checkAssertAndClearEmail(descr: String, expectedTo: String, expectedSubject: String, expectedBody: String) {
+fun TestScenarioBuilder.assertEmailThenClear(descr: String, expectedTo: String, expectedSubject: String, expectedBody: String) {
+    act {initDebugMailbox()}
     acta {debugCheckEmail()}
     assertMailInFooter(descr, expectedTo, expectedSubject, expectedBody)
     acta {ClearSentEmailsRequest.send()}
@@ -126,9 +128,21 @@ fun TestScenarioBuilder.assertFreshCustomerDashboardScreen() {
     assertScreenHTML("Fresh customer's dashboard screen", "39ffecee-5b3f-4bf0-b9c6-43256a58a663")
 }
 
-fun TestScenarioBuilder.assertCustomerBreatheScreen() {
-//    assertScreenHTML("Customer breathe screen", "5c58a466-1225-444a-abde-6d11def5c00c")
-    assertScreenHTML("Customer breathe screen", "92db9a5b-0fa7-4991-a6b6-80dbec02be50")
+fun TestScenarioBuilder.assertCustomerWithTokenStaticIndexScreen() {
+    assertScreenHTML("assertCustomerWithTokenStaticIndexScreen", "0281a518-32fe-45d2-b222-332490b8291c")
+}
+
+fun TestScenarioBuilder.assertCustomerWithTokenDynamicIndexScreen() {
+    assertScreenHTML("assertCustomerWithTokenDynamicIndexScreen", "1e961b10-1466-48d9-a481-65db5ca537ac")
+}
+
+
+fun TestScenarioBuilder.assertAnonymousWriterStaticIndexScreen() {
+    assertScreenHTML("assertWriterAnonymousStaticIndexScreen", "fef22d58-3da9-4651-bd59-019f74944ada")
+}
+
+fun TestScenarioBuilder.assertAnonymousWriterDynamicIndexScreen() {
+    assertScreenHTML("assertWriterAnonymousDynamicIndexScreen", "bda202ba-4f0e-4fb7-b8ca-8b94aa01cd7f")
 }
 
 inline fun fiddlingWithGlobals(block: () -> Unit) {
@@ -166,6 +180,11 @@ class TestShit {
     val snapshots = mutableListOf<Snapshot>()
     var nextInstructionIndex by notNull<Int>()
 
+    val browseroids = _Browseroids()
+    class _Browseroids {
+        val debugMailbox = FuckingBrowseroid("debugMailbox", initialURL = fconst.url.test.writerLocalBase + "/debugMailbox.html")
+    }
+
     val timestamps by lazy {
         val list = listOf(
             "2015-12-18 01:18:05", "2015-12-20 02:14:05", "2015-12-22 06:45:05", "2015-12-24 20:58:05", "2015-12-27 05:45:05",
@@ -185,7 +204,7 @@ class TestShit {
         list
     }
 
-    fun imposeNextRequestTimestamp(): Promise<Unit> {
+    fun imposeNextRequestTimestamp(): Promisoid<Unit> {
         if (nextRequestTimestampIndex > timestamps.lastIndex) bitch("Out of timestamps")
         val stamp = timestamps[nextRequestTimestampIndex++]
         return ImposeNextRequestTimestampRequest.send(stamp)
@@ -347,7 +366,7 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
     }))
 }
 
-private fun testAddFileByFedorAndApproveForBobul(testShit: TestShit, req: WriterAddUAOrderFileRequest): Promise<Unit> {
+private fun testAddFileByFedorAndApproveForBobul(testShit: TestShit, req: WriterAddUAOrderFileRequest): Promisoid<Unit> {
     return async<Unit> {
         await(testShit.imposeNextRequestTimestamp())
         val res = await(send(testShit.fedorToken, req)).orDie()
@@ -356,7 +375,7 @@ private fun testAddFileByFedorAndApproveForBobul(testShit: TestShit, req: Writer
     }
 }
 
-private fun testCopyFileToBobul(testShit: TestShit, orderFileID: String): Promise<FormResponse2<TestCopyOrderFileToAreaRequest.Response>> {
+private fun testCopyFileToBobul(testShit: TestShit, orderFileID: String): Promisoid<FormResponse2<TestCopyOrderFileToAreaRequest.Response>> {
     return send(testShit.dasjaToken, TestCopyOrderFileToAreaRequest()-{o->
         o.orderFileID.value = orderFileID
         o.areaName.value = const.orderArea.customer
@@ -444,7 +463,7 @@ fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
 //    """))
 }
 
-fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String) -> Promise<Unit>) {
+fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String) -> Promisoid<Unit>) {
     val o = this
     o.acta {async{
         measureAndReportToDocumentElement("Preparing some orders for Ivo Bobul") {
@@ -507,7 +526,8 @@ fun TestScenarioBuilder.expectPieceOfShitDownload(expected: PieceOfShitDownload,
 }
 
 fun TestScenarioBuilder.pause(shit: TestShit, descr: String = "Cool shit, huh?..", only: Boolean = false) {
-    acta {Promise<Unit> {resolve, _ ->
+    acta {
+        Promisoid<Unit> {resolve, _ ->
         val shouldPause = when (shit.pauses) {
             TestShit.Pauses.NONE -> false
             TestShit.Pauses.ALL -> true
@@ -518,11 +538,11 @@ fun TestScenarioBuilder.pause(shit: TestShit, descr: String = "Cool shit, huh?..
             val paneName = "TestScenarioBuilder.pause"
 
             val onContinue = {
-                debugPanes.remove(paneName)
+                old_debugPanes.remove(paneName)
                 resolve(Unit)
             }
 
-            debugPanes.put(paneName, kdiv(className = css.test.popup.pause){o->
+            old_debugPanes.put(paneName, kdiv(className = css.test.popup.pause){o->
                 o- descr
                 o- Button(icon = fa.play, style = Style(marginLeft = "1rem"), onClick = onContinue)
             })

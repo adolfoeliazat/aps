@@ -1,3 +1,7 @@
+-------------------- URL --------------------
+
+[uac]/order.html?id=100000&tab=files
+
 -------------------- NAVBAR --------------------
 
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -17,70 +21,52 @@
           </a>
           <ul class="dropdown-menu">
             <li class="">
-              <a href="why.html">
-                <span class="">
-                  Почему мы?
-                </span>
+              <a href="/why.html">
+                Почему мы?
               </a>
             </li>
             <li class="">
-              <a href="prices.html">
-                <span class="">
-                  Цены
-                </span>
+              <a href="/prices.html">
+                Цены
               </a>
             </li>
             <li class="">
-              <a href="samples.html">
-                <span class="">
-                  Примеры
-                </span>
+              <a href="/samples.html">
+                Примеры
               </a>
             </li>
             <li class="">
-              <a href="faq.html">
-                <span class="">
-                  ЧаВо
-                </span>
+              <a href="/faq.html">
+                ЧаВо
               </a>
             </li>
             <li class="">
-              <a href="contact.html">
-                <span class="">
-                  Связь
-                </span>
+              <a href="/contact.html">
+                Связь
               </a>
             </li>
             <li class="">
-              <a href="blog.html">
-                <span class="">
-                  Блог
-                </span>
+              <a href="/blog.html">
+                Блог
               </a>
             </li>
           </ul>
         </li>
         <li class="">
-          <a href="orders.html">
-            <span class="">
-              Мои заказы
-            </span>
+          <a href="/orders.html">
+            Мои заказы
           </a>
         </li>
         <li class="">
-          <a href="support.html">
-            <span class="">
-              Поддержка
-            </span>
+          <a href="/support.html">
+            Поддержка
           </a>
         </li>
       </ul>
       <ul id="rightNavbar" class="nav navbar-nav navbar-right">
         <li class="">
-          <a href="dashboard.html">
-            <span class="">
-              Иво
-            </span>
+          <a href="/dashboard.html">
+            Иво
           </a>
         </li>
       </ul>

@@ -2,43 +2,84 @@ package aps.front
 
 import aps.*
 import into.kommon.*
-import kotlin.browser.window
 import kotlin.coroutines.*
+import kotlin.coroutines.intrinsics.SUSPENDED_MARKER
+import kotlin.coroutines.intrinsics.suspendCoroutineOrReturn
 import kotlin.properties.Delegates.notNull
 
-fun <T> async(block: suspend () -> T): Promise<T> =
-    Promise {resolve, reject ->
+// https://promisesaplus.com/#point-47
+class ThenableShitHidingWrapper<out T>(val thenableShit: T)
+
+
+fun <T> async(block: suspend () -> T): Promisoid<T> =
+    Promisoid {resolve, reject ->
         block.startCoroutine(object:Continuation<T> {
+            override val context = EmptyCoroutineContext
+
             override fun resume(value: T) {
                 resolve(value)
             }
 
             override fun resumeWithException(exception: Throwable) {
-                console.error("----- resumeWithException -----")
-                console.error(exception.stack)
                 reject(exception)
             }
         })
     }
 
-suspend fun <T> await(p: Promise<T>): T {
+suspend fun <T> await(p: Promisoid<T>): T {
     if (TestGlobal.killAwait) die()
-    return CoroutineIntrinsics.suspendCoroutineOrReturn {c: Continuation<T> ->
-        p.then<Any?>(onFulfilled = {c.resume(it)},
-                     onRejected = {c.resumeWithException(it)})
-        CoroutineIntrinsics.SUSPENDED
+    return suspendCoroutineOrReturn {c: Continuation<T> ->
+        p.then(
+            onFulfilled = {
+                c.resume(it)
+            },
+            onRejected = {
+                c.resumeWithException(it)
+            }
+        )
+        SUSPENDED_MARKER
+    }
+}
+
+fun <T> asyncNative(block: suspend () -> T): Promise<T> =
+    Promise {resolve, reject ->
+        block.startCoroutine(object:Continuation<T> {
+            override val context = EmptyCoroutineContext
+
+            override fun resume(value: T) {
+                resolve(value)
+            }
+
+            override fun resumeWithException(exception: Throwable) {
+                reject(exception)
+            }
+        })
+    }
+
+suspend fun <T> awaitNative(p: Promise<T>): T {
+    if (TestGlobal.killAwait) die()
+    return suspendCoroutineOrReturn {c: Continuation<T> ->
+        p.then<Any?>(
+            onFulfilled = {
+                c.resume(it)
+            },
+            onRejected = {
+                c.resumeWithException(it)
+            }
+        )
+        SUSPENDED_MARKER
     }
 }
 
 suspend fun <T> awaitJSShit(p: Any?): T =
-    if (p is Promise<*>) await(p as Promise<T>)
+    if (p is Promise<*>) awaitNative(p) as T
     else p as T
 
-fun <T> Promise<T>.finally(onFulfilled: (T) -> Unit) =
-    this.then<Nothing>(onFulfilled, {})
+//fun <T> Promisoid<T>.finally(onFulfilled: (T) -> Unit) =
+//    this.then<Nothing>(onFulfilled, {})
 
 
-fun <T> Promise<T>.orTestTimeout(ms: Int, getPromiseName: (() -> String?)? = null): Promise<T> {
+fun <T> Promisoid<T>.orTestTimeout(ms: Int, getPromiseName: (() -> String?)? = null): Promisoid<T> {
     val shit = ResolvableShit<T>()
     val thePromiseName = getPromiseName?.invoke() ?: "shit"
     timeoutSet(ms) {
@@ -49,11 +90,11 @@ fun <T> Promise<T>.orTestTimeout(ms: Int, getPromiseName: (() -> String?)? = nul
             shit.reject(Exception(msg))
         }
     }
-    this.finally {shit.resolve(it)}
+    this.then {shit.resolve(it)}
     return shit.promise
 }
 
-fun <T> Promise<T>.orTestTimeoutNamedAfter(ms: Int, getPromiseNameBearer: () -> Any): Promise<T> {
+fun <T> Promisoid<T>.orTestTimeoutNamedAfter(ms: Int, getPromiseNameBearer: () -> Any): Promisoid<T> {
     return this.orTestTimeout(ms, getPromiseName = {NamesOfThings[getPromiseNameBearer()]})
 }
 
@@ -61,14 +102,14 @@ fun <T> Promise<T>.orTestTimeoutNamedAfter(ms: Int, getPromiseNameBearer: () -> 
 class ResolvableShit<T> {
     private var _resolve by notNull<(T) -> Unit>()
     private var _reject by notNull<(Throwable) -> Unit>()
-    private var _promise by notNull<Promise<T>>()
+    private var _promise by notNull<Promisoid<T>>()
     private var hasPromise = false
 
     init {
         reset()
     }
 
-    val promise: Promise<T> get() = _promise
+    val promise: Promisoid<T> get() = _promise
     fun resolve(value: T) = _resolve(value)
     fun reject(e: Throwable) = _reject(e)
 
@@ -77,7 +118,7 @@ class ResolvableShit<T> {
             NamesOfThings.unflow(this, promise)
         }
 
-        _promise = Promise<T> {resolve, reject ->
+        _promise = Promisoid<T> {resolve, reject ->
             this._resolve = resolve
             this._reject = reject
         }
@@ -88,7 +129,7 @@ class ResolvableShit<T> {
 
 fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
 
-fun tillEndOfTime(): Promise<Unit> {
+fun tillEndOfTime(): Promisoid<Unit> {
     dlog("--- Waiting till end of time ---")
     return delay(Int.MAX_VALUE)
 }
@@ -119,11 +160,11 @@ class TwoStepTestLock(
         sutPause2.reset()
     }
 
-    fun testPause1(): Promise<Unit> = async {
+    fun testPause1(): Promisoid<Unit> = async {
         await(testPause1.promise.orTestTimeoutNamedAfter(testPause1Timeout, {testPause1}))
     }
 
-    fun testPause2(): Promise<Unit> = async {
+    fun testPause2(): Promisoid<Unit> = async {
         await(testPause2.promise.orTestTimeoutNamedAfter(testPause2Timeout, {testPause2}))
     }
 
@@ -135,12 +176,12 @@ class TwoStepTestLock(
         sutPause2.resolve()
     }
 
-    fun sutPause1(): Promise<Unit> = async {
+    fun sutPause1(): Promisoid<Unit> = async {
         testPause1.resolve()
         await(sutPause1.promise.orTestTimeoutNamedAfter(sutPause1Timeout, {sutPause1}))
     }
 
-    fun sutPause2(): Promise<Unit> = async {
+    fun sutPause2(): Promisoid<Unit> = async {
         testPause2.resolve()
         await(sutPause2.promise.orTestTimeoutNamedAfter(sutPause2Timeout, {sutPause2}))
     }
@@ -164,7 +205,7 @@ class TestLock(
         sutPause.reset()
     }
 
-    fun testPause(): Promise<Unit> = async {
+    fun testPause(): Promisoid<Unit> = async {
         await(testPause.promise.orTestTimeoutNamedAfter(testPauseTimeout, {testPause}))
     }
 
@@ -172,7 +213,7 @@ class TestLock(
         sutPause.resolve()
     }
 
-    fun sutPause(): Promise<Unit> = async {
+    fun sutPause(): Promisoid<Unit> = async {
         testPause.resolve()
         await(sutPause.promise.orTestTimeoutNamedAfter(sutPauseTimeout, {sutPause}))
     }

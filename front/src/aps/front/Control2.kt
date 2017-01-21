@@ -25,11 +25,11 @@ data class Attrs(
     val href: String? = null,
     val tabIndex: Int? = null,
     val onClick: ((MouseEvent) -> Unit)? = null,
-    val onClicka: ((MouseEvent) -> Promise<Unit>)? = null,
+    val onClicka: ((MouseEvent) -> Promisoid<Unit>)? = null,
     val onMouseEnter: ((MouseEvent) -> Unit)? = null,
-    val onMouseEntera: ((MouseEvent) -> Promise<Unit>)? = null,
+    val onMouseEntera: ((MouseEvent) -> Promisoid<Unit>)? = null,
     val onMouseLeave: ((MouseEvent) -> Unit)? = null,
-    val onMouseLeava: ((MouseEvent) -> Promise<Unit>)? = null
+    val onMouseLeava: ((MouseEvent) -> Promisoid<Unit>)? = null
 )
 
 abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, FuckingControl {
@@ -98,7 +98,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
     lateinit var reactClassInstance: ReactClassInstance
     var reactClassInstanceOperable = false
     var shouldUpdate = false
-    var errorStickerID: String? = null
+//    var errorStickerID: String? = null
     var errorStickerTether: Tether? = null
     val definitionStackCapture = CaptureStackException()
 
@@ -203,7 +203,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
 
                 effectiveShame?.let {TestGlobal.shameToControl.remove(it)}
 
-                errorStickerID?.let {debugPanes.remove(it)}
+//                errorStickerID?.let {debugPanes.remove(it)}
                 errorStickerTether?.destroy()
             },
 
@@ -234,10 +234,10 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
         json() // Attributes
     )
 
-    open fun testSetValue(x: dynamic): Promise<Unit> {die("Control $debugDisplayName doesn't support testSetValue")}
+    open fun testSetValue(x: dynamic): Promisoid<Unit> {die("Control $debugDisplayName doesn't support testSetValue")}
     open fun testGetValue(): Any? {die("Control $debugDisplayName doesn't support testGetValue")}
 
-    open fun testClick(): Promise<Unit> {
+    open fun testClick(): Promisoid<Unit> {
         if (simpleTestClickImpl()) {
             return onRootClick(DummyMouseEvent())
         } else {
@@ -258,15 +258,13 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
         shouldUpdate = false
     }
 
-    open fun onRootClick(e: MouseEvent): Promise<Unit> {"__async"
+    open fun onRootClick(e: MouseEvent): Promisoid<Unit> = async {
         if (simpleOnRootClickImpl()) {
             e.preventDefault()
             e.stopPropagation()
             attrs.onClick?.let {it(e)}
-            attrs.onClicka?.let {__await(it(e))}
+            attrs.onClicka?.let {await(it(e))}
         }
-
-        return __asyncResult(Unit)
     }
 
     fun captureAction(arg: dynamic) {imf("captureAction")}
@@ -322,42 +320,43 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
     }}
 
     fun stickException(arg: dynamic) {
-        val exception: dynamic = arg.exception
-
-        val element = Shitus.byid0(elementID)
-        check(element != null) {"stickException to unrendered element"}
-
-        fun doReveal() {
-            revealStack(exception)
-        }
-
-        doReveal() // Does nothing if something is already revealed
-
-        val errorStickerID = puid(); this.errorStickerID = errorStickerID
-
-        debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
-            "id" to errorStickerID,
-            "style" to json(
-                "width" to 10,
-                "height" to 10,
-                "background" to Color.RED_500.toString(),
-                "cursor" to "pointer",
-                "zIndex" to REALLY_BIG_Z_INDEX),
-            "onClick" to {
-                Shitus.hideStackRevelation()
-                revealStackCalledTimes = 0
-                doReveal()
-            }
-        ))))
-
-        requestAnimationFrame {
-            errorStickerTether = Tether(json(
-                "element" to byid(errorStickerID),
-                "target" to element,
-                "attachment" to "top left",
-                "targetAttachment" to "top left"
-            ))
-        }
+        die("stickException")
+//        val exception: dynamic = arg.exception
+//
+//        val element = Shitus.byid0(elementID)
+//        check(element != null) {"stickException to unrendered element"}
+//
+//        fun doReveal() {
+//            revealStack(exception)
+//        }
+//
+//        doReveal() // Does nothing if something is already revealed
+//
+//        val errorStickerID = puid(); this.errorStickerID = errorStickerID
+//
+//        debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
+//            "id" to errorStickerID,
+//            "style" to json(
+//                "width" to 10,
+//                "height" to 10,
+//                "background" to Color.RED_500.toString(),
+//                "cursor" to "pointer",
+//                "zIndex" to REALLY_BIG_Z_INDEX),
+//            "onClick" to {
+//                Shitus.hideStackRevelation()
+//                revealStackCalledTimes = 0
+//                doReveal()
+//            }
+//        ))))
+//
+//        requestAnimationFrame {
+//            errorStickerTether = Tether(json(
+//                "element" to byid(errorStickerID),
+//                "target" to element,
+//                "attachment" to "top left",
+//                "targetAttachment" to "top left"
+//            ))
+//        }
     }
 
     companion object

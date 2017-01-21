@@ -7,18 +7,50 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 import jquery.JQuery
 import jquery.jq
+import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 
-val panes = Panes("pane-")
-val debugPanes = Panes("debugPane-") // TODO:vgrechka Add some option to prevent accidental showing of this in release builds
+//class Pane(
+//)
 
-class Panes(val idPrefix: String) {
+//private val panes = mutableListOf<Pane>()
+
+//object Panes {
+//    private val nodes = mutableListOf<HTMLElement>()
+//
+//    fun put(tre: ToReactElementable): Pane {
+//        throw UnsupportedOperationException("Implement me, please, fuck you")
+//    }
+//
+//    fun passivate() {
+//        for (node in nodes) {
+//            ReactDOM.unmountComponentAtNode(node)
+//        }
+//    }
+//
+//    fun activate() {
+////        for (x in broEntries(Browseroid.current)) {
+////            val node = byid0(x.htmlElementID)!!
+////            ReactDOM.render(x.reactElement, node)
+////            nodes += node
+////        }
+//    }
+//}
+
+
+val old_panes by lazy {Old_Panes("pane-", Browseroid.current.reactoid)}
+val old_debugPanes by lazy {Old_Panes("debugPane-", Browseroid.current.reactoid)}
+
+class Old_Panes(val idPrefix: String, val reactoidom: Reactoid) {
     val names = mutableSetOf<String>()
+//    val nameToMountedShit = mutableMapOf<String, Reactoid.MountedShit>()
 
     fun put(name: String, parent: JQuery? = null, tre: ToReactElementable) {
-        remove(name)
+//        remove(name)
+        if (names.contains(name)) bitch("Pane already exists: $name")
 
         val id = nameToContainerID(name)
         val container = byid0(id) ?: run {
@@ -26,7 +58,7 @@ class Panes(val idPrefix: String) {
             byid0ForSure(id)
         }
 
-        DOMReact.render(tre.toReactElement(), container)
+        reactoidom.mount(tre.toReactElement() ?: NORE, container)
 
         names.add(name)
     }
@@ -41,6 +73,7 @@ class Panes(val idPrefix: String) {
         return name
 
     }
+
     fun put(tre: ToReactElementable): String {
         val name = puid()
         put(name, tre)
@@ -49,11 +82,11 @@ class Panes(val idPrefix: String) {
 
     fun remove(name: String) {
         val id = nameToContainerID(name)
-        val container = byid0(id)
-        if (container != null) {
-            DOMReact.unmountComponentAtNode(container)
+        val container = byid0(id) ?: bitch("No container: $id")
+//        if (container != null) {
+            _DOMReact.unmountComponentAtNode(container)
             container.remove()
-        }
+//        }
 
         names.remove(name)
     }

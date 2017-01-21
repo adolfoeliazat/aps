@@ -19,7 +19,7 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
-fun buildAndRunTestScenario(scenario: StepBasedTestScenario, showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promise<Throwable?> = async {
+fun buildAndRunTestScenario(scenario: StepBasedTestScenario, showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promisoid<Throwable?> = async {
     val builder = TestScenarioBuilder(scenario)
     block(builder)
     await(builder.runScenario(showTestPassedPane))
@@ -35,11 +35,11 @@ val transformRootLineTidy = {it: String ->
 
 class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     val instructions = mutableListOf<TestInstruction>()
-    val shit get() = scenario.testShit
+    val testShit get() = scenario.testShit
     var lastAssertScreenHTMLParams by notNull<AssertScreenHTMLParams>()
 
-    fun runScenario(showTestPassedPane: Boolean): Promise<Throwable?> = async {
-        await(art.run(shit, instructions, showTestPassedPane))
+    fun runScenario(showTestPassedPane: Boolean): Promisoid<Throwable?> = async {
+        await(art.run(testShit, instructions, showTestPassedPane))
     }
 
     fun state(descr: String) {
@@ -61,23 +61,22 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
         }})
     }
 
-    fun <T> acta(descr: String? = null, block: () -> Promise<T>): TestInstruction.Do {
+    fun <T> acta(descr: String? = null, block: () -> Promisoid<T>): TestInstruction.Do {
         var step: TestInstruction.Step? = null
         if (descr != null) {
             step = TestInstruction.Step.ActionStep(descr)
             instructions.add(step)
         }
 
-        val instr = TestInstruction.Do {"__async"
-            __await(block())
+        val instr = TestInstruction.Do {async{
+            await(block())
             step?.passed = true
-            __asyncResult(Unit)
-        }
+        }}
         instructions.add(instr)
         return instr
     }
 
-    fun <T> await(block: () -> Promise<T>) {
+    fun <T> await(block: () -> Promisoid<T>) {
         acta(null, block)
     }
 
@@ -104,7 +103,7 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
         }}
     }
 
-    fun checkOnAnimationFrame(stepTitle: String, block: () -> Promise<Unit>) {
+    fun checkOnAnimationFrame(stepTitle: String, block: () -> Promisoid<Unit>) {
         val step = TestInstruction.Step.AssertionStep(stepTitle)
         instructions.add(step)
         acta {async{
@@ -146,7 +145,7 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     }
 
     fun assertHTML(inside: CSSSelector,
-                   expected: () -> Promise<String>,
+                   expected: () -> Promisoid<String>,
                    transformLine: ((String) -> String)? = null,
                    descr: String? = null
     ) {
@@ -196,7 +195,7 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     }
 
     fun assertUnderFooterHTML(descr: String, expected: String) {
-        assertHTML(inside = "#$ELID_UNDER_FOOTER", expected = {Promise.resolve(expected)}, transformLine = {it}, descr=descr)
+        assertHTML(inside = "#$ELID_UNDER_FOOTER", expected = {Promisoid.resolve(expected)}, transformLine = {it}, descr=descr)
     }
 
     fun click(shame: String) {
@@ -317,10 +316,10 @@ fun TestScenarioBuilder.endWorkRegion() {
         val signal = ResolvableShit<Unit>()
 
         var pane by notNull<String>()
-        pane = debugPanes.put(kdiv(className = css.test.popup.pause){o->
+        pane = old_debugPanes.put(kdiv(className = css.test.popup.pause){o->
             o- hor1(marginBottom = "0.5rem"){o->
                 o- Button(icon = fa.bomb, onClick = {
-                    debugPanes.remove(pane)
+                    old_debugPanes.remove(pane)
                     signal.reject(Exception("Fucking killed"))
                 })
                 o- rerunTestButton()
@@ -395,7 +394,11 @@ fun TestScenarioBuilder.sequence(
     buildAction()
 
     for ((i, step) in steps.withIndex()) {
-        o.acta {step.lock.testPause()}
+        o.acta {async{
+            dwarnStriking(111111)
+            await(step.lock.testPause())
+            dwarnStriking(222222)
+        }}
         o.assertScreenHTML("$assertionDescr (${i + 1})", step.assertionID)
         o.act {step.lock.testResume()}
     }
@@ -417,16 +420,16 @@ fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: Str
 fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
     check(snapshot.name.length == 1 && snapshot.name[0] >= '1' && snapshot.name[0] <= '9') {"Snapshot name corresponds to a numeric key"}
 
-    shit.snapshots.add(snapshot)
+    testShit.snapshots.add(snapshot)
 
     instructions.add(0, TestInstruction.Do {async<Unit>{
         val snapshotChoice = ResolvableShit<Snapshot?>()
-        val bannerPane = debugPanes.put(kdiv(className = css.test.popup.chooseSnapshot){o->
+        val bannerPane = old_debugPanes.put(kdiv(className = css.test.popup.chooseSnapshot){o->
             o- "Choose snapshot:"
             o- Button(title = "0", style = Style(marginLeft = "0.5em")) {
                 snapshotChoice.resolve(null)
             }
-            for (snap in shit.snapshots) {
+            for (snap in testShit.snapshots) {
                 o- Button(title = snap.name, style = Style(marginLeft = "0.5em")) {
                     snapshotChoice.resolve(snap)
                 }
@@ -437,7 +440,7 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
             if (e.key == "0") {
                 snapshotChoice.resolve(null)
             }
-            for (snap in shit.snapshots) {
+            for (snap in testShit.snapshots) {
                 if (e.key == snap.name) {
                     snapshotChoice.resolve(snap)
                 }
@@ -460,9 +463,10 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
                 instructions.subList(0, useSnapshotIndex + 1).clear()
                 instructions.add(0, TestInstruction.Do {async<Unit>{
                     dlog("Restoring shit from snapshot ${useSnapshot.id}")
-                    DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
+                    die("reimplement me")
+//                    DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
 
-                    docInnerHTML = "<h3>Restoring test: ${ctorName(scenario)} (snapshot: ${useSnapshot.name})</h3><hr>"
+                    setDocInnerHTML("<h3>Restoring test: ${ctorName(scenario)} (snapshot: ${useSnapshot.name})</h3><hr>")
                     measureAndReportToDocumentElement("Restoring snapshot database") {
                         await(send(RecreateTestDatabaseSchemaRequest()-{o->
                             o.snapshotID.value = useSnapshot.id
@@ -481,7 +485,7 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
                             }
                         }
                     })
-                    shit.nextRequestTimestampIndex = clientState.nextRequestTimestampIndex
+                    testShit.nextRequestTimestampIndex = clientState.nextRequestTimestampIndex
                     await(_kindaNavigateToStaticContent(clientState.url))
 
                     val world = World("boobs")
@@ -490,12 +494,12 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
                     m.debugDescription = "Restore shit from snapshot"
                 })
                 instructions.add(1, assertion)
-                shit.nextInstructionIndex = 0
+                testShit.nextInstructionIndex = 0
 
             }
         } finally {
             window.removeEventListener("keydown", ::keyListener)
-            debugPanes.remove(bannerPane)
+            old_debugPanes.remove(bannerPane)
         }
     }})
 
@@ -513,7 +517,7 @@ fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
         gloshit.store = store
         val clientState = ClientStateSnapshot(
             url = Globus.realLocation.href,
-            nextRequestTimestampIndex = shit.nextRequestTimestampIndex,
+            nextRequestTimestampIndex = testShit.nextRequestTimestampIndex,
             storageItems = (mutableListOf<ClientStateSnapshot.StorageItem>()-{o->
                 for (i in 0 until store.length) {
                     val key = store.key(i)!!
@@ -551,22 +555,11 @@ class ClientStateSnapshot (
 
 fun TestScenarioBuilder.initialShit(test: TestScenario) {
     acta {async{
-        killEverythingVisual()
-        Globus.location = FakeLocationProxy(Globus.realLocation.href)
-
-        docInnerHTML = "<h3>Running Test: ${ctorName(test)}</h3><hr>"
+        setDocInnerHTML("<h3>Running Test: ${ctorName(test)}</h3><hr>")
         measureAndReportToDocumentElement("Resetting database") {
             await(send(RecreateTestDatabaseSchemaRequest()-{o->
-//                if (useSnapshot) {
-//                    o.templateDB.value = "apsTestSnapshotOnTestServer"
-//                }
             }))
-//            await(send(ResetTestDatabaseRequest()))
-//            await(ResetTestDatabaseAlongWithTemplateRequest.send(templateDB = "test-template-ua-1", recreateTemplate = true))
         }
-//        measureAndReportToDocumentElement("Preparing shit") {
-//            await(prepareShit())
-//        }
     }}
 }
 

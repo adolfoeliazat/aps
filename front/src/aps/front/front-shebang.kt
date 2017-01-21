@@ -311,11 +311,11 @@ fun Tabs(def: dynamic): dynamic {
     })
 }
 
-fun callDebugRPWithProgress(arg: dynamic): Promise<Unit> {
+fun callDebugRPWithProgress(arg: dynamic): Promisoid<Unit> {
     imf("callDebugRPWithProgress")
 }
 
-fun debugRPC(arg: dynamic): Promise<dynamic> {
+fun debugRPC(arg: dynamic): Promisoid<dynamic> {
     bitch("It's time to use new RPC shit, OK?")
 }
 
@@ -423,17 +423,18 @@ fun OpenSourceCodeLink(def: dynamic): ReactElement {
             return@render Shitus.diva(json(),
                 Shitus.diva(json(),
                     Shitus.link(json("title" to linkText, "style" to Shitus.asnn(json("color" to BLACK_BOOT.toString(), "textDecoration" to "underline"), style),
-                        "onClick" to onClick@{"__async"
+                        "onClick" to onClick@{async{
                             my.linkProgress = Shitus.glyph("refresh fa-spin")
                             update()
 
                             var error: String? = null
                             try {
-                                val res = __await(OpenSourceCodeRequest.send(sourceLocation))
+                                val res = await(OpenSourceCodeRequest.send(sourceLocation))
                                 error = res.error
                                 if (error == null) {
                                     my.linkProgress = Shitus.glyph("check")
-                                    return@onClick update()
+                                    update()
+                                    return@async
                                 }
                             } catch (e: Throwable) {
                                 console.error(e)
@@ -443,7 +444,7 @@ fun OpenSourceCodeLink(def: dynamic): ReactElement {
                             my.linkProgress = Shitus.spana(json("style" to json("color" to RED_700.toString())),
                                 Shitus.glyph("exclamation-triangle"), Shitus.spana(json("style" to json("marginLeft" to 10)), error))
                             update()
-                        })),
+                        }})),
                     if (my.linkProgress != null) Shitus.spana(json("style" to json("marginLeft" to 10)), my.linkProgress) else null,
                     if (cshit != null) cshit.renderCaret(json("style" to json("marginLeft" to 10))) else null
                 ),
@@ -527,10 +528,10 @@ fun decorate(def: dynamic) {
                 }
             }
         } else if (name.startsWith("arounda_")) {
-            target[origName] = {"__async"
+            target[origName] = {async{
                 val args = js("Array.prototype.slice.call(arguments)")
-                __await(decorator.apply(null, js("[]").concat(orig, /*...*/args)))
-            }
+                await<dynamic>(decorator.apply(null, js("[]").concat(orig, /*...*/args)))
+            }}
         } else {
             Shitus.raise("WTF is decorator kind ${name}")
         }
@@ -590,15 +591,7 @@ fun CollapsibleShit(def: dynamic): dynamic {
 }
 
 fun clogError(e: dynamic, contextMsg: dynamic) {
-    Shitus.run({"__async"
-        var msg = ""
-        if (contextMsg) {
-            msg += contextMsg + ": "
-        }
-        msg += __await(errorToMappedClientStackString(e))
-
-        console.error(msg)
-    })
+    die("@kill clogError")
 }
 
 fun pageHeader2(
@@ -624,15 +617,15 @@ fun pageHeader3(
     }
 }
 
-fun errorToMappedClientStackString(shit: Throwable): Promise<String> {
+fun errorToMappedClientStackString(shit: Throwable): Promisoid<String> {
     val mangledStack: String = shit.asDynamic().stack
     // dwarnStriking("mangledStack", mangledStack)
     return stackToMappedClientStackString(mangledStack)
 }
 
-fun stackToMappedClientStackString(mangledStack: String): Promise<String> {"__async"
-    val res = __await(MapStackRequest.send(mangledStack))
-    return __asyncResult(res.originalStack)
+fun stackToMappedClientStackString(mangledStack: String): Promisoid<String> = async {
+    val res = await(MapStackRequest.send(mangledStack))
+    res.originalStack
 }
 
 //interface Errorish {

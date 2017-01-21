@@ -4,7 +4,7 @@ import aps.*
 import into.kommon.*
 
 class CustomerUAOrdersPage(val world: World) {
-    fun load(): Promise<Unit> {
+    fun load(): Promisoid<Unit> {
         val m = Melinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
             ui = world,
             urlPath = "orders.html",

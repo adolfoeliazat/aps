@@ -17,15 +17,15 @@ import kotlin.browser.document
 import kotlin.browser.window
 
 interface TestHost {
-    fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit>
+    fun selectNewBrowserAndNavigate(name: String, url: String): Promisoid<Unit>
 }
 
 abstract class TestScenario {
     val SLOWISH = false
 
-    abstract fun run0(showTestPassedPane: Boolean): Promise<Throwable?>
+    abstract fun run0(showTestPassedPane: Boolean): Promisoid<Throwable?>
     open val shortDescription: String = ctorName(this)
-    open fun prepareShit(): Promise<Unit> = __asyncResult(Unit)
+    open fun prepareShit(): Promisoid<Unit> = async {}
     open val name: String get() = ctorName(this)
     open val longDescription: String? = null
     val testShit = TestShit()
@@ -34,7 +34,7 @@ abstract class TestScenario {
     lateinit var host: TestHost
     val testCommon by lazy { TestCommon(host) }
 
-    fun run(showTestPassedPane: Boolean): Promise<Throwable?> {"__async"
+    fun run(showTestPassedPane: Boolean): Promisoid<Throwable?> = async {
         executed += this
 
 //        byid0("topNavbarContainer")?.let {ReactDOM.unmountComponentAtNode(it)}
@@ -54,7 +54,7 @@ abstract class TestScenario {
 //        measureAndReportToDocumentElement("Preparing shit") {
 //            __await(prepareShit())
 //        }
-        return __reawait(run0(showTestPassedPane))
+        await(run0(showTestPassedPane))
     }
 
 
@@ -120,17 +120,16 @@ fun jsFacing_igniteTestShit() = async<Unit> {
     }
 }
 
-private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String, String>): Promise<Unit> {"__async"
+private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String, String>): Promisoid<Unit> = async {
     val suite: TestSuite = instantiate(testSuiteName)
     TestGlobal.lastTestSuite = suite
     Globus.realTypedStorageLocal.lastTestSuiteURL = Globus.realLocation.href
     for (scenario in suite.scenarios) {
         clog("=====", "Running scenario", ctorName(scenario), "=====")
-        val res = __await(runTest(scenario, urlQuery, showTestPassedPane = false))
+        val res = await(runTest(scenario, urlQuery, showTestPassedPane = false))
         if (res != null) {
             val bar = "*************************************"
             console.error("\n$bar\nWe are fucked, man\n$bar")
-            return __asyncResult(Unit)
         }
     }
 
@@ -149,16 +148,14 @@ private fun runTestSuiteFailingFast(testSuiteName: String, urlQuery: Map<String,
                 }
             }
         })
-
-    return __asyncResult(Unit)
 }
 
-private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promise<Throwable?> {
+private fun runTestNamed(testName: String, urlQuery: Map<String, String>): Promisoid<Throwable?> {
     val scenario: TestScenario = instantiate(testName)
     return runTest(scenario, urlQuery, showTestPassedPane = true)
 }
 
-private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promise<Throwable?> = async {
+private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showTestPassedPane: Boolean): Promisoid<Throwable?> = async {
     val opts = TestOptions.load(urlQuery)
 
     Globus.realTypedStorageLocal.lastTestURL = Globus.realLocation.href
@@ -185,7 +182,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         art.respectArtPauses = urlQuery["respectArtPauses"] == "yes"
 
         val sim = object : TestHost {
-            override fun selectNewBrowserAndNavigate(name: String, url: String): Promise<Unit> = async {
+            override fun selectNewBrowserAndNavigate(name: String, url: String): Promisoid<Unit> = async {
                 die("don't use me")
 //                dlog("Selecting browser", name)
 //                hrss.browserOld = hrss.browsers.getOrPut(name) {BrowserOld(name)}
@@ -220,7 +217,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
         hrss.hotCodeUpdateDisabled = false
         hrss.liveStatusPollingViaIntervalDisabled = false
 
-        hrss.urlQueryBeforeRunningTest = getURLQuery()
+        hrss.urlQueryBeforeRunningTest = parseQueryString(Globus.realLocation.href)
 
         measure("Load generated shit") {
             // TODO:vgrechka Load generated shit once for whole suite

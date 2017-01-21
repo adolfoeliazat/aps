@@ -79,10 +79,10 @@ fun legacy_implementControlShit(arg: dynamic) {
 
     fun addEventListeners() {
         Shitus.byid(me.elementID).off() // Several controls can be on same element, and we don't want to handle click several times
-        Shitus.byid(me.elementID).on("click", onClick@{e: KeyboardEvent -> "__async"
+        Shitus.byid(me.elementID).on("click", onClick@{e: KeyboardEvent -> async {
             if (Globus.mode == Mode.DEBUG && e.ctrlKey) {
                 if (e.shiftKey) {
-                    if (me.ignoreDebugCtrlShiftClick) return@onClick Unit
+                    if (me.ignoreDebugCtrlShiftClick) return@async Unit
 
                     preventAndStop(e)
 
@@ -90,7 +90,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                         Shitus.raiseWithMeta(json("message" to "Put some shame on me", "meta" to me))
                     }
 
-                    return@onClick me.captureAction()
+                    return@async me.captureAction()
                 }
 
                 preventAndStop(e)
@@ -98,12 +98,12 @@ fun legacy_implementControlShit(arg: dynamic) {
 //                return@onClick Shitus.revealControl(me)
             }
 
-            val shit: ((Any?) -> Promise<Any?>)? = me.onRootClick
+            val shit: ((Any?) -> Promisoid<Any?>)? = me.onRootClick
 //            shit?.let {__await(it(e))}
             shit?.let {it(e)}
 
 //            __await<dynamic>(jshit.utils.fova(me.onRootClick, e))
-        })
+        }})
     }
 
     fun removeEventListeners() {
@@ -233,7 +233,7 @@ fun legacy_implementControlShit(arg: dynamic) {
                 TestGlobal.shameToControl.remove(me.effectiveShame)
             }
 
-            shit.errorStickerID?.let {debugPanes.remove(it)}
+            shit.errorStickerID?.let {old_debugPanes.remove(it)}
             shit.errorStickerTether?.destroy()
         }
     ))
@@ -255,7 +255,7 @@ fun legacy_implementControlShit(arg: dynamic) {
         val errorStickerID = puid()
         shit.errorStickerID = errorStickerID
 
-        debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
+        old_debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
             "id" to errorStickerID,
             "style" to json(
                 "width" to 10,
@@ -318,7 +318,7 @@ fun legacy_implementControlShit(arg: dynamic) {
     }
 
     if (implementTestClick) {
-        me.testClick = fun(_arg: dynamic): Promise<Unit> = async<Unit> {
+        me.testClick = fun(_arg: dynamic): Promisoid<Unit> = async<Unit> {
             val arg: dynamic = if (_arg) _arg else json()
             val testActionHandOpts = arg.testActionHandOpts
 
@@ -328,11 +328,11 @@ fun legacy_implementControlShit(arg: dynamic) {
                 val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
                 await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
-                val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
+                val shit: ((Any?) -> Promisoid<Any?>)? = implementTestClick.onClick
                 shit?.let {await(it(stubEvent))}
 //                await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
             } else {
-                val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
+                val shit: ((Any?) -> Promisoid<Any?>)? = implementTestClick.onClick
                 shit?.let {awaitJSShit<Unit>(it(stubEvent))}
 //                await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
             }
@@ -340,7 +340,7 @@ fun legacy_implementControlShit(arg: dynamic) {
     }
 
     if (implementTestKeyDown) {
-        me.testKeyDown = {_arg: dynamic -> "__async"
+        me.testKeyDown = {_arg: dynamic -> async<Unit> {
             val arg: dynamic = if (_arg) _arg else json()
             val testActionHandOpts = arg.testActionHandOpts
             val keyCode = arg.keyCode
@@ -349,17 +349,15 @@ fun legacy_implementControlShit(arg: dynamic) {
 
             if (art.testSpeed == "slow") {
                 val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
-                __await<dynamic>(js("$")(global.DEBUG_ACTION_HAND_DELAY))
+                await<dynamic>(js("$")(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
-                val shit: ((Any?) -> Promise<Any?>)? = implementTestKeyDown.onKeyDown
-                shit?.let {__await(it(stubEvent))}
-//                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
+                val shit: ((Any?) -> Promisoid<Any?>)? = implementTestKeyDown.onKeyDown
+                shit?.let {await(it(stubEvent))}
             } else {
-                val shit: ((Any?) -> Promise<Any?>)? = implementTestKeyDown.onKeyDown
-                shit?.let {__await(it(stubEvent))}
-//                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
+                val shit: ((Any?) -> Promisoid<Any?>)? = implementTestKeyDown.onKeyDown
+                shit?.let {await(it(stubEvent))}
             }
-        }
+        }}
     }
 
     me.captureAction = captureAction@{_def: dynamic ->
@@ -463,23 +461,24 @@ fun legacy_implementControlShit(arg: dynamic) {
                                     else if (insertedCodeLink) insertedCodeLink
                                     else Shitus.button(json("level" to "primary", "icon" to "pencil", "title" to "Insert Test Action Code", "style" to json(),
                                         "onClick" to {
-                                            "__async"
-                                            __await<dynamic>(callDebugRPWithProgress(json(
-                                                "msg" to json(
-                                                    "fun" to "danger_insertTestActionCode",
-                                                    "placeholderTag" to art.actionPlaceholderTag,
-                                                    "code" to codeArea.getValue()
-                                                ),
-                                                "progressPlaceholder" to progressPlaceholder,
-                                                "progressTitle" to "Inserting test action code"
-                                            )))
+                                            async {
+                                                await<dynamic>(callDebugRPWithProgress(json(
+                                                    "msg" to json(
+                                                        "fun" to "danger_insertTestActionCode",
+                                                        "placeholderTag" to art.actionPlaceholderTag,
+                                                        "code" to codeArea.getValue()
+                                                    ),
+                                                    "progressPlaceholder" to progressPlaceholder,
+                                                    "progressTitle" to "Inserting test action code"
+                                                )))
 
-                                            val m = codeArea.getValue().match(global.RegExp("\\\$tag: \"(.*?)\""))
-                                            Shitus.invariant(m && m[1], "Where the fuck is tag in generated code?")
-                                            insertedCodeLink = Shitus.diva(json(
-                                                "style" to json("marginLeft" to 8)),
-                                                OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
-                                            update()
+                                                val m = codeArea.getValue().match(global.RegExp("\\\$tag: \"(.*?)\""))
+                                                Shitus.invariant(m && m[1], "Where the fuck is tag in generated code?")
+                                                insertedCodeLink = Shitus.diva(json(
+                                                    "style" to json("marginLeft" to 8)),
+                                                                               OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
+                                                update()
+                                            }
                                         }
                                     ))
                                 }

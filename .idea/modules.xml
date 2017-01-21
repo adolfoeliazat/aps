@@ -4,11 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/back/back.iml" filepath="$PROJECT_DIR$/back/back.iml" />
       <module fileurl="file://$PROJECT_DIR$/front/front.iml" filepath="$PROJECT_DIR$/front/front.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../into-kommon/into-kommon.iml" filepath="$PROJECT_DIR$/../into-kommon/into-kommon.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../into-kommon/js/into-kommon-js.iml" filepath="$PROJECT_DIR$/../into-kommon/js/into-kommon-js.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../into-kommon/jvm/into-kommon-jvm.iml" filepath="$PROJECT_DIR$/../into-kommon/jvm/into-kommon-jvm.iml" />
-      <module fileurl="file://$PROJECT_DIR$/kotlin-js-playground/kotlin-js-playground.iml" filepath="$PROJECT_DIR$/kotlin-js-playground/kotlin-js-playground.iml" />
-      <module fileurl="file://$PROJECT_DIR$/kotlin-jvm-playground/kotlin-jvm-playground.iml" filepath="$PROJECT_DIR$/kotlin-jvm-playground/kotlin-jvm-playground.iml" />
       <module fileurl="file://$PROJECT_DIR$/tools/tools.iml" filepath="$PROJECT_DIR$/tools/tools.iml" />
     </modules>
   </component>

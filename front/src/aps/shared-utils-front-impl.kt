@@ -45,17 +45,57 @@ val NOTRE: ToReactElementable = NORE.toToReactElementable()
     fun forceUpdate()
 }
 
-fun splitTextToDocuments() {
-    open class A
-    class B : A()
-    val p = Promise<A> {resolve, reject ->
-        resolve(B())
+//class Promisoid<out T>(val promise: Promise<ThenableShitHidingWrapper<T>>) {
+//    fun then(onFulfilled: (T) -> Unit,
+//             onRejected: ((Throwable) -> Unit)? = null) {
+//        promise.then<Nothing>(
+//            onFulfilled = {onFulfilled(it.thenableShit)},
+//            onRejected = {onRejected?.invoke(it)}
+//        )
+//    }
+//
+//    companion object {
+//        fun <T> resolve(value: T): Promisoid<T> {
+//            return Promisoid(Promise.resolve(ThenableShitHidingWrapper(value)))
+//        }
+//    }
+//}
+
+class Promisoid<out T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
+    private val nativePromise = Promise<ThenableShitHidingWrapper<T>> {resolveNative, rejectNative ->
+        fun resolve(value: T) {
+            resolveNative(ThenableShitHidingWrapper(value))
+        }
+
+        fun reject(exception: Throwable) {
+            rejectNative(exception)
+        }
+
+        f(::resolve, ::reject)
+    }
+
+    fun then(onFulfilled: (T) -> Unit) {
+        nativePromise.then<Nothing>(
+            onFulfilled = {onFulfilled(it.thenableShit)})
+    }
+
+    fun then(onFulfilled: (T) -> Unit, onRejected: ((Throwable) -> Unit)? = null) {
+        nativePromise.then<Nothing>(
+            onFulfilled = {onFulfilled(it.thenableShit)},
+            onRejected = onRejected)
+    }
+
+    companion object {
+        fun <T> resolve(value: T): Promisoid<T> {
+            imf()
+//            return Promisoid(Promise.resolve(ThenableShitHidingWrapper(value)))
+        }
     }
 }
 
-@native class Promise<out T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
+external class Promise<out T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
     fun <U> then(onFulfilled: (T) -> Unit,
-                 onRejected: ((Throwable) -> Unit)? = null): Promise<U> = noImpl
+                 onRejected: ((Throwable) -> Unit)? = noImpl): Promise<U> = noImpl
 
     companion object {
         fun <T> resolve(value: T): Promise<T> = noImpl
@@ -68,9 +108,9 @@ fun remoteProcedureNameForRequest(req: Any): String {
 }
 
 
-@native fun <T> __await(p: Promise<T>): T = noImpl
-@native fun <T> __asyncResult(x: T): Promise<T> = noImpl
-@native fun <T> __reawait(p: Promise<T>): Promise<T> = noImpl
+//@native fun <T> __await(p: Promisoid<T>): T = noImpl
+//@native fun <T> __asyncResult(x: T): Promisoid<T> = noImpl
+//@native fun <T> __reawait(p: Promisoid<T>): Promisoid<T> = noImpl
 
 @Front open class RequestMatumba {
     // TODO:vgrechka Why the fuck do I need `fields` and `hiddenFields` to be separate?
@@ -84,7 +124,7 @@ abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: Str
         container.hiddenFields.add(this)
     }
 
-    abstract fun populateRemote(json: Json): Promise<Unit>
+    abstract fun populateRemote(json: Json): Promisoid<Unit>
 }
 
 //abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
@@ -101,7 +141,7 @@ abstract class FormFieldFront(val container: RequestMatumba, val name: String) {
     abstract var error: String?
     abstract var disabled: Boolean
     abstract fun focus()
-    abstract fun populateRemote(json: Json): Promise<Unit>
+    abstract fun populateRemote(json: Json): Promisoid<Unit>
 }
 
 annotation class Front
@@ -150,7 +190,7 @@ annotation class Front
     private var specified = false
 
     // TODO:vgrechka Extract this generic toRemote()
-    override fun populateRemote(json: Json): Promise<Unit> = async {
+    override fun populateRemote(json: Json): Promisoid<Unit> = async {
         if (!possiblyUnspecified && value == null) bitch("I want field $name specified")
 
         val dynaValue: dynamic = value
@@ -205,12 +245,13 @@ annotation class Front
 
 
 
-fun <Res> callMatumba(req: RequestMatumba, token: String?): Promise<Res> =
-    callMatumba(remoteProcedureNameForRequest(req), req, token)
+fun <Res> callMatumba(req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null): Promisoid<Res> =
+    callMatumba(remoteProcedureNameForRequest(req), req, token, wideClientKind = wideClientKind)
 
-fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?): Promise<Res> = async {
+fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null): Promisoid<Res> = async {
+    val wck = wideClientKind ?: WideClientKind.User(Globus.clientKind)
     val payload = js("({})")
-    payload.clientKind = Globus.clientKind.name
+    putWideClientKind(payload, wck)
     payload.lang = global.LANG
     token?.let {payload.token = it}
 
@@ -218,16 +259,24 @@ fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?
     for (field in req.fields) await(field.populateRemote(payload.fields))
     for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
 
-    await(callRemoteProcedurePassingJSONObject<Res>(procedureName, payload))
+    await(callRemoteProcedurePassingJSONObject<Res>(procedureName, payload, wck))
 }
 
-fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> =
+private fun putWideClientKind(payload: dynamic, wck: WideClientKind) {
+    payload.wideClientKind = wck::class.simpleName
+    if (wck is WideClientKind.User) {
+        payload.clientKind = wck.kind.name
+    }
+}
+
+fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> =
     callZimbabwe(remoteProcedureNameForRequest(req), req, token)
 
-fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promise<ZimbabweResponse<Res>> = async {
+fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> = async {
     try {
+        val wck = WideClientKind.User(Globus.clientKind)
         val payload = js("({})")
-        payload.clientKind = Globus.clientKind.name
+        putWideClientKind(payload, wck)
         payload.lang = global.LANG
         token?.let {payload.token = it}
 
@@ -236,7 +285,7 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
         for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
 
         TestGlobal.requestPause?.let {await(it.promise)}
-        val res = await<Any>(callRemoteProcedurePassingJSONObject(procedureName, payload))
+        val res = await<Any>(callRemoteProcedurePassingJSONObject(procedureName, payload, wck))
 
         when (res) {
             is FormResponse.Hunky<*> -> ZimbabweResponse.Hunky(cast(res.meat))
@@ -253,13 +302,25 @@ fun spitExceptionToConsole(e: dynamic) {
     revealStack(e)
 }
 
-fun <Res> callDangerousMatumba(req: RequestMatumba): Promise<Res> {
-    return callMatumba(req, js("typeof DANGEROUS_TOKEN === 'undefined' ? null : DANGEROUS_TOKEN")
-        ?: bitch("This fucking client is built without DANGEROUS_TOKEN"))
+fun <Res> callDangerousMatumba(req: RequestMatumba): Promisoid<Res> {
+    return callMatumba(
+        req = req,
+        token = js("typeof DANGEROUS_TOKEN === 'undefined' ? null : DANGEROUS_TOKEN") ?: bitch("This fucking client is built without DANGEROUS_TOKEN"),
+        wideClientKind = WideClientKind.Test())
 }
 
 fun printStack() {
     console.log(global.Error("Gimme the stack").stack)
+}
+
+val CaptureStackException.prettyCapturedStack: Promisoid<String> get() = async {
+    val lines = stack.lines().toMutableList()
+    lines.removeAt(0)
+    while (lines[0].contains(CaptureStackException::class.simpleName!!)) {
+        lines.removeAt(0)
+    }
+
+    await(stackToMappedClientStackString(lines.joinToString("\n")))
 }
 
 

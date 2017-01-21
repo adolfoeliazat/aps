@@ -9,7 +9,7 @@ import kotlin.properties.Delegates.notNull
 
 interface CustomerSingleUAOrderPageTab {
     val tabSpec: TabSpec
-    fun load(): Promise<ZimbabweResponse.Shitty<*>?>
+    fun load(): Promisoid<ZimbabweResponse.Shitty<*>?>
 }
 
 
@@ -21,7 +21,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 
     var orderID by notNull<String>()
 
-    fun load(): Promise<Unit> = async {
+    fun load(): Promisoid<Unit> = async {
         val urlQuery = typeSafeURLQuery(world){URLQuery()}
         orderID = urlQuery.id.nullifyBlank() ?: return@async world.setShittyParamsPage()
         val tabID = urlQuery.tab ?: "params"
@@ -74,7 +74,7 @@ class CustomerSingleUAOrderPage(val world: World) {
         ))
     }
 
-    fun clickOnTab(id: String): Promise<Unit> = async {
+    fun clickOnTab(id: String): Promisoid<Unit> = async {
         effects2.blinkOn(byid("tab-$id"), widthCalcSuffix = "- 0.15em")
         try {
             await(world.pushNavigate("order.html?id=$orderID&tab=$id"))
@@ -86,7 +86,7 @@ class CustomerSingleUAOrderPage(val world: World) {
 }
 
 private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
-    override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
+    override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {
         null
     }
 
@@ -160,7 +160,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
 
 
 private class MessagesTab(val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
-    override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
+    override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {
         throw UnsupportedOperationException("Implement me, please, fuck you")
     }
 

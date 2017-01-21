@@ -18,14 +18,14 @@ data class HandOpts(
 )
 
 object TestUserActionAnimation {
-    fun hand(target: Control2, opts: HandOpts = HandOpts()): Promise<Unit> = hand(target.elementID, opts)
+    fun hand(target: Control2, opts: HandOpts = HandOpts()): Promisoid<Unit> = hand(target.elementID, opts)
 
     @JsName("hand")
     fun hand(
         elementID: String,
         opts: HandOpts = HandOpts(),
-        doWhileHandVisible: () -> Promise<Unit> = {async{}}
-    ): Promise<Unit> = async {
+        doWhileHandVisible: () -> Promisoid<Unit> = {async{}}
+    ): Promisoid<Unit> = async {
         if (!testOpts().animateUserActions) return@async
 
         val mycss = when (opts.direction) {
@@ -36,32 +36,34 @@ object TestUserActionAnimation {
         }
         val el = byid(elementID)
 
-        var left by notNull<Double>()
-        var top by notNull<Double>()
+        val my = object {
+            var left by notNull<Double>()
+            var top by notNull<Double>()
+        }
         var marginTop: String? = null
         val verticalGap = 5
         val horizontalGap = 5
         exhaustive/when (opts.direction) {
             HandDirection.UP -> {
-                left = el.offset().left + el.outerWidth() / 2
-                top = el.offset().top + el.outerHeight() + verticalGap
+                my.left = el.offset().left + el.outerWidth() / 2
+                my.top = el.offset().top + el.outerHeight() + verticalGap
             }
             HandDirection.DOWN -> {
-                left = el.offset().left + el.outerWidth() / 2
-                top = el.offset().top - verticalGap
+                my.left = el.offset().left + el.outerWidth() / 2
+                my.top = el.offset().top - verticalGap
                 marginTop = "-3rem"
             }
             HandDirection.LEFT -> {
                 imf("hand left/top for LEFT")
             }
             HandDirection.RIGHT -> {
-                left = el.offset().left - horizontalGap
-                top = el.offset().top + el.outerHeight() / 2
+                my.left = el.offset().left - horizontalGap
+                my.top = el.offset().top + el.outerHeight() / 2
             }
         }
         // clog("left = $left; top = $top; marginTop = $marginTop")
 
-        val handPane = debugPanes.put(kdiv(className = mycss.pane, left = left, top = top, marginTop = marginTop){o->
+        val handPane = old_debugPanes.put(kdiv(className = mycss.pane, left = my.left, top = my.top, marginTop = marginTop){o->
             o- kdiv(className = mycss.fillContainer){o->
                 o- kdiv(className = mycss.fillBigFinger)
                 o- kdiv(className = mycss.fillFist)
@@ -80,7 +82,7 @@ object TestUserActionAnimation {
 
         if (testOpts().handPauses && opts.pauseDescr != null) {
             val pause = ResolvableShit<Unit>()
-            val bannerPane = debugPanes.put(kdiv(className = css.test.popup.pause){o->
+            val bannerPane = old_debugPanes.put(kdiv(className = css.test.popup.pause){o->
                 o- opts.pauseDescr
                 o- Button(icon = fa.play, style = Style(marginLeft = "0.5em")) {
                     pause.resolve()
@@ -98,7 +100,7 @@ object TestUserActionAnimation {
                 await(pause.promise)
             } finally {
                 window.removeEventListener("keydown", ::keyListener)
-                debugPanes.remove(bannerPane)
+                old_debugPanes.remove(bannerPane)
             }
         } else {
             await(delay(opts.ms * testOpts().slowdown))
@@ -106,10 +108,10 @@ object TestUserActionAnimation {
 
         await(doWhileHandVisible())
 
-        debugPanes.remove(handPane)
+        old_debugPanes.remove(handPane)
     }
 
-    fun scroll(finalY: Int): Promise<Unit> = async {
+    fun scroll(finalY: Int): Promisoid<Unit> = async {
         // TODO:vgrechka Take into account devicePixelRatio
         if (testOpts().animateUserActions) {
             var y = jqbody.scrollTop()

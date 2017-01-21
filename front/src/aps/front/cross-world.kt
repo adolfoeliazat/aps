@@ -1,6 +1,8 @@
 package aps.front
 
+import into.kommon.*
 import jquery.jq
+import kotlin.properties.Delegates.notNull
 
 private var _crossWorld: CrossWorld? = null
 
@@ -11,30 +13,40 @@ val crossWorld: CrossWorld
     }
 
 class CrossWorld {
-    val locationControl = Control2.from {kdiv(className = css.test.crossWorld.locationPane){o->
+    private val locationControl = Control2.from {kdiv(className = css.test.crossWorld.locationPane){o->
         o- kspan(className = css.test.crossWorld.label){o->
             var text = ""
-            Globus.worldMaybe?.let {
-                text += it.name + " :: "
-            }
+            text += Browseroid.current.name + " :: "
             text += Globus.location.href
 
             o- text
         }
     }}
 
-    val locationPane = debugPanes.put(locationControl)
+    private var pane: String? = null
 
-    init {
-        jq("#footer > div > .container").hide()
+    fun createOrUpdate() {
+        if (pane == null) {
+            pane = old_debugPanes.put(locationControl)
+            locationControl.update()
+        } else {
+            locationControl.update()
+        }
+    }
+
+    fun dispose() {
+        pane?.let {
+            old_debugPanes.remove(it)
+            pane = null
+        }
     }
 }
 
 fun killEverythingVisual() {
-    panes.removeAll()
-    debugPanes.removeAll()
-    DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
-    _crossWorld = null
+//    old_panes.removeAll()
+//    old_debugPanes.removeAll()
+//    DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
+//    _crossWorld = null
 }
 
 

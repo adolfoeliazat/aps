@@ -13,7 +13,7 @@ interface LocationProxy {
     val host: String
     fun pushState(data: Any?, title: String, newURL: String)
     fun replaceState(data: Any?, title: String, newURL: String)
-    fun replaceWholeURL(newURL: String)
+//    fun replaceWholeURL(newURL: String)
     fun reload()
 }
 
@@ -46,42 +46,34 @@ class RealLocationProxy : LocationProxy {
         window.history.replaceState(data, title, newURL)
     }
 
-    override fun replaceWholeURL(newURL: String) {
-        throw UnsupportedOperationException(this::class.simpleName + ".replaceWholeURL")
-    }
 }
 
-class FakeLocationProxy(initialHref: String) : LocationProxy {
-    private var url = URL(initialHref)
-
-    init {
-        crossWorld.locationControl.update()
-    }
-
-    override val href get() = url.href
-    override val pathname get() = url.pathname
-    override val search get() = url.search
-    override val baseWithoutSlash get() = url.protocol + "//" + url.host
-    override val host get() = url.host
-
-    override fun pushState(data: Any?, title: String, newURL: String) {
-        replaceState(data, title, newURL)
-    }
-
-    override fun replaceState(data: Any?, title: String, newURL: String) {
-        check(newURL.startsWith("/")) {"newURL should start with /"}
-        url = URL(baseWithoutSlash + newURL)
-        crossWorld.locationControl.update()
-    }
-
-    override fun replaceWholeURL(newURL: String) {
-        url = URL(newURL)
-        crossWorld.locationControl.update()
-    }
-
-    override fun reload() {
-        throw UnsupportedOperationException(this::class.simpleName + ".reload")
-    }
-
-}
+//class FakeLocationProxy(initialHref: String) : LocationProxy {
+//    private var url = URL(initialHref)
+//
+//    init {
+//        crossWorld.locationControl.update()
+//    }
+//
+//    override val href get() = url.href
+//    override val pathname get() = url.pathname
+//    override val search get() = url.search
+//    override val baseWithoutSlash get() = url.protocol + "//" + url.host
+//    override val host get() = url.host
+//
+//    override fun pushState(data: Any?, title: String, newURL: String) {
+//        replaceState(data, title, newURL)
+//    }
+//
+//    override fun replaceState(data: Any?, title: String, newURL: String) {
+//        check(newURL.startsWith("/")) {"newURL should start with /"}
+//        url = URL(baseWithoutSlash + newURL)
+//        crossWorld.locationControl.update()
+//    }
+//
+//    override fun reload() {
+//        throw UnsupportedOperationException(this::class.simpleName + ".reload")
+//    }
+//
+//}
 

@@ -4,12 +4,14 @@ import aps.*
 import into.kommon.*
 
 class DebugWordMentionFinderPage(val world: World) {
+    private val typedStorageLocal = Globus.realTypedStorageLocal
+
     val input = Input(kind = Input.Kind.TEXTAREA, rows = 15,
                       initialValue = typedStorageLocal.DebugWordMentionFinderPage_inputText ?: "")
 
     val outPlaceholder = Placeholder()
 
-    fun load(): Promise<Unit> = async {
+    fun load(): Promisoid<Unit> = async {
         world.setPage(Page(
             header = pageHeader2("Word Mention Finder"),
             body = kdiv{o->
@@ -18,7 +20,7 @@ class DebugWordMentionFinderPage(val world: World) {
                     val wholeText = input.getValue()
                     typedStorageLocal.DebugWordMentionFinderPage_inputText = wholeText
 
-                    gloshit.wholeText = wholeText
+                    aps.gloshit.wholeText = wholeText
                     // tokens.forEach {console.log(it.toString())}
                     val docs = splitTextToDocuments(wholeText)
                     val allStems = mutableListOf<String>()

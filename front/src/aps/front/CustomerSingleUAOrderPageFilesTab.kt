@@ -36,7 +36,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         val search by stringURLParam()
     }
 
-    override fun load(): Promise<ZimbabweResponse.Shitty<*>?> = async {
+    override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {
         urlQuery = FilesTabURLQuery()
 //        val filesTabURLQuery = typeSafeURLQuery(world){FilesTabURLQuery()}
 //        ordering = filesTabURLQuery.ordering.relaxedToEnum(Ordering.values(), default = Ordering.DESC)
@@ -64,7 +64,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         }
     }
 
-    private fun requestChunk(fromID: String?): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
+    private fun requestChunk(fromID: String?): Promisoid<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
         val res = await(sendCustomerGetUAOrderFiles(world.token, ItemsRequest(CustomerFileFilter.values())-{o->
             o.entityID.value = order.id
             o.filter.value = urlQuery.filter
@@ -164,13 +164,13 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
             }
         }
 
-        fun reloadFilesTab(): Promise<Unit> =
+        fun reloadFilesTab(): Promisoid<Unit> =
             world.pushNavigate("order.html?id=${order.id}&tab=files"
                                    + "&ordering=${orderingSelect.value.name}"
                                    + "&filter=${filterSelect.value.name}"
                                    + "&search=${encodeURIComponent(searchInput.getValue())}")
 
-        fun reload(elementID: String): Promise<Unit> = async {
+        fun reload(elementID: String): Promisoid<Unit> = async {
             effects2.blinkOn(byid(elementID))
             ebafHost.headerControlsDisabled = true
             stripContent.update()
@@ -268,7 +268,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                         }
                     }
 
-                    fun enterEditMode(): Promise<Unit> = async {
+                    fun enterEditMode(): Promisoid<Unit> = async {
                         val topShitID = puid()
                         itemPlace.setContent(
                             when (world.user.kind) {
@@ -372,7 +372,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                                    val iframeID = puid()
                                                    jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
                                                    val iframe = byid0(iframeID) as HTMLIFrameElement
-                                                   gloshit.iframe = iframe
+                                                   aps.gloshit.iframe = iframe
                                                    iframe.onload = {
                                                        iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
                                                    }

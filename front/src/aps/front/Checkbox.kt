@@ -26,7 +26,7 @@ class Checkbox(val valueSetter: (Boolean) -> Unit, val elementID: String) {
 }
 
 fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
-    val onChange: (() -> Promise<Unit>)? = def.onChange
+    val onChange: (() -> Promisoid<Unit>)? = def.onChange
     val initialValue: dynamic = if (def.initialValue != null) def.initialValue else false
 
     var disabled: Boolean = false
@@ -43,12 +43,11 @@ fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
                         "type" to "checkbox",
                         "checked" to value,
                         "disabled" to disabled,
-                        "onChange" to {"__async"
+                        "onChange" to {async{
                             value = !value
                             update()
-                            onChange?.let {__await(it())}
-//                            __await<dynamic>(fova(onChange))
-                        }
+                            onChange?.let {await(it())}
+                        }}
                     ))
                 },
 
@@ -68,7 +67,7 @@ fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
                     me.getValue()
                 },
 
-            "testSetValue" to {arg: dynamic -> "__async"
+            "testSetValue" to {arg: dynamic -> async {
                     val value: dynamic = arg.value
 
                     if (art.testSpeed == "slow") {
@@ -77,7 +76,7 @@ fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
                     } else {
                         me.setValue(value)
                     }
-                }
+                }}
             )
 
             me.componentDidMount = {

@@ -20,45 +20,45 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
     visualShitCaptured.resolve(data)
 }
 
-fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> = async {
+fun captureVisualShit(id: String): Promisoid<VisualShitCapturedRequest.Response> = async {
     await(send(MoveMouseAwayFromPageRequest()))
-    debugPanes.hideAll()
+    old_debugPanes.hideAll()
     try {
         check(window.devicePixelRatio == 1.25 && window.innerWidth == 1008) {
             "Visual testing is designed for window.devicePixelRatio == 1.25 && window.innerWidth == 1008. " +
             "Otherwise there are tiny little differences in rendering of, for example, rounded corners, etc."
         }
 
-        var documentHeight by notNull<Double>()
-        var documentHeightPhysicalDouble by notNull<Double>()
-        var isHeightGood by notNull<Boolean>()
+        val my = object {
+            var documentHeight by notNull<Double>()
+            var documentHeightPhysicalDouble by notNull<Double>()
+            var isHeightGood by notNull<Boolean>()
+        }
 
         fun determineHeight(original: Boolean = false) {
-//            documentHeight = document.documentElement!!.asDynamic().offsetHeight
-            documentHeight = document.documentElement!!.getBoundingClientRect().height
-            documentHeightPhysicalDouble = documentHeight.toPhysicalPixelsDouble()
-//            isHeightGood = Math.floor(documentHeightPhysicalDouble) == Math.ceil(documentHeightPhysicalDouble)
-            isHeightGood = Math.abs(documentHeightPhysicalDouble - documentHeightPhysicalDouble) < 0.001
-            clog("${ifOrEmpty(original){"Original: "}}documentHeight = $documentHeight; documentHeightPhysicalDouble = $documentHeightPhysicalDouble; isHeightGood = $isHeightGood")
+            my.documentHeight = document.documentElement!!.getBoundingClientRect().height
+            my.documentHeightPhysicalDouble = my.documentHeight.toPhysicalPixelsDouble()
+            my.isHeightGood = Math.abs(my.documentHeightPhysicalDouble - my.documentHeightPhysicalDouble) < 0.001
+            clog("${ifOrEmpty(original){"Original: "}}documentHeight = ${my.documentHeight}; documentHeightPhysicalDouble = ${my.documentHeightPhysicalDouble}; isHeightGood = ${my.isHeightGood}")
         }
 
         determineHeight(original = true)
-        if (!isHeightGood) {
-            val shouldBePhysical = Math.ceil(documentHeightPhysicalDouble)
-            val deltaPhysical = shouldBePhysical - documentHeightPhysicalDouble
+        if (!my.isHeightGood) {
+            val shouldBePhysical = Math.ceil(my.documentHeightPhysicalDouble)
+            val deltaPhysical = shouldBePhysical - my.documentHeightPhysicalDouble
             val deltaPixels = deltaPhysical / window.devicePixelRatio // ph = px * ratio  -->  px = ph / ratio
             clog("shouldBePhysical = $shouldBePhysical; deltaPhysical = $deltaPhysical; deltaPixels = $deltaPixels")
             jqbody.css("margin-bottom", "${deltaPixels}px")
             determineHeight()
         }
-        check(isHeightGood) {"Fucky document height"}
+        check(my.isHeightGood) {"Fucky document height"}
 
-        val documentHeightPhysical: Int = documentHeight.toPhysicalPixels()
+        val documentHeightPhysical: Int = my.documentHeight.toPhysicalPixels()
         val windowHeight: Double = window.asDynamic().innerHeight
         val windowHeightPhysical: Int = windowHeight.toPhysicalPixels()
         val topNavbarHeightPhysical: Int = const.topNavbarHeight.toPhysicalPixels()
         val scrollStepPhysical: Int = windowHeightPhysical - topNavbarHeightPhysical
-        clog("documentHeight = $documentHeight; documentHeightPhysicalDouble = $documentHeightPhysicalDouble; documentHeightPhysical = $documentHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
+        clog("documentHeight = ${my.documentHeight}; documentHeightPhysicalDouble = ${my.documentHeightPhysicalDouble}; documentHeightPhysical = $documentHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
 
         byid(const.elementID.dynamicFooter).css("display", "none")
         val origScrollY = window.scrollY
@@ -130,7 +130,7 @@ fun captureVisualShit(id: String): Promise<VisualShitCapturedRequest.Response> =
 
         res
     } finally {
-        debugPanes.showAll()
+        old_debugPanes.showAll()
         await(send(ReturnMouseWhereItWasRequest()))
     }
 }

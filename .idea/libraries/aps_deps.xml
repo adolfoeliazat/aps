@@ -1,8 +1,9 @@
 <component name="libraryTable">
-  <library name="aps-gradle-lib">
+  <library name="aps-deps">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/back/lib/postgresql-9.4.1211.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/annotations-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/ant-1.9.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/ant-launcher-1.9.7.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/asm-5.0.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/asm-commons-5.0.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/asm-tree-5.0.1.jar!/" />
@@ -10,10 +11,13 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/commons-collections-3.2.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/commons-digester-1.8.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/commons-pool2-2.4.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/commons-validator-1.5.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/comsat-jdbc-0.7.1-SNAPSHOT.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/comsat-jooq-0.7.1-SNAPSHOT.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/comsat-servlet-0.7.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/dropbox-core-sdk-2.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/gson-2.7.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/guava-19.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/HdrHistogram-2.1.9.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/HikariCP-2.5.1.jar!/" />
@@ -34,6 +38,7 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/javax.servlet-api-3.1.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/javax.transaction-api-1.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/javax.websocket-api-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jedis-2.9.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-alpn-client-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-annotations-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-client-9.3.11.v20160721.jar!/" />
@@ -54,12 +59,27 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-util-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-webapp-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/jetty-xml-9.3.11.v20160721.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jna-4.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jna-platform-4.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-3.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-codegen-3.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-meta-3.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jsinterop-annotations-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jsr305-3.0.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/kryo-4.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/kryo-serializers-0.38.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/LatencyUtils-2.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-analyzers-common-6.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-core-6.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-queries-6.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-queryparser-6.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-sandbox-6.3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/metrics-core-3.1.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/minlog-1.3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/objenesis-2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/okhttp-3.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/okio-1.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/protobuf-java-3.0.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/quasar-core-0.7.6-jdk8.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/reflectasm-1.11.3.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/reflections-0.9.10.jar!/" />
@@ -70,45 +90,16 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/websocket-common-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/websocket-server-9.3.11.v20160721.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/websocket-servlet-9.3.11.v20160721.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib/postgresql-9.4.1211.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/args4j-2.33.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/closure-compiler-v20161024.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/ant-1.9.7.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jedis-2.9.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/commons-pool2-2.4.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/dropbox-core-sdk-2.1.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/okhttp-3.5.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/okio-1.11.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-core-6.3.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-analyzers-common-6.3.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-queries-6.3.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-queryparser-6.3.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/lucene-sandbox-6.3.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-3.9.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-codegen-3.9.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/jooq-meta-3.9.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/back/lib-gradle/quasar-core-0.7.6-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/javax.servlet-api-3.1.0-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/HikariCP-2.5.1-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/slf4j-api-1.7.21-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/annotations-2.0.1.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/reflections-0.9.10-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/jetty-server-9.3.11.v20160721-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/guava-19.0-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/commons-validator-1.5.1-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/jetty-servlet-9.3.11.v20160721-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/closure-compiler-v20161024-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../vendor/gradle/gradle-core-3.1-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/ant-1.9.7-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/dropbox-core-sdk-2.1.1-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/javax.mail.glassfish-1.4.1.v201005082020-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/postgresql-9.4.1211-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/lucene-analyzers-common-6.3.0-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/lucene-core-6.3.0-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.ideaLibSources/jooq-3.9.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/quasar-core-0.7.6-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/args4j-2.33.jar!/OSGI-OPT/src" />
+      <root url="jar://$PROJECT_DIR$/back/lib-gradle/closure-compiler-v20161024.jar!/OSGI-OPT/src" />
     </SOURCES>
   </library>
 </component>

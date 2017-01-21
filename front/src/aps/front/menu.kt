@@ -4,5 +4,5 @@ import aps.*
 
 class Menu(val items: List<MenuItem>)
 
-class MenuItem(val title: String, val act: () -> Promise<Unit>)
+class MenuItem(val title: String, val act: () -> Promisoid<Unit>)
 

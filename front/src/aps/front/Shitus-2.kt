@@ -18,7 +18,7 @@ var revealStackCalledTimes = 0
 val Throwable.stack: String get() = this.asDynamic().stack
 
 fun revealRawStack(stack: String) {
-    debugPanes.put("revealStack", oldShitAsToReactElementable(Shitus.updatableElement(json(), ctor@{update: dynamic ->
+    old_debugPanes.put("revealStack", oldShitAsToReactElementable(Shitus.updatableElement(json(), ctor@{update: dynamic ->
         return@ctor {
             Shitus.diva(json("noStateContributions" to true, "style" to json(
                 "position" to "fixed",
@@ -37,12 +37,12 @@ fun revealRawStack(stack: String) {
     })))
 }
 
-fun revealStack(exception: Throwable, muteConsole: Boolean = false, skipAllForeignLines: Boolean = false): Promise<Unit> {"__async"
+fun revealStack(exception: Throwable, muteConsole: Boolean = false, skipAllForeignLines: Boolean = false): Promisoid<Unit> = async {
     if (++revealStackCalledTimes > 3) {
-        return console.warn("Too much of stack revealing") /ignora
+        return@async console.warn("Too much of stack revealing")
     }
 
-    val stack = __await(errorToMappedClientStackString(exception))
+    val stack = await(errorToMappedClientStackString(exception))
     if (!muteConsole) {
         console.error(stack)
         var errorToLog = "revealStack: " + stack
@@ -50,11 +50,11 @@ fun revealStack(exception: Throwable, muteConsole: Boolean = false, skipAllForei
         console.error(errorToLog)
     }
 
-    if (debugPanes.contains("revealStack")) {
-        return console.warn("Some other stack is already revealed, so not showing") /ignora
+    if (old_debugPanes.contains("revealStack")) {
+        return@async console.warn("Some other stack is already revealed, so not showing")
     }
 
-    debugPanes.put("revealStack", oldShitAsToReactElementable(Shitus.updatableElement(json(), ctor@{update: dynamic ->
+    old_debugPanes.put("revealStack", oldShitAsToReactElementable(Shitus.updatableElement(json(), ctor@{update: dynamic ->
         return@ctor {
             Shitus.diva(json("noStateContributions" to true, "style" to json(
                         "position" to "fixed",
@@ -71,8 +71,6 @@ fun revealStack(exception: Throwable, muteConsole: Boolean = false, skipAllForei
                         )
         }
     })))
-
-    return __asyncResult(Unit)
 }
 
 fun updatableShit(render: (update: () -> Unit) -> ToReactElementable) = object:Control2(Attrs()) {
@@ -89,7 +87,7 @@ fun renderRawStackTrace(stack: String, marginRight: Int? = null): ToReactElement
 fun renderStackTrace(e: Throwable, onRendered: (() -> Unit)? = null, skipAllForeignLines: Boolean = false, marginRight: Int? = null): ToReactElementable {
     val shit = Placeholder(kdiv{it-"Loading mapped stack..."})
 
-    fun fuck(): Promise<Unit> = async {
+    fun fuck(): Promisoid<Unit> = async {
         val ctx = RenderStackTraceContext(marginRight=marginRight, skipAllForeignLines=skipAllForeignLines)
 
         val stack = await(errorToMappedClientStackString(e))
@@ -206,7 +204,7 @@ fun jsFacing_isOrWasInTestScenario(): Boolean {
 
 class HotReloadSurvivingShit {
     var debugFunctionsKeydownListener: dynamic = null
-    var onUnhandledRejection: dynamic = null
+//    var onUnhandledRejection: dynamic = null
     var preventExceptionRevelation: Boolean = false
     val controlBeingRevealed: dynamic = null
     val browsers = mutableMapOf<String, BrowserOld>()

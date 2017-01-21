@@ -13,7 +13,7 @@ import into.kommon.*
 
 
 class AdminUsersPage(val ui: World) {
-    fun load(): Promise<Unit> {
+    fun load(): Promisoid<Unit> {
         val m = Melinda<UserRTO, Nothing, UserFilter>(
             ui,
             urlPath = "admin-users.html",
@@ -131,13 +131,13 @@ class AdminUsersPage(val ui: World) {
 
                 fun scrollToHeading() {
                     val top = Shitus.byid(headingID).offset().top - 50 - 15
-                    global.requestAnimationFrame { js("$")(document).scrollTop(top) }
+                    aps.global.requestAnimationFrame { js("$")(document).scrollTop(top) }
                 }
 
 
-                fun refreshRecord(): Promise<Unit> {"__async"
-                    val res = __await(GetUserRequest.send(ui.tokenMaybe!!, user.id))
-                    return ignora/when (res) {
+                fun refreshRecord(): Promisoid<Unit> = async {
+                    val res = await(GetUserRequest.send(ui.tokenMaybe!!, user.id))
+                    return@async when (res) {
                         is ZimbabweResponse.Shitty -> setShit(
                             headingActionItems = listOf(),
                             body = Shitus.errorBanner(json("content" to res.error)).toToReactElementable())

@@ -12,7 +12,7 @@ import aps.*
 import into.kommon.*
 
 class ProfilePage(val ui: World) {
-    fun load(): Promise<Unit> {"__async"
+    fun load(): Promisoid<Unit> = async {
         val primaryButtonTitle = t("TOTE", "Отправить на проверку")
 
         var pageBody: ReactElement
@@ -80,8 +80,6 @@ class ProfilePage(val ui: World) {
             body = oldShitAsToReactElementable(pageBody),
             headerControls = headerControls
         ))
-
-        return __asyncResult(Unit)
     }
 }
 

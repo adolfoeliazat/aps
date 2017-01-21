@@ -7,32 +7,29 @@
 <project name="aps">
     <property environment="env"/>
 
-    <!-- TODO:vgrechka @unhardcode -->
-    <property name="KOTLIN_COMPILER_JAR" value="C:\Users\Vladimir\.IdeaIC2016.3\config\plugins\Kotlin\kotlinc\lib\kotlin-compiler.jar"/>
+    <property name="kotlin.version" value="1.1.0-beta-17"/>
 
-    <include file="${env.INTO_KOMMON_HOME}/build-into-kommon-inc.xml" as="inc"/>
+    <!-- @param inFile -->
+    <target name="enhance-js">
+        <java classname="into.kommon.EnhanceJS" fork="true" failonerror="true">
+            <classpath refid="cp"/>
+            <arg value="${inFile}"/>
+        </java>
+    </target>
 
     <path id="cp">
-        <path refid="into-kommon-jvm-classpath"/>
         <pathelement location="${env.APS_HOME}/back/out"/>
         <fileset dir="${env.APS_HOME}/back/lib" includes="*.jar"/>
         <fileset dir="${env.APS_HOME}/back/lib-gradle" includes="*.jar"/>
-        <pathelement location="${KOTLIN_COMPILER_JAR}"/>
     </path>
 
     <target name="before-compilation">
     </target>
 
     <target name="after-compilation">
-        <ant antfile="${env.INTO_KOMMON_HOME}/build-into-kommon.xml" target="after-compilation"/>
-
         <java classname="aps.LintShit" fork="true" failonerror="true">
             <classpath refid="cp"/>
         </java>
-
-        <antcall target="inc.enhance-js">
-            <param name="inFile" value="${env.APS_HOME}/front/out/front.js"/>
-        </antcall>
 
         <pathconvert targetos="windows" property="cpstring" refid="cp"/>
         <echo file="_run.cmd">

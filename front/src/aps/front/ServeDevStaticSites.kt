@@ -9,7 +9,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.nodeRequire
 
 object ServeDevStaticSites {
     val express = nodeRequire("express")

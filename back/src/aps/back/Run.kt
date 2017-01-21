@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
         "jooq" -> runJava("aps.back.GenerateJOOQKt").waitFor()
         "forever" -> Forever()
         "lint" -> LintShit()
-        "generate" -> GenerateShit()
+//        "generate" -> GenerateShit()
         else -> bitch("Do your [$command] yourself")
     }
 }

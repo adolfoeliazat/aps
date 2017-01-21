@@ -7,6 +7,8 @@
       <w>addon</w>
       <w>algo</w>
       <w>allkeys</w>
+      <w>alrighty</w>
+      <w>appendln</w>
       <w>apsback</w>
       <w>apsdevua</w>
       <w>apsua</w>
@@ -18,6 +20,8 @@
       <w>bmix</w>
       <w>bobul</w>
       <w>browserify</w>
+      <w>browseroid</w>
+      <w>browseroids</w>
       <w>byid</w>
       <w>bytea</w>
       <w>cancela</w>
@@ -105,9 +109,11 @@
       <w>navbar</w>
       <w>nbsp</w>
       <w>ndash</w>
+      <w>pipiska</w>
       <w>pizda</w>
       <w>pizdashot</w>
       <w>pizdature</w>
+      <w>pizdets</w>
       <w>plpgsql</w>
       <w>pname</w>
       <w>pojo</w>
@@ -115,7 +121,10 @@
       <w>postgresql</w>
       <w>prepending</w>
       <w>primitiveish</w>
+      <w>promisoid</w>
       <w>psql</w>
+      <w>reactoid</w>
+      <w>reactoidom</w>
       <w>reawait</w>
       <w>reimplement</w>
       <w>relazy</w>
@@ -139,13 +148,16 @@
       <w>tamy</w>
       <w>testconst</w>
       <w>textarea</w>
+      <w>thenable</w>
       <w>thiz</w>
+      <w>timeroid</w>
       <w>tmpdir</w>
       <w>tsquery</w>
       <w>tsvector</w>
       <w>unchecking</w>
       <w>unduplicate</w>
       <w>unflow</w>
+      <w>unhandledrejection</w>
       <w>unhardcode</w>
       <w>uninit</w>
       <w>unrendered</w>

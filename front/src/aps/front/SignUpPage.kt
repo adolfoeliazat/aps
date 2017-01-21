@@ -12,7 +12,7 @@ import aps.*
 import kotlin.browser.window
 
 class SignUpPage(val world: World) {
-    fun load(): Promise<Unit> = async {
+    fun load(): Promisoid<Unit> = async {
         world.setPage(Page(
             header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация")))),
             body = oldShitAsToReactElementable(Shitus.diva(json(),
@@ -23,7 +23,7 @@ class SignUpPage(val world: World) {
                                                                onSuccessa = {async{
                         world.signedUpOK = true
                         world.initialEmailFieldValueAfterSignUp = req.immutableSignUpFields.email.value
-                        await(world.pushNavigate("sign-in.html"))
+                        await(world.pushNavigate("/sign-in.html"))
                     }}
                 )).toReactElement(),
 

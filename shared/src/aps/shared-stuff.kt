@@ -28,6 +28,11 @@ enum class ClientKind {
     UA_CUSTOMER, UA_WRITER
 }
 
+sealed class WideClientKind {
+    class User(val kind: ClientKind) : WideClientKind()
+    class Test : WideClientKind()
+}
+
 enum class Language(val decimalPoint: String) {
     EN(decimalPoint = "."),
     UA(decimalPoint = ",")
@@ -72,7 +77,7 @@ class ImposeNextRequestTimestampRequest : RequestMatumba() {
     val stamp = StringHiddenField(this, "stamp")
 
     companion object {
-        fun send(stamp: String): Promise<Unit> = callDangerousMatumba(ImposeNextRequestTimestampRequest().apply {
+        fun send(stamp: String): Promisoid<Unit> = callDangerousMatumba(ImposeNextRequestTimestampRequest().apply {
             this.stamp.value = stamp
         })
     }
@@ -101,7 +106,7 @@ class ResetTestDatabaseAlongWithTemplateRequest() : RequestMatumba() {
     val recreateTemplate = BooleanHiddenField(this, "recreateTemplate")
 
     companion object {
-        fun send(templateDB: String, recreateTemplate: Boolean = false): Promise<GenericResponse> = callDangerousMatumba(ResetTestDatabaseAlongWithTemplateRequest().apply {
+        fun send(templateDB: String, recreateTemplate: Boolean = false): Promisoid<GenericResponse> = callDangerousMatumba(ResetTestDatabaseAlongWithTemplateRequest().apply {
             this.templateDB.value = templateDB
             this.recreateTemplate.value = recreateTemplate
         })
@@ -144,7 +149,7 @@ class SignInWithPasswordRequest : RequestMatumba() {
 
 class SignInWithTokenRequest : RequestMatumba() {
     companion object {
-        fun send(token: String): Promise<SignInResponse> = callMatumba(SignInWithTokenRequest(), token)
+        fun send(token: String): Promisoid<SignInResponse> = callMatumba(SignInWithTokenRequest(), token)
     }
 }
 
@@ -199,7 +204,7 @@ class WorldPointRequest() : RequestMatumba() {
     val action = EnumHiddenField(this, "action", Action.values())
 
     companion object {
-        fun send(pointName: String, action: Action): Promise<GenericResponse> = callDangerousMatumba(WorldPointRequest().apply {
+        fun send(pointName: String, action: Action): Promisoid<GenericResponse> = callDangerousMatumba(WorldPointRequest().apply {
             this.pointName.value = pointName
             this.action.value = action
         })
@@ -210,7 +215,7 @@ class GetSoftwareVersionRequest : RequestMatumba() {
     class Response(val ctime: String, val backendInstanceID: String) : CommonResponseFieldsImpl()
 
     companion object {
-        fun send(): Promise<Response> = callDangerousMatumba(GetSoftwareVersionRequest())
+        fun send(): Promisoid<Response> = callDangerousMatumba(GetSoftwareVersionRequest())
     }
 }
 
@@ -218,7 +223,7 @@ class GetSentEmailsRequest : RequestMatumba() {
     class Response(val emails: List<Email>) : CommonResponseFieldsImpl()
 
     companion object {
-        fun send(): Promise<Response> = callDangerousMatumba(GetSentEmailsRequest())
+        fun send(): Promisoid<Response> = callDangerousMatumba(GetSentEmailsRequest())
     }
 }
 
@@ -226,13 +231,13 @@ class GetGeneratedShitRequest : RequestMatumba() {
     class Response(val code: String) : CommonResponseFieldsImpl()
 
     companion object {
-        fun send(): Promise<Response> = callDangerousMatumba(GetGeneratedShitRequest())
+        fun send(): Promisoid<Response> = callDangerousMatumba(GetGeneratedShitRequest())
     }
 }
 
 class ClearSentEmailsRequest : RequestMatumba() {
     companion object {
-        fun send(): Promise<Unit> = callDangerousMatumba(ClearSentEmailsRequest())
+        fun send(): Promisoid<Unit> = callDangerousMatumba(ClearSentEmailsRequest())
     }
 
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
@@ -242,7 +247,7 @@ class ImposeNextGeneratedPasswordRequest() : RequestMatumba() {
     val password = StringHiddenField(this, "password")
 
     companion object {
-        fun send(password: String): Promise<Unit> = callDangerousMatumba(ImposeNextGeneratedPasswordRequest().apply {
+        fun send(password: String): Promisoid<Unit> = callDangerousMatumba(ImposeNextGeneratedPasswordRequest().apply {
             this.password.value = password
         })
     }
@@ -259,7 +264,7 @@ class GetLiveStatusRequest : RequestMatumba() {
     }
 
     companion object {
-        fun send(token: String): Promise<Response> = callMatumba(GetLiveStatusRequest(), token)
+        fun send(token: String): Promisoid<Response> = callMatumba(GetLiveStatusRequest(), token)
     }
 
 //    fun rpc(ui: LegacyUIShit): Promise<Response> = callRemoteProcedure(this, ui)
@@ -271,15 +276,6 @@ class Email(val to: String, val subject: String, val html: String)
 object ignore
 infix operator fun Any?.div(erongi: ignore) = Unit
 
-object ignora
-infix operator fun Any?.div(arongi: ignora) = __asyncResult(Unit)
-infix operator fun ignora.div(any: Any?) = __asyncResult(Unit)
-
-//object a
-//infix operator fun <T> a.div(x: T) = __asyncResult(x)
-
-//object resulta
-//infix operator fun <T> resulta.div(x: T) = __asyncResult(x)
 
 class GetUserRequest() : RequestMatumba() {
     class Response (
@@ -289,7 +285,7 @@ class GetUserRequest() : RequestMatumba() {
     val id = StringHiddenField(this, "id")
 
     companion object {
-        fun send(token: String, id: String): Promise<ZimbabweResponse<Response>> = callZimbabwe(GetUserRequest()-{o->
+        fun send(token: String, id: String): Promisoid<ZimbabweResponse<Response>> = callZimbabwe(GetUserRequest()-{o->
             o.id.value = id
         }, token)
     }
@@ -366,7 +362,7 @@ class MapStackRequest : RequestMatumba() {
     val mangledStack = StringHiddenField(this, "mangledStack")
 
     companion object {
-        fun send(mangledStack: String): Promise<Response> = callDangerousMatumba(MapStackRequest()-{o->
+        fun send(mangledStack: String): Promisoid<Response> = callDangerousMatumba(MapStackRequest()-{o->
             o.mangledStack.value = mangledStack
         })
     }
@@ -378,7 +374,7 @@ class OpenSourceCodeRequest : RequestMatumba() {
     val sourceLocation = StringHiddenField(this, "sourceLocation")
 
     companion object {
-        fun send(sourceLocation: String): Promise<Response> = callDangerousMatumba(OpenSourceCodeRequest()-{o->
+        fun send(sourceLocation: String): Promisoid<Response> = callDangerousMatumba(OpenSourceCodeRequest()-{o->
             o.sourceLocation.value = sourceLocation
         })
     }
@@ -395,7 +391,7 @@ class TestSetUserFieldsRequest() : RequestMatumba() {
     val insertedAt = StringHiddenField(this, "insertedAt ", possiblyUnspecified = true)
 }
 
-fun send(req: TestSetUserFieldsRequest): Promise<GenericResponse> = callDangerousMatumba(req)
+fun send(req: TestSetUserFieldsRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 
 //class GetRedisLogMessagesRequest : RequestMatumba() {
 //    class Response(val items: List<RedisLogMessage>)
@@ -407,7 +403,7 @@ class SendRedisLogMessageRequest : RequestMatumba() {
     val type = EnumHiddenField(this, "type", RedisLogMessage.Separator.Type.values())
     val text = StringHiddenField(this, "text")
 }
-fun send(req: SendRedisLogMessageRequest): Promise<GenericResponse> = callDangerousMatumba(req)
+fun send(req: SendRedisLogMessageRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 
 
 class JSONResponse(val json: String) : CommonResponseFieldsImpl()
@@ -415,7 +411,7 @@ class JSONResponse(val json: String) : CommonResponseFieldsImpl()
 class PrivilegedRedisCommandRequest : RequestMatumba() {
     val json = StringHiddenField(this, "json")
 }
-fun send(req: PrivilegedRedisCommandRequest): Promise<JSONResponse> = callDangerousMatumba(req)
+fun send(req: PrivilegedRedisCommandRequest): Promisoid<JSONResponse> = callDangerousMatumba(req)
 
 interface CommonRequestFields {
     var rootRedisLogMessageID: String?
@@ -431,7 +427,7 @@ interface CommonResponseFields {
 class FuckingRemoteProcedureRequest : RequestMatumba() {
     val json = StringHiddenField(this, "json")
 }
-fun send(req: FuckingRemoteProcedureRequest): Promise<JSONResponse> = callDangerousMatumba(req)
+fun send(req: FuckingRemoteProcedureRequest): Promisoid<JSONResponse> = callDangerousMatumba(req)
 
 class CustomerCreateUAOrderRequest : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()

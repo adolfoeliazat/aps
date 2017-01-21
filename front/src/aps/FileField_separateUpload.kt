@@ -33,7 +33,7 @@ import org.w3c.xhr.XMLHttpRequest
                         "onChange" to {
                             val files: FileList = byid0(inputID).asDynamic().files
                             file = files[0]
-                            gloshit.file = file
+                            aps.gloshit.file = file
                             noise.clog("Got file", file)
                             uploaded = false
                             update()
@@ -88,7 +88,7 @@ import org.w3c.xhr.XMLHttpRequest
     override fun focus() = imf()
 
 
-    override fun populateRemote(json: Json): Promise<Unit> = async {
+    override fun populateRemote(json: Json): Promisoid<Unit> = async {
         imf()
 //        json[name] = value
     }

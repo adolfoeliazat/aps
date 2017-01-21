@@ -14,7 +14,7 @@ class InitAutoReload {
     lateinit var initialCtime: String
 
     init {
-        fun inita(): Promise<Unit> = async {
+        fun inita(): Promisoid<Unit> = async {
             if (Globus.mode != Mode.DEBUG) return@async
 
             initialCtime = await(GetSoftwareVersionRequest.send()).ctime
@@ -24,15 +24,15 @@ class InitAutoReload {
     }
 
     private fun schedule() {
-        window.setTimeout({tick()}, 500)
+//        window.setTimeout({tick()}, 500)
     }
 
-    private fun tick() {"__async"
-        if (initialCtime != __await(GetSoftwareVersionRequest.send()).ctime) {
+    private fun tick() = async {
+        if (initialCtime != await(GetSoftwareVersionRequest.send()).ctime) {
             if (realTypedStorageLocal.reloadTest) {
                 TestGlobal.lastTestHrefMaybe?.let {
                     Globus.realLocation.href = it
-                    return
+                    return@async
                 }
             }
 

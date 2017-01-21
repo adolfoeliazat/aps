@@ -8,7 +8,7 @@ class kic(
     val key: String? = null,
     val style: Style = Style(),
     val className: String = "",
-    val onClicka: () -> Promise<Unit> = {async{}},
+    val onClicka: () -> Promisoid<Unit> = {async{}},
     val onClick: () -> Unit = {}
 ) : Control2(Attrs()) {
 
@@ -20,7 +20,7 @@ class kic(
         }
     }
 
-    fun click(): Promise<Unit> {
+    fun click(): Promisoid<Unit> {
         onClick()
         return onClicka()
     }

@@ -81,6 +81,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                 ClientKind.UA_WRITER -> "[uaw]"
             }
             append(base + url.substring(nextSlash) + "\n\n")
+            gloshit.actualAssertionURL = toString()
             append("-------------------- NAVBAR --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
             if (!endsWith("\n")) append("\n")
@@ -97,7 +98,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                 var horizontalPosition = p.opts.bannerHorizontalPosition
                 var capturedVisualShit = false
 
-                fun acceptCurrentShit(): Promise<Unit> = async {
+                fun acceptCurrentShit(): Promisoid<Unit> = async {
                     await(captureVisualShitIfNeeded())
                     await(send(SaveCapturedVisualShitRequest()))
                     await(send(HardenScreenHTMLRequest()-{o->
@@ -124,7 +125,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                         }
 
                         actual != expected -> {
-                            val pane = debugPanes.put(byid(ELID_UNDER_FOOTER), kdiv(
+                            val pane = old_debugPanes.put(byid(ELID_UNDER_FOOTER), kdiv(
                                 id = "fuckingDiff",
                                 backgroundColor = RED_700, color = WHITE, marginTop = 10, padding = "10px 10px",
                                 textAlign = "center", fontWeight = "bold"
@@ -164,7 +165,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                         o- acceptButton()
                                     }))
                             } finally {
-                                debugPanes.remove(pane)
+                                old_debugPanes.remove(pane)
                             }
                         }
 
@@ -227,7 +228,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                             return@lazy place
                         }
 
-                        abstract fun promiseBase64(): Promise<String>
+                        abstract fun promiseBase64(): Promisoid<String>
 
                         fun renderButton() = Button(
                             title = buttonTitle,
@@ -299,11 +300,11 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                     }
                                     o- kdiv(width = "1rem")
                                     o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {
-                                        debugPanes.remove(visualDiffPane)
+                                        old_debugPanes.remove(visualDiffPane)
                                         acceptCurrentShit()
                                     })
                                     o- Button(icon = fa.close, style = bannerButtonStyle, onClick = {
-                                        debugPanes.remove(visualDiffPane)
+                                        old_debugPanes.remove(visualDiffPane)
                                     })
                                 }
                             }
@@ -316,7 +317,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                     init {
                         async {
                             await(captureVisualShitIfNeeded())
-                            visualDiffPane = debugPanes.put(ctrl)
+                            visualDiffPane = old_debugPanes.put(ctrl)
                         }
                     }
                 }
@@ -391,7 +392,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
 //                                o- "Assertion: $descr"
                         }
                     }
-                    val bannerPane = debugPanes.put(banner)
+                    val bannerPane = old_debugPanes.put(banner)
 
                     fun keyListener(e: Event) {
                         e as KeyboardEvent
@@ -419,7 +420,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                         testPausedOnAssertion = false
                         pausedOnAssertion = ResolvableShit()
                         window.removeEventListener("keydown", ::keyListener)
-                        debugPanes.remove(bannerPane)
+                        old_debugPanes.remove(bannerPane)
                     }
                 }
             }.shit)

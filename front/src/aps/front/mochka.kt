@@ -12,7 +12,7 @@ class runMochka(build: runMochka.() -> Unit) {
     private val process = js("process")
 
     init {
-        process.on("unhandledRejection") {error: Throwable, where: Promise<*> ->
+        process.on("unhandledRejection") {error: Throwable, where: Promisoid<*> ->
             currentMochaDone.let {
                 if (it != null) {
                     it(error)

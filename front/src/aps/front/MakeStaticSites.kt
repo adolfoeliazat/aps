@@ -19,22 +19,35 @@ object MakeStaticSites {
     class Testimonial(val name: LS, val img: String, val says: LS)
     class BlogItem(val listTitle: String, val title: String, val slug: String, val content: String)
 
-    val React = nodeRequire("react")
-    val ReactDOMServer = nodeRequire("react-dom/server")
-    val fs = nodeRequire("fs")
-    val sh = nodeRequire("shelljs")
-    val minimist = nodeRequire("minimist")
+    val React = aps.nodeRequire("react")
+    val ReactDOMServer = aps.nodeRequire("react-dom/server")
+    val fs = aps.nodeRequire("fs")
+    val sh = aps.nodeRequire("shelljs")
+    val minimist = aps.nodeRequire("minimist")
 
     lateinit var mode: Mode
     lateinit var lang: Language
     lateinit var out: String
     val DEPS_JS = "$APS_TEMP/deps.js"
 
+//    @JsName("runShit")
+//    fun runShit(argv: Array<String>) = async {
+//        try {
+//            console.log("pussy")
+//            await(delay(3000))
+//            console.log("boobs")
+//            await(delay(3000))
+//            console.log("ok")
+//        } catch (e: dynamic) {
+//            println(e.stack)
+//        }
+//    }
+
     @JsName("runShit")
-    fun runShit(argv: Array<String>) {"__async"
+    fun runShit(argv: Array<String>) = async {
         try {
             puidPrefix = "MakeStaticSites-"
-            global.React = React
+            aps.global.React = React
             sh.config.fatal = true
             js("Error").stackTraceLimit = js("Infinity")
 
@@ -51,13 +64,13 @@ object MakeStaticSites {
             out = outString ?: "$APS_HOME/front/out/static"
             println("Out directory: $out")
 
-            __await(browserifyShit())
-            __await(makeWriterSite(Language.UA))
-            __await(makeCustomerSite(Language.UA, Currency.UAH))
+            await(browserifyShit())
+            await(makeWriterSite(Language.UA))
+            await(makeCustomerSite(Language.UA, Currency.UAH))
 
             println("COOL")
-        } catch (e: Throwable) { // run.js won't get it, because it's in promise
-            println(e.asDynamic().stack)
+        } catch (e: dynamic) { // run.js won't get it, because it's in promise
+            println(e.stack)
         }
     }
 
@@ -68,13 +81,13 @@ object MakeStaticSites {
 
     fun t(en: String, ua: String): String = t(LS(en, ua))
 
-    fun makeWriterSite(lang: Language): Promise<Unit> {"__async"
+    fun makeWriterSite(lang: Language): Promisoid<Unit> = async {
         val siteName = "writer-${lang.name.toLowerCase()}"
         print("Making $siteName... ")
         this.lang = lang
 
         val root = "$out/$siteName"
-        __await(remakeDirAndCopyShit(root))
+        await(remakeDirAndCopyShit(root))
 
         val tabTitle = t(en="Writer", ua="Writer UA")
 
@@ -424,10 +437,9 @@ object MakeStaticSites {
         }
 
         println("DONE")
-        return __asyncResult(Unit)
     }
 
-    fun browserifyShit(): Promise<Unit> {"__async"
+    fun browserifyShit(): Promisoid<Unit> = async {
         sh.rm("-f", DEPS_JS)
 
         val entryStream = js("new (require('stream')).Readable")
@@ -450,15 +462,15 @@ object MakeStaticSites {
         """)
         entryStream.push(null) // EOF
 
-        val bro = nodeRequire("browserify")(json(
+        val bro = (aps.nodeRequire("browserify"))(json(
             "entries" to jsArrayOf(entryStream),
             "cache" to json(),
             "packageCache" to json(),
             "debug" to true
         ))
 
-        process.stdout.write("Browserifying shit... ")
-        __await<Unit>(newNativePromise {resolve: dynamic, reject: dynamic ->
+        aps.process.stdout.write("Browserifying shit... ")
+        awaitNative<Unit>(aps.newNativePromise {resolve: dynamic, reject: dynamic ->
             bro.bundle {err: dynamic, buf: dynamic ->
                 if (err != null) {
                     reject(err)
@@ -471,10 +483,9 @@ object MakeStaticSites {
         })
 
         println("DONE")
-        return __asyncResult(Unit)
     }
 
-    fun remakeDirAndCopyShit(root: String): Promise<Unit> {"__async"
+    fun remakeDirAndCopyShit(root: String): Promisoid<Unit> = async {
         sh.rm("-rf", root)
         sh.mkdir("-p", root)
 
@@ -491,14 +502,9 @@ object MakeStaticSites {
         sh.cp(DEPS_JS, root)
 
         // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
-//        sh.cp("${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js", root)
-        sh.cp("$KOMMON_HOME/js/out/into-kommon-js-enhanced.js", root)
-        sh.cp("$KOMMON_HOME/js/out/into-kommon-js.js.map", root)
         sh.cp("$APS_HOME/front/out/front-enhanced.js", root)
         sh.cp("$APS_HOME/front/out/front.js.map", root)
         sh.cp("$APS_HOME/front/out/lib/kotlin.js", root)
-
-        return __asyncResult(Unit)
     }
 
     fun wholePageTicker(): ReactElement {
@@ -511,13 +517,13 @@ object MakeStaticSites {
             </div>""")
     }
 
-    fun makeCustomerSite(lang: Language, currency: Currency): Promise<Unit> {"__async"
+    fun makeCustomerSite(lang: Language, currency: Currency): Promisoid<Unit> = async {
         val siteName = "customer-${lang.name.toLowerCase()}"
         print("Making $siteName... ")
         this.lang = lang
 
         val root = "$out/$siteName"
-        __await(remakeDirAndCopyShit(root))
+        await(remakeDirAndCopyShit(root))
 
         val tabTitle = t(en="APS", ua="APS UA")
 
@@ -1013,7 +1019,6 @@ object MakeStaticSites {
         }
 
         println("DONE")
-        return __asyncResult(Unit)
     }
 
     fun genericWritePage(name: String, highlightedItem: String?, content: ReactElement, root: String, tabTitle: String, lang: Language, clientKind: ClientKind) {
@@ -1122,11 +1127,6 @@ object MakeStaticSites {
     <script src="bootstrap/js/bootstrap-3.3.7-hacked.js"></script>
     <script src="bootstrap-datetimepicker-4.17.43-hacked.js"></script>
     <script src="kotlin.js"></script>
-    <!--
-        <script src="kotlin-1.1-m02-eap-hacked.js"></script>
-        <script src="into-kommon-js-enhanced.js"></script>
-        <script src="front-enhanced.js"></script>
-    -->
 
     <script>
         ${readStatic("testimonials.js")}
@@ -1138,7 +1138,7 @@ object MakeStaticSites {
 
         ${if (mode == Mode.DEBUG) """
             // TODO:vgrechka Think about DANGEROUS_TOKEN. How it should be included into client, etc.
-            DANGEROUS_TOKEN = '${process.env.APS_DANGEROUS_TOKEN}'
+            DANGEROUS_TOKEN = '${aps.process.env.APS_DANGEROUS_TOKEN}'
         """ else ""}
 
         global.MODE = '$mode'
@@ -1147,7 +1147,6 @@ object MakeStaticSites {
         const scriptSuffix = ${if (mode == Mode.DEBUG) "'?' + Date.now()" else "''"}
 
         Promise.resolve()
-        .then(_=> loadScript('into-kommon-js-enhanced.js' + scriptSuffix))
         .then(_=> loadScript('front-enhanced.js' + scriptSuffix))
         .then(_=> {
             kot = Kotlin.modules.front

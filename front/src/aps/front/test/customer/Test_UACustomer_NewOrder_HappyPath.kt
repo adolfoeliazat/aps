@@ -11,7 +11,7 @@ class Test_UACustomer_NewOrder_HappyPath : StepBasedTestScenario() {
             it.token = testShit.bobulToken
         })
         o.kindaNavigateToStaticContent("${fconst.test.url.customer}/orders.html")
-        o.assertCustomerBreatheScreen()
+        o.assertCustomerWithTokenStaticIndexScreen()
 
         o.acta {async{
             val world = World("boobs")

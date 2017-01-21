@@ -258,7 +258,7 @@ class ControlShitMe : ShitWithRenderFunction, FuckingControl {
     var ignoreDebugCtrlShiftClick: Boolean = false
     var effectiveShame: String? = null
     lateinit var captureAction: (dynamic) -> Unit
-    var onRootClick: ((Any?) -> Promise<Any?>)? = null
+    var onRootClick: ((Any?) -> Promisoid<Any?>)? = null
     var testClick: ((dynamic) -> Unit)? = null
     var testKeyDown: ((dynamic) -> Unit)? = null
     var testSetValue: ((dynamic) -> Unit)? = null
@@ -331,10 +331,10 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
 
     fun addEventListeners() {
         Shitus.byid(me.elementID).off() // Several controls can be on same element, and we don't want to handle click several times
-        Shitus.byid(me.elementID).on("click", onClick@{e: KeyboardEvent -> "__async"
+        Shitus.byid(me.elementID).on("click", onClick@{e: KeyboardEvent -> async {
             if (Globus.mode == Mode.DEBUG && e.ctrlKey) {
                 if (e.shiftKey) {
-                    if (me.ignoreDebugCtrlShiftClick) return@onClick Unit
+                    if (me.ignoreDebugCtrlShiftClick) return@async Unit
 
                     preventAndStop(e)
 
@@ -342,18 +342,15 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                         Shitus.raiseWithMeta(json("message" to "Put some shame on me", "meta" to me))
                     }
 
-                    return@onClick me.captureAction(null) // TODO:vgrechka Prettier default argument
+                    return@async me.captureAction(null) // TODO:vgrechka Prettier default argument
                 }
 
                 preventAndStop(e)
                 die("This code path should be deleted")
-//                return@onClick Shitus.revealControl(me)
             }
 
-//            val shit: ((Any?) -> Promise<Any?>)? = me.onRootClick
-            me.onRootClick?.let {__await(it(e))}
-//            __await<dynamic>(jshit.utils.fova(me.onRootClick, e))
-        })
+            me.onRootClick?.let {await(it(e))}
+        }})
     }
 
     fun removeEventListeners() {
@@ -479,7 +476,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
 
             me.effectiveShame?.let {TestGlobal.shameToControl.remove(it)}
 
-            shit.errorStickerID?.let {debugPanes.remove(it)}
+            shit.errorStickerID?.let {old_debugPanes.remove(it)}
             shit.errorStickerTether?.destroy()
         }
     ))
@@ -501,7 +498,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
         val errorStickerID = puid()
         shit.errorStickerID = errorStickerID
 
-        debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
+        old_debugPanes.put(errorStickerID, oldShitAsToReactElementable(React.createElement("div", json(
             "id" to errorStickerID,
             "style" to json(
                 "width" to 10,
@@ -564,7 +561,7 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
     }
 
     if (implementTestClick) {
-        me.testClick = {_arg: dynamic -> "__async"
+        me.testClick = {_arg: dynamic -> async<Unit> {
             val arg: dynamic = if (_arg) _arg else json()
             val testActionHandOpts = arg.testActionHandOpts
 
@@ -572,21 +569,19 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
 
             if (art.testSpeed == "slow") {
                 val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
-                __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
+                await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
-                val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
-                shit?.let {__await(it(stubEvent))}
-//                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
+                val shit: ((Any?) -> Promisoid<Any?>)? = implementTestClick.onClick
+                shit?.let {await(it(stubEvent))}
             } else {
-                val shit: ((Any?) -> Promise<Any?>)? = implementTestClick.onClick
-                shit?.let {__await(it(stubEvent))}
-//                __await<dynamic>(jshit.utils.fova(implementTestClick.onClick, stubEvent))
+                val shit: ((Any?) -> Promisoid<Any?>)? = implementTestClick.onClick
+                shit?.let {await(it(stubEvent))}
             }
-        }
+        }}
     }
 
     if (implementTestKeyDown) {
-        me.testKeyDown = {_arg: dynamic -> "__async"
+        me.testKeyDown = {_arg: dynamic -> async<Unit> {
             val arg: dynamic = if (_arg) _arg else json()
             val testActionHandOpts = arg.testActionHandOpts
             val keyCode = arg.keyCode
@@ -595,17 +590,15 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
 
             if (art.testSpeed == "slow") {
                 val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(me.elementID)), testActionHandOpts))
-                __await<dynamic>(js("$")(global.DEBUG_ACTION_HAND_DELAY))
+                await<dynamic>(js("$")(global.DEBUG_ACTION_HAND_DELAY))
                 testActionHand.delete()
-                val shit: ((Any?) -> Promise<Any?>)? = implementTestKeyDown.onKeyDown
-                shit?.let {__await(it(stubEvent))}
-//                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
+                val shit: ((Any?) -> Promisoid<Any?>)? = implementTestKeyDown.onKeyDown
+                shit?.let {await(it(stubEvent))}
             } else {
-                val shit: ((Any?) -> Promise<Any?>)? = implementTestKeyDown.onKeyDown
-                shit?.let {__await(it(stubEvent))}
-//                __await<dynamic>(jshit.utils.fova(implementTestKeyDown.onKeyDown, stubEvent))
+                val shit: ((Any?) -> Promisoid<Any?>)? = implementTestKeyDown.onKeyDown
+                shit?.let {await(it(stubEvent))}
             }
-        }
+        }}
     }
 
     me.captureAction = captureAction@{_def: dynamic ->
@@ -709,23 +702,24 @@ fun implementControlShit2(me: ControlShitMe, def: dynamic, implementTestClick: d
                                     else if (insertedCodeLink) insertedCodeLink
                                     else Shitus.button(json("level" to "primary", "icon" to "pencil", "title" to "Insert Test Action Code", "style" to json(),
                                         "onClick" to {
-                                            "__async"
-                                            __await<dynamic>(callDebugRPWithProgress(json(
-                                                "msg" to json(
-                                                    "fun" to "danger_insertTestActionCode",
-                                                    "placeholderTag" to art.actionPlaceholderTag,
-                                                    "code" to codeArea.getValue()
-                                                ),
-                                                "progressPlaceholder" to progressPlaceholder,
-                                                "progressTitle" to "Inserting test action code"
-                                            )))
+                                            async {
+                                                await<dynamic>(callDebugRPWithProgress(json(
+                                                    "msg" to json(
+                                                        "fun" to "danger_insertTestActionCode",
+                                                        "placeholderTag" to art.actionPlaceholderTag,
+                                                        "code" to codeArea.getValue()
+                                                    ),
+                                                    "progressPlaceholder" to progressPlaceholder,
+                                                    "progressTitle" to "Inserting test action code"
+                                                )))
 
-                                            val m = codeArea.getValue().match(global.RegExp("\\\$tag: \"(.*?)\""))
-                                            Shitus.invariant(m && m[1], "Where the fuck is tag in generated code?")
-                                            insertedCodeLink = Shitus.diva(json(
-                                                "style" to json("marginLeft" to 8)),
-                                                OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
-                                            update()
+                                                val m = codeArea.getValue().match(global.RegExp("\\\$tag: \"(.*?)\""))
+                                                Shitus.invariant(m && m[1], "Where the fuck is tag in generated code?")
+                                                insertedCodeLink = Shitus.diva(json(
+                                                    "style" to json("marginLeft" to 8)),
+                                                                               OpenSourceCodeLink(json("where" to json("\$tag" to m[1]))))
+                                                update()
+                                            }
                                         }
                                     ))
                                 }

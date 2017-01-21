@@ -3,91 +3,36 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-fun send(req: RecreateTestDatabaseSchemaRequest): Promise<GenericResponse> =
-    callDangerousMatumba(req)
+fun send(req: RecreateTestDatabaseSchemaRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
+fun send(req: ResetTestDatabaseRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
+fun send(req: ImposeNextRequestErrorRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
+fun send(token: String, req: LoadUAOrderRequest): Promisoid<ZimbabweResponse<LoadUAOrderRequest.Response>> = callZimbabwe(req, token)
+fun sendCustomerGetUAOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): Promisoid<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = callZimbabwe("customerGetUAOrderFiles", req, token)
+fun send(token: String?, req: SignUpRequest): Promisoid<FormResponse2<SignUpRequest.Response>> = _send(token, req)
+fun sendSafe(token: String?, req: SignUpRequest): Promisoid<FormResponse2<GenericResponse>> = _sendSafe(token, req)
+fun send(token: String?, req: SignInWithPasswordRequest): Promisoid<FormResponse2<SignInResponse>> = _send(token, req)
+fun sendSafe(token: String?, req: SignInWithPasswordRequest): Promisoid<FormResponse2<SignInResponse>> = _sendSafe(token, req)
+fun send(token: String?, req: CustomerCreateUAOrderRequest): Promisoid<FormResponse2<CustomerCreateUAOrderRequest.Response>> = _send(token, req)
+fun send(token: String?, req: CustomerAddUAOrderFileRequest): Promisoid<FormResponse2<AddUAOrderFileRequestBase.Response>> = _send(token, req)
+fun send(token: String?, req: WriterAddUAOrderFileRequest): Promisoid<FormResponse2<AddUAOrderFileRequestBase.Response>> = _send(token, req)
+fun send(req: PingRequest): Promisoid<FormResponse2<GenericResponse>> = _send(Globus.worldMaybe?.tokenMaybe, req)
+fun send(req: DeleteRequest): Promisoid<ZimbabweResponse<DeleteRequest.Response>> = callZimbabwe(req, Globus.world.token)
+fun send(req: VisualShitCapturedRequest): Promisoid<VisualShitCapturedRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(req: SaveCapturedVisualShitRequest): Promisoid<SaveCapturedVisualShitRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(req: CapturedVisualShitExistsRequest): Promisoid<CapturedVisualShitExistsRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(req: GetCapturedVisualShitRequest): Promisoid<GetCapturedVisualShitRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(req: GetCurrentCapturedVisualShitRequest): Promisoid<GetCurrentCapturedVisualShitRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(req: DiffCapturedVisualShitWithSavedRequest): Promisoid<DiffCapturedVisualShitWithSavedRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(req: MoveMouseAwayFromPageRequest): Promisoid<MoveMouseAwayFromPageRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(req: ReturnMouseWhereItWasRequest): Promisoid<ReturnMouseWhereItWasRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(req: HardenScreenHTMLRequest): Promisoid<HardenScreenHTMLRequest.Response> = sendDangerousJSONProcedure(req)
+fun send(token: String, req: TestCopyOrderFileToAreaRequest): Promisoid<FormResponse2<TestCopyOrderFileToAreaRequest.Response>> = _send(token, req)
+fun send(req: TestTakeSnapshotRequest): Promisoid<TestTakeSnapshotRequest.Response> = callDangerousMatumba(req)
+fun send(req: TestLoadSnapshotRequest): Promisoid<TestLoadSnapshotRequest.Response> = callDangerousMatumba(req)
+fun send(req: GetSentEmailsRequest): Promisoid<GetSentEmailsRequest.Response> = callDangerousMatumba(req)
+fun send(req: ClearSentEmailsRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 
-fun send(req: ResetTestDatabaseRequest): Promise<GenericResponse> =
-    callDangerousMatumba(req)
-
-fun send(req: ImposeNextRequestErrorRequest): Promise<GenericResponse> =
-    callDangerousMatumba(req)
-
-fun send(token: String, req: LoadUAOrderRequest): Promise<ZimbabweResponse<LoadUAOrderRequest.Response>> =
-    callZimbabwe(req, token)
-
-fun sendCustomerGetUAOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): Promise<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> =
-    callZimbabwe("customerGetUAOrderFiles", req, token)
-
-fun send(token: String?, req: SignUpRequest): Promise<FormResponse2<SignUpRequest.Response>> {"__async"
-    return __asyncResult(__await(_send(token, req)))
-}
-
-fun sendSafe(token: String?, req: SignUpRequest): Promise<FormResponse2<GenericResponse>> {"__async"
-    return __asyncResult(__await(_sendSafe(token, req)))
-}
-
-fun send(token: String?, req: SignInWithPasswordRequest): Promise<FormResponse2<SignInResponse>> {"__async"
-    return __asyncResult(__await(_send(token, req)))
-}
-
-fun sendSafe(token: String?, req: SignInWithPasswordRequest): Promise<FormResponse2<SignInResponse>> {"__async"
-    return __asyncResult(__await(_sendSafe(token, req)))
-}
-
-fun send(token: String?, req: CustomerCreateUAOrderRequest): Promise<FormResponse2<CustomerCreateUAOrderRequest.Response>> =
-    _send(token, req)
-
-fun send(token: String?, req: CustomerAddUAOrderFileRequest): Promise<FormResponse2<AddUAOrderFileRequestBase.Response>> =
-    _send(token, req)
-
-fun send(token: String?, req: WriterAddUAOrderFileRequest): Promise<FormResponse2<AddUAOrderFileRequestBase.Response>> =
-    _send(token, req)
-
-fun send(req: PingRequest): Promise<FormResponse2<GenericResponse>> =
-    _send(Globus.worldMaybe?.tokenMaybe, req)
-
-fun send(req: DeleteRequest): Promise<ZimbabweResponse<DeleteRequest.Response>> =
-    callZimbabwe(req, Globus.world.token)
-
-fun send(req: VisualShitCapturedRequest): Promise<VisualShitCapturedRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(req: SaveCapturedVisualShitRequest): Promise<SaveCapturedVisualShitRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(req: CapturedVisualShitExistsRequest): Promise<CapturedVisualShitExistsRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(req: GetCapturedVisualShitRequest): Promise<GetCapturedVisualShitRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(req: GetCurrentCapturedVisualShitRequest): Promise<GetCurrentCapturedVisualShitRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(req: DiffCapturedVisualShitWithSavedRequest): Promise<DiffCapturedVisualShitWithSavedRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(req: MoveMouseAwayFromPageRequest): Promise<MoveMouseAwayFromPageRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(req: ReturnMouseWhereItWasRequest): Promise<ReturnMouseWhereItWasRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(req: HardenScreenHTMLRequest): Promise<HardenScreenHTMLRequest.Response> =
-    sendDangerousJSONProcedure(req)
-
-fun send(token: String, req: TestCopyOrderFileToAreaRequest): Promise<FormResponse2<TestCopyOrderFileToAreaRequest.Response>> =
-    _send(token, req)
-
-fun send(req: TestTakeSnapshotRequest): Promise<TestTakeSnapshotRequest.Response> =
-    callDangerousMatumba(req)
-
-fun send(req: TestLoadSnapshotRequest): Promise<TestLoadSnapshotRequest.Response> =
-    callDangerousMatumba(req)
-
-
-
-private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {
+private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->
         o.json.value = jsonize(req)
     }
@@ -95,26 +40,25 @@ private fun <T, R> sendDangerousJSONProcedure(req: T): Promise<R> = async {
     dejsonize<R>(jpres.json)
 }
 
-
-private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"
+private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req) = async<FormResponse2<Meat>> {
     Globus.lastAttemptedRPCName = ctorName(req)
-    val res: FormResponse = __await(callMatumba(req, token))
-    return __asyncResult(when (res) {
-                             is FormResponse.Shitty -> {
-                                 FormResponse2.Shitty(res.error, res.fieldErrors)
-                             }
-                             is FormResponse.Hunky<*> -> {
-                                 FormResponse2.Hunky(res.meat as Meat)
-                             }
-                         })
+    val res: FormResponse = await(callMatumba(req, token))
+    when (res) {
+        is FormResponse.Shitty -> {
+            FormResponse2.Shitty(res.error, res.fieldErrors)
+        }
+        is FormResponse.Hunky<*> -> {
+            FormResponse2.Hunky(res.meat as Meat)
+        }
+    }
 }
 
-private fun <Req: RequestMatumba, Meat> _sendSafe(token: String?, req: Req): Promise<FormResponse2<Meat>> {"__async"
-    return __asyncResult(
-        try {
-            __await(_send<Req, Meat>(token, req))
-        } catch(e: Throwable) {
-            FormResponse2.Shitty<Meat>(const.msg.serviceFuckedUp, listOf())
-        })
+private fun <Req: RequestMatumba, Meat> _sendSafe(token: String?, req: Req): Promisoid<FormResponse2<Meat>> = async {
+    try {
+        await(_send<Req, Meat>(token, req))
+    } catch(e: Throwable) {
+        FormResponse2.Shitty<Meat>(const.msg.serviceFuckedUp, listOf())
+    }
+
 }
 

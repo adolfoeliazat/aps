@@ -90,56 +90,56 @@ fun main(args: Array<String>) {
 
 // ---------- Below is taken from https://blog.jetbrains.com/kotlin/2016/12/kotlin-1-1-m04-is-here/#more-4405 ----------
 
-private suspend fun <T> await(f: CompletableFuture<T>): T =
-    suspendCoroutine<T> { c: Continuation<T> ->
-        f.whenComplete { result, exception ->
-            if (exception == null) // the future has been completed successfully
-                c.resume(result)
-            else // the future has been completed with an exception
-                c.resumeWithException(exception)
-        }
-    }
-
-private fun <T> async(block: suspend () -> T): CompletableFuture<T> {
-    val future = CompletableFuture<T>()
-    block.startCoroutine(completion = object : Continuation<T> {
-        override fun resume(value: T) {
-            future.complete(value)
-        }
-        override fun resumeWithException(exception: Throwable) {
-            future.completeExceptionally(exception)
-        }
-    })
-    return future
-}
-
-
-private enum class E1 {FOO, BAR}
-private enum class E2 {BAZ, QUX}
-
-private fun qwe_enumValuesEquality() {
-    println(Arrays.equals(E1.values(), E1.values()))
-    println("ok")
-}
-
-private fun qwe_casts_1() {
-    val xs = listOf(E1.FOO)
-    val ys = xs as List<E2>
-    val y: Any = xs.first()
-    println(y)
-    println("ok")
-}
-
-
-private fun qwe_casts_2() {
-    val x = E1.FOO
-    val y = x as E2
-}
-
-private fun shit1() {
-    val text = "foo bar baz"
-    val docs = text.split(Regex("----*"))
-}
+//private suspend fun <T> await(f: CompletableFuture<T>): T =
+//    suspendCoroutine<T> { c: Continuation<T> ->
+//        f.whenComplete { result, exception ->
+//            if (exception == null) // the future has been completed successfully
+//                c.resume(result)
+//            else // the future has been completed with an exception
+//                c.resumeWithException(exception)
+//        }
+//    }
+//
+//private fun <T> async(block: suspend () -> T): CompletableFuture<T> {
+//    val future = CompletableFuture<T>()
+//    block.startCoroutine(completion = object : Continuation<T> {
+//        override fun resume(value: T) {
+//            future.complete(value)
+//        }
+//        override fun resumeWithException(exception: Throwable) {
+//            future.completeExceptionally(exception)
+//        }
+//    })
+//    return future
+//}
+//
+//
+//private enum class E1 {FOO, BAR}
+//private enum class E2 {BAZ, QUX}
+//
+//private fun qwe_enumValuesEquality() {
+//    println(Arrays.equals(E1.values(), E1.values()))
+//    println("ok")
+//}
+//
+//private fun qwe_casts_1() {
+//    val xs = listOf(E1.FOO)
+//    val ys = xs as List<E2>
+//    val y: Any = xs.first()
+//    println(y)
+//    println("ok")
+//}
+//
+//
+//private fun qwe_casts_2() {
+//    val x = E1.FOO
+//    val y = x as E2
+//}
+//
+//private fun shit1() {
+//    val text = "foo bar baz"
+//    val docs = text.split(Regex("----*"))
+//}
 
 
 

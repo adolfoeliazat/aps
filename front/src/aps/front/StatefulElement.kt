@@ -27,7 +27,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
     open fun componentDidUpdate() {}
     open fun componentWillUnmount() {}
 
-    protected open fun onRootClick(e: ReactEvent) = UnitPromise {resolve, reject ->}
+    protected open fun onRootClick(e: ReactEvent) {}
     protected open fun contributeTestState(state: TestStateContributions) {}
 
     protected open fun getLongRevelationTitle(): String = "// TODO:vgrechka Implement getLongRevelationTitle"
@@ -39,25 +39,25 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
     val constructionStackAsError: dynamic = js("Error()")
     open val firstSignificantStackLine: Int = 2
 
-    val `$sourceLocation`: Promise<String?> by lazy {
-        Promise<String?>({resolve, reject ->
-            `$definitionStack`.then<Nothing>({jsArray ->
+    val `$sourceLocation`: Promisoid<String?> by lazy {
+        Promisoid<String?>({resolve, reject ->
+            `$definitionStack`.then({jsArray ->
                 resolve(if (jsArray[0]) jsArray[0].loc else null)
             })
         })
     }
 
-    val `$definitionStack`: Promise<dynamic> by lazy {
+    val `$definitionStack`: Promisoid<dynamic> by lazy {
         promiseDefinitionStack(constructionStackAsError, firstSignificantStackLine)
     }
 
-    val definitionStackString: Promise<String> get() {"__async"
-        val jsarray = __await(this.`$definitionStack`)
-        return __asyncResult(buildString {
+    val definitionStackString: Promisoid<String> get() = async {
+        val jsarray = await(this.`$definitionStack`)
+        buildString {
             for (item in jsArrayToListOfDynamic(jsarray)) {
                 append("${item.loc}  ")
             }
-        })
+        }
     }
 
 
@@ -133,12 +133,12 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
 
             if (tame != null) {
                 for (other in jsArrayToListOfDynamic(elementControls)) {
-                    runni {"__async"
+                    runni {async{
                         val otherDescription = if (other is StatefulElement)
-                            __await(other.definitionStackString)
+                            await(other.definitionStackString)
                         else
                             "Some legacy shit"
-                        val thisDescription = __await(this@StatefulElement.definitionStackString)
+                        val thisDescription = await(this@StatefulElement.definitionStackString)
 
                         if (other.tame) {
                             val shortMessage = "Control ${debugDisplayName} conflicts with ${other.debugDisplayName}, because both are tamed"
@@ -151,7 +151,7 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
                             console.error(longMessage)
                             Shitus.raise(shortMessage)
                         }
-                    }
+                    }}
                 }
             }
 
@@ -311,49 +311,6 @@ abstract class StatefulElement(val tame: String? = null, override val elementID:
 }
 
 
-//fun sampleUsage_diva() {
-//    val el: ReactElement =  diva {
-//        elementID = "something-explicit"
-//        tame = "something"
-//
-//        style {color = ROSYBROWN; fontWeight = "bold"}
-//
-//        onClick {e ->
-//            preventAndStop(e)
-//            println("I'm responding")
-//        }
-//
-//        onClicka {e -> "__async"
-//            fun fetchSomeAsyncShit(): Promise<String> {
-//                throw js.Error("No way")
-//            }
-//
-//            preventAndStop(e)
-//            val shit: String = __await(fetchSomeAsyncShit())
-//            println("Here... I've got some async shit for you: $shit")
-//            __asyncResult(Unit)
-//        }
-//
-//        - "Some text content"
-//        - diva {
-//            - "Some nested shit"
-//            onClick {
-//                println("Nested shit reacts too")
-//            }
-//        }
-//        - "More text"
-//    }.toReactElement()
-//}
-
-//fun makeBasicHTMLControlCtor(tag: String): ((BasicHTMLControlBuilder.() -> Unit) -> Control) {
-//    return {build ->
-//        val builder = BasicHTMLControlBuilder(tag)
-//        builder.build()
-//        Control(builder)
-//    }
-//}
-
-val noopAsyncReactEventHandler = {e: ReactEvent -> "__async"; __asyncResult(Unit)}
 
 fun or(vararg xs: String): String {
     return xs.find { it != "" } ?: ""

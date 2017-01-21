@@ -4,47 +4,47 @@ import aps.*
 
 object fuckingRemoteCall {
 
-    fun loadTestShit(id: String): Promise<String?> = sendShit(json(
+    fun loadTestShit(id: String): Promisoid<String?> = sendShit(json(
         "proc" to "loadTestShit",
         "id" to id
     ))
 
-    fun updateTestShit(id: String, newValue: String): Promise<Unit> = sendShit(json(
+    fun updateTestShit(id: String, newValue: String): Promisoid<Unit> = sendShit(json(
         "proc" to "updateTestShit",
         "id" to id,
         "newValue" to newValue
     ))
 
-    fun robotClickOnChrome(): Promise<Unit> = sendShit(json(
+    fun robotClickOnChrome(): Promisoid<Unit> = sendShit(json(
         "proc" to "robotClickOnChrome"
     ))
 
-    fun robotTypeTextCRIntoWindowTitledOpen(text: String): Promise<Unit> = sendShit(json(
+    fun robotTypeTextCRIntoWindowTitledOpen(text: String): Promisoid<Unit> = sendShit(json(
         "proc" to "robotTypeTextCRIntoWindowTitledOpen",
         "text" to text
     ))
 
-    fun resetLastDownloadedFile(): Promise<Unit> = sendShit(json(
+    fun resetLastDownloadedFile(): Promisoid<Unit> = sendShit(json(
         "proc" to "resetLastDownloadedFile"
     ))
 
-    fun getLastDownloadedPieceOfShit(): Promise<PieceOfShitDownload?> = sendShit(json(
+    fun getLastDownloadedPieceOfShit(): Promisoid<PieceOfShitDownload?> = sendShit(json(
         "proc" to "getLastDownloadedPieceOfShit"
     ))
 
-    fun executeSQL(descr: String, sql: String): Promise<Unit> = sendShit(json(
+    fun executeSQL(descr: String, sql: String): Promisoid<Unit> = sendShit(json(
         "proc" to "executeSQL",
         "descr" to descr,
         "sql" to sql
     ))
 
-    fun luceneParseRussian(text: String): Promise<List<LuceneParseToken>> = sendShit(json(
+    fun luceneParseRussian(text: String): Promisoid<List<LuceneParseToken>> = sendShit(json(
         "proc" to "luceneParseRussian",
         "text" to text
     ))
 
 
-    private fun <T> sendShit(request: Json): Promise<T> = async {
+    private fun <T> sendShit(request: Json): Promisoid<T> = async {
         val res = await(send(FuckingRemoteProcedureRequest()-{o->
             o.json.value = JSON.stringify(request)
         }))

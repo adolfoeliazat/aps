@@ -6,10 +6,10 @@ abstract class WriterBootTestScenario : BootTestScenario() {
     override val clientKind = ClientKind.UA_WRITER
     lateinit var fuckerToken: String
 
-    fun prepareFucker(fieldsReq: TestSetUserFieldsRequest): Promise<Unit> {"__async"
-        __await(ImposeNextGeneratedPasswordRequest.send("fucker-secret"))
+    fun prepareFucker(fieldsReq: TestSetUserFieldsRequest) = async<Unit> {
+        await(ImposeNextGeneratedPasswordRequest.send("fucker-secret"))
 
-        __await(send(null, SignUpRequest()-{o->
+        await(send(null, SignUpRequest()-{o->
             o.agreeTerms.value = true
             o.immutableSignUpFields-{o->
                 o.email.value = "fucker@test.shit.ua"
@@ -20,15 +20,13 @@ abstract class WriterBootTestScenario : BootTestScenario() {
             }
         })).orDie()
 
-        fuckerToken = __await(sendSafe(null, SignInWithPasswordRequest()-{o->
+        fuckerToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
             o.email.value = "fucker@test.shit.ua"
             o.password.value = "fucker-secret"
         })).orDie().token
 
         fieldsReq.email.value = "fucker@test.shit.ua"
-        __await(send(fieldsReq))
-
-        return __asyncResult(Unit)
+        await(send(fieldsReq))
     }
 
     fun assert_staticHomePage_rightNavbarGaylord() {

@@ -37,6 +37,12 @@ object fconst {
         }
     }
 
+    object url {
+        object test {
+            val writerLocalBase = "http://aps-ua-writer.local:3022"
+        }
+    }
+
     object test {
         object default {
             val animationHalfwaySignalTimeout = 1000

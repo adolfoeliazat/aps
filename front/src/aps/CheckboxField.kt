@@ -39,10 +39,10 @@ import into.kommon.*
     override fun focus() = dwarn("Need focus() for CheckboxField?")
 
     fun popupTerms() {
-        global.alert("No fucking terms. You can go crazy with this shit...")
+        aps.global.alert("No fucking terms. You can go crazy with this shit...")
     }
 
-    override fun populateRemote(json: Json): Promise<Unit> = async {
+    override fun populateRemote(json: Json): Promisoid<Unit> = async {
         json[name] = value
     }
 }

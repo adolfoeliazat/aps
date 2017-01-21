@@ -43,7 +43,7 @@ fun jsFacing_link(def: Json): ReactElement {
         "onRootClick" to {e: MouseEvent -> async<Unit> {
             e.preventDefault()
             e.stopPropagation()
-            val shit: (() -> Promise<Unit>)? = onClick
+            val shit: (() -> Promisoid<Unit>)? = onClick
             shit?.let {await(it())}
         }}
     )
@@ -67,25 +67,27 @@ fun jsFacing_urlLink(ui: World, def: dynamic): dynamic {
         "controlTypeName" to "urlLink",
         "style" to style,
         "id" to id,
-        "onClick" to {"__async"
-            effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
-            if (name != null) {
-                Shitus.byid(id).css("text-decoration", "none")
+        "onClick" to {
+            async {
+                effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
+                if (name != null) {
+                    Shitus.byid(id).css("text-decoration", "none")
 //                TestGlobal["link_" + name + "_blinks"] = true
-            }
+                }
 
-            if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
-                __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
-            }
+                if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
+                    await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
+                }
 
-            __await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {"__async"
-                __await<dynamic>(ui.pushNavigate(url))
-            })))
+                await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {async{
+                    await<dynamic>(ui.pushNavigate(url))
+                }})))
 
-            effects.blinkOff()
-            if (name) {
-                Shitus.byid(id).css("text-decoration", "")
+                effects.blinkOff()
+                if (name) {
+                    Shitus.byid(id).css("text-decoration", "")
 //                TestGlobal["link_" + name + "_blinks"] = false
+                }
             }
     })
 
@@ -109,7 +111,7 @@ fun urlLink(
     val ui = hrss.browserOld.ui
     val id = puid()
 
-    fun doClick(): Promise<Unit> = async {
+    fun doClick(): Promisoid<Unit> = async {
         effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
         await(TestGlobal.linkTickingLock.sutPause())
         Shitus.byid(id).css("text-decoration", "none")
@@ -132,7 +134,7 @@ fun urlLink(
         attrs.copy(
             controlTypeName = attrs.controlTypeName ?: "urlLink",
             id = id,
-            onClicka = fun(_): Promise<Unit> = doClick()
+            onClicka = fun(_): Promisoid<Unit> = doClick()
         ),
         style,
         key = key,
@@ -151,7 +153,7 @@ class Link(
     attrs: Attrs = Attrs(),
     val style: Style = Style(),
     val key: String? = null,
-    val doClick: (() -> Promise<Unit>)? = null
+    val doClick: (() -> Promisoid<Unit>)? = null
 ) : Control2(attrs) {
     init {
         check(params.content != null || params.title != null) {"Either content or title"}
@@ -193,14 +195,14 @@ class Link(
                  "className" to attrs.className,
                  "style" to style.toReactStyle(),
                  "href" to "#",
-                 "onMouseEnter" to {e: MouseEvent -> "__async"
+                 "onMouseEnter" to {e: MouseEvent -> async {
                      attrs.onMouseEnter?.let {it(e)}
-                     attrs.onMouseEntera?.let {__await(it(e))}
-                 },
-                 "onMouseLeave" to {e: MouseEvent -> "__async"
+                     attrs.onMouseEntera?.let {await(it(e))}
+                 }},
+                 "onMouseLeave" to {e: MouseEvent -> async {
                      attrs.onMouseLeave?.let {it(e)}
-                     attrs.onMouseLeava?.let {__await(it(e))}
-                 }),
+                     attrs.onMouseLeava?.let {await(it(e))}
+                 }}),
             content.toReactElement()
         ))
     }
@@ -212,7 +214,7 @@ fun link(
     @Mix attrs: Attrs = Attrs(),
     @Mix style: Style = Style(),
     key: String? = null,
-    doClick: (() -> Promise<Unit>)? = null
+    doClick: (() -> Promisoid<Unit>)? = null
 ): ToReactElementable {
     return Link(params, attrs, style, key = key, doClick = doClick)
 }

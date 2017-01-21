@@ -206,7 +206,7 @@ object Shitus {
     val elementIDToControls: dynamic = json()
 
     val hideStackRevelation: dynamic = {
-        debugPanes.remove("revealStack")
+        old_debugPanes.remove("revealStack")
         revealStackCalledTimes = 0
     }
 
@@ -262,14 +262,14 @@ object Shitus {
         trainStack = jsArrayOf(rootTrain)
     }
 
-    fun entraina(def: dynamic): Promise<Unit> {"__async"
+    fun entraina(def: dynamic): Promisoid<Unit> = async {
         val name: dynamic = def.name
         val act: dynamic = def.act
         val `$sourceLocation`: dynamic = def.`$sourceLocation`
         val `$definitionStack`: dynamic = def.`$definitionStack`
 
         beginTrain(json("name" to name, "\$sourceLocation" to `$sourceLocation`, "\$definitionStack" to `$definitionStack`)); try {
-            return __await(act())
+            return@async await<dynamic>(act())
         } finally { endTrain() }
     }
 
@@ -297,17 +297,18 @@ fun jsDeleteKey(obj: Any, key: String) {
 }
 
 fun jsFacing_delay(ms: dynamic): dynamic {
-    return newNativePromise({resolve: dynamic ->
-        global.setTimeout(resolve, ms)
-    })
+    die("@killme jsFacing_delay")
+//    return newNativePromise({resolve: dynamic ->
+//        global.setTimeout(resolve, ms)
+//    })
 }
 
 fun jsFacing_run(f: dynamic): dynamic {
     return f()
 }
 
-fun jsFacing_runa(f: dynamic): Promise<dynamic> {"__async"
-    return __asyncResult(__await(f()))
+fun jsFacing_runa(f: dynamic): Promisoid<dynamic> = async {
+    await<dynamic>(f())
 }
 
 fun jsFacing_repeat(s: String, count: Int): String {
@@ -328,10 +329,10 @@ fun shittyFov(x: dynamic, y: dynamic): dynamic {
     return if (jsTypeOf(x) == "function") x(y) else x
 }
 
-fun jsFacing_fova(): Promise<dynamic> {"__async"
+fun jsFacing_fova(): Promisoid<dynamic> = async {
     val all = js("Array.prototype.slice.call(arguments)")
     val x = all[0]
-    return if (jsTypeOf(x) == "function") __await<dynamic>(x.apply(null, x.slice(1))) else x
+    if (jsTypeOf(x) == "function") await<dynamic>(x.apply(null, x.slice(1))) else x
 }
 
 fun jsFacing_tokens(s: dynamic): dynamic {
@@ -395,154 +396,6 @@ fun jsFacing_sortKeys(o: dynamic) {
     }
 }
 
-//fun jsFacing_errorToMappedClientStackString(shit: dynamic, _opts: dynamic = null): Promise<dynamic> {"__async"
-//    val opts = if (_opts != null) _opts else json("skipReactShit" to true, "skipMessage" to false)
-//    val skipReactShit  = opts.skipReactShit
-//    val skipMessage = opts.skipMessage
-//
-//    val stack = if (jsTypeOf(shit) == "string") shit else shit.stack
-//    if (stack == null) return __asyncResult(null)
-//    var lines = stack.split("\n")
-//    lines = __await(jsFacing_linesToMappedUsefulLines(lines))
-//
-//    if (skipReactShit) {
-//        var reactShitMarkerSet: dynamic = null
-//        lines.forEach({s: dynamic, i: dynamic ->
-//            if (s.includes("React")) {
-//                if (!reactShitMarkerSet) {
-//                    lines[i] = "----- React shit is skipped -----"
-//                    reactShitMarkerSet = true
-//                } else {
-//                    lines[i] = undefined
-//                }
-//            }
-//        })
-//        lines = global.lodash.compact(lines)
-//    }
-//
-//    return __asyncResult((if (skipMessage || jsTypeOf(shit) == "string") "" else shit.message + "\n") + lines.join("\n"))
-//}
-
-//fun jsFacing_linesToMappedUsefulLines(lines: dynamic): Promise<dynamic> {"__async"
-//    val clientStackSourceMapConsumer = __await<dynamic>(jsFacing_getClientStackSourceMapConsumer())
-//    val kotlinStackSourceMapConsumer = __await<dynamic>(jsFacing_getKotlinStackSourceMapConsumer())
-////    const scalaStackSourceMapConsumer = await getScalaStackSourceMapConsumer()
-//
-//    val usefulLines = jsArrayOf()
-//    lines.forEach({_lineText: dynamic, i: dynamic ->
-//        var lineText = _lineText
-//        // println("Mapping stack trace line " + lineText)
-//        var smapConsumer: dynamic = null
-//        var sliceLineFrom: dynamic = null
-//
-//        val koti = lineText.indexOf("front-enhanced.js:")
-//        if (koti != -1) {
-//            // dlog("koti line: [" + lineText + "]")
-//            smapConsumer = kotlinStackSourceMapConsumer
-//            sliceLineFrom = koti + "front-enhanced.js:".length
-//        }
-//
-//        val bjsi = lineText.indexOf("bundle.js:")
-//        if (bjsi != -1) {
-//            // dlog("bjsi line: [" + lineText + "]")
-//            smapConsumer = clientStackSourceMapConsumer
-//            sliceLineFrom = bjsi + "bundle.js:".length
-//        }
-//
-//        if (!smapConsumer) {
-//            // console.warn("No smapConsumer for line: " + lineText)
-//            return@forEach Unit
-//        }
-//
-//        val someShit = lineText.slice(sliceLineFrom, lineText.length - 1).split(":")
-//        val line = someShit[0]
-//        val column = someShit[1]
-////        const [line, column] = lineText.slice(sliceLineFrom, lineText.length - 1).split(":")
-//        val pos = smapConsumer.originalPositionFor(json("line" to parseInt(line), "column" to parseInt(column)))
-//
-//        // Members of returned thing can be null
-//        // https://github.com/mozilla/source-map/blob/182f4459415de309667845af2b05716fcf9c59ad/lib/source-map-consumer.js#L637
-//        if (pos.source != null) {
-//            var lineTextWithoutPos: dynamic = null
-//            if (lineText.startsWith("    at http://") || lineText.startsWith("    at https://")) {
-//                lineTextWithoutPos = "    at god knows where"
-//            } else {
-//                lineTextWithoutPos = lineText.slice(0, lineText.indexOf(" ("/*)*/))
-//            }
-//
-//            lineText = lineTextWithoutPos + " (${pos.source}:${pos.line}:${pos.column})"
-//            lineText = lineText.replace("file://E:/work/aps", "APS")
-//        } else {
-//            console.warn("Original source location is not found:", "line", line, "column", column, "pos", pos)
-//        }
-//
-//        usefulLines.push(lineText)
-//    })
-//
-//    return __asyncResult(usefulLines)
-//}
-
-//var clientStackSourceMapConsumerPromise: dynamic = null
-//
-//fun jsFacing_getClientStackSourceMapConsumer(): Promise<Any> {"__async"
-//    if (clientStackSourceMapConsumerPromise == null) {
-//        clientStackSourceMapConsumerPromise = jsFacing_createClientStackSourceMapConsumer()
-//    }
-//    val clientStackSourceMapConsumer = __await<dynamic>(clientStackSourceMapConsumerPromise)
-//    if (!clientStackSourceMapConsumer) throw JSException("We are fucked, man. No clientStackSourceMapConsumer")
-//
-//    return __asyncResult(clientStackSourceMapConsumer)
-//}
-//
-//fun jsFacing_createClientStackSourceMapConsumer(): Promise<Any> {"__async"
-//    val logTime = jsFacing_beginLogTime("createClientStackSourceMapConsumer")
-//    try {
-//        try {
-//            val response = __await<dynamic>(global.superagent.get("bundle.js"))
-//            val text = response.text
-//            val smcIndex = text.lastIndexOf("//# sourceMappingURL=data:application/json;")
-//            if (smcIndex != -1) {
-//                val arg = global.convertSourceMap.fromComment(text.slice(smcIndex)).toJSON()
-//                return js("new global.sourceMap.SourceMapConsumer(arg)")
-//            } else {
-//                return dlog("No inline source map found in bundle.js")
-//            }
-//        } catch (e: Throwable) {
-//            return dlog("Failed to make bundle source map consumer: ${e}")
-//        }
-//    } finally {
-//        logTime.end()
-//    }
-//}
-//
-//
-//var kotlinStackSourceMapConsumerPromise: dynamic = null
-//
-//fun jsFacing_getKotlinStackSourceMapConsumer(): Promise<Any> {"__async"
-//    if (!kotlinStackSourceMapConsumerPromise) {
-//        kotlinStackSourceMapConsumerPromise = jsFacing_createKotlinStackSourceMapConsumer()
-//    }
-//    val kotlinStackSourceMapConsumer = __await<dynamic>(kotlinStackSourceMapConsumerPromise)
-//    if (!kotlinStackSourceMapConsumer) throw JSException("We are fucked, man. No kotlinStackSourceMapConsumer")
-//
-//    return kotlinStackSourceMapConsumer
-//}
-//
-//fun jsFacing_createKotlinStackSourceMapConsumer(): Promise<Any> {"__async"
-//    val logTime = jsFacing_beginLogTime("createKotlinStackSourceMapConsumer")
-//    try {
-//        try {
-//            val response = __await<dynamic>(global.superagent.get("front.js.map"))
-//            val text = response.text
-//            val arg = global.JSON.parse(text)
-//            return js("new sourceMap.SourceMapConsumer(arg)")
-//        } catch (e: Throwable) {
-//            return dlog("Failed to make Kotlin source map consumer: ${e}")
-//        }
-//    } finally {
-//        logTime.end()
-//    }
-//}
 
 fun jsFacing_beginLogTime(what: dynamic): dynamic {
     val t0 = global.Date.now()

@@ -12,10 +12,10 @@ import aps.*
 import into.kommon.*
 import kotlin.browser.window
 
-fun fetchURL(url: String, method: String, data: String?): Promise<String> {"__async"
+fun fetchURL(url: String, method: String, data: String?): Promisoid<String> {
     val stackBeforeXHR: String = CaptureStackException().stack
 
-    return Promise {resolve, reject ->
+    return Promisoid {resolve, reject ->
         val xhr = js("new XMLHttpRequest()")
         xhr.open(method, url)
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
@@ -37,7 +37,7 @@ fun fetchURL(url: String, method: String, data: String?): Promise<String> {"__as
 
 val backendURL = "http://127.0.0.1:8080"
 
-fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<dynamic> = async {
+fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promisoid<dynamic> = async {
     val obj = await(fetchFromURL("POST", "$backendURL/$path", global.JSON.stringify(requestJSONObject)) {
         global.JSON.parse(it)
     })
@@ -51,10 +51,10 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promise<d
     obj
 }
 
-fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String) -> T): Promise<T> {
+fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String) -> T): Promisoid<T> {
     val stackBeforeXHR: String = CaptureStackException().stack
 
-    return Promise {resolve, reject ->
+    return Promisoid {resolve, reject ->
         val xhr = js("new XMLHttpRequest()")
         xhr.open(method, url)
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
@@ -187,16 +187,16 @@ fun jsonizeToObject(shit: Any?): Any? {
     }
 }
 
-fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields): Promise<Res> {"__async"
-//    __dlog.requestJSONObject(procedureName, requestJSONObject)
+fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields, wideClientKind: WideClientKind): Promisoid<Res> = async {
     requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
     requestJSONObject.databaseID = ExternalGlobus.DB
-    requestJSONObject.clientURL = windowLocationHrefToClientURL(Globus.location.href)
+    if (wideClientKind is WideClientKind.User) {
+        requestJSONObject.clientURL = windowLocationHrefToClientURL(Globus.location.href)
+    }
     requestJSONObject.fakeEmail = Globus.isTest
-    val responseJSONObject = __await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
-//    __dlog.responseJSONObject(procedureName, global.JSON.stringify(responseJSONObject, null, 2))
+    val responseJSONObject = await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
 
-    return __asyncResult(dejsonizeValue<Res>(responseJSONObject)!!)
+    dejsonizeValue<Res>(responseJSONObject)!!
 }
 
 fun windowLocationHrefToClientURL(href: String): String {
@@ -217,26 +217,27 @@ fun windowLocationHrefToClientURL(href: String): String {
 }
 
 @Deprecated("Old RPC")
-fun <Res> callRemoteProcedure(procedureName: String, req: Request): Promise<Res> {"__async"
-    val requestJSONObject = js("({})")
-    val dynamicReq: dynamic = req
-    for (k in jsArrayToListOfDynamic(global.Object.keys(req))) {
-        val dynamicValue = dynamicReq[k]
-        requestJSONObject[k] = when {
-            dynamicValue == null -> null
-
-            // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    94315462-a862-4148-95a0-e45a0f73212d
-            dynamicValue.`name$` != null -> dynamicValue.`name$` // Kinda enum
-
-//            global.Array.isArray(dynamicValue.array) -> {
-//                jsArrayToList(dynamicValue.array)
-//            }
-
-            else -> dynamicValue
-        }
-    }
-
-    return __await(callRemoteProcedurePassingJSONObject(procedureName, requestJSONObject))
+fun <Res> callRemoteProcedure(procedureName: String, req: Request): Promisoid<Res> = async {
+    die("kill me: callRemoteProcedure")
+//    val requestJSONObject = js("({})")
+//    val dynamicReq: dynamic = req
+//    for (k in jsArrayToListOfDynamic(global.Object.keys(req))) {
+//        val dynamicValue = dynamicReq[k]
+//        requestJSONObject[k] = when {
+//            dynamicValue == null -> null
+//
+//            // TODO:vgrechka Reimplement once Kotlin-JS gets reflection    94315462-a862-4148-95a0-e45a0f73212d
+//            dynamicValue.`name$` != null -> dynamicValue.`name$` // Kinda enum
+//
+////            global.Array.isArray(dynamicValue.array) -> {
+////                jsArrayToList(dynamicValue.array)
+////            }
+//
+//            else -> dynamicValue
+//        }
+//    }
+//
+//    return __await(callRemoteProcedurePassingJSONObject(procedureName, requestJSONObject))
 }
 
 

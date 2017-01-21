@@ -23,7 +23,7 @@ open class Button(
     val separateDropDownMenuButton: Boolean = false,
     val dropDownMenuDirection: MenuDirection = Button.MenuDirection.DOWN,
     val narrowCaret: Boolean = false,
-    var onClicka: () -> Promise<Unit> = {async{}},
+    var onClicka: () -> Promisoid<Unit> = {async{}},
     val onClick: () -> Unit = {}
 ) : Control2(Attrs(id = id)) {
 
@@ -45,7 +45,7 @@ open class Button(
         override fun toString() = string
     }
 
-    open fun click(): Promise<Unit> = async {
+    open fun click(): Promisoid<Unit> = async {
         onClick()
         await(onClicka())
     }
@@ -160,7 +160,7 @@ fun TestScenarioBuilder.buttonClick(key: String, handOpts: HandOpts = HandOpts()
 
 fun TestScenarioBuilder.buttonUserInitiatedClick(key: String) {
     acta("Clicking button `$key`") {async{
-        val successOrTimeout = Promise<Unit> {resolve, reject ->
+        val successOrTimeout = Promisoid<Unit> {resolve, reject ->
             timeoutSet(1000) {reject(Exception("Timed out waiting for a fucking robot click"))}
             window.onclick = {
                 window.onclick = null

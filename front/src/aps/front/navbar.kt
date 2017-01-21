@@ -155,7 +155,8 @@ class TopNavItem(
     val linkStyle: Style,
     val active: Boolean
 ) : Control2() {
-    private val href = if (pageName == "home") "/" else "/$pageName.html"
+//    private val href = if (pageName == "home") "/" else "/$pageName.html"
+    private val href = if (pageName == "home") "/" else "$pageName.html"
     private val aid = puid()
 
     companion object {
@@ -193,7 +194,7 @@ class TopNavItem(
         ).toToReactElementable()
     }
 
-    fun click(): Promise<Unit> = async {
+    fun click(): Promisoid<Unit> = async {
         var dleft = 0
         var dwidth = 0
         if (pageName == "home") { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
@@ -226,6 +227,7 @@ fun TestScenarioBuilder.topNavItemClick(key: String, handOpts: HandOpts = HandOp
         val target = TopNavItem.instance(key)
         await(TestUserActionAnimation.hand(target, handOpts))
         target.click() // Not await
+        Unit
     }}
 }
 
@@ -273,9 +275,9 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
 
             var me: dynamic = undefined; var testActionHand: dynamic = undefined
 
-            fun onClick(e: dynamic): Promise<Unit> {"__async"
+            fun onClick(e: dynamic): Promisoid<Unit> = async {
                 if (e) { // Not simulated in test
-                    if (e.ctrlKey && !e.shiftKey) return __asyncResult(Unit) // Allow debug revelations
+                    if (e.ctrlKey && !e.shiftKey) return@async Unit // Allow debug revelations
                     e.preventDefault()
                     e.stopPropagation()
                 }
@@ -298,9 +300,9 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
 //                    TestGlobal["topNavbarLink_" + name + "_blinks"] = true
 
                 if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(isInTestScenario() && art.testSpeed == "fast")) {
-                    __await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
+                    await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
                 }
-                __await<dynamic>(ui!!.pushNavigate(href))
+                await<dynamic>(ui!!.pushNavigate(href))
 
                 global.setTimeout({
                                       effects.blinkOff()
@@ -308,20 +310,20 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
                                       global.bsClearMenus()
                                   }, 250)
 
-                return __asyncResult(Unit)
+                return@async Unit
             }
 
             me = {
-                "click" to {"__async"
+                "click" to {async{
                     if (art.testSpeed == "slow") {
                         me.showHand()
-                        __await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
+                        await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
                         me.hideHand()
-                        __await<dynamic>(onClick(js("undefined")))
+                        await<dynamic>(onClick(js("undefined")))
                     } else {
-                        __await<dynamic>(onClick(js("undefined")))
+                        await<dynamic>(onClick(js("undefined")))
                     }
-                }
+                }}
             }
             TestGlobal.topNavbarLinks[name] = me
 

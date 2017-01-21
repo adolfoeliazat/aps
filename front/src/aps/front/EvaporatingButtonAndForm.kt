@@ -24,7 +24,7 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
     val level: Button.Level,
     val icon: IconClass,
     val formSpec: FormSpec<Req, Res>,
-    val onSuccessa: (Res) -> Promise<Unit>
+    val onSuccessa: (Res) -> Promisoid<Unit>
 ) : IButtonAndForm {
     private var form: FormMatumba<*, *>? = null
     private var formClass = ""

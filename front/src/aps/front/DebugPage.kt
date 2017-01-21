@@ -10,7 +10,7 @@ class DebugPage(val world: World) {
         var page: String? = null
     }
 
-    fun load(): Promise<Unit> = async {
+    fun load(): Promisoid<Unit> = async {
         val urlQuery = typeSafeURLQuery(world){URLQuery()}
         when (urlQuery.page) {
             "log" -> await(DebugLogPage(world).load())

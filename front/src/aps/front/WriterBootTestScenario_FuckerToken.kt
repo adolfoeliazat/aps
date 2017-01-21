@@ -5,10 +5,10 @@ import aps.*
 abstract class WriterBootTestScenario_FuckerToken : WriterBootTestScenario() {
     protected abstract fun setFuckerFields(o: TestSetUserFieldsRequest)
 
-    override fun prepareShit(): Promise<Unit> {"__async"
+    override fun prepareShit(): Promisoid<Unit> = async {
         val req = TestSetUserFieldsRequest()
         setFuckerFields(req)
-        return __reawait(prepareFucker(req))
+        await(prepareFucker(req))
     }
 
     override fun fillStorageLocal(tsl: TypedStorageLocal) {

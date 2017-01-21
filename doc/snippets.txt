@@ -66,6 +66,8 @@ Misc
 Links
 =====
 
+http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_1&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=true&handPauses=true
+
 http://aps-ua-writer.local:3022/debug.html?page=log&cut=last_boot
 http://aps-ua-writer.local:3022/debug.html?page=log&cut=last_boot&skipCrap=true
 
@@ -95,9 +97,11 @@ Kotlin Version Upgrade Procedure
 * Allow IDEA to update runtimes
 * Ensure that into-kommon/lib/kotlin/<prev-version>/**/*.jar files were replaced with new versions by looking into jar's META-INF/build.txt
 * Copy into-kommon/lib/kotlin/<prev-version> to into-kommon/lib/kotlin/<new-version>
-* File -> Project Structure -> Libraries, change <prev-version> to <new-version> in paths of KotlinJavaRuntime and KotlinJavaScript
+// * File -> Project Structure -> Libraries, change <prev-version> to <new-version> in paths of KotlinJavaRuntime and KotlinJavaScript
+* In KotlinJavaRuntime.xml and KotlinJavaScript.xml (E:\work\aps\.idea\libraries) change <prev-version> to <new-version>
+* File -> Invalidate Caches / Restart
 * Remove into-kommon/lib/kotlin/<prev-version>
-* In build-into-kommon-inc.xml change `kotlin.version`
+* In build-into-kommon-inc.xml change `kotlin.version` to <new-version>
 * File -> Synchronize
 * Build -> Rebuild Project
 * Fix shit

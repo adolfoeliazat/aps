@@ -10,7 +10,7 @@ import kotlin.properties.Delegates.notNull
 import kotlin.reflect.KProperty
 
 //val storageLocal: StorageLocal get() = Globus.browser.storageLocal
-val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLocal
+//val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLocal
 
 @native interface IExternalGlobus {
     var storageLocalForStaticContent: IStorage
@@ -33,7 +33,10 @@ object Globus {
     val mode by lazy {Mode.valueOf(ExternalGlobus.MODE)}
     var worldMaybe: World? = null
     val realLocation = RealLocationProxy()
-    var location: LocationProxy = realLocation
+//    var location: LocationProxy = realLocation
+    var effectsPane: String? = null
+
+    val location: LocationProxy get() = Browseroid.current.location
 
     val clientKind: ClientKind get() {
         if (isTest()) {
@@ -59,8 +62,9 @@ object Globus {
         override fun removeItem(key: String) = localStorage.removeItem(key)
     }
     val realTypedStorageLocal = TypedStorageLocal(realStorageLocal)
-    var browser = Browser(typedStorageLocal = realTypedStorageLocal)
+    var browser_killme = Browser(typedStorageLocal = realTypedStorageLocal)
     var isTest = false
+    val topNavbarContainer get() = byid0("topNavbarContainer")
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)
@@ -130,9 +134,9 @@ class BrowserOld(val name: String) {
 //    val typedStorageLocal = TypedStorageLocal(_storageLocal)
 
     val storageLocal = object : StorageLocal {
-        override val length get() = JSObject.keys(storageLocalItems).size
+        override val length get() = aps.JSObject.keys(storageLocalItems).size
 
-        override fun key(index: Int) = JSObject.keys(storageLocalItems)[index]
+        override fun key(index: Int) = aps.JSObject.keys(storageLocalItems)[index]
 
         override fun removeItem(key: String) {
             throw UnsupportedOperationException("Implement me, please, fuck you")
@@ -148,7 +152,7 @@ class BrowserOld(val name: String) {
 
         override fun setItem(key: dynamic, value: dynamic) {
             storageLocalItems[key] = value
-            global.localStorage.setItem(key, value) // TODO:vgrechka @kill
+            aps.global.localStorage.setItem(key, value) // TODO:vgrechka @kill
         }
     }
 }

@@ -25,11 +25,11 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val dontShameButtons: Boolean = false,
 
     val onCancel: FormMatumba<Req, Res>.() -> Unit = {},
-    val onCancela: FormMatumba<Req, Res>.() -> Promise<Unit> = {"__async"; __asyncResult(Unit)},
+    val onCancela: FormMatumba<Req, Res>.() -> Promisoid<Unit> = {async{}},
     val onError: FormMatumba<Req, Res>.(res: FormResponse.Shitty) -> Unit = {},
-    val onErrora: FormMatumba<Req, Res>.(res: FormResponse.Shitty) -> Promise<Unit> = {"__async"; __asyncResult(Unit)},
+    val onErrora: FormMatumba<Req, Res>.(res: FormResponse.Shitty) -> Promisoid<Unit> = {async{}},
     val onSuccess: FormMatumba<Req, Res>.(res: Res) -> Unit = {},
-    val onSuccessa: FormMatumba<Req, Res>.(res: Res) -> Promise<Unit> = {"__async"; __asyncResult(Unit)},
+    val onSuccessa: FormMatumba<Req, Res>.(res: Res) -> Promisoid<Unit> = {async{}},
 //    val onDeleta: FormMatumba<Req, Res>.() -> Promise<Unit> = {async{}},
     val getInvisibleFieldNames: FormMatumba<Req, Res>.() -> Iterable<String> = {listOf()}
 )
@@ -52,7 +52,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         override fun defaultControlTypeName() = "FormMatumba"
 
         override fun render(): ReactElement {
-            gloshit.updateForm = {update()}
+            aps.gloshit.updateForm = {update()}
             figureOutActualVisibleFieldNames()
 
             return kdiv(attrs = Attrs(className = spec.containerClassName, id = elementID), style = spec.containerStyle){o->
@@ -242,11 +242,14 @@ fun TestScenarioBuilder.submitForm(
     descr: String,
     buildAction: (() -> Unit)? = null,
     aid: String,
-    buttonKey: String? = null
+    buttonKey: String? = null,
+    imposeTimestamp: Boolean = true
 ) {
     sequence(
         buildAction = {
-            acta {shit.imposeNextRequestTimestamp()}
+            if (imposeTimestamp) {
+                acta {shit.imposeNextRequestTimestamp()}
+            }
             (buildAction ?: {
                 buttonClick(buttonKey ?: fconst.key.primary.testRef)
             })()

@@ -18,7 +18,7 @@ fun toReactElementable(x: Any?): ToReactElementable {
 }
 
 interface DefinitionStackHolder {
-    fun promiseDefinitionStack(): Promise<dynamic>
+    fun promiseDefinitionStack(): Promisoid<dynamic>
 }
 
 fun renderExpandableOnDemandStack(definitionStackHolder: DefinitionStackHolder): ToReactElementable {
@@ -32,9 +32,11 @@ fun renderExpandableOnDemandStack(definitionStackHolder: DefinitionStackHolder):
                 - when (state) {
                     "virgin" -> toReactElementable(Shitus.link(json("content" to "Show stack", "onClick" to {
                         state = "loading"
-                        runni {"__async"
-                            val jsarray = __await<dynamic>(definitionStackHolder.promiseDefinitionStack())
-                            console.log("--- got definition stack", jsarray)
+                        runni {
+                            async {
+                                val jsarray = await<dynamic>(definitionStackHolder.promiseDefinitionStack())
+                                console.log("--- got definition stack", jsarray)
+                            }
                         }
                         update()
                     })))

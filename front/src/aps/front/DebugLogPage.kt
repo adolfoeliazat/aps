@@ -25,7 +25,7 @@ class DebugLogPage(val world: World) {
 
     val urlQuery = URLQuery()
 
-    fun load(): Promise<Unit> = async {
+    fun load(): Promisoid<Unit> = async {
         var rootMessages = await(getLogMessages(RedisLogMessage.ROOT_ID))
         run {
             fun cutFromLastBoot(bottomIndex: Int) {
@@ -86,7 +86,7 @@ class DebugLogPage(val world: World) {
         ))
     }
 
-    fun getLogMessages(parentID: String): Promise<List<RedisLogMessage>> = async {
+    fun getLogMessages(parentID: String): Promisoid<List<RedisLogMessage>> = async {
         val jsons = run {
             val ids = await(fedis.lrange("$parentID:children", -MAX_LEN, -1))
             if (ids.isNotEmpty())

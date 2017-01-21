@@ -9,8 +9,10 @@
 package aps.front
 
 import aps.*
+import aps.front.Globus.effectsPane
 import into.kommon.*
 import jquery.JQuery
+import kotlin.properties.Delegates.notNull
 
 object effects2 {
     fun blinkOn(
@@ -43,10 +45,10 @@ object effects2 {
         effects.blinkOffFadingOut()
     }
 
-    fun fadeOut(elementID: String): Promise<Unit> = fade(elementID, decreaseOpacity = true)
-    fun fadeIn(elementID: String): Promise<Unit> = fade(elementID, decreaseOpacity = false)
+    fun fadeOut(elementID: String): Promisoid<Unit> = fade(elementID, decreaseOpacity = true)
+    fun fadeIn(elementID: String): Promisoid<Unit> = fade(elementID, decreaseOpacity = false)
 
-    fun fade(elementID: String, decreaseOpacity: Boolean): Promise<Unit> = async {
+    fun fade(elementID: String, decreaseOpacity: Boolean): Promisoid<Unit> = async {
         val frames = 16
         check(frames % 2 == 0) {"frames should be even"}
         val initialOpacity = if (decreaseOpacity) 1.0 else 0.0
@@ -120,6 +122,7 @@ fun TestScenarioBuilder.animatedActionSequence(
 }
 
 var effects: ILegacyEffects = null.asDynamic()
+private var effectsInitialized = false
 
 fun initEffects() {
     effects = Shitus.statefulElement(ctor@{update ->
@@ -152,7 +155,7 @@ fun initEffects() {
                 val left = targetOffset.left + dleft
                 var top = targetOffset.top + targetHeight - height + dtop
                 if (fixed) {
-                    top -= js("$")(global.document).scrollTop()
+                    top -= js("$")(aps.global.document).scrollTop()
                 }
                 // dlog({left, top, width, height})
 
@@ -197,12 +200,12 @@ fun initEffects() {
         return@ctor me
     })
 
-    global.requestAnimationFrame({
-        panes.remove("initEffects")
-        panes.put("initEffects", oldShitAsToReactElementable(effects.element))
-    })
-}
+    requestAnimationFrame {
+        effectsPane = old_panes.put(oldShitAsToReactElementable(effects.element))
+    }
 
+    effectsInitialized = true
+}
 
 
 
