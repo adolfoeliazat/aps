@@ -24,7 +24,7 @@ class InitAutoReload {
     }
 
     private fun schedule() {
-//        window.setTimeout({tick()}, 500)
+        window.setTimeout({tick()}, 500)
     }
 
     private fun tick() = async {

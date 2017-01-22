@@ -33,14 +33,17 @@ private fun shit2() {
     println("title: $title")
 }
 
-private fun shit3() {
-    val hwnd = User32.INSTANCE.FindWindow(null, "APS UA - Google Chrome") ?: bitch("No necessary Chrome window")
-    User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Chrome to foreground")
-    val robot = Robot()
-    robot.mouseMove(18, 216)
-    robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
-    robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
-}
+//private fun shit3() {
+//    val hwnd =
+//        User32.INSTANCE.FindWindow(null, "APS UA - Google Chrome")
+//        ?: User32.INSTANCE.FindWindow(null, "Writer UA - Google Chrome")
+//        ?: bitch("No necessary Chrome window")
+//    User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Chrome to foreground")
+//    val robot = Robot()
+//    robot.mouseMove(18, 216)
+//    robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+//    robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
+//}
 
 private fun shit4() {
     val hwnd = User32.INSTANCE.FindWindow(null, "Open") ?: bitch("No Open window")

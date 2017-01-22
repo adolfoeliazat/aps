@@ -395,9 +395,7 @@ fun TestScenarioBuilder.sequence(
 
     for ((i, step) in steps.withIndex()) {
         o.acta {async{
-            dwarnStriking(111111)
             await(step.lock.testPause())
-            dwarnStriking(222222)
         }}
         o.assertScreenHTML("$assertionDescr (${i + 1})", step.assertionID)
         o.act {step.lock.testResume()}

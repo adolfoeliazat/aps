@@ -11,13 +11,24 @@ Import Gradle dependencies
 PostgreSQL
 ==========
 
+imdisk -a -t vm -s 100M -m r:
+
+Click "Format"
+
 cd /d E:\work\aps\back\bin\dev\win
 title pg-test & pg-test-start.cmd
     | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
+    | In the end it should say, "server started"
+
+%pg_home%\bin\psql.exe -h 127.0.0.1 -p 5433 postgres postgres
+create database "aps-test" encoding 'UTF8';
+\l
+\q
 
 cd /d E:\work\aps\back\bin\dev\win
 title pg-dev & pg-dev-start.cmd
     | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
+    | In the end it should say, "server started"
 
 // cd /d e:\work\aps
 // ant java -Dclass=aps.back.GenerateJOOQKt
@@ -38,6 +49,16 @@ F.dumpShames()
 
 cd /d e:\work\aps
 node run.js runAllUnitTests
+
+
+Static Sites
+============
+
+Serve development static sites
+
+    cd /d e:\work\aps\front
+    node run.js ServeDevStaticSites
+
 
 Redis
 =====
@@ -65,6 +86,9 @@ Misc
 
 Links
 =====
+
+http://aps-ua-writer.local:3022/faq.html?test=Test_UACustomer_Order_Files_EditFile&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=true&handPauses=true
+
 
 http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_1&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=true&handPauses=true
 

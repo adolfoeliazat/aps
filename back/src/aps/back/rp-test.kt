@@ -320,7 +320,10 @@ fun frp_updateTestShit(rmap: Map<*, *>) {
 }
 
 fun frp_robotClickOnChrome(rmap: Map<*, *>) {
-    val hwnd = User32.INSTANCE.FindWindow(null, "APS UA - Google Chrome") ?: bitch("No necessary Chrome window")
+    val hwnd =
+        User32.INSTANCE.FindWindow(null, "APS UA - Google Chrome")
+        ?: User32.INSTANCE.FindWindow(null, "Writer UA - Google Chrome")
+        ?: bitch("No necessary Chrome window")
     User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Chrome to foreground")
     val origLocation = MouseInfo.getPointerInfo().location
     val robot = Robot()
