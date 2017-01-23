@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import aps.front.Globus.effectsPane
 import aps.front.testutils.*
 import into.kommon.*
 import org.w3c.dom.HTMLElement
@@ -8,8 +9,6 @@ import org.w3c.dom.url.URL
 import kotlin.properties.Delegates.notNull
 
 private val reactoidImpl = ReactoidImpl()
-
-var currentBrowseroid: Browseroid = realBrowseroid
 
 interface Browseroid {
     val name: String
@@ -19,7 +18,7 @@ interface Browseroid {
 //    val timeroid: Timeroid
 
     companion object {
-        val current: Browseroid get() = currentBrowseroid
+        val current: Browseroid get() = Globus.currentBrowseroid
     }
 }
 
@@ -63,7 +62,7 @@ class TestBrowseroid(override val name: String, val initialURL: String) : Browse
             var theNewURL = newURL
             if (!theNewURL.startsWith("/")) theNewURL = "/$theNewURL"
             url = URL(baseWithoutSlash + theNewURL)
-            crossWorld.createOrUpdate()
+            LocationBar.update()
         }
 
         override fun reload() {
@@ -161,7 +160,7 @@ class TestBrowseroid(override val name: String, val initialURL: String) : Browse
 
     fun replaceWholeURL(newURL: String) {
         url = URL(newURL)
-        crossWorld.createOrUpdate()
+        LocationBar.update()
     }
 }
 
@@ -258,8 +257,107 @@ class FuckingBrowseroid(val name: String, val initialURL: String) {
 //    }
 }
 
+data class MordaCoitizeParams(
+    val browseroidName: String,
+    val url: String,
+    val fillTypedStorageLocal: (TypedStorageLocal) -> Unit,
+    val fillRawStorageLocal: (StorageLocal) -> Unit
+)
+
+class Morda {
+    enum class State {
+        VIRGIN, STATIC, ACTIVE, SHELVED
+    }
+
+    private var state: State = State.VIRGIN
+    private var coitizeParams by notNull<MordaCoitizeParams>()
+
+    fun coitize(p: MordaCoitizeParams) = async<Unit> {
+        check(state == State.VIRGIN)
+
+        coitizeParams = p
+
+        TestGlobal.currentMorda?.let {await(it.shelve())}
+
+        run { // Create and set new environment
+            val bro = TestBrowseroid(p.browseroidName, p.url)
+            p.fillRawStorageLocal(bro.typedStorageLocal.store)
+            p.fillTypedStorageLocal(bro.typedStorageLocal)
+            Globus.currentBrowseroid = bro
+
+            ExternalGlobus.storageLocalForStaticContent = object:IStorage {
+                override fun getItem(key: String) = bro.typedStorageLocal.store.getItem(key)
+            }
+        }
+
+        run { // Dispose shit
+            LocationBar.dispose()
+            _DOMReact.checkNothingMounted()
+        }
+
+        run { // Load static content
+            dlog("Navigating to static content: ${p.url}")
+            val content = measureAndReportToDocumentElement("Loading ${p.url}") {
+                await(fetchURL(p.url, "GET", null))
+            }
+
+            val openingHeadTagIndex = content.indexOfOrDie("<head")
+            val closingHTMLTagIndex = content.indexOfOrDie("</html>")
+            val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
+
+            setDocInnerHTML(innerHTMLContent)
+            jqbody.scrollTop(0)
+            loadCSS()
+        }
+
+        LocationBar.update()
+
+        state = State.STATIC
+    }
+
+    fun boot() = async<Unit> {
+        check(state == State.STATIC)
+
+        val world = World(coitizeParams.browseroidName)
+        await(world.boot())
+
+        state = State.ACTIVE
+    }
+
+    fun shelve(): Promisoid<Unit> = async {
+        imf("shelve")
+    }
+
+    fun switchTo(): Promisoid<Unit> = async {
+        imf("switchTo")
+    }
+}
+
+class MordaBuilder(private val o: TestScenarioBuilder) {
+    private val morda = Morda()
+
+    fun init(
+        p: MordaCoitizeParams,
+        buildStaticAssertion: () -> Unit,
+        buildDynamicAssertion: () -> Unit
+    ) {
+        o.acta {morda.coitize(p)}
+        buildStaticAssertion()
+        o.acta {morda.boot()}
+        buildDynamicAssertion()
+    }
+
+    fun switchTo() {
+        o.acta {morda.switchTo()}
+    }
+}
 
 
+class FuckBrowseroidState {
+    var bro by notNullOnce<TestBrowseroid>()
+    var storageLocalForStaticContent by notNullOnce<IStorage>()
+    var bodyScrollTop by notNullOnce<Double>()
+}
 
 
 

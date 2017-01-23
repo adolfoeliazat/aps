@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import aps.front.Globus.effectsPane
 import aps.front.testutils.*
 import into.kommon.*
 import kotlin.properties.Delegates.notNull
@@ -239,64 +240,26 @@ class Test_UACustomer_Order_Files_EditMeta : TestUACustomer_Order_Files_Base() {
     }
 }
 
-data class FuckBrowseroidParams(
-    val browseroidName: String,
-    val url: String,
-    val fillTypedStorageLocal: (TypedStorageLocal) -> Unit,
-    val fillRawStorageLocal: (StorageLocal) -> Unit,
-    val buildStaticAssertion: () -> Unit,
-    val buildDynamicAssertion: () -> Unit
-)
 
-fun TestScenarioBuilder.fuckBrowseroid(p: FuckBrowseroidParams) {
-    acta {async{
-        val bro = TestBrowseroid(p.browseroidName, p.url)
-        p.fillTypedStorageLocal(bro.typedStorageLocal)
-        p.fillRawStorageLocal(bro.typedStorageLocal.store)
-        currentBrowseroid = bro
-
-        ExternalGlobus.storageLocalForStaticContent = object : IStorage {
-            override fun getItem(key: String) = bro.typedStorageLocal.store.getItem(key)
-        }
-
-        dlog("Navigating to static content: ${p.url}")
-        val content = measureAndReportToDocumentElement("Loading ${p.url}") {
-            await(fetchURL(p.url, "GET", null))
-        }
-
-        val openingHeadTagIndex = content.indexOfOrDie("<head")
-        val closingHTMLTagIndex = content.indexOfOrDie("</html>")
-        val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
-
-        killEverythingVisual()
-        setDocInnerHTML(innerHTMLContent)
-        jqbody.scrollTop(0)
-        loadCSS()
-        (currentBrowseroid as TestBrowseroid).replaceWholeURL(p.url)
-        ExternalGlobus.displayInitialShit()
-    }}
-
-    p.buildStaticAssertion()
-    acta {async {
-        val world = World(p.browseroidName)
-        await(world.boot())
-    }}
-    p.buildDynamicAssertion()
-}
 
 class Test_UACustomer_Order_Files_EditFile : StepBasedTestScenario() {
     override fun buildSteps() {
+        val ivo1 = MordaBuilder(o)
+        val fedor1 = MordaBuilder(o)
+
         o.commonFuckingShit(this, buildInitFuckingBrowser = {
-            o.fuckBrowseroid(FuckBrowseroidParams(
-                browseroidName = "ivo1",
-                url = "${fconst.test.url.customer}/order.html?id=100000&tab=files",
-                fillTypedStorageLocal = {
-                    it.token = testShit.bobulToken
-                },
-                fillRawStorageLocal = {},
+            ivo1.init(
+                MordaCoitizeParams(
+                    browseroidName = "ivo1",
+                    url = "${fconst.test.url.customer}/order.html?id=100000&tab=files",
+                    fillTypedStorageLocal = {
+                        it.token = testShit.bobulToken
+                    },
+                    fillRawStorageLocal = {}
+                ),
                 buildStaticAssertion = {o.assertCustomerWithTokenStaticIndexScreen()},
                 buildDynamicAssertion = {o.assertScreenHTML("pipiska 1", "70ff5b21-f1d7-4d0b-ac02-3bc394d2cc98")}
-            ))
+            )
         })
 
         val orderFileID = 100010L
@@ -311,19 +274,22 @@ class Test_UACustomer_Order_Files_EditFile : StepBasedTestScenario() {
         o.assertScreenHTML("Piece of shit #$orderFileID is opened for editing", "683e036b-0ecb-4d4d-be5a-1b2591a83abc")
         val kludge = true
         if (kludge) {
-            o.fuckBrowseroid(FuckBrowseroidParams(
-                browseroidName = "fedor1",
-                url = "http://aps-ua-writer.local:3022",
-                fillTypedStorageLocal = {},
-                fillRawStorageLocal = {},
+            fedor1.init(
+                MordaCoitizeParams(
+                    browseroidName = "fedor1",
+                    url = "http://aps-ua-writer.local:3022",
+                    fillTypedStorageLocal = {},
+                    fillRawStorageLocal = {}
+                ),
                 buildStaticAssertion = {o.assertAnonymousWriterStaticIndexScreen()},
                 buildDynamicAssertion = {o.assertAnonymousWriterDynamicIndexScreen()}
-            ))
+            )
 
             o.topNavItemSequence(descr = "Navigate sign-in page", key = fconst.key.topNavItem.signIn.testRef, aid = "e80010be-2bc9-4d8f-8170-46cc8b250515")
             o.inputSetValue(fieldSpecs.email_testRef.name, "pizda")
         }
 
+        ivo1.switchTo()
         o.acta {tillEndOfTime()}
 
         o.fileFieldChoose(
@@ -374,7 +340,6 @@ class Test_UACustomer_Order_Files_EditFile : StepBasedTestScenario() {
             )
         }
     }
-
 }
 
 class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
@@ -551,20 +516,22 @@ fun TestScenarioBuilder.setUpOrderFilesTestTemplate_1(
     setUpOrders()
     o.acta {fedis.popLogGroup()}
 
-    (initFuckingBrowser ?: {
-        o.initFuckingBrowser(fillTypedStorageLocal = {
-            it.token = shit.bobulToken
-        })
-        o.kindaNavigateToStaticContent("${fconst.test.url.customer}/order.html?id=100000&tab=files")
-        o.assertCustomerWithTokenStaticIndexScreen()
-
-        o.acta {
-            async {
-                val world = World("boobs")
-                await(world.boot())
-            }
-        }
-    })()
+    if (initFuckingBrowser == null) die("initFuckingBrowser should not be null")
+    initFuckingBrowser()
+//    (initFuckingBrowser ?: {
+//        o.initFuckingBrowser(fillTypedStorageLocal = {
+//            it.token = shit.bobulToken
+//        })
+//        o.kindaNavigateToStaticContent("${fconst.test.url.customer}/order.html?id=100000&tab=files")
+//        o.assertCustomerWithTokenStaticIndexScreen()
+//
+//        o.acta {
+//            async {
+//                val world = World("boobs")
+//                await(world.boot())
+//            }
+//        }
+//    })()
 
     assertScreen()
 }

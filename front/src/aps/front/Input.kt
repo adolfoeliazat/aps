@@ -223,13 +223,13 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
 
                 "testGetValue" to { me.getValue() },
 
-                "setBlinking" to {b: dynamic ->
+                "setBlinking" to {b: dynamic -> async {
                     if (b) {
-                        effects.blinkOn(json("target" to Shitus.byid(me.elementID), "widthCountMargin" to false))
+                        await(effects).blinkOn(Shitus.byid(me.elementID), BlinkOpts(widthCountMargin = false))
                     } else {
-                        effects.blinkOff()
+                        await(effects).blinkOff()
                     }
-                }
+                }}
             )
 
             me.renderInRevelationPane = {

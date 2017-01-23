@@ -42,7 +42,7 @@ fun ignite() {
     // For hot reloading
 //    global.makeAPSShitImplCtor = ::makeAPSShitImplCtor
 
-    initEffects()
+//    initEffects()
     Shitus.initTrains()
 
     global.Shitus = Shitus

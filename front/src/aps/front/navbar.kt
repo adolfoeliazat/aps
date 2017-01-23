@@ -202,13 +202,13 @@ class TopNavItem(
             dwidth = 15
         }
 
-        effects.blinkOn(json("target" to Shitus.byid(aid).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
+        await(effects).blinkOn(byid(aid).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth))
         await(TestGlobal.topNavItemTickingLock.sutPause())
 
         await(ui!!.pushNavigate(href))
 
         await(delay(250))
-        effects.blinkOff()
+        await(effects).blinkOff()
         ExternalGlobus.bsClearMenus()
         await(TestGlobal.topNavItemDoneLock.sutPause())
     }
@@ -296,7 +296,7 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
 //                        return
                 }
 
-                effects.blinkOn(json("target" to Shitus.byid(id).parent(), "fixed" to true, "dleft" to dleft, "dwidth" to dwidth))
+                await(effects).blinkOn(byid(id).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth))
 //                    TestGlobal["topNavbarLink_" + name + "_blinks"] = true
 
                 if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(isInTestScenario() && art.testSpeed == "fast")) {
@@ -304,11 +304,11 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
                 }
                 await<dynamic>(ui!!.pushNavigate(href))
 
-                global.setTimeout({
-                                      effects.blinkOff()
+                global.setTimeout({async{
+                                      await(effects).blinkOff()
 //                        TestGlobal["topNavbarLink_" + name + "_blinks"] = false
                                       global.bsClearMenus()
-                                  }, 250)
+                                  }}, 250)
 
                 return@async Unit
             }

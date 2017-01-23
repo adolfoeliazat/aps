@@ -36,7 +36,7 @@ object KotlinShit : IKotlinShit {
     val pollLiveStatus = ::jsFacing_pollLiveStatus
 //    val startLiveStatusPolling = ::jsFacing_startLiveStatusPolling
 //    val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
-    val urlLink = ::jsFacing_urlLink
+//    val urlLink = ::jsFacing_urlLink
     val pageLink = ::jsFacing_pageLink
 
     override fun loadAdminUsersPage(ui: World): Promisoid<Unit> = async {

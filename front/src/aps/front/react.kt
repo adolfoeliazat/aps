@@ -23,7 +23,6 @@ object _DOMReact {
     data class Root(val hel: HTMLElement, val stackCapture: CaptureStackException)
 
     private val _roots = mutableListOf<Root>()
-    val roots get() = _roots.toList()
 
     fun render(rel: ReactElement?, hel: HTMLElement) {
         ReactDOM.render(rel, hel)
@@ -46,10 +45,51 @@ object _DOMReact {
         }
         _roots.removeAt(i)
     }
+
+    fun checkNothingMounted() {
+        if (_roots.isNotEmpty()) {
+            async {
+                console.error(buildString {
+                    appendln("${_roots.size} leftover React root(s):")
+                    for ((i, root) in _roots.withIndex()) {
+                        lnappendln2("${i + 1}) Shit")
+                        appendln(await(root.stackCapture.prettyCapturedStack))
+                    }
+                })
+            }
+            throw IllegalStateException("checkNothingMounted")
+        }
+    }
+
 }
 
 external object ReactDOM {
     fun render(rel: ReactElement?, container: HTMLElement): Unit = noImpl
     fun unmountComponentAtNode(container: HTMLElement): Unit = noImpl
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

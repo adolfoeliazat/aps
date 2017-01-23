@@ -75,11 +75,11 @@ class CustomerSingleUAOrderPage(val world: World) {
     }
 
     fun clickOnTab(id: String): Promisoid<Unit> = async {
-        effects2.blinkOn(byid("tab-$id"), widthCalcSuffix = "- 0.15em")
+        await(effects).blinkOn(byid("tab-$id"), BlinkOpts(widthCalcSuffix = "- 0.15em"))
         try {
             await(world.pushNavigate("order.html?id=$orderID&tab=$id"))
         } finally {
-            effects2.blinkOffFadingOut()
+            await(effects).blinkOffFadingOut()
         }
     }
 

@@ -54,45 +54,44 @@ fun jsFacing_link(def: Json): ReactElement {
     return elcl(me)
 }
 
-fun jsFacing_urlLink(ui: World, def: dynamic): dynamic {
-    val name = def.name // TODO:vgrechka Seems to be unused
-    val url = def.url
-    val delayActionForFanciness = def.delayActionForFanciness
-    val blinkOpts = def.blinkOpts
-    val style = def.style
-
-    val id = puid()
-
-    val linkDef: dynamic = json(
-        "controlTypeName" to "urlLink",
-        "style" to style,
-        "id" to id,
-        "onClick" to {
-            async {
-                effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
-                if (name != null) {
-                    Shitus.byid(id).css("text-decoration", "none")
-//                TestGlobal["link_" + name + "_blinks"] = true
-                }
-
-                if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
-                    await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
-                }
-
-                await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {async{
-                    await<dynamic>(ui.pushNavigate(url))
-                }})))
-
-                effects.blinkOff()
-                if (name) {
-                    Shitus.byid(id).css("text-decoration", "")
-//                TestGlobal["link_" + name + "_blinks"] = false
-                }
-            }
-    })
-
-    return Shitus.link(Shitus.asn1(linkDef, def))
-}
+//fun jsFacing_urlLink(ui: World, def: dynamic): dynamic {
+//    val name = def.name // TODO:vgrechka Seems to be unused
+//    val url = def.url
+//    val delayActionForFanciness = def.delayActionForFanciness
+//    val blinkOpts = def.blinkOpts
+//    val style = def.style
+//
+//    val id = puid()
+//
+//    val linkDef: dynamic = json(
+//        "controlTypeName" to "urlLink",
+//        "style" to style,
+//        "id" to id,
+//        "onClick" to {async{
+//            await(effects).blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
+//            if (name != null) {
+//                Shitus.byid(id).css("text-decoration", "none")
+////                TestGlobal["link_" + name + "_blinks"] = true
+//            }
+//
+//            if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
+//                await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
+//            }
+//
+//            await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {async{
+//                await<dynamic>(ui.pushNavigate(url))
+//            }})))
+//
+//            effects.blinkOff()
+//            if (name) {
+//                Shitus.byid(id).css("text-decoration", "")
+////                TestGlobal["link_" + name + "_blinks"] = false
+//            }
+//        }}
+//    )
+//
+//    return Shitus.link(Shitus.asn1(linkDef, def))
+//}
 
 fun jsFacing_pageLink(ui: World, def: dynamic) {
     Shitus.raise("Kill me please, I don’t deserve living")
@@ -112,7 +111,7 @@ fun urlLink(
     val id = puid()
 
     fun doClick(): Promisoid<Unit> = async {
-        effects.blinkOn(global.Object.assign(json("target" to Shitus.byid(id), "dtop" to 3), blinkOpts))
+        await(effects).blinkOn(byid(id), BlinkOpts(dtop = 3))
         await(TestGlobal.linkTickingLock.sutPause())
         Shitus.byid(id).css("text-decoration", "none")
 
@@ -124,7 +123,7 @@ fun urlLink(
             await<dynamic>(ui.pushNavigate(url))
         }})))
 
-        effects.blinkOff()
+        await(effects).blinkOff()
         Shitus.byid(id).css("text-decoration", "")
         await(TestGlobal.linkDoneLock.sutPause())
     }

@@ -4,22 +4,6 @@ package aps.front
 
 import aps.*
 
-fun qweeeeee() {
-
-}
-
-fun qwe_1() = async {
-    fun f() = Promisoid<Unit> {_, _ -> console.log("I will never end")}
-
-    val promise = async<Unit> {
-        f()
-    }
-
-    console.log(1)
-    console.log("res", await(promise))
-    console.log(2)
-}
-
 //fun qwe_2() = async {
 //    val promise: Promisoid<Promisoid<Unit>> = async {
 //        Promisoid<Unit> {_, _ -> console.log("I will never end")}

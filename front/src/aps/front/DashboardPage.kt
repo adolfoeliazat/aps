@@ -44,8 +44,7 @@ class DashboardPage(val ui: World) {
                                             items.push(Shitus.diva(json("controlTypeName" to "addMetric", "tame" to tame, "noStateContributions" to noStateContributions, "style" to json("position" to "relative", "overflow" to "hidden"),
                                                                         "className" to ifOrEmpty(ignoreInTests){"ignoreInTests"}),
                                                                    Shitus.diva(json("style" to json("position" to "absolute", "zIndex" to -1, "left" to 0, "top" to 0)), Shitus.repeat(".", 210)),
-                                                                   ui.urlLink(json("tamy" to true, "style" to json("background" to Color.WHITE, "paddingRight" to 8, "color" to Color.BLACK_BOOT), "blinkOpts" to json("dwidth" to -8),
-                                                                                   "title" to title, "url" to url, "delayActionForFanciness" to true)),
+                                                                   urlLink(url = url, linkParams = LinkParams(title = title), style = Style(backgroundColor = Color.WHITE, paddingRight = 8, color = Color.BLACK_BOOT), blinkOpts = BlinkOpts(dwidth = -8)),
                                                                    Shitus.diva(json("style" to json("float" to "right", "paddingLeft" to 8, "background" to Color.WHITE)),
                                                                                Shitus.spana(json("className" to "badge", "style" to json("float" to "right", "backgroundColor" to Color.BLUE_GRAY_400)),
                                                                                             Shitus.spanc(json("tame" to "badge", "content" to "" + value))))

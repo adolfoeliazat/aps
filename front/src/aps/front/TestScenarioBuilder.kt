@@ -416,126 +416,127 @@ fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: Str
 }
 
 fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
-    check(snapshot.name.length == 1 && snapshot.name[0] >= '1' && snapshot.name[0] <= '9') {"Snapshot name corresponds to a numeric key"}
-
-    testShit.snapshots.add(snapshot)
-
-    instructions.add(0, TestInstruction.Do {async<Unit>{
-        val snapshotChoice = ResolvableShit<Snapshot?>()
-        val bannerPane = old_debugPanes.put(kdiv(className = css.test.popup.chooseSnapshot){o->
-            o- "Choose snapshot:"
-            o- Button(title = "0", style = Style(marginLeft = "0.5em")) {
-                snapshotChoice.resolve(null)
-            }
-            for (snap in testShit.snapshots) {
-                o- Button(title = snap.name, style = Style(marginLeft = "0.5em")) {
-                    snapshotChoice.resolve(snap)
-                }
-            }
-        })
-        fun keyListener(e: Event) {
-            e as KeyboardEvent
-            if (e.key == "0") {
-                snapshotChoice.resolve(null)
-            }
-            for (snap in testShit.snapshots) {
-                if (e.key == snap.name) {
-                    snapshotChoice.resolve(snap)
-                }
-            }
-        }
-        window.addEventListener("keydown", ::keyListener)
-
-        try {
-            await(snapshotChoice.promise)?.let {useSnapshot->
-                dlog("Using snapshot ${useSnapshot.id}")
-                val useSnapshotIndex = instructions.indexOfFirst {
-                    it.snapshot?.id == useSnapshot.id
-                }
-                if (useSnapshotIndex == -1) bitch("Snapshot instruction not found: ${useSnapshot.id}")
-                val assertion = instructions[useSnapshotIndex - 1]
-                gloshit.instructions = instructions
-                gloshit.useSnapshotIndex = useSnapshotIndex
-                gloshit.assertion = assertion
-                check(assertion.isAssertion) {"Instruction before snapshot should be assertion"}
-                instructions.subList(0, useSnapshotIndex + 1).clear()
-                instructions.add(0, TestInstruction.Do {async<Unit>{
-                    dlog("Restoring shit from snapshot ${useSnapshot.id}")
-                    die("reimplement me")
-//                    DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
-
-                    setDocInnerHTML("<h3>Restoring test: ${ctorName(scenario)} (snapshot: ${useSnapshot.name})</h3><hr>")
-                    measureAndReportToDocumentElement("Restoring snapshot database") {
-                        await(send(RecreateTestDatabaseSchemaRequest()-{o->
-                            o.snapshotID.value = useSnapshot.id
-                        }))
-                    }
-
-                    val clientState = JSON.parse<ClientStateSnapshot>(
-                        Globus.realStorageLocal.getItem(
-                            fconst.storage.clientStateSnapshotPrefix + useSnapshot.id)!!)
-                    dlog("Restored clientState", clientState)
-
-                    _initFuckingBrowser(fillRawStorageLocal = {store->
-                        for (item in clientState.storageItems) {
-                            item.value?.let {
-                                store.setItem(item.key, it)
-                            }
-                        }
-                    })
-                    testShit.nextRequestTimestampIndex = clientState.nextRequestTimestampIndex
-                    await(_kindaNavigateToStaticContent(clientState.url))
-
-                    val world = World("boobs")
-                    await(world.boot())
-                }}-{m->
-                    m.debugDescription = "Restore shit from snapshot"
-                })
-                instructions.add(1, assertion)
-                testShit.nextInstructionIndex = 0
-
-            }
-        } finally {
-            window.removeEventListener("keydown", ::keyListener)
-            old_debugPanes.remove(bannerPane)
-        }
-    }})
-
-    lastAssertScreenHTMLParams.let {
-        assertScreenHTML(it.copy(descr = "Before snapshot: " + it.descr))}
-
-    instructions.add(TestInstruction.Do {async<Unit> {
-        dlog("Taking snapshot ${snapshot.id}")
-        await(send(TestTakeSnapshotRequest()-{o->
-            o.name.value = snapshot.id
-            o.url.value = Globus.realLocation.href // TODO:vgrechka @kill
-        }))
-
-        val store = TestGlobal.browser.typedStorageLocal.store
-        gloshit.store = store
-        val clientState = ClientStateSnapshot(
-            url = Globus.realLocation.href,
-            nextRequestTimestampIndex = testShit.nextRequestTimestampIndex,
-            storageItems = (mutableListOf<ClientStateSnapshot.StorageItem>()-{o->
-                for (i in 0 until store.length) {
-                    val key = store.key(i)!!
-                    o += ClientStateSnapshot.StorageItem(
-                        key = key,
-                        value = store.getItem(key)
-                    )
-                }
-            }).toTypedArray()
-        )
-        gloshit.clientState = clientState
-
-        val clientStateJSON = JSON.stringify(clientState)
-        dlog("clientStateJSON", clientStateJSON)
-        Globus.realStorageLocal.setItem(
-            fconst.storage.clientStateSnapshotPrefix + snapshot.id,
-            clientStateJSON)
-    }}-{m->
-        m.snapshot = snapshot
-    })
+    die("reimplement snapshot")
+//    check(snapshot.name.length == 1 && snapshot.name[0] >= '1' && snapshot.name[0] <= '9') {"Snapshot name corresponds to a numeric key"}
+//
+//    testShit.snapshots.add(snapshot)
+//
+//    instructions.add(0, TestInstruction.Do {async<Unit>{
+//        val snapshotChoice = ResolvableShit<Snapshot?>()
+//        val bannerPane = old_debugPanes.put(kdiv(className = css.test.popup.chooseSnapshot){o->
+//            o- "Choose snapshot:"
+//            o- Button(title = "0", style = Style(marginLeft = "0.5em")) {
+//                snapshotChoice.resolve(null)
+//            }
+//            for (snap in testShit.snapshots) {
+//                o- Button(title = snap.name, style = Style(marginLeft = "0.5em")) {
+//                    snapshotChoice.resolve(snap)
+//                }
+//            }
+//        })
+//        fun keyListener(e: Event) {
+//            e as KeyboardEvent
+//            if (e.key == "0") {
+//                snapshotChoice.resolve(null)
+//            }
+//            for (snap in testShit.snapshots) {
+//                if (e.key == snap.name) {
+//                    snapshotChoice.resolve(snap)
+//                }
+//            }
+//        }
+//        window.addEventListener("keydown", ::keyListener)
+//
+//        try {
+//            await(snapshotChoice.promise)?.let {useSnapshot->
+//                dlog("Using snapshot ${useSnapshot.id}")
+//                val useSnapshotIndex = instructions.indexOfFirst {
+//                    it.snapshot?.id == useSnapshot.id
+//                }
+//                if (useSnapshotIndex == -1) bitch("Snapshot instruction not found: ${useSnapshot.id}")
+//                val assertion = instructions[useSnapshotIndex - 1]
+//                gloshit.instructions = instructions
+//                gloshit.useSnapshotIndex = useSnapshotIndex
+//                gloshit.assertion = assertion
+//                check(assertion.isAssertion) {"Instruction before snapshot should be assertion"}
+//                instructions.subList(0, useSnapshotIndex + 1).clear()
+//                instructions.add(0, TestInstruction.Do {async<Unit>{
+//                    dlog("Restoring shit from snapshot ${useSnapshot.id}")
+//                    die("reimplement me")
+////                    DOMReact.containers.toList().forEach {DOMReact.unmountComponentAtNode(it)}
+//
+//                    setDocInnerHTML("<h3>Restoring test: ${ctorName(scenario)} (snapshot: ${useSnapshot.name})</h3><hr>")
+//                    measureAndReportToDocumentElement("Restoring snapshot database") {
+//                        await(send(RecreateTestDatabaseSchemaRequest()-{o->
+//                            o.snapshotID.value = useSnapshot.id
+//                        }))
+//                    }
+//
+//                    val clientState = JSON.parse<ClientStateSnapshot>(
+//                        Globus.realStorageLocal.getItem(
+//                            fconst.storage.clientStateSnapshotPrefix + useSnapshot.id)!!)
+//                    dlog("Restored clientState", clientState)
+//
+//                    _initFuckingBrowser(fillRawStorageLocal = {store->
+//                        for (item in clientState.storageItems) {
+//                            item.value?.let {
+//                                store.setItem(item.key, it)
+//                            }
+//                        }
+//                    })
+//                    testShit.nextRequestTimestampIndex = clientState.nextRequestTimestampIndex
+//                    await(_kindaNavigateToStaticContent(clientState.url))
+//
+//                    val world = World("boobs")
+//                    await(world.boot())
+//                }}-{m->
+//                    m.debugDescription = "Restore shit from snapshot"
+//                })
+//                instructions.add(1, assertion)
+//                testShit.nextInstructionIndex = 0
+//
+//            }
+//        } finally {
+//            window.removeEventListener("keydown", ::keyListener)
+//            old_debugPanes.remove(bannerPane)
+//        }
+//    }})
+//
+//    lastAssertScreenHTMLParams.let {
+//        assertScreenHTML(it.copy(descr = "Before snapshot: " + it.descr))}
+//
+//    instructions.add(TestInstruction.Do {async<Unit> {
+//        dlog("Taking snapshot ${snapshot.id}")
+//        await(send(TestTakeSnapshotRequest()-{o->
+//            o.name.value = snapshot.id
+//            o.url.value = Globus.realLocation.href // TODO:vgrechka @kill
+//        }))
+//
+//        val store = TestGlobal.browser.typedStorageLocal.store
+//        gloshit.store = store
+//        val clientState = ClientStateSnapshot(
+//            url = Globus.realLocation.href,
+//            nextRequestTimestampIndex = testShit.nextRequestTimestampIndex,
+//            storageItems = (mutableListOf<ClientStateSnapshot.StorageItem>()-{o->
+//                for (i in 0 until store.length) {
+//                    val key = store.key(i)!!
+//                    o += ClientStateSnapshot.StorageItem(
+//                        key = key,
+//                        value = store.getItem(key)
+//                    )
+//                }
+//            }).toTypedArray()
+//        )
+//        gloshit.clientState = clientState
+//
+//        val clientStateJSON = JSON.stringify(clientState)
+//        dlog("clientStateJSON", clientStateJSON)
+//        Globus.realStorageLocal.setItem(
+//            fconst.storage.clientStateSnapshotPrefix + snapshot.id,
+//            clientStateJSON)
+//    }}-{m->
+//        m.snapshot = snapshot
+//    })
 }
 
 class ClientStateSnapshot (
@@ -616,7 +617,29 @@ fun TestScenarioBuilder.search(text: String, aid: String) {
     )
 }
 
+fun TestScenarioBuilder.animatedActionSequence(
+    buildAction: () -> Unit,
+    assertionDescr: String,
+    halfwayAssertionID: String,
+    finalAssertionID: String,
+    actionTimeout: Int = 5000
+) {
+    val o = this
+    o.act {
+        TestGlobal.animationHalfwaySignal = ResolvableShit()
+        TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
+        TestGlobal.formActionCompleted = ResolvableShit()
+    }
 
+    buildAction()
+
+    o.acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(1000)}
+    o.assertScreenHTML(assertionDescr + " (animation halfway)", halfwayAssertionID)
+    o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
+
+    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(actionTimeout)}
+    o.assertScreenHTML(assertionDescr, finalAssertionID)
+}
 
 
 

@@ -9,46 +9,38 @@
 package aps.front
 
 import aps.*
-import aps.front.Globus.effectsPane
-import into.kommon.*
 import jquery.JQuery
-import kotlin.properties.Delegates.notNull
 
-object effects2 {
-    fun blinkOn(
-        target: JQuery,
-        fixed: Boolean = false,
-        dleft: Int = 0,
-        dtop: Int = 0,
-        dwidth: Int = 0,
-        widthCountMargin: Boolean = true,
-        heightCountMargin: Boolean = true,
-        widthCalcSuffix: String? = null
-    ) {
-        effects.blinkOn(json(
+val effects by PassivableHolder(EffectsInitializer())
+
+class Effects {
+    val legacyEffects: dynamic = makeLegacyEffects()
+
+    fun blinkOn(target: JQuery, opts: BlinkOpts = BlinkOpts()) {
+        legacyEffects.blinkOn(json(
             "target" to target,
-            "fixed" to fixed,
-            "dleft" to dleft,
-            "dtop" to dtop,
-            "dwidth" to dwidth,
-            "widthCountMargin" to widthCountMargin,
-            "heightCountMargin" to heightCountMargin,
-            "widthCalcSuffix" to widthCalcSuffix
+            "fixed" to opts.fixed,
+            "dleft" to opts.dleft,
+            "dtop" to opts.dtop,
+            "dwidth" to opts.dwidth,
+            "widthCountMargin" to opts.widthCountMargin,
+            "heightCountMargin" to opts.heightCountMargin,
+            "widthCalcSuffix" to opts.widthCalcSuffix
         ))
     }
 
     fun blinkOff() {
-        effects.blinkOff()
+        legacyEffects.blinkOff()
     }
 
     fun blinkOffFadingOut() {
-        effects.blinkOffFadingOut()
+        legacyEffects.blinkOffFadingOut()
     }
 
     fun fadeOut(elementID: String): Promisoid<Unit> = fade(elementID, decreaseOpacity = true)
     fun fadeIn(elementID: String): Promisoid<Unit> = fade(elementID, decreaseOpacity = false)
 
-    fun fade(elementID: String, decreaseOpacity: Boolean): Promisoid<Unit> = async {
+    private fun fade(elementID: String, decreaseOpacity: Boolean): Promisoid<Unit> = async {
         val frames = 16
         check(frames % 2 == 0) {"frames should be even"}
         val initialOpacity = if (decreaseOpacity) 1.0 else 0.0
@@ -89,43 +81,42 @@ object effects2 {
     }
 }
 
-fun TestScenarioBuilder.animatedActionSequence(
-    buildAction: () -> Unit,
-    assertionDescr: String,
-    halfwayAssertionID: String,
-    finalAssertionID: String,
-    actionTimeout: Int = 5000
-) {
-    val o = this
-    o.act {
-        TestGlobal.animationHalfwaySignal = ResolvableShit()
-        TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
-        TestGlobal.formActionCompleted = ResolvableShit()
+data class BlinkOpts(
+    val fixed: Boolean = false,
+    val dleft: Int = 0,
+    val dtop: Int = 0,
+    val dwidth: Int = 0,
+    val widthCountMargin: Boolean = true,
+    val heightCountMargin: Boolean = true,
+    val widthCalcSuffix: String? = null
+)
+
+class EffectsInitializer : PassivableInitializer<Effects> {
+    override fun initialize() = async {
+        val api = Effects()
+        val pane = old_panes.put(oldShitAsToReactElementable(api.legacyEffects.element))
+        await(tillAnimationFrame())
+        EffectsPassivable(pane, api)
     }
-
-    buildAction()
-
-    o.acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(1000)}
-    o.assertScreenHTML(assertionDescr + " (animation halfway)", halfwayAssertionID)
-    o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
-
-    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(actionTimeout)}
-    o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
-
-@native interface ILegacyEffects {
-    val element: ReactElement
-    fun blinkOn(arg: dynamic)
-    fun blinkOff()
-    fun blinkOffFadingOut()
+class EffectsPassivable(val pane: String, override val api: Effects) : Passivable<Effects> {
+    override fun passivate() = async {
+        old_panes.remove(pane)
+        EffectsPassivated(api)
+    }
 }
 
-var effects: ILegacyEffects = null.asDynamic()
-private var effectsInitialized = false
+class EffectsPassivated(val api: Effects) : Passivated<Effects> {
+    override fun activate(): Promisoid<Passivable<Effects>> = async {
+        val pane = old_panes.put(oldShitAsToReactElementable(api.legacyEffects.element))
+        await(tillAnimationFrame())
+        EffectsPassivable(pane, api)
+    }
+}
 
-fun initEffects() {
-    effects = Shitus.statefulElement(ctor@{update ->
+private fun makeLegacyEffects(): dynamic {
+    return Shitus.statefulElement(ctor@{update ->
         var me: dynamic = null
         var blinker: dynamic = null
         var blinkerInterval: dynamic = null
@@ -199,14 +190,7 @@ fun initEffects() {
 
         return@ctor me
     })
-
-    requestAnimationFrame {
-        effectsPane = old_panes.put(oldShitAsToReactElementable(effects.element))
-    }
-
-    effectsInitialized = true
 }
-
 
 
 

@@ -171,14 +171,14 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                    + "&search=${encodeURIComponent(searchInput.getValue())}")
 
         fun reload(elementID: String): Promisoid<Unit> = async {
-            effects2.blinkOn(byid(elementID))
+            await(effects).blinkOn(byid(elementID))
             ebafHost.headerControlsDisabled = true
             stripContent.update()
             await(TestGlobal.reloadPageTickingLock.sutPause())
             try {
                 await(reloadFilesTab())
             } finally {
-                effects2.blinkOffFadingOut()
+                await(effects).blinkOffFadingOut()
                 ebafHost.headerControlsDisabled = false
                 stripContent.update() // TODO:vgrechka Redundant?
                 await(TestGlobal.loadPageForURLLock.sutPause2())
@@ -289,7 +289,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                                     cancelButtonTitle = const.defaultCancelButtonTitle,
                                                     containerClassName = css.cunt.bodyEditing,
                                                     onCancela = {async{
-                                                        await(effects2.fadeOut(topShitID))
+                                                        await(await(effects).fadeOut(topShitID))
                                                         enterViewMode()
                                                     }},
                                                     onSuccessa = {res-> async<Unit> {
@@ -306,7 +306,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                                                 o- itemPlace
                                                             })
                                                             topPlace = newTopPlace
-                                                            await(effects2.fadeIn(viewRootID))
+                                                            await(await(effects).fadeIn(viewRootID))
                                                         } else {
                                                             enterViewMode()
                                                         }
@@ -326,7 +326,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                     }
 
                     fun enterVanishedMode() = async {
-                        await(effects2.fadeOut(viewRootID))
+                        await(await(effects).fadeOut(viewRootID))
                         itemPlace.setContent(NOTRE)
                         TestGlobal.shitVanished.resolve()
                     }
@@ -416,7 +416,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                     val btn = Button("loadMore", title = t("Load more", "Загрузить еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50))
                     btn.onClicka = {
                         async {
-                            effects2.blinkOn(byid(btn.elementID))
+                            await(effects).blinkOn(byid(btn.elementID))
                             try {
                                 val res = try {
                                     await(requestChunk(meat.moreFromID))
@@ -440,7 +440,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                     }
                                 }
                             } finally {
-                                effects2.blinkOff()
+                                await(effects).blinkOff()
                                 responseProcessed()
                             }
                         }

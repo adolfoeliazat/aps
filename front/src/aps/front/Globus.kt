@@ -61,10 +61,12 @@ object Globus {
         override fun setItem(key: String, value: String) = localStorage.setItem(key, value)
         override fun removeItem(key: String) = localStorage.removeItem(key)
     }
+
     val realTypedStorageLocal = TypedStorageLocal(realStorageLocal)
     var browser_killme = Browser(typedStorageLocal = realTypedStorageLocal)
     var isTest = false
     val topNavbarContainer get() = byid0("topNavbarContainer")
+    var currentBrowseroid: Browseroid = realBrowseroid
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)

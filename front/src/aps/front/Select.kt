@@ -169,13 +169,13 @@ class Select<E>(
         Shitus.byid(elementID).focus()
     }
 
-    override fun setBlinking(b: Boolean) {
+    override fun setBlinking(b: Boolean) {async{
         if (b) {
-            effects.blinkOn(json("target" to Shitus.byid(elementID), "widthCountMargin" to false))
+            await(effects).blinkOn(byid(elementID), BlinkOpts(widthCountMargin = false))
         } else {
-            effects.blinkOff()
+            await(effects).blinkOff()
         }
-    }
+    }}
 
     override fun componentDidMount() {
         if (key != null) {

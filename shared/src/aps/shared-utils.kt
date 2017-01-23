@@ -14,6 +14,7 @@ import into.kommon.*
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
 import kotlin.properties.ReadOnlyProperty
+import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environment variable")
@@ -343,8 +344,20 @@ fun StringBuilder.lnappendln2(s: String) {
     append("\n" + s + "\n\n")
 }
 
+fun <T: Any> notNullOnce(): ReadWriteProperty<Any?, T> = NotNullOnceVar()
 
+private class NotNullOnceVar<T: Any> : ReadWriteProperty<Any?, T> {
+    private var value: T? = null
 
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return value ?: throw IllegalStateException("Property ${property.name} should be initialized before get.")
+    }
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        check(this.value == null) {"Property ${property.name} should be assigned only once"}
+        this.value = value
+    }
+}
 
 
 

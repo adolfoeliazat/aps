@@ -31,7 +31,7 @@ class SignUpPage(val world: World) {
                     hr(),
                     Shitus.diva(json("tame" to "signInSuggestion", "style" to json("textAlign" to "left")),
                                 Shitus.spanc(json("tame" to "prose", "content" to t("TOTE", "Уже есть аккаунт? Тогда "))),
-                                world.urlLink(json("tamy" to true, "title" to t("TOTE", "входим сюда"), "url" to "sign-in.html", "delayActionForFanciness" to true)),
+                                urlLink(title = t("TOTE", "входим сюда"), url = "sign-in.html"),
                                 "."))
                 ))
         ))

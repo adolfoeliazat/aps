@@ -19,46 +19,46 @@ external interface IStorage {
     fun getItem(key: String): String?
 }
 
-fun TestScenarioBuilder.initFuckingBrowser(fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {}) {
-    act {
-        _initFuckingBrowser(fillTypedStorageLocal)
-    }
-}
+//fun TestScenarioBuilder.initFuckingBrowser(fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {}) {
+//    act {
+//        _initFuckingBrowser(fillTypedStorageLocal)
+//    }
+//}
 
 
-fun _initFuckingBrowser(fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {}, fillRawStorageLocal: (StorageLocal) -> Unit = {}) {
-    val bro = TestBrowseroid("shit", "http://pizda.com")
-    fillTypedStorageLocal(bro.typedStorageLocal)
-    fillRawStorageLocal(bro.typedStorageLocal.store)
-    currentBrowseroid = bro
+//fun _initFuckingBrowser(fillTypedStorageLocal: (TypedStorageLocal) -> Unit = {}, fillRawStorageLocal: (StorageLocal) -> Unit = {}) {
+//    val bro = TestBrowseroid("shit", "http://pizda.com")
+//    fillTypedStorageLocal(bro.typedStorageLocal)
+//    fillRawStorageLocal(bro.typedStorageLocal.store)
+//    Globus.currentBrowseroid = bro
+//
+//    ExternalGlobus.storageLocalForStaticContent = object : IStorage {
+//        override fun getItem(key: String) = bro.typedStorageLocal.store.getItem(key)
+//    }
+//}
 
-    ExternalGlobus.storageLocalForStaticContent = object : IStorage {
-        override fun getItem(key: String) = bro.typedStorageLocal.store.getItem(key)
-    }
-}
+//fun TestScenarioBuilder.kindaNavigateToStaticContent(url: String) {
+//    acta {_kindaNavigateToStaticContent(url)}
+//}
 
-fun TestScenarioBuilder.kindaNavigateToStaticContent(url: String) {
-    acta {_kindaNavigateToStaticContent(url)}
-}
-
-fun _kindaNavigateToStaticContent(url: String): Promisoid<Unit> {
-    return async {
-        dlog("_kindaNavigateToStaticContent: $url")
-        val content = measureAndReportToDocumentElement("Loading $url") {
-            await(fetchURL(url, "GET", null))
-        }
-
-        val openingHeadTagIndex = content.indexOfOrDie("<head")
-        val closingHTMLTagIndex = content.indexOfOrDie("</html>")
-        val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
-
-        killEverythingVisual()
-        setDocInnerHTML(innerHTMLContent)
-        loadCSS()
-        (currentBrowseroid as TestBrowseroid).replaceWholeURL(url)
-        ExternalGlobus.displayInitialShit()
-    }
-}
+//fun _kindaNavigateToStaticContent(url: String): Promisoid<Unit> {
+//    return async {
+//        dlog("_kindaNavigateToStaticContent: $url")
+//        val content = measureAndReportToDocumentElement("Loading $url") {
+//            await(fetchURL(url, "GET", null))
+//        }
+//
+//        val openingHeadTagIndex = content.indexOfOrDie("<head")
+//        val closingHTMLTagIndex = content.indexOfOrDie("</html>")
+//        val innerHTMLContent = content.substring(openingHeadTagIndex, closingHTMLTagIndex)
+//
+//        killEverythingVisual()
+//        setDocInnerHTML(innerHTMLContent)
+//        loadCSS()
+//        (currentBrowseroid as TestBrowseroid).replaceWholeURL(url)
+//        ExternalGlobus.displayInitialShit()
+//    }
+//}
 
 inline fun <T> measureAndReportToDocumentElement(name: String, block: () -> T): T {
     setDocInnerHTML(getDocInnerHTML() + "$name....")
@@ -70,27 +70,6 @@ inline fun <T> measureAndReportToDocumentElement(name: String, block: () -> T): 
 fun getDocInnerHTML() = document.documentElement!!.innerHTML
 
 fun setDocInnerHTML(value: String) {
-    effectsPane?.let {
-        old_panes.remove(it)
-        effectsPane = null
-    }
-    crossWorld.dispose()
-    _DOMReact.roots.forEach {_DOMReact.unmountComponentAtNode(it.hel)}
-
-    val roots = _DOMReact.roots
-    if (roots.isNotEmpty()) {
-        async {
-            console.error(buildString {
-                appendln("${roots.size} leftover React root(s):")
-                for ((i, root) in roots.withIndex()) {
-                    lnappendln2("${i + 1}) Shit")
-                    appendln(await(root.stackCapture.prettyCapturedStack))
-                }
-            })
-        }
-        die("Leftover React roots")
-    }
-
     document.documentElement!!.innerHTML = value
 }
 

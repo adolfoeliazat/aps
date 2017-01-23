@@ -52,7 +52,7 @@ class World(val name: String) {
 
         hrss.browserOld.impl = this
         KotlinShit.clientImpl = this
-        initEffects()
+//        initEffects()
 //        if (MODE == "debug") {
 //            Shitus.initDebugFunctionsShit()
 //        }
@@ -60,14 +60,14 @@ class World(val name: String) {
 
         Globus.worldMaybe = this
         if (isTest()) {
-            crossWorld.createOrUpdate()
+            LocationBar.update()
         }
         send(PingRequest())
     }
 
-    fun urlLink(def: dynamic): dynamic {
-        return KotlinShit.urlLink(this, def)
-    }
+//    fun urlLink(def: dynamic): dynamic {
+//        return KotlinShit.urlLink(this, def)
+//    }
 
     fun pageLink(def: dynamic): dynamic {
         return KotlinShit.pageLink(this, def)
