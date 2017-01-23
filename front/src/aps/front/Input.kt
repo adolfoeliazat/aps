@@ -326,8 +326,8 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
                     async {
                         setValue(initialValue)
                         for (newValue in subsequentValues) {
-                            await(delay(50))
                             setValue(newValue)
+                            await(delay(50))
                         }
                     }
                 }

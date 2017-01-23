@@ -13,7 +13,7 @@ import kotlin.reflect.KProperty
 //val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLocal
 
 @native interface IExternalGlobus {
-    var storageLocalForStaticContent: IStorage
+    var storageLocalForStaticContent: IStorage?
     var LANG: String
     var MODE: String
     var DB: String
@@ -51,7 +51,7 @@ object Globus {
         }
     }
 
-    val world get() = worldMaybe!!
+    val world get() = bang(worldMaybe)
 
     val realStorageLocal = object:StorageLocal {
         override val length get() = localStorage.length
@@ -66,7 +66,8 @@ object Globus {
     var browser_killme = Browser(typedStorageLocal = realTypedStorageLocal)
     var isTest = false
     val topNavbarContainer get() = byid0("topNavbarContainer")
-    var currentBrowseroid: Browseroid = realBrowseroid
+    var currentBrowseroidMaybe: Browseroid? = realBrowseroid
+    val currentBrowseroid get() = bang(currentBrowseroidMaybe)
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)

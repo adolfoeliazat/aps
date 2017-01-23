@@ -10,6 +10,9 @@ import aps.*
 import into.kommon.*
 import kotlin.properties.Delegates.notNull
 
+
+
+
 fun renderTopNavbar(clientKind: ClientKind,
                     t: (String, String) -> String,
                     highlightedItem: String? = null,

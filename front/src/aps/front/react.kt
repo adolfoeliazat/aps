@@ -47,11 +47,12 @@ object _DOMReact {
     }
 
     fun checkNothingMounted() {
-        if (_roots.isNotEmpty()) {
+        val roots = _roots.toList()
+        if (roots.isNotEmpty()) {
             async {
                 console.error(buildString {
-                    appendln("${_roots.size} leftover React root(s):")
-                    for ((i, root) in _roots.withIndex()) {
+                    appendln("${roots.size} leftover React root(s):")
+                    for ((i, root) in roots.withIndex()) {
                         lnappendln2("${i + 1}) Shit")
                         appendln(await(root.stackCapture.prettyCapturedStack))
                     }

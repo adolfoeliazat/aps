@@ -51,7 +51,7 @@ object TestGlobal {
     val topNavItemDoneLock by notNullNamed(TestLock())
     val linkTickingLock by notNullNamed(TestLock())
     val linkDoneLock by notNullNamed(TestLock())
-    var currentMorda: Morda? = null
+    var currentMordaMaybe: Morda? = null
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

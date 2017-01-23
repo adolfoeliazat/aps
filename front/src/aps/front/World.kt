@@ -60,7 +60,7 @@ class World(val name: String) {
 
         Globus.worldMaybe = this
         if (isTest()) {
-            LocationBar.update()
+            testLocationBar.update()
         }
         send(PingRequest())
     }
@@ -146,7 +146,7 @@ class World(val name: String) {
                 }
             })
 
-            Browseroid.current.reactoid.mount(topNavbarElement, Globus.topNavbarContainer!!)
+            _DOMReact.render(topNavbarElement, navbarContainer())
 
             initDynamicFooter()
 
@@ -158,7 +158,7 @@ class World(val name: String) {
         val jqFooter = jq("#footer")
         jqFooter.append("<div id='${const.elementID.dynamicFooter}'></div>")
         footer = DynamicFooter(this)
-        Browseroid.current.reactoid.mount(footer.toReactElement(), byid0ForSure("dynamicFooter"))
+        Browseroid.current.reactoid.mount(footer.toReactElement(), dynamicFooterContainer())
     }
 
     fun setPage(def: Page) {
@@ -281,7 +281,7 @@ class World(val name: String) {
                 updateRoot = update
                 {Shitus.diva(json(), rootContent)}
             })
-            Browseroid.current.reactoid.mount(rootElement, Shitus.byid0("root"))
+            _DOMReact.render(rootElement, rootContainer())
         }
 
         updateRoot()
@@ -326,18 +326,21 @@ class World(val name: String) {
         return renderTopNavbar(Globus.clientKind, ::_t, highlightedItem = highlightedItem, ui = this)
     }
 
-    fun unmountShit() {
-        die("reimplement me")
-//        DOMReact.unmountComponentAtNode(Shitus.byid0("topNavbarContainer"))
-//        DOMReact.unmountComponentAtNode(Shitus.byid0("dynamicFooter"))
-//        DOMReact.unmountComponentAtNode(Shitus.byid0("root"))
+    fun shelveVisualShit() {
+        _DOMReact.unmountComponentAtNode(navbarContainer())
+        _DOMReact.unmountComponentAtNode(rootContainer())
+        _DOMReact.unmountComponentAtNode(dynamicFooterContainer())
     }
 
-//    fun mountShit() {
-//        DOMReact.render(topNavbarElement, Shitus.byid0("topNavbarContainer"))
-//        DOMReact.render(rootElement, Shitus.byid0("root"))
-//    }
+    fun unshelveVisualShit() {
+        _DOMReact.render(rootElement, rootContainer())
+        _DOMReact.render(topNavbarElement, navbarContainer())
+        _DOMReact.render(rootElement, rootContainer())
+    }
 
+    private fun navbarContainer() = bang(Globus.topNavbarContainer)
+    private fun rootContainer() = bang(byid0("root"))
+    private fun dynamicFooterContainer() = byid0ForSure("dynamicFooter")
 }
 
 class Page(
