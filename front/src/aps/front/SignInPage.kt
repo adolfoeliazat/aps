@@ -53,10 +53,11 @@ class SignInPage(val ui: World) {
                     o-kdiv(textAlign="left"){o->
                         o-t("TOTE", "Как? Еще нет аккаунта? ")
                         o-urlLink(
-                            key = fconst.key.link.createAccount.decl,
                             linkParams = LinkParams(title=t("TOTE", "Срочно создать!")),
                             url = "/sign-up.html",
-                            delayActionForFanciness = true)
+                            delayActionForFanciness = true,
+                            key = fconst.key.link.createAccount.decl
+                        )
                     }
                 }}
             }

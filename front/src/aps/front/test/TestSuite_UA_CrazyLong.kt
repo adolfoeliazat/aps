@@ -21,6 +21,8 @@ class Test_UA_TryOutBrowseroids : StepBasedTestScenario() {
 
 
 class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
+    // http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_1&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=false&handPauses=true
+
     override fun buildSteps() {
         val ivo1 = MordaBuilder(o)
 
@@ -34,6 +36,26 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
             ),
             buildStaticAssertion = {o.assertAnonymousCustomerStaticIndexScreen()},
             buildDynamicAssertion = {o.assertAnonymousCustomerDynamicIndexScreen()}
+        )
+        o.topNavItemSequence(
+            descr = "Click 'Sign In'",
+            key = fconst.key.topNavItem.signIn.testRef,
+            aid = "5d81d6de-36f1-4a5c-9259-8975f36d84b4"
+        )
+
+        o.linkSequence(descr = "Go to sign-up page", key = fconst.key.link.createAccount.testRef, aid = "b1765832-d2a9-47a4-a2ef-4f1a3f63d203")
+        o.debugMailboxClear()
+        o.formSubmissionAttempts(
+            testShit,
+            descr = "Sign-up attempts",
+            baseID = "7418ea51-7b3c-4bc6-9404-7e4d513a00cb",
+            buildAttempts = {a->
+                a.prepareNothing()
+                a.badTextFieldValuesThenValid(fieldSpecs.email_testRef, TestData.bobul.email)
+                a.badTextFieldValuesThenValid(fieldSpecs.firstName_testRef, TestData.bobul.firstName)
+                a.badTextFieldValuesThenValid(fieldSpecs.lastName_testRef, TestData.bobul.lastName)
+                a.add(TestAttempt("${fieldSpecs.agreeTerms_testRef.name}-check") {o.checkboxSet(fieldSpecs.agreeTerms_testRef.name, true)})
+            }
         )
 
         o.acta {tillEndOfTime()}

@@ -34,6 +34,7 @@ object fconst {
 
         object link {
             object createAccount : KeyDef() {val decl = name; val testRef = name}
+            object signUp : KeyDef() {val decl = name; val testRef = name}
         }
     }
 
