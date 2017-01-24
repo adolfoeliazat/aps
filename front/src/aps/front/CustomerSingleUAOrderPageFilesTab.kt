@@ -38,10 +38,6 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
 
     override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {
         urlQuery = FilesTabURLQuery()
-//        val filesTabURLQuery = typeSafeURLQuery(world){FilesTabURLQuery()}
-//        ordering = filesTabURLQuery.ordering.relaxedToEnum(Ordering.values(), default = Ordering.DESC)
-//        filter = filesTabURLQuery.filter.relaxedToEnum(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
-//        search = (filesTabURLQuery.search ?: "").trim()
 
         val res = await(requestChunk(null))
         when (res) {
@@ -54,9 +50,10 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                     o- ebafPlus.renderForm()
                 }}
 
+                val items = renderItems(meat, noItemsMessage = true, chunkIndex = chunksLoaded - 1)
                 content = ToReactElementable.from {kdiv{o->
                     o- plusFormContainer
-                    o- renderItems(meat, noItemsMessage = true, chunkIndex = chunksLoaded - 1)
+                    o- items
                 }}
 
                 null

@@ -290,7 +290,6 @@ class Test_UACustomer_Order_Files_EditFile : StepBasedTestScenario() {
         }
 
         ivo1.switchTo()
-        o.acta {tillEndOfTime()}
 
         o.fileFieldChoose(
             assertionDescr = "File changed",
