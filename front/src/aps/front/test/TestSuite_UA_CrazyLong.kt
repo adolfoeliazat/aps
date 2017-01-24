@@ -22,7 +22,23 @@ class Test_UA_TryOutBrowseroids : StepBasedTestScenario() {
 
 class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
     override fun buildSteps() {
-        die("reimplement Test_UA_CrazyLong_1")
+        val ivo1 = MordaBuilder(o)
+
+        o.initialShit(this)
+        ivo1.init(
+            MordaCoitizeParams(
+                browseroidName = "ivo1",
+                url = fconst.test.url.customer,
+                fillTypedStorageLocal = {},
+                fillRawStorageLocal = {}
+            ),
+            buildStaticAssertion = {o.assertAnonymousCustomerStaticIndexScreen()},
+            buildDynamicAssertion = {o.assertAnonymousCustomerDynamicIndexScreen()}
+        )
+
+        o.acta {tillEndOfTime()}
+
+
 //        o.initialShit(this)
 //
 ////        val ivo1 = TestBrowseroid(name = "ivo1", initialURL = fconst.test.url.customer)

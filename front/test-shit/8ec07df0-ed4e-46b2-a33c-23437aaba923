@@ -1,0 +1,416 @@
+-------------------- URL --------------------
+
+[uac]/
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="">
+          <a href="why.html">
+            Почему мы?
+          </a>
+        </li>
+        <li class="">
+          <a href="prices.html">
+            Цены
+          </a>
+        </li>
+        <li class="">
+          <a href="samples.html">
+            Примеры
+          </a>
+        </li>
+        <li class="">
+          <a href="faq.html">
+            ЧаВо
+          </a>
+        </li>
+        <li class="">
+          <a href="contact.html">
+            Связь
+          </a>
+        </li>
+        <li class="">
+          <a href="blog.html">
+            Блог
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="sign-in.html">
+            Вход
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div id="staticShit">
+  <!-- BEGIN CONTENT -->
+    <div id="MakeStaticSites-833" class="container">
+      <div id="MakeStaticSites-858">
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-864">
+          <h3 style="margin-bottom: 0;" id="MakeStaticSites-862">
+            <span id="MakeStaticSites-860" class="">
+              Welcome to AcademicPaperServed UA
+            </span>
+          </h3>
+        </div>
+        <div>
+          <p>
+            Hey there! Listening to music, but can’t follow your favorite song, because there’s a research paper you’ve got to get done by tomorrow?
+          </p>
+          <p>
+            Sitting in front of your laptop, desperately typing the keywords in your search engine browser and wondering why AcademicPaperServed came up with an idea of giving written assignments to the needy students like yourself?
+          </p>
+          <p>
+            Can’t be effective in the workplace, because there’s a persuasive essay you’ve got to turn in early next week?
+          </p>
+          <p>
+            Now relax. You’ve just reached the right destination! At AcademicPaperServed writing papers is really very easy!
+          </p>
+          <p>
+            Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
+          </p>
+        </div>
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-871">
+          <h3 style="margin-bottom: 0;" id="MakeStaticSites-869">
+            <span id="MakeStaticSites-867" class="">
+              Features
+            </span>
+          </h3>
+        </div>
+        <div class="row" style="margin-bottom: 20px;" id="MakeStaticSites-684">
+          <div class="col-md-4" id="MakeStaticSites-670">
+            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-666">
+              <i class="fa fa-pencil  fa-2x" style="color: #546e7a;">
+              </i>
+            </div>
+            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-668">
+              No plagiarism
+            </div>
+          </div>
+          <div class="col-md-4" id="MakeStaticSites-676">
+            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-672">
+              <i class="fa fa-star  fa-2x" style="color: #546e7a;">
+              </i>
+            </div>
+            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-674">
+              Only premium quality
+            </div>
+          </div>
+          <div class="col-md-4" id="MakeStaticSites-682">
+            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-678">
+              <i class="fa fa-list  fa-2x" style="color: #546e7a;">
+              </i>
+            </div>
+            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-680">
+              Free title page, outline, list&nbsp;of&nbsp;references
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 20px;" id="MakeStaticSites-704">
+          <div class="col-md-4" id="MakeStaticSites-690">
+            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-686">
+              <i class="glyphicon glyphicon-piggy-bank  fa-2x" style="color: #546e7a;">
+              </i>
+            </div>
+            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-688">
+              One-time and life-time discounts to returning customers
+            </div>
+          </div>
+          <div class="col-md-4" id="MakeStaticSites-696">
+            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-692">
+              <i class="fa fa-credit-card  fa-2x" style="color: #546e7a;">
+              </i>
+            </div>
+            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-694">
+              30-days money back guarantee
+            </div>
+          </div>
+          <div class="col-md-4" id="MakeStaticSites-702">
+            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-698">
+              <i class="fa fa-life-saver  fa-2x" style="color: #546e7a;">
+              </i>
+            </div>
+            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-700">
+              24/7 support
+            </div>
+          </div>
+        </div>
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-878">
+          <h3 style="margin-bottom: 0;" id="MakeStaticSites-876">
+            <span id="MakeStaticSites-874" class="">
+              Who We Are
+            </span>
+          </h3>
+        </div>
+        <div>
+          <p>
+            AcademicPaperServed is an experienced custom writing service, consisting of expert writers to deliver written assignments, essays, research papers, term papers, theses, book reports, etc to English-speaking clients worldwide. Our team of professional writers focuses on the highest quality of all types of academic papers. Thesis writing is a challenge to many students. With our assistance it will not be a problem anymore!
+          </p>
+          <p>
+            Our writers are versed in various fields of academic writing, so if you do not find a suitable category on this page, feel free to contact our Support Center to find out availability of writing help in your area of interest.
+          </p>
+          <p>
+            We have access to most reliable and complete online libraries to make your research or essay unique.
+          </p>
+          <p>
+            AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.
+          </p>
+        </div>
+        <div id="MakeStaticSites-784">
+          <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-885">
+            <h3 style="margin-bottom: 0;" id="MakeStaticSites-883">
+              <span id="MakeStaticSites-881" class="">
+                Что о нас говорят
+              </span>
+            </h3>
+          </div>
+          <div id="testimonials-window">
+            <div id="testimonials-strip">
+              <div class="testimonials-item" id="MakeStaticSites-718">
+                <div class="media" id="MakeStaticSites-716">
+                  <div class="media-left" id="MakeStaticSites-708">
+                    <img class="media-object" src="nicole.jpg">
+                    </div>
+                    <div class="media-body" id="MakeStaticSites-714">
+                      <h4 class="media-heading" id="MakeStaticSites-710">
+                        Nicole
+                      </h4>
+                      <span id="MakeStaticSites-712">
+                        Never expected such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="testimonials-item" id="MakeStaticSites-730">
+                  <div class="media" id="MakeStaticSites-728">
+                    <div class="media-left" id="MakeStaticSites-720">
+                      <img class="media-object" src="miranda.jpg">
+                      </div>
+                      <div class="media-body" id="MakeStaticSites-726">
+                        <h4 class="media-heading" id="MakeStaticSites-722">
+                          Miranda
+                        </h4>
+                        <span id="MakeStaticSites-724">
+                          Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="testimonials-item" id="MakeStaticSites-742">
+                    <div class="media" id="MakeStaticSites-740">
+                      <div class="media-left" id="MakeStaticSites-732">
+                        <img class="media-object" src="mike-p.jpg">
+                        </div>
+                        <div class="media-body" id="MakeStaticSites-738">
+                          <h4 class="media-heading" id="MakeStaticSites-734">
+                            Mike P.
+                          </h4>
+                          <span id="MakeStaticSites-736">
+                            I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="testimonials-item" id="MakeStaticSites-754">
+                      <div class="media" id="MakeStaticSites-752">
+                        <div class="media-left" id="MakeStaticSites-744">
+                          <img class="media-object" src="joseph-b.jpg">
+                          </div>
+                          <div class="media-body" id="MakeStaticSites-750">
+                            <h4 class="media-heading" id="MakeStaticSites-746">
+                              Joseph B.
+                            </h4>
+                            <span id="MakeStaticSites-748">
+                              First I doubted I’d get anything of good quality, but I was up&nbsp;to the eyes in work and had no other choice. The paper&nbsp;proved to be authentic and came on time. Can I get&nbsp;the same writer for my next essay?
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="testimonials-item" id="MakeStaticSites-766">
+                        <div class="media" id="MakeStaticSites-764">
+                          <div class="media-left" id="MakeStaticSites-756">
+                            <img class="media-object" src="mark-c.jpg">
+                            </div>
+                            <div class="media-body" id="MakeStaticSites-762">
+                              <h4 class="media-heading" id="MakeStaticSites-758">
+                                Mark C.
+                              </h4>
+                              <span id="MakeStaticSites-760">
+                                How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="testimonials-item" id="MakeStaticSites-778">
+                          <div class="media" id="MakeStaticSites-776">
+                            <div class="media-left" id="MakeStaticSites-768">
+                              <img class="media-object" src="linda-r.jpg">
+                              </div>
+                              <div class="media-body" id="MakeStaticSites-774">
+                                <h4 class="media-heading" id="MakeStaticSites-770">
+                                  Linda R.
+                                </h4>
+                                <span id="MakeStaticSites-772">
+                                  I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div style="display: flex; align-items: center; position: absolute; width: 20px; right: 0; top: 0; height: 100%;" id="MakeStaticSites-781">
+                          <i class="fa fa-chevron-right  fa-2x" id="testimonials-right">
+                          </i>
+                        </div>
+                      </div>
+                      <div>
+                      </div>
+                    </div>
+                    <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-892">
+                      <h3 style="margin-bottom: 0;" id="MakeStaticSites-890">
+                        <span id="MakeStaticSites-888" class="">
+                          What We Offer
+                        </span>
+                      </h3>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;" id="MakeStaticSites-811">
+                      <div class="col-md-3" id="MakeStaticSites-791">
+                        <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-787">
+                          <i class="fa fa-envira  fa-2x" style="color: #546e7a;">
+                          </i>
+                        </div>
+                        <div style="text-align: center; margin: 0 0px;" id="MakeStaticSites-789">
+                          Custom essay, research, thesis writing
+                        </div>
+                      </div>
+                      <div class="col-md-3" id="MakeStaticSites-797">
+                        <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-793">
+                          <i class="fa fa-rocket  fa-2x" style="color: #546e7a;">
+                          </i>
+                        </div>
+                        <div style="text-align: center; margin: 0 0px;" id="MakeStaticSites-795">
+                          Plagiarism-free original papers written from scratch
+                        </div>
+                      </div>
+                      <div class="col-md-3" id="MakeStaticSites-803">
+                        <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-799">
+                          <i class="fa fa-bomb  fa-2x" style="color: #546e7a;">
+                          </i>
+                        </div>
+                        <div style="text-align: center; margin: 0 0px;" id="MakeStaticSites-801">
+                          Proofreading and editing of written papers
+                        </div>
+                      </div>
+                      <div class="col-md-3" id="MakeStaticSites-809">
+                        <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-805">
+                          <i class="fa fa-book  fa-2x" style="color: #546e7a;">
+                          </i>
+                        </div>
+                        <div style="text-align: center; margin: 0 0px;" id="MakeStaticSites-807">
+                          Free guidelines on essay topic selection and writing process
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="fa-ul" style="margin-left: 22px;" id="MakeStaticSites-831">
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-813">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports
+                      </li>
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-815">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Plagiarism-free original papers written from scratch
+                      </li>
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-817">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Proofreading and editing of written papers
+                      </li>
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-819">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Choosing sources for your paper, providing with annotated bibliography upon request
+                      </li>
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-821">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Free guidelines on successful essay topic selection and writing process
+                      </li>
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-823">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Individual approach to every customer, no repetitions, free consulting on the paper content
+                      </li>
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-825">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Free revisions till you are completely satisfied
+                      </li>
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-827">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Meeting your deadline
+                      </li>
+                      <li style="margin-bottom: 10px;" id="MakeStaticSites-829">
+                        <i class="fa fa-star  fa-li" style="color: #546e7a;">
+                        </i>
+                        Security and confidentiality
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- END CONTENT -->
+                </div>
+                <div id="ticker" style="display: none;">
+                  <div>
+                    <div class="container">
+                      <div style="display:  flex;  align-items:  center;  justify-content:  center;  position:  absolute;  left:  0px;  top:  200px;  width:  100%;">
+                        <span style="margin-left:  10">
+                          Дышите глубоко...
+                        </span>
+                        <div id="wholePageTicker" class="progressTicker" style="background-color:  #546e7a;  width:  14px;  height:  28px;  margin-left:  10px;  margin-top:  -5px">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script src="jquery.min.js">
+                </script>
+                <script>
+                  window.storageLocalForStaticContent = localStorage
+                  function dlog(...args) {
+                  console.log.apply(console.log, args)
+                  }
+                  function displayInitialShit() {
+                  if (window.storageLocalForStaticContent.getItem('token')) {
+                  dlog('displayInitialShit -- token')
+                  document.getElementById('ticker').style.display = ''
+                  } else {
+                  dlog('displayInitialShit -- no token')
+                  makeSignInNavbarLinkVisible()
+                  document.getElementById('staticShit').style.display = ''
+                  window.staticShitIsRenderedStatically = true
+                  }
+                  }
+                  function makeSignInNavbarLinkVisible() {
+                  $('a[href="sign-in.html"]').css('display', '')
+                  }
+                  if (!/test=|testSuite=/.test(location.href)) {
+                  displayInitialShit()
+                  }
+                </script>

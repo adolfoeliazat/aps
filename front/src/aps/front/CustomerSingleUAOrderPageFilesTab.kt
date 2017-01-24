@@ -50,7 +50,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                     o- ebafPlus.renderForm()
                 }}
 
-                val items = renderItems(meat, noItemsMessage = true, chunkIndex = chunksLoaded - 1)
+                val items = makeItemsControl(meat, noItemsMessage = true, chunkIndex = chunksLoaded - 1)
                 content = ToReactElementable.from {kdiv{o->
                     o- plusFormContainer
                     o- items
@@ -184,7 +184,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         }
     }
 
-    private fun renderItems(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean, chunkIndex: Int, containerID: String? = null): ToReactElementable {
+    private fun makeItemsControl(meat: ItemsResponse<UAOrderFileRTO>, noItemsMessage: Boolean, chunkIndex: Int, containerID: String? = null): ToReactElementable {
         if (meat.items.isEmpty()) {
             return if (noItemsMessage) span(const.msg.noItems)
             else NOTRE
@@ -428,10 +428,10 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                         is ZimbabweResponse.Hunky -> {
                                             val newChunkContainerID = puid()
                                             placeholder.setContent(
-                                                renderItems(res.meat,
-                                                            noItemsMessage = false,
-                                                            chunkIndex = chunksLoaded - 1,
-                                                            containerID = newChunkContainerID))
+                                                makeItemsControl(res.meat,
+                                                                 noItemsMessage = false,
+                                                                 chunkIndex = chunksLoaded - 1,
+                                                                 containerID = newChunkContainerID))
                                             await(scrollBodyToShitGradually {byid(newChunkContainerID)})
                                         }
                                     }

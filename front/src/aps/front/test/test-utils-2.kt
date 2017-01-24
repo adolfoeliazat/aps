@@ -115,6 +115,13 @@ fun TestScenarioBuilder.assertCustomerWithTokenDynamicIndexScreen() {
     assertScreenHTML("assertCustomerWithTokenDynamicIndexScreen", "1e961b10-1466-48d9-a481-65db5ca537ac")
 }
 
+fun TestScenarioBuilder.assertAnonymousCustomerStaticIndexScreen() {
+    assertScreenHTML(currentJSFunctionName(), "8ec07df0-ed4e-46b2-a33c-23437aaba923")
+}
+
+fun TestScenarioBuilder.assertAnonymousCustomerDynamicIndexScreen() {
+    assertScreenHTML(currentJSFunctionName(), "56acc98a-f632-4391-8660-c65022f9f14c")
+}
 
 fun TestScenarioBuilder.assertAnonymousWriterStaticIndexScreen() {
     assertScreenHTML("assertWriterAnonymousStaticIndexScreen", "fef22d58-3da9-4651-bd59-019f74944ada")
