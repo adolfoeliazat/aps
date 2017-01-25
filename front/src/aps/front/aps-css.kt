@@ -65,6 +65,18 @@ object css {
 
     var allShit = ""
 
+    object textField : Group(null) {
+        val labelContainer by Style("""
+            position: relative;
+        """)
+
+        val labelContainerTestHint by Style("""
+            position: absolute;
+            right: 0;
+            top: 0;
+        """)
+    }
+
     object cunt : Group(null) {
         object header : Group(this) {
             val viewing by Style("""

@@ -134,17 +134,11 @@ sealed class FormResponse2<Meat> {
     class Shitty<Meat>(val error: String, val fieldErrors: List<FieldError>): FormResponse2<Meat>()
 }
 
-fun passwordField(container: RequestMatumba) =
-    TextField(container, fieldSpecs.password)
-
-fun emailField(container: RequestMatumba) =
-    TextField(container, fieldSpecs.email)
-
 class SignInResponse(val token: String, val user: UserRTO) : CommonResponseFieldsImpl()
 
 class SignInWithPasswordRequest : RequestMatumba() {
-    val email = emailField(this)
-    val password = passwordField(this)
+    val email = TextField(this, fieldSpecs.emailInSignInForm)
+    val password = TextField(this, fieldSpecs.passwordInSignInForm)
 }
 
 class SignInWithTokenRequest : RequestMatumba() {
@@ -183,7 +177,7 @@ open class UpdateUserRequest() : RequestMatumba() {
 class AdminCreateUserRequest: UpdateUserRequest()
 
 class ImmutableSignUpFields(container: RequestMatumba) {
-    val email = emailField(container)
+    val email = TextField(container, fieldSpecs.email)
 }
 
 class MutableSignUpFields(container: RequestMatumba) {

@@ -77,17 +77,21 @@
             </span>
           </blockquote>
           <div class="form-group">
-            <label>
-              Почта
-            </label>
+            <div class="textField-labelContainer">
+              <label>
+                Почта
+              </label>
+            </div>
             <div style="position: relative;">
               <input type="text" rows="5" class="form-control" value="bobul@test.shit.ua" style="resize: none;">
               </div>
             </div>
             <div class="form-group" style="margin-bottom: 0px;">
-              <label>
-                Имя
-              </label>
+              <div class="textField-labelContainer">
+                <label>
+                  Имя
+                </label>
+              </div>
               <div style="position: relative;">
                 <input type="text" rows="5" class="form-control" value="iamlongshitiamlongshitiamlongshitiamlongshitiamlong" style="resize: none; padding-right: 30px;">
                   <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
@@ -100,9 +104,11 @@
                 </div>
               </div>
               <div class="form-group" style="margin-bottom: 0px;">
-                <label>
-                  Фамилия
-                </label>
+                <div class="textField-labelContainer">
+                  <label>
+                    Фамилия
+                  </label>
+                </div>
                 <div style="position: relative;">
                   <input type="text" rows="5" class="form-control" value="" style="resize: none; padding-right: 30px;">
                     <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">

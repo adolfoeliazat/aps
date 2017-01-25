@@ -38,8 +38,16 @@ import aps.front.*
     override fun focus() = input.focus()
 
     override fun render(): ReactElement {
+        val c = css.textField
+        fun String.div(block: (ElementBuilder) -> Unit) = kdiv(Attrs(className = this), Style(), block)
+
         return kdiv(className = "form-group", marginBottom = if (error != null) 0 else null){o->
-            o- klabel {it-_spec.title}
+            o- c.labelContainer.div{o->
+                o- c.labelContainerTestHint.div{o->
+                    o- "fuck you"
+                }
+                o- klabel {it-_spec.title}
+            }
             o- kdiv(position = "relative"){o->
                 o- input
                 if (error != null) {

@@ -4,6 +4,31 @@ package aps.front
 
 import aps.*
 
+//fun qwe_1() {
+//    fun qwe_local(firstCall: Boolean = true) {
+//        console.log("I am local in qwe_1; firstCall = $firstCall")
+//        if (firstCall) {
+////            qwe_local(firstCall = false) // Comment this out as third step
+//        }
+//    }
+//    qwe_local()
+//}
+//
+//// First, try `qwe_1()` with this commented out -- works as expected
+//// Second, uncomment this and try `qwe_1()` again -- broken
+//// Third, comment out line with recursive call to `qwe_local` above, then try `qwe_1()` again -- works as expected
+////
+//fun qwe_2() {
+//    fun qwe_local(firstCall: Boolean = true) {
+//        console.log("I am local in qwe_2; firstCall = $firstCall")
+//        if (firstCall) {
+//            qwe_local(firstCall = false)
+//        }
+//    }
+//    qwe_local()
+//}
+
+
 //fun qwe_2() = async {
 //    val promise: Promisoid<Promisoid<Unit>> = async {
 //        Promisoid<Unit> {_, _ -> console.log("I will never end")}

@@ -105,16 +105,16 @@ fun assertEqualsStructurally(expected: Any?, actual: Any?, msg: String? = null) 
 
     fun prepare(x: dynamic): dynamic {
         val clone = lodash.cloneDeep(x)
-        fun descend(x: dynamic) {
+        fun descend_assertEqualsStructurally(x: dynamic) {
             if (jsTypeOf(x) != "object") return
             if (x is ArrayList<*>) {
                 jsDeleteKey(x, "modCount")
             }
             for (key in JSObject.keys(x)) {
-                descend(x[key])
+                descend_assertEqualsStructurally(x[key])
             }
         }
-        descend(clone)
+        descend_assertEqualsStructurally(clone)
         return clone
     }
 

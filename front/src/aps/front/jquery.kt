@@ -32,6 +32,7 @@ fun JQuery.outerWidth(includeMargin: Boolean = false): Double = this.asDynamic()
 fun JQuery.outerHeight(includeMargin: Boolean = false): Double = this.asDynamic().outerHeight(includeMargin)
 fun JQuery.each(block: (index: Int, element: HTMLElement) -> Unit): Unit = this.asDynamic().each(block)
 fun JQuery.hide(): String = this.asDynamic().hide()
+fun JQuery.show(): String = this.asDynamic().show()
 
 val jqbody: JQuery get() = jq(document.body!!)
 

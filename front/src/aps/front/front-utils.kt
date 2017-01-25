@@ -158,19 +158,25 @@ fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String 
     return buf.toString()
 }
 
+val testArtifactClasses = listOf(
+    css.textField.labelContainerTestHint
+)
+
 fun stripUninterestingElements(jqel: JQuery): HTMLElement {
-    fun descend(el: HTMLElement) {
+    fun descend_stripUninterestingElements(el: HTMLElement) {
         if (el.tagName == "SCRIPT" || el.style.display == "none") return el.remove()
-        if (el.className.contains("ignoreInTests")) return el.remove()
+        val classNames = el.className.split(Regex("\\s+"))
+        if (classNames.contains("ignoreInTests")) return el.remove() // TODO:vgrechka @killme
+        if (testArtifactClasses.any {classNames.contains(it)}) return el.remove()
 
         val children = el.children.asList().toList() // Copying it because `children.asList()` is live
         for (child in children) {
-            descend(child)
+            descend_stripUninterestingElements(child)
         }
     }
 
     val root = jqel[0]!!.cloneNode(/*deep*/ true) as HTMLElement
-    descend(root)
+    descend_stripUninterestingElements(root)
     return root
 }
 
@@ -399,13 +405,6 @@ val progressTickerRuleStyle: CSSStyleDeclaration by lazy {
     bitch("Cannot find .progressTicker rule")
 }
 
-fun freezeProgressTicker() {
-    progressTickerKeyframe100RuleStyle.opacity = "1"
-}
-
-fun unfreezeProgressTicker() {
-    progressTickerKeyframe100RuleStyle.opacity = "0"
-}
 
 fun isModalShown() = jq(".modal-backdrop").length > 0
 

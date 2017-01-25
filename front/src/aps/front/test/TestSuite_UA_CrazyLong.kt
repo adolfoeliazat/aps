@@ -55,13 +55,15 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
                 a.badTextFieldValuesThenValid(fieldSpecs.firstName_testRef, TestData.bobul.firstName)
                 a.badTextFieldValuesThenValid(fieldSpecs.lastName_testRef, TestData.bobul.lastName)
                 a.add(TestAttempt(
-                    "${fieldSpecs.agreeTerms_testRef.name}-check",
-                    buildBeforeSubmit = {
-                        o.imposeNextGeneratedPassword(TestData.bobul.password)
-                    },
+                    subID = "${fieldSpecs.agreeTerms_testRef.name}-check",
+                    descr = "Mark checkbox",
                     buildPrepare = {
                         o.checkboxSet(fieldSpecs.agreeTerms_testRef.name, true)
-                    }))
+                    },
+                    buildBeforeSubmit = {
+                        o.imposeNextGeneratedPassword(TestData.bobul.password)
+                    }
+                ))
             }
         )
         o.debugMailboxCheck("c937779f-0870-4dec-a5a9-4ccaa791b934")
@@ -71,8 +73,31 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
             descr = "Sign-in attempts",
             baseID = "6a87ffac-4adf-4348-9894-f697bcb23268",
             buildAttempts = {a->
-                a.badTextFieldValuesThenValid(fieldSpecs.email_testRef, "pizda@wrong-email.me")
-                a.badTextFieldValuesThenValid(fieldSpecs.password_testRef, TestData.bobul.password)
+                var subID = 1
+                class Value(val value: String, val descr: String)
+                val emails = listOf(
+                    Value("", "empty"),
+                    Value("shit", "malformed"),
+                    Value("pizda@wrong-email.me", "incorrect"),
+                    Value(TestData.bobul.email, "correct")
+                )
+                val passwords = listOf(
+                    Value("", "empty"),
+                    Value("shitty password", "incorrect"),
+                    Value(TestData.bobul.password, "correct")
+                )
+                for (email in emails) {
+                    for (password in passwords) {
+                        a.add(TestAttempt(
+                            subID = "" + subID++,
+                            descr = "Email: ${email.descr}; Password: ${password.descr}",
+                            buildPrepare = {
+                                o.inputSetValue(fieldSpecs.emailInSignInForm_testRef.name, email.value)
+                                o.inputSetValue(fieldSpecs.passwordInSignInForm_testRef.name, password.value)
+                            }
+                        ))
+                    }
+                }
             }
         )
 
@@ -123,73 +148,6 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
 //        o.beginWorkRegion()
     }
 
-}
-
-fun TestScenarioBuilder.formSubmissionAttempts(
-    testShit: TestShit,
-    descr: String,
-    baseID: String,
-    buildAttempts: (TestAttemptBuilder) -> Unit
-) {
-    val testAttemptBuilder = TestAttemptBuilder(this)
-    buildAttempts(testAttemptBuilder)
-
-    section(descr) {
-        for ((i, attempt) in testAttemptBuilder.attempts.withIndex()) {
-            attempt.buildPrepare()
-            submitFormSequence(
-                testShit,
-                descr = "Attempt ${attempt.id}",
-                aid = "$baseID--${attempt.id}",
-                imposeTimestamp = i == testAttemptBuilder.attempts.lastIndex,
-                buildBeforeAction = attempt.buildBeforeSubmit)
-        }
-    }
-}
-
-class TestAttempt(
-    val id: String,
-    val buildBeforeSubmit: () -> Unit = {},
-    val buildPrepare: () -> Unit
-)
-
-class TestAttemptBuilder(val o: TestScenarioBuilder) {
-    private val _attempts = mutableListOf<TestAttempt>()
-
-    val attempts get() = _attempts.toList()
-
-    fun add(attempt: TestAttempt) {
-        if (_attempts.any {it.id == attempt.id}) bitch("ID is already used: $${attempt.id}")
-        _attempts += attempt
-    }
-}
-
-fun TestAttemptBuilder.prepareNothing() {
-    add(TestAttempt("prepareNothing") {})
-}
-
-fun TestAttemptBuilder.badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String) {
-    exhaustive/when (field.type) {
-        TextFieldType.STRING, TextFieldType.PASSWORD, TextFieldType.TEXTAREA -> {
-            if (field.minLen >= 1) {
-                add(TestAttempt("${field.name}--empty") {o.inputSetValue(field.name, "")})
-            }
-            if (field.minLen > 1) {
-                add(TestAttempt("${field.name}--tooShort") {o.inputSetValue(field.name, TestData.generateShit(field.minLen - 1))})
-            }
-            add(TestAttempt("${field.name}--tooLong") {o.inputSetValue(field.name, TestData.generateShit(field.maxLen + 1))})
-            add(TestAttempt("${field.name}--valid") {o.inputSetValue(field.name, validValue)})
-        }
-
-        TextFieldType.EMAIL -> {
-            add(TestAttempt("${field.name}--empty") {o.inputSetValue(field.name, "")})
-            add(TestAttempt("${field.name}-shit") {o.inputSetValue(field.name, "shit")})
-            add(TestAttempt("${field.name}-valid") {o.inputSetValue(field.name, validValue)})
-        }
-
-        TextFieldType.PHONE -> imf("badTextFieldValuesThenValid for PHONE")
-
-    }
 }
 
 

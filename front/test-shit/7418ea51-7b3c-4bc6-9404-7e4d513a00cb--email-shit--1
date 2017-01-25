@@ -72,25 +72,31 @@
       <div class="">
         <form class="">
           <div class="form-group">
-            <label>
-              Почта
-            </label>
+            <div class="textField-labelContainer">
+              <label>
+                Почта
+              </label>
+            </div>
             <div style="position: relative;">
               <input type="text" rows="5" class="form-control" disabled="" value="shit" style="resize: none;">
               </div>
             </div>
             <div class="form-group">
-              <label>
-                Имя
-              </label>
+              <div class="textField-labelContainer">
+                <label>
+                  Имя
+                </label>
+              </div>
               <div style="position: relative;">
                 <input type="text" rows="5" class="form-control" disabled="" value="" style="resize: none;">
                 </div>
               </div>
               <div class="form-group">
-                <label>
-                  Фамилия
-                </label>
+                <div class="textField-labelContainer">
+                  <label>
+                    Фамилия
+                  </label>
+                </div>
                 <div style="position: relative;">
                   <input type="text" rows="5" class="form-control" disabled="" value="" style="resize: none;">
                   </div>

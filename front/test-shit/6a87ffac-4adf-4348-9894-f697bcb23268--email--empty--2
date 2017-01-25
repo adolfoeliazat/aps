@@ -100,19 +100,12 @@
                 </div>
               </div>
             </div>
-            <div class="form-group" style="margin-bottom: 0px;">
+            <div class="form-group">
               <label>
                 Пароль
               </label>
               <div style="position: relative;">
-                <input type="password" rows="5" class="form-control" value="" style="resize: none; padding-right: 30px;">
-                  <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
-                    <span class="">
-                      Поле обязательно
-                    </span>
-                  </div>
-                  <div style="width: 15px; height: 15px; background-color: rgb(229, 115, 115); border-radius: 10px; position: absolute; right: 8px; top: 10px;">
-                  </div>
+                <input type="password" rows="5" class="form-control" value="" style="resize: none;">
                 </div>
               </div>
               <div style="text-align: left;">

@@ -264,7 +264,73 @@ fun TestScenarioBuilder.submitFormSequence(
     )
 }
 
+fun TestScenarioBuilder.formSubmissionAttempts(
+    testShit: TestShit,
+    descr: String,
+    baseID: String,
+    buildAttempts: (TestAttemptBuilder) -> Unit
+) {
+    val testAttemptBuilder = TestAttemptBuilder(this)
+    buildAttempts(testAttemptBuilder)
 
+    section(descr) {
+        for ((i, attempt) in testAttemptBuilder.attempts.withIndex()) {
+            attempt.buildPrepare()
+            submitFormSequence(
+                testShit,
+                descr = "Attempt: ${attempt.descr}",
+                aid = "$baseID--${attempt.subID}",
+                imposeTimestamp = i == testAttemptBuilder.attempts.lastIndex,
+                buildBeforeAction = attempt.buildBeforeSubmit)
+        }
+    }
+}
+
+class TestAttempt(
+    val subID: String,
+    val descr: String,
+    val buildBeforeSubmit: () -> Unit = {},
+    val buildPrepare: () -> Unit
+)
+
+class TestAttemptBuilder(val o: TestScenarioBuilder) {
+    private val _attempts = mutableListOf<TestAttempt>()
+
+    val attempts get() = _attempts.toList()
+
+    fun add(attempt: TestAttempt) {
+        if (_attempts.any {it.subID == attempt.subID}) bitch("ID is already used: $${attempt.subID}")
+        _attempts += attempt
+    }
+}
+
+fun TestAttemptBuilder.prepareNothing() {
+    add(TestAttempt(subID = "Prepare nothing", descr = "prepareNothing") {})
+}
+
+fun TestAttemptBuilder.badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String) {
+    exhaustive/when (field.type) {
+        TextFieldType.STRING, TextFieldType.PASSWORD, TextFieldType.TEXTAREA -> {
+            if (field.minLen >= 1) {
+                add(TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {o.inputSetValue(field.name, "")})
+            }
+            if (field.minLen > 1) {
+                add(TestAttempt(subID = "${field.name}--tooShort", descr = "${field.name}: too short") {o.inputSetValue(field.name, TestData.generateShit(field.minLen - 1))})
+            }
+            add(TestAttempt(subID = "${field.name}--tooLong", descr = "${field.name}: too long") {o.inputSetValue(field.name, TestData.generateShit(field.maxLen + 1))})
+            add(TestAttempt(subID = "${field.name}--valid", descr = "${field.name}: valid") {o.inputSetValue(field.name, validValue)})
+        }
+
+        TextFieldType.EMAIL -> {
+            add(TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {o.inputSetValue(field.name, "")})
+            add(TestAttempt(subID = "${field.name}-shit", descr = "${field.name}: shit") {o.inputSetValue(field.name, "shit")})
+            add(TestAttempt(subID = "${field.name}-valid", descr = "${field.name}: valid") {o.inputSetValue(field.name, validValue)})
+        }
+
+        TextFieldType.PHONE -> imf("badTextFieldValuesThenValid for PHONE")
+
+    }
+}
 
 
 

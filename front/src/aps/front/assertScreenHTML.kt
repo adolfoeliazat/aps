@@ -386,10 +386,14 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                 o- rerunTestSlowlyButton()
                                 renderSpecificButtons(o)
                             }
-                            o- link(title = "Assertion: ${p.descr}", color = BLACK, onClick = {
-                                revealStack(stackCapture, muteConsole = true)
-                            })
-//                                o- "Assertion: $descr"
+                            o- kdiv{o->
+                                o- link(title = "Assertion: ${p.descr}", color = BLACK, onClick = {
+                                    revealStack(stackCapture, muteConsole = true)
+                                })
+                            }
+                            o- kdiv(fontSize = "75%", fontWeight = "normal"){o->
+                                o- p.assertionID
+                            }
                         }
                     }
                     val bannerPane = old_debugPanes.put(banner)

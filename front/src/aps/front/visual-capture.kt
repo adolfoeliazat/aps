@@ -79,7 +79,7 @@ fun captureVisualShit(id: String): Promisoid<VisualShitCapturedRequest.Response>
 
         val shots = mutableListOf<BrowserShot>()
 
-        freezeProgressTicker()
+        freezeShitForCapturing()
         while (true) {
             if (shots.size == 10) bitch("Too many fucking chunks to shoot")
 
@@ -109,7 +109,7 @@ fun captureVisualShit(id: String): Promisoid<VisualShitCapturedRequest.Response>
             if (dy < 0.001) break
             if (isModalShown()) break
         }
-        unfreezeProgressTicker()
+        unfreezeShitAfterCapturing()
 
         val res = await(send(VisualShitCapturedRequest()-{o->
             o.id = shitID
@@ -135,7 +135,15 @@ fun captureVisualShit(id: String): Promisoid<VisualShitCapturedRequest.Response>
     }
 }
 
+fun freezeShitForCapturing() {
+    progressTickerKeyframe100RuleStyle.opacity = "1"
+    testArtifactClasses.forEach {jq(".$it").hide()}
+}
 
+fun unfreezeShitAfterCapturing() {
+    progressTickerKeyframe100RuleStyle.opacity = "0"
+    testArtifactClasses.forEach {jq(".$it").show()}
+}
 
 
 

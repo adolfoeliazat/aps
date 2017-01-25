@@ -21,7 +21,7 @@ import org.apache.commons.validator.routines.EmailValidator
         run error@{
             if (value.length < spec.minLen)
                 return@error if (value.length == 0) t("TOTE", "Поле обязательно")
-                else t("TOTE", "Не менее $spec.minLen символов")
+                else t("TOTE", "Не менее ${spec.minLen} символов")
             if (value.length > spec.maxLen) return@error t("TOTE", "Не более ${spec.maxLen} символов")
 
             when (spec.type) {
