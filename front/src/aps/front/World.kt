@@ -60,7 +60,7 @@ class World(val name: String) {
 
         Globus.worldMaybe = this
         if (isTest()) {
-            testLocationBar.update()
+            TestLocationBar.update()
         }
         send(PingRequest())
     }

@@ -237,19 +237,21 @@ fun TestScenarioBuilder.formWithAnimationOnCompletionSequence_killme(
     assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
-fun TestScenarioBuilder.submitForm(
+fun TestScenarioBuilder.submitFormSequence(
     shit: TestShit,
     descr: String,
     buildAction: (() -> Unit)? = null,
     aid: String,
     buttonKey: String? = null,
-    imposeTimestamp: Boolean = true
+    imposeTimestamp: Boolean = true,
+    buildBeforeAction: () -> Unit = {}
 ) {
     sequence(
         buildAction = {
             if (imposeTimestamp) {
                 acta {shit.imposeNextRequestTimestamp()}
             }
+            buildBeforeAction()
             (buildAction ?: {
                 buttonClick(buttonKey ?: fconst.key.primary.testRef)
             })()

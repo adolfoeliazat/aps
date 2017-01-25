@@ -2,7 +2,7 @@ package aps.front
 
 import kotlin.properties.Delegates.notNull
 
-object testLocationBar {
+object TestLocationBar {
     private var initialized = false
     private var pane by notNull<String>()
     private var control by notNull<Control2>()

@@ -583,7 +583,7 @@ fun TestScenarioBuilder.addFile(shit: TestShit, fileName: String, title: String,
 
     inputAppendValue("title", title)
     inputAppendValue("details", details)
-    submitForm(
+    submitFormSequence(
         shit,
         descr = "Shit is added",
         aid = "$aid--submit"
@@ -641,7 +641,15 @@ fun TestScenarioBuilder.animatedActionSequence(
     o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
-
+fun TestScenarioBuilder.pretendingAllAssertionsNotHardened(build: () -> Unit) {
+    var old by notNullOnce<Boolean>()
+    act {
+        old = TestGlobal.pretendAllAssertionsNotHardened
+        TestGlobal.pretendAllAssertionsNotHardened = true
+    }
+    build()
+    act {TestGlobal.pretendAllAssertionsNotHardened = old}
+}
 
 
 

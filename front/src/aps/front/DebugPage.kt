@@ -15,6 +15,7 @@ class DebugPage(val world: World) {
         when (urlQuery.page) {
             "log" -> await(DebugLogPage(world).load())
             "word-mention-finder" -> await(DebugWordMentionFinderPage(world).load())
+            "mailbox" -> await(DebugMailboxPage(world).load())
             else -> wtf("Fucky page: ${urlQuery.page}")
         }
     }

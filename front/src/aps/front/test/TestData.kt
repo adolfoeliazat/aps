@@ -8,7 +8,11 @@ data class TestUserData(
 )
 
 object TestData {
-    val bobul = TestUserData(email = "bobul@test.shit.ua", firstName = "Иво", lastName = "Бобул", password = "bobulsecret")
+    val bobul = TestUserData(
+        email = "bobul@test.shit.ua",
+        firstName = "Иво",
+        lastName = "Бобул",
+        password = "ohuevajushij-secret")
 
     fun generateShit(len: Int): String {
         val bunchOfShit = buildString {

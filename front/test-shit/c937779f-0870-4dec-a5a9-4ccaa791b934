@@ -1,0 +1,91 @@
+-------------------- URL --------------------
+
+[uaw]/debug.html?page=mailbox
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        Писец
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="">
+          <a href="why.html">
+            Почему мы?
+          </a>
+        </li>
+        <li class="">
+          <a href="prices.html">
+            Цены
+          </a>
+        </li>
+        <li class="">
+          <a href="faq.html">
+            ЧаВо
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="sign-in.html">
+            Вход
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          Mailbox
+        </h3>
+      </div>
+    </div>
+    <div>
+      <div class="test-mailbox-messages">
+        <div class="test-mailbox-message">
+          <div class="test-mailbox-header">
+            <div class="test-mailbox-section">
+              <div class="test-mailbox-sectionTitle">
+                To:
+              </div>
+              <div class="test-mailbox-sectionValue">
+                Иво Бобул &lt;bobul@test.shit.ua&gt;
+              </div>
+            </div>
+            <div class="test-mailbox-section">
+              <div class="test-mailbox-sectionTitle">
+                Subject:
+              </div>
+              <div class="test-mailbox-sectionValue">
+                Пароль для APS
+              </div>
+            </div>
+          </div>
+          <div class="test-mailbox-body">
+            <div>
+              Привет, Иво!<br>
+              <br>
+                Вот твой пароль: ohuevajushij-secret
+                <br>
+                  <br>
+                    <a href="http://aps-ua-customer.local:3012/sign-in.html">
+                      http://aps-ua-customer.local:3012/sign-in.html
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

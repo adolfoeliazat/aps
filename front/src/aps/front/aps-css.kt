@@ -15,7 +15,12 @@ import kotlin.reflect.KProperty
 object css {
     abstract class Group(val parent: Group?)
 
-    private class Style(val style: String? = null, val hover: String? = null) {
+    private class Style(
+        val style: String? = null,
+        val hover: String? = null,
+        val firstChild: String? = null,
+        val notFirstChild: String? = null
+    ) {
         var name: String? = null
 
         operator fun getValue(thiz: Any, prop: KProperty<*>): String {
@@ -31,6 +36,8 @@ object css {
 
                 style?.let {allShit += ".$name {$it}"}
                 hover?.let {allShit += ".$name:hover {$it}"}
+                firstChild?.let {allShit += ".$name:first-child {$it}"}
+                notFirstChild?.let {allShit += ".$name:nth-child(1n+2) {$it}"}
             }
             return name!!
         }
@@ -123,6 +130,38 @@ object css {
 
     object test : Group(null) {
         val width = "45rem"
+
+        object mailbox : Group(this) {
+            val messages by Style("""
+            """)
+
+            val message by Style(
+                style = """
+                """,
+                notFirstChild = """
+                    margin-top: 1em;
+                """)
+
+            val header by Style("""
+                background-color: #b3e5fc;
+                margin-bottom: 0.25em;;
+            """)
+
+            val section by Style("""
+                display: flex;
+            """)
+
+            val sectionTitle by Style("""
+                font-weight: bold;
+            """)
+
+            val sectionValue by Style("""
+                margin-left: 1ch;
+            """)
+
+            val body by Style("""
+            """)
+        }
 
         object crossWorld : Group(this) {
             val locationPane by Style("""

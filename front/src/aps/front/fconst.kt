@@ -41,6 +41,7 @@ object fconst {
     object url {
         object test {
             val writerLocalBase = "http://aps-ua-writer.local:3022"
+            val debugMailbox = "$writerLocalBase/debug.html?page=mailbox"
         }
     }
 

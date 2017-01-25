@@ -62,7 +62,7 @@ class TestBrowseroid(override val name: String, val initialURL: String) : Browse
             var theNewURL = newURL
             if (!theNewURL.startsWith("/")) theNewURL = "/$theNewURL"
             url = URL(baseWithoutSlash + theNewURL)
-            testLocationBar.update()
+            TestLocationBar.update()
         }
 
         override fun reload() {
@@ -160,7 +160,7 @@ class TestBrowseroid(override val name: String, val initialURL: String) : Browse
 
     fun replaceWholeURL(newURL: String) {
         url = URL(newURL)
-        testLocationBar.update()
+        TestLocationBar.update()
     }
 }
 
@@ -312,7 +312,7 @@ class Morda {
             loadCSS()
         }
 
-        testLocationBar.update()
+        TestLocationBar.update()
         ExternalGlobus.displayInitialShit()
         TestGlobal.currentMordaMaybe = this
         state = State.STATIC
@@ -342,14 +342,15 @@ class Morda {
         TestGlobal.currentMordaMaybe = this
         Globus.currentBrowseroidMaybe = bro
         ExternalGlobus.storageLocalForStaticContent = stols
-        testLocationBar.update()
+        TestLocationBar.update()
         world.unshelveVisualShit()
         jqbody.scrollTop(bodyScrollTop)
         state = State.ACTIVE
     }
 
     private fun disposeAndShelveShit() = async<Unit> {
-        testLocationBar.dispose()
+        TestLocationBar.dispose()
+        disposeEffects()
         Globus.worldMaybe?.shelveVisualShit()
         _DOMReact.checkNothingMounted()
     }

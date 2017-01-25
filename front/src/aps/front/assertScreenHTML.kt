@@ -110,7 +110,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
 
                 val shit = async {
                     when {
-                        expected == null -> {
+                        expected == null || TestGlobal.pretendAllAssertionsNotHardened -> {
                             await(showTestBanner(
                                 AssertionBannerKind.NOT_HARDENED,
                                 renderSpecificButtons = {o->

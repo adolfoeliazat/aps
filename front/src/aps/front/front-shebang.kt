@@ -52,6 +52,7 @@ object TestGlobal {
     val linkTickingLock by notNullNamed(TestLock())
     val linkDoneLock by notNullNamed(TestLock())
     var currentMordaMaybe: Morda? = null
+    val currentMorda get() = bang(currentMordaMaybe)
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!
@@ -63,6 +64,7 @@ object TestGlobal {
 
     val lastTestHref get() = lastTestHrefMaybe!!
     var lastTestSuite: TestSuite? = null
+    var pretendAllAssertionsNotHardened = false
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

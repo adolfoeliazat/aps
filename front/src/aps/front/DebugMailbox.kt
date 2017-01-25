@@ -77,15 +77,20 @@ fun TestScenarioBuilder.debugMailboxClear() {
 }
 
 fun TestScenarioBuilder.debugMailboxCheck(aid: String) {
-    acta {async{
-        die("reimplement me")
-//        testShit.browseroids.debugMailbox.let {
-//            await(it.push())
-//            await(it.refresh())
-//        }
-//        assertScreenHTML("Checking mail", aid)
-//        FuckingBrowseroid.pop()
-    }}
+    var prevMorda by notNullOnce<Morda>()
+    val morda = Morda()
+
+    act {prevMorda = TestGlobal.currentMorda}
+    acta {morda.coitize(MordaCoitizeParams(
+        browseroidName = "debug-mailbox",
+        url = fconst.url.test.debugMailbox,
+        fillTypedStorageLocal = {},
+        fillRawStorageLocal = {}
+    ))}
+    acta {morda.boot()}
+    assertScreenHTML("Checking email", aid)
+    // acta {delay(1500)}
+    acta {prevMorda.switchTo()}
 }
 
 

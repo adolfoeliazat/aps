@@ -10,10 +10,40 @@ package aps.front
 
 import aps.*
 import jquery.JQuery
+import kotlin.properties.Delegates.notNull
 
-val effects by PassivableHolder(EffectsInitializer())
+// TODO:vgrechka Simplify this shit
 
-class Effects {
+private var initialized = false
+private var _effects by notNull<EffectsAPI>()
+private var pane by notNull<String>()
+
+val effects: Promisoid<EffectsAPI> get() = async {
+    if (!initialized) {
+        val api = EffectsAPI()
+        pane = old_panes.put(oldShitAsToReactElementable(api.legacyEffects.element))
+        await(tillAnimationFrame())
+        _effects = api
+        initialized = true
+    }
+
+    _effects
+}
+
+fun disposeEffects() {
+    if (initialized) {
+        old_panes.remove(pane)
+        initialized = false
+    }
+}
+
+
+
+
+
+val effects_killme by PassivableHolder(EffectsInitializer())
+
+class EffectsAPI {
     val legacyEffects: dynamic = makeLegacyEffects()
 
     fun blinkOn(target: JQuery, opts: BlinkOpts = BlinkOpts()) {
@@ -91,24 +121,24 @@ data class BlinkOpts(
     val widthCalcSuffix: String? = null
 )
 
-class EffectsInitializer : PassivableInitializer<Effects> {
+class EffectsInitializer : PassivableInitializer<EffectsAPI> {
     override fun initialize() = async {
-        val api = Effects()
+        val api = EffectsAPI()
         val pane = old_panes.put(oldShitAsToReactElementable(api.legacyEffects.element))
         await(tillAnimationFrame())
         EffectsPassivable(pane, api)
     }
 }
 
-class EffectsPassivable(val pane: String, override val api: Effects) : Passivable<Effects> {
+class EffectsPassivable(val pane: String, override val api: EffectsAPI) : Passivable<EffectsAPI> {
     override fun passivate() = async {
         old_panes.remove(pane)
         EffectsPassivated(api)
     }
 }
 
-class EffectsPassivated(val api: Effects) : Passivated<Effects> {
-    override fun activate(): Promisoid<Passivable<Effects>> = async {
+class EffectsPassivated(val api: EffectsAPI) : Passivated<EffectsAPI> {
+    override fun activate(): Promisoid<Passivable<EffectsAPI>> = async {
         val pane = old_panes.put(oldShitAsToReactElementable(api.legacyEffects.element))
         await(tillAnimationFrame())
         EffectsPassivable(pane, api)

@@ -13,5 +13,5 @@ fun responseProcessed() {
 fun TestScenarioBuilder.submitSignInForm(shit: TestShit, userData: TestUserData, descr: String, aid: String) {
     inputSetValue(fieldSpecs.email_testRef.name, userData.email)
     inputSetValue(fieldSpecs.password_testRef.name, userData.password)
-    submitForm(shit, descr = descr, aid = aid)
+    submitFormSequence(shit, descr = descr, aid = aid)
 }
