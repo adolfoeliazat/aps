@@ -59,12 +59,18 @@ fun TestScenarioBuilder.assertScreenHTML(descr: String?, assertionID: String, op
 }
 
 fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
-    val stackCapture = CaptureStackException()
-    lastAssertScreenHTMLParams = p
-    act {TestGlobal.testShitBeingAssertedID = p.assertionID}
+    val stackCapture: CaptureStackException? = CaptureStackException()
+//    lastAssertScreenHTMLParams = p
+//    act {TestGlobal.testShitBeingAssertedID = p.assertionID}
 
     val stepTitle = "HTML: ${p.descr}"
-    checkOnAnimationFrame(stepTitle) {async<Unit>{
+    checkOnAnimationFrame(stepTitle) {doAssertScreenHTML(p, stackCapture)}
+}
+
+fun doAssertScreenHTML(p: AssertScreenHTMLParams, stackCapture: CaptureStackException?): Promisoid<Unit> {
+    return async<Unit> {
+        await(tillAnimationFrame())
+        TestGlobal.testShitBeingAssertedID = p.assertionID
         val expected = await(fuckingRemoteCall.loadTestShit(p.assertionID))
 
         val actual = buildString {
@@ -101,7 +107,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                 fun acceptCurrentShit(): Promisoid<Unit> = async {
                     await(captureVisualShitIfNeeded())
                     await(send(SaveCapturedVisualShitRequest()))
-                    await(send(HardenScreenHTMLRequest()-{o->
+                    await(send(HardenScreenHTMLRequest() - {o ->
                         o.assertionID = p.assertionID
                         o.html = actual
                     }))
@@ -113,8 +119,8 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                         expected == null || TestGlobal.pretendAllAssertionsNotHardened -> {
                             await(showTestBanner(
                                 AssertionBannerKind.NOT_HARDENED,
-                                renderSpecificButtons = {o->
-                                    o- acceptButton()
+                                renderSpecificButtons = {o ->
+                                    o - acceptButton()
                                 }))
                         }
 
@@ -129,28 +135,28 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                 id = "fuckingDiff",
                                 backgroundColor = RED_700, color = WHITE, marginTop = 10, padding = "10px 10px",
                                 textAlign = "center", fontWeight = "bold"
-                            ){o->
-                                o- kdiv(paddingBottom = 10){o->
-                                    o- "Diff"
+                            ) {o ->
+                                o - kdiv(paddingBottom = 10) {o ->
+                                    o - "Diff"
                                 }
 
-                                o- kdiv(
+                                o - kdiv(
                                     backgroundColor = WHITE, color = BLACK_BOOT,
                                     fontWeight = "normal", textAlign = "left", padding = 5
-                                ){o->
-                                    o- renderDiff(expected = expected, actual = actual, actualTestShit = actual)
+                                ) {o ->
+                                    o - renderDiff(expected = expected, actual = actual, actualTestShit = actual)
                                 }
                             })
 
                             try {
-                                val captureExists = await(send(CapturedVisualShitExistsRequest()-{o->
+                                val captureExists = await(send(CapturedVisualShitExistsRequest() - {o ->
                                     o.id = p.assertionID
                                 })).exists
 
                                 await(showTestBanner(
                                     AssertionBannerKind.INCORRECT,
-                                    renderSpecificButtons = {o->
-                                        o- Button(title = "Diff", style = bannerButtonStyle, onClick = {
+                                    renderSpecificButtons = {o ->
+                                        o - Button(title = "Diff", style = bannerButtonStyle, onClick = {
                                             verticalPosition = p.opts.bannerVerticalPosition
                                             horizontalPosition = p.opts.bannerHorizontalPosition
                                             banner.update()
@@ -158,11 +164,13 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                             nextDiff().scrollBodyToShit(dy = -70)
                                         })
                                         if (captureExists) {
-                                            o- Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {async<Unit>{
-                                                openVisualDiff()
-                                            }})
+                                            o - Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {
+                                                async<Unit> {
+                                                    openVisualDiff()
+                                                }
+                                            })
                                         }
-                                        o- acceptButton()
+                                        o - acceptButton()
                                     }))
                             } finally {
                                 old_debugPanes.remove(pane)
@@ -199,27 +207,27 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                         var scrollTop: Double = 0.0
 
                         val view by lazy {
-                            val place = Placeholder(kdiv{o->
-                                o- hor2{o->
-                                    o- kdiv(marginTop = "0.7rem"){o->
-                                        o- "Loading shit..."
+                            val place = Placeholder(kdiv {o ->
+                                o - hor2 {o ->
+                                    o - kdiv(marginTop = "0.7rem") {o ->
+                                        o - "Loading shit..."
                                     }
-                                    o- renderTicker(float = null)
+                                    o - renderTicker(float = null)
                                 }
                             })
 
                             async {
                                 try {
                                     val base64 = await(promiseBase64())
-                                    place.setContent(kdiv(id = scrollerID, style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")){o->
+                                    place.setContent(kdiv(id = scrollerID, style = Style(position = "absolute", width = "100%", height = "100%", overflow = "auto")) {o ->
                                         val imgURL = "data:image/png;base64,$base64"
-                                        o- img2(src = imgURL, style = Style(width = "100%"))
+                                        o - img2(src = imgURL, style = Style(width = "100%"))
                                     })
                                 } catch (e: dynamic) {
-                                    place.setContent(kdiv{o->
-                                        o- hor2 {o ->
-                                            o- ki(iconClass = fa.frownO)
-                                            o- "It didn't work. See your fucking server log..."
+                                    place.setContent(kdiv {o ->
+                                        o - hor2 {o ->
+                                            o - ki(iconClass = fa.frownO)
+                                            o - "It didn't work. See your fucking server log..."
                                         }
                                     })
                                 }
@@ -246,7 +254,8 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                 ctrl.update()
 
                                 timeoutSet(0) {
-                                    byid0(mode.scrollerID)?.let {scroller -> // May be loading, so no scroller yet
+                                    byid0(mode.scrollerID)?.let {scroller ->
+                                        // May be loading, so no scroller yet
                                         scroller.scrollLeft = mode.scrollLeft
                                         scroller.scrollTop = mode.scrollTop
                                     }
@@ -255,29 +264,29 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                         )
                     }
 
-                    val diffMode = object:Mode() {
+                    val diffMode = object : Mode() {
                         override val buttonTitle = "Diff"
 
                         override fun promiseBase64() = async {
-                            val res = await(send(DiffCapturedVisualShitWithSavedRequest()-{o->
+                            val res = await(send(DiffCapturedVisualShitWithSavedRequest() - {o ->
                                 o.id = p.assertionID
                             }))
                             res.base64
                         }
                     }
 
-                    val hardenedMode = object:Mode() {
+                    val hardenedMode = object : Mode() {
                         override val buttonTitle = "Hardened"
 
                         override fun promiseBase64() = async {
-                            val res = await(send(GetCapturedVisualShitRequest()-{o->
+                            val res = await(send(GetCapturedVisualShitRequest() - {o ->
                                 o.id = p.assertionID
                             }))
                             res.base64
                         }
                     }
 
-                    val currentMode = object:Mode() {
+                    val currentMode = object : Mode() {
                         override val buttonTitle = "Current"
 
                         override fun promiseBase64() = async {
@@ -288,31 +297,33 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
 
                     var mode: Mode = diffMode
 
-                    val ctrl: Control2 by lazy {Control2.from {
-                        kdiv(className = mycss.pane){o->
-                            o- kdiv(className = mycss.titleBar){o->
-                                o- kdiv(className = mycss.title){o->
-                                    o- "Visual Diff"
-                                }
-                                o- hor1(baseStyle = Style(justifyContent = "flex-end")){o->
-                                    for (m in listOf(diffMode, hardenedMode, currentMode)) {
-                                        o- m.renderButton()
+                    val ctrl: Control2 by lazy {
+                        Control2.from {
+                            kdiv(className = mycss.pane) {o ->
+                                o - kdiv(className = mycss.titleBar) {o ->
+                                    o - kdiv(className = mycss.title) {o ->
+                                        o - "Visual Diff"
                                     }
-                                    o- kdiv(width = "1rem")
-                                    o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {
-                                        old_debugPanes.remove(visualDiffPane)
-                                        acceptCurrentShit()
-                                    })
-                                    o- Button(icon = fa.close, style = bannerButtonStyle, onClick = {
-                                        old_debugPanes.remove(visualDiffPane)
-                                    })
+                                    o - hor1(baseStyle = Style(justifyContent = "flex-end")) {o ->
+                                        for (m in listOf(diffMode, hardenedMode, currentMode)) {
+                                            o - m.renderButton()
+                                        }
+                                        o - kdiv(width = "1rem")
+                                        o - Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClick = {
+                                            old_debugPanes.remove(visualDiffPane)
+                                            acceptCurrentShit()
+                                        })
+                                        o - Button(icon = fa.close, style = bannerButtonStyle, onClick = {
+                                            old_debugPanes.remove(visualDiffPane)
+                                        })
+                                    }
                                 }
-                            }
-                            o- kdiv(className = mycss.content){o->
-                                o- mode.view
+                                o - kdiv(className = mycss.content) {o ->
+                                    o - mode.view
+                                }
                             }
                         }
-                    }}
+                    }
 
                     init {
                         async {
@@ -342,21 +353,21 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                     assertionBannerPause = ResolvableShit<Unit>()
                     banner = Control2.from {
                         val style = Style()
-                        exhaustive/when (verticalPosition) {
+                        exhaustive / when (verticalPosition) {
                             VerticalPosition.TOP -> style.top = 0
                             VerticalPosition.BOTTOM -> style.bottom = 0
                         }
-                        exhaustive/when (horizontalPosition) {
+                        exhaustive / when (horizontalPosition) {
                             HorizontalPosition.LEFT -> style.left = 0
                             HorizontalPosition.RIGHT -> style.right = 0
                         }
-                        kdiv(className = className, baseStyle = style){o->
-                            o- hor1(marginBottom = "0.5rem"){o->
-                                o- Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
+                        kdiv(className = className, baseStyle = style) {o ->
+                            o - hor1(marginBottom = "0.5rem") {o ->
+                                o - Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
                                     assertionBannerPause.resolve()
                                 })
-                                o- killTestButton()
-                                o- Button(
+                                o - killTestButton()
+                                o - Button(
                                     icon = when (verticalPosition) {
                                         VerticalPosition.TOP -> fa.arrowDown
                                         VerticalPosition.BOTTOM -> fa.arrowUp
@@ -369,7 +380,7 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                         }
                                         banner.update()
                                     })
-                                o- Button(
+                                o - Button(
                                     icon = when (horizontalPosition) {
                                         HorizontalPosition.LEFT -> fa.arrowRight
                                         HorizontalPosition.RIGHT -> fa.arrowLeft
@@ -382,17 +393,21 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
                                         }
                                         banner.update()
                                     })
-                                o- rerunTestButton()
-                                o- rerunTestSlowlyButton()
+                                o - rerunTestButton()
+                                o - rerunTestSlowlyButton()
                                 renderSpecificButtons(o)
                             }
-                            o- kdiv{o->
-                                o- link(title = "Assertion: ${p.descr}", color = BLACK, onClick = {
-                                    revealStack(stackCapture, muteConsole = true)
+                            o - kdiv {o ->
+                                o - link(title = "Assertion: ${p.descr}", color = BLACK, onClick = {
+                                    if (stackCapture != null) {
+                                        revealStack(stackCapture, muteConsole = true)
+                                    } else {
+                                        bitch("No fucking stack capture")
+                                    }
                                 })
                             }
-                            o- kdiv(fontSize = "75%", fontWeight = "normal"){o->
-                                o- p.assertionID
+                            o - kdiv(fontSize = "75%", fontWeight = "normal") {o ->
+                                o - p.assertionID
                             }
                         }
                     }
@@ -430,11 +445,12 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
             }.shit)
         } else {
             when {
-                expected == null && testOpts().ignoreNotHardened -> {}
+                expected == null && testOpts().ignoreNotHardened -> {
+                }
                 actual != expected -> {
                     if (!testOpts().ignoreIncorrect) {
                         throw ArtAssertionError(
-                            stepTitle,
+                            bang(p.descr),
                             visualPayload = renderDiff(
                                 expected = expected ?: "--- Not yet hardened ---",
                                 actual = actual,
@@ -447,6 +463,6 @@ fun TestScenarioBuilder.assertScreenHTML(p: AssertScreenHTMLParams) {
         }
 
         TestGlobal.testShitBeingAssertedID = null
-    }}
+    }
 }
 

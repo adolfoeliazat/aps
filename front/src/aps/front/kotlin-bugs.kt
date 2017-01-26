@@ -4,6 +4,10 @@ package aps.front
 
 import aps.*
 
+fun qweqweqwe() {
+    console.log("fooo")
+}
+
 //fun qwe_1() {
 //    fun qwe_local(firstCall: Boolean = true) {
 //        console.log("I am local in qwe_1; firstCall = $firstCall")

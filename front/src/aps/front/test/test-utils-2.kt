@@ -100,7 +100,7 @@ fun TestScenarioBuilder.imposeNextRequestTimestampUTC(stamp: String) {
 }
 
 fun TestScenarioBuilder.imposeNextGeneratedPassword(password: String) {
-    acta {ImposeNextGeneratedPasswordRequest.send(password)}
+    acta {imposeNextGeneratedPassword2(password)}
 }
 
 fun TestScenarioBuilder.assertFreshCustomerDashboardScreen() {
@@ -165,11 +165,6 @@ class TestShit {
     var pauses = Pauses.NONE
     val snapshots = mutableListOf<Snapshot>()
     var nextInstructionIndex by notNull<Int>()
-
-    val browseroids = _Browseroids()
-    class _Browseroids {
-        val debugMailbox = FuckingBrowseroid("debugMailbox", initialURL = fconst.url.test.writerLocalBase + "/debugMailbox.html")
-    }
 
     val timestamps by lazy {
         val list = listOf(
@@ -281,6 +276,8 @@ fun TestScenarioBuilder.setUpDasja(testShit: TestShit) {
         }
     }}
 }
+
+fun imposeNextGeneratedPassword2(password: String) = ImposeNextGeneratedPasswordRequest.send(password)
 
 //fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, addFiles: () -> Unit) {
 //

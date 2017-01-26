@@ -12,20 +12,28 @@ import aps.front.*
 
     override var error: String? = null
 
-    val input by lazy {Input(json(
-        "type" to when (spec.type) {
-            TextFieldType.PASSWORD -> "password"
-            else -> "text"
-        },
-        "kind" to when (spec.type) {
-            TextFieldType.TEXTAREA -> "textarea"
-            else -> "input"
-        },
-        "volatileStyle" to {
-            if (error != null) json("paddingRight" to 30)
-            else undefined
-        }
-    ), key = name + container.fieldInstanceKeySuffix)}
+    private val c = css.textField
+    private fun String.div(block: (ElementBuilder) -> Unit) = kdiv(Attrs(className = this), Style(), block)
+
+    val input: Input by lazy {Input(
+        json(
+            "type" to when (spec.type) {
+                TextFieldType.PASSWORD -> "password"
+                else -> "text"
+            },
+            "kind" to when (spec.type) {
+                TextFieldType.TEXTAREA -> "textarea"
+                else -> "input"
+            },
+            "volatileStyle" to {
+                if (error != null) json("paddingRight" to 30)
+                else undefined
+            }
+        ),
+        key = name + container.fieldInstanceKeySuffix,
+        onValueChanged = {
+            testHint.update()
+        })}
 
     var value: String
         get() = input.getValue()
@@ -38,14 +46,9 @@ import aps.front.*
     override fun focus() = input.focus()
 
     override fun render(): ReactElement {
-        val c = css.textField
-        fun String.div(block: (ElementBuilder) -> Unit) = kdiv(Attrs(className = this), Style(), block)
-
         return kdiv(className = "form-group", marginBottom = if (error != null) 0 else null){o->
             o- c.labelContainer.div{o->
-                o- c.labelContainerTestHint.div{o->
-                    o- "fuck you"
-                }
+                o- testHint
                 o- klabel {it-_spec.title}
             }
             o- kdiv(position = "relative"){o->
@@ -58,6 +61,14 @@ import aps.front.*
 
         }.toReactElement()
     }
+
+    private val testHint = Control2.from {when{
+        isTest() && _spec.type == TextFieldType.PASSWORD ->
+            c.labelContainerTestHint.div{o->
+                o- input.value
+            }
+        else -> NOTRE
+    }}
 
     override fun populateRemote(json: Json): Promisoid<Unit> = async {
         json[name] = value

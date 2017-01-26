@@ -53,6 +53,7 @@ object TestGlobal {
     val linkDoneLock by notNullNamed(TestLock())
     var currentMordaMaybe: Morda? = null
     val currentMorda get() = bang(currentMordaMaybe)
+    var instructionCondition: () -> Boolean = {true}
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

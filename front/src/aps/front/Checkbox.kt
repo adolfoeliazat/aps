@@ -99,11 +99,15 @@ fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
 
 
 fun TestScenarioBuilder.checkboxSet(key: String, value: Boolean, handOpts: HandOpts = HandOpts()) {
-    acta("Setting checkbox `$key` to `$value`") {async<Unit>{
+    acta("Setting checkbox `$key` to `$value`") {checkboxSet2(key, value, handOpts)}
+}
+
+fun checkboxSet2(key: String, value: Boolean, handOpts: HandOpts = HandOpts()): Promisoid<Unit> {
+    return async<Unit> {
         val target = Checkbox.instance(key)
         await(TestUserActionAnimation.hand(target.elementID, handOpts))
         target.setValue(value) // Not await
-    }}
+    }
 }
 
 

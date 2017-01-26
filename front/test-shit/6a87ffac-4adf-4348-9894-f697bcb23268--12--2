@@ -1,0 +1,130 @@
+-------------------- URL --------------------
+
+[uac]/dashboard.html
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Проза
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                Почему мы?
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                Цены
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                Примеры
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                ЧаВо
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                Связь
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                Блог
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="">
+          <a href="orders.html">
+            Мои заказы
+          </a>
+        </li>
+        <li class="">
+          <a href="support.html">
+            Поддержка
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="active">
+          <a href="dashboard.html">
+            Иво
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <span class="">
+            Панель
+          </span>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div>
+            <div style="background-color: rgb(236, 239, 241); font-weight: bold; padding: 2px 5px; margin-bottom: 10px;">
+              Работенка
+            </div>
+            Сюшай, савсэм нэт работы...
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div>
+            <div style="background-color: rgb(236, 239, 241); font-weight: bold; padding: 2px 5px; margin-bottom: 10px;">
+              Аккаунт
+            </div>
+            <ul class="fa-ul" style="margin-left: 20px;">
+              <li style="margin-bottom: 5px;">
+                <i class="fa fa-li fa-chevron-right" style="color: rgb(84, 110, 122);">
+                </i>
+                <a class="" href="#" style="color: rgb(51, 51, 51);">
+                  <span class="">
+                    Выйти прочь
+                  </span>
+                </a>
+              </li>
+              <li style="margin-bottom: 5px;">
+                <i class="fa fa-li fa-chevron-right" style="color: rgb(84, 110, 122);">
+                </i>
+                <a class="" href="#" style="color: rgb(51, 51, 51);">
+                  <span class="">
+                    Сменить пароль
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

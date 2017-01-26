@@ -42,6 +42,7 @@ sealed class TestInstruction() : DefinitionStackHolder {
     var isAssertion = false
     var snapshot: Snapshot? = null
     var debugDescription: String? = null
+    var alwaysPassCondition = false
 
     override fun promiseDefinitionStack(): Promisoid<dynamic> {
         throw UnsupportedOperationException("Implement me, please, fuck you")
@@ -184,9 +185,11 @@ object art {
 
                             is TestInstruction.BeginSection -> {}
                             is TestInstruction.EndSection -> {}
-                            is TestInstruction.Do -> {
-                                await(instr.action())
-                            }
+                            is TestInstruction.Do -> {unit{
+                                if (instr.alwaysPassCondition || TestGlobal.instructionCondition()) {
+                                    await(instr.action())
+                                }
+                            }}
                             is TestInstruction.Step -> {
                                 instr.executed = true
                             }

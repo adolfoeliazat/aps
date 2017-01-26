@@ -82,7 +82,7 @@ suspend fun <T> awaitJSShit(p: Any?): T =
 fun <T> Promisoid<T>.orTestTimeout(ms: Int, getPromiseName: (() -> String?)? = null): Promisoid<T> {
     val shit = ResolvableShit<T>()
     val thePromiseName = getPromiseName?.invoke() ?: "shit"
-    timeoutSet(ms) {
+    realTimeoutSet(ms) {
         val msg = "Sick of waiting for $thePromiseName"
         if (isTestPausedOnAssertion()) {
             console.warn("--- $msg, but not dying because test is paused on assertion ---")
@@ -219,8 +219,13 @@ class TestLock(
     }
 }
 
+fun timeoutSet(ms: Int, cb: () -> Unit) {
+    Globus.currentBrowseroid.timer.setTimeout(cb, ms)
+}
 
-
+fun realTimeoutSet(ms: Int, cb: () -> Unit) {
+    realBrowseroid.timer.setTimeout(cb, ms)
+}
 
 
 

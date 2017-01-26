@@ -28,7 +28,7 @@ class DashboardPage(val ui: World) {
                             "title" to t("TOTE", "Работенка"),
                             "emptyItemsText" to t("TOTE", "Сюшай, савсэм нэт работы..."),
 
-                            "items" to await<dynamic>(Shitus.runa({
+                            "items" to js("[]") /*await<dynamic>(Shitus.runa({
                                 async {
                                     val items = js("[]")
 
@@ -67,7 +67,7 @@ class DashboardPage(val ui: World) {
 
                                     return@async items
                                 }
-                            }))
+                            }))*/
                         ))
                     ),
 
@@ -99,21 +99,21 @@ class DashboardPage(val ui: World) {
         }
 
         fun scheduleUpdate() {
-            timeoutSet(5000, outta@{
-                async {
-                    if (myPage != ui.currentPage) return@async Unit
-
-                    // Automatic refreshes should be prevented while something is being investigated via revealer,
-                    // otherwise elements being looked at might be removed
-                    if (hrss.controlBeingRevealed) { scheduleUpdate(); return@async Unit }
-
-                    if (Shitus.isOrWasInTestScenario() && hrss.browserOld.ui != ui) { scheduleUpdate(); return@async Unit }
-
-                    dlog("Updating dashboard page")
-
-                    await(DashboardPage(ui).load(preserveScroll = true))
-                }
-            })
+//            timeoutSet(5000) outta@{
+//                async {
+//                    if (myPage != ui.currentPage) return@async Unit
+//
+//                    // Automatic refreshes should be prevented while something is being investigated via revealer,
+//                    // otherwise elements being looked at might be removed
+//                    if (hrss.controlBeingRevealed) { scheduleUpdate(); return@async Unit }
+//
+//                    if (Shitus.isOrWasInTestScenario() && hrss.browserOld.ui != ui) { scheduleUpdate(); return@async Unit }
+//
+//                    dlog("Updating dashboard page")
+//
+//                    await(DashboardPage(ui).load(preserveScroll = true))
+//                }
+//            }
         }
         scheduleUpdate()
     }

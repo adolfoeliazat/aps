@@ -417,7 +417,12 @@ fun <T> bang(x: T?): T {
     return x
 }
 
+inline fun unit(block: () -> Unit) {
+    block()
+}
 
+fun <T> flatten(xs: List<List<T>>) =
+    xs.fold(listOf<T>(), {all, chunk -> all + chunk})
 
 
 

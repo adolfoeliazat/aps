@@ -53,15 +53,14 @@ fun ignite() {
 
 fun igniteShit(): Promisoid<Unit> = async {
     window.addEventListener("unhandledrejection", {event-> async {
-        console.log("pizda")
-//        val reason = event.asDynamic().reason
-//        console.error("Unhandled rejection: ${reason.message}")
-//        try {
-//            val stack = await(errorToMappedClientStackString(reason))
-//            console.error("Unhandled rejection stack:\n$stack")
-//        } catch (e: dynamic) {
-//            console.error("Failed to map unhandled rejection. Raw shit:\n${reason.stack}")
-//        }
+        val reason = event.asDynamic().reason
+        console.error("Unhandled rejection: ${reason.message}")
+        try {
+            val stack = await(errorToMappedClientStackString(reason))
+            console.error("Unhandled rejection stack:\n$stack")
+        } catch (e: dynamic) {
+            console.error("Failed to map unhandled rejection. Raw shit:\n${reason.stack}")
+        }
     }})
 
     hrss.browserOld = BrowserOld("default") // Kind of production

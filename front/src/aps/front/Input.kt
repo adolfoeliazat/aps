@@ -52,7 +52,8 @@ val inputReactClass by lazy {React.createClass(json(
 ))}
 
 
-class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable, Blinkable {
+class Input(
+    val legacySpec: Json, val key: String? = null, val onValueChanged: () -> Unit = {}) : ToReactElementable, Blinkable {
     enum class Kind {INPUT, TEXTAREA}
 
     companion object {
@@ -286,6 +287,7 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
 
     fun setValue(value: String) {
         legacyShit.setValue(value)
+        onValueChanged()
     }
 
     fun testSetValue(newValue: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> = async {
@@ -358,9 +360,13 @@ class Input(val legacySpec: Json, val key: String? = null) : ToReactElementable,
 }
 
 fun TestScenarioBuilder.inputSetValue(key: String, value: String) {
-    acta("Typing into `$key`: ${markdownItalicVerbatim(value)}") {async{
+    acta("Typing into `$key`: ${markdownItalicVerbatim(value)}") {inputSetValue2(key, value)}
+}
+
+fun inputSetValue2(key: String, value: String): Promisoid<Unit> {
+    return async {
         await(Input.instance(key).testSetValue(value))
-    }}
+    }
 }
 
 fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {

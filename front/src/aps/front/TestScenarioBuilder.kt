@@ -36,7 +36,7 @@ val transformRootLineTidy = {it: String ->
 class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     val instructions = mutableListOf<TestInstruction>()
     val testShit get() = scenario.testShit
-    var lastAssertScreenHTMLParams by notNull<AssertScreenHTMLParams>()
+//    var lastAssertScreenHTMLParams by notNull<AssertScreenHTMLParams>()
 
     fun runScenario(showTestPassedPane: Boolean): Promisoid<Throwable?> = async {
         await(art.run(testShit, instructions, showTestPassedPane))
@@ -55,8 +55,8 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
         }
     }
 
-    fun act(descr: String? = null, block: () -> Unit) {
-        acta(descr, {async{
+    fun act(descr: String? = null, block: () -> Unit): TestInstruction.Do {
+        return acta(descr, {async{
             block()
         }})
     }
@@ -399,6 +399,22 @@ fun TestScenarioBuilder.sequence(
         }}
         o.assertScreenHTML("$assertionDescr (${i + 1})", step.assertionID)
         o.act {step.lock.testResume()}
+    }
+}
+
+fun sequence2(
+    action: () -> Promisoid<Unit>,
+    assertionDescr: String,
+    steps: List<TestSequenceStep>
+) = async<Unit> {
+    steps.forEach {it.lock.reset()}
+
+    await(action())
+
+    for ((i, step) in steps.withIndex()) {
+        await(step.lock.testPause())
+        await(doAssertScreenHTML(AssertScreenHTMLParams("$assertionDescr (${i + 1})", step.assertionID), stackCapture = null))
+        step.lock.testResume()
     }
 }
 

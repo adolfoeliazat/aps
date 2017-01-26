@@ -74,6 +74,16 @@ object css {
             position: absolute;
             right: 0;
             top: 0;
+            border-bottom: 1px solid #bbb;
+            border-right: 1px solid #bbb;
+            border-left: 1px solid #bbb;
+            padding: 0rem 0.3rem;
+            border-bottom-left-radius: 0.4rem;
+            border-top-right-radius: 0.4rem;
+            background-color: #eee;
+            font-size: 75%;
+            margin-top: 2.5rem;
+            z-index: 10000;
         """)
     }
 
