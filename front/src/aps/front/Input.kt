@@ -359,11 +359,7 @@ class Input(
 
 }
 
-fun TestScenarioBuilder.inputSetValue(key: String, value: String) {
-    acta("Typing into `$key`: ${markdownItalicVerbatim(value)}") {inputSetValue2(key, value)}
-}
-
-fun inputSetValue2(key: String, value: String): Promisoid<Unit> {
+fun inputSetValue(key: String, value: String): Promisoid<Unit> {
     return async {
         await(Input.instance(key).testSetValue(value))
     }

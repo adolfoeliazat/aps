@@ -232,51 +232,22 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 //    assertScreenHTML(assertionDescr, finalAssertionID)
 //}
 
-//fun TestScenarioBuilder.submitFormSequence(
-//    shit: TestShit,
-//    descr: String,
-//    buildAction: (() -> Unit)? = null,
-//    aid: String,
-//    buttonKey: String? = null,
-//    imposeTimestamp: Boolean = true,
-//    buildBeforeAction: () -> Unit = {}
-//) {
-//    sequence(
-//        buildAction = {
-//            if (imposeTimestamp) {
-//                acta {shit.imposeNextRequestTimestamp()}
-//            }
-//            buildBeforeAction()
-//            (buildAction ?: {
-//                buttonClick(buttonKey ?: fconst.key.primary.testRef)
-//            })()
-//        },
-//        assertionDescr = descr,
-//        steps = listOf(
-//            TestSequenceStep(TestGlobal.formTickingLock, "$aid--1"),
-//            TestSequenceStep(TestGlobal.formDoneLock, "$aid--2")
-//        )
-//    )
-//}
-
-suspend fun submitFormSequence2(
+suspend fun submitFormSequence(
     shit: TestShit,
     descr: String,
-    action: (() -> Promisoid<Unit>)? = null,
+    action: (suspend () -> Unit)? = null,
     aid: String,
     buttonKey: String? = null,
-    imposeTimestamp: Boolean = true,
-    beforeAction: () -> Promisoid<Unit> = {async{}}
+    imposeTimestamp: Boolean = true
 ) {
     sequence2(
         action = {async{
             if (imposeTimestamp) {
                 await(shit.imposeNextRequestTimestamp())
             }
-            await(beforeAction())
-            await((action ?: {
-                buttonClick2(buttonKey ?: fconst.key.primary.testRef)
-            })())
+            run(action ?: {
+                buttonClick(buttonKey ?: fconst.key.primary.testRef)
+            })
         }},
         assertionDescr = descr,
         steps = listOf(
@@ -286,102 +257,51 @@ suspend fun submitFormSequence2(
     )
 }
 
-//fun TestScenarioBuilder.formSubmissionAttempts(
-//    testShit: TestShit,
-//    descr: String,
-//    baseID: String,
-//    attempts: List<TestAttempt>
-//) {
-//    for (i in 0 until attempts.size)
-//        for (j in i+1 until attempts.size)
-//            if (attempts[i].subID == attempts[j].subID) bitch("Attempt subID duplication: ${attempts[i].subID}")
-//
-//    section(descr) {
-//        for ((i, attempt) in attempts.withIndex()) {
-//            attempt.buildPrepare()
-//            submitFormSequence(
-//                testShit,
-//                descr = "Attempt: ${attempt.descr}",
-//                aid = "$baseID--${attempt.subID}",
-//                imposeTimestamp = i == attempts.lastIndex,
-//                buildBeforeAction = attempt.buildBeforeSubmit)
-//        }
-//    }
-//}
-
-suspend fun formSubmissionAttempts2(
+suspend fun formSubmissionAttempts(
     testShit: TestShit,
     descr: String,
     baseID: String,
-    attempts: List<TestAttempt2>
+    attempts: List<TestAttempt>
 ) {
     for (i in 0 until attempts.size)
         for (j in i+1 until attempts.size)
             if (attempts[i].subID == attempts[j].subID) bitch("Attempt subID duplication: ${attempts[i].subID}")
 
-//    section(descr) {
     for ((i, attempt) in attempts.withIndex()) {
-        await(attempt.prepare())
-        submitFormSequence2(
+        attempt.prepare()
+        submitFormSequence(
             testShit,
             descr = "Attempt: ${attempt.descr}",
             aid = "$baseID--${attempt.subID}",
-            imposeTimestamp = i == attempts.lastIndex,
-            beforeAction = attempt.beforeSubmit)
+            imposeTimestamp = i == attempts.lastIndex)
     }
-//    }
 }
 
 class TestAttempt(
     val subID: String,
     val descr: String,
-    val buildBeforeSubmit: () -> Unit = {},
-    val buildPrepare: () -> Unit
+    val prepare: suspend () -> Unit
 )
 
-class TestAttempt2(
-    val subID: String,
-    val descr: String,
-    val beforeSubmit: () -> Promisoid<Unit> = {async{}},
-    val prepare: () -> Promisoid<Unit>
-)
 
-class FuckingItem(
-    val subID: String,
-    val descr: String,
-    val buildBeforeSubmit: () -> Unit = {},
-    val buildPrepare: () -> Unit
-)
-
-//class TestAttemptBuilder(val o: TestScenarioBuilder) {
-//    private val _attempts = mutableListOf<TestAttempt>()
-//
-//    val attempts get() = _attempts.toList()
-//
-//    fun add(attempt: TestAttempt) {
-//        if (_attempts.any {it.subID == attempt.subID}) bitch("ID is already used: $${attempt.subID}")
-//        _attempts += attempt
-//    }
-//}
-
-fun badTextFieldValuesThenValid(o: TestScenarioBuilder, field: TextFieldSpec, validValue: String): List<TestAttempt> {
+fun badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String): List<TestAttempt> {
     val l = mutableListOf<TestAttempt>()
     exhaustive/when (field.type) {
         TextFieldType.STRING, TextFieldType.PASSWORD, TextFieldType.TEXTAREA -> {
             if (field.minLen >= 1) {
-                l += TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {o.inputSetValue(field.name, "")}
+                l += TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {inputSetValue(field.name, "")}
             }
             if (field.minLen > 1) {
-                l += TestAttempt(subID = "${field.name}--tooShort", descr = "${field.name}: too short") {o.inputSetValue(field.name, TestData.generateShit(field.minLen - 1))}
+                l += TestAttempt(subID = "${field.name}--tooShort", descr = "${field.name}: too short") {inputSetValue(field.name, TestData.generateShit(field.minLen - 1))}
             }
-            l += TestAttempt(subID = "${field.name}--tooLong", descr = "${field.name}: too long") {o.inputSetValue(field.name, TestData.generateShit(field.maxLen + 1))}
-            l += TestAttempt(subID = "${field.name}--valid", descr = "${field.name}: valid") {o.inputSetValue(field.name, validValue)}
+            l += TestAttempt(subID = "${field.name}--tooLong", descr = "${field.name}: too long") {inputSetValue(field.name, TestData.generateShit(field.maxLen + 1))}
+            l += TestAttempt(subID = "${field.name}--valid", descr = "${field.name}: valid") {inputSetValue(field.name, validValue)}
         }
 
         TextFieldType.EMAIL -> {
-            l += TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {o.inputSetValue(field.name, "")}
-            l += TestAttempt(subID = "${field.name}-shit", descr = "${field.name}: shit") {o.inputSetValue(field.name, "shit")}
-            l += TestAttempt(subID = "${field.name}-valid", descr = "${field.name}: valid") {o.inputSetValue(field.name, validValue)}
+            l += TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {inputSetValue(field.name, "")}
+            l += TestAttempt(subID = "${field.name}-shit", descr = "${field.name}: shit") {inputSetValue(field.name, "shit")}
+            l += TestAttempt(subID = "${field.name}-valid", descr = "${field.name}: valid") {inputSetValue(field.name, validValue)}
         }
 
         TextFieldType.PHONE -> imf("badTextFieldValuesThenValid for PHONE")
@@ -389,74 +309,28 @@ fun badTextFieldValuesThenValid(o: TestScenarioBuilder, field: TextFieldSpec, va
     return l
 }
 
-fun badTextFieldValuesThenValid2(field: TextFieldSpec, validValue: String): List<TestAttempt2> {
-    val l = mutableListOf<TestAttempt2>()
-    exhaustive/when (field.type) {
-        TextFieldType.STRING, TextFieldType.PASSWORD, TextFieldType.TEXTAREA -> {
-            if (field.minLen >= 1) {
-                l += TestAttempt2(subID = "${field.name}--empty", descr = "${field.name}: empty") {inputSetValue2(field.name, "")}
-            }
-            if (field.minLen > 1) {
-                l += TestAttempt2(subID = "${field.name}--tooShort", descr = "${field.name}: too short") {inputSetValue2(field.name, TestData.generateShit(field.minLen - 1))}
-            }
-            l += TestAttempt2(subID = "${field.name}--tooLong", descr = "${field.name}: too long") {inputSetValue2(field.name, TestData.generateShit(field.maxLen + 1))}
-            l += TestAttempt2(subID = "${field.name}--valid", descr = "${field.name}: valid") {inputSetValue2(field.name, validValue)}
-        }
-
-        TextFieldType.EMAIL -> {
-            l += TestAttempt2(subID = "${field.name}--empty", descr = "${field.name}: empty") {inputSetValue2(field.name, "")}
-            l += TestAttempt2(subID = "${field.name}-shit", descr = "${field.name}: shit") {inputSetValue2(field.name, "shit")}
-            l += TestAttempt2(subID = "${field.name}-valid", descr = "${field.name}: valid") {inputSetValue2(field.name, validValue)}
-        }
-
-        TextFieldType.PHONE -> imf("badTextFieldValuesThenValid for PHONE")
+fun badIntFieldValuesThenValid(field: IntFieldSpec, validValue: Int): List<TestAttempt> =
+    mutableListOf<TestAttempt>()-{l->
+        l += TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {}
     }
-    return l
-}
 
-//fun TestAttemptBuilder.badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String) {
-//
-//    exhaustive/when (field.type) {
-//        TextFieldType.STRING, TextFieldType.PASSWORD, TextFieldType.TEXTAREA -> {
-//            if (field.minLen >= 1) {
-//                add(TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {o.inputSetValue(field.name, "")})
-//            }
-//            if (field.minLen > 1) {
-//                add(TestAttempt(subID = "${field.name}--tooShort", descr = "${field.name}: too short") {o.inputSetValue(field.name, TestData.generateShit(field.minLen - 1))})
-//            }
-//            add(TestAttempt(subID = "${field.name}--tooLong", descr = "${field.name}: too long") {o.inputSetValue(field.name, TestData.generateShit(field.maxLen + 1))})
-//            add(TestAttempt(subID = "${field.name}--valid", descr = "${field.name}: valid") {o.inputSetValue(field.name, validValue)})
-//        }
-//
-//        TextFieldType.EMAIL -> {
-//            add(TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {o.inputSetValue(field.name, "")})
-//            add(TestAttempt(subID = "${field.name}-shit", descr = "${field.name}: shit") {o.inputSetValue(field.name, "shit")})
-//            add(TestAttempt(subID = "${field.name}-valid", descr = "${field.name}: valid") {o.inputSetValue(field.name, validValue)})
-//        }
-//
-//        TextFieldType.PHONE -> imf("badTextFieldValuesThenValid for PHONE")
-//
-//    }
-//}
-
-fun eachOrCombinationOfLasts(chunks: List<List<TestAttempt2>>): List<TestAttempt2> =
+fun eachOrCombinationOfLasts(chunks: List<List<TestAttempt>>): List<TestAttempt> =
     if (!testOpts().skipRambling) {
         flatten(chunks)
     } else {
         val lastItem = chunks.last().last()
-        listOf(TestAttempt2(
+        listOf(TestAttempt(
             subID = lastItem.subID,
             descr = lastItem.descr,
-            beforeSubmit = lastItem.beforeSubmit,
-            prepare = {async{
+            prepare = {
                 for (chunk in chunks) {
-                    await(chunk.last().prepare())
+                    chunk.last().prepare()
                 }
-            }}
+            }
         ))
     }
 
-fun eachOrLast(attempts: List<TestAttempt2>): List<TestAttempt2> =
+fun eachOrLast(attempts: List<TestAttempt>): List<TestAttempt> =
     if (!testOpts().skipRambling) {
         attempts
     } else {
