@@ -107,6 +107,8 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
             aid = "5305390c-3f36-4c60-b43d-7f127ace28a1"
         )
 
+        o.acta {sequence_openPlusForm("a46f92d5-e07d-41cf-bd9d-6559375ca7ad")}
+
         o.acta {tillEndOfTime()}
     }
 }
