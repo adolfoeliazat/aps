@@ -72,16 +72,28 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
     fun <Req : RequestMatumba, Res> specifyPlus(
         plusFormSpec: FormSpec<Req, Res>,
-        onPlusFormSuccessa: (Res) -> Promisoid<Unit> = {async{}}
+        onPlusFormSuccessa: suspend (Res) -> Unit = {}
     ) {
-        plusShit = EvaporatingButtonAndForm(ebafHost, key = "plus", level = Button.Level.PRIMARY, icon = plusIcon, formSpec = plusFormSpec, onSuccessa = onPlusFormSuccessa)
+        plusShit = EvaporatingButtonAndForm(
+            ebafHost,
+            key = "plus",
+            level = Button.Level.PRIMARY,
+            icon = plusIcon,
+            formSpec = plusFormSpec,
+            onSuccessa = onPlusFormSuccessa)
     }
 
     fun <Req : RequestMatumba, Res> specifyEdit(
         editFormSpec: FormSpec<Req, Res>,
-        onEditFormSuccessa: (Res) -> Promisoid<Unit> = {async{}}
+        onEditFormSuccessa: suspend (Res) -> Unit = {}
     ) {
-        editShit = EvaporatingButtonAndForm(ebafHost, key = "edit", level = Button.Level.DEFAULT, icon = fa.edit, formSpec = editFormSpec, onSuccessa = onEditFormSuccessa)
+        editShit = EvaporatingButtonAndForm(
+            ebafHost,
+            key = "edit",
+            level = Button.Level.DEFAULT,
+            icon = fa.edit,
+            formSpec = editFormSpec,
+            onSuccessa = onEditFormSuccessa)
     }
 
 
@@ -91,7 +103,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     }
 
 
-    fun applyHeaderControls(controlToBlink: Blinkable): Promisoid<dynamic> = async {
+    suspend fun applyHeaderControls(controlToBlink: Blinkable) {
         setHeaderControlsDisabled(true)
         controlToBlink.setBlinking(true)
 
@@ -112,7 +124,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
         val url = "${urlPath}?${urlParamParts.join("&")}"
-        await<dynamic>(ui.pushNavigate(url))
+        ui.pushNavigate(url)
 
         setHeaderControlsDisabled(false)
         controlToBlink.setBlinking(false)
@@ -157,7 +169,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 "onKeyDown" to {e: KeyboardEvent -> async {
                     if (e.keyCode == 13) {
                         preventAndStop(e)
-                        await(applyHeaderControls(searchBoxInput!!))
+                        applyHeaderControls(searchBoxInput!!)
                     }
                 }}
             ))
@@ -178,7 +190,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 style = json("width" to 160),
                 volatileDisabled = {ebafHost.headerControlsDisabled},
                 onChanga = {async{
-                    await(applyHeaderControls(filterSelect!!))
+                    applyHeaderControls(filterSelect!!)
                 }}
             )
 
@@ -195,7 +207,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
                 style = json("width" to 160),
                 volatileDisabled = {ebafHost.headerControlsDisabled},
                 onChanga = {async{
-                    await(applyHeaderControls(orderingSelect!!))
+                    applyHeaderControls(orderingSelect!!)
                 }}
             )
 

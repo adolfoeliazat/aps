@@ -97,7 +97,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
             primaryButtonTitle = t("Add", "Добавить"),
             cancelButtonTitle = const.defaultCancelButtonTitle
         ),
-        onSuccessa = {res->
+        onSuccessa = {
             world.pushNavigate("order.html?id=${order.id}&tab=files")
         }
     )
@@ -133,12 +133,12 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
 
             filterSelect.onChanga = {reload(filterSelect.elementID)}
             orderingSelect.onChanga = {reload(orderingSelect.elementID)}
-            searchInput.onKeyDowna = {e-> async {
+            searchInput.onKeyDowna = {e->
                 if (e.keyCode == 13) {
                     preventAndStop(e)
-                    await(reload(searchInput.elementID))
+                    asu {reload(searchInput.elementID)}
                 }
-            }}
+            }
 
 //                gloshit.updateStripContent = {stripContent.update()}
         }
@@ -155,32 +155,32 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
 
                 val refreshButtonID = puid()
                 o- Button(key = fconst.key.refreshPage.decl, id = refreshButtonID, icon = fa.refresh, volatileDisabled = {ebafHost.headerControlsDisabled}) {
-                    reload(refreshButtonID)
+                    asu {reload(refreshButtonID)}
                 }
 
                 o- ebafPlus.renderButton()
             }
         }
 
-        fun reloadFilesTab(): Promisoid<Unit> =
+        suspend fun reloadFilesTab() =
             world.pushNavigate("order.html?id=${order.id}&tab=files"
                                    + "&ordering=${orderingSelect.value.name}"
                                    + "&filter=${filterSelect.value.name}"
                                    + "&search=${encodeURIComponent(searchInput.getValue())}")
 
-        fun reload(elementID: String): Promisoid<Unit> = async {
+        suspend fun reload(elementID: String) {
             await(effects).blinkOn(byid(elementID))
             ebafHost.headerControlsDisabled = true
             stripContent.update()
-            await(TestGlobal.reloadPageTickingLock.sutPause())
+            TestGlobal.reloadPageTickingLock.sutPause()
             try {
-                await(reloadFilesTab())
+                reloadFilesTab()
             } finally {
                 await(effects).blinkOffFadingOut()
                 ebafHost.headerControlsDisabled = false
                 stripContent.update() // TODO:vgrechka Redundant?
-                await(TestGlobal.loadPageForURLLock.sutPause2())
-                await(TestGlobal.reloadPageDoneLock.sutPause())
+                TestGlobal.loadPageForURLLock.sutPause2()
+                TestGlobal.reloadPageDoneLock.sutPause()
             }
         }
     }
@@ -287,7 +287,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                                     cancelButtonTitle = const.defaultCancelButtonTitle,
                                                     containerClassName = css.cunt.bodyEditing,
                                                     onCancela = {async{
-                                                        await(await(effects).fadeOut(topShitID))
+                                                        await(effects).fadeOut(topShitID)
                                                         enterViewMode()
                                                     }},
                                                     onSuccessa = {res-> async<Unit> {
@@ -304,7 +304,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                                                 o- itemPlace
                                                             })
                                                             topPlace = newTopPlace
-                                                            await(await(effects).fadeIn(viewRootID))
+                                                            await(effects).fadeIn(viewRootID)
                                                         } else {
                                                             enterViewMode()
                                                         }
@@ -324,7 +324,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                     }
 
                     fun enterVanishedMode() = async {
-                        await(await(effects).fadeOut(viewRootID))
+                        await(effects).fadeOut(viewRootID)
                         itemPlace.setContent(NOTRE)
                         TestGlobal.shitVanished.resolve()
                     }

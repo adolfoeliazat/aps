@@ -6,15 +6,13 @@ import aps.front.*
 
 @Front class SelectField<T>(
     container: RequestMatumba,
-    name: String,
-    val title: String,
-    val values: Array<T>
-) : FormFieldFront(container, name)
+    val spec: SelectFieldSpec<T>
+) : FormFieldFront(container, spec.name)
 where T : Enum<T>, T : Titled {
 
     override var error: String? = null
 
-    val select = Select(key = null, attrs = Attrs(), values = values, initialValue = null,
+    val select = Select(key = spec.name, attrs = Attrs(), values = spec.values, initialValue = null,
                         onChange = {
                             form.fieldChanged()
                         },
@@ -32,7 +30,7 @@ where T : Enum<T>, T : Titled {
                                     "marginBottom" to if (error != null) 0 else null
                                 )),
             // Can it be null?
-                           if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else null,
+                           if (spec.title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to spec.title))) else null,
                            Shitus.diva(json("style" to json("position" to "relative")),
                                        select.toReactElement(),
                                        if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else null,
@@ -41,7 +39,7 @@ where T : Enum<T>, T : Titled {
 
     var value: T
         get() = select.value
-        set(value) { select.setValue(value) }
+        set(value) {asu{ select.setValue(value) }}
 
     override var disabled: Boolean
         get() = select.isDisabled()

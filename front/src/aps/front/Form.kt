@@ -25,11 +25,11 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val dontShameButtons: Boolean = false,
 
     val onCancel: FormMatumba<Req, Res>.() -> Unit = {},
-    val onCancela: FormMatumba<Req, Res>.() -> Promisoid<Unit> = {async{}},
+    val onCancela: suspend FormMatumba<Req, Res>.() -> Unit = {},
     val onError: FormMatumba<Req, Res>.(res: FormResponse.Shitty) -> Unit = {},
-    val onErrora: FormMatumba<Req, Res>.(res: FormResponse.Shitty) -> Promisoid<Unit> = {async{}},
+    val onErrora: suspend FormMatumba<Req, Res>.(res: FormResponse.Shitty) -> Unit = {},
     val onSuccess: FormMatumba<Req, Res>.(res: Res) -> Unit = {},
-    val onSuccessa: FormMatumba<Req, Res>.(res: Res) -> Promisoid<Unit> = {async{}},
+    val onSuccessa: suspend FormMatumba<Req, Res>.(res: Res) -> Unit = {},
 //    val onDeleta: FormMatumba<Req, Res>.() -> Promise<Unit> = {async{}},
     val getInvisibleFieldNames: FormMatumba<Req, Res>.() -> Iterable<String> = {listOf()}
 )
@@ -74,52 +74,47 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                             level = Button.Level.PRIMARY,
                             title = spec.primaryButtonTitle,
                             disabled = working,
-                            onClicka = {async{
-                                Shitus.beginTrain(json("name" to "Submit fucking form"))
-                                try {
-                                    for (field: FormFieldFront in spec.req.fields) {
-                                        field.error = null
-                                        field.disabled = true
-                                    }
-                                    error = null
-                                    working = true
-                                    update()
+                            onClicka = {
+                                for (field: FormFieldFront in spec.req.fields) {
+                                    field.error = null
+                                    field.disabled = true
+                                }
+                                error = null
+                                working = true
+                                update()
 
-                                    await(TestGlobal.formTickingLock.sutPause())
+                                TestGlobal.formTickingLock.sutPause()
 
-                                    val res: FormResponse = await(callMatumba(spec.req, spec.ui.tokenMaybe))
+                                val res: FormResponse = await(callMatumba(spec.req, spec.ui.tokenMaybe))
 //                                    TestGlobal.formActionHalfway.resolve()
 //                                    await(TestGlobal.formActionHalfwayConsidered.promise)
 
-                                    when (res) {
-                                        is FormResponse.Shitty -> {
-                                            error = res.error
-                                            (spec.onError)(res)
-                                            await((spec.onErrora)(res))
-                                        }
-                                        is FormResponse.Hunky<*> -> {
-                                            error = null
-                                            val meat = res.meat as Res
-                                            (spec.onSuccess)(meat)
-                                            await((spec.onSuccessa)(meat))
-                                        }
+                                when (res) {
+                                    is FormResponse.Shitty -> {
+                                        error = res.error
+                                        (spec.onError)(res)
+                                        (spec.onErrora)(res)
                                     }
-
-                                    for (field in spec.req.fields) {
-                                        field.error = if (res !is FormResponse.Shitty) null else
-                                            res.fieldErrors.find{it.field == field.name}?.error
-                                        field.disabled = false
+                                    is FormResponse.Hunky<*> -> {
+                                        error = null
+                                        val meat = res.meat as Res
+                                        (spec.onSuccess)(meat)
+                                        (spec.onSuccessa)(meat)
                                     }
-
-                                    working = false
-                                    update()
-
-                                    await(TestGlobal.formDoneLock.sutPause())
-//                                    TestGlobal.formActionCompleted.resolve()
-                                } finally {
-                                    Shitus.endTrain()
                                 }
-                            }}
+
+                                for (field in spec.req.fields) {
+                                    field.error = if (res !is FormResponse.Shitty) null else
+                                        res.fieldErrors.find{it.field == field.name}?.error
+                                    field.disabled = false
+                                }
+
+                                working = false
+                                update()
+
+                                TestGlobal.formDoneLock.sutPause()
+//                                    TestGlobal.formActionCompleted.resolve()
+                            }
                         ).toReactElement(),
 
 
@@ -131,7 +126,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                 style = Style(marginLeft = 10),
                                 onClicka = {async{
                                     (spec.onCancel)()
-                                    await((spec.onCancela)())
+                                    (spec.onCancela)()
 //                                    TestGlobal.formActionCompleted.resolve()
                                 }}
                             ).toReactElement()
@@ -179,92 +174,92 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
     }
 }
 
-fun TestScenarioBuilder.formSequence_killme(
-    buildAction: () -> Unit,
-    assertionDescr: String,
-    halfwayAssertionID: String,
-    finalAssertionID: String,
-    halfwayTimeout: Int = 5000,
-    completedTimeout: Int = 1000
-) {
-    val o = this
-    o.act {
-        TestGlobal.formActionCompleted = ResolvableShit()
-        TestGlobal.formActionHalfway = ResolvableShit()
-        TestGlobal.formActionHalfwayConsidered = ResolvableShit()
-    }
+//fun TestScenarioBuilder.formSequence_killme(
+//    buildAction: () -> Unit,
+//    assertionDescr: String,
+//    halfwayAssertionID: String,
+//    finalAssertionID: String,
+//    halfwayTimeout: Int = 5000,
+//    completedTimeout: Int = 1000
+//) {
+//    val o = this
+//    o.act {
+//        TestGlobal.formActionCompleted = ResolvableShit()
+//        TestGlobal.formActionHalfway = ResolvableShit()
+//        TestGlobal.formActionHalfwayConsidered = ResolvableShit()
+//    }
+//
+//    buildAction()
+//
+//    o.acta {TestGlobal.formActionHalfway.promise.orTestTimeout(halfwayTimeout)}
+//    o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
+//    o.act {TestGlobal.formActionHalfwayConsidered.resolve()}
+//
+//    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(completedTimeout)}
+//    o.assertScreenHTML(assertionDescr, finalAssertionID)
+//}
 
-    buildAction()
+//fun TestScenarioBuilder.formWithAnimationOnCompletionSequence_killme(
+//    shit: TestShit,
+//    buildAction: () -> Unit,
+//    assertionDescr: String,
+//    halfwayAssertionID: String,
+//    completionAnimationHalfwayAssertionID: String,
+//    finalAssertionID: String,
+//    halfwayTimeout: Int = 5000,
+//    completedTimeout: Int = 5000
+//) {
+//    act {
+//        TestGlobal.formActionCompleted = ResolvableShit()
+//        TestGlobal.formActionHalfway = ResolvableShit()
+//        TestGlobal.formActionHalfwayConsidered = ResolvableShit()
+//        TestGlobal.animationHalfwaySignal = ResolvableShit()
+//        TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
+//    }
+//
+//    acta {shit.imposeNextRequestTimestamp()}
+//    buildAction()
+//
+//    acta {TestGlobal.formActionHalfway.promise.orTestTimeout(halfwayTimeout)}
+//    assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
+//    act {TestGlobal.formActionHalfwayConsidered.resolve()}
+//
+//    acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(fconst.test.default.animationHalfwaySignalTimeout)}
+//    assertScreenHTML(assertionDescr + " (completion animation halfway)", completionAnimationHalfwayAssertionID)
+//    act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
+//
+//    acta {TestGlobal.formActionCompleted.promise.orTestTimeout(completedTimeout)}
+//    assertScreenHTML(assertionDescr, finalAssertionID)
+//}
 
-    o.acta {TestGlobal.formActionHalfway.promise.orTestTimeout(halfwayTimeout)}
-    o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
-    o.act {TestGlobal.formActionHalfwayConsidered.resolve()}
+//fun TestScenarioBuilder.submitFormSequence(
+//    shit: TestShit,
+//    descr: String,
+//    buildAction: (() -> Unit)? = null,
+//    aid: String,
+//    buttonKey: String? = null,
+//    imposeTimestamp: Boolean = true,
+//    buildBeforeAction: () -> Unit = {}
+//) {
+//    sequence(
+//        buildAction = {
+//            if (imposeTimestamp) {
+//                acta {shit.imposeNextRequestTimestamp()}
+//            }
+//            buildBeforeAction()
+//            (buildAction ?: {
+//                buttonClick(buttonKey ?: fconst.key.primary.testRef)
+//            })()
+//        },
+//        assertionDescr = descr,
+//        steps = listOf(
+//            TestSequenceStep(TestGlobal.formTickingLock, "$aid--1"),
+//            TestSequenceStep(TestGlobal.formDoneLock, "$aid--2")
+//        )
+//    )
+//}
 
-    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(completedTimeout)}
-    o.assertScreenHTML(assertionDescr, finalAssertionID)
-}
-
-fun TestScenarioBuilder.formWithAnimationOnCompletionSequence_killme(
-    shit: TestShit,
-    buildAction: () -> Unit,
-    assertionDescr: String,
-    halfwayAssertionID: String,
-    completionAnimationHalfwayAssertionID: String,
-    finalAssertionID: String,
-    halfwayTimeout: Int = 5000,
-    completedTimeout: Int = 5000
-) {
-    act {
-        TestGlobal.formActionCompleted = ResolvableShit()
-        TestGlobal.formActionHalfway = ResolvableShit()
-        TestGlobal.formActionHalfwayConsidered = ResolvableShit()
-        TestGlobal.animationHalfwaySignal = ResolvableShit()
-        TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
-    }
-
-    acta {shit.imposeNextRequestTimestamp()}
-    buildAction()
-
-    acta {TestGlobal.formActionHalfway.promise.orTestTimeout(halfwayTimeout)}
-    assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID)
-    act {TestGlobal.formActionHalfwayConsidered.resolve()}
-
-    acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(fconst.test.default.animationHalfwaySignalTimeout)}
-    assertScreenHTML(assertionDescr + " (completion animation halfway)", completionAnimationHalfwayAssertionID)
-    act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
-
-    acta {TestGlobal.formActionCompleted.promise.orTestTimeout(completedTimeout)}
-    assertScreenHTML(assertionDescr, finalAssertionID)
-}
-
-fun TestScenarioBuilder.submitFormSequence(
-    shit: TestShit,
-    descr: String,
-    buildAction: (() -> Unit)? = null,
-    aid: String,
-    buttonKey: String? = null,
-    imposeTimestamp: Boolean = true,
-    buildBeforeAction: () -> Unit = {}
-) {
-    sequence(
-        buildAction = {
-            if (imposeTimestamp) {
-                acta {shit.imposeNextRequestTimestamp()}
-            }
-            buildBeforeAction()
-            (buildAction ?: {
-                buttonClick(buttonKey ?: fconst.key.primary.testRef)
-            })()
-        },
-        assertionDescr = descr,
-        steps = listOf(
-            TestSequenceStep(TestGlobal.formTickingLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.formDoneLock, "$aid--2")
-        )
-    )
-}
-
-fun submitFormSequence2(
+suspend fun submitFormSequence2(
     shit: TestShit,
     descr: String,
     action: (() -> Promisoid<Unit>)? = null,
@@ -272,8 +267,8 @@ fun submitFormSequence2(
     buttonKey: String? = null,
     imposeTimestamp: Boolean = true,
     beforeAction: () -> Promisoid<Unit> = {async{}}
-) = async<Unit> {
-    await(sequence2(
+) {
+    sequence2(
         action = {async{
             if (imposeTimestamp) {
                 await(shit.imposeNextRequestTimestamp())
@@ -288,38 +283,38 @@ fun submitFormSequence2(
             TestSequenceStep(TestGlobal.formTickingLock, "$aid--1"),
             TestSequenceStep(TestGlobal.formDoneLock, "$aid--2")
         )
-    ))
+    )
 }
 
-fun TestScenarioBuilder.formSubmissionAttempts(
-    testShit: TestShit,
-    descr: String,
-    baseID: String,
-    attempts: List<TestAttempt>
-) {
-    for (i in 0 until attempts.size)
-        for (j in i+1 until attempts.size)
-            if (attempts[i].subID == attempts[j].subID) bitch("Attempt subID duplication: ${attempts[i].subID}")
+//fun TestScenarioBuilder.formSubmissionAttempts(
+//    testShit: TestShit,
+//    descr: String,
+//    baseID: String,
+//    attempts: List<TestAttempt>
+//) {
+//    for (i in 0 until attempts.size)
+//        for (j in i+1 until attempts.size)
+//            if (attempts[i].subID == attempts[j].subID) bitch("Attempt subID duplication: ${attempts[i].subID}")
+//
+//    section(descr) {
+//        for ((i, attempt) in attempts.withIndex()) {
+//            attempt.buildPrepare()
+//            submitFormSequence(
+//                testShit,
+//                descr = "Attempt: ${attempt.descr}",
+//                aid = "$baseID--${attempt.subID}",
+//                imposeTimestamp = i == attempts.lastIndex,
+//                buildBeforeAction = attempt.buildBeforeSubmit)
+//        }
+//    }
+//}
 
-    section(descr) {
-        for ((i, attempt) in attempts.withIndex()) {
-            attempt.buildPrepare()
-            submitFormSequence(
-                testShit,
-                descr = "Attempt: ${attempt.descr}",
-                aid = "$baseID--${attempt.subID}",
-                imposeTimestamp = i == attempts.lastIndex,
-                buildBeforeAction = attempt.buildBeforeSubmit)
-        }
-    }
-}
-
-fun formSubmissionAttempts2(
+suspend fun formSubmissionAttempts2(
     testShit: TestShit,
     descr: String,
     baseID: String,
     attempts: List<TestAttempt2>
-) = async<Unit> {
+) {
     for (i in 0 until attempts.size)
         for (j in i+1 until attempts.size)
             if (attempts[i].subID == attempts[j].subID) bitch("Attempt subID duplication: ${attempts[i].subID}")
@@ -327,12 +322,12 @@ fun formSubmissionAttempts2(
 //    section(descr) {
     for ((i, attempt) in attempts.withIndex()) {
         await(attempt.prepare())
-        await(submitFormSequence2(
+        submitFormSequence2(
             testShit,
             descr = "Attempt: ${attempt.descr}",
             aid = "$baseID--${attempt.subID}",
             imposeTimestamp = i == attempts.lastIndex,
-            beforeAction = attempt.beforeSubmit))
+            beforeAction = attempt.beforeSubmit)
     }
 //    }
 }

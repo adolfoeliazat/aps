@@ -178,7 +178,7 @@ class TopNavItem(
                 "className" to (if (active) "active" else ""),
                 "onClick" to {e: ReactEvent ->
                     preventAndStop(e)
-                    click()
+                    asu {click()}
                 }
             ),
             listOf(
@@ -197,7 +197,7 @@ class TopNavItem(
         ).toToReactElementable()
     }
 
-    fun click(): Promisoid<Unit> = async {
+    suspend fun click() {
         var dleft = 0
         var dwidth = 0
         if (pageName == "home") { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
@@ -206,14 +206,14 @@ class TopNavItem(
         }
 
         await(effects).blinkOn(byid(aid).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth))
-        await(TestGlobal.topNavItemTickingLock.sutPause())
+        TestGlobal.topNavItemTickingLock.sutPause()
 
-        await(ui!!.pushNavigate(href))
+        ui!!.pushNavigate(href)
 
         await(delay(250))
         await(effects).blinkOff()
         ExternalGlobus.bsClearMenus()
-        await(TestGlobal.topNavItemDoneLock.sutPause())
+        TestGlobal.topNavItemDoneLock.sutPause()
     }
 
     override fun componentDidMount() {
@@ -225,22 +225,19 @@ class TopNavItem(
     }
 }
 
-fun TestScenarioBuilder.topNavItemClick(key: String, handOpts: HandOpts = HandOpts()) {
-    acta("Clicking top nav item `$key`") {async<Unit>{
-        val target = TopNavItem.instance(key)
-        await(TestUserActionAnimation.hand(target, handOpts))
-        target.click() // Not await
-        Unit
-    }}
+suspend fun topNavItemClick(key: String, handOpts: HandOpts = HandOpts()) {
+    val target = TopNavItem.instance(key)
+    await(TestUserActionAnimation.hand(target, handOpts))
+    notAwait {target.click()}
 }
 
-fun TestScenarioBuilder.topNavItemSequence(
+suspend fun topNavItemSequence(
     descr: String,
     key: String,
     aid: String
 ) {
-    sequence(
-        buildAction = {
+    sequence2(
+        action = {
             topNavItemClick(key)
         },
         assertionDescr = descr,
@@ -305,7 +302,7 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
                 if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(isInTestScenario() && art.testSpeed == "fast")) {
                     await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
                 }
-                await<dynamic>(ui!!.pushNavigate(href))
+                ui!!.pushNavigate(href)
 
                 global.setTimeout({async{
                                       await(effects).blinkOff()

@@ -31,10 +31,6 @@ object const {
         val maxTitleLen = common.maxTitleLen
         val minDetailsLen = common.minDetailsLen
         val maxDetailsLen = common.maxDetailsLen
-        val minPages = 1
-        val maxPages = 300
-        val minSources = 0
-        val maxSources = 20
     }
 
     object file {

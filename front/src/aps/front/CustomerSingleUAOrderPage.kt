@@ -67,17 +67,17 @@ class CustomerSingleUAOrderPage(val world: World) {
                     initialActiveID = tab.tabSpec.id,
                     switchOnTabClick = false,
                     tabDomIdPrefix = "tab-",
-                    onTabClicka = this::clickOnTab,
+                    onTabClicka = {clickOnTab(it)},
                     tabs = tabs.map {it.tabSpec}
                 )
             }
         ))
     }
 
-    fun clickOnTab(id: String): Promisoid<Unit> = async {
+    suspend fun clickOnTab(id: String) {
         await(effects).blinkOn(byid("tab-$id"), BlinkOpts(widthCalcSuffix = "- 0.15em"))
         try {
-            await(world.pushNavigate("order.html?id=$orderID&tab=$id"))
+            world.pushNavigate("order.html?id=$orderID&tab=$id")
         } finally {
             await(effects).blinkOffFadingOut()
         }

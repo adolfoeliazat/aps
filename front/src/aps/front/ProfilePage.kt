@@ -49,7 +49,7 @@ class ProfilePage(val ui: World) {
                     onSuccessa = {res -> async {
                         ui.setUser(res.newUser)
                         // TODO:vgrechka Simplify code await/return like below    b75d3e99-4883-4153-8777-34e568d942e1
-                        await(ui.replaceNavigate("profile.html"))
+                        ui.replaceNavigate("profile.html")
                     }})).toReactElement())
         }
         else if (userState == UserState.PROFILE_APPROVAL_PENDING) {

@@ -25,7 +25,7 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
     val level: Button.Level,
     val icon: IconClass,
     val formSpec: FormSpec<Req, Res>,
-    val onSuccessa: (Res) -> Promisoid<Unit>
+    val onSuccessa: suspend (Res) -> Unit
 ) : IButtonAndForm {
     private var form: FormMatumba<*, *>? = null
     private var formClass = ""
@@ -50,15 +50,13 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
             form = FormMatumba(formSpec.copy(
                 onCancel = {host.cancelForm()},
                 onSuccessa = {res->
-                    async {
-                        await(onSuccessa(res))
-                    }
+                    asu {onSuccessa(res)}
                 }
             ))
 
             host.headerMode = HeaderMode.CREATING
             host.updateShit()
-            await(await(effects).fadeIn(form!!.elementID))
+            await(effects).fadeIn(form!!.elementID)
         }}
     ).toReactElement()
 
@@ -81,7 +79,7 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
     }
 }
 
-fun sequence_openPlusForm(aid: String) = sequence2(
+suspend fun sequence_openPlusForm(aid: String) = sequence2(
     action = {
         buttonClick2(fconst.key.plus.testRef)
     },

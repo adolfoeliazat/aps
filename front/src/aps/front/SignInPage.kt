@@ -26,20 +26,17 @@ class SignInPage(val ui: World) {
                         spec.req.password.value = ""
                     },
 
-                    onSuccessa = {res ->
-                        async {
-                            ui.userMaybe = res.user
-//                        ui.startLiveStatusPolling()
-                            ui.tokenMaybe = res.token
-                            Browseroid.current.typedStorageLocal.token = ui.tokenMaybe
-//                        hrss.storageLocal.setItem("token", token!!)
+                    onSuccessa = {res -> async {
+                        ui.userMaybe = res.user
+                        ui.tokenMaybe = res.token
+                        Browseroid.current.typedStorageLocal.token = ui.tokenMaybe
 
-                            await(ui.pushNavigate(when (res.user.state) {
-                                                   UserState.COOL -> "dashboard.html"
-                                                   else -> "profile.html"
-                                               }))
-                        }
-                    }
+                        ui.pushNavigate(
+                            when (res.user.state) {
+                                UserState.COOL -> "dashboard.html"
+                                else -> "profile.html"
+                            })
+                    }}
                 ))
 
                 if (ui.signedUpOK) {

@@ -23,7 +23,7 @@ open class Button(
     val separateDropDownMenuButton: Boolean = false,
     val dropDownMenuDirection: MenuDirection = Button.MenuDirection.DOWN,
     val narrowCaret: Boolean = false,
-    var onClicka: () -> Promisoid<Unit> = {async{}},
+    var onClicka: suspend () -> Unit = {},
     val onClick: () -> Unit = {}
 ) : Control2(Attrs(id = id)) {
 
@@ -45,9 +45,9 @@ open class Button(
         override fun toString() = string
     }
 
-    open fun click(): Promisoid<Unit> = async {
+    open suspend fun click(): Promisoid<Unit> = async {
         onClick()
-        await(onClicka())
+        onClicka()
     }
 
     override fun render(): ToReactElementable {
@@ -59,7 +59,7 @@ open class Button(
             "disabled" to (volatileDisabled?.let {it()} ?: disabled),
             "onClick" to {e: ReactEvent ->
                 preventAndStop(e)
-                click()
+                asu {click()}
             }
         )
         dataDismiss?.let {buttonJSAttrs["data-dismiss"] = it}
@@ -163,23 +163,24 @@ fun buttonClick2(key: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> 
 }
 
 fun TestScenarioBuilder.buttonUserInitiatedClick(key: String) {
-    acta("Clicking button `$key`") {async{
-        val successOrTimeout = Promisoid<Unit> {resolve, reject ->
-            timeoutSet(1000) {reject(Exception("Timed out waiting for a fucking robot click"))}
-            window.onclick = {
-                window.onclick = null
-                Button.instance(key).click()
-                resolve(Unit)
-            }
-        }
-
-        try {
-            await(fuckingRemoteCall.robotClickOnChrome())
-            await(successOrTimeout)
-        } finally {
-            window.onclick = null
-        }
-    }}
+    imf("reimplement buttonUserInitiatedClick")
+//    acta("Clicking button `$key`") {async{
+//        val successOrTimeout = Promisoid<Unit> {resolve, reject ->
+//            timeoutSet(1000) {reject(Exception("Timed out waiting for a fucking robot click"))}
+//            window.onclick = {
+//                window.onclick = null
+//                Button.instance(key).click()
+//                resolve(Unit)
+//            }
+//        }
+//
+//        try {
+//            await(fuckingRemoteCall.robotClickOnChrome())
+//            await(successOrTimeout)
+//        } finally {
+//            window.onclick = null
+//        }
+//    }}
 }
 
 

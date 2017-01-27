@@ -14,7 +14,7 @@ class Tabs2(
     val tabs: List<TabSpec>,
     initialActiveID: String? = null,
     val switchOnTabClick: Boolean = true,
-    val onTabClicka: (id: String) -> Promisoid<Unit> = {async{}},
+    val onTabClicka: suspend (id: String) -> Unit = {},
     val tabDomIdPrefix: String? = null,
     val key: String? = "tabs"
 ): Control2(Attrs()) {
@@ -29,12 +29,12 @@ class Tabs2(
 
     private var activeID = initialActiveID ?: tabs[0].id
 
-    fun clickOnTaba(id: String): Promisoid<Unit> = async {
+    suspend fun clickOnTaba(id: String) {
         if (switchOnTabClick) {
             activeID = id
             update()
         }
-        await(onTabClicka(id))
+        onTabClicka(id)
     }
 
     override fun render() = kdiv{o->
@@ -47,7 +47,7 @@ class Tabs2(
                            className = if (tab.id == activeID) "active" else ""){o->
                         o- ka(href="#", onClick = {e->
                             preventAndStop(e)
-                            clickOnTaba(tab.id)
+                            asu {clickOnTaba(tab.id)}
                         }){o->
                             o- tab.title
                         }
@@ -80,9 +80,10 @@ class Tabs2(
 }
 
 fun TestScenarioBuilder.tabsClickOnTab(key: String, id: String) {
-    acta("Choosing tab `$id`") {
-        Tabs2.instance(key).clickOnTaba(id)
-    }
+    imf("reimplement tabsClickOnTab")
+//    acta("Choosing tab `$id`") {
+//        Tabs2.instance(key).clickOnTaba(id)
+//    }
 }
 
 

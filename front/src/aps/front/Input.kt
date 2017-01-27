@@ -78,7 +78,7 @@ class Input(
         initialValue: String = "",
         volatileDisabled: () -> Boolean = {false},
         onKeyDown: (KeyboardEvent) -> Unit = {},
-        onKeyDowna: (KeyboardEvent) -> Promisoid<Unit> = {async{}}
+        onKeyDowna: suspend (KeyboardEvent) -> Unit = {}
     ) : this(json(
         "style" to style.toReactStyle(),
         "placeholder" to placeholder,
@@ -95,11 +95,11 @@ class Input(
 
     lateinit var elementID: String
     lateinit var onKeyDown: (KeyboardEvent) -> Unit
-    lateinit var onKeyDowna: (KeyboardEvent) -> Promisoid<Unit>
+    lateinit var onKeyDowna: suspend (KeyboardEvent) -> Unit
 
-    fun keyDown(e: KeyboardEvent): Promisoid<Unit> {
+    suspend fun keyDown(e: KeyboardEvent) {
         onKeyDown(e)
-        return onKeyDowna(e)
+        onKeyDowna(e)
     }
 
     fun LegacyCtor(): dynamic {
@@ -168,7 +168,7 @@ class Input(
                         },
 
                         "onKeyDown" to {e: dynamic ->
-                            keyDown(e)
+                            asu {keyDown(e)}
                         }
                     ))
                 },
@@ -400,13 +400,14 @@ fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) 
 //}
 
 fun TestScenarioBuilder.inputPressEnter(key: String) {
-    act("Pressing Enter in `$key`") {
-        Input.instance(key).keyDown(json(
-            "keyCode" to 13,
-            "preventDefault" to {},
-            "stopPropagation" to {}
-        ).asDynamic())
-    }
+    imf("reimplement inputPressEnter")
+//    act("Pressing Enter in `$key`") {
+//        Input.instance(key).keyDown(json(
+//            "keyCode" to 13,
+//            "preventDefault" to {},
+//            "stopPropagation" to {}
+//        ).asDynamic())
+//    }
 }
 
 

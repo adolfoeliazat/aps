@@ -168,7 +168,7 @@ open class UpdateUserRequest() : RequestMatumba() {
     val immutableSignUpFields = ImmutableSignUpFields(this)
     val mutableSignUpFields = MutableSignUpFields(this)
     val profileFields = ProfileFields(this)
-    val state = SelectField(this, "state", t("TOTE", "Статус"), UserState.values())
+    val state = SelectField(this, fieldSpecs.userState)
     val profileRejectionReason = TextField(this, fieldSpecs.profileRejectionReason)
     val banReason = TextField(this, fieldSpecs.banReason)
     val adminNotes = TextField(this, fieldSpecs.adminNotes)
@@ -427,11 +427,11 @@ class CustomerCreateUAOrderRequest : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
 
     val title = TextField(this, fieldSpecs.title)
-    val documentType = SelectField(this, "documentType", t("TOTE", "Тип документа"), UADocumentType.values())
-    val deadline = DateTimeField(this, "deadline", t("TOTE", "Срок"))
-    val numPages = IntField(this, "numPages", t("TOTE", "Страниц"), const.order.minPages, const.order.maxPages)
-    val numSources = IntField(this, "numSources", t("TOTE", "Источников"), const.order.minSources, const.order.maxSources)
+    val documentType = SelectField(this, fieldSpecs.ua.documentType)
+    val numPages = IntField(this, fieldSpecs.numPages)
+    val numSources = IntField(this, fieldSpecs.numSources)
     val details = TextField(this, fieldSpecs.details)
+    val phone = TextField(this, fieldSpecs.phone)
 }
 
 fun fileField(container: RequestMatumba, shouldBeProvided: Boolean = true) = FileField(container, "file", t("TOTE", "Файл"), shouldBeProvided = shouldBeProvided)
@@ -586,6 +586,7 @@ class LuceneParseToken {
 
 
 
+//    val deadline = DateTimeField(this, "deadline", t("Deadline", "Срок"))
 
 
 

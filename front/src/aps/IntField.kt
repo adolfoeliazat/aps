@@ -6,11 +6,8 @@ import aps.front.*
 
 @Front class IntField(
     container: RequestMatumba,
-    name: String,
-    val title: String,
-    val min: Int,
-    val max: Int
-): FormFieldFront(container, name) {
+    val spec: IntFieldSpec
+): FormFieldFront(container, spec.name) {
 
     override var error: String? = null
 
@@ -37,7 +34,7 @@ import aps.front.*
                                 "style" to json(
                                     "marginBottom" to if (error != null) 0 else null
                                 )),
-                           if (title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to title))) else undefined,
+                           if (spec.title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to spec.title))) else undefined,
                            Shitus.diva(json("style" to json("position" to "relative")),
                                        input,
                                        if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,

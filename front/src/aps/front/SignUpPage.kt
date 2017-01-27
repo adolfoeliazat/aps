@@ -23,7 +23,7 @@ class SignUpPage(val world: World) {
                                                                onSuccessa = {async{
                         world.signedUpOK = true
                         world.initialEmailFieldValueAfterSignUp = req.immutableSignUpFields.email.value
-                        await(world.pushNavigate("/sign-in.html"))
+                        world.pushNavigate("/sign-in.html")
                     }}
                 )).toReactElement(),
 

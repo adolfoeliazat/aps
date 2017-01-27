@@ -110,22 +110,20 @@ fun urlLink(
     val ui = hrss.browserOld.ui
     val id = puid()
 
-    fun doClick(): Promisoid<Unit> = async {
+    fun doClick() = async {
         await(effects).blinkOn(byid(id), BlinkOpts(dtop = 3))
-        await(TestGlobal.linkTickingLock.sutPause())
+        TestGlobal.linkTickingLock.sutPause()
         Shitus.byid(id).css("text-decoration", "none")
 
         if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
             await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
         }
 
-        await<dynamic>(Shitus.entraina(json("name" to "Navigate via urlLink: ${url}", "act" to {async<Unit>{
-            await<dynamic>(ui.pushNavigate(url))
-        }})))
+        ui.pushNavigate(url)
 
         await(effects).blinkOff()
         Shitus.byid(id).css("text-decoration", "")
-        await(TestGlobal.linkDoneLock.sutPause())
+        TestGlobal.linkDoneLock.sutPause()
     }
 
     return link(
@@ -220,21 +218,19 @@ fun link(
 
 fun DummyMouseEvent() = MouseEvent("dummyTypeArg")
 
-fun TestScenarioBuilder.linkClick(key: String, handOpts: HandOpts = HandOpts()) {
-    acta("Clicking link `$key`") {async<Unit>{
-        val target = Link.instance(key)
-        await(TestUserActionAnimation.hand(target, handOpts))
-        target.click() // Not await
-    }}
+suspend fun linkClick(key: String, handOpts: HandOpts = HandOpts()) {
+    val target = Link.instance(key)
+    await(TestUserActionAnimation.hand(target, handOpts))
+    target.click()
 }
 
-fun TestScenarioBuilder.linkSequence(
+suspend fun linkSequence(
     descr: String,
     key: String,
     aid: String
 ) {
-    sequence(
-        buildAction = {
+    sequence2(
+        action = {
             linkClick(key)
         },
         assertionDescr = descr,

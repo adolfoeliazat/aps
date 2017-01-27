@@ -43,7 +43,7 @@ fun ignite() {
 //    global.makeAPSShitImplCtor = ::makeAPSShitImplCtor
 
 //    initEffects()
-    Shitus.initTrains()
+//    Shitus.initTrains()
 
     global.Shitus = Shitus
 
@@ -51,7 +51,7 @@ fun ignite() {
     igniteDebugShit()
 }
 
-fun igniteShit(): Promisoid<Unit> = async {
+fun igniteShit() {
     window.addEventListener("unhandledrejection", {event-> async {
         val reason = event.asDynamic().reason
         console.error("Unhandled rejection: ${reason.message}")
@@ -90,7 +90,7 @@ fun igniteShit(): Promisoid<Unit> = async {
 
     val search = Globus.realLocation.search
     if (search.contains("test=") || search.contains("testSuite=")) {
-        await(jsFacing_igniteTestShit())
+        jsFacing_igniteTestShit()
     } else {
 //        global.DB = global.sessionStorage.getItem("DB") ?: "aps-dev" // TODO:vgrechka @security
 
@@ -102,7 +102,7 @@ fun igniteShit(): Promisoid<Unit> = async {
             }
         })
 
-        await(World("default").boot())
+        asu {World("default").boot()}
     }
 }
 

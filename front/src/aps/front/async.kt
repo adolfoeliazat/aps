@@ -131,9 +131,14 @@ class ResolvableShit<T> {
 
 fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
 
-fun tillEndOfTime(): Promisoid<Unit> {
+fun tillEndOfTimePromise(): Promisoid<Unit> {
     dlog("--- Waiting till end of time ---")
     return delay(Int.MAX_VALUE)
+}
+
+suspend fun waitTillEndOfTime() {
+    dlog("--- Waiting till end of time ---")
+    await(delay(Int.MAX_VALUE))
 }
 
 class TwoStepTestLock(
@@ -162,11 +167,11 @@ class TwoStepTestLock(
         sutPause2.reset()
     }
 
-    fun testPause1(): Promisoid<Unit> = async {
+    suspend fun testPause1() {
         await(testPause1.promise.orTestTimeoutNamedAfter(testPause1Timeout, {testPause1}))
     }
 
-    fun testPause2(): Promisoid<Unit> = async {
+    suspend fun testPause2() {
         await(testPause2.promise.orTestTimeoutNamedAfter(testPause2Timeout, {testPause2}))
     }
 
@@ -178,12 +183,12 @@ class TwoStepTestLock(
         sutPause2.resolve()
     }
 
-    fun sutPause1(): Promisoid<Unit> = async {
+    suspend fun sutPause1() {
         testPause1.resolve()
         await(sutPause1.promise.orTestTimeoutNamedAfter(sutPause1Timeout, {sutPause1}))
     }
 
-    fun sutPause2(): Promisoid<Unit> = async {
+    suspend fun sutPause2() {
         testPause2.resolve()
         await(sutPause2.promise.orTestTimeoutNamedAfter(sutPause2Timeout, {sutPause2}))
     }
@@ -207,7 +212,7 @@ class TestLock(
         sutPause.reset()
     }
 
-    fun testPause(): Promisoid<Unit> = async {
+    suspend fun testPause() {
         await(testPause.promise.orTestTimeoutNamedAfter(testPauseTimeout, {testPause}))
     }
 
@@ -215,7 +220,7 @@ class TestLock(
         sutPause.resolve()
     }
 
-    fun sutPause(): Promisoid<Unit> = async {
+    suspend fun sutPause() {
         testPause.resolve()
         await(sutPause.promise.orTestTimeoutNamedAfter(sutPauseTimeout, {sutPause}))
     }
@@ -229,6 +234,9 @@ fun realTimeoutSet(ms: Int, cb: () -> Unit) {
     realBrowseroid.timer.setTimeout(cb, ms)
 }
 
+fun notAwait(block: suspend () -> Unit) {
+    async {block()}
+}
 
 
 

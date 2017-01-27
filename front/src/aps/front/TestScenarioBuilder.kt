@@ -76,6 +76,21 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
         return instr
     }
 
+    fun acts(descr: String? = null, block: suspend () -> Unit): TestInstruction.Do {
+        var step: TestInstruction.Step? = null
+        if (descr != null) {
+            step = TestInstruction.Step.ActionStep(descr)
+            instructions.add(step)
+        }
+
+        val instr = TestInstruction.Do {async{
+            block()
+            step?.passed = true
+        }}
+        instructions.add(instr)
+        return instr
+    }
+
     fun <T> await(block: () -> Promisoid<T>) {
         acta(null, block)
     }
@@ -357,25 +372,24 @@ fun rerunTestSlowlyButton(): Button {
         })
 }
 
-fun TestScenarioBuilder.twoStepLockSequence(
-    buildAction: () -> Unit,
+suspend fun twoStepLockSequence(
+    action: suspend () -> Unit,
     lock: TwoStepTestLock,
     assertionDescr: String,
     assertionID1: String,
     assertionID2: String
 ) {
-    val o = this
-    o.act {lock.reset()}
+    lock.reset()
 
-    buildAction()
+    action()
 
-    o.acta {lock.testPause1()}
-    o.assertScreenHTML("$assertionDescr (1)", assertionID1)
-    o.act {lock.testResume1()}
+    lock.testPause1()
+    assertScreenHTML("$assertionDescr (1)", assertionID1)
+    lock.testResume1()
 
-    o.acta {lock.testPause2()}
-    o.assertScreenHTML("$assertionDescr (2)", assertionID2)
-    o.act {lock.testResume2()}
+    lock.testPause2()
+    assertScreenHTML("$assertionDescr (2)", assertionID2)
+    lock.testResume2()
 }
 
 class TestSequenceStep(
@@ -383,52 +397,34 @@ class TestSequenceStep(
     val assertionID: String
 )
 
-fun TestScenarioBuilder.sequence(
-    buildAction: () -> Unit,
+suspend fun sequence2(
+    action: suspend () -> Unit,
     assertionDescr: String,
     steps: List<TestSequenceStep>
 ) {
-    val o = this
-    o.act {steps.forEach {it.lock.reset()}}
-
-    buildAction()
-
-    for ((i, step) in steps.withIndex()) {
-        o.acta {async{
-            await(step.lock.testPause())
-        }}
-        o.assertScreenHTML("$assertionDescr (${i + 1})", step.assertionID)
-        o.act {step.lock.testResume()}
-    }
-}
-
-fun sequence2(
-    action: () -> Promisoid<Unit>,
-    assertionDescr: String,
-    steps: List<TestSequenceStep>
-) = async<Unit> {
     steps.forEach {it.lock.reset()}
 
-    await(action())
+    action()
 
     for ((i, step) in steps.withIndex()) {
-        await(step.lock.testPause())
-        await(doAssertScreenHTML(AssertScreenHTMLParams("$assertionDescr (${i + 1})", step.assertionID), stackCapture = null))
+        step.lock.testPause()
+        assertScreenHTML("$assertionDescr (${i + 1})", step.assertionID)
         step.lock.testResume()
     }
 }
 
 fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: String, keySuffix: String, fileName: String) {
-    sequence(
-        assertionDescr = assertionDescr,
-        buildAction = {
-            buttonUserInitiatedClick("${fconst.key.upload.testRef}$keySuffix")
-            typeIntoOpenFileDialog(fconst.test.filesRoot + fileName)
-        },
-        steps = listOf(
-            TestSequenceStep(TestGlobal.fileFieldChangedLock, assertionID)
-        )
-    )
+    imf("reimplement fileFieldChoose")
+//    sequence(
+//        assertionDescr = assertionDescr,
+//        buildAction = {
+//            buttonUserInitiatedClick("${fconst.key.upload.testRef}$keySuffix")
+//            typeIntoOpenFileDialog(fconst.test.filesRoot + fileName)
+//        },
+//        steps = listOf(
+//            TestSequenceStep(TestGlobal.fileFieldChangedLock, assertionID)
+//        )
+//    )
 }
 
 fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
@@ -568,7 +564,7 @@ class ClientStateSnapshot (
 
 
 
-fun TestScenarioBuilder.initialShit(test: TestScenario) {
+fun TestScenarioBuilder.initialShit_killme(test: TestScenario) {
     acta {async{
         setDocInnerHTML("<h3>Running Test: ${ctorName(test)}</h3><hr>")
         measureAndReportToDocumentElement("Resetting database") {
@@ -578,59 +574,70 @@ fun TestScenarioBuilder.initialShit(test: TestScenario) {
     }}
 }
 
+suspend fun initialShit(test: TestScenario) {
+    setDocInnerHTML("<h3>Running Test: ${ctorName(test)}</h3><hr>")
+    measureAndReportToDocumentElement("Resetting database") {
+        await(send(RecreateTestDatabaseSchemaRequest()-{o->
+        }))
+    }
+}
+
 
 fun TestScenarioBuilder.addFile(shit: TestShit, fileName: String, title: String, details: String, aid: String) {
-    sequence(
-        buildAction = {
-            buttonClick(fconst.key.plus.testRef)
-        },
-        assertionDescr = "Opened plus form",
-        steps = listOf(
-            TestSequenceStep(TestGlobal.fadeHalfwayLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.fadeDoneLock, "$aid--2")
-        )
-    )
-
-    fileFieldChoose(
-        assertionDescr = "Chose file",
-        assertionID = "$aid--3",
-        keySuffix = "",
-        fileName = fileName)
-
-    inputAppendValue("title", title)
-    inputAppendValue("details", details)
-    submitFormSequence(
-        shit,
-        descr = "Shit is added",
-        aid = "$aid--submit"
-    )
+    imf("addFile")
+//    sequence(
+//        buildAction = {
+//            buttonClick(fconst.key.plus.testRef)
+//        },
+//        assertionDescr = "Opened plus form",
+//        steps = listOf(
+//            TestSequenceStep(TestGlobal.fadeHalfwayLock, "$aid--1"),
+//            TestSequenceStep(TestGlobal.fadeDoneLock, "$aid--2")
+//        )
+//    )
+//
+//    fileFieldChoose(
+//        assertionDescr = "Chose file",
+//        assertionID = "$aid--3",
+//        keySuffix = "",
+//        fileName = fileName)
+//
+//    inputAppendValue("title", title)
+//    inputAppendValue("details", details)
+//    submitFormSequence(
+//        shit,
+//        descr = "Shit is added",
+//        aid = "$aid--submit"
+//    )
 }
 
 fun TestScenarioBuilder.refreshPage(aid: String) {
-    sequence(
-        assertionDescr = "Refresh page",
-        buildAction = {
-            buttonClick(fconst.key.refreshPage.testRef)
-        },
-        steps = listOf(
-            TestSequenceStep(TestGlobal.reloadPageTickingLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.reloadPageDoneLock, "$aid--2")
-        )
-    )
+    imf("reimplement refreshPage")
+//    sequence(
+//        assertionDescr = "Refresh page",
+//        buildAction = {
+//            buttonClick(fconst.key.refreshPage.testRef)
+//        },
+//        steps = listOf(
+//            TestSequenceStep(TestGlobal.reloadPageTickingLock, "$aid--1"),
+//            TestSequenceStep(TestGlobal.reloadPageDoneLock, "$aid--2")
+//        )
+//    )
 }
 
 fun TestScenarioBuilder.search(text: String, aid: String) {
-    sequence(
-        assertionDescr = "Search",
-        buildAction = {
-            inputSetValue(fconst.key.search.testRef, text)
-            inputPressEnter(fconst.key.search.testRef)
-        },
-        steps = listOf(
-            TestSequenceStep(TestGlobal.reloadPageTickingLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.reloadPageDoneLock, "$aid--2")
-        )
-    )
+    imf("reimplement search")
+//    sequence(
+//        assertionDescr = "Search",
+//        buildAction = {
+//            inputSetValue(fconst.key.search.testRef, text)
+//            inputPressEnter(fconst.key.search.testRef)
+//        },
+//        steps = listOf(
+//            TestSequenceStep(TestGlobal.reloadPageTickingLock, "$aid--1"),
+//            TestSequenceStep(TestGlobal.reloadPageDoneLock, "$aid--2")
+//        )
+//    )
 }
 
 fun TestScenarioBuilder.animatedActionSequence(
@@ -640,21 +647,22 @@ fun TestScenarioBuilder.animatedActionSequence(
     finalAssertionID: String,
     actionTimeout: Int = 5000
 ) {
-    val o = this
-    o.act {
-        TestGlobal.animationHalfwaySignal = ResolvableShit()
-        TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
-        TestGlobal.formActionCompleted = ResolvableShit()
-    }
-
-    buildAction()
-
-    o.acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(1000)}
-    o.assertScreenHTML(assertionDescr + " (animation halfway)", halfwayAssertionID)
-    o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
-
-    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(actionTimeout)}
-    o.assertScreenHTML(assertionDescr, finalAssertionID)
+    imf("reimplement animatedActionSequence")
+//    val o = this
+//    o.act {
+//        TestGlobal.animationHalfwaySignal = ResolvableShit()
+//        TestGlobal.animationHalfwaySignalProcessedSignal = ResolvableShit()
+//        TestGlobal.formActionCompleted = ResolvableShit()
+//    }
+//
+//    buildAction()
+//
+//    o.acta {TestGlobal.animationHalfwaySignal.promise.orTestTimeout(1000)}
+//    o.assertScreenHTML(assertionDescr + " (animation halfway)", halfwayAssertionID)
+//    o.act {TestGlobal.animationHalfwaySignalProcessedSignal.resolve()}
+//
+//    o.acta {TestGlobal.formActionCompleted.promise.orTestTimeout(actionTimeout)}
+//    o.assertScreenHTML(assertionDescr, finalAssertionID)
 }
 
 fun TestScenarioBuilder.pretendingAllAssertionsNotHardened(build: () -> Unit) {

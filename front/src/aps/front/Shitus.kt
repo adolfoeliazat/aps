@@ -223,55 +223,55 @@ object Shitus {
     var rootTrain: dynamic = null
     var trainStack = jsArrayOf()
 
-    fun beginTrain(def: dynamic) {
-        val name = def.name
+//    fun beginTrain(def: dynamic) {
+//        val name = def.name
+//
+//        val newTrain = Shitus.asnn(def, json("\$\$typeof" to "train", "name" to name, "parent" to Shitus.currentTrain(), "items" to jsArrayOf(), "rpcs" to jsArrayOf()))
+//        Shitus.pushItemToCurrentTrain(newTrain)
+//        Shitus.trainStack.push(newTrain)
+//        return newTrain
+//    }
+//
+//    val endTrain: dynamic = {def: dynamic ->
+//        Shitus.currentTrain() // Blows up if no train
+//        Shitus.trainStack.pop()
+//    }
 
-        val newTrain = Shitus.asnn(def, json("\$\$typeof" to "train", "name" to name, "parent" to Shitus.currentTrain(), "items" to jsArrayOf(), "rpcs" to jsArrayOf()))
-        Shitus.pushItemToCurrentTrain(newTrain)
-        Shitus.trainStack.push(newTrain)
-        return newTrain
-    }
+//    fun currentTrain(): dynamic {
+//        val train = Shitus.maybeCurrentTrain()
+//        Shitus.invariant(train, "I need a train")
+//        return train
+//    }
+//
+//    fun maybeCurrentTrain() {
+//        return lodash.last(Shitus.trainStack)
+//    }
 
-    val endTrain: dynamic = {def: dynamic ->
-        Shitus.currentTrain() // Blows up if no train
-        Shitus.trainStack.pop()
-    }
+//    fun pushItemToCurrentTrain(item: dynamic) {
+//        val items = currentTrain().items
+//        if (items.length > 20) {
+//            console.warn("Train is too long---shifting")
+//            items.shift()
+//        }
+//
+//        items.push(item)
+//    }
 
-    fun currentTrain(): dynamic {
-        val train = Shitus.maybeCurrentTrain()
-        Shitus.invariant(train, "I need a train")
-        return train
-    }
+//    fun initTrains() {
+//        rootTrain = json("\$\$typeof" to "train", "name" to "Root", "items" to js("[]"), "rpcs" to js("[]"))
+//        trainStack = jsArrayOf(rootTrain)
+//    }
 
-    fun maybeCurrentTrain() {
-        return lodash.last(Shitus.trainStack)
-    }
-
-    fun pushItemToCurrentTrain(item: dynamic) {
-        val items = currentTrain().items
-        if (items.length > 20) {
-            console.warn("Train is too long---shifting")
-            items.shift()
-        }
-
-        items.push(item)
-    }
-
-    fun initTrains() {
-        rootTrain = json("\$\$typeof" to "train", "name" to "Root", "items" to js("[]"), "rpcs" to js("[]"))
-        trainStack = jsArrayOf(rootTrain)
-    }
-
-    fun entraina(def: dynamic): Promisoid<Unit> = async {
-        val name: dynamic = def.name
-        val act: dynamic = def.act
-        val `$sourceLocation`: dynamic = def.`$sourceLocation`
-        val `$definitionStack`: dynamic = def.`$definitionStack`
-
-        beginTrain(json("name" to name, "\$sourceLocation" to `$sourceLocation`, "\$definitionStack" to `$definitionStack`)); try {
-            return@async await<dynamic>(act())
-        } finally { endTrain() }
-    }
+//    fun entraina(def: dynamic): Promisoid<Unit> = async {
+//        val name: dynamic = def.name
+//        val act: dynamic = def.act
+//        val `$sourceLocation`: dynamic = def.`$sourceLocation`
+//        val `$definitionStack`: dynamic = def.`$definitionStack`
+//
+//        beginTrain(json("name" to name, "\$sourceLocation" to `$sourceLocation`, "\$definitionStack" to `$definitionStack`)); try {
+//            return@async await<dynamic>(act())
+//        } finally { endTrain() }
+//    }
 
 }
 

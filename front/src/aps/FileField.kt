@@ -54,7 +54,7 @@ import kotlin.browser.window
                         noise.clog("Got file", file)
                         content = Content.FileToUpload(file)
                         update()
-                        TestGlobal.fileFieldChangedLock.sutPause()
+//                        TestGlobal.fileFieldChangedLock.sutPause()
                     }
                 ), listOf())
                 when (_content) {

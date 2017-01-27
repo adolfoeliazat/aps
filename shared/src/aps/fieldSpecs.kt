@@ -1,8 +1,6 @@
 package aps
 
 object fieldSpecs {
-    // TODO:vgrechka x and x_testRef should be changed to x.decl and x.testRef, otherwise its easy to mistakenly just use x in test
-
     val firstName = TextFieldSpec("firstName", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val firstName_testRef = firstName
     val lastName = TextFieldSpec("lastName", t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50); val lastName_testRef = lastName
     val password = TextFieldSpec("password", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 50); val password_testRef = password
@@ -17,8 +15,14 @@ object fieldSpecs {
     val searchString = TextFieldSpec("searchString", "", TextFieldType.STRING, 0, 50); val searchString_testRef = searchString
     val title = TextFieldSpec("title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen); val title_testRef = title
     val details = TextFieldSpec("details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen); val details_testRef = details
-
     val agreeTerms = CheckboxFieldSpec("agreeTerms"); val agreeTerms_testRef = agreeTerms
+    val userState = SelectFieldSpec("userState", t("TOTE", "Статус"), UserState.values()); val userState_testRef = userState
+    val numPages = IntFieldSpec("numPages", t("TOTE", "Страниц"), min = 1, max = 300); val numPages_testRef = numPages
+    val numSources = IntFieldSpec("numSources", t("TOTE", "Источников"), min = 0, max = 20); val numSources_testRef = numSources
+
+    object ua {
+        val documentType = SelectFieldSpec("documentType", t("TOTE", "Тип документа"), UADocumentType.values()); val documentType_testRef = documentType
+    }
 }
 
 data class TextFieldSpec(
@@ -38,9 +42,18 @@ data class CheckboxFieldSpec(
     val name: String
 )
 
+class SelectFieldSpec<T>(
+    val name: String,
+    val title: String,
+    val values: Array<T>
+) where T : Enum<T>, T : Titled
 
-
-
+class IntFieldSpec(
+    val name: String,
+    val title: String,
+    val min: Int,
+    val max: Int
+)
 
 
 

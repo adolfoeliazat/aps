@@ -67,10 +67,10 @@ class EffectsAPI {
         legacyEffects.blinkOffFadingOut()
     }
 
-    fun fadeOut(elementID: String): Promisoid<Unit> = fade(elementID, decreaseOpacity = true)
-    fun fadeIn(elementID: String): Promisoid<Unit> = fade(elementID, decreaseOpacity = false)
+    suspend fun fadeOut(elementID: String) = fade(elementID, decreaseOpacity = true)
+    suspend fun fadeIn(elementID: String) = fade(elementID, decreaseOpacity = false)
 
-    private fun fade(elementID: String, decreaseOpacity: Boolean): Promisoid<Unit> = async {
+    private suspend fun fade(elementID: String, decreaseOpacity: Boolean) {
         val frames = 16
         check(frames % 2 == 0) {"frames should be even"}
         val initialOpacity = if (decreaseOpacity) 1.0 else 0.0
@@ -98,7 +98,7 @@ class EffectsAPI {
             setOpacity(opacity)
 
             if (opacity == midpoint) {
-                await(TestGlobal.fadeHalfwayLock.sutPause())
+                TestGlobal.fadeHalfwayLock.sutPause()
 //                if (isTest()) {
 //                    TestGlobal.animationHalfwaySignal.resolve()
 //                    await(TestGlobal.animationHalfwaySignalProcessedSignal.promise)
@@ -107,7 +107,7 @@ class EffectsAPI {
             }
         }
         check(midpointReached) {"midpointReached"}
-        await(TestGlobal.fadeDoneLock.sutPause())
+        TestGlobal.fadeDoneLock.sutPause()
     }
 }
 

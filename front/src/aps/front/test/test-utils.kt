@@ -26,11 +26,12 @@ object TestUtils {
     }
 
     fun bootWorld(o: TestScenarioBuilder, name: String, done: (World) -> Unit) {
-        o.acta {async{
-            val world = World(name)
-            await(world.boot())
-            done(world)
-        }}
+        imf("reimplement bootWorld")
+//        o.acta {async{
+//            val world = World(name)
+//            await(world.boot())
+//            done(world)
+//        }}
     }
 
     fun pushWriterURL(o: TestScenarioBuilder, path: String) {

@@ -174,8 +174,8 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
                         stickException(json("exception" to Error("There is already a thing shamed ${it}")))
                     } else {
                         TestGlobal.shameToControl[it] = json(
-                            "testSetValue" to {x: dynamic -> async<Unit> {
-                                await(testSetValue(x))
+                            "testSetValue" to {x: dynamic -> asu {
+                                testSetValue(x)
                             }},
                             "testGetValue" to {
                                 testGetValue()
@@ -234,7 +234,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
         json() // Attributes
     )
 
-    open fun testSetValue(x: dynamic): Promisoid<Unit> {die("Control $debugDisplayName doesn't support testSetValue")}
+    open suspend fun testSetValue(x: dynamic) {die("Control $debugDisplayName doesn't support testSetValue")}
     open fun testGetValue(): Any? {die("Control $debugDisplayName doesn't support testGetValue")}
 
     open fun testClick(): Promisoid<Unit> {

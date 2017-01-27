@@ -37,11 +37,11 @@ class Select<E>(
     val style: Json = json(),
     val volatileDisabled: (() -> Boolean)? = null,
     val onChange: () -> Unit = {},
-    var onChanga: () -> Promisoid<Unit> = {async{}},
+    var onChanga: suspend () -> Unit = {},
     val onFocus: () -> Unit = {},
-    val onFocusa: () -> Promisoid<Unit> = {async{}},
+    val onFocusa: suspend () -> Unit = {},
     val onBlur: () -> Unit = {},
-    val onBlura: () -> Promisoid<Unit> = {async{}}
+    val onBlura: suspend () -> Unit = {}
 
 ) : Control2(attrs), Blinkable where E : Enum<E>, E : Titled {
 
@@ -81,20 +81,20 @@ class Select<E>(
             "value" to value.name,
             "disabled" to (volatileDisabled?.let {it()} ?: persistentDisabled),
 
-            "onChange" to {async{
+            "onChange" to {asu{
                 setValue(stringToValue(Shitus.byid0(elementID).value))
                 onChange()
-                await(onChanga())
+                asu {onChanga()}
             }},
 
-            "onFocus" to {async{
+            "onFocus" to {asu{
                 onFocus()
-                await(onFocusa())
+                onFocusa()
             }},
 
-            "onBlur" to {async{
+            "onBlur" to {asu{
                 onBlur()
-                await(onBlura())
+                onBlura()
             }}),
 
             values.map {
@@ -121,7 +121,7 @@ class Select<E>(
 
     override fun testGetValue() = value.name
 
-    override fun testSetValue(arg: dynamic): Promisoid<Unit> = async {
+    override suspend fun testSetValue(arg: dynamic) {
         val stringValue = arg.value
         val testActionHandOpts = arg.testActionHandOpts
 
@@ -133,24 +133,24 @@ class Select<E>(
             await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
             testActionHand.delete()
 
-            await(setValueExt(stringToValue(stringValue), notify = true))
+            setValueExt(stringToValue(stringValue), notify = true)
         } else {
-            await(setValueExt(stringToValue(stringValue), notify = true))
+            setValueExt(stringToValue(stringValue), notify = true)
         }
     }
 
-    fun setValue(value: E): Promisoid<Unit> = async {
+    suspend fun setValue(value: E) {
         val x = value.name
-        await(setValueExt(value))
+        setValueExt(value)
     }
 
-    fun setValueExt(newValue: E, notify: Boolean = false): Promisoid<Unit> = async {
+    suspend fun setValueExt(newValue: E, notify: Boolean = false) {
         value = newValue
         update()
 
         if (notify) {
             onChange()
-            await(onChanga())
+            onChanga()
         }
     }
 
@@ -190,12 +190,22 @@ class Select<E>(
     }
 }
 
-fun <E> TestScenarioBuilder.selectSetValue(key: String, values: Array<E>, value: E)
+//fun <E> TestScenarioBuilder.selectSetValueDescribingStep(key: String, values: Array<E>, value: E)
+//where E : Enum<E>, E : Titled {
+//    acta("Selecting in `$key`: ${markdownItalicVerbatim(value.title)}") {
+//        val select = Select.instance(key, values)
+//        select.setValueExt(value, notify = true)
+//    }
+//}
+
+suspend fun <E> selectSetValue(spec: SelectFieldSpec<E>, value: E)
 where E : Enum<E>, E : Titled {
-    acta("Selecting in `$key`: ${markdownItalicVerbatim(value.title)}") {
-        val select = Select.instance(key, values)
-        select.setValueExt(value, notify = true)
-    }
+    val select = Select.instance(spec.name, spec.values)
+    dlog("Fucking 1"); await(delay(500))
+    dlog("Fucking 2"); await(delay(500))
+    select.setValueExt(value, notify = true)
+    dlog("Fucking 3"); await(delay(500))
+    dlog("Fucking 4"); await(delay(500))
 }
 
 

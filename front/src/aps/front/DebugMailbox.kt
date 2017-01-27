@@ -70,27 +70,26 @@ fun initDebugMailbox() {
 //    }))))
 }
 
-fun TestScenarioBuilder.debugMailboxClear() {
-    acta {async{
-        await(send(ClearSentEmailsRequest()))
-    }}
+suspend fun debugMailboxClear() {
+    await(send(ClearSentEmailsRequest()))
 }
 
-fun TestScenarioBuilder.debugMailboxCheck(aid: String) {
-    var prevMorda by notNullOnce<Morda>()
+suspend fun debugMailboxCheck(aid: String) {
+    val my = object {
+        var prevMorda by notNullOnce<Morda>()
+    }
     val morda = Morda()
 
-    act {prevMorda = TestGlobal.currentMorda}
-    acta {morda.coitize(MordaCoitizeParams(
+    my.prevMorda = TestGlobal.currentMorda
+    morda.coitize(MordaCoitizeParams(
         browseroidName = "debug-mailbox",
         url = fconst.url.test.debugMailbox,
         fillTypedStorageLocal = {},
         fillRawStorageLocal = {}
-    ))}
-    acta {morda.boot()}
+    ))
+    morda.boot()
     assertScreenHTML("Checking email", aid)
-    // acta {delay(1500)}
-    acta {prevMorda.switchTo()}
+    my.prevMorda.switchTo()
 }
 
 

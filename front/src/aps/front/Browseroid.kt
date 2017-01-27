@@ -165,12 +165,12 @@ class TestBrowseroid(override val name: String, val initialURL: String) : Browse
 
     var bootedWorld: World? = null
 
-    fun boot(): Promisoid<Unit> = async {
+    suspend fun boot() {
         if (currentTestBrowseroid != this) bitch("Before booting switch to browseroid $name")
         if (bootedWorld != null) bitch("Browseroid $name is already booted")
 
         val world = World(name)
-        await(world.boot())
+        world.boot()
         bootedWorld = world
     }
 
@@ -210,7 +210,12 @@ class Morda {
     private var stols by notNullOnce<IStorage>()
     private var bodyScrollTop by notNull<Double>()
 
-    fun coitize(p: MordaCoitizeParams) = async<Unit> {
+    suspend fun coitize(p: MordaCoitizeParams) {
+        await(coitize_killme(p))
+    }
+
+
+    fun coitize_killme(p: MordaCoitizeParams) = async<Unit> {
         check(state == State.VIRGIN)
         coitizeParams = p
         dlog("Coitizing ${p.browseroidName}")
@@ -252,10 +257,10 @@ class Morda {
         state = State.STATIC
     }
 
-    fun boot() = async<Unit> {
+    suspend fun boot() {
         check(state == State.STATIC)
         world = World(coitizeParams.browseroidName)
-        await(world.boot())
+        world.boot()
         state = State.ACTIVE
     }
 
@@ -270,7 +275,7 @@ class Morda {
         state = State.SHELVED
     }
 
-    fun switchTo() = async<Unit> {
+    suspend fun switchTo() {
         check(state == State.SHELVED)
         Globus.worldMaybe = world
         TestGlobal.currentMordaMaybe = this
@@ -294,19 +299,30 @@ class Morda {
 class MordaBuilder(private val o: TestScenarioBuilder) {
     private val morda = Morda()
 
-    fun init(
+//    fun init_killme(
+//        p: MordaCoitizeParams,
+//        buildStaticAssertion: () -> Unit,
+//        buildDynamicAssertion: () -> Unit
+//    ) {
+//        o.acta {morda.coitize_killme(p)}
+//        buildStaticAssertion()
+//        o.acta {morda.boot_killme()}
+//        buildDynamicAssertion()
+//    }
+
+    suspend fun init(
         p: MordaCoitizeParams,
-        buildStaticAssertion: () -> Unit,
-        buildDynamicAssertion: () -> Unit
+        assertStatic: suspend () -> Unit,
+        assertDynamic: suspend () -> Unit
     ) {
-        o.acta {morda.coitize(p)}
-        buildStaticAssertion()
-        o.acta {morda.boot()}
-        buildDynamicAssertion()
+        morda.coitize(p)
+        assertStatic()
+        morda.boot()
+        assertDynamic()
     }
 
-    fun switchTo() {
-        o.acta {morda.switchTo()}
+    suspend fun switchTo() {
+        morda.switchTo()
     }
 }
 

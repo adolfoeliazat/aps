@@ -73,17 +73,15 @@ fun setDocInnerHTML(value: String) {
     document.documentElement!!.innerHTML = value
 }
 
-fun TestScenarioBuilder.assertCustomerStaticIndexScreen() {
+suspend fun assertCustomerStaticIndexScreen() {
     assertScreenHTML("Customer index", "aead9163-e41b-4ec1-9967-47670291dadc")
-//    assertNavbarHTMLExt("Customer index", "11786d8d-6681-4579-a90b-7f602a59dd2d")
-//    assertRootHTMLExt("Customer index", "9a386880-c709-4cbc-a97c-41bb5b559a36")
 }
 
-fun TestScenarioBuilder.assertCustomerSignInScreen() {
+suspend fun assertCustomerSignInScreen() {
     assertScreenHTML("Customer sign-in screen", "38dcedaf-5aad-43e8-ac3b-685b681fb75c")
 }
 
-fun TestScenarioBuilder.assertCustomerSignUpScreen() {
+suspend fun assertCustomerSignUpScreen() {
     assertScreenHTML("Customer sign-up screen", "1de9ffb2-3215-42e0-a67c-c9c2856880b8")
 }
 
@@ -103,31 +101,31 @@ fun TestScenarioBuilder.imposeNextGeneratedPassword(password: String) {
     acta {imposeNextGeneratedPassword2(password)}
 }
 
-fun TestScenarioBuilder.assertFreshCustomerDashboardScreen() {
+suspend fun assertFreshCustomerDashboardScreen() {
     assertScreenHTML("Fresh customer's dashboard screen", "39ffecee-5b3f-4bf0-b9c6-43256a58a663")
 }
 
-fun TestScenarioBuilder.assertCustomerWithTokenStaticIndexScreen() {
+suspend fun assertCustomerWithTokenStaticIndexScreen() {
     assertScreenHTML("assertCustomerWithTokenStaticIndexScreen", "0281a518-32fe-45d2-b222-332490b8291c")
 }
 
-fun TestScenarioBuilder.assertCustomerWithTokenDynamicIndexScreen() {
+suspend fun assertCustomerWithTokenDynamicIndexScreen() {
     assertScreenHTML("assertCustomerWithTokenDynamicIndexScreen", "1e961b10-1466-48d9-a481-65db5ca537ac")
 }
 
-fun TestScenarioBuilder.assertAnonymousCustomerStaticIndexScreen() {
+suspend fun assertAnonymousCustomerStaticIndexScreen() {
     assertScreenHTML(currentJSFunctionName(), "8ec07df0-ed4e-46b2-a33c-23437aaba923")
 }
 
-fun TestScenarioBuilder.assertAnonymousCustomerDynamicIndexScreen() {
+suspend fun assertAnonymousCustomerDynamicIndexScreen() {
     assertScreenHTML(currentJSFunctionName(), "56acc98a-f632-4391-8660-c65022f9f14c")
 }
 
-fun TestScenarioBuilder.assertAnonymousWriterStaticIndexScreen() {
+suspend fun assertAnonymousWriterStaticIndexScreen() {
     assertScreenHTML("assertWriterAnonymousStaticIndexScreen", "fef22d58-3da9-4651-bd59-019f74944ada")
 }
 
-fun TestScenarioBuilder.assertAnonymousWriterDynamicIndexScreen() {
+suspend fun assertAnonymousWriterDynamicIndexScreen() {
     assertScreenHTML("assertWriterAnonymousDynamicIndexScreen", "bda202ba-4f0e-4fb7-b8ca-8b94aa01cd7f")
 }
 
@@ -457,7 +455,7 @@ fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String)
                 val createOrderResponse = await(send(testShit.bobulToken, CustomerCreateUAOrderRequest()-{o->
                     o.title.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
                     o.documentType.value = UADocumentType.COURSE
-                    o.deadline.killmeValue = moment("2016-12-11 18:15:00").valueOf()
+//                    o.deadline.killmeValue = moment("2016-12-11 18:15:00").valueOf()
                     o.numPages.setValue(30)
                     o.numSources.setValue(5)
                     o.details.value = "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории."
@@ -566,15 +564,16 @@ fun TestScenarioBuilder.requestSequence(
     halfwayOpts: AssertScreenOpts = AssertScreenOpts(),
     finalOpts: AssertScreenOpts = AssertScreenOpts()
 ) {
-    val o = this
-    o.genericRequestSequence(
-        buildAction = buildAction,
-        beforeResponse = {
-            o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID, halfwayOpts)
-        },
-        afterResponse = {o.assertScreenHTML(assertionDescr, finalAssertionID, finalOpts)},
-        responseTimeout = responseTimeout
-    )
+    imf("reimplement requestSequence")
+//    val o = this
+//    o.genericRequestSequence(
+//        buildAction = buildAction,
+//        beforeResponse = {
+//            o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID, halfwayOpts)
+//        },
+//        afterResponse = {o.assertScreenHTML(assertionDescr, finalAssertionID, finalOpts)},
+//        responseTimeout = responseTimeout
+//    )
 }
 
 fun TestScenarioBuilder.requestSequenceNoFinalAssertion(
@@ -584,23 +583,25 @@ fun TestScenarioBuilder.requestSequenceNoFinalAssertion(
     responseTimeout: Int = fconst.test.defaultResponseTimeout,
     halfwayOpts: AssertScreenOpts = AssertScreenOpts()
 ) {
-    val o = this
-    o.genericRequestSequence(
-        buildAction = buildAction,
-        beforeResponse = {
-            o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID, halfwayOpts)
-        },
-        afterResponse = {},
-        responseTimeout = responseTimeout
-    )
+    imf("reimplement requestSequenceNoFinalAssertion")
+//    val o = this
+//    o.genericRequestSequence(
+//        buildAction = buildAction,
+//        beforeResponse = {
+//            o.assertScreenHTML("$assertionDescr (halfway)", halfwayAssertionID, halfwayOpts)
+//        },
+//        afterResponse = {},
+//        responseTimeout = responseTimeout
+//    )
 }
 
 fun TestScenarioBuilder.boot(worldName: String, aid: String) {
-    acta {async{
-        val world = World(worldName)
-        await(world.boot())
-    }}
-    assertScreenHTML("Boot: $worldName", aid)
+    imf("reimplement TestScenarioBuilder.boot")
+//    acta {async{
+//        val world = World(worldName)
+//        await(world.boot())
+//    }}
+//    assertScreenHTML("Boot: $worldName", aid)
 }
 
 

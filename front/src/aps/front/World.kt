@@ -40,15 +40,15 @@ class World(val name: String) {
     val token: String get() = tokenMaybe!!
     val user: UserRTO get() = userMaybe.let {it ?: bitch("I want a fucking user")}
 
-    fun boot() = async<Unit> {
+    suspend fun boot() {
         hrss.browserOld.ui = this
 //        KotlinShit.ui = this
 
-        global.onpopstate = {e: dynamic -> async{
+        global.onpopstate = {e: dynamic ->
             breatheBanner.show()
-            await<dynamic>(loadPageForURL())
+            asu {loadPageForURL()}
             breatheBanner.hide()
-        }}
+        }
 
         hrss.browserOld.impl = this
         KotlinShit.clientImpl = this
@@ -56,7 +56,7 @@ class World(val name: String) {
 //        if (MODE == "debug") {
 //            Shitus.initDebugFunctionsShit()
 //        }
-        await<dynamic>(bootKillme())
+        bootKillme()
 
         Globus.worldMaybe = this
         if (isTest()) {
@@ -83,75 +83,71 @@ class World(val name: String) {
 
     fun loadSignInPage(): Promisoid<Unit> = SignInPage(this).load()
 
-    fun signOut() {
+    suspend fun signOut() {
         typedStorageLocal.clear()
-//        hrss.storageLocal.clear()
         tokenMaybe = null
         userMaybe = null
         replaceNavigate("/")
     }
 
-    fun pushNavigate(url: String): Promisoid<Unit> = async {
-        //        ui.currentPage = null.asDynamic() // TODO:vgrechka Do something about this
+    suspend fun pushNavigate(url: String) {
         Globus.location.pushState(null, "", url)
-        await(loadPageForURL())
+        loadPageForURL()
     }
 
-    fun replaceNavigate(where: dynamic): Promisoid<Unit> = async {
+    suspend fun replaceNavigate(where: dynamic) {
         Globus.location.replaceState(null, "", where)
-        await<dynamic>(loadPageForURL())
+        loadPageForURL()
     }
 
-    fun bootKillme(): Promisoid<Unit> = async {
-        Shitus.beginTrain(json("name" to "boot()")); try {
-            tokenMaybe = typedStorageLocal.token
+    suspend fun bootKillme() {
+        tokenMaybe = typedStorageLocal.token
 //            token = hrss.storageLocal.getItem("token")
-            if (tokenMaybe != null) {
-                try {
-                    val res = await(SignInWithTokenRequest.send(tokenMaybe!!))
-                    userMaybe = res.user
+        if (tokenMaybe != null) {
+            try {
+                val res = await(SignInWithTokenRequest.send(tokenMaybe!!))
+                userMaybe = res.user
 //                        ui.startLiveStatusPolling()
-                } catch (e: Throwable) {
-                    // Pretend no one was signed in.
-                    // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
-                    console.warn("Failed to private_getUserInfo", e)
-                    tokenMaybe = undefined
-                    typedStorageLocal.clear()
+            } catch (e: Throwable) {
+                // Pretend no one was signed in.
+                // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
+                console.warn("Failed to private_getUserInfo", e)
+                tokenMaybe = undefined
+                typedStorageLocal.clear()
 //                    hrss.storageLocal.clear()
-                } finally {
+            } finally {
 //                    ExternalGlobus.makeSignInNavbarLinkVisible()
-                }
             }
+        }
 
 //            js("$")(global.document.head).append("<style id='css'>${apsCSS()}</style>")
 
-            topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
-                updateNavbar = update
-                return@elementCtor render@{
-                    var pathname: dynamic = null
-                    if (Globus.location.pathname == "/test.html") {
-                        if (prevPathname == null) Shitus.raise("I want prevPathname")
-                        pathname = prevPathname
-                    } else {
-                        pathname = Globus.location.pathname
-                    }
-
-                    var highlightedItem = Regex("/([^/]*?)\\.html").find(pathname)?.let {
-                        it.groupValues[1]
-                    }
-                    if (highlightedItem == "sign-up") { // XXX
-                        highlightedItem = "sign-in"
-                    }
-                    return@render renderTopNavbar(highlightedItem = highlightedItem)
+        topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
+            updateNavbar = update
+            return@elementCtor render@{
+                var pathname: dynamic = null
+                if (Globus.location.pathname == "/test.html") {
+                    if (prevPathname == null) Shitus.raise("I want prevPathname")
+                    pathname = prevPathname
+                } else {
+                    pathname = Globus.location.pathname
                 }
-            })
 
-            _DOMReact.render(topNavbarElement, navbarContainer())
+                var highlightedItem = Regex("/([^/]*?)\\.html").find(pathname)?.let {
+                    it.groupValues[1]
+                }
+                if (highlightedItem == "sign-up") { // XXX
+                    highlightedItem = "sign-in"
+                }
+                return@render renderTopNavbar(highlightedItem = highlightedItem)
+            }
+        })
 
-            initDynamicFooter()
+        _DOMReact.render(topNavbarElement, navbarContainer())
 
-            await<dynamic>(loadPageForURL())
-        } finally { Shitus.endTrain() }
+        initDynamicFooter()
+
+        loadPageForURL()
     }
 
     private fun initDynamicFooter() {
@@ -182,11 +178,11 @@ class World(val name: String) {
         currentPage = def
     }
 
-    fun loadPageForURL(): Promisoid<Unit> = async {
+    suspend fun loadPageForURL() {
         val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
         noise.clog(Globus.location.href)
 
-        await(TestGlobal.loadPageForURLLock.sutPause1())
+        TestGlobal.loadPageForURLLock.sutPause1()
 
         val user = userMaybe
         val firstRun = loadPageForURLFirstRun
@@ -266,7 +262,6 @@ class World(val name: String) {
 //            }
 
         updateNavbar()
-        return@async Unit
     }
 
     fun loadSignUpPage(): Promisoid<Unit> = async {
