@@ -181,11 +181,11 @@ class TestBrowseroid(override val name: String, val initialURL: String) : Browse
 
     override val timer = object:Timeroid {
         override fun setTimeout(cb: () -> Unit, ms: Int) {
-            imf("TestBrowseroid.setTimeout")
+            realBrowseroid.timer.setTimeout(cb, ms)
         }
 
         override fun setInterval(cb: () -> Unit, ms: Int) {
-            imf("TestBrowseroid.setInterval")
+            realBrowseroid.timer.setInterval(cb, ms)
         }
 
     }

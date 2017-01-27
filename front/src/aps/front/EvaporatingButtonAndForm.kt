@@ -10,6 +10,7 @@ interface EvaporatingButtonAndFormHost {
     val headerControlsDisabled: Boolean
     var headerControlsVisible: Boolean
     var headerControlsClass: String
+    var headerMode: HeaderMode
     fun updateShit()
 }
 
@@ -34,7 +35,7 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
         level = level,
         icon = icon,
         disabled = host.headerControlsDisabled,
-        onClicka = {async<Unit>{
+        onClicka = {asu{
             host.showEmptyLabel = false
             setHeaderControlsDisappearing()
             // formClass = "aniFadeIn"
@@ -42,6 +43,7 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
             host.cancelForm = {
                 setHeaderControlsAppearing()
                 form = null
+                host.headerMode = HeaderMode.BROWSING
                 host.updateShit()
             }
 
@@ -54,8 +56,8 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
                 }
             ))
 
+            host.headerMode = HeaderMode.CREATING
             host.updateShit()
-
             await(await(effects).fadeIn(form!!.elementID))
         }}
     ).toReactElement()

@@ -45,66 +45,68 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
 
         o.linkSequence(descr = "Go to sign-up page", key = fconst.key.link.createAccount.testRef, aid = "b1765832-d2a9-47a4-a2ef-4f1a3f63d203")
         o.debugMailboxClear()
-        o.instructions += TestInstruction.Do {
-            formSubmissionAttempts2(
-                testShit,
-                descr = "Sign-up attempts",
-                baseID = "7418ea51-7b3c-4bc6-9404-7e4d513a00cb",
-                attempts = eachOrCombinationOfLasts(listOf(
-                    badTextFieldValuesThenValid2(fieldSpecs.email_testRef, TestData.bobul.email),
-                    badTextFieldValuesThenValid2(fieldSpecs.firstName_testRef, TestData.bobul.firstName),
-                    badTextFieldValuesThenValid2(fieldSpecs.lastName_testRef, TestData.bobul.lastName),
-                    listOf(TestAttempt2(
-                        subID = "${fieldSpecs.agreeTerms_testRef.name}-check",
-                        descr = "Mark checkbox",
-                        prepare = {
-                            checkboxSet2(fieldSpecs.agreeTerms_testRef.name, true)
-                        },
-                        beforeSubmit = {
-                            imposeNextGeneratedPassword2(TestData.bobul.password)
-                        }
-                    ))
+        o.acta {formSubmissionAttempts2(
+            testShit,
+            descr = "Sign-up attempts",
+            baseID = "7418ea51-7b3c-4bc6-9404-7e4d513a00cb",
+            attempts = eachOrCombinationOfLasts(listOf(
+                badTextFieldValuesThenValid2(fieldSpecs.email_testRef, TestData.bobul.email),
+                badTextFieldValuesThenValid2(fieldSpecs.firstName_testRef, TestData.bobul.firstName),
+                badTextFieldValuesThenValid2(fieldSpecs.lastName_testRef, TestData.bobul.lastName),
+                listOf(TestAttempt2(
+                    subID = "${fieldSpecs.agreeTerms_testRef.name}-check",
+                    descr = "Mark checkbox",
+                    prepare = {
+                        checkboxSet2(fieldSpecs.agreeTerms_testRef.name, true)
+                    },
+                    beforeSubmit = {
+                        imposeNextGeneratedPassword2(TestData.bobul.password)
+                    }
                 ))
-            )
-        }
+            ))
+        )}
         o.debugMailboxCheck("c937779f-0870-4dec-a5a9-4ccaa791b934")
 
-        o.instructions += TestInstruction.Do {
-            formSubmissionAttempts2(
-                testShit,
-                descr = "Sign-in attempts",
-                baseID = "6a87ffac-4adf-4348-9894-f697bcb23268",
-                attempts = eachOrLast(mutableListOf<TestAttempt2>()-{l->
-                    var subID = 1
-                    class Value(val value: String, val descr: String)
-                    val emails = listOf(
-                        Value("", "empty"),
-                        Value("shit", "malformed"),
-                        Value("pizda@wrong-email.me", "incorrect"),
-                        Value(TestData.bobul.email, "correct")
-                    )
-                    val passwords = listOf(
-                        Value("", "empty"),
-                        Value("shitty password", "incorrect"),
-                        Value(TestData.bobul.password, "correct")
-                    )
-                    for (email in emails) {
-                        for (password in passwords) {
-                            l += TestAttempt2(
-                                subID = "" + subID++,
-                                descr = "Email: ${email.descr}; Password: ${password.descr}",
-                                prepare = {async{
-                                    await(inputSetValue2(fieldSpecs.emailInSignInForm_testRef.name, email.value))
-                                    await(inputSetValue2(fieldSpecs.passwordInSignInForm_testRef.name, password.value))
-                                }}
-                            )
-                        }
+        o.acta {formSubmissionAttempts2(
+            testShit,
+            descr = "Sign-in attempts",
+            baseID = "6a87ffac-4adf-4348-9894-f697bcb23268",
+            attempts = eachOrLast(mutableListOf<TestAttempt2>()-{l->
+                var subID = 1
+                class Value(val value: String, val descr: String)
+                val emails = listOf(
+                    Value("", "empty"),
+                    Value("shit", "malformed"),
+                    Value("pizda@wrong-email.me", "incorrect"),
+                    Value(TestData.bobul.email, "correct")
+                )
+                val passwords = listOf(
+                    Value("", "empty"),
+                    Value("shitty password", "incorrect"),
+                    Value(TestData.bobul.password, "correct")
+                )
+                for (email in emails) {
+                    for (password in passwords) {
+                        l += TestAttempt2(
+                            subID = "" + subID++,
+                            descr = "Email: ${email.descr}; Password: ${password.descr}",
+                            prepare = {async{
+                                await(inputSetValue2(fieldSpecs.emailInSignInForm_testRef.name, email.value))
+                                await(inputSetValue2(fieldSpecs.passwordInSignInForm_testRef.name, password.value))
+                            }}
+                        )
                     }
-                })
-            )
-        }
+                }
+            })
+        )}
 
-//        o.beginWorkRegion()
+        o.beginWorkRegion()
+        o.topNavItemSequence(
+            descr = "Click 'My Orders'",
+            key = fconst.key.topNavItem.orders.testRef,
+            aid = "5305390c-3f36-4c60-b43d-7f127ace28a1"
+        )
+
         o.acta {tillEndOfTime()}
     }
 }

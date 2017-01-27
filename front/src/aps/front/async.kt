@@ -10,6 +10,8 @@ import kotlin.properties.Delegates.notNull
 // https://promisesaplus.com/#point-47
 class ThenableShitHidingWrapper<out T>(val thenableShit: T)
 
+fun asu(block: suspend () -> Unit): Promisoid<Unit> =
+    async(block)
 
 fun <T> async(block: suspend () -> T): Promisoid<T> =
     Promisoid {resolve, reject ->

@@ -187,6 +187,9 @@ fun ToReactElementable.Companion.from(render: () -> ToReactElementable) =
         override fun toReactElement() = render().toReactElement()
     }
 
+fun ToReactElementable.Companion.volatile(render: () -> ToReactElementable) =
+    ToReactElementable.from(render)
+
 
 open class ControlInstanceSpec {
     var shame = ""

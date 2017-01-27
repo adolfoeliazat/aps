@@ -80,6 +80,7 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
         override var headerControlsDisabled = false
         override var headerControlsVisible = true
         override var headerControlsClass = ""
+        override var headerMode = HeaderMode.BROWSING
 
         override fun updateShit() {
             stripContent.update()

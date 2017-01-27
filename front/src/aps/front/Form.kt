@@ -132,7 +132,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                                 onClicka = {async{
                                     (spec.onCancel)()
                                     await((spec.onCancela)())
-                                    TestGlobal.formActionCompleted.resolve()
+//                                    TestGlobal.formActionCompleted.resolve()
                                 }}
                             ).toReactElement()
 

@@ -18,7 +18,7 @@ class AdminUsersPage(val ui: World) {
             ui,
             urlPath = "admin-users.html",
             procedureName = "getUsers",
-            header = {pageHeader0(t("TOTE", "Пользователи"))},
+            header = {t("TOTE", "Пользователи")},
             filterSelectValues = UserFilter.values(),
             defaultFilter = UserFilter.ALL,
 

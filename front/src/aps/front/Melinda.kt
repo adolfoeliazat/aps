@@ -15,6 +15,13 @@ import kotlin.collections.*
 
 val reactNull = oldShitAsToReactElementable(null)
 
+enum class HeaderMode {
+    BROWSING, CREATING
+}
+
+fun renderUsualHeader(title: String): ToReactElementable =
+    pageHeader0(title)
+
 class Melinda<Item, Entity, Filter>(
     val ui: World,
     val urlPath: String,
@@ -32,7 +39,7 @@ class Melinda<Item, Entity, Filter>(
     val renderItem: (Int, Item) -> ToReactElementable,
     val emptyMessage: String? = null,
     val tabsSpec: Any? = null,
-    val header: (Melinda<Item, Entity, Filter>).() -> ToReactElementable,
+    val header: (Melinda<Item, Entity, Filter>).() -> String,
     val aboveItems: (Melinda<Item, Entity, Filter>).() -> ToReactElementable = {reactNull}
 )
 where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
@@ -56,7 +63,11 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         override var headerControlsDisabled = false
         override var headerControlsVisible = true
         override var headerControlsClass = ""
-        override fun updateShit() = ui.updatePage()
+        override var headerMode = HeaderMode.BROWSING
+
+        override fun updateShit() {
+            ui.updatePage()
+        }
     }
 
     fun <Req : RequestMatumba, Res> specifyPlus(
@@ -205,7 +216,10 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
 
         return@async ui.setPage(Page(
-            header = header(),
+            header = ToReactElementable.volatile {renderUsualHeader(header() + when (ebafHost.headerMode) {
+                HeaderMode.BROWSING -> ""
+                HeaderMode.CREATING -> fconst.symbols.rightDoubleAngleQuotationSpaced + t("New", "Новый")
+            })},
             body = object:ToReactElementable {
                 override fun toReactElement(): ReactElement {
                     return Shitus.diva(json("style" to json("marginBottom" to 15)),
@@ -324,7 +338,6 @@ where Filter : Enum<Filter>, Filter : Titled {
 fun <E: Enum<E>> stringToEnum(s: String?, values: Array<E>): E {
     return values.find {it.name == s} ?: wtf("stringToEnum: s = [$s]; values = [${values.joinToString{it.name}}]")
 }
-
 
 
 

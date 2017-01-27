@@ -9,7 +9,7 @@ class CustomerUAOrdersPage(val world: World) {
             ui = world,
             urlPath = "orders.html",
             procedureName = "customerGetOrders",
-            header = {pageHeader0(t("TOTE", "Мои заказы"))},
+            header = {t("My Orders", "Мои заказы")},
             filterSelectValues = CustomerOrderFilter.values(),
             defaultFilter = CustomerOrderFilter.ALL,
 
@@ -23,7 +23,7 @@ class CustomerUAOrdersPage(val world: World) {
         m.specifyPlus(
             plusFormSpec = FormSpec<CustomerCreateUAOrderRequest, CustomerCreateUAOrderRequest.Response>(
                 CustomerCreateUAOrderRequest(), world,
-                primaryButtonTitle = t("TOTE", "Создать"),
+                primaryButtonTitle = t("Create", "Создать"),
                 cancelButtonTitle = const.defaultCancelButtonTitle),
             onPlusFormSuccessa = {res->
                 world.pushNavigate("order.html?id=${res.id}")

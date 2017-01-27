@@ -5,6 +5,11 @@ import aps.*
 object fconst {
     val defaultScrollBursts = 8
 
+    object symbols {
+        val rightDoubleAngleQuotation = "»"
+        val rightDoubleAngleQuotationSpaced = " » "
+    }
+
     object key {
         object topNavItem {
             object why : KeyDef() {val decl = name; val testRef = name}
