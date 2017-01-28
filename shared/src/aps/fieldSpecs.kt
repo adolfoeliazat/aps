@@ -25,7 +25,7 @@ object fieldSpecs {
     }
 }
 
-data class TextFieldSpec(
+class TextFieldSpec(
     val name: String,
     val title: String,
     val type: TextFieldType,

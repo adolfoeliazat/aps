@@ -284,35 +284,64 @@ class TestAttempt(
 )
 
 
-fun badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String): List<TestAttempt> {
-    val l = mutableListOf<TestAttempt>()
-    exhaustive/when (field.type) {
-        TextFieldType.STRING, TextFieldType.PASSWORD, TextFieldType.TEXTAREA -> {
-            if (field.minLen >= 1) {
-                l += TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {inputSetValue(field.name, "")}
+fun badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String): List<TestAttempt> =
+    mutableListOf<TestAttempt>()-{res->
+        val add = fuckingAdder(res, field.name)
+
+        if (field.minLen >= 1) {
+            add("empty", "")
+            add("blank", " ".repeat(field.minLen)) // TODO:vgrechka Check for other whitespace or non-alphanumeric shit?
+        }
+        if (field.minLen > 1) {
+            add("too short", TestData.generateShit(field.minLen - 1))
+        }
+        add("too long", TestData.generateShit(field.maxLen + 1))
+
+        exhaustive/when (field.type) {
+            TextFieldType.EMAIL -> {
+                add("malformed-1", "shit")
+                // TODO:vgrechka Other shitty emails?
             }
-            if (field.minLen > 1) {
-                l += TestAttempt(subID = "${field.name}--tooShort", descr = "${field.name}: too short") {inputSetValue(field.name, TestData.generateShit(field.minLen - 1))}
+            TextFieldType.PHONE -> {
+                add("malformed 1", "shit")
+                add("malformed 2", "123 4835 a 43234")
+                // TODO:vgrechka Other shitty phones?
             }
-            l += TestAttempt(subID = "${field.name}--tooLong", descr = "${field.name}: too long") {inputSetValue(field.name, TestData.generateShit(field.maxLen + 1))}
-            l += TestAttempt(subID = "${field.name}--valid", descr = "${field.name}: valid") {inputSetValue(field.name, validValue)}
+            TextFieldType.STRING, TextFieldType.TEXTAREA, TextFieldType.PASSWORD -> {}
         }
 
-        TextFieldType.EMAIL -> {
-            l += TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {inputSetValue(field.name, "")}
-            l += TestAttempt(subID = "${field.name}-shit", descr = "${field.name}: shit") {inputSetValue(field.name, "shit")}
-            l += TestAttempt(subID = "${field.name}-valid", descr = "${field.name}: valid") {inputSetValue(field.name, validValue)}
-        }
-
-        TextFieldType.PHONE -> imf("badTextFieldValuesThenValid for PHONE")
+        add("valid", validValue)
     }
-    return l
-}
 
 fun badIntFieldValuesThenValid(field: IntFieldSpec, validValue: Int): List<TestAttempt> =
-    mutableListOf<TestAttempt>()-{l->
-        l += TestAttempt(subID = "${field.name}--empty", descr = "${field.name}: empty") {}
+    mutableListOf<TestAttempt>()-{res->
+        val add = fuckingAdder(res, field.name)
+        add("empty", "")
+        add("blank", "     ")
+        add("fraction 1", "1.5")
+        add("fraction 2", ".5")
+        add("fraction 3", "5.")
+        add("malformed 1", "5..")
+        add("malformed 2", "4e5")
+        add("malformed 3", "pizda")
+        add("malformed 4", "1 2")
+        add("too little", (field.min - 1).toString())
+        add("too big", (field.max + 1).toString())
+
+        add("valid", validValue.toString())
     }
+
+private class fuckingAdder(val res: MutableList<TestAttempt>, val fieldName: String) {
+    operator fun invoke(descr: String, value: String) {
+        res += TestAttempt(
+            subID = "$fieldName--" + descr.replace(" ", "-"),
+            descr = "$fieldName: $descr",
+            prepare = {
+                inputSetValue(fieldName, value)
+            }
+        )
+    }
+}
 
 fun eachOrCombinationOfLasts(chunks: List<List<TestAttempt>>): List<TestAttempt> =
     if (!testOpts().skipRambling) {

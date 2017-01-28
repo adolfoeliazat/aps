@@ -17,6 +17,7 @@ import jquery.jq
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
+import kotlin.coroutines.RestrictsSuspension
 import kotlin.properties.Delegates.notNull
 
 fun buildAndRunTestScenario(scenario: StepBasedTestScenario, showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promisoid<Throwable?> = async {
@@ -308,22 +309,14 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
 
 }
 
-fun TestScenarioBuilder.forceOptsTillHere(opts: TestOptions) {
-    instructions.add(0, TestInstruction.Do {async{
-        TestGlobal.forcedTestOpts = opts
-    }})
-    instructions.add(TestInstruction.Do {async{
-        TestGlobal.forcedTestOpts = null
-    }})
-}
-
-fun TestScenarioBuilder.beginWorkRegion() {
-    instructions.add(0, TestInstruction.Do {async{
-        TestGlobal.forcedTestOpts = TestOptionsTemplates.fastestExceptShowBannerOnNonCorrectAssertions .opts
-    }})
-    instructions.add(TestInstruction.Do {async{
-        TestGlobal.forcedTestOpts = null
-    }})
+suspend fun forceFast(block: suspend () -> Unit) {
+    val old = TestGlobal.forcedTestOpts
+    TestGlobal.forcedTestOpts = TestOptionsTemplates.fastestExceptShowBannerOnNonCorrectAssertions.opts
+    try {
+        block()
+    } finally {
+        TestGlobal.forcedTestOpts = old
+    }
 }
 
 fun TestScenarioBuilder.endWorkRegion() {

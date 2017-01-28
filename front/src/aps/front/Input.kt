@@ -359,10 +359,8 @@ class Input(
 
 }
 
-fun inputSetValue(key: String, value: String): Promisoid<Unit> {
-    return async {
-        await(Input.instance(key).testSetValue(value))
-    }
+suspend fun inputSetValue(key: String, value: String) {
+    await(Input.instance(key).testSetValue(value))
 }
 
 fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {

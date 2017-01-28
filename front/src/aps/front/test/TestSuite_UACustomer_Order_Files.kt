@@ -360,8 +360,6 @@ class Test_UACustomer_Order_Files_AddFile : TestUACustomer_Order_Files_Base() {
         o.search(text = "pussy & little | вход", aid = "9e309e71-d8c0-425c-933e-aa53be69c3c4")
         o.search(text = "вход глубина", aid = "b4140546-fdef-4bef-aad1-f4f1f8a53184")
         o.search(text = "", aid = "e29466da-4c32-450a-afbb-c6c5b95b50a3")
-
-        o.beginWorkRegion()
     }
 
 }
