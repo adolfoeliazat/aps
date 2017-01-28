@@ -238,7 +238,8 @@ suspend fun submitFormSequence(
     action: (suspend () -> Unit)? = null,
     aid: String,
     buttonKey: String? = null,
-    imposeTimestamp: Boolean = true
+    imposeTimestamp: Boolean = true,
+    aopts: AssertScreenOpts? = null
 ) {
     sequence2(
         action = {async{
@@ -253,7 +254,8 @@ suspend fun submitFormSequence(
         steps = listOf(
             TestSequenceStep(TestGlobal.formTickingLock, "$aid--1"),
             TestSequenceStep(TestGlobal.formDoneLock, "$aid--2")
-        )
+        ),
+        aopts = aopts
     )
 }
 
@@ -273,20 +275,27 @@ suspend fun formSubmissionAttempts(
             testShit,
             descr = "Attempt: ${attempt.descr}",
             aid = "$baseID--${attempt.subID}",
-            imposeTimestamp = i == attempts.lastIndex)
+            imposeTimestamp = i == attempts.lastIndex,
+            aopts = attempt.aopts)
     }
 }
 
 class TestAttempt(
     val subID: String,
     val descr: String,
-    val prepare: suspend () -> Unit
+    val prepare: suspend () -> Unit,
+    val aopts: AssertScreenOpts? = null
 )
 
 
-fun badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String): List<TestAttempt> =
+fun badTextFieldValuesThenValid(
+    field: TextFieldSpec,
+    validValue: String,
+    aopts: AssertScreenOpts? = null,
+    subIDSuffix: String = ""
+): List<TestAttempt> =
     mutableListOf<TestAttempt>()-{res->
-        val add = fuckingAdder(res, field.name)
+        val add = fuckingAdder(res, field.name, aopts, subIDSuffix)
 
         if (field.minLen >= 1) {
             add("empty", "")
@@ -303,8 +312,9 @@ fun badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String): List<
                 // TODO:vgrechka Other shitty emails?
             }
             TextFieldType.PHONE -> {
-                add("malformed 1", "shit")
+                add("malformed 1", "shit-123")
                 add("malformed 2", "123 4835 a 43234")
+                add("too few digits", "1   2    3")
                 // TODO:vgrechka Other shitty phones?
             }
             TextFieldType.STRING, TextFieldType.TEXTAREA, TextFieldType.PASSWORD -> {}
@@ -331,14 +341,20 @@ fun badIntFieldValuesThenValid(field: IntFieldSpec, validValue: Int): List<TestA
         add("valid", validValue.toString())
     }
 
-private class fuckingAdder(val res: MutableList<TestAttempt>, val fieldName: String) {
+private class fuckingAdder(
+    val res: MutableList<TestAttempt>,
+    val fieldName: String,
+    val aopts: AssertScreenOpts? = null,
+    val subIDSuffix: String = ""
+) {
     operator fun invoke(descr: String, value: String) {
         res += TestAttempt(
-            subID = "$fieldName--" + descr.replace(" ", "-"),
+            subID = "$fieldName--" + descr.replace(" ", "-") + subIDSuffix,
             descr = "$fieldName: $descr",
             prepare = {
                 inputSetValue(fieldName, value)
-            }
+            },
+            aopts = aopts
         )
     }
 }

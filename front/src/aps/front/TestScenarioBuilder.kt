@@ -393,7 +393,8 @@ class TestSequenceStep(
 suspend fun sequence2(
     action: suspend () -> Unit,
     assertionDescr: String,
-    steps: List<TestSequenceStep>
+    steps: List<TestSequenceStep>,
+    aopts: AssertScreenOpts? = null
 ) {
     steps.forEach {it.lock.reset()}
 
@@ -401,7 +402,7 @@ suspend fun sequence2(
 
     for ((i, step) in steps.withIndex()) {
         step.lock.testPause()
-        assertScreenHTML("$assertionDescr (${i + 1})", step.assertionID)
+        assertScreenHTML("$assertionDescr (${i + 1})", step.assertionID, opts = aopts)
         step.lock.testResume()
     }
 }

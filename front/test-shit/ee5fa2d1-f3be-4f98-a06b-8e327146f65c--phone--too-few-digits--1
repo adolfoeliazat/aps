@@ -1,0 +1,186 @@
+-------------------- URL --------------------
+
+[uac]/orders.html
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Проза
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                Почему мы?
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                Цены
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                Примеры
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                ЧаВо
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                Связь
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                Блог
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="orders.html">
+            Мои заказы
+          </a>
+        </li>
+        <li class="">
+          <a href="support.html">
+            Поддержка
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            Иво
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <span class="">
+            Мои заказы » Новый
+          </span>
+        </h3>
+      </div>
+      <div style="position: absolute; right: 14px; top: 16px;">
+      </div>
+    </div>
+    <div style="margin-bottom: 15px;">
+      <div class="" style="margin-bottom: 15px;">
+        <div class="">
+          <form class="">
+            <div class="form-group">
+              <div class="textField-labelContainer">
+                <label>
+                  Название
+                </label>
+              </div>
+              <div style="position: relative;">
+                <input type="text" rows="5" class="form-control" disabled="" value="Особенности перевода правовых документов на основе брачного контракта" style="resize: none;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>
+                  <span class="">
+                    Тип документа
+                  </span>
+                </label>
+                <div style="position: relative;">
+                  <select class="form-control" disabled="">
+                    <option value="ESSAY">
+                      Реферат
+                    </option>
+                    <option value="COURSE">
+                      Курсовая работа
+                    </option>
+                    <option value="GRADUATION">
+                      Дипломная работа
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>
+                  <span class="">
+                    Страниц
+                  </span>
+                </label>
+                <div style="position: relative;">
+                  <input type="text" rows="5" class="form-control" disabled="" value="250" style="resize: none;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <span class="">
+                      Источников
+                    </span>
+                  </label>
+                  <div style="position: relative;">
+                    <input type="text" rows="5" class="form-control" disabled="" value="10" style="resize: none;">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="textField-labelContainer">
+                      <label>
+                        Детали
+                      </label>
+                    </div>
+                    <div style="position: relative;">
+                      <textarea rows="5" type="text" class="form-control" disabled="" style="resize: none;">
+                        На протяжении жизни человек сталкивается с различными ситуациями, требующими обращения к профессиональному юристу.
+                        Зачастую документацию приходится воспроизводить на иностранном языке, например, для получения рабочей вакансии за границей, поступления в зарубежный вуз, успешного проведения деловых операций, приобретения права проживания в том или ином государстве.
+                        В этом случае не обойтись без услуг профессионального переводчика. Перевод документов физических и юридических лиц можно охарактеризовать, как "перевод текстов, относящихся к области права и используемых для обмена юридической информацией между людьми, говорящими на разных языках".
+                        Поскольку право является предметной областью, связанной с социально-политическими и культурными особенностями страны, юридический перевод правовых документов представляет собой непростую задачу, считается одним из самых сложных видов перевыражения текста в среде переводчиков, т.к. для адекватной передачи юридической информации язык юридического перевода должен быть особо точным, ясным и достоверным.
+                      </textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="textField-labelContainer">
+                      <label>
+                        Телефон
+                      </label>
+                    </div>
+                    <div style="position: relative;">
+                      <input type="text" rows="5" class="form-control" disabled="" value="1   2    3" style="resize: none;">
+                      </div>
+                    </div>
+                    <div style="text-align: left;">
+                      <button class="btn btn-primary " disabled="">
+                        Создать
+                      </button>
+                      <button class="btn btn-default " disabled="" style="margin-left: 10px;">
+                        Передумал
+                      </button>
+                      <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122); float: right;">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>

@@ -10,7 +10,7 @@ object fieldSpecs {
     val profileRejectionReason = TextFieldSpec("profileRejectionReason", t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000); val profileRejectionReason_testRef = profileRejectionReason
     val banReason = TextFieldSpec("banReason", t("TOTE", "Причина бана"), TextFieldType.TEXTAREA, 0, 5000); val banReason_testRef = banReason
     val adminNotes = TextFieldSpec("adminNotes", t("TOTE", "Заметки админа"), TextFieldType.TEXTAREA, 0, 5000); val adminNotes_testRef = adminNotes
-    val phone = TextFieldSpec("phone", t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 20, minDigits = 6); val phone_testRef = phone
+    val phone = TextFieldSpec("phone", t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 50, minDigits = 6); val phone_testRef = phone
     val aboutMe = TextFieldSpec("aboutMe", t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300); val aboutMe_testRef = aboutMe
     val searchString = TextFieldSpec("searchString", "", TextFieldType.STRING, 0, 50); val searchString_testRef = searchString
     val title = TextFieldSpec("title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen); val title_testRef = title

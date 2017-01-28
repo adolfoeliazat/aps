@@ -54,8 +54,8 @@ data class AssertScreenHTMLParams(
     val opts: AssertScreenOpts = AssertScreenOpts()
 )
 
-suspend fun assertScreenHTML(descr: String?, assertionID: String, opts: AssertScreenOpts = AssertScreenOpts()) {
-    assertScreenHTML(AssertScreenHTMLParams(descr, assertionID, opts))
+suspend fun assertScreenHTML(descr: String?, assertionID: String, opts: AssertScreenOpts? = null) {
+    assertScreenHTML(AssertScreenHTMLParams(descr, assertionID, opts ?: AssertScreenOpts()))
 }
 
 suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
