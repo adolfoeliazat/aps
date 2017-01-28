@@ -281,7 +281,7 @@ object css {
                     top: 6rem;
                     left: 1rem;
                     background: $BROWN_50;
-                    width: calc(100vw - 2rem - 17px);
+                    width: calc(100vw - 2rem - ${fconst.scrollbarWidth}px);
                     height: calc(100vh - 7rem);
                     border: 0.3rem solid $BROWN_300;
                     z-index: 1000000;

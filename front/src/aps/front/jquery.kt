@@ -56,6 +56,8 @@ fun JQuery.scrollBodyToShit(dy: Int = 0) {
     jqbody.scrollTop(this.offset().top - 50 + dy)
 }
 
+fun HTMLElement.hasScrollbar() = scrollHeight > clientHeight
+
 
 
 

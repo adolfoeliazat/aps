@@ -456,9 +456,11 @@ fun fuckingSpantus(): ReactElement {
 
 
 
-fun <T> ifornull(cond: Boolean, f: () -> T): T? {
-    return if (cond) f() else null
-}
+fun <T> ifOrNull(cond: Boolean, f: () -> T): T? =
+    if (cond) f() else null
+
+fun ifOrZero(cond: Boolean, f: () -> Int): Int =
+    if (cond) f() else 0
 
 //class UnitPromise(f: (resolve: () -> Unit, reject: (Throwable) -> Unit) -> Unit) {
 //    val promise: Promisoid<Unit>

@@ -54,8 +54,22 @@ import aps.front.*
             o- kdiv(position = "relative"){o->
                 o- input
                 if (error != null) {
-                    o- oldShitAsToReactElementable(errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))))
-                    o- oldShitAsToReactElementable(Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))))
+                    o- oldShitAsToReactElementable(errorLabelOld(json(
+                        "name" to name,
+                        "title" to error,
+                        "style" to json(
+                            "marginTop" to 5,
+                            "marginRight" to 9,
+                            "textAlign" to "right"))))
+                    o- oldShitAsToReactElementable(Shitus.diva(json(
+                        "style" to json(
+                            "width" to 15,
+                            "height" to 15,
+                            "backgroundColor" to Color.RED_300,
+                            "borderRadius" to 10,
+                            "position" to "absolute",
+                            "right" to 8 + ifOrZero(byid0ForSure(input.elementID).hasScrollbar()) {fconst.scrollbarWidth},
+                            "top" to 10))))
                 }
             }
 

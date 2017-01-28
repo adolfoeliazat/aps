@@ -11,15 +11,18 @@ import aps.front.*
 
     override var error: String? = null
 
-    val input: IKillMeInput = Shitus.Input(json(
-        "tamy" to true,
-        "type" to "text",
-        "kind" to "input",
-        "volatileStyle" to {
-            if (error != null) json("paddingRight" to 30)
-            else undefined
-        }
-    ))
+    val input: IKillMeInput = Shitus.Input(
+        json(
+            "tamy" to true,
+            "type" to "text",
+            "kind" to "input",
+            "volatileStyle" to {
+                if (error != null) json("paddingRight" to 30)
+                else undefined
+            }
+        ),
+        key = name + container.fieldInstanceKeySuffix
+    )
 
     fun setValue(value: Int) { input.setValue(value.toString()) }
 

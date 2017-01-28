@@ -4,6 +4,7 @@ import aps.*
 
 object fconst {
     val defaultScrollBursts = 8
+    val scrollbarWidth = 17
 
     object symbols {
         val rightDoubleAngleQuotation = "»"
@@ -70,6 +71,7 @@ object fconst {
     object storage {
         val clientStateSnapshotPrefix = "clientStateSnapshot-"
     }
+
 }
 
 

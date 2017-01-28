@@ -136,7 +136,7 @@ fun renderTopNavbar(clientKind: ClientKind,
                 makeBrandLink(ui, "home", brandTitle, "navbar-brand"))),
             reactCreateElement("div", json("style" to json("textAlign" to "left")), listOf(
                 reactCreateElement("ul", json("id" to "leftNavbar", "className" to "nav navbar-nav", "style" to json("float" to "none", "display" to "inline-block", "verticalAlign" to "top")), leftNavbarElements),
-                ifornull(rightNavbarItem != null) {reactCreateElement("ul", json("id" to "rightNavbar", "className" to "nav navbar-nav navbar-right"), listOf(rightNavbarItem))}
+                ifOrNull(rightNavbarItem != null) {reactCreateElement("ul", json("id" to "rightNavbar", "className" to "nav navbar-nav navbar-right"), listOf(rightNavbarItem))}
             ))
         ))
     ))

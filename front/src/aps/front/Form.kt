@@ -299,7 +299,7 @@ fun badTextFieldValuesThenValid(field: TextFieldSpec, validValue: String): List<
 
         exhaustive/when (field.type) {
             TextFieldType.EMAIL -> {
-                add("malformed-1", "shit")
+                add("malformed 1", "shit")
                 // TODO:vgrechka Other shitty emails?
             }
             TextFieldType.PHONE -> {

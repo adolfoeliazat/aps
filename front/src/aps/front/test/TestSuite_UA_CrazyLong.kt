@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import aps.front.VerticalPosition.*
 import aps.front.testutils.*
 import into.kommon.*
 

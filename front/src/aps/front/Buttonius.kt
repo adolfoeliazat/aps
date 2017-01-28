@@ -69,7 +69,7 @@ open class Button(
             buttonJSAttrs,
             listOf(
                 icon?.let {ki(className = it.className, color = iconColor).toReactElement()},
-                ifornull(icon != null && title != null) {symbols.nbsp.asReactElement()},
+                ifOrNull(icon != null && title != null) {symbols.nbsp.asReactElement()},
                 title?.asReactElement()
             )
         ))

@@ -3,10 +3,9 @@ package aps
 import into.kommon.*
 import kotlin.properties.Delegates
 
-@Back class IntField(
-    container: RequestMatumba,
-    val spec: IntFieldSpec
-) : FormFieldBack(container, spec.name) {
+@Back class IntField(container: RequestMatumba, val spec: IntFieldSpec)
+    : FormFieldBack(container, spec.name)
+{
     var value by Delegates.notNull<Int>()
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
@@ -22,8 +21,8 @@ import kotlin.properties.Delegates
                 return@error t("TOTE", "Я такие числа не понимаю")
             }
 
-            if (value < spec.min) return@error t("TOTE", "Не менее $spec.min")
-            if (value > spec.max) return@error t("TOTE", "Не более $spec.max")
+            if (value < spec.min) return@error t("TOTE", "Не менее ${spec.min}")
+            if (value > spec.max) return@error t("TOTE", "Не более ${spec.max}")
 
             null
         }?.let {error ->
