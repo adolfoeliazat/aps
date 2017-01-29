@@ -78,15 +78,14 @@ suspend fun debugMailboxCheck(aid: String) {
     val my = object {
         var prevMorda by notNullOnce<Morda>()
     }
-    val morda = Morda()
-
-    my.prevMorda = TestGlobal.currentMorda
-    morda.coitize(MordaCoitizeParams(
-        browseroidName = "debug-mailbox",
+    val morda = Morda(
+        "debug-mailbox",
         url = fconst.url.test.debugMailbox,
         fillTypedStorageLocal = {},
         fillRawStorageLocal = {}
-    ))
+    )
+    my.prevMorda = TestGlobal.currentMorda
+    morda.coitize()
     morda.boot()
     assertScreenHTML("Checking email", aid)
     my.prevMorda.switchTo()

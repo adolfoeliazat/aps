@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import aps.front.Globus.effectsPane
 import aps.front.testutils.*
 import into.kommon.*
 import org.w3c.dom.HTMLElement
@@ -191,41 +190,33 @@ class TestBrowseroid(override val name: String, val initialURL: String) : Browse
     }
 }
 
-data class MordaCoitizeParams(
+
+class Morda(
     val browseroidName: String,
     val url: String,
     val fillTypedStorageLocal: (TypedStorageLocal) -> Unit,
     val fillRawStorageLocal: (StorageLocal) -> Unit
-)
-
-class Morda {
+) {
     enum class State {
         VIRGIN, STATIC, ACTIVE, SHELVED
     }
 
     private var state: State = State.VIRGIN
-    private var coitizeParams by notNull<MordaCoitizeParams>()
     private var world by notNullOnce<World >()
     private var bro by notNullOnce<TestBrowseroid>()
     private var stols by notNullOnce<IStorage>()
     private var bodyScrollTop by notNull<Double>()
 
-    suspend fun coitize(p: MordaCoitizeParams) {
-        await(coitize_killme(p))
-    }
-
-
-    fun coitize_killme(p: MordaCoitizeParams) = async<Unit> {
+    suspend fun coitize() {
         check(state == State.VIRGIN)
-        coitizeParams = p
-        dlog("Coitizing ${p.browseroidName}")
+        dlog("Coitizing $browseroidName")
 
         TestGlobal.currentMordaMaybe?.let {await(it.shelve())}
 
         run { // Create and set new environment
-            bro = TestBrowseroid(p.browseroidName, p.url)
-            p.fillRawStorageLocal(bro.typedStorageLocal.store)
-            p.fillTypedStorageLocal(bro.typedStorageLocal)
+            bro = TestBrowseroid(browseroidName, url)
+            fillRawStorageLocal(bro.typedStorageLocal.store)
+            fillTypedStorageLocal(bro.typedStorageLocal)
             Globus.currentBrowseroidMaybe = bro
 
             stols = object:IStorage {
@@ -237,9 +228,9 @@ class Morda {
         await(disposeAndShelveShit())
 
         run { // Load static content
-            dlog("Navigating to static content: ${p.url}")
-            val content = measureAndReportToDocumentElement("Loading ${p.url}") {
-                await(fetchURL(p.url, "GET", null))
+            dlog("Navigating to static content: $url")
+            val content = measureAndReportToDocumentElement("Loading $url") {
+                await(fetchURL(url, "GET", null))
             }
 
             val openingHeadTagIndex = content.indexOfOrDie("<head")
@@ -259,7 +250,7 @@ class Morda {
 
     suspend fun boot() {
         check(state == State.STATIC)
-        world = World(coitizeParams.browseroidName)
+        world = World(browseroidName)
         world.boot()
         state = State.ACTIVE
     }
@@ -287,6 +278,16 @@ class Morda {
         state = State.ACTIVE
     }
 
+    suspend fun coitizeAndBootAsserting(
+        assertStatic: suspend () -> Unit,
+        assertDynamic: suspend () -> Unit
+    ) {
+        coitize()
+        assertStatic()
+        boot()
+        assertDynamic()
+    }
+
     private fun disposeAndShelveShit() = async<Unit> {
         TestLocationBar.dispose()
         disposeEffects()
@@ -294,36 +295,6 @@ class Morda {
         _DOMReact.checkNothingMounted()
     }
 
-}
-
-class MordaBuilder(private val o: TestScenarioBuilder) {
-    private val morda = Morda()
-
-//    fun init_killme(
-//        p: MordaCoitizeParams,
-//        buildStaticAssertion: () -> Unit,
-//        buildDynamicAssertion: () -> Unit
-//    ) {
-//        o.acta {morda.coitize_killme(p)}
-//        buildStaticAssertion()
-//        o.acta {morda.boot_killme()}
-//        buildDynamicAssertion()
-//    }
-
-    suspend fun init(
-        p: MordaCoitizeParams,
-        assertStatic: suspend () -> Unit,
-        assertDynamic: suspend () -> Unit
-    ) {
-        morda.coitize(p)
-        assertStatic()
-        morda.boot()
-        assertDynamic()
-    }
-
-    suspend fun switchTo() {
-        morda.switchTo()
-    }
 }
 
 
