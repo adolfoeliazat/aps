@@ -68,6 +68,7 @@ object TestGlobal {
     val lastTestHref get() = lastTestHrefMaybe!!
     var lastTestSuite: TestSuite? = null
     var pretendAllAssertionsNotHardened = false
+    var defaultAssertScreenOpts = AssertScreenOpts()
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

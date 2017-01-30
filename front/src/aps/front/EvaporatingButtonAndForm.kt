@@ -79,14 +79,14 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
     }
 }
 
-suspend fun sequence_openPlusForm(aid: String) = sequence2(
+suspend fun sequence_openPlusForm(aid: String) = sequence(
     action = {
         buttonClick(fconst.key.plus.testRef)
     },
-    assertionDescr = "Opened plus form",
+    descr = "Opened plus form",
     steps = listOf(
-        TestSequenceStep(TestGlobal.fadeHalfwayLock, "$aid--1"),
-        TestSequenceStep(TestGlobal.fadeDoneLock, "$aid--2")
+        PauseAssertResume(TestGlobal.fadeHalfwayLock, "$aid--1"),
+        PauseAssertResume(TestGlobal.fadeDoneLock, "$aid--2")
     )
 )
 

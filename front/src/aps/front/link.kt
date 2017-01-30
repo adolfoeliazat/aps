@@ -229,14 +229,14 @@ suspend fun linkSequence(
     key: String,
     aid: String
 ) {
-    sequence2(
+    sequence(
         action = {
             linkClick(key)
         },
-        assertionDescr = descr,
+        descr = descr,
         steps = listOf(
-            TestSequenceStep(TestGlobal.linkTickingLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.linkDoneLock, "$aid--2")
+            PauseAssertResume(TestGlobal.linkTickingLock, "$aid--1"),
+            PauseAssertResume(TestGlobal.linkDoneLock, "$aid--2")
         )
     )
 }

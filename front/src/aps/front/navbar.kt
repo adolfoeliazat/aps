@@ -210,15 +210,17 @@ suspend fun topNavItemSequence(
     page: TestRef<PageSpec>,
     aid: String
 ) {
-    val _descr = descr ?: "Click nav item ${page.shit.navTitle}"
-    sequence2(
+    sequence(
         action = {
             topNavItemClick(page)
         },
-        assertionDescr = _descr,
+        descr = descr ?: "Click nav item ${page.shit.navTitle}",
         steps = listOf(
-            TestSequenceStep(TestGlobal.topNavItemTickingLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.topNavItemDoneLock, "$aid--2")
+            PauseAssertResume(TestGlobal.topNavItemTickingLock, "$aid--1"),
+            DumbStep {TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(
+                bannerVerticalPosition = VerticalPosition.TOP,
+                bannerHorizontalPosition = HorizontalPosition.RIGHT)},
+            PauseAssertResume(TestGlobal.topNavItemDoneLock, "$aid--2")
         )
     )
 }

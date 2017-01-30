@@ -385,25 +385,47 @@ suspend fun twoStepLockSequence(
     lock.testResume2()
 }
 
-class TestSequenceStep(
-    val lock: TestLock,
-    val assertionID: String
-)
+interface SequenceStep {
+    suspend fun beforeAnySteps()
+    suspend fun act(descr: String, aopts: AssertScreenOpts?)
+}
 
-suspend fun sequence2(
+class DumbStep(val block: suspend () -> Unit) : SequenceStep {
+    suspend override fun beforeAnySteps() {
+    }
+
+    suspend override fun act(descr: String, aopts: AssertScreenOpts?) {
+        block()
+    }
+}
+
+class PauseAssertResume(
+    val lock: TestLock,
+    val assertionID: String) : SequenceStep
+{
+    suspend override fun beforeAnySteps() {
+        lock.reset()
+    }
+
+    suspend override fun act(descr: String, aopts: AssertScreenOpts?) {
+        lock.testPause()
+        assertScreenHTML(descr, assertionID, opts = aopts)
+        lock.testResume()
+    }
+}
+
+suspend fun sequence(
     action: suspend () -> Unit,
-    assertionDescr: String,
-    steps: List<TestSequenceStep>,
+    descr: String,
+    steps: List<SequenceStep>,
     aopts: AssertScreenOpts? = null
 ) {
-    steps.forEach {it.lock.reset()}
+    steps.forEach {it.beforeAnySteps()}
 
     action()
 
     for ((i, step) in steps.withIndex()) {
-        step.lock.testPause()
-        assertScreenHTML("$assertionDescr (${i + 1})", step.assertionID, opts = aopts)
-        step.lock.testResume()
+        step.act("$descr (${i + 1})", aopts)
     }
 }
 

@@ -51,15 +51,16 @@ class AssertScreenOpts(
 data class AssertScreenHTMLParams(
     val descr: String?,
     val assertionID: String,
-    val opts: AssertScreenOpts = AssertScreenOpts()
+    val opts: AssertScreenOpts? = null
 )
 
 suspend fun assertScreenHTML(descr: String?, assertionID: String, opts: AssertScreenOpts? = null) {
-    assertScreenHTML(AssertScreenHTMLParams(descr, assertionID, opts ?: AssertScreenOpts()))
+    assertScreenHTML(AssertScreenHTMLParams(descr, assertionID, opts))
 }
 
 suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
     val stackCapture: CaptureStackException? = CaptureStackException()
+    val opts = p.opts ?: TestGlobal.defaultAssertScreenOpts
 //    lastAssertScreenHTMLParams = p
 //    act {TestGlobal.testShitBeingAssertedID = p.assertionID}
 
@@ -85,7 +86,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
         append("-------------------- NAVBAR --------------------\n\n")
         append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
         if (!endsWith("\n")) append("\n")
-        append("\n-------------------- ${if (!p.opts.spoilActual) "ROOT" else "FUCKROOT"} --------------------\n\n")
+        append("\n-------------------- ${if (!opts.spoilActual) "ROOT" else "FUCKROOT"} --------------------\n\n")
         append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
     }
 
@@ -94,8 +95,8 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             val bannerButtonStyle = Style()
 
             var banner by notNull<Control2>()
-            var verticalPosition = p.opts.bannerVerticalPosition
-            var horizontalPosition = p.opts.bannerHorizontalPosition
+            var verticalPosition = opts.bannerVerticalPosition
+            var horizontalPosition = opts.bannerHorizontalPosition
             var capturedVisualShit = false
 
             suspend fun acceptCurrentShit() {
@@ -151,8 +152,8 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                 AssertionBannerKind.INCORRECT,
                                 renderSpecificButtons = {o ->
                                     o - Button(title = "Diff", style = bannerButtonStyle, onClick = {
-                                        verticalPosition = p.opts.bannerVerticalPosition
-                                        horizontalPosition = p.opts.bannerHorizontalPosition
+                                        verticalPosition = opts.bannerVerticalPosition
+                                        horizontalPosition = opts.bannerHorizontalPosition
                                         banner.update()
 //                                                byid("fuckingDiff").scrollBodyToShit()
                                         nextDiff().scrollBodyToShit(dy = -70)

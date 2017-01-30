@@ -197,7 +197,7 @@ object css {
                 font-weight: normal;
                 font-size: 1rem;
                 font-family: arial narrow;
-                z-index: 100000;
+                z-index: 1000000;
                 padding: 0rem;
                 text-align: center;
             """)

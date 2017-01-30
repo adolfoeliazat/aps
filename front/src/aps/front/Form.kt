@@ -240,7 +240,7 @@ suspend fun submitFormSequence(
     imposeTimestamp: Boolean = true,
     aopts: AssertScreenOpts? = null
 ) {
-    sequence2(
+    sequence(
         action = {async{
             if (imposeTimestamp) {
                 await(shit.imposeNextRequestTimestamp())
@@ -249,10 +249,10 @@ suspend fun submitFormSequence(
                 buttonClick(buttonKey ?: fconst.key.primary.testRef)
             })
         }},
-        assertionDescr = descr,
+        descr = descr,
         steps = listOf(
-            TestSequenceStep(TestGlobal.formTickingLock, "$aid--1"),
-            TestSequenceStep(TestGlobal.formDoneLock, "$aid--2")
+            PauseAssertResume(TestGlobal.formTickingLock, "$aid--1"),
+            PauseAssertResume(TestGlobal.formDoneLock, "$aid--2")
         ),
         aopts = aopts
     )
