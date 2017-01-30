@@ -13,7 +13,7 @@ import aps.back.generated.jooq.tables.pojos.*
 import into.kommon.*
 
 @RemoteProcedureFactory fun updateUser() = adminProcedure(
-    UpdateUserRequest(),
+    {UpdateUserRequest()},
 
     runShit = fun(ctx, req): UpdateUserRequest.Response {
         val oldUser = ctx.loadUser(req.id.value.toLong())

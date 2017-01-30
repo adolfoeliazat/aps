@@ -35,10 +35,14 @@ class ProcedureContext {
     lateinit var token: String
 
     val fieldErrors = mutableListOf<FieldError>()
+
+    val xlobal = object:Xlobal {
+        override val user get()= this@ProcedureContext.user
+    }
 }
 
 class ProcedureSpec<Req : RequestMatumba, Res : Any>(
-    val req: Req,
+    val req: (ProcedureContext) -> Req,
     val runShit: (ProcedureContext, Req) -> Res,
     val validate: (ProcedureContext, Req) -> Unit = { ctx, req -> },
     val wrapInFormResponse: Boolean,
@@ -130,18 +134,6 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 //                    }
 
                     fun runShitWithMaybeDB(): Res {
-                        // TODO:vgrechka Wrap each RPC in transaction    5928def7-392e-433f-99a8-9decfe959971
-
-                        val input  = rmap["fields"] as Map<String, Any?>
-                        for (field in spec.req.fields) field.load(input, ctx.fieldErrors)
-
-                        if (spec.needsDangerousToken) {
-                            if (rmap["token"] != systemDangerousToken()) {
-                                // TODO:vgrechka Notify me about hackers    50ec0187-3b47-43de-8a29-b561e6d7132f
-                                bitch("Invalid dangerous token")
-                            }
-                        }
-
                         if (spec.needsUser) {
                             ctx.token = rmap["token"] as String
                             ctx.user = userByToken(ctx.q, ctx.token)
@@ -149,10 +141,20 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                             if (!spec.userKinds.contains(ctx.user.kind)) bitch("User kind not allowed: ${ctx.user.kind}")
                         }
 
-                        spec.validate(ctx, spec.req)
+                        val input  = rmap["fields"] as Map<String, Any?>
+                        val req = spec.req(ctx)
+                        for (field in req.fields) field.load(input, ctx.fieldErrors)
+
+                        if (spec.needsDangerousToken) {
+                            if (rmap["token"] != systemDangerousToken()) {
+                                bitch("Invalid dangerous token")
+                            }
+                        }
+
+                        spec.validate(ctx, req)
                         if (ctx.fieldErrors.isNotEmpty()) bitchExpectedly(t("Please fix errors below", "Пожалуйста, исправьте ошибки ниже"))
 
-                        return spec.runShit(ctx, spec.req)
+                        return spec.runShit(ctx, req)
                     }
 
                     val res = if (spec.needsDB) {
@@ -208,7 +210,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 //}
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
-publicProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+publicProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -222,7 +224,7 @@ publicProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRes
         logRequestJSON = true))
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
-anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+anyUserProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -235,7 +237,7 @@ anyUserProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRe
         logRequestJSON = true))
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
-customerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+customerProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -248,7 +250,7 @@ customerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormR
         logRequestJSON = true))
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
-writerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+writerProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
@@ -262,7 +264,7 @@ writerProcedure(req: Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormRes
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
 adminProcedure(
-    req: Req,
+    req: (ProcedureContext) -> Req,
     runShit: (ProcedureContext, Req) -> Res,
     wrapInFormResponse: Boolean? = null,
     validate: ((ProcedureContext, Req) -> Unit)? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =

@@ -12,7 +12,7 @@ import aps.back.generated.jooq.tables.pojos.*
 import org.jooq.*
 
 @RemoteProcedureFactory fun loadUAOrder() = anyUserProcedure(
-    LoadUAOrderRequest(),
+    {LoadUAOrderRequest()},
     runShit = fun(ctx, req): LoadUAOrderRequest.Response {
         val rec: Record = tracingSQL("Select UA order") {ctx.q
             .select().from(UA_ORDERS)

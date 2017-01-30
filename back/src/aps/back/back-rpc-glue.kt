@@ -4,7 +4,7 @@ import aps.*
 import into.kommon.*
 
 @RemoteProcedureFactory fun jsonProcedure() = testProcedure(
-    JsonProcedureRequest(),
+    {JsonProcedureRequest()},
     runShit = fun(ctx, req): JsonProcedureRequest.Response {
         val reqJSON = req.json.value
         val mr = Regex("^\\{\"\\\$\\\$\\\$class\":\\s*\"([^\"]*)\"").find(reqJSON) ?: wtf("Cannot figure out request class name from JSON")

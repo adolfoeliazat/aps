@@ -103,7 +103,7 @@ object redisLog {
 //)
 
 @RemoteProcedureFactory fun sendRedisLogMessage() = testProcedure(
-    SendRedisLogMessageRequest(),
+    {SendRedisLogMessageRequest()},
     needsDB = false,
     runShit = fun(ctx, req): GenericResponse {
         redisLog.send(RedisLogMessage.Separator()-{o->
@@ -117,7 +117,7 @@ object redisLog {
 private val idToLogGroupMessage = Collections.synchronizedMap(mutableMapOf<String, RedisLogMessage>())
 
 @RemoteProcedureFactory fun servePrivilegedRedisCommand() = testProcedure(
-    PrivilegedRedisCommandRequest(),
+    {PrivilegedRedisCommandRequest()},
     needsDB = false,
     runShit = fun (ctx, req): JSONResponse {
         val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)

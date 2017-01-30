@@ -7,7 +7,9 @@ class MakeOrderPage(val world: World) {
         world.setPage(Page(
             header = usualHeader(t("TOTE", "Заказ")),
             body = kdiv{o->
-                o- "Fuck you"
+                o- FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
+                    UACustomerCreateOrderRequest(world.xlobal), world
+                ))
             }
         ))
     }

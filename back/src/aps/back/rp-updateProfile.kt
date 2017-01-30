@@ -11,7 +11,7 @@ import aps.*
 import aps.back.generated.jooq.tables.pojos.JQUsers
 
 @RemoteProcedureFactory fun updateProfile() = anyUserProcedure(
-    UpdateProfileRequest(),
+    {UpdateProfileRequest()},
     runShit = fun(ctx, req): UpdateProfileRequest.Response {
         val q = tracingSQL("Update profile") {ctx.q
             .update(USERS)

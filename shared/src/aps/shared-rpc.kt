@@ -85,7 +85,11 @@ class TestLoadSnapshotRequest: RequestMatumba() {
     val name by stringHiddenField()
 }
 
-class UACustomerCreateOrderRequest : RequestMatumba() {
+interface Xlobal {
+    val user: UserRTO?
+}
+
+class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
 
     val documentType = SelectField(this, fieldSpecs.ua.documentType)
@@ -95,14 +99,12 @@ class UACustomerCreateOrderRequest : RequestMatumba() {
     val details = TextField(this, fieldSpecs.details)
 
     var name by notNullOnce<TextField>()
-    val phone = TextField(this, fieldSpecs.phone)
-    var email by notNullOnce<TextField>()
+    init {if (xlobal.user == null) name = TextField(this, fieldSpecs.name)}
 
-    init {
-        val user = xlobal.user
-        if (user == null) {
-        }
-    }
+    val phone = TextField(this, fieldSpecs.phone)
+
+    var email by notNullOnce<TextField>()
+    init {if (xlobal.user == null) email = TextField(this, fieldSpecs.email)}
 }
 
 

@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
 
 
 @RemoteProcedureFactory fun serveCustomerGetUAOrderFiles() = customerProcedure(
-    ItemsRequest(CustomerFileFilter.values()),
+    {ItemsRequest(CustomerFileFilter.values())},
     runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
         val tsqueryLanguage = "russian"
 

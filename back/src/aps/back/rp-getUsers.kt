@@ -12,7 +12,7 @@ import org.jooq.*
 import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun getUsers() = adminProcedure(
-    ItemsRequest(UserFilter.values()),
+    {ItemsRequest(UserFilter.values())},
     runShit = fun(ctx, req): ItemsResponse<UserRTO> {
         val chunk = selectChunk(
             ctx.q, table = "users", pojoClass = JQUsers::class, loadItem = JQUsers::toRTO,

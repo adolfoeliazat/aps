@@ -13,7 +13,7 @@ import org.mindrot.jbcrypt.BCrypt
 import java.util.*
 
 @RemoteProcedureFactory fun signInWithPassword() = publicProcedure(
-    SignInWithPasswordRequest(),
+    {SignInWithPasswordRequest()},
     runShit = fun(ctx, req): SignInResponse {
         // TODO:vgrechka Peculiarly log wrong-password sign-in attempts    5e8dd00b-c96e-4991-b350-a1aa78c784a4
 
@@ -47,7 +47,7 @@ import java.util.*
 
 
 @RemoteProcedureFactory fun signInWithToken() = anyUserProcedure(
-    SignInWithTokenRequest(),
+    {SignInWithTokenRequest()},
     wrapInFormResponse = false,
     runShit = fun(ctx, req): SignInResponse {
         return SignInResponse(ctx.token, ctx.user)

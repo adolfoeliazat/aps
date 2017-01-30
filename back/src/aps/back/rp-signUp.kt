@@ -17,7 +17,7 @@ import java.sql.SQLException
 import java.util.*
 
 @RemoteProcedureFactory fun serveSignUp() = publicProcedure(
-    SignUpRequest(),
+    {SignUpRequest()},
     runShit = fun(ctx, req): SignUpRequest.Response {
         try {
             val firstName = req.mutableSignUpFields.firstName.value

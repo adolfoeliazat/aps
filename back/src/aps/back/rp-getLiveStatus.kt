@@ -11,7 +11,7 @@ import aps.back.generated.jooq.Tables.USERS
 import aps.GetLiveStatusRequest.Response as Res
 
 @RemoteProcedureFactory fun getLiveStatus() = anyUserProcedure(
-    GetLiveStatusRequest(),
+    {GetLiveStatusRequest()},
     wrapInFormResponse = false,
     runShit = fun(ctx, req): GetLiveStatusRequest.Response {
         return when (ctx.user.kind) {

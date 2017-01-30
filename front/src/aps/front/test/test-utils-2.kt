@@ -452,7 +452,8 @@ fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String)
                 TestGlobal.overriddenClientKind = ClientKind.UA_CUSTOMER
 
                 await(testShit.imposeNextRequestTimestamp())
-                val createOrderResponse = await(send(testShit.bobulToken, UACustomerCreateOrderRequest()-{o->
+                val xxx by lazy {imf("xlobal? No-no-no, fuck you...")}
+                val createOrderResponse = await(send(testShit.bobulToken, UACustomerCreateOrderRequest(xxx)-{o->
                     o.title.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
                     o.documentType.value = UADocumentType.COURSE
 //                    o.deadline.killmeValue = moment("2016-12-11 18:15:00").valueOf()

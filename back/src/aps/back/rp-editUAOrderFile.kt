@@ -14,14 +14,14 @@ import into.kommon.*
 import java.util.*
 
 @RemoteProcedureFactory fun serveCustomerEditUAOrderFile() = customerProcedure(
-    CustomerEditUAOrderFileRequest(),
+    {CustomerEditUAOrderFileRequest()},
     runShit = fun(ctx, req): EditUAOrderFileRequestBase.Response {
         return serveEditUAOrderFile(UserKind.CUSTOMER, ctx, req)
     }
 )
 
 @RemoteProcedureFactory fun serveWriterEditUAOrderFile() = writerProcedure(
-    WriterEditUAOrderFileRequest(),
+    {WriterEditUAOrderFileRequest()},
     runShit = fun(ctx, req): EditUAOrderFileRequestBase.Response {
         return serveEditUAOrderFile(UserKind.WRITER, ctx, req)
     }

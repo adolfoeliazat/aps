@@ -11,7 +11,7 @@ import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.enums.*
 
 @RemoteProcedureFactory fun serveUACustomerCreateOrder() = customerProcedure(
-    UACustomerCreateOrderRequest(),
+    {UACustomerCreateOrderRequest(it.xlobal)},
     runShit = fun(ctx, req): UACustomerCreateOrderRequest.Response {
         val documentType = req.documentType.value
 

@@ -42,7 +42,7 @@ object TestServerFiddling {
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
 testProcedure(
-    req: Req,
+    req: (ProcedureContext) -> Req,
     runShit: (ProcedureContext, Req) -> Res,
     needsDB: Boolean? = null,
     logRequestJSON: Boolean? = null
@@ -60,7 +60,7 @@ testProcedure(
     ))
 
 @RemoteProcedureFactory fun imposeNextRequestTimestamp() = testProcedure(
-    ImposeNextRequestTimestampRequest(),
+    {ImposeNextRequestTimestampRequest()},
     runShit = fun(ctx, req): GenericResponse {
         TestServerFiddling.nextRequestTimestamp = stringToStamp(req.stamp.value)
         return GenericResponse()
@@ -68,7 +68,7 @@ testProcedure(
 )
 
 @RemoteProcedureFactory fun imposeNextRequestError() = testProcedure(
-    ImposeNextRequestErrorRequest(),
+    {ImposeNextRequestErrorRequest()},
     runShit = fun(ctx, req): GenericResponse {
         TestServerFiddling.nextRequestError = req.error.value ?: const.msg.serviceFuckedUp
         return GenericResponse()
@@ -76,7 +76,7 @@ testProcedure(
 )
 
 @RemoteProcedureFactory fun imposeNextGeneratedPassword() = testProcedure(
-    ImposeNextGeneratedPasswordRequest(),
+    {ImposeNextGeneratedPasswordRequest()},
     runShit = fun(ctx, req): GenericResponse {
         TestServerFiddling.nextGeneratedPassword = req.password.value
         return GenericResponse()
@@ -84,7 +84,7 @@ testProcedure(
 )
 
 @RemoteProcedureFactory fun resetTestDatabase() = testProcedure(
-    ResetTestDatabaseRequest(),
+    {ResetTestDatabaseRequest()},
     runShit = fun(ctx, req): GenericResponse {
         DB.apsTestOnTestServer.recreate()
         return GenericResponse()
@@ -92,7 +92,7 @@ testProcedure(
 )
 
 @RemoteProcedureFactory fun serveRecreateTestDatabaseSchema() = testProcedure(
-    RecreateTestDatabaseSchemaRequest(),
+    {RecreateTestDatabaseSchemaRequest()},
     runShit = fun(ctx, req): GenericResponse {
         val templateDB =
             req.snapshotID.value?.let {DB.apsTestSnapshotOnTestServer(it)}
@@ -127,7 +127,7 @@ testProcedure(
 )
 
 @RemoteProcedureFactory fun resetTestDatabaseAlongWithTemplate() = testProcedure(
-    ResetTestDatabaseAlongWithTemplateRequest(),
+    {ResetTestDatabaseAlongWithTemplateRequest()},
     runShit = fun(ctx, req): GenericResponse {
         val templateDB = DB.byNameOnTestServer(req.templateDB.value)
 
@@ -141,14 +141,14 @@ testProcedure(
 )
 
 @RemoteProcedureFactory fun serveGetSentEmails() = testProcedure(
-    RequestMatumba(),
+    {RequestMatumba()},
     runShit = fun(ctx, req): GetSentEmailsRequest.Response {
         return GetSentEmailsRequest.Response(EmailMatumba.sentEmails)
     }
 )
 
 @RemoteProcedureFactory fun serveClearSentEmails() = testProcedure(
-    RequestMatumba(),
+    {RequestMatumba()},
     runShit = fun(ctx, req): GenericResponse {
         EmailMatumba.sentEmails.clear()
         return GenericResponse()
@@ -156,7 +156,7 @@ testProcedure(
 )
 
 @RemoteProcedureFactory fun worldPoint() = testProcedure(
-    WorldPointRequest(),
+    {WorldPointRequest()},
     runShit = fun(ctx, req): GenericResponse {
         val oldRejectAllRequests = TestServerFiddling.rejectAllRequestsNeedingDB
         TestServerFiddling.rejectAllRequestsNeedingDB = true
@@ -193,7 +193,7 @@ testProcedure(
 val backendInstanceID = "" + UUID.randomUUID()
 
 @RemoteProcedureFactory fun getSoftwareVersion() = testProcedure(
-    GetSoftwareVersionRequest(),
+    {GetSoftwareVersionRequest()},
     logRequestJSON = false,
     runShit = fun(ctx, req): GetSoftwareVersionRequest.Response {
         val path = Paths.get("$APS_HOME/front/out/front-enhanced.js")
@@ -205,7 +205,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 )
 
 @RemoteProcedureFactory fun getGeneratedShit() = testProcedure(
-    RequestMatumba(),
+    {RequestMatumba()},
     runShit = fun(ctx, req): GetGeneratedShitRequest.Response {
         return GetGeneratedShitRequest.Response(GodServlet::class.java.getResource("generated-shit.js").readText())
     }
@@ -213,7 +213,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 
 
 @RemoteProcedureFactory fun openSourceCode() = testProcedure(
-    OpenSourceCodeRequest(),
+    {OpenSourceCodeRequest()},
     runShit = fun(ctx, req): OpenSourceCodeRequest.Response {
         val sourceLocation = req.sourceLocation.value.replace("\\", "/")
         val firstColon = sourceLocation.indexOf(':')
@@ -247,7 +247,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 )
 
 @RemoteProcedureFactory fun testSetUserFields() = testProcedure(
-    TestSetUserFieldsRequest(),
+    {TestSetUserFieldsRequest()},
     needsDB = true,
     runShit = fun(ctx, req): GenericResponse {
         var step = tracingSQL("Update user") {ctx.q
@@ -271,7 +271,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 )
 
 @RemoteProcedureFactory fun fuckingRemoteProcedure() = testProcedure(
-    FuckingRemoteProcedureRequest(),
+    {FuckingRemoteProcedureRequest()},
     needsDB = true,
     runShit = fun (ctx, req): JSONResponse {
         val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
@@ -353,7 +353,7 @@ fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
 }
 
 @RemoteProcedureFactory fun ping() = publicProcedure(
-    GenericRequest(),
+    {GenericRequest()},
     runShit = fun(ctx, req): GenericResponse {
         return GenericResponse()
     }
@@ -417,7 +417,7 @@ fun serveHardenScreenHTMLRequest(req: HardenScreenHTMLRequest) {
 
 @RemoteProcedureFactory
 fun serveTestCopyOrderFileToArea() = adminProcedure(
-    TestCopyOrderFileToAreaRequest(),
+    {TestCopyOrderFileToAreaRequest()},
     runShit = fun(ctx, req): TestCopyOrderFileToAreaRequest.Response {
         val protoOrderFile: JQUaOrderFilesRecord = selectUAOrderFile(ctx, req.orderFileID.value.toLong())
         val area: JQUaOrderAreasRecord = selectUAOrderAreaByName(ctx, protoOrderFile.uaOrderId, req.areaName.value)

@@ -12,7 +12,7 @@ import org.jooq.*
 import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun customerGetOrders() = customerProcedure(
-    ItemsRequest(UserFilter.values()),
+    {ItemsRequest(UserFilter.values())},
     runShit = fun(ctx, req): ItemsResponse<UAOrderRTO> {
         return ItemsResponse(listOf(), null)
 //        val chunk = selectChunk(

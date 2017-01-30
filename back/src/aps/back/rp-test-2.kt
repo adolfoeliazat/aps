@@ -5,7 +5,7 @@ import aps.back.generated.jooq.Tables.*
 import com.fasterxml.jackson.databind.JsonNode
 
 @RemoteProcedureFactory fun serveTestTakeSnapshot() = testProcedure(
-    TestTakeSnapshotRequest(),
+    {TestTakeSnapshotRequest()},
     needsDB = true,
     runShit = fun(ctx, req): TestTakeSnapshotRequest.Response {
         dwarnStriking("Taking snapshot: ${req.name.value} @ ${req.url.value}")
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.JsonNode
 )
 
 @RemoteProcedureFactory fun serveTestLoadSnapshot() = testProcedure(
-    TestLoadSnapshotRequest(),
+    {TestLoadSnapshotRequest()},
     needsDB = true,
     runShit = fun(ctx, req): TestLoadSnapshotRequest.Response {
         val rec = tracingSQL("Load snapshot") {

@@ -13,7 +13,7 @@ import org.jooq.*
 import kotlin.reflect.KClass
 
 @RemoteProcedureFactory fun getUser() = adminProcedure(
-    GetUserRequest(),
+    {GetUserRequest()},
     runShit = fun(ctx, req): GetUserRequest.Response {
         return GetUserRequest.Response(tracingSQL("Select user") {ctx.q
             .select().from(USERS)

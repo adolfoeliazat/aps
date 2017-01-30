@@ -30,7 +30,7 @@ private fun makeMappingCache(): LoadingCache<String, SourceMapping> {
 }
 
 @RemoteProcedureFactory @Synchronized fun mapStack() = testProcedure(
-    MapStackRequest(),
+    {MapStackRequest()},
     runShit = fun(ctx, req): MapStackRequest.Response {
         val noisy = false
 

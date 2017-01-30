@@ -14,14 +14,14 @@ import com.google.common.hash.Hashing
 import java.util.*
 
 @RemoteProcedureFactory fun serveCustomerAddUAOrderFile() = customerProcedure(
-    CustomerAddUAOrderFileRequest(),
+    {CustomerAddUAOrderFileRequest()},
     runShit = fun(ctx, req): AddUAOrderFileRequestBase.Response {
         return serveAddUAOrderFile(UserKind.CUSTOMER, ctx, req)
     }
 )
 
 @RemoteProcedureFactory fun serveWriterAddUAOrderFile() = writerProcedure(
-    WriterAddUAOrderFileRequest(),
+    {WriterAddUAOrderFileRequest()},
     runShit = fun(ctx, req): AddUAOrderFileRequestBase.Response {
         return serveAddUAOrderFile(UserKind.WRITER, ctx, req)
     }

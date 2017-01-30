@@ -1,6 +1,7 @@
 package aps
 
 object fieldSpecs {
+    val name = TextFieldSpec("name", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val name_testRef = name
     val firstName = TextFieldSpec("firstName", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val firstName_testRef = firstName
     val lastName = TextFieldSpec("lastName", t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50); val lastName_testRef = lastName
     val password = TextFieldSpec("password", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 50); val password_testRef = password

@@ -34,7 +34,6 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val getInvisibleFieldNames: FormMatumba<Req, Res>.() -> Iterable<String> = {listOf()}
 )
 
-
 class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToReactElementable {
     init {
         req.fields.forEach {it.form = this}
