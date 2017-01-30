@@ -13,7 +13,7 @@ import into.kommon.*
 
 
 class AdminUsersPage(val ui: World) {
-    fun load(): Promisoid<Unit> {
+    suspend fun load() {
         val m = Melinda<UserRTO, Nothing, UserFilter>(
             ui,
             urlPath = "admin-users.html",

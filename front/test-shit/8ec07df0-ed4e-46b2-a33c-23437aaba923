@@ -43,6 +43,11 @@
             Блог
           </a>
         </li>
+        <li class="">
+          <a href="makeOrder.html">
+            Заказать
+          </a>
+        </li>
       </ul>
       <ul id="rightNavbar" class="nav navbar-nav navbar-right">
         <li class="">
@@ -60,10 +65,10 @@
 <div id="staticShit">
   <!-- BEGIN CONTENT -->
     <div id="MakeStaticSites-833" class="container">
-      <div id="MakeStaticSites-858">
-        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-864">
-          <h3 style="margin-bottom: 0;" id="MakeStaticSites-862">
-            <span id="MakeStaticSites-860" class="">
+      <div id="MakeStaticSites-861">
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-867">
+          <h3 style="margin-bottom: 0;" id="MakeStaticSites-865">
+            <span id="MakeStaticSites-863" class="">
               Welcome to AcademicPaperServed UA
             </span>
           </h3>
@@ -85,9 +90,9 @@
             Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
           </p>
         </div>
-        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-871">
-          <h3 style="margin-bottom: 0;" id="MakeStaticSites-869">
-            <span id="MakeStaticSites-867" class="">
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-874">
+          <h3 style="margin-bottom: 0;" id="MakeStaticSites-872">
+            <span id="MakeStaticSites-870" class="">
               Features
             </span>
           </h3>
@@ -150,9 +155,9 @@
             </div>
           </div>
         </div>
-        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-878">
-          <h3 style="margin-bottom: 0;" id="MakeStaticSites-876">
-            <span id="MakeStaticSites-874" class="">
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-881">
+          <h3 style="margin-bottom: 0;" id="MakeStaticSites-879">
+            <span id="MakeStaticSites-877" class="">
               Who We Are
             </span>
           </h3>
@@ -172,9 +177,9 @@
           </p>
         </div>
         <div id="MakeStaticSites-784">
-          <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-885">
-            <h3 style="margin-bottom: 0;" id="MakeStaticSites-883">
-              <span id="MakeStaticSites-881" class="">
+          <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-888">
+            <h3 style="margin-bottom: 0;" id="MakeStaticSites-886">
+              <span id="MakeStaticSites-884" class="">
                 Что о нас говорят
               </span>
             </h3>
@@ -280,9 +285,9 @@
                       <div>
                       </div>
                     </div>
-                    <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-892">
-                      <h3 style="margin-bottom: 0;" id="MakeStaticSites-890">
-                        <span id="MakeStaticSites-888" class="">
+                    <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-895">
+                      <h3 style="margin-bottom: 0;" id="MakeStaticSites-893">
+                        <span id="MakeStaticSites-891" class="">
                           What We Offer
                         </span>
                       </h3>

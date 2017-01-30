@@ -35,7 +35,7 @@ object TestUtils {
     }
 
     fun pushWriterURL(o: TestScenarioBuilder, path: String) {
-        o.act {Globus.location.pushState(null, "", "http://aps-ua-writer.local:3022$path")}
+        o.act {loc.pushState(null, "", "http://aps-ua-writer.local:3022$path")}
     }
 
     fun putTinyTestContextLabel(text: String) {

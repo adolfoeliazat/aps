@@ -14,7 +14,7 @@ import into.kommon.ifOrEmpty
 // TODO:vgrechka Auto-refresh only minimal necessary parts
 
 class DashboardPage(val ui: World) {
-    fun load(preserveScroll: Boolean = false): Promisoid<Unit> = async {
+    suspend fun load(preserveScroll: Boolean = false) {
         val showWorkSection = ui.user.state == UserState.COOL
         val myPage = Page(
             header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Dashboard", "Панель")))),

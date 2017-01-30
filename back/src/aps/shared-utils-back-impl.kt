@@ -27,15 +27,15 @@ fun t(en: String, ru: String) = ru
 annotation class Back
 
 @Dummy interface Promisoid<T>
-@Dummy fun <Res> callRemoteProcedure(req: Any): Promisoid<Res> = dontCallMe
-@Dummy fun <Res> callRemoteProcedure(req: Any, ui: LegacyUIShit): Promisoid<Res> = dontCallMe
+@Dummy fun <Res> callRemoteProcedure(req: Any): Promisoid<Res> = fuckOff()
+@Dummy fun <Res> callRemoteProcedure(req: Any, ui: LegacyUIShit): Promisoid<Res> = fuckOff()
 //@Dummy fun <T> __await(x: Promisoid<T>): T = dontCallMe
 //@Dummy fun <T> __asyncResult(x: T): Promisoid<T> = dontCallMe
 @Dummy interface LegacyUIShit
-@Dummy fun <Res> callMatumba(req: RequestMatumba, token: String?): Promisoid<Res> = dontCallMe
-@Dummy fun <Res> callDangerousMatumba(req: RequestMatumba): Promisoid<Res> = dontCallMe
-@Dummy fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> = dontCallMe
-@Dummy fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> = dontCallMe
+@Dummy fun <Res> callMatumba(req: RequestMatumba, token: String?): Promisoid<Res> = fuckOff()
+@Dummy fun <Res> callDangerousMatumba(req: RequestMatumba): Promisoid<Res> = fuckOff()
+@Dummy fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> = fuckOff()
+@Dummy fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> = fuckOff()
 
 @Back open class RequestMatumba {
     val fields = mutableListOf<FormFieldBack>()

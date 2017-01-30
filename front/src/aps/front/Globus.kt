@@ -9,6 +9,11 @@ import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 import kotlin.reflect.KProperty
 
+val loc get() = Globus.currentBrowseroid.location
+
+
+
+
 //val storageLocal: StorageLocal get() = Globus.browser.storageLocal
 //val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLocal
 
@@ -19,6 +24,8 @@ import kotlin.reflect.KProperty
     var DB: String
     fun displayInitialShit()
     fun bsClearMenus()
+    fun initStaticShit()
+    fun disposeStaticShit()
 }
 @JsName("global")
 @native val ExternalGlobus: IExternalGlobus = noImpl
@@ -36,17 +43,15 @@ object Globus {
 //    var location: LocationProxy = realLocation
     var effectsPane: String? = null
 
-    val location: LocationProxy get() = Browseroid.current.location
 
     val clientKind: ClientKind get() {
         if (isTest()) {
             TestGlobal.overriddenClientKind?.let {return it}
         }
 
-        val host = location.host
         return when {
-            host.contains("ua") && host.contains("customer") -> ClientKind.UA_CUSTOMER
-            host.contains("ua") && host.contains("writer") -> ClientKind.UA_WRITER
+            loc.host.contains("ua") && loc.host.contains("customer") -> ClientKind.UA_CUSTOMER
+            loc.host.contains("ua") && loc.host.contains("writer") -> ClientKind.UA_WRITER
             else -> wtf("clientKind")
         }
     }

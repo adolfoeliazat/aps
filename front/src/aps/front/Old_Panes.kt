@@ -13,36 +13,8 @@ import jquery.jq
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 
-//class Pane(
-//)
-
-//private val panes = mutableListOf<Pane>()
-
-//object Panes {
-//    private val nodes = mutableListOf<HTMLElement>()
-//
-//    fun put(tre: ToReactElementable): Pane {
-//        throw UnsupportedOperationException("Implement me, please, fuck you")
-//    }
-//
-//    fun passivate() {
-//        for (node in nodes) {
-//            ReactDOM.unmountComponentAtNode(node)
-//        }
-//    }
-//
-//    fun activate() {
-////        for (x in broEntries(Browseroid.current)) {
-////            val node = byid0(x.htmlElementID)!!
-////            ReactDOM.render(x.reactElement, node)
-////            nodes += node
-////        }
-//    }
-//}
-
-
-val old_panes by lazy {Old_Panes("pane-", Browseroid.current.reactoid)}
-val old_debugPanes by lazy {Old_Panes("debugPane-", Browseroid.current.reactoid)}
+val old_panes by lazy {Old_Panes("pane-", Globus.currentBrowseroid.reactoid)}
+val old_debugPanes by lazy {Old_Panes("debugPane-", Globus.currentBrowseroid.reactoid)}
 
 class Old_Panes(val idPrefix: String, val reactoidom: Reactoid) {
     val names = mutableSetOf<String>()

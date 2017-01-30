@@ -114,11 +114,11 @@ suspend fun assertCustomerWithTokenDynamicIndexScreen() {
 }
 
 suspend fun assertAnonymousCustomerStaticIndexScreen() {
-    assertScreenHTML(currentJSFunctionName(), "8ec07df0-ed4e-46b2-a33c-23437aaba923")
+    assertScreenHTML("assertAnonymousCustomerStaticIndexScreen", "8ec07df0-ed4e-46b2-a33c-23437aaba923")
 }
 
 suspend fun assertAnonymousCustomerDynamicIndexScreen() {
-    assertScreenHTML(currentJSFunctionName(), "56acc98a-f632-4391-8660-c65022f9f14c")
+    assertScreenHTML("assertAnonymousCustomerDynamicIndexScreen", "56acc98a-f632-4391-8660-c65022f9f14c")
 }
 
 suspend fun assertAnonymousWriterStaticIndexScreen() {

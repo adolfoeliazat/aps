@@ -38,7 +38,7 @@ fun fetchURL(url: String, method: String, data: String?): Promisoid<String> {
 val backendURL = "http://127.0.0.1:8080"
 
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promisoid<dynamic> = async {
-    val obj = await(fetchFromURL("POST", "$backendURL/$path", global.JSON.stringify(requestJSONObject)) {
+    val obj = await(fetchFromURL_killme("POST", "$backendURL/$path", global.JSON.stringify(requestJSONObject)) {
         global.JSON.parse(it)
     })
 
@@ -51,7 +51,7 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promisoid
     obj
 }
 
-fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String) -> T): Promisoid<T> {
+fun <T> fetchFromURL_killme(method: String, url: String, data: Any?, transform: (String) -> T): Promisoid<T> {
     val stackBeforeXHR: String = CaptureStackException().stack
 
     return Promisoid {resolve, reject ->
@@ -74,6 +74,30 @@ fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String
 
         xhr.send(data)
     }
+}
+
+suspend fun <T> fetchFromURL(method: String, url: String, data: Any?, transform: (String) -> T): T {
+    val stackBeforeXHR: String = CaptureStackException().stack
+    return await(Promisoid {resolve, reject ->
+        val xhr = js("new XMLHttpRequest()")
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+
+        xhr.onreadystatechange = {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    val response: String = xhr.responseText
+                    val result = transform(response)
+                    // dlog("Got backend response for /$path", global.JSON.stringify(result, null, 4))
+                    resolve(result)
+                } else {
+                    reject(FatException("Got shitty backend response from $url: status = ${xhr.status}", stackBeforeXHR))
+                }
+            }
+        }
+
+        xhr.send(data)
+    })
 }
 
 fun <T> dejsonize(json: String, descr: String? = null): T {
@@ -191,7 +215,7 @@ fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSO
     requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
     requestJSONObject.databaseID = ExternalGlobus.DB
     if (wideClientKind is WideClientKind.User) {
-        requestJSONObject.clientURL = windowLocationHrefToClientURL(Globus.location.href)
+        requestJSONObject.clientURL = windowLocationHrefToClientURL(loc.href)
     }
     requestJSONObject.fakeEmail = Globus.isTest
     val responseJSONObject = await(fetchFromBackend("rpc/$procedureName", requestJSONObject))

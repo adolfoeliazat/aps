@@ -11,8 +11,8 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-class ProfilePage(val ui: World) {
-    fun load(): Promisoid<Unit> = async {
+class UAWriterProfilePage(val ui: World) {
+    suspend fun load() {
         val primaryButtonTitle = t("TOTE", "Отправить на проверку")
 
         var pageBody: ReactElement

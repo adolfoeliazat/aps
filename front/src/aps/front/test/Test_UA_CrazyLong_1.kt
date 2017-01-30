@@ -24,7 +24,7 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
 
                 topNavItemSequence(
                     descr = "Click 'Sign In'",
-                    key = fconst.key.topNavItem.signIn.testRef,
+                    page = pages.uaCustomer.signIn_testRef,
                     aid = "5d81d6de-36f1-4a5c-9259-8975f36d84b4"
                 )
 
@@ -88,7 +88,7 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
 
                 topNavItemSequence(
                     descr = "Click 'My Orders'",
-                    key = fconst.key.topNavItem.orders.testRef,
+                    page = pages.uaCustomer.orders_testRef,
                     aid = "5305390c-3f36-4c60-b43d-7f127ace28a1"
                 )
             }

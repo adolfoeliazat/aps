@@ -3,8 +3,8 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-class CustomerUAOrdersPage(val world: World) {
-    fun load(): Promisoid<Unit> {
+class UACustomerOrdersPage(val world: World) {
+    suspend fun load() {
         val m = Melinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
             ui = world,
             urlPath = "orders.html",
@@ -30,7 +30,7 @@ class CustomerUAOrdersPage(val world: World) {
             }
         )
 
-        return m.ignita()
+        m.ignita()
     }
 }
 

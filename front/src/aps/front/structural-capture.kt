@@ -12,7 +12,7 @@ import kotlin.browser.window
 
 
 fun captureShit(): Json = json()-{o->
-    o["url"] = Globus.location.href
+    o["url"] = loc.href
     o["documentTitle"] = document.title
     o["windowScrollY"] = window.scrollY
     o["body"] = captureNode(document.body!!)!!

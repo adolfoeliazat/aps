@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import aps.front.PageKind.*
 import into.kommon.*
 
 object MakeStaticSites {
@@ -91,9 +92,9 @@ object MakeStaticSites {
 
         val tabTitle = t(en="Writer", ua="Writer UA")
 
-        fun writePage(name: String, highlightedItem: String? = null, content: ToReactElementable) {
-            genericWritePage(name=name,
-                             highlightedItem=highlightedItem,
+        fun writePage(path: String, highlight: PageSpec? = null, content: ToReactElementable) {
+            genericWritePage(path = path,
+                             highlight = highlight,
                              root=root,
                              tabTitle=tabTitle,
                              lang=lang,
@@ -103,7 +104,7 @@ object MakeStaticSites {
                              }.toReactElement())
         }
 
-        writePage(name="index", content=kdiv{o->
+        writePage(path = pages.uaWriter.index.path, content = kdiv{o->
             o- pageHeader(t(en="Welcome to Writer", ua="Приветствуем на Писце"))
             o- markdownPiece(
                 en = """
@@ -184,7 +185,7 @@ object MakeStaticSites {
             ))
         })
 
-        writePage(name="why", highlightedItem="why", content=kdiv{o->
+        writePage(path = pages.uaWriter.why.path, highlight = pages.uaWriter.why, content=kdiv{o->
             o- pageHeader(t(en="Why Writer?", ua="Почему Писец?"))
 
             fun add(section: Section) =o- kdiv{o->
@@ -271,7 +272,7 @@ object MakeStaticSites {
                     """)))
         })
 
-        writePage(name="prices", highlightedItem="prices", content=kdiv{o->
+        writePage(path = pages.uaWriter.prices.path, highlight = pages.uaWriter.prices, content = kdiv{o->
             o- pageHeader(t(en="Our Prices", ua="Наши цены"))
             o- markdownPiece(
                 en = """
@@ -329,7 +330,7 @@ object MakeStaticSites {
                 ua = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy." )
         })
 
-        writePage(name="faq", highlightedItem="faq", content=kdiv{o->
+        writePage(path = pages.uaWriter.faq.path, highlight = pages.uaWriter.faq, content=kdiv{o->
             o- pageHeader(t(en="FAQ", ua="Частые вопросы"))
 
             fun add(section: Section) =o- kdiv{o->
@@ -432,8 +433,8 @@ object MakeStaticSites {
                     ua = "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. ")))
         })
 
-        for (name in writerDynamicPageNames()) {
-            writePage(name=name, content=wholePageTicker().toToReactElementable())
+        for (p in pages.uaWriter.fuckers.filter {it.kind != STATIC}) {
+            writePage(path = p.path, content = wholePageTicker().toToReactElementable())
         }
 
         println("DONE")
@@ -527,9 +528,9 @@ object MakeStaticSites {
 
         val tabTitle = t(en="APS", ua="APS UA")
 
-        fun writePage(name: String, highlightedItem: String? = null, content: ToReactElementable) {
-            genericWritePage(name=name,
-                             highlightedItem=highlightedItem,
+        fun writePage(path: String, highlight: PageSpec? = null, content: ToReactElementable) {
+            genericWritePage(path = path,
+                             highlight = highlight,
                              root=root,
                              tabTitle=tabTitle,
                              lang=lang,
@@ -539,7 +540,7 @@ object MakeStaticSites {
                              }.toReactElement())
         }
 
-        writePage(name="index", content=kdiv{o->
+        writePage(path = pages.uaCustomer.index.path, content=kdiv{o->
             o- pageHeader(t(en="Welcome to AcademicPaperServed", ua="Welcome to AcademicPaperServed UA"))
             o- markdownPiece(
                 en = """
@@ -620,7 +621,7 @@ object MakeStaticSites {
             ))
         })
 
-        writePage(name="why", highlightedItem="why", content=kdiv{o->
+        writePage(path = pages.uaCustomer.why.path, highlight = pages.uaCustomer.why, content = kdiv{o->
             o- pageHeader(t(en="Why AcademicPaperServed?", ua="Why AcademicPaperServed UA?"))
 
             fun add(section: Section) =o- kdiv{o->
@@ -725,7 +726,7 @@ object MakeStaticSites {
             }
         }
 
-        writePage(name="prices", highlightedItem="prices", content=kdiv{o->
+        writePage(path = pages.uaCustomer.prices.path, highlight = pages.uaCustomer.prices, content=kdiv{o->
             o- pageHeader(t(en="Pricing Policy", ua="Pricing Policy"))
             o- markdownPiece(
                 en = """
@@ -805,12 +806,12 @@ object MakeStaticSites {
             )
         }
 
-        writePage(name="samples", highlightedItem="samples", content=kdiv{o->
+        writePage(path = pages.uaCustomer.samples.path, highlight = pages.uaCustomer.samples, content = kdiv{o->
             o- pageHeader(t(en="Sample Papers", ua="Примеры работ"))
             o- hrefBullets(sampleItems)
         })
 
-        writePage(name="faq", highlightedItem="faq", content=kdiv{o->
+        writePage(path = pages.uaCustomer.faq.path, highlight = pages.uaCustomer.faq, content = kdiv{o->
             o- pageHeader(t(en="FAQ", ua="FAQ"))
 
             fun add(section: Section) =o- kdiv{o->
@@ -914,7 +915,7 @@ object MakeStaticSites {
 
         })
 
-        writePage(name="contact", highlightedItem="contact", content=kdiv{o->
+        writePage(path = pages.uaCustomer.contact.path, highlight = pages.uaCustomer.contact, content = kdiv{o->
             o- pageHeader(t(en="Contact Us", ua="Contact Us"))
             o- markdownPiece(
                 en = """
@@ -1002,27 +1003,27 @@ object MakeStaticSites {
         }
 
         for (item in blogItems) {
-            writePage(name="blog-${item.slug}", highlightedItem="blog", content=kdiv{o->
+            writePage(path = pages.uaCustomer.blog.path + "-${item.slug}", highlight = pages.uaCustomer.blog, content = kdiv{o->
                 o- pageHeader(item.title)
                 o- markdownPiece(item.content)
             })
         }
 
-        writePage(name="blog", highlightedItem="blog", content=kdiv{o->
+        writePage(path = pages.uaCustomer.blog.path, highlight = pages.uaCustomer.blog, content = kdiv{o->
             o- pageHeader(t(en="Writing Blog", ua="Писательский Блог"))
             o- hrefBullets(blogItems.map{x ->
                 HrefBulletItem(title = x.listTitle, href = "blog-${x.slug}.html")})
         })
 
-        for (name in customerDynamicPageNames()) {
-            writePage(name=name, content=wholePageTicker().toToReactElementable())
+        for (p in pages.uaCustomer.fuckers.filter {it.kind != STATIC}) {
+            writePage(path = p.path, content = wholePageTicker().toToReactElementable())
         }
 
         println("DONE")
     }
 
-    fun genericWritePage(name: String, highlightedItem: String?, content: ReactElement, root: String, tabTitle: String, lang: Language, clientKind: ClientKind) {
-        fs.writeFileSync("${root}/${name}.html", """
+    fun genericWritePage(path: String, highlight: PageSpec? = null, content: ReactElement, root: String, tabTitle: String, lang: Language, clientKind: ClientKind) {
+        fs.writeFileSync("$root/$path.html", """
     <!DOCTYPE html>
     <html lang="en" style="position: relative; min-height: 100%;">
     <head>
@@ -1061,7 +1062,7 @@ object MakeStaticSites {
     </head>
     <body style="padding-top: 50px; padding-bottom: 0px; overflow-y: scroll;">
     <div id="topNavbarContainer">
-    ${renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, highlightedItem = highlightedItem, rightNavbarItemAStyle = Style(display = "none")))}
+    ${renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, highlight = highlight, rightLinkStyle = Style(display = "none")))}
     </div>
 
     <div id="root" style="min-height: calc(100vh - 28px - 50px);">

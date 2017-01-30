@@ -244,6 +244,12 @@ fun String.indexOfOrDie(needle: String, startIndex: Int = 0): Int {
     return idx
 }
 
+fun String.lastIndexOfOrDie(needle: String, startIndex: Int = 0): Int {
+    val idx = this.lastIndexOf(needle, startIndex)
+    if (idx == -1) die("Needle not found: [$needle]")
+    return idx
+}
+
 inline fun loopNotTooLong(maxIterations: Int = 1000, block: () -> Unit) {
     for (i in 1..maxIterations) {
         try {

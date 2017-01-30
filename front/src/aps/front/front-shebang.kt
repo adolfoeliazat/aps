@@ -14,6 +14,8 @@ import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 object TestGlobal {
     val shameToControl = mutableMapOf<String, dynamic>()
@@ -72,39 +74,11 @@ fun requestAnimationFrame(block: () -> Unit) {
     global.requestAnimationFrame(block)
 }
 
-fun customerDynamicPageNames(): List<String> {
-    return listOf("test", "sign-in", "sign-up", "dashboard", "orders", "order", "support")
-}
-
-fun writerDynamicPageNames(): List<String> {
-    return listOf(
-        "test", "sign-in", "sign-up", "dashboard", "orders", "support", "store", "users", "profile",
-        "admin-my-tasks", "admin-heap", "admin-users",
-        "debug-perf-render", "debug-kotlin-playground", "debug"
-    )
-}
-
-fun jsFacing_isDynamicPage(name: String): Boolean {
-    if (Globus.clientKind == ClientKind.UA_CUSTOMER) return customerDynamicPageNames().indexOf(name) != -1
-//    if (global.CLIENT_KIND == UserKind.CUSTOMER.name) return customerDynamicPageNames().indexOf(name) != -1
-    return writerDynamicPageNames().indexOf(name) != -1
-}
-
-fun isDynamicPage(clientKind: ClientKind, name: String): Boolean =
-    when (clientKind) {
-        ClientKind.UA_CUSTOMER -> customerDynamicPageNames().indexOf(name) != -1
-        ClientKind.UA_WRITER -> writerDynamicPageNames().indexOf(name) != -1
-    }
-
-
-
 fun userKindTitle(kind: UserKind) = when (kind) {
     UserKind.CUSTOMER -> t("TOTE", "Заказчик")
     UserKind.WRITER -> t("TOTE", "Писатель")
     UserKind.ADMIN -> t("TOTE", "Админ")
 }
-
-fun requiredToken(ui: World): String = ui.tokenMaybe ?: bitch("I want a token")
 
 fun oldShitAsToReactElementable(someShit: Any?): ToReactElementable =
     object:ToReactElementable {
@@ -252,7 +226,7 @@ val elKillme: dynamic = {
 }
 
 fun getURLQuery(): Map<String, String> {
-    return parseQueryString(Globus.location.href)
+    return parseQueryString(loc.href)
 }
 
 fun labe(def: dynamic): dynamic {

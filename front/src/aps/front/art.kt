@@ -109,7 +109,7 @@ object art {
     var testInstructions: Iterable<TestInstruction> by HotReloadSurvivingFuckingShit("art_testInstructions")
 
     fun uiState(def: dynamic): Promisoid<Unit> = async {
-        val url: String = Globus.location.href // Capture location for reassertion on hot reload, as it will be changed to "/test.html..."
+        val url: String = loc.href // Capture location for reassertion on hot reload, as it will be changed to "/test.html..."
 
         hrss.reassertUIState = {arg: dynamic -> async {
             val scrollThere: dynamic = arg.scrollThere

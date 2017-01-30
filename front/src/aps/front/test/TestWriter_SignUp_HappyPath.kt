@@ -111,7 +111,7 @@ class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {
             o.actionStep("Writer opens link from email") {
                 o.act {
                     putTinyTestContextLabel("Writer: Kafka #2")
-                    Globus.location.pushState(null, "", "http://aps-ua-writer.local:3022/profile.html")
+                    loc.pushState(null, "", "http://aps-ua-writer.local:3022/profile.html")
                 }
             }
             initNewBrowser(o, fillStorageLocal = {it.token = initialStorageLocal.token})

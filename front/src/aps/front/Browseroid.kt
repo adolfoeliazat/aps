@@ -16,10 +16,6 @@ interface Browseroid {
     val typedStorageLocal: TypedStorageLocal
     val reactoid: Reactoid
     val timer: Timeroid
-
-    companion object {
-        val current: Browseroid get() = Globus.currentBrowseroid
-    }
 }
 
 interface Timeroid {

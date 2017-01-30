@@ -69,7 +69,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
     val actual = buildString {
         append("-------------------- URL --------------------\n\n")
-        var url = Globus.location.href
+        var url = loc.href
         val doubleSlash = url.indexOfOrDie("//")
         var nextSlash = url.indexOf("/", doubleSlash + 2)
         if (nextSlash == -1) {

@@ -14,7 +14,7 @@ fun bitch(msg: String = "Just bitching..."): Nothing = throw Exception(msg)
 fun imf(what: String = "me"): Nothing = throw Exception("Implement $what, please, fuck you")
 fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw Exception("WTF: $msg")
 fun die(msg: String = "You've just killed me, motherfucker!"): Nothing = throw Exception("Aarrgghh... $msg")
-val dontCallMe: Nothing get() = wtf("Don't call me, motherfucker")
+fun fuckOff(msg: String = "Don't call me"): Nothing = throw Exception("Fuck off... $msg")
 
 fun <R> measuringAndPrinting(block: () -> R): R {
     val start = currentTimeMillis()

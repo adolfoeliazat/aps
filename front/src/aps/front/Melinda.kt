@@ -130,12 +130,12 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         controlToBlink.setBlinking(false)
     }
 
-    fun ignita(): Promisoid<Unit> = async {
+    suspend fun ignita() {
         if (entityProcedureName != null) {
             val entityReq = EntityRequest()
             val res = await(callZimbabwe<EntityResponse<Entity>>(entityProcedureName, entityReq, ui.tokenMaybe))
             entity = when (res) {
-                is ZimbabweResponse.Shitty -> return@async ui.setPage(Page(
+                is ZimbabweResponse.Shitty -> return ui.setPage(Page(
                     header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
                     body = oldShitAsToReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
 
@@ -219,7 +219,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         orderingSelect?.let {itemsReq.ordering.value = it.value}
         val res = await(callZimbabwe<ItemsResponse<Item>>(procedureName, itemsReq, ui.tokenMaybe))
         val itemsRes = when (res) {
-            is ZimbabweResponse.Shitty -> return@async ui.setPage(Page(
+            is ZimbabweResponse.Shitty -> return ui.setPage(Page(
                 header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("TOTE", "Облом")))),
                 body = oldShitAsToReactElementable(Shitus.diva(js("({})"), Shitus.errorBanner(json("content" to res.error))))))
 
@@ -227,7 +227,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
         }
 
 
-        return@async ui.setPage(Page(
+        return ui.setPage(Page(
             header = ToReactElementable.volatile {renderUsualHeader(header() + when (ebafHost.headerMode) {
                 HeaderMode.BROWSING -> ""
                 HeaderMode.CREATING -> fconst.symbols.rightDoubleAngleQuotationSpaced + t("New", "Новый")

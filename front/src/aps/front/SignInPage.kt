@@ -10,7 +10,7 @@ import aps.*
 
 class SignInPage(val ui: World) {
 
-    fun load(): Promisoid<Unit> = async {
+    suspend fun load() {
         ui.setPage(Page(
             header = oldShitAsToReactElementable(pageHeader(t("Sign In", "Вход"))),
             body = kdiv{o->
@@ -29,7 +29,7 @@ class SignInPage(val ui: World) {
                     onSuccessa = {res -> async {
                         ui.userMaybe = res.user
                         ui.tokenMaybe = res.token
-                        Browseroid.current.typedStorageLocal.token = ui.tokenMaybe
+                        Globus.currentBrowseroid.typedStorageLocal.token = ui.tokenMaybe
 
                         ui.pushNavigate(
                             when (res.user.state) {

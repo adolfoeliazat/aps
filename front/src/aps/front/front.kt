@@ -12,79 +12,9 @@ import into.kommon.*
 import org.w3c.dom.events.Event
 
 
-@native interface IKotlinShit {
-    fun loadAdminUsersPage(ui: World): Promisoid<Unit>
-    fun loadDashboardPage(ui: World): Promisoid<Unit>
-    fun loadProfilePage(ui: World): Promisoid<Unit>
-    fun loadSignUpPage(ui: World): Promisoid<Unit>
-}
-
-
-object KotlinShit : IKotlinShit {
-//    lateinit var ui: World
+object KotlinShit {
     lateinit var clientImpl: World
-
-//    val loadSignInPageCtor = ::jsFacing_loadSignInPageCtor
-//    val renderTopNavbar_calledByFuckingUI = ::jsFacing_renderTopNavbar_calledByFuckingUI
-    val isDynamicPage = ::jsFacing_isDynamicPage
-
-//    val jsFacing_pushNavigate = ::pushNavigate
-    val jsFacing_puid = ::puid
-
-//    val jsFacing_art_invokeStateContributions = ::invokeStateContributions
-//    val apsCSS = ::jsFacing_apsCSS
-    val pollLiveStatus = ::jsFacing_pollLiveStatus
-//    val startLiveStatusPolling = ::jsFacing_startLiveStatusPolling
-//    val stopLiveStatusPolling = ::jsFacing_stopLiveStatusPolling
-//    val urlLink = ::jsFacing_urlLink
     val pageLink = ::jsFacing_pageLink
-
-    override fun loadAdminUsersPage(ui: World): Promisoid<Unit> = async {
-        await(AdminUsersPage(ui).load())
-    }
-
-    override fun loadProfilePage(ui: World): Promisoid<Unit> = async {
-        await(ProfilePage(ui).load())
-    }
-
-    override fun loadSignUpPage(ui: World): Promisoid<Unit> = async {
-        await(SignUpPage(ui).load())
-    }
-
-    override fun loadDashboardPage(ui: World): Promisoid<Unit> = async {
-        await(DashboardPage(ui).load())
-    }
-
-//    val kot_melinda = ::jsFacing_melinda
-
-//    override fun makeProfileFields(def: dynamic): dynamic {
-//        return jsArrayOf(
-//            ui.TextField(json(
-//                "name" to "phone",
-//                "title" to t("TOTE", "Телефон")
-//            )),
-//            ui.TextField(json(
-//                "name" to "aboutMe",
-//                "kind" to "textarea",
-//                "title" to t("TOTE", "Пара ласковых о себе")
-//            ))
-//        )
-//    }
-
-//    override fun userKindIcon(def: dynamic): dynamic {
-//        // #extract {user} from def
-//        val user: UserRTO = def.user
-//
-//        return Shitus.faIcon(json("tame" to "icon", "style" to json("marginLeft" to 5, "marginRight" to 5),
-//            "icon" to when (user.kind) {
-//                UserKind.CUSTOMER -> "user"
-//                UserKind.WRITER -> "pencil"
-//                UserKind.ADMIN -> "cog"
-//            }
-//        ))
-//    }
-
-
 }
 
 class ReactClassShit(

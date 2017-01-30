@@ -9,6 +9,10 @@
 package aps.front
 
 import aps.*
+import aps.ClientKind.*
+import aps.UserState.*
+import aps.front.Globus.clientKind
+import aps.front.PageKind.*
 import into.kommon.*
 import jquery.jq
 import org.w3c.dom.HTMLElement
@@ -17,18 +21,16 @@ import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
 class World(val name: String) {
-    private val typedStorageLocal get() = Browseroid.current.typedStorageLocal
-
     lateinit var rootContent: ReactElement
     lateinit var currentPage: Page
     var tokenMaybe: String? = null
     var signedUpOK: Boolean = false
     var userMaybe: UserRTO? = null
-    lateinit var urlQuery: Map<String, String>
+    lateinit var urlQuery: Map<String, String> // TODO:vgrechka @kill
     lateinit var updateNavbar: () -> Unit
     var prevPathname: String? = null
     var prevHref: String? = null
-    var loadPageForURLFirstRun: Boolean = false
+    var firstTimeLoadingPage = true
     lateinit var updatePage: () -> Unit
     lateinit var updatePageHeader: () -> Unit
     lateinit var updateRoot: () -> Unit
@@ -36,6 +38,7 @@ class World(val name: String) {
     lateinit var rootElement: ReactElement
     lateinit var topNavbarElement: ReactElement
     lateinit var footer: DynamicFooter
+    var navbarHighlight: PageSpec? = null
 
     val token: String get() = tokenMaybe!!
     val user: UserRTO get() = userMaybe.let {it ?: bitch("I want a fucking user")}
@@ -81,27 +84,26 @@ class World(val name: String) {
         userMaybe = x
     }
 
-    fun loadSignInPage(): Promisoid<Unit> = SignInPage(this).load()
-
     suspend fun signOut() {
-        typedStorageLocal.clear()
+        Globus.currentBrowseroid.typedStorageLocal.clear()
         tokenMaybe = null
         userMaybe = null
         replaceNavigate("/")
     }
 
     suspend fun pushNavigate(url: String) {
-        Globus.location.pushState(null, "", url)
+        loc.pushState(null, "", url)
         loadPageForURL()
     }
 
     suspend fun replaceNavigate(where: dynamic) {
-        Globus.location.replaceState(null, "", where)
+        loc.replaceState(null, "", where)
         loadPageForURL()
     }
 
     suspend fun bootKillme() {
-        tokenMaybe = typedStorageLocal.token
+        val tsl = Globus.currentBrowseroid.typedStorageLocal
+        tokenMaybe = tsl.token
 //            token = hrss.storageLocal.getItem("token")
         if (tokenMaybe != null) {
             try {
@@ -113,7 +115,7 @@ class World(val name: String) {
                 // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
                 console.warn("Failed to private_getUserInfo", e)
                 tokenMaybe = undefined
-                typedStorageLocal.clear()
+                tsl.clear()
 //                    hrss.storageLocal.clear()
             } finally {
 //                    ExternalGlobus.makeSignInNavbarLinkVisible()
@@ -125,21 +127,21 @@ class World(val name: String) {
         topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
             updateNavbar = update
             return@elementCtor render@{
-                var pathname: dynamic = null
-                if (Globus.location.pathname == "/test.html") {
-                    if (prevPathname == null) Shitus.raise("I want prevPathname")
-                    pathname = prevPathname
-                } else {
-                    pathname = Globus.location.pathname
-                }
-
-                var highlightedItem = Regex("/([^/]*?)\\.html").find(pathname)?.let {
-                    it.groupValues[1]
-                }
-                if (highlightedItem == "sign-up") { // XXX
-                    highlightedItem = "sign-in"
-                }
-                return@render renderTopNavbar(highlightedItem = highlightedItem)
+//                var pathname: dynamic = null
+//                if (loc.pathname == "/test.html") {
+//                    if (prevPathname == null) Shitus.raise("I want prevPathname")
+//                    pathname = prevPathname
+//                } else {
+//                    pathname = loc.pathname
+//                }
+//
+//                var highlightedItem = Regex("/([^/]*?)\\.html").find(pathname)?.let {
+//                    it.groupValues[1]
+//                }
+//                if (highlightedItem == "sign-up") { // XXX
+//                    highlightedItem = "sign-in"
+//                }
+                return@render renderTopNavbar(clientKind, ::t, highlight = navbarHighlight, ui = this)
             }
         })
 
@@ -154,7 +156,7 @@ class World(val name: String) {
         val jqFooter = jq("#footer")
         jqFooter.append("<div id='${const.elementID.dynamicFooter}'></div>")
         footer = DynamicFooter(this)
-        Browseroid.current.reactoid.mount(footer.toReactElement(), dynamicFooterContainer())
+        Globus.currentBrowseroid.reactoid.mount(footer.toReactElement(), dynamicFooterContainer())
     }
 
     fun setPage(def: Page) {
@@ -179,93 +181,83 @@ class World(val name: String) {
     }
 
     suspend fun loadPageForURL() {
+        val user = userMaybe
         val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
-        noise.clog(Globus.location.href)
+        noise.clog(loc.href)
 
         TestGlobal.loadPageForURLLock.sutPause1()
 
-        val user = userMaybe
-        val firstRun = loadPageForURLFirstRun
-        loadPageForURLFirstRun = false
-        urlQuery = parseQueryString(Globus.location.href)
-        val pathname = Globus.location.pathname
+        urlQuery = parseQueryString(loc.href) // TODO:vgrechka @kill
+        val pathname = loc.pathname
 
-        var ultimateName =
-            if (pathname.endsWith(".html"))
-                pathname.substring(pathname.lastIndexOf("/") + 1, pathname.lastIndexOf("."))
-            else { // Root of the site (/), otherwise we wouldn't have reached here because of 404
-                when (user) {
-                    null -> "index"
-                    else -> when (user.state) {
-                        UserState.COOL -> {
-                            Globus.location.pushState(null, "", "/dashboard.html")
-                            "dashboard"
-                        }
-                        UserState.PROFILE_REJECTED,
-                        UserState.PROFILE_PENDING,
-                        UserState.PROFILE_APPROVAL_PENDING,
-                        UserState.BANNED -> {
-                            Globus.location.pushState(null, "", "/profile.html")
-                            "profile"
-                        }
-                    }
+        var changeURLTo: PageSpec? = null
+        var page: PageSpec = when {
+            pathname.endsWith(".html") -> {
+                val path = pathname.substring(pathname.lastIndexOfOrDie("/") + 1, pathname.lastIndexOfOrDie("."))
+                val pages = when (clientKind) {
+                    UA_CUSTOMER -> pages.uaCustomer
+                    UA_WRITER -> pages.uaWriter
+                }
+                bang(pages.fuckers.find {it.path == path})
+            }
+
+            // Root of the site (/). Otherwise we wouldn't have reached here because of 404
+
+            user == null -> {
+                when (clientKind) {
+                    UA_CUSTOMER -> pages.uaCustomer.index
+                    UA_WRITER -> pages.uaWriter.index
                 }
             }
 
-        val my = object {
-            var loader by notNull<() -> Promisoid<Unit>>()
-        }
-
-        fun isStaticPage(name: String) = !isDynamicPage(name)
-
-        if (isStaticPage(ultimateName)) {
-            fun staticLoader(): Promisoid<Unit> = async {
-                val url = Globus.location.baseWithoutSlash + "/$ultimateName.html"
-                var content = await(fetchFromURL("GET", url, null, {it}))
-                content = content.substring(content.indexOf("<!-- BEGIN CONTENT -->"), content.indexOf("<!-- END CONTENT -->"))
-                setRootContent(rawHTML(content))
-            }
-            my.loader = ::staticLoader
-        } else {
-            if (user == null && ultimateName != "sign-in" && ultimateName != "sign-up" && !ultimateName.startsWith("debug")) {
-                Globus.location.replaceState(null, "", "/sign-in.html")
-                ultimateName = "sign-in"
-            }
-
-            if (ultimateName == "sign-in") {
-                my.loader = this::loadSignInPage
-            } else if (ultimateName == "sign-up") {
-                my.loader = {loadSignUpPage()}
-            } else if (user != null || (Globus.mode == Mode.DEBUG && ultimateName.startsWith("debug"))) {
-                my.loader = privatePageLoader(ultimateName)
+            else -> {
+                when (user.state) {
+                    COOL -> {
+                        when (clientKind) {
+                            UA_CUSTOMER -> pages.uaCustomer.dashboard
+                            UA_WRITER -> pages.uaWriter.dashboard
+                        }
+                    }
+                    PROFILE_REJECTED, PROFILE_PENDING, PROFILE_APPROVAL_PENDING, BANNED -> {
+                        when (clientKind) {
+                            UA_CUSTOMER -> pages.uaCustomer.profile
+                            UA_WRITER -> pages.uaWriter.profile
+                        }
+                    }
+                }.also {
+                    changeURLTo = it
+                }
             }
         }
 
+        if (page.kind == PRIVATE && user == null) {
+            page = when (clientKind) {
+                UA_CUSTOMER -> pages.uaCustomer.signIn
+                UA_WRITER -> pages.uaWriter.signIn
+            }.also {
+                changeURLTo = it
+            }
+        }
+
+        changeURLTo?.let {loc.pushState(null, "", "/${it.path}.html")}
+
+        val firstRun = firstTimeLoadingPage
+        firstTimeLoadingPage = false
         val skipBodyRendering =
-            firstRun && // JS has just loaded
-                isStaticPage(ultimateName) &&
-                typedStorageLocal.token == null
-//            localStorage.getItem("token") == null
+            firstRun
+            && page.kind == STATIC
+            // && user == null // TODO:vgrechka Is this needed?
 
         if (!skipBodyRendering) {
-            global.window.disposeStaticShit()
-
+            ExternalGlobus.disposeStaticShit()
             footer.setBurgerMenu(null)
-            await<dynamic>(my.loader())
-
-            js("$")(global.document).scrollTop(0)
-            global.window.initStaticShit()
+            page.load(this)
+            jqbody.scrollTop(0)
+            ExternalGlobus.initStaticShit()
         }
 
-//            if (token != null) {
-//                await<dynamic>(ui.pollLiveStatus())
-//            }
-
+        navbarHighlight = page
         updateNavbar()
-    }
-
-    fun loadSignUpPage(): Promisoid<Unit> = async {
-        await(KotlinShit.loadSignUpPage(this))
     }
 
     fun setRootContent(newRootContent: dynamic) {
@@ -282,44 +274,10 @@ class World(val name: String) {
         updateRoot()
     }
 
-    fun isDynamicPage(name: String): Boolean {
-        return KotlinShit.isDynamicPage(name)
-    }
-
-    fun privatePageLoader(name: String): () -> Promisoid<Unit> {
-        return when (name) {
-            "dashboard" -> ({async{
-                await(KotlinShit.loadDashboardPage(this))
-            }})
-            "admin-users" -> ({async{
-                await(KotlinShit.loadAdminUsersPage(this))
-            }})
-            "profile" -> ({async{
-                await(KotlinShit.loadProfilePage(this))
-            }})
-            "debug" -> ({async{
-                await(DebugPage(this).load())
-            }})
-            "orders" -> ({
-                when (Globus.clientKind) {
-                    ClientKind.UA_CUSTOMER -> CustomerUAOrdersPage(this).load()
-                    ClientKind.UA_WRITER -> WriterOrdersPage(this).load()
-                }
-            })
-            "order" -> ({
-                when (Globus.clientKind) {
-                    ClientKind.UA_CUSTOMER -> CustomerSingleUAOrderPage(this).load()
-                    ClientKind.UA_WRITER -> imf()
-                }
-            })
-            else -> wtf("privatePageLoader for [$name]")
-        }
-    }
-
-    fun renderTopNavbar(highlightedItem: String?): ReactElement {
-        fun _t(en: String, ua: String) = ua
-        return renderTopNavbar(Globus.clientKind, ::_t, highlightedItem = highlightedItem, ui = this)
-    }
+//    fun renderTopNavbar(highlight: Page?): ReactElement {
+//        fun _t(en: String, ua: String) = ua
+//        return renderTopNavbar(clientKind, ::_t, highlight = highlight, ui = this)
+//    }
 
     fun shelveVisualShit() {
         _DOMReact.unmountComponentAtNode(navbarContainer())
@@ -344,6 +302,18 @@ class Page(
     val body: ToReactElementable,
     val onKeyDown: ((ReactEvent) -> Unit)? = null
 )
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

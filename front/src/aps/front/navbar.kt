@@ -7,166 +7,166 @@
 package aps.front
 
 import aps.*
+import aps.ClientKind.*
+import aps.UserKind.*
+import aps.front.PageKind.*
 import into.kommon.*
 import kotlin.properties.Delegates.notNull
 
-
-
-
 fun renderTopNavbar(clientKind: ClientKind,
                     t: (String, String) -> String,
-                    highlightedItem: String? = null,
+                    highlight: PageSpec? = null,
                     ui: World? = null,
-                    rightNavbarItemAStyle: Style = Style()
+                    rightLinkStyle: Style = Style()
 ): ReactElement {
-    val user: UserRTO? = ui?.getUser()
+    val user = ui?.getUser()
 
-    class Item(val key: String, val pageName: String, val title: String, val aStyle: Style = Style()) {
-        fun render(): ReactElement {
-            return TopNavItem(
-                key = key, ui = ui, pageName = pageName, title = title, linkStyle = aStyle,
-                active = highlightedItem == pageName
-            ).toReactElement()
-        }
+    fun renderPage(p: PageSpec, linkStyle: Style = Style()) = bang(
+        TopNavItem(ui, p, active = p == highlight, linkStyle = linkStyle).render().toReactElement())
+
+//    class Item(val navKey: NavKey, val path: String, val navTitle: String, val linkStyle: Style = Style()) {
+//        fun render(): ReactElement {
+//            return TopNavItem(key = navKey, ui = ui, path = path, title = navTitle, linkStyle = linkStyle,
+//                              active = highlight == navKey
+//            ).toReactElement()
+//        }
+//    }
+
+    val fuckers = when (clientKind) {
+        UA_CUSTOMER -> pages.uaCustomer.fuckers
+        UA_WRITER -> pages.uaWriter.fuckers
     }
+    val staticPages = fuckers.filter {it.kind == STATIC}
+    val privatePages = fuckers.filter {it.kind == PRIVATE}
 
-    var proseItems by notNull<List<Item>>()
-    if (clientKind == ClientKind.UA_CUSTOMER) {
-        proseItems = listOf(
-            Item(pageName = "why", title = t("Why Us?", "Почему мы?"), key = fconst.key.topNavItem.why.decl),
-            Item(pageName = "prices", title = t("Prices", "Цены"), key = fconst.key.topNavItem.prices.decl),
-            Item(pageName = "samples", title = t("Samples", "Примеры"), key = fconst.key.topNavItem.samples.decl),
-            Item(pageName = "faq", title = t("FAQ", "ЧаВо"), key = fconst.key.topNavItem.faq.decl),
-            Item(pageName = "contact", title = t("Contact Us", "Связь"), key = fconst.key.topNavItem.contact.decl),
-            Item(pageName = "blog", title = t("Blog", "Блог"), key = fconst.key.topNavItem.blog.decl)
-        )
-    } else {
-        if (user == null || user.kind != UserKind.ADMIN) {
-            proseItems = listOf(
-                Item(pageName = "why", title = t("Why Us?", "Почему мы?"), key = fconst.key.topNavItem.why.decl),
-                Item(pageName = "prices", title = t("Prices", "Цены"), key = fconst.key.topNavItem.prices.decl),
-                Item(pageName = "faq", title = t("FAQ", "ЧаВо"), key = fconst.key.topNavItem.faq.decl)
-            )
+//    val privatePages = mutableListOf<PageSpec>()
+//    if (user != null) {
+//        if (clientKind == UA_CUSTOMER) {
+//            privatePages.addAll(listOf(
+//                simpleItem(pages.uaCustomer.orders), simpleItem(pages.uaCustomer.support)))
+//        } else {
+//            if (user.kind == UserKind.WRITER) {
+//                if (user.state == UserState.COOL) {
+//                    privatePages.addAll(listOf(
+//                        simpleItem(pages.uaWriter.orders), simpleItem(pages.uaWriter.store)))
+//                }
+//                privatePages.addAll(listOf(
+//                    simpleItem(pages.uaWriter.profile)))
+//            } else if (user.kind == ADMIN) {
+//                privatePages.addAll(listOf(
+//                    simpleItem(pages.uaAdmin.users)))
+//            }
+//        }
+//    }
+
+    val rightPage = when (clientKind) {
+        UA_CUSTOMER -> {
+            when (user) {
+                null -> pages.uaCustomer.signIn
+                else -> pages.uaCustomer.dashboard
+            }
         }
-    }
-
-    val privateItems = mutableListOf<Item>()
-    if (user != null) {
-        if (clientKind == ClientKind.UA_CUSTOMER) {
-            privateItems.addAll(listOf(
-                Item(pageName = "orders", title = t("My Orders", "Мои заказы"), key = fconst.key.topNavItem.orders.decl),
-                Item(pageName = "support", title = t("Support", "Поддержка"), key = fconst.key.topNavItem.support.decl)
-            ))
-        } else {
-            if (user.kind == UserKind.WRITER) {
-                if (user.state == UserState.COOL) {
-                    privateItems.addAll(listOf(
-                        Item(pageName = "orders", title = t("My Orders", "Мои заказы"), key = fconst.key.topNavItem.orders.decl),
-                        Item(pageName = "store", title = t("Store", "Аукцион"), key = fconst.key.topNavItem.store.decl)
-                    ))
-                }
-                privateItems.addAll(listOf(
-                    Item(pageName = "profile", title = t("Profile", "Профиль"), key = fconst.key.topNavItem.profile.decl)
-                ))
-            } else if (user.kind == UserKind.ADMIN) {
-                privateItems.addAll(listOf(
-                    Item(pageName = "admin-users", title = t("Users", "Юзеры"), key = fconst.key.topNavItem.adminUsers.decl)
-                ))
+        UA_WRITER -> {
+            when (user) {
+                null -> pages.uaWriter.signIn
+                else -> pages.uaWriter.dashboard
             }
         }
     }
+    val rightEl = renderPage(rightPage, linkStyle = rightLinkStyle)
 
-    val leftNavbarElements = mutableListOf<ReactElement>()
-    var rightNavbarItem: ReactElement? = null
-    if (user != null) {
-        if (user.kind != UserKind.ADMIN) {
-            val dropdownLinkStyle = when {
-                proseItems.any {x -> x.pageName == highlightedItem} -> Style(backgroundColor = "#e7e7e7")
-                else -> Style()
-            }
-            leftNavbarElements.add(
-                reactCreateElement("li", json("className" to "dropdown"), listOf(
+    val leftEls = mutableListOf<ReactElement>()
+    when (user) {
+        null -> {
+            leftEls += staticPages.map {renderPage(it)}
+        }
+        else -> {
+            leftEls += reactCreateElement(
+                "li",
+                json("className" to "dropdown"),
+                listOf(
                     reactCreateElement(
                         "a",
-                        json(
-                            "href" to "#",
-                            "className" to "dropdown-toggle skipClearMenus",
-                            "style" to dropdownLinkStyle.toReactStyle(),
-                            "data-toggle" to "dropdown",
-                            "role" to "button"
-                        ),
+                        json("href" to "#",
+                             "className" to "dropdown-toggle skipClearMenus",
+                             "style" to when {
+                                 staticPages.any {it == highlight} -> Style(backgroundColor = "#e7e7e7")
+                                 else -> Style()
+                             }.toReactStyle(),
+                             "data-toggle" to "dropdown",
+                             "role" to "button"),
                         listOf(
-                            t("Prose", "Проза").asReactElement(),
+                            t("Stuff", "Стафф").asReactElement(),
                             reactCreateElement(
                                 "span",
-                                json(
-                                    "className" to "caret",
-                                    "style" to json("marginLeft" to 5)
-                                )
-                            )
-                        )
-                    ),
-                    reactCreateElement("ul", json("className" to "dropdown-menu"), proseItems.map(Item::render))
-                )))
-//            leftNavbarElements.add(
-//                Shitus.lia(json("tame" to "prose", "className" to "dropdown"),
-//                    Shitus.aa(json("href" to "#", "className" to "dropdown-toggle skipClearMenus", "style" to dropdownAStyle, "data-toggle" to "dropdown", "role" to "button"), t("Prose", "Проза"), Shitus.spana(json("className" to "caret", "style" to json("marginLeft" to 5)))),
-//                    Shitus.ula.apply(null, js("[]").concat(
-//                        json("className" to "dropdown-menu"),
-//                        proseItems))))
+                                json("className" to "caret",
+                                     "style" to json("marginLeft" to 5))))),
+                    reactCreateElement(
+                        "ul",
+                        json("className" to "dropdown-menu"),
+                        staticPages.map {renderPage(it)})))
+
+            leftEls += privatePages.map {renderPage(it)}
         }
-        leftNavbarElements.addAll(privateItems.map(Item::render))
-        rightNavbarItem = Item(pageName = "dashboard", title = user.firstName, aStyle = rightNavbarItemAStyle, key = fconst.key.topNavItem.dashboard.decl).render()
-    } else {
-        leftNavbarElements.addAll(proseItems.map(Item::render))
-        rightNavbarItem = Item(pageName = "sign-in", title = t("Sign In", "Вход"), aStyle = rightNavbarItemAStyle, key = fconst.key.topNavItem.signIn.decl).render()
     }
 
     val brandTitle = when (clientKind) {
-        ClientKind.UA_CUSTOMER -> "APS"
-        ClientKind.UA_WRITER -> when {
-            user != null && user.kind == UserKind.ADMIN -> t("Admin", "Админ")
-            else -> t("Writer", "Писец")
+        UA_CUSTOMER -> "APS"
+        UA_WRITER -> {
+            when (user?.kind) {
+                ADMIN -> t("Admin", "Админ")
+                else -> t("Writer", "Писец")
+            }
         }
     }
 
-    return reactCreateElement("nav", json("className" to "navbar navbar-default navbar-fixed-top"), listOf(
-        reactCreateElement("div", json("className" to "container"), listOf(
-            reactCreateElement("div", json("className" to "navbar-header"), listOf(
-                makeBrandLink(ui, "home", brandTitle, "navbar-brand"))),
-            reactCreateElement("div", json("style" to json("textAlign" to "left")), listOf(
-                reactCreateElement("ul", json("id" to "leftNavbar", "className" to "nav navbar-nav", "style" to json("float" to "none", "display" to "inline-block", "verticalAlign" to "top")), leftNavbarElements),
-                ifOrNull(rightNavbarItem != null) {reactCreateElement("ul", json("id" to "rightNavbar", "className" to "nav navbar-nav navbar-right"), listOf(rightNavbarItem))}
-            ))
-        ))
-    ))
+    return reactCreateElement(
+        "nav",
+        json("className" to "navbar navbar-default navbar-fixed-top"),
+        listOf(
+            reactCreateElement(
+                "div",
+                json("className" to "container"),
+                listOf(
+                    reactCreateElement(
+                        "div",
+                        json("className" to "navbar-header"),
+                        listOf(makeBrandLink(ui, "home", brandTitle, "navbar-brand"))),
+                    reactCreateElement(
+                        "div",
+                        json("style" to json("textAlign" to "left")),
+                        listOf(
+                            reactCreateElement(
+                                "ul",
+                                json("id" to "leftNavbar",
+                                     "className" to "nav navbar-nav",
+                                     "style" to json(
+                                         "float" to "none",
+                                         "display" to "inline-block",
+                                         "verticalAlign" to "top")),
+                                leftEls),
+                            reactCreateElement(
+                                "ul",
+                                json("id" to "rightNavbar",
+                                     "className" to "nav navbar-nav navbar-right"),
+                                listOf(rightEl))))))))
 }
 
-private class OldSpec(
-    val name: String,
-    val title: String,
-    val active: Boolean,
-    val ui: World?,
-    val aStyle: Style
-)
-
 class TopNavItem(
-    val key: String,
     val ui: World?,
-    val pageName: String,
-    val title: String,
-    val linkStyle: Style,
+    val page: PageSpec,
+    val linkStyle: Style = Style(),
     val active: Boolean
 ) : Control2() {
-//    private val href = if (pageName == "home") "/" else "/$pageName.html"
-    private val href = if (pageName == "home") "/" else "$pageName.html"
+//    private val href = if (page.path == "index") "/" else "${page.path}.html"
+    private val href = page.path + ".html"
     private val aid = puid()
 
     companion object {
-        val instances = mutableMapOf<String, TopNavItem>()
+        val instances = mutableMapOf<PageSpec, TopNavItem>()
 
-        fun instance(key: String): TopNavItem {
-            return instances[key] ?: bitch("No TopNavItem keyed `$key`")
+        fun instance(page: PageSpec): TopNavItem {
+            return instances[page] ?: bitch("No TopNavItem keyed `$page`")
         }
     }
 
@@ -190,7 +190,7 @@ class TopNavItem(
                         "style" to linkStyle.toReactStyle()
                     ),
                     listOf(
-                        title.asReactElement()
+                        page.navTitle.asReactElement()
                     )
                 )
             )
@@ -200,7 +200,8 @@ class TopNavItem(
     suspend fun click() {
         var dleft = 0
         var dwidth = 0
-        if (pageName == "home") { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
+        // TODO:vgrechka Is this still needed?
+        if (page.path == "index") { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
             dleft = -15
             dwidth = 15
         }
@@ -217,28 +218,28 @@ class TopNavItem(
     }
 
     override fun componentDidMount() {
-        instances[key] = this
+        instances[page] = this
     }
 
     override fun componentWillUnmount() {
-        instances.remove(key)
+        instances.remove(page)
     }
 }
 
-suspend fun topNavItemClick(key: String, handOpts: HandOpts = HandOpts()) {
-    val target = TopNavItem.instance(key)
+suspend fun topNavItemClick(page: TestRef<PageSpec>, handOpts: HandOpts = HandOpts()) {
+    val target = TopNavItem.instance(page.shit)
     await(TestUserActionAnimation.hand(target, handOpts))
     notAwait {target.click()}
 }
 
 suspend fun topNavItemSequence(
     descr: String,
-    key: String,
+    page: TestRef<PageSpec>,
     aid: String
 ) {
     sequence2(
         action = {
-            topNavItemClick(key)
+            topNavItemClick(page)
         },
         assertionDescr = descr,
         steps = listOf(
@@ -299,9 +300,10 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
                 await(effects).blinkOn(byid(id).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth))
 //                    TestGlobal["topNavbarLink_" + name + "_blinks"] = true
 
-                if ((!jsFacing_isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(isInTestScenario() && art.testSpeed == "fast")) {
-                    await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
-                }
+                fuckOff("Don't use makeBrandLink")
+//                if ((!isDynamicPage(name) || jsArrayOf("sign-in", "sign-up").indexOf(name) != -1) && !(isInTestScenario() && art.testSpeed == "fast")) {
+//                    await<dynamic>(Shitus.delay(global.ACTION_DELAY_FOR_FANCINESS))
+//                }
                 ui!!.pushNavigate(href)
 
                 global.setTimeout({async{
