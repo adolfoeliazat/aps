@@ -19,7 +19,7 @@ enum class HeaderMode {
     BROWSING, CREATING
 }
 
-fun renderUsualHeader(title: String): ToReactElementable =
+fun usualHeader(title: String): ToReactElementable =
     pageHeader0(title)
 
 class Melinda<Item, Entity, Filter>(
@@ -228,7 +228,8 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 
 
         return ui.setPage(Page(
-            header = ToReactElementable.volatile {renderUsualHeader(header() + when (ebafHost.headerMode) {
+            header = ToReactElementable.volatile {
+                usualHeader(header() + when (ebafHost.headerMode) {
                 HeaderMode.BROWSING -> ""
                 HeaderMode.CREATING -> fconst.symbols.rightDoubleAngleQuotationSpaced + t("New", "Новый")
             })},

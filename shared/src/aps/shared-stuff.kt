@@ -423,16 +423,6 @@ class FuckingRemoteProcedureRequest : RequestMatumba() {
 }
 fun send(req: FuckingRemoteProcedureRequest): Promisoid<JSONResponse> = callDangerousMatumba(req)
 
-class CustomerCreateUAOrderRequest : RequestMatumba() {
-    class Response(val id: String) : CommonResponseFieldsImpl()
-
-    val title = TextField(this, fieldSpecs.title)
-    val documentType = SelectField(this, fieldSpecs.ua.documentType)
-    val numPages = IntField(this, fieldSpecs.numPages)
-    val numSources = IntField(this, fieldSpecs.numSources)
-    val details = TextField(this, fieldSpecs.details)
-    val phone = TextField(this, fieldSpecs.phone)
-}
 
 fun fileField(container: RequestMatumba, shouldBeProvided: Boolean = true) = FileField(container, "file", t("TOTE", "Файл"), shouldBeProvided = shouldBeProvided)
 fun fileTitleField(container: RequestMatumba) = TextField(container, fieldSpecs.title)

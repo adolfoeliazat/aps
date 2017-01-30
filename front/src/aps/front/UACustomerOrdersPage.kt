@@ -21,8 +21,8 @@ class UACustomerOrdersPage(val world: World) {
         )
 
         m.specifyPlus(
-            plusFormSpec = FormSpec<CustomerCreateUAOrderRequest, CustomerCreateUAOrderRequest.Response>(
-                CustomerCreateUAOrderRequest(), world,
+            plusFormSpec = FormSpec<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(
+                UACustomerCreateOrderRequest(), world,
                 primaryButtonTitle = t("Create", "Создать"),
                 cancelButtonTitle = const.defaultCancelButtonTitle),
             onPlusFormSuccessa = {res->

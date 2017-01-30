@@ -10,9 +10,9 @@ import aps.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.enums.*
 
-@RemoteProcedureFactory fun serveCustomerCreateUAOrder() = customerProcedure(
-    CustomerCreateUAOrderRequest(),
-    runShit = fun(ctx, req): CustomerCreateUAOrderRequest.Response {
+@RemoteProcedureFactory fun serveUACustomerCreateOrder() = customerProcedure(
+    UACustomerCreateOrderRequest(),
+    runShit = fun(ctx, req): UACustomerCreateOrderRequest.Response {
         val documentType = req.documentType.value
 
         val orderRec = tracingSQL("Insert UA order") {ctx.q
@@ -47,7 +47,7 @@ import aps.back.generated.jooq.enums.*
         createArea(const.orderArea.customer)
         createArea(const.orderArea.writer)
 
-        return CustomerCreateUAOrderRequest.Response(orderRec.getValue(UA_ORDERS.ID).toString())
+        return UACustomerCreateOrderRequest.Response(orderRec.getValue(UA_ORDERS.ID).toString())
     }
 )
 

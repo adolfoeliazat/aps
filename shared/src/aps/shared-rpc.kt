@@ -85,7 +85,25 @@ class TestLoadSnapshotRequest: RequestMatumba() {
     val name by stringHiddenField()
 }
 
+class UACustomerCreateOrderRequest : RequestMatumba() {
+    class Response(val id: String) : CommonResponseFieldsImpl()
 
+    val documentType = SelectField(this, fieldSpecs.ua.documentType)
+    val title = TextField(this, fieldSpecs.title)
+    val numPages = IntField(this, fieldSpecs.numPages)
+    val numSources = IntField(this, fieldSpecs.numSources)
+    val details = TextField(this, fieldSpecs.details)
+
+    var name by notNullOnce<TextField>()
+    val phone = TextField(this, fieldSpecs.phone)
+    var email by notNullOnce<TextField>()
+
+    init {
+        val user = xlobal.user
+        if (user == null) {
+        }
+    }
+}
 
 
 
