@@ -93,10 +93,10 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
 
     val documentType = SelectField(this, fieldSpecs.ua.documentType)
-    val title = TextField(this, fieldSpecs.title)
+    val documentTitle = TextField(this, fieldSpecs.documentTitle)
     val numPages = IntField(this, fieldSpecs.numPages)
     val numSources = IntField(this, fieldSpecs.numSources)
-    val details = TextField(this, fieldSpecs.details)
+    val documentDetails = TextField(this, fieldSpecs.documentDetails)
 
     var name by notNullOnce<TextField>()
     init {if (xlobal.user == null) name = TextField(this, fieldSpecs.name)}

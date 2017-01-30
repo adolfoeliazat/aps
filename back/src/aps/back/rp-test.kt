@@ -53,7 +53,7 @@ testProcedure(
         wrapInFormResponse = false,
         needsDB = needsDB ?: false,
         needsDangerousToken = true,
-        needsUser = false,
+        needsUser = NeedsUser.NO,
         userKinds = setOf(),
         considerNextRequestTimestampFiddling = false,
         logRequestJSON = logRequestJSON ?: true

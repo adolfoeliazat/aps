@@ -15,11 +15,13 @@ object fieldSpecs {
     val aboutMe = TextFieldSpec("aboutMe", t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300); val aboutMe_testRef = aboutMe
     val searchString = TextFieldSpec("searchString", "", TextFieldType.STRING, 0, 50); val searchString_testRef = searchString
     val title = TextFieldSpec("title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen); val title_testRef = title
+    val documentTitle = TextFieldSpec("documentTitle", t("TOTE", "Тема работы"), TextFieldType.STRING, minLen = 5, maxLen = 100); val documentTitle_testRef = documentTitle
     val details = TextFieldSpec("details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen); val details_testRef = details
+    val documentDetails = TextFieldSpec("documentDetails", t("TOTE", "Детали работы (задание)"), TextFieldType.TEXTAREA, minLen = 5, maxLen = 2000); val documentDetails_testRef = documentDetails
     val agreeTerms = CheckboxFieldSpec("agreeTerms"); val agreeTerms_testRef = agreeTerms
     val userState = SelectFieldSpec("userState", t("TOTE", "Статус"), UserState.values()); val userState_testRef = userState
-    val numPages = IntFieldSpec("numPages", t("TOTE", "Страниц"), min = 1, max = 300); val numPages_testRef = numPages
-    val numSources = IntFieldSpec("numSources", t("TOTE", "Источников"), min = 0, max = 20); val numSources_testRef = numSources
+    val numPages = IntFieldSpec("numPages", t("TOTE", "Количество страниц"), min = 1, max = 500); val numPages_testRef = numPages
+    val numSources = IntFieldSpec("numSources", t("TOTE", "Количество источников"), min = 0, max = 50); val numSources_testRef = numSources
 
     object ua {
         val documentType = SelectFieldSpec("documentType", t("TOTE", "Тип документа"), UADocumentType.values()); val documentType_testRef = documentType

@@ -72,6 +72,14 @@ fun UADocumentType.toJOOQ(): JQUaDocumentType = when (this) {
     UADocumentType.ESSAY -> JQUaDocumentType.ESSAY
     UADocumentType.COURSE -> JQUaDocumentType.COURSE
     UADocumentType.GRADUATION -> JQUaDocumentType.GRADUATION
+    UADocumentType.ABSTRACT -> JQUaDocumentType.ABSTRACT
+    UADocumentType.LAB -> JQUaDocumentType.LAB
+    UADocumentType.TEST -> JQUaDocumentType.TEST
+    UADocumentType.RGR -> JQUaDocumentType.RGR
+    UADocumentType.DRAWING -> JQUaDocumentType.DRAWING
+    UADocumentType.DISSERTATION -> JQUaDocumentType.DISSERTATION
+    UADocumentType.PRACTICE -> JQUaDocumentType.PRACTICE
+    UADocumentType.OTHER -> JQUaDocumentType.OTHER
 }
 
 fun JQUserKind.toApp(): UserKind = when (this) {
@@ -84,6 +92,14 @@ fun JQUaDocumentType.toApp(): UADocumentType = when (this) {
     JQUaDocumentType.ESSAY -> UADocumentType.ESSAY
     JQUaDocumentType.COURSE -> UADocumentType.COURSE
     JQUaDocumentType.GRADUATION -> UADocumentType.GRADUATION
+    JQUaDocumentType.ABSTRACT -> UADocumentType.ABSTRACT
+    JQUaDocumentType.LAB -> UADocumentType.LAB
+    JQUaDocumentType.TEST -> UADocumentType.TEST
+    JQUaDocumentType.RGR -> UADocumentType.RGR
+    JQUaDocumentType.DRAWING -> UADocumentType.DRAWING
+    JQUaDocumentType.DISSERTATION -> UADocumentType.DISSERTATION
+    JQUaDocumentType.PRACTICE -> UADocumentType.PRACTICE
+    JQUaDocumentType.OTHER-> UADocumentType.OTHER
 }
 
 fun DocumentUrgency.toJOOQ(): JQDocumentUrgency = when (this) {

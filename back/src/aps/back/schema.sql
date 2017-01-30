@@ -152,9 +152,17 @@ create trigger on_update before update on support_thread_messages for each row e
 
 
 create type ua_document_type as enum (
-    'ESSAY', -- Реферат
-    'COURSE', -- Курсовая
-    'GRADUATION' -- Дипломная
+    'ABSTRACT',
+    'COURSE',
+    'GRADUATION',
+    'LAB',
+    'TEST',
+    'RGR',
+    'DRAWING',
+    'DISSERTATION',
+    'ESSAY',
+    'PRACTICE',
+    'OTHER'
 );
 
 create type document_urgency as enum (

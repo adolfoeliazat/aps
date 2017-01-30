@@ -9,9 +9,11 @@ package aps.back
 import aps.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.enums.*
+import into.kommon.*
 
 @RemoteProcedureFactory fun serveUACustomerCreateOrder() = customerProcedure(
     {UACustomerCreateOrderRequest(it.xlobal)},
+    needsUser = NeedsUser.MAYBE,
     runShit = fun(ctx, req): UACustomerCreateOrderRequest.Response {
         val documentType = req.documentType.value
 
@@ -21,13 +23,13 @@ import aps.back.generated.jooq.enums.*
             .set(UA_ORDERS.UPDATED_AT, ctx.requestTimestamp)
             .set(UA_ORDERS.CREATOR_ID, ctx.user.id.toLong())
             .set(UA_ORDERS.CUSTOMER_ID, ctx.user.id.toLong())
-            .set(UA_ORDERS.TITLE, req.title.value)
+            .set(UA_ORDERS.TITLE, req.documentTitle.value)
             .set(UA_ORDERS.ADMIN_NOTES, "")
             .set(UA_ORDERS.DOCUMENT_TYPE, documentType.toJOOQ())
 //            .set(UA_ORDERS.DEADLINE, req.deadline.value)
             .set(UA_ORDERS.NUM_PAGES, req.numPages.value)
             .set(UA_ORDERS.NUM_SOURCES, req.numSources.value)
-            .set(UA_ORDERS.DETAILS, req.details.value)
+            .set(UA_ORDERS.DETAILS, req.documentDetails.value)
             .set(UA_ORDERS.STATE, JQUaOrderState.LOOKING_FOR_WRITERS)
             .returning(UA_ORDERS.ID)
             .fetchOne()

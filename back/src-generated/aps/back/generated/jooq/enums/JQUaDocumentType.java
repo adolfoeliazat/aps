@@ -26,11 +26,27 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum JQUaDocumentType implements EnumType {
 
-    ESSAY("ESSAY"),
+    ABSTRACT("ABSTRACT"),
 
     COURSE("COURSE"),
 
-    GRADUATION("GRADUATION");
+    GRADUATION("GRADUATION"),
+
+    LAB("LAB"),
+
+    TEST("TEST"),
+
+    RGR("RGR"),
+
+    DRAWING("DRAWING"),
+
+    DISSERTATION("DISSERTATION"),
+
+    ESSAY("ESSAY"),
+
+    PRACTICE("PRACTICE"),
+
+    OTHER("OTHER");
 
     private final String literal;
 

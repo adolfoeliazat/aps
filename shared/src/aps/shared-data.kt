@@ -63,6 +63,20 @@ class UAOrderFileRTO(
     val updatedAt: Long
 )
 
+enum class UADocumentType(override val title: String) : Titled {
+    ABSTRACT(t("TOTE", "Реферат")),
+    COURSE(t("TOTE", "Курсовая работа")),
+    GRADUATION(t("TOTE", "Дипломная работа")),
+    LAB(t("TOTE", "Лабораторная работа")),
+    TEST(t("TOTE", "Контрольная работа")),
+    RGR(t("TOTE", "РГР")),
+    DRAWING(t("TOTE", "Чертеж")),
+    DISSERTATION(t("TOTE", "Диссертация")),
+    ESSAY(t("TOTE", "Эссе (сочинение)")),
+    PRACTICE(t("TOTE", "Отчет по практике")),
+    OTHER(t("TOTE", "Другое"))
+}
+
 
 
 

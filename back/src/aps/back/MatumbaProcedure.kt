@@ -23,22 +23,30 @@ fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die
 // typealias ServletService = (HttpServletRequest, HttpServletResponse) -> Unit
 
 class ProcedureContext {
-    lateinit var q: DSLContext
-//    lateinit var qshit: DSLContextProxyFactory
-    var wideClientKind by notNull<WideClientKind>()
-    lateinit var clientKind: ClientKind
-    lateinit var lang: Language
-    lateinit var requestTimestamp: Timestamp
-    lateinit var clientDomain: String
-    lateinit var clientPortSuffix: String
-    lateinit var user: UserRTO
-    lateinit var token: String
+    var q by notNullOnce<DSLContext>()
+    var wideClientKind by notNullOnce<WideClientKind>()
+    var clientKind by notNullOnce<ClientKind>()
+    var lang by notNullOnce<Language>()
+    var requestTimestamp by notNullOnce<Timestamp>()
+    var clientDomain by notNullOnce<String>()
+    var clientPortSuffix by notNullOnce<String>()
+    var user by notNullOnce<UserRTO>()
+    var token by notNullOnce<String>()
+    var hasUser by notNullOnce<Boolean>()
 
     val fieldErrors = mutableListOf<FieldError>()
 
     val xlobal = object:Xlobal {
-        override val user get()= this@ProcedureContext.user
+        val ctx = this@ProcedureContext
+
+        override val user get()=
+            if (ctx.hasUser) ctx.user
+            else null
     }
+}
+
+enum class NeedsUser {
+    YES, NO, MAYBE
 }
 
 class ProcedureSpec<Req : RequestMatumba, Res : Any>(
@@ -48,7 +56,7 @@ class ProcedureSpec<Req : RequestMatumba, Res : Any>(
     val wrapInFormResponse: Boolean,
     val needsDB: Boolean,
     val needsDangerousToken: Boolean,
-    val needsUser: Boolean,
+    val needsUser: NeedsUser,
     val userKinds: Set<UserKind>,
     val considerNextRequestTimestampFiddling: Boolean,
     val logRequestJSON: Boolean
@@ -103,13 +111,14 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                     }
                     ctx.lang = Language.valueOf(rmap["lang"] as String)
 
-                    ctx.requestTimestamp = Timestamp(Date().time)
+                    var ts = Timestamp(Date().time)
                     if (spec.considerNextRequestTimestampFiddling) {
                         TestServerFiddling.nextRequestTimestamp?.let {
                             TestServerFiddling.nextRequestTimestamp = null
-                            ctx.requestTimestamp = it
+                            ts = it
                         }
                     }
+                    ctx.requestTimestamp = ts
 
 //                    ctx.clientDomain = when (ctx.lang) {
 //                        Language.EN -> when (ctx.clientKind) {
@@ -134,11 +143,19 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 //                    }
 
                     fun runShitWithMaybeDB(): Res {
-                        if (spec.needsUser) {
-                            ctx.token = rmap["token"] as String
-                            ctx.user = userByToken(ctx.q, ctx.token)
-
-                            if (!spec.userKinds.contains(ctx.user.kind)) bitch("User kind not allowed: ${ctx.user.kind}")
+                        if (spec.needsUser != NeedsUser.NO) {
+                            val token = rmap["token"] as String?
+                            if (token == null) {
+                                if (spec.needsUser == NeedsUser.YES)
+                                    bitch("I want freaking token")
+                                ctx.hasUser = false
+                            } else {
+                                ctx.token = token
+                                ctx.user = userByToken(ctx.q, ctx.token)
+                                if (!spec.userKinds.contains(ctx.user.kind))
+                                    bitch("User kind not allowed: ${ctx.user.kind}")
+                                ctx.hasUser = true
+                            }
                         }
 
                         val input  = rmap["fields"] as Map<String, Any?>
@@ -218,7 +235,7 @@ publicProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req)
         wrapInFormResponse = wrapInFormResponse ?: true,
         needsDB = true,
         needsDangerousToken = false,
-        needsUser = false,
+        needsUser = NeedsUser.NO,
         userKinds = setOf(),
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
@@ -231,20 +248,20 @@ anyUserProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req
         wrapInFormResponse = wrapInFormResponse ?: true,
         needsDB = true,
         needsDangerousToken = false,
-        needsUser = true,
+        needsUser = NeedsUser.YES,
         userKinds = setOf(UserKind.CUSTOMER, UserKind.WRITER, UserKind.ADMIN),
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
-customerProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+customerProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, needsUser: NeedsUser? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
         wrapInFormResponse = wrapInFormResponse ?: true,
         needsDB = true,
         needsDangerousToken = false,
-        needsUser = true,
+        needsUser = needsUser ?: NeedsUser.YES,
         userKinds = setOf(UserKind.CUSTOMER),
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
@@ -257,7 +274,7 @@ writerProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req)
         wrapInFormResponse = wrapInFormResponse ?: true,
         needsDB = true,
         needsDangerousToken = false,
-        needsUser = true,
+        needsUser = NeedsUser.YES,
         userKinds = setOf(UserKind.WRITER),
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
@@ -276,7 +293,7 @@ adminProcedure(
         wrapInFormResponse = wrapInFormResponse ?: true,
         needsDB = true,
         needsDangerousToken = false,
-        needsUser = true,
+        needsUser = NeedsUser.YES,
         userKinds = setOf(UserKind.ADMIN),
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))

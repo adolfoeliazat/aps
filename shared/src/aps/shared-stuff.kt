@@ -459,12 +459,6 @@ abstract class DeleteRequest : RequestMatumba() {
 
 class DeleteUAOrderFileRequest : DeleteRequest()
 
-enum class UADocumentType(override val title: String) : Titled {
-    ESSAY(t("TOTE", "Реферат")),
-    COURSE(t("TOTE", "Курсовая работа")),
-    GRADUATION(t("TOTE", "Дипломная работа"))
-}
-
 enum class DocumentUrgency(override val title: String) : Titled {
     H12(t("TOTE", "12 часов")),
     H24(t("TOTE", "24 часа")),
@@ -506,6 +500,14 @@ fun uaPageCost(type: UADocumentType, urgency: DocumentUrgency): Int =
             DocumentUrgency.H24 -> 2099
             DocumentUrgency.H12 -> 3099
         }
+        UADocumentType.ABSTRACT -> 123
+        UADocumentType.LAB -> 123
+        UADocumentType.TEST -> 123
+        UADocumentType.RGR -> 123
+        UADocumentType.DRAWING -> 123
+        UADocumentType.DISSERTATION -> 123
+        UADocumentType.PRACTICE -> 123
+        UADocumentType.OTHER -> 123
     }
 
 abstract class CommonResponseFieldsImpl : CommonResponseFields {
