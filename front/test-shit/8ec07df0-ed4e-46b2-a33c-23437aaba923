@@ -7,51 +7,51 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/">
+      <a id="whocares" class="navbar-brand" href="/">
         APS
       </a>
     </div>
     <div style="text-align: left;">
       <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
-        <li class="">
-          <a href="why.html">
+        <li id="whocares" class="">
+          <a id="whocares" href="why.html">
             Почему мы?
           </a>
         </li>
-        <li class="">
-          <a href="prices.html">
+        <li id="whocares" class="">
+          <a id="whocares" href="prices.html">
             Цены
           </a>
         </li>
-        <li class="">
-          <a href="samples.html">
+        <li id="whocares" class="">
+          <a id="whocares" href="samples.html">
             Примеры
           </a>
         </li>
-        <li class="">
-          <a href="faq.html">
+        <li id="whocares" class="">
+          <a id="whocares" href="faq.html">
             ЧаВо
           </a>
         </li>
-        <li class="">
-          <a href="contact.html">
+        <li id="whocares" class="">
+          <a id="whocares" href="contact.html">
             Связь
           </a>
         </li>
-        <li class="">
-          <a href="blog.html">
+        <li id="whocares" class="">
+          <a id="whocares" href="blog.html">
             Блог
           </a>
         </li>
-        <li class="">
-          <a href="makeOrder.html">
+        <li id="whocares" class="">
+          <a id="whocares" href="makeOrder.html">
             Заказать
           </a>
         </li>
       </ul>
       <ul id="rightNavbar" class="nav navbar-nav navbar-right">
-        <li class="">
-          <a href="sign-in.html">
+        <li id="whocares" class="">
+          <a id="whocares" href="signIn.html">
             Вход
           </a>
         </li>
@@ -64,11 +64,11 @@
 
 <div id="staticShit">
   <!-- BEGIN CONTENT -->
-    <div id="MakeStaticSites-833" class="container">
-      <div id="MakeStaticSites-861">
-        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-867">
-          <h3 style="margin-bottom: 0;" id="MakeStaticSites-865">
-            <span id="MakeStaticSites-863" class="">
+    <div id="whocares" class="container">
+      <div id="whocares">
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="whocares">
+          <h3 style="margin-bottom: 0;" id="whocares">
+            <span id="whocares" class="">
               Welcome to AcademicPaperServed UA
             </span>
           </h3>
@@ -90,74 +90,74 @@
             Professional custom papers writing service, research paper, essay and term paper writing service from experienced writers at affordable price.
           </p>
         </div>
-        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-874">
-          <h3 style="margin-bottom: 0;" id="MakeStaticSites-872">
-            <span id="MakeStaticSites-870" class="">
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="whocares">
+          <h3 style="margin-bottom: 0;" id="whocares">
+            <span id="whocares" class="">
               Features
             </span>
           </h3>
         </div>
-        <div class="row" style="margin-bottom: 20px;" id="MakeStaticSites-684">
-          <div class="col-md-4" id="MakeStaticSites-670">
-            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-666">
+        <div class="row" style="margin-bottom: 20px;" id="whocares">
+          <div class="col-md-4" id="whocares">
+            <div style="text-align: center; margin-bottom: 10px;" id="whocares">
               <i class="fa fa-pencil  fa-2x" style="color: #546e7a;">
               </i>
             </div>
-            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-668">
+            <div style="text-align: center; margin: 0 40px;" id="whocares">
               No plagiarism
             </div>
           </div>
-          <div class="col-md-4" id="MakeStaticSites-676">
-            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-672">
+          <div class="col-md-4" id="whocares">
+            <div style="text-align: center; margin-bottom: 10px;" id="whocares">
               <i class="fa fa-star  fa-2x" style="color: #546e7a;">
               </i>
             </div>
-            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-674">
+            <div style="text-align: center; margin: 0 40px;" id="whocares">
               Only premium quality
             </div>
           </div>
-          <div class="col-md-4" id="MakeStaticSites-682">
-            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-678">
+          <div class="col-md-4" id="whocares">
+            <div style="text-align: center; margin-bottom: 10px;" id="whocares">
               <i class="fa fa-list  fa-2x" style="color: #546e7a;">
               </i>
             </div>
-            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-680">
+            <div style="text-align: center; margin: 0 40px;" id="whocares">
               Free title page, outline, list&nbsp;of&nbsp;references
             </div>
           </div>
         </div>
-        <div class="row" style="margin-bottom: 20px;" id="MakeStaticSites-704">
-          <div class="col-md-4" id="MakeStaticSites-690">
-            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-686">
+        <div class="row" style="margin-bottom: 20px;" id="whocares">
+          <div class="col-md-4" id="whocares">
+            <div style="text-align: center; margin-bottom: 10px;" id="whocares">
               <i class="glyphicon glyphicon-piggy-bank  fa-2x" style="color: #546e7a;">
               </i>
             </div>
-            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-688">
+            <div style="text-align: center; margin: 0 40px;" id="whocares">
               One-time and life-time discounts to returning customers
             </div>
           </div>
-          <div class="col-md-4" id="MakeStaticSites-696">
-            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-692">
+          <div class="col-md-4" id="whocares">
+            <div style="text-align: center; margin-bottom: 10px;" id="whocares">
               <i class="fa fa-credit-card  fa-2x" style="color: #546e7a;">
               </i>
             </div>
-            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-694">
+            <div style="text-align: center; margin: 0 40px;" id="whocares">
               30-days money back guarantee
             </div>
           </div>
-          <div class="col-md-4" id="MakeStaticSites-702">
-            <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-698">
+          <div class="col-md-4" id="whocares">
+            <div style="text-align: center; margin-bottom: 10px;" id="whocares">
               <i class="fa fa-life-saver  fa-2x" style="color: #546e7a;">
               </i>
             </div>
-            <div style="text-align: center; margin: 0 40px;" id="MakeStaticSites-700">
+            <div style="text-align: center; margin: 0 40px;" id="whocares">
               24/7 support
             </div>
           </div>
         </div>
-        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-881">
-          <h3 style="margin-bottom: 0;" id="MakeStaticSites-879">
-            <span id="MakeStaticSites-877" class="">
+        <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="whocares">
+          <h3 style="margin-bottom: 0;" id="whocares">
+            <span id="whocares" class="">
               Who We Are
             </span>
           </h3>
@@ -176,108 +176,108 @@
             AcademicPaperServed team consists of expert academic writers providing you with free guidelines, helping with topic selection, proofreading, editing and formatting even if you want to get your essay done overnight! We guarantee premium quality writing with urgent projects.
           </p>
         </div>
-        <div id="MakeStaticSites-784">
-          <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-888">
-            <h3 style="margin-bottom: 0;" id="MakeStaticSites-886">
-              <span id="MakeStaticSites-884" class="">
+        <div id="whocares">
+          <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="whocares">
+            <h3 style="margin-bottom: 0;" id="whocares">
+              <span id="whocares" class="">
                 Что о нас говорят
               </span>
             </h3>
           </div>
           <div id="testimonials-window">
             <div id="testimonials-strip">
-              <div class="testimonials-item" id="MakeStaticSites-718">
-                <div class="media" id="MakeStaticSites-716">
-                  <div class="media-left" id="MakeStaticSites-708">
+              <div class="testimonials-item" id="whocares">
+                <div class="media" id="whocares">
+                  <div class="media-left" id="whocares">
                     <img class="media-object" src="nicole.jpg">
                     </div>
-                    <div class="media-body" id="MakeStaticSites-714">
-                      <h4 class="media-heading" id="MakeStaticSites-710">
+                    <div class="media-body" id="whocares">
+                      <h4 class="media-heading" id="whocares">
                         Nicole
                       </h4>
-                      <span id="MakeStaticSites-712">
+                      <span id="whocares">
                         Never expected such an urgent project could be accomplished overnight! I really appreciated the level of your writers and you treating the customers. I will recommend your services to my friends.
                       </span>
                     </div>
                   </div>
                 </div>
-                <div class="testimonials-item" id="MakeStaticSites-730">
-                  <div class="media" id="MakeStaticSites-728">
-                    <div class="media-left" id="MakeStaticSites-720">
+                <div class="testimonials-item" id="whocares">
+                  <div class="media" id="whocares">
+                    <div class="media-left" id="whocares">
                       <img class="media-object" src="miranda.jpg">
                       </div>
-                      <div class="media-body" id="MakeStaticSites-726">
-                        <h4 class="media-heading" id="MakeStaticSites-722">
+                      <div class="media-body" id="whocares">
+                        <h4 class="media-heading" id="whocares">
                           Miranda
                         </h4>
-                        <span id="MakeStaticSites-724">
+                        <span id="whocares">
                           Wow!!! The paper got A+, for the first time in my student life I was graded so high! Thanx!
                         </span>
                       </div>
                     </div>
                   </div>
-                  <div class="testimonials-item" id="MakeStaticSites-742">
-                    <div class="media" id="MakeStaticSites-740">
-                      <div class="media-left" id="MakeStaticSites-732">
+                  <div class="testimonials-item" id="whocares">
+                    <div class="media" id="whocares">
+                      <div class="media-left" id="whocares">
                         <img class="media-object" src="mike-p.jpg">
                         </div>
-                        <div class="media-body" id="MakeStaticSites-738">
-                          <h4 class="media-heading" id="MakeStaticSites-734">
+                        <div class="media-body" id="whocares">
+                          <h4 class="media-heading" id="whocares">
                             Mike P.
                           </h4>
-                          <span id="MakeStaticSites-736">
+                          <span id="whocares">
                             I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!
                           </span>
                         </div>
                       </div>
                     </div>
-                    <div class="testimonials-item" id="MakeStaticSites-754">
-                      <div class="media" id="MakeStaticSites-752">
-                        <div class="media-left" id="MakeStaticSites-744">
+                    <div class="testimonials-item" id="whocares">
+                      <div class="media" id="whocares">
+                        <div class="media-left" id="whocares">
                           <img class="media-object" src="joseph-b.jpg">
                           </div>
-                          <div class="media-body" id="MakeStaticSites-750">
-                            <h4 class="media-heading" id="MakeStaticSites-746">
+                          <div class="media-body" id="whocares">
+                            <h4 class="media-heading" id="whocares">
                               Joseph B.
                             </h4>
-                            <span id="MakeStaticSites-748">
+                            <span id="whocares">
                               First I doubted I’d get anything of good quality, but I was up&nbsp;to the eyes in work and had no other choice. The paper&nbsp;proved to be authentic and came on time. Can I get&nbsp;the same writer for my next essay?
                             </span>
                           </div>
                         </div>
                       </div>
-                      <div class="testimonials-item" id="MakeStaticSites-766">
-                        <div class="media" id="MakeStaticSites-764">
-                          <div class="media-left" id="MakeStaticSites-756">
+                      <div class="testimonials-item" id="whocares">
+                        <div class="media" id="whocares">
+                          <div class="media-left" id="whocares">
                             <img class="media-object" src="mark-c.jpg">
                             </div>
-                            <div class="media-body" id="MakeStaticSites-762">
-                              <h4 class="media-heading" id="MakeStaticSites-758">
+                            <div class="media-body" id="whocares">
+                              <h4 class="media-heading" id="whocares">
                                 Mark C.
                               </h4>
-                              <span id="MakeStaticSites-760">
+                              <span id="whocares">
                                 How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.
                               </span>
                             </div>
                           </div>
                         </div>
-                        <div class="testimonials-item" id="MakeStaticSites-778">
-                          <div class="media" id="MakeStaticSites-776">
-                            <div class="media-left" id="MakeStaticSites-768">
+                        <div class="testimonials-item" id="whocares">
+                          <div class="media" id="whocares">
+                            <div class="media-left" id="whocares">
                               <img class="media-object" src="linda-r.jpg">
                               </div>
-                              <div class="media-body" id="MakeStaticSites-774">
-                                <h4 class="media-heading" id="MakeStaticSites-770">
+                              <div class="media-body" id="whocares">
+                                <h4 class="media-heading" id="whocares">
                                   Linda R.
                                 </h4>
-                                <span id="MakeStaticSites-772">
+                                <span id="whocares">
                                   I would have never accomplished this research paper on my own! It was too challenging. You also explained some parts of the paper I did not understand. Excellent job!
                                 </span>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div style="display: flex; align-items: center; position: absolute; width: 20px; right: 0; top: 0; height: 100%;" id="MakeStaticSites-781">
+                        <div style="display: flex; align-items: center; position: absolute; width: 20px; right: 0; top: 0; height: 100%;" id="whocares">
                           <i class="fa fa-chevron-right  fa-2x" id="testimonials-right">
                           </i>
                         </div>
@@ -285,93 +285,93 @@
                       <div>
                       </div>
                     </div>
-                    <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="MakeStaticSites-895">
-                      <h3 style="margin-bottom: 0;" id="MakeStaticSites-893">
-                        <span id="MakeStaticSites-891" class="">
+                    <div class="page-header " style="margin-top: 0; margin-bottom: 15px;" id="whocares">
+                      <h3 style="margin-bottom: 0;" id="whocares">
+                        <span id="whocares" class="">
                           What We Offer
                         </span>
                       </h3>
                     </div>
-                    <div class="row" style="margin-bottom: 20px;" id="MakeStaticSites-811">
-                      <div class="col-md-3" id="MakeStaticSites-791">
-                        <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-787">
+                    <div class="row" style="margin-bottom: 20px;" id="whocares">
+                      <div class="col-md-3" id="whocares">
+                        <div style="text-align: center; margin-bottom: 10px;" id="whocares">
                           <i class="fa fa-envira  fa-2x" style="color: #546e7a;">
                           </i>
                         </div>
-                        <div style="text-align: center; margin: 0 0px;" id="MakeStaticSites-789">
+                        <div style="text-align: center; margin: 0 0px;" id="whocares">
                           Custom essay, research, thesis writing
                         </div>
                       </div>
-                      <div class="col-md-3" id="MakeStaticSites-797">
-                        <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-793">
+                      <div class="col-md-3" id="whocares">
+                        <div style="text-align: center; margin-bottom: 10px;" id="whocares">
                           <i class="fa fa-rocket  fa-2x" style="color: #546e7a;">
                           </i>
                         </div>
-                        <div style="text-align: center; margin: 0 0px;" id="MakeStaticSites-795">
+                        <div style="text-align: center; margin: 0 0px;" id="whocares">
                           Plagiarism-free original papers written from scratch
                         </div>
                       </div>
-                      <div class="col-md-3" id="MakeStaticSites-803">
-                        <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-799">
+                      <div class="col-md-3" id="whocares">
+                        <div style="text-align: center; margin-bottom: 10px;" id="whocares">
                           <i class="fa fa-bomb  fa-2x" style="color: #546e7a;">
                           </i>
                         </div>
-                        <div style="text-align: center; margin: 0 0px;" id="MakeStaticSites-801">
+                        <div style="text-align: center; margin: 0 0px;" id="whocares">
                           Proofreading and editing of written papers
                         </div>
                       </div>
-                      <div class="col-md-3" id="MakeStaticSites-809">
-                        <div style="text-align: center; margin-bottom: 10px;" id="MakeStaticSites-805">
+                      <div class="col-md-3" id="whocares">
+                        <div style="text-align: center; margin-bottom: 10px;" id="whocares">
                           <i class="fa fa-book  fa-2x" style="color: #546e7a;">
                           </i>
                         </div>
-                        <div style="text-align: center; margin: 0 0px;" id="MakeStaticSites-807">
+                        <div style="text-align: center; margin: 0 0px;" id="whocares">
                           Free guidelines on essay topic selection and writing process
                         </div>
                       </div>
                     </div>
-                    <ul class="fa-ul" style="margin-left: 22px;" id="MakeStaticSites-831">
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-813">
+                    <ul class="fa-ul" style="margin-left: 22px;" id="whocares">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Custom essay, research paper, book report, term paper, precis, sketch, poetry analysis, data collection, thesis writing, SWOT analysis, lab reports, dissertations, reviews, speeches, presentations, case studies, courseworks, homeworks, assignments, creative writing, blog writing, capstone project, grant proposal, lab reports
                       </li>
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-815">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Plagiarism-free original papers written from scratch
                       </li>
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-817">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Proofreading and editing of written papers
                       </li>
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-819">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Choosing sources for your paper, providing with annotated bibliography upon request
                       </li>
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-821">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Free guidelines on successful essay topic selection and writing process
                       </li>
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-823">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Individual approach to every customer, no repetitions, free consulting on the paper content
                       </li>
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-825">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Free revisions till you are completely satisfied
                       </li>
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-827">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Meeting your deadline
                       </li>
-                      <li style="margin-bottom: 10px;" id="MakeStaticSites-829">
+                      <li style="margin-bottom: 10px;" id="whocares">
                         <i class="fa fa-star  fa-li" style="color: #546e7a;">
                         </i>
                         Security and confidentiality

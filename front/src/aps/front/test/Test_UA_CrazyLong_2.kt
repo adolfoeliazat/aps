@@ -15,7 +15,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         initialTestShit(this)
         ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousCustomerStaticIndexScreen()},
                                      assertDynamic = {assertAnonymousCustomerDynamicIndexScreen()})
-
+        topNavItemSequence(page = pages.uaCustomer.makeOrder_testRef,
+                           aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
     }
 }
 

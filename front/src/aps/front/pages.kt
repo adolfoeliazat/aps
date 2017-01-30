@@ -12,13 +12,15 @@ class PageSpec (
     val path: String,
     val navTitle: String,
     val kind: PageKind,
+    val inTopNavbar: Boolean = true,
     val load: suspend (world: World) -> Unit
-)
+) : Fucker()
 
-private fun staticPage(ident: String, navTitle: String) = PageSpec(
+private fun staticPage(ident: String, navTitle: String, inTopNavbar: Boolean = true) = PageSpec(
     path = ident,
     navTitle = navTitle,
     kind = STATIC,
+    inTopNavbar = inTopNavbar,
     load = {world->
         val url = loc.baseWithoutSlash + "/$ident.html"
         val content = fetchFromURL("GET", url, null) {it}
@@ -30,14 +32,14 @@ private fun staticPage(ident: String, navTitle: String) = PageSpec(
 
 object pages {
     object uaCustomer : Fuckers<PageSpec>() {
-        val index by namedFucker {staticPage(it, "boobs")}
+        val index by namedFucker {staticPage(it, "boobs", inTopNavbar = false)}
         val why by namedFucker {staticPage(it, t("Why Us?", "Почему мы?"))}
         val prices by namedFucker {staticPage(it, t("Prices", "Цены"))}
         val samples by namedFucker {staticPage(it, t("Samples", "Примеры"))}
         val faq by namedFucker {staticPage(it, t("FAQ", "ЧаВо"))}
         val contact by namedFucker {staticPage(it, t("Contact Us", "Связь"))}
         val blog by namedFucker {staticPage(it, t("Blog", "Блог"))}
-        val makeOrder by namedFucker {PageSpec(it, t("Make Order", "Заказать"), PUBLIC) {imf()}}
+        val makeOrder by namedFucker {PageSpec(it, t("Make Order", "Заказать"), PUBLIC) {MakeOrderPage(it).load()}}; val makeOrder_testRef = TestRef(makeOrder)
         val orders by namedFucker {PageSpec(it, t("My Orders", "Мои заказы"), PRIVATE) {UACustomerOrdersPage(it).load()}}; val orders_testRef = TestRef(orders)
         val support by namedFucker {PageSpec(it, t("Support", "Поддержка"), PRIVATE) {imf()}}
         val dashboard by namedFucker {PageSpec(it, "boobs", PRIVATE) {DashboardPage(it).load()}}
@@ -46,7 +48,7 @@ object pages {
     }
 
     object uaWriter : Fuckers<PageSpec>() {
-        val index by namedFucker {staticPage(it, "boobs")}
+        val index by namedFucker {staticPage(it, "boobs", inTopNavbar = false)}
         val why by namedFucker {staticPage(it, t("Why Us?", "Почему мы?"))}
         val prices by namedFucker {staticPage(it, t("Prices", "Цены"))}
         val samples by namedFucker {staticPage(it, t("Samples", "Примеры"))}

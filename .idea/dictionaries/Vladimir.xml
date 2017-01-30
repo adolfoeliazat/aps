@@ -93,6 +93,7 @@
       <w>jedis</w>
       <w>jooq</w>
       <w>jpreq</w>
+      <w>jqel</w>
       <w>jsonb</w>
       <w>jsonize</w>
       <w>jsons</w>
@@ -135,6 +136,7 @@
       <w>primitiveish</w>
       <w>promisoid</w>
       <w>psql</w>
+      <w>puid</w>
       <w>reactoid</w>
       <w>reactoidom</w>
       <w>reawait</w>
@@ -179,6 +181,7 @@
       <w>userprofile</w>
       <w>valdescr</w>
       <w>vdiff</w>
+      <w>whocares</w>
       <w>wrappee</w>
       <w>yaml</w>
     </words>

@@ -44,6 +44,7 @@ class World(val name: String) {
     val user: UserRTO get() = userMaybe.let {it ?: bitch("I want a fucking user")}
 
     suspend fun boot() {
+        dwarnStriking("Booting world", name)
         hrss.browserOld.ui = this
 //        KotlinShit.ui = this
 
@@ -182,11 +183,8 @@ class World(val name: String) {
 
     suspend fun loadPageForURL() {
         val user = userMaybe
-        val noise = DebugNoise("loadPageForURL", mute = false, style = DebugNoise.Style.COLON)
-        noise.clog(loc.href)
-
+        dwarnStriking("loadPageForURL", loc.href)
         TestGlobal.loadPageForURLLock.sutPause1()
-
         urlQuery = parseQueryString(loc.href) // TODO:vgrechka @kill
         val pathname = loc.pathname
 
@@ -201,6 +199,7 @@ class World(val name: String) {
                 bang(pages.fuckers.find {it.path == path})
             }
 
+            // TODO:vgrechka This is wrong if pushStating:
             // Root of the site (/). Otherwise we wouldn't have reached here because of 404
 
             user == null -> {

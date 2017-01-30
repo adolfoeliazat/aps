@@ -33,7 +33,7 @@ data class Attrs(
 )
 
 abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, FuckingControl {
-    abstract fun render(): ToReactElementable
+    abstract protected fun render(): ToReactElementable
 
     open fun componentWillMount        (){}
     open fun componentDidMount         (){}

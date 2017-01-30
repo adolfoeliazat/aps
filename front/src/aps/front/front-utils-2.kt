@@ -1,5 +1,6 @@
 package aps.front
 
+import aps.*
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -28,17 +29,23 @@ class eagerNamed<out T>(val make: (ident: String) -> T) {
     }
 }
 
-abstract class Fuckers<T> {
-    val fuckers = mutableListOf<T>()
+abstract class Fucker {
+    var belongsToFuckers by notNullOnce<Fuckers<*>>()
 }
 
-class namedFucker<B, out T>(val make: (ident: String) -> T) where T : B {
-    operator fun provideDelegate(thiz: Fuckers<B>, property: KProperty<*>) = run {
-        val value = make(property.name)
-        thiz.fuckers += value
+abstract class Fuckers<T> {
+    val fuckers = mutableListOf<T>()
+    val name get() = this::class.simpleName
+}
 
-        object:ReadOnlyProperty<Fuckers<B>, T> {
-            override fun getValue(thisRef: Fuckers<B>, property: KProperty<*>): T = value
+class namedFucker<Base, out T>(val make: (ident: String) -> T) where T : Base, Base : Fucker {
+    operator fun provideDelegate(thiz: Fuckers<Base>, property: KProperty<*>) = run {
+        val fucker = make(property.name)
+        thiz.fuckers += fucker
+        fucker.belongsToFuckers = thiz
+
+        object:ReadOnlyProperty<Fuckers<Base>, T> {
+            override fun getValue(thisRef: Fuckers<Base>, property: KProperty<*>): T = fucker
         }
     }
 }

@@ -11,7 +11,6 @@ import aps.ClientKind.*
 import aps.UserKind.*
 import aps.front.PageKind.*
 import into.kommon.*
-import kotlin.properties.Delegates.notNull
 
 fun renderTopNavbar(clientKind: ClientKind,
                     t: (String, String) -> String,
@@ -21,43 +20,15 @@ fun renderTopNavbar(clientKind: ClientKind,
 ): ReactElement {
     val user = ui?.getUser()
 
-    fun renderPage(p: PageSpec, linkStyle: Style = Style()) = bang(
-        TopNavItem(ui, p, active = p == highlight, linkStyle = linkStyle).render().toReactElement())
-
-//    class Item(val navKey: NavKey, val path: String, val navTitle: String, val linkStyle: Style = Style()) {
-//        fun render(): ReactElement {
-//            return TopNavItem(key = navKey, ui = ui, path = path, title = navTitle, linkStyle = linkStyle,
-//                              active = highlight == navKey
-//            ).toReactElement()
-//        }
-//    }
+    fun renderItem(p: PageSpec, linkStyle: Style = Style()) = bang(
+        TopNavItem(ui, p, active = p == highlight, linkStyle = linkStyle).toReactElement())
 
     val fuckers = when (clientKind) {
         UA_CUSTOMER -> pages.uaCustomer.fuckers
         UA_WRITER -> pages.uaWriter.fuckers
     }
-    val staticPages = fuckers.filter {it.kind == STATIC}
-    val privatePages = fuckers.filter {it.kind == PRIVATE}
-
-//    val privatePages = mutableListOf<PageSpec>()
-//    if (user != null) {
-//        if (clientKind == UA_CUSTOMER) {
-//            privatePages.addAll(listOf(
-//                simpleItem(pages.uaCustomer.orders), simpleItem(pages.uaCustomer.support)))
-//        } else {
-//            if (user.kind == UserKind.WRITER) {
-//                if (user.state == UserState.COOL) {
-//                    privatePages.addAll(listOf(
-//                        simpleItem(pages.uaWriter.orders), simpleItem(pages.uaWriter.store)))
-//                }
-//                privatePages.addAll(listOf(
-//                    simpleItem(pages.uaWriter.profile)))
-//            } else if (user.kind == ADMIN) {
-//                privatePages.addAll(listOf(
-//                    simpleItem(pages.uaAdmin.users)))
-//            }
-//        }
-//    }
+    val staticPages = fuckers.filter {it.kind == STATIC && it.inTopNavbar}
+    val privatePages = fuckers.filter {it.kind == PRIVATE && it.inTopNavbar}
 
     val rightPage = when (clientKind) {
         UA_CUSTOMER -> {
@@ -73,12 +44,14 @@ fun renderTopNavbar(clientKind: ClientKind,
             }
         }
     }
-    val rightEl = renderPage(rightPage, linkStyle = rightLinkStyle)
+    val rightEl = renderItem(rightPage, linkStyle = rightLinkStyle)
 
     val leftEls = mutableListOf<ReactElement>()
     when (user) {
         null -> {
-            leftEls += staticPages.map {renderPage(it)}
+            leftEls += staticPages.map {renderItem(it)}
+            if (clientKind == UA_CUSTOMER)
+                leftEls += renderItem(pages.uaCustomer.makeOrder)
         }
         else -> {
             leftEls += reactCreateElement(
@@ -104,9 +77,9 @@ fun renderTopNavbar(clientKind: ClientKind,
                     reactCreateElement(
                         "ul",
                         json("className" to "dropdown-menu"),
-                        staticPages.map {renderPage(it)})))
+                        staticPages.map {renderItem(it)})))
 
-            leftEls += privatePages.map {renderPage(it)}
+            leftEls += privatePages.map {renderItem(it)}
         }
     }
 
@@ -233,15 +206,16 @@ suspend fun topNavItemClick(page: TestRef<PageSpec>, handOpts: HandOpts = HandOp
 }
 
 suspend fun topNavItemSequence(
-    descr: String,
+    descr: String? = null,
     page: TestRef<PageSpec>,
     aid: String
 ) {
+    val _descr = descr ?: "Click nav item ${page.shit.navTitle}"
     sequence2(
         action = {
             topNavItemClick(page)
         },
-        assertionDescr = descr,
+        assertionDescr = _descr,
         steps = listOf(
             TestSequenceStep(TestGlobal.topNavItemTickingLock, "$aid--1"),
             TestSequenceStep(TestGlobal.topNavItemDoneLock, "$aid--2")

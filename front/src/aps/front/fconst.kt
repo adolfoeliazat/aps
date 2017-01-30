@@ -9,6 +9,7 @@ object fconst {
     object symbols {
         val rightDoubleAngleQuotation = "»"
         val rightDoubleAngleQuotationSpaced = " » "
+        val nl2 = "\n\n"
     }
 
 //    object pageNames {

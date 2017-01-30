@@ -169,6 +169,8 @@ fun stripUninterestingElements(jqel: JQuery): HTMLElement {
         if (classNames.contains("ignoreInTests")) return el.remove() // TODO:vgrechka @killme
         if (testArtifactClasses.any {classNames.contains(it)}) return el.remove()
 
+        if (el.id.startsWith("MakeStaticSites-")) el.id = "whocares"
+
         val children = el.children.asList().toList() // Copying it because `children.asList()` is live
         for (child in children) {
             descend_stripUninterestingElements(child)

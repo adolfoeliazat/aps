@@ -31,19 +31,6 @@ object MakeStaticSites {
     lateinit var out: String
     val DEPS_JS = "$APS_TEMP/deps.js"
 
-//    @JsName("runShit")
-//    fun runShit(argv: Array<String>) = async {
-//        try {
-//            console.log("pussy")
-//            await(delay(3000))
-//            console.log("boobs")
-//            await(delay(3000))
-//            console.log("ok")
-//        } catch (e: dynamic) {
-//            println(e.stack)
-//        }
-//    }
-
     @JsName("runShit")
     fun runShit(argv: Array<String>) = async {
         try {
@@ -1096,7 +1083,7 @@ object MakeStaticSites {
         }
 
         function makeSignInNavbarLinkVisible() {
-            $('a[href="sign-in.html"]').css('display', '')
+            $('a[href="signIn.html"]').css('display', '')
         }
 
         ${if (mode == Mode.PROD) """
