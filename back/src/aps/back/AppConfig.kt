@@ -4,11 +4,13 @@ import aps.*
 import org.h2.jdbcx.JdbcDataSource
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
+import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
@@ -18,6 +20,7 @@ val springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
 @Configuration
 @EnableJpaRepositories
 @EnableTransactionManagement
+@ComponentScan(basePackages = arrayOf("aps.back"))
 open class AppConfig {
     @Bean open fun entityManagerFactory(dataSource: DataSource) = LocalContainerEntityManagerFactoryBean()-{o->
         o.jpaVendorAdapter = HibernateJpaVendorAdapter()-{o->
@@ -44,14 +47,34 @@ open class AppConfig {
         o.entityManagerFactory = emf
     }
 
-    @Bean open fun warmWelcomer() = WarmWelcomer()
+    @Bean open fun warmWelcomer(sayer: ShitSayer) = WarmWelcomer(sayer)
 }
 
-class WarmWelcomer {
+interface Welcomer {
+    fun sayHello()
+}
+
+class WarmWelcomer(val sayer: ShitSayer) : Welcomer {
     var count = 0
 
-    fun sayHello() {
+    override fun sayHello() {
         dwarnStriking("${++count} Hello? No-no-no... Fuck you!")
+    }
+}
+
+@Component
+class BrutalWelcomer(val sayer: ShitSayer) : Welcomer {
+    var count = 0
+
+    override fun sayHello() {
+        sayer.sayShit("${++count} Hello, sweetheart. Wanna see some kittens?")
+    }
+}
+
+@Component
+class ShitSayer {
+    fun sayShit(shit: String) {
+        dwarnStriking(shit)
     }
 }
 

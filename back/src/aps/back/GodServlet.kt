@@ -13,6 +13,8 @@ import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.*
 import into.kommon.*
 import org.jooq.Result
+import org.springframework.beans.factory.NoSuchBeanDefinitionException
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.servlet.*
@@ -49,10 +51,17 @@ class GodServlet : HttpServlet() {
 
                 pathInfo.startsWith("/rpc/") -> {
                     val procedureName = req.pathInfo.substring("/rpc/".length)
-                    val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
-                    @Suppress("UNCHECKED_CAST")
-                    val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
-                    service(req, res)
+                    try {
+                        val server = springctx.getBean("serve" + procedureName.capitalize(), ServeShit::class.java)
+                        server.servletRequest = req
+                        server.servletResponse = res
+                        server.serve()
+                    } catch (e: NoSuchBeanDefinitionException) {
+                        val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
+                        @Suppress("UNCHECKED_CAST")
+                        val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
+                        service(req, res)
+                    }
                 }
 
                 pathInfo == "/file" -> {

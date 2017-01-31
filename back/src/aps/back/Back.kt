@@ -48,7 +48,13 @@ fun reallyBoot() {
     BackGlobus.startMoment = Date()
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
 
-    springctx
+    val fuckAroundWithSpring = true
+    if (fuckAroundWithSpring) {
+        springctx.getBean(WarmWelcomer::class.java).sayHello()
+        springctx.getBean("warmWelcomer", Welcomer::class.java).sayHello()
+        springctx.getBean(BrutalWelcomer::class.java).sayHello()
+        springctx.getBean("brutalWelcomer", Welcomer::class.java).sayHello()
+    }
 
     redisLog.send(RedisLogMessage.Separator()-{o->
         o.type = THICK_SEPARATOR
