@@ -52,10 +52,10 @@ class GodServlet : HttpServlet() {
                 pathInfo.startsWith("/rpc/") -> {
                     val procedureName = req.pathInfo.substring("/rpc/".length)
                     try {
-                        val server = springctx.getBean("serve" + procedureName.capitalize(), ServeShit::class.java)
-                        server.servletRequest = req
-                        server.servletResponse = res
-                        server.serve()
+                        springctx.getBean("serve" + procedureName.capitalize(), BitchyProcedure::class.java)-{o->
+                            o.bpc = BitchyProcedureContext(req, res)
+                            o.serve()
+                        }
                     } catch (e: NoSuchBeanDefinitionException) {
                         val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
                         @Suppress("UNCHECKED_CAST")
