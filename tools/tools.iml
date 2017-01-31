@@ -11,5 +11,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="back" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" name="qwe" level="project" />
   </component>
 </module>

@@ -13,19 +13,19 @@ import java.net.URL
 object PushSlimShitToCF {
     @JvmStatic
     fun main(args: Array<String>) {
-        val slimJar = "$APS_TEMP/$slimJarName"
+        val slimJar = "${SharedGlobus.APS_TEMP}/$slimJarName"
         eprintln("Packing slim jar")
 
         Delete()-{o->
-            o.setDir(File("$APS_TEMP/slim-override"))
+            o.setDir(File("${SharedGlobus.APS_TEMP}/slim-override"))
             o.execute()
         }
         Mkdir()-{o->
-            o.dir = File("$APS_TEMP/slim-override/aps")
+            o.dir = File("${SharedGlobus.APS_TEMP}/slim-override/aps")
             o.execute()
         }
         val normalVersion = File("$APS_HOME/back/out/aps/version.txt").readText()
-        File("$APS_TEMP/slim-override/aps/version.txt").writeText(normalVersion + ".slim")
+        File("${SharedGlobus.APS_TEMP}/slim-override/aps/version.txt").writeText(normalVersion + ".slim")
 
         Jar()-{o->
             o.project = Project()
@@ -44,7 +44,7 @@ object PushSlimShitToCF {
                 o.setExcludes("aps/version.txt")
             })
             o.addFileset(FileSet()-{o->
-                o.dir = File("$APS_TEMP/slim-override")
+                o.dir = File("${SharedGlobus.APS_TEMP}/slim-override")
                 o.setIncludes("**/*")
             })
             o.execute()

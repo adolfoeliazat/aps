@@ -288,24 +288,25 @@ class TestAttempt(
 
 
 fun badTextFieldValuesThenValid(
-    field: TextFieldSpec,
+    field: TestRef<TextFieldSpec>,
     validValue: String,
     aopts: AssertScreenOpts? = null,
     subIDSuffix: String = ""
-): List<TestAttempt> =
-    mutableListOf<TestAttempt>()-{res->
-        val add = fuckingAdder(res, field.name, aopts, subIDSuffix)
+): List<TestAttempt> {
+    val f = field.it
+    return mutableListOf<TestAttempt>()-{res->
+        val add = fuckingAdder(res, f.name, aopts, subIDSuffix)
 
-        if (field.minLen >= 1) {
+        if (f.minLen >= 1) {
             add("empty", "")
-            add("blank", " ".repeat(field.minLen)) // TODO:vgrechka Check for other whitespace or non-alphanumeric shit?
+            add("blank", " ".repeat(f.minLen)) // TODO:vgrechka Check for other whitespace or non-alphanumeric shit?
         }
-        if (field.minLen > 1) {
-            add("too short", TestData.generateShit(field.minLen - 1))
+        if (f.minLen > 1) {
+            add("too short", TestData.generateShit(f.minLen - 1))
         }
-        add("too long", TestData.generateShit(field.maxLen + 1))
+        add("too long", TestData.generateShit(f.maxLen + 1))
 
-        exhaustive/when (field.type) {
+        exhaustive/when (f.type) {
             TextFieldType.EMAIL -> {
                 add("malformed 1", "shit")
                 // TODO:vgrechka Other shitty emails?
@@ -321,10 +322,12 @@ fun badTextFieldValuesThenValid(
 
         add("valid", validValue)
     }
+}
 
-fun badIntFieldValuesThenValid(field: IntFieldSpec, validValue: Int): List<TestAttempt> =
-    mutableListOf<TestAttempt>()-{res->
-        val add = fuckingAdder(res, field.name)
+fun badIntFieldValuesThenValid(field: TestRef<IntFieldSpec>, validValue: Int): List<TestAttempt> {
+    val f = field.it
+    return mutableListOf<TestAttempt>()-{res->
+        val add = fuckingAdder(res, f.name)
         add("empty", "")
         add("blank", "     ")
         add("fraction 1", "1.5")
@@ -334,11 +337,12 @@ fun badIntFieldValuesThenValid(field: IntFieldSpec, validValue: Int): List<TestA
         add("malformed 2", "4e5")
         add("malformed 3", "pizda")
         add("malformed 4", "1 2")
-        add("too little", (field.min - 1).toString())
-        add("too big", (field.max + 1).toString())
+        add("too little", (f.min - 1).toString())
+        add("too big", (f.max + 1).toString())
 
         add("valid", validValue.toString())
     }
+}
 
 private class fuckingAdder(
     val res: MutableList<TestAttempt>,

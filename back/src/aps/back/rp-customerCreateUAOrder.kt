@@ -17,39 +17,47 @@ import into.kommon.*
     runShit = fun(ctx, req): UACustomerCreateOrderRequest.Response {
         val documentType = req.documentType.value
 
-        val orderRec = tracingSQL("Insert UA order") {ctx.q
-            .insertInto(UA_ORDERS)
-            .set(UA_ORDERS.INSERTED_AT, ctx.requestTimestamp)
-            .set(UA_ORDERS.UPDATED_AT, ctx.requestTimestamp)
-            .set(UA_ORDERS.CREATOR_ID, ctx.user.id.toLong())
-            .set(UA_ORDERS.CUSTOMER_ID, ctx.user.id.toLong())
-            .set(UA_ORDERS.TITLE, req.documentTitle.value)
-            .set(UA_ORDERS.ADMIN_NOTES, "")
-            .set(UA_ORDERS.DOCUMENT_TYPE, documentType.toJOOQ())
-//            .set(UA_ORDERS.DEADLINE, req.deadline.value)
-            .set(UA_ORDERS.NUM_PAGES, req.numPages.value)
-            .set(UA_ORDERS.NUM_SOURCES, req.numSources.value)
-            .set(UA_ORDERS.DETAILS, req.documentDetails.value)
-            .set(UA_ORDERS.STATE, JQUaOrderState.LOOKING_FOR_WRITERS)
-            .returning(UA_ORDERS.ID)
-            .fetchOne()
-        }
+        springctx.getBean(WarmWelcomer::class.java).sayHello()
+        springctx.getBean(WarmWelcomer::class.java).sayHello()
+        springctx.getBean(WarmWelcomer::class.java).sayHello()
 
-        fun createArea(name: String) {
-            tracingSQL("Insert order area: $name") {ctx.q
-                .insertInto(UA_ORDER_AREAS)
-                .set(UA_ORDER_AREAS.INSERTED_AT, ctx.requestTimestamp)
-                .set(UA_ORDER_AREAS.UPDATED_AT, ctx.requestTimestamp)
-                .set(UA_ORDER_AREAS.UA_ORDER_ID, orderRec.getValue(UA_ORDERS.ID))
-                .set(UA_ORDER_AREAS.NAME, name)
-                .execute()
-            }
-        }
+        val repo = springctx.getBean(UAOrderRepository::class.java)
+        repo.save(UAOrder()-{o->
+            o.title = "boobs2"
+        })
+        dwarnStriking("Saved shit")
 
-        createArea(const.orderArea.customer)
-        createArea(const.orderArea.writer)
+        die()
 
-        return UACustomerCreateOrderRequest.Response(orderRec.getValue(UA_ORDERS.ID).toString())
+//        val orderID = UA_ORDERS.let {t->
+//            ctx.insertShit("Insert order", t) {it
+//                .set(t.CUSTOMER_ID, ctx.user.id.toLong())
+//                .set(t.TITLE, req.documentTitle.value)
+//                .set(t.ADMIN_NOTES, "")
+//                .set(t.DOCUMENT_TYPE, documentType.toJOOQ())
+//                .set(t.NUM_PAGES, req.numPages.value)
+//                .set(t.NUM_SOURCES, req.numSources.value)
+//                .set(t.DETAILS, req.documentDetails.value)
+//                .set(t.STATE, JQUaOrderState.LOOKING_FOR_WRITERS)
+//                .returnID(t)
+//            }
+//        }
+
+//        fun createArea(name: String) {
+//            tracingSQL("Insert order area: $name") {ctx.q
+//                .insertInto(UA_ORDER_AREAS)
+//                .set(UA_ORDER_AREAS.INSERTED_AT, ctx.requestTimestamp)
+//                .set(UA_ORDER_AREAS.UPDATED_AT, ctx.requestTimestamp)
+//                .set(UA_ORDER_AREAS.UA_ORDER_ID, orderID)
+//                .set(UA_ORDER_AREAS.NAME, name)
+//                .execute()
+//            }
+//        }
+//
+//        createArea(const.orderArea.customer)
+//        createArea(const.orderArea.writer)
+
+//        return UACustomerCreateOrderRequest.Response(orderID.toString())
     }
 )
 

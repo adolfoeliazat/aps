@@ -7,3 +7,5 @@ rem =======================================================================
 
 del lib-gradle\* & gradle importDeps
 
+rem del lib-gradle\* & gradle --stacktrace importDeps
+

@@ -200,7 +200,7 @@ class TopNavItem(
 }
 
 suspend fun topNavItemClick(page: TestRef<PageSpec>, handOpts: HandOpts = HandOpts()) {
-    val target = TopNavItem.instance(page.shit)
+    val target = TopNavItem.instance(page.it)
     await(TestUserActionAnimation.hand(target, handOpts))
     notAwait {target.click()}
 }
@@ -214,7 +214,7 @@ suspend fun topNavItemSequence(
         action = {
             topNavItemClick(page)
         },
-        descr = descr ?: "Click nav item ${page.shit.navTitle}",
+        descr = descr ?: "Click nav item ${page.it.navTitle}",
         steps = listOf(
             PauseAssertResume(TestGlobal.topNavItemTickingLock, "$aid--1"),
             DumbStep {TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(

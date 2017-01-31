@@ -25,7 +25,7 @@ class DebugLogPage(val world: World) {
 
     val urlQuery = URLQuery()
 
-    fun load(): Promisoid<Unit> = async {
+    suspend fun load() {
         var rootMessages = await(getLogMessages(RedisLogMessage.ROOT_ID))
         run {
             fun cutFromLastBoot(bottomIndex: Int) {

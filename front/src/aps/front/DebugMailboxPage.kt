@@ -10,7 +10,7 @@ class DebugMailboxPage(val world: World) {
 
     val urlQuery = URLQuery()
 
-    fun load() = async<Unit> {
+    suspend fun load() {
         val res = await(send(GetSentEmailsRequest()))
         world.setPage(Page(
             header = pageHeader2("Mailbox"),

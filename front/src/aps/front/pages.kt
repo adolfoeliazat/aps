@@ -5,7 +5,7 @@ import aps.front.PageKind.*
 import into.kommon.*
 
 enum class PageKind {
-    STATIC, PUBLIC, PRIVATE
+    STATIC, PUBLIC, PRIVATE, DEBUG
 }
 
 class PageSpec (
@@ -58,6 +58,7 @@ object pages {
         val profile by namedFucker {PageSpec(it, t("Profile", "Профиль"), PRIVATE) {UAWriterProfilePage(it).load()}}
         val dashboard by namedFucker {PageSpec(it, "boobs", PRIVATE) {DashboardPage(it).load()}}
         val signIn by namedFucker {PageSpec(it, t("Sign In", "Вход"), PUBLIC) {SignInPage(it).load()}}
+        val debug by namedFucker {PageSpec(it, "boobs", DEBUG) {DebugPage(it).load()}}
 
 //                    co.test, co.signIn, co.signUp, co.dashboard, co.orders, support,
 //                    store, users, co.profile, adminMyTasks, adminHeap, adminUsers, debugPerfRender,

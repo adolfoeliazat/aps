@@ -11,7 +11,7 @@ class DebugWordMentionFinderPage(val world: World) {
 
     val outPlaceholder = Placeholder()
 
-    fun load(): Promisoid<Unit> = async {
+    suspend fun load() {
         world.setPage(Page(
             header = pageHeader2("Word Mention Finder"),
             body = kdiv{o->

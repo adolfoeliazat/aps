@@ -116,6 +116,7 @@ fun JQUaOrderState.toApp(): UAOrderState = when (this) {
     JQUaOrderState.LOOKING_FOR_WRITERS -> UAOrderState.LOOKING_FOR_WRITERS
     JQUaOrderState.WAITING_FOR_PAYMENT -> UAOrderState.WAITING_FOR_PAYMENT
     JQUaOrderState.WRITER_ASSIGNED -> UAOrderState.WRITER_ASSIGNED
+    JQUaOrderState.WAITING_EMAIL_CONFIRMATION -> UAOrderState.WAITING_EMAIL_CONFIRMATION
 }
 
 fun UAOrderState.toJOOQ(): JQUaOrderState = when (this) {
@@ -123,6 +124,7 @@ fun UAOrderState.toJOOQ(): JQUaOrderState = when (this) {
     UAOrderState.LOOKING_FOR_WRITERS -> JQUaOrderState.LOOKING_FOR_WRITERS
     UAOrderState.WAITING_FOR_PAYMENT -> JQUaOrderState.WAITING_FOR_PAYMENT
     UAOrderState.WRITER_ASSIGNED -> JQUaOrderState.WRITER_ASSIGNED
+    UAOrderState.WAITING_EMAIL_CONFIRMATION -> JQUaOrderState.WAITING_EMAIL_CONFIRMATION
 }
 
 fun ProcedureContext.loadUser(id: Long): UserRTO {

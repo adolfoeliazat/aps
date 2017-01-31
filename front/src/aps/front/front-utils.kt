@@ -19,6 +19,7 @@ import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.asList
 import kotlin.properties.Delegates.notNull
+import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -426,7 +427,9 @@ inline fun unit(block: () -> Unit) {
 fun <T> flatten(xs: List<List<T>>) =
     xs.fold(listOf<T>(), {all, chunk -> all + chunk})
 
-
+fun <T: Any> mere(value: T) = object:ReadOnlyProperty<Any?, T> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T = value
+}
 
 
 

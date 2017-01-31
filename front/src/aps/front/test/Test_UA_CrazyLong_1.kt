@@ -41,10 +41,10 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
                         badTextFieldValuesThenValid(fieldSpecs.firstName_testRef, TestData.bobul.firstName),
                         badTextFieldValuesThenValid(fieldSpecs.lastName_testRef, TestData.bobul.lastName),
                         listOf(TestAttempt(
-                            subID = "${fieldSpecs.agreeTerms_testRef.name}-check",
+                            subID = "${fieldSpecs.agreeTerms_testRef.it.name}-check",
                             descr = "Mark checkbox",
                             prepare = {
-                                checkboxSet2(fieldSpecs.agreeTerms_testRef.name, true)
+                                checkboxSet2(fieldSpecs.agreeTerms_testRef.it.name, true)
                             }
                         ))
                     ))
@@ -77,8 +77,8 @@ class Test_UA_CrazyLong_1 : StepBasedTestScenario() {
                                     subID = "" + subID++,
                                     descr = "Email: ${email.descr}; Password: ${password.descr}",
                                     prepare = {
-                                        inputSetValue(fieldSpecs.emailInSignInForm_testRef.name, email.value)
-                                        inputSetValue(fieldSpecs.passwordInSignInForm_testRef.name, password.value)
+                                        inputSetValue(fieldSpecs.emailInSignInForm_testRef.it.name, email.value)
+                                        inputSetValue(fieldSpecs.passwordInSignInForm_testRef.it.name, password.value)
                                     }
                                 )
                             }

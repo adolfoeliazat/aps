@@ -21,35 +21,49 @@ interface DefinitionStackHolder {
     fun promiseDefinitionStack(): Promisoid<dynamic>
 }
 
-fun renderExpandableOnDemandStack(definitionStackHolder: DefinitionStackHolder): ToReactElementable {
-    return object : Control(ControlInstanceSpec()) {
-        var state = "virgin"
+//fun renderExpandableOnDemandStack(definitionStackHolder: DefinitionStackHolder): ToReactElementable {
+//    return object : Control(ControlInstanceSpec()) {
+//        var state = "virgin"
+//
+//        override fun defaultControlTypeName() = "renderExpandableOnDemandStack"
+//
+//        override fun render(): ReactElement {
+//            return diva {
+//                - when (state) {
+//                    "virgin" -> toReactElementable(Shitus.link(json("content" to "Show stack", "onClick" to {
+//                        state = "loading"
+//                        runni {
+//                            async {
+//                                val jsarray = await<dynamic>(definitionStackHolder.promiseDefinitionStack())
+//                                console.log("--- got definition stack", jsarray)
+//                            }
+//                        }
+//                        update()
+//                    })))
+//
+//                    "loading" -> spana {style {fontStyle = "italic"}; - "Loading..."}
+//
+//                    else -> wtf(state)
+//                }
+//
+//            }.toReactElement()
+//        }
+//    }
+//}
 
-        override fun defaultControlTypeName() = "renderExpandableOnDemandStack"
-
-        override fun render(): ReactElement {
-            return diva {
-                - when (state) {
-                    "virgin" -> toReactElementable(Shitus.link(json("content" to "Show stack", "onClick" to {
-                        state = "loading"
-                        runni {
-                            async {
-                                val jsarray = await<dynamic>(definitionStackHolder.promiseDefinitionStack())
-                                console.log("--- got definition stack", jsarray)
-                            }
-                        }
-                        update()
-                    })))
-
-                    "loading" -> spana {style {fontStyle = "italic"}; - "Loading..."}
-
-                    else -> wtf(state)
-                }
-
-            }.toReactElement()
-        }
-    }
+fun label(title: String) = klabel{o->
+    o- title
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

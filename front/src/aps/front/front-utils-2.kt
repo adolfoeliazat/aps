@@ -50,8 +50,6 @@ class namedFucker<Base, out T>(val make: (ident: String) -> T) where T : Base, B
     }
 }
 
-class TestRef<out T>(val shit: T)
-
 
 
 

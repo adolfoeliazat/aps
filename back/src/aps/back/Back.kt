@@ -48,13 +48,14 @@ fun reallyBoot() {
     BackGlobus.startMoment = Date()
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
 
+    springctx
+
     redisLog.send(RedisLogMessage.Separator()-{o->
         o.type = THICK_SEPARATOR
         o.text = "Booting fucking backend"
     })
 
-    run {
-        // Gather meta
+    run { // Gather meta
         val refl = Reflections(ConfigurationBuilder()
                                    .setUrls(ClasspathHelper.forPackage("aps.back"))
                                    .setScanners(MethodAnnotationsScanner()))

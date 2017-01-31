@@ -39,6 +39,7 @@
       <w>ctime</w>
       <w>cwarn</w>
       <w>dasja</w>
+      <w>databind</w>
       <w>datetimepicker</w>
       <w>dejsonize</w>
       <w>deleta</w>
@@ -63,6 +64,7 @@
       <w>eprintln</w>
       <w>errora</w>
       <w>expectedly</w>
+      <w>fasterxml</w>
       <w>fatify</w>
       <w>fconst</w>
       <w>fedis</w>
@@ -79,6 +81,7 @@
       <w>guid</w>
       <w>guids</w>
       <w>hacky</w>
+      <w>hikari</w>
       <w>horiz</w>
       <w>hwnd</w>
       <w>idname</w>
@@ -90,6 +93,7 @@
       <w>inita</w>
       <w>instrs</w>
       <w>interop</w>
+      <w>jdbc</w>
       <w>jedis</w>
       <w>jooq</w>
       <w>jpreq</w>
@@ -124,6 +128,7 @@
       <w>perf</w>
       <w>pipiska</w>
       <w>pizda</w>
+      <w>pizdabase</w>
       <w>pizdashot</w>
       <w>pizdature</w>
       <w>pizdets</w>
@@ -142,6 +147,7 @@
       <w>reawait</w>
       <w>reimplement</w>
       <w>relazy</w>
+      <w>releasetrain</w>
       <w>reloader</w>
       <w>renderable</w>
       <w>resulta</w>
@@ -156,6 +162,9 @@
       <w>shelvable</w>
       <w>shita</w>
       <w>spanc</w>
+      <w>springctx</w>
+      <w>springframework</w>
+      <w>sqlfiddle</w>
       <w>staticshit</w>
       <w>sticked</w>
       <w>stols</w>
@@ -163,6 +172,7 @@
       <w>taba</w>
       <w>tamy</w>
       <w>testconst</w>
+      <w>testdb</w>
       <w>textarea</w>
       <w>thenable</w>
       <w>thiz</w>
@@ -181,10 +191,12 @@
       <w>userprofile</w>
       <w>valdescr</w>
       <w>vdiff</w>
+      <w>welcomer</w>
       <w>whocares</w>
       <w>wrappee</w>
       <w>xlobal</w>
       <w>yaml</w>
+      <w>zaxxer</w>
     </words>
   </dictionary>
 </component>

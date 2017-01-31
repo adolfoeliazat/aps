@@ -153,6 +153,10 @@ object css {
     object test : Group(null) {
         val width = "45rem"
 
+        object sqlfiddle : Group(this) {
+
+        }
+
         object mailbox : Group(this) {
             val messages by Style("""
             """)

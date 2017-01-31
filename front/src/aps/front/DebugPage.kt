@@ -10,12 +10,13 @@ class DebugPage(val world: World) {
         var page: String? = null
     }
 
-    fun load(): Promisoid<Unit> = async {
+    suspend fun load() {
         val urlQuery = typeSafeURLQuery(world){URLQuery()}
         when (urlQuery.page) {
-            "log" -> await(DebugLogPage(world).load())
-            "word-mention-finder" -> await(DebugWordMentionFinderPage(world).load())
-            "mailbox" -> await(DebugMailboxPage(world).load())
+            "log" -> DebugLogPage(world).load()
+            "word-mention-finder" -> DebugWordMentionFinderPage(world).load()
+            "mailbox" -> DebugMailboxPage(world).load()
+            "sqlfiddle" -> SQLFiddlePage(world).load()
             else -> wtf("Fucky page: ${urlQuery.page}")
         }
     }

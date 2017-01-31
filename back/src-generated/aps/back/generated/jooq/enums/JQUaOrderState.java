@@ -32,7 +32,9 @@ public enum JQUaOrderState implements EnumType {
 
     WAITING_FOR_PAYMENT("WAITING_FOR_PAYMENT"),
 
-    WRITER_ASSIGNED("WRITER_ASSIGNED");
+    WRITER_ASSIGNED("WRITER_ASSIGNED"),
+
+    WAITING_EMAIL_CONFIRMATION("WAITING_EMAIL_CONFIRMATION");
 
     private final String literal;
 

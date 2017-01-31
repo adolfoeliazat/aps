@@ -29,7 +29,7 @@ object MakeStaticSites {
     lateinit var mode: Mode
     lateinit var lang: Language
     lateinit var out: String
-    val DEPS_JS = "$APS_TEMP/deps.js"
+    val DEPS_JS = "${SharedGlobus.APS_TEMP}/deps.js"
 
     @JsName("runShit")
     fun runShit(argv: Array<String>) = async {

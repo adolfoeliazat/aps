@@ -13,7 +13,7 @@ object PublishStaticSitesOnGH {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val root = "$APS_TEMP/pizda"
+        val root = "${SharedGlobus.APS_TEMP}/pizda"
 
         Delete()-{o->
             o.setDir(File(root))

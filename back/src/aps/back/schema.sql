@@ -178,7 +178,8 @@ create type ua_order_state as enum (
     'CREATED',
     'LOOKING_FOR_WRITERS',
     'WAITING_FOR_PAYMENT',
-    'WRITER_ASSIGNED'
+    'WRITER_ASSIGNED',
+    'WAITING_EMAIL_CONFIRMATION'
 );
 
 create table ua_orders(
