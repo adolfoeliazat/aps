@@ -107,6 +107,11 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
     init {if (xlobal.user == null) email = TextField(this, fieldSpecs.email)}
 }
 
+class TestSQLFiddleRequest : RequestMatumba() {
+    class Response(val spew: String) : CommonResponseFieldsImpl()
+    val input by stringHiddenField()
+}
+
 
 
 

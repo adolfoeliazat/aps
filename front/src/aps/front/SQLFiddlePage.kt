@@ -7,11 +7,16 @@ import kotlin.coroutines.CoroutineContext
 class SQLFiddlePage(val world: World) {
     val input: Input by mere(Input(
         kind = Input.Kind.TEXTAREA,
-        onKeyDown = {
+        autoFocus = true,
+        initialValue = "select * from uaorder",
+        onKeyDowna = {
             if (it.ctrlKey && it.key == "Enter") {
-                val sql = input.value
+                spew.setContent(span("Working like a dog..."))
+                val res = send(TestSQLFiddleRequest()-{o->
+                    o.input.value = input.value
+                })
                 spew.setContent(kdiv(whiteSpace = "pre", fontFamily = "monospace"){o->
-                    o- "shit:\n$sql"
+                    o- res.spew
                 })
             }
         }))
@@ -22,8 +27,6 @@ class SQLFiddlePage(val world: World) {
         world.setPage(Page(
             header = usualHeader("SQL Fiddle"),
             body = kdiv{o->
-//                val c = css.test.sqlfiddle
-//                fun String.div(block: (ElementBuilder) -> Unit) = kdiv(this, block)
                 o- kdiv{o->
                     o- label("Enter your shit:")
                     o- input

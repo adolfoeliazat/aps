@@ -11,8 +11,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import javax.persistence.EntityManagerFactory
 import org.h2.jdbcx.JdbcDataSource
-
-
+import javax.sql.DataSource
 
 val springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
 
@@ -20,15 +19,17 @@ val springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
 @EnableJpaRepositories
 @EnableTransactionManagement
 open class AppConfig {
-    @Bean open fun entityManagerFactory() = LocalContainerEntityManagerFactoryBean()-{o->
+    @Bean open fun entityManagerFactory(dataSource: DataSource) = LocalContainerEntityManagerFactoryBean()-{o->
         o.jpaVendorAdapter = HibernateJpaVendorAdapter()-{o->
             o.setGenerateDdl(true)
         }
         o.setPackagesToScan("aps.back")
-        o.dataSource = JdbcDataSource()-{o->
-            o.setURL("jdbc:h2:${SharedGlobus.APS_TEMP}/pizdabase;AUTO_SERVER=TRUE")
-            o.user = "sa"
-        }
+        o.dataSource = dataSource
+    }
+
+    @Bean open fun dataSource() = JdbcDataSource()-{o->
+        o.setURL("jdbc:h2:${SharedGlobus.APS_TEMP}/pizdabase;AUTO_SERVER=TRUE")
+        o.user = "sa"
     }
 
     @Bean open fun transactionManager(emf: EntityManagerFactory) = JpaTransactionManager()-{o->

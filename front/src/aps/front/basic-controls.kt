@@ -55,6 +55,7 @@ fun label(title: String) = klabel{o->
     o- title
 }
 
+fun span(s: String? = null) = kspan {it-s}
 
 
 

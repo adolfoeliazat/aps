@@ -26,6 +26,7 @@ val inputReactClass by lazy {React.createClass(json(
         val onChange: dynamic =  self.props.onChange
         val onMount: dynamic =  self.props.onMount
         val style: dynamic =  self.props.style
+        val autoFocus: dynamic =  self.props.autoFocus
 
         val rest = lodash.omit( self.props, "kind", "value", "onChange", "onMount", "style")
 
@@ -33,6 +34,7 @@ val inputReactClass by lazy {React.createClass(json(
             "ref" to "input",
             "defaultValue" to defaultValue,
             "style" to aps.global.Object.assign(json("resize" to "none"), style),
+            "autoFocus" to autoFocus,
             "onChange" to {e: dynamic ->
                 self.manualValue = e.target.value
                 onChange && onChange(e)
@@ -76,6 +78,7 @@ class Input(
         style: Style = Style(),
         placeholder: String = "",
         initialValue: String = "",
+        autoFocus: Boolean = false,
         volatileDisabled: () -> Boolean = {false},
         onKeyDown: (KeyboardEvent) -> Unit = {},
         onKeyDowna: suspend (KeyboardEvent) -> Unit = {}
@@ -91,11 +94,13 @@ class Input(
     {
         this.onKeyDown = onKeyDown
         this.onKeyDowna = onKeyDowna
+        this.autoFocus = autoFocus
     }
 
     lateinit var elementID: String
     lateinit var onKeyDown: (KeyboardEvent) -> Unit
     lateinit var onKeyDowna: suspend (KeyboardEvent) -> Unit
+    var autoFocus = false
 
     suspend fun keyDown(e: KeyboardEvent) {
         onKeyDown(e)
@@ -151,6 +156,7 @@ class Input(
                         "className" to "form-control",
                         "disabled" to isRenderingDisabled,
                         "onClick" to me.onPhysicalClick,
+                        "autoFocus" to autoFocus,
                         "style" to aps.global.Object.assign(json(),
                                                             shittyFov(volatileStyle),
                                                             style,

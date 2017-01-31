@@ -23,8 +23,6 @@ val ki = ElementBuilderFactory("i")
 val klabel = ElementBuilderFactory("label")
 val kblockquote = ElementBuilderFactory("blockquote")
 
-fun span(s: String? = null) = kspan {it-s}
-
 open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, block: ((ElementBuilder) -> Unit)? = null) : ToReactElementable {
     val children = mutableListOf<ToReactElementable>()
 

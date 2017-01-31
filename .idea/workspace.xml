@@ -54,47 +54,22 @@
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" line="144" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/Form.kt" line="316" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-customerCreateUAOrder.kt" line="13" />
+    <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" line="41" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/SQLFiddlePage.kt" line="17" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/aps/back/AppConfig.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/aps/back/UAOrder.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/aps/front/SQLFiddlePage.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/test-shit/c31b6b5e-aac1-4136-8bef-906cf5be8cdc--email--valid--1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/back.iml" afterPath="$PROJECT_DIR$/back/back.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/build.gradle" afterPath="$PROJECT_DIR$/back/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/import-deps.cmd" afterPath="$PROJECT_DIR$/back/import-deps.cmd" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/enums/JQUaOrderState.java" afterPath="$PROJECT_DIR$/back/src-generated/aps/back/generated/jooq/enums/JQUaOrderState.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/Back.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/PublishStaticSitesOnGH.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/PublishStaticSitesOnGH.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/PushSlimShitToCF.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/PushSlimShitToCF.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/back-data.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/back-data.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/bconst.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/bconst.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-customerCreateUAOrder.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-customerCreateUAOrder.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/schema.sql" afterPath="$PROJECT_DIR$/back/src/aps/back/schema.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/AppConfig.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/AppConfig.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugLogPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugLogPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugMailboxPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugMailboxPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugWordMentionFinderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugWordMentionFinderPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Form.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Form.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Select.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Select.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Input.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Input.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/SQLFiddlePage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/SQLFiddlePage.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-utils-2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-utils-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/navbar.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/navbar.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/pages.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/pages.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_1.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_1.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/fieldSpecs.kt" afterPath="$PROJECT_DIR$/shared/src/aps/fieldSpecs.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/tools.iml" afterPath="$PROJECT_DIR$/tools/tools.iml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/aps_deps.xml" afterPath="$PROJECT_DIR$/.idea/libraries/qwe.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" afterPath="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-rpc.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-rpc.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -160,108 +135,107 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="DebugPage.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="18" column="27" lean-forward="false" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
-              <folding>
-                <element signature="e#75#108#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DebugWordMentionFinderPage.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugWordMentionFinderPage.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="13" column="22" lean-forward="false" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DebugLogPage.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugLogPage.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="27" column="22" lean-forward="false" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DebugMailboxPage.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugMailboxPage.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="12" column="4" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SQLFiddlePage.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SQLFiddlePage.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/SQLFiddlePage.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="26" column="16" lean-forward="false" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
+            <state relative-caret-position="192">
+              <caret line="10" column="45" lean-forward="false" selection-start-line="10" selection-start-column="45" selection-end-line="10" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="front-utils.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt">
+      <file leaf-file-name="rp-test-2.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="433" column="0" lean-forward="false" selection-start-line="433" selection-start-column="0" selection-end-line="433" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Input.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Input.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="75" column="8" lean-forward="false" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="basic-controls.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/basic-controls.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+            <state relative-caret-position="223">
+              <caret line="44" column="59" lean-forward="false" selection-start-line="44" selection-start-column="59" selection-end-line="44" selection-end-column="59" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#18#191#0" expanded="true" />
+                <marker date="1485863066070" expanded="false" signature="25:117" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="new-shit.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
+      <file leaf-file-name="ResultSetMetaData.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/sql/ResultSetMetaData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="22" column="4" lean-forward="false" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
+            <state relative-caret-position="293">
+              <caret line="157" column="11" lean-forward="false" selection-start-line="157" selection-start-column="11" selection-end-line="157" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="aps-css.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
+      <file leaf-file-name="ResultSet.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/sql/ResultSet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="155" column="8" lean-forward="false" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
+            <state relative-caret-position="282">
+              <caret line="906" column="11" lean-forward="false" selection-start-line="906" selection-start-column="11" selection-end-line="906" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataSource.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/javax/sql/DataSource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="605">
+              <caret line="89" column="13" lean-forward="false" selection-start-line="89" selection-start-column="13" selection-end-line="89" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="back-utils.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/back/back-utils.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="353">
+              <caret line="53" column="11" lean-forward="false" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JvmClassMapping.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/kotlin/jvm/JvmClassMapping.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="293">
+              <caret line="93" column="22" lean-forward="false" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AppConfig.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/back/AppConfig.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="199">
+              <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#18#684#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JdbcDataSource.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/h2-1.4.193-sources.jar!/org/h2/jdbcx/JdbcDataSource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="816">
+              <caret line="68" column="4" lean-forward="false" selection-start-line="68" selection-start-column="4" selection-end-line="68" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Query.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/javax/persistence/Query.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="768">
+              <caret line="47" column="9" lean-forward="false" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -357,13 +331,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/back/src/aps/back/rp-signUp.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/rp-updateProfile.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/rp-updateUser.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/back-rpc-glue.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/redisLog.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-mapStack.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/UACustomerOrdersPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/World.kt" />
@@ -396,7 +364,6 @@
         <option value="$PROJECT_DIR$/back/src/aps/back/PublishStaticSitesOnGH.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/PushSlimShitToCF.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/bconst.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/AppConfig.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-customerCreateUAOrder.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/DBFiddle.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/pages.kt" />
@@ -405,9 +372,16 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/DebugWordMentionFinderPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/DebugMailboxPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
+        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-rpc.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/Input.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/SQLFiddlePage.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/AppConfig.kt" />
       </list>
     </option>
   </component>
@@ -570,7 +544,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib/postgresql-9.4.1211.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="nnnamed&#9;null&#9;null&#10;controls.kt&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/basic-controls.kt&#10;debug&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DebugPage.kt&#10;ant-&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;makes&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;loadpagefor&#9;null&#9;null&#10;ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;debugpage&#9;null&#9;null&#10;pages&#9;null&#9;null&#10;aps_te&#9;null&#9;null&#10;backglo&#9;null&#9;null&#10;uaorder&#9;null&#9;null&#10;backkt&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/Back.kt&#10;boot&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/BackBoot.kt&#10;ant-m&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;build&#9;FILE&#9;file://E:/work/aps/back/build.gradle&#10;backb&#9;null&#9;null&#10;import&#9;FILE&#9;file://E:/work/aps/back/import-deps.cmd&#10;orderstate&#9;null&#9;null&#10;insertshit&#9;null&#9;null&#10;shared-ut&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;testref&#9;null&#9;null&#10;bitchex&#9;null&#9;null&#10;servecrea&#9;null&#9;null&#10;long_1&#9;null&#9;null&#10;fspe&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/fieldSpecs.kt&#10;field&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/fieldSpecs.kt&#10;snippe&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;schema&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/schema.sql&#10;shared-da&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-data.kt&#10;fieldspe&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/fieldSpecs.kt&#10;apscss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/aps-css.kt&#10;formma&#9;null&#9;null&#10;makeorp&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeOrderPage.kt&#10;procedureconte&#9;null&#9;null&#10;world&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/World.kt&#10;userrto&#9;null&#9;null&#10;s-rpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;lintshit&#9;null&#9;null&#10;enhance&#9;null&#9;null&#10;build.xml&#9;FILE&#9;file://E:/work/aps/build.xml&#10;shared-rpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;shared-s&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-stuff.kt&#10;shared&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;pagespec&#9;null&#9;null&#10;dumpcon&#9;null&#9;null&#10;dumpcontrol&#9;null&#9;null&#10;pushnavigate&#9;null&#9;null&#10;pushnavi&#9;null&#9;null&#10;bugs&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt" />
+    <property name="SearchEverywhereHistoryKey" value="input&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Input.kt&#10;label&#9;null&#9;null&#10;rp-te&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-test-2.kt&#10;frontglu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-rpc-glue.kt&#10;rp-test&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-test-2.kt&#10;nnnamed&#9;null&#9;null&#10;controls.kt&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/basic-controls.kt&#10;debug&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/DebugPage.kt&#10;ant-&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;makes&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;loadpagefor&#9;null&#9;null&#10;ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;debugpage&#9;null&#9;null&#10;pages&#9;null&#9;null&#10;aps_te&#9;null&#9;null&#10;backglo&#9;null&#9;null&#10;uaorder&#9;null&#9;null&#10;backkt&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/Back.kt&#10;boot&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/BackBoot.kt&#10;ant-m&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;build&#9;FILE&#9;file://E:/work/aps/back/build.gradle&#10;backb&#9;null&#9;null&#10;import&#9;FILE&#9;file://E:/work/aps/back/import-deps.cmd&#10;orderstate&#9;null&#9;null&#10;insertshit&#9;null&#9;null&#10;shared-ut&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils.kt&#10;testref&#9;null&#9;null&#10;bitchex&#9;null&#9;null&#10;servecrea&#9;null&#9;null&#10;long_1&#9;null&#9;null&#10;fspe&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/fieldSpecs.kt&#10;field&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/fieldSpecs.kt&#10;snippe&#9;FILE&#9;file://E:/work/aps/doc/snippets.txt&#10;schema&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/schema.sql&#10;shared-da&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-data.kt&#10;fieldspe&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/fieldSpecs.kt&#10;apscss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/aps-css.kt&#10;formma&#9;null&#9;null&#10;makeorp&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeOrderPage.kt&#10;procedureconte&#9;null&#9;null&#10;world&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/World.kt&#10;userrto&#9;null&#9;null&#10;s-rpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;lintshit&#9;null&#9;null&#10;enhance&#9;null&#9;null&#10;build.xml&#9;FILE&#9;file://E:/work/aps/build.xml&#10;shared-rpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;shared-s&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-stuff.kt&#10;shared&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;pagespec&#9;null&#9;null" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
     <property name="last.edited.regexp" value="" />
   </component>
@@ -975,13 +949,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00260" summary="vovagrechka/aps#32">
-      <created>1484280795354</created>
-      <option name="number" value="00260" />
-      <option name="presentableId" value="LOCAL-00260" />
-      <option name="project" value="LOCAL" />
-      <updated>1484280795354</updated>
-    </task>
     <task id="LOCAL-00261" summary="vovagrechka/aps#32">
       <created>1484295469469</created>
       <option name="number" value="00261" />
@@ -1318,7 +1285,14 @@
       <option name="project" value="LOCAL" />
       <updated>1485798093488</updated>
     </task>
-    <option name="localTasksCounter" value="309" />
+    <task id="LOCAL-00309" summary="Stuff">
+      <created>1485859341592</created>
+      <option name="number" value="00309" />
+      <option name="presentableId" value="LOCAL-00309" />
+      <option name="project" value="LOCAL" />
+      <updated>1485859341592</updated>
+    </task>
+    <option name="localTasksCounter" value="310" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1535,128 +1509,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/hibernate-jpa-2.1-api-1.0.0.Final.jar!/javax/persistence/EntityManagerFactory.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="11" column="17" lean-forward="false" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/javax/persistence/EntityManagerFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="27" column="17" lean-forward="false" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/spring-beans-4.2.9.RELEASE.jar!/org/springframework/beans/factory/FactoryBean.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/spring-beans-4.2.9.RELEASE-sources.jar!/org/springframework/beans/factory/FactoryBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1841">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#5717#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/spring-jdbc-4.2.9.RELEASE.jar!/org/springframework/jdbc/datasource/embedded/EmbeddedDatabaseBuilder.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="38" column="35" lean-forward="false" selection-start-line="38" selection-start-column="35" selection-end-line="38" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/spring-jdbc-4.2.9.RELEASE-sources.jar!/org/springframework/jdbc/datasource/embedded/EmbeddedDatabaseBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#2185#2186#0" expanded="false" />
-            <element signature="e#2225#2226#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/BackBoot.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="47" column="34" lean-forward="false" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/spring-orm-4.2.9.RELEASE.jar!/org/springframework/orm/jpa/LocalContainerEntityManagerFactoryBean.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="31" column="11" lean-forward="false" selection-start-line="31" selection-start-column="11" selection-end-line="31" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/spring-orm-4.2.9.RELEASE-sources.jar!/org/springframework/orm/jpa/AbstractEntityManagerFactoryBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="84" column="22" lean-forward="false" selection-start-line="84" selection-start-column="22" selection-end-line="84" selection-end-column="22" />
-          <folding>
-            <element signature="e#10098#10099#0" expanded="false" />
-            <element signature="e#10145#10146#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/spring-orm-4.2.9.RELEASE-sources.jar!/org/springframework/orm/jpa/LocalContainerEntityManagerFactoryBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="88" column="74" lean-forward="false" selection-start-line="88" selection-start-column="74" selection-end-line="88" selection-end-column="74" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="509" column="34" lean-forward="false" selection-start-line="509" selection-start-column="34" selection-end-line="509" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/hibernate-jpa-2.1-api-1.0.0.Final.jar!/javax/persistence/GenerationType.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="11" column="4" lean-forward="false" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/javax/persistence/GenerationType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="39" column="6" lean-forward="false" selection-start-line="39" selection-start-column="6" selection-end-line="39" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/UAOrder.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -1810,14 +1662,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/javax/sql/DataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="76" column="17" lean-forward="false" selection-start-line="76" selection-start-column="17" selection-end-line="76" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/spring-orm-4.3.6.RELEASE-sources.jar!/org/springframework/orm/jpa/LocalContainerEntityManagerFactoryBean.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="282">
@@ -1830,14 +1674,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
           <caret line="38" column="11" lean-forward="false" selection-start-line="38" selection-start-column="11" selection-end-line="38" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/h2-1.4.193-sources.jar!/org/h2/jdbcx/JdbcDataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1855,16 +1691,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/AppConfig.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding>
-            <element signature="e#18#656#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1926,24 +1752,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="22" column="4" lean-forward="false" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/basic-controls.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -1951,14 +1759,6 @@
           <folding>
             <element signature="e#75#108#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Input.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="75" column="8" lean-forward="false" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1970,11 +1770,178 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/SQLFiddlePage.kt">
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-rpc.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="109" column="6" lean-forward="false" selection-start-line="109" selection-start-column="6" selection-end-line="109" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/CustomerSingleUAOrderPageFilesTab.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="400" column="24" lean-forward="false" selection-start-line="400" selection-start-column="24" selection-end-line="400" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/basic-controls.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="311" column="0" lean-forward="false" selection-start-line="311" selection-start-column="0" selection-end-line="311" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/back/lib-gradle/hibernate-jpa-2.1-api-1.0.0.Final.jar!/javax/persistence/EntityManagerFactory.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="11" column="17" lean-forward="false" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/javax/persistence/EntityManagerFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="38" column="19" lean-forward="true" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/javax/persistence/EntityManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="623" column="11" lean-forward="false" selection-start-line="623" selection-start-column="11" selection-end-line="623" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/kotlin/text/StringBuilderJVM.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
-          <caret line="26" column="16" lean-forward="false" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
+          <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Input.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="100" column="50" lean-forward="false" selection-start-line="100" selection-start-column="50" selection-end-line="100" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/SQLFiddlePage.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="10" column="45" lean-forward="false" selection-start-line="10" selection-start-column="45" selection-end-line="10" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/kotlin/jvm/JvmClassMapping.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="93" column="22" lean-forward="false" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/back-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="353">
+          <caret line="53" column="11" lean-forward="false" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/javax/persistence/Query.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="768">
+          <caret line="47" column="9" lean-forward="false" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/h2-1.4.193-sources.jar!/org/h2/jdbcx/JdbcDataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="68" column="4" lean-forward="false" selection-start-line="68" selection-start-column="4" selection-end-line="68" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/javax/sql/DataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="89" column="13" lean-forward="false" selection-start-line="89" selection-start-column="13" selection-end-line="89" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/sql/ResultSetMetaData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="157" column="11" lean-forward="false" selection-start-line="157" selection-start-column="11" selection-end-line="157" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/sql/ResultSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="906" column="11" lean-forward="false" selection-start-line="906" selection-start-column="11" selection-end-line="906" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="44" column="59" lean-forward="false" selection-start-line="44" selection-start-column="59" selection-end-line="44" selection-end-column="59" />
+          <folding>
+            <element signature="e#18#191#0" expanded="true" />
+            <marker date="1485863066070" expanded="false" signature="25:117" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/AppConfig.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+          <folding>
+            <element signature="e#18#684#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

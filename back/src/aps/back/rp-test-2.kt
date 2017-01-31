@@ -3,6 +3,8 @@ package aps.back
 import aps.*
 import aps.back.generated.jooq.Tables.*
 import com.fasterxml.jackson.databind.JsonNode
+import javax.persistence.EntityManagerFactory
+import javax.sql.DataSource
 
 @RemoteProcedureFactory fun serveTestTakeSnapshot() = testProcedure(
     {TestTakeSnapshotRequest()},
@@ -34,6 +36,31 @@ import com.fasterxml.jackson.databind.JsonNode
         val url = objectMapper.treeToValue(rec.value, String::class.java)
         dwarnStriking("Snapshot URL: $url")
         return TestLoadSnapshotRequest.Response(url)
+    }
+)
+
+@RemoteProcedureFactory fun serveTestSQLFiddle() = testProcedure(
+    {TestSQLFiddleRequest()},
+    needsDB = true,
+    runShit = fun(ctx, req): TestSQLFiddleRequest.Response {
+        val sql = req.input.value
+        val ds = springctx.getBean(DataSource::class.java)
+        ds.connection.use {con->
+            val rs = con.prepareStatement(sql).executeQuery()
+            val meta = rs.metaData
+            var rowCount = 0
+            val spew = StringBuilder()
+            while (rs.next()) {
+                ++rowCount
+                spew.appendln("---- Row $rowCount ---------------")
+                for (col in 1..meta.columnCount) {
+                    spew.appendln(meta.getColumnName(col) + ": " + rs.getObject(col))
+                }
+            }
+            return TestSQLFiddleRequest.Response(
+                "Got $rowCount rows(s)\n"
+                + spew.toString())
+        }
     }
 )
 
