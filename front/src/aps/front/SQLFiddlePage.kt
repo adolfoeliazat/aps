@@ -8,14 +8,16 @@ class SQLFiddlePage(val world: World) {
     val input: Input by mere(Input(
         kind = Input.Kind.TEXTAREA,
         autoFocus = true,
-        initialValue = "select * from uaorder",
+        initialValue = "select * from ua_orders",
         onKeyDowna = {
             if (it.ctrlKey && it.key == "Enter") {
                 spew.setContent(span("Working like a dog..."))
                 val res = send(TestSQLFiddleRequest()-{o->
                     o.input.value = input.value
                 })
-                spew.setContent(kdiv(whiteSpace = "pre", fontFamily = "monospace"){o->
+                spew.setContent(kdiv(whiteSpace = "pre",
+                                     fontFamily = "monospace",
+                                     color = ifOrNull(res.isError){Color.RED_700}){o->
                     o- res.spew
                 })
             }

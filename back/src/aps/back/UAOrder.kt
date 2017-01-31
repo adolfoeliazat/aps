@@ -1,27 +1,28 @@
 package aps.back
 
 import org.springframework.data.repository.CrudRepository
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-
-@Entity
-class UAOrder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null
-    var title: String? = null
-}
+import javax.persistence.*
 
 //@Entity
-//data class UAOrder2 (
+//@Table(name = "ua_orders")
+//class UAOrder {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
-//    var id: Long? = null,
+//    var id: Long? = null
 //    var title: String? = null
-//) {
 //}
+
+@Entity
+@Table(name = "ua_orders")
+class UAOrder (
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    val id: Long? = null,
+    var title: String
+) {
+    constructor() : this(null, "")
+}
+
 
 interface UAOrderRepository : CrudRepository<UAOrder, Long> {
 

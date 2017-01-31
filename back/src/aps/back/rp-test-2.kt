@@ -3,6 +3,9 @@ package aps.back
 import aps.*
 import aps.back.generated.jooq.Tables.*
 import com.fasterxml.jackson.databind.JsonNode
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.sql.SQLException
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
 
@@ -43,23 +46,32 @@ import javax.sql.DataSource
     {TestSQLFiddleRequest()},
     needsDB = true,
     runShit = fun(ctx, req): TestSQLFiddleRequest.Response {
-        val sql = req.input.value
-        val ds = springctx.getBean(DataSource::class.java)
-        ds.connection.use {con->
-            val rs = con.prepareStatement(sql).executeQuery()
-            val meta = rs.metaData
-            var rowCount = 0
-            val spew = StringBuilder()
-            while (rs.next()) {
-                ++rowCount
-                spew.appendln("---- Row $rowCount ---------------")
-                for (col in 1..meta.columnCount) {
-                    spew.appendln(meta.getColumnName(col) + ": " + rs.getObject(col))
+        try {
+            val sql = req.input.value
+            val ds = springctx.getBean(DataSource::class.java)
+            ds.connection.use {con->
+                val rs = con.prepareStatement(sql).executeQuery()
+                val meta = rs.metaData
+                var rowCount = 0
+                val spew = StringBuilder()
+                while (rs.next()) {
+                    ++rowCount
+                    spew.appendln("---- Row $rowCount ---------------")
+                    for (col in 1..meta.columnCount) {
+                        spew.appendln(meta.getColumnName(col) + ": " + rs.getObject(col))
+                    }
                 }
+                return TestSQLFiddleRequest.Response(
+                    isError = false,
+                    spew = "Got $rowCount rows(s)\n" + spew.toString())
             }
+        } catch(e: SQLException) {
+            val sw = StringWriter()
+            e.printStackTrace(PrintWriter(sw))
             return TestSQLFiddleRequest.Response(
-                "Got $rowCount rows(s)\n"
-                + spew.toString())
+                isError = true,
+                spew = sw.toString()
+            )
         }
     }
 )

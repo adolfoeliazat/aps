@@ -22,10 +22,13 @@ import into.kommon.*
         springctx.getBean(WarmWelcomer::class.java).sayHello()
 
         val repo = springctx.getBean(UAOrderRepository::class.java)
-        repo.save(UAOrder()-{o->
-            o.title = "boobs2"
-        })
+        repo.save(UAOrder(title = "boobs"))
         dwarnStriking("Saved shit")
+
+        val shit = repo.findOne(1)
+        dwarnStriking("Found shit", shit.id, shit.title)
+        shit.title = "cunt"
+        repo.save(shit)
 
         die()
 

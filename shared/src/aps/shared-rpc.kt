@@ -108,7 +108,7 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
 }
 
 class TestSQLFiddleRequest : RequestMatumba() {
-    class Response(val spew: String) : CommonResponseFieldsImpl()
+    class Response(val spew: String, val isError: Boolean) : CommonResponseFieldsImpl()
     val input by stringHiddenField()
 }
 

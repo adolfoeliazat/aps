@@ -107,10 +107,14 @@ fun <T> dejsonize(json: String, descr: String? = null): T {
 
 fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
     try {
-        val noise = DebugNoise("dejsonize", mute = true)
-
-        if (descr != null) {
-            noise.clog("jsThing ($descr)", jsThing)
+        gloshit.pizda = TestSQLFiddleRequest.Response("qqq", true)
+        val logShit = false
+        if (logShit) {
+            val shit = JSON.stringify(jsThing).substring(0, 5000)
+            if (!shit.contains("GetSoftwareVersionRequest") && descr != null) {
+                gloshit.dejsonizeValue_jsThing = jsThing
+                clog("dejsonizeValue", descr, shit)
+            }
         }
 
         val res = when {
@@ -121,7 +125,6 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
             jsThing.`$$$enum` != null -> {
                 val enumName = jsThing.`$$$enum` as String
                 val code = "_.${enumName.replace("\$", ".")}.${jsThing.value}"
-                noise.clog("code", code)
                 eval(code)
             }
 
@@ -131,10 +134,17 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
                     "kotlin.Unit" -> Unit.asDynamic()
                     else -> {
                         val inst = eval("new _.${clazz.replace("$", ".")}()")
-                        for (k in jsKeys(jsThing))
+                        for (k in jsKeys(jsThing)) {
                             if (k != "\$\$\$class") {
-                                jsSet(inst, k, dejsonizeValue(jsThing[k]))
+                                val jsValue = jsThing[k]
+                                val kotlinValue = dejsonizeValue<Any?>(jsValue)
+                                val prop = when {
+                                    jsTypeOf(jsValue) == "boolean" -> "is" + k.capitalize()
+                                    else -> k
+                                }
+                                jsSet(inst, prop, kotlinValue)
                             }
+                        }
                         inst
                     }
                 }
@@ -149,7 +159,6 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
                         "long" -> "new Kotlin.Long(stringValue)"
                         else -> wtf("Primitiveish typeName: $typeName")
                     }
-                noise.clog("code", code)
                 eval(code)
             }
 
@@ -160,10 +169,6 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
             jsIsArray(jsThing) -> jsArrayToListOfDynamic(jsThing) {dejsonizeValue(it)}.asDynamic()
 
             else -> wtf("Dunno how to dejsonize that jsThing")
-        }
-
-        if (descr != null) {
-            noise.clog("res ($descr)", jsThing)
         }
 
         return res as T
@@ -211,7 +216,7 @@ fun jsonizeToObject(shit: Any?): Any? {
     }
 }
 
-fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields, wideClientKind: WideClientKind): Promisoid<Res> = async {
+fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields, wideClientKind: WideClientKind, descr: String? = null): Promisoid<Res> = async {
     requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
     requestJSONObject.databaseID = ExternalGlobus.DB
     if (wideClientKind is WideClientKind.User) {
@@ -220,7 +225,7 @@ fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSO
     requestJSONObject.fakeEmail = Globus.isTest
     val responseJSONObject = await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
 
-    dejsonizeValue<Res>(responseJSONObject)!!
+    dejsonizeValue<Res>(responseJSONObject, descr = descr)!!
 }
 
 fun windowLocationHrefToClientURL(href: String): String {

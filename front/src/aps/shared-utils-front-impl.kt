@@ -245,10 +245,10 @@ annotation class Front
 
 
 
-fun <Res> callMatumba(req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null): Promisoid<Res> =
-    callMatumba(remoteProcedureNameForRequest(req), req, token, wideClientKind = wideClientKind)
+fun <Res> callMatumba(req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null, descr: String? = null): Promisoid<Res> =
+    callMatumba(remoteProcedureNameForRequest(req), req, token, wideClientKind = wideClientKind, descr = descr)
 
-fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null): Promisoid<Res> = async {
+fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null, descr: String? = null): Promisoid<Res> = async {
     val wck = wideClientKind ?: WideClientKind.User(Globus.clientKind)
     val payload = js("({})")
     putWideClientKind(payload, wck)
@@ -259,7 +259,7 @@ fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?
     for (field in req.fields) await(field.populateRemote(payload.fields))
     for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
 
-    await(callRemoteProcedurePassingJSONObject<Res>(procedureName, payload, wck))
+    await(callRemoteProcedurePassingJSONObject<Res>(procedureName, payload, wck, descr = descr))
 }
 
 private fun putWideClientKind(payload: dynamic, wck: WideClientKind) {
@@ -313,7 +313,8 @@ suspend fun <Res> callDangerousMatumba2(req: RequestMatumba): Res {
     return await(callMatumba(
         req = req,
         token = js("typeof DANGEROUS_TOKEN === 'undefined' ? null : DANGEROUS_TOKEN") ?: bitch("This fucking client is built without DANGEROUS_TOKEN"),
-        wideClientKind = WideClientKind.Test()))
+        wideClientKind = WideClientKind.Test(),
+        descr = req::class.simpleName))
 }
 
 fun printStack() {
