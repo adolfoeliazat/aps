@@ -51,6 +51,8 @@ dependencies {
     compile 'org.springframework.data:spring-data-jpa'
     compile 'org.springframework:spring-orm:4.3.6.RELEASE'
     compile 'com.h2database:h2:1.4.193'
+    compile 'net.bytebuddy:byte-buddy:1.6.7'
+    compile 'net.bytebuddy:byte-buddy-agent:1.6.7'
 }
 
 task importDeps(type: Copy) {

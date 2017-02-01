@@ -150,5 +150,6 @@ title aps forever & _run aps.back.Forever
 
 ant generate-shit
 
+-javaagent:javaagent/dist/aps-javaagent.jar    -javaagent:back/lib-gradle/aspectjweaver-1.8.10.jar
 
 

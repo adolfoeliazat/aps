@@ -80,7 +80,20 @@ class BrutalWelcomer(val sayer: ShitSayer) : Welcomer {
     var count = 0
 
     override fun sayHello() {
+        sayer.sayShit("Calling Foo: " + Foo().m())
         sayer.sayShit("${++count} Hello, sweetheart. Wanna see some kittens?")
+    }
+}
+
+class Foo {
+    fun m(): String {
+        return "foo"
+    }
+}
+
+class Bar {
+    fun m(): String {
+        return "bar"
     }
 }
 

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component
                 repo.save(UAOrder(title = req.documentTitle.value)-{o->
                     o.pizda = "hairy"
                 })
+                dwarnStriking("Saved shit")
                 val shit = repo.findOne(1)
                 dwarnStriking("Found shit: $shit")
                 shit.pizda = "Extremely hairy"

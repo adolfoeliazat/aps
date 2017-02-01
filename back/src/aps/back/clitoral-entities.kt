@@ -12,7 +12,7 @@ abstract class ClitoralEntity {
 }
 
 @Entity @Table(name = "ua_orders")
-class UAOrder (
+open class UAOrder (
     var title: String) : ClitoralEntity()
 {
 //    constructor() : this("boobs")
