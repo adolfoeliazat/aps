@@ -37,6 +37,7 @@ import net.bytebuddy.implementation.MethodDelegation
 import net.bytebuddy.implementation.StubMethod
 import net.bytebuddy.implementation.SuperMethodCall
 import net.bytebuddy.implementation.bind.annotation.SuperCall
+import org.reflections.scanners.SubTypesScanner
 import java.net.URL
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.javaConstructor
@@ -62,71 +63,7 @@ fun reallyBoot() {
     BackGlobus.startMoment = Date()
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
 
-    run { // Fiddle with classes
-        ByteBuddyAgent.install()
-
-//        val foo = Foo()
-//        ByteBuddy()
-//            .redefine(Bar::class.java)
-//            .name(Foo::class.java.name)
-//            .make()
-//            .load(Foo::class.java.classLoader, ClassReloadingStrategy.fromInstalledAgent())
-
-        val entries = System.getProperty("java.class.path").split(File.pathSeparator)
-        val urlLoader = URLClassLoader(entries.map {File(it).toURI().toURL()}.toTypedArray(), null)
-        val separateLoader = object:ClassLoader() {
-            override fun loadClass(name: String?): Class<*> {
-                return urlLoader.loadClass(name)
-            }
-        }
-//        val c = separateLoader.loadClass("aps.back.UAOrder")
-//        val cinst = c.declaredConstructors[0].newInstance("boobs")
-//        c.getDeclaredMethod("setPizda", String::class.java).invoke(cinst, "Gigantic")
-//        println(cinst)
-//        exitProcess(0)
-
-
-        val clazz = separateLoader.loadClass("aps.back.UAOrder")
-        ByteBuddy()
-            .redefine(clazz)
-//            .name("Pizda")
-            .name(clazz.name)
-            .defineMethod("fuck", Void.TYPE, Visibility.PUBLIC)
-            .intercept(MethodDelegation.to(object {
-                fun lala() {
-                    println("----------- Yeah, yeah, yeah, more -----------")
-                }
-            }))
-            .defineConstructor(Visibility.PUBLIC)
-            .intercept(MethodCall
-                           .invoke(clazz.constructors[0])
-                           .with("boobs"))
-//            .intercept(SuperMethodCall.INSTANCE)
-//            .intercept(MethodDelegation.to(object {
-//                fun lala() {
-//                    println("----------- So nice you constructed me -----------")
-//                }
-//            }))
-//            .intercept(StubMethod.INSTANCE)
-//            .defineConstructor(Visibility.PUBLIC)
-//            .intercept(SuperMethodCall.INSTANCE)
-//            .intercept(StubMethod.INSTANCE)
-//            .intercept(MethodCall
-//                           .invoke(clazz.constructors[0])
-//                           .onSuper()
-//                           .with("boobs"))
-            .make()
-            .load(BackGlobus::class.java.classLoader, ClassReloadingStrategy.fromInstalledAgent())
-//        val inst = Class.forName("Pizda").newInstance() as UAOrder
-        val inst = Class.forName("aps.back.UAOrder").newInstance() as UAOrder
-//        val inst = Class.forName("aps.back.UAOrder").constructors[0].newInstance("qweqwe") as UAOrder
-//        val inst = Class.forName("aps.back.UAOrder").getDeclaredConstructor(String::class.java).newInstance("qweqwe") as UAOrder
-        inst.javaClass.getMethod("fuck").invoke(inst)
-        inst.pizda = "Deep hairy forest"
-        println("aaaaaa " + inst)
-        println("ggggggggggggg")
-    }
-
+    instrumentShit()
 
     val fuckAroundWithSpring = true
     if (fuckAroundWithSpring) {
@@ -164,6 +101,56 @@ fun reallyBoot() {
         start()
         println("APS backend shit is spinning...")
         join()
+    }
+}
+
+private fun instrumentShit() {
+    ByteBuddyAgent.install()
+
+    val entries = System.getProperty("java.class.path").split(File.pathSeparator)
+    val urlLoader = URLClassLoader(entries.map {File(it).toURI().toURL()}.toTypedArray(), null)
+    val separateLoader = object:ClassLoader() {
+        override fun loadClass(name: String?): Class<*> {
+            return urlLoader.loadClass(name)
+        }
+    }
+
+    val buddy = ByteBuddy()
+
+    val refl = Reflections(
+        ConfigurationBuilder()
+            .addClassLoader(separateLoader)
+            .setUrls(ClasspathHelper.forPackage("aps.back"))
+            // .setScanners(MethodAnnotationsScanner())
+            .addScanners(SubTypesScanner()))
+    val classes = refl.getSubTypesOf(ClitoralEntity::class.java)
+    for (clazz in classes) {
+        val ctor = clazz.constructors[0]
+        val paramTypes = ctor.parameterTypes
+        val ctorParams = kotlin.arrayOfNulls<Any?>(paramTypes.size)
+        for ((i, pt) in paramTypes.withIndex()) {
+            ctorParams[i] = when (pt) {
+                String::class.java -> "boobs"
+                else -> "Obscure ctor param #$i in ${clazz.name}"
+            }
+        }
+
+        buddy
+            .redefine(clazz)
+            .name(clazz.name)
+            .defineConstructor(Visibility.PUBLIC)
+            .intercept(MethodCall
+                           .invoke(ctor)
+                           .with(*ctorParams))
+            .make()
+            .load(BackGlobus::class.java.classLoader, ClassReloadingStrategy.fromInstalledAgent())
+    }
+
+    val tryShitOut = true
+    if (tryShitOut) {
+        val inst = Class.forName("aps.back.UAOrder").newInstance() as UAOrder
+        inst.pizda = "Deep hairy forest"
+        println("aaaaa " + inst)
     }
 }
 

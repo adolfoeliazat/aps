@@ -71,7 +71,7 @@ class WarmWelcomer(val sayer: ShitSayer) : Welcomer {
     var count = 0
 
     override fun sayHello() {
-        dwarnStriking("${++count} Hello? No-no-no... Fuck you!")
+        sayer.sayShit("${++count} Hello? No-no-no... Fuck you!")
     }
 }
 
@@ -80,20 +80,7 @@ class BrutalWelcomer(val sayer: ShitSayer) : Welcomer {
     var count = 0
 
     override fun sayHello() {
-        sayer.sayShit("Calling Foo: " + Foo().m())
         sayer.sayShit("${++count} Hello, sweetheart. Wanna see some kittens?")
-    }
-}
-
-class Foo {
-    fun m(): String {
-        return "foo"
-    }
-}
-
-class Bar {
-    fun m(): String {
-        return "bar"
     }
 }
 

@@ -15,8 +15,6 @@ abstract class ClitoralEntity {
 open class UAOrder (
     var title: String) : ClitoralEntity()
 {
-//    constructor() : this("boobs")
-
     var pizda by notNull<String>()
 
     override fun toString() =
