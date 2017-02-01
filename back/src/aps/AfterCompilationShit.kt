@@ -8,6 +8,7 @@ package aps
 
 import aps.back.*
 import into.kommon.*
+import org.apache.tools.ant.Project
 import java.io.File
 import org.apache.tools.ant.taskdefs.*
 
@@ -39,6 +40,18 @@ class AfterCompilationShit {
 
 //            fixSourceMap("$todir/into-kommon-js.js.map")
             fixSourceMap("$todir/front.js.map")
+        }
+
+        run {
+            eprintln("Packaging aps-javaagent")
+            Jar()-{o->
+                o.project = Project() // Necessary dummy
+                o.destFile = File("$APS_HOME/javaagent/dist/aps-javaagent.jar")
+                o.setBasedir(File("$APS_HOME/javaagent/out"))
+                o.setIncludes("**/*")
+                o.setManifest(File("$APS_HOME/javaagent/src/META-INF/MANIFEST.MF"))
+                o.execute()
+            }
         }
 
         eprintln("COOL")

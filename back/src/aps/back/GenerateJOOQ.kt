@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
     }
 
     Copy()-{o->
-        o.project = Project()
+        o.project = Project() // Necessary dummy
         o.setTodir(File("$APS_HOME/back/bak"))
         o.addFileset(FileSet()-{o->
             o.dir = File("$APS_HOME/back")

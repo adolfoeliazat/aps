@@ -93,6 +93,7 @@
       <w>inita</w>
       <w>instrs</w>
       <w>interop</w>
+      <w>javaagent</w>
       <w>jdbc</w>
       <w>jedis</w>
       <w>jooq</w>
