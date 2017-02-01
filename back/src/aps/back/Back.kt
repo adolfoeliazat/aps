@@ -8,21 +8,15 @@ package aps.back
 
 import aps.*
 import aps.RedisLogMessage.Separator.Type.*
-import aps.back.BackGlobus.slimJarName
-import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.tables.pojos.JQUserRoles
-import aps.back.generated.jooq.tables.pojos.JQUsers
 import into.kommon.*
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletHandler
-import org.jooq.DSLContext
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.util.ClasspathHelper
 import org.reflections.util.ConfigurationBuilder
 import org.slf4j.Logger
 import java.io.File
-import java.io.FileOutputStream
 import java.lang.reflect.Method
 import java.net.URLClassLoader
 import java.sql.Timestamp
@@ -33,16 +27,7 @@ import net.bytebuddy.ByteBuddy
 import net.bytebuddy.agent.ByteBuddyAgent
 import net.bytebuddy.description.modifier.Visibility
 import net.bytebuddy.implementation.MethodCall
-import net.bytebuddy.implementation.MethodDelegation
-import net.bytebuddy.implementation.StubMethod
-import net.bytebuddy.implementation.SuperMethodCall
-import net.bytebuddy.implementation.bind.annotation.SuperCall
 import org.reflections.scanners.SubTypesScanner
-import java.net.URL
-import kotlin.reflect.full.primaryConstructor
-import kotlin.reflect.jvm.javaConstructor
-import kotlin.system.exitProcess
-
 
 val THE_ADMIN_ID = 101L // TODO:vgrechka Unhardcode admin ID    17c5cc52-57c2-480d-a7c3-abb030b01cc9
 
@@ -106,16 +91,13 @@ fun reallyBoot() {
 
 private fun instrumentShit() {
     ByteBuddyAgent.install()
+    val buddy = ByteBuddy()
 
     val entries = System.getProperty("java.class.path").split(File.pathSeparator)
     val urlLoader = URLClassLoader(entries.map {File(it).toURI().toURL()}.toTypedArray(), null)
     val separateLoader = object:ClassLoader() {
-        override fun loadClass(name: String?): Class<*> {
-            return urlLoader.loadClass(name)
-        }
+        override fun loadClass(name: String?) = urlLoader.loadClass(name)
     }
-
-    val buddy = ByteBuddy()
 
     val refl = Reflections(
         ConfigurationBuilder()
@@ -127,11 +109,15 @@ private fun instrumentShit() {
     for (clazz in classes) {
         val ctor = clazz.constructors[0]
         val paramTypes = ctor.parameterTypes
-        val ctorParams = kotlin.arrayOfNulls<Any?>(paramTypes.size)
+        val ctorParams = arrayOfNulls<Any?>(paramTypes.size)
         for ((i, pt) in paramTypes.withIndex()) {
             ctorParams[i] = when (pt) {
                 String::class.java -> "boobs"
-                else -> "Obscure ctor param #$i in ${clazz.name}"
+                Integer.TYPE -> -1
+                else -> when {
+                    pt.isEnum -> pt.enumConstants[0]
+                    else -> bitch("Obscure ctor param #$i in ${clazz.name}: $pt")
+                }
             }
         }
 
@@ -149,7 +135,6 @@ private fun instrumentShit() {
     val tryShitOut = true
     if (tryShitOut) {
         val inst = Class.forName("aps.back.UAOrder").newInstance() as UAOrder
-        inst.pizda = "Deep hairy forest"
         println("aaaaa " + inst)
     }
 }
