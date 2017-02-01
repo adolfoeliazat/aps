@@ -62,18 +62,8 @@
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/back.iml" afterPath="$PROJECT_DIR$/back/back.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/build.gradle" afterPath="$PROJECT_DIR$/back/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/AppConfig.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/AppConfig.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/Back.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/ServeUACustomerCreateOrder.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/ServeUACustomerCreateOrder.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/doc/snippets.txt" afterPath="$PROJECT_DIR$/doc/snippets.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/javaagent/javaagent.iml" afterPath="$PROJECT_DIR$/javaagent/javaagent.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/javaagent/src/aps/agent/Agent.kt" afterPath="$PROJECT_DIR$/javaagent/src/aps/agent/Agent.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/tools.iml" afterPath="$PROJECT_DIR$/tools/tools.iml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/fuck.xml" afterPath="$PROJECT_DIR$/.idea/libraries/fuck3.xml" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -154,12 +144,9 @@
       <file leaf-file-name="Back.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="95" column="27" lean-forward="false" selection-start-line="95" selection-start-column="27" selection-end-line="95" selection-end-column="27" />
-              <folding>
-                <element signature="e#80#1449#0" expanded="true" />
-                <marker date="1485970941853" expanded="false" signature="87:861" ph="..." />
-              </folding>
+            <state relative-caret-position="312">
+              <caret line="100" column="32" lean-forward="false" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -187,8 +174,8 @@
       <file leaf-file-name="MethodCall.java" pinned="false" current-in-tab="false">
         <entry file="jar://$USER_HOME$/.ideaLibSources/byte-buddy-1.6.7-sources.jar!/net/bytebuddy/implementation/MethodCall.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="116" column="63" lean-forward="false" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
+            <state relative-caret-position="96">
+              <caret line="2305" column="8" lean-forward="false" selection-start-line="2305" selection-start-column="8" selection-end-line="2305" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -209,8 +196,8 @@
       <file leaf-file-name="SuperMethodCall.java" pinned="false" current-in-tab="false">
         <entry file="jar://$USER_HOME$/.ideaLibSources/byte-buddy-1.6.7-sources.jar!/net/bytebuddy/implementation/SuperMethodCall.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="413">
-              <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+            <state relative-caret-position="293">
+              <caret line="22" column="12" lean-forward="false" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -1099,13 +1086,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00268" summary="vovagrechka/aps#32">
-      <created>1484334501009</created>
-      <option name="number" value="00268" />
-      <option name="presentableId" value="LOCAL-00268" />
-      <option name="project" value="LOCAL" />
-      <updated>1484334501009</updated>
-    </task>
     <task id="LOCAL-00269" summary="vovagrechka/aps#32">
       <created>1484384616214</created>
       <option name="number" value="00269" />
@@ -1442,7 +1422,14 @@
       <option name="project" value="LOCAL" />
       <updated>1485957045418</updated>
     </task>
-    <option name="localTasksCounter" value="317" />
+    <task id="LOCAL-00317" summary="Fucking around with Java Agent">
+      <created>1485970981414</created>
+      <option name="number" value="00317" />
+      <option name="presentableId" value="LOCAL-00317" />
+      <option name="project" value="LOCAL" />
+      <updated>1485970981414</updated>
+    </task>
+    <option name="localTasksCounter" value="318" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2036,14 +2023,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/byte-buddy-1.6.7-sources.jar!/net/bytebuddy/implementation/MethodCall.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="116" column="63" lean-forward="false" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ideaLibSources/byte-buddy-1.6.7-sources.jar!/net/bytebuddy/implementation/StubMethod.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -2051,14 +2030,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ideaLibSources/byte-buddy-1.6.7-sources.jar!/net/bytebuddy/implementation/SuperMethodCall.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2112,14 +2083,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/byte-buddy-1.6.7-sources.jar!/net/bytebuddy/implementation/SuperMethodCall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="22" column="12" lean-forward="false" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/byte-buddy-1.6.7-sources.jar!/net/bytebuddy/implementation/MethodCall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="2305" column="8" lean-forward="false" selection-start-line="2305" selection-start-column="8" selection-end-line="2305" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="95" column="27" lean-forward="false" selection-start-line="95" selection-start-column="27" selection-end-line="95" selection-end-column="27" />
-          <folding>
-            <element signature="e#80#1449#0" expanded="true" />
-            <marker date="1485970941853" expanded="false" signature="87:861" ph="..." />
-          </folding>
+        <state relative-caret-position="312">
+          <caret line="100" column="32" lean-forward="false" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>

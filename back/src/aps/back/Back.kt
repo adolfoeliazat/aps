@@ -94,9 +94,19 @@ fun reallyBoot() {
             .defineMethod("fuck", Void.TYPE, Visibility.PUBLIC)
             .intercept(MethodDelegation.to(object {
                 fun lala() {
-                    println("----------- yeah, yeah, yeah, more -----------")
+                    println("----------- Yeah, yeah, yeah, more -----------")
                 }
             }))
+            .defineConstructor(Visibility.PUBLIC)
+            .intercept(MethodCall
+                           .invoke(clazz.constructors[0])
+                           .with("boobs"))
+//            .intercept(SuperMethodCall.INSTANCE)
+//            .intercept(MethodDelegation.to(object {
+//                fun lala() {
+//                    println("----------- So nice you constructed me -----------")
+//                }
+//            }))
 //            .intercept(StubMethod.INSTANCE)
 //            .defineConstructor(Visibility.PUBLIC)
 //            .intercept(SuperMethodCall.INSTANCE)
@@ -108,8 +118,9 @@ fun reallyBoot() {
             .make()
             .load(BackGlobus::class.java.classLoader, ClassReloadingStrategy.fromInstalledAgent())
 //        val inst = Class.forName("Pizda").newInstance() as UAOrder
-//        val inst = Class.forName("aps.back.UAOrder").newInstance() as UAOrder
-        val inst = Class.forName("aps.back.UAOrder").constructors[0].newInstance("qweqwe") as UAOrder
+        val inst = Class.forName("aps.back.UAOrder").newInstance() as UAOrder
+//        val inst = Class.forName("aps.back.UAOrder").constructors[0].newInstance("qweqwe") as UAOrder
+//        val inst = Class.forName("aps.back.UAOrder").getDeclaredConstructor(String::class.java).newInstance("qweqwe") as UAOrder
         inst.javaClass.getMethod("fuck").invoke(inst)
         inst.pizda = "Deep hairy forest"
         println("aaaaaa " + inst)
