@@ -12,6 +12,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PR
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 
+// TODO:vgrechka Introduce some meta-annotation?
 @Component @Scope(SCOPE_PROTOTYPE) class ServeUACustomerCreateOrder(
     val repo: UAOrderRepository
 ) : BitchyProcedure() {
@@ -21,7 +22,17 @@ import org.springframework.stereotype.Component
             makeRequest = {UACustomerCreateOrderRequest(it.xlobal)},
             needsUser = NeedsUser.MAYBE,
             runShit = {_, req: UACustomerCreateOrderRequest ->
-                repo.save(UAOrder(title = req.documentTitle.value))
+                repo.save(UAOrder(title = req.documentTitle.value)-{o->
+                    o.pizda = "hairy"
+                })
+                val shit = repo.findOne(1)
+                dwarnStriking("Found shit: $shit")
+                shit.pizda = "Extremely hairy"
+                repo.save(shit)
+                dwarnStriking("Saved shit")
+                val shit2 = repo.findOne(1)
+                dwarnStriking("Found shit again: $shit2")
+
                 die("cooooooool")
             }
         ))

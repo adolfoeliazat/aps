@@ -25,12 +25,10 @@ dependencyManagement {
 }
 
 dependencies {
+    compile 'org.aspectj:aspectjrt:1.8.10'
+    compile 'org.aspectj:aspectjweaver:1.8.10'
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'org.slf4j:slf4j-simple:1.7.21'
-//    compile 'co.paralleluniverse:quasar-core:0.7.6:jdk8'
-//    compile 'co.paralleluniverse:quasar-core:0.7.6:sources'
-//    compile 'co.paralleluniverse:comsat-servlet:0.7.1-SNAPSHOT'
-//    compile 'co.paralleluniverse:comsat-jooq:0.7.1-SNAPSHOT'
     compile 'org.eclipse.jetty.aggregate:jetty-all:9.3.11.v20160721'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.3'
     compile 'org.jooq:jooq:3.9.0'
