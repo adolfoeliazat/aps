@@ -102,7 +102,7 @@ fun reallyBoot() {
 }
 
 private fun instrumentShit() {
-    ByteBuddyAgent.install()
+//    ByteBuddyAgent.install()
     val buddy = ByteBuddy()
 
     val entries = System.getProperty("java.class.path").split(File.pathSeparator)

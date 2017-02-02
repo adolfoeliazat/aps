@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.annotation.Pointcut
 import org.h2.jdbcx.JdbcDataSource
 import org.hibernate.annotations.common.reflection.XProperty
+import org.hibernate.cfg.Environment
 import org.springframework.context.annotation.*
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.orm.jpa.JpaTransactionManager
@@ -19,7 +20,7 @@ import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
 import kotlin.system.exitProcess
 
-val springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
+@Volatile var springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
 
 @Configuration
 @EnableJpaRepositories
@@ -29,8 +30,11 @@ open class AppConfig {
     @Bean open fun entityManagerFactory(dataSource: DataSource) = LocalContainerEntityManagerFactoryBean()-{o->
         o.jpaVendorAdapter = HibernateJpaVendorAdapter()-{o->
             o.setShowSql(true)
-            o.setGenerateDdl(true)
+//            o.setGenerateDdl(true)
+//            o.jpaPropertyMap.put(Environment.HBM2DDL_AUTO, "update")
+//            o.jpaPropertyMap["hibernate.hbm2ddl.auto"] = "create-drop"
         }
+        o.jpaPropertyMap.put(Environment.HBM2DDL_AUTO, "create-drop")
         o.setPackagesToScan("aps.back")
         o.dataSource = dataSource
     }

@@ -7,7 +7,7 @@ import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
 
 @MappedSuperclass @Access(PROPERTY)
-open class ClitoralEntity {
+abstract class ClitoralEntity {
     @get:Id @get:GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
 

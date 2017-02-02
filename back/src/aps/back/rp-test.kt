@@ -20,6 +20,9 @@ import org.jooq.Record
 import org.jooq.UpdateSetMoreStep
 import org.jooq.UpdateSetStep
 import org.mindrot.jbcrypt.BCrypt
+import org.springframework.beans.factory.support.BeanDefinitionRegistry
+import org.springframework.beans.factory.support.DefaultListableBeanFactory
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.awt.MouseInfo
 import java.awt.Robot
 import java.awt.event.InputEvent
@@ -94,6 +97,14 @@ testProcedure(
 @RemoteProcedureFactory fun serveRecreateTestDatabaseSchema() = testProcedure(
     {RecreateTestDatabaseSchemaRequest()},
     runShit = fun(ctx, req): GenericResponse {
+        springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
+//        val beanFactory = springctx.beanFactory as BeanDefinitionRegistry
+//        beanFactory.removeBeanDefinition("transactionManager")
+//        beanFactory.removeBeanDefinition("entityManagerFactory")
+//        val beanFactory = springctx.beanFactory as DefaultListableBeanFactory
+//        beanFactory.destroySingleton("transactionManager")
+//        beanFactory.destroySingleton("entityManagerFactory")
+
         val templateDB =
             req.snapshotID.value?.let {DB.apsTestSnapshotOnTestServer(it)}
             ?: req.templateDB.value?.let {DB.byID(it)}

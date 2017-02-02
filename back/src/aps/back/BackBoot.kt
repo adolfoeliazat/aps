@@ -5,6 +5,7 @@ import aps.back.BackGlobus.slimJarName
 import sun.misc.Launcher
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.system.exitProcess
 
 object BackBoot {
     @JvmStatic
