@@ -1,0 +1,147 @@
+-------------------- URL --------------------
+
+[uaw]/debug.html?page=mailbox
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        Писец
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="">
+          <a href="why.html">
+            Почему мы?
+          </a>
+        </li>
+        <li class="">
+          <a href="prices.html">
+            Цены
+          </a>
+        </li>
+        <li class="">
+          <a href="samples.html">
+            Примеры
+          </a>
+        </li>
+        <li class="">
+          <a href="faq.html">
+            ЧаВо
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="signIn.html">
+            Вход
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          Mailbox
+        </h3>
+      </div>
+    </div>
+    <div>
+      <div class="test-mailbox-messages">
+        <div class="test-mailbox-message">
+          <div class="test-mailbox-header">
+            <div class="test-mailbox-section">
+              <div class="test-mailbox-sectionTitle">
+                To:
+              </div>
+              <div class="test-mailbox-sectionValue">
+                Пися Камушкин &lt;pisia@test.shit.ua&gt;
+              </div>
+            </div>
+            <div class="test-mailbox-section">
+              <div class="test-mailbox-sectionTitle">
+                Subject:
+              </div>
+              <div class="test-mailbox-sectionValue">
+                [APS UA] Подтверждение заказа
+              </div>
+            </div>
+          </div>
+          <div class="test-mailbox-body">
+            <div>
+              <div style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;">
+                <div style="padding-bottom: 1em;">
+                  Привет, Пися Камушкин!
+                </div>
+                Нажми
+                <a href="http://aps-ua-customer.local:3012/confirmOrder.html?secret=top-fucking-secret">
+                  сюда
+                </a>
+                для подтверждения заказа.
+                <h3 style="font-size: 24px; margin-top: 20px; margin-bottom: 10px; line-height: 1.1; font-weight: 500;">
+                  Заказ №1
+                </h3>
+                <table style="border-spacing: 0; border-collapse: collapse;">
+                  <tbody>
+                    <tr>
+                      <th style="text-align: left; white-space: nowrap; padding: 0; padding-bottom: 0.5em;">
+                        Тип документа
+                      </th>
+                      <td style="padding: 0; padding-left: 1em; padding-bottom: 0.5em; white-space: pre-wrap;">
+                        Отчет по практике
+                      </td>
+                    </tr>
+                    <tr>
+                      <th style="text-align: left; white-space: nowrap; padding: 0; padding-bottom: 0.5em;">
+                        Тема работы
+                      </th>
+                      <td style="padding: 0; padding-left: 1em; padding-bottom: 0.5em; white-space: pre-wrap;">
+                        Как я пинал хуи на практике
+                      </td>
+                    </tr>
+                    <tr>
+                      <th style="text-align: left; white-space: nowrap; padding: 0; padding-bottom: 0.5em;">
+                        Количество страниц
+                      </th>
+                      <td style="padding: 0; padding-left: 1em; padding-bottom: 0.5em; white-space: pre-wrap;">
+                        13
+                      </td>
+                    </tr>
+                    <tr>
+                      <th style="text-align: left; white-space: nowrap; padding: 0; padding-bottom: 0.5em;">
+                        Количество источников
+                      </th>
+                      <td style="padding: 0; padding-left: 1em; padding-bottom: 0.5em; white-space: pre-wrap;">
+                        5
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div style="font-weight: bold; padding-top: 0.5em; padding-bottom: 0.5em;">
+                  Детали
+                </div>
+                <div style="white-space: pre-wrap;">
+                  Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.
+                  Кухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел.
+                </div>
+                <div style="padding-top: 2em; font-style: italic;">
+                  APS UA
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

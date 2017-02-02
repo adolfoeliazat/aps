@@ -24,7 +24,7 @@ import java.util.*
             needsUser = NeedsUser.MAYBE,
             runShit = fun (ctx, req: UACustomerCreateOrderRequest): UACustomerCreateOrderRequest.Response {
                 if (ctx.hasUser) {
-                    imf("hasUser")
+                    imf("ServeUACustomerCreateOrder hasUser")
                 } else {
                     val imposedSecret = TestServerFiddling.nextGeneratedConfirmationSecret
                     val confirmationSecret = when (imposedSecret) {
@@ -55,7 +55,7 @@ import java.util.*
                     val confirmationURL = ctx.clientRoot + "/confirmOrder.html?secret=$confirmationSecret"
                     EmailMatumba.send(Email(
                         to = "${req.name.value} <${req.email.value}>",
-                        subject = "Подтверждение заказа",
+                        subject = "[${const.productName.uaCustomer}] Подтверждение заказа",
                         html = dedent(t(
                             en = """TOTE""",
                             ua = """

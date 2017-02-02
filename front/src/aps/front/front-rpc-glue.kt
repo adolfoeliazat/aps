@@ -34,6 +34,7 @@ fun send(req: ClearSentEmailsRequest): Promisoid<GenericResponse> = callDangerou
 suspend fun send(req: TestSQLFiddleRequest): TestSQLFiddleRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: ImposeNextGeneratedPasswordRequest): Promisoid<ImposeNextGeneratedPasswordRequest.Response> = callDangerousMatumba(req)
 suspend fun send(req: ImposeNextGeneratedConfirmationSecretRequest): Promisoid<ImposeNextGeneratedConfirmationSecretRequest.Response> = callDangerousMatumba(req)
+suspend fun send(req: ConfirmOrderRequest): FormResponse2<ConfirmOrderRequest.Response> = _send2(null, req)
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->
@@ -41,6 +42,10 @@ private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     }
     val jpres: JsonProcedureRequest.Response = await(callDangerousMatumba(jpreq))
     dejsonize<R>(jpres.json)
+}
+
+private suspend fun <Req: RequestMatumba, Meat> _send2(token: String?, req: Req): FormResponse2<Meat> {
+    return await(_send(token, req))
 }
 
 private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req) = async<FormResponse2<Meat>> {

@@ -112,6 +112,11 @@ class TestSQLFiddleRequest : RequestMatumba() {
     val input by stringHiddenField()
 }
 
+class ConfirmOrderRequest : RequestMatumba() {
+    class Response : CommonResponseFieldsImpl()
+    val secret by stringHiddenField()
+}
+
 
 
 

@@ -18,7 +18,10 @@ abstract class ClitoralEntity {
     var deleted = false
 }
 
-@Entity @Table(name = "ua_orders")
+@Entity @Table(name = "ua_orders",
+               indexes = arrayOf(
+                   Index(columnList = "confirmationSecret")
+               ))
 open class UAOrder (
     @Column(length = MAX_STRING) var title: String,
     @Enumerated(EnumType.STRING) var documentType: UADocumentType,
@@ -32,7 +35,7 @@ open class UAOrder (
 }
 
 interface UAOrderRepository : CrudRepository<UAOrder, Long> {
-
+    fun findByConfirmationSecret(secret: String): UAOrder?
 }
 
 

@@ -17,3 +17,7 @@ fun TestScenarioBuilder.submitSignInForm(shit: TestShit, userData: TestUserData,
 //    inputSetValue(fieldSpecs.password_testRef.name, userData.password)
 //    submitFormSequence(shit, descr = descr, aid = aid)
 }
+
+suspend fun navigate(url: String) {
+    Globus.currentBrowseroid.location.pushState(null, "", url)
+}

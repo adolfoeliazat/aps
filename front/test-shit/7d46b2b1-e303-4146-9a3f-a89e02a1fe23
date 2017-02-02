@@ -1,0 +1,81 @@
+-------------------- URL --------------------
+
+[uac]/confirmOrder.html?secret=wrong-secret
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a id="whocares" class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li id="whocares" class="">
+          <a id="whocares" href="why.html">
+            Почему мы?
+          </a>
+        </li>
+        <li id="whocares" class="">
+          <a id="whocares" href="prices.html">
+            Цены
+          </a>
+        </li>
+        <li id="whocares" class="">
+          <a id="whocares" href="samples.html">
+            Примеры
+          </a>
+        </li>
+        <li id="whocares" class="">
+          <a id="whocares" href="faq.html">
+            ЧаВо
+          </a>
+        </li>
+        <li id="whocares" class="">
+          <a id="whocares" href="contact.html">
+            Связь
+          </a>
+        </li>
+        <li id="whocares" class="">
+          <a id="whocares" href="blog.html">
+            Блог
+          </a>
+        </li>
+        <li id="whocares" class="">
+          <a id="whocares" href="makeOrder.html">
+            Заказать
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li id="whocares" class="">
+          <a id="whocares" href="signIn.html">
+            Вход
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div id="staticShit">
+  <!-- BEGIN CONTENT -->
+    <div id="whocares" class="container">
+      <div>
+        <div class="container">
+          <div style="display:  flex;  align-items:  center;  justify-content:  center;  position:  absolute;  left:  0px;  top:  200px;  width:  100%;">
+            <span style="margin-left:  10">
+              Дышите глубоко...
+            </span>
+            <div id="wholePageTicker" class="progressTicker" style="background-color:  #546e7a;  width:  14px;  height:  28px;  margin-left:  10px;  margin-top:  -5px">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END CONTENT -->
+    </div>

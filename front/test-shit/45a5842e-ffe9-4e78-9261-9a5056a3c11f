@@ -1,0 +1,80 @@
+-------------------- URL --------------------
+
+[uac]/confirmOrder.html?secret=wrong-secret
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="">
+          <a href="why.html">
+            Почему мы?
+          </a>
+        </li>
+        <li class="">
+          <a href="prices.html">
+            Цены
+          </a>
+        </li>
+        <li class="">
+          <a href="samples.html">
+            Примеры
+          </a>
+        </li>
+        <li class="">
+          <a href="faq.html">
+            ЧаВо
+          </a>
+        </li>
+        <li class="">
+          <a href="contact.html">
+            Связь
+          </a>
+        </li>
+        <li class="">
+          <a href="blog.html">
+            Блог
+          </a>
+        </li>
+        <li class="">
+          <a href="makeOrder.html">
+            Заказать
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="signIn.html">
+            Вход
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <span class="">
+            Подтверждение заказа
+          </span>
+        </h3>
+      </div>
+    </div>
+    <div>
+      Че за хрень ты мне тут передаешь в параметрах? Скопируй ссылку из письма нормально, или я не знаю...
+    </div>
+  </div>
+</div>

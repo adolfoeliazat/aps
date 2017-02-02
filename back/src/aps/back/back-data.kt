@@ -125,6 +125,7 @@ fun UAOrderState.toJOOQ(): JQUaOrderState = when (this) {
     UAOrderState.WAITING_FOR_PAYMENT -> JQUaOrderState.WAITING_FOR_PAYMENT
     UAOrderState.WRITER_ASSIGNED -> JQUaOrderState.WRITER_ASSIGNED
     UAOrderState.WAITING_EMAIL_CONFIRMATION -> JQUaOrderState.WAITING_EMAIL_CONFIRMATION
+    else -> die("Fuck UAOrderState.toJOOQ")
 }
 
 fun ProcedureContext.loadUser(id: Long): UserRTO {
