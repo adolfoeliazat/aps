@@ -23,7 +23,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             formSubmissionAttempts(
                 testShit,
                 descr = "Make order (no sign-in)",
-                baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc",
+                baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
                 attempts = eachOrCombinationOfLasts(listOf(
                     badTextFieldValuesThenValid(fieldSpecs.documentTitle_testRef, "Как я пинал хуи на практике"),
                     badIntFieldValuesThenValid(fieldSpecs.numPages_testRef, 13),
