@@ -1,32 +1,34 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 abstract class WriterBootTestScenario : BootTestScenario() {
     override val clientKind = ClientKind.UA_WRITER
     lateinit var fuckerToken: String
 
     fun prepareFucker(fieldsReq: TestSetUserFieldsRequest) = async<Unit> {
-        await(ImposeNextGeneratedPasswordRequest.send("fucker-secret"))
-
-        await(send(null, SignUpRequest()-{o->
-            o.agreeTerms.value = true
-            o.immutableSignUpFields-{o->
-                o.email.value = "fucker@test.shit.ua"
-            }
-            o.mutableSignUpFields-{o->
-                o.firstName.value = "Gaylord"
-                o.lastName.value = "Fucker"
-            }
-        })).orDie()
-
-        fuckerToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
-            o.email.value = "fucker@test.shit.ua"
-            o.password.value = "fucker-secret"
-        })).orDie().token
-
-        fieldsReq.email.value = "fucker@test.shit.ua"
-        await(send(fieldsReq))
+        die("Don't use prepareFucker")
+//        await(ImposeNextGeneratedPasswordRequest.send("fucker-secret"))
+//
+//        await(send(null, SignUpRequest()-{o->
+//            o.agreeTerms.value = true
+//            o.immutableSignUpFields-{o->
+//                o.email.value = "fucker@test.shit.ua"
+//            }
+//            o.mutableSignUpFields-{o->
+//                o.firstName.value = "Gaylord"
+//                o.lastName.value = "Fucker"
+//            }
+//        })).orDie()
+//
+//        fuckerToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
+//            o.email.value = "fucker@test.shit.ua"
+//            o.password.value = "fucker-secret"
+//        })).orDie().token
+//
+//        fieldsReq.email.value = "fucker@test.shit.ua"
+//        await(send(fieldsReq))
     }
 
     fun assert_staticHomePage_rightNavbarGaylord() {

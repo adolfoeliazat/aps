@@ -20,24 +20,15 @@ abstract class ClitoralEntity {
 
 @Entity @Table(name = "ua_orders")
 open class UAOrder (
-    @Column(length = MAX_STRING)
-    var title: String,
-
-    @Enumerated(EnumType.STRING)
-    var documentType: UADocumentType,
-
+    @Column(length = MAX_STRING) var title: String,
+    @Enumerated(EnumType.STRING) var documentType: UADocumentType,
     var numPages: Int,
     var numSources: Int,
-
-    @Column(length = MAX_STRING)
-    var details: String,
-
-    @Enumerated(EnumType.STRING)
-    var state: UAOrderState
+    @Column(length = MAX_STRING) var details: String,
+    @Enumerated(EnumType.STRING) var state: UAOrderState,
+    @Column(length = MAX_STRING) var confirmationSecret: String
 ) : ClitoralEntity() {
-    override fun toString(): String {
-        return "UAOrder(id=$id, title='$title', documentType=$documentType, numPages=$numPages, numSources=$numSources, details='$details', state=$state)"
-    }
+    override fun toString() = "UAOrder(id=$id, title='$title', documentType=$documentType, numPages=$numPages, numSources=$numSources, details='$details', state=$state)"
 }
 
 interface UAOrderRepository : CrudRepository<UAOrder, Long> {

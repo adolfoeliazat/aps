@@ -43,6 +43,11 @@ class ProcedureContext {
             if (ctx.hasUser) ctx.user
             else null
     }
+
+    val clientProtocol = "http" // TODO:vgrechka Switch everything to HTTPS
+    val clientRootPath = ""
+
+    val clientRoot get()= "$clientProtocol://$clientDomain$clientPortSuffix$clientRootPath"
 }
 
 enum class NeedsUser {

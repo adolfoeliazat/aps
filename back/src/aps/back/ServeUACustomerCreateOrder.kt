@@ -11,6 +11,7 @@ import into.kommon.*
 import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
+import java.util.*
 
 // TODO:vgrechka Introduce some meta-annotation?
 @Component @Scope(SCOPE_PROTOTYPE) class ServeUACustomerCreateOrder(
@@ -25,13 +26,23 @@ import org.springframework.stereotype.Component
                 if (ctx.hasUser) {
                     imf("hasUser")
                 } else {
+                    val imposedSecret = TestServerFiddling.nextGeneratedConfirmationSecret
+                    val confirmationSecret = when (imposedSecret) {
+                        null -> UUID.randomUUID().toString()
+                        else -> {
+                            TestServerFiddling.nextGeneratedConfirmationSecret = null
+                            imposedSecret
+                        }
+                    }
+
                     val order = repo.save(UAOrder(
                         documentType = req.documentType.value,
                         title = req.documentTitle.value,
                         numPages = req.numPages.value,
                         numSources = req.numSources.value,
                         details = req.documentDetails.value,
-                        state = UAOrderState.WAITING_EMAIL_CONFIRMATION
+                        state = UAOrderState.WAITING_EMAIL_CONFIRMATION,
+                        confirmationSecret = confirmationSecret
                     ))
 
                     val vspacing = "0.5em"
@@ -41,7 +52,7 @@ import org.springframework.stereotype.Component
                             <td style='padding: 0; padding-left: 1em; padding-bottom: $vspacing; white-space: pre-wrap;'>${escapeHTML(value.toString())}</td>
                         </tr>"""
 
-                    val href = "pizda"
+                    val confirmationURL = ctx.clientRoot + "/confirmOrder.html?secret=$confirmationSecret"
                     EmailMatumba.send(Email(
                         to = "${req.name.value} <${req.email.value}>",
                         subject = "Подтверждение заказа",
@@ -50,7 +61,7 @@ import org.springframework.stereotype.Component
                             ua = """
                                 <div style='font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;'>
                                     <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(req.name.value)}!</div>
-                                    Нажми <a href="$href">сюда</a> для подтверждения заказа.
+                                    Нажми <a href="$confirmationURL">сюда</a> для подтверждения заказа.
                                     <h3 style='font-size: 24px; margin-top: 20px; margin-bottom: 10px; line-height: 1.1; font-weight: 500;'>
                                         Заказ №${order.id}
                                     </h3>

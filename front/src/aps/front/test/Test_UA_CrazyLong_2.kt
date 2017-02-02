@@ -20,6 +20,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
             debugMailboxClear()
             selectSetValue(fieldSpecs.ua.documentType_testRef, UADocumentType.PRACTICE)
+            imposeNextGeneratedConfirmationSecret("top-fucking-secret")
             formSubmissionAttempts(
                 testShit,
                 descr = "Make order (no sign-in)",

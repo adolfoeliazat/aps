@@ -93,13 +93,13 @@ fun TestScenarioBuilder.assertEmailThenClear(descr: String, expectedTo: String, 
     act {debugHideMailbox()}
 }
 
-fun TestScenarioBuilder.imposeNextRequestTimestampUTC(stamp: String) {
-    acta {ImposeNextRequestTimestampRequest.send(stamp)}
-}
-
-fun TestScenarioBuilder.imposeNextGeneratedPassword(password: String) {
-    acta {imposeNextGeneratedPassword2(password)}
-}
+//fun TestScenarioBuilder.imposeNextRequestTimestampUTC(stamp: String) {
+//    acta {ImposeNextRequestTimestampRequest.send(stamp)}
+//}
+//
+//fun TestScenarioBuilder.imposeNextGeneratedPassword(password: String) {
+//    acta {imposeNextGeneratedPassword2(password)}
+//}
 
 suspend fun assertFreshCustomerDashboardScreen() {
     assertScreenHTML("Fresh customer's dashboard screen", "39ffecee-5b3f-4bf0-b9c6-43256a58a663")
@@ -192,94 +192,99 @@ class TestShit {
 }
 
 fun TestScenarioBuilder.setUpBobul(testShit: TestShit) {
-    acta {async{
-        measureAndReportToDocumentElement("Preparing customer: Ivo Bobul") {
-            await(ImposeNextGeneratedPasswordRequest.send("bobul-secret"))
-
-            fiddlingWithGlobals {
-                TestGlobal.overriddenClientKind = ClientKind.UA_CUSTOMER
-
-                testShit.bobulID = await(send(null, SignUpRequest()-{o->
-                    o.agreeTerms.value = true
-                    o.immutableSignUpFields-{o->
-                        o.email.value = "bobul@test.shit.ua"
-                    }
-                    o.mutableSignUpFields-{o->
-                        o.firstName.value = "Иво"
-                        o.lastName.value = "Бобул"
-                    }
-                })).orDie().userID
-
-                testShit.bobulToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
-                    o.email.value = "bobul@test.shit.ua"
-                    o.password.value = "bobul-secret"
-                })).orDie().token
-
-//                await(send(TestSetUserFieldsRequest()-{o->
+    imf("Reimplement setUpBobul")
+//    acta {async{
+//        measureAndReportToDocumentElement("Preparing customer: Ivo Bobul") {
+//            await(ImposeNextGeneratedPasswordRequest.send("bobul-secret"))
+//
+//            fiddlingWithGlobals {
+//                TestGlobal.overriddenClientKind = ClientKind.UA_CUSTOMER
+//
+//                testShit.bobulID = await(send(null, SignUpRequest()-{o->
+//                    o.agreeTerms.value = true
+//                    o.immutableSignUpFields-{o->
+//                        o.email.value = "bobul@test.shit.ua"
+//                    }
+//                    o.mutableSignUpFields-{o->
+//                        o.firstName.value = "Иво"
+//                        o.lastName.value = "Бобул"
+//                    }
+//                })).orDie().userID
+//
+//                testShit.bobulToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
 //                    o.email.value = "bobul@test.shit.ua"
-//                }))
-            }
-        }
-    }}
+//                    o.password.value = "bobul-secret"
+//                })).orDie().token
+//
+////                await(send(TestSetUserFieldsRequest()-{o->
+////                    o.email.value = "bobul@test.shit.ua"
+////                }))
+//            }
+//        }
+//    }}
 }
 
 fun TestScenarioBuilder.setUpFedor(testShit: TestShit) {
-    acta {async{
-        measureAndReportToDocumentElement("Preparing writer: Fedor Dostoevsky") {
-            await(ImposeNextGeneratedPasswordRequest.send("fedor-secret"))
-
-            fiddlingWithGlobals {
-                TestGlobal.overriddenClientKind = ClientKind.UA_WRITER
-
-                testShit.fedorID = await(send(null, SignUpRequest()-{o->
-                    o.agreeTerms.value = true
-                    o.immutableSignUpFields-{o->
-                        o.email.value = "fedor@test.shit.ua"
-                    }
-                    o.mutableSignUpFields-{o->
-                        o.firstName.value = "Федор"
-                        o.lastName.value = "Достоевский"
-                    }
-                })).orDie().userID
-
-                await(send(TestSetUserFieldsRequest()-{o->
-                    o.email.value = "fedor@test.shit.ua"
-                    o.state.value = UserState.COOL
-                }))
-
-                testShit.fedorToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
-                    o.email.value = "fedor@test.shit.ua"
-                    o.password.value = "fedor-secret"
-                })).orDie().token
-            }
-        }
-    }}
+    imf("Reimplement setUpFedor")
+//    acta {async{
+//        measureAndReportToDocumentElement("Preparing writer: Fedor Dostoevsky") {
+//            await(ImposeNextGeneratedPasswordRequest.send("fedor-secret"))
+//
+//            fiddlingWithGlobals {
+//                TestGlobal.overriddenClientKind = ClientKind.UA_WRITER
+//
+//                testShit.fedorID = await(send(null, SignUpRequest()-{o->
+//                    o.agreeTerms.value = true
+//                    o.immutableSignUpFields-{o->
+//                        o.email.value = "fedor@test.shit.ua"
+//                    }
+//                    o.mutableSignUpFields-{o->
+//                        o.firstName.value = "Федор"
+//                        o.lastName.value = "Достоевский"
+//                    }
+//                })).orDie().userID
+//
+//                await(send(TestSetUserFieldsRequest()-{o->
+//                    o.email.value = "fedor@test.shit.ua"
+//                    o.state.value = UserState.COOL
+//                }))
+//
+//                testShit.fedorToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
+//                    o.email.value = "fedor@test.shit.ua"
+//                    o.password.value = "fedor-secret"
+//                })).orDie().token
+//            }
+//        }
+//    }}
 }
 
 fun TestScenarioBuilder.setUpDasja(testShit: TestShit) {
-    acta {async{
-        measureAndReportToDocumentElement("Preparing admin: Dasja") {
-            await(ImposeNextGeneratedPasswordRequest.send("fedor-secret"))
-
-            fiddlingWithGlobals {
-                TestGlobal.overriddenClientKind = ClientKind.UA_WRITER
-
-                testShit.dasjaID = "100000"
-
-                testShit.dasjaToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
-                    o.email.value = "dasja@test.shit.ua"
-                    o.password.value = "dasjasecret"
-                })).orDie().token
-            }
-        }
-    }}
+    imf("Reimplement setUpDasja")
+//    acta {async{
+//        measureAndReportToDocumentElement("Preparing admin: Dasja") {
+//            await(ImposeNextGeneratedPasswordRequest.send("fedor-secret"))
+//
+//            fiddlingWithGlobals {
+//                TestGlobal.overriddenClientKind = ClientKind.UA_WRITER
+//
+//                testShit.dasjaID = "100000"
+//
+//                testShit.dasjaToken = await(sendSafe(null, SignInWithPasswordRequest()-{o->
+//                    o.email.value = "dasja@test.shit.ua"
+//                    o.password.value = "dasjasecret"
+//                })).orDie().token
+//            }
+//        }
+//    }}
 }
 
-fun imposeNextGeneratedPassword2(password: String) = ImposeNextGeneratedPasswordRequest.send(password)
+suspend fun imposeNextGeneratedPassword2(password: String) = send(ImposeNextGeneratedPasswordRequest()-{o->
+    o.password.value = password
+})
 
-//fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, addFiles: () -> Unit) {
-//
-//}
+suspend fun imposeNextGeneratedConfirmationSecret(secret: String) = send(ImposeNextGeneratedConfirmationSecretRequest()-{o->
+    o.secret.value = secret
+})
 
 fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
     await(testShit.imposeNextRequestTimestamp())

@@ -41,6 +41,7 @@ object TestServerFiddling {
     @Volatile var rejectAllRequestsNeedingDB: Boolean = false
     @Volatile var nextGeneratedPassword: String? = null
     @Volatile var nextRequestError: String? = null
+    @Volatile var nextGeneratedConfirmationSecret : String? = null
 }
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
@@ -80,9 +81,17 @@ testProcedure(
 
 @RemoteProcedureFactory fun imposeNextGeneratedPassword() = testProcedure(
     {ImposeNextGeneratedPasswordRequest()},
-    runShit = fun(ctx, req): GenericResponse {
+    runShit = fun(ctx, req): ImposeNextGeneratedPasswordRequest.Response {
         TestServerFiddling.nextGeneratedPassword = req.password.value
-        return GenericResponse()
+        return ImposeNextGeneratedPasswordRequest.Response()
+    }
+)
+
+@RemoteProcedureFactory fun imposeNextGeneratedConfirmationSecret() = testProcedure(
+    {ImposeNextGeneratedConfirmationSecretRequest()},
+    runShit = fun(ctx, req): ImposeNextGeneratedConfirmationSecretRequest.Response {
+        TestServerFiddling.nextGeneratedConfirmationSecret = req.secret.value
+        return ImposeNextGeneratedConfirmationSecretRequest.Response()
     }
 )
 

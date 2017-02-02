@@ -32,6 +32,8 @@ fun send(req: TestLoadSnapshotRequest): Promisoid<TestLoadSnapshotRequest.Respon
 fun send(req: GetSentEmailsRequest): Promisoid<GetSentEmailsRequest.Response> = callDangerousMatumba(req)
 fun send(req: ClearSentEmailsRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 suspend fun send(req: TestSQLFiddleRequest): TestSQLFiddleRequest.Response = callDangerousMatumba2(req)
+suspend fun send(req: ImposeNextGeneratedPasswordRequest): Promisoid<ImposeNextGeneratedPasswordRequest.Response> = callDangerousMatumba(req)
+suspend fun send(req: ImposeNextGeneratedConfirmationSecretRequest): Promisoid<ImposeNextGeneratedConfirmationSecretRequest.Response> = callDangerousMatumba(req)
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->

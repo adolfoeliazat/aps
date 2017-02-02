@@ -232,16 +232,14 @@ class ClearSentEmailsRequest : RequestMatumba() {
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
-class ImposeNextGeneratedPasswordRequest() : RequestMatumba() {
+class ImposeNextGeneratedPasswordRequest : RequestMatumba() {
+    class Response : CommonResponseFieldsImpl()
     val password = StringHiddenField(this, "password")
+}
 
-    companion object {
-        fun send(password: String): Promisoid<Unit> = callDangerousMatumba(ImposeNextGeneratedPasswordRequest().apply {
-            this.password.value = password
-        })
-    }
-
-//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
+class ImposeNextGeneratedConfirmationSecretRequest : RequestMatumba() {
+    class Response : CommonResponseFieldsImpl()
+    val secret = StringHiddenField(this, "secret")
 }
 
 

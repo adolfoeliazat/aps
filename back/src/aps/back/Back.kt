@@ -102,7 +102,7 @@ fun reallyBoot() {
 }
 
 private fun instrumentShit() {
-//    ByteBuddyAgent.install()
+    // ByteBuddyAgent.install()    // -javaagent:back/lib-gradle/byte-buddy-agent-1.6.7.jar
     val buddy = ByteBuddy()
 
     val entries = System.getProperty("java.class.path").split(File.pathSeparator)
