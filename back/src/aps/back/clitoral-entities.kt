@@ -7,7 +7,7 @@ import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
 
 @MappedSuperclass @Access(PROPERTY)
-abstract class ClitoralEntity {
+open class ClitoralEntity {
     @get:Id @get:GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
 
@@ -25,8 +25,9 @@ open class UAOrder (
     var details: String,
     var state: UAOrderState
 ) : ClitoralEntity() {
-    override fun toString() =
-        "UAOrder(id='$id', title='$title')"
+    override fun toString(): String {
+        return "UAOrder(id=$id, title='$title', documentType=$documentType, numPages=$numPages, numSources=$numSources, details='$details', state=$state)"
+    }
 }
 
 interface UAOrderRepository : CrudRepository<UAOrder, Long> {

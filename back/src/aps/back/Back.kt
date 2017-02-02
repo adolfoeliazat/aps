@@ -25,9 +25,21 @@ import java.util.*
 import net.bytebuddy.dynamic.loading.ClassReloadingStrategy
 import net.bytebuddy.ByteBuddy
 import net.bytebuddy.agent.ByteBuddyAgent
+import net.bytebuddy.description.method.MethodDescription
+import net.bytebuddy.description.modifier.MethodManifestation
 import net.bytebuddy.description.modifier.Visibility
+import net.bytebuddy.description.type.TypeDescription
+import net.bytebuddy.dynamic.DynamicType
+import net.bytebuddy.dynamic.Transformer
 import net.bytebuddy.implementation.MethodCall
+import net.bytebuddy.implementation.SuperMethodCall
+import net.bytebuddy.matcher.ElementMatcher
+import net.bytebuddy.matcher.ElementMatchers
 import org.reflections.scanners.SubTypesScanner
+import java.beans.Introspector
+import java.lang.reflect.Modifier
+import kotlin.properties.Delegates.notNull
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 val THE_ADMIN_ID = 101L // TODO:vgrechka Unhardcode admin ID    17c5cc52-57c2-480d-a7c3-abb030b01cc9
 
@@ -105,8 +117,10 @@ private fun instrumentShit() {
             .setUrls(ClasspathHelper.forPackage("aps.back"))
             // .setScanners(MethodAnnotationsScanner())
             .addScanners(SubTypesScanner()))
-    val classes = refl.getSubTypesOf(ClitoralEntity::class.java)
-    for (clazz in classes) {
+    val rootClass = separateLoader.loadClass("aps.back.ClitoralEntity")
+    val classes = refl.getSubTypesOf(rootClass)
+    for (clazz in listOf(rootClass) + classes) {
+        // TODO:vgrechka Ensure classes are sorted from super to children -- redefinitions should be loaded in that order
         val ctor = clazz.constructors[0]
         val paramTypes = ctor.parameterTypes
         val ctorParams = arrayOfNulls<Any?>(paramTypes.size)
@@ -121,13 +135,33 @@ private fun instrumentShit() {
             }
         }
 
-        buddy
-            .redefine(clazz)
+        val train1 = buddy
+            .rebase(clazz)
             .name(clazz.name)
-            .defineConstructor(Visibility.PUBLIC)
-            .intercept(MethodCall
-                           .invoke(ctor)
-                           .with(*ctorParams))
+
+        var train2 = train1
+        if (clazz != rootClass) {
+            train2 = train1.defineConstructor(Visibility.PUBLIC)
+                .intercept(MethodCall
+                               .invoke(ctor)
+                               .with(*ctorParams))
+        }
+
+        var train3 = train2
+        val beanInfo = Introspector.getBeanInfo(clazz, /*stopClass*/ clazz.superclass)
+        for (pd in beanInfo.propertyDescriptors) {
+            fun open(m: Method) {
+                clog("Opening ${clazz.simpleName}.${m.name}")
+                train3 = train3
+                    .method(ElementMatchers.named(m.name))
+                    .intercept(SuperMethodCall.INSTANCE)
+                    .transform(Transformer.ForMethod.withModifiers(MethodManifestation.PLAIN))
+            }
+            pd.readMethod?.let(::open)
+            pd.writeMethod?.let(::open)
+        }
+
+        train3
             .make()
             .load(BackGlobus::class.java.classLoader, ClassReloadingStrategy.fromInstalledAgent())
     }

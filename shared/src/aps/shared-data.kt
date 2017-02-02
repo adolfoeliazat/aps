@@ -1,5 +1,7 @@
 package aps
 
+import aps.Color.*
+
 class UserRTO(
     val id: String,
     val deleted: Boolean,
@@ -77,6 +79,13 @@ enum class UADocumentType(override val title: String) : Titled {
     OTHER(t("TOTE", "Другое"))
 }
 
+enum class UAOrderState(override val title: String, val labelBackground: Color) : Titled {
+    CREATED(t("TOTE", "Создан"), GRAY_300),
+    LOOKING_FOR_WRITERS(t("TOTE", "Ищем писателей"), LIGHT_BLUE_100),
+    WAITING_FOR_PAYMENT(t("TOTE", "Ждем оплаты"), GRAY_300),
+    WRITER_ASSIGNED(t("TOTE", "Писатель назначен"), GRAY_300),
+    WAITING_EMAIL_CONFIRMATION(t("TOTE", "Ждем подтверждения имейла"), GRAY_300)
+}
 
 
 

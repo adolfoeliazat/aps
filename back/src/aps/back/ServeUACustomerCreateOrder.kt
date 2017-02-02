@@ -21,21 +21,21 @@ import org.springframework.stereotype.Component
             bpc = bpc,
             makeRequest = {UACustomerCreateOrderRequest(it.xlobal)},
             needsUser = NeedsUser.MAYBE,
-            runShit = {_, req: UACustomerCreateOrderRequest ->
-                repo.save(UAOrder(
-                    title = req.documentTitle.value,
-                    documentType = UADocumentType.ESSAY,
-                    numPages = 30,
-                    numSources = 5,
-                    details = "Fucking shit",
-                    state = UAOrderState.WAITING_EMAIL_CONFIRMATION
-                ))
-                dwarnStriking("Saved shit")
-
-                val shit = repo.findOne(1)
-                dwarnStriking("Found shit: $shit")
-
-                die("cooooooool")
+            runShit = fun (ctx, req: UACustomerCreateOrderRequest): UACustomerCreateOrderRequest.Response {
+                if (ctx.hasUser) {
+                    imf("hasUser")
+                } else {
+                    val order = repo.save(UAOrder(
+                        title = req.documentTitle.value,
+                        documentType = UADocumentType.ESSAY,
+                        numPages = 30,
+                        numSources = 5,
+                        details = "Fucking shit",
+                        state = UAOrderState.WAITING_EMAIL_CONFIRMATION
+                    ))
+                    dwarnStriking("ooooooo", order)
+                    return UACustomerCreateOrderRequest.Response(order.id.toString())
+                }
             }
         ))
     }
