@@ -206,6 +206,8 @@ class GetSoftwareVersionRequest : RequestMatumba() {
     }
 }
 
+class Email(val to: String, val subject: String, val html: String)
+
 class GetSentEmailsRequest : RequestMatumba() {
     class Response(val emails: List<Email>) : CommonResponseFieldsImpl()
 
@@ -257,7 +259,6 @@ class GetLiveStatusRequest : RequestMatumba() {
 //    fun rpc(ui: LegacyUIShit): Promise<Response> = callRemoteProcedure(this, ui)
 }
 
-class Email(val to: String, val subject: String, val html: String)
 
 
 object ignore

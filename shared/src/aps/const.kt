@@ -57,6 +57,10 @@ object const {
         val dynamicFooter = "dynamicFooter"
         val cutLineContainer = "cutLineContainer"
     }
+
+    object productName {
+        val uaCustomer = "APS UA"
+    }
 }
 
 

@@ -127,6 +127,7 @@ fun tidyHTML(html: String, transformLine: ((String) -> String)? = null): String 
 
     val ultimateHTML = html
         .replace("<span", "\n<span")
+        .replace("<a", "\n<a")
         .replace(">", ">\n")
         .replace("</", "\n</")
 

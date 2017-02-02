@@ -26,14 +26,47 @@ import org.springframework.stereotype.Component
                     imf("hasUser")
                 } else {
                     val order = repo.save(UAOrder(
+                        documentType = req.documentType.value,
                         title = req.documentTitle.value,
-                        documentType = UADocumentType.ESSAY,
-                        numPages = 30,
-                        numSources = 5,
-                        details = "Fucking shit",
+                        numPages = req.numPages.value,
+                        numSources = req.numSources.value,
+                        details = req.documentDetails.value,
                         state = UAOrderState.WAITING_EMAIL_CONFIRMATION
                     ))
-                    dwarnStriking("ooooooo", order)
+
+                    val vspacing = "0.5em"
+                    fun row(title: String, value: Any) = """
+                        <tr>
+                            <th style='text-align: left; white-space: nowrap; padding: 0; padding-bottom: $vspacing;'>$title</th>
+                            <td style='padding: 0; padding-left: 1em; padding-bottom: $vspacing; white-space: pre-wrap;'>${escapeHTML(value.toString())}</td>
+                        </tr>"""
+
+                    val href = "pizda"
+                    EmailMatumba.send(Email(
+                        to = "${req.name.value} <${req.email.value}>",
+                        subject = "Подтверждение заказа",
+                        html = dedent(t(
+                            en = """TOTE""",
+                            ua = """
+                                <div style='font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;'>
+                                    <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(req.name.value)}!</div>
+                                    Нажми <a href="$href">сюда</a> для подтверждения заказа.
+                                    <h3 style='font-size: 24px; margin-top: 20px; margin-bottom: 10px; line-height: 1.1; font-weight: 500;'>
+                                        Заказ №${order.id}
+                                    </h3>
+                                    <table style='border-spacing: 0; border-collapse: collapse;'>
+                                        ${row(fieldSpecs.ua.documentType.title, order.documentType.title)}
+                                        ${row(fieldSpecs.documentTitle.title, order.title)}
+                                        ${row(fieldSpecs.numPages.title, order.numPages)}
+                                        ${row(fieldSpecs.numSources.title, order.numSources)}
+                                    </table>
+                                    <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fieldSpecs.details.title}</div>
+                                    <div style='white-space: pre-wrap;'>${escapeHTML(order.details)}</div>
+                                    <div style='padding-top: 2em; font-style: italic;'>${const.productName.uaCustomer}</div>
+                                </div>
+                            """
+                        ))
+                    ))
                     return UACustomerCreateOrderRequest.Response(order.id.toString())
                 }
             }

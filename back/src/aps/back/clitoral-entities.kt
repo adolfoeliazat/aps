@@ -6,9 +6,11 @@ import java.sql.Timestamp
 import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
 
-@MappedSuperclass @Access(PROPERTY)
+private const val MAX_STRING = 10000
+
+@MappedSuperclass // @Access(PROPERTY)
 abstract class ClitoralEntity {
-    @get:Id @get:GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
     var createdAt = Timestamp(System.currentTimeMillis())
@@ -18,11 +20,19 @@ abstract class ClitoralEntity {
 
 @Entity @Table(name = "ua_orders")
 open class UAOrder (
+    @Column(length = MAX_STRING)
     var title: String,
+
+    @Enumerated(EnumType.STRING)
     var documentType: UADocumentType,
+
     var numPages: Int,
     var numSources: Int,
+
+    @Column(length = MAX_STRING)
     var details: String,
+
+    @Enumerated(EnumType.STRING)
     var state: UAOrderState
 ) : ClitoralEntity() {
     override fun toString(): String {
