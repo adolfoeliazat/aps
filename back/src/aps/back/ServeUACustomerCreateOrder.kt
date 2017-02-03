@@ -13,8 +13,7 @@ import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 import java.util.*
 
-// TODO:vgrechka Introduce some meta-annotation?
-@Component @Scope(SCOPE_PROTOTYPE) class ServeUACustomerCreateOrder(
+@Servant class ServeUACustomerCreateOrder(
     val repo: UAOrderRepository
 ) : BitchyProcedure() {
     override fun serve() {

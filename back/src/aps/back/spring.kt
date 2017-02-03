@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Pointcut
 import org.h2.jdbcx.JdbcDataSource
 import org.hibernate.annotations.common.reflection.XProperty
 import org.hibernate.cfg.Environment
+import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE
 import org.springframework.context.annotation.*
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.orm.jpa.JpaTransactionManager
@@ -22,6 +23,9 @@ import kotlin.system.exitProcess
 
 @Volatile var springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
 
+@Component @Scope(SCOPE_PROTOTYPE)
+annotation class Servant
+
 @Configuration
 @EnableJpaRepositories
 @EnableTransactionManagement
@@ -30,9 +34,6 @@ open class AppConfig {
     @Bean open fun entityManagerFactory(dataSource: DataSource) = LocalContainerEntityManagerFactoryBean()-{o->
         o.jpaVendorAdapter = HibernateJpaVendorAdapter()-{o->
             o.setShowSql(true)
-//            o.setGenerateDdl(true)
-//            o.jpaPropertyMap.put(Environment.HBM2DDL_AUTO, "update")
-//            o.jpaPropertyMap["hibernate.hbm2ddl.auto"] = "create-drop"
         }
         o.jpaPropertyMap.put(Environment.HBM2DDL_AUTO, "create-drop")
         o.setPackagesToScan("aps.back")
@@ -51,21 +52,8 @@ open class AppConfig {
     @Bean open fun warmWelcomer(sayer: ShitSayer) = WarmWelcomer(sayer)
 }
 
-@Aspect
-class XClassFiddler {
-//    @Around("call(java.util.List org.hibernate.annotations.common.reflection.java.JavaXClass.getDeclaredProperties(..))")
-//    fun fuck(jp: ProceedingJoinPoint): Any? {
-//        println("yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeees")
-////        println("accessType = $accessType")
-//        println("signature = " + jp.signature)
-//        println("args = " + jp.args.joinToString())
-//        val res = jp.proceed() as List<XProperty>
-//        return res.filter {p->
-//            println("pppppppppppp: " + p.name + "; " + p.classOrElementClass)
-//            !p.name.endsWith("\$delegate")
-//        }
-//    }
-}
+
+
 
 interface Welcomer {
     fun sayHello()

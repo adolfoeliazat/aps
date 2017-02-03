@@ -7,7 +7,7 @@ import javax.persistence.*
 
 private const val MAX_STRING = 10000
 
-@MappedSuperclass // @Access(PROPERTY)
+@MappedSuperclass
 abstract class ClitoralEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

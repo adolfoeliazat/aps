@@ -9,12 +9,9 @@ package aps.back
 import aps.*
 import into.kommon.*
 import org.mindrot.jbcrypt.BCrypt
-import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE
-import org.springframework.context.annotation.Scope
-import org.springframework.stereotype.Component
 import java.util.*
 
-@Component @Scope(SCOPE_PROTOTYPE) class ServeConfirmOrder(
+@Servant class ServeConfirmOrder(
     val orderRepo: UAOrderRepository,
     val userRepo: UserRepository,
     val userTokenRepo: UserTokenRepository

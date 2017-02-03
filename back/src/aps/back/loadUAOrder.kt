@@ -7,13 +7,8 @@
 package aps.back
 
 import aps.*
-import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE
-import org.springframework.context.annotation.Scope
-import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
-
-@Component @Scope(SCOPE_PROTOTYPE) class ServeLoadUAOrder(
+@Servant class ServeLoadUAOrder(
     val orderRepo: UAOrderRepository,
     val userRepo: UserRepository,
     val userTokenRepo: UserTokenRepository

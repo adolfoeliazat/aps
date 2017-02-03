@@ -55,6 +55,10 @@ class GodServlet : HttpServlet() {
                 pathInfo.startsWith("/rpc/") -> {
                     val procedureName = req.pathInfo.substring("/rpc/".length)
                     try {
+                        run {
+                            val server = springctx.getBean("serve" + procedureName.capitalize(), BitchyProcedure::class.java)
+                            server.bpc = BitchyProcedureContext(req, res)
+                        }
                         val server = springctx.getBean("serve" + procedureName.capitalize(), BitchyProcedure::class.java)
                         server.bpc = BitchyProcedureContext(req, res)
                         TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
