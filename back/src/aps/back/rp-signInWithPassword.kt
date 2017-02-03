@@ -50,7 +50,7 @@ import java.util.*
     {SignInWithTokenRequest()},
     wrapInFormResponse = false,
     runShit = fun(ctx, req): SignInResponse {
-        return SignInResponse(ctx.token, ctx.user)
+        return SignInResponse(ctx.token, ctx.user_killme)
     }
 )
 

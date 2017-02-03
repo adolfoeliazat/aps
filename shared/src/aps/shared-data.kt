@@ -29,7 +29,6 @@ class UAOrderRTO(
     val insertedAt: Long,
     val customer: UserRTO,
     val documentType: UADocumentType,
-    val deadline: Long,
     val price: Int?,
     val numPages: Int,
     val numSource: Int,

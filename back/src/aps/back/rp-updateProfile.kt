@@ -21,7 +21,7 @@ import aps.back.generated.jooq.tables.pojos.JQUsers
             .set(USERS.ABOUT_ME, req.profileFields.aboutMe.value)
             .set(USERS.STATE, UserState.PROFILE_APPROVAL_PENDING.name)
             .set(USERS.ASSIGNED_TO, THE_ADMIN_ID)
-            .where(USERS.ID.eq(ctx.user.id.toLong()))
+            .where(USERS.ID.eq(ctx.user_killme.id.toLong()))
             .execute()
         }
 

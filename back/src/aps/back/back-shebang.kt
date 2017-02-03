@@ -85,7 +85,7 @@ fun <POJO : Any, RTO> selectChunk(
 fun loadUser(ctx: ProcedureContext): UserRTO {
     val users = tracingSQL("Select user") {ctx.q
         .select().from(USERS)
-        .where(USERS.ID.eq(ctx.user.id.toLong()))
+        .where(USERS.ID.eq(ctx.user_killme.id.toLong()))
         .fetch().into(JQUsers::class.java)
     }
 

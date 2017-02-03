@@ -97,8 +97,8 @@ class World(val name: String) {
         loadPageForURL()
     }
 
-    suspend fun replaceNavigate(where: dynamic) {
-        loc.replaceState(null, "", where)
+    suspend fun replaceNavigate(url: String) {
+        loc.replaceState(null, "", url)
         loadPageForURL()
     }
 

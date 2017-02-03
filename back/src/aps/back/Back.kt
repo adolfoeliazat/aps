@@ -130,6 +130,7 @@ private fun instrumentShit() {
                 Integer.TYPE -> -1
                 else -> when {
                     pt.isEnum -> pt.enumConstants[0]
+                    rootClass.isAssignableFrom(pt) -> null
                     else -> bitch("Obscure ctor param #$i in ${clazz.name}: $pt")
                 }
             }

@@ -14,6 +14,9 @@ import java.util.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.JQUsers
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import org.hibernate.Hibernate
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.support.TransactionTemplate
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import kotlin.properties.Delegates.notNull
@@ -30,9 +33,10 @@ class ProcedureContext {
     var requestTimestamp by notNullOnce<Timestamp>()
     var clientDomain by notNullOnce<String>()
     var clientPortSuffix by notNullOnce<String>()
-    var user by notNullOnce<UserRTO>()
+    var user_killme by notNullOnce<UserRTO>()
     var token by notNullOnce<String>()
     var hasUser by notNullOnce<Boolean>()
+    var user: User? = null
 
     val fieldErrors = mutableListOf<FieldError>()
 
@@ -40,7 +44,7 @@ class ProcedureContext {
         val ctx = this@ProcedureContext
 
         override val user get()=
-            if (ctx.hasUser) ctx.user
+            if (ctx.hasUser) ctx.user_killme
             else null
     }
 
@@ -147,6 +151,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 //                        }
 //                    }
 
+
                     fun runShitWithMaybeDB(): Res {
                         if (spec.needsUser != NeedsUser.NO) {
                             val token = rmap["token"] as String?
@@ -156,9 +161,9 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                                 ctx.hasUser = false
                             } else {
                                 ctx.token = token
-                                ctx.user = userByToken(ctx.q, ctx.token)
-                                if (!spec.userKinds.contains(ctx.user.kind))
-                                    bitch("User kind not allowed: ${ctx.user.kind}")
+                                ctx.user_killme = userByToken2(ctx.token)
+                                if (!spec.userKinds.contains(ctx.user_killme.kind))
+                                    bitch("User kind not allowed: ${ctx.user_killme.kind}")
                                 ctx.hasUser = true
                             }
                         }
@@ -317,6 +322,11 @@ fun userByToken(q: DSLContext, token: String): UserRTO {
     return rows[0].toRTO(q)
 }
 
+fun userByToken2(token: String): UserRTO {
+    val repo = springctx.getBean(UserTokenRepository::class.java)
+    val ut = repo.findByToken(token) ?: bitch("Invalid token")
+    return ut.user!!.toRTO()
+}
 
 
 

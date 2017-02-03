@@ -15,7 +15,7 @@ private val moveItemToTopOnEdit = true
 //    var search: String? = null
 //}
 
-class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
+class CustomerSingleUAOrderPageFilesTab(val page: UACustomerSingleOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
 //    lateinit var ordering: Ordering
 //    lateinit var filter: CustomerFileFilter
 //    lateinit var search: String
@@ -30,10 +30,10 @@ class CustomerSingleUAOrderPageFilesTab(val page: CustomerSingleUAOrderPage, val
                                    ToReactElementable.from{content},
                                    ToReactElementable.from{stripContent})
 
-    inner class FilesTabURLQuery : URLQueryBase(world) {
-        val ordering by enumURLParam(Ordering.values(), default = Ordering.DESC)
-        val filter by enumURLParam(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
-        val search by stringURLParam()
+    inner class FilesTabURLQuery : URLQueryBase_killme(world) {
+        val ordering by enumURLParam_killme(Ordering.values(), default = Ordering.DESC)
+        val filter by enumURLParam_killme(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
+        val search by stringURLParam_killme()
     }
 
     override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {

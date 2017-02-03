@@ -5,7 +5,7 @@ import aps.Color.*
 import kotlin.coroutines.CoroutineContext
 
 class DebugMailboxPage(val world: World) {
-    inner class URLQuery : URLQueryBase(world) {
+    inner class URLQuery : URLQueryBase_killme(world) {
     }
 
     val urlQuery = URLQuery()

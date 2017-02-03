@@ -18,9 +18,9 @@ class DebugLogPage(val world: World) {
 
     enum class Cut {NONE, LAST_BOOT, LAST_NON_EMPTY_BOOT}
 
-    inner class URLQuery : URLQueryBase(world) {
-        val cut by enumURLParam(Cut.values(), Cut.NONE)
-        val skipCrap by booleanURLParam()
+    inner class URLQuery : URLQueryBase_killme(world) {
+        val cut by enumURLParam_killme(Cut.values(), Cut.NONE)
+        val skipCrap by booleanURLParam_killme()
     }
 
     val urlQuery = URLQuery()

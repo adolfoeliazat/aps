@@ -45,7 +45,7 @@ private fun serveAddUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContext
 
     val orderID = req.orderID.value.toLong()
 
-    val areaID = selectUAOrderAreaByName(ctx, orderID, userKindToAreaName(ctx.user.kind)).id
+    val areaID = selectUAOrderAreaByName(ctx, orderID, userKindToAreaName(ctx.user_killme.kind)).id
 
     val seenAsFrom = callingUserKind.toJOOQ()
 
@@ -59,7 +59,7 @@ private fun serveAddUAOrderFile(callingUserKind: UserKind, ctx: ProcedureContext
         }
     }
 
-    insertFileUserPermission(ctx, fileID, ctx.user.id.toLong())
+    insertFileUserPermission(ctx, fileID, ctx.user_killme.id.toLong())
 
     return AddUAOrderFileRequestBase.Response(orderFileID.toString())
 }

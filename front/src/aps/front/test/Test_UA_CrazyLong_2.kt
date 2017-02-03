@@ -39,6 +39,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 debugMailboxCheck("b9196719-9e01-45f3-987c-cb8259c7f9e6")
             }
 
+            // TODO:vgrechka Try to access order page before it's confirmed
+
             run { // Wrong confirmation secret
                 val ivo2 = Morda("ivo2",
                                  url = fconst.test.url.customer + "/confirmOrder.html?secret=wrong-secret",

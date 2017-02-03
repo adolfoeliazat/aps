@@ -23,44 +23,61 @@ import java.util.*
             makeRequest = {UACustomerCreateOrderRequest(it.xlobal)},
             needsUser = NeedsUser.MAYBE,
             runShit = fun (ctx, req: UACustomerCreateOrderRequest): UACustomerCreateOrderRequest.Response {
-                if (ctx.hasUser) {
-                    imf("ServeUACustomerCreateOrder hasUser")
-                } else {
-                    val imposedSecret = TestServerFiddling.nextGeneratedConfirmationSecret
-                    val confirmationSecret = when (imposedSecret) {
-                        null -> UUID.randomUUID().toString()
-                        else -> {
-                            TestServerFiddling.nextGeneratedConfirmationSecret = null
-                            imposedSecret
-                        }
+                val user = ctx.user
+                val imposedSecret = TestServerFiddling.nextGeneratedConfirmationSecret
+                val confirmationSecret = when (imposedSecret) {
+                    null -> UUID.randomUUID().toString()
+                    else -> {
+                        TestServerFiddling.nextGeneratedConfirmationSecret = null
+                        imposedSecret
                     }
+                }
 
-                    val order = repo.save(UAOrder(
-                        documentType = req.documentType.value,
-                        title = req.documentTitle.value,
-                        numPages = req.numPages.value,
-                        numSources = req.numSources.value,
-                        details = req.documentDetails.value,
-                        state = UAOrderState.WAITING_EMAIL_CONFIRMATION,
-                        confirmationSecret = confirmationSecret
-                    ))
+                val order = repo.save(UAOrder(
+                    documentType = req.documentType.value,
+                    title = req.documentTitle.value,
+                    numPages = req.numPages.value,
+                    numSources = req.numSources.value,
+                    details = req.documentDetails.value,
+                    state = UAOrderState.WAITING_EMAIL_CONFIRMATION,
+                    confirmationSecret = confirmationSecret,
+                    phone = req.phone.value,
+                    customer = user,
+                    anonymousCustomerEmail = when {
+                        user == null -> req.anonymousCustomerEmail.value
+                        else -> null
+                    },
+                    anonymousCustomerName = when {
+                        user == null -> req.anonymousCustomerName.value
+                        else -> null
+                    }
+                ))
 
-                    val vspacing = "0.5em"
-                    fun row(title: String, value: Any) = """
+                val vspacing = "0.5em"
+                fun row(title: String, value: Any) = """
                         <tr>
                             <th style='text-align: left; white-space: nowrap; padding: 0; padding-bottom: $vspacing;'>$title</th>
                             <td style='padding: 0; padding-left: 1em; padding-bottom: $vspacing; white-space: pre-wrap;'>${escapeHTML(value.toString())}</td>
                         </tr>"""
 
-                    val confirmationURL = ctx.clientRoot + "/confirmOrder.html?secret=$confirmationSecret"
-                    EmailMatumba.send(Email(
-                        to = "${req.name.value} <${req.email.value}>",
-                        subject = "[${const.productName.uaCustomer}] Подтверждение заказа",
-                        html = dedent(t(
-                            en = """TOTE""",
-                            ua = """
+                val customerName = when {
+                    ctx.user == null -> req.anonymousCustomerName.value
+                    else -> imf("ServeUACustomerCreateOrder -- signed-in customer")
+                }
+                val customerEmail = when {
+                    ctx.user == null -> req.anonymousCustomerEmail.value
+                    else -> imf("ServeUACustomerCreateOrder -- signed-in customer")
+                }
+
+                val confirmationURL = ctx.clientRoot + "/confirmOrder.html?secret=$confirmationSecret"
+                EmailMatumba.send(Email(
+                    to = "$customerName <$customerEmail>",
+                    subject = "[${const.productName.uaCustomer}] Подтверждение заказа",
+                    html = dedent(t(
+                        en = """TOTE""",
+                        ua = """
                                 <div style='font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;'>
-                                    <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(req.name.value)}!</div>
+                                    <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(customerName)}!</div>
                                     Нажми <a href="$confirmationURL">сюда</a> для подтверждения заказа.
                                     <h3 style='font-size: 24px; margin-top: 20px; margin-bottom: 10px; line-height: 1.1; font-weight: 500;'>
                                         Заказ №${order.id}
@@ -76,10 +93,9 @@ import java.util.*
                                     <div style='padding-top: 2em; font-style: italic;'>${const.productName.uaCustomer}</div>
                                 </div>
                             """
-                        ))
                     ))
-                    return UACustomerCreateOrderRequest.Response(order.id.toString())
-                }
+                ))
+                return UACustomerCreateOrderRequest.Response(order.id.toString())
             }
         ))
     }

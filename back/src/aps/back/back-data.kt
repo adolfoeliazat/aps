@@ -27,7 +27,7 @@ fun <Res, R : Record> ProcedureContext.insertShit(
             .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
 
         table.field("creator_id")?.let {
-            step = step.set(it as Field<Long>, this.user.id.toLong())
+            step = step.set(it as Field<Long>, this.user_killme.id.toLong())
         }
 
         block(step)
@@ -203,7 +203,7 @@ fun JQUaOrderFilesRecord.toRTO(ctx: ProcedureContext, searchWords: List<String> 
         id = id.toString(),
         file = loadFile(ctx.q, fileId, searchWords, Language.UA),
         seenAsFrom = seenAsFrom.toApp(),
-        editable = creatorId == ctx.user.id.toLong(),
+        editable = creatorId == ctx.user_killme.id.toLong(),
         insertedAt = insertedAt.time,
         updatedAt = updatedAt.time
     )

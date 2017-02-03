@@ -359,11 +359,11 @@ private class NotNullOnceVar<T: Any> : ReadWriteProperty<Any?, T> {
     private var value: T? = null
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return value ?: throw IllegalStateException("Property ${property.name} should be initialized before get.")
+        return value ?: throw IllegalStateException("Property `${property.name}` should be initialized before get.")
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        check(this.value == null) {"Property ${property.name} should be assigned only once"}
+        check(this.value == null) {"Property `${property.name}` should be assigned only once"}
         this.value = value
     }
 }

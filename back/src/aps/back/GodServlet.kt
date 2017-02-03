@@ -14,6 +14,9 @@ import aps.back.generated.jooq.tables.pojos.*
 import into.kommon.*
 import org.jooq.Result
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
+import org.springframework.orm.jpa.JpaTransactionManager
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.support.TransactionTemplate
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,11 +55,13 @@ class GodServlet : HttpServlet() {
                 pathInfo.startsWith("/rpc/") -> {
                     val procedureName = req.pathInfo.substring("/rpc/".length)
                     try {
-                        springctx.getBean("serve" + procedureName.capitalize(), BitchyProcedure::class.java)-{o->
-                            o.bpc = BitchyProcedureContext(req, res)
-                            o.serve()
+                        val server = springctx.getBean("serve" + procedureName.capitalize(), BitchyProcedure::class.java)
+                        server.bpc = BitchyProcedureContext(req, res)
+                        TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
+                            server.serve()
                         }
                     } catch (e: NoSuchBeanDefinitionException) {
+//                        clog("NoSuchBeanDefinitionException: $e")
                         val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
                         @Suppress("UNCHECKED_CAST")
                         val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit

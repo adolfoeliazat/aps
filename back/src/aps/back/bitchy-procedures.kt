@@ -114,9 +114,9 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                                 ctx.hasUser = false
                             } else {
                                 ctx.token = token
-                                ctx.user = userByToken(ctx.q, ctx.token)
-                                if (!p.userKinds.contains(ctx.user.kind))
-                                    bitch("User kind not allowed: ${ctx.user.kind}")
+                                ctx.user_killme = userByToken2(ctx.token)
+                                if (!p.userKinds.contains(ctx.user_killme.kind))
+                                    bitch("User kind not allowed: ${ctx.user_killme.kind}")
                                 ctx.hasUser = true
                             }
                         }

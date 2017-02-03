@@ -4,14 +4,13 @@ import aps.*
 import into.kommon.*
 
 class ConfirmOrderPage(val world: World) {
-    val urlQuery = URLQuery()
-    inner class URLQuery : URLQueryBase(world) {
-        val secret by stringURLParam()
+    object urlQuery {
+        val secret by MaybeStringURLParam()
     }
 
     suspend fun load() {
-        val res = send(ConfirmOrderRequest() - {o ->
-            o.secret.value = urlQuery.secret
+        val res = send(ConfirmOrderRequest()-{o->
+            o.secret.value = urlQuery.secret.get(world)
         })
         exhaustive/when (res) {
             is FormResponse2.Shitty -> {
@@ -22,8 +21,19 @@ class ConfirmOrderPage(val world: World) {
                     }
                 ))
             }
+
             is FormResponse2.Hunky -> {
-                imf("aaaaaaaaaaaaa")
+                val u = res.meat.userSignedInAsPartOfMakingOrder
+                if (u != null) {
+                    world.userMaybe = u.user
+                    world.tokenMaybe = u.token
+                    Globus.currentBrowseroid.typedStorageLocal.token = u.token
+                    world.updateNavbar()
+                }
+
+                world.replaceNavigate(
+                    pages.uaCustomer.order.path + ".html"
+                        + "?${UACustomerSingleOrderPage.urlQuery.id.name}=${res.meat.orderId}")
             }
         }
     }

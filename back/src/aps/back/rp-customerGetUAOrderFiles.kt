@@ -39,7 +39,7 @@ import kotlin.reflect.KClass
             tracingSQL("Select area") {ctx.q
                 .selectFrom(t)
                 .where(t.UA_ORDER_ID.eq(req.entityID.value!!.toLong()))
-                .and(t.NAME.eq(userKindToAreaName(ctx.user.kind)))
+                .and(t.NAME.eq(userKindToAreaName(ctx.user_killme.kind)))
                 .fetchOne().id
             }
         }

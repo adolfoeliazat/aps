@@ -98,13 +98,13 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
     val numSources = IntField(this, fieldSpecs.numSources)
     val documentDetails = TextField(this, fieldSpecs.documentDetails)
 
-    var name by notNullOnce<TextField>()
-    init {if (xlobal.user == null) name = TextField(this, fieldSpecs.name)}
+    var anonymousCustomerName by notNullOnce<TextField>()
+    init {if (xlobal.user == null) anonymousCustomerName  = TextField(this, fieldSpecs.anonymousCustomerName)}
 
     val phone = TextField(this, fieldSpecs.phone)
 
-    var email by notNullOnce<TextField>()
-    init {if (xlobal.user == null) email = TextField(this, fieldSpecs.email)}
+    var anonymousCustomerEmail by notNullOnce<TextField>()
+    init {if (xlobal.user == null) anonymousCustomerEmail = TextField(this, fieldSpecs.email)}
 }
 
 class TestSQLFiddleRequest : RequestMatumba() {
@@ -112,8 +112,17 @@ class TestSQLFiddleRequest : RequestMatumba() {
     val input by stringHiddenField()
 }
 
+class UserSignedInAsPartOfMakingOrder(
+    val user: UserRTO,
+    val token: String
+)
+
 class ConfirmOrderRequest : RequestMatumba() {
-    class Response : CommonResponseFieldsImpl()
+    class Response(
+        val orderId: String,
+        val userSignedInAsPartOfMakingOrder: UserSignedInAsPartOfMakingOrder?
+    ) : CommonResponseFieldsImpl()
+
     val secret by stringHiddenField()
 }
 

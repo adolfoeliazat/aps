@@ -12,19 +12,17 @@ interface CustomerSingleUAOrderPageTab {
     fun load(): Promisoid<ZimbabweResponse.Shitty<*>?>
 }
 
-
-class CustomerSingleUAOrderPage(val world: World) {
-    class URLQuery {
-        var id: String? = null
-        var tab: String? = null
+class UACustomerSingleOrderPage(val world: World) {
+    object urlQuery {
+        val id by MaybeStringURLParam()
+        val tab by MaybeStringURLParam()
     }
 
-    var orderID by notNull<String>()
+    var orderID by notNullOnce<String>()
 
     fun load(): Promisoid<Unit> = async {
-        val urlQuery = typeSafeURLQuery(world){URLQuery()}
-        orderID = urlQuery.id.nullifyBlank() ?: return@async world.setShittyParamsPage()
-        val tabID = urlQuery.tab ?: "params"
+        orderID = urlQuery.id.get(world) ?: return@async world.setShittyParamsPage()
+        val tabID = urlQuery.tab.get(world) ?: "params"
 
         val res = await(send(world.token, LoadUAOrderRequest()-{o->
             o.id.value = orderID
@@ -110,7 +108,8 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                     o- kdiv(className = "col-md-4"){o->
                         o- label(t("TOTE", "Срок"))
                         o- kdiv(){o->
-                            o- formatUnixTime(order.deadline)
+                            o- t("TOTE", "ХЗ")
+//                            o- formatUnixTime(order.deadline)
                         }
                     }
                 }

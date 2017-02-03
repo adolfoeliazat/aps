@@ -4,11 +4,13 @@ import aps.front.*
 
 object fieldSpecs {
     val name = TextFieldSpec("name", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val name_testRef = TestRef(name)
+    val anonymousCustomerName = name; val anonymousCustomerName_testRef = TestRef(anonymousCustomerName)
     val firstName = TextFieldSpec("firstName", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val firstName_testRef = TestRef(firstName)
     val lastName = TextFieldSpec("lastName", t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50); val lastName_testRef = TestRef(lastName)
     val password = TextFieldSpec("password", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 50); val password_testRef = TestRef(password)
     val passwordInSignInForm = TextFieldSpec("passwordInSignInForm", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 0, maxLen = Int.MAX_VALUE); val passwordInSignInForm_testRef = TestRef(passwordInSignInForm)
     val email = TextFieldSpec("email", t("TOTE", "Почта"), TextFieldType.EMAIL, minLen = 3, maxLen = 50); val email_testRef = TestRef(email)
+    val anonymousCustomerEmail = email; val anonymousCustomerEmail_testRef = TestRef(anonymousCustomerEmail)
     val emailInSignInForm = TextFieldSpec("emailInSignInForm", t("TOTE", "Почта"), TextFieldType.STRING, minLen = 0, maxLen = Int.MAX_VALUE); val emailInSignInForm_testRef = TestRef(emailInSignInForm)
     val profileRejectionReason = TextFieldSpec("profileRejectionReason", t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000); val profileRejectionReason_testRef = TestRef(profileRejectionReason)
     val banReason = TextFieldSpec("banReason", t("TOTE", "Причина бана"), TextFieldType.TEXTAREA, 0, 5000); val banReason_testRef = TestRef(banReason)

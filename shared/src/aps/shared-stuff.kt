@@ -20,7 +20,7 @@ enum class UserRole {
     SUPPORT
 }
 
-enum class UserKind() {
+enum class UserKind {
     CUSTOMER, WRITER, ADMIN
 }
 

@@ -42,6 +42,7 @@ object pages {
         val makeOrder by namedFucker {PageSpec(it, t("Make Order", "Заказать"), PUBLIC) {MakeOrderPage(it).load()}}; val makeOrder_testRef = TestRef(makeOrder)
         val confirmOrder by namedFucker {PageSpec(it, "boobs", PUBLIC) {ConfirmOrderPage(it).load()}}
         val orders by namedFucker {PageSpec(it, t("My Orders", "Мои заказы"), PRIVATE) {UACustomerOrdersPage(it).load()}}; val orders_testRef = TestRef(orders)
+        val order by namedFucker {PageSpec(it, "boobs", PRIVATE) {UACustomerSingleOrderPage(it).load()}}; val order_testRef = TestRef(orders)
         val support by namedFucker {PageSpec(it, t("Support", "Поддержка"), PRIVATE) {imf()}}
         val dashboard by namedFucker {PageSpec(it, "boobs", PRIVATE) {DashboardPage(it).load()}}
         val profile by namedFucker {PageSpec(it, t("Profile", "Профиль"), PRIVATE) {imf()}}
