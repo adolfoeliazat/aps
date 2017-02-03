@@ -4,10 +4,10 @@ import aps.*
 import into.kommon.*
 
 external class WeakMap<in K: Any, V: Any?> {
-    fun delete(key: K): Boolean = noImpl
-    operator fun get(key: K): V? = noImpl
-    fun has(key: K): Boolean = noImpl
-    operator fun set(key: K, value: V): WeakMap<K, V> = noImpl
+    fun delete(key: K): Boolean
+    operator fun get(key: K): V?
+    fun has(key: K): Boolean
+    operator fun set(key: K, value: V): WeakMap<K, V>
 }
 
 inline fun <K: Any, V> WeakMap<K, V>.getOrPut(key: K, defaultValue: () -> V): V {

@@ -3,6 +3,7 @@
 package aps.front
 
 import aps.*
+import kotlin.js.json
 
 interface EvaporatingButtonAndFormHost {
     var showEmptyLabel: Boolean

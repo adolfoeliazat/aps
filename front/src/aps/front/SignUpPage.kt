@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import kotlin.browser.window
+import kotlin.js.json
 
 class SignUpPage(val world: World) {
     fun load(): Promisoid<Unit> = async {

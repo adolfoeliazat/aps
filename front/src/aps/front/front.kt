@@ -4,13 +4,21 @@
  * (C) Copyright 2015-2016 Vladimir Grechka
  */
 
+@file:Suppress("UnsafeCastFromDynamic")
+
 package aps.front
 
 import aps.*
-import aps.Color.*
-import into.kommon.*
 import org.w3c.dom.events.Event
+import kotlin.js.json
 
+val __hack = run {js("""
+    if (typeof exports === 'object') {
+        exports.getFront = function() {
+            return front
+        }
+    }
+""")}
 
 object KotlinShit {
     lateinit var clientImpl: World
@@ -119,7 +127,7 @@ fun jsFacing_ia(vararg ignored: dynamic): dynamic {
     return killme_basicTag("i", attrs, children)
 }
 
-fun jsFacing_h3a(vararg ignored: dynamic): dynamic {
+fun jsFacing_h3a(ignored: dynamic): dynamic {
     val attrs = js("arguments[0]")
     val children = js("Array.prototype.slice.call(arguments, 1)")
     return killme_basicTag("h3", attrs, children)
@@ -137,18 +145,18 @@ fun jsFacing_blockquotea(vararg ignored: dynamic): dynamic {
     return killme_basicTag("blockquote", attrs, children)
 }
 
-fun jsFacing_dom_spana(vararg ignored: dynamic): dynamic {
-    val attrs = js("arguments[0]")
-    val children = js("Array.prototype.slice.call(arguments, 1)")
-    return killme_veryBasicTag("span", attrs, *children)
-}
+//fun jsFacing_dom_spana(vararg ignored: dynamic): dynamic {
+//    val attrs = js("arguments[0]")
+//    val children = js("Array.prototype.slice.call(arguments, 1)")
+//    return killme_veryBasicTag("span", attrs, *children)
+//}
 
-fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: dynamic): dynamic {
+fun killme_basicTag(tag: String, attrs: dynamic, childrenAsJSArray: Array<dynamic>): dynamic {
     var me: dynamic = undefined // @workaround
     me = json(
         "render" to render@{
             try {
-                childrenAsJSArray.forEach({ child: dynamic, idx: dynamic ->
+                childrenAsJSArray.asDynamic().forEach({ child: dynamic, idx: dynamic ->
                     if (!Shitus.isObject(child)) return@forEach Unit
                     else {
                         if (js("typeof child") == "function") return@forEach Unit
@@ -492,7 +500,7 @@ fun simpleButton(title: String?, onClick: (e: ReactEvent) -> Unit): ReactElement
 //    }
 //}
 
-@native interface ReactEvent {
+external interface ReactEvent {
     val keyCode: Int
     val ctrlKey: Boolean
     val shiftKey: Boolean
@@ -591,13 +599,6 @@ fun span(doInsideBuilder: FlowElementBuilder.() -> Unit): ReactElement {
     return builder.toElement()
 }
 
-
-//@native val console: NativeConsole = noImpl
-//@native interface NativeConsole {
-//    fun log(vararg args: Any?)
-//    fun warn(vararg args: Any?)
-//    fun error(vararg args: Any?)
-//}
 
 fun Map<String, Any?>.toJSObject(): dynamic {
     val obj = js("({})")

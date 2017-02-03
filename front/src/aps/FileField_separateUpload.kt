@@ -8,7 +8,10 @@ import into.kommon.*
 import org.w3c.files.File
 import org.w3c.files.FileList
 import org.w3c.files.FileReader
+import org.w3c.files.get
 import org.w3c.xhr.XMLHttpRequest
+import kotlin.js.Json
+import kotlin.js.json
 
 @Front class FileField_separateUpload(
     container: RequestMatumba,

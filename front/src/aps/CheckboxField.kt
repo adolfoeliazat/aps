@@ -4,6 +4,8 @@ package aps
 
 import aps.front.*
 import into.kommon.*
+import kotlin.js.Json
+import kotlin.js.json
 
 @Front class CheckboxField(container: RequestMatumba, spec: CheckboxFieldSpec) : FormFieldFront(container, spec.name) {
     override var error: String? = null

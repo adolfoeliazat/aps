@@ -10,6 +10,8 @@ package aps
 
 import aps.front.*
 import into.kommon.*
+import kotlin.js.Json
+import kotlin.js.json
 
 //fun bitch(msg: String = "Just bitching..."): Nothing = throw JSException(msg)
 //fun imf(what: String = "me"): Nothing = throw JSException("Implement $what, please, fuck you")
@@ -24,9 +26,9 @@ inline fun dwarn(vararg xs: dynamic) = cwarn("[DEBUG]", *xs)
 
 fun t(en: String, ru: String) = ru
 
-@native val React: IReact = noImpl
+external val React: IReact
 
-@native interface IReact {
+external interface IReact {
     fun createElement(tag: dynamic, attrs: dynamic, vararg children: dynamic): ReactElement
     fun createClass(def: dynamic): dynamic
 }
@@ -36,12 +38,12 @@ fun el(tag: String, attrs: Json, vararg children: ReactElement?): ReactElement =
 
 fun String?.asReactElement(): ReactElement? = this.asDynamicReactElement()
 
-@native class ReactElement
+external class ReactElement
 
 val NORE: ReactElement = null.asDynamic()
 val NOTRE: ToReactElementable = NORE.toToReactElementable()
 
-@native interface ReactClassInstance {
+external interface ReactClassInstance {
     fun forceUpdate()
 }
 
@@ -95,10 +97,10 @@ class Promisoid<out T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) ->
 
 external class Promise<out T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
     fun <U> then(onFulfilled: (T) -> Unit,
-                 onRejected: ((Throwable) -> Unit)? = noImpl): Promise<U> = noImpl
+                 onRejected: ((Throwable) -> Unit)? = definedExternally): Promise<U>
 
     companion object {
-        fun <T> resolve(value: T): Promise<T> = noImpl
+        fun <T> resolve(value: T): Promise<T>
     }
 }
 
@@ -106,11 +108,6 @@ fun remoteProcedureNameForRequest(req: Any): String {
     val requestClassName = ctorName(req)
     return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
 }
-
-
-//@native fun <T> __await(p: Promisoid<T>): T = noImpl
-//@native fun <T> __asyncResult(x: T): Promisoid<T> = noImpl
-//@native fun <T> __reawait(p: Promisoid<T>): Promisoid<T> = noImpl
 
 @Front open class RequestMatumba {
     // TODO:vgrechka Why the fuck do I need `fields` and `hiddenFields` to be separate?
@@ -212,7 +209,7 @@ annotation class Front
 }
 
 
-@native interface IKillMeInput {
+external interface IKillMeInput {
     fun getValue(): String
     fun setValue(value: String)
     fun isDisabled(): Boolean
@@ -221,27 +218,6 @@ annotation class Front
 }
 
 
-
-//@native interface LegacyUIShit {
-//    fun replaceNavigate(url: String): Promise<Unit>
-//    fun pushNavigate(url: String): Promise<Unit>
-//    fun setUser(newUser: UserRTO)
-//    var token: String?
-//    var signedUpOK: Boolean
-//    var user: UserRTO
-//    fun startLiveStatusPolling()
-//    fun setPage(spec: Json)
-//    fun urlLink(spec: Json): ReactElement
-//    fun getUser(): UserRTO
-//    fun signOut()
-//    fun updatePage()
-//    val urlQuery: Map<String, String>
-//    var currentPage: Any?
-//    fun loadPageForURL(): Promise<Unit>
-//    fun setRootContent(re: ReactElement)
-//    var updatePage: () -> Unit
-//    var updatePageHeader: () -> Unit
-//}
 
 
 

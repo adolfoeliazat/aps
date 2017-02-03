@@ -408,7 +408,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                 }
                 val bannerPane = old_debugPanes.put(banner)
 
-                fun keyListener(e: Event) {
+                val keyListener = fun(e: Event) {
                     e as KeyboardEvent
                     when (e.key) {
                         "n" -> assertionBannerPause.resolve()
@@ -424,7 +424,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                         }
                     }
                 }
-                window.addEventListener("keydown", ::keyListener)
+                window.addEventListener("keydown", keyListener)
 
                 try {
                     testPausedOnAssertion = true
@@ -433,7 +433,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                 } finally {
                     testPausedOnAssertion = false
                     pausedOnAssertion = ResolvableShit()
-                    window.removeEventListener("keydown", ::keyListener)
+                    window.removeEventListener("keydown", keyListener)
                     old_debugPanes.remove(bannerPane)
                 }
             }

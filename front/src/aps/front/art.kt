@@ -17,6 +17,8 @@ import aps.front.testutils.*
 import into.kommon.*
 import jquery.jq
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.js.Json
+import kotlin.js.json
 import kotlin.reflect.KProperty
 
 class HotReloadSurvivingFuckingShit(val nameInGlobalScope: String) {
@@ -131,7 +133,7 @@ object art {
             testInstructions = instructions
 
             val urlq = getURLQuery()
-            val until = urlq["until"]?.let {parseInt(it)} ?: Int.MAX_VALUE
+            val until = urlq["until"]?.let {it.toInt()} ?: Int.MAX_VALUE
             val from = urlq["from"] ?: "start"
 
             var skipping = from != "start"
@@ -941,18 +943,10 @@ fun gertrude(def: dynamic) {
     art.assert(false, descr, detailsUI)
 }
 
-@native interface LegacyControl
-@native interface LegacyDefinitionStack
-@native interface LegacyCallStack
+external interface LegacyControl
+external interface LegacyDefinitionStack
+external interface LegacyCallStack
 
-//val stateContributionsByControl = mutableMapOf<LegacyControl, MutableMap<String, dynamic>>()
-
-//@native class TestUIStateContribution(
-//    val value: String,
-//    val control: LegacyControl,
-//    val definitionStack: LegacyDefinitionStack,
-//    val callStack: LegacyCallStack
-//)
 
 fun invokeStateContributions(actual: MutableMap<String, Any>?) {
     // println("--- invokeStateContributions ---")

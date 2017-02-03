@@ -4,10 +4,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
-import org.w3c.dom.css.CSSRule
-import org.w3c.dom.css.CSSRuleList
-import org.w3c.dom.css.CSSStyleDeclaration
-import org.w3c.dom.css.CSSStyleSheet
+import org.w3c.dom.css.*
 import kotlin.browser.document
 
 fun spikeFindProgressTickerKeyframes() {

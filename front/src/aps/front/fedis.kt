@@ -4,6 +4,8 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.js.Json
+import kotlin.js.json
 
 object fedis {
     class LogGroup(val id: String, val prevID: String?)

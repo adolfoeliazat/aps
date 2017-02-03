@@ -14,6 +14,7 @@ import org.w3c.dom.MessageEvent
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
+import kotlin.js.json
 
 @JsName("ignite")
 fun ignite() {

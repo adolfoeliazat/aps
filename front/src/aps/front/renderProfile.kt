@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import kotlin.js.json
 
 fun userKindIcon(kind: UserKind): ReactElement {
     return faIcon(tame="icon", marginLeft=5, marginRight=5,

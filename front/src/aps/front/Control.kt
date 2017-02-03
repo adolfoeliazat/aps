@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.js.json
 
 fun button(build: ButtonBuilder.() -> Unit): Control {
     val cis = ButtonBuilder()

@@ -3,6 +3,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 import org.w3c.dom.HTMLElement
+import kotlin.js.json
 
 interface Reactoid {
     interface MountedShit {
@@ -15,8 +16,8 @@ interface Reactoid {
 //    fun unmountComponentAtNode(container: HTMLElement)
 }
 
-@native object ReactDOMServer {
-    fun renderToStaticMarkup(el: ReactElement): String = noImpl
+external object ReactDOMServer {
+    fun renderToStaticMarkup(el: ReactElement): String
 }
 
 object _DOMReact {
@@ -65,8 +66,8 @@ object _DOMReact {
 }
 
 external object ReactDOM {
-    fun render(rel: ReactElement?, container: HTMLElement): Unit = noImpl
-    fun unmountComponentAtNode(container: HTMLElement): Unit = noImpl
+    fun render(rel: ReactElement?, container: HTMLElement): Unit
+    fun unmountComponentAtNode(container: HTMLElement): Unit
 }
 
 

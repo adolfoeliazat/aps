@@ -4,10 +4,11 @@ import aps.*
 import into.kommon.*
 import aps.Color.*
 import kotlin.browser.window
+import kotlin.js.json
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
 
-@native interface JsDiffItem {
+external interface JsDiffItem {
     val added: Boolean
     val removed: Boolean
     val value: String

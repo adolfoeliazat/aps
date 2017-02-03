@@ -9,6 +9,7 @@ package aps.front
 import aps.*
 import aps.Color.*
 import into.kommon.*
+import kotlin.js.json
 
 object js {
     val Object = js("Object")

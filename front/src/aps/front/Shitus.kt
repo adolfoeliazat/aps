@@ -11,8 +11,9 @@ package aps.front
 import aps.*
 import aps.Color.*
 import into.kommon.*
+import kotlin.js.json
 
-@native val lodash: dynamic = noImpl
+external val lodash: dynamic
 
 object Shitus {
     var topZIndex = 100000
@@ -23,72 +24,72 @@ object Shitus {
 
     val initDebugFunctionsShit = {art.initDebugFunctionsShit()}
 
-    val isOrWasInTestScenario: dynamic = ::jsFacing_isOrWasInTestScenario
-    val renderDefinitionStackStrip: dynamic = ::jsFacing_renderDefinitionStackStrip
-    val raiseWithMeta: dynamic = ::jsFacing_raiseWithMeta
-    val glyph: dynamic = ::jsFacing_glyph
-    val errorBanner = ::jsFacing_errorBanner
-    val byid: dynamic = ::jsFacing_byid
-    val byid0: dynamic = ::jsFacing_byid0
-    val horizontala: dynamic = ::jsFacing_horizontala
-    val hor1: dynamic = ::jsFacing_hor1
-    val hor2: dynamic = ::jsFacing_hor2
-    val nostring: dynamic = ::jsFacing_nostring
-    val elcl: dynamic = ::jsFacing_elcl
-    val diva: dynamic = ::jsFacing_diva
-    val spana: dynamic = ::jsFacing_spana
-    val ula: dynamic = ::jsFacing_ula
-    val lia: dynamic = ::jsFacing_lia
-    val forma: dynamic = ::jsFacing_forma
-    val labela: dynamic = ::jsFacing_labela
-    val nava: dynamic = ::jsFacing_nava
-    val aa: dynamic = ::jsFacing_aa
-    val ia: dynamic = ::jsFacing_ia
-    val h3a: dynamic = ::jsFacing_h3a
-    val h4a: dynamic = ::jsFacing_h4a
-    val blockquotea: dynamic = ::jsFacing_blockquotea
+    val isOrWasInTestScenario: dynamic = js("jsFacing_isOrWasInTestScenario")
+    val renderDefinitionStackStrip: dynamic = js("jsFacing_renderDefinitionStackStrip")
+    val raiseWithMeta: dynamic = js("jsFacing_raiseWithMeta")
+    val glyph: dynamic = js("jsFacing_glyph")
+    val errorBanner = js("jsFacing_errorBanner")
+    val byid: dynamic = js("jsFacing_byid")
+    val byid0: dynamic = js("jsFacing_byid0")
+    val horizontala: dynamic = js("jsFacing_horizontala")
+    val hor1: dynamic = js("jsFacing_hor1")
+    val hor2: dynamic = js("jsFacing_hor2")
+    val nostring: dynamic = js("jsFacing_nostring")
+    val elcl: dynamic = js("jsFacing_elcl")
+    val diva: dynamic = js("jsFacing_diva")
+    val spana: dynamic = js("jsFacing_spana")
+    val ula: dynamic = js("jsFacing_ula")
+    val lia: dynamic = js("jsFacing_lia")
+    val forma: dynamic = js("jsFacing_forma")
+    val labela: dynamic = js("jsFacing_labela")
+    val nava: dynamic = js("jsFacing_nava")
+    val aa: dynamic = js("jsFacing_aa")
+    val ia: dynamic = js("jsFacing_ia")
+    val h3a: dynamic = js("jsFacing_h3a")
+    val h4a: dynamic = js("jsFacing_h4a")
+    val blockquotea: dynamic = js("jsFacing_blockquotea")
 //    val dom.spana = ::jsFacing_dom_spana
-    val horiza: dynamic = ::jsFacing_horiza
-    val link: dynamic = ::jsFacing_link
+    val horiza: dynamic = js("jsFacing_horiza")
+    val link: dynamic = js("jsFacing_link")
 //    val faIcon = ::jsFacing_faIcon
 //    val liveBadge: dynamic = ::jsFacing_liveBadge
 //    val liveBadge2: dynamic = ::jsFacing_liveBadge2
 //    val Checkbox: dynamic = ::jsFacing_Checkbox
-    val button: dynamic = ::jsFacing_button
+    val button: dynamic = js("jsFacing_button")
 //    val TopNavItem: dynamic = ::jsFacing_TopNavItem
-    val spanc: dynamic = ::jsFacing_spanc
-    val Input: dynamic = ::jsFacing_Input
+    val spanc: dynamic = js("jsFacing_spanc")
+    val Input: dynamic = js("jsFacing_Input")
 
-    val delay = ::jsFacing_delay
-    val run: dynamic = ::jsFacing_run
-    val runa = ::jsFacing_runa
-    val repeat = ::jsFacing_repeat
-    val fov: dynamic = ::jsFacing_fov
-    val fova = ::jsFacing_fova
-    val tokens = ::jsFacing_tokens
-    val values = ::jsFacing_values
-    val invariant = ::jsFacing_invariant
-    val raise = ::jsFacing_raise
-    val isEqual = ::jsFacing_isEqual
-    val clone = ::jsFacing_clone
-    val isObject = ::jsFacing_isObject
+    val delay = js("jsFacing_delay")
+    val run: dynamic = js("jsFacing_run")
+    val runa = js("jsFacing_runa")
+    val repeat = js("jsFacing_repeat")
+    val fov: dynamic = js("jsFacing_fov")
+    val fova = js("jsFacing_fova")
+    val tokens = js("jsFacing_tokens")
+    val values = js("jsFacing_values")
+    val invariant = js("jsFacing_invariant")
+    val raise = js("jsFacing_raise")
+    val isEqual = js("jsFacing_isEqual")
+    val clone = js("jsFacing_clone")
+    val isObject = js("jsFacing_isObject")
     val noop: dynamic = {}
-    val isBlank = ::jsFacing_isBlank
-    val sortKeys = ::jsFacing_sortKeys
+    val isBlank = js("jsFacing_isBlank")
+    val sortKeys = js("jsFacing_sortKeys")
 //    val trim = lodash.trim
 //    val trimStart = lodash.trimStart
 //    val sortBy = lodash.sortBy
 //    val isEmpty = lodash.isEmpty
 //    val errorToMappedClientStackString: dynamic = ::jsFacing_errorToMappedClientStackString
-    val makeT = ::jsFacing_makeT
-    val dedent = ::jsFacing_dedent
-    val omapo = ::jsFacing_omapo
-    val uuid = ::jsFacing_uuid
-    val codeLinesToString = ::jsFacing_codeLinesToString
-    val fcomapo = ::jsFacing_fcomapo
+    val makeT = js("jsFacing_makeT")
+    val dedent = js("jsFacing_dedent")
+    val omapo = js("jsFacing_omapo")
+    val uuid = js("jsFacing_uuid")
+    val codeLinesToString = js("jsFacing_codeLinesToString")
+    val fcomapo = js("jsFacing_fcomapo")
 //    val invalidateKotlinStackSourceMapConsumer = ::jsFacing_invalidateKotlinStackSourceMapConsumer
-    val captureStackAsException = ::jsFacing_captureStackAsException
-    val omapa = ::jsFacing_omapa
+    val captureStackAsException = js("jsFacing_captureStackAsException")
+    val omapa = js("jsFacing_omapa")
 
     val asn1: dynamic = {
         val all = js("Array.prototype.slice.call(arguments)")
@@ -569,6 +570,21 @@ fun jsFacing_updatableElement(def: dynamic, ctor_killme: dynamic): dynamic {
 }
 
 fun pageHeader(title: String): ReactElement {
+//    val className = ""
+//    return reactCreateElement(
+//        "div",
+//        json("className" to "page-header $className", "style" to json("marginTop" to 0, "marginBottom" to 15)),
+//        listOf(
+//            reactCreateElement(
+//                "h3",
+//                json("tame" to "pageHeader", "style" to json("marginBottom" to 0)),
+//                listOf(
+//                    title.asReactElement()
+//                )
+//            )
+//        )
+//        )
+
     return jsFacing_pageHeader(json("title" to title))
 }
 
@@ -579,39 +595,40 @@ fun jsFacing_pageHeader(def: dynamic): dynamic {
 
     val id = puid()
 
+    "rrrrrrrrrrrrrrrrrrrrrrrrrrrr"
     val me = json(
         "render" to render@{
             // TODO:vgrechka Externalize pageHeader colors    bec22c87-4fa1-4118-aa88-a37a6baeca56
             return@render Shitus.diva(json("className" to "page-header ${className}", "style" to json("marginTop" to 0, "marginBottom" to 15)),
-                Shitus.h3a.apply(null, js("[]").concat(
+                Shitus.h3a(
                     json("tame" to "pageHeader", "style" to json("marginBottom" to 0)),
-                    Shitus.spancTitle(json("title" to title)),
-                    /*...*/labels.map({label: dynamic, i: dynamic ->
-                        val style = json(
-                            "fontSize" to "12px",
-                            "fontWeight" to "normal",
-                            "position" to "relative",
-                            "top" to "-4px",
-                            "left" to "8px",
-                            "display" to "inline",
-                            "padding" to ".2em .6em .3em",
-                            "lineHeight" to "1",
-                            "color" to "#fff",
-                            "textAlign" to "center",
-                            "whiteSpace" to "nowrap",
-                            "verticalAlign" to "baseline",
-                            "borderRadius" to ".25em"
-                        )
-                        if (label.level == "success") {
-                            global.Object.assign(style, json("background" to LIGHT_GREEN_700.toString()))
-                        } else {
-                            Shitus.raise("Weird pageHeader label level: ${label.level}")
-                        }
-                        return@map Shitus.spana(json("tame" to "label${Shitus.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
-                            Shitus.spancTitle(json("title" to label.title))
-                        )
-                    })
-                ))
+                    Shitus.spancTitle(json("title" to title)) // ,
+//                    /*...*/labels.map({label: dynamic, i: dynamic ->
+//                        val style = json(
+//                            "fontSize" to "12px",
+//                            "fontWeight" to "normal",
+//                            "position" to "relative",
+//                            "top" to "-4px",
+//                            "left" to "8px",
+//                            "display" to "inline",
+//                            "padding" to ".2em .6em .3em",
+//                            "lineHeight" to "1",
+//                            "color" to "#fff",
+//                            "textAlign" to "center",
+//                            "whiteSpace" to "nowrap",
+//                            "verticalAlign" to "baseline",
+//                            "borderRadius" to ".25em"
+//                        )
+//                        if (label.level == "success") {
+//                            global.Object.assign(style, json("background" to LIGHT_GREEN_700.toString()))
+//                        } else {
+//                            Shitus.raise("Weird pageHeader label level: ${label.level}")
+//                        }
+//                        return@map Shitus.spana(json("tame" to "label${Shitus.sufindex(i)}", "tattrs" to json("level" to label.level), "style" to style),
+//                            Shitus.spancTitle(json("title" to label.title))
+//                        )
+//                    })
+)
             )
         }
     )

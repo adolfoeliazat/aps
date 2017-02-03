@@ -9,9 +9,11 @@ package aps.front
 import aps.*
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.js.Json
+import kotlin.js.json
 
-@native class Tether(opts: Json) {
-    fun destroy(): Unit = noImpl
+external class Tether(opts: Json) {
+    fun destroy()
 }
 
 fun legacy_implementControlShit(arg: dynamic) {

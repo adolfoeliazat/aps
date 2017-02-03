@@ -12,6 +12,7 @@ import aps.*
 import aps.Color.*
 import into.kommon.*
 import kotlin.browser.window
+import kotlin.js.json
 
 var revealStackCalledTimes = 0
 

@@ -1,6 +1,7 @@
 package aps.front
 
 import org.w3c.dom.events.MouseEvent
+import kotlin.js.json
 
 fun button2(tre: ToReactElementable, level: String = "default", act: () -> Unit): ToReactElementable {
     return ToReactElementable.from(reactCreateElement("button", json(

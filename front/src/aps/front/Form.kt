@@ -11,6 +11,7 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 import into.kommon.*
+import kotlin.js.json
 
 data class FormSpec<Req: RequestMatumba, Res>(
     val req: Req,
@@ -245,9 +246,11 @@ suspend fun submitFormSequence(
             if (imposeTimestamp) {
                 await(shit.imposeNextRequestTimestamp())
             }
-            run(action ?: {
+            val shit = action ?: {
                 buttonClick(buttonKey ?: fconst.key.primary.testRef)
-            })
+            }
+            shit()
+//            run(shit)
         }},
         descr = descr,
         steps = listOf(

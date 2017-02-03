@@ -6,9 +6,12 @@ import jquery.jq
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.Text
+import org.w3c.dom.css.get
+import org.w3c.dom.get
 import kotlin.browser.document
 import kotlin.browser.window
-
+import kotlin.js.Json
+import kotlin.js.json
 
 
 fun captureShit(): Json = json()-{o->

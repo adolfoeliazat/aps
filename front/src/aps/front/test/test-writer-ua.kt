@@ -9,6 +9,7 @@ package aps.front
 import aps.*
 import aps.front.*
 import into.kommon.*
+import kotlin.js.json
 
 //class TS_UA_Writer_SignUp_1 : TestScenario() {
 //    override val shortDescription = "TS_UA_Writer_SignUp_1"
@@ -629,7 +630,7 @@ fun dynamicAsString(x: dynamic): String {
     return x
 }
 
-@native interface StackAsError
+external interface StackAsError
 
 fun captureStackAsError(): StackAsError {
     return js("Error()")

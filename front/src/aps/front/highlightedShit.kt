@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.js.json
 
 fun highlightedShit(text: String, ranges: List<IntRangeRTO>, backgroundColor: Color? = null, tag: String? = null): ToReactElementable {
     return highlightedShit(text, ranges.map {it.start..it.endInclusive}, backgroundColor, tag)

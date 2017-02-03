@@ -6,70 +6,7 @@
 
 package aps.front
 
-//@native interface JShitUtils {
-//    var jQuery: dynamic
-////    var arrayDeleteFirstThat: dynamic
-////    var deleteKey: dynamic
-//    var delay: dynamic
-//    var DEBUG_ACTION_HAND_DELAY: dynamic
-////    var runa: dynamic
-////    var repeat: dynamic
-////    var timeoutSet: dynamic
-////    var dlog: dynamic
-////    var fov: dynamic
-////    var tokens: dynamic
-////    var values: dynamic
-////    var invariant: dynamic
-////    var keys: dynamic
-////    var without: dynamic
-////    var raise: dynamic
-////    var isEqual: dynamic
-////    var clone: dynamic
-////    var fova: dynamic
-////    var isObject: dynamic
-////    var isArray: dynamic
-////    var pick: dynamic
-////    var nil: dynamic
-////    var deepEquals: dynamic
-////    var noop: dynamic
-////    var deepInspect: dynamic
-////    var isBlank: dynamic
-////    var sortKeys: dynamic
-////    var trim: dynamic
-////    var trimStart: dynamic
-////    var sortBy: dynamic
-////    var isEmpty: dynamic
-////    var errorToMappedClientStackString: dynamic
-////    var makeT: dynamic
-////    var dedent: dynamic
-////    var omapo: dynamic
-////    var clog: dynamic
-////    var compact: dynamic
-////    val toPairs: dynamic
-////    val toLiteralCode: dynamic
-////    val moment: dynamic
-////    val uuid: dynamic
-////    val codeLinesToString: dynamic
-////    val fcomapo: dynamic
-////    val invalidateKotlinStackSourceMapConsumer: dynamic
-//}
-
-//@native interface JShitArt {
-////    var uiStateContributions: dynamic
-//    var respectArtPauses: dynamic
-//    var halted: dynamic
-////    var openTestPassedPane: dynamic
-////    var stepDescriptions: dynamic
-//    var assertionDetailsWithSourceLink: dynamic
-////    var renderStepDescriptions: dynamic
-//    var assert: dynamic
-////    var stateContributionsByControl: dynamic
-//    var actionPlaceholderTag: dynamic
-//    var stateContributionsByControl: dynamic
-//
-//}
-
-@native interface JShit {
+external interface JShit {
 //    var runHotCodeUpdateStuff: dynamic
 //    var raise: dynamic
 //    var Select: dynamic

@@ -29,7 +29,7 @@ object css {
 
                 var group: Group? = thiz as? Group
                 while (group != null) {
-                    val groupName = group::class.simpleName
+                    val groupName = group!!::class.simpleName
                     name = groupName + "-" + name
                     group = group.parent
                 }
@@ -52,7 +52,7 @@ object css {
 
                 var group: Group? = thiz as? Group
                 while (group != null) {
-                    val groupName = group::class.simpleName
+                    val groupName = group!!::class.simpleName
                     name = groupName + "-" + name
                     group = group.parent
                 }

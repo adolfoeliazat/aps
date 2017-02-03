@@ -5,6 +5,7 @@ import into.kommon.*
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.events.MouseEventInit
 import kotlin.browser.window
+import kotlin.js.json
 
 open class Button(
     val key: String? = null,

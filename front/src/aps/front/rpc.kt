@@ -11,6 +11,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 import kotlin.browser.window
+import kotlin.js.json
 
 fun fetchURL(url: String, method: String, data: String?): Promisoid<String> {
     val stackBeforeXHR: String = CaptureStackException().stack
@@ -203,7 +204,7 @@ fun jsonizeToObject(shit: Any?): Any? {
 
         else -> {
             val out = json()
-            out["\$\$\$class"] = "aps." + shit::class.simpleName
+            out["\$\$\$class"] = "aps." + shit!!::class.simpleName
 
             val protoProps = JSObject.getOwnPropertyNames(shit.asDynamic().__proto__).toSet() - setOf("constructor")
             for (protoProp in protoProps) {

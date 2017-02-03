@@ -13,7 +13,7 @@ import org.w3c.dom.*
 import jquery.*
 import kotlin.browser.*
 
-@native interface JQueryPosition {
+external interface JQueryPosition {
     val left: Double
     val top: Double
 }

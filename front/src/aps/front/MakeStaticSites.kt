@@ -11,6 +11,7 @@ package aps.front
 import aps.*
 import aps.front.PageKind.*
 import into.kommon.*
+import kotlin.js.json
 
 object MakeStaticSites {
     class LS(val en: String, val ua: String)
@@ -1137,9 +1138,8 @@ object MakeStaticSites {
         Promise.resolve()
         .then(_=> loadScript('front-enhanced.js' + scriptSuffix))
         .then(_=> {
-            kot = Kotlin.modules.front
-            F = kot.aps.front
-            kot.aps.front.ignite()
+            F = front.aps.front
+            F.ignite()
         })
 
         function loadScript(src) {

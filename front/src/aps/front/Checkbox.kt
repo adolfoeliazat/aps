@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.js.json
 
 class Checkbox(val valueSetter: (Boolean) -> Unit, val elementID: String) {
     companion object {

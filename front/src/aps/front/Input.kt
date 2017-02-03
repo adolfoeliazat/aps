@@ -11,6 +11,8 @@ package aps.front
 import aps.*
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.js.Json
+import kotlin.js.json
 
 fun jsFacing_Input(legacySpec: Json, key: String? = null) {
     val input = Input(legacySpec, key)

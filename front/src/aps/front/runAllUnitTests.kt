@@ -2,7 +2,7 @@ package aps.front
 
 import aps.*
 import into.mochka.*
-import kotlin.text.js.RegExp
+//import kotlin.text.js.RegExp
 
 fun runAllUnitTests() {
     runMochka {

@@ -7,6 +7,8 @@ import into.kommon.*
 import jquery.jq
 import kotlin.browser.document
 import kotlin.browser.window
+import kotlin.js.Math
+import kotlin.js.json
 import kotlin.properties.Delegates.notNull
 
 val visualShitCaptured = ResolvableShit<VisualShitCapturedMessageData>()

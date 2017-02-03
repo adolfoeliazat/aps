@@ -3,6 +3,47 @@
 package aps.front
 
 import aps.*
+import org.w3c.dom.events.Event
+import kotlin.browser.window
+import kotlin.properties.Delegates.notNull
+
+// ---- Worked before upgrade ---------------------------------
+
+private fun handler(e: Event) {
+    console.log("lalala")
+}
+
+fun qwe_crefInterop_addListener() {
+    window.addEventListener("keydown", ::handler)
+}
+
+fun qwe_crefInterop_removeListener() {
+    window.removeEventListener("keydown", ::handler)
+}
+
+// ---- Better workarounds? ---------------------------------
+
+private var uglyHandler = ::handler
+
+fun qwe_crefInterop_addListener_worksButUgly() {
+    window.addEventListener("keydown", uglyHandler)
+}
+
+fun qwe_crefInterop_removeListener_worksButUgly() {
+    window.removeEventListener("keydown", uglyHandler)
+}
+
+
+fun qwe() {
+    async {
+        fun asd() {
+            console.log("qqqqqqqqqqqqqqqqqqqq")
+        }
+        val f = ::asd
+        f()
+    }
+}
+
 
 //fun qwe_1() {
 //    fun qwe_local(firstCall: Boolean = true) {

@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import aps.Color.*
-import kotlin.coroutines.CoroutineContext
 
 class SQLFiddlePage(val world: World) {
     val input: Input by mere(Input(

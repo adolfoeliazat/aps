@@ -5,17 +5,19 @@ package aps
 import aps.front.*
 import aps.Color.*
 import into.kommon.*
+import kotlin.js.Json
+import kotlin.js.json
 
-@native val moment: MomentShit = noImpl
+external val moment: MomentShit
 
-@native interface MomentShit {
+external interface MomentShit {
     fun tz(unix: Double, zone: String): Moment
 }
 
-@native fun moment(ms: Double): Moment = noImpl
-@native fun moment(s: String): Moment = noImpl
+external fun moment(ms: Double): Moment
+external fun moment(s: String): Moment
 
-@native interface Moment {
+external interface Moment {
     fun valueOf(): Double
     fun format(fmt: String): String
     fun tz(zone: String): Moment
@@ -25,7 +27,7 @@ import into.kommon.*
 fun Moment.formatPostgres(): String =
     this.format("YYYY-MM-DD LTS")
 
-@native interface EonasdanPicker {
+external interface EonasdanPicker {
     fun destroy()
     fun date(): Moment?
     fun date(moment: Moment?)

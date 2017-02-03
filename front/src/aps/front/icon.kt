@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import kotlin.js.json
 
 @GenerateSignatureMixes
 class faIcon(val icon: String, @Mix attrs: Attrs, @Mix val style: Style): Control2(attrs) {

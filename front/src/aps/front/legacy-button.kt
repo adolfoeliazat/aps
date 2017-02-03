@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.js.json
 
 fun jsFacing_button(def: dynamic, key: String? = null): dynamic {
     val title: dynamic = def.title

@@ -17,7 +17,7 @@ val loc get() = Globus.currentBrowseroid.location
 //val storageLocal: StorageLocal get() = Globus.browser.storageLocal
 //val typedStorageLocal: TypedStorageLocal get() = Globus.browser.typedStorageLocal
 
-@native interface IExternalGlobus {
+external interface IExternalGlobus {
     var storageLocalForStaticContent: IStorage?
     var LANG: String
     var MODE: String
@@ -28,7 +28,7 @@ val loc get() = Globus.currentBrowseroid.location
     fun disposeStaticShit()
 }
 @JsName("global")
-@native val ExternalGlobus: IExternalGlobus = noImpl
+external val ExternalGlobus: IExternalGlobus
 
 enum class Mode { DEBUG, PROD }
 
@@ -109,7 +109,7 @@ class TypedStorageLocal(val store: StorageLocal) {
 
     inner class IntValue {
         operator fun getValue(thisRef: Any?, property: KProperty<*>): Int? {
-            return store.getItem(property.name)?.let {parseInt(it)}
+            return store.getItem(property.name)?.let {it.toInt()}
         }
 
         operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Int?) {

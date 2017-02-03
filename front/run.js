@@ -15,10 +15,11 @@ global.ReactDOMServer = require('react-dom/server')
 // global.kotlin = require(`${KOMMON_HOME}/lib/kotlin/1.1-m02-eap/kotlin-1.1-m02-eap-hacked.js`)
 global.kotlin = require(`./out/lib/kotlin.js`)
 //require(`${KOMMON_HOME}/js/out/into-kommon-js-enhanced.js`)
-require('./out/front.js')
+const front = require('./out/front.js').getFront()
 
 const mainObjectName = process.argv[2]
-const mainObject = kotlin.modules.front.aps.front[mainObjectName]
+//const mainObject = kotlin.modules.front.aps.front[mainObjectName]
+const mainObject = front.aps.front[mainObjectName]
 const argv = process.argv.slice(3)
 if (typeof mainObject === 'function') mainObject(argv)
 else mainObject.runShit(argv)

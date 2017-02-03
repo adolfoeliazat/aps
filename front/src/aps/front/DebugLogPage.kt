@@ -6,6 +6,7 @@ import aps.RedisLogMessage.Separator.Type.*
 import aps.Color.*
 import into.kommon.*
 import kotlin.browser.window
+import kotlin.js.json
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 

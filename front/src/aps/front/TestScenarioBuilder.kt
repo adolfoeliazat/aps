@@ -17,7 +17,7 @@ import jquery.jq
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
-import kotlin.coroutines.RestrictsSuspension
+import kotlin.js.json
 import kotlin.properties.Delegates.notNull
 
 fun buildAndRunTestScenario(scenario: StepBasedTestScenario, showTestPassedPane: Boolean, block: (TestScenarioBuilder) -> Unit): Promisoid<Throwable?> = async {

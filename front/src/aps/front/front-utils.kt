@@ -18,6 +18,8 @@ import org.w3c.dom.events.EventTarget
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.asList
+import kotlin.js.Json
+import kotlin.js.Math
 import kotlin.properties.Delegates.notNull
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
@@ -38,7 +40,7 @@ open class FatException(
 //    abstract val visualPayload: ToReactElementable?
 //}
 
-@native interface JSArray
+external interface JSArray
 
 fun <T> Array<T>.toJSArray(): JSArray = this.asIterable().toJSArray()
 

@@ -3,6 +3,7 @@ package aps.front
 import aps.*
 import aps.front.*
 import jquery.jq
+import kotlin.js.json
 
 private var modalShownResolvable = ResolvableShit<Unit>()
 private var modalHiddenResolvable = ResolvableShit<Unit>()

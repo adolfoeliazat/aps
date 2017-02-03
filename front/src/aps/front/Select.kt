@@ -8,6 +8,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.js.*
 
 interface ShitWithRenderFunction {
     val render: () -> ReactElement

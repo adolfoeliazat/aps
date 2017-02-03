@@ -6,6 +6,8 @@
 
 package aps
 
+import kotlin.js.Date
+
 val global: dynamic get() = if (aps.isBrowser()) js("window") else js("global")
 val gloshit: dynamic get() = aps.global
 
@@ -15,7 +17,7 @@ fun isNodeJS(): Boolean = !aps.isBrowser()
 val process: dynamic get()= js("process")
 
 fun currentTimeMillis(): Long = Date().getTime().toLong()
-fun currentTimeInt(): Int = Date().getTime()
+fun currentTimeInt(): Double = Date().getTime()
 
 fun getenv(name: String): String? = aps.process.env[name]
 
@@ -25,10 +27,10 @@ fun <T> newNativePromise(arg: dynamic): Promise<T> {
 
 external @JsName("Object")
 object JSObject {
-    fun keys(x: Any): Array<String> = noImpl
-    fun getOwnPropertyNames(x: Any): Array<String> = noImpl
+    fun keys(x: Any): Array<String>
+    fun getOwnPropertyNames(x: Any): Array<String>
 }
 
-@native @JsName("require")
-fun nodeRequire(module: String): dynamic = noImpl
+external @JsName("require")
+fun nodeRequire(module: String): dynamic
 

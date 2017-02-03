@@ -18,6 +18,7 @@ import jquery.jq
 import org.w3c.dom.HTMLElement
 import kotlin.browser.localStorage
 import kotlin.browser.window
+import kotlin.js.json
 import kotlin.properties.Delegates.notNull
 
 class World(val name: String) {

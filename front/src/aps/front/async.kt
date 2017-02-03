@@ -2,9 +2,8 @@ package aps.front
 
 import aps.*
 import into.kommon.*
-import kotlin.coroutines.*
-import kotlin.coroutines.intrinsics.SUSPENDED_MARKER
-import kotlin.coroutines.intrinsics.suspendCoroutineOrReturn
+import kotlin.coroutines.experimental.*
+import kotlin.coroutines.experimental.intrinsics.*
 import kotlin.properties.Delegates.notNull
 
 // https://promisesaplus.com/#point-47
@@ -39,7 +38,7 @@ suspend fun <T> await(p: Promisoid<T>): T {
                 c.resumeWithException(it)
             }
         )
-        SUSPENDED_MARKER
+        COROUTINE_SUSPENDED
     }
 }
 
@@ -69,7 +68,7 @@ suspend fun <T> awaitNative(p: Promise<T>): T {
                 c.resumeWithException(it)
             }
         )
-        SUSPENDED_MARKER
+        COROUTINE_SUSPENDED
     }
 }
 
