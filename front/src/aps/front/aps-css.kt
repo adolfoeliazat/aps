@@ -245,7 +245,10 @@ object css {
                 z-index: 100000;""")
 
             object assertion : Group(this) {
+                val common = "opacity: 0.3;"
+
                 val notHardened by Style("""
+                    $common
                     position: fixed;
                     width: $width;
                     min-height: 10rem;
@@ -257,6 +260,7 @@ object css {
                     z-index: 100000;""")
 
                 val correct by Style("""
+                    $common
                     position: fixed;
                     width: $width;
                     min-height: 10rem;
@@ -268,6 +272,7 @@ object css {
                     z-index: 100000;""")
 
                 val incorrect by Style("""
+                    $common
                     position: fixed;
                     width: $width;
                     min-height: 10rem;

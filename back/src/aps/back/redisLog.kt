@@ -28,11 +28,11 @@ object redisLog {
 
         msg.id = UUID.randomUUID().toString()
         msg.parentID = RedisLogMessage.ROOT_ID
-        if (isRequestThread) {
-            requestShit.redisLogParentIDs.let {
+        if (isRequestThread()) {
+            RequestGlobus.redisLogParentIDs.let {
                 if (it.isNotEmpty())
                     msg.parentID = it.peek()
-                else requestShit.commonRequestFields.rootRedisLogMessageID?.let {
+                else RequestGlobus.commonRequestFields.rootRedisLogMessageID?.let {
                     msg.parentID = it
                 }
             }
@@ -57,7 +57,7 @@ object redisLog {
 
     fun shouldSkip() =
         !bconst.localRedisLoggingEnabled
-        || isRequestThread && requestShit.skipLoggingToRedis
+        || isRequestThread() && RequestGlobus.skipLoggingToRedis
 
     fun <T> group(title: String, block: () -> T): T {
         if (shouldSkip()) return block()
@@ -67,7 +67,7 @@ object redisLog {
             o.stage = RedisLogMessage.Fuck.Stage.PENDING
         }
         redisLog.send(rlm)
-        requestShit.redisLogParentIDs.push(rlm.id)
+        RequestGlobus.redisLogParentIDs.push(rlm.id)
 
         try {
             val res = block()
@@ -79,7 +79,7 @@ object redisLog {
             throw e
         } finally {
             rlm.endMillis = currentTimeMillis()
-            requestShit.redisLogParentIDs.pop()
+            RequestGlobus.redisLogParentIDs.pop()
             redisLog.amend(rlm)
         }
     }

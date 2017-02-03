@@ -183,10 +183,13 @@ class TestShit {
         list
     }
 
-    fun imposeNextRequestTimestamp(): Promisoid<Unit> {
+    suspend fun imposeNextRequestTimestamp() {
         if (nextRequestTimestampIndex > timestamps.lastIndex) bitch("Out of timestamps")
         val stamp = timestamps[nextRequestTimestampIndex++]
-        return ImposeNextRequestTimestampRequest.send(stamp)
+        clog("Imposing timestamp: $stamp")
+        send(ImposeNextRequestTimestampRequest()-{o->
+            o.stamp.value = stamp
+        })
     }
 
 }
@@ -287,46 +290,47 @@ suspend fun imposeNextGeneratedConfirmationSecret(secret: String) = send(ImposeN
 })
 
 fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
-    await(testShit.imposeNextRequestTimestamp())
-    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("fuck you.rtf")
-        o.title.value = "A warm word to my writer"
-        o.details.value = dedent("""
-            Я к вам пишу – чего же боле?
-            Что я могу еще сказать?
-            Теперь, я знаю, в вашей воле
-            Меня презреньем наказать.
-        """)
-    })).orDie()
-
-    await(testShit.imposeNextRequestTimestamp())
-    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("crazy monster boobs.rtf")
-        o.title.value = "Cool stuff"
-        o.details.value = dedent("""
-             - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
-             - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
-             - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
-        """)
-    })).orDie()
-
-    await(testShit.imposeNextRequestTimestamp())
-    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("the trial.doc")
-        o.title.value = "Процесс by Кафка"
-        o.details.value = dedent("""
-            Это чисто на почитать...
-        """)
-    })).orDie()
-
-//    await(fuckingRemoteCall.executeSQL("Add file permissions", """
-//        insert into file_user_permissions(file_id, user_id) values(100000, 100000);
-//        insert into file_user_permissions(file_id, user_id) values(100001, 100000);
-//        insert into file_user_permissions(file_id, user_id) values(100002, 100000);
-//    """))
+    imf("Reimplement setUpFilesByBobul_1")
+//    await(testShit.imposeNextRequestTimestamp())
+//    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+//        o.orderID.value = orderID
+//        o.file.content = FileField.Content.TestFileOnServer("fuck you.rtf")
+//        o.title.value = "A warm word to my writer"
+//        o.details.value = dedent("""
+//            Я к вам пишу – чего же боле?
+//            Что я могу еще сказать?
+//            Теперь, я знаю, в вашей воле
+//            Меня презреньем наказать.
+//        """)
+//    })).orDie()
+//
+//    await(testShit.imposeNextRequestTimestamp())
+//    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+//        o.orderID.value = orderID
+//        o.file.content = FileField.Content.TestFileOnServer("crazy monster boobs.rtf")
+//        o.title.value = "Cool stuff"
+//        o.details.value = dedent("""
+//             - Прокурор Гастерер - мой давний друг,- сказал он. - Можно мне позвонить ему?
+//             - Конечно, - ответил инспектор,- но я  не  знаю,  какой  в этом  смысл,  разве  что вам надо переговорить с ним по личному делу.
+//             - Какой смысл? -  воскликнул  К.  скорее  озадаченно,  чем сердито.  Да  кто  вы  такой?  Ищете  смысл,  а  творите  такую бессмыслицу, что и не придумаешь. Да тут камни возопят! Сначала эти господа на меня напали, а теперь расселись, стоят и глазеют всем скопом, как я пляшу под вашу  дудку.  И  еще  спрашиваете, какой  смысл  звонить  прокурору,  когда  мне  сказано,  что  я арестован! Хорошо, я не буду звонить!
+//        """)
+//    })).orDie()
+//
+//    await(testShit.imposeNextRequestTimestamp())
+//    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+//        o.orderID.value = orderID
+//        o.file.content = FileField.Content.TestFileOnServer("the trial.doc")
+//        o.title.value = "Процесс by Кафка"
+//        o.details.value = dedent("""
+//            Это чисто на почитать...
+//        """)
+//    })).orDie()
+//
+////    await(fuckingRemoteCall.executeSQL("Add file permissions", """
+////        insert into file_user_permissions(file_id, user_id) values(100000, 100000);
+////        insert into file_user_permissions(file_id, user_id) values(100001, 100000);
+////        insert into file_user_permissions(file_id, user_id) values(100002, 100000);
+////    """))
 }
 
 
@@ -353,12 +357,13 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
 }
 
 private fun testAddFileByFedorAndApproveForBobul(testShit: TestShit, req: WriterAddUAOrderFileRequest): Promisoid<Unit> {
-    return async<Unit> {
-        await(testShit.imposeNextRequestTimestamp())
-        val res = await(send(testShit.fedorToken, req)).orDie()
-        await(testShit.imposeNextRequestTimestamp())
-        await(testCopyFileToBobul(testShit, res.id))
-    }
+    imf("Reimplement testAddFileByFedorAndApproveForBobul")
+//    return async<Unit> {
+//        await(testShit.imposeNextRequestTimestamp())
+//        val res = await(send(testShit.fedorToken, req)).orDie()
+//        await(testShit.imposeNextRequestTimestamp())
+//        await(testCopyFileToBobul(testShit, res.id))
+//    }
 }
 
 private fun testCopyFileToBobul(testShit: TestShit, orderFileID: String): Promisoid<FormResponse2<TestCopyOrderFileToAreaRequest.Response>> {
@@ -399,80 +404,82 @@ fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
 }
 
 fun setUpFilesByBobul_2(testShit: TestShit, orderID: String) = async<Unit> {
-    await(testShit.imposeNextRequestTimestamp())
-    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("piece of trial 1.rtf")
-        o.title.value = "A piece of... Trial 1"
-        o.details.value = dedent("""
-             - Вы  глубоко заблуждаетесь, - сказал К. сердито, с трудом скрывая раздражение, - и  вообще  вы  неверно  истолковали  мои слова  про  барышню,  я  совсем  не  то хотел сказать. Искренне советую вам ничего ей не говорить. Вы глубоко заблуждаетесь,  я ее  знаю  очень  хорошо,  и  все,  что  вы  говорите, неправда!
-        """)
-    })).orDie()
-
-    await(testShit.imposeNextRequestTimestamp())
-    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("piece of trial 2.rtf")
-        o.title.value = "A piece of... Trial 2"
-        o.details.value = dedent("""
-             Когда  ему  надоело смотреть на пустую улицу, он прилег на кушетку, но сначала  приоткрыл  дверь  в  прихожую,  чтобы,  не вставая,   видеть   всех,  кто  войдет  в  квартиру.  Часов  до одиннадцати он пролежал спокойно на кушетке, покуривая  сигару. Но  потом  не выдержал и вышел в прихожую, как будто этим можно было ускорить приход фройляйн Бюрстнер. У него не было  никакой охоты  ее  видеть,  он  даже  не  мог  точно вспомнить, как она выглядит, но ему нужно было с ней поговорить, и его  раздражало что из-за ее опоздания даже конец дня вышел такой беспокойный и беспорядочный.  Виновата она была и в том, что он не поужинал и пропустил визит к Эльзе, назначенный на сегодня. Конечно, можно было  бы  наверстать  упущенное  и  пойти  в  ресторанчик,  где работала  Эльза.  Он  решил,  что  после  разговора  с фройляйн Бюрстнер он так и сделает.
-
-             Уже  пробило  половину  двенадцатого,  когда  на  лестнице раздались  чьи-то шаги. К. так ушел в свои мысли, что с громким топотом расхаживал по прихожей, как по своей комнате, но тут он торопливо нырнул к себе. В прихожую  вошла  фройляйн  Бюрстнер. Заперев  дверь,  она зябко закутала узкие плечи шелковой шалью. Еще миг, и она  скроется  в  своей  комнате,  куда  К.  в  этот полуночный час, разумеется, войти не мог. Значит, ему надо было заговорить с ней сразу; но, к несчастью, он забыл зажечь свет у себя  в комнате, и, если бы он сейчас вышел оттуда, из темноты, это походило бы на нападение. Во всяком случае,  он  мог  очень напугать   ее.
-        """)
-    })).orDie()
-
-    await(testShit.imposeNextRequestTimestamp())
-    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("piece of trial 3.rtf")
-        o.title.value = "A piece of... Trial 3"
-        o.details.value = dedent("""
-             - Вы  не  подумали  об одном, - сказал он. - Правда, у вас могут быть неприятности, но никакая опасность вам не грозит. Вы знаете, что фрау Грубах - а в этом вопросе она играет  решающую роль,  поскольку капитан доводится ей племянником, - вы знаете, что она меня просто  обожает  и  беспрекословно  верит  каждому моему  слову.  Кстати,  она  и зависит от меня, я ей дал в долг порядочную сумму денег. Я готов принять любое предложенное вами объяснение нашей поздней встречи, если только  оно  будет  хоть немного  правдоподобно, и обязуюсь подействовать на фрау Грубах так, чтобы она не только приняла его официально, но и  поверила безоговорочно  и  искренне.  И пожалуйста, не щадите меня. Если вам угодно распространить слух, что я к  вам  приставал,  то  я именно  так и сообщу фрау Грубах, и она все примет, не теряя ко мне уважения, настолько она меня ценит.
-        """)
-    })).orDie()
-
-    await(testShit.imposeNextRequestTimestamp())
-    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
-        o.orderID.value = orderID
-        o.file.content = FileField.Content.TestFileOnServer("piece of trial 4.rtf")
-        o.title.value = "A piece of... Trial 4"
-        o.details.value = dedent("""
-                 К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
-        """)
-    })).orDie()
-
-//    await(fuckingRemoteCall.executeSQL("Add file permissions", """
-//        insert into file_user_permissions(file_id, user_id) values(100005, 100000);
-//        insert into file_user_permissions(file_id, user_id) values(100006, 100000);
-//        insert into file_user_permissions(file_id, user_id) values(100007, 100000);
-//        insert into file_user_permissions(file_id, user_id) values(100008, 100000);
-//    """))
+    imf("Reimplement setUpFilesByBobul_2")
+//    await(testShit.imposeNextRequestTimestamp())
+//    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+//        o.orderID.value = orderID
+//        o.file.content = FileField.Content.TestFileOnServer("piece of trial 1.rtf")
+//        o.title.value = "A piece of... Trial 1"
+//        o.details.value = dedent("""
+//             - Вы  глубоко заблуждаетесь, - сказал К. сердито, с трудом скрывая раздражение, - и  вообще  вы  неверно  истолковали  мои слова  про  барышню,  я  совсем  не  то хотел сказать. Искренне советую вам ничего ей не говорить. Вы глубоко заблуждаетесь,  я ее  знаю  очень  хорошо,  и  все,  что  вы  говорите, неправда!
+//        """)
+//    })).orDie()
+//
+//    await(testShit.imposeNextRequestTimestamp())
+//    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+//        o.orderID.value = orderID
+//        o.file.content = FileField.Content.TestFileOnServer("piece of trial 2.rtf")
+//        o.title.value = "A piece of... Trial 2"
+//        o.details.value = dedent("""
+//             Когда  ему  надоело смотреть на пустую улицу, он прилег на кушетку, но сначала  приоткрыл  дверь  в  прихожую,  чтобы,  не вставая,   видеть   всех,  кто  войдет  в  квартиру.  Часов  до одиннадцати он пролежал спокойно на кушетке, покуривая  сигару. Но  потом  не выдержал и вышел в прихожую, как будто этим можно было ускорить приход фройляйн Бюрстнер. У него не было  никакой охоты  ее  видеть,  он  даже  не  мог  точно вспомнить, как она выглядит, но ему нужно было с ней поговорить, и его  раздражало что из-за ее опоздания даже конец дня вышел такой беспокойный и беспорядочный.  Виновата она была и в том, что он не поужинал и пропустил визит к Эльзе, назначенный на сегодня. Конечно, можно было  бы  наверстать  упущенное  и  пойти  в  ресторанчик,  где работала  Эльза.  Он  решил,  что  после  разговора  с фройляйн Бюрстнер он так и сделает.
+//
+//             Уже  пробило  половину  двенадцатого,  когда  на  лестнице раздались  чьи-то шаги. К. так ушел в свои мысли, что с громким топотом расхаживал по прихожей, как по своей комнате, но тут он торопливо нырнул к себе. В прихожую  вошла  фройляйн  Бюрстнер. Заперев  дверь,  она зябко закутала узкие плечи шелковой шалью. Еще миг, и она  скроется  в  своей  комнате,  куда  К.  в  этот полуночный час, разумеется, войти не мог. Значит, ему надо было заговорить с ней сразу; но, к несчастью, он забыл зажечь свет у себя  в комнате, и, если бы он сейчас вышел оттуда, из темноты, это походило бы на нападение. Во всяком случае,  он  мог  очень напугать   ее.
+//        """)
+//    })).orDie()
+//
+//    await(testShit.imposeNextRequestTimestamp())
+//    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+//        o.orderID.value = orderID
+//        o.file.content = FileField.Content.TestFileOnServer("piece of trial 3.rtf")
+//        o.title.value = "A piece of... Trial 3"
+//        o.details.value = dedent("""
+//             - Вы  не  подумали  об одном, - сказал он. - Правда, у вас могут быть неприятности, но никакая опасность вам не грозит. Вы знаете, что фрау Грубах - а в этом вопросе она играет  решающую роль,  поскольку капитан доводится ей племянником, - вы знаете, что она меня просто  обожает  и  беспрекословно  верит  каждому моему  слову.  Кстати,  она  и зависит от меня, я ей дал в долг порядочную сумму денег. Я готов принять любое предложенное вами объяснение нашей поздней встречи, если только  оно  будет  хоть немного  правдоподобно, и обязуюсь подействовать на фрау Грубах так, чтобы она не только приняла его официально, но и  поверила безоговорочно  и  искренне.  И пожалуйста, не щадите меня. Если вам угодно распространить слух, что я к  вам  приставал,  то  я именно  так и сообщу фрау Грубах, и она все примет, не теряя ко мне уважения, настолько она меня ценит.
+//        """)
+//    })).orDie()
+//
+//    await(testShit.imposeNextRequestTimestamp())
+//    await(send(testShit.bobulToken, CustomerAddUAOrderFileRequest()-{o->
+//        o.orderID.value = orderID
+//        o.file.content = FileField.Content.TestFileOnServer("piece of trial 4.rtf")
+//        o.title.value = "A piece of... Trial 4"
+//        o.details.value = dedent("""
+//                 К. сообщили по  телефону,  что  на  воскресенье  назначено первое  предварительное следствие по его делу. Ему сказали, что его будут вызывать  на  следствия  регулярно;  может  быть,  не каждую  неделю,  но все же довольно часто. С одной стороны, все заинтересованы как  можно  быстрее  закончить  процесс,  но,  с другой  стороны,  следствие  должно  вестись  со всей возможной тщательностью; однако ввиду напряжения, которого  оно  требует, допросы  не  должны  слишком  затягиваться.  Вот почему избрана процедура коротких, часто следующих друг  за  другом  допросов. Воскресный  день  назначен  для  допросов  ради  того, чтобы не нарушать  служебные  обязанности  К.  Предполагается,  что   он согласен  с  намеченной  процедурой,  в  противном  случае ему, поелику  возможно,  постараются  пойти   навстречу.   Например, допросы можно было бы проводить и ночью, но, вероятно, по ночам у  К.  не  совсем  свежая  голова. Во всяком случае, если К. не возражает, решено пока что придерживаться воскресного дня. Само собой понятно,  что  явка  для  него  обязательна,  об  этом  и напоминать  ему  не  стоит.  Был  назван  номер  дома, куда ему следовало  явиться;  дом  находился  на  отдаленной   улице   в предместье, где К. еще никогда не бывал.
+//        """)
+//    })).orDie()
+//
+////    await(fuckingRemoteCall.executeSQL("Add file permissions", """
+////        insert into file_user_permissions(file_id, user_id) values(100005, 100000);
+////        insert into file_user_permissions(file_id, user_id) values(100006, 100000);
+////        insert into file_user_permissions(file_id, user_id) values(100007, 100000);
+////        insert into file_user_permissions(file_id, user_id) values(100008, 100000);
+////    """))
 }
 
 fun TestScenarioBuilder.setUpBobulOrder(testShit: TestShit, setUpFiles: (String) -> Promisoid<Unit>) {
-    val o = this
-    o.acta {async{
-        measureAndReportToDocumentElement("Preparing some orders for Ivo Bobul") {
-            fiddlingWithGlobals {
-                TestGlobal.overriddenClientKind = ClientKind.UA_CUSTOMER
-
-                await(testShit.imposeNextRequestTimestamp())
-                val xxx by lazy {imf("xlobal? No-no-no, fuck you...")}
-                val createOrderResponse = await(send(testShit.bobulToken, UACustomerCreateOrderRequest(xxx)-{o->
-                    o.documentTitle.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
-                    o.documentType.value = UADocumentType.COURSE
-//                    o.deadline.killmeValue = moment("2016-12-11 18:15:00").valueOf()
-                    o.numPages.setValue(30)
-                    o.numSources.setValue(5)
-                    o.documentDetails.value = "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории."
-                }))
-                createOrderResponse as FormResponse2.Hunky
-                val orderID = createOrderResponse.meat.id
-
-                await(setUpFiles(orderID))
-            }
-        }
-    }}
+    imf("Reimplement setUpBobulOrder")
+//    val o = this
+//    o.acta {async{
+//        measureAndReportToDocumentElement("Preparing some orders for Ivo Bobul") {
+//            fiddlingWithGlobals {
+//                TestGlobal.overriddenClientKind = ClientKind.UA_CUSTOMER
+//
+//                await(testShit.imposeNextRequestTimestamp())
+//                val xxx by lazy {imf("xlobal? No-no-no, fuck you...")}
+//                val createOrderResponse = await(send(testShit.bobulToken, UACustomerCreateOrderRequest(xxx)-{o->
+//                    o.documentTitle.value = "Когнитивно-прагматические аспекты перевода рекламных слоганов с английского"
+//                    o.documentType.value = UADocumentType.COURSE
+////                    o.deadline.killmeValue = moment("2016-12-11 18:15:00").valueOf()
+//                    o.numPages.setValue(30)
+//                    o.numSources.setValue(5)
+//                    o.documentDetails.value = "В статье рассматривается проблема перевода корпоративных слоганов коммерческой рекламы, оказывающих воздействие на сознание аудитории. Изучаются процессы наделения объектов рекламирования дополнительным символическим содержанием для осуществления имиджевой коммуникации. Наличие конкретной прагматической цели обуславливает широкое использование средств языковой выразительности на всех уровнях организации рекламного текста, создавая необходимость в поиске адекватных способов перевода рекламных посланий. В работе определяются доминанты перевода рекламного текста, предлагаются методы перевода англоязычных слоганов автомобильных компаний для русскоязычной аудитории."
+//                }))
+//                createOrderResponse as FormResponse2.Hunky
+//                val orderID = createOrderResponse.meat.id
+//
+//                await(setUpFiles(orderID))
+//            }
+//        }
+//    }}
 }
 
 

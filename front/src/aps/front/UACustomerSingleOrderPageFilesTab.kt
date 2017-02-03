@@ -10,16 +10,7 @@ import kotlin.properties.Delegates.notNull
 
 private val moveItemToTopOnEdit = true
 
-//private class FilesTabURLQuery {
-//    var ordering: String? = null
-//    var filter: String? = null
-//    var search: String? = null
-//}
-
-class CustomerSingleUAOrderPageFilesTab(val page: UACustomerSingleOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
-//    lateinit var ordering: Ordering
-//    lateinit var filter: CustomerFileFilter
-//    lateinit var search: String
+class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
     lateinit var meat: ItemsResponse<UAOrderFileRTO>
     lateinit var content: ToReactElementable
     lateinit var stripContent: Control2

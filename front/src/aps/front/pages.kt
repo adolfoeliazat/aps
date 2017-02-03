@@ -8,7 +8,7 @@ enum class PageKind {
     STATIC, PUBLIC, PRIVATE, DEBUG
 }
 
-class PageSpec (
+data class PageSpec (
     val path: String,
     val navTitle: String,
     val kind: PageKind,

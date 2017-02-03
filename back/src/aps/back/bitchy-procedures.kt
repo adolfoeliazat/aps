@@ -70,7 +70,7 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                     log.info("${p.bpc.servletRequest.pathInfo}: $requestJSON")
                 }
                 val rmap = hackyObjectMapper.readValue(requestJSON, Map::class.java)
-                requestShit.commonRequestFields = hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class.java)
+                RequestGlobus.commonRequestFields = hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class.java)
                 // log.section("rmap:", rmap)
 
                 fun serviceShit() {
@@ -95,15 +95,6 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                         }
                     }
                     ctx.lang = Language.valueOf(rmap["lang"] as String)
-
-                    var ts = Timestamp(Date().time)
-                    if (p.considerNextRequestTimestampFiddling) {
-                        TestServerFiddling.nextRequestTimestamp?.let {
-                            TestServerFiddling.nextRequestTimestamp = null
-                            ts = it
-                        }
-                    }
-                    ctx.requestTimestamp = ts
 
                     fun runShitWithMaybeDB(): Res {
                         if (p.needsUser != NeedsUser.NO) {
@@ -140,7 +131,7 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                     val res = if (p.needsDB) {
                         if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
 
-                        val db = DB.byID(requestShit.commonRequestFields.databaseID!!)
+                        val db = DB.byID(RequestGlobus.commonRequestFields.databaseID!!)
 
                         db.joo {q->
                             ctx.q = q

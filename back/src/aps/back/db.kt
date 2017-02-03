@@ -167,10 +167,10 @@ object DB {
                         .set(SQLDialect.POSTGRES_9_5)
                         .set(DefaultExecuteListenerProvider(object:DefaultExecuteListener() {
                             override fun executeStart(ctx: ExecuteContext) {
-                                if (!BackGlobus.tracingEnabled || !isRequestThread) return
+                                if (!BackGlobus.tracingEnabled || !isRequestThread()) return
 
                                 fun dumpShit(shit: String) {
-                                    requestShit.actualSQLFromJOOQ = shit
+                                    RequestGlobus.actualSQLFromJOOQ = shit
                                 }
 
                                 fun dumpShit(shit: QueryPart) {
@@ -184,9 +184,9 @@ object DB {
                             }
 
                             override fun fetchEnd(ctx: ExecuteContext) {
-                                if (!BackGlobus.tracingEnabled || !isRequestThread) return
+                                if (!BackGlobus.tracingEnabled || !isRequestThread()) return
 
-                                requestShit.resultFromJOOQ = ctx.result()
+                                RequestGlobus.resultFromJOOQ = ctx.result()
                             }
                         }))
                 )

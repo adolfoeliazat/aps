@@ -23,8 +23,8 @@ fun <Res, R : Record> ProcedureContext.insertShit(
     return tracingSQL(descr) {
         var step = q
             .insertInto(table)
-            .set(table.field("inserted_at") as Field<Timestamp>, this.requestTimestamp)
-            .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
+            .set(table.field("inserted_at") as Field<Timestamp>, RequestGlobus.stamp)
+            .set(table.field("updated_at") as Field<Timestamp>, RequestGlobus.stamp)
 
         table.field("creator_id")?.let {
             step = step.set(it as Field<Long>, this.user_killme.id.toLong())
@@ -43,7 +43,7 @@ fun <Res, R : Record> ProcedureContext.updateShit(
     return tracingSQL(descr) {
         val step = q
             .update(table)
-            .set(table.field("updated_at") as Field<Timestamp>, this.requestTimestamp)
+            .set(table.field("updated_at") as Field<Timestamp>, RequestGlobus.stamp)
         block(step)
     }
 }

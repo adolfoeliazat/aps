@@ -35,13 +35,13 @@ fun renderTopNavbar(clientKind: ClientKind,
         UA_CUSTOMER -> {
             when (user) {
                 null -> pages.uaCustomer.signIn
-                else -> pages.uaCustomer.dashboard
+                else -> pages.uaCustomer.dashboard.copy(navTitle = user.firstName)
             }
         }
         UA_WRITER -> {
             when (user) {
                 null -> pages.uaWriter.signIn
-                else -> pages.uaWriter.dashboard
+                else -> pages.uaWriter.dashboard.copy(navTitle = user.firstName)
             }
         }
     }

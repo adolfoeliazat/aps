@@ -23,15 +23,13 @@ import java.util.*
             val firstName = req.mutableSignUpFields.firstName.value
             val lastName = req.mutableSignUpFields.lastName.value
             val email = req.immutableSignUpFields.email.value
-            val password = TestServerFiddling.nextGeneratedPassword?.let {
-                TestServerFiddling.nextGeneratedPassword = null
-                it
-            } ?: "" + UUID.randomUUID()
+            val password = TestServerFiddling.nextGeneratedPassword.getAndReset()
+                ?: UUID.randomUUID().toString()
 
             val userID = USERS.let {t->
                 ctx.insertShit("Insert user", t) {it
-                    .set(t.INSERTED_AT, ctx.requestTimestamp)
-                    .set(t.UPDATED_AT, ctx.requestTimestamp)
+                    .set(t.INSERTED_AT, RequestGlobus.stamp)
+                    .set(t.UPDATED_AT, RequestGlobus.stamp)
                     .set(t.EMAIL, email)
                     .set(t.KIND, when (ctx.clientKind) {
                         ClientKind.UA_CUSTOMER -> JQUserKind.CUSTOMER
@@ -50,7 +48,7 @@ import java.util.*
                 }
             }
 
-            val signInURL = "${requestShit.commonRequestFields.clientURL}/sign-in.html"
+            val signInURL = "${RequestGlobus.commonRequestFields.clientURL}/sign-in.html"
 
             EmailMatumba.send(Email(
                 to = "$firstName $lastName <$email>",

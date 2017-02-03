@@ -215,18 +215,20 @@ object art {
                                 await(executeSetValueLike())
                             }
                             is TestInstruction.Click -> {
-                                val control = getControlForAction(json("implementing" to "testClick"))
-                                if (instr.timestamp.there) {
-                                    await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
-                                }
-                                await<dynamic>(control.testClick(instr))
+                                die("Fuck you 175a1d6f-90ec-4973-9e26-b3fed616f992")
+//                                val control = getControlForAction(json("implementing" to "testClick"))
+//                                if (instr.timestamp.there) {
+//                                    await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+//                                }
+//                                await<dynamic>(control.testClick(instr))
                             }
                             is TestInstruction.KeyDown -> {
-                                val control = getControlForAction(json("implementing" to "testKeyDown"))
-                                if (instr.timestamp.there) {
-                                    await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
-                                }
-                                await<dynamic>(control.testKeyDown(instr))
+                                die("Fuck you 90f96c88-ddc9-4feb-86d5-70621d19a23a")
+//                                val control = getControlForAction(json("implementing" to "testKeyDown"))
+//                                if (instr.timestamp.there) {
+//                                    await(ImposeNextRequestTimestampRequest.send(instr.timestamp))
+//                                }
+//                                await<dynamic>(control.testKeyDown(instr))
                             }
                             is TestInstruction.Action -> {} // This is label?
                         }

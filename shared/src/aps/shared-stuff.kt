@@ -67,15 +67,8 @@ open class Request {
 open class GenericRequest : RequestMatumba()
 
 class ImposeNextRequestTimestampRequest : RequestMatumba() {
+    class Response : CommonResponseFieldsImpl()
     val stamp = StringHiddenField(this, "stamp")
-
-    companion object {
-        fun send(stamp: String): Promisoid<Unit> = callDangerousMatumba(ImposeNextRequestTimestampRequest().apply {
-            this.stamp.value = stamp
-        })
-    }
-
-//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
 
 class ImposeNextRequestErrorRequest : RequestMatumba() {

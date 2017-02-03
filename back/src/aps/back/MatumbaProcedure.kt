@@ -30,7 +30,6 @@ class ProcedureContext {
     var wideClientKind by notNullOnce<WideClientKind>()
     var clientKind by notNullOnce<ClientKind>()
     var lang by notNullOnce<Language>()
-    var requestTimestamp by notNullOnce<Timestamp>()
     var clientDomain by notNullOnce<String>()
     var clientPortSuffix by notNullOnce<String>()
     var user_killme by notNullOnce<UserRTO>()
@@ -94,7 +93,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                     log.info("${servletRequest.pathInfo}: $requestJSON")
                 }
                 val rmap = hackyObjectMapper.readValue(requestJSON, Map::class.java)
-                requestShit.commonRequestFields = hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class.java)
+                RequestGlobus.commonRequestFields = hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class.java)
                 // log.section("rmap:", rmap)
 
                 fun serviceShit() {
@@ -119,38 +118,6 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                         }
                     }
                     ctx.lang = Language.valueOf(rmap["lang"] as String)
-
-                    var ts = Timestamp(Date().time)
-                    if (spec.considerNextRequestTimestampFiddling) {
-                        TestServerFiddling.nextRequestTimestamp?.let {
-                            TestServerFiddling.nextRequestTimestamp = null
-                            ts = it
-                        }
-                    }
-                    ctx.requestTimestamp = ts
-
-//                    ctx.clientDomain = when (ctx.lang) {
-//                        Language.EN -> when (ctx.clientKind) {
-//                            ClientKind.CUSTOMER -> "aps-en-customer.local"
-//                            ClientKind.WRITER -> "aps-en-writer.local"
-//                        }
-//                        Language.UA -> when (ctx.clientKind) {
-//                            ClientKind.CUSTOMER -> "aps-ua-customer.local"
-//                            ClientKind.WRITER -> "aps-ua-writer.local"
-//                        }
-//                    }
-
-//                    ctx.clientPortSuffix = when (ctx.lang) {
-//                        Language.EN -> when (ctx.clientKind) {
-//                            ClientKind.CUSTOMER -> ":3011"
-//                            ClientKind.WRITER -> ":3021"
-//                        }
-//                        Language.UA -> when (ctx.clientKind) {
-//                            ClientKind.CUSTOMER -> ":3012"
-//                            ClientKind.WRITER -> ":3022"
-//                        }
-//                    }
-
 
                     fun runShitWithMaybeDB(): Res {
                         if (spec.needsUser != NeedsUser.NO) {
@@ -188,7 +155,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                         if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
 
 //                        val db = DB.apsTestOnTestServer
-                        val db = DB.byID(requestShit.commonRequestFields.databaseID!!)
+                        val db = DB.byID(RequestGlobus.commonRequestFields.databaseID!!)
 
 //                        redisLog.group("Some shit 2") {
                             db.joo {q->

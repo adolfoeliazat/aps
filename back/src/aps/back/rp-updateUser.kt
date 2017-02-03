@@ -20,7 +20,7 @@ import into.kommon.*
 
         tracingSQL("Update user") {ctx.q
             .update(USERS)
-            .set(USERS.UPDATED_AT, ctx.requestTimestamp)
+            .set(USERS.UPDATED_AT, RequestGlobus.stamp)
             .set(USERS.STATE, req.state.value.name)
             .set(USERS.PROFILE_REJECTION_REASON, if (req.state.value == UserState.PROFILE_REJECTED) req.profileRejectionReason.value else null)
             .set(USERS.BAN_REASON, if (req.state.value == UserState.BANNED) req.banReason.value else null)

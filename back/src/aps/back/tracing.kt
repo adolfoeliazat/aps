@@ -14,8 +14,8 @@ fun <T> tracingSQL(descr: String, block: () -> T): T {
     }
     redisLog.send(rlm)
 
-    requestShit.actualSQLFromJOOQ = null
-    requestShit.resultFromJOOQ = null
+    RequestGlobus.actualSQLFromJOOQ = null
+    RequestGlobus.resultFromJOOQ = null
 
     try {
         val res = block()
@@ -26,8 +26,8 @@ fun <T> tracingSQL(descr: String, block: () -> T): T {
         rlm.exceptionStack = e.stackString()
         throw e
     } finally {
-        requestShit.actualSQLFromJOOQ?.let {rlm.text = it}
-        requestShit.resultFromJOOQ?.let {res->
+        RequestGlobus.actualSQLFromJOOQ?.let {rlm.text = it}
+        RequestGlobus.resultFromJOOQ?.let {res->
             rlm.result = mutableListOf<RecordRTO>()-{o->
                 for (rec in res) {
                     o += RecordRTO(mutableListOf<FieldValueRTO>()-{o->

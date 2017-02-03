@@ -37,11 +37,25 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 object TestServerFiddling {
-    @Volatile var nextRequestTimestamp: Timestamp? = null
+    val nextRequestTimestamp = SetGetResetShit<Timestamp>()
+    val nextGeneratedPassword = SetGetResetShit<String>()
+    val nextRequestError = SetGetResetShit<String>()
+    val nextGeneratedConfirmationSecret = SetGetResetShit<String>()
     @Volatile var rejectAllRequestsNeedingDB: Boolean = false
-    @Volatile var nextGeneratedPassword: String? = null
-    @Volatile var nextRequestError: String? = null
-    @Volatile var nextGeneratedConfirmationSecret : String? = null
+}
+
+class SetGetResetShit<T> {
+    private @Volatile var value: T? = null
+
+    fun getAndReset(): T? {
+        val res = value
+        value = null
+        return res
+    }
+
+    fun set(newValue: T) {
+        value = newValue
+    }
 }
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
@@ -66,7 +80,7 @@ testProcedure(
 @RemoteProcedureFactory fun imposeNextRequestTimestamp() = testProcedure(
     {ImposeNextRequestTimestampRequest()},
     runShit = fun(ctx, req): GenericResponse {
-        TestServerFiddling.nextRequestTimestamp = stringToStamp(req.stamp.value)
+        TestServerFiddling.nextRequestTimestamp.set(stringToStamp(req.stamp.value))
         return GenericResponse()
     }
 )
@@ -74,7 +88,7 @@ testProcedure(
 @RemoteProcedureFactory fun imposeNextRequestError() = testProcedure(
     {ImposeNextRequestErrorRequest()},
     runShit = fun(ctx, req): GenericResponse {
-        TestServerFiddling.nextRequestError = req.error.value ?: const.msg.serviceFuckedUp
+        TestServerFiddling.nextRequestError.set(req.error.value ?: const.msg.serviceFuckedUp)
         return GenericResponse()
     }
 )
@@ -82,7 +96,7 @@ testProcedure(
 @RemoteProcedureFactory fun imposeNextGeneratedPassword() = testProcedure(
     {ImposeNextGeneratedPasswordRequest()},
     runShit = fun(ctx, req): ImposeNextGeneratedPasswordRequest.Response {
-        TestServerFiddling.nextGeneratedPassword = req.password.value
+        TestServerFiddling.nextGeneratedPassword.set(req.password.value)
         return ImposeNextGeneratedPasswordRequest.Response()
     }
 )
@@ -90,7 +104,7 @@ testProcedure(
 @RemoteProcedureFactory fun imposeNextGeneratedConfirmationSecret() = testProcedure(
     {ImposeNextGeneratedConfirmationSecretRequest()},
     runShit = fun(ctx, req): ImposeNextGeneratedConfirmationSecretRequest.Response {
-        TestServerFiddling.nextGeneratedConfirmationSecret = req.secret.value
+        TestServerFiddling.nextGeneratedConfirmationSecret.set(req.secret.value)
         return ImposeNextGeneratedConfirmationSecretRequest.Response()
     }
 )
@@ -125,8 +139,8 @@ testProcedure(
                 USERS.let {
                     tracingSQL("Insert Dasja") {q
                         .insertInto(USERS)
-                        .set(it.INSERTED_AT, ctx.requestTimestamp)
-                        .set(it.UPDATED_AT, ctx.requestTimestamp)
+                        .set(it.INSERTED_AT, RequestGlobus.stamp)
+                        .set(it.UPDATED_AT, RequestGlobus.stamp)
                         .set(it.EMAIL, "dasja@test.shit.ua")
                         .set(it.KIND, JQUserKind.ADMIN)
                         .set(it.LANG, ctx.lang.name)

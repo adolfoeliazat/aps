@@ -37,16 +37,8 @@ import java.util.*
                     } else {
                         val user = userRepo.findByEmail(anonymousCustomerEmail)
                         if (user == null) {
-                            val password = run {
-                                val ngp = TestServerFiddling.nextGeneratedPassword
-                                when (ngp) {
-                                    null -> UUID.randomUUID().toString()
-                                    else -> {
-                                        TestServerFiddling.nextGeneratedPassword = null
-                                        ngp
-                                    }
-                                }
-                            }
+                            val password = TestServerFiddling.nextGeneratedPassword.getAndReset()
+                                ?: UUID.randomUUID().toString()
 
                             val newCustomer = userRepo.save(User(
                                 email = anonymousCustomerEmail,
@@ -57,8 +49,10 @@ import java.util.*
                                 kind = UserKind.CUSTOMER,
                                 state = UserState.COOL
                             ))
-                            order.customer = newCustomer
-                            orderRepo.save(order)
+                            orderRepo.save(order-{o->
+                                o.customer = newCustomer
+                                o.state = UAOrderState.WAITING_ADMIN_APPROVAL
+                            })
 
                             val userToken = UserToken(
                                 user = newCustomer,

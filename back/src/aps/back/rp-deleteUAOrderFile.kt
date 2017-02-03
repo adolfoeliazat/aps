@@ -13,10 +13,7 @@ import aps.back.generated.jooq.Tables.*
     {DeleteUAOrderFileRequest()},
     runShit = fun(ctx, req): DeleteRequest.Response {
         // Thread.sleep(5000)
-        TestServerFiddling.nextRequestError?.let {
-            TestServerFiddling.nextRequestError = null
-            bitchExpectedly(it)
-        }
+        TestServerFiddling.nextRequestError.getAndReset()?.let(::bitchExpectedly)
 
         val orderFileID = req.id.value.toLong()
 

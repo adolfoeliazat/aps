@@ -34,6 +34,7 @@ fun send(req: ClearSentEmailsRequest): Promisoid<GenericResponse> = callDangerou
 suspend fun send(req: TestSQLFiddleRequest): TestSQLFiddleRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: ImposeNextGeneratedPasswordRequest): Promisoid<ImposeNextGeneratedPasswordRequest.Response> = callDangerousMatumba(req)
 suspend fun send(req: ImposeNextGeneratedConfirmationSecretRequest): Promisoid<ImposeNextGeneratedConfirmationSecretRequest.Response> = callDangerousMatumba(req)
+suspend fun send(req: ImposeNextRequestTimestampRequest): Promisoid<ImposeNextRequestTimestampRequest.Response> = callDangerousMatumba(req)
 suspend fun send(req: ConfirmOrderRequest): FormResponse2<ConfirmOrderRequest.Response> = _send2(null, req)
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {

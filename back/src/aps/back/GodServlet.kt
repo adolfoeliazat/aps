@@ -26,15 +26,37 @@ import javax.servlet.http.*
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
+private val requestGlobusThreadLocal = ThreadLocal<RequestGlobusType>()
+
+val RequestGlobus
+    get() = requestGlobusThreadLocal.get() ?: bitch("RequestGlobus? What else?")
+
+fun isRequestThread() =
+    requestGlobusThreadLocal.get() != null
+
+class RequestGlobusType {
+    val stamp by lazy {
+        TestServerFiddling.nextRequestTimestamp.getAndReset()
+            ?: Timestamp(System.currentTimeMillis())
+    }
+
+    var skipLoggingToRedis = false
+    var actualSQLFromJOOQ: String? = null
+    var resultFromJOOQ: Result<*>? = null
+    val redisLogParentIDs = Stack<String>()
+    lateinit var commonRequestFields: CommonRequestFieldsHolder
+    lateinit var servletRequest: HttpServletRequest
+}
+
 class GodServlet : HttpServlet() {
     val log by logger()
 
     override fun service(req: HttpServletRequest, res: HttpServletResponse) {
         val pathInfo = req.pathInfo
 
-        _requestShit.set(RequestShit())
-        requestShit.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
-        requestShit.servletRequest = req
+        requestGlobusThreadLocal.set(RequestGlobusType())
+        RequestGlobus.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
+        RequestGlobus.servletRequest = req
 
         res.addHeader("Access-Control-Allow-Origin", "*")
 
@@ -95,7 +117,7 @@ class GodServlet : HttpServlet() {
         val databaseID = req.getHeader("databaseID") ?: req.getParameter("databaseID") ?: bitch("I want `databaseID`")
         val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
 
-        requestShit.commonRequestFields = CommonRequestFieldsHolder()-{o->
+        RequestGlobus.commonRequestFields = CommonRequestFieldsHolder()-{o->
         }
 
         val db = DB.byID(databaseID)
@@ -158,18 +180,6 @@ private fun HttpServletResponse.spitText(text: String) {
     }
 }
 
-class RequestShit {
-    var skipLoggingToRedis = false
-    var actualSQLFromJOOQ: String? = null
-    var resultFromJOOQ: Result<*>? = null
-    val redisLogParentIDs = Stack<String>()
-    lateinit var commonRequestFields: CommonRequestFieldsHolder
-    lateinit var servletRequest: HttpServletRequest
-}
-
-val _requestShit = ThreadLocal<RequestShit>()
-val isRequestThread: Boolean get() = _requestShit.get() != null
-val requestShit: RequestShit get() = _requestShit.get()
 
 val patternsToExcludeRedisLoggingCompletely = listOf(
     "getSoftwareVersion", "mapStack", "getLiveStatus",

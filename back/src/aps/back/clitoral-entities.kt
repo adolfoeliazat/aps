@@ -12,7 +12,10 @@ abstract class ClitoralEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    var createdAt = Timestamp(System.currentTimeMillis())
+    var createdAt = when {
+        isRequestThread() -> RequestGlobus.stamp
+        else -> Timestamp(currentTimeMillis())
+    }
     var updatedAt = createdAt
     var deleted = false
 }

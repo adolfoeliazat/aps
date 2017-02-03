@@ -12,77 +12,8 @@ object fconst {
         val nl2 = "\n\n"
     }
 
-//    object pageNames {
-//        object common {
-//            object dynamic {
-//                val dashboard by myName()
-//                val profile by myName()
-//                val test by myName()
-//                val signIn by myName()
-//                val signUp by myName()
-//                val orders by myName()
-//            }
-//        }
-//
-//        object customer {
-//            object static {
-//                val index by myName()
-//                val why by myName()
-//                val prices by myName()
-//            }
-//            object dynamic {
-//                val order by myName()
-//                val support by myName()
-//
-//                private val co = common.dynamic
-//                val all = listOf(
-//                    co.test, co.signIn, co.signUp, co.dashboard, co.orders, order, support)
-//            }
-//        }
-//
-////        object writer {
-////            object static {
-////                val index by myName()
-////                val why by myName()
-////            }
-////            object dynamic {
-////                val support by myName()
-////                val store by myName()
-////                val users by myName()
-////                val adminMyTasks by myName()
-////                val adminHeap by myName()
-////                val adminUsers by myName()
-////                val debugPerfRender by myName()
-////                val debugKotlinPlayground by myName()
-////                val debug by myName()
-////
-////                private val co = common.dynamic
-////                val all = listOf(
-////                    co.test, co.signIn, co.signUp, co.dashboard, co.orders, support,
-////                    store, users, co.profile, adminMyTasks, adminHeap, adminUsers, debugPerfRender,
-////                    debugKotlinPlayground, debug)
-////            }
-////        }
-//    }
 
     object key {
-//        object topNavItem {
-//            object why : KeyDef() {val decl = name; val testRef = name}
-//            object prices : KeyDef() {val decl = name; val testRef = name}
-//            object samples : KeyDef() {val decl = name; val testRef = name}
-//            object faq : KeyDef() {val decl = name; val testRef = name}
-//            object contact : KeyDef() {val decl = name; val testRef = name}
-//            object blog : KeyDef() {val decl = name; val testRef = name}
-//            object makeOrder : KeyDef() {val decl = name; val testRef = name}
-//            object orders : KeyDef() {val decl = name; val testRef = name}
-//            object support : KeyDef() {val decl = name; val testRef = name}
-//            object store : KeyDef() {val decl = name; val testRef = name}
-//            object profile : KeyDef() {val decl = name; val testRef = name}
-//            object adminUsers : KeyDef() {val decl = name; val testRef = name}
-//            object dashboard : KeyDef() {val decl = name; val testRef = name}
-//            object signIn : KeyDef() {val decl = name; val testRef = name}
-//        }
-
         object refreshPage : KeyDef() {val decl = name; val testRef = name}
         object plus : KeyDef() {val decl = name; val testRef = name}
         object upload : KeyDef() {val decl = name; val testRef = name}

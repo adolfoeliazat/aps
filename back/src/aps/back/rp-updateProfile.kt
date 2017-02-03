@@ -15,7 +15,7 @@ import aps.back.generated.jooq.tables.pojos.JQUsers
     runShit = fun(ctx, req): UpdateProfileRequest.Response {
         val q = tracingSQL("Update profile") {ctx.q
             .update(USERS)
-            .set(USERS.PROFILE_UPDATED_AT, ctx.requestTimestamp)
+            .set(USERS.PROFILE_UPDATED_AT, RequestGlobus.stamp)
             .set(USERS.PHONE, req.profileFields.phone.value)
             .set(USERS.COMPACT_PHONE, compactPhone(req.profileFields.phone.value))
             .set(USERS.ABOUT_ME, req.profileFields.aboutMe.value)

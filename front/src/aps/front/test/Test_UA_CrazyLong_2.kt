@@ -59,7 +59,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
             }
         }
-
     }
 }
 

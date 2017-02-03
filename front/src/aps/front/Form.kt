@@ -244,7 +244,7 @@ suspend fun submitFormSequence(
     sequence(
         action = {async{
             if (imposeTimestamp) {
-                await(shit.imposeNextRequestTimestamp())
+                shit.imposeNextRequestTimestamp()
             }
             val shit = action ?: {
                 buttonClick(buttonKey ?: fconst.key.primary.testRef)

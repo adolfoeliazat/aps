@@ -23,14 +23,8 @@ import java.util.*
             needsUser = NeedsUser.MAYBE,
             runShit = fun (ctx, req: UACustomerCreateOrderRequest): UACustomerCreateOrderRequest.Response {
                 val user = ctx.user
-                val imposedSecret = TestServerFiddling.nextGeneratedConfirmationSecret
-                val confirmationSecret = when (imposedSecret) {
-                    null -> UUID.randomUUID().toString()
-                    else -> {
-                        TestServerFiddling.nextGeneratedConfirmationSecret = null
-                        imposedSecret
-                    }
-                }
+                val confirmationSecret = TestServerFiddling.nextGeneratedConfirmationSecret.getAndReset()
+                    ?: UUID.randomUUID().toString()
 
                 val order = repo.save(UAOrder(
                     documentType = req.documentType.value,
@@ -54,10 +48,10 @@ import java.util.*
 
                 val vspacing = "0.5em"
                 fun row(title: String, value: Any) = """
-                        <tr>
-                            <th style='text-align: left; white-space: nowrap; padding: 0; padding-bottom: $vspacing;'>$title</th>
-                            <td style='padding: 0; padding-left: 1em; padding-bottom: $vspacing; white-space: pre-wrap;'>${escapeHTML(value.toString())}</td>
-                        </tr>"""
+                    <tr>
+                        <th style='text-align: left; white-space: nowrap; padding: 0; padding-bottom: $vspacing;'>$title</th>
+                        <td style='padding: 0; padding-left: 1em; padding-bottom: $vspacing; white-space: pre-wrap;'>${escapeHTML(value.toString())}</td>
+                    </tr>"""
 
                 val customerName = when {
                     ctx.user == null -> req.anonymousCustomerName.value
