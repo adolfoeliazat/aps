@@ -17,7 +17,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  fillRawStorageLocal = {})
                 ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousCustomerStaticIndexScreen()},
                                              assertDynamic = {assertAnonymousCustomerDynamicIndexScreen()})
-                topNavItemSequence(page = pages.uaCustomer.makeOrder_testRef,
+                topNavItemSequence(page = pageSpecs.uaCustomer.makeOrder_testRef,
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
                 debugMailboxClear()
                 selectSetValue(fieldSpecs.ua.documentType_testRef, UADocumentType.PRACTICE)

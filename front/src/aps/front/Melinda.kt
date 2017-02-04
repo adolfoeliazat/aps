@@ -232,7 +232,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             header = ToReactElementable.volatile {
                 usualHeader(header() + when (ebafHost.headerMode) {
                 HeaderMode.BROWSING -> ""
-                HeaderMode.CREATING -> fconst.symbols.rightDoubleAngleQuotationSpaced + t("New", "Новый")
+                HeaderMode.CREATING -> fconst.text.symbols.rightDoubleAngleQuotationSpaced + t("New", "Новый")
             })},
             body = object:ToReactElementable {
                 override fun toReactElement(): ReactElement {

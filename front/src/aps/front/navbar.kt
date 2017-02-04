@@ -9,7 +9,6 @@ package aps.front
 import aps.*
 import aps.ClientKind.*
 import aps.UserKind.*
-import aps.front.PageKind.*
 import into.kommon.*
 import kotlin.js.json
 
@@ -21,38 +20,45 @@ fun renderTopNavbar(clientKind: ClientKind,
 ): ReactElement {
     val user = ui?.getUser()
 
-    fun renderItem(p: PageSpec, linkStyle: Style = Style()) = bang(
-        TopNavItem(ui, p, active = p == highlight, linkStyle = linkStyle).toReactElement())
+    fun renderItem(p: PageSpec, title: String? = null, linkStyle: Style = Style()) = bang(
+        TopNavItem(ui, p, active = p == highlight, title = title, linkStyle = linkStyle).toReactElement())
 
-    val fuckers = when (clientKind) {
-        UA_CUSTOMER -> pages.uaCustomer.fuckers
-        UA_WRITER -> pages.uaWriter.fuckers
-    }
-    val staticPages = fuckers.filter {it.kind == STATIC && it.inTopNavbar}
-    val privatePages = fuckers.filter {it.kind == PRIVATE && it.inTopNavbar}
-
-    val rightPage = when (clientKind) {
-        UA_CUSTOMER -> {
-            when (user) {
-                null -> pages.uaCustomer.signIn
-                else -> pages.uaCustomer.dashboard.copy(navTitle = user.firstName)
+    val rightEl = run {
+        class Shit(val page: PageSpec, val title: String? = null)
+        val shit = when (clientKind) {
+            UA_CUSTOMER -> {
+                val q = pageSpecs.uaCustomer
+                when (user) {
+                    null -> Shit(q.signIn)
+                    else -> Shit(q.dashboard, user.firstName)
+                }
             }
+            UA_WRITER -> {
+                val q = pageSpecs.uaWriter
+                when (user) {
+                    null -> Shit(q.signIn)
+                    else -> Shit(q.dashboard, user.firstName)
+                }
+            }
+        }
+        renderItem(shit.page, title = shit.title, linkStyle = rightLinkStyle)
+    }
+
+    val staticPages = when (clientKind) {
+        UA_CUSTOMER -> {
+            val q = pageSpecs.uaCustomer
+            listOf(q.why, q.prices, q.samples, q.faq, q.contact, q.blog, q.makeOrder)
         }
         UA_WRITER -> {
-            when (user) {
-                null -> pages.uaWriter.signIn
-                else -> pages.uaWriter.dashboard.copy(navTitle = user.firstName)
-            }
+            val q = pageSpecs.uaWriter
+            listOf(q.why, q.prices, q.samples, q.faq)
         }
     }
-    val rightEl = renderItem(rightPage, linkStyle = rightLinkStyle)
 
     val leftEls = mutableListOf<ReactElement>()
     when (user) {
         null -> {
             leftEls += staticPages.map {renderItem(it)}
-            if (clientKind == UA_CUSTOMER)
-                leftEls += renderItem(pages.uaCustomer.makeOrder)
         }
         else -> {
             leftEls += reactCreateElement(
@@ -80,6 +86,16 @@ fun renderTopNavbar(clientKind: ClientKind,
                         json("className" to "dropdown-menu"),
                         staticPages.map {renderItem(it)})))
 
+            val privatePages = when (clientKind) {
+                UA_CUSTOMER -> {
+                    val q = pageSpecs.uaCustomer
+                    listOf(q.orders)
+                }
+                UA_WRITER -> {
+                    val q = pageSpecs.uaWriter
+                    listOf(q.orders, q.store)
+                }
+            }
             leftEls += privatePages.map {renderItem(it)}
         }
     }
@@ -129,6 +145,7 @@ fun renderTopNavbar(clientKind: ClientKind,
 class TopNavItem(
     val ui: World?,
     val page: PageSpec,
+    val title: String? = null,
     val linkStyle: Style = Style(),
     val active: Boolean
 ) : Control2() {

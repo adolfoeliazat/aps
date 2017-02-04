@@ -12,14 +12,9 @@ import aps.*
 import aps.ClientKind.*
 import aps.UserState.*
 import aps.front.Globus.clientKind
-import aps.front.PageKind.*
 import into.kommon.*
 import jquery.jq
-import org.w3c.dom.HTMLElement
-import kotlin.browser.localStorage
-import kotlin.browser.window
 import kotlin.js.json
-import kotlin.properties.Delegates.notNull
 
 class World(val name: String) {
     lateinit var rootContent: ReactElement
@@ -194,8 +189,8 @@ class World(val name: String) {
             pathname.endsWith(".html") -> {
                 val path = pathname.substring(pathname.lastIndexOfOrDie("/") + 1, pathname.lastIndexOfOrDie("."))
                 val pages = when (clientKind) {
-                    UA_CUSTOMER -> pages.uaCustomer
-                    UA_WRITER -> pages.uaWriter
+                    UA_CUSTOMER -> pageSpecs.uaCustomer
+                    UA_WRITER -> pageSpecs.uaWriter
                 }
                 bang(pages.fuckers.find {it.path == path})
             }
@@ -205,8 +200,8 @@ class World(val name: String) {
 
             user == null -> {
                 when (clientKind) {
-                    UA_CUSTOMER -> pages.uaCustomer.index
-                    UA_WRITER -> pages.uaWriter.index
+                    UA_CUSTOMER -> pageSpecs.uaCustomer.index
+                    UA_WRITER -> pageSpecs.uaWriter.index
                 }
             }
 
@@ -214,14 +209,14 @@ class World(val name: String) {
                 when (user.state) {
                     COOL -> {
                         when (clientKind) {
-                            UA_CUSTOMER -> pages.uaCustomer.dashboard
-                            UA_WRITER -> pages.uaWriter.dashboard
+                            UA_CUSTOMER -> pageSpecs.uaCustomer.dashboard
+                            UA_WRITER -> pageSpecs.uaWriter.dashboard
                         }
                     }
                     PROFILE_REJECTED, PROFILE_PENDING, PROFILE_APPROVAL_PENDING, BANNED -> {
                         when (clientKind) {
-                            UA_CUSTOMER -> pages.uaCustomer.profile
-                            UA_WRITER -> pages.uaWriter.profile
+                            UA_CUSTOMER -> pageSpecs.uaCustomer.profile
+                            UA_WRITER -> pageSpecs.uaWriter.profile
                         }
                     }
                 }.also {
@@ -230,10 +225,10 @@ class World(val name: String) {
             }
         }
 
-        if (page.kind == PRIVATE && user == null) {
+        if (page.requiresSignIn && user == null) {
             page = when (clientKind) {
-                UA_CUSTOMER -> pages.uaCustomer.signIn
-                UA_WRITER -> pages.uaWriter.signIn
+                UA_CUSTOMER -> pageSpecs.uaCustomer.signIn
+                UA_WRITER -> pageSpecs.uaWriter.signIn
             }.also {
                 changeURLTo = it
             }
@@ -245,7 +240,7 @@ class World(val name: String) {
         firstTimeLoadingPage = false
         val skipBodyRendering =
             firstRun
-            && page.kind == STATIC
+            && page.skipFirstTimeRendering
             // && user == null // TODO:vgrechka Is this needed?
 
         if (!skipBodyRendering) {

@@ -6,12 +6,13 @@ object fconst {
     val defaultScrollBursts = 8
     val scrollbarWidth = 17
 
-    object symbols {
-        val rightDoubleAngleQuotation = "»"
-        val rightDoubleAngleQuotationSpaced = " » "
-        val nl2 = "\n\n"
+    object text {
+        object symbols {
+            val rightDoubleAngleQuotation = "»"
+            val rightDoubleAngleQuotationSpaced = " » "
+            val nl2 = "\n\n"
+        }
     }
-
 
     object key {
         object refreshPage : KeyDef() {val decl = name; val testRef = name}

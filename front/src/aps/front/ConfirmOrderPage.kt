@@ -32,7 +32,7 @@ class ConfirmOrderPage(val world: World) {
                 }
 
                 world.replaceNavigate(
-                    pages.uaCustomer.order.path + ".html"
+                    pageSpecs.uaCustomer.order.path + ".html"
                         + "?${UACustomerSingleOrderPage.urlQuery.id.name}=${res.meat.orderId}")
             }
         }

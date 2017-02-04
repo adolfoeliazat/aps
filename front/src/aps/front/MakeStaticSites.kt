@@ -9,7 +9,6 @@
 package aps.front
 
 import aps.*
-import aps.front.PageKind.*
 import into.kommon.*
 import kotlin.js.json
 
@@ -92,7 +91,11 @@ object MakeStaticSites {
                              }.toReactElement())
         }
 
-        writePage(path = pages.uaWriter.index.path, content = kdiv{o->
+        for (p in pageSpecs.uaWriter.fuckers) {
+            writePage(path = p.path, content = wholePageTicker().toToReactElementable())
+        }
+
+        writePage(path = pageSpecs.uaWriter.index.path, content = kdiv{o->
             o- pageHeader(t(en="Welcome to Writer", ua="Приветствуем на Писце"))
             o- markdownPiece(
                 en = """
@@ -173,7 +176,7 @@ object MakeStaticSites {
             ))
         })
 
-        writePage(path = pages.uaWriter.why.path, highlight = pages.uaWriter.why, content=kdiv{o->
+        writePage(path = pageSpecs.uaWriter.why.path, highlight = pageSpecs.uaWriter.why, content=kdiv{o->
             o- pageHeader(t(en="Why Writer?", ua="Почему Писец?"))
 
             fun add(section: Section) =o- kdiv{o->
@@ -260,7 +263,7 @@ object MakeStaticSites {
                     """)))
         })
 
-        writePage(path = pages.uaWriter.prices.path, highlight = pages.uaWriter.prices, content = kdiv{o->
+        writePage(path = pageSpecs.uaWriter.prices.path, highlight = pageSpecs.uaWriter.prices, content = kdiv{o->
             o- pageHeader(t(en="Our Prices", ua="Наши цены"))
             o- markdownPiece(
                 en = """
@@ -318,7 +321,7 @@ object MakeStaticSites {
                 ua = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy." )
         })
 
-        writePage(path = pages.uaWriter.faq.path, highlight = pages.uaWriter.faq, content=kdiv{o->
+        writePage(path = pageSpecs.uaWriter.faq.path, highlight = pageSpecs.uaWriter.faq, content=kdiv{o->
             o- pageHeader(t(en="FAQ", ua="Частые вопросы"))
 
             fun add(section: Section) =o- kdiv{o->
@@ -420,10 +423,6 @@ object MakeStaticSites {
                     en = "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. ",
                     ua = "The writers will provide you with the necessary sources used to write your paper if you request it in advance. Sometimes we use paid online libraries providing access per day/hour, in this case it is extremely difficult to come back there again and copy-paste material. Some libraries have copyright protection software, so cannot always copy the text for you. However, your timely request for the sources package will give us direction in a library choice. ")))
         })
-
-        for (p in pages.uaWriter.fuckers.filter {it.kind != STATIC}) {
-            writePage(path = p.path, content = wholePageTicker().toToReactElementable())
-        }
 
         println("DONE")
     }
@@ -528,7 +527,11 @@ object MakeStaticSites {
                              }.toReactElement())
         }
 
-        writePage(path = pages.uaCustomer.index.path, content=kdiv{o->
+        for (p in pageSpecs.uaCustomer.fuckers) {
+            writePage(path = p.path, content = wholePageTicker().toToReactElementable())
+        }
+
+        writePage(path = pageSpecs.uaCustomer.index.path, content=kdiv{o->
             o- pageHeader(t(en="Welcome to AcademicPaperServed", ua="Welcome to AcademicPaperServed UA"))
             o- markdownPiece(
                 en = """
@@ -609,7 +612,7 @@ object MakeStaticSites {
             ))
         })
 
-        writePage(path = pages.uaCustomer.why.path, highlight = pages.uaCustomer.why, content = kdiv{o->
+        writePage(path = pageSpecs.uaCustomer.why.path, highlight = pageSpecs.uaCustomer.why, content = kdiv{o->
             o- pageHeader(t(en="Why AcademicPaperServed?", ua="Why AcademicPaperServed UA?"))
 
             fun add(section: Section) =o- kdiv{o->
@@ -714,7 +717,7 @@ object MakeStaticSites {
             }
         }
 
-        writePage(path = pages.uaCustomer.prices.path, highlight = pages.uaCustomer.prices, content=kdiv{o->
+        writePage(path = pageSpecs.uaCustomer.prices.path, highlight = pageSpecs.uaCustomer.prices, content=kdiv{o->
             o- pageHeader(t(en="Pricing Policy", ua="Pricing Policy"))
             o- markdownPiece(
                 en = """
@@ -794,12 +797,12 @@ object MakeStaticSites {
             )
         }
 
-        writePage(path = pages.uaCustomer.samples.path, highlight = pages.uaCustomer.samples, content = kdiv{o->
+        writePage(path = pageSpecs.uaCustomer.samples.path, highlight = pageSpecs.uaCustomer.samples, content = kdiv{o->
             o- pageHeader(t(en="Sample Papers", ua="Примеры работ"))
             o- hrefBullets(sampleItems)
         })
 
-        writePage(path = pages.uaCustomer.faq.path, highlight = pages.uaCustomer.faq, content = kdiv{o->
+        writePage(path = pageSpecs.uaCustomer.faq.path, highlight = pageSpecs.uaCustomer.faq, content = kdiv{o->
             o- pageHeader(t(en="FAQ", ua="FAQ"))
 
             fun add(section: Section) =o- kdiv{o->
@@ -903,7 +906,7 @@ object MakeStaticSites {
 
         })
 
-        writePage(path = pages.uaCustomer.contact.path, highlight = pages.uaCustomer.contact, content = kdiv{o->
+        writePage(path = pageSpecs.uaCustomer.contact.path, highlight = pageSpecs.uaCustomer.contact, content = kdiv{o->
             o- pageHeader(t(en="Contact Us", ua="Contact Us"))
             o- markdownPiece(
                 en = """
@@ -991,21 +994,17 @@ object MakeStaticSites {
         }
 
         for (item in blogItems) {
-            writePage(path = pages.uaCustomer.blog.path + "-${item.slug}", highlight = pages.uaCustomer.blog, content = kdiv{o->
+            writePage(path = pageSpecs.uaCustomer.blog.path + "-${item.slug}", highlight = pageSpecs.uaCustomer.blog, content = kdiv{o->
                 o- pageHeader(item.title)
                 o- markdownPiece(item.content)
             })
         }
 
-        writePage(path = pages.uaCustomer.blog.path, highlight = pages.uaCustomer.blog, content = kdiv{o->
+        writePage(path = pageSpecs.uaCustomer.blog.path, highlight = pageSpecs.uaCustomer.blog, content = kdiv{o->
             o- pageHeader(t(en="Writing Blog", ua="Писательский Блог"))
             o- hrefBullets(blogItems.map{x ->
                 HrefBulletItem(title = x.listTitle, href = "blog-${x.slug}.html")})
         })
-
-        for (p in pages.uaCustomer.fuckers.filter {it.kind != STATIC}) {
-            writePage(path = p.path, content = wholePageTicker().toToReactElementable())
-        }
 
         println("DONE")
     }
