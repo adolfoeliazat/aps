@@ -181,7 +181,7 @@ class TopNavItem(
                         "style" to linkStyle.toReactStyle()
                     ),
                     listOf(
-                        page.navTitle.asReactElement()
+                        (title ?: page.navTitle ?: wtf("TopNavItem title")).asReactElement()
                     )
                 )
             )
@@ -236,7 +236,7 @@ suspend fun topNavItemSequence(
         steps = listOf(
             PauseAssertResume(TestGlobal.topNavItemTickingLock, "$aid--1"),
             DumbStep {TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(
-                bannerVerticalPosition = VerticalPosition.TOP,
+                bannerVerticalPosition = VerticalPosition.BOTTOM,
                 bannerHorizontalPosition = HorizontalPosition.RIGHT)},
             PauseAssertResume(TestGlobal.topNavItemDoneLock, "$aid--2")
         )

@@ -34,8 +34,8 @@ class UACustomerSingleOrderPage(val world: World) {
 
         val tabs = listOf(
             ParamsTab(world, order),
-            UACustomerSingleOrderPageFilesTab(this, world, order),
-            MessagesTab(order)
+            UACustomerSingleOrderPageFilesTab(this, world, order)/*,
+            MessagesTab(order)*/
         )
         val tab = tabs.find {it.tabSpec.id == tabID} ?: tabs.first()
 
@@ -57,6 +57,15 @@ class UACustomerSingleOrderPage(val world: World) {
             }),
 
             body = kdiv{o->
+                if (order.state == UAOrderState.CUSTOMER_DRAFT) {
+                    val c = css.orderPage.customer.draftHint
+                    o- kdiv(className = c.container){o->
+                        o- kdiv(className = c.message){o->
+                            o- t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...")
+                        }
+                        o- Button(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = fconst.key.button.sendForApproval)
+                    }
+                }
                 o- h4(marginBottom = "0.7em"){o->
                     o- order.title
                 }
@@ -98,49 +107,72 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
 
         exhaustive/when (world.user.kind) {
             UserKind.CUSTOMER -> {
-                o- row{o->
-                    o- kdiv(className = "col-md-3"){o->
-                        o- label(t("TOTE", "Создан"))
-                        o- kdiv{o->
-                            o- formatUnixTime(order.insertedAt)
+                val option = 2
+                if (option == 1) {
+                    o- row{o->
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(t("Created", "Создан"))
+                            o- kdiv{o->
+                                o- formatUnixTime(order.insertedAt)
+                            }
+                        }
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(fieldSpecs.ua.documentType.title)
+                            o- kdiv{o->
+                                o- order.documentType.title
+                            }
+                        }
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(fieldSpecs.numPages.title)
+                            o- kdiv{o->
+                                o- order.numPages.toString()
+                            }
+                        }
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(fieldSpecs.numSources.title)
+                            o- kdiv{o->
+                                o- order.numSource.toString()
+                            }
                         }
                     }
-                    o- kdiv(className = "col-md-3"){o->
-                        o- label(t("TOTE", fieldSpecs.ua.documentType.title))
-                        o- kdiv{o->
-                            o- order.documentType.title
-                        }
-                    }
-                    o- kdiv(className = "col-md-3"){o->
-                        o- label(t("TOTE", fieldSpecs.numPages.title))
-                        o- kdiv{o->
-                            o- order.numPages.toString()
-                        }
-                    }
-                    o- kdiv(className = "col-md-3"){o->
-                        o- label(t("TOTE", fieldSpecs.numSources.title))
-                        o- kdiv{o->
-                            o- order.numSource.toString()
-                        }
-                    }
-//                    o- kdiv(className = "col-md-4"){o->
-//                        o- label(t("TOTE", "Срок"))
-//                        o- kdiv{o->
-//                            o- t("TOTE", "ХЗ")
-////                            o- formatUnixTime(order.deadline)
-//                        }
-//                    }
                 }
-                o- row{o->
+                else if (option == 2) {
+                    o- row{o->
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(t("Created", "Создан"))
+                            o- kdiv{o->
+                                o- formatUnixTime(order.insertedAt)
+                            }
+                        }
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(fieldSpecs.phone.title)
+                            o- div(order.phone)
+                        }
+                    }
+                    o- row{o->
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(fieldSpecs.ua.documentType.title)
+                            o- kdiv{o->
+                                o- order.documentType.title
+                            }
+                        }
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(fieldSpecs.numPages.title)
+                            o- kdiv{o->
+                                o- order.numPages.toString()
+                            }
+                        }
+                        o- kdiv(className = "col-md-3"){o->
+                            o- label(fieldSpecs.numSources.title)
+                            o- kdiv{o->
+                                o- order.numSource.toString()
+                            }
+                        }
+                    }
                 }
-//                order.price?.let {
-//                    o- kdiv{o->
-//                        o- formatUAH(it)
-//                    }
-//                }
                 o- row{o->
                     o- kdiv(className = "col-md-12"){o->
-                        o- label(t("TOTE", fieldSpecs.documentDetails.title))
+                        o- label(fieldSpecs.documentDetails.title)
                         o- kdiv(whiteSpace = "pre-wrap"){o->
                             o- order.details
                         }
@@ -154,7 +186,24 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
         }
     }
 
-    override val tabSpec = TabSpec("params", t("TOTE", "Параметры"), content)
+    override val tabSpec = TabSpec(
+        id = "params",
+        title = t("TOTE", "Параметры"),
+        content = content,
+        stripContent = kdiv{o->
+            when (world.user.kind) {
+                UserKind.CUSTOMER -> {
+                    if (order.state == UAOrderState.CUSTOMER_DRAFT) {
+                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit) {
+                            console.log("fuck you")
+                        }
+                    }
+                }
+                UserKind.WRITER -> {}
+                UserKind.ADMIN -> {}
+            }
+        }
+    )
 }
 
 

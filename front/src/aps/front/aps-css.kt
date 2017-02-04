@@ -65,6 +65,28 @@ object css {
 
     var allShit = ""
 
+    object orderPage : Group(null) {
+        object customer : Group(null) {
+            object draftHint : Group(null) {
+                val container by Style("""
+                    margin-top: -0.5em;
+                    background-color: ${Color.BLUE_GRAY_50};
+                    padding: 0.25em;
+                    padding-right: 0;
+                    display: flex;
+                    align-items: center;
+                """)
+
+                val message by Style("""
+                    flex-grow: 1;
+                """)
+
+                val button by Style("""
+                """)
+            }
+        }
+    }
+
     object textField : Group(null) {
         val labelContainer by Style("""
             position: relative;
@@ -245,10 +267,8 @@ object css {
                 z-index: 100000;""")
 
             object assertion : Group(this) {
-                val common = "opacity: 0.3;"
-
                 val notHardened by Style("""
-                    $common
+                    opacity: 0.3;
                     position: fixed;
                     width: $width;
                     min-height: 10rem;
@@ -260,7 +280,7 @@ object css {
                     z-index: 100000;""")
 
                 val correct by Style("""
-                    $common
+                    opacity: 0.3;
                     position: fixed;
                     width: $width;
                     min-height: 10rem;
@@ -272,7 +292,7 @@ object css {
                     z-index: 100000;""")
 
                 val incorrect by Style("""
-                    $common
+                    opacity: 0.5;
                     position: fixed;
                     width: $width;
                     min-height: 10rem;

@@ -51,7 +51,7 @@ import java.util.*
                             ))
                             orderRepo.save(order-{o->
                                 o.customer = newCustomer
-                                o.state = UAOrderState.WAITING_ADMIN_APPROVAL
+                                o.state = UAOrderState.CUSTOMER_DRAFT
                             })
 
                             val userToken = UserToken(

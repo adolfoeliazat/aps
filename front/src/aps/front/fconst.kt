@@ -29,6 +29,11 @@ object fconst {
             object createAccount : KeyDef() {val decl = name; val testRef = name}
             object signUp : KeyDef() {val decl = name; val testRef = name}
         }
+
+        object button {
+            val sendForApproval by named {it}; val sendForApproval_testRef = TestRef(sendForApproval)
+            val edit by named {it}; val edit_testRef = TestRef(edit)
+        }
     }
 
     object url {

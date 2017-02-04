@@ -34,7 +34,8 @@ class UAOrderRTO(
     val numSource: Int,
     val details: String,
     val adminNotes: String,
-    val state: UAOrderState
+    val state: UAOrderState,
+    val phone: String
 )
 
 data class IntRangeRTO(
@@ -80,6 +81,7 @@ enum class UADocumentType(override val title: String) : Titled {
 
 enum class UAOrderState(override val title: String, val labelBackground: Color) : Titled {
     CREATED(t("TOTE", "Создан"), GRAY_300),
+    CUSTOMER_DRAFT(t("TOTE", "Черновик"), GRAY_300),
     LOOKING_FOR_WRITERS(t("TOTE", "Ищем писателей"), LIGHT_BLUE_100),
     WAITING_FOR_PAYMENT(t("TOTE", "Ждем оплаты"), GRAY_300),
     WRITER_ASSIGNED(t("TOTE", "Писатель назначен"), GRAY_300),
