@@ -2,14 +2,13 @@ package aps.front
 
 import aps.*
 import aps.const.text.symbols.times
-import aps.front.*
 import jquery.jq
 import kotlin.js.json
 
 class OpenModalParamsButton(
     val title: String,
     val level: Button.Level,
-    val onClicka: suspend () -> Unit
+    val onClicka: (suspend () -> Unit)? = null
 )
 
 class OpenModalParams(
@@ -17,7 +16,8 @@ class OpenModalParams(
     val title: String,
     val okButton: OpenModalParamsButton,
     val cancelButton: OpenModalParamsButton,
-    val body: ToReactElementable
+    val body: ToReactElementable,
+    val width: String? = null
 )
 
 suspend fun openModal(p: OpenModalParams) {
@@ -29,7 +29,7 @@ suspend fun openModal(p: OpenModalParams) {
     val modalID = puid()
     val timesButtonID = puid()
     val pane = old_panes.put(kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
-        o- kdiv(className = "modal-dialog"){o->
+        o- kdiv(className = "modal-dialog", width = p.width){o->
             o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${p.leftMarginColor}"){o->
                 o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
                     o- Button(id = timesButtonID, title = times, className = "close", dataDismiss = "modal")
@@ -41,10 +41,12 @@ suspend fun openModal(p: OpenModalParams) {
                     o- p.body
                 }
                 o- kdiv(className = "modal-footer"){o->
-                    o- Button(title = p.okButton.title, level = p.okButton.level, key = fconst.key.button.modal.ok.ref) {
-                        result = true
-                        byid(timesButtonID).click()
-                    }
+                    o- Button(title = p.okButton.title, level = p.okButton.level, key = fconst.key.button.modal.ok.ref,
+                              onClicka = p.okButton.onClicka ?: {
+                                  result = true
+                                  byid(timesButtonID).click()
+                              })
+
                     o- Button(title = p.cancelButton.title, level = p.cancelButton.level, key = fconst.key.button.modal.cancel.ref) {
                         result = false
                         byid(timesButtonID).click()
@@ -55,12 +57,23 @@ suspend fun openModal(p: OpenModalParams) {
     })
 
     val jqModal = byid(modalID).asDynamic()
-    jqModal.modal(json())
+    jqModal.on("show.bs.modal") {
+        jqbody.css("overflow-y", "hidden")
+        jq(".navbar-fixed-top").css("padding-right", "${fconst.scrollbarWidth}px")
+        jqbody.addClass(css.shebang.paddingRightScrollbarWidthImportant)
+        jq(".${css.test.crossWorld.locationPane}").addClass(css.shebang.paddingRightScrollbarWidthImportant)
+    }
     jqModal.on("shown.bs.modal") {
 //        modalShownResolvable.resolve(Unit)
         TestGlobal.modalShownLock.sutNotify()
     }
+    jqModal.on("hide.bs.modal") {
+    }
     jqModal.on("hidden.bs.modal") {
+        jqbody.css("overflow-y", "scroll")
+        jq(".navbar-fixed-top").css("padding-right", "")
+        jqbody.removeClass(css.shebang.paddingRightScrollbarWidthImportant)
+        jq(".${css.test.crossWorld.locationPane}").removeClass(css.shebang.paddingRightScrollbarWidthImportant)
         jqModal.data("bs.modal", null)
         old_panes.remove(pane)
 //        modalHiddenResolvable.resolve(Unit)
@@ -68,6 +81,7 @@ suspend fun openModal(p: OpenModalParams) {
         shit.resolve(result)
         Unit
     }
+    jqModal.modal(json())
 
     await(shit.promise)
 }

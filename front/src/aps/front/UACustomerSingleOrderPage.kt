@@ -200,41 +200,38 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                 UserKind.CUSTOMER -> {
                     if (order.state == UAOrderState.CUSTOMER_DRAFT) {
                         o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit.ref) {
+                            val form = FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
+                                UACustomerCreateOrderRequest(world.xlobal, UPDATE)-{o->
+                                    o.documentType.value = order.documentType
+                                    o.documentTitle.value = order.title
+                                    o.numPages.setValue(order.numPages)
+                                    o.numSources.setValue(order.numSources)
+                                    o.documentDetails.value = order.details
+                                    o.phone.value = order.phone
+                                },
+                                world,
+                                renderButtons = false,
+                                onSuccessa = {
+                                }
+                            ))
+
                             openModal(OpenModalParams(
+                                width = "80rem",
                                 leftMarginColor = Color.BLUE_GRAY_300,
                                 title = t("TOTE", "Параметры заказа"),
                                 okButton = OpenModalParamsButton(
                                     title = t("TOTE", "Сохранить"),
                                     level = Button.Level.PRIMARY,
-                                    onClicka = {}
+                                    onClicka = {
+                                        form.submit()
+                                    }
                                 ),
                                 cancelButton = OpenModalParamsButton(
                                     title = t("TOTE", "Не стоит"),
-                                    level = Button.Level.DEFAULT,
-                                    onClicka = {}
+                                    level = Button.Level.DEFAULT
                                 ),
                                 body = kdiv{o->
-                                    o- FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
-                                        UACustomerCreateOrderRequest(world.xlobal, UPDATE)-{o->
-                                            o.documentType.value = order.documentType
-                                            o.documentTitle.value = order.title
-                                            o.numPages.setValue(order.numPages)
-                                            o.numSources.setValue(order.numSources)
-                                            o.documentDetails.value = order.details
-                                            o.phone.value = order.phone
-                                        },
-                                        world,
-                                        renderButtons = false,
-                                        onSuccessa = {
-//                                            if (world.userMaybe != null) {
-//                                                imf("MakeOrderPage for signed-in user")
-//                                            } else {
-//                                                place.setContent(kdiv{o->
-//                                                    o- t("TOTE", "Мы отправили письмо. Нажми там на ссылку для подтверждения заказа.")
-//                                                })
-//                                            }
-                                        }
-                                    ))
+                                    o- form
                                 }
                             ))
                             clog("aaaaaaaaaaaaaaaaaaa")

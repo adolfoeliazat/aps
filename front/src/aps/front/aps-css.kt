@@ -65,6 +65,12 @@ object css {
 
     var allShit = ""
 
+    object shebang : Group(null) {
+        val paddingRightScrollbarWidthImportant by Style("""
+            padding-right: ${fconst.scrollbarWidth}px !important;
+        """)
+    }
+
     object orderPage : Group(null) {
         object customer : Group(null) {
             object draftHint : Group(null) {
@@ -586,6 +592,11 @@ fun apsCSS(): String {
         .zebra-1 .label1 {background-color: ${TEAL_100};}
 
         .hover-color-BLUE_GRAY_800:hover {color: ${BLUE_GRAY_800};}
+
+        .modal-open .modal {
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
     """
 
     res += css.allShit

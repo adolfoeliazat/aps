@@ -7,6 +7,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     // http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_2&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=false&handPauses=true
 
     override suspend fun run1() {
+        val testdata = object {
+            val details = "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."
+        }
+
         forceFast {
             initialTestShit(this)
 
@@ -23,14 +27,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
                 formSubmissionAttempts(
-                    testShit,
-                    descr = "Make order (no sign-in)",
-                    baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
+                    testShit, baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
                     attempts = eachOrCombinationOfLasts(listOf(
                         badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал хуи на практике"),
                         badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 13),
                         badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 5),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentDetails.testRef, "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentDetails.testRef, testdata.details),
                         badTextFieldValuesThenValid(fieldSpecs.shebang.anonymousCustomerName.testRef, "Пися Камушкин"),
                         badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 123-45-67"),
                         badTextFieldValuesThenValid(fieldSpecs.shebang.email.testRef, "pisia@test.shit.ua")
@@ -59,8 +61,30 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
             }
 
-            run { // Edit params
+            while (true) {
+                run { // Edit params -- cancel
+                    step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "9b32c20b-bcdb-4024-b068-5c6a36231944")
+                    inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
+                    step({buttonClick(fconst.key.button.modal.cancel.testRef)}, TestGlobal.modalHiddenLock, "65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
+                }
+                sleep(1000)
+            }
+
+            run { // Edit params -- save
+                unforceFast()
                 step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
+                selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
+                formSubmissionAttempts(
+                    testShit, baseID = "beaa5793-9590-415e-8bc9-ca6fec7ead52",
+                    buttonKey = fconst.key.button.modal.ok.testRef,
+                    attempts = eachOrCombinationOfLasts(listOf(
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал большие хуи на практике"),
+                        badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 23),
+                        badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 7),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentDetails.testRef, "Это чисто на почитать... " + testdata.details),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 321-45-67")
+                    ))
+                )
             }
         }
     }

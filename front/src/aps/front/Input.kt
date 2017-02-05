@@ -298,36 +298,36 @@ class Input(
         onValueChanged()
     }
 
-    fun testSetValue(newValue: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> = async {
-        await(testSetValueAlgo(
+    suspend fun testSetValue(newValue: String, handOpts: HandOpts = HandOpts()) {
+        testSetValueAlgo(
             initialValue = "",
             subsequentValues = (0 until newValue.length).map {newValue.substring(0, it + 1)},
             finalValue = newValue,
-            handOpts = handOpts))
+            handOpts = handOpts)
     }
 
-    fun testPrependValue(prefix: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> = async {
-        await(testSetValueAlgo(
+    suspend fun testPrependValue(prefix: String, handOpts: HandOpts = HandOpts()) {
+        testSetValueAlgo(
             initialValue = value,
             subsequentValues = (1..prefix.length).map {prefix.substring(0, it) + value},
             finalValue = prefix + value,
-            handOpts = handOpts))
+            handOpts = handOpts)
     }
 
-    fun testAppendValue(suffix: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> = async {
-        await(testSetValueAlgo(
+    suspend fun testAppendValue(suffix: String, handOpts: HandOpts = HandOpts()) {
+        testSetValueAlgo(
             initialValue = value,
             subsequentValues = (1..suffix.length).map {value + suffix.substring(0, it)},
             finalValue = value + suffix,
-            handOpts = handOpts))
+            handOpts = handOpts)
     }
 
-    private fun testSetValueAlgo(
+    private suspend fun testSetValueAlgo(
         initialValue: String,
         subsequentValues: List<String>,
         finalValue: String,
         handOpts: HandOpts
-    ) = async {
+    ) {
         if (testOpts().animateUserActions) {
             await(TestUserActionAnimation.hand(
                 legacyShit.elementID,
@@ -367,32 +367,40 @@ class Input(
 
 }
 
+suspend fun inputSetValue(field: TestRef<TextFieldSpec>, value: String) {
+    inputSetValue(field.it.name, value)
+}
+
+suspend fun inputSetValue(field: TestRef<IntFieldSpec>, value: String) {
+    inputSetValue(field.it.name, value)
+}
+
 suspend fun inputSetValue(key: String, value: String) {
-    await(Input.instance(key).testSetValue(value))
+    Input.instance(key).testSetValue(value)
 }
 
-fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {
-    acta("Prepending to `$key`: ${markdownItalicVerbatim(value)}") {async{
-        await(Input.instance(key).testPrependValue(value))
-    }}
+suspend fun inputPrependValue(key: String, value: String) {
+    Input.instance(key).testPrependValue(value)
 }
 
-fun TestScenarioBuilder.inputAppendValue(key: String, value: String) {
-    acta("Appending to `$key`: ${markdownItalicVerbatim(value)}") {async{
-        await(Input.instance(key).testAppendValue(value))
-    }}
+suspend fun inputPrependValue(field: TestRef<TextFieldSpec>, value: String) {
+    inputPrependValue(field.it.name, value)
 }
 
-fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) {
-    act("Appending long shit to `$key`") {
-        val inst = Input.instance(key)
-        var newValue = inst.getValue()
-        var i = 0
-        while (newValue.length <= maxLen)
-            newValue += " SHIT ${++i}"
-        inst.setValue(newValue)
-    }
+suspend fun inputAppendValue(key: String, value: String) {
+    Input.instance(key).testAppendValue(value)
 }
+
+//fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) {
+//    act("Appending long shit to `$key`") {
+//        val inst = Input.instance(key)
+//        var newValue = inst.getValue()
+//        var i = 0
+//        while (newValue.length <= maxLen)
+//            newValue += " SHIT ${++i}"
+//        inst.setValue(newValue)
+//    }
+//}
 
 //fun TestScenarioBuilder.inputPrependValue(key: String, value: String) {
 //    act("Prepending to `$key`: ${markdownItalicVerbatim(value)}") {
