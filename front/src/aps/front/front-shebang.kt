@@ -57,6 +57,8 @@ object TestGlobal {
     var currentMordaMaybe: Morda? = null
     val currentMorda get() = bang(currentMordaMaybe)
     var instructionCondition: () -> Boolean = {true}
+    val openEditFormHalfwayLock by notNullNamed(TestLock())
+    val openEditFormDoneLock by notNullNamed(TestLock())
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!

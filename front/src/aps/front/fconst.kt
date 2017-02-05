@@ -16,13 +16,11 @@ object fconst {
 
     object key {
         object refreshPage : KeyDef() {val decl = name; val testRef = name}
-        object plus : KeyDef() {val decl = name; val testRef = name}
         object upload : KeyDef() {val decl = name; val testRef = name}
         object file : KeyDef() {val decl = name; val testRef = name}
         object search : KeyDef() {val decl = name; val testRef = name}
         object filter : KeyDef() {val decl = name; val testRef = name}
         object ordering : KeyDef() {val decl = name; val testRef = name}
-        object primary : KeyDef() {val decl = name; val testRef = name}
         object cancel : KeyDef() {val decl = name; val testRef = name}
 
         object link {
@@ -33,6 +31,8 @@ object fconst {
         object button {
             val sendForApproval by named {it}; val sendForApproval_testRef = TestRef(sendForApproval)
             val edit by named {it}; val edit_testRef = TestRef(edit)
+            val plus by named {it}; val plus_testRef = TestRef(plus)
+            val primary by named {it}; val primary_testRef = TestRef(primary)
         }
     }
 

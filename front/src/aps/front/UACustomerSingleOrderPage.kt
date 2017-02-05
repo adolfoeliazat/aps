@@ -3,6 +3,7 @@
 package aps.front
 
 import aps.*
+import aps.UACustomerCreateOrderRequest.Mode.*
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
 import kotlin.properties.Delegates.notNull
@@ -97,105 +98,125 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
         null
     }
 
-    private val content = kdiv{o->
-        fun label(title: String) = klabel(marginBottom = 0) {it-title}
+    private val place = Placeholder(renderView())
 
-        fun row(build: (ElementBuilder) -> Unit) =
-            kdiv(className = "row", marginBottom = "0.5em"){o->
-                build(o)
+    private fun renderView(): ToReactElementable {
+        return kdiv{o->
+            fun label(title: String) = klabel(marginBottom = 0) {it - title}
+
+            fun row(build: (ElementBuilder) -> Unit) =
+                kdiv(className = "row", marginBottom = "0.5em"){o->
+                    build(o)
+                }
+
+            exhaustive / when (world.user.kind) {
+                UserKind.CUSTOMER -> {
+                    val option = 2
+                    if (option == 1) {
+                        o- row{o->
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(t("Created", "Создан"))
+                                o- kdiv{o->
+                                    o- formatUnixTime(order.insertedAt)
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(fieldSpecs.ua.documentType.title)
+                                o- kdiv{o->
+                                    o- order.documentType.title
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(fieldSpecs.numPages.title)
+                                o- kdiv{o->
+                                    o- order.numPages.toString()
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(fieldSpecs.numSources.title)
+                                o- kdiv{o->
+                                    o- order.numSource.toString()
+                                }
+                            }
+                        }
+                    } else if (option == 2) {
+                        o- row{o->
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(t("Created", "Создан"))
+                                o- kdiv{o->
+                                    o- formatUnixTime(order.insertedAt)
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(fieldSpecs.phone.title)
+                                o- div(order.phone)
+                            }
+                        }
+                        o- row{o->
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(fieldSpecs.ua.documentType.title)
+                                o- kdiv{o->
+                                    o- order.documentType.title
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(fieldSpecs.numPages.title)
+                                o- kdiv{o->
+                                    o- order.numPages.toString()
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(fieldSpecs.numSources.title)
+                                o- kdiv{o->
+                                    o- order.numSource.toString()
+                                }
+                            }
+                        }
+                    }
+                    o- row{o->
+                        o- kdiv(className = "col-md-12"){o->
+                            o- label(fieldSpecs.documentDetails.title)
+                            o- kdiv(whiteSpace = "pre-wrap"){o->
+                                o- order.details
+                            }
+                        }
+                    }
+                }
+
+                UserKind.WRITER -> imf()
+
+                UserKind.ADMIN -> imf()
             }
+        }
+    }
 
-        exhaustive/when (world.user.kind) {
-            UserKind.CUSTOMER -> {
-                val option = 2
-                if (option == 1) {
-                    o- row{o->
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(t("Created", "Создан"))
-                            o- kdiv{o->
-                                o- formatUnixTime(order.insertedAt)
-                            }
-                        }
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(fieldSpecs.ua.documentType.title)
-                            o- kdiv{o->
-                                o- order.documentType.title
-                            }
-                        }
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(fieldSpecs.numPages.title)
-                            o- kdiv{o->
-                                o- order.numPages.toString()
-                            }
-                        }
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(fieldSpecs.numSources.title)
-                            o- kdiv{o->
-                                o- order.numSource.toString()
-                            }
-                        }
+    private fun renderEdit(): ToReactElementable {
+        return kdiv{o->
+            o- FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
+                UACustomerCreateOrderRequest(world.xlobal, UPDATE), world,
+                onSuccessa = {
+                    if (world.userMaybe != null) {
+                        imf("MakeOrderPage for signed-in user")
+                    } else {
+                        place.setContent(kdiv{o->
+                            o- t("TOTE", "Мы отправили письмо. Нажми там на ссылку для подтверждения заказа.")
+                        })
                     }
                 }
-                else if (option == 2) {
-                    o- row{o->
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(t("Created", "Создан"))
-                            o- kdiv{o->
-                                o- formatUnixTime(order.insertedAt)
-                            }
-                        }
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(fieldSpecs.phone.title)
-                            o- div(order.phone)
-                        }
-                    }
-                    o- row{o->
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(fieldSpecs.ua.documentType.title)
-                            o- kdiv{o->
-                                o- order.documentType.title
-                            }
-                        }
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(fieldSpecs.numPages.title)
-                            o- kdiv{o->
-                                o- order.numPages.toString()
-                            }
-                        }
-                        o- kdiv(className = "col-md-3"){o->
-                            o- label(fieldSpecs.numSources.title)
-                            o- kdiv{o->
-                                o- order.numSource.toString()
-                            }
-                        }
-                    }
-                }
-                o- row{o->
-                    o- kdiv(className = "col-md-12"){o->
-                        o- label(fieldSpecs.documentDetails.title)
-                        o- kdiv(whiteSpace = "pre-wrap"){o->
-                            o- order.details
-                        }
-                    }
-                }
-            }
-
-            UserKind.WRITER -> imf()
-
-            UserKind.ADMIN -> imf()
+            ))
         }
     }
 
     override val tabSpec = TabSpec(
         id = "params",
         title = t("TOTE", "Параметры"),
-        content = content,
+        content = place,
         stripContent = kdiv{o->
             when (world.user.kind) {
                 UserKind.CUSTOMER -> {
                     if (order.state == UAOrderState.CUSTOMER_DRAFT) {
                         o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit) {
-                            console.log("fuck you")
+
                         }
                     }
                 }

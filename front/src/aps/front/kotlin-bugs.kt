@@ -8,6 +8,18 @@ import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
 
+//fun handler(event: Event) {
+//    window.alert("123")
+//}
+//
+//fun main(args: Array<String>) {
+//    val ref1 = ::handler
+//    val ref2 = ::handler
+//    console.log("Is ==?", ref1 == ref2)
+//    console.log("Is ===?", ref1 === ref2)
+//}
+
+
 //// ---- Worked before upgrade ---------------------------------
 //
 //private fun handler(e: Event) {

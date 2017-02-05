@@ -139,11 +139,9 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
                             if (k != "\$\$\$class") {
                                 val jsValue = jsThing[k]
                                 val kotlinValue = dejsonizeValue<Any?>(jsValue)
-                                val prop = when {
-                                    jsTypeOf(jsValue) == "boolean" -> "is" + k.capitalize()
-                                    else -> k
-                                }
-                                jsSet(inst, prop, kotlinValue)
+                                jsSet(inst, k, kotlinValue)
+                                if (jsTypeOf(jsValue) == "boolean") // XXX
+                                    jsSet(inst, "is" + k.capitalize(), kotlinValue)
                             }
                         }
                         inst

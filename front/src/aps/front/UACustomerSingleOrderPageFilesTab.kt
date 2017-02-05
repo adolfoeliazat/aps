@@ -81,7 +81,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     }
 
     val ebafPlus = EvaporatingButtonAndForm(
-        host = ebafHost, key = fconst.key.plus.decl, level = Button.Level.PRIMARY, icon = fa.plus,
+        host = ebafHost, key = fconst.key.button.plus, level = Button.Level.PRIMARY, icon = fa.plus,
         formSpec = FormSpec<CustomerAddUAOrderFileRequest, AddUAOrderFileRequestBase.Response>(
             CustomerAddUAOrderFileRequest()-{o->
                 o.orderID.value = order.id

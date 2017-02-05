@@ -151,12 +151,10 @@ open class Button(
 
 }
 
-fun buttonClick(key: String, handOpts: HandOpts = HandOpts()): Promisoid<Unit> {
-    return async<Unit> {
-        val target = Button.instance(key)
-        await(TestUserActionAnimation.hand(target, handOpts))
-        notAwait {target.click()}
-    }
+suspend fun buttonClick(key: TestRef<String>, handOpts: HandOpts = HandOpts()) {
+    val target = Button.instance(key.it)
+    await(TestUserActionAnimation.hand(target, handOpts))
+    notAwait {target.click()}
 }
 
 fun TestScenarioBuilder.buttonUserInitiatedClick(key: String) {

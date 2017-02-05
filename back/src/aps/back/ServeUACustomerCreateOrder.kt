@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import aps.UACustomerCreateOrderRequest.Mode.*
 import into.kommon.*
 import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE
 import org.springframework.context.annotation.Scope
@@ -19,7 +20,7 @@ import java.util.*
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,
-            makeRequest = {UACustomerCreateOrderRequest(it.xlobal)},
+            makeRequest = {UACustomerCreateOrderRequest(it.xlobal, CREATE)},
             needsUser = NeedsUser.MAYBE,
             runShit = fun (ctx, req: UACustomerCreateOrderRequest): UACustomerCreateOrderRequest.Response {
                 val user = ctx.user

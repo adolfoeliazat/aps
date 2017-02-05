@@ -117,6 +117,10 @@ fun tillAnimationFrame(): Promisoid<Unit> = Promisoid {resolve, reject ->
     }
 }
 
+suspend fun waitAnimationFrame() {
+    await(tillAnimationFrame())
+}
+
 typealias CSSSelector = String
 
 fun cwarnTitle(title: String) {

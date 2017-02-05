@@ -280,7 +280,7 @@ object css {
                     z-index: 100000;""")
 
                 val correct by Style("""
-                    opacity: 0.3;
+                    opacity: 1;
                     position: fixed;
                     width: $width;
                     min-height: 10rem;

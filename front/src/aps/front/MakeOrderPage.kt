@@ -1,13 +1,14 @@
 package aps.front
 
 import aps.*
+import aps.UACustomerCreateOrderRequest.Mode.*
 import into.kommon.*
 
 class MakeOrderPage(val world: World) {
     val place: Placeholder by mere(Placeholder(
         kdiv(marginBottom = "1em"){o->
                 o- FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
-                    UACustomerCreateOrderRequest(world.xlobal), world,
+                    UACustomerCreateOrderRequest(world.xlobal, CREATE), world,
                     onSuccessa = {
                         if (world.userMaybe != null) {
                             imf("MakeOrderPage for signed-in user")

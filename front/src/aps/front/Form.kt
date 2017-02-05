@@ -70,7 +70,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                         json("style" to json("textAlign" to "left")),
 
                         Button(
-                            key = fconst.key.primary.decl + req.fieldInstanceKeySuffix,
+                            key = fconst.key.button.primary + req.fieldInstanceKeySuffix,
                             level = Button.Level.PRIMARY,
                             title = spec.primaryButtonTitle,
                             disabled = working,
@@ -237,7 +237,7 @@ suspend fun submitFormSequence(
     descr: String,
     action: (suspend () -> Unit)? = null,
     aid: String,
-    buttonKey: String? = null,
+    buttonKey: TestRef<String>? = null,
     imposeTimestamp: Boolean = true,
     aopts: AssertScreenOpts? = null
 ) {
@@ -247,7 +247,7 @@ suspend fun submitFormSequence(
                 shit.imposeNextRequestTimestamp()
             }
             val shit = action ?: {
-                buttonClick(buttonKey ?: fconst.key.primary.testRef)
+                buttonClick(buttonKey ?: fconst.key.button.primary_testRef)
             }
             shit()
 //            run(shit)
