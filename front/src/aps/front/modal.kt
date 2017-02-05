@@ -28,28 +28,35 @@ suspend fun openModal(p: OpenModalParams) {
 
     val modalID = puid()
     val timesButtonID = puid()
-    val pane = old_panes.put(kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
-        o- kdiv(className = "modal-dialog", width = p.width){o->
-            o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${p.leftMarginColor}"){o->
-                o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
-                    o- Button(id = timesButtonID, title = times, className = "close", dataDismiss = "modal")
-                    o- h4(className = "modal-title"){o->
-                        o- p.title
+    val pane = old_panes.put(kdiv{o->
+        o- kdiv(className = "modal", display = "block") // XXX To display right scrollbar that doesn't fade in/out
+        o- kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
+            o- kdiv(className = "modal-dialog", width = p.width){o->
+                o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${p.leftMarginColor}"){o->
+                    o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
+                        o- Button(id = timesButtonID, title = times, className = "close", dataDismiss = "modal")
+                        o- h4(className = "modal-title"){o->
+                            o- p.title
+                        }
                     }
-                }
-                o- kdiv(className = "modal-body"){o->
-                    o- p.body
-                }
-                o- kdiv(className = "modal-footer"){o->
-                    o- Button(title = p.okButton.title, level = p.okButton.level, key = fconst.key.button.modal.ok.ref,
-                              onClicka = p.okButton.onClicka ?: {
-                                  result = true
-                                  byid(timesButtonID).click()
-                              })
+                    o- kdiv(className = "modal-body"){o->
+                        o- p.body
+                        val debug_makeItTall = false
+                        if (debug_makeItTall) {
+                            o- rawHTML("<br>pizda".repeat(50))
+                        }
+                    }
+                    o- kdiv(className = "modal-footer"){o->
+                        o- Button(title = p.okButton.title, level = p.okButton.level, key = fconst.key.button.modal.ok.ref,
+                                  onClicka = p.okButton.onClicka ?: {
+                                      result = true
+                                      byid(timesButtonID).click()
+                                  })
 
-                    o- Button(title = p.cancelButton.title, level = p.cancelButton.level, key = fconst.key.button.modal.cancel.ref) {
-                        result = false
-                        byid(timesButtonID).click()
+                        o- Button(title = p.cancelButton.title, level = p.cancelButton.level, key = fconst.key.button.modal.cancel.ref) {
+                            result = false
+                            byid(timesButtonID).click()
+                        }
                     }
                 }
             }

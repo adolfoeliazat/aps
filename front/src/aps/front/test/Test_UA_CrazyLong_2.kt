@@ -61,13 +61,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
             }
 
-            while (true) {
-                run { // Edit params -- cancel
-                    step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "9b32c20b-bcdb-4024-b068-5c6a36231944")
-                    inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
-                    step({buttonClick(fconst.key.button.modal.cancel.testRef)}, TestGlobal.modalHiddenLock, "65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
-                }
-                sleep(1000)
+            run { // Edit params -- cancel
+                step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "9b32c20b-bcdb-4024-b068-5c6a36231944")
+                inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
+                step({buttonClick(fconst.key.button.modal.cancel.testRef)}, TestGlobal.modalHiddenLock, "65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
             run { // Edit params -- save
