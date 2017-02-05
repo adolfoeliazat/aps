@@ -69,6 +69,8 @@ object css {
         val paddingRightScrollbarWidthImportant by Style("""
             padding-right: ${fconst.scrollbarWidth}px !important;
         """)
+
+        val modalPane by Style("")
     }
 
     object orderPage : Group(null) {

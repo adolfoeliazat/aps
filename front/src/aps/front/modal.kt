@@ -28,7 +28,7 @@ suspend fun openModal(p: OpenModalParams) {
 
     val modalID = puid()
     val timesButtonID = puid()
-    val pane = old_panes.put(kdiv{o->
+    val pane = old_panes.put(kdiv(className = css.shebang.modalPane){o->
         o- kdiv(className = "modal", display = "block") // XXX To display right scrollbar that doesn't fade in/out
         o- kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
             o- kdiv(className = "modal-dialog", width = p.width){o->
@@ -41,9 +41,11 @@ suspend fun openModal(p: OpenModalParams) {
                     }
                     o- kdiv(className = "modal-body"){o->
                         o- p.body
-                        val debug_makeItTall = false
+                        val debug_makeItTall = true
                         if (debug_makeItTall) {
-                            o- rawHTML("<br>pizda".repeat(50))
+                            for (i in 1..50) {
+                                o- div("pizda $i")
+                            }
                         }
                     }
                     o- kdiv(className = "modal-footer"){o->

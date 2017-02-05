@@ -44,8 +44,7 @@ fun killTestButton(): Button {
 
 class AssertScreenOpts(
     val bannerVerticalPosition: VerticalPosition = VerticalPosition.BOTTOM,
-    val bannerHorizontalPosition: HorizontalPosition = HorizontalPosition.LEFT,
-    val spoilActual: Boolean = false
+    val bannerHorizontalPosition: HorizontalPosition = HorizontalPosition.LEFT
 )
 
 data class AssertScreenHTMLParams(
@@ -89,8 +88,16 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
         append("-------------------- NAVBAR --------------------\n\n")
         append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
         if (!endsWith("\n")) append("\n")
-        append("\n-------------------- ${if (!opts.spoilActual) "ROOT" else "FUCKROOT"} --------------------\n\n")
+        append("\n-------------------- ROOT --------------------\n\n")
         append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
+
+        val modalPaneSelector = ".${css.shebang.modalPane}"
+        val jqModalPane = jq(modalPaneSelector)
+        if (jqModalPane.length > 0) {
+            check(jqModalPane.length == 1) {"Too many modal panes"}
+            append("\n-------------------- MODAL --------------------\n\n")
+            append(tidyHTML(takeHTMLForAssertion(modalPaneSelector)))
+        }
     }
 
     if (testOpts().stopOnAssertions) {

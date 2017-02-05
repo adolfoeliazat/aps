@@ -4,7 +4,7 @@
 
 -------------------- NAVBAR --------------------
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" style="padding-right: 17px;">
   <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">
