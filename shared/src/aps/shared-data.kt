@@ -31,7 +31,7 @@ class UAOrderRTO(
     val documentType: UADocumentType,
     val price: Int?,
     val numPages: Int,
-    val numSource: Int,
+    val numSources: Int,
     val details: String,
     val adminNotes: String,
     val state: UAOrderState,

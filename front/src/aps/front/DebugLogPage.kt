@@ -4,11 +4,8 @@ import aps.*
 import aps.RedisLogMessage.*
 import aps.RedisLogMessage.Separator.Type.*
 import aps.Color.*
-import into.kommon.*
-import kotlin.browser.window
+import aps.const.text.symbols.nbsp
 import kotlin.js.json
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
 class DebugLogPage(val world: World) {
     val noise = DebugNoise("DebugPage", mute = false)
@@ -207,7 +204,7 @@ class DebugLogPage(val world: World) {
 
     fun renderInTitle(o: ElementBuilder, msg: RedisLogMessage) {
         msg.endMillis?.let {
-            o- "${symbols.nbsp+symbols.nbsp+symbols.nbsp}${it - msg.beginMillis}ms"
+            o- "${nbsp+nbsp+nbsp}${it - msg.beginMillis}ms"
         }
     }
 

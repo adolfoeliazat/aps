@@ -77,12 +77,12 @@ import java.util.*
                                         Заказ №${order.id}
                                     </h3>
                                     <table style='border-spacing: 0; border-collapse: collapse;'>
-                                        ${row(fieldSpecs.ua.documentType.title, order.documentType.title)}
-                                        ${row(fieldSpecs.documentTitle.title, order.title)}
-                                        ${row(fieldSpecs.numPages.title, order.numPages)}
-                                        ${row(fieldSpecs.numSources.title, order.numSources)}
+                                        ${row(fieldSpecs.shebang.ua.documentType.ref.title, order.documentType.title)}
+                                        ${row(fieldSpecs.shebang.documentTitle.ref.title, order.title)}
+                                        ${row(fieldSpecs.shebang.numPages.ref.title, order.numPages)}
+                                        ${row(fieldSpecs.shebang.numSources.ref.title, order.numSources)}
                                     </table>
-                                    <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fieldSpecs.details.title}</div>
+                                    <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fieldSpecs.shebang.details.ref.title}</div>
                                     <div style='white-space: pre-wrap;'>${escapeHTML(order.details)}</div>
                                     <div style='padding-top: 2em; font-style: italic;'>${const.productName.uaCustomer}</div>
                                 </div>

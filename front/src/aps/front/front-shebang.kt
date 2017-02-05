@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import aps.Color.*
+import aps.const.text.symbols.nbsp
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.js.json
@@ -59,6 +60,8 @@ object TestGlobal {
     var instructionCondition: () -> Boolean = {true}
     val openEditFormHalfwayLock by notNullNamed(TestLock())
     val openEditFormDoneLock by notNullNamed(TestLock())
+    val modalShownLock by notNullNamed(TestLock())
+    val modalHiddenLock by notNullNamed(TestLock())
 
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!
@@ -135,7 +138,7 @@ fun preludeWithOrangeTriangle(def: dynamic): dynamic {
 
     return Shitus.diva(json("controlTypeName" to "preludeWithOrangeTriangle", "tame" to "preludeWithOrangeTriangle", "style" to style),
         Shitus.ia(json("className" to "fa fa-exclamation-triangle", "style" to json("color" to Color.AMBER_900.toString()))),
-        symbols.nbsp, symbols.nbsp,
+        nbsp, nbsp,
         Shitus.spancTitle(json("title" to title)))
 }
 
@@ -151,7 +154,7 @@ fun preludeWithGreenCheck(def: dynamic): ReactElement {
 
     return Shitus.diva(json("controlTypeName" to "preludeWithGreenCheck", "tame" to "preludeWithGreenCheck", "style" to style),
         Shitus.ia(json("className" to "fa fa-check", "style" to json("color" to Color.LIGHT_GREEN_700.toString()))),
-        symbols.nbsp, symbols.nbsp,
+        nbsp, nbsp,
         Shitus.spancTitle(json("title" to title)))
 }
 
@@ -217,7 +220,7 @@ fun preludeWithHourglass(def: dynamic): dynamic {
 
         return Shitus.diva(json("tame" to "preludeWithHourglass", "style" to style),
             Shitus.glyph("hourglass-half", json("style" to json("color" to hourglassColor))),
-            symbols.nbsp, symbols.nbsp, content)
+            nbsp, nbsp, content)
 }
 
 fun hr(): ReactElement {

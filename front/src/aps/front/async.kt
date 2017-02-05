@@ -227,6 +227,10 @@ class TestLock(
         testPause.resolve()
         await(sutPause.promise.orTestTimeoutNamedAfter(sutPauseTimeout, {sutPause}))
     }
+
+    fun sutNotify() {
+        testPause.resolve()
+    }
 }
 
 fun timeoutSet(ms: Int, cb: () -> Unit) {

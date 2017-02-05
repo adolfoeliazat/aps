@@ -93,21 +93,21 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal, mode: Mode) : RequestMatumba(
     enum class Mode { CREATE, UPDATE }
     class Response(val id: String) : CommonResponseFieldsImpl()
 
-    val documentType = SelectField(this, fieldSpecs.ua.documentType)
-    val documentTitle = TextField(this, fieldSpecs.documentTitle)
-    val numPages = IntField(this, fieldSpecs.numPages)
-    val numSources = IntField(this, fieldSpecs.numSources)
-    val documentDetails = TextField(this, fieldSpecs.documentDetails)
+    val documentType = SelectField(this, fieldSpecs.shebang.ua.documentType.ref)
+    val documentTitle = TextField(this, fieldSpecs.shebang.documentTitle.ref)
+    val numPages = IntField(this, fieldSpecs.shebang.numPages.ref)
+    val numSources = IntField(this, fieldSpecs.shebang.numSources.ref)
+    val documentDetails = TextField(this, fieldSpecs.shebang.documentDetails.ref)
 
     var anonymousCustomerName by notNullOnce<TextField>()
     init {if (mode == Mode.CREATE && xlobal.user == null)
-        anonymousCustomerName  = TextField(this, fieldSpecs.anonymousCustomerName)}
+        anonymousCustomerName  = TextField(this, fieldSpecs.shebang.anonymousCustomerName.ref)}
 
-    val phone = TextField(this, fieldSpecs.phone)
+    val phone = TextField(this, fieldSpecs.shebang.phone.ref)
 
     var anonymousCustomerEmail by notNullOnce<TextField>()
     init {if (mode == Mode.CREATE && xlobal.user == null)
-        anonymousCustomerEmail = TextField(this, fieldSpecs.email)}
+        anonymousCustomerEmail = TextField(this, fieldSpecs.shebang.email.ref)}
 }
 
 class TestSQLFiddleRequest : RequestMatumba() {

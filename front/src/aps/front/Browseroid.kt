@@ -249,6 +249,7 @@ class Morda(
         world = World(browseroidName)
         world.boot()
         state = State.ACTIVE
+        sleep(100) // XXX
     }
 
     fun shelve() = async<Unit> {

@@ -9,6 +9,9 @@
 package aps.front
 
 import aps.*
+import aps.const.text.symbols.mdash
+import aps.const.text.symbols.nbsp
+import aps.const.text.symbols.ndash
 import into.kommon.*
 import kotlin.js.json
 
@@ -125,7 +128,7 @@ object MakeStaticSites {
             o- horizBulletsRow(listOf(
                 HorizBulletItem("pencil", LS(en="No plagiarism", ua="No plagiarism")),
                 HorizBulletItem("star", LS(en="Only premium quality", ua="Only premium quality")),
-                HorizBulletItem("list", LS(en="Free title page, outline, list${symbols.nbsp}of${symbols.nbsp}references", ua="Free title page, outline, list${symbols.nbsp}of${symbols.nbsp}references"))
+                HorizBulletItem("list", LS(en="Free title page, outline, list${nbsp}of${nbsp}references", ua="Free title page, outline, list${nbsp}of${nbsp}references"))
             ), horizContentMargin = 40)
             o- horizBulletsRow(listOf(
                 HorizBulletItem("gi-piggy-bank", LS(en="One-time and life-time discounts to returning customers", ua="One-time and life-time discounts to returning customers")),
@@ -311,10 +314,10 @@ object MakeStaticSites {
                 ua = "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:")
 
             o- locBullets(listOf(
-                LS(en="More than 50 pages${symbols.mdash}5%", ua="Более 50 страниц ${symbols.ndash} 5%"),
-                LS(en="More than 100 pages${symbols.mdash}10%", ua="Более 100 страниц ${symbols.ndash} 10%"),
-                LS(en="More than 150 pages${symbols.mdash}15%", ua="Более 150 страниц ${symbols.ndash} 15%"),
-                LS(en="More than 200 pages${symbols.mdash}30%", ua="Более 200 страниц ${symbols.ndash} 30%")))
+                LS(en="More than 50 pages${mdash}5%", ua="Более 50 страниц ${ndash} 5%"),
+                LS(en="More than 100 pages${mdash}10%", ua="Более 100 страниц ${ndash} 10%"),
+                LS(en="More than 150 pages${mdash}15%", ua="Более 150 страниц ${ndash} 15%"),
+                LS(en="More than 200 pages${mdash}30%", ua="Более 200 страниц ${ndash} 30%")))
 
             o- markdownPiece(
                 en = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
@@ -561,7 +564,7 @@ object MakeStaticSites {
             o- horizBulletsRow(listOf(
                 HorizBulletItem("pencil", LS(en="No plagiarism", ua="No plagiarism")),
                 HorizBulletItem("star", LS(en="Only premium quality", ua="Only premium quality")),
-                HorizBulletItem("list", LS(en="Free title page, outline, list${symbols.nbsp}of${symbols.nbsp}references", ua="Free title page, outline, list${symbols.nbsp}of${symbols.nbsp}references"))
+                HorizBulletItem("list", LS(en="Free title page, outline, list${nbsp}of${nbsp}references", ua="Free title page, outline, list${nbsp}of${nbsp}references"))
             ), horizContentMargin = 40)
             o- horizBulletsRow(listOf(
                 HorizBulletItem("gi-piggy-bank", LS(en="One-time and life-time discounts to returning customers", ua="One-time and life-time discounts to returning customers")),
@@ -754,10 +757,10 @@ object MakeStaticSites {
                 en = "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:",
                 ua = "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:")
             o- locBullets(listOf(
-                LS(en="More than 50 pages${symbols.mdash}5%", ua="Более 50 страниц ${symbols.ndash} 5%"),
-                LS(en="More than 100 pages${symbols.mdash}10%", ua="Более 100 страниц ${symbols.ndash} 10%"),
-                LS(en="More than 150 pages${symbols.mdash}15%", ua="Более 150 страниц ${symbols.ndash} 15%"),
-                LS(en="More than 200 pages${symbols.mdash}30%", ua="Более 200 страниц ${symbols.ndash} 30%")))
+                LS(en="More than 50 pages${mdash}5%", ua="Более 50 страниц ${ndash} 5%"),
+                LS(en="More than 100 pages${mdash}10%", ua="Более 100 страниц ${ndash} 10%"),
+                LS(en="More than 150 pages${mdash}15%", ua="Более 150 страниц ${ndash} 15%"),
+                LS(en="More than 200 pages${mdash}30%", ua="Более 200 страниц ${ndash} 30%")))
             o- markdownPiece(
                 en = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
                 ua = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.")
@@ -1175,8 +1178,8 @@ object MakeStaticSites {
                         en="I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!",
                         ua="I was impressed when you writer sent me the copies of sources in one hour upon my request, though the paper was written over a month ago and I did not ask to make that at once. Carry on!")),
                     Testimonial(name = LS(en="Joseph B.", ua="Joseph B."), img = "joseph-b.jpg", says = LS(
-                        en="First I doubted I’d get anything of good quality, but I was up${symbols.nbsp}to the eyes in work and had no other choice. The paper${symbols.nbsp}proved to be authentic and came on time. Can I get${symbols.nbsp}the same writer for my next essay?",
-                        ua="First I doubted I’d get anything of good quality, but I was up${symbols.nbsp}to the eyes in work and had no other choice. The paper${symbols.nbsp}proved to be authentic and came on time. Can I get${symbols.nbsp}the same writer for my next essay?")),
+                        en="First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?",
+                        ua="First I doubted I’d get anything of good quality, but I was up${nbsp}to the eyes in work and had no other choice. The paper${nbsp}proved to be authentic and came on time. Can I get${nbsp}the same writer for my next essay?")),
                     Testimonial(name = LS(en="Mark C.", ua="Mark C."), img = "mark-c.jpg", says = LS(
                         en="How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.",
                         ua="How come you are so smart in every subject, guys? I’ve always been a bright student, but I admit you write quicker and select the most up-to-date sources. I need to learn from you.")),
@@ -1226,7 +1229,7 @@ object MakeStaticSites {
     }
 
     fun markdownPiece(content: String): ToReactElementable {
-        return markdown(dedent(content.replace("{{mdash}}", symbols.mdash)))
+        return markdown(dedent(content.replace("{{mdash}}", mdash)))
     }
 
 

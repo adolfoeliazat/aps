@@ -3,36 +3,37 @@ package aps
 import aps.front.*
 
 object fieldSpecs {
-    val name = TextFieldSpec("name", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val name_testRef = TestRef(name)
-    val anonymousCustomerName = name; val anonymousCustomerName_testRef = TestRef(anonymousCustomerName)
-    val firstName = TextFieldSpec("firstName", t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val firstName_testRef = TestRef(firstName)
-    val lastName = TextFieldSpec("lastName", t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50); val lastName_testRef = TestRef(lastName)
-    val password = TextFieldSpec("password", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 50); val password_testRef = TestRef(password)
-    val passwordInSignInForm = TextFieldSpec("passwordInSignInForm", t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 0, maxLen = Int.MAX_VALUE); val passwordInSignInForm_testRef = TestRef(passwordInSignInForm)
-    val email = TextFieldSpec("email", t("TOTE", "Почта"), TextFieldType.EMAIL, minLen = 3, maxLen = 50); val email_testRef = TestRef(email)
-    val anonymousCustomerEmail = email; val anonymousCustomerEmail_testRef = TestRef(anonymousCustomerEmail)
-    val emailInSignInForm = TextFieldSpec("emailInSignInForm", t("TOTE", "Почта"), TextFieldType.STRING, minLen = 0, maxLen = Int.MAX_VALUE); val emailInSignInForm_testRef = TestRef(emailInSignInForm)
-    val profileRejectionReason = TextFieldSpec("profileRejectionReason", t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000); val profileRejectionReason_testRef = TestRef(profileRejectionReason)
-    val banReason = TextFieldSpec("banReason", t("TOTE", "Причина бана"), TextFieldType.TEXTAREA, 0, 5000); val banReason_testRef = TestRef(banReason)
-    val adminNotes = TextFieldSpec("adminNotes", t("TOTE", "Заметки админа"), TextFieldType.TEXTAREA, 0, 5000); val adminNotes_testRef = TestRef(adminNotes)
-    val phone = TextFieldSpec("phone", t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 50, minDigits = 6); val phone_testRef = TestRef(phone)
-    val aboutMe = TextFieldSpec("aboutMe", t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300); val aboutMe_testRef = TestRef(aboutMe)
-    val searchString = TextFieldSpec("searchString", "", TextFieldType.STRING, 0, 50); val searchString_testRef = TestRef(searchString)
-    val title = TextFieldSpec("title", t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen); val title_testRef = TestRef(title)
-    val documentTitle = TextFieldSpec("documentTitle", t("TOTE", "Тема работы"), TextFieldType.STRING, minLen = 5, maxLen = 100); val documentTitle_testRef = TestRef(documentTitle)
-    val details = TextFieldSpec("details", t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen); val details_testRef = TestRef(details)
-    val documentDetails = TextFieldSpec("documentDetails", t("TOTE", "Детали работы (задание)"), TextFieldType.TEXTAREA, minLen = 5, maxLen = 2000); val documentDetails_testRef = TestRef(documentDetails)
-    val agreeTerms = CheckboxFieldSpec("agreeTerms"); val agreeTerms_testRef = TestRef(agreeTerms)
-    val userState = SelectFieldSpec("userState", t("TOTE", "Статус"), UserState.values()); val userState_testRef = TestRef(userState)
-    val numPages = IntFieldSpec("numPages", t("TOTE", "Количество страниц"), min = 1, max = 500); val numPages_testRef = TestRef(numPages)
-    val numSources = IntFieldSpec("numSources", t("TOTE", "Количество источников"), min = 0, max = 50); val numSources_testRef = TestRef(numSources)
+    object shebang                               : NamedGroup(null) {
+        object documentTitle                     : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Тема работы"), TextFieldType.STRING, minLen = 5, maxLen = 100); val testRef = TestRef(ref)}
+        object anonymousCustomerName             : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val testRef = TestRef(ref)}
+        object firstName                         : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val testRef = TestRef(ref)}
+        object lastName                          : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50); val testRef = TestRef(ref)}
+        object password                          : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 50); val testRef = TestRef(ref)}
+        object passwordInSignInForm              : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 0, maxLen = Int.MAX_VALUE); val testRef = TestRef(ref)}
+        object email                             : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Почта"), TextFieldType.EMAIL, minLen = 3, maxLen = 50); val testRef = TestRef(ref)}
+        object anonymousCustomerEmail            : Refs(this) {val ref = email.ref.copy(name = name); val testRef = TestRef(ref)}
+        object emailInSignInForm                 : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Почта"), TextFieldType.STRING, minLen = 0, maxLen = Int.MAX_VALUE); val testRef = TestRef(ref)}
+        object profileRejectionReason            : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000); val testRef = TestRef(ref)}
+        object banReason                         : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Причина бана"), TextFieldType.TEXTAREA, 0, 5000); val testRef = TestRef(ref)}
+        object adminNotes                        : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Заметки админа"), TextFieldType.TEXTAREA, 0, 5000); val testRef = TestRef(ref)}
+        object phone                             : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 50, minDigits = 6); val testRef = TestRef(ref)}
+        object aboutMe                           : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300); val testRef = TestRef(ref)}
+        object searchString                      : Refs(this) {val ref = TextFieldSpec(name, "", TextFieldType.STRING, 0, 50); val testRef = TestRef(ref)}
+        object title                             : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen); val testRef = TestRef(ref)}
+        object details                           : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen); val testRef = TestRef(ref)}
+        object documentDetails                   : Refs(this) {val ref = TextFieldSpec(name, t("TOTE", "Детали работы (задание)"), TextFieldType.TEXTAREA, minLen = 5, maxLen = 2000); val testRef = TestRef(ref)}
+        object agreeTerms                        : Refs(this) {val ref  = CheckboxFieldSpec(name); val testRef = TestRef(ref)}
+        object userState                         : Refs(this) {val ref = SelectFieldSpec(name, t("TOTE", "Статус"), UserState.values()); val testRef = TestRef(ref)}
+        object numPages                          : Refs(this) {val ref = IntFieldSpec(name, t("TOTE", "Количество страниц"), min = 1, max = 500); val testRef = TestRef(ref)}
+        object numSources                        : Refs(this) {val ref = IntFieldSpec(name, t("TOTE", "Количество источников"), min = 0, max = 50); val testRef = TestRef(ref)}
 
-    object ua {
-        val documentType = SelectFieldSpec("documentType", t("TOTE", "Тип документа"), UADocumentType.values()); val documentType_testRef = TestRef(documentType)
+        object ua                                : NamedGroup(this) {
+            object documentType                  : Refs(this) {val ref = SelectFieldSpec(name, t("TOTE", "Тип документа"), UADocumentType.values()); val testRef = TestRef(ref)}
+        }
     }
 }
 
-class TextFieldSpec(
+data class TextFieldSpec(
     val name: String,
     val title: String,
     val type: TextFieldType,

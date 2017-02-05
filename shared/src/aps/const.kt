@@ -1,7 +1,23 @@
 package aps
 
 object const {
-    val defaultCancelButtonTitle = t("Never Mind", "Передумал")
+
+    object text {
+        object symbols {
+            val rightDoubleAngleQuotation = "»"
+            val rightDoubleAngleQuotationSpaced = " » "
+            val nl2 = "\n\n"
+            val nbsp: String = "" + 0xa0.toChar()
+            val mdash = "—"
+            val ndash = "–"
+            val threeQuotes = "\"\"\""
+            val times = "×"
+        }
+
+        object shebang {
+            val defaultCancelButtonTitle = t("Nah", "Не надо")
+        }
+    }
 
     object msg {
         val noItems = t("TOTE", "Савсэм ничего нэт, да...")

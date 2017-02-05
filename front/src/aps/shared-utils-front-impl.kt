@@ -113,7 +113,7 @@ fun remoteProcedureNameForRequest(req: Any): String {
     // TODO:vgrechka Why the fuck do I need `fields` and `hiddenFields` to be separate?
     val fields = mutableListOf<FormFieldFront>()
     val hiddenFields = mutableListOf<HiddenFormFieldFront>()
-    var fieldInstanceKeySuffix: String = ""
+    var fieldInstanceKeySuffix: String? = null
 }
 
 abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: String) {

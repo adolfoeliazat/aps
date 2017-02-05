@@ -13,6 +13,7 @@ import aps.Color.*
 import aps.*
 import aps.WorldPointRequest.Action.RESTORE
 import aps.WorldPointRequest.Action.SAVE
+import aps.const.text.symbols.mdash
 import aps.front.testutils.*
 import into.kommon.*
 import jquery.jq
@@ -340,7 +341,7 @@ object art {
 
         val stack = null
         assertionErrorPane.set(json(
-            "message" to (message ?: "No fucking message") + symbols.mdash + hrss.currentTestScenario!!.name,
+            "message" to (message ?: "No fucking message") + mdash + hrss.currentTestScenario!!.name,
             "stack" to stack,
             "detailsUI" to kdiv(backgroundColor = WHITE){it-detailsUI}.toReactElement(),
             "scrollThere" to true))

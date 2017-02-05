@@ -2,13 +2,19 @@ package aps.front
 
 import aps.*
 import into.kommon.*
-import org.w3c.dom.events.MouseEvent
-import org.w3c.dom.events.MouseEventInit
-import kotlin.browser.window
 import kotlin.js.json
 
+open class ButtonKey(val name: String)
+
+data class SubscriptButtonKey(val key: ButtonKey, val subscript: Any?)
+    : ButtonKey(key.name + "-$subscript")
+
+abstract class ButtonKeyRefs(val group: NamedGroup?) {
+    protected val key = ButtonKey(name = qualifyMe(group))
+}
+
 open class Button(
-    val key: String? = null,
+    val key: ButtonKey? = null,
     id: String? = null,
     val style: Style = Style(),
     val className: String = "",
@@ -24,8 +30,8 @@ open class Button(
     val separateDropDownMenuButton: Boolean = false,
     val dropDownMenuDirection: MenuDirection = Button.MenuDirection.DOWN,
     val narrowCaret: Boolean = false,
-    var onClicka: suspend () -> Unit = {},
-    val onClick: () -> Unit = {}
+    val onClick: () -> Unit = {},
+    var onClicka: suspend () -> Unit = {}
 ) : Control2(Attrs(id = id)) {
 
     enum class MenuDirection(val string: String) {
@@ -34,10 +40,10 @@ open class Button(
     }
 
     companion object {
-        val instances = mutableMapOf<String, Button>()
+        val instances = mutableMapOf<ButtonKey, Button>()
 
-        fun instance(key: String): Button {
-            return instances[key] ?: bitch("No Button keyed `$key`")
+        fun instance(key: ButtonKey): Button {
+            return instances[key] ?: bitch("No Button keyed `${key.name}`")
         }
     }
 
@@ -70,7 +76,7 @@ open class Button(
             buttonJSAttrs,
             listOf(
                 icon?.let {ki(className = it.className, color = iconColor).toReactElement()},
-                ifOrNull(icon != null && title != null) {symbols.nbsp.asReactElement()},
+                ifOrNull(icon != null && title != null) {const.text.symbols.nbsp.asReactElement()},
                 title?.asReactElement()
             )
         ))
@@ -151,7 +157,7 @@ open class Button(
 
 }
 
-suspend fun buttonClick(key: TestRef<String>, handOpts: HandOpts = HandOpts()) {
+suspend fun buttonClick(key: TestRef<ButtonKey>, handOpts: HandOpts = HandOpts()) {
     val target = Button.instance(key.it)
     await(TestUserActionAnimation.hand(target, handOpts))
     notAwait {target.click()}

@@ -23,8 +23,10 @@ import kotlin.js.json
                 else undefined
             }
         ),
-        key = name + container.fieldInstanceKeySuffix
+        key = makeKey()
     )
+
+    private fun makeKey() = name + (container.fieldInstanceKeySuffix ?: "")
 
     fun setValue(value: Int) { input.setValue(value.toString()) }
 

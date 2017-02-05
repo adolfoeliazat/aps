@@ -2,10 +2,17 @@
 
 package aps.front
 
-import aps.*
-import org.w3c.dom.events.Event
-import kotlin.browser.window
-import kotlin.properties.Delegates.notNull
+//open class A {
+//    fun cname() = this::class.simpleName!!
+//}
+//class B : A()
+//object C : A()
+//
+//fun main(args: Array<String>) {
+//    console.log("A:", A().cname())
+//    console.log("B:", B().cname())
+//    console.log("C:", C.cname())
+//}
 
 
 //fun handler(event: Event) {

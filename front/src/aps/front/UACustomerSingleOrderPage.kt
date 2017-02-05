@@ -4,6 +4,7 @@ package aps.front
 
 import aps.*
 import aps.UACustomerCreateOrderRequest.Mode.*
+import aps.const.text.symbols.nbsp
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
 import kotlin.properties.Delegates.notNull
@@ -53,7 +54,7 @@ class UACustomerSingleOrderPage(val world: World) {
                          marginLeft = "1em",
                          position = "relative",
                          top = "-0.2em"){o->
-                    o- order.state.title.replace(" ", symbols.nbsp)
+                    o- order.state.title.replace(" ", nbsp)
                 }
             }),
 
@@ -64,7 +65,7 @@ class UACustomerSingleOrderPage(val world: World) {
                         o- kdiv(className = c.message){o->
                             o- t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...")
                         }
-                        o- Button(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = fconst.key.button.sendForApproval)
+                        o- Button(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = fconst.key.button.sendForApproval.ref)
                     }
                 }
                 o- h4(marginBottom = "0.7em"){o->
@@ -121,21 +122,21 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.ua.documentType.title)
+                                o- label(fieldSpecs.shebang.ua.documentType.ref.title)
                                 o- kdiv{o->
                                     o- order.documentType.title
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.numPages.title)
+                                o- label(fieldSpecs.shebang.numPages.ref.title)
                                 o- kdiv{o->
                                     o- order.numPages.toString()
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.numSources.title)
+                                o- label(fieldSpecs.shebang.numSources.ref.title)
                                 o- kdiv{o->
-                                    o- order.numSource.toString()
+                                    o- order.numSources.toString()
                                 }
                             }
                         }
@@ -148,34 +149,34 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.phone.title)
+                                o- label(fieldSpecs.shebang.phone.ref.title)
                                 o- div(order.phone)
                             }
                         }
                         o- row{o->
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.ua.documentType.title)
+                                o- label(fieldSpecs.shebang.ua.documentType.ref.title)
                                 o- kdiv{o->
                                     o- order.documentType.title
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.numPages.title)
+                                o- label(fieldSpecs.shebang.numPages.ref.title)
                                 o- kdiv{o->
                                     o- order.numPages.toString()
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.numSources.title)
+                                o- label(fieldSpecs.shebang.numSources.ref.title)
                                 o- kdiv{o->
-                                    o- order.numSource.toString()
+                                    o- order.numSources.toString()
                                 }
                             }
                         }
                     }
                     o- row{o->
                         o- kdiv(className = "col-md-12"){o->
-                            o- label(fieldSpecs.documentDetails.title)
+                            o- label(fieldSpecs.shebang.documentDetails.ref.title)
                             o- kdiv(whiteSpace = "pre-wrap"){o->
                                 o- order.details
                             }
@@ -190,23 +191,6 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
         }
     }
 
-    private fun renderEdit(): ToReactElementable {
-        return kdiv{o->
-            o- FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
-                UACustomerCreateOrderRequest(world.xlobal, UPDATE), world,
-                onSuccessa = {
-                    if (world.userMaybe != null) {
-                        imf("MakeOrderPage for signed-in user")
-                    } else {
-                        place.setContent(kdiv{o->
-                            o- t("TOTE", "Мы отправили письмо. Нажми там на ссылку для подтверждения заказа.")
-                        })
-                    }
-                }
-            ))
-        }
-    }
-
     override val tabSpec = TabSpec(
         id = "params",
         title = t("TOTE", "Параметры"),
@@ -215,8 +199,45 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
             when (world.user.kind) {
                 UserKind.CUSTOMER -> {
                     if (order.state == UAOrderState.CUSTOMER_DRAFT) {
-                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit) {
-
+                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit.ref) {
+                            openModal(OpenModalParams(
+                                leftMarginColor = Color.BLUE_GRAY_300,
+                                title = t("TOTE", "Параметры заказа"),
+                                okButton = OpenModalParamsButton(
+                                    title = t("TOTE", "Сохранить"),
+                                    level = Button.Level.PRIMARY,
+                                    onClicka = {}
+                                ),
+                                cancelButton = OpenModalParamsButton(
+                                    title = t("TOTE", "Не стоит"),
+                                    level = Button.Level.DEFAULT,
+                                    onClicka = {}
+                                ),
+                                body = kdiv{o->
+                                    o- FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
+                                        UACustomerCreateOrderRequest(world.xlobal, UPDATE)-{o->
+                                            o.documentType.value = order.documentType
+                                            o.documentTitle.value = order.title
+                                            o.numPages.setValue(order.numPages)
+                                            o.numSources.setValue(order.numSources)
+                                            o.documentDetails.value = order.details
+                                            o.phone.value = order.phone
+                                        },
+                                        world,
+                                        renderButtons = false,
+                                        onSuccessa = {
+//                                            if (world.userMaybe != null) {
+//                                                imf("MakeOrderPage for signed-in user")
+//                                            } else {
+//                                                place.setContent(kdiv{o->
+//                                                    o- t("TOTE", "Мы отправили письмо. Нажми там на ссылку для подтверждения заказа.")
+//                                                })
+//                                            }
+                                        }
+                                    ))
+                                }
+                            ))
+                            clog("aaaaaaaaaaaaaaaaaaa")
                         }
                     }
                 }

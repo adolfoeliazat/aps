@@ -24,6 +24,7 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val cancelButtonTitle: String? = null,
 //    val deleteButtonTitle: String? = null,
     val dontShameButtons: Boolean = false,
+    val renderButtons: Boolean = true,
 
     val onCancel: FormMatumba<Req, Res>.() -> Unit = {},
     val onCancela: suspend FormMatumba<Req, Res>.() -> Unit = {},
@@ -55,6 +56,79 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
             aps.gloshit.updateForm = {update()}
             figureOutActualVisibleFieldNames()
 
+            var buttonPanel: ReactElement? = null
+            if (spec.renderButtons) {
+                buttonPanel = Shitus.diva(
+                    json("style" to json("textAlign" to "left")),
+
+                    Button(
+                        key = buttonKey(fconst.key.button.primary.ref),
+                        level = Button.Level.PRIMARY,
+                        title = spec.primaryButtonTitle,
+                        disabled = working,
+                        onClicka = {
+                            for (field: FormFieldFront in spec.req.fields) {
+                                field.error = null
+                                field.disabled = true
+                            }
+                            error = null
+                            working = true
+                            update()
+
+                            TestGlobal.formTickingLock.sutPause()
+
+                            val res: FormResponse = await(callMatumba(spec.req, spec.ui.tokenMaybe))
+    //                                    TestGlobal.formActionHalfway.resolve()
+    //                                    await(TestGlobal.formActionHalfwayConsidered.promise)
+
+                            when (res) {
+                                is FormResponse.Shitty -> {
+                                    error = res.error
+                                    (spec.onError)(res)
+                                    (spec.onErrora)(res)
+                                }
+                                is FormResponse.Hunky<*> -> {
+                                    error = null
+                                    val meat = res.meat as Res
+                                    (spec.onSuccess)(meat)
+                                    (spec.onSuccessa)(meat)
+                                }
+                            }
+
+                            for (field in spec.req.fields) {
+                                field.error = if (res !is FormResponse.Shitty) null else
+                                    res.fieldErrors.find{it.field == field.name}?.error
+                                field.disabled = false
+                            }
+
+                            working = false
+                            update()
+
+                            TestGlobal.formDoneLock.sutPause()
+    //                                    TestGlobal.formActionCompleted.resolve()
+                        }
+                    ).toReactElement(),
+
+
+                    if (spec.cancelButtonTitle != null) {
+                        Button(
+                            key = buttonKey(fconst.key.button.cancel.ref),
+                            title = spec.cancelButtonTitle,
+                            disabled = working,
+                            style = Style(marginLeft = 10),
+                            onClicka = {async{
+                                (spec.onCancel)()
+                                (spec.onCancela)()
+    //                                    TestGlobal.formActionCompleted.resolve()
+                            }}
+                        ).toReactElement()
+
+                    } else undefined,
+
+                    if (working) renderTicker("right").toReactElement() else null
+                )
+            }
+
             return kdiv(attrs = Attrs(className = spec.containerClassName, id = elementID), style = spec.containerStyle){o->
                 val form: ReactElement = Shitus.forma.apply(null, js("[]").concat(
                     jsArrayOf(
@@ -66,78 +140,18 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                         .map{x -> x.render()}
                         .toJSArray(),
 
-                    Shitus.diva(
-                        json("style" to json("textAlign" to "left")),
-
-                        Button(
-                            key = fconst.key.button.primary + req.fieldInstanceKeySuffix,
-                            level = Button.Level.PRIMARY,
-                            title = spec.primaryButtonTitle,
-                            disabled = working,
-                            onClicka = {
-                                for (field: FormFieldFront in spec.req.fields) {
-                                    field.error = null
-                                    field.disabled = true
-                                }
-                                error = null
-                                working = true
-                                update()
-
-                                TestGlobal.formTickingLock.sutPause()
-
-                                val res: FormResponse = await(callMatumba(spec.req, spec.ui.tokenMaybe))
-//                                    TestGlobal.formActionHalfway.resolve()
-//                                    await(TestGlobal.formActionHalfwayConsidered.promise)
-
-                                when (res) {
-                                    is FormResponse.Shitty -> {
-                                        error = res.error
-                                        (spec.onError)(res)
-                                        (spec.onErrora)(res)
-                                    }
-                                    is FormResponse.Hunky<*> -> {
-                                        error = null
-                                        val meat = res.meat as Res
-                                        (spec.onSuccess)(meat)
-                                        (spec.onSuccessa)(meat)
-                                    }
-                                }
-
-                                for (field in spec.req.fields) {
-                                    field.error = if (res !is FormResponse.Shitty) null else
-                                        res.fieldErrors.find{it.field == field.name}?.error
-                                    field.disabled = false
-                                }
-
-                                working = false
-                                update()
-
-                                TestGlobal.formDoneLock.sutPause()
-//                                    TestGlobal.formActionCompleted.resolve()
-                            }
-                        ).toReactElement(),
-
-
-                        if (spec.cancelButtonTitle != null) {
-                            Button(
-                                key = fconst.key.cancel.decl + req.fieldInstanceKeySuffix,
-                                title = spec.cancelButtonTitle,
-                                disabled = working,
-                                style = Style(marginLeft = 10),
-                                onClicka = {async{
-                                    (spec.onCancel)()
-                                    (spec.onCancela)()
-//                                    TestGlobal.formActionCompleted.resolve()
-                                }}
-                            ).toReactElement()
-
-                        } else undefined,
-
-                        if (working) renderTicker("right").toReactElement() else null
-                    )
+                    buttonPanel
                 ))
                 o- form
             }.toReactElement()
+        }
+
+        private fun buttonKey(key: ButtonKey): ButtonKey {
+            val subscript = req.fieldInstanceKeySuffix
+            return when (subscript) {
+                null -> key
+                else -> SubscriptButtonKey(key, subscript)
+            }
         }
 
         override fun componentDidMount() {
@@ -237,7 +251,7 @@ suspend fun submitFormSequence(
     descr: String,
     action: (suspend () -> Unit)? = null,
     aid: String,
-    buttonKey: TestRef<String>? = null,
+    buttonKey: TestRef<ButtonKey>? = null,
     imposeTimestamp: Boolean = true,
     aopts: AssertScreenOpts? = null
 ) {
@@ -247,15 +261,15 @@ suspend fun submitFormSequence(
                 shit.imposeNextRequestTimestamp()
             }
             val shit = action ?: {
-                buttonClick(buttonKey ?: fconst.key.button.primary_testRef)
+                buttonClick(buttonKey ?: fconst.key.button.primary.testRef)
             }
             shit()
 //            run(shit)
         }},
         descr = descr,
         steps = listOf(
-            PauseAssertResume(TestGlobal.formTickingLock, "$aid--1"),
-            PauseAssertResume(TestGlobal.formDoneLock, "$aid--2")
+            PauseAssertResumeStep(TestGlobal.formTickingLock, "$aid--1"),
+            PauseAssertResumeStep(TestGlobal.formDoneLock, "$aid--2")
         ),
         aopts = aopts
     )

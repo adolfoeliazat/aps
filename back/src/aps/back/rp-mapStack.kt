@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import aps.const.text.symbols.nbsp
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.cache.LoadingCache
@@ -100,7 +101,7 @@ private fun makeMappingCache(): LoadingCache<String, SourceMapping> {
                 } catch (e: Exception) {}
 
                 val result = "$prefix ($shortPath:${orig.lineNumber}:${orig.columnPosition})" +
-                             symbols.nbsp.repeat(5) + marginNotes.joinToString(symbols.nbsp.repeat(3))
+                             nbsp.repeat(5) + marginNotes.joinToString(nbsp.repeat(3))
                 resultLines.add(result)
             }
             catch (e: Skip) {

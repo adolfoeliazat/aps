@@ -45,16 +45,15 @@ private object DebugShitToIgnite {
 
     fun shit1() = async {
         await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
-        Button.instance("assertionBanner-play").click()
+        buttonClick(fconst.key.button.assertionBanner.play.testRef)
         await(tillBodyHTMLContains("Assertion: 1"))
-        Button.instance("assertionBanner-vdiff").click()
+        buttonClick(fconst.key.button.assertionBanner.vdiff.testRef)
     }
 
     fun shit2() = async {
         await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
-        Button.instance("assertionBanner-play").click()
+        buttonClick(fconst.key.button.assertionBanner.play.testRef)
         await(tillBodyHTMLContains("Assertion: 1"))
-//        Button.instance("assertionBanner-accept").click()
     }
 }
 

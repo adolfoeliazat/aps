@@ -123,8 +123,8 @@ sealed class FormResponse2<Meat> {
 class SignInResponse(val token: String, val user: UserRTO) : CommonResponseFieldsImpl()
 
 class SignInWithPasswordRequest : RequestMatumba() {
-    val email = TextField(this, fieldSpecs.emailInSignInForm)
-    val password = TextField(this, fieldSpecs.passwordInSignInForm)
+    val email = TextField(this, fieldSpecs.shebang.emailInSignInForm.ref)
+    val password = TextField(this, fieldSpecs.shebang.passwordInSignInForm.ref)
 }
 
 class SignInWithTokenRequest : RequestMatumba() {
@@ -137,7 +137,7 @@ class SignUpRequest : RequestMatumba() {
     class Response(val userID: String) : CommonResponseFieldsImpl()
     val immutableSignUpFields = ImmutableSignUpFields(this)
     val mutableSignUpFields = MutableSignUpFields(this)
-    val agreeTerms = CheckboxField(this, fieldSpecs.agreeTerms)
+    val agreeTerms = CheckboxField(this, fieldSpecs.shebang.agreeTerms.ref)
 }
 
 class UpdateProfileRequest() : RequestMatumba() {
@@ -154,26 +154,26 @@ open class UpdateUserRequest() : RequestMatumba() {
     val immutableSignUpFields = ImmutableSignUpFields(this)
     val mutableSignUpFields = MutableSignUpFields(this)
     val profileFields = ProfileFields(this)
-    val state = SelectField(this, fieldSpecs.userState)
-    val profileRejectionReason = TextField(this, fieldSpecs.profileRejectionReason)
-    val banReason = TextField(this, fieldSpecs.banReason)
-    val adminNotes = TextField(this, fieldSpecs.adminNotes)
+    val state = SelectField(this, fieldSpecs.shebang.userState.ref)
+    val profileRejectionReason = TextField(this, fieldSpecs.shebang.profileRejectionReason.ref)
+    val banReason = TextField(this, fieldSpecs.shebang.banReason.ref)
+    val adminNotes = TextField(this, fieldSpecs.shebang.adminNotes.ref)
 }
 
 class AdminCreateUserRequest: UpdateUserRequest()
 
 class ImmutableSignUpFields(container: RequestMatumba) {
-    val email = TextField(container, fieldSpecs.email)
+    val email = TextField(container, fieldSpecs.shebang.email.ref)
 }
 
 class MutableSignUpFields(container: RequestMatumba) {
-    val firstName = TextField(container, fieldSpecs.firstName)
-    val lastName = TextField(container, fieldSpecs.lastName)
+    val firstName = TextField(container, fieldSpecs.shebang.firstName.ref)
+    val lastName = TextField(container, fieldSpecs.shebang.lastName.ref)
 }
 
 class ProfileFields(container: RequestMatumba) {
-    val phone = TextField(container, fieldSpecs.phone)
-    val aboutMe = TextField(container, fieldSpecs.aboutMe)
+    val phone = TextField(container, fieldSpecs.shebang.phone.ref)
+    val aboutMe = TextField(container, fieldSpecs.shebang.aboutMe.ref)
 }
 
 
@@ -316,7 +316,7 @@ where Filter: Enum<Filter>, Filter: Titled {
     val entityID = MaybeStringHiddenField(this, "entityID")
     val filter = EnumHiddenField(this, "filter", filterValues)
     val ordering = EnumHiddenField(this, "ordering", Ordering.values())
-    val searchString = TextField(this, fieldSpecs.searchString)
+    val searchString = TextField(this, fieldSpecs.shebang.searchString.ref)
     val fromID = MaybeStringHiddenField(this, "fromID")
 }
 
@@ -410,8 +410,8 @@ fun send(req: FuckingRemoteProcedureRequest): Promisoid<JSONResponse> = callDang
 
 
 fun fileField(container: RequestMatumba, shouldBeProvided: Boolean = true) = FileField(container, "file", t("TOTE", "Файл"), shouldBeProvided = shouldBeProvided)
-fun fileTitleField(container: RequestMatumba) = TextField(container, fieldSpecs.title)
-fun fileDetailsField(container: RequestMatumba) = TextField(container, fieldSpecs.details)
+fun fileTitleField(container: RequestMatumba) = TextField(container, fieldSpecs.shebang.title.ref)
+fun fileDetailsField(container: RequestMatumba) = TextField(container, fieldSpecs.shebang.details.ref)
 
 abstract class AddUAOrderFileRequestBase : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()

@@ -6,33 +6,37 @@ object fconst {
     val defaultScrollBursts = 8
     val scrollbarWidth = 17
 
-    object text {
-        object symbols {
-            val rightDoubleAngleQuotation = "»"
-            val rightDoubleAngleQuotationSpaced = " » "
-            val nl2 = "\n\n"
-        }
-    }
-
     object key {
-        object refreshPage : KeyDef() {val decl = name; val testRef = name}
-        object upload : KeyDef() {val decl = name; val testRef = name}
-        object file : KeyDef() {val decl = name; val testRef = name}
-        object search : KeyDef() {val decl = name; val testRef = name}
-        object filter : KeyDef() {val decl = name; val testRef = name}
-        object ordering : KeyDef() {val decl = name; val testRef = name}
-        object cancel : KeyDef() {val decl = name; val testRef = name}
+        object file : KeyDef() {val ref = name; val testRef = name}
+        object search : KeyDef() {val ref = name; val testRef = name}
+        object filter : KeyDef() {val ref = name; val testRef = name}
+        object ordering : KeyDef() {val ref = name; val testRef = name}
 
         object link {
             object createAccount : KeyDef() {val decl = name; val testRef = name}
             object signUp : KeyDef() {val decl = name; val testRef = name}
         }
 
-        object button {
-            val sendForApproval by named {it}; val sendForApproval_testRef = TestRef(sendForApproval)
-            val edit by named {it}; val edit_testRef = TestRef(edit)
-            val plus by named {it}; val plus_testRef = TestRef(plus)
-            val primary by named {it}; val primary_testRef = TestRef(primary)
+        object button                            : NamedGroup(null) {
+            object sendForApproval               : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object edit                          : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object primary                       : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object plus                          : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object upload                        : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object cancel                        : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object refreshPage                   : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object loadMore                      : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+
+            object modal                         : NamedGroup(this) {
+                object ok                        : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+                object cancel                    : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            }
+
+            object assertionBanner               : NamedGroup(this) {
+                object vdiff                     : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+                object accept                    : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+                object play                      : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            }
         }
     }
 
@@ -65,5 +69,22 @@ object fconst {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

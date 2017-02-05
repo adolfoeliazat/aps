@@ -66,7 +66,7 @@ import kotlin.js.json
                             o- kspan{o->
                                 o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
                             }
-                            o- Button(fconst.key.upload.decl + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = SubscriptButtonKey(fconst.key.button.upload.ref, container.fieldInstanceKeySuffix), onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -76,14 +76,14 @@ import kotlin.js.json
                             o- kspan{o->
                                 o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
                             }
-                            o- Button(fconst.key.upload.decl + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = SubscriptButtonKey(fconst.key.button.upload.ref, container.fieldInstanceKeySuffix), onClick = {
                                 byid(inputID).click()
                             })
                         }
                     }
                     is Content.NotProvided -> {
                         o- kdiv{o->
-                            o- Button(fconst.key.upload.decl + container.fieldInstanceKeySuffix, icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), key = SubscriptButtonKey(fconst.key.button.upload.ref, container.fieldInstanceKeySuffix), onClick = {
                                 byid(inputID).click()
                             })
                         }

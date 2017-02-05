@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import aps.Color.*
+import aps.const.text.symbols.nbsp
 import into.kommon.*
 import kotlin.browser.window
 import kotlin.js.json
@@ -154,13 +155,13 @@ class RenderStackTraceContext(val marginRight: Int?, val skipAllForeignLines: Bo
                 val suffix = m.groupValues[3]
                 val link = OpenSourceCodeLink(json("where" to json("\$sourceLocation" to m.groupValues[2])))
                 lineEls += kdiv(display="flex"){o->
-                    o- ("" + prefix.replace(Regex("\\s"), symbols.nbsp))
+                    o- ("" + prefix.replace(Regex("\\s"), nbsp))
                     o- link
-                    o- ("" + suffix.replace(Regex("\\s"), symbols.nbsp))
+                    o- ("" + suffix.replace(Regex("\\s"), nbsp))
                 }
             } else {
                 lineEls += kdiv {o->
-                    o- ("" + line.replace(Regex("\\s"), symbols.nbsp))
+                    o- ("" + line.replace(Regex("\\s"), nbsp))
                 }
             }
         }

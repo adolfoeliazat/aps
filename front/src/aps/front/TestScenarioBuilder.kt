@@ -10,8 +10,10 @@ package aps.front
 
 import aps.*
 import aps.Color.*
+import aps.const.text.symbols.threeQuotes
 import aps.front.testutils.*
 import into.kommon.*
+import into.mochka.assert
 import jquery.JQuery
 import jquery.jq
 import org.w3c.dom.events.Event
@@ -176,7 +178,7 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
                     expected = tidyExpected,
                     actual = tidyActual,
                     actualTestShit = rawActual.trim(),
-                    actualPaste = symbols.threeQuotes + rawActual.trim() + symbols.threeQuotes))
+                    actualPaste = threeQuotes + rawActual.trim() + threeQuotes))
             }
         }}
     }
@@ -409,24 +411,32 @@ class DumbStep(val block: suspend () -> Unit) : SequenceStep {
     }
 }
 
-class PauseAssertResume(
+suspend fun pauseAssertResume(lock: TestLock, aid: String, descr: String? = null, aopts: AssertScreenOpts? = null) {
+    lock.testPause()
+    assertScreenHTML(descr ?: "Describe me", assertionID = aid, opts = aopts)
+    lock.testResume()
+}
+
+class PauseAssertResumeStep(
     val lock: TestLock,
-    val assertionID: String) : SequenceStep
+    val aid: String) : SequenceStep
 {
     suspend override fun beforeAnySteps() {
         lock.reset()
     }
 
     suspend override fun act(descr: String, aopts: AssertScreenOpts?) {
-        lock.testPause()
-        assertScreenHTML(descr, assertionID, opts = aopts)
-        lock.testResume()
+        pauseAssertResume(lock, aid = aid, descr = descr, aopts = aopts)
     }
+}
+
+suspend fun step(action: suspend () -> Unit, lock: TestLock, aid: String) {
+    sequence(action = action, steps = listOf(PauseAssertResumeStep(lock, aid)))
 }
 
 suspend fun sequence(
     action: suspend () -> Unit,
-    descr: String,
+    descr: String = "Describe me",
     steps: List<SequenceStep>,
     aopts: AssertScreenOpts? = null
 ) {

@@ -237,8 +237,8 @@ suspend fun linkSequence(
         },
         descr = descr,
         steps = listOf(
-            PauseAssertResume(TestGlobal.linkTickingLock, "$aid--1"),
-            PauseAssertResume(TestGlobal.linkDoneLock, "$aid--2")
+            PauseAssertResumeStep(TestGlobal.linkTickingLock, "$aid--1"),
+            PauseAssertResumeStep(TestGlobal.linkDoneLock, "$aid--2")
         )
     )
 }

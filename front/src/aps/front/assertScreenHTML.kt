@@ -66,6 +66,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
     sleep(0)             // XXX Fucking React...
     waitAnimationFrame() // It seems, both of these is needed
+                         // Also, when Chrome's Elements tab is open, updates still lag
 
     TestGlobal.testShitBeingAssertedID = p.assertionID
     val expected = await(fuckingRemoteCall.loadTestShit(p.assertionID))
@@ -161,7 +162,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                         nextDiff().scrollBodyToShit(dy = -70)
                                     })
                                     if (captureExists) {
-                                        o- Button(key = "assertionBanner-vdiff", title = "VDiff", style = bannerButtonStyle, onClicka = {
+                                        o- Button(title = "VDiff", style = bannerButtonStyle, key = fconst.key.button.assertionBanner.vdiff.ref, onClicka = {
                                             async<Unit> {
                                                 openVisualDiff()
                                             }
@@ -306,7 +307,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                         o- m.renderButton()
                                     }
                                     o- kdiv(width = "1rem")
-                                    o- Button(key = "visualDiffPane-accept", icon = fa.check, title = "Accept", style = bannerButtonStyle, onClicka = {
+                                    o- Button(icon = fa.check, title = "Accept", style = bannerButtonStyle, key = fconst.key.button.assertionBanner.accept.ref, onClicka = {
                                         old_debugPanes.remove(visualDiffPane)
                                         acceptCurrentShit()
                                     })
@@ -338,7 +339,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             }
 
             fun acceptButton() = Button(
-                key = "assertionBanner-accept",
+                key = fconst.key.button.assertionBanner.accept.ref,
                 icon = fa.check,
                 style = bannerButtonStyle,
                 onClicka = {acceptCurrentShit()})
@@ -360,7 +361,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                     }
                     kdiv(className = className, baseStyle = style){o->
                         o- hor1(marginBottom = "0.5rem"){o->
-                            o- Button(key = "assertionBanner-play", icon = fa.play, style = bannerButtonStyle, onClick = {
+                            o- Button(key = fconst.key.button.assertionBanner.play.ref, icon = fa.play, style = bannerButtonStyle, onClick = {
                                 assertionBannerPause.resolve()
                             })
                             o- killTestButton()

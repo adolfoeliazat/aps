@@ -1,9 +1,83 @@
 package aps.front
 
 import aps.*
+import aps.const.text.symbols.times
 import aps.front.*
 import jquery.jq
 import kotlin.js.json
+
+class OpenModalParamsButton(
+    val title: String,
+    val level: Button.Level,
+    val onClicka: suspend () -> Unit
+)
+
+class OpenModalParams(
+    val leftMarginColor: Color,
+    val title: String,
+    val okButton: OpenModalParamsButton,
+    val cancelButton: OpenModalParamsButton,
+    val body: ToReactElementable
+)
+
+suspend fun openModal(p: OpenModalParams) {
+    // TODO:vgrechka Escape key
+
+    val shit = ResolvableShit<Boolean>()
+    var result = false
+
+    val modalID = puid()
+    val timesButtonID = puid()
+    val pane = old_panes.put(kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
+        o- kdiv(className = "modal-dialog"){o->
+            o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${p.leftMarginColor}"){o->
+                o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
+                    o- Button(id = timesButtonID, title = times, className = "close", dataDismiss = "modal")
+                    o- h4(className = "modal-title"){o->
+                        o- p.title
+                    }
+                }
+                o- kdiv(className = "modal-body"){o->
+                    o- p.body
+                }
+                o- kdiv(className = "modal-footer"){o->
+                    o- Button(title = p.okButton.title, level = p.okButton.level, key = fconst.key.button.modal.ok.ref) {
+                        result = true
+                        byid(timesButtonID).click()
+                    }
+                    o- Button(title = p.cancelButton.title, level = p.cancelButton.level, key = fconst.key.button.modal.cancel.ref) {
+                        result = false
+                        byid(timesButtonID).click()
+                    }
+                }
+            }
+        }
+    })
+
+    val jqModal = byid(modalID).asDynamic()
+    jqModal.modal(json())
+    jqModal.on("shown.bs.modal") {
+//        modalShownResolvable.resolve(Unit)
+        TestGlobal.modalShownLock.sutNotify()
+    }
+    jqModal.on("hidden.bs.modal") {
+        jqModal.data("bs.modal", null)
+        old_panes.remove(pane)
+//        modalHiddenResolvable.resolve(Unit)
+        TestGlobal.modalHiddenLock.sutNotify()
+        shit.resolve(result)
+        Unit
+    }
+
+    await(shit.promise)
+}
+
+
+
+
+
+//=============================== Kill me, please ================================
+
 
 private var modalShownResolvable = ResolvableShit<Unit>()
 private var modalHiddenResolvable = ResolvableShit<Unit>()
@@ -56,7 +130,7 @@ fun modalConfirmDeletion(msg: String): Promisoid<Boolean> {
         o- kdiv(className = "modal-dialog"){o->
             o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${Color.RED_300}"){o->
                 o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
-                    o- Button(id = timesButtonID, title = symbols.times, className = "close", dataDismiss = "modal")
+                    o- Button(id = timesButtonID, title = times, className = "close", dataDismiss = "modal")
                     o- h4(className = "modal-title"){o->
                         o- t("TOTE", "Внимание")
                     }
@@ -65,11 +139,11 @@ fun modalConfirmDeletion(msg: String): Promisoid<Boolean> {
                     o- msg
                 }
                 o- kdiv(className = "modal-footer"){o->
-                    o- Button(key = "modal-yes", title = t("TOTE", "Мочи!"), level = Button.Level.DANGER) {
+                    o- Button(title = t("TOTE", "Мочи!"), level = Button.Level.DANGER, key = fconst.key.button.modal.ok.ref) {
                         result = true
                         byid(timesButtonID).click()
                     }
-                    o- Button(key = "modal-no", title = t("TOTE", "Я очкую"), dataDismiss = "modal") {
+                    o- Button(title = t("TOTE", "Я очкую"), dataDismiss = "modal", key = fconst.key.button.modal.cancel.ref) {
                         result = false
                         byid(timesButtonID).click()
                     }
@@ -105,7 +179,7 @@ fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promisoid<B
             o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${Color.RED_300}"){o->
                 val errorPlace = Placeholder()
                 o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
-                    o- Button(id = timesButtonID, title = symbols.times, className = "close", dataDismiss = "modal")
+                    o- Button(id = timesButtonID, title = times, className = "close", dataDismiss = "modal")
                     o- h4(className = "modal-title"){o->
                         o- t("TOTE", "Внимание")
                     }
@@ -117,7 +191,7 @@ fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promisoid<B
                 o- kdiv(className = "modal-footer"){o->
                     val tickerPlace = Placeholder()
                     o- tickerPlace
-                    o- Button(key = "modal-yes", title = t("TOTE", "Мочи!"), level = Button.Level.DANGER) {
+                    o- Button(title = t("TOTE", "Мочи!"), level = Button.Level.DANGER, key = fconst.key.button.modal.ok.ref) {
                         tickerPlace.setContent(renderTicker("left"))
                         async {
                             val res = await(send(req))
@@ -134,7 +208,7 @@ fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promisoid<B
                             responseProcessed()
                         }
                     }
-                    o- Button(key = "modal-no", title = t("TOTE", "Я очкую"), dataDismiss = "modal") {
+                    o- Button(title = t("TOTE", "Я очкую"), dataDismiss = "modal", key = fconst.key.button.modal.cancel.ref) {
                         result = false
                         byid(timesButtonID).click()
                     }

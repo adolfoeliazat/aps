@@ -20,20 +20,20 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 topNavItemSequence(page = pageSpecs.uaCustomer.makeOrder_testRef,
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
                 debugMailboxClear()
-                selectSetValue(fieldSpecs.ua.documentType_testRef, UADocumentType.PRACTICE)
+                selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
                 formSubmissionAttempts(
                     testShit,
                     descr = "Make order (no sign-in)",
                     baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
                     attempts = eachOrCombinationOfLasts(listOf(
-                        badTextFieldValuesThenValid(fieldSpecs.documentTitle_testRef, "Как я пинал хуи на практике"),
-                        badIntFieldValuesThenValid(fieldSpecs.numPages_testRef, 13),
-                        badIntFieldValuesThenValid(fieldSpecs.numSources_testRef, 5),
-                        badTextFieldValuesThenValid(fieldSpecs.documentDetails_testRef, "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."),
-                        badTextFieldValuesThenValid(fieldSpecs.name_testRef, "Пися Камушкин"),
-                        badTextFieldValuesThenValid(fieldSpecs.phone_testRef, "+38 (068) 123-45-67"),
-                        badTextFieldValuesThenValid(fieldSpecs.email_testRef, "pisia@test.shit.ua")
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал хуи на практике"),
+                        badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 13),
+                        badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 5),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentDetails.testRef, "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.anonymousCustomerName.testRef, "Пися Камушкин"),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 123-45-67"),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.email.testRef, "pisia@test.shit.ua")
                     ))
                 )
                 debugMailboxCheck("b9196719-9e01-45f3-987c-cb8259c7f9e6")
@@ -60,23 +60,42 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params
-                val key = fconst.key.button.edit_testRef
-                val descr: String? = null
-                val aid = "aa754a01-a99e-49d9-b982-db9ff87abf41"
-                sequence(
-                    action = {
-                        buttonClick(key)
-                    },
-                    descr = descr ?: "Click button $key",
-                    steps = listOf(
-                        PauseAssertResume(TestGlobal.openEditFormHalfwayLock, "$aid--1"),
-                        PauseAssertResume(TestGlobal.openEditFormDoneLock, "$aid--2")
-                    )
-                )
+                step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//val key = fconst.key.button.edit_testRef
+//val descr: String? = null
+//val aid = "aa754a01-a99e-49d9-b982-db9ff87abf41"
+//sequence(
+//action = {
+//    buttonClick(key)
+//},
+//descr = descr ?: "Click button $key",
+//steps = listOf(
+//PauseAssertResume(TestGlobal.openEditFormHalfwayLock, "$aid--1"),
+//PauseAssertResume(TestGlobal.openEditFormDoneLock, "$aid--2")
+//)
+//)
+
+
+
 
 
 

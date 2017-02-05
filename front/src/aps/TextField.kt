@@ -32,10 +32,14 @@ import kotlin.js.json
                 else undefined
             }
         ),
-        key = name + container.fieldInstanceKeySuffix,
+        key = makeKey(),
         onValueChanged = {
             testHint.update()
         })}
+
+    private fun makeKey(): String {
+        return name + (container.fieldInstanceKeySuffix ?: "")
+    }
 
     var value: String
         get() = input.getValue()

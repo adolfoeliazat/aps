@@ -22,7 +22,7 @@ interface IButtonAndForm {
 
 class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
     private val host: EvaporatingButtonAndFormHost,
-    val key: String,
+    val key: ButtonKey,
     val level: Button.Level,
     val icon: IconClass,
     val formSpec: FormSpec<Req, Res>,
@@ -82,12 +82,12 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
 
 suspend fun sequence_openPlusForm(aid: String) = sequence(
     action = {
-        buttonClick(fconst.key.button.plus_testRef)
+        buttonClick(fconst.key.button.plus.testRef)
     },
     descr = "Opened plus form",
     steps = listOf(
-        PauseAssertResume(TestGlobal.fadeHalfwayLock, "$aid--1"),
-        PauseAssertResume(TestGlobal.fadeDoneLock, "$aid--2")
+        PauseAssertResumeStep(TestGlobal.fadeHalfwayLock, "$aid--1"),
+        PauseAssertResumeStep(TestGlobal.fadeDoneLock, "$aid--2")
     )
 )
 

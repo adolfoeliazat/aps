@@ -81,13 +81,13 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     }
 
     val ebafPlus = EvaporatingButtonAndForm(
-        host = ebafHost, key = fconst.key.button.plus, level = Button.Level.PRIMARY, icon = fa.plus,
+        host = ebafHost, key = fconst.key.button.plus.ref, level = Button.Level.PRIMARY, icon = fa.plus,
         formSpec = FormSpec<CustomerAddUAOrderFileRequest, AddUAOrderFileRequestBase.Response>(
             CustomerAddUAOrderFileRequest()-{o->
                 o.orderID.value = order.id
             }, world,
             primaryButtonTitle = t("Add", "Добавить"),
-            cancelButtonTitle = const.defaultCancelButtonTitle
+            cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle
         ),
         onSuccessa = {
             world.pushNavigate("order.html?id=${order.id}&tab=files")
@@ -96,7 +96,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
     inner class StripContent : Control2(Attrs()) {
         val filterSelect = Select(
-            key = fconst.key.filter.decl,
+            key = fconst.key.filter.ref,
             values = CustomerFileFilter.values(),
             initialValue = urlQuery.filter,
             isAction = true,
@@ -105,7 +105,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         )
 
         val orderingSelect = Select(
-            key = fconst.key.ordering.decl,
+            key = fconst.key.ordering.ref,
             values = Ordering.values(),
             initialValue = urlQuery.ordering,
             isAction = true,
@@ -114,7 +114,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         )
 
         val searchInput = Input(
-            key = fconst.key.search.decl,
+            key = fconst.key.search.ref,
             style = Style(paddingLeft = 30, width = "100%"),
             placeholder = t("Search...", "Поиск..."),
             volatileDisabled  = {ebafHost.headerControlsDisabled}
@@ -146,7 +146,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 o- orderingSelect
 
                 val refreshButtonID = puid()
-                o- Button(key = fconst.key.refreshPage.decl, id = refreshButtonID, icon = fa.refresh, volatileDisabled = {ebafHost.headerControlsDisabled}) {
+                o- Button(id = refreshButtonID, icon = fa.refresh, volatileDisabled = {ebafHost.headerControlsDisabled}, key = fconst.key.button.refreshPage.ref) {
                     asu {reload(refreshButtonID)}
                 }
 
@@ -276,7 +276,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                                         o.details.value = orderFile.file.details
                                                     },
                                                     world,
-                                                    cancelButtonTitle = const.defaultCancelButtonTitle,
+                                                    cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle,
                                                     containerClassName = css.cunt.bodyEditing,
                                                     onCancela = {async{
                                                         await(effects).fadeOut(topShitID)
@@ -403,7 +403,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 moreFromID
                 val placeholder = Placeholder()
                 placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
-                    val btn = Button("loadMore", title = t("Load more", "Загрузить еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50))
+                    val btn = Button(title = t("Load more", "Загрузить еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = fconst.key.button.loadMore.ref)
                     btn.onClicka = {
                         async {
                             await(effects).blinkOn(byid(btn.elementID))

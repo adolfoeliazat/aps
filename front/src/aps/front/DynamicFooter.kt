@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import aps.const.text.symbols.nbsp
 import kotlin.browser.window
 
 class DynamicFooter(val world: World) : Control2(Attrs()) {
@@ -11,7 +12,7 @@ class DynamicFooter(val world: World) : Control2(Attrs()) {
     val versions = Control2.from {kdiv{o->
         o- "Frontend: ${Globus.version}"
         backendVersion?.let {
-            o- (symbols.nbsp+symbols.nbsp+symbols.nbsp)
+            o- (nbsp+nbsp+nbsp)
             o- "Backend: $it"
         }
     }}

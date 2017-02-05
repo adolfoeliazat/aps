@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import aps.const.text.symbols.rightDoubleAngleQuotationSpaced
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.collections.*
@@ -77,7 +78,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     ) {
         plusShit = EvaporatingButtonAndForm(
             ebafHost,
-            key = "plus",
+            key = aps.front.fconst.key.button.plus.ref,
             level = Button.Level.PRIMARY,
             icon = plusIcon,
             formSpec = plusFormSpec,
@@ -90,7 +91,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     ) {
         editShit = EvaporatingButtonAndForm(
             ebafHost,
-            key = "edit",
+            key = aps.front.fconst.key.button.edit.ref,
             level = Button.Level.DEFAULT,
             icon = fa.edit,
             formSpec = editFormSpec,
@@ -232,7 +233,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
             header = ToReactElementable.volatile {
                 usualHeader(header() + when (ebafHost.headerMode) {
                 HeaderMode.BROWSING -> ""
-                HeaderMode.CREATING -> fconst.text.symbols.rightDoubleAngleQuotationSpaced + t("New", "Новый")
+                HeaderMode.CREATING -> rightDoubleAngleQuotationSpaced + t("New", "Новый")
             })},
             body = object:ToReactElementable {
                 override fun toReactElement(): ReactElement {

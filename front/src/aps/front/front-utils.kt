@@ -422,11 +422,6 @@ fun <T> Array<T>.jsPush(item: T) {
     this.asDynamic().push(item)
 }
 
-fun <T> bang(x: T?): T {
-    if (x == null) bitch("Banging on null")
-    return x
-}
-
 inline fun unit(block: () -> Unit) {
     block()
 }
