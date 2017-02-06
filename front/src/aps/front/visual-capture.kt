@@ -22,7 +22,9 @@ fun visualShitCaptured(data: VisualShitCapturedMessageData) {
     visualShitCaptured.resolve(data)
 }
 
-fun captureVisualShit(id: String): Promisoid<VisualShitCapturedRequest.Response> = async {
+suspend fun captureVisualShit(id: String) = await(captureVisualShitPromise(id))
+
+fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Response> = async {
     await(send(MoveMouseAwayFromPageRequest()))
     old_debugPanes.hideAll()
     try {

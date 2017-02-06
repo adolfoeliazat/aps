@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
 import kotlin.browser.window
 
@@ -25,7 +26,29 @@ fun dumpControls() {
     for (key in Link.instances.keys) clog("Link: $key")
 }
 
-fun igniteDebugShit(): Promisoid<Unit> = DebugShitToIgnite.nothing()
+fun igniteDebugShit() {
+    val captureVisualShitShortcut = true
+
+    if (captureVisualShitShortcut) addWindowAltSomethingListener("KeyS") {
+        val id = "sample"
+        captureVisualShit(id)
+        send(SaveCapturedVisualShitRequest())
+        dwarnStriking("Saved shit: $id")
+    }
+}
+
+fun addWindowAltSomethingListener(code: String, block: suspend () -> Unit) {
+    window.addEventListener("keydown", {
+        it as KeyboardEvent
+        if (it.altKey && it.code == code) {
+            preventAndStop(it)
+            async {
+                block()
+            }
+        }
+    })
+}
+
 private object DebugShitToIgnite {
     fun nothing() = async {}
 

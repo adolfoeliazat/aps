@@ -111,7 +111,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
             suspend fun acceptCurrentShit() {
                 await(captureVisualShitIfNeeded())
-                await(send(SaveCapturedVisualShitRequest()))
+                await(sendp(SaveCapturedVisualShitRequest()))
                 await(send(HardenScreenHTMLRequest()-{o->
                     o.assertionID = p.assertionID
                     o.html = actual
@@ -340,7 +340,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
             fun captureVisualShitIfNeeded() = async {
                 if (!capturedVisualShit) {
-                    await(captureVisualShit(p.assertionID))
+                    await(captureVisualShitPromise(p.assertionID))
                     capturedVisualShit = true
                 }
             }
