@@ -16,7 +16,7 @@ class VisualShitCapturedRequest {
     var headerHeight by notNull<Double>()
     var contentWidth by notNull<Double>()
     var contentLeft by notNull<Double>()
-    var documentHeightPhysical by notNull<Int>()
+    var containerHeightPhysical by notNull<Int>()
     var modal by notNull<Boolean>()
 }
 

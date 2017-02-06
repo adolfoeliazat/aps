@@ -5,6 +5,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 import jquery.jq
+import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.js.Math
@@ -34,22 +35,41 @@ fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Re
         }
 
         val my = object {
-            var documentHeight by notNull<Double>()
-            var documentHeightPhysicalDouble by notNull<Double>()
+            var containerHeight by notNull<Double>()
+            var containerHeightPhysicalDouble by notNull<Double>()
             var isHeightGood by notNull<Boolean>()
         }
 
+        val isModal: Boolean
+        val containerForScrolling: HTMLElement
+        val containerForHeightMeasurement: HTMLElement
+
+        val jqModalFade = jq(".modal.fade")
+        if (jqModalFade.length == 0) {
+            isModal = false
+        } else {
+            check (jqModalFade.length == 1) {"Too many .modal.fades"}
+            isModal = true
+        }
+        if (isModal) {
+            containerForScrolling = bang(jqModalFade[0])
+            containerForHeightMeasurement = bang(jq(".modal-dialog")[0])
+        } else {
+            containerForScrolling = bang(document.body)
+            containerForHeightMeasurement = bang(document.documentElement) as HTMLElement
+        }
+
         fun determineHeight(original: Boolean = false) {
-            my.documentHeight = document.documentElement!!.getBoundingClientRect().height
-            my.documentHeightPhysicalDouble = my.documentHeight.toPhysicalPixelsDouble()
-            my.isHeightGood = Math.abs(my.documentHeightPhysicalDouble - my.documentHeightPhysicalDouble) < 0.001
-            clog("${ifOrEmpty(original){"Original: "}}documentHeight = ${my.documentHeight}; documentHeightPhysicalDouble = ${my.documentHeightPhysicalDouble}; isHeightGood = ${my.isHeightGood}")
+            my.containerHeight = containerForHeightMeasurement.getBoundingClientRect().height
+            my.containerHeightPhysicalDouble = my.containerHeight.toPhysicalPixelsDouble()
+            my.isHeightGood = Math.abs(my.containerHeightPhysicalDouble - my.containerHeightPhysicalDouble) < 0.001
+            clog("${ifOrEmpty(original){"Original: "}}containerHeight = ${my.containerHeight}; containerHeightPhysicalDouble = ${my.containerHeightPhysicalDouble}; isHeightGood = ${my.isHeightGood}")
         }
 
         determineHeight(original = true)
         if (!my.isHeightGood) {
-            val shouldBePhysical = Math.ceil(my.documentHeightPhysicalDouble)
-            val deltaPhysical = shouldBePhysical - my.documentHeightPhysicalDouble
+            val shouldBePhysical = Math.ceil(my.containerHeightPhysicalDouble)
+            val deltaPhysical = shouldBePhysical - my.containerHeightPhysicalDouble
             val deltaPixels = deltaPhysical / window.devicePixelRatio // ph = px * ratio  -->  px = ph / ratio
             clog("shouldBePhysical = $shouldBePhysical; deltaPhysical = $deltaPhysical; deltaPixels = $deltaPixels")
             jqbody.css("margin-bottom", "${deltaPixels}px")
@@ -57,21 +77,24 @@ fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Re
         }
         check(my.isHeightGood) {"Fucky document height"}
 
-        val documentHeightPhysical: Int = my.documentHeight.toPhysicalPixels()
+        val containerHeightPhysical: Int = my.containerHeight.toPhysicalPixels()
         val windowHeight: Double = window.asDynamic().innerHeight
         val windowHeightPhysical: Int = windowHeight.toPhysicalPixels()
         val topNavbarHeightPhysical: Int = const.topNavbarHeight.toPhysicalPixels()
-        val scrollStepPhysical: Int = windowHeightPhysical - topNavbarHeightPhysical
-        clog("documentHeight = ${my.documentHeight}; documentHeightPhysicalDouble = ${my.documentHeightPhysicalDouble}; documentHeightPhysical = $documentHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
+        var scrollStepPhysical: Int = windowHeightPhysical
+        if (!isModal) {
+            scrollStepPhysical -= topNavbarHeightPhysical
+        }
+        clog("containerHeight = ${my.containerHeight}; containerHeightPhysicalDouble = ${my.containerHeightPhysicalDouble}; containerHeightPhysical = $containerHeightPhysical; windowHeight = $windowHeight; windowHeightPhysical = $windowHeightPhysical; topNavbarHeightPhysical = $topNavbarHeightPhysical; scrollStepPhysical = $scrollStepPhysical")
 
         byid(const.elementID.dynamicFooter).css("display", "none")
-        val origScrollY = window.scrollY
+        val origScrollY = containerForScrolling.scrollTop
 
         val drawPurpleLines = false
         if (drawPurpleLines) {
             jqbody.append("<div id='${const.elementID.cutLineContainer}'></div>")
             var yPhysical = topNavbarHeightPhysical
-            while (yPhysical < documentHeightPhysical) {
+            while (yPhysical < containerHeightPhysical) {
                 byid(const.elementID.cutLineContainer).append(
                     "<div class='${css.test.cutLine}' style='top: ${yPhysical.toLayoutPixels()}px; height: ${1.0 / window.devicePixelRatio}px'></div>")
                 byid(const.elementID.cutLineContainer).append(
@@ -89,11 +112,11 @@ fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Re
 
             val requestedYPhysical = shots.size * scrollStepPhysical
             val requestedY = requestedYPhysical.toLayoutPixels()
-            if (!isModalShown()) {
-                window.scroll(0.0, requestedY)
-            }
+//            if (!isModalShown()) {
+                containerForScrolling.scrollTop = requestedY
+//            }
             await(delay(100)) // Fucking Chrome...
-            clog("Shooting at $requestedY (window.scrollY = ${window.scrollY}; requestedYPhysical = $requestedYPhysical)")
+            clog("Shooting at $requestedY (containerForScrolling.scrollTop = ${containerForScrolling.scrollTop}; requestedYPhysical = $requestedYPhysical)")
 
             visualShitCaptured.reset()
             shitID = id
@@ -101,17 +124,17 @@ fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Re
             val data = await(visualShitCaptured.promise)
             shots += BrowserShot()-{o->
                 o.dataURL = data.dataURL
-                o.windowScrollY = window.scrollY
-                o.windowScrollYPhysical = window.scrollY.toPhysicalPixels()
+                o.windowScrollY = containerForScrolling.scrollTop // TODO:vgrechka window -> containerForScrolling
+                o.windowScrollYPhysical = containerForScrolling.scrollTop.toPhysicalPixels() // TODO:vgrechka window -> containerForScrolling
             }
 
-            val oldY = window.scrollY
-            window.scroll(0.0, oldY + 1)
-            val dy = Math.abs(oldY - window.scrollY)
-            clog("oldY = $oldY; window.scrollY = ${window.scrollY}; dy = $dy")
+            val oldY = containerForScrolling.scrollTop
+            containerForScrolling.scrollTop = oldY + 1
+            val dy = Math.abs(oldY - containerForScrolling.scrollTop)
+            clog("oldY = $oldY; containerForScrolling.scrollTop = ${containerForScrolling.scrollTop}; dy = $dy")
 
             if (dy < 0.001) break
-            if (isModalShown()) break
+//            if (isModalShown()) break
         }
         unfreezeShitAfterCapturing()
 
@@ -122,14 +145,14 @@ fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Re
             o.headerHeight = const.topNavbarHeight
             o.contentWidth = jq("#topNavbarContainer > nav > .container").outerWidth()
             o.contentLeft = jq("#topNavbarContainer > nav > .container").offset().left.toDouble()
-            o.documentHeightPhysical = documentHeightPhysical
-            o.modal = isModalShown()
+            o.containerHeightPhysical = containerHeightPhysical
+            o.modal = isModal
         }))
         clog("Sent captured shit to backend")
 
         jqbody.css("margin-bottom", "0px")
         byid(const.elementID.cutLineContainer).remove()
-        window.scroll(0.0, origScrollY)
+        containerForScrolling.scrollTop = origScrollY
         byid(const.elementID.dynamicFooter).css("display", "")
 
         res
@@ -142,11 +165,17 @@ fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Re
 fun freezeShitForCapturing() {
     progressTickerKeyframe100RuleStyle.opacity = "1"
     testArtifactClasses.forEach {jq(".$it").hide()}
+    jq(".modal-backdrop").removeClass("fade") // Opacity should be turned off right away
+    jq(".modal-backdrop").css("background-color", "white")
+    jq(".modal-backdrop").css("opacity", 1)
 }
 
 fun unfreezeShitAfterCapturing() {
     progressTickerKeyframe100RuleStyle.opacity = "0"
     testArtifactClasses.forEach {jq(".$it").show()}
+    jq(".modal-backdrop").addClass("fade")
+    jq(".modal-backdrop").css("background-color", "")
+    jq(".modal-backdrop").css("opacity", "")
 }
 
 

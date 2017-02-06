@@ -21,7 +21,8 @@ private @Volatile var capturedShit: CapturedShit? = null
 fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCapturedRequest.Response {
     fun toPhysicalPixels(x: Double) = Math.round(x * req.devicePixelRatio).toInt()
 
-    if (req.modal) check(req.shots.size == 1) {"Modal capture should have one shot"}
+//    if (req.modal) check(req.shots.size == 1) {"Modal capture should have one shot"}
+    val considerHeader = !req.modal
 
     val imgs = mutableListOf<BufferedImage>()
     val shebangWidth = toPhysicalPixels(req.contentWidth)
@@ -36,7 +37,7 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
         imgs += img
         // File("$APS_TEMP/visual-capture/${req.id}--$i.png").writeBytes(bytes)
 
-        if (i == 0 && !req.modal) {
+        if (i == 0 && considerHeader) {
             headerHeightPhysical = 0
             while (Color(img.getRGB(0, headerHeightPhysical)) != Color.WHITE) {
                 headerHeightPhysical = headerHeightPhysical + 1
@@ -45,9 +46,10 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
         }
     }
 
-    val imageHeight =
-        if (!req.modal) req.documentHeightPhysical
-        else imgs.first().height
+    val imageHeight = req.containerHeightPhysical
+//    val imageHeight =
+//        if (!req.modal) req.containerHeightPhysical
+//        else imgs.first().height
 
     val shebang = BufferedImage(shebangWidth, imageHeight, BufferedImage.TYPE_INT_ARGB)
     val g = shebang.createGraphics()
@@ -65,12 +67,12 @@ fun serveVisualShitCapturedRequest(req: VisualShitCapturedRequest): VisualShitCa
     var heightLeft = imageHeight
     for ((i, img) in imgs.withIndex()) {
         val cropTop: Int; val cropHeight: Int
-        when (i) {
-            0 -> {
+        when {
+            i == 0 || (i < imgs.lastIndex && req.modal) -> {
                 cropTop = 0
                 cropHeight = img.height
             }
-            imgs.lastIndex -> {
+            i == imgs.lastIndex -> {
                 cropHeight = heightLeft
                 cropTop = img.height - cropHeight
             }

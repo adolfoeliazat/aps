@@ -416,7 +416,7 @@ val progressTickerRuleStyle: CSSStyleDeclaration by lazy {
 }
 
 
-fun isModalShown() = jq(".modal-backdrop").length > 0
+//fun isModalShown() = jq(".modal-backdrop").length > 0
 
 fun <T> Array<T>.jsPush(item: T) {
     this.asDynamic().push(item)
