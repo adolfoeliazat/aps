@@ -69,10 +69,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 // TODO:vgrechka Not doing assertions here?
                 step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
-                step({buttonClick(fconst.key.button.cancel.testRef)}, TestGlobal.modalHiddenLock, "65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
+                step({buttonClick(fconst.key.button.cancel.testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
-            unforceFast()
             run { // Edit params -- save
                 step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
 
@@ -84,7 +83,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 inputSetValue(fieldSpecs.shebang.phone.testRef, "")
 
                 formSubmissionAttempts(
-                    testShit, baseID = "_beaa5793-9590-415e-8bc9-ca6fec7ead52",
+                    testShit, baseID = "2_beaa5793-9590-415e-8bc9-ca6fec7ead52",
                     attempts = eachOrCombinationOfLasts(listOf(
                         badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал большие хуи на практике"),
                         badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 23),

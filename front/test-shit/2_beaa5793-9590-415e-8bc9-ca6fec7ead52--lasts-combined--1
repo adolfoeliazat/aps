@@ -213,7 +213,7 @@
               </span>
             </label>
             <div style="position: relative;">
-              <select class="form-control">
+              <select class="form-control" disabled="">
                 <option value="ABSTRACT">
                   Реферат
                 </option>
@@ -257,7 +257,7 @@
               </label>
             </div>
             <div style="position: relative;">
-              <input type="text" rows="5" class="form-control" value="Как я пинал хуи на практике" style="resize: none;">
+              <input type="text" rows="5" class="form-control" disabled="" value="Как я пинал большие хуи на практике" style="resize: none;">
               </div>
             </div>
             <div class="form-group">
@@ -267,7 +267,7 @@
                 </span>
               </label>
               <div style="position: relative;">
-                <input type="text" rows="5" class="form-control" value="13" style="resize: none;">
+                <input type="text" rows="5" class="form-control" disabled="" value="23" style="resize: none;">
                 </div>
               </div>
               <div class="form-group">
@@ -277,7 +277,7 @@
                   </span>
                 </label>
                 <div style="position: relative;">
-                  <input type="text" rows="5" class="form-control" value="5" style="resize: none;">
+                  <input type="text" rows="5" class="form-control" disabled="" value="7" style="resize: none;">
                   </div>
                 </div>
                 <div class="form-group">
@@ -287,8 +287,8 @@
                     </label>
                   </div>
                   <div style="position: relative;">
-                    <textarea rows="5" type="text" class="form-control" style="resize: none;">
-                      Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.
+                    <textarea rows="5" type="text" class="form-control" disabled="" style="resize: none;">
+                      Это чисто на почитать... Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.
                       Кухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел.
                     </textarea>
                   </div>
@@ -300,7 +300,7 @@
                     </label>
                   </div>
                   <div style="position: relative;">
-                    <input type="text" rows="5" class="form-control" value="+38 (068) 123-45-67" style="resize: none;">
+                    <input type="text" rows="5" class="form-control" disabled="" value="+38 (068) 321-45-67" style="resize: none;">
                     </div>
                   </div>
                 </form>
@@ -308,11 +308,13 @@
               <div class="modal-footer">
                 <div style="display: flex;">
                   <div style="display: flex; flex-grow: 1; justify-content: flex-start;">
+                    <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122);">
+                    </div>
                   </div>
-                  <button class="btn btn-primary ">
+                  <button class="btn btn-primary " disabled="">
                     Сохранить
                   </button>
-                  <button class="btn btn-default " style="margin-left: 10px;">
+                  <button class="btn btn-default " disabled="" style="margin-left: 10px;">
                     Не стоит
                   </button>
                 </div>

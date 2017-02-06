@@ -412,15 +412,25 @@ fun eachOrCombinationOfLasts(chunks: List<List<TestAttempt>>): List<TestAttempt>
         flatten(chunks)
     } else {
         val lastItem = chunks.last().last()
-        listOf(TestAttempt(
-            subID = lastItem.subID,
-            descr = lastItem.descr,
-            prepare = {
-                for (chunk in chunks) {
-                    chunk.last().prepare()
+        listOf(
+            TestAttempt(
+                subID = "firsts-combined",
+                descr = "firsts combined",
+                prepare = {
+                    for (chunk in chunks) {
+                        chunk.first().prepare()
+                    }
                 }
-            }
-        ))
+            ),
+            TestAttempt(
+                subID = "lasts-combined",
+                descr = "lasts combined",
+                prepare = {
+                    for (chunk in chunks) {
+                        chunk.last().prepare()
+                    }
+                }
+            ))
     }
 
 fun eachOrLast(attempts: List<TestAttempt>): List<TestAttempt> =

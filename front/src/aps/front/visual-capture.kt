@@ -42,7 +42,7 @@ fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Re
 
         val isModal: Boolean
         val containerForScrolling: HTMLElement
-        val containerForHeightMeasurement: HTMLElement
+        val getContainerHeight: () -> Double
 
         val jqModalFade = jq(".modal.fade")
         if (jqModalFade.length == 0) {
@@ -53,14 +53,15 @@ fun captureVisualShitPromise(id: String): Promisoid<VisualShitCapturedRequest.Re
         }
         if (isModal) {
             containerForScrolling = bang(jqModalFade[0])
-            containerForHeightMeasurement = bang(jq(".modal-dialog")[0])
+            val modalMargin = 30
+            getContainerHeight = {bang(jq(".modal-dialog")[0]).getBoundingClientRect().height + 2 * modalMargin}
         } else {
             containerForScrolling = bang(document.body)
-            containerForHeightMeasurement = bang(document.documentElement) as HTMLElement
+            getContainerHeight = {bang(document.documentElement).getBoundingClientRect().height}
         }
 
         fun determineHeight(original: Boolean = false) {
-            my.containerHeight = containerForHeightMeasurement.getBoundingClientRect().height
+            my.containerHeight = getContainerHeight()
             my.containerHeightPhysicalDouble = my.containerHeight.toPhysicalPixelsDouble()
             my.isHeightGood = Math.abs(my.containerHeightPhysicalDouble - my.containerHeightPhysicalDouble) < 0.001
             clog("${ifOrEmpty(original){"Original: "}}containerHeight = ${my.containerHeight}; containerHeightPhysicalDouble = ${my.containerHeightPhysicalDouble}; isHeightGood = ${my.isHeightGood}")

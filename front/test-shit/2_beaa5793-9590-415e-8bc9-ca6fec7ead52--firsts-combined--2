@@ -206,6 +206,11 @@
       </div>
       <div class="modal-body">
         <form>
+          <blockquote style="background-color: rgb(255, 235, 238); border-left: 3px solid rgb(229, 115, 115); font-size: 14px; margin-bottom: 15px;">
+            <span class="">
+              Пожалуйста, исправьте ошибки ниже
+            </span>
+          </blockquote>
           <div class="form-group">
             <label>
               <span class="">
@@ -250,57 +255,90 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom: 0px;">
             <div class="textField-labelContainer">
               <label>
                 Тема работы
               </label>
             </div>
             <div style="position: relative;">
-              <input type="text" rows="5" class="form-control" value="Как я пинал хуи на практике" style="resize: none;">
+              <input type="text" rows="5" class="form-control" value="" style="resize: none; padding-right: 30px;">
+                <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
+                  <span class="">
+                    Поле обязательно
+                  </span>
+                </div>
+                <div style="width: 15px; height: 15px; background-color: rgb(229, 115, 115); border-radius: 10px; position: absolute; right: 8px; top: 10px;">
+                </div>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 0px;">
               <label>
                 <span class="">
                   Количество страниц
                 </span>
               </label>
               <div style="position: relative;">
-                <input type="text" rows="5" class="form-control" value="13" style="resize: none;">
+                <input type="text" rows="5" class="form-control" value="" style="resize: none; padding-right: 30px;">
+                  <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
+                    <span class="">
+                      Поле обязательно
+                    </span>
+                  </div>
+                  <div style="width: 15px; height: 15px; background-color: rgb(229, 115, 115); border-radius: 10px; position: absolute; right: 8px; top: 10px;">
+                  </div>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" style="margin-bottom: 0px;">
                 <label>
                   <span class="">
                     Количество источников
                   </span>
                 </label>
                 <div style="position: relative;">
-                  <input type="text" rows="5" class="form-control" value="5" style="resize: none;">
+                  <input type="text" rows="5" class="form-control" value="" style="resize: none; padding-right: 30px;">
+                    <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
+                      <span class="">
+                        Поле обязательно
+                      </span>
+                    </div>
+                    <div style="width: 15px; height: 15px; background-color: rgb(229, 115, 115); border-radius: 10px; position: absolute; right: 8px; top: 10px;">
+                    </div>
                   </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 0px;">
                   <div class="textField-labelContainer">
                     <label>
                       Детали работы (задание)
                     </label>
                   </div>
                   <div style="position: relative;">
-                    <textarea rows="5" type="text" class="form-control" style="resize: none;">
-                      Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.
-                      Кухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел.
+                    <textarea rows="5" type="text" class="form-control" style="resize: none; padding-right: 30px;">
                     </textarea>
+                    <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
+                      <span class="">
+                        Поле обязательно
+                      </span>
+                    </div>
+                    <div style="width: 15px; height: 15px; background-color: rgb(229, 115, 115); border-radius: 10px; position: absolute; right: 8px; top: 10px;">
+                    </div>
                   </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 0px;">
                   <div class="textField-labelContainer">
                     <label>
                       Телефон
                     </label>
                   </div>
                   <div style="position: relative;">
-                    <input type="text" rows="5" class="form-control" value="+38 (068) 123-45-67" style="resize: none;">
+                    <input type="text" rows="5" class="form-control" value="" style="resize: none; padding-right: 30px;">
+                      <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
+                        <span class="">
+                          Поле обязательно
+                        </span>
+                      </div>
+                      <div style="width: 15px; height: 15px; background-color: rgb(229, 115, 115); border-radius: 10px; position: absolute; right: 8px; top: 10px;">
+                      </div>
                     </div>
                   </div>
                 </form>
