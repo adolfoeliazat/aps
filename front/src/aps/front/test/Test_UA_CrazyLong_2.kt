@@ -11,6 +11,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             val details = "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."
         }
 
+        TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(
+            bannerVerticalPosition = VerticalPosition.TOP,
+            bannerHorizontalPosition = HorizontalPosition.RIGHT)
+
         forceFast {
             initialTestShit(this)
 
@@ -65,16 +69,22 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 // TODO:vgrechka Not doing assertions here?
                 step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
-                step({buttonClick(fconst.key.button.modal.cancel.testRef)}, TestGlobal.modalHiddenLock, "65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
+                step({buttonClick(fconst.key.button.cancel.testRef)}, TestGlobal.modalHiddenLock, "65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
+            unforceFast()
             run { // Edit params -- save
-                unforceFast()
                 step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
+
                 selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
+                inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "")
+                inputSetValue(fieldSpecs.shebang.numPages.testRef, "")
+                inputSetValue(fieldSpecs.shebang.numSources.testRef, "")
+                inputSetValue(fieldSpecs.shebang.documentDetails.testRef, "")
+                inputSetValue(fieldSpecs.shebang.phone.testRef, "")
+
                 formSubmissionAttempts(
                     testShit, baseID = "_beaa5793-9590-415e-8bc9-ca6fec7ead52",
-                    buttonKey = fconst.key.button.modal.ok.testRef,
                     attempts = eachOrCombinationOfLasts(listOf(
                         badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал большие хуи на практике"),
                         badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 23),

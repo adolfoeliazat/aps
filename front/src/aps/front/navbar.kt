@@ -235,9 +235,9 @@ suspend fun topNavItemSequence(
         descr = descr ?: "Click nav item ${page.it.navTitle}",
         steps = listOf(
             PauseAssertResumeStep(TestGlobal.topNavItemTickingLock, "$aid--1"),
-            DumbStep {TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(
-                bannerVerticalPosition = VerticalPosition.BOTTOM,
-                bannerHorizontalPosition = HorizontalPosition.RIGHT)},
+//            DumbStep {TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(
+//                bannerVerticalPosition = VerticalPosition.BOTTOM,
+//                bannerHorizontalPosition = HorizontalPosition.RIGHT)},
             PauseAssertResumeStep(TestGlobal.topNavItemDoneLock, "$aid--2")
         )
     )

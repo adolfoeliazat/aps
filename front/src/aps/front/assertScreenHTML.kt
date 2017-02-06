@@ -403,7 +403,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                             renderSpecificButtons(o)
                         }
                         o- kdiv{o->
-                            o- link(title = "Assertion: ${p.descr}", color = BLACK, onClick = {
+                            o- link(title = /*"Assertion: " + */"${p.descr}", color = BLACK, onClick = {
                                 if (stackCapture != null) {
                                     revealStack(stackCapture, muteConsole = true)
                                 } else {

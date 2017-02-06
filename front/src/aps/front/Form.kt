@@ -16,7 +16,7 @@ import kotlin.js.json
 data class FormSpec<Req: RequestMatumba, Res>(
     val req: Req,
     val ui: World,
-    val className: String = "",
+//    val className: String = "",
     val containerClassName: String = "",
     val containerStyle: Style = Style(),
     val errorBannerStyle: dynamic = js("undefined"),
@@ -24,7 +24,8 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val cancelButtonTitle: String? = null,
 //    val deleteButtonTitle: String? = null,
     val dontShameButtons: Boolean = false,
-    val renderButtons: Boolean = true,
+//    val renderButtons: Boolean = true,
+    val buttonLocation: ButtonLocation = FormSpec.ButtonLocation.LEFT,
 
     val onCancel: FormMatumba<Req, Res>.() -> Unit = {},
     val onCancela: suspend FormMatumba<Req, Res>.() -> Unit = {},
@@ -34,7 +35,11 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val onSuccessa: suspend FormMatumba<Req, Res>.(res: Res) -> Unit = {},
 //    val onDeleta: FormMatumba<Req, Res>.() -> Promise<Unit> = {async{}},
     val getInvisibleFieldNames: FormMatumba<Req, Res>.() -> Iterable<String> = {listOf()}
-)
+) {
+    enum class ButtonLocation {
+        LEFT, RIGHT
+    }
+}
 
 class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToReactElementable {
     init {
@@ -49,63 +54,62 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 
     val elementID get() = control.elementID
 
-    val control = object:Control() {
-        override fun defaultControlTypeName() = "FormMatumba"
-
-        override fun render(): ReactElement {
-            aps.gloshit.updateForm = {update()}
+    val fieldsAndBanner = object:Control2() {
+        override fun render(): ElementBuilder {
             figureOutActualVisibleFieldNames()
-
-            var buttonPanel: ReactElement? = null
-            if (spec.renderButtons) {
-                buttonPanel = Shitus.diva(
-                    json("style" to json("textAlign" to "left")),
-
-                    Button(
-                        key = buttonKey(fconst.key.button.primary.ref),
-                        level = Button.Level.PRIMARY,
-                        title = spec.primaryButtonTitle,
-                        disabled = working,
-                        onClicka = {submit()}
-                    ).toReactElement(),
-
-
-                    if (spec.cancelButtonTitle != null) {
-                        Button(
-                            key = buttonKey(fconst.key.button.cancel.ref),
-                            title = spec.cancelButtonTitle,
-                            disabled = working,
-                            style = Style(marginLeft = 10),
-                            onClicka = {async{
-                                (spec.onCancel)()
-                                (spec.onCancela)()
-    //                                    TestGlobal.formActionCompleted.resolve()
-                            }}
-                        ).toReactElement()
-
-                    } else undefined,
-
-                    if (working) renderTicker("right").toReactElement() else null
-                )
+            return kform{o->
+                if (error != null) {
+                    val shit: ReactElement = Shitus.errorBanner(json("content" to error, "style" to spec.errorBannerStyle))
+                    o- shit
+                }
+                for (f in spec.req.fields) {
+                    if (actualVisibleFieldNames.contains(f.name)) {
+                        o- f.render()
+                    }
+                }
             }
-
-            return kdiv(attrs = Attrs(className = spec.containerClassName, id = elementID), style = spec.containerStyle){o->
-                val form: ReactElement = Shitus.forma.apply(null, js("[]").concat(
-                    jsArrayOf(
-                        json("className" to spec.className),
-                        if (error != null) Shitus.errorBanner(json("content" to error, "style" to spec.errorBannerStyle)) else undefined),
-
-                    spec.req.fields
-                        .filter{x -> actualVisibleFieldNames.contains(x.name)}
-                        .map{x -> x.render()}
-                        .toJSArray(),
-
-                    buttonPanel
-                ))
-                o- form
-            }.toReactElement()
         }
+    }
 
+    val buttonsAndTicker = object:Control2() {
+        override fun render(): ToReactElementable {
+            return kdiv(display = "flex"){o->
+                val tickerBar = kdiv(Style(display = "flex", flexGrow = 1,
+                                           justifyContent = when (spec.buttonLocation) {
+                                               FormSpec.ButtonLocation.LEFT -> "flex-end"
+                                               FormSpec.ButtonLocation.RIGHT -> "flex-start"})){o->
+                    if (working)
+                        o- renderTicker()
+                }
+
+                if (spec.buttonLocation == FormSpec.ButtonLocation.RIGHT)
+                    o- tickerBar
+
+                o- Button(
+                    key = buttonKey(fconst.key.button.primary.ref),
+                    level = Button.Level.PRIMARY,
+                    title = spec.primaryButtonTitle,
+                    disabled = working,
+                    onClicka = {submit()}
+                )
+
+                if (spec.cancelButtonTitle != null) {
+                    o- Button(
+                        key = buttonKey(fconst.key.button.cancel.ref),
+                        title = spec.cancelButtonTitle,
+                        disabled = working,
+                        style = Style(marginLeft = 10),
+                        onClicka = {async{
+                            (spec.onCancel)()
+                            (spec.onCancela)()
+                        }}
+                    ).toReactElement()
+                }
+
+                if (spec.buttonLocation == FormSpec.ButtonLocation.LEFT)
+                    o- tickerBar
+            }
+        }
 
         private fun buttonKey(key: ButtonKey): ButtonKey {
             val subscript = req.fieldInstanceKeySuffix
@@ -114,6 +118,19 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                 else -> SubscriptButtonKey(key, subscript)
             }
         }
+
+    }
+
+    val control = object:Control() {
+        override fun defaultControlTypeName() = "FormMatumba"
+
+        override fun render(): ReactElement {
+            return kdiv(attrs = Attrs(className = spec.containerClassName, id = elementID), style = spec.containerStyle){o->
+                o- fieldsAndBanner
+                o- buttonsAndTicker
+            }.toReactElement()
+        }
+
 
         override fun componentDidMount() {
             focusedField?.let {it.focus()}
@@ -131,7 +148,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         }
         error = null
         working = true
-        control.update()
+        updateAll()
 
         TestGlobal.formTickingLock.sutPause()
 
@@ -158,9 +175,14 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         }
 
         working = false
-        control.update()
+        updateAll()
 
         TestGlobal.formDoneLock.sutPause()
+    }
+
+    fun updateAll() {
+        fieldsAndBanner.update()
+        buttonsAndTicker.update()
     }
 
     fun figureOutActualVisibleFieldNames() {
@@ -171,7 +193,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         val oldVisible = actualVisibleFieldNames.toSet()
         figureOutActualVisibleFieldNames()
         if (oldVisible != actualVisibleFieldNames.toSet()) {
-            control.update()
+            updateAll()
         }
     }
 
@@ -289,7 +311,7 @@ suspend fun formSubmissionAttempts(
         attempt.prepare()
         submitFormSequence(
             testShit,
-            descr = "Attempt: ${attempt.descr}",
+            descr = /*"Attempt: " + */attempt.descr,
             aid = "$baseID--${attempt.subID}",
             imposeTimestamp = i == attempts.lastIndex,
             buttonKey = buttonKey,
@@ -369,9 +391,14 @@ private class fuckingAdder(
     val subIDSuffix: String = ""
 ) {
     operator fun invoke(descr: String, value: String) {
+        val lastDot = fieldName.lastIndexOf(".")
+        val fieldNameForDescr = when {
+            lastDot == -1 -> fieldName
+            else -> fieldName.substring(lastDot + 1)
+        }
         res += TestAttempt(
             subID = "$fieldName--" + descr.replace(" ", "-") + subIDSuffix,
-            descr = "$fieldName: $descr",
+            descr = "$fieldNameForDescr: $descr",
             prepare = {
                 inputSetValue(fieldName, value)
             },

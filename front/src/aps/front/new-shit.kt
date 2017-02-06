@@ -24,6 +24,7 @@ val ka = ElementBuilderFactory("a")
 val ki = ElementBuilderFactory("i")
 val klabel = ElementBuilderFactory("label")
 val kblockquote = ElementBuilderFactory("blockquote")
+val kform = ElementBuilderFactory("form")
 
 open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, block: ((ElementBuilder) -> Unit)? = null) : ToReactElementable {
     val children = mutableListOf<ToReactElementable>()
@@ -148,6 +149,7 @@ data class Style(
     var fontWeight: String? = null,
     var fontStyle: String? = null,
     var display: String? = null,
+    var flexGrow: Any? = null,
     var justifyContent: String? = null,
     var whiteSpace: String? = null,
     var cursor: String? = null,
@@ -202,6 +204,7 @@ data class Style(
             fontWeight?.let {o.fontWeight = it}
             fontStyle?.let {o.fontStyle = it}
             display?.let {o.display = it}
+            flexGrow?.let {o.flexGrow = it}
             justifyContent?.let {o.justifyContent = it}
             whiteSpace?.let {o.whiteSpace = it}
             cursor?.let {o.cursor = it}

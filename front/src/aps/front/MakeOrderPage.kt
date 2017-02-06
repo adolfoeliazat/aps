@@ -9,6 +9,7 @@ class MakeOrderPage(val world: World) {
         kdiv(marginBottom = "1em"){o->
                 o- FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
                     UACustomerCreateOrderRequest(world.xlobal, CREATE), world,
+                    primaryButtonTitle = t("Proceed", "Продолжить"),
                     onSuccessa = {
                         if (world.userMaybe != null) {
                             imf("MakeOrderPage for signed-in user")

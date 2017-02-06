@@ -14,13 +14,18 @@ class OpenModalParamsButton(
 class OpenModalParams(
     val leftMarginColor: Color,
     val title: String,
-    val okButton: OpenModalParamsButton,
-    val cancelButton: OpenModalParamsButton,
+//    val okButton: OpenModalParamsButton,
+//    val cancelButton: OpenModalParamsButton,
     val body: ToReactElementable,
-    val width: String? = null
+    val width: String? = null,
+    val footer: ToReactElementable
 )
 
-suspend fun openModal(p: OpenModalParams) {
+interface ModalOperations {
+    fun close()
+}
+
+suspend fun openModal(p: OpenModalParams): ModalOperations {
     // TODO:vgrechka Escape key
 
     val shit = ResolvableShit<Boolean>()
@@ -41,7 +46,7 @@ suspend fun openModal(p: OpenModalParams) {
                     }
                     o- kdiv(className = "modal-body"){o->
                         o- p.body
-                        val debug_makeItTall = true
+                        val debug_makeItTall = false
                         if (debug_makeItTall) {
                             for (i in 1..50) {
                                 o- div("pizda $i")
@@ -49,16 +54,17 @@ suspend fun openModal(p: OpenModalParams) {
                         }
                     }
                     o- kdiv(className = "modal-footer"){o->
-                        o- Button(title = p.okButton.title, level = p.okButton.level, key = fconst.key.button.modal.ok.ref,
-                                  onClicka = p.okButton.onClicka ?: {
-                                      result = true
-                                      byid(timesButtonID).click()
-                                  })
-
-                        o- Button(title = p.cancelButton.title, level = p.cancelButton.level, key = fconst.key.button.modal.cancel.ref) {
-                            result = false
-                            byid(timesButtonID).click()
-                        }
+                        o- p.footer
+//                        o- Button(title = p.okButton.title, level = p.okButton.level, key = fconst.key.button.modal.ok.ref,
+//                                  onClicka = p.okButton.onClicka ?: {
+//                                      result = true
+//                                      byid(timesButtonID).click()
+//                                  })
+//
+//                        o- Button(title = p.cancelButton.title, level = p.cancelButton.level, key = fconst.key.button.modal.cancel.ref) {
+//                            result = false
+//                            byid(timesButtonID).click()
+//                        }
                     }
                 }
             }
@@ -92,7 +98,13 @@ suspend fun openModal(p: OpenModalParams) {
     }
     jqModal.modal(json())
 
-    await(shit.promise)
+    return object:ModalOperations {
+        override fun close() {
+            byid(timesButtonID).click()
+        }
+    }
+
+//    await(shit.promise)
 }
 
 

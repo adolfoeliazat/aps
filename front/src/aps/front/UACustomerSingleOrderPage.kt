@@ -200,6 +200,8 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                 UserKind.CUSTOMER -> {
                     if (order.state == UAOrderState.CUSTOMER_DRAFT) {
                         o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit.ref) {
+                            var modal by notNullOnce<ModalOperations>()
+
                             val form = FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
                                 UACustomerCreateOrderRequest(world.xlobal, UPDATE)-{o->
                                     o.documentType.value = order.documentType
@@ -210,29 +212,22 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                     o.phone.value = order.phone
                                 },
                                 world,
-                                renderButtons = false,
+                                buttonLocation = FormSpec.ButtonLocation.RIGHT,
+                                primaryButtonTitle = t("TOTE", "Сохранить"),
+                                cancelButtonTitle = t("TOTE", "Не стоит"),
                                 onSuccessa = {
+                                },
+                                onCancel = {
+                                    modal.close()
                                 }
                             ))
 
-                            openModal(OpenModalParams(
+                            modal = openModal(OpenModalParams(
                                 width = "80rem",
                                 leftMarginColor = Color.BLUE_GRAY_300,
                                 title = t("TOTE", "Параметры заказа"),
-                                okButton = OpenModalParamsButton(
-                                    title = t("TOTE", "Сохранить"),
-                                    level = Button.Level.PRIMARY,
-                                    onClicka = {
-                                        form.submit()
-                                    }
-                                ),
-                                cancelButton = OpenModalParamsButton(
-                                    title = t("TOTE", "Не стоит"),
-                                    level = Button.Level.DEFAULT
-                                ),
-                                body = kdiv{o->
-                                    o- form
-                                }
+                                body = form.fieldsAndBanner,
+                                footer = form.buttonsAndTicker
                             ))
                             clog("aaaaaaaaaaaaaaaaaaa")
                         }

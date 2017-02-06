@@ -24,7 +24,7 @@ class LintShit {
                     if (line.startsWith("//")) continue
                     class Shit(message: String): Exception(message)
                     try {
-                        for (tag in listOf("kdiv", "kspan", "h3", "kul", "kli", "ka")) {
+                        for (tag in listOf("kdiv", "kspan", "h3", "kul", "kli", "ka", "kform")) {
                             if (Regex("\\W$tag\\W").containsMatchIn(line)) {
                                 if (line.trimEnd().endsWith("{")) {
                                     throw Shit("Lambda parameter is mandatory for $tag")

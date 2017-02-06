@@ -398,11 +398,14 @@ suspend fun twoStepLockSequence(
 }
 
 interface SequenceStep {
+    val descr: String?
     suspend fun beforeAnySteps()
     suspend fun act(descr: String, aopts: AssertScreenOpts?)
 }
 
 class DumbStep(val block: suspend () -> Unit) : SequenceStep {
+    override val descr = null
+
     suspend override fun beforeAnySteps() {
     }
 
@@ -421,6 +424,8 @@ class PauseAssertResumeStep(
     val lock: TestLock,
     val aid: String) : SequenceStep
 {
+    override val descr = NamesOfThings[lock] ?: "some lock"
+
     suspend override fun beforeAnySteps() {
         lock.reset()
     }
@@ -445,7 +450,8 @@ suspend fun sequence(
     action()
 
     for ((i, step) in steps.withIndex()) {
-        step.act("$descr (${i + 1})", aopts)
+        val stepDescr = step.descr ?: "${i + 1}"
+        step.act("$descr [$stepDescr]", aopts)
     }
 }
 
