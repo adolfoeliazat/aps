@@ -18,8 +18,8 @@ class SignUpPage(val world: World) {
             header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация")))),
             body = oldShitAsToReactElementable(Shitus.diva(json(),
                                                            FormMatumba<SignUpRequest, GenericResponse>(FormSpec(
-                                                               SignUpRequest(),
-                                                               world,
+                                                               req = SignUpRequest(),
+                                                               ui = world,
                                                                primaryButtonTitle = t("Proceed", "Вперед"),
                                                                onSuccessa = {async{
                         world.signedUpOK = true

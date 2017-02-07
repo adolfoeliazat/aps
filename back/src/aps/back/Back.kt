@@ -83,8 +83,8 @@ fun reallyBoot() {
         debugLog.section("Remote procedure factories:", methods.map {it.name}.joinToString())
         for (m in methods) {
             val procName =
-                if (m.name.startsWith("serve")) m.name.substring("serve".length).decapitalize()
-                else m.name
+                if (m.name.startsWith("serve")) m.name.substring("serve".length)
+                else m.name.capitalize()
             remoteProcedureNameToFactory[procName] = m
         }
     }

@@ -83,7 +83,7 @@
               </span>
             </label>
             <div style="position: relative;">
-              <select class="form-control" disabled="">
+              <select class="form-control" data-value="PRACTICE" disabled="">
                 <option value="ABSTRACT">
                   Реферат
                 </option>

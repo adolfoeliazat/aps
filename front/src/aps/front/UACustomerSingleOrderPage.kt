@@ -3,7 +3,6 @@
 package aps.front
 
 import aps.*
-import aps.UACustomerCreateOrderRequest.Mode.*
 import aps.const.text.symbols.nbsp
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
@@ -202,25 +201,34 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                         o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit.ref) {
                             var modal by notNullOnce<ModalOperations>()
 
-                            val form = FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(FormSpec(
-                                UACustomerCreateOrderRequest(world.xlobal, UPDATE)-{o->
-                                    o.documentType.value = order.documentType
-                                    o.documentTitle.value = order.title
-                                    o.numPages.setValue(order.numPages)
-                                    o.numSources.setValue(order.numSources)
-                                    o.documentDetails.value = order.details
-                                    o.phone.value = order.phone
-                                },
-                                world,
-                                buttonLocation = FormSpec.ButtonLocation.RIGHT,
-                                primaryButtonTitle = t("TOTE", "Сохранить"),
-                                cancelButtonTitle = t("TOTE", "Не стоит"),
-                                onSuccessa = {
-                                },
-                                onCancel = {
-                                    modal.close()
-                                }
-                            ))
+                            val form = FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(
+                                procedureName = "UACustomerUpdateOrder",
+                                form = FormSpec(
+                                    req = UACustomerCreateOrderRequest(world.xlobal)-{o->
+                                        o.documentType.value = order.documentType
+                                        o.documentTitle.value = order.title
+                                        o.numPages.setValue(order.numPages)
+                                        o.numSources.setValue(order.numSources)
+                                        o.documentDetails.value = order.details
+                                        o.phone.value = order.phone
+                                    },
+                                    populateFields = {
+                                        it["entityID"] = order.id
+                                    },
+                                    ui = world,
+                                    buttonLocation = FormSpec.ButtonLocation.RIGHT,
+                                    primaryButtonTitle = t("TOTE", "Сохранить"),
+                                    cancelButtonTitle = t("TOTE", "Не стоит"),
+                                    onSuccessa = {
+                                        val path = pageSpecs.uaCustomer.order.path
+                                        val idParam = UACustomerSingleOrderPage.urlQuery.id.name
+                                        world.replaceNavigate("$path.html?$idParam=${order.id}")
+                                        modal.close()
+                                    },
+                                    onCancela = {
+                                        modal.close()
+                                    }
+                                ))
 
                             modal = openModal(OpenModalParams(
                                 width = "80rem",
@@ -229,7 +237,6 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                 body = form.fieldsAndBanner,
                                 footer = form.buttonsAndTicker
                             ))
-                            clog("aaaaaaaaaaaaaaaaaaa")
                         }
                     }
                 }

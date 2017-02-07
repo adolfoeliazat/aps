@@ -291,7 +291,7 @@ class World(val name: String) {
     private fun dynamicFooterContainer() = byid0ForSure("dynamicFooter")
 
     val xlobal = object:Xlobal {
-        override val user = userMaybe
+        override val user get()= userMaybe
     }
 }
 

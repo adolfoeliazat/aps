@@ -89,9 +89,9 @@ interface Xlobal {
     val user: UserRTO?
 }
 
-class UACustomerCreateOrderRequest(xlobal: Xlobal, mode: Mode) : RequestMatumba() {
-    enum class Mode { CREATE, UPDATE }
+class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
+    class UpdateResponse : CommonResponseFieldsImpl()
 
     val documentType = SelectField(this, fieldSpecs.shebang.ua.documentType.ref)
     val documentTitle = TextField(this, fieldSpecs.shebang.documentTitle.ref)
@@ -100,13 +100,13 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal, mode: Mode) : RequestMatumba(
     val documentDetails = TextField(this, fieldSpecs.shebang.documentDetails.ref)
 
     var anonymousCustomerName by notNullOnce<TextField>()
-    init {if (mode == Mode.CREATE && xlobal.user == null)
+    init {if (xlobal.user == null)
         anonymousCustomerName  = TextField(this, fieldSpecs.shebang.anonymousCustomerName.ref)}
 
     val phone = TextField(this, fieldSpecs.shebang.phone.ref)
 
     var anonymousCustomerEmail by notNullOnce<TextField>()
-    init {if (mode == Mode.CREATE && xlobal.user == null)
+    init {if (xlobal.user == null)
         anonymousCustomerEmail = TextField(this, fieldSpecs.shebang.email.ref)}
 }
 

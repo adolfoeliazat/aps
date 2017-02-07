@@ -14,21 +14,6 @@ interface ShitWithRenderFunction {
     val render: () -> ReactElement
 }
 
-class statefulElement(ctor: () -> ShitWithRenderFunction): ToReactElementable {
-    lateinit var legacyUpdate: () -> Unit
-
-    val legacyStatefulElement = Shitus.statefulElement({update ->
-        legacyUpdate = update
-        ctor()
-    })
-
-    override fun toReactElement() = legacyStatefulElement.element
-
-    fun update() {
-        legacyUpdate()
-    }
-}
-
 class Select<E>(
     val key: String? = null,
     attrs: Attrs = Attrs(),
@@ -80,6 +65,11 @@ class Select<E>(
             "id" to elementID,
             "className" to "form-control",
             "value" to value.name,
+
+            // React doesn't add `selected` attribute to `option`s, so we capture value here.
+            // Needed for HTML assertions.
+            "data-value" to value.name,
+
             "disabled" to (volatileDisabled?.let {it()} ?: persistentDisabled),
 
             "onChange" to {asu{

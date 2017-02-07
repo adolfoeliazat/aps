@@ -83,9 +83,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     val ebafPlus = EvaporatingButtonAndForm(
         host = ebafHost, key = fconst.key.button.plus.ref, level = Button.Level.PRIMARY, icon = fa.plus,
         formSpec = FormSpec<CustomerAddUAOrderFileRequest, AddUAOrderFileRequestBase.Response>(
-            CustomerAddUAOrderFileRequest()-{o->
+            req = CustomerAddUAOrderFileRequest()-{o->
                 o.orderID.value = order.id
-            }, world,
+            },
+            ui = world,
             primaryButtonTitle = t("Add", "Добавить"),
             cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle
         ),
@@ -268,14 +269,14 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                             o- renderFileTitle(editing = true)
                                             o- kdiv(className = "col-md-12", marginTop = -1){o->
                                                 o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
-                                                    CustomerEditUAOrderFileRequest()-{o->
+                                                    req = CustomerEditUAOrderFileRequest()-{o->
                                                         o.fieldInstanceKeySuffix = "-${orderFile.id}"
                                                         o.orderFileID.value = orderFile.id
                                                         o.file.content = FileField.Content.ExistingFile(orderFile.file.name, orderFile.file.sizeBytes)
                                                         o.title.value = orderFile.file.title
                                                         o.details.value = orderFile.file.details
                                                     },
-                                                    world,
+                                                    ui = world,
                                                     cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle,
                                                     containerClassName = css.cunt.bodyEditing,
                                                     onCancela = {async{

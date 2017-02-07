@@ -5,30 +5,3 @@
  */
 
 package aps.front
-
-import aps.*
-
-// TODO:vgrechka @revisit
-object __dlog {
-    val requestJSONObject = Dlogger(false, "requestJSONObject")
-    val responseJSONObject = Dlogger(false, "responseJSONObject")
-    val pushNavigate = Dlogger(true, "pushNavigate")
-
-    class Dlogger(val enabled: Boolean, val prefix: String) {
-        operator fun invoke(vararg args: Any?) {
-            if (enabled) {
-                dlog(prefix, *args)
-            }
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-

@@ -74,8 +74,8 @@ open class UAOrder(
     @Enumerated(EnumType.STRING) var state: UAOrderState,
     @Column(length = MAX_STRING) var confirmationSecret: String,
     @Column(length = MAX_STRING) var anonymousCustomerEmail: String?,
-    @Column(length = MAX_STRING) val anonymousCustomerName: String?,
-    @Column(length = MAX_STRING) val phone: String,
+    @Column(length = MAX_STRING) var anonymousCustomerName: String?,
+    @Column(length = MAX_STRING) var phone: String,
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId", nullable = true)

@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import into.kommon.*
-import aps.UACustomerCreateOrderRequest.Mode.*
 
 class UACustomerOrdersPage(val world: World) {
     suspend fun load() {
@@ -23,7 +22,8 @@ class UACustomerOrdersPage(val world: World) {
 
         m.specifyPlus(
             plusFormSpec = FormSpec<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(
-                UACustomerCreateOrderRequest(world.xlobal, CREATE), world,
+                req = UACustomerCreateOrderRequest(world.xlobal),
+                ui = world,
                 primaryButtonTitle = t("Create", "Создать"),
                 cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle),
             onPlusFormSuccessa = {res->

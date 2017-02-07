@@ -35,7 +35,7 @@ class UAWriterProfilePage(val ui: World) {
             pageBody = Shitus.diva(json(),
                 prelude,
                 FormMatumba<UpdateProfileRequest, UpdateProfileRequest.Response>(FormSpec(
-                    UpdateProfileRequest()-{o->
+                    req = UpdateProfileRequest()-{o->
                         o.mutableSignUpFields-{o->
                             o.firstName.value = user.firstName
                             o.lastName.value = user.lastName
@@ -45,7 +45,7 @@ class UAWriterProfilePage(val ui: World) {
                             o.aboutMe.value = user.aboutMe.orEmpty()
                         }
                     },
-                    ui,
+                    ui = ui,
                     primaryButtonTitle = primaryButtonTitle,
                     onSuccessa = {res -> async {
                         ui.setUser(res.newUser)

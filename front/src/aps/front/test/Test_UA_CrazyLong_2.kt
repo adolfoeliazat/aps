@@ -3,6 +3,8 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 
+// TODO:vgrechka Use paths from pageSpecs in URLs
+
 class Test_UA_CrazyLong_2 : FuckingScenario() {
     // http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_2&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=false&handPauses=true
 
@@ -67,7 +69,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Edit params -- cancel
                 // TODO:vgrechka Not doing assertions here?
-                step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "9b32c20b-bcdb-4024-b068-5c6a36231944")
+                step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
                 step({buttonClick(fconst.key.button.cancel.testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
@@ -75,23 +77,20 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Edit params -- save
                 step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
 
-                selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
-                inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "")
-                inputSetValue(fieldSpecs.shebang.numPages.testRef, "")
-                inputSetValue(fieldSpecs.shebang.numSources.testRef, "")
-                inputSetValue(fieldSpecs.shebang.documentDetails.testRef, "")
-                inputSetValue(fieldSpecs.shebang.phone.testRef, "")
-
-                formSubmissionAttempts(
-                    testShit, baseID = "2_beaa5793-9590-415e-8bc9-ca6fec7ead52",
-                    attempts = eachOrCombinationOfLasts(listOf(
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал большие хуи на практике"),
-                        badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 23),
-                        badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 7),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentDetails.testRef, "Это чисто на почитать... " + testdata.details),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 321-45-67")
-                    ))
-                )
+//                step(
+//                    action = {
+                        selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
+                        formSubmissionAttempts(
+                            testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
+                            attempts = eachOrCombinationOfLasts(listOf(
+                                badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал большие хуи на практике"),
+                                badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 23),
+                                badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 7),
+                                badTextFieldValuesThenValid(fieldSpecs.shebang.documentDetails.testRef, "Это чисто на почитать... " + testdata.details),
+                                badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 321-45-67")
+                            ))
+                        )//},
+//                    lock = TestGlobal.modalHiddenLock, aid = "553a58e5-a658-416d-8f3a-32287636ecb4")
             }
         }
     }

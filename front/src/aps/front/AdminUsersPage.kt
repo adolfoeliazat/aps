@@ -45,7 +45,7 @@ class AdminUsersPage(val ui: World) {
                         headingActionItems = listOf(),
                         body = kdiv(marginBottom=15){o->
                             o- FormMatumba<UpdateUserRequest, GenericResponse>(FormSpec(
-                                UpdateUserRequest()-{o->
+                                req = UpdateUserRequest()-{o->
                                     o.id.value = user.id
                                     o.state.value = user.state
                                     o.profileRejectionReason.value = user.profileRejectionReason.orEmpty()
@@ -65,8 +65,7 @@ class AdminUsersPage(val ui: World) {
                                         o.aboutMe.value = user.aboutMe.orEmpty()
                                     }
                                 },
-
-                                ui,
+                                ui = ui,
                                 dontShameButtons = true,
                                 errorBannerStyle = json("marginTop" to 15),
                                 primaryButtonTitle = t("TOTE", "Сохранить"),
@@ -155,7 +154,7 @@ class AdminUsersPage(val ui: World) {
 
         m.specifyPlus(
             plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
-                AdminCreateUserRequest(), ui,
+                req = AdminCreateUserRequest(), ui = ui,
                 primaryButtonTitle = t("TOTE", "Создать засранца"),
                 cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle
             )

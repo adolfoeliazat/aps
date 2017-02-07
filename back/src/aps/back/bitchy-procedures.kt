@@ -125,6 +125,10 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                         p.validate(ctx, req)
                         if (ctx.fieldErrors.isNotEmpty()) bitchExpectedly(t("Please fix errors below", "Пожалуйста, исправьте ошибки ниже"))
 
+                        input["entityID"]?.let {
+                            ctx.fields.entityID = (it as String).toLong()
+                        }
+
                         return p.runShit(ctx, req)
                     }
 

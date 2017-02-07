@@ -20,11 +20,11 @@ class SignInPage(val ui: World) {
                     "Все круто. Теперь у тебя есть аккаунт. Пароль мы отправили письмом.")))}
 
                 val form = FormMatumba<SignInWithPasswordRequest, SignInResponse>(FormSpec(
-                    SignInWithPasswordRequest(),
-                    ui,
+                    req = SignInWithPasswordRequest(),
+                    ui = ui,
                     primaryButtonTitle = t("Sign In", "Войти"),
                     onError = {
-                        spec.req.password.value = ""
+                        form.req.password.value = ""
                     },
 
                     onSuccessa = {res -> async {

@@ -86,7 +86,7 @@ fun <T> Promisoid<T>.orTestTimeout(ms: Int, getPromiseName: (() -> String?)? = n
     realTimeoutSet(ms) {
         val msg = "Sick of waiting for $thePromiseName"
         if (isTestPausedOnAssertion()) {
-            console.warn("--- $msg, but not dying because test is paused on assertion ---")
+            // console.warn("--- $msg, but not dying because test is paused on assertion ---")
         } else {
             shit.reject(Exception(msg))
         }

@@ -106,7 +106,8 @@ external class Promise<out T>(f: (resolve: (T) -> Unit, reject: (Throwable) -> U
 
 fun remoteProcedureNameForRequest(req: Any): String {
     val requestClassName = ctorName(req)
-    return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
+    return requestClassName.substring(0, requestClassName.length - "Request".length)
+//    return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
 }
 
 @Front open class RequestMatumba {
@@ -224,7 +225,7 @@ external interface IKillMeInput {
 fun <Res> callMatumba(req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null, descr: String? = null): Promisoid<Res> =
     callMatumba(remoteProcedureNameForRequest(req), req, token, wideClientKind = wideClientKind, descr = descr)
 
-fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null, descr: String? = null): Promisoid<Res> = async {
+fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?, wideClientKind: WideClientKind? = null, descr: String? = null, populateFields: (Json) -> Unit = {}): Promisoid<Res> = async {
     val wck = wideClientKind ?: WideClientKind.User(Globus.clientKind)
     val payload = js("({})")
     putWideClientKind(payload, wck)
@@ -234,6 +235,7 @@ fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?
     payload.fields = json()
     for (field in req.fields) await(field.populateRemote(payload.fields))
     for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
+    populateFields(payload.fields)
 
     await(callRemoteProcedurePassingJSONObject<Res>(procedureName, payload, wck, descr = descr))
 }

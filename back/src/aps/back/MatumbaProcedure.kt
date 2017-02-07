@@ -37,6 +37,8 @@ class ProcedureContext {
     var hasUser by notNullOnce<Boolean>()
     var user: User? = null
 
+    val fields = ProcedureFields()
+
     val fieldErrors = mutableListOf<FieldError>()
 
     val xlobal = object:Xlobal {
@@ -51,6 +53,10 @@ class ProcedureContext {
     val clientRootPath = ""
 
     val clientRoot get()= "$clientProtocol://$clientDomain$clientPortSuffix$clientRootPath"
+}
+
+class ProcedureFields {
+    var entityID by notNullOnce<Long>()
 }
 
 enum class NeedsUser {

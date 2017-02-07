@@ -22,7 +22,7 @@ class OpenModalParams(
 )
 
 interface ModalOperations {
-    fun close()
+    suspend fun close()
 }
 
 suspend fun openModal(p: OpenModalParams): ModalOperations {
@@ -99,12 +99,11 @@ suspend fun openModal(p: OpenModalParams): ModalOperations {
     jqModal.modal(json())
 
     return object:ModalOperations {
-        override fun close() {
+        override suspend fun close() {
             byid(timesButtonID).click()
+            await(shit.promise)
         }
     }
-
-//    await(shit.promise)
 }
 
 
