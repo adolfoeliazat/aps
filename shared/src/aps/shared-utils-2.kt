@@ -1,5 +1,6 @@
 package aps
 
+import aps.front.*
 import into.kommon.*
 
 fun escapeHTML(s: String) =
@@ -30,14 +31,21 @@ fun qualify(name: String, path: String?) = stringBuild{s->
 }
 
 fun Any.qualifyMe(path: String?) = qualify(bang(this::class.simpleName), path)
-fun Any.qualifyMe(group: NamedGroup?) = qualifyMe(group?.qualifiedName)
+fun <Item : NamedItem> Any.qualifyMe(group: NamedGroup<Item>?) = qualifyMe(group?.qualifiedName)
 
-abstract class NamedGroup(val parent: NamedGroup?) {
-    val name get()= bang(this::class.simpleName)
-    val qualifiedName: String get()= qualify(name, parent?.qualifiedName)
+interface NamedItem {
+    val name: String
 }
 
-abstract class Refs(val group: NamedGroup?) {
+abstract class NamedGroup<Item : NamedItem>(val parent: NamedGroup<Item>?) {
+    val name get()= bang(this::class.simpleName)
+    val qualifiedName: String get()= qualify(name, parent?.qualifiedName)
+    val items = mutableListOf<Item>()
+
+    fun itemNamed(name: String?) = items.find {it.name == name}
+}
+
+abstract class Refs<Item : NamedItem>(val group: NamedGroup<Item>?) {
     val name = qualifyMe(group)
 }
 

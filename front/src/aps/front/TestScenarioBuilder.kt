@@ -134,28 +134,29 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     }
 
     fun halt() {
-        val step = TestInstruction.Step.HaltStep("Fucking halt")
-        instructions.add(step)
-        act {
-            throw FatException("Fucking halted", visualPayload = kdiv{o->
-                fun makeTab(title: String, paste: String) = TabSpec(
-                    id = title,
-                    title = title,
-                    content = kdiv{o->
-                        o- Input(json("initialValue" to paste,
-                                      "kind" to "textarea",
-                                      "rows" to 10,
-                                      "style" to json("width" to "100%",
-                                                      "height" to "100%"),
-                                      "untested" to true))
-                    })
-
-                o- Tabs2(initialActiveID = "Navbar Paste", tabs = listOf(
-                    makeTab("Navbar Paste", "o.assertNavbarHTML(\"\"\"${takeHTMLForAssertion(SELECTOR_NAVBAR)}\"\"\")"),
-                    makeTab("Root Paste", "o.assertRootHTML(\"\"\"${takeHTMLForAssertion(SELECTOR_ROOT)}\"\"\")")
-                ))
-            })
-        }
+        imf("Reimplement TestScenarioBuilder.halt")
+//        val step = TestInstruction.Step.HaltStep("Fucking halt")
+//        instructions.add(step)
+//        act {
+//            throw FatException("Fucking halted", visualPayload = kdiv{o->
+//                fun makeTab(title: String, paste: String) = TabSpec(
+//                    key = title,
+//                    title = title,
+//                    content = kdiv{o->
+//                        o- Input(json("initialValue" to paste,
+//                                      "kind" to "textarea",
+//                                      "rows" to 10,
+//                                      "style" to json("width" to "100%",
+//                                                      "height" to "100%"),
+//                                      "untested" to true))
+//                    })
+//
+//                o- Tabs2(initialActiveID = "Navbar Paste", tabs = listOf(
+//                    makeTab("Navbar Paste", "o.assertNavbarHTML(\"\"\"${takeHTMLForAssertion(SELECTOR_NAVBAR)}\"\"\")"),
+//                    makeTab("Root Paste", "o.assertRootHTML(\"\"\"${takeHTMLForAssertion(SELECTOR_ROOT)}\"\"\")")
+//                ))
+//            })
+//        }
     }
 
     fun assertHTML(under: CSSSelector, expected: String, transformLine: ((String) -> String)? = null) {

@@ -4,12 +4,12 @@ import aps.*
 import into.kommon.*
 import kotlin.js.json
 
-open class ButtonKey(val name: String)
+open class ButtonKey(override val name: String) : NamedItem
 
 data class SubscriptButtonKey(val key: ButtonKey, val subscript: Any?)
     : ButtonKey(key.name + "-$subscript")
 
-abstract class ButtonKeyRefs(val group: NamedGroup?) {
+abstract class ButtonKeyRefs(val group: NamedGroup<ButtonKey>) {
     protected val key = ButtonKey(name = qualifyMe(group))
 }
 

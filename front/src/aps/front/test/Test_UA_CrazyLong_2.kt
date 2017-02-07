@@ -87,6 +87,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     ))
                 )
             }
+
+            run { // Edit params -- save 2
+                step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
+                selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
+                submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
+            }
         }
     }
 }

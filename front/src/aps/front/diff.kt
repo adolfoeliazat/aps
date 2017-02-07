@@ -24,7 +24,7 @@ fun renderDiff(
     val noisy = false
 
     val tabSpecs = mutableListOf<TabSpec>()
-    tabSpecs.add(TabSpec(id = "diff",
+    tabSpecs.add(TabSpec(key = fconst.tab.shebang.diff.ref,
                          title = "Diff",
                          content = kdiv(whiteSpace = "pre") {o ->
                              val placeholders = mutableListOf<Placeholder>()
@@ -93,7 +93,7 @@ fun renderDiff(
                          }))
 
     if (actualPaste != null) {
-        tabSpecs.add(TabSpec(id = "actualPaste",
+        tabSpecs.add(TabSpec(key = fconst.tab.shebang.actualPaste.ref,
                              title = "Actual Paste",
                              content = kdiv {o ->
                                  o - Input(json("initialValue" to actualPaste,
@@ -105,7 +105,7 @@ fun renderDiff(
                              }))
     }
 
-    val tabs = Tabs2(initialActiveID = "diff", tabs = tabSpecs)
+    val tabs = Tabs2(initialActiveKey = fconst.tab.shebang.diff.ref, tabs = tabSpecs)
 
 
     return kdiv(position = "relative"){o->

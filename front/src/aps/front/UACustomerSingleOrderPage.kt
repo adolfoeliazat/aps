@@ -6,7 +6,6 @@ import aps.*
 import aps.const.text.symbols.nbsp
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
-import kotlin.properties.Delegates.notNull
 
 interface CustomerSingleUAOrderPageTab {
     val tabSpec: TabSpec
@@ -23,7 +22,7 @@ class UACustomerSingleOrderPage(val world: World) {
 
     fun load(): Promisoid<Unit> = async {
         orderID = urlQuery.id.get(world) ?: return@async world.setShittyParamsPage()
-        val tabID = urlQuery.tab.get(world) ?: "params"
+        val tabKey = fconst.tab.order.itemNamed(urlQuery.tab.get(world)) ?: fconst.tab.order.params.ref
 
         val res = await(send(world.token, LoadUAOrderRequest()-{o->
             o.id.value = orderID
@@ -38,7 +37,7 @@ class UACustomerSingleOrderPage(val world: World) {
             UACustomerSingleOrderPageFilesTab(this, world, order)/*,
             MessagesTab(order)*/
         )
-        val tab = tabs.find {it.tabSpec.id == tabID} ?: tabs.first()
+        val tab = tabs.find {it.tabSpec.key == tabKey} ?: tabs.first()
 
         val error = await(tab.load())
         error?.let {return@async world.setShittyResponsePage(it)}
@@ -72,7 +71,7 @@ class UACustomerSingleOrderPage(val world: World) {
                 }
 
                 o- Tabs2(
-                    initialActiveID = tab.tabSpec.id,
+                    initialActiveKey = tab.tabSpec.key,
                     switchOnTabClick = false,
                     tabDomIdPrefix = "tab-",
                     onTabClicka = {clickOnTab(it)},
@@ -82,10 +81,10 @@ class UACustomerSingleOrderPage(val world: World) {
         ))
     }
 
-    suspend fun clickOnTab(id: String) {
-        await(effects).blinkOn(byid("tab-$id"), BlinkOpts(widthCalcSuffix = "- 0.15em"))
+    suspend fun clickOnTab(key: TabKey) {
+        await(effects).blinkOn(byid("tab-${key.name}"), BlinkOpts(widthCalcSuffix = "- 0.15em"))
         try {
-            world.pushNavigate("order.html?id=$orderID&tab=$id")
+            world.pushNavigate("order.html?id=$orderID&tab=${key.name}")
         } finally {
             await(effects).blinkOffFadingOut()
         }
@@ -191,7 +190,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
     }
 
     override val tabSpec = TabSpec(
-        id = "params",
+        key = fconst.tab.order.params.ref,
         title = t("TOTE", "Параметры"),
         content = place,
         stripContent = kdiv{o->
@@ -258,7 +257,7 @@ private class MessagesTab(val order: UAOrderRTO) : CustomerSingleUAOrderPageTab 
         o- "fucking messages"
     }
 
-    override val tabSpec = TabSpec("messages", t("TOTE", "Сообщения"), content)
+    override val tabSpec = TabSpec(fconst.tab.order.messages.ref, t("TOTE", "Сообщения"), content)
 }
 
 

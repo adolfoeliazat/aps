@@ -18,7 +18,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     var chunksLoaded = 0
     var urlQuery by notNull<FilesTabURLQuery>()
 
-    override val tabSpec = TabSpec("files", t("Files", "Файлы"),
+    override val tabSpec = TabSpec(fconst.tab.order.files.ref, t("Files", "Файлы"),
                                    ToReactElementable.from{content},
                                    ToReactElementable.from{stripContent})
 

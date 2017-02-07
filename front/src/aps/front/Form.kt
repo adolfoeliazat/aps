@@ -273,7 +273,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val form: FormSpec<Req, Res>, val pr
 
 suspend fun submitFormSequence(
     shit: TestShit,
-    descr: String,
+    descr: String = "Describe me",
     action: (suspend () -> Unit)? = null,
     aid: String,
     buttonKey: TestRef<ButtonKey>? = null,

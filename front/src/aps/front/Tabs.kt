@@ -3,8 +3,15 @@ package aps.front
 import aps.*
 import into.kommon.*
 
+class TabKey(override val name: String) : NamedItem
+
+abstract class TabKeyRefs(val group: NamedGroup<TabKey>) {
+    protected val key = TabKey(name = qualifyMe(group))
+    init {group.items += @Suppress("LeakingThis") key}
+}
+
 class TabSpec(
-    val id: String,
+    val key: TabKey,
     val title: String,
     val content: ToReactElementable,
     val stripContent: ToReactElementable = kdiv()
@@ -12,9 +19,9 @@ class TabSpec(
 
 class Tabs2(
     val tabs: List<TabSpec>,
-    initialActiveID: String? = null,
+    initialActiveKey: TabKey? = null,
     val switchOnTabClick: Boolean = true,
-    val onTabClicka: suspend (id: String) -> Unit = {},
+    val onTabClicka: suspend (id: TabKey) -> Unit = {},
     val tabDomIdPrefix: String? = null,
     val key: String? = "tabs"
 ): Control2(Attrs()) {
@@ -27,9 +34,9 @@ class Tabs2(
         }
     }
 
-    private var activeID = initialActiveID ?: tabs[0].id
+    private var activeID = initialActiveKey ?: tabs[0].key
 
-    suspend fun clickOnTaba(id: String) {
+    suspend fun clickOnTaba(id: TabKey) {
         if (switchOnTabClick) {
             activeID = id
             update()
@@ -38,16 +45,16 @@ class Tabs2(
     }
 
     override fun render() = kdiv{o->
-        val activeTab = tabs.first {it.id == activeID}
+        val activeTab = tabs.first {it.key == activeID}
 
         o- kdiv(position="relative"){o->
             o- kul(className="nav nav-tabs"){o->
                 for (tab in tabs) {
-                    o- kli(id = tabDomIdPrefix?.let {it + tab.id},
-                           className = if (tab.id == activeID) "active" else ""){o->
+                    o- kli(id = tabDomIdPrefix?.let {it + tab.key.name},
+                           className = if (tab.key == activeID) "active" else ""){o->
                         o- ka(href="#", onClick = {e->
                             preventAndStop(e)
-                            asu {clickOnTaba(tab.id)}
+                            asu {clickOnTaba(tab.key)}
                         }){o->
                             o- tab.title
                         }
@@ -79,12 +86,12 @@ class Tabs2(
 
 }
 
-fun TestScenarioBuilder.tabsClickOnTab(key: String, id: String) {
-    imf("reimplement tabsClickOnTab")
-//    acta("Choosing tab `$id`") {
-//        Tabs2.instance(key).clickOnTaba(id)
-//    }
-}
+//fun TestScenarioBuilder.tabsClickOnTab(key: String, id: String) {
+//    imf("reimplement tabsClickOnTab")
+////    acta("Choosing tab `$id`") {
+////        Tabs2.instance(key).clickOnTaba(id)
+////    }
+//}
 
 
 

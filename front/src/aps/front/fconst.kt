@@ -6,6 +6,19 @@ object fconst {
     val defaultScrollBursts = 8
     val scrollbarWidth = 17
 
+    object tab                               : NamedGroup<TabKey>(null) {
+        object order                         : NamedGroup<TabKey>(this) {
+            object params                    : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object files                     : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object messages                  : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+        }
+
+        object shebang                       : NamedGroup<TabKey>(this) {
+            object diff                      : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+            object actualPaste               : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+        }
+    }
+
     object key {
         object file : KeyDef() {val ref = name; val testRef = name}
         object search : KeyDef() {val ref = name; val testRef = name}
@@ -17,7 +30,8 @@ object fconst {
             object signUp : KeyDef() {val decl = name; val testRef = name}
         }
 
-        object button                            : NamedGroup(null) {
+        // TODO:vgrechka Move out of `key`
+        object button                            : NamedGroup<ButtonKey>(null) {
             object sendForApproval               : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
             object edit                          : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
             object primary                       : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
@@ -27,12 +41,12 @@ object fconst {
             object refreshPage                   : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
             object loadMore                      : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
 
-            object modal                         : NamedGroup(this) {
+            object modal                         : NamedGroup<ButtonKey>(this) {
                 object ok                        : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
                 object cancel                    : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
             }
 
-            object assertionBanner               : NamedGroup(this) {
+            object assertionBanner               : NamedGroup<ButtonKey>(this) {
                 object vdiff                     : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
                 object accept                    : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
                 object play                      : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
