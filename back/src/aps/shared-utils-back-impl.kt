@@ -95,6 +95,21 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     StringHiddenField(thisRef, property.name)
 }
 
+@Back fun longHiddenField() = eagerEx<RequestMatumba, LongHiddenField> {thisRef, property ->
+    LongHiddenField(thisRef, property.name)
+}
+
+@Back class LongHiddenField(
+    container: RequestMatumba,
+    name: String
+) : FormFieldBack(container, name) {
+    var value by notNullOnce<Long>()
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        value = (input[name] as String).toLong()
+    }
+}
+
 @Back class MaybeStringHiddenField(
     container: RequestMatumba,
     name: String,

@@ -12,6 +12,7 @@ import aps.front.*
 import into.kommon.*
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.properties.Delegates.notNull
 
 //fun bitch(msg: String = "Just bitching..."): Nothing = throw JSException(msg)
 //fun imf(what: String = "me"): Nothing = throw JSException("Implement $what, please, fuck you")
@@ -153,6 +154,10 @@ annotation class Front
     return HiddenField(container, name, possiblyUnspecified=possiblyUnspecified)
 }
 
+@Front fun stringHiddenField() = eagerEx<RequestMatumba, HiddenField<String>> {thisRef, property ->
+    StringHiddenField(thisRef, property.name)
+}
+
 @Front fun StringHiddenField(
     container: RequestMatumba,
     name: String,
@@ -161,8 +166,16 @@ annotation class Front
     return HiddenField(container, name, possiblyUnspecified=possiblyUnspecified)
 }
 
-@Front fun stringHiddenField() = eagerEx<RequestMatumba, HiddenField<String>> {thisRef, property ->
-    StringHiddenField(thisRef, property.name)
+@Front fun longHiddenField() = eagerEx<RequestMatumba, LongHiddenField> {thisRef, property ->
+    LongHiddenField(thisRef, property.name)
+}
+
+@Front class LongHiddenField(container: RequestMatumba, name: String): HiddenFormFieldFront(container, name) {
+    var value by notNull<Long>()
+
+    override fun populateRemote(json: Json) = async {
+        json[name] = value.toString()
+    }
 }
 
 @Front fun MaybeStringHiddenField(
@@ -208,6 +221,7 @@ annotation class Front
         json["$name-specified"] = specified
     }
 }
+
 
 
 external interface IKillMeInput {

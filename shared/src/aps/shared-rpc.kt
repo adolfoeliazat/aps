@@ -116,6 +116,7 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
 
 class UACustomerUpdateOrderRequest : RequestMatumba() {
     class Response : CommonResponseFieldsImpl()
+    val entityID by longHiddenField()
     val fields1 = UACustomer_OrderRequestFields1(this)
     val fields2 = UACustomer_OrderRequestFields2(this)
 }

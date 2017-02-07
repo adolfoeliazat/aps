@@ -204,6 +204,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                             val form = FormMatumba<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(
                                 form = FormSpec(
                                     req = UACustomerUpdateOrderRequest()-{o->
+                                        o.entityID.value = order.id.toLong()
                                         o.fields1-{o->
                                             o.documentType.value = order.documentType
                                             o.documentTitle.value = order.title
@@ -214,9 +215,6 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                         o.fields2-{o->
                                             o.phone.value = order.phone
                                         }
-                                    },
-                                    populateFields = {
-                                        it["entityID"] = order.id
                                     },
                                     ui = world,
                                     buttonLocation = FormSpec.ButtonLocation.RIGHT,
