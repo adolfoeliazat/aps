@@ -23,15 +23,17 @@ import java.util.*
                 val confirmationSecret = TestServerFiddling.nextGeneratedConfirmationSecret.getAndReset()
                     ?: UUID.randomUUID().toString()
 
+                val f1 = req.fields1
+                val f2 = req.fields2
                 val order = repo.save(UAOrder(
-                    documentType = req.documentType.value,
-                    title = req.documentTitle.value,
-                    numPages = req.numPages.value,
-                    numSources = req.numSources.value,
-                    details = req.documentDetails.value,
+                    documentType = f1.documentType.value,
+                    title = f1.documentTitle.value,
+                    numPages = f1.numPages.value,
+                    numSources = f1.numSources.value,
+                    details = f1.documentDetails.value,
                     state = UAOrderState.WAITING_EMAIL_CONFIRMATION,
                     confirmationSecret = confirmationSecret,
-                    phone = req.phone.value,
+                    phone = f2.phone.value,
                     customer = user,
                     anonymousCustomerEmail = when {
                         user == null -> req.anonymousCustomerEmail.value
@@ -98,19 +100,21 @@ import java.util.*
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,
-            makeRequest = {UACustomerCreateOrderRequest(it.xlobal)},
+            makeRequest = {UACustomerUpdateOrderRequest()},
             needsUser = NeedsUser.YES,
-            runShit = fun(ctx, req: UACustomerCreateOrderRequest): UACustomerCreateOrderRequest.UpdateResponse {
+            runShit = fun(ctx, req: UACustomerUpdateOrderRequest): UACustomerUpdateOrderRequest.Response {
                 val order = repo.findOne(ctx.fields.entityID)-{o->
-                    o.documentType = req.documentType.value
-                    o.title = req.documentTitle.value
-                    o.numPages = req.numPages.value
-                    o.numSources = req.numSources.value
-                    o.details = req.documentDetails.value
-                    o.phone = req.phone.value
+                    val f1 = req.fields1
+                    val f2 = req.fields2
+                    o.documentType = f1.documentType.value
+                    o.title = f1.documentTitle.value
+                    o.numPages = f1.numPages.value
+                    o.numSources = f1.numSources.value
+                    o.details = f1.documentDetails.value
+                    o.phone = f2.phone.value
                 }
                 repo.save(order)
-                return UACustomerCreateOrderRequest.UpdateResponse()
+                return UACustomerUpdateOrderRequest.Response()
             }
         ))
     }

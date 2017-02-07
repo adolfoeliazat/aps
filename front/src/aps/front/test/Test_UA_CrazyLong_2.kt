@@ -47,7 +47,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 debugMailboxCheck("b9196719-9e01-45f3-987c-cb8259c7f9e6")
             }
 
-            // TODO:vgrechka Try to access order page before it's confirmed
+            // TODO:vgrechka Try to access order page before it's confirmed (should say "fuck you" to user)
 
             run { // Wrong confirmation secret
                 val ivo2 = Morda("ivo2",
@@ -68,7 +68,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- cancel
-                // TODO:vgrechka Not doing assertions here?
                 step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
                 step({buttonClick(fconst.key.button.cancel.testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
@@ -76,21 +75,17 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Edit params -- save
                 step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
-
-//                step(
-//                    action = {
-                        selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
-                        formSubmissionAttempts(
-                            testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
-                            attempts = eachOrCombinationOfLasts(listOf(
-                                badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал большие хуи на практике"),
-                                badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 23),
-                                badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 7),
-                                badTextFieldValuesThenValid(fieldSpecs.shebang.documentDetails.testRef, "Это чисто на почитать... " + testdata.details),
-                                badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 321-45-67")
-                            ))
-                        )//},
-//                    lock = TestGlobal.modalHiddenLock, aid = "553a58e5-a658-416d-8f3a-32287636ecb4")
+                selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
+                formSubmissionAttempts(
+                    testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
+                    attempts = eachOrCombinationOfLasts(listOf(
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал большие хуи на практике"),
+                        badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 23),
+                        badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 7),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentDetails.testRef, "Это чисто на почитать... " + testdata.details),
+                        badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 321-45-67")
+                    ))
+                )
             }
         }
     }
@@ -104,25 +99,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
 
 
-
-
-
-
-
-
-//val key = fconst.key.button.edit_testRef
-//val descr: String? = null
-//val aid = "aa754a01-a99e-49d9-b982-db9ff87abf41"
-//sequence(
-//action = {
-//    buttonClick(key)
-//},
-//descr = descr ?: "Click button $key",
-//steps = listOf(
-//PauseAssertResume(TestGlobal.openEditFormHalfwayLock, "$aid--1"),
-//PauseAssertResume(TestGlobal.openEditFormDoneLock, "$aid--2")
-//)
-//)
 
 
 

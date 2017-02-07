@@ -201,16 +201,19 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                         o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit.ref) {
                             var modal by notNullOnce<ModalOperations>()
 
-                            val form = FormMatumba<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(
-                                procedureName = "UACustomerUpdateOrder",
+                            val form = FormMatumba<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(
                                 form = FormSpec(
-                                    req = UACustomerCreateOrderRequest(world.xlobal)-{o->
-                                        o.documentType.value = order.documentType
-                                        o.documentTitle.value = order.title
-                                        o.numPages.setValue(order.numPages)
-                                        o.numSources.setValue(order.numSources)
-                                        o.documentDetails.value = order.details
-                                        o.phone.value = order.phone
+                                    req = UACustomerUpdateOrderRequest()-{o->
+                                        o.fields1-{o->
+                                            o.documentType.value = order.documentType
+                                            o.documentTitle.value = order.title
+                                            o.numPages.setValue(order.numPages)
+                                            o.numSources.setValue(order.numSources)
+                                            o.documentDetails.value = order.details
+                                        }
+                                        o.fields2-{o->
+                                            o.phone.value = order.phone
+                                        }
                                     },
                                     populateFields = {
                                         it["entityID"] = order.id
