@@ -7,7 +7,7 @@ class TabKey(override val name: String) : NamedItem
 
 abstract class TabKeyRefs(val group: NamedGroup<TabKey>) {
     protected val key = TabKey(name = qualifyMe(group))
-    init {group.items += @Suppress("LeakingThis") key}
+    init {group.items += key}
 }
 
 class TabSpec(
@@ -17,20 +17,22 @@ class TabSpec(
     val stripContent: ToReactElementable = kdiv()
 )
 
+interface TabFiddling {
+
+}
+
 class Tabs2(
     val tabs: List<TabSpec>,
     initialActiveKey: TabKey? = null,
     val switchOnTabClick: Boolean = true,
-    val onTabClicka: suspend (id: TabKey) -> Unit = {},
-    val tabDomIdPrefix: String? = null,
-    val key: String? = "tabs"
+    val onTabClicka: suspend (id: TabKey) -> Unit = {}
 ): Control2(Attrs()) {
 
     companion object {
-        val instances = mutableMapOf<String, Tabs2>()
+        val instances = mutableMapOf<TabKey, TabFiddling>()
 
-        fun instance(key: String): Tabs2 {
-            return instances[key] ?: bitch("No Tabs2 keyed `$key`")
+        fun instance(key: TabKey): TabFiddling {
+            return instances[key] ?: bitch("No tab keyed `${key.name}`")
         }
     }
 
@@ -50,13 +52,26 @@ class Tabs2(
         o- kdiv(position="relative"){o->
             o- kul(className="nav nav-tabs"){o->
                 for (tab in tabs) {
-                    o- kli(id = tabDomIdPrefix?.let {it + tab.key.name},
+                    o- kli(id = tab.key.name,
                            className = if (tab.key == activeID) "active" else ""){o->
-                        o- ka(href="#", onClick = {e->
-                            preventAndStop(e)
-                            asu {clickOnTaba(tab.key)}
-                        }){o->
-                            o- tab.title
+                        o- object:Control2() {
+                            override fun render() =
+                                ka(href="#",
+                                   onClick = {e->
+                                       preventAndStop(e)
+                                       asu {clickOnTaba(tab.key)}})
+                                {o->
+                                    o- tab.title
+                                }
+
+                            override fun componentDidMount() {
+                                instances[tab.key] = object:TabFiddling {
+                                }
+                            }
+
+                            override fun componentWillUnmount() {
+                                instances.remove(tab.key)
+                            }
                         }
                     }
                 }
@@ -72,17 +87,6 @@ class Tabs2(
         }
     }
 
-    override fun componentDidMount() {
-        if (key != null) {
-            instances[key] = this
-        }
-    }
-
-    override fun componentWillUnmount() {
-        if (key != null) {
-            instances.remove(key)
-        }
-    }
 
 }
 

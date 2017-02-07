@@ -22,7 +22,8 @@ class UACustomerSingleOrderPage(val world: World) {
 
     fun load(): Promisoid<Unit> = async {
         orderID = urlQuery.id.get(world) ?: return@async world.setShittyParamsPage()
-        val tabKey = fconst.tab.order.itemNamed(urlQuery.tab.get(world)) ?: fconst.tab.order.params.ref
+        val defaultTab = fconst.tab.order.params.ref
+        val tabKey = fconst.tab.order.itemSimplyNamed(urlQuery.tab.get(world)) ?: defaultTab
 
         val res = await(send(world.token, LoadUAOrderRequest()-{o->
             o.id.value = orderID
@@ -73,7 +74,6 @@ class UACustomerSingleOrderPage(val world: World) {
                 o- Tabs2(
                     initialActiveKey = tab.tabSpec.key,
                     switchOnTabClick = false,
-                    tabDomIdPrefix = "tab-",
                     onTabClicka = {clickOnTab(it)},
                     tabs = tabs.map {it.tabSpec}
                 )
@@ -82,9 +82,9 @@ class UACustomerSingleOrderPage(val world: World) {
     }
 
     suspend fun clickOnTab(key: TabKey) {
-        await(effects).blinkOn(byid("tab-${key.name}"), BlinkOpts(widthCalcSuffix = "- 0.15em"))
+        await(effects).blinkOn(byid(key.name), BlinkOpts(widthCalcSuffix = "- 0.15em"))
         try {
-            world.pushNavigate("order.html?id=$orderID&tab=${key.name}")
+            world.pushNavigate("order.html?id=$orderID&tab=${simpleName(key.name)}")
         } finally {
             await(effects).blinkOffFadingOut()
         }

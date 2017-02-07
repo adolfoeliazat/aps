@@ -42,13 +42,17 @@ abstract class NamedGroup<Item : NamedItem>(val parent: NamedGroup<Item>?) {
     val qualifiedName: String get()= qualify(name, parent?.qualifiedName)
     val items = mutableListOf<Item>()
 
-    fun itemNamed(name: String?) = items.find {it.name == name}
+    fun itemSimplyNamed(simpleName: String?) = items.find {simpleName(it.name) == simpleName}
 }
 
 abstract class Refs<Item : NamedItem>(val group: NamedGroup<Item>?) {
     val name = qualifyMe(group)
 }
 
+fun simpleName(qualified: String): String {
+    val from = qualified.lastIndexOfOrNull(".") ?: 0
+    return qualified.substring(from)
+}
 
 
 
