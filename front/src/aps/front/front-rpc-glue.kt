@@ -7,7 +7,6 @@ fun send(req: RecreateTestDatabaseSchemaRequest): Promisoid<GenericResponse> = c
 fun send(req: ResetTestDatabaseRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 fun send(req: ImposeNextRequestErrorRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 fun send(token: String, req: LoadUAOrderRequest): Promisoid<ZimbabweResponse<LoadUAOrderRequest.Response>> = callZimbabwe(req, token)
-fun sendCustomerGetUAOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): Promisoid<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = callZimbabwe("customerGetUAOrderFiles", req, token)
 fun send(token: String?, req: SignUpRequest): Promisoid<FormResponse2<SignUpRequest.Response>> = _send(token, req)
 fun sendSafe(token: String?, req: SignUpRequest): Promisoid<FormResponse2<GenericResponse>> = _sendSafe(token, req)
 fun send(token: String?, req: SignInWithPasswordRequest): Promisoid<FormResponse2<SignInResponse>> = _send(token, req)
@@ -37,6 +36,7 @@ suspend fun send(req: ImposeNextGeneratedConfirmationSecretRequest): Promisoid<I
 suspend fun send(req: ImposeNextRequestTimestampRequest): Promisoid<ImposeNextRequestTimestampRequest.Response> = callDangerousMatumba(req)
 suspend fun send(req: ConfirmOrderRequest): FormResponse2<ConfirmOrderRequest.Response> = _send2(null, req)
 suspend fun send(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequest.Response = await(sendDangerousJSONProcedure(req))
+suspend fun sendUACustomerGetOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): ZimbabweResponse<ItemsResponse<UAOrderFileRTO>> = await(callZimbabwe("UACustomerGetOrderFiles", req, token))
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->

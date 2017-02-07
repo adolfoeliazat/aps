@@ -62,19 +62,18 @@ object TestGlobal {
     val openEditFormDoneLock by notNullNamed(TestLock())
     val modalShownLock by notNullNamed(TestLock())
     val modalHiddenLock by notNullNamed(TestLock())
-
     val lastTest get() = lastTestMaybe!!
     val lastTestOpts get() = lastTestOptsMaybe!!
-
     val lastTestHrefMaybe
         get() = lastTestMaybe?.let {
             testNameToURL(it.name, lastTestOpts)
         }
-
     val lastTestHref get() = lastTestHrefMaybe!!
     var lastTestSuite: TestSuite? = null
     var pretendAllAssertionsNotHardened = false
     var defaultAssertScreenOpts = AssertScreenOpts()
+    val switchTabHalfwayLock by notNullNamed(TestLock())
+    val switchTabDoneLock by notNullNamed(TestLock())
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

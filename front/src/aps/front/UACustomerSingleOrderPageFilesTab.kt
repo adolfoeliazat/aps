@@ -54,13 +54,13 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     }
 
     private fun requestChunk(fromID: String?): Promisoid<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
-        val res = await(sendCustomerGetUAOrderFiles(world.token, ItemsRequest(CustomerFileFilter.values())-{o->
+        val res = sendUACustomerGetOrderFiles(world.token, ItemsRequest(CustomerFileFilter.values())-{o->
             o.entityID.value = order.id
             o.filter.value = urlQuery.filter
             o.ordering.value = urlQuery.ordering
             o.searchString.value = urlQuery.search
             o.fromID.value = fromID
-        }))
+        })
         ++chunksLoaded
         res
     }

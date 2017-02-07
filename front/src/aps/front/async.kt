@@ -144,6 +144,10 @@ suspend fun sleep(ms: Int) {
     await(delay(ms))
 }
 
+suspend fun sleepTillEndOfTime() {
+    sleep(Int.MAX_VALUE)
+}
+
 class TwoStepTestLock(
     val testPause1Timeout: Int = 5000,
     val testPause2Timeout: Int = 5000,

@@ -93,6 +93,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
                 submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
+
+            run { // Add some files
+                sequence({tabClick(fconst.tab.order.files.testRef)},
+                         steps = listOf(
+                             PauseAssertResumeStep(TestGlobal.switchTabHalfwayLock, "f727a9ea-c520-4613-97e0-c154f6506d3a"),
+                             PauseAssertResumeStep(TestGlobal.switchTabDoneLock, "f621673e-7f84-4a53-969f-8844614c4f30")))
+            }
         }
     }
 }

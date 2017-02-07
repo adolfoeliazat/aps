@@ -83,10 +83,12 @@ class UACustomerSingleOrderPage(val world: World) {
 
     suspend fun clickOnTab(key: TabKey) {
         await(effects).blinkOn(byid(key.name), BlinkOpts(widthCalcSuffix = "- 0.15em"))
+        TestGlobal.switchTabHalfwayLock.sutPause()
         try {
             world.pushNavigate("order.html?id=$orderID&tab=${simpleName(key.name)}")
         } finally {
             await(effects).blinkOffFadingOut()
+            TestGlobal.switchTabDoneLock.sutPause()
         }
     }
 

@@ -18,7 +18,7 @@ class TabSpec(
 )
 
 interface TabFiddling {
-
+    fun click()
 }
 
 class Tabs2(
@@ -66,6 +66,9 @@ class Tabs2(
 
                             override fun componentDidMount() {
                                 instances[tab.key] = object:TabFiddling {
+                                    override fun click() {
+                                        async {clickOnTaba(tab.key)}
+                                    }
                                 }
                             }
 
@@ -90,12 +93,9 @@ class Tabs2(
 
 }
 
-//fun TestScenarioBuilder.tabsClickOnTab(key: String, id: String) {
-//    imf("reimplement tabsClickOnTab")
-////    acta("Choosing tab `$id`") {
-////        Tabs2.instance(key).clickOnTaba(id)
-////    }
-//}
+suspend fun tabClick(ref: TestRef<TabKey>) {
+    Tabs2.instance(ref.it).click()
+}
 
 
 
