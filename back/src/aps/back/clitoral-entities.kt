@@ -121,6 +121,21 @@ interface UserTokenRepository : CrudRepository<UserToken, Long> {
     fun findByToken(x: String): UserToken?
 }
 
+@Entity @Table(name = "ua_order_files",
+               indexes = arrayOf(
+               ))
+open class UAOrderFile(
+    @Column(length = MAX_STRING) var name: String,
+    @Column(length = MAX_STRING) var title: String,
+    @Column(length = MAX_STRING) var mime: String,
+    @Column(length = MAX_STRING) var details: String,
+    @Column(length = MAX_STRING) var adminNotes: String,
+    @Column(length = MAX_STRING) var sha1: String,
+    var sizeBytes: Int
+) : ClitoralEntity()
+
+interface UAOrderFileRepository : CrudRepository<UAOrderFile, Long> {
+}
 
 
 
