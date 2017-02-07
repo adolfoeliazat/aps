@@ -143,7 +143,9 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     o- searchInput
                     o- ki(className = "${fa.search}", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
                 }
-                o- filterSelect
+                if (order.state != UAOrderState.CUSTOMER_DRAFT) {
+                    o- filterSelect
+                }
                 o- orderingSelect
 
                 val refreshButtonID = puid()

@@ -1,6 +1,6 @@
 -------------------- URL --------------------
 
-[uac]/order.html?id=1&tab=.files
+[uac]/order.html?id=1&tab=files
 
 -------------------- NAVBAR --------------------
 
@@ -105,86 +105,61 @@
       <div>
         <div style="position: relative;">
           <ul class="nav nav-tabs">
-            <li id="tab.order.params" class="active">
+            <li id="tab.order.params" class="">
               <a href="#">
                 Параметры
               </a>
             </li>
-            <li id="tab.order.files" class="">
+            <li id="tab.order.files" class="active">
               <a href="#">
                 Файлы
               </a>
             </li>
           </ul>
           <div style="top: 0px; right: 0px; position: absolute;">
-            <div>
-              <button class="btn btn-default ">
-                <i class="fa fa-pencil">
-                </i>
-              </button>
+            <div style="display: flex;">
+              <div style="margin-left: 0px;">
+                <div style="position: relative;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="" style="resize: none; width: 100%; padding-left: 30px;">
+                    <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
+                    </i>
+                  </div>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control" data-value="DESC">
+                    <option value="ASC">
+                      Старые
+                    </option>
+                    <option value="DESC">
+                      Новые
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-default ">
+                    <i class="fa fa-refresh">
+                    </i>
+                  </button>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-primary ">
+                    <i class="fa fa-plus">
+                    </i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div style="margin-top: 5px;">
-          <div>
-            <div class="row" style="margin-bottom: 0.5em;">
-              <div class="col-md-3">
-                <label style="margin-bottom: 0px;">
-                  Создан
-                </label>
-                <div>
-                  18.12.2015 03:18:05 (Киев)
-                </div>
+          <div style="margin-top: 5px;">
+            <div>
+              <div>
               </div>
-              <div class="col-md-3">
-                <label style="margin-bottom: 0px;">
-                  Телефон
-                </label>
-                <div>
-                  +38 (068) 321-45-67
-                </div>
-              </div>
-            </div>
-            <div class="row" style="margin-bottom: 0.5em;">
-              <div class="col-md-3">
-                <label style="margin-bottom: 0px;">
-                  Тип документа
-                </label>
-                <div>
-                  Отчет по практике
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label style="margin-bottom: 0px;">
-                  Количество страниц
-                </label>
-                <div>
-                  23
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label style="margin-bottom: 0px;">
-                  Количество источников
-                </label>
-                <div>
-                  7
-                </div>
-              </div>
-            </div>
-            <div class="row" style="margin-bottom: 0.5em;">
-              <div class="col-md-12">
-                <label style="margin-bottom: 0px;">
-                  Детали работы (задание)
-                </label>
-                <div style="white-space: pre-wrap;">
-                  Это чисто на почитать... Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.
-                  Кухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел.
-                </div>
-              </div>
+              <span>
+                Савсэм ничего нэт, да...
+              </span>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>

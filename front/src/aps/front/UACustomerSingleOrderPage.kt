@@ -20,8 +20,8 @@ class UACustomerSingleOrderPage(val world: World) {
 
     var orderID by notNullOnce<String>()
 
-    fun load(): Promisoid<Unit> = async {
-        orderID = urlQuery.id.get(world) ?: return@async world.setShittyParamsPage()
+    suspend fun load() {
+        orderID = urlQuery.id.get(world) ?: return world.setShittyParamsPage()
         val defaultTab = fconst.tab.order.params.ref
         val tabKey = fconst.tab.order.itemSimplyNamed(urlQuery.tab.get(world)) ?: defaultTab
 
@@ -29,7 +29,7 @@ class UACustomerSingleOrderPage(val world: World) {
             o.id.value = orderID
         }))
         val order = when (res) {
-            is ZimbabweResponse.Shitty -> return@async world.setShittyResponsePage(res)
+            is ZimbabweResponse.Shitty -> return world.setShittyResponsePage(res)
             is ZimbabweResponse.Hunky -> res.meat.order
         }
 
@@ -41,7 +41,7 @@ class UACustomerSingleOrderPage(val world: World) {
         val tab = tabs.find {it.tabSpec.key == tabKey} ?: tabs.first()
 
         val error = await(tab.load())
-        error?.let {return@async world.setShittyResponsePage(it)}
+        error?.let {return world.setShittyResponsePage(it)}
 
         world.setPage(Page(
             header = pageHeader3(kdiv{o->

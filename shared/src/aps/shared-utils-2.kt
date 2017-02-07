@@ -50,8 +50,7 @@ abstract class Refs<Item : NamedItem>(val group: NamedGroup<Item>?) {
 }
 
 fun simpleName(qualified: String): String {
-    val from = qualified.lastIndexOfOrNull(".") ?: 0
-    return qualified.substring(from)
+    return qualified.substring(qualified.lastIndexOf(".") + 1)
 }
 
 
