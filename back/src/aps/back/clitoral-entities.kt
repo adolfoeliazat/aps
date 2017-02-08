@@ -24,10 +24,10 @@ abstract class ClitoralEntity {
                indexes = arrayOf(
                    Index(columnList = "email")
                ))
-open class User(
+class User(
     @Column(length = MAX_STRING) var email: String,
-    @Column(length = MAX_STRING) var firstName: String,
-    @Column(length = MAX_STRING) var lastName: String,
+    @Column(length = MAX_STRING) var firstName: String?,
+    @Column(length = MAX_STRING) var lastName: String?,
     @Column(length = MAX_STRING) var passwordHash: String,
     @Column(length = MAX_STRING) var phone: String,
     @Enumerated(EnumType.STRING) var kind: UserKind,
@@ -47,8 +47,8 @@ open class User(
             profileRejectionReason = null,
             banReason = null,
             adminNotes = "",
-            firstName = firstName,
-            lastName = lastName,
+            firstName = firstName ?: "fuck",
+            lastName = lastName ?: "shit",
             phone = phone,
             compactPhone = phone,
             aboutMe = "",
@@ -65,7 +65,7 @@ interface UserRepository : CrudRepository<User, Long> {
                indexes = arrayOf(
                    Index(columnList = "confirmationSecret")
                ))
-open class UAOrder(
+class UAOrder(
     @Column(length = MAX_STRING) var title: String,
     @Enumerated(EnumType.STRING) var documentType: UADocumentType,
     var numPages: Int,
@@ -109,13 +109,15 @@ interface UAOrderRepository : CrudRepository<UAOrder, Long> {
                indexes = arrayOf(
                    Index(columnList = "token")
                ))
-open class UserToken(
+class UserToken(
     @Column(length = MAX_STRING) var token: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", nullable = false)
     var user: User?
-) : ClitoralEntity()
+) : ClitoralEntity() {
+}
 
 interface UserTokenRepository : CrudRepository<UserToken, Long> {
     fun findByToken(x: String): UserToken?
@@ -124,7 +126,7 @@ interface UserTokenRepository : CrudRepository<UserToken, Long> {
 @Entity @Table(name = "ua_order_files",
                indexes = arrayOf(
                ))
-open class UAOrderFile(
+class UAOrderFile(
     @Column(length = MAX_STRING) var name: String,
     @Column(length = MAX_STRING) var title: String,
     @Column(length = MAX_STRING) var mime: String,
@@ -137,19 +139,15 @@ open class UAOrderFile(
 interface UAOrderFileRepository : CrudRepository<UAOrderFile, Long> {
 }
 
-//@Entity @Table(name = "test_state",
-//               indexes = arrayOf(
-//               ))
-//open class TestState(
-//    @Column(length = MAX_STRING) var snapshotName: String,
-//    @Column(length = MAX_STRING) var browseroidName: String,
-//    @Column(length = MAX_STRING) var href: String,
-//    @Column(length = MAX_STRING) var token: String?
-//) : ClitoralEntity()
-//
-//interface TestStateRepository : CrudRepository<TestState, Long> {
-//    fun findBySnapshotName(x: String): TestState?
-//}
+
+
+
+
+
+
+
+
+
 
 
 

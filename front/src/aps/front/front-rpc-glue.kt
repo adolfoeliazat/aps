@@ -39,6 +39,8 @@ suspend fun send(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequ
 suspend fun sendUACustomerGetOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): ZimbabweResponse<ItemsResponse<UAOrderFileRTO>> = await(callZimbabwe("UACustomerGetOrderFiles", req, token))
 suspend fun send(req: TestTakeDBSnapshotRequest): TestTakeDBSnapshotRequest.Response = await(callDangerousMatumba(req))
 suspend fun send(req: TestRestoreDBSnapshotRequest): TestRestoreDBSnapshotRequest.Response = await(callDangerousMatumba(req))
+suspend fun send(token: String?, req: SignInWithTokenRequest): FormResponse2<SignInResponse> = _send2(token, req)
+suspend fun send(req: TestCodeFiddleRequest): TestCodeFiddleRequest.Response = callDangerousMatumba2(req)
 
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
@@ -51,6 +53,10 @@ private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
 
 private suspend fun <Req: RequestMatumba, Meat> _send2(token: String?, req: Req): FormResponse2<Meat> {
     return await(_send(token, req))
+}
+
+private suspend fun <Req: RequestMatumba, Meat> _send3(req: Req): FormResponse2<Meat> {
+    return _send2(Globus.worldMaybe?.tokenMaybe, req)
 }
 
 private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req) = async<FormResponse2<Meat>> {

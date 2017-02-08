@@ -292,7 +292,8 @@ fun userByToken(q: DSLContext, token: String): UserRTO {
 fun userByToken2(token: String): UserRTO {
     val repo = springctx.getBean(UserTokenRepository::class.java)
     val ut = repo.findByToken(token) ?: bitch("Invalid token")
-    return ut.user!!.toRTO()
+    val user = ut.user!!
+    return user.toRTO()
 }
 
 

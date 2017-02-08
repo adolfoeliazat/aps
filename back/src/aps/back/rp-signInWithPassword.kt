@@ -45,13 +45,24 @@ import java.util.*
     }
 )
 
-
-@RemoteProcedureFactory fun signInWithToken() = anyUserProcedure(
-    {SignInWithTokenRequest()},
-    wrapInFormResponse = false,
-    runShit = fun(ctx, req): SignInResponse {
-        return SignInResponse(ctx.token, ctx.user_killme)
+@Servant class ServeSignInWithToken : BitchyProcedure() {
+    override fun serve() {
+        fuckAnyUser(FuckAnyUserParams(
+            bpc = bpc,
+            makeRequest = {SignInWithTokenRequest()},
+            runShit = fun(ctx, req: SignInWithTokenRequest): SignInResponse {
+                return SignInResponse(ctx.token, ctx.user_killme)
+            }
+        ))
     }
-)
+}
+
+//@RemoteProcedureFactory fun signInWithToken() = anyUserProcedure(
+//    {SignInWithTokenRequest()},
+//    wrapInFormResponse = false,
+//    runShit = fun(ctx, req): SignInResponse {
+//        return SignInResponse(ctx.token, ctx.user_killme)
+//    }
+//)
 
 

@@ -57,8 +57,8 @@ class World(val name: String) {
 //            Shitus.initDebugFunctionsShit()
 //        }
         bootKillme()
-
         Globus.worldMaybe = this
+
         if (isTest()) {
             TestLocationBar.update()
         }
@@ -101,25 +101,20 @@ class World(val name: String) {
     suspend fun bootKillme() {
         val tsl = Globus.currentBrowseroid.typedStorageLocal
         tokenMaybe = tsl.token
-//            token = hrss.storageLocal.getItem("token")
         if (tokenMaybe != null) {
-            try {
-                val res = await(SignInWithTokenRequest.send(tokenMaybe!!))
-                userMaybe = res.user
-//                        ui.startLiveStatusPolling()
-            } catch (e: Throwable) {
-                // Pretend no one was signed in.
-                // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
-                console.warn("Failed to private_getUserInfo", e)
-                tokenMaybe = undefined
-                tsl.clear()
-//                    hrss.storageLocal.clear()
-            } finally {
-//                    ExternalGlobus.makeSignInNavbarLinkVisible()
+            val res = send(tokenMaybe, SignInWithTokenRequest())
+            exhaustive/when (res) {
+                is FormResponse2.Hunky -> {
+                    userMaybe = res.meat.user
+                }
+                is FormResponse2.Shitty -> {
+                    // Pretend no one was signed in.
+                    // User will be able to see actual rejection reason (ban or something) on subsequent sign in attempt.
+                    tokenMaybe = undefined
+                    tsl.clear()
+                }
             }
         }
-
-//            js("$")(global.document.head).append("<style id='css'>${apsCSS()}</style>")
 
         topNavbarElement = Shitus.updatableElement(json(), elementCtor@{update: dynamic ->
             updateNavbar = update

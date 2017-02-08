@@ -61,6 +61,7 @@ fun reallyBoot() {
     // System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
 
     instrumentShit()
+    selfSanityCheck()
 
     val fuckAroundWithSpring = true
     if (fuckAroundWithSpring) {
@@ -101,77 +102,95 @@ fun reallyBoot() {
     }
 }
 
+private fun selfSanityCheck() {
+    val clazz = User::class.java
+    try {
+        clazz.newInstance()
+    } catch (e: Throwable) {
+        die("Compile me with freaking noarg, OK?")
+    }
+    val method = clazz.getMethod("getEmail")
+    if (Modifier.isFinal(method.modifiers)) {
+        die("Compile me with freaking allopen, OK?")
+    }
+}
+
 private fun instrumentShit() {
-    // ByteBuddyAgent.install()    // -javaagent:back/lib-gradle/byte-buddy-agent-1.6.7.jar
-    val buddy = ByteBuddy()
+    // Fuck this shit, noarg and allopen actually work...
 
-    val entries = System.getProperty("java.class.path").split(File.pathSeparator)
-    val urlLoader = URLClassLoader(entries.map {File(it).toURI().toURL()}.toTypedArray(), null)
-    val separateLoader = object:ClassLoader() {
-        override fun loadClass(name: String?) = urlLoader.loadClass(name)
-    }
-
-    val refl = Reflections(
-        ConfigurationBuilder()
-            .addClassLoader(separateLoader)
-            .setUrls(ClasspathHelper.forPackage("aps.back"))
-            // .setScanners(MethodAnnotationsScanner())
-            .addScanners(SubTypesScanner()))
-    val rootClass = separateLoader.loadClass("aps.back.ClitoralEntity")
-    val classes = refl.getSubTypesOf(rootClass)
-    for (clazz in listOf(rootClass) + classes) {
-        // TODO:vgrechka Ensure classes are sorted from super to children -- redefinitions should be loaded in that order
-        val ctor = clazz.constructors[0]
-        val paramTypes = ctor.parameterTypes
-        val ctorParams = arrayOfNulls<Any?>(paramTypes.size)
-        for ((i, pt) in paramTypes.withIndex()) {
-            ctorParams[i] = when (pt) {
-                String::class.java -> "boobs"
-                Integer.TYPE -> -1
-                else -> when {
-                    pt.isEnum -> pt.enumConstants[0]
-                    rootClass.isAssignableFrom(pt) -> null
-                    else -> bitch("Obscure ctor param #$i in ${clazz.name}: $pt")
-                }
-            }
-        }
-
-        val train1 = buddy
-            .rebase(clazz)
-            .name(clazz.name)
-
-        var train2 = train1
-        if (clazz != rootClass) {
-            train2 = train1.defineConstructor(Visibility.PUBLIC)
-                .intercept(MethodCall
-                               .invoke(ctor)
-                               .with(*ctorParams))
-        }
-
-        var train3 = train2
-        val beanInfo = Introspector.getBeanInfo(clazz, /*stopClass*/ clazz.superclass)
-        for (pd in beanInfo.propertyDescriptors) {
-            fun open(m: Method) {
-                clog("Opening ${clazz.simpleName}.${m.name}")
-                train3 = train3
-                    .method(ElementMatchers.named(m.name))
-                    .intercept(SuperMethodCall.INSTANCE)
-                    .transform(Transformer.ForMethod.withModifiers(MethodManifestation.PLAIN))
-            }
-            pd.readMethod?.let(::open)
-            pd.writeMethod?.let(::open)
-        }
-
-        train3
-            .make()
-            .load(BackGlobus::class.java.classLoader, ClassReloadingStrategy.fromInstalledAgent())
-    }
-
-    val tryShitOut = true
-    if (tryShitOut) {
-        val inst = Class.forName("aps.back.UAOrder").newInstance() as UAOrder
-        println("aaaaa " + inst)
-    }
+//    // ByteBuddyAgent.install()    // -javaagent:back/lib-gradle/byte-buddy-agent-1.6.7.jar
+//    val buddy = ByteBuddy()
+//
+//    val entries = System.getProperty("java.class.path").split(File.pathSeparator)
+//    val urlLoader = URLClassLoader(entries.map {File(it).toURI().toURL()}.toTypedArray(), null)
+//    val separateLoader = object:ClassLoader() {
+//        override fun loadClass(name: String?) = urlLoader.loadClass(name)
+//    }
+//
+//    val refl = Reflections(
+//        ConfigurationBuilder()
+//            .addClassLoader(separateLoader)
+//            .setUrls(ClasspathHelper.forPackage("aps.back"))
+//            // .setScanners(MethodAnnotationsScanner())
+//            .addScanners(SubTypesScanner()))
+//    val rootClass = separateLoader.loadClass("aps.back.ClitoralEntity")
+//    val classes = refl.getSubTypesOf(rootClass)
+//    for (clazz in listOf(rootClass) + classes) {
+//        // TODO:vgrechka Ensure classes are sorted from super to children -- redefinitions should be loaded in that order
+//        val ctor = clazz.constructors[0]
+//        val paramTypes = ctor.parameterTypes
+//        val ctorParams = arrayOfNulls<Any?>(paramTypes.size)
+//        for ((i, pt) in paramTypes.withIndex()) {
+//            ctorParams[i] = when (pt) {
+//                String::class.java -> "boobs"
+//                Integer.TYPE -> -1
+//                else -> when {
+//                    pt.isEnum -> pt.enumConstants[0]
+//                    rootClass.isAssignableFrom(pt) -> null
+//                    else -> bitch("Obscure ctor param #$i in ${clazz.name}: $pt")
+//                }
+//            }
+//        }
+//
+//        val train1 = buddy
+//            .rebase(clazz)
+//            .name(clazz.name)
+//
+//        var train2 = train1
+//        if (clazz != rootClass) {
+//            train2 = train1.defineConstructor(Visibility.PUBLIC)
+//                .intercept(MethodCall
+//                               .invoke(ctor)
+//                               .with(*ctorParams))
+//        }
+//
+//        var train3 = train2
+//        fun open(m: Method) {
+//            clog("Opening ${clazz.simpleName}.${m.name}")
+//            train3 = train3
+//                .method(ElementMatchers.named(m.name))
+//                .intercept(SuperMethodCall.INSTANCE)
+//                .transform(Transformer.ForMethod.withModifiers(MethodManifestation.PLAIN))
+//        }
+//        for (m in clazz.methods) {
+//            open(m)
+//        }
+////        val beanInfo = Introspector.getBeanInfo(clazz, /*stopClass*/ clazz.superclass)
+////        for (pd in beanInfo.propertyDescriptors) {
+////            pd.readMethod?.let(::open)
+////            pd.writeMethod?.let(::open)
+////        }
+//
+//        train3
+//            .make()
+//            .load(BackGlobus::class.java.classLoader, ClassReloadingStrategy.fromInstalledAgent())
+//    }
+//
+//    val tryShitOut = true
+//    if (tryShitOut) {
+//        val inst = Class.forName("aps.back.UAOrder").newInstance() as UAOrder
+//        println("aaaaa " + inst)
+//    }
 }
 
 
@@ -436,7 +455,6 @@ fun compactPhone(s: String): String {
 }
 
 annotation class RemoteProcedureFactory
-
 
 
 

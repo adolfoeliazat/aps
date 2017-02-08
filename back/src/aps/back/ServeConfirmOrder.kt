@@ -11,11 +11,7 @@ import into.kommon.*
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
 
-@Servant class ServeConfirmOrder(
-    val orderRepo: UAOrderRepository,
-    val userRepo: UserRepository,
-    val userTokenRepo: UserTokenRepository
-) : BitchyProcedure() {
+@Servant class ServeConfirmOrder(val orderRepo: UAOrderRepository, val userRepo: UserRepository, val userTokenRepo: UserTokenRepository) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,

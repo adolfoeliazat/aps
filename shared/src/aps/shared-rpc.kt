@@ -126,6 +126,11 @@ class TestSQLFiddleRequest : RequestMatumba() {
     val input by stringHiddenField()
 }
 
+class TestCodeFiddleRequest : RequestMatumba() {
+    class Response : CommonResponseFieldsImpl()
+    val what by stringHiddenField()
+}
+
 class UserSignedInAsPartOfMakingOrder(
     val user: UserRTO,
     val token: String

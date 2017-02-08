@@ -128,9 +128,6 @@ class SignInWithPasswordRequest : RequestMatumba() {
 }
 
 class SignInWithTokenRequest : RequestMatumba() {
-    companion object {
-        fun send(token: String): Promisoid<SignInResponse> = callMatumba(SignInWithTokenRequest(), token)
-    }
 }
 
 class SignUpRequest : RequestMatumba() {

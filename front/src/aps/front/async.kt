@@ -131,12 +131,12 @@ class ResolvableShit<T> {
 fun ResolvableShit<Unit>.resolve() = this.resolve(Unit)
 
 fun tillEndOfTimePromise(): Promisoid<Unit> {
-    dlog("--- Waiting till end of time ---")
+    dlog("--- Waiting till the end of time ---")
     return delay(Int.MAX_VALUE)
 }
 
 suspend fun waitTillEndOfTime() {
-    dlog("--- Waiting till end of time ---")
+    dlog("--- Waiting till the end of time. Good luck... ---")
     await(delay(Int.MAX_VALUE))
 }
 

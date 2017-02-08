@@ -68,6 +68,8 @@ Configure redis.windows.conf
     maxmemory 512mb
     maxmemory-policy allkeys-lru
 
+    Comment out all lines starting with `save`
+
 Start
 
     cd /d C:\opt\Redis

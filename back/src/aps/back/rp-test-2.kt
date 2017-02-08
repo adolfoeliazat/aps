@@ -52,8 +52,7 @@ class TestState {
     }
 }
 
-@Servant class ServeTestRestoreDBSnapshot(
-) : BitchyProcedure() {
+@Servant class ServeTestRestoreDBSnapshot : BitchyProcedure() {
     override fun serve() {
         fuckDangerously(FuckDangerouslyParams(
             bpc = bpc,
@@ -123,6 +122,25 @@ private fun snapshotFile(snapshotName: String) =
     }
 )
 
+@Servant class ServeTestCodeFiddle : BitchyProcedure() {
+    override fun serve() {
+        fuckDangerously(FuckDangerouslyParams(
+            bpc = bpc, makeRequest = {TestCodeFiddleRequest()},
+            runShit = fun(ctx, req: TestCodeFiddleRequest): TestCodeFiddleRequest.Response {
+                when (req.what.value) {
+                    "fuck1" -> {
+                        val repo = springctx.getBean(UserTokenRepository::class.java)
+                        val ut = repo.findOne(1) ?: wtf("No token with ID 1")
+                        val user = ut.user!!
+                        dwarnStriking("firstName = ${user.firstName}; lastName = ${user.lastName}")
+                    }
+                    else -> wtf("what = ${req.what.value}")
+                }
+                return TestCodeFiddleRequest.Response()
+            }
+        ))
+    }
+}
 
 
 
