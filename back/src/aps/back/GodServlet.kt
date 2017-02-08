@@ -77,13 +77,20 @@ class GodServlet : HttpServlet() {
                 pathInfo.startsWith("/rpc/") -> {
                     val procedureName = req.pathInfo.substring("/rpc/".length)
                     try {
+                        val pnc = procedureName.capitalize()
                         run {
-                            val server = springctx.getBean("serve" + procedureName.capitalize(), BitchyProcedure::class.java)
+                            val server = springctx.getBean("serve" + pnc, BitchyProcedure::class.java)
                             server.bpc = BitchyProcedureContext(req, res)
                         }
-                        val server = springctx.getBean("serve" + procedureName.capitalize(), BitchyProcedure::class.java)
+                        val server = springctx.getBean("serve" + pnc, BitchyProcedure::class.java)
                         server.bpc = BitchyProcedureContext(req, res)
-                        TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
+
+                        val useTx = true // !pnc.oneOf("TestTakeDBSnapshot")
+                        if (useTx) {
+                            TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
+                                server.serve()
+                            }
+                        } else {
                             server.serve()
                         }
                     } catch (e: NoSuchBeanDefinitionException) {

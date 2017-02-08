@@ -37,6 +37,9 @@ suspend fun send(req: ImposeNextRequestTimestampRequest): Promisoid<ImposeNextRe
 suspend fun send(req: ConfirmOrderRequest): FormResponse2<ConfirmOrderRequest.Response> = _send2(null, req)
 suspend fun send(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequest.Response = await(sendDangerousJSONProcedure(req))
 suspend fun sendUACustomerGetOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): ZimbabweResponse<ItemsResponse<UAOrderFileRTO>> = await(callZimbabwe("UACustomerGetOrderFiles", req, token))
+suspend fun send(req: TestTakeDBSnapshotRequest): TestTakeDBSnapshotRequest.Response = await(callDangerousMatumba(req))
+suspend fun send(req: TestRestoreDBSnapshotRequest): TestRestoreDBSnapshotRequest.Response = await(callDangerousMatumba(req))
+
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->

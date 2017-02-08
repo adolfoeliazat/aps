@@ -137,6 +137,19 @@ open class UAOrderFile(
 interface UAOrderFileRepository : CrudRepository<UAOrderFile, Long> {
 }
 
+//@Entity @Table(name = "test_state",
+//               indexes = arrayOf(
+//               ))
+//open class TestState(
+//    @Column(length = MAX_STRING) var snapshotName: String,
+//    @Column(length = MAX_STRING) var browseroidName: String,
+//    @Column(length = MAX_STRING) var href: String,
+//    @Column(length = MAX_STRING) var token: String?
+//) : ClitoralEntity()
+//
+//interface TestStateRepository : CrudRepository<TestState, Long> {
+//    fun findBySnapshotName(x: String): TestState?
+//}
 
 
 

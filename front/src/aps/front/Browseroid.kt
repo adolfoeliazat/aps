@@ -285,6 +285,11 @@ class Morda(
         assertDynamic()
     }
 
+    suspend fun coitizeAndBoot() {
+        coitize()
+        boot()
+    }
+
     private fun disposeAndShelveShit() = async<Unit> {
         TestLocationBar.dispose()
         disposeEffects()

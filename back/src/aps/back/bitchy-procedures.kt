@@ -40,6 +40,29 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
     ))
 }
 
+fun <Req : RequestMatumba, Res : CommonResponseFields>
+    fuckDangerously(p: FuckDangerouslyParams<Req, Res>)
+{
+    fuckSomeone(FuckSomeoneParams(
+        bpc = p.bpc,
+        req = p.makeRequest,
+        runShit = p.runShit,
+        wrapInFormResponse = false,
+        needsDB = true,
+        needsDangerousToken = true,
+        needsUser = NeedsUser.NO,
+        userKinds = setOf(),
+        considerNextRequestTimestampFiddling = false,
+        logRequestJSON = false
+    ))
+}
+
+class FuckDangerouslyParams<Req : RequestMatumba, out Res : CommonResponseFields>(
+    val bpc: BitchyProcedureContext,
+    val makeRequest: (ProcedureContext) -> Req,
+    val runShit: (ProcedureContext, Req) -> Res)
+
+
 class FuckSomeoneParams<Req : RequestMatumba, out Res : CommonResponseFields>(
     val bpc: BitchyProcedureContext,
     val req: (ProcedureContext) -> Req,

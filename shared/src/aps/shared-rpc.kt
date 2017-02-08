@@ -140,6 +140,19 @@ class ConfirmOrderRequest : RequestMatumba() {
     val secret by stringHiddenField()
 }
 
+class TestTakeDBSnapshotRequest : RequestMatumba() {
+    class Response : CommonResponseFieldsImpl()
+    val snapshotName by stringHiddenField()
+    val browseroidName by stringHiddenField()
+    val href by stringHiddenField()
+    val token by maybeStringHiddenField()
+}
+
+class TestRestoreDBSnapshotRequest : RequestMatumba() {
+    class Response(val browseroidName: String, val href: String, val token: String?) : CommonResponseFieldsImpl()
+    val snapshotName by stringHiddenField()
+}
+
 
 
 

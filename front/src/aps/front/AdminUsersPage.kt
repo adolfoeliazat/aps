@@ -12,7 +12,6 @@ import aps.*
 import into.kommon.*
 import kotlin.js.json
 
-
 class AdminUsersPage(val ui: World) {
     suspend fun load() {
         val m = Melinda<UserRTO, Nothing, UserFilter>(
