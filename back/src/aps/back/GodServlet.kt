@@ -85,7 +85,8 @@ class GodServlet : HttpServlet() {
                         val server = springctx.getBean("serve" + pnc, BitchyProcedure::class.java)
                         server.bpc = BitchyProcedureContext(req, res)
 
-                        val useTx = true // !pnc.oneOf("TestTakeDBSnapshot")
+                        val useTx = true
+//                        val useTx = !pnc.oneOf("TestRestoreDBSnapshot")
                         if (useTx) {
                             TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
                                 server.serve()
@@ -98,7 +99,9 @@ class GodServlet : HttpServlet() {
                         val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
                         @Suppress("UNCHECKED_CAST")
                         val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
-                        service(req, res)
+                        TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
+                            service(req, res)
+                        }
                     }
                 }
 

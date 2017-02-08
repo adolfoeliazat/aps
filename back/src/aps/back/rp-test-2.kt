@@ -2,9 +2,11 @@ package aps.back
 
 import aps.*
 import into.kommon.*
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.sql.PreparedStatement
 import java.sql.SQLException
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
@@ -26,7 +28,7 @@ class TestState {
             bpc = bpc,
             makeRequest = {TestTakeDBSnapshotRequest()},
             runShit = fun(ctx, req: TestTakeDBSnapshotRequest): TestTakeDBSnapshotRequest.Response {
-                File("${SharedGlobus.APS_TEMP}/snapshot-${req.snapshotName.value}.json").writeText(
+                snapshotFile(req.snapshotName.value).writeText(
                     objectMapper.writeValueAsString(TestState()-{o->
                         o.snapshotName = req.snapshotName.value
                         o.browseroidName = req.browseroidName.value
@@ -51,35 +53,38 @@ class TestState {
 }
 
 @Servant class ServeTestRestoreDBSnapshot(
-    val emf: EntityManagerFactory
-    ) : BitchyProcedure() {
+) : BitchyProcedure() {
     override fun serve() {
         fuckDangerously(FuckDangerouslyParams(
             bpc = bpc,
             makeRequest = {TestRestoreDBSnapshotRequest()},
             runShit = fun(ctx, req: TestRestoreDBSnapshotRequest): TestRestoreDBSnapshotRequest.Response {
-                imf()
-//                val s = repo.findBySnapshotName(req.snapshotName.value)!!
-//                return TestRestoreDBSnapshotRequest.Response(
-//                    browseroidName = s.browseroidName,
-//                    href = s.href,
-//                    token = s.token)
+                val testState = objectMapper.readValue(snapshotFile(req.snapshotName.value), TestState::class.java)
 
-//                val em = emf.createEntityManager()
-//                em.transaction.begin()
-//                try {
-//                    dwarnStriking("Fucking around, boy? I'll make a little DB snapshot for you...")
-//                    em.createNativeQuery("script to '${SharedGlobus.APS_TEMP}/dbsnap-${req.snapshotName.value}.sql'").resultList
-//                    dwarnStriking("Done. Use it with care, son. Time for a friendly final word... Fuck you")
-//                    return TestRestoreDBSnapshotRequest.Response()
-//                } finally {
-//                    em.transaction.rollback()
-//                    em.close()
-//                }
+                val ds = springctx.getBean(DataSource::class.java)
+                ds.connection.use {con->
+                    testState
+                        .sqlCommands
+                        .filter {it.toLowerCase().startsWith("insert into ")}
+                        .reversed()
+                        .forEach {sql->
+                            clog("Restoring: $sql")
+                            con.prepareStatement(sql).use(PreparedStatement::execute)
+                        }
+                }
+
+                return TestRestoreDBSnapshotRequest.Response(
+                    browseroidName = testState.browseroidName,
+                    href = testState.href,
+                    token = testState.token
+                )
             }
         ))
     }
 }
+
+private fun snapshotFile(snapshotName: String) =
+    File("${SharedGlobus.APS_TEMP}/snapshot-$snapshotName.json")
 
 
 

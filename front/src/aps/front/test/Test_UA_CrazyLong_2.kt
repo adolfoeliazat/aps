@@ -20,7 +20,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         forceFast {
             initialTestShit(this)
 
-            val startPoint = 1
+            val startPoint = 2
             var point = 0
 
             if (++point >= startPoint) {
@@ -108,14 +108,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             if (++point >= startPoint) {
                 if (point == startPoint) {
-                    val res = send(TestRestoreDBSnapshotRequest()-{o->
+                    val state = send(TestRestoreDBSnapshotRequest()-{o->
                         o.snapshotName.value = "pizda-${point - 1}"
                     })
-                    dlog("Snapshot response", res)
-                    sleepTillEndOfTime()
-                    val ivo3 = Morda(res.browseroidName,
-                                     url = res.href,
-                                     fillTypedStorageLocal = {it.token = res.token},
+                    dlog("Snapshot response", state)
+                    val ivo3 = Morda(state.browseroidName,
+                                     url = state.href,
+                                     fillTypedStorageLocal = {it.token = state.token},
                                      fillRawStorageLocal = {})
                     ivo3.coitizeAndBoot()
                 }
