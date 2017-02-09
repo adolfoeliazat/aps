@@ -7,11 +7,7 @@
 package aps.back
 
 import aps.*
-import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.enums.*
-import aps.back.generated.jooq.tables.records.*
 import com.google.common.hash.Hashing
-import into.kommon.*
 import org.springframework.data.repository.findOrDie
 import java.util.*
 
@@ -21,34 +17,21 @@ import java.util.*
             bpc = bpc, makeRequest = {UACreateOrderFileRequest()},
             runShit = fun(ctx, req): aps.UACreateOrderFileRequest.Response {
                 val order = orderRepo.findOrDie(req.orderID.value)
-                imf()
+                // TODO:vgrechka @security Check permissions
 
-//                val content = Base64.getDecoder().decode(req.file.base64)
-//                val file = fileRepo.save(UAOrderFile(
-//                    name = req.file.fileName,
-//                    title = req.title.value,
-//                    mime = "application/octet-stream",
-//                    details = req.details.value,
-//                    adminNotes = "",
-//                    sha1 = Hashing.sha1().hashBytes(content).toString(),
-//                    sizeBytes = content.size
-//                ))
-//
-//                val orderID = req.orderID.value
-//
-//                val orderFileID = UA_ORDER_FILES.let {t->
-//                    ctx.insertShit("Insert order file", t) {it
-//                        .set(t.UA_ORDER_ID, orderID)
-//                        .set(t.FILE_ID, fileID)
-//                        .set(t.UA_ORDER_AREA_ID, areaID)
-//                        .set(t.SEEN_AS_FROM, seenAsFrom)
-//                        .returnID(t)
-//                    }
-//                }
-//
-//                insertFileUserPermission(ctx, fileID, ctx.user_killme.id.toLong())
-//
-//                return AddUAOrderFileRequestBase.Response(orderFileID.toString())
+                val content = Base64.getDecoder().decode(req.file.base64)
+                val file = fileRepo.save(UAOrderFile(
+                    order = order,
+                    name = req.file.fileName,
+                    title = req.title.value,
+                    mime = "application/octet-stream",
+                    details = req.details.value,
+                    adminNotes = "",
+                    sha1 = Hashing.sha1().hashBytes(content).toString(),
+                    sizeBytes = content.size
+                ))
+
+                return UACreateOrderFileRequest.Response(file.id!!)
             }
         ))
     }

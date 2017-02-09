@@ -164,10 +164,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                             }
                         ),
                         onSuccessa = {
-                            imf("onSuccessa")
-//                            val path = pageSpecs.uaCustomer.order.path
-//                            val idParam = UACustomerSingleOrderPage.urlQuery.id.name
-//                            world.replaceNavigate("$path.html?$idParam=${this@ParamsTab.order.id}")
+                            val q = UACustomerSingleOrderPage.urlQuery
+                            world.replaceNavigate(makeURL(pageSpecs.uaCustomer.order, listOf(
+                                URLParamValue(q.id, order.id.toString()),
+                                URLParamValue(q.tab, simpleName(fconst.tab.order.files.ref.name))
+                            )))
                         }
                     )
                 }

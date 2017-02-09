@@ -7,8 +7,14 @@ import kotlin.reflect.KProperty
 
 abstract class URLQueryBase_killme(val world: World)
 
-class MaybeStringURLParam : ReadOnlyProperty<Any?, MaybeStringURLParam> {
-    var name by notNull<String>()
+interface URLParam<T> {
+    var name: String
+}
+
+class URLParamValue<T>(val param: URLParam<T>, val value: T)
+
+class MaybeStringURLParam : URLParam<String>, ReadOnlyProperty<Any?, MaybeStringURLParam> {
+    override var name by notNull<String>()
 
     fun get(world: World): String? {
         return world.urlQuery[name]
@@ -40,5 +46,28 @@ fun <E : Enum<E>> enumURLParam_killme(values: Array<E>, default: E) =
             return thisRef.world.urlQuery[property.name].relaxedToEnum(values, default)
         }
     }
+
+
+
+fun makeURL(page: PageSpec, paramValues: List<URLParamValue<*>>) = stringBuild{s->
+    s += page.path + ".html"
+    if (paramValues.isNotEmpty())
+        s += "?"
+    s += paramValues.joinToString("&") {it.param.name + "=" + it.value}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

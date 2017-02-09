@@ -411,7 +411,7 @@ fun fileTitleField(container: RequestMatumba) = TextField(container, fieldSpecs.
 fun fileDetailsField(container: RequestMatumba) = TextField(container, fieldSpecs.shebang.details.ref)
 
 class UACreateOrderFileRequest : RequestMatumba() {
-    class Response(val id: String) : CommonResponseFieldsImpl()
+    class Response(val id: Long) : CommonResponseFieldsImpl()
 
     val orderID by longHiddenField()
     val file = fileField(this)

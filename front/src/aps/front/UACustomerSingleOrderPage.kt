@@ -219,9 +219,9 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                     }
                                 ),
                                 onSuccessa = {
-                                    val path = pageSpecs.uaCustomer.order.path
-                                    val idParam = UACustomerSingleOrderPage.urlQuery.id.name
-                                    world.replaceNavigate("$path.html?$idParam=${this@ParamsTab.order.id}")
+                                    world.replaceNavigate(makeURL(pageSpecs.uaCustomer.order, listOf(
+                                        URLParamValue(UACustomerSingleOrderPage.urlQuery.id, order.id.toString())
+                                    )))
                                 }
                             )
                         }
