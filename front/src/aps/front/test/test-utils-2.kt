@@ -334,8 +334,8 @@ fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
 }
 
 
-fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
-    await(testAddFileByFedorAndApproveForBobul(testShit, WriterAddUAOrderFileRequest()-{o->
+fun setUpFilesByFedor_1(testShit: TestShit, orderID: Long) = async<Unit> {
+    await(testAddFileByFedorAndApproveForBobul(testShit, UAWriterCreateOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("idiot.rtf")
         o.title.value = "The (Fucking) Idiot"
@@ -346,7 +346,7 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
         """)
     }))
 
-    await(testAddFileByFedorAndApproveForBobul(testShit, WriterAddUAOrderFileRequest()-{o->
+    await(testAddFileByFedorAndApproveForBobul(testShit, UAWriterCreateOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("crime and punishment.rtf")
         o.title.value = "Crime and Punishment"
@@ -356,7 +356,7 @@ fun setUpFilesByFedor_1(testShit: TestShit, orderID: String) = async<Unit> {
     }))
 }
 
-private fun testAddFileByFedorAndApproveForBobul(testShit: TestShit, req: WriterAddUAOrderFileRequest): Promisoid<Unit> {
+private fun testAddFileByFedorAndApproveForBobul(testShit: TestShit, req: UAWriterCreateOrderFileRequest): Promisoid<Unit> {
     imf("Reimplement testAddFileByFedorAndApproveForBobul")
 //    return async<Unit> {
 //        await(testShit.imposeNextRequestTimestamp())
@@ -374,8 +374,8 @@ private fun testCopyFileToBobul(testShit: TestShit, orderFileID: String): Promis
     })
 }
 
-fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
-    await(testAddFileByFedorAndApproveForBobul(testShit, WriterAddUAOrderFileRequest()-{o->
+fun setUpFilesByFedor_2(testShit: TestShit, orderID: Long) = async<Unit> {
+    await(testAddFileByFedorAndApproveForBobul(testShit, UAWriterCreateOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("crappy release 1.rtf")
         o.title.value = "Crappy release 1"
@@ -384,7 +384,7 @@ fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
         """)
     }))
 
-    await(testAddFileByFedorAndApproveForBobul(testShit, WriterAddUAOrderFileRequest()-{o->
+    await(testAddFileByFedorAndApproveForBobul(testShit, UAWriterCreateOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("crappy release 2.rtf")
         o.title.value = "Crappy release 2"
@@ -393,7 +393,7 @@ fun setUpFilesByFedor_2(testShit: TestShit, orderID: String) = async<Unit> {
         """)
     }))
 
-    await(testAddFileByFedorAndApproveForBobul(testShit, WriterAddUAOrderFileRequest()-{o->
+    await(testAddFileByFedorAndApproveForBobul(testShit, UAWriterCreateOrderFileRequest()-{o->
         o.orderID.value = orderID
         o.file.content = FileField.Content.TestFileOnServer("crappy release 3.rtf")
         o.title.value = "Crappy release 3"

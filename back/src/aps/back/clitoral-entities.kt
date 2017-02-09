@@ -2,6 +2,7 @@ package aps.back
 
 import aps.*
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.RepositoryDefinition
 import java.sql.Timestamp
 import javax.persistence.*
 
@@ -85,7 +86,7 @@ class UAOrder(
 
     fun toRTO(): UAOrderRTO {
         return UAOrderRTO(
-            id = id.toString(),
+            id = id!!,
             title = title,
             insertedAt = createdAt.time,
             customer = customer!!.toRTO(),

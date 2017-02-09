@@ -25,6 +25,7 @@ import org.jooq.exception.DataAccessException
 import org.jooq.exception.DataTypeException
 import org.jooq.impl.*
 import org.jooq.tools.Convert.convert
+import org.springframework.data.repository.CrudRepository
 import java.sql.SQLFeatureNotSupportedException
 import java.sql.Timestamp
 import java.sql.Types
@@ -366,6 +367,24 @@ class PostgresJSONBJacksonJsonNodeConverter : Converter<Any?, JsonNode> {
         return JsonNode::class.java
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

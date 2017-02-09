@@ -209,7 +209,8 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
 
             p.bpc.servletResponse-{o->
                 o.contentType = "application/json; charset=utf-8"
-                o.writer.println(hackyObjectMapper.writeValueAsString(responseBean))
+                o.writer.println(shittyObjectMapper.writeValueAsString(responseBean))
+//                o.writer.println(hackyObjectMapper.writeValueAsString(responseBean))
                 o.status = HttpServletResponse.SC_OK
             }
         }

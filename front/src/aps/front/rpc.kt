@@ -107,6 +107,7 @@ fun <T> dejsonize(json: String, descr: String? = null): T {
 }
 
 fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
+//    if (JSON.stringify(jsThing).contains("UAOrderRTO")) console.error("xxxxxxxxxxxxxx", jsThing)
     try {
         gloshit.pizda = TestSQLFiddleRequest.Response("qqq", true)
         val logShit = false
@@ -152,13 +153,23 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
             jsThing.`$$$primitiveish` != null -> {
                 val typeName: String = jsThing.`$$$primitiveish`
                 val stringValue: String? = jsThing.value
-                val code =
-                    if (stringValue == null) "null"
-                    else when (typeName) {
-                        "long" -> "new Kotlin.Long(stringValue)"
+
+                when {
+                    stringValue == null -> null
+                    else -> when (typeName) {
+                        "long" -> stringValue.toLong()
                         else -> wtf("Primitiveish typeName: $typeName")
                     }
-                eval(code)
+                }
+
+//                val code =
+//                    if (stringValue == null) "null"
+//                    else when (typeName) {
+////                        "long" -> "toLong(stringValue)"
+////                        "long" -> "new Kotlin.Long(stringValue)"
+//                        else -> wtf("Primitiveish typeName: $typeName")
+//                    }
+//                eval(code)
             }
 
             jsThing.`$$$mapOfStringToAnyQuestion` == true -> {

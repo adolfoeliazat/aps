@@ -7,17 +7,8 @@
 package aps.back
 
 import aps.*
-import aps.back.generated.jooq.*
-import aps.back.generated.jooq.enums.*
-import aps.back.generated.jooq.tables.JQFiles.*
-import aps.back.generated.jooq.tables.JQUaOrderFiles.*
-import aps.back.generated.jooq.tables.records.*
-import org.jooq.*
-import org.jooq.impl.DSL
 
-@Servant class ServeUACustomerGetOrderFiles(
-    val repo: UAOrderRepository
-) : BitchyProcedure() {
+@Servant class ServeUACustomerGetOrderFiles(val repo: UAOrderRepository) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,

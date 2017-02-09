@@ -24,7 +24,7 @@ class UserRTO(
 )
 
 class UAOrderRTO(
-    val id: String,
+    val id: Long,
     val title: String,
     val insertedAt: Long,
     val customer: UserRTO,

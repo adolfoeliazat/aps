@@ -8,6 +8,7 @@ package aps.back
 
 import aps.*
 import into.kommon.*
+import org.springframework.data.repository.findOrDie
 import java.util.*
 
 @Servant class ServeUACustomerCreateOrder(
@@ -103,7 +104,7 @@ import java.util.*
             makeRequest = {UACustomerUpdateOrderRequest()},
             needsUser = NeedsUser.YES,
             runShit = fun(ctx, req: UACustomerUpdateOrderRequest): UACustomerUpdateOrderRequest.Response {
-                val order = repo.findOne(req.entityID.value)-{o->
+                val order = repo.findOrDie(req.entityID.value)-{o->
                     val f1 = req.fields1
                     val f2 = req.fields2
                     o.documentType = f1.documentType.value

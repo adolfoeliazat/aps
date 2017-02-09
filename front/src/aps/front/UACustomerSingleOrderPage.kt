@@ -204,16 +204,16 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                 title = t("TOTE", "Параметры заказа"),
                                 formSpec = FormSpec<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(
                                     ui = world,
-                                    req = UACustomerUpdateOrderRequest() - {o ->
-                                        o.entityID.value = order.id.toLong()
-                                        o.fields1 - {o ->
+                                    req = UACustomerUpdateOrderRequest()-{o->
+                                        o.entityID.value = order.id
+                                        o.fields1-{o->
                                             o.documentType.value = order.documentType
                                             o.documentTitle.value = order.title
                                             o.numPages.setValue(order.numPages)
                                             o.numSources.setValue(order.numSources)
                                             o.documentDetails.value = order.details
                                         }
-                                        o.fields2 - {o ->
+                                        o.fields2-{o->
                                             o.phone.value = order.phone
                                         }
                                     }

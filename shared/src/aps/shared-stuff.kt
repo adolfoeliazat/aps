@@ -310,7 +310,7 @@ class EntityResponse<Item> (
 
 class ItemsRequest<Filter>(filterValues: Array<Filter>) : RequestMatumba()
 where Filter: Enum<Filter>, Filter: Titled {
-    val entityID = MaybeStringHiddenField(this, "entityID")
+    val entityID by longHiddenField()
     val filter = EnumHiddenField(this, "filter", filterValues)
     val ordering = EnumHiddenField(this, "ordering", Ordering.values())
     val searchString = TextField(this, fieldSpecs.shebang.searchString.ref)
@@ -413,14 +413,14 @@ fun fileDetailsField(container: RequestMatumba) = TextField(container, fieldSpec
 abstract class AddUAOrderFileRequestBase : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
 
-    val orderID = StringHiddenField(this, "orderID")
+    val orderID by longHiddenField()
     val file = fileField(this)
     val title = fileTitleField(this)
     val details = fileDetailsField(this)
 }
 
-class CustomerAddUAOrderFileRequest : AddUAOrderFileRequestBase()
-class WriterAddUAOrderFileRequest : AddUAOrderFileRequestBase()
+class UACustomerCreateOrderFileRequest : AddUAOrderFileRequestBase()
+class UAWriterCreateOrderFileRequest : AddUAOrderFileRequestBase()
 
 abstract class EditUAOrderFileRequestBase : RequestMatumba() {
     class Response(val updatedOrderFile: UAOrderFileRTO) : CommonResponseFieldsImpl()

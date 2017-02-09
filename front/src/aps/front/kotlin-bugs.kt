@@ -2,6 +2,15 @@
 
 package aps.front
 
+import kotlin.properties.Delegates.notNull
+
+
+//fun main(args: Array<String>) {
+//    val x = "1450401485000".toLong()
+//    console.log(x.toString())
+//}
+
+
 //open class A {
 //    fun cname() = this::class.simpleName!!
 //}
