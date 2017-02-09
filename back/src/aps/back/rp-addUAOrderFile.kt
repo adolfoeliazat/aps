@@ -14,11 +14,11 @@ import com.google.common.hash.Hashing
 import into.kommon.*
 import java.util.*
 
-@Servant class ServeUACustomerCreateOrderFileRequest(val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
+@Servant class ServeUACreateOrderFileRequest(val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
-            bpc = bpc, makeRequest = {UACustomerCreateOrderFileRequest()},
-            runShit = fun(ctx, req): aps.AddUAOrderFileRequestBase.Response {
+            bpc = bpc, makeRequest = {UACreateOrderFileRequest()},
+            runShit = fun(ctx, req): aps.UACreateOrderFileRequest.Response {
                 val order = orderRepo.findOne(req.orderID.value)
                 imf()
 

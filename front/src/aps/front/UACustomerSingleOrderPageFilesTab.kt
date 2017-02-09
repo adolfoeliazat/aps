@@ -82,8 +82,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
     val ebafPlus = EvaporatingButtonAndForm(
         host = ebafHost, key = fconst.key.button.plus.ref, level = Button.Level.PRIMARY, icon = fa.plus,
-        formSpec = FormSpec<UACustomerCreateOrderFileRequest, AddUAOrderFileRequestBase.Response>(
-            req = UACustomerCreateOrderFileRequest()-{o->
+        formSpec = FormSpec<UACreateOrderFileRequest, UACreateOrderFileRequest.Response>(
+            req = UACreateOrderFileRequest()-{o->
                 o.orderID.value = order.id
             },
             ui = world,
@@ -157,20 +157,9 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = fconst.key.button.plus.ref) {
                     openEditModal(
                         title = t("TOTE", "Новый файл"),
-                        formSpec = FormSpec<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(
+                        formSpec = FormSpec<UACreateOrderFileRequest, UACreateOrderFileRequest.Response>(
                             ui = world,
-                            req = UACustomerUpdateOrderRequest()-{o->
-                                o.entityID.value = order.id
-                                o.fields1-{o->
-                                    o.documentType.value = order.documentType
-                                    o.documentTitle.value = order.title
-                                    o.numPages.setValue(order.numPages)
-                                    o.numSources.setValue(order.numSources)
-                                    o.documentDetails.value = order.details
-                                }
-                                o.fields2-{o->
-                                    o.phone.value = order.phone
-                                }
+                            req = UACreateOrderFileRequest()-{o->
                             }
                         ),
                         onSuccessa = {
