@@ -43,26 +43,19 @@ data class IntRangeRTO(
     val endInclusive: Int
 )
 
-class FileRTO(
-    val id: String,
+class UAOrderFileRTO(
+    val id: Long,
+    val seenAsFrom: UserKind,
+    val editable: Boolean,
+    val createdAt: Long,
+    val updatedAt: Long,
     val name: String,
     val nameHighlightRanges: List<IntRangeRTO>,
     val title: String,
     val titleHighlightRanges: List<IntRangeRTO>,
     val details: String,
     val detailsHighlightRanges: List<IntRangeRTO>,
-    val sizeBytes: Int,
-    val insertedAt: Long,
-    val updatedAt: Long
-)
-
-class UAOrderFileRTO(
-    val id: String,
-    val file: FileRTO,
-    val seenAsFrom: UserKind,
-    val editable: Boolean,
-    val insertedAt: Long,
-    val updatedAt: Long
+    val sizeBytes: Int
 )
 
 enum class UADocumentType(override val title: String) : Titled {

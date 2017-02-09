@@ -136,37 +136,37 @@ fun ProcedureContext.loadUser(id: Long): UserRTO {
     }
 }
 
-fun loadFile(q: DSLContext, id: Long, searchWords: List<String>, lang: Language): FileRTO {
-    val x = tracingSQL("Select file") {q
-        .select().from(FILES)
-        .where(FILES.ID.eq(id))
-        .fetchOne().into(JQFiles::class.java)
-    }
-
-    val analyzer = when (lang) {
-        Language.UA -> russianAnalyzer
-        else -> imf("Support analyzing for $lang")
-    }
-
-    return FileRTO(
-        id = "" + x.id,
-        name = x.name,
-        nameHighlightRanges =
-            if (searchWords.isEmpty()) listOf()
-            else luceneHighlightRanges(x.name.chopOffFileExtension(), searchWords, analyzer),
-        title = x.title,
-        titleHighlightRanges =
-            if (searchWords.isEmpty()) listOf()
-            else luceneHighlightRanges(x.title, searchWords, analyzer),
-        details = x.details,
-        detailsHighlightRanges =
-            if (searchWords.isEmpty()) listOf()
-            else luceneHighlightRanges(x.details, searchWords, analyzer),
-        sizeBytes = x.sizeBytes,
-        insertedAt = x.insertedAt.time,
-        updatedAt = x.updatedAt.time
-    )
-}
+//fun loadFile(q: DSLContext, id: Long, searchWords: List<String>, lang: Language): FileRTO {
+//    val x = tracingSQL("Select file") {q
+//        .select().from(FILES)
+//        .where(FILES.ID.eq(id))
+//        .fetchOne().into(JQFiles::class.java)
+//    }
+//
+//    val analyzer = when (lang) {
+//        Language.UA -> russianAnalyzer
+//        else -> imf("Support analyzing for $lang")
+//    }
+//
+//    return FileRTO(
+//        id = "" + x.id,
+//        name = x.name,
+//        nameHighlightRanges =
+//            if (searchWords.isEmpty()) listOf()
+//            else luceneHighlightRanges(x.name.chopOffFileExtension(), searchWords, analyzer),
+//        title = x.title,
+//        titleHighlightRanges =
+//            if (searchWords.isEmpty()) listOf()
+//            else luceneHighlightRanges(x.title, searchWords, analyzer),
+//        details = x.details,
+//        detailsHighlightRanges =
+//            if (searchWords.isEmpty()) listOf()
+//            else luceneHighlightRanges(x.details, searchWords, analyzer),
+//        sizeBytes = x.sizeBytes,
+//        insertedAt = x.insertedAt.time,
+//        updatedAt = x.updatedAt.time
+//    )
+//}
 
 fun JQUsers.toRTO(q: DSLContext): UserRTO {
     val roles = tracingSQL("Select roles") {q
@@ -199,14 +199,15 @@ fun JQUsers.toRTO(q: DSLContext): UserRTO {
 }
 
 fun JQUaOrderFilesRecord.toRTO(ctx: ProcedureContext, searchWords: List<String> = listOf()): UAOrderFileRTO {
-    return UAOrderFileRTO(
-        id = id.toString(),
-        file = loadFile(ctx.q, fileId, searchWords, Language.UA),
-        seenAsFrom = seenAsFrom.toApp(),
-        editable = creatorId == ctx.user_killme.id.toLong(),
-        insertedAt = insertedAt.time,
-        updatedAt = updatedAt.time
-    )
+    die("Kill JQUaOrderFilesRecord.toRTO")
+//    return UAOrderFileRTO(
+//        id = id.toString(),
+//        file = loadFile(ctx.q, fileId, searchWords, Language.UA),
+//        seenAsFrom = seenAsFrom.toApp(),
+//        editable = creatorId == ctx.user_killme.id.toLong(),
+//        createdAt = insertedAt.time,
+//        updatedAt = updatedAt.time
+//    )
 }
 
 fun insertFileUserPermission(ctx: ProcedureContext, fileID: Long, userID: Long) {

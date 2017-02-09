@@ -219,8 +219,6 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                         o- itemPlace
                     }
 
-                    val file get() = orderFile.file
-
                     fun enterViewMode() {
                         itemPlace.setContent(renderView())
                     }
@@ -239,7 +237,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                         o- kdiv(className = "col-md-3"){o->
                                             o- label(t("Created", "Создан"))
                                             o- kdiv(){o->
-                                                o- formatUnixTime(orderFile.insertedAt)
+                                                o- formatUnixTime(orderFile.createdAt)
                                             }
                                         }
                                         o- kdiv(className = "col-md-3"){o->
@@ -251,13 +249,13 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                         o- kdiv(className = "col-md-3"){o->
                                             o- label(t("File name", "Имя файла"))
                                             o- kdiv(){o->
-                                                o- highlightedShit(file.name, file.nameHighlightRanges, tag = "span")
+                                                o- highlightedShit(orderFile.name, orderFile.nameHighlightRanges, tag = "span")
                                             }
                                         }
                                         o- kdiv(className = "col-md-3"){o->
                                             o- label(t("Size", "Размер"))
                                             o- kdiv(){o->
-                                                o- formatFileSizeApprox(Globus.lang, file.sizeBytes)
+                                                o- formatFileSizeApprox(Globus.lang, orderFile.sizeBytes)
                                             }
                                         }
                                     }
@@ -265,7 +263,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                         o- kdiv(className = "col-md-12"){o->
                                             o- label(t("Details", "Детали"))
                                             o- kdiv(whiteSpace = "pre-wrap"){o->
-                                                o- highlightedShit(file.details, file.detailsHighlightRanges)
+                                                o- highlightedShit(orderFile.details, orderFile.detailsHighlightRanges)
                     //                                                o- file.details
                                             }
                                         }
@@ -292,9 +290,9 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                                     req = CustomerEditUAOrderFileRequest()-{o->
                                                         o.fieldInstanceKeySuffix = "-${orderFile.id}"
                                                         o.orderFileID.value = orderFile.id
-                                                        o.file.content = FileField.Content.ExistingFile(orderFile.file.name, orderFile.file.sizeBytes)
-                                                        o.title.value = orderFile.file.title
-                                                        o.details.value = orderFile.file.details
+                                                        o.file.content = FileField.Content.ExistingFile(orderFile.name, orderFile.sizeBytes)
+                                                        o.title.value = orderFile.title
+                                                        o.details.value = orderFile.details
                                                     },
                                                     ui = world,
                                                     cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle,
@@ -353,10 +351,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                         UserKind.ADMIN -> fa.cog
                                     })
                                 o- " "
-                                o- highlightedShit(file.title, file.titleHighlightRanges, tag = "span")
+                                o- highlightedShit(orderFile.title, orderFile.titleHighlightRanges, tag = "span")
 
                                 val idColor: Color?; val idBackground: Color?
-                                if (urlQuery.search.split(Regex("\\s+")).contains(orderFile.id)) {
+                                if (urlQuery.search.split(Regex("\\s+")).contains(orderFile.id.toString())) {
                                     idColor = Color.GRAY_800
                                     idBackground = Color.AMBER_200
                                 } else {
@@ -387,13 +385,13 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                                    iframe.onload = {
                                                        iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
                                                    }
-                                                   iframe.src = "$backendURL/file?fileID=${file.id}&databaseID=${ExternalGlobus.DB}&token=${world.tokenMaybe}"
+                                                   iframe.src = "$backendURL/file?fileID=${orderFile.id}&databaseID=${ExternalGlobus.DB}&token=${world.tokenMaybe}"
                                                })
                                         if (orderFile.editable) {
                                             o- kic("delete-${orderFile.id}", className = "${css.cunt.header.rightIcon} ${fa.trash}", style = Style(),
                                                    onClicka = {async{
                                                        if (await(modalConfirmAndPerformDeletion(
-                                                           t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.file.title}"),
+                                                           t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.title}"),
                                                            DeleteUAOrderFileRequest()-{o->
                                                                o.id.value = orderFile.id
                                                            }))) {

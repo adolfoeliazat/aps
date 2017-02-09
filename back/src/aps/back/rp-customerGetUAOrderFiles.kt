@@ -7,14 +7,20 @@
 package aps.back
 
 import aps.*
+import org.springframework.data.repository.findOrDie
+import javax.persistence.EntityManagerFactory
 
-@Servant class ServeUACustomerGetOrderFiles(val repo: UAOrderRepository) : BitchyProcedure() {
+@Servant class ServeUACustomerGetOrderFiles(val emf: EntityManagerFactory, val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,
             makeRequest = {ItemsRequest(CustomerFileFilter.values())},
             needsUser = NeedsUser.YES,
             runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
+                val order = orderRepo.findOrDie(req.entityID.value)
+                // TODO:vgrechka @security Check permissions
+                // TODO:vgrechka Friendly, kind of, message if no such order (user may mistype URL, etc.)
+
                 val fromID = req.fromID.value?.toLong()
                 val ordering = req.ordering.value
 
@@ -28,9 +34,32 @@ import aps.*
                         }
                     }
 
-                    val items = listOf<UAOrderFileRTO>()
-
-                    return@run Chunk(items, moreFromId = null)
+                    val em = emf.createEntityManager()
+                    em.transaction.begin()
+                    try {
+                        val query = em.createQuery("select f from UAOrderFile f")
+                        val items = query.resultList.map {
+                            val f = it as UAOrderFile
+                            UAOrderFileRTO(
+                                id = f.id!!,
+                                createdAt = f.createdAt.time,
+                                updatedAt = f.updatedAt.time,
+                                name = f.name,
+                                title = f.title,
+                                details = f.details,
+                                sizeBytes = f.sizeBytes,
+                                detailsHighlightRanges = listOf(),
+                                editable = true,
+                                nameHighlightRanges = listOf(),
+                                seenAsFrom = UserKind.CUSTOMER,
+                                titleHighlightRanges = listOf()
+                            )
+                        }
+                        return@run Chunk(items, moreFromId = null)
+                    } finally {
+                        em.transaction.rollback()
+                        em.close()
+                    }
                 }
 
                 return ItemsResponse(chunk.items, chunk.moreFromId)

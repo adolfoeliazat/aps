@@ -422,7 +422,7 @@ class UACreateOrderFileRequest : RequestMatumba() {
 abstract class EditUAOrderFileRequestBase : RequestMatumba() {
     class Response(val updatedOrderFile: UAOrderFileRTO) : CommonResponseFieldsImpl()
 
-    val orderFileID = StringHiddenField(this, "orderFileID")
+    val orderFileID by longHiddenField()
     val file = fileField(this, shouldBeProvided = false)
     val title = fileTitleField(this)
     val details = fileDetailsField(this)
@@ -433,7 +433,7 @@ class WriterEditUAOrderFileRequest : EditUAOrderFileRequestBase()
 
 abstract class DeleteRequest : RequestMatumba() {
     class Response : CommonResponseFieldsImpl()
-    val id = StringHiddenField(this, "id")
+    val id by longHiddenField()
 }
 
 class DeleteUAOrderFileRequest : DeleteRequest()
