@@ -43,12 +43,12 @@ data class FormSpec<Req: RequestMatumba, Res>(
     }
 }
 
-class FormMatumba<Req: RequestMatumba, Res>(val form: FormSpec<Req, Res>, val procedureName: String? = null) : ToReactElementable {
+class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val procedureName: String? = null) : ToReactElementable {
     init {
         req.fields.forEach {it.form = this}
     }
 
-    val req: Req get() = form.req
+    val req: Req get() = spec.req
     var error: String? = null
     var working: Boolean = false
     lateinit var actualVisibleFieldNames: Iterable<String>
@@ -61,10 +61,10 @@ class FormMatumba<Req: RequestMatumba, Res>(val form: FormSpec<Req, Res>, val pr
             figureOutActualVisibleFieldNames()
             return kform{o->
                 if (error != null) {
-                    val shit: ReactElement = Shitus.errorBanner(json("content" to error, "style" to form.errorBannerStyle))
+                    val shit: ReactElement = Shitus.errorBanner(json("content" to error, "style" to spec.errorBannerStyle))
                     o- shit
                 }
-                for (f in form.req.fields) {
+                for (f in spec.req.fields) {
                     if (actualVisibleFieldNames.contains(f.name)) {
                         o- f.render()
                     }
@@ -77,38 +77,38 @@ class FormMatumba<Req: RequestMatumba, Res>(val form: FormSpec<Req, Res>, val pr
         override fun render(): ToReactElementable {
             return kdiv(display = "flex"){o->
                 val tickerBar = kdiv(Style(display = "flex", flexGrow = 1,
-                                           justifyContent = when (form.buttonLocation) {
+                                           justifyContent = when (spec.buttonLocation) {
                                                FormSpec.ButtonLocation.LEFT -> "flex-end"
                                                FormSpec.ButtonLocation.RIGHT -> "flex-start"})){o->
                     if (working)
                         o- renderTicker()
                 }
 
-                if (form.buttonLocation == FormSpec.ButtonLocation.RIGHT)
+                if (spec.buttonLocation == FormSpec.ButtonLocation.RIGHT)
                     o- tickerBar
 
                 o- Button(
                     key = buttonKey(fconst.key.button.primary.ref),
                     level = Button.Level.PRIMARY,
-                    title = form.primaryButtonTitle,
+                    title = spec.primaryButtonTitle,
                     disabled = working,
                     onClicka = {submit()}
                 )
 
-                if (form.cancelButtonTitle != null) {
+                if (spec.cancelButtonTitle != null) {
                     o- Button(
                         key = buttonKey(fconst.key.button.cancel.ref),
-                        title = form.cancelButtonTitle,
+                        title = spec.cancelButtonTitle,
                         disabled = working,
                         style = Style(marginLeft = 10),
                         onClicka = {async{
-                            (form.onCancel)()
-                            (form.onCancela)()
+                            (spec.onCancel)()
+                            (spec.onCancela)()
                         }}
                     ).toReactElement()
                 }
 
-                if (form.buttonLocation == FormSpec.ButtonLocation.LEFT)
+                if (spec.buttonLocation == FormSpec.ButtonLocation.LEFT)
                     o- tickerBar
             }
         }
@@ -127,7 +127,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val form: FormSpec<Req, Res>, val pr
         override fun defaultControlTypeName() = "FormMatumba"
 
         override fun render(): ReactElement {
-            return kdiv(attrs = Attrs(className = form.containerClassName, id = elementID), style = form.containerStyle){o->
+            return kdiv(attrs = Attrs(className = spec.containerClassName, id = elementID), style = spec.containerStyle){o->
                 o- fieldsAndBanner
                 o- buttonsAndTicker
             }.toReactElement()
@@ -144,7 +144,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val form: FormSpec<Req, Res>, val pr
     }
 
     suspend fun submit() {
-        for (field: FormFieldFront in form.req.fields) {
+        for (field: FormFieldFront in spec.req.fields) {
             field.error = null
             field.disabled = true
         }
@@ -155,23 +155,23 @@ class FormMatumba<Req: RequestMatumba, Res>(val form: FormSpec<Req, Res>, val pr
         TestGlobal.formTickingLock.sutPause()
 
         val theProcedureName = procedureName ?: remoteProcedureNameForRequest(req)
-        val res: FormResponse = await(callMatumba(theProcedureName, form.req, form.ui.tokenMaybe, populateFields = form.populateFields))
+        val res: FormResponse = await(callMatumba(theProcedureName, spec.req, spec.ui.tokenMaybe, populateFields = spec.populateFields))
 
         when (res) {
             is FormResponse.Shitty -> {
                 error = res.error
-                (form.onError)(res)
-                (form.onErrora)(res)
+                (spec.onError)(res)
+                (spec.onErrora)(res)
             }
             is FormResponse.Hunky<*> -> {
                 error = null
                 val meat = res.meat as Res
-                (form.onSuccess)(meat)
-                (form.onSuccessa)(meat)
+                (spec.onSuccess)(meat)
+                (spec.onSuccessa)(meat)
             }
         }
 
-        for (field in form.req.fields) {
+        for (field in spec.req.fields) {
             field.error = if (res !is FormResponse.Shitty) null else
                 res.fieldErrors.find{it.field == field.name}?.error
             field.disabled = false
@@ -189,7 +189,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val form: FormSpec<Req, Res>, val pr
     }
 
     fun figureOutActualVisibleFieldNames() {
-        actualVisibleFieldNames = form.req.fields.map{x -> x.name}.without((form.getInvisibleFieldNames)())
+        actualVisibleFieldNames = spec.req.fields.map{x -> x.name}.without((spec.getInvisibleFieldNames)())
     }
 
     fun fieldChanged() {

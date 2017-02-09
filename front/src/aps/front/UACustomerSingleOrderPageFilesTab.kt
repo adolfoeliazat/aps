@@ -153,7 +153,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     asu {reload(refreshButtonID)}
                 }
 
-                o- ebafPlus.renderButton()
+//                o- ebafPlus.renderButton()
+                o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = fconst.key.button.plus.ref) {
+                    clog("fuck you")
+                }
             }
         }
 

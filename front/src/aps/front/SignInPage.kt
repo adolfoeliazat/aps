@@ -24,7 +24,7 @@ class SignInPage(val ui: World) {
                     ui = ui,
                     primaryButtonTitle = t("Sign In", "Войти"),
                     onError = {
-                        form.req.password.value = ""
+                        spec.req.password.value = ""
                     },
 
                     onSuccessa = {res -> async {

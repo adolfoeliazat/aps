@@ -20,7 +20,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         forceFast {
             initialTestShit(this)
 
-            val startPoint = 2
+            val startPoint = 1
             var point = 0
 
             if (++point >= startPoint) {
@@ -123,6 +123,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                              steps = listOf(
                                  PauseAssertResumeStep(TestGlobal.switchTabHalfwayLock, "f727a9ea-c520-4613-97e0-c154f6506d3a"),
                                  PauseAssertResumeStep(TestGlobal.switchTabDoneLock, "f621673e-7f84-4a53-969f-8844614c4f30")))
+                    seq({buttonClick(fconst.key.button.plus.testRef)}, TestGlobal.modalShownLock, "314f08fe-960b-4e92-8454-28d3745a5c52")
                 }
             }
         }

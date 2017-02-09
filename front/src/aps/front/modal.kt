@@ -25,7 +25,7 @@ interface ModalOperations {
     suspend fun close()
 }
 
-suspend fun openModal(p: OpenModalParams): ModalOperations {
+fun openModal(p: OpenModalParams): ModalOperations {
     // TODO:vgrechka Escape key
 
     val shit = ResolvableShit<Boolean>()
@@ -104,6 +104,36 @@ suspend fun openModal(p: OpenModalParams): ModalOperations {
             await(shit.promise)
         }
     }
+}
+
+fun <Req : RequestMatumba, Res : CommonResponseFields>
+    openEditModal(title: String,
+                  formSpec: FormSpec<Req, Res>,
+                  onSuccessa: suspend () -> Unit): ModalOperations
+{
+    var modal by notNullOnce<ModalOperations>()
+
+    val form = FormMatumba(formSpec.copy(
+        buttonLocation = FormSpec.ButtonLocation.RIGHT,
+        primaryButtonTitle = t("TOTE", "Сохранить"),
+        cancelButtonTitle = t("TOTE", "Не стоит"),
+        onSuccessa = {
+            onSuccessa()
+            modal.close()
+        },
+        onCancela = {
+            modal.close()
+        }
+    ))
+
+    modal = openModal(OpenModalParams(
+        width = "80rem",
+        leftMarginColor = Color.BLUE_GRAY_300,
+        title = title,
+        body = form.fieldsAndBanner,
+        footer = form.buttonsAndTicker
+    ))
+    return modal
 }
 
 

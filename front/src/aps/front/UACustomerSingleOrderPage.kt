@@ -200,45 +200,30 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                 UserKind.CUSTOMER -> {
                     if (order.state == UAOrderState.CUSTOMER_DRAFT) {
                         o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit.ref) {
-                            var modal by notNullOnce<ModalOperations>()
-
-                            val form = FormMatumba<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(
-                                form = FormSpec(
-                                    req = UACustomerUpdateOrderRequest()-{o->
+                            openEditModal(
+                                title = t("TOTE", "Параметры заказа"),
+                                formSpec = FormSpec<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(
+                                    ui = world,
+                                    req = UACustomerUpdateOrderRequest() - {o ->
                                         o.entityID.value = order.id.toLong()
-                                        o.fields1-{o->
+                                        o.fields1 - {o ->
                                             o.documentType.value = order.documentType
                                             o.documentTitle.value = order.title
                                             o.numPages.setValue(order.numPages)
                                             o.numSources.setValue(order.numSources)
                                             o.documentDetails.value = order.details
                                         }
-                                        o.fields2-{o->
+                                        o.fields2 - {o ->
                                             o.phone.value = order.phone
                                         }
-                                    },
-                                    ui = world,
-                                    buttonLocation = FormSpec.ButtonLocation.RIGHT,
-                                    primaryButtonTitle = t("TOTE", "Сохранить"),
-                                    cancelButtonTitle = t("TOTE", "Не стоит"),
-                                    onSuccessa = {
-                                        val path = pageSpecs.uaCustomer.order.path
-                                        val idParam = UACustomerSingleOrderPage.urlQuery.id.name
-                                        world.replaceNavigate("$path.html?$idParam=${order.id}")
-                                        modal.close()
-                                    },
-                                    onCancela = {
-                                        modal.close()
                                     }
-                                ))
-
-                            modal = openModal(OpenModalParams(
-                                width = "80rem",
-                                leftMarginColor = Color.BLUE_GRAY_300,
-                                title = t("TOTE", "Параметры заказа"),
-                                body = form.fieldsAndBanner,
-                                footer = form.buttonsAndTicker
-                            ))
+                                ),
+                                onSuccessa = {
+                                    val path = pageSpecs.uaCustomer.order.path
+                                    val idParam = UACustomerSingleOrderPage.urlQuery.id.name
+                                    world.replaceNavigate("$path.html?$idParam=${this@ParamsTab.order.id}")
+                                }
+                            )
                         }
                     }
                 }

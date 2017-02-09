@@ -440,6 +440,10 @@ suspend fun step(action: suspend () -> Unit, lock: TestLock, aid: String) {
     sequence(action = action, steps = listOf(PauseAssertResumeStep(lock, aid)))
 }
 
+suspend fun seq(action: suspend () -> Unit, lock: TestLock, aid: String) {
+    sequence(action = action, steps = listOf(PauseAssertResumeStep(lock, aid)))
+}
+
 suspend fun sequence(
     action: suspend () -> Unit,
     descr: String = "Describe me",
