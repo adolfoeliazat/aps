@@ -20,7 +20,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         forceFast {
             initialTestShit(this)
 
-            val startPoint = 1
+            val startPoint = 2
             var point = 0
 
             if (++point >= startPoint) {
@@ -124,6 +124,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  PauseAssertResumeStep(TestGlobal.switchTabHalfwayLock, "f727a9ea-c520-4613-97e0-c154f6506d3a"),
                                  PauseAssertResumeStep(TestGlobal.switchTabDoneLock, "f621673e-7f84-4a53-969f-8844614c4f30")))
                     seq({buttonClick(fconst.key.button.plus.testRef)}, TestGlobal.modalShownLock, "314f08fe-960b-4e92-8454-28d3745a5c52")
+                    fileFieldChoose("little pussy.rtf", "5c7490d7-baf8-4adc-9532-5233bc0d96c1")
+                    inputSetValue(fieldSpecs.shebang.title.testRef, "Задание на практику")
+                    inputSetValue(fieldSpecs.shebang.details.testRef, "- Вам следовало остаться у себя в комнате! Разве Франц вам ничего не говорил?\n\n- Что вам, наконец, нужно? - спросил К., переводя взгляд с нового посетителя на того,  кого  назвали  Франц  (он  стоял  в дверях),  и  снова  на первого.  В  открытое окно видна была та старуха: в припадке старческого любопытства она уже  перебежала к другому окну - посмотреть, что дальше.")
+                    submitFormSequence(testShit, aid = "477d2267-bc41-43fe-9090-5e09a824edda")
                 }
             }
         }

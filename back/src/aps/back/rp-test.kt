@@ -361,7 +361,7 @@ fun frp_robotClickOnChrome(rmap: Map<*, *>) {
     User32.INSTANCE.SetForegroundWindow(hwnd) || bitch("Cannot bring Chrome to foreground")
     val origLocation = MouseInfo.getPointerInfo().location
     val robot = Robot()
-    robot.mouseMove(18, 416)
+    robot.mouseMove(600, 190) // Somewhere in page (or modal, so it won't be closed!) title
     robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
     robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
     robot.mouseMove(origLocation.x, origLocation.y)

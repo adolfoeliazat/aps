@@ -160,6 +160,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                         formSpec = FormSpec<UACreateOrderFileRequest, UACreateOrderFileRequest.Response>(
                             ui = world,
                             req = UACreateOrderFileRequest()-{o->
+                                o.orderID.value = order.id
                             }
                         ),
                         onSuccessa = {
@@ -169,7 +170,6 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 //                            world.replaceNavigate("$path.html?$idParam=${this@ParamsTab.order.id}")
                         }
                     )
-
                 }
             }
         }

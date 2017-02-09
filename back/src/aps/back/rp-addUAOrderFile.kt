@@ -12,14 +12,15 @@ import aps.back.generated.jooq.enums.*
 import aps.back.generated.jooq.tables.records.*
 import com.google.common.hash.Hashing
 import into.kommon.*
+import org.springframework.data.repository.findOrDie
 import java.util.*
 
-@Servant class ServeUACreateOrderFileRequest(val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
+@Servant class ServeUACreateOrderFile(val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc, makeRequest = {UACreateOrderFileRequest()},
             runShit = fun(ctx, req): aps.UACreateOrderFileRequest.Response {
-                val order = orderRepo.findOne(req.orderID.value)
+                val order = orderRepo.findOrDie(req.orderID.value)
                 imf()
 
 //                val content = Base64.getDecoder().decode(req.file.base64)
@@ -50,12 +51,6 @@ import java.util.*
 //                return AddUAOrderFileRequestBase.Response(orderFileID.toString())
             }
         ))
-    }
-}
-
-@Servant class ServeUAWriterCreateOrderFileRequest : BitchyProcedure() {
-    override fun serve() {
-        imf("ServeUAWriterCreateOrderFileRequest")
     }
 }
 

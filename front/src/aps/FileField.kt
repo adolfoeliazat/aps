@@ -50,15 +50,15 @@ import kotlin.js.json
                     "id" to inputID,
                     "type" to "file",
                     "style" to json("display" to "none"),
-                    "onChange" to {
+                    "onChange" to {async{
                         val files: FileList = byid0(inputID).asDynamic().files
                         val file = files[0]!!
                         aps.gloshit.file = file
                         noise.clog("Got file", file)
                         content = Content.FileToUpload(file)
                         update()
-//                        TestGlobal.fileFieldChangedLock.sutPause()
-                    }
+                        TestGlobal.fileFieldChangedLock.sutPause()
+                    }}
                 ), listOf())
                 when (_content) {
                     is Content.ExistingFile -> {
@@ -83,7 +83,7 @@ import kotlin.js.json
                     }
                     is Content.NotProvided -> {
                         o- kdiv{o->
-                            o- Button(icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), key = SubscriptButtonKey(fconst.key.button.upload.ref, container.fieldInstanceKeySuffix), onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), key = fconst.key.button.upload.ref, onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -155,12 +155,6 @@ import kotlin.js.json
     }
 }
 
-fun TestScenarioBuilder.typeIntoOpenFileDialog(text: String) {
-    acta("Typing into Open dialog: ${markdownItalicVerbatim(text)}") {
-        fuckingRemoteCall.robotTypeTextCRIntoWindowTitledOpen(text)
-    }
-}
-
 //fun TestScenarioBuilder.fileFieldWaitTillShitChanged(key: String) {
 //    acta("Waiting till file in `$key` is changed") {
 //        val shit = ResolvableShit<Unit>()
@@ -177,5 +171,25 @@ fun TestScenarioBuilder.typeIntoOpenFileDialog(text: String) {
 //        shit.promise
 //    }
 //}
+
+
+suspend fun fileFieldChoose(fileName: String, aid: String, descr: String = "Describe me") {
+    sequence(
+        action = {
+            buttonUserInitiatedClick(fconst.key.button.upload.testRef)
+            typeIntoOpenFileDialog(fconst.test.filesRoot + fileName)
+        },
+        steps = listOf(
+            PauseAssertResumeStep(TestGlobal.fileFieldChangedLock, aid)
+        ),
+        descr = descr
+    )
+}
+
+suspend fun typeIntoOpenFileDialog(text: String) {
+    await(fuckingRemoteCall.robotTypeTextCRIntoWindowTitledOpen(text))
+}
+
+
 
 

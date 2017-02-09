@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.browser.window
 import kotlin.js.json
 
 open class ButtonKey(override val name: String) : NamedItem
@@ -163,25 +164,25 @@ suspend fun buttonClick(key: TestRef<ButtonKey>, handOpts: HandOpts = HandOpts()
     notAwait {target.click()}
 }
 
-fun TestScenarioBuilder.buttonUserInitiatedClick(key: String) {
-    imf("reimplement buttonUserInitiatedClick")
-//    acta("Clicking button `$key`") {async{
-//        val successOrTimeout = Promisoid<Unit> {resolve, reject ->
-//            timeoutSet(1000) {reject(Exception("Timed out waiting for a fucking robot click"))}
-//            window.onclick = {
-//                window.onclick = null
-//                Button.instance(key).click()
-//                resolve(Unit)
-//            }
-//        }
-//
-//        try {
-//            await(fuckingRemoteCall.robotClickOnChrome())
-//            await(successOrTimeout)
-//        } finally {
-//            window.onclick = null
-//        }
-//    }}
+suspend fun buttonUserInitiatedClick(key: TestRef<ButtonKey>, handOpts: HandOpts = HandOpts()) {
+    // TODO:vgrechka Rethink
+    val successOrTimeout = Promisoid<Unit> {resolve, reject ->
+        timeoutSet(5000) {reject(Exception("Timed out waiting for a fucking robot click"))}
+        window.onclick = {async{
+            window.onclick = null
+            val target = Button.instance(key.it)
+            await(TestUserActionAnimation.hand(target, handOpts))
+            notAwait {target.click()}
+            resolve(Unit)
+        }}
+    }
+
+    try {
+        await(fuckingRemoteCall.robotClickOnChrome())
+        await(successOrTimeout)
+    } finally {
+        window.onclick = null
+    }
 }
 
 

@@ -460,20 +460,6 @@ suspend fun sequence(
     }
 }
 
-fun TestScenarioBuilder.fileFieldChoose(assertionDescr: String, assertionID: String, keySuffix: String, fileName: String) {
-    imf("reimplement fileFieldChoose")
-//    sequence(
-//        assertionDescr = assertionDescr,
-//        buildAction = {
-//            buttonUserInitiatedClick("${fconst.key.upload.testRef}$keySuffix")
-//            typeIntoOpenFileDialog(fconst.test.filesRoot + fileName)
-//        },
-//        steps = listOf(
-//            TestSequenceStep(TestGlobal.fileFieldChangedLock, assertionID)
-//        )
-//    )
-}
-
 fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
     die("reimplement snapshot")
 //    check(snapshot.name.length == 1 && snapshot.name[0] >= '1' && snapshot.name[0] <= '9') {"Snapshot name corresponds to a numeric key"}
