@@ -97,6 +97,13 @@ suspend fun tabClick(ref: TestRef<TabKey>) {
     Tabs2.instance(ref.it).click()
 }
 
+suspend fun tabSequence(tab: TestRef<TabKey>, aidHalfway: String, aidDone: String) {
+    sequence({tabClick(tab)},
+             steps = listOf(
+                 PauseAssertResumeStep(TestGlobal.switchTabHalfwayLock, aidHalfway),
+                 PauseAssertResumeStep(TestGlobal.switchTabDoneLock, aidDone)))
+}
+
 
 
 

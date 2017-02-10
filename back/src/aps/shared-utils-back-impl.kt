@@ -110,6 +110,21 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     }
 }
 
+@Back fun intHiddenField() = eagerEx<RequestMatumba, IntHiddenField> {thisRef, property ->
+    IntHiddenField(thisRef, property.name)
+}
+
+@Back class IntHiddenField(
+    container: RequestMatumba,
+    name: String
+) : FormFieldBack(container, name) {
+    var value by notNullOnce<Int>()
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        value = (input[name] as String).toInt()
+    }
+}
+
 @Back fun maybeLongHiddenField() = eagerEx<RequestMatumba, MaybeLongHiddenField> {thisRef, property ->
     MaybeLongHiddenField(thisRef, property.name)
 }

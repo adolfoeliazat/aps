@@ -63,9 +63,9 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 //    lastAssertScreenHTMLParams = p
 //    act {TestGlobal.testShitBeingAssertedID = p.assertionID}
 
-    sleep(0)             // XXX Fucking React...
-    waitAnimationFrame() // It seems, both of these is needed
-                         // Also, when Chrome's Elements tab is open, updates still lag
+    sleep(50)             // XXX Fucking React...
+    waitAnimationFrame()  // It seems, both of these is needed
+                          // Also, when Chrome's Elements tab is open, updates still lag
 
     TestGlobal.testShitBeingAssertedID = p.assertionID
     val expected = await(fuckingRemoteCall.loadTestShit(p.assertionID))
@@ -109,8 +109,13 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             var verticalPosition = opts.bannerVerticalPosition
             var horizontalPosition = opts.bannerHorizontalPosition
             var capturedVisualShit = false
+            var descriptionPanel by notNull<Placeholder>()
 
             suspend fun acceptCurrentShit() {
+                descriptionPanel.setContent(kdiv{o->
+                    o- span("Accepting...", Style(fontStyle = "italic"))
+                })
+
                 await(captureVisualShitIfNeeded())
                 await(sendp(SaveCapturedVisualShitRequest()))
                 await(send(HardenScreenHTMLRequest()-{o->
@@ -403,18 +408,22 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                             o- rerunTestSlowlyButton()
                             renderSpecificButtons(o)
                         }
-                        o- kdiv{o->
-                            o- link(title = /*"Assertion: " + */"${p.descr}", color = BLACK, onClick = {
-                                if (stackCapture != null) {
-                                    revealStack(stackCapture, muteConsole = true)
-                                } else {
-                                    bitch("No fucking stack capture")
-                                }
-                            })
-                        }
-                        o- kdiv(fontSize = "75%", fontWeight = "normal"){o->
-                            o- p.assertionID
-                        }
+
+                        descriptionPanel = Placeholder(kdiv{o->
+                            o- kdiv{o->
+                                o- link(title = /*"Assertion: " + */"${p.descr}", color = BLACK, onClick = {
+                                    if (stackCapture != null) {
+                                        revealStack(stackCapture, muteConsole = true)
+                                    } else {
+                                        bitch("No fucking stack capture")
+                                    }
+                                })
+                            }
+                            o- kdiv(fontSize = "75%", fontWeight = "normal"){o->
+                                o- p.assertionID
+                            }
+                        })
+                        o- descriptionPanel
                     }
                 }
                 val bannerPane = old_debugPanes.put(banner)

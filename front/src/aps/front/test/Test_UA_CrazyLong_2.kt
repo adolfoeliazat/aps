@@ -12,14 +12,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     enum class FilesShortcutMode { ALL, A, B }
 
+    object testdata {
+        val details = "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."
+    }
+
+    val filesShortcutMode1 = FilesShortcutMode.B
+    val startPoint = 2
+    var currentPoint = 0
+
     override suspend fun run1() {
-        val startPoint = 2
-        val filesShortcutMode1 = FilesShortcutMode.B
-
-        val testdata = object {
-            val details = "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."
-        }
-
         TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(
             bannerVerticalPosition = VerticalPosition.TOP,
             bannerHorizontalPosition = HorizontalPosition.RIGHT)
@@ -27,9 +28,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         forceFast()
         initialTestShit(this)
 
-        var point = 0
-
-        if (++point >= startPoint) {
+        definePoint(1) {
             run { // Make order
                 val ivo1 = Morda("ivo1",
                                  url = fconst.test.url.customer,
@@ -103,33 +102,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
                 submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
-
-            send(TestTakeDBSnapshotRequest()-{o->
-                o.snapshotName.value = "pizda-$point"
-                o.browseroidName.value = TestGlobal.currentMorda.browseroidName
-                o.href.value = Globus.currentBrowseroid.location.href
-                o.token.value = Globus.currentBrowseroid.typedStorageLocal.token
-            })
         }
 
-        if (++point >= startPoint) {
-            if (point == startPoint) {
-                val state = send(TestRestoreDBSnapshotRequest()-{o->
-                    o.snapshotName.value = "pizda-${point - 1}"
-                })
-                dlog("Snapshot response", state)
-                val ivo3 = Morda(state.browseroidName,
-                                 url = state.href,
-                                 fillTypedStorageLocal = {it.token = state.token},
-                                 fillRawStorageLocal = {})
-                ivo3.coitizeAndBoot()
-            }
+        definePoint(2) {
             run { // Add some files
-                // TODO:vgrechka Assert only modal's content, reuse assertion
-                sequence({tabClick(fconst.tab.order.files.testRef)},
-                         steps = listOf(
-                             PauseAssertResumeStep(TestGlobal.switchTabHalfwayLock, "f727a9ea-c520-4613-97e0-c154f6506d3a"),
-                             PauseAssertResumeStep(TestGlobal.switchTabDoneLock, "f621673e-7f84-4a53-969f-8844614c4f30")))
+                tabSequence(fconst.tab.order.files.testRef, "f727a9ea-c520-4613-97e0-c154f6506d3a", "f621673e-7f84-4a53-969f-8844614c4f30")
 
                 val bunch1 = listOf(
                     AddFileParams(fileName = "little pussy.rtf", title = "Задание на практику", details = "- Вам следовало остаться у себя в комнате! Разве Франц вам ничего не говорил?\n\n- Что вам, наконец, нужно? - спросил К., переводя взгляд с нового посетителя на того,  кого  назвали  Франц  (он  стоял  в дверях),  и  снова  на первого.  В  открытое окно видна была та старуха: в припадке старческого любопытства она уже  перебежала к другому окну - посмотреть, что дальше.", aid = "4c30a4f4-5bee-426a-ab7f-960367b2c198"),
@@ -202,16 +179,45 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "86500c2a-c99b-4c16-9eb1-b95a8000ccc9")
                          ))
 
-                sleep(0)
                 scrollBodyToBottomGradually()
                 sequence({buttonClick(fconst.key.button.loadMore.testRef)},
                          steps = listOf(
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "e799ccdf-58f6-44b4-9c8c-468e8694c30b"),
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "81c65484-7584-49fb-84ea-b872dfaf9e5d")
                          ))
-                sleep(0)
                 scrollBodyToBottomGradually()
             }
+
+            run { // Switch to Params and back to Files
+                scrollBodyToTopGradually()
+                tabSequence(fconst.tab.order.params.testRef, "f0526589-fa1e-4a2a-818f-3d4eca9e231a", "721ff1f7-093a-4752-a699-75debd0a2d99")
+                tabSequence(fconst.tab.order.files.testRef, "3c35734a-6cc1-4de4-a69d-421acd693603", "95b74865-e2dd-4b9c-a6b4-76dc967ad5dd")
+            }
+        }
+    }
+
+    fun pointToSnapshotName(i: Int) = "${this::class.simpleName}-$i"
+
+    private suspend fun definePoint(index: Int, script: suspend () -> Unit) {
+        // index is for easy textual search of point definitions
+        ++currentPoint
+        if (currentPoint != index) die("Expected point index $index, got $currentPoint")
+
+        if (currentPoint >= startPoint) {
+            if (currentPoint > 1 && currentPoint == startPoint) {
+                val state = send(TestRestoreTestPointSnapshotRequest()-{o->
+                    o.snapshotName.value = pointToSnapshotName(currentPoint - 1)
+                })
+                dlog("TestRestoreDBSnapshotRequest response", state)
+                testShit.nextRequestTimestampIndex = state.nextRequestTimestampIndex
+                val morda = Morda(state.browseroidName,
+                                  url = state.href,
+                                  fillTypedStorageLocal = {it.token = state.token},
+                                  fillRawStorageLocal = {})
+                morda.coitizeAndBoot()
+            }
+            script()
+            savePointState()
         }
     }
 
@@ -239,6 +245,16 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         inputSetValue(fieldSpecs.shebang.fileTitle.testRef, p.title)
         inputSetValue(fieldSpecs.shebang.fileDetails.testRef, p.details)
         submitFormSequence(testShit, aid = "${p.aid}--2")
+    }
+
+    suspend fun savePointState() {
+        send(TestTakeTestPointSnapshotRequest()-{o->
+            o.snapshotName.value = pointToSnapshotName(currentPoint)
+            o.browseroidName.value = TestGlobal.currentMorda.browseroidName
+            o.href.value = Globus.currentBrowseroid.location.href
+            o.token.value = Globus.currentBrowseroid.typedStorageLocal.token
+            o.nextRequestTimestampIndex.value = testShit.nextRequestTimestampIndex
+        })
     }
 }
 

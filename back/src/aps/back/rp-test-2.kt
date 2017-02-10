@@ -19,22 +19,24 @@ class TestState {
     var href by notNull<String>()
     var token: String? = null
     var sqlCommands by notNull<List<String>>()
+    var nextRequestTimestampIndex by notNull<Int>()
 }
 
-@Servant class ServeTestTakeDBSnapshot(
+@Servant class ServeTestTakeTestPointSnapshot(
     val emf: EntityManagerFactory
 ) : BitchyProcedure() {
     override fun serve() {
         fuckDangerously(FuckDangerouslyParams(
             bpc = bpc,
-            makeRequest = {TestTakeDBSnapshotRequest()},
-            runShit = fun(ctx, req: TestTakeDBSnapshotRequest): TestTakeDBSnapshotRequest.Response {
+            makeRequest = {TestTakeTestPointSnapshotRequest()},
+            runShit = fun(ctx, req: TestTakeTestPointSnapshotRequest): TestTakeTestPointSnapshotRequest.Response {
                 snapshotFile(req.snapshotName.value).writeText(
                     objectMapper.writeValueAsString(TestState()-{o->
                         o.snapshotName = req.snapshotName.value
                         o.browseroidName = req.browseroidName.value
                         o.token = req.token.value
                         o.href = req.href.value
+                        o.nextRequestTimestampIndex = req.nextRequestTimestampIndex.value
                         o.sqlCommands = run {
                             val em = emf.createEntityManager()
                             em.transaction.begin()
@@ -47,18 +49,18 @@ class TestState {
                         }
                     })
                 )
-                return TestTakeDBSnapshotRequest.Response()
+                return TestTakeTestPointSnapshotRequest.Response()
             }
         ))
     }
 }
 
-@Servant class ServeTestRestoreDBSnapshot : BitchyProcedure() {
+@Servant class ServeTestRestoreTestPointSnapshot : BitchyProcedure() {
     override fun serve() {
         fuckDangerously(FuckDangerouslyParams(
             bpc = bpc,
-            makeRequest = {TestRestoreDBSnapshotRequest()},
-            runShit = fun(ctx, req: TestRestoreDBSnapshotRequest): TestRestoreDBSnapshotRequest.Response {
+            makeRequest = {TestRestoreTestPointSnapshotRequest()},
+            runShit = fun(ctx, req: TestRestoreTestPointSnapshotRequest): TestRestoreTestPointSnapshotRequest.Response {
                 val testState = objectMapper.readValue(snapshotFile(req.snapshotName.value), TestState::class.java)
 
                 val ds = springctx.getBean(DataSource::class.java)
@@ -73,10 +75,11 @@ class TestState {
                         }
                 }
 
-                return TestRestoreDBSnapshotRequest.Response(
+                return TestRestoreTestPointSnapshotRequest.Response(
                     browseroidName = testState.browseroidName,
                     href = testState.href,
-                    token = testState.token
+                    token = testState.token,
+                    nextRequestTimestampIndex = testState.nextRequestTimestampIndex
                 )
             }
         ))

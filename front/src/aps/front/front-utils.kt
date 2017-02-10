@@ -277,7 +277,13 @@ suspend fun scrollBodyGradually(targetTop: Double, bursts: Int = fconst.defaultS
 }
 
 suspend fun scrollBodyToBottomGradually() {
+    sleep(0)
     scrollBodyGradually(jqbody.height().toDouble() - jqwindow.height().toDouble() + const.topNavbarHeight)
+}
+
+suspend fun scrollBodyToTopGradually() {
+    sleep(0)
+    scrollBodyGradually(0.0)
 }
 
 fun EventTarget.addEventLis(type: String, callback: ((Event) -> Unit)?) {
