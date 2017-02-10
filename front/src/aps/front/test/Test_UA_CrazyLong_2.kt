@@ -135,11 +135,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun addFile(fileName: String, title: String, details: String, aid: String) {
-        seq({buttonClick(fconst.key.button.plus.testRef)}, TestGlobal.modalShownLock, "$aid--3")
-        fileFieldChoose(fileName, "$aid--4")
+        seq({buttonClick(fconst.key.button.plus.testRef)}, TestGlobal.modalShownLock, "d7249410-e04b-421b-90db-2e4b538fab90--emptyAddFileModal")
+        fileFieldChoose(fileName, "$aid--1")
         inputSetValue(fieldSpecs.shebang.title.testRef, title)
         inputSetValue(fieldSpecs.shebang.details.testRef, details)
-        submitFormSequence(testShit, aid = "$aid--5")
+        submitFormSequence(testShit, aid = "$aid--2")
     }
 }
 

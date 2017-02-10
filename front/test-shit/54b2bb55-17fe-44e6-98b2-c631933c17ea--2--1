@@ -1,0 +1,79 @@
+-------------------- URL --------------------
+
+[uac]/order.html?id=1&tab=files
+
+
+-------------------- MODAL --------------------
+
+<div class="modal" style="display: block;">
+</div>
+<div class="modal fade in" style="display: block;">
+  <div class="modal-dialog" style="width: 80rem;">
+    <div class="modal-content" style="border-left: 0.5em solid rgb(144, 164, 174);">
+      <div class="modal-header">
+        <button class="btn btn-default close" data-dismiss="modal">
+          ×
+        </button>
+        <h4 class="modal-title">
+          Новый файл
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>
+              Файл
+            </label>
+            <div style="display: flex; align-items: center;">
+              <span>
+                pussy story.rtf (3 КБ)
+              </span>
+              <button class="btn btn-default " style="margin-left: 1em;">
+                <i class="fa fa-cloud-upload">
+                </i>
+                &nbsp;
+                Изменить...
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="textField-labelContainer">
+              <label>
+                Название
+              </label>
+            </div>
+            <div style="position: relative;">
+              <input type="text" rows="5" class="form-control" disabled="" value="Методичка какая-то левая" style="resize: none;">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="textField-labelContainer">
+                <label>
+                  Детали
+                </label>
+              </div>
+              <div style="position: relative;">
+                <textarea rows="5" type="text" class="form-control" disabled="" style="resize: none;">
+                  В комнате он тотчас же стал выдвигать ящики стола; там был образцовый  порядок,  но  удостоверение  личности,  которое  он искал, он от волнения никак найти  не  мог.  Наконец  он  нашел удостоверение на велосипед и уже хотел идти с ним к стражам, но потом  эта  бумажка  показалась  ему неубедительной, и он снова стал искать, пока не нашел свою метрику.
+                </textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div style="display: flex;">
+            <div style="display: flex; flex-grow: 1; justify-content: flex-start;">
+              <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122);">
+              </div>
+            </div>
+            <button class="btn btn-primary " disabled="">
+              Сохранить
+            </button>
+            <button class="btn btn-default " disabled="" style="margin-left: 10px;">
+              Не стоит
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

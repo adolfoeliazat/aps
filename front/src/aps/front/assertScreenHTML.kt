@@ -84,12 +84,6 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             ClientKind.UA_WRITER -> "[uaw]"
         }
         append(base + url.substring(nextSlash) + "\n\n")
-        gloshit.actualAssertionURL = toString()
-        append("-------------------- NAVBAR --------------------\n\n")
-        append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
-        if (!endsWith("\n")) append("\n")
-        append("\n-------------------- ROOT --------------------\n\n")
-        append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
 
         val modalPaneSelector = ".${css.shebang.modalPane}"
         val jqModalPane = jq(modalPaneSelector)
@@ -97,6 +91,13 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             check(jqModalPane.length == 1) {"Too many modal panes"}
             append("\n-------------------- MODAL --------------------\n\n")
             append(tidyHTML(takeHTMLForAssertion(modalPaneSelector)))
+        } else {
+            gloshit.actualAssertionURL = toString()
+            append("-------------------- NAVBAR --------------------\n\n")
+            append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
+            if (!endsWith("\n")) append("\n")
+            append("\n-------------------- ROOT --------------------\n\n")
+            append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
         }
     }
 
