@@ -25,7 +25,6 @@ import javax.persistence.EntityManagerFactory
                 val ordering = req.ordering.value
 
                 val chunk = run {
-                    val chunkSize = 10
                     val theFromID = when {
                         fromID != null -> fromID
                         else -> when (ordering) {

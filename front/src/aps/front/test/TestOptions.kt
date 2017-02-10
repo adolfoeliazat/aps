@@ -44,7 +44,7 @@ object TestOptionsTemplates {
     val slower = TestOptionsTemplate("Slower", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = false, animateUserActions = true, slowdown = 2, handPauses = true))
     val fastest = TestOptionsTemplate("Fastest", TestOptions(stopOnAssertions = false, dontStopOnCorrectAssertions = false, animateUserActions = false, slowdown = 1, handPauses = false))
     val fastestIgnoreNotHardened = TestOptionsTemplate("Fastest, ignore not-hardened assertions", TestOptions(stopOnAssertions = false, dontStopOnCorrectAssertions = false, animateUserActions = false, slowdown = 1, handPauses = false, ignoreNotHardened = true))
-    val fastestExceptShowBannerOnNonCorrectAssertions = TestOptionsTemplate("Fastest except show banner on non-correct assertions", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = false, slowdown = 1, handPauses = false, skipRambling = true, addTestOffClassSuffixes = true, fastFileUpload = true))
+    val fastestExceptShowBannerOnNonCorrectAssertions = TestOptionsTemplate("Fastest except show banner on non-correct assertions", TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = false, slowdown = 1, handPauses = false, skipRambling = true, addTestOffClassSuffixes = false, fastFileUpload = false))
 
     val all = setOf(
         TestOptionsTemplate("Default", TestOptions()),

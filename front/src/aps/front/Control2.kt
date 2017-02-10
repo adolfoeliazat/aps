@@ -251,7 +251,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
         if (isInTestScenario() && hrss.worldIsHalted) return
         if (!reactClassInstanceOperable) {
             // TODO:vgrechka Include control construction stack in warning
-            console.warn("Attempt to update non-operable control")
+            // console.warn("Attempt to update non-operable control")
             return
         }
 

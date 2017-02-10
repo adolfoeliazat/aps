@@ -2,6 +2,8 @@ package aps
 
 object const {
 
+    val moreableChunkSize = 10
+
     object text {
         object symbols {
             val rightDoubleAngleQuotation = "»"

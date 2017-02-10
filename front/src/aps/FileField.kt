@@ -109,32 +109,6 @@ import kotlin.js.json
         }
     }
 
-    // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
-    private fun base64ToUint8ArraySlices(base64: String): dynamic {
-        val sliceSize = 512
-
-        val byteCharacters = js("atob")(base64)
-        val byteArrays = js("[]")
-
-        var offset = 0
-        while (offset.asDynamic() < byteCharacters.length) {
-            val slice = byteCharacters.slice(offset, offset + sliceSize)
-
-            val byteNumbers = js("new Array(slice.length)")
-            var i = 0
-            while (i.asDynamic() < slice.length) {
-                byteNumbers[i] = slice.charCodeAt(i)
-                i++
-            }
-
-            val byteArray = js("new Uint8Array(byteNumbers)")
-
-            byteArrays.push(byteArray)
-            offset += sliceSize
-        }
-
-        return byteArrays
-    }
 
     private suspend fun onGotFile(file: File) {
         noise.clog("Got file", file)
@@ -168,7 +142,7 @@ import kotlin.js.json
                         "fileName" to _content.file.name,
                         "base64" to run {
                             val dataURL: String = reader.result
-                            dlog("dataURL", dataURL.substring(0, 20))
+                            // dlog("dataURL", dataURL.substring(0, 20))
                             dataURL.substring(dataURL.indexOf(",") + 1)
                         }
                     )
@@ -238,6 +212,33 @@ suspend fun typeIntoOpenFileDialog(text: String) {
     await(fuckingRemoteCall.robotTypeTextCRIntoWindowTitledOpen(text))
 }
 
+
+// http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+fun base64ToUint8ArraySlices(base64: String): Array<dynamic> {
+    val sliceSize = 512
+
+    val byteCharacters = js("atob")(base64)
+    val byteArrays = js("[]")
+
+    var offset = 0
+    while (offset.asDynamic() < byteCharacters.length) {
+        val slice = byteCharacters.slice(offset, offset + sliceSize)
+
+        val byteNumbers = js("new Array(slice.length)")
+        var i = 0
+        while (i.asDynamic() < slice.length) {
+            byteNumbers[i] = slice.charCodeAt(i)
+            i++
+        }
+
+        val byteArray = js("new Uint8Array(byteNumbers)")
+
+        byteArrays.push(byteArray)
+        offset += sliceSize
+    }
+
+    return byteArrays
+}
 
 
 
