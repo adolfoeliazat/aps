@@ -260,16 +260,24 @@ fun scrollBodyToShitGradually(
 
     val targetTop: Double
     targetTop = shit.offset().top - const.topNavbarHeight + dy
-    await(scrollBodyGradually(targetTop, bursts))
+    await(scrollBodyGraduallyPromise(targetTop, bursts))
 }
 
-fun scrollBodyGradually(targetTop: Double, bursts: Int = fconst.defaultScrollBursts): Promisoid<Unit> = async {
+fun scrollBodyGraduallyPromise(targetTop: Double, bursts: Int = fconst.defaultScrollBursts): Promisoid<Unit> = async {
     val startTop = jqbody.scrollTop()
     for (i in 1..bursts) {
         await(tillAnimationFrame())
         jqbody.scrollTop(startTop + (targetTop - startTop) / bursts * i)
     }
     jqbody.scrollTop(targetTop)
+}
+
+suspend fun scrollBodyGradually(targetTop: Double, bursts: Int = fconst.defaultScrollBursts) {
+    await(scrollBodyGraduallyPromise(targetTop, bursts))
+}
+
+suspend fun scrollBodyToBottomGradually() {
+    scrollBodyGradually(jqbody.height().toDouble() - jqwindow.height().toDouble() + const.topNavbarHeight)
 }
 
 fun EventTarget.addEventLis(type: String, callback: ((Event) -> Unit)?) {

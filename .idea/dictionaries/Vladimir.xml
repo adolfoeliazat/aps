@@ -89,6 +89,7 @@
       <w>horiz</w>
       <w>hwnd</w>
       <w>idname</w>
+      <w>idop</w>
       <w>iframe</w>
       <w>ignita</w>
       <w>igniter</w>
@@ -101,8 +102,10 @@
       <w>jdbc</w>
       <w>jedis</w>
       <w>jooq</w>
+      <w>jpql</w>
       <w>jpreq</w>
       <w>jqel</w>
+      <w>jqwindow</w>
       <w>jsonb</w>
       <w>jsonize</w>
       <w>jsons</w>
@@ -160,6 +163,7 @@
       <w>resulta</w>
       <w>rmap</w>
       <w>rosybrown</w>
+      <w>rtos</w>
       <w>runtimes</w>
       <w>scroller</w>
       <w>scuko</w>

@@ -35,6 +35,7 @@ fun JQuery.hide(): String = this.asDynamic().hide()
 fun JQuery.show(): String = this.asDynamic().show()
 
 val jqbody: JQuery get() = jq(document.body!!)
+val jqwindow: JQuery get() = js("$(window)")
 
 fun byid(id: String): JQuery {
     val selector = "#$id".replace(Regex("\\."), "\\.")

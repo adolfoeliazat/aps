@@ -274,7 +274,7 @@ fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promisoid<B
                                     byid(timesButtonID).click()
                                 }
                             }
-                            responseProcessed()
+                            // TODO Resume test here
                         }
                     }
                     o- Button(title = t("TOTE", "Я очкую"), dataDismiss = "modal", key = fconst.key.button.modal.cancel.ref) {

@@ -19,7 +19,7 @@ import javax.persistence.EntityManagerFactory
             runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
                 val order = orderRepo.findOrDie(req.entityID.value)
                 // TODO:vgrechka @security Check permissions
-                // TODO:vgrechka Friendly, kind of, message if no such order (user may mistype URL, etc.)
+                // TODO:vgrechka Friendly (like "fuck you" or something) message if no such order (user may mistype URL, etc.)
 
                 val fromID = req.fromID.value?.toLong()
                 val ordering = req.ordering.value
@@ -36,8 +36,26 @@ import javax.persistence.EntityManagerFactory
                     val em = emf.createEntityManager()
                     em.transaction.begin()
                     try {
-                        val query = em.createQuery("select f from UAOrderFile f order by id ${ordering.name}")
-                        val items = query.resultList.map {
+                        val query = em
+                            .createQuery(stringBuild{s->
+                                s += "select f from UAOrderFile f where"
+                                val idop = when (ordering) {
+                                    Ordering.ASC -> ">="
+                                    Ordering.DESC -> "<="
+                                }
+                                s += " id $idop $theFromID"
+                                s += " order by id ${ordering.name}"
+                            })
+                            .setMaxResults(const.moreableChunkSize + 1)
+
+                        var items: List<UAOrderFile> = cast(query.resultList)
+                        var moreFromId: Long? = null
+                        if (items.size > const.moreableChunkSize) {
+                            moreFromId = items.last().id
+                            items = items.dropLast(1)
+                        }
+
+                        val rtos = items.map {
                             val f = it as UAOrderFile
                             UAOrderFileRTO(
                                 id = f.id!!,
@@ -54,7 +72,7 @@ import javax.persistence.EntityManagerFactory
                                 titleHighlightRanges = listOf()
                             )
                         }
-                        return@run Chunk(items, moreFromId = null)
+                        return@run Chunk(rtos, moreFromId = moreFromId)
                     } finally {
                         em.transaction.rollback()
                         em.close()

@@ -53,7 +53,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         }
     }
 
-    private fun requestChunk(fromID: String?): Promisoid<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
+    private fun requestChunk(fromID: Long?): Promisoid<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
         val res = sendUACustomerGetOrderFiles(world.token, ItemsRequest(CustomerFileFilter.values())-{o->
             o.entityID.value = order.id
             o.filter.value = urlQuery.filter
@@ -308,7 +308,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                                             itemPlace.setContent(NOTRE)
                                                             itemPlace = Placeholder(renderView(initiallyTransparent = true))
 
-                                                            await(scrollBodyGradually(0.0))
+                                                            await(scrollBodyGraduallyPromise(0.0))
                                                             val newTopPlace = Placeholder()
                                                             topPlace.setContent(kdiv{o->
                                                                 o- newTopPlace
@@ -422,10 +422,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 moreFromID
                 val placeholder = Placeholder()
                 placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
-                    val btn = Button(title = t("Load more", "Загрузить еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = fconst.key.button.loadMore.ref)
+                    val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = fconst.key.button.loadMore.ref)
                     btn.onClicka = {
                         async {
                             await(effects).blinkOn(byid(btn.elementID))
+                            TestGlobal.loadMoreHalfwayLock.sutPause()
                             try {
                                 val res = try {
                                     await(requestChunk(meat.moreFromID))
@@ -450,7 +451,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                 }
                             } finally {
                                 await(effects).blinkOff()
-                                responseProcessed()
+                                TestGlobal.loadMoreDoneLock.sutPause()
                             }
                         }
                     }

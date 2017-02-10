@@ -42,45 +42,45 @@ class QueryBuilder(val shortDescription: String) {
     }
 }
 
-class Chunk<T>(val items: List<T>, val moreFromId: String?)
+class Chunk<T>(val items: List<T>, val moreFromId: Long?)
 
 
-fun <POJO : Any, RTO> selectChunk(
-    q: DSLContext,
-    table: String,
-    pojoClass: KClass<POJO>,
-    appendToSelect: (QueryBuilder) -> Unit = {},
-    appendToFrom: (QueryBuilder) -> Unit = {},
-    appendToWhere: (QueryBuilder) -> Unit = {},
-    loadItem: (POJO, DSLContext) -> RTO,
-    ordering: Ordering,
-    fromID: Long?
-) : Chunk<RTO> {
-    val chunkSize = 10
-
-    val theFromID = fromID?.let {it} ?: if (ordering == Ordering.ASC) 0L else Long.MAX_VALUE
-    var records = QueryBuilder("Select chunk")
-        .text("select *")
-        .run(appendToSelect)
-        .text("from $table")
-        .run(appendToFrom)
-        .text("where true")
-        .run(appendToWhere)
-        .text("and $table.id ${if (ordering == Ordering.ASC) ">=" else "<="}").arg(theFromID)
-        .text("order by $table.id $ordering")
-        .text("fetch first ${chunkSize + 1} rows only")
-        .fetch(q)
-
-    var moreFromId: String? = null
-    if (records.size == chunkSize + 1) {
-        moreFromId = "" + records.last()[DSL.field(DSL.name(table, "id"))]
-        records = records.subList(0, chunkSize)
-    }
-
-    val items = records.map{it.into(pojoClass.java)}.map{loadItem(it, q)}
-
-    return Chunk(items, moreFromId)
-}
+//fun <POJO : Any, RTO> selectChunk(
+//    q: DSLContext,
+//    table: String,
+//    pojoClass: KClass<POJO>,
+//    appendToSelect: (QueryBuilder) -> Unit = {},
+//    appendToFrom: (QueryBuilder) -> Unit = {},
+//    appendToWhere: (QueryBuilder) -> Unit = {},
+//    loadItem: (POJO, DSLContext) -> RTO,
+//    ordering: Ordering,
+//    fromID: Long?
+//) : Chunk<RTO> {
+//    val chunkSize = 10
+//
+//    val theFromID = fromID?.let {it} ?: if (ordering == Ordering.ASC) 0L else Long.MAX_VALUE
+//    var records = QueryBuilder("Select chunk")
+//        .text("select *")
+//        .run(appendToSelect)
+//        .text("from $table")
+//        .run(appendToFrom)
+//        .text("where true")
+//        .run(appendToWhere)
+//        .text("and $table.id ${if (ordering == Ordering.ASC) ">=" else "<="}").arg(theFromID)
+//        .text("order by $table.id $ordering")
+//        .text("fetch first ${chunkSize + 1} rows only")
+//        .fetch(q)
+//
+//    var moreFromId: String? = null
+//    if (records.size == chunkSize + 1) {
+//        moreFromId = "" + records.last()[DSL.field(DSL.name(table, "id"))]
+//        records = records.subList(0, chunkSize)
+//    }
+//
+//    val items = records.map{it.into(pojoClass.java)}.map{loadItem(it, q)}
+//
+//    return Chunk(items, moreFromId)
+//}
 
 fun loadUser(ctx: ProcedureContext): UserRTO {
     val users = tracingSQL("Select user") {ctx.q

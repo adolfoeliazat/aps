@@ -1,0 +1,79 @@
+-------------------- URL --------------------
+
+[uac]/order.html?id=1&tab=files
+
+
+-------------------- MODAL --------------------
+
+<div class="modal" style="display: block;">
+</div>
+<div class="modal fade in" style="display: block;">
+  <div class="modal-dialog" style="width: 80rem;">
+    <div class="modal-content" style="border-left: 0.5em solid rgb(144, 164, 174);">
+      <div class="modal-header">
+        <button class="btn btn-default close" data-dismiss="modal">
+          ×
+        </button>
+        <h4 class="modal-title">
+          Новый файл
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>
+              Файл
+            </label>
+            <div style="display: flex; align-items: center;">
+              <span>
+                lousy writing 10.rtf (2 КБ)
+              </span>
+              <button class="btn btn-default " style="margin-left: 1em;">
+                <i class="fa fa-cloud-upload">
+                </i>
+                &nbsp;
+                Изменить...
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="textField-labelContainer">
+              <label>
+                Название
+              </label>
+            </div>
+            <div style="position: relative;">
+              <input type="text" rows="5" class="form-control" disabled="" value="Три маленьких лесовика" style="resize: none;">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="textField-labelContainer">
+                <label>
+                  Детали
+                </label>
+              </div>
+              <div style="position: relative;">
+                <textarea rows="5" type="text" class="form-control" disabled="" style="resize: none;">
+                  Вдова убеждает вдовца жениться на себе, обещая заботиться о его дочери больше, чем о родной. Но вдовец сначала хочет узнать высшую волю о своём повторном браке, и получает положительное знамение. Однако мачеха вскоре возненавидела свою падчерицу, надела на ту бумажную одежду, и зимой, в лютый мороз, отправила в лес за земляникой. В лесу девочка повстречала домик с тремя маленькими лесными человечками.
+                </textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div style="display: flex;">
+            <div style="display: flex; flex-grow: 1; justify-content: flex-start;">
+              <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122);">
+              </div>
+            </div>
+            <button class="btn btn-primary " disabled="">
+              Сохранить
+            </button>
+            <button class="btn btn-default " disabled="" style="margin-left: 10px;">
+              Не стоит
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

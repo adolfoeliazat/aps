@@ -314,12 +314,12 @@ where Filter: Enum<Filter>, Filter: Titled {
     val filter = EnumHiddenField(this, "filter", filterValues)
     val ordering = EnumHiddenField(this, "ordering", Ordering.values())
     val searchString = TextField(this, fieldSpecs.shebang.searchString.ref)
-    val fromID = MaybeStringHiddenField(this, "fromID")
+    val fromID by maybeLongHiddenField()
 }
 
 class ItemsResponse<Item> (
     val items: List<Item>,
-    val moreFromID: String?
+    val moreFromID: Long?
 ) : CommonResponseFieldsImpl()
 
 

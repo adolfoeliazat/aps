@@ -74,6 +74,8 @@ object TestGlobal {
     var defaultAssertScreenOpts = AssertScreenOpts()
     val switchTabHalfwayLock by notNullNamed(TestLock())
     val switchTabDoneLock by notNullNamed(TestLock())
+    val loadMoreHalfwayLock by notNullNamed(TestLock())
+    val loadMoreDoneLock by notNullNamed(TestLock())
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

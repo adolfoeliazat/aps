@@ -178,6 +178,18 @@ annotation class Front
     }
 }
 
+@Front fun maybeLongHiddenField() = eagerEx<RequestMatumba, MaybeLongHiddenField> {thisRef, property ->
+    MaybeLongHiddenField(thisRef, property.name)
+}
+
+@Front class MaybeLongHiddenField(container: RequestMatumba, name: String): HiddenFormFieldFront(container, name) {
+    var value: Long? = null
+
+    override fun populateRemote(json: Json) = async {
+        json[name] = value?.toString()
+    }
+}
+
 @Front fun MaybeStringHiddenField(
     container: RequestMatumba,
     name: String,
