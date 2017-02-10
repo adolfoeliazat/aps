@@ -15,6 +15,7 @@
       <w>apsdevua</w>
       <w>apsfront</w>
       <w>apsua</w>
+      <w>atob</w>
       <w>backquote</w>
       <w>bconst</w>
       <w>bigserial</w>
@@ -189,6 +190,7 @@
       <w>tsquery</w>
       <w>tsvector</w>
       <w>ucapomo</w>
+      <w>uint</w>
       <w>unchecking</w>
       <w>unduplicate</w>
       <w>unflow</w>

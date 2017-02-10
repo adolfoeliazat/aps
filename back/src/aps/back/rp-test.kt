@@ -119,6 +119,7 @@ testProcedure(
 
 @RemoteProcedureFactory fun serveRecreateTestDatabaseSchema() = testProcedure(
     {RecreateTestDatabaseSchemaRequest()},
+    needsDB = false,
     runShit = fun(ctx, req): GenericResponse {
         springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
 //        val beanFactory = springctx.beanFactory as BeanDefinitionRegistry
@@ -128,34 +129,34 @@ testProcedure(
 //        beanFactory.destroySingleton("transactionManager")
 //        beanFactory.destroySingleton("entityManagerFactory")
 
-        val templateDB =
-            req.snapshotID.value?.let {DB.apsTestSnapshotOnTestServer(it)}
-            ?: req.templateDB.value?.let {DB.byID(it)}
-
-        val db = DB.apsTestOnTestServer
-        if (templateDB == null) {
-            db.recreateSchema()
-            db.joo {q->
-                USERS.let {
-                    tracingSQL("Insert Dasja") {q
-                        .insertInto(USERS)
-                        .set(it.INSERTED_AT, RequestGlobus.stamp)
-                        .set(it.UPDATED_AT, RequestGlobus.stamp)
-                        .set(it.EMAIL, "dasja@test.shit.ua")
-                        .set(it.KIND, JQUserKind.ADMIN)
-                        .set(it.LANG, ctx.lang.name)
-                        .set(it.STATE, UserState.COOL.name)
-                        .set(it.PASSWORD_HASH, BCrypt.hashpw("dasjasecret", BCrypt.gensalt()))
-                        .set(it.FIRST_NAME, "Дася")
-                        .set(it.LAST_NAME, "Админовна")
-                        .set(it.ADMIN_NOTES, "")
-                        .execute()
-                    }
-                }
-            }
-        } else {
-            db.recreate(template = templateDB)
-        }
+//        val templateDB =
+//            req.snapshotID.value?.let {DB.apsTestSnapshotOnTestServer(it)}
+//            ?: req.templateDB.value?.let {DB.byID(it)}
+//
+//        val db = DB.apsTestOnTestServer
+//        if (templateDB == null) {
+//            db.recreateSchema()
+//            db.joo {q->
+//                USERS.let {
+//                    tracingSQL("Insert Dasja") {q
+//                        .insertInto(USERS)
+//                        .set(it.INSERTED_AT, RequestGlobus.stamp)
+//                        .set(it.UPDATED_AT, RequestGlobus.stamp)
+//                        .set(it.EMAIL, "dasja@test.shit.ua")
+//                        .set(it.KIND, JQUserKind.ADMIN)
+//                        .set(it.LANG, ctx.lang.name)
+//                        .set(it.STATE, UserState.COOL.name)
+//                        .set(it.PASSWORD_HASH, BCrypt.hashpw("dasjasecret", BCrypt.gensalt()))
+//                        .set(it.FIRST_NAME, "Дася")
+//                        .set(it.LAST_NAME, "Админовна")
+//                        .set(it.ADMIN_NOTES, "")
+//                        .execute()
+//                    }
+//                }
+//            }
+//        } else {
+//            db.recreate(template = templateDB)
+//        }
         return GenericResponse()
     }
 )
@@ -306,7 +307,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 
 @RemoteProcedureFactory fun fuckingRemoteProcedure() = testProcedure(
     {FuckingRemoteProcedureRequest()},
-    needsDB = true,
+    needsDB = false,
     runShit = fun (ctx, req): JSONResponse {
         val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
         val proc: String = cast(rmap["proc"])
@@ -388,6 +389,7 @@ fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
 
 @RemoteProcedureFactory fun ping() = publicProcedure(
     {GenericRequest()},
+    needsDB = false,
     runShit = fun(ctx, req): GenericResponse {
         return GenericResponse()
     }

@@ -179,7 +179,6 @@ class GodServlet : HttpServlet() {
             }
         }
     }
-
 }
 
 private fun HttpServletResponse.spitText(text: String) {

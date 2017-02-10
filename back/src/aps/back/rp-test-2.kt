@@ -8,6 +8,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.sql.PreparedStatement
 import java.sql.SQLException
+import java.util.*
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
 import kotlin.properties.Delegates.notNull
@@ -86,41 +87,42 @@ private fun snapshotFile(snapshotName: String) =
     File("${SharedGlobus.APS_TEMP}/snapshot-$snapshotName.json")
 
 
-
-
-@RemoteProcedureFactory fun serveTestSQLFiddle() = testProcedure(
-    {TestSQLFiddleRequest()},
-    needsDB = true,
-    runShit = fun(ctx, req): TestSQLFiddleRequest.Response {
-        try {
-            val sql = req.input.value
-            val ds = springctx.getBean(DataSource::class.java)
-            ds.connection.use {con->
-                val rs = con.prepareStatement(sql).executeQuery()
-                val meta = rs.metaData
-                var rowCount = 0
-                val spew = StringBuilder()
-                while (rs.next()) {
-                    ++rowCount
-                    spew.appendln("---- Row $rowCount ---------------")
-                    for (col in 1..meta.columnCount) {
-                        spew.appendln(meta.getColumnName(col) + ": " + rs.getObject(col))
+@Servant class ServeTestSQLFiddle : BitchyProcedure() {
+    override fun serve() {
+        fuckDangerously(FuckDangerouslyParams(
+            bpc = bpc, makeRequest = {TestSQLFiddleRequest()},
+            runShit = fun(ctx, req: TestSQLFiddleRequest): TestSQLFiddleRequest.Response {
+                try {
+                    val sql = req.input.value
+                    val ds = springctx.getBean(DataSource::class.java)
+                    ds.connection.use {con->
+                        val rs = con.prepareStatement(sql).executeQuery()
+                        val meta = rs.metaData
+                        var rowCount = 0
+                        val spew = StringBuilder()
+                        while (rs.next()) {
+                            ++rowCount
+                            spew.appendln("---- Row $rowCount ---------------")
+                            for (col in 1..meta.columnCount) {
+                                spew.appendln(meta.getColumnName(col) + ": " + rs.getObject(col))
+                            }
+                        }
+                        return TestSQLFiddleRequest.Response(
+                            isError = false,
+                            spew = "Got $rowCount rows(s)\n" + spew.toString())
                     }
+                } catch(e: SQLException) {
+                    val sw = StringWriter()
+                    e.printStackTrace(PrintWriter(sw))
+                    return TestSQLFiddleRequest.Response(
+                        isError = true,
+                        spew = sw.toString()
+                    )
                 }
-                return TestSQLFiddleRequest.Response(
-                    isError = false,
-                    spew = "Got $rowCount rows(s)\n" + spew.toString())
             }
-        } catch(e: SQLException) {
-            val sw = StringWriter()
-            e.printStackTrace(PrintWriter(sw))
-            return TestSQLFiddleRequest.Response(
-                isError = true,
-                spew = sw.toString()
-            )
-        }
+        ))
     }
-)
+}
 
 @Servant class ServeTestCodeFiddle : BitchyProcedure() {
     override fun serve() {
@@ -141,6 +143,38 @@ private fun snapshotFile(snapshotName: String) =
         ))
     }
 }
+
+@Servant class ServeTestGetFileUploadData : BitchyProcedure() {
+    override fun serve() {
+        fuckDangerously(FuckDangerouslyParams(
+            bpc = bpc,
+            makeRequest = {TestGetFileUploadDataRequest()},
+            runShit = fun(ctx, req: TestGetFileUploadDataRequest): TestGetFileUploadDataRequest.Response {
+                val file = File(const.test.filesRoot + req.fileName.value)
+                val bytes = file.readBytes()
+                return TestGetFileUploadDataRequest.Response(
+                    name = file.name,
+                    size = bytes.size,
+                    base64 = Base64.getEncoder().encodeToString(bytes)
+                )
+            }
+        ))
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

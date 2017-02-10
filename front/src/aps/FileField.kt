@@ -53,11 +53,7 @@ import kotlin.js.json
                     "onChange" to {async{
                         val files: FileList = byid0(inputID).asDynamic().files
                         val file = files[0]!!
-                        aps.gloshit.file = file
-                        noise.clog("Got file", file)
-                        content = Content.FileToUpload(file)
-                        update()
-                        TestGlobal.fileFieldChangedLock.sutPause()
+                        onGotFile(file)
                     }}
                 ), listOf())
                 when (_content) {
@@ -103,6 +99,51 @@ import kotlin.js.json
         val instanceKey get() = key + container.fieldInstanceKeySuffix
     }
 
+    fun testUploadFileFast(fileName: String) {
+        async {
+            val res = send(TestGetFileUploadDataRequest()-{o->
+                o.fileName.value = fileName
+            })
+            val file = File(base64ToUint8ArraySlices(res.base64), res.name)
+            onGotFile(file)
+        }
+    }
+
+    // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+    private fun base64ToUint8ArraySlices(base64: String): dynamic {
+        val sliceSize = 512
+
+        val byteCharacters = js("atob")(base64)
+        val byteArrays = js("[]")
+
+        var offset = 0
+        while (offset.asDynamic() < byteCharacters.length) {
+            val slice = byteCharacters.slice(offset, offset + sliceSize)
+
+            val byteNumbers = js("new Array(slice.length)")
+            var i = 0
+            while (i.asDynamic() < slice.length) {
+                byteNumbers[i] = slice.charCodeAt(i)
+                i++
+            }
+
+            val byteArray = js("new Uint8Array(byteNumbers)")
+
+            byteArrays.push(byteArray)
+            offset += sliceSize
+        }
+
+        return byteArrays
+    }
+
+    private suspend fun onGotFile(file: File) {
+        noise.clog("Got file", file)
+        gloshit.file = file
+        content = Content.FileToUpload(file)
+        control.update()
+        TestGlobal.fileFieldChangedLock.sutPause()
+    }
+
     override fun render() = control.toReactElement()
 
     override var error: String? = null
@@ -127,6 +168,7 @@ import kotlin.js.json
                         "fileName" to _content.file.name,
                         "base64" to run {
                             val dataURL: String = reader.result
+                            dlog("dataURL", dataURL.substring(0, 20))
                             dataURL.substring(dataURL.indexOf(",") + 1)
                         }
                     )
@@ -176,8 +218,14 @@ import kotlin.js.json
 suspend fun fileFieldChoose(fileName: String, aid: String, descr: String = "Describe me") {
     sequence(
         action = {
-            buttonUserInitiatedClick(fconst.key.button.upload.testRef)
-            typeIntoOpenFileDialog(fconst.test.filesRoot + fileName)
+            if (testOpts().fastFileUpload) {
+                if (FileField.instances.size != 1) bitch("I want exactly one FileField")
+                val ff = FileField.instances.values.first()
+                ff.testUploadFileFast(fileName)
+            } else {
+                buttonUserInitiatedClick(fconst.key.button.upload.testRef)
+                typeIntoOpenFileDialog(const.test.filesRoot + fileName)
+            }
         },
         steps = listOf(
             PauseAssertResumeStep(TestGlobal.fileFieldChangedLock, aid)

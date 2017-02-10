@@ -7,6 +7,7 @@ import java.sql.Timestamp
 import javax.persistence.*
 
 private const val MAX_STRING = 10000
+private const val MAX_BLOB = 10 * 1024 * 1024
 
 @MappedSuperclass
 abstract class ClitoralEntity {
@@ -132,6 +133,7 @@ class UAOrderFile(
     @Column(length = MAX_STRING) var adminNotes: String,
     @Column(length = MAX_STRING) var sha1: String,
     var sizeBytes: Int,
+    @Column(length = MAX_BLOB) var content: ByteArray,
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderId", nullable = false)
     var order: UAOrder

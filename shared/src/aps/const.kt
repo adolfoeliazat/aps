@@ -77,6 +77,10 @@ object const {
     object productName {
         val uaCustomer = "APS UA"
     }
+
+    object test {
+        val filesRoot = "E:\\work\\aps\\back\\testfiles\\"
+    }
 }
 
 

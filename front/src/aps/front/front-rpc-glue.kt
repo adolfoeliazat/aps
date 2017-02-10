@@ -40,6 +40,7 @@ suspend fun send(req: TestTakeDBSnapshotRequest): TestTakeDBSnapshotRequest.Resp
 suspend fun send(req: TestRestoreDBSnapshotRequest): TestRestoreDBSnapshotRequest.Response = await(callDangerousMatumba(req))
 suspend fun send(token: String?, req: SignInWithTokenRequest): FormResponse2<SignInResponse> = _send2(token, req)
 suspend fun send(req: TestCodeFiddleRequest): TestCodeFiddleRequest.Response = callDangerousMatumba2(req)
+suspend fun send(req: TestGetFileUploadDataRequest): TestGetFileUploadDataRequest.Response = callDangerousMatumba2(req)
 
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {

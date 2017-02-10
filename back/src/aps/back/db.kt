@@ -160,6 +160,7 @@ object DB {
         }
 
         fun <T> joo(act: (DSLContext) -> T): T {
+            die("Don't use DB.joo")
             ds.connection.use {con->
                 // TODO:vgrechka Cache jOOQ DSLContext
                 val q = DSL.using(

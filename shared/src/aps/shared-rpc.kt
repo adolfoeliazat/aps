@@ -158,6 +158,17 @@ class TestRestoreDBSnapshotRequest : RequestMatumba() {
     val snapshotName by stringHiddenField()
 }
 
+class TestGetFileUploadDataRequest : RequestMatumba() {
+    class Response(val name: String, val size: Int, val base64: String) : CommonResponseFieldsImpl()
+    val fileName by stringHiddenField()
+}
+
+
+
+
+
+
+
 
 
 

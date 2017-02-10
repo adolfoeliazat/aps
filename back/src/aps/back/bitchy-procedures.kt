@@ -176,12 +176,12 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                     val res = if (p.needsDB) {
                         if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
 
-                        val db = DB.byID(RequestGlobus.commonRequestFields.databaseID!!)
+//                        val db = DB.byID(RequestGlobus.commonRequestFields.databaseID!!)
 
-                        db.joo {q->
-                            ctx.q = q
+//                        db.joo {q->
+//                            ctx.q = q
                             runShitWithMaybeDB()
-                        }
+//                        }
                     } else {
                         runShitWithMaybeDB()
                     }

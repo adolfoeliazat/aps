@@ -28,7 +28,8 @@ import java.util.*
                     details = req.details.value,
                     adminNotes = "",
                     sha1 = Hashing.sha1().hashBytes(content).toString(),
-                    sizeBytes = content.size
+                    sizeBytes = content.size,
+                    content = content
                 ))
 
                 return UACreateOrderFileRequest.Response(file.id!!)

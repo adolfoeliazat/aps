@@ -204,13 +204,13 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 //}
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
-publicProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
+publicProcedure(req: (ProcedureContext) -> Req, runShit: (ProcedureContext, Req) -> Res, wrapInFormResponse: Boolean? = null, validate: ((ProcedureContext, Req) -> Unit)? = null, needsDB: Boolean? = null): (HttpServletRequest, HttpServletResponse) -> Unit  =
     remoteProcedure(ProcedureSpec(
         req,
         runShit = runShit,
         validate = validate ?: {ctx, req ->},
         wrapInFormResponse = wrapInFormResponse ?: true,
-        needsDB = true,
+        needsDB = needsDB ?: true,
         needsDangerousToken = false,
         needsUser = NeedsUser.NO,
         userKinds = setOf(),
