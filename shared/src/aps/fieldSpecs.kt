@@ -4,7 +4,7 @@ import aps.front.*
 
 object fieldSpecs {
     object shebang                               : NamedGroup<NamedItem>(null) {
-        object documentTitle                     : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Тема работы"), TextFieldType.STRING, minLen = 5, maxLen = 100); val testRef = TestRef(ref)}
+        object documentTitle                     : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Тема работы"), TextFieldType.STRING, minLen = 3, maxLen = 100); val testRef = TestRef(ref)}
         object anonymousCustomerName             : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val testRef = TestRef(ref)}
         object firstName                         : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Имя"), TextFieldType.STRING, minLen = 1, maxLen = 50); val testRef = TestRef(ref)}
         object lastName                          : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50); val testRef = TestRef(ref)}
@@ -19,10 +19,10 @@ object fieldSpecs {
         object phone                             : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 50, minDigits = 6); val testRef = TestRef(ref)}
         object aboutMe                           : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300); val testRef = TestRef(ref)}
         object searchString                      : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, "", TextFieldType.STRING, 0, 50); val testRef = TestRef(ref)}
-        object title                             : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Название"), TextFieldType.STRING, const.order.minTitleLen, const.order.maxTitleLen); val testRef = TestRef(ref)}
-        object details                           : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Детали"), TextFieldType.TEXTAREA, const.order.minDetailsLen, const.order.maxDetailsLen); val testRef = TestRef(ref)}
-        object documentDetails                   : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Детали работы (задание)"), TextFieldType.TEXTAREA, minLen = 5, maxLen = 2000); val testRef = TestRef(ref)}
-        object agreeTerms                        : Refs<NamedItem>(this) {val ref  = CheckboxFieldSpec(name); val testRef = TestRef(ref)}
+        object fileTitle                         : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Название"), TextFieldType.STRING, 3, 100); val testRef = TestRef(ref)}
+        object fileDetails                       : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Детали"), TextFieldType.TEXTAREA, 3, 2000); val testRef = TestRef(ref)}
+        object orderDetails                      : Refs<NamedItem>(this) {val ref = TextFieldSpec(name, t("TOTE", "Детали работы (задание)"), TextFieldType.TEXTAREA, minLen = 3, maxLen = 2000); val testRef = TestRef(ref)}
+        object agreeTerms                        : Refs<NamedItem>(this) {val ref = CheckboxFieldSpec(name); val testRef = TestRef(ref)}
         object userState                         : Refs<NamedItem>(this) {val ref = SelectFieldSpec(name, t("TOTE", "Статус"), UserState.values()); val testRef = TestRef(ref)}
         object numPages                          : Refs<NamedItem>(this) {val ref = IntFieldSpec(name, t("TOTE", "Количество страниц"), min = 1, max = 500); val testRef = TestRef(ref)}
         object numSources                        : Refs<NamedItem>(this) {val ref = IntFieldSpec(name, t("TOTE", "Количество источников"), min = 0, max = 50); val testRef = TestRef(ref)}

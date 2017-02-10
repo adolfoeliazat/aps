@@ -1,0 +1,1582 @@
+-------------------- URL --------------------
+
+[uac]/order.html?id=1&tab=files
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Стафф
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                Почему мы?
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                Цены
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                Примеры
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                ЧаВо
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                Связь
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                Блог
+              </a>
+            </li>
+            <li class="">
+              <a href="makeOrder.html">
+                Заказать
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="">
+          <a href="orders.html">
+            Мои заказы
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            Пися Камушкин
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <div>
+            Заказ №1
+            <span style="top: -0.2em; position: relative; margin-left: 1em; padding: 0.1em 0.3em; background-color: rgb(224, 224, 224); font-size: 60%; border-radius: 0.3em;">
+              Черновик
+            </span>
+          </div>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <div class="draftHint-container">
+        <div class="draftHint-message">
+          Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...
+        </div>
+        <button class="btn btn-primary ">
+          Отправить на проверку
+        </button>
+      </div>
+      <h4 style="margin-bottom: 0.7em;">
+        Как я пинал большие хуи на практике
+      </h4>
+      <div>
+        <div style="position: relative;">
+          <ul class="nav nav-tabs">
+            <li id="tab.order.params" class="">
+              <a href="#">
+                Параметры
+              </a>
+            </li>
+            <li id="tab.order.files" class="active">
+              <a href="#">
+                Файлы
+              </a>
+            </li>
+          </ul>
+          <div style="top: 0px; right: 0px; position: absolute;">
+            <div style="display: flex;">
+              <div style="margin-left: 0px;">
+                <div style="position: relative;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="" style="resize: none; width: 100%; padding-left: 30px;">
+                    <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
+                    </i>
+                  </div>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control" data-value="DESC">
+                    <option value="ASC">
+                      Старые
+                    </option>
+                    <option value="DESC">
+                      Новые
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-default ">
+                    <i class="fa fa-refresh">
+                    </i>
+                  </button>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-primary ">
+                    <i class="fa fa-plus">
+                    </i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 5px;">
+            <div>
+              <div>
+              </div>
+              <div>
+                <span>
+                </span>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Тарас Бульба
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №17
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        17.01.2016 15:34:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        17.01.2016 15:34:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 14.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          К старому казацкому полковнику Тарасу Бульбе приезжают после выпуска из Киевской академии (Киев с 1569 года по 1654 год входит в состав Речи Посполитой) два его сына — Остап и Андрий. Два дюжих молодца, здоровые и крепкие, лиц которых ещё не касалась бритва, смущены встречей с отцом, подшучивающим над их одеждой недавних семинаристов. Старший, Остап, не выдерживает насмешек отца: «Хоть ты мне и батька, а как будешь смеяться, то, ей-Богу, поколочу!» И отец с сыном, вместо приветствия после давней отлучки, совсем нешуточно мутузят друг друга тумаками. Бледная, худощавая и добрая мать старается образумить буйного своего мужа, который уже и сам останавливается, довольный, что испытал сына. Бульба хочет таким же образом «поприветствовать» и младшего, но того уже обнимает мать, защищая от отца.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Старосветские помещики
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №16
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        15.01.2016 11:34:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        15.01.2016 11:34:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 13.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Афанасий Иванович был высок, ходил всегда в бараньем тулупчике, и практически всегда улыбался. Пульхерия Ивановна почти никогда не смеялась, но «на лице и в глазах её было написано столько доброты, столько готовности угостить вас всем, что было у них лучшего, что вы, верно, нашли бы улыбку уже чересчур приторною для её доброго лица». Афанасий Иванович и Пульхерия Ивановна живут уединённо в одной из отдалённых деревень, называемых в Малороссии старосветскими. Жизнь их так тиха, что гостю, заехавшему ненароком в низенький барский домик, утопающий в зелени сада, страсти и тревожные волнения внешнего мира покажутся не существующими вовсе. Маленькие комнаты домика заставлены всевозможными вещицами, двери поют на разные лады, кладовые заполнены припасами, приготовлением которых беспрестанно заняты дворовые под управлением Пульхерии Ивановны. Несмотря на то, что хозяйство обкрадывается приказчиком и лакеями, благословенная земля производит всего в таком количестве, что Афанасий Иванович и Пульхерия Ивановна совсем не замечают хищений.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Повесть о том, как поссорился Иван Иванович с Иваном Никифоровичем
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №15
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        15.01.2016 09:50:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        15.01.2016 09:50:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 12.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Миргород — идеально — красивый город. В нём всё прекрасно, начиная от «домов и домиков, которые издали можно принять за копны сена» и заканчивая уникальной, неповторимой лужей на площади, «удивительной лужей, единственной, которую вам только удавалось когда видеть». Кроме того там «нет ни воровства, ни мошенничества». И в этом городе живут два друга, являющие собой символ благополучия и стабильности города — Иван Иванович Перерепенко и Иван Никифорович Довгочхун. Оба — прекрасные люди.
+                          Как-то раз «в июле месяце» Иван Иванович обнаружил, что у Ивана Никифоровича есть замечательное ружьё. Ивану Ивановичу «очень захотелось иметь это ружьецо». Он отправляется к Ивану Никифоровичу с целью выпросить его или поменять на бурую свинью. Но Иван Никифорович не захотел отдавать ружья и, поддавшись на провокацию Ивана Ивановича, назвал того гусаком. Иван Иванович страшно обиделся и поссорился с Иваном Никифоровичем.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Вий
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №14
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        13.01.2016 17:02:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        13.01.2016 17:02:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 11.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Три студента киевской бурсы отправились на каникулы заняться репетиторством. По дороге заплутали в темноте и попросили ночлега на отдаленном хуторе. Один из студентов, Хома Брут, по странной воле старухи-хозяйки получил место для ночлега в хлеву. Готовясь в темноте ко сну, Хома был напуган неожиданным визитом хозяйки, та вскочила на него верхом и поскакала по полям и буеракам. Измученный Хома стал читать молитвы и заметил, что чары ведьмы слабеют. Одна из молитв помогла ему освободиться. Хома сам вскочил верхом на старуху и стал погонять её, охаживая поленом. К утру чары окончательно развеялись, и старуха превратилась в прекрасную панночку, в полном изнеможении упавшую на землю.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Заколдованное место
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №13
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        11.01.2016 05:56:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        11.01.2016 05:56:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 10.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Рассказчик объясняет, что повествование относится к тому времени, когда он был ещё ребёнком. Отец с одним из сыновей уехал в Крым продавать табак, оставив дома жену и трёх сыновей да деда стеречь баштан — дело прибыльное, проезжих много, а всего лучше — чумаки, что рассказывали диковинные истории. Как-то к вечеру приходит несколько возов с чумаками, да все старинными дедовыми знакомцами. Перецеловались, закурили, пошёл разговор, а там и угощение. Потребовал дед, чтоб внуки плясали, гостей потешили, да недолго терпел, сам пошёл. Плясал дед славно, такие кренделя выделывал, что диво, покуда не дошёл до одного места, близ грядки с огурцами. Здесь ноги его стали. Бранился, и снова начинал — без толку. Сзади кто-то засмеялся. Огляделся, а места не узнает: и баштан, и чумаки — всё пропало, вокруг одно гладкое поле. Все ж понял, где он, за поповым огородом, за гумном волостного писаря. «Вот куда затащила нечистая сила!» Стал выбираться, месяца нет, нашёл в темноте дорожку. На могилке поблизости вспыхнул огонёк, и другой чуть поодаль. «Клад!» — решил дед и навалил для приметы изрядную ветку, поскольку заступа при себе не имел. Поздно вернулся он на баштан, чумаков не было, дети спали[2].
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Иван Фёдорович Шпонька и его тётушка
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №12
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        08.01.2016 20:50:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        08.01.2016 20:50:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 9.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          «Иван Фёдорович Шпонька и его тётушка» по своему реалистическому характеру, уже во многом близкому к наиболее зрелым произведениям Гоголя, стоит особняком среди остальных повестей «Вечеров на хуторе близ Диканьки». Это обстоятельство позволяет утверждать, что написана она могла быть позже всего цикла украинских повестей. Поэтому наиболее вероятным временем написания «Шпоньки» можно считать конец 1831 года (31 января 1832 г. датировано цензурное разрешение второй части «Вечеров»)[1].
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Страшная месть
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №11
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        06.01.2016 06:37:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        06.01.2016 06:37:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 8.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Старый есаул женит своего сына. Отец выносит иконы, чтобы благословить ими молодых, но неожиданно один из гостей - казаков превращается в страшного урода. Все в ужасе от него отпрянули, но есаул Горобець догадывается, что это превращение связано с иконами и что перед ним колдун. С помощью икон нечестивец был изгнан. Одними из гостей на свадьбе были названный брат есаула, Данило Бурульбаш и его жена Катерина. Катерина - сирота, её мать умерла, а отец пропал, когда она была совсем маленькой и совсем его не помнила. Но неожиданно после свадьбы в гости приезжает отец Катерины и между зятем и тестем сразу возникает ссора.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Ночь перед Рождеством
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №10
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        03.01.2016 07:18:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        03.01.2016 07:18:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 7.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Действие повести хронологически приурочено к эпизоду царствования Екатерины II — последней депутации запорожцев, состоявшейся в 1775 г. и связанной с работой Комиссии по упразднению Запорожской Сечи.
+                          Сюжет произведения разворачивается в Диканьке, на территории современной Украины. Никем не замеченные, в небе кружатся двое: ведьма на метле, которая набирает в рукав звёзды, и чёрт, который прячет месяц в карман, думая, что наступившая тьма удержит дома богатого казака Чуба, приглашенного к дьяку на кутью, и ненавистный чёрту кузнец Вакула (нарисовавший на церковной стене картину Страшного суда и посрамляемого чёрта) не осмелится прийти к Чубовой дочери Оксане.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Пропавшая грамота
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №9
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        03.01.2016 00:24:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        03.01.2016 00:24:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 6.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Повествование начинается с сетований рассказчика, Фомы Григорьевича, на тех слушательниц, что выпытывают у него «яку-нибудь страховинну казочку», а потом всю ночь дрожат под одеялом. Затем он рассказывает историю, что случилась с его дедом, которого гетман послал с грамотой к царице.
+                          Дед, простившись с женой и детьми, уж наутро был в Конотопе, где была ярмарка. С зашитой в шапку грамотой дед пошёл поискать себе огнива и табаку и познакомился с гулякой-запорожцем. Они отправились дальше вместе с приставшим к ним ещё одним гулякой. Запорожец, потчуя весь вечер приятелей диковинными историями, к ночи оробел и наконец открылся, что продал душу дьяволу и этою ночью наступает срок расплаты. Дед обещался не спать ночью, чтоб пособить запорожцу. Путешественники принуждены были остановиться в ближайшем шинке. Уснули вскоре оба дедовых попутчика, так что ему пришлось нести караул в одиночку. Как мог, боролся дед со сном, но мертвый сон сморил его, он проснулся поздним утром и не нашел ни запорожца, ни коней. Пропала и дедова шапка с грамотой, которою вчера поменялся дед с запорожцем. Дед попросил совета у бывших в шинке чумаков, и наконец шинкарь указал деду, где найти чёрта, чтоб вытребовать у него обратно грамоту[1].
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Майская ночь, или Утопленница
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №8
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        02.01.2016 03:21:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        02.01.2016 03:21:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 5.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Тихим и ясным вечером девушки с парубками собираются и поют песни. Молодой казак Левко, сын сельского головы, подойдя к одной из хат, песнею вызывает ясноокую Ганну. Ганна появляется не сразу: она боится зависти девушек и дерзости парубков и материнской строгости, и ещё чего-то неясного. Левко не раз просил отца разрешить ему жениться на Ганне, но тот не хотел и по своему давнему обыкновению притворялся глухим. О самом голове «известно, что некогда он сопровождал царицу Екатерину в Крым, о чём любит при случае поминать, ныне крив, суров, важен и вдов, живёт несколько под каблуком своей свояченицы».
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Вечер накануне Ивана Купала
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №7
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        30.12.2015 14:02:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        30.12.2015 14:02:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 4.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Впервые была напечатана в 1830 году в февральском и мартовском выпусках «Отечественных записок» без подписи автора, под заглавием «Бисаврюк, или Вечер накануне Ивана Купала. Малороссийская повесть (из народного предания), рассказанная дьячком Покровской церкви». Издателем были внесены в неё многочисленные правки. Этим обстоятельством объясняется появившийся в предисловии текст, высмеивающий от имени рассказчика редакторское самоуправство[1].
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Сорочинская ярмарка
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №6
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        28.12.2015 09:19:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        28.12.2015 09:19:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 3.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Крестьянин Солопий Черевик вместе с красавицей-дочкой Параской и сварливой женой Хавроньей (мачехой Параски) прибывает на ярмарку, чтобы продать десяток мешков пшеницы и старую лошадь. Им встречается Грицко — молодой юноша, влюбившийся в Параску, но тут же поссорившийся с её мачехой. Грицко сватается к Параске, Солопий не против свадьбы, но Хавронья яростно возражает и свадьба отменяется. Тогда Грицко обращается к цыгану, который обещает свадьбу всё-таки устроить.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Land of Lisp
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №5
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        27.12.2015 07:45:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        27.12.2015 07:45:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 2.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Lisp has been hailed as the world’s most powerful programming language, but its cryptic syntax and academic reputation can be enough to scare off even experienced programmers. Those dark days are finally over—Land of Lisp brings the power of functional programming to the people!
+                          With his brilliantly quirky comics and out-of-this-world games, longtime Lisper Conrad Barski teaches you the mysteries of Common Lisp. You’ll start with the basics, like list manipulation, I/O, and recursion, then move on to more complex topics like macros, higher order programming, and domain-specific languages. Then, when your brain overheats, you can kick back with an action-packed comic book interlude!
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Let Over Lambda
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №4
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        24.12.2015 22:58:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        24.12.2015 22:58:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 1.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Let Over Lambda is one of the most hardcore computer programming books out there. Starting with the fundamentals, it describes the most advanced features of the most advanced language: Common Lisp. Only the top percentile of programmers use lisp and if you can understand this book you are in the top percentile of lisp programmers. If you are looking for a dry coding manual that re-hashes common-sense techniques in whatever langue du jour, this book is not for you. This book is about pushing the boundaries of what we know about programming. While this book teaches useful skills that can help solve your programming problems today and now, it has also been designed to be entertaining and inspiring. If you have ever wondered what lisp or even programming itself is really about, this is the book you have been looking for.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Методичка какая-то левая
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №3
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        22.12.2015 08:45:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        22.12.2015 08:45:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          pussy story.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        3 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          В комнате он тотчас же стал выдвигать ящики стола; там был образцовый  порядок,  но  удостоверение  личности,  которое  он искал, он от волнения никак найти  не  мог.  Наконец  он  нашел удостоверение на велосипед и уже хотел идти с ним к стражам, но потом  эта  бумажка  показалась  ему неубедительной, и он снова стал искать, пока не нашел свою метрику.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Шаблон отчета
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №2
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        20.12.2015 04:14:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        20.12.2015 04:14:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          crazy monster boobs.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Меньше всего К. боялся, что  его  потом упрекнут  в  непонимании  шуток,  зато он отлично помнил - хотя обычно с прошлым опытом и не считался - некоторые случаи,  сами по  себе  незначительные,  когда  он  в отличие от своих друзей сознательно пренебрегал возможными  последствиями  и  вел  себя крайне  необдуманно  и  неосторожно,  за  что  и  расплачивался полностью. Больше этого с ним повториться не  должно,  хотя  бы теперь,  а если это комедия, то он им подыграет. Но пока что он еще свободен.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Задание на практику
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №1
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        18.12.2015 03:18:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        18.12.2015 03:18:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          little pussy.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        3 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          - Вам следовало остаться у себя в комнате! Разве Франц вам ничего не говорил?
+                          - Что вам, наконец, нужно? - спросил К., переводя взгляд с нового посетителя на того,  кого  назвали  Франц  (он  стоял  в дверях),  и  снова  на первого.  В  открытое окно видна была та старуха: в припадке старческого любопытства она уже  перебежала к другому окну - посмотреть, что дальше.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

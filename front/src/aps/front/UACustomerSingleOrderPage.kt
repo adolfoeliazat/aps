@@ -176,7 +176,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                     }
                     o- row{o->
                         o- kdiv(className = "col-md-12"){o->
-                            o- label(fieldSpecs.shebang.documentDetails.ref.title)
+                            o- label(fieldSpecs.shebang.orderDetails.ref.title)
                             o- kdiv(whiteSpace = "pre-wrap"){o->
                                 o- order.details
                             }

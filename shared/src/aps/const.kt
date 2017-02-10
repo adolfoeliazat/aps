@@ -35,26 +35,26 @@ object const {
         val fileForbidden = "Fucking file is forbidden"
     }
 
-    object common {
-        val minTitleLen = 5
-        val maxTitleLen = 100
-        val minDetailsLen = 5
-        val maxDetailsLen = 2000
-    }
-
-    object order {
-        val minTitleLen = common.minTitleLen
-        val maxTitleLen = common.maxTitleLen
-        val minDetailsLen = common.minDetailsLen
-        val maxDetailsLen = common.maxDetailsLen
-    }
-
-    object file {
-        val minTitleLen = common.minTitleLen
-        val maxTitleLen = common.maxTitleLen
-        val minDetailsLen = common.minDetailsLen
-        val maxDetailsLen = common.maxDetailsLen
-    }
+//    object common {
+//        val minTitleLen = 5
+//        val maxTitleLen = 100
+//        val minDetailsLen = 5
+//        val maxDetailsLen = 2000
+//    }
+//
+//    object order {
+//        val minTitleLen = common.minTitleLen
+//        val maxTitleLen = common.maxTitleLen
+//        val minDetailsLen = common.minDetailsLen
+//        val maxDetailsLen = common.maxDetailsLen
+//    }
+//
+//    object file {
+//        val minTitleLen = common.minTitleLen
+//        val maxTitleLen = common.maxTitleLen
+//        val minDetailsLen = common.minDetailsLen
+//        val maxDetailsLen = common.maxDetailsLen
+//    }
 
     val topNavbarHeight = 50.0
 

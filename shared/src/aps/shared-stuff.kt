@@ -407,8 +407,8 @@ fun send(req: FuckingRemoteProcedureRequest): Promisoid<JSONResponse> = callDang
 
 
 fun fileField(container: RequestMatumba, shouldBeProvided: Boolean = true) = FileField(container, "file", t("TOTE", "Файл"), shouldBeProvided = shouldBeProvided)
-fun fileTitleField(container: RequestMatumba) = TextField(container, fieldSpecs.shebang.title.ref)
-fun fileDetailsField(container: RequestMatumba) = TextField(container, fieldSpecs.shebang.details.ref)
+fun fileTitleField(container: RequestMatumba) = TextField(container, fieldSpecs.shebang.fileTitle.ref)
+fun fileDetailsField(container: RequestMatumba) = TextField(container, fieldSpecs.shebang.fileDetails.ref)
 
 class UACreateOrderFileRequest : RequestMatumba() {
     class Response(val id: Long) : CommonResponseFieldsImpl()

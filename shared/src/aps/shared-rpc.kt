@@ -94,7 +94,7 @@ class UACustomerOrderRequestFields1(cont: RequestMatumba) {
     val documentTitle = TextField(cont, fieldSpecs.shebang.documentTitle.ref)
     val numPages = IntField(cont, fieldSpecs.shebang.numPages.ref)
     val numSources = IntField(cont, fieldSpecs.shebang.numSources.ref)
-    val documentDetails = TextField(cont, fieldSpecs.shebang.documentDetails.ref)
+    val documentDetails = TextField(cont, fieldSpecs.shebang.orderDetails.ref)
 }
 
 class UACustomerOrderRequestFields2(cont: RequestMatumba) {

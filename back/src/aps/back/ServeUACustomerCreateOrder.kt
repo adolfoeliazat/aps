@@ -81,7 +81,7 @@ import java.util.*
                                         ${row(fieldSpecs.shebang.numPages.ref.title, order.numPages)}
                                         ${row(fieldSpecs.shebang.numSources.ref.title, order.numSources)}
                                     </table>
-                                    <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fieldSpecs.shebang.details.ref.title}</div>
+                                    <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fieldSpecs.shebang.orderDetails.ref.title}</div>
                                     <div style='white-space: pre-wrap;'>${escapeHTML(order.details)}</div>
                                     <div style='padding-top: 2em; font-style: italic;'>${const.productName.uaCustomer}</div>
                                 </div>
