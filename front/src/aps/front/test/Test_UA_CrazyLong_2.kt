@@ -119,25 +119,33 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     ivo3.coitizeAndBoot()
                 }
                 run { // Add some files
+                    // TODO:vgrechka Assert only modal's content, reuse assertion
                     sequence({tabClick(fconst.tab.order.files.testRef)},
                              steps = listOf(
                                  PauseAssertResumeStep(TestGlobal.switchTabHalfwayLock, "f727a9ea-c520-4613-97e0-c154f6506d3a"),
                                  PauseAssertResumeStep(TestGlobal.switchTabDoneLock, "f621673e-7f84-4a53-969f-8844614c4f30")))
-                    seq({buttonClick(fconst.key.button.plus.testRef)}, TestGlobal.modalShownLock, "314f08fe-960b-4e92-8454-28d3745a5c52")
-                    fileFieldChoose("little pussy.rtf", "5c7490d7-baf8-4adc-9532-5233bc0d96c1")
-                    inputSetValue(fieldSpecs.shebang.title.testRef, "Задание на практику")
-                    inputSetValue(fieldSpecs.shebang.details.testRef, "- Вам следовало остаться у себя в комнате! Разве Франц вам ничего не говорил?\n\n- Что вам, наконец, нужно? - спросил К., переводя взгляд с нового посетителя на того,  кого  назвали  Франц  (он  стоял  в дверях),  и  снова  на первого.  В  открытое окно видна была та старуха: в припадке старческого любопытства она уже  перебежала к другому окну - посмотреть, что дальше.")
-                    submitFormSequence(testShit, aid = "477d2267-bc41-43fe-9090-5e09a824edda")
+                    addFile(fileName = "little pussy.rtf", title = "Задание на практику", details = "- Вам следовало остаться у себя в комнате! Разве Франц вам ничего не говорил?\n\n- Что вам, наконец, нужно? - спросил К., переводя взгляд с нового посетителя на того,  кого  назвали  Франц  (он  стоял  в дверях),  и  снова  на первого.  В  открытое окно видна была та старуха: в припадке старческого любопытства она уже  перебежала к другому окну - посмотреть, что дальше.", aid = "4c30a4f4-5bee-426a-ab7f-960367b2c198")
+                    addFile(fileName = "crazy monster boobs.rtf", title = "Шаблон отчета", details = "Меньше всего К. боялся, что  его  потом упрекнут  в  непонимании  шуток,  зато он отлично помнил - хотя обычно с прошлым опытом и не считался - некоторые случаи,  сами по  себе  незначительные,  когда  он  в отличие от своих друзей сознательно пренебрегал возможными  последствиями  и  вел  себя крайне  необдуманно  и  неосторожно,  за  что  и  расплачивался полностью. Больше этого с ним повториться не  должно,  хотя  бы теперь,  а если это комедия, то он им подыграет. Но пока что он еще свободен.", aid = "167277d8-dcae-4de6-ae6c-a39f1981e6f5")
+                    addFile(fileName = "pussy story.rtf", title = "Методичка какая-то левая", details = "В комнате он тотчас же стал выдвигать ящики стола; там был образцовый  порядок,  но  удостоверение  личности,  которое  он искал, он от волнения никак найти  не  мог.  Наконец  он  нашел удостоверение на велосипед и уже хотел идти с ним к стражам, но потом  эта  бумажка  показалась  ему неубедительной, и он снова стал искать, пока не нашел свою метрику.", aid = "54b2bb55-17fe-44e6-98b2-c631933c17ea")
+                    addFile(fileName = "shitty document 1.rtf", title = "Let Over Lambda", details = "Let Over Lambda is one of the most hardcore computer programming books out there. Starting with the fundamentals, it describes the most advanced features of the most advanced language: Common Lisp. Only the top percentile of programmers use lisp and if you can understand this book you are in the top percentile of lisp programmers. If you are looking for a dry coding manual that re-hashes common-sense techniques in whatever langue du jour, this book is not for you. This book is about pushing the boundaries of what we know about programming. While this book teaches useful skills that can help solve your programming problems today and now, it has also been designed to be entertaining and inspiring. If you have ever wondered what lisp or even programming itself is really about, this is the book you have been looking for.", aid = "89209597-11ef-4d78-8575-bd39bf6fca26")
+                    addFile(fileName = "shitty document 2.rtf", title = "Land of Lisp", details = " Lisp has been hailed as the world’s most powerful programming language, but its cryptic syntax and academic reputation can be enough to scare off even experienced programmers. Those dark days are finally over—Land of Lisp brings the power of functional programming to the people!\n\nWith his brilliantly quirky comics and out-of-this-world games, longtime Lisper Conrad Barski teaches you the mysteries of Common Lisp. You’ll start with the basics, like list manipulation, I/O, and recursion, then move on to more complex topics like macros, higher order programming, and domain-specific languages. Then, when your brain overheats, you can kick back with an action-packed comic book interlude! ", aid = "5ac8d7c0-bd39-4e12-bdfa-451074af8f4d")
                 }
             }
         }
+    }
+
+    private suspend fun addFile(fileName: String, title: String, details: String, aid: String) {
+        seq({buttonClick(fconst.key.button.plus.testRef)}, TestGlobal.modalShownLock, "$aid--3")
+        fileFieldChoose(fileName, "$aid--4")
+        inputSetValue(fieldSpecs.shebang.title.testRef, title)
+        inputSetValue(fieldSpecs.shebang.details.testRef, details)
+        submitFormSequence(testShit, aid = "$aid--5")
     }
 }
 
 
 
 //send(TestCodeFiddleRequest()-{it.what.value = "fuck1"}) //; waitTillEndOfTime()
-
 
 
 

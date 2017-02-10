@@ -1,0 +1,402 @@
+-------------------- URL --------------------
+
+[uac]/order.html?id=1&tab=files
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top" style="padding-right: 17px;">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        APS
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle skipClearMenus" data-toggle="dropdown" role="button">
+            Стафф
+            <span class="caret" style="margin-left: 5px;">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="">
+              <a href="why.html">
+                Почему мы?
+              </a>
+            </li>
+            <li class="">
+              <a href="prices.html">
+                Цены
+              </a>
+            </li>
+            <li class="">
+              <a href="samples.html">
+                Примеры
+              </a>
+            </li>
+            <li class="">
+              <a href="faq.html">
+                ЧаВо
+              </a>
+            </li>
+            <li class="">
+              <a href="contact.html">
+                Связь
+              </a>
+            </li>
+            <li class="">
+              <a href="blog.html">
+                Блог
+              </a>
+            </li>
+            <li class="">
+              <a href="makeOrder.html">
+                Заказать
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="">
+          <a href="orders.html">
+            Мои заказы
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            Пися Камушкин
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <div>
+            Заказ №1
+            <span style="top: -0.2em; position: relative; margin-left: 1em; padding: 0.1em 0.3em; background-color: rgb(224, 224, 224); font-size: 60%; border-radius: 0.3em;">
+              Черновик
+            </span>
+          </div>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <div class="draftHint-container">
+        <div class="draftHint-message">
+          Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...
+        </div>
+        <button class="btn btn-primary ">
+          Отправить на проверку
+        </button>
+      </div>
+      <h4 style="margin-bottom: 0.7em;">
+        Как я пинал большие хуи на практике
+      </h4>
+      <div>
+        <div style="position: relative;">
+          <ul class="nav nav-tabs">
+            <li id="tab.order.params" class="">
+              <a href="#">
+                Параметры
+              </a>
+            </li>
+            <li id="tab.order.files" class="active">
+              <a href="#">
+                Файлы
+              </a>
+            </li>
+          </ul>
+          <div style="top: 0px; right: 0px; position: absolute;">
+            <div style="display: flex;">
+              <div style="margin-left: 0px;">
+                <div style="position: relative;">
+                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" value="" style="resize: none; width: 100%; padding-left: 30px;">
+                    <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
+                    </i>
+                  </div>
+                </div>
+                <div style="margin-left: 8px;">
+                  <select class="form-control" data-value="DESC">
+                    <option value="ASC">
+                      Старые
+                    </option>
+                    <option value="DESC">
+                      Новые
+                    </option>
+                  </select>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-default ">
+                    <i class="fa fa-refresh">
+                    </i>
+                  </button>
+                </div>
+                <div style="margin-left: 8px;">
+                  <button class="btn btn-primary ">
+                    <i class="fa fa-plus">
+                    </i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 5px;">
+            <div>
+              <div>
+              </div>
+              <div>
+                <span>
+                </span>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Задание на практику
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №1
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        18.12.2015 03:18:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        18.12.2015 03:18:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          little pussy.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        3 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          - Вам следовало остаться у себя в комнате! Разве Франц вам ничего не говорил?
+                          - Что вам, наконец, нужно? - спросил К., переводя взгляд с нового посетителя на того,  кого  назвали  Франц  (он  стоял  в дверях),  и  снова  на первого.  В  открытое окно видна была та старуха: в припадке старческого любопытства она уже  перебежала к другому окну - посмотреть, что дальше.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Шаблон отчета
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №2
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-trash">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        20.12.2015 04:14:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        20.12.2015 04:14:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          crazy monster boobs.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Меньше всего К. боялся, что  его  потом упрекнут  в  непонимании  шуток,  зато он отлично помнил - хотя обычно с прошлым опытом и не считался - некоторые случаи,  сами по  себе  незначительные,  когда  он  в отличие от своих друзей сознательно пренебрегал возможными  последствиями  и  вел  себя крайне  необдуманно  и  неосторожно,  за  что  и  расплачивался полностью. Больше этого с ним повториться не  должно,  хотя  бы теперь,  а если это комедия, то он им подыграет. Но пока что он еще свободен.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+-------------------- MODAL --------------------
+
+<div class="modal" style="display: block;">
+</div>
+<div class="modal fade in" style="display: block;">
+  <div class="modal-dialog" style="width: 80rem;">
+    <div class="modal-content" style="border-left: 0.5em solid rgb(144, 164, 174);">
+      <div class="modal-header">
+        <button class="btn btn-default close" data-dismiss="modal">
+          ×
+        </button>
+        <h4 class="modal-title">
+          Новый файл
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>
+              Файл
+            </label>
+            <div>
+              <button class="btn btn-default ">
+                <i class="fa fa-cloud-upload">
+                </i>
+                &nbsp;
+                Выбрать...
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="textField-labelContainer">
+              <label>
+                Название
+              </label>
+            </div>
+            <div style="position: relative;">
+              <input type="text" rows="5" class="form-control" value="" style="resize: none;">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="textField-labelContainer">
+                <label>
+                  Детали
+                </label>
+              </div>
+              <div style="position: relative;">
+                <textarea rows="5" type="text" class="form-control" style="resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div style="display: flex;">
+            <div style="display: flex; flex-grow: 1; justify-content: flex-start;">
+            </div>
+            <button class="btn btn-primary ">
+              Сохранить
+            </button>
+            <button class="btn btn-default " style="margin-left: 10px;">
+              Не стоит
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

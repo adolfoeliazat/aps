@@ -37,7 +37,7 @@ import javax.persistence.EntityManagerFactory
                     val em = emf.createEntityManager()
                     em.transaction.begin()
                     try {
-                        val query = em.createQuery("select f from UAOrderFile f")
+                        val query = em.createQuery("select f from UAOrderFile f order by id ${ordering.name}")
                         val items = query.resultList.map {
                             val f = it as UAOrderFile
                             UAOrderFileRTO(
