@@ -62,6 +62,8 @@ object fconst {
     }
 
     object test {
+        val testOffClassSuffix = "-testoff"
+
         object default {
             val animationHalfwaySignalTimeout = 1000
         }

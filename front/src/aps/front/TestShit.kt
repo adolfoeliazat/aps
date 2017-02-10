@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import aps.front.fconst.test.testOffClassSuffix
 import jquery.jq
 
 val SELECTOR_NAVBAR = "#topNavbarContainer"
@@ -15,7 +16,9 @@ fun fillTestProfile_Gaylord(o: TestSetUserFieldsRequest) {
 }
 
 fun takeHTMLForAssertion(under: CSSSelector): String {
-    val rawActual = stripUninterestingElements(jq(under)).innerHTML
+    var rawActual = stripUninterestingElements(jq(under)).innerHTML
+    if (testOpts().addTestOffClassSuffixes)
+        rawActual = rawActual.replace(testOffClassSuffix, "")
     return rawActual
 }
 

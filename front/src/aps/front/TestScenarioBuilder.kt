@@ -314,21 +314,21 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
 
 private var optsBeforeForceFast: TestOptions? = null
 
+fun forceFast() {
+    optsBeforeForceFast = TestGlobal.forcedTestOpts
+    TestGlobal.forcedTestOpts = TestOptionsTemplates.fastestExceptShowBannerOnNonCorrectAssertions.opts
+}
+
 fun unforceFast() {
     TestGlobal.forcedTestOpts = optsBeforeForceFast
 }
 
-suspend fun forceFast(forceFast: Boolean = true, block: suspend () -> Unit) {
-    if (forceFast) {
-        optsBeforeForceFast = TestGlobal.forcedTestOpts
-        TestGlobal.forcedTestOpts = TestOptionsTemplates.fastestExceptShowBannerOnNonCorrectAssertions.opts
-        try {
-            block()
-        } finally {
-            unforceFast()
-        }
-    } else {
+suspend fun forcingFast(block: suspend () -> Unit) {
+    forceFast()
+    try {
         block()
+    } finally {
+        unforceFast()
     }
 }
 

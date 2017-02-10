@@ -2,6 +2,8 @@ package aps.front
 
 import aps.*
 import aps.const.text.symbols.times
+import aps.front.fconst.test.testOffClassSuffix
+import into.kommon.*
 import jquery.jq
 import kotlin.js.json
 
@@ -35,7 +37,10 @@ fun openModal(p: OpenModalParams): ModalOperations {
     val timesButtonID = puid()
     val pane = old_panes.put(kdiv(className = css.shebang.modalPane){o->
         o- kdiv(className = "modal", display = "block") // XXX To display right scrollbar that doesn't fade in/out
-        o- kdiv(Attrs(className = "modal fade", id = modalID, tabIndex = -1)){o->
+        var fadeClass = "fade"
+        if (isTest() && testOpts().addTestOffClassSuffixes)
+            fadeClass += testOffClassSuffix
+        o- kdiv(Attrs(className = "modal $fadeClass", id = modalID, tabIndex = -1)){o->
             o- kdiv(className = "modal-dialog", width = p.width){o->
                 o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${p.leftMarginColor}"){o->
                     o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
