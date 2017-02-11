@@ -17,7 +17,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 2
+    val startPoint = 1
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -77,13 +77,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- cancel
-                step({buttonClick(fconst.button.edit_testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
+                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
-                step({buttonClick(fconst.button.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
+                step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
             run { // Edit params -- save
-                step({buttonClick(fconst.button.edit_testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
+                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
                 selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
                 formSubmissionAttempts(
                     testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
@@ -98,7 +98,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- save 2
-                step({buttonClick(fconst.button.edit_testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
+                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
                 selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
                 submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
@@ -106,7 +106,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(2) {
             run { // Add some files
-                tabSequence(fconst.tab.order.files_testRef, "f727a9ea-c520-4613-97e0-c154f6506d3a", "f621673e-7f84-4a53-969f-8844614c4f30")
+                tabSequence(tabs.order.files_testRef, "f727a9ea-c520-4613-97e0-c154f6506d3a", "f621673e-7f84-4a53-969f-8844614c4f30")
 
                 val bunch1 = listOf(
                     AddFileParams(fileName = "little pussy.rtf", title = "Задание на практику", details = "- Вам следовало остаться у себя в комнате! Разве Франц вам ничего не говорил?\n\n- Что вам, наконец, нужно? - спросил К., переводя взгляд с нового посетителя на того,  кого  назвали  Франц  (он  стоял  в дверях),  и  снова  на первого.  В  открытое окно видна была та старуха: в припадке старческого любопытства она уже  перебежала к другому окну - посмотреть, что дальше.", aid = "4c30a4f4-5bee-426a-ab7f-960367b2c198"),
@@ -173,14 +173,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 }
 
                 scrollBodyToBottomGradually()
-                sequence({buttonClick(fconst.button.loadMore_testRef)},
+                sequence({buttonClick(buttons.loadMore_testRef)},
                          steps = listOf(
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "efa418ce-873c-485b-9005-ec7a73e4bd2c"),
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "86500c2a-c99b-4c16-9eb1-b95a8000ccc9")
                          ))
 
                 scrollBodyToBottomGradually()
-                sequence({buttonClick(fconst.button.loadMore_testRef)},
+                sequence({buttonClick(buttons.loadMore_testRef)},
                          steps = listOf(
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "e799ccdf-58f6-44b4-9c8c-468e8694c30b"),
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "81c65484-7584-49fb-84ea-b872dfaf9e5d")
@@ -190,8 +190,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Switch to Params and back to Files
                 scrollBodyToTopGradually()
-                tabSequence(fconst.tab.order.params_testRef, "f0526589-fa1e-4a2a-818f-3d4eca9e231a", "721ff1f7-093a-4752-a699-75debd0a2d99")
-                tabSequence(fconst.tab.order.files_testRef, "3c35734a-6cc1-4de4-a69d-421acd693603", "95b74865-e2dd-4b9c-a6b4-76dc967ad5dd")
+                tabSequence(tabs.order.params_testRef, "f0526589-fa1e-4a2a-818f-3d4eca9e231a", "721ff1f7-093a-4752-a699-75debd0a2d99")
+                tabSequence(tabs.order.files_testRef, "3c35734a-6cc1-4de4-a69d-421acd693603", "95b74865-e2dd-4b9c-a6b4-76dc967ad5dd")
             }
         }
 
@@ -251,7 +251,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun addFile(p: AddFileParams) {
-        seq({buttonClick(fconst.button.plus_testRef)}, TestGlobal.modalShownLock, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
+        seq({buttonClick(buttons.plus_testRef)}, TestGlobal.modalShownLock, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
         fileFieldChoose(p.fileName, "${p.aid}--1")
         inputSetValue(fieldSpecs.shebang.fileTitle.testRef, p.title)
         inputSetValue(fieldSpecs.shebang.fileDetails.testRef, p.details)

@@ -56,7 +56,7 @@ import kotlin.js.json
                             xhr.send(file)
                         }
                     ), listOf())
-                    o- Button(icon = fa.cloudUpload, title = t("TOTE", "Выбрать файл..."), key = fconst.button.upload, onClick = {
+                    o- Button(icon = fa.cloudUpload, title = t("TOTE", "Выбрать файл..."), key = buttons.upload, onClick = {
                         byid(inputID).click()
                     })
                 } else {

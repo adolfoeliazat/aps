@@ -22,8 +22,8 @@ class UACustomerSingleOrderPage(val world: World) {
 
     suspend fun load() {
         orderID = urlQuery.id.get(world) ?: return world.setShittyParamsPage()
-        val defaultTab = fconst.tab.order.params
-        val tabKey = fconst.tab.order.items.findSimplyNamed(urlQuery.tab.get(world)) ?: defaultTab
+        val defaultTab = tabs.order.params
+        val tabKey = tabs.order.items.findSimplyNamed(urlQuery.tab.get(world)) ?: defaultTab
 
         val res = await(send(world.token, LoadUAOrderRequest()-{o->
             o.id.value = orderID
@@ -64,7 +64,7 @@ class UACustomerSingleOrderPage(val world: World) {
                         o- kdiv(className = c.message){o->
                             o- t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...")
                         }
-                        o- Button(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = fconst.button.sendForApproval)
+                        o- Button(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = buttons.sendForApproval)
                     }
                 }
                 o- h4(marginBottom = "0.7em"){o->
@@ -192,14 +192,14 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
     }
 
     override val tabSpec = TabSpec(
-        key = fconst.tab.order.params,
+        key = tabs.order.params,
         title = t("TOTE", "Параметры"),
         content = place,
         stripContent = kdiv{o->
             when (world.user.kind) {
                 UserKind.CUSTOMER -> {
                     if (order.state == UAOrderState.CUSTOMER_DRAFT) {
-                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.button.edit) {
+                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = buttons.edit) {
                             openEditModal(
                                 title = t("TOTE", "Параметры заказа"),
                                 formSpec = FormSpec<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(
@@ -244,7 +244,7 @@ private class MessagesTab(val order: UAOrderRTO) : CustomerSingleUAOrderPageTab 
         o- "fucking messages"
     }
 
-    override val tabSpec = TabSpec(fconst.tab.order.messages, t("TOTE", "Сообщения"), content)
+    override val tabSpec = TabSpec(tabs.order.messages, t("TOTE", "Сообщения"), content)
 }
 
 

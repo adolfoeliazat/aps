@@ -69,14 +69,14 @@ private object DebugShitToIgnite {
 
     fun shit1() = async {
         await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
-        buttonClick(fconst.button.assertionBanner.play_testRef)
+        buttonClick(buttons.assertionBanner.play_testRef)
         await(tillBodyHTMLContains("Assertion: 1"))
-        buttonClick(fconst.button.assertionBanner.vdiff_testRef)
+        buttonClick(buttons.assertionBanner.vdiff_testRef)
     }
 
     fun shit2() = async {
         await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
-        buttonClick(fconst.button.assertionBanner.play_testRef)
+        buttonClick(buttons.assertionBanner.play_testRef)
         await(tillBodyHTMLContains("Assertion: 1"))
     }
 }

@@ -105,12 +105,12 @@
       <div>
         <div style="position: relative;">
           <ul class="nav nav-tabs">
-            <li id="tab.order.params" class="">
+            <li id="tabs.order.params" class="">
               <a href="#">
                 Параметры
               </a>
             </li>
-            <li id="tab.order.files" class="active">
+            <li id="tabs.order.files" class="active">
               <a href="#">
                 Файлы
               </a>

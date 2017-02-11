@@ -208,11 +208,11 @@ fun modalConfirmDeletion(msg: String): Promisoid<Boolean> {
                     o- msg
                 }
                 o- kdiv(className = "modal-footer"){o->
-                    o- Button(title = t("TOTE", "Мочи!"), level = Button.Level.DANGER, key = fconst.button.modal.ok) {
+                    o- Button(title = t("TOTE", "Мочи!"), level = Button.Level.DANGER, key = buttons.modal.ok) {
                         result = true
                         byid(timesButtonID).click()
                     }
-                    o- Button(title = t("TOTE", "Я очкую"), dataDismiss = "modal", key = fconst.button.modal.cancel) {
+                    o- Button(title = t("TOTE", "Я очкую"), dataDismiss = "modal", key = buttons.modal.cancel) {
                         result = false
                         byid(timesButtonID).click()
                     }
@@ -260,7 +260,7 @@ fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promisoid<B
                 o- kdiv(className = "modal-footer"){o->
                     val tickerPlace = Placeholder()
                     o- tickerPlace
-                    o- Button(title = t("TOTE", "Мочи!"), level = Button.Level.DANGER, key = fconst.button.modal.ok) {
+                    o- Button(title = t("TOTE", "Мочи!"), level = Button.Level.DANGER, key = buttons.modal.ok) {
                         tickerPlace.setContent(renderTicker("left"))
                         async {
                             val res = await(send(req))
@@ -277,7 +277,7 @@ fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promisoid<B
                             // TODO Resume test here
                         }
                     }
-                    o- Button(title = t("TOTE", "Я очкую"), dataDismiss = "modal", key = fconst.button.modal.cancel) {
+                    o- Button(title = t("TOTE", "Я очкую"), dataDismiss = "modal", key = buttons.modal.cancel) {
                         result = false
                         byid(timesButtonID).click()
                     }
