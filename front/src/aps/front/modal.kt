@@ -60,16 +60,6 @@ fun openModal(p: OpenModalParams): ModalOperations {
                     }
                     o- kdiv(className = "modal-footer"){o->
                         o- p.footer
-//                        o- Button(title = p.okButton.title, level = p.okButton.level, key = fconst.key.button.modal.ok.ref,
-//                                  onClicka = p.okButton.onClicka ?: {
-//                                      result = true
-//                                      byid(timesButtonID).click()
-//                                  })
-//
-//                        o- Button(title = p.cancelButton.title, level = p.cancelButton.level, key = fconst.key.button.modal.cancel.ref) {
-//                            result = false
-//                            byid(timesButtonID).click()
-//                        }
                     }
                 }
             }
@@ -84,7 +74,6 @@ fun openModal(p: OpenModalParams): ModalOperations {
         jq(".${css.test.crossWorld.locationPane}").addClass(css.shebang.paddingRightScrollbarWidthImportant)
     }
     jqModal.on("shown.bs.modal") {
-//        modalShownResolvable.resolve(Unit)
         TestGlobal.modalShownLock.sutNotify()
     }
     jqModal.on("hide.bs.modal") {
@@ -96,7 +85,6 @@ fun openModal(p: OpenModalParams): ModalOperations {
         jq(".${css.test.crossWorld.locationPane}").removeClass(css.shebang.paddingRightScrollbarWidthImportant)
         jqModal.data("bs.modal", null)
         old_panes.remove(pane)
-//        modalHiddenResolvable.resolve(Unit)
         TestGlobal.modalHiddenLock.sutNotify()
         shit.resolve(result)
         Unit

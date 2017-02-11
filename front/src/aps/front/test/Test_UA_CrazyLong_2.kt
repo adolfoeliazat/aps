@@ -39,18 +39,18 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 topNavItemSequence(page = pages.uaCustomer.makeOrder_testRef,
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
                 debugMailboxClear()
-                selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
+                selectSetValue(fields.shebang.ua.documentType_testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
                 formSubmissionAttempts(
                     testShit, baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
                     attempts = eachOrCombinationOfLasts(listOf(
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал хуи на практике"),
-                        badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 13),
-                        badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 5),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.orderDetails.testRef, testdata.details),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.anonymousCustomerName.testRef, "Пися Камушкин"),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 123-45-67"),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.email.testRef, "pisia@test.shit.ua")
+                        badTextFieldValuesThenValid(fields.shebang.documentTitle_testRef, "Как я пинал хуи на практике"),
+                        badIntFieldValuesThenValid(fields.shebang.numPages_testRef, 13),
+                        badIntFieldValuesThenValid(fields.shebang.numSources_testRef, 5),
+                        badTextFieldValuesThenValid(fields.shebang.orderDetails_testRef, testdata.details),
+                        badTextFieldValuesThenValid(fields.shebang.anonymousCustomerName_testRef, "Пися Камушкин"),
+                        badTextFieldValuesThenValid(fields.shebang.phone_testRef, "+38 (068) 123-45-67"),
+                        badTextFieldValuesThenValid(fields.shebang.email_testRef, "pisia@test.shit.ua")
                     ))
                 )
                 debugMailboxCheck("b9196719-9e01-45f3-987c-cb8259c7f9e6")
@@ -78,28 +78,28 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Edit params -- cancel
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
-                inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
+                inputSetValue(fields.shebang.documentTitle_testRef, "Хуй")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
             run { // Edit params -- save
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
-                selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
+                selectSetValue(fields.shebang.ua.documentType_testRef, UADocumentType.LAB)
                 formSubmissionAttempts(
                     testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
                     attempts = eachOrCombinationOfLasts(listOf(
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.documentTitle.testRef, "Как я пинал большие хуи на практике"),
-                        badIntFieldValuesThenValid(fieldSpecs.shebang.numPages.testRef, 23),
-                        badIntFieldValuesThenValid(fieldSpecs.shebang.numSources.testRef, 7),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.orderDetails.testRef, "Это чисто на почитать... " + testdata.details),
-                        badTextFieldValuesThenValid(fieldSpecs.shebang.phone.testRef, "+38 (068) 321-45-67")
+                        badTextFieldValuesThenValid(fields.shebang.documentTitle_testRef, "Как я пинал большие хуи на практике"),
+                        badIntFieldValuesThenValid(fields.shebang.numPages_testRef, 23),
+                        badIntFieldValuesThenValid(fields.shebang.numSources_testRef, 7),
+                        badTextFieldValuesThenValid(fields.shebang.orderDetails_testRef, "Это чисто на почитать... " + testdata.details),
+                        badTextFieldValuesThenValid(fields.shebang.phone_testRef, "+38 (068) 321-45-67")
                     ))
                 )
             }
 
             run { // Edit params -- save 2
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
-                selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
+                selectSetValue(fields.shebang.ua.documentType_testRef, UADocumentType.PRACTICE)
                 submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
         }
@@ -196,14 +196,17 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(3) {
-            kicClick(kics.order.file.edit_testRef, subscript = 27L)
+            run { // Edit file -- cancel
+                step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
+                inputSetValue(fields.shebang.documentTitle_testRef, "Хуй")
+                step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "74893db1-b1cb-4cae-8d17-441f715899d3")
+            }
         }
     }
 
     fun pointToSnapshotName(i: Int) = "${this::class.simpleName}-$i"
 
     private suspend fun definePoint(index: Int, script: suspend () -> Unit) {
-        // index is for easy textual search of point definitions
         ++currentPoint
         if (currentPoint != index) die("Expected point index $index, got $currentPoint")
 
@@ -253,8 +256,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     private suspend fun addFile(p: AddFileParams) {
         seq({buttonClick(buttons.plus_testRef)}, TestGlobal.modalShownLock, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
         fileFieldChoose(p.fileName, "${p.aid}--1")
-        inputSetValue(fieldSpecs.shebang.fileTitle.testRef, p.title)
-        inputSetValue(fieldSpecs.shebang.fileDetails.testRef, p.details)
+        inputSetValue(fields.shebang.fileTitle_testRef, p.title)
+        inputSetValue(fields.shebang.fileDetails_testRef, p.details)
         submitFormSequence(testShit, aid = "${p.aid}--2")
     }
 }

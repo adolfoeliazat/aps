@@ -277,62 +277,62 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                         }
                     }
 
-                    fun enterEditMode(): Promisoid<Unit> = async {
-                        val topShitID = puid()
-                        itemPlace.setContent(
-                            when (world.user.kind) {
-                                UserKind.CUSTOMER -> {
-                                    kdiv(id = topShitID, className = css.item){o->
-                                        o- row{o->
-                                            o- renderFileTitle(editing = true)
-                                            o- kdiv(className = "col-md-12", marginTop = -1){o->
-                                                o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
-                                                    req = CustomerEditUAOrderFileRequest()-{o->
-                                                        o.fieldInstanceKeySuffix = "-${orderFile.id}"
-                                                        o.orderFileID.value = orderFile.id
-                                                        o.file.content = FileField.Content.ExistingFile(orderFile.name, orderFile.sizeBytes)
-                                                        o.title.value = orderFile.title
-                                                        o.details.value = orderFile.details
-                                                    },
-                                                    ui = world,
-                                                    cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle,
-                                                    containerClassName = css.cunt.bodyEditing,
-                                                    onCancela = {async{
-                                                        await(effects).fadeOut(topShitID)
-                                                        enterViewMode()
-                                                    }},
-                                                    onSuccessa = {res-> async<Unit> {
-                                                        orderFile = res.updatedOrderFile
-
-                                                        if (moveItemToTopOnEdit) {
-                                                            itemPlace.setContent(NOTRE)
-                                                            itemPlace = Placeholder(renderView(initiallyTransparent = true))
-
-                                                            await(scrollBodyGraduallyPromise(0.0))
-                                                            val newTopPlace = Placeholder()
-                                                            topPlace.setContent(kdiv{o->
-                                                                o- newTopPlace
-                                                                o- itemPlace
-                                                            })
-                                                            topPlace = newTopPlace
-                                                            await(effects).fadeIn(viewRootID)
-                                                        } else {
-                                                            enterViewMode()
-                                                        }
-                                                    }}
-                                                ))
-                                            }
-                                        }
-                                    }
-                                }
-
-                                UserKind.WRITER -> imf()
-
-                                UserKind.ADMIN -> imf()
-                            })
-
-                        await(scrollBodyToShitGradually(dontScrollToTopItem = true){byid(topShitID)})
-                    }
+//                    fun enterEditMode(): Promisoid<Unit> = async {
+//                        val topShitID = puid()
+//                        itemPlace.setContent(
+//                            when (world.user.kind) {
+//                                UserKind.CUSTOMER -> {
+//                                    kdiv(id = topShitID, className = css.item){o->
+//                                        o- row{o->
+//                                            o- renderFileTitle(editing = true)
+//                                            o- kdiv(className = "col-md-12", marginTop = -1){o->
+//                                                o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
+//                                                    req = CustomerEditUAOrderFileRequest()-{o->
+//                                                        o.fieldInstanceKeySuffix = "-${orderFile.id}"
+//                                                        o.orderFileID.value = orderFile.id
+//                                                        o.file.content = FileField.Content.ExistingFile(orderFile.name, orderFile.sizeBytes)
+//                                                        o.title.value = orderFile.title
+//                                                        o.details.value = orderFile.details
+//                                                    },
+//                                                    ui = world,
+//                                                    cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle,
+//                                                    containerClassName = css.cunt.bodyEditing,
+//                                                    onCancela = {async{
+//                                                        await(effects).fadeOut(topShitID)
+//                                                        enterViewMode()
+//                                                    }},
+//                                                    onSuccessa = {res-> async<Unit> {
+//                                                        orderFile = res.updatedOrderFile
+//
+//                                                        if (moveItemToTopOnEdit) {
+//                                                            itemPlace.setContent(NOTRE)
+//                                                            itemPlace = Placeholder(renderView(initiallyTransparent = true))
+//
+//                                                            await(scrollBodyGraduallyPromise(0.0))
+//                                                            val newTopPlace = Placeholder()
+//                                                            topPlace.setContent(kdiv{o->
+//                                                                o- newTopPlace
+//                                                                o- itemPlace
+//                                                            })
+//                                                            topPlace = newTopPlace
+//                                                            await(effects).fadeIn(viewRootID)
+//                                                        } else {
+//                                                            enterViewMode()
+//                                                        }
+//                                                    }}
+//                                                ))
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//
+//                                UserKind.WRITER -> imf()
+//
+//                                UserKind.ADMIN -> imf()
+//                            })
+//
+//                        await(scrollBodyToShitGradually(dontScrollToTopItem = true){byid(topShitID)})
+//                    }
 
                     fun enterVanishedMode() = async {
                         await(effects).fadeOut(viewRootID)
@@ -396,9 +396,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                                     enterVanishedMode()
                                                 }
                                             })
-                                            o- kic("${fa.pencil} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = {
-                                                enterEditMode()
-                                            })
+                                            o- kic("${fa.pencil} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = {editFile(orderFile)})
                                         }
                                     }
                                 }
@@ -457,6 +455,29 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 o- placeholder
             }
         }
+    }
+
+    private suspend fun editFile(file: UAOrderFileRTO) {
+        openEditModal(
+            title = t("TOTE", "Файл") + " " + numberSign + file.id,
+            formSpec = FormSpec<UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response>(
+                ui = world,
+                req = UAUpdateOrderFileRequest()-{o->
+                    o.fileID.value = file.id
+                    o.title.value = file.title
+                    o.details.value = file.details
+                    o.file.content = FileField.Content.ExistingFile(file.name, file.sizeBytes)
+                }
+            ),
+            onSuccessa = {
+                imf("editFile")
+//                val q = UACustomerSingleOrderPage.urlQuery
+//                world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
+//                    URLParamValue(q.id, order.id.toString()),
+//                    URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
+//                )))
+            }
+        )
     }
 }
 

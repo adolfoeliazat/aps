@@ -38,7 +38,7 @@ annotation class Back
 @Dummy fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> = fuckOff()
 
 @Back open class RequestMatumba {
-    val fields = mutableListOf<FormFieldBack>()
+    val _fields = mutableListOf<FormFieldBack>()
 }
 
 //abstract class HiddenFormFieldBack<T>(val container: RequestMatumba, val name: String) {
@@ -189,7 +189,7 @@ abstract class FormFieldBack(
     override val constructionStack = Exception().stackTrace
 
     init {
-        container.fields.add(this)
+        container._fields.add(this)
     }
 
     fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) =

@@ -45,7 +45,7 @@ data class FormSpec<Req: RequestMatumba, Res>(
 
 class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val procedureName: String? = null) : ToReactElementable {
     init {
-        req.fields.forEach {it.form = this}
+        req._fields.forEach {it.form = this}
     }
 
     val req: Req get() = spec.req
@@ -64,7 +64,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
                     val shit: ReactElement = Shitus.errorBanner(json("content" to error, "style" to spec.errorBannerStyle))
                     o- shit
                 }
-                for (f in spec.req.fields) {
+                for (f in spec.req._fields) {
                     if (actualVisibleFieldNames.contains(f.name)) {
                         o- f.render()
                     }
@@ -144,7 +144,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
     }
 
     suspend fun submit() {
-        for (field: FormFieldFront in spec.req.fields) {
+        for (field: FormFieldFront in spec.req._fields) {
             field.error = null
             field.disabled = true
         }
@@ -171,7 +171,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
             }
         }
 
-        for (field in spec.req.fields) {
+        for (field in spec.req._fields) {
             field.error = if (res !is FormResponse.Shitty) null else
                 res.fieldErrors.find{it.field == field.name}?.error
             field.disabled = false
@@ -189,7 +189,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
     }
 
     fun figureOutActualVisibleFieldNames() {
-        actualVisibleFieldNames = spec.req.fields.map{x -> x.name}.without((spec.getInvisibleFieldNames)())
+        actualVisibleFieldNames = spec.req._fields.map{x -> x.name}.without((spec.getInvisibleFieldNames)())
     }
 
     fun fieldChanged() {

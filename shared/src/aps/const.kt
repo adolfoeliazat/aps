@@ -5,6 +5,8 @@ object const {
     val moreableChunkSize = 10
 
     object text {
+        val numberSign = t("#", "№")
+
         object symbols {
             val rightDoubleAngleQuotation = "»"
             val rightDoubleAngleQuotationSpaced = " » "

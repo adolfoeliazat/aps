@@ -8,6 +8,7 @@ package aps.back
 
 import aps.*
 import com.google.common.hash.Hashing
+import into.kommon.*
 import org.springframework.data.repository.findOrDie
 import java.util.*
 
@@ -33,6 +34,34 @@ import java.util.*
                 ))
 
                 return UACreateOrderFileRequest.Response(file.id!!)
+            }
+        ))
+    }
+}
+
+@Servant class ServeUAUpdateOrderFile(val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
+    override fun serve() {
+        fuckCustomer(FuckCustomerParams(
+            bpc = bpc, makeRequest = {UAUpdateOrderFileRequest()},
+            runShit = fun(ctx, req): aps.UAUpdateOrderFileRequest.Response {
+                die("fuuuuuuuuuuuck youuuuuuuuuuuuuuuuu")
+//                val order = orderRepo.findOrDie(req.orderID.value)
+//                // TODO:vgrechka @security Check permissions
+//
+//                val content = Base64.getDecoder().decode(req.file.base64)
+//                val file = fileRepo.save(UAOrderFile(
+//                    order = order,
+//                    name = req.file.fileName,
+//                    title = req.title.value,
+//                    mime = "application/octet-stream",
+//                    details = req.details.value,
+//                    adminNotes = "",
+//                    sha1 = Hashing.sha1().hashBytes(content).toString(),
+//                    sizeBytes = content.size,
+//                    content = content
+//                ))
+//
+//                return UAUpdateOrderFileRequest.Response(file.id!!)
             }
         ))
     }

@@ -90,15 +90,15 @@ interface Xlobal {
 }
 
 class UACustomerOrderRequestFields1(cont: RequestMatumba) {
-    val documentType = SelectField(cont, fieldSpecs.shebang.ua.documentType.ref)
-    val documentTitle = TextField(cont, fieldSpecs.shebang.documentTitle.ref)
-    val numPages = IntField(cont, fieldSpecs.shebang.numPages.ref)
-    val numSources = IntField(cont, fieldSpecs.shebang.numSources.ref)
-    val documentDetails = TextField(cont, fieldSpecs.shebang.orderDetails.ref)
+    val documentType = SelectField(cont, fields.shebang.ua.documentType)
+    val documentTitle = TextField(cont, fields.shebang.documentTitle)
+    val numPages = IntField(cont, fields.shebang.numPages)
+    val numSources = IntField(cont, fields.shebang.numSources)
+    val documentDetails = TextField(cont, fields.shebang.orderDetails)
 }
 
 class UACustomerOrderRequestFields2(cont: RequestMatumba) {
-    val phone = TextField(cont, fieldSpecs.shebang.phone.ref)
+    val phone = TextField(cont, fields.shebang.phone)
 }
 
 class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
@@ -107,11 +107,11 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
     val fields1 = UACustomerOrderRequestFields1(this)
     var anonymousCustomerName by notNullOnce<TextField>()
         init {if (xlobal.user == null)
-            anonymousCustomerName  = TextField(this, fieldSpecs.shebang.anonymousCustomerName.ref)}
+            anonymousCustomerName  = TextField(this, fields.shebang.anonymousCustomerName)}
     val fields2 = UACustomerOrderRequestFields2(this)
     var anonymousCustomerEmail by notNullOnce<TextField>()
         init {if (xlobal.user == null)
-            anonymousCustomerEmail = TextField(this, fieldSpecs.shebang.email.ref)}
+            anonymousCustomerEmail = TextField(this, fields.shebang.email)}
 }
 
 class UACustomerUpdateOrderRequest : RequestMatumba() {

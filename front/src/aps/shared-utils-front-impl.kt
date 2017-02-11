@@ -113,14 +113,14 @@ fun remoteProcedureNameForRequest(req: Any): String {
 
 @Front open class RequestMatumba {
     // TODO:vgrechka Why the fuck do I need `fields` and `hiddenFields` to be separate?
-    val fields = mutableListOf<FormFieldFront>()
-    val hiddenFields = mutableListOf<HiddenFormFieldFront>()
+    val _fields = mutableListOf<FormFieldFront>()
+    val _hiddenFields = mutableListOf<HiddenFormFieldFront>()
     var fieldInstanceKeySuffix: String? = null
 }
 
 abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: String) {
     init {
-        container.hiddenFields.add(this)
+        container._hiddenFields.add(this)
     }
 
     abstract fun populateRemote(json: Json): Promisoid<Unit>
@@ -129,7 +129,7 @@ abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: Str
 //abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
 abstract class FormFieldFront(val container: RequestMatumba, val name: String) {
     init {
-        container.fields.add(this)
+        container._fields.add(this)
     }
 
     lateinit var form: FormMatumba<*, *>
@@ -271,8 +271,8 @@ fun <Res> callMatumba(procedureName: String, req: RequestMatumba, token: String?
     token?.let {payload.token = it}
 
     payload.fields = json()
-    for (field in req.fields) await(field.populateRemote(payload.fields))
-    for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
+    for (field in req._fields) await(field.populateRemote(payload.fields))
+    for (field in req._hiddenFields) await(field.populateRemote(payload.fields))
     populateFields(payload.fields)
 
     await(callRemoteProcedurePassingJSONObject<Res>(procedureName, payload, wck, descr = descr))
@@ -297,8 +297,8 @@ fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String
         token?.let {payload.token = it}
 
         payload.fields = json()
-        for (field in req.fields) await(field.populateRemote(payload.fields))
-        for (field in req.hiddenFields) await(field.populateRemote(payload.fields))
+        for (field in req._fields) await(field.populateRemote(payload.fields))
+        for (field in req._hiddenFields) await(field.populateRemote(payload.fields))
 
         TestGlobal.requestPause?.let {await(it.promise)}
         val res = await<Any>(callRemoteProcedurePassingJSONObject(procedureName, payload, wck))

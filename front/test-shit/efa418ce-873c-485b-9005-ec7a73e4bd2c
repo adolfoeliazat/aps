@@ -176,15 +176,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -259,15 +259,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -342,15 +342,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -425,15 +425,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -508,15 +508,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -591,15 +591,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -674,15 +674,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -757,15 +757,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -840,15 +840,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -923,15 +923,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="cunt-header-rightIcon fa fa-cloud-download" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-trash">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="cunt-header-rightIcon fa fa-pencil">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>

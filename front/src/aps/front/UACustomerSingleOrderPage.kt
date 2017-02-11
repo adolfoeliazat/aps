@@ -122,19 +122,19 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.shebang.ua.documentType.ref.title)
+                                o- label(fields.shebang.ua.documentType.title)
                                 o- kdiv{o->
                                     o- order.documentType.title
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.shebang.numPages.ref.title)
+                                o- label(fields.shebang.numPages.title)
                                 o- kdiv{o->
                                     o- order.numPages.toString()
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.shebang.numSources.ref.title)
+                                o- label(fields.shebang.numSources.title)
                                 o- kdiv{o->
                                     o- order.numSources.toString()
                                 }
@@ -149,25 +149,25 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.shebang.phone.ref.title)
+                                o- label(fields.shebang.phone.title)
                                 o- div(order.phone)
                             }
                         }
                         o- row{o->
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.shebang.ua.documentType.ref.title)
+                                o- label(fields.shebang.ua.documentType.title)
                                 o- kdiv{o->
                                     o- order.documentType.title
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.shebang.numPages.ref.title)
+                                o- label(fields.shebang.numPages.title)
                                 o- kdiv{o->
                                     o- order.numPages.toString()
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
-                                o- label(fieldSpecs.shebang.numSources.ref.title)
+                                o- label(fields.shebang.numSources.title)
                                 o- kdiv{o->
                                     o- order.numSources.toString()
                                 }
@@ -176,7 +176,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                     }
                     o- row{o->
                         o- kdiv(className = "col-md-12"){o->
-                            o- label(fieldSpecs.shebang.orderDetails.ref.title)
+                            o- label(fields.shebang.orderDetails.title)
                             o- kdiv(whiteSpace = "pre-wrap"){o->
                                 o- order.details
                             }

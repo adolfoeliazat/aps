@@ -159,7 +159,7 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
 
                         val input  = rmap["fields"] as Map<String, Any?>
                         val req = p.req(ctx)
-                        for (field in req.fields) field.load(input, ctx.fieldErrors)
+                        for (field in req._fields) field.load(input, ctx.fieldErrors)
 
                         if (p.needsDangerousToken) {
                             if (rmap["token"] != systemDangerousToken()) {
