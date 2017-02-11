@@ -3,30 +3,34 @@ package aps.front
 import aps.*
 import into.kommon.*
 
+open class KicKey(override val fqn: String) : Fucker(), FQNed
+
+data class SubscriptKicKey(val key: KicKey, val subscript: Any?)
+    : KicKey(key.fqn + "-$subscript")
 
 class kic(
-    val key: String? = null,
-    val style: Style = Style(),
     val className: String = "",
-    val onClicka: () -> Promisoid<Unit> = {async{}},
-    val onClick: () -> Unit = {}
+    val key: KicKey? = null,
+    val style: Style = Style(),
+    val onClick: () -> Unit = {},
+    val onClicka: suspend () -> Unit = {}
 ) : Control2(Attrs()) {
 
     companion object {
-        val instances = mutableMapOf<String, kic>()
+        val instances = mutableMapOf<KicKey, kic>()
 
-        fun instance(key: String): kic {
+        fun instance(key: KicKey): kic {
             return instances[key] ?: bitch("No kic keyed `$key`")
         }
     }
 
-    fun click(): Promisoid<Unit> {
+    suspend fun click() {
         onClick()
-        return onClicka()
+        onClicka()
     }
 
     override fun render(): ToReactElementable =
-        ki(id = elementID, className = className, baseStyle = style, onClick = {click()})
+        ki(id = elementID, className = className, baseStyle = style, onClick = {async{click()}})
 
     override fun componentDidMount() {
         if (key != null) {
@@ -41,19 +45,11 @@ class kic(
     }
 }
 
-fun TestScenarioBuilder.kicClick(key: String, handOpts: HandOpts = HandOpts()) {
-    acta("Clicking kic `$key`") {async<Unit>{
-        val target = kic.instance(key)
-        await(TestUserActionAnimation.hand(target, handOpts))
-        target.click() // Not await
-    }}
+suspend fun kicClick(key: TestRef<KicKey>, handOpts: HandOpts = HandOpts()) {
+    val target = kic.instance(key.it)
+    await(TestUserActionAnimation.hand(target, handOpts))
+    notAwait {target.click()}
 }
-
-//fun TestScenarioBuilder.kicClickNoWait(key: String) {
-//    act("Clicking kic `$key`") {
-//        kic.instance(key).click()
-//    }
-//}
 
 
 

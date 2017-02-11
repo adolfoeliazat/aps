@@ -27,10 +27,11 @@ class TestSuite_UACustomer_Order_Files : TestSuite {
 
 class Test_UACustomer_Order_Files_1 : StepBasedTestScenario() {
     override fun buildSteps() {
-        o.setUpOrderAndFiles1(testShit)
-        o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = false, sha1 = "16428e392350fc2e0ea8dda708fdd4ed61f423d5")) {
-            o.kicClick("download-100001")
-        }
+        imf("Reimplement Test_UACustomer_Order_Files_1")
+//        o.setUpOrderAndFiles1(testShit)
+//        o.expectPieceOfShitDownload(PieceOfShitDownload(100001, "crazy monster boobs.rtf", forbidden = false, sha1 = "16428e392350fc2e0ea8dda708fdd4ed61f423d5")) {
+//            o.kicClick("download-100001")
+//        }
     }
 }
 

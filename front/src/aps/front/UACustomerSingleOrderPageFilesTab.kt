@@ -376,32 +376,29 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
                                 if (!editing) {
                                     o- hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")) {o->
-                                        o- kic("download-${orderFile.id}", className = "${css.cunt.header.rightIcon} ${fa.cloudDownload}", style = Style(marginTop = "0.45rem"),
-                                               onClick = {
-                                                   val iframeID = puid()
-                                                   jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
-                                                   val iframe = byid0(iframeID) as HTMLIFrameElement
-                                                   aps.gloshit.iframe = iframe
-                                                   iframe.onload = {
-                                                       iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
-                                                   }
-                                                   iframe.src = "$backendURL/file?fileID=${orderFile.id}&databaseID=${ExternalGlobus.DB}&token=${world.tokenMaybe}"
-                                               })
+                                        o- kic("${fa.cloudDownload} ${css.cunt.header.rightIcon}", style = Style(marginTop = "0.45rem"), key = SubscriptKicKey(kics.order.file.download, order.id), onClicka = {
+                                            val iframeID = puid()
+                                            jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
+                                            val iframe = byid0(iframeID) as HTMLIFrameElement
+                                            aps.gloshit.iframe = iframe
+                                            iframe.onload = {
+                                                iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
+                                            }
+                                            iframe.src = "$backendURL/file?fileID=${orderFile.id}&databaseID=${ExternalGlobus.DB}&token=${world.tokenMaybe}"
+                                        })
                                         if (orderFile.editable) {
-                                            o- kic("delete-${orderFile.id}", className = "${css.cunt.header.rightIcon} ${fa.trash}", style = Style(),
-                                                   onClicka = {async{
-                                                       if (await(modalConfirmAndPerformDeletion(
-                                                           t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.title}"),
-                                                           DeleteUAOrderFileRequest()-{o->
-                                                               o.id.value = orderFile.id
-                                                           }))) {
-                                                           enterVanishedMode()
-                                                       }
-                                                   }})
-                                            o- kic("edit-${orderFile.id}", className = "${css.cunt.header.rightIcon} ${fa.pencil}", style = Style(),
-                                                   onClicka = {
-                                                       enterEditMode()
-                                                   })
+                                            o- kic("${fa.trash} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.delete, order.id), onClicka = {
+                                                if (await(modalConfirmAndPerformDeletion(
+                                                    t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.title}"),
+                                                    DeleteUAOrderFileRequest()-{o->
+                                                        o.id.value = orderFile.id
+                                                    }))) {
+                                                    enterVanishedMode()
+                                                }
+                                            })
+                                            o- kic("${fa.pencil} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.edit, order.id), onClicka = {
+                                                enterEditMode()
+                                            })
                                         }
                                     }
                                 }

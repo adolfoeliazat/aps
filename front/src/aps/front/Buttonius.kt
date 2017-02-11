@@ -6,14 +6,9 @@ import kotlin.browser.window
 import kotlin.js.json
 
 open class ButtonKey(override val fqn: String) : Fucker(), FQNed
-//open class ButtonKey(override val name: String) : NamedItem
 
 data class SubscriptButtonKey(val key: ButtonKey, val subscript: Any?)
     : ButtonKey(key.fqn + "-$subscript")
-
-//abstract class ButtonKeyRefs(val group: NamedGroup<ButtonKey>) {
-//    protected val key = ButtonKey(name = qualifyMe(group))
-//}
 
 open class Button(
     val key: ButtonKey? = null,
@@ -54,7 +49,7 @@ open class Button(
         override fun toString() = string
     }
 
-    open suspend fun click(): Promisoid<Unit> = async {
+    open suspend fun click() {
         onClick()
         onClicka()
     }
