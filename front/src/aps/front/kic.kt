@@ -20,7 +20,7 @@ class kic(
         val instances = mutableMapOf<KicKey, kic>()
 
         fun instance(key: KicKey): kic {
-            return instances[key] ?: bitch("No kic keyed `$key`")
+            return instances[key] ?: bitch("No kic keyed `${key.fqn}`")
         }
     }
 
@@ -45,11 +45,20 @@ class kic(
     }
 }
 
-suspend fun kicClick(key: TestRef<KicKey>, handOpts: HandOpts = HandOpts()) {
-    val target = kic.instance(key.it)
+suspend fun kicClick(key: TestRef<KicKey>, subscript: Any? = null, handOpts: HandOpts = HandOpts()) {
+    val target = kic.instance(if (subscript == null) key.it
+                              else SubscriptKicKey(key.it, subscript))
     await(TestUserActionAnimation.hand(target, handOpts))
     notAwait {target.click()}
 }
+
+
+
+
+
+
+
+
 
 
 

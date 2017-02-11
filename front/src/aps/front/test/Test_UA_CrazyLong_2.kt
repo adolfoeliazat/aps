@@ -196,7 +196,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(3) {
-            clog("aaaaaaaaaaaaaaaaaaaa")
+            kicClick(kics.order.file.edit_testRef, subscript = 27L)
         }
     }
 
