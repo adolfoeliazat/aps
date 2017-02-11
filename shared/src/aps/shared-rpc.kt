@@ -170,7 +170,24 @@ class TestGetFileUploadDataRequest : RequestMatumba() {
     val fileName by stringHiddenField()
 }
 
+class FileFields1(cont: RequestMatumba) {
+    val title = TextField(cont, fields.shebang.fileTitle)
+    val details = TextField(cont, fields.shebang.fileDetails)
+}
 
+class UACreateOrderFileRequest : RequestMatumba() {
+    class Response(val id: Long) : CommonResponseFieldsImpl()
+    val orderID by longHiddenField()
+    val file = FileField(this, fields.shebang.fileFile_create)
+    val fields1 = FileFields1(this)
+}
+
+class UAUpdateOrderFileRequest : RequestMatumba() {
+    class Response : CommonResponseFieldsImpl()
+    val fileID by longHiddenField()
+    val file = FileField(this, fields.shebang.fileFile_update)
+    val fields1 = FileFields1(this)
+}
 
 
 

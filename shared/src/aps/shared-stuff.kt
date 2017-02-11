@@ -406,39 +406,6 @@ class FuckingRemoteProcedureRequest : RequestMatumba() {
 fun send(req: FuckingRemoteProcedureRequest): Promisoid<JSONResponse> = callDangerousMatumba(req)
 
 
-fun fileField(container: RequestMatumba, shouldBeProvided: Boolean = true) = FileField(container, "file", t("TOTE", "Файл"), shouldBeProvided = shouldBeProvided)
-fun fileTitleField(container: RequestMatumba) = TextField(container, fields.shebang.fileTitle)
-fun fileDetailsField(container: RequestMatumba) = TextField(container, fields.shebang.fileDetails)
-
-class UACreateOrderFileRequest : RequestMatumba() {
-    class Response(val id: Long) : CommonResponseFieldsImpl()
-
-    val orderID by longHiddenField()
-    val file = fileField(this)
-    val title = fileTitleField(this)
-    val details = fileDetailsField(this)
-}
-
-class UAUpdateOrderFileRequest : RequestMatumba() {
-    class Response : CommonResponseFieldsImpl()
-
-    val fileID by longHiddenField()
-    val file = fileField(this)
-    val title = fileTitleField(this)
-    val details = fileDetailsField(this)
-}
-
-//abstract class EditUAOrderFileRequestBase : RequestMatumba() {
-//    class Response(val updatedOrderFile: UAOrderFileRTO) : CommonResponseFieldsImpl()
-//
-//    val orderFileID by longHiddenField()
-//    val file = fileField(this, shouldBeProvided = false)
-//    val title = fileTitleField(this)
-//    val details = fileDetailsField(this)
-//}
-//
-//class CustomerEditUAOrderFileRequest : EditUAOrderFileRequestBase()
-//class WriterEditUAOrderFileRequest : EditUAOrderFileRequestBase()
 
 abstract class DeleteRequest : RequestMatumba() {
     class Response : CommonResponseFieldsImpl()

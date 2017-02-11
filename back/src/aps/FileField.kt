@@ -7,29 +7,27 @@ import kotlin.properties.Delegates.notNull
 
 @Back class FileField(
     container: RequestMatumba,
-    name: String,
-    @Dummy val title: String,
-    val shouldBeProvided: Boolean = true
-): FormFieldBack(container, name) {
-    var provided by notNull<Boolean>()
-    lateinit var fileName: String
-    lateinit var base64: String
+    val spec: FileFieldSpec
+): FormFieldBack(container, spec.name) {
+    var fileName by notNullOnce<String>()
+    var base64 by notNullOnce<String>()
+    var valueKind by notNullOnce<FileFieldValueKind>()
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         val value = (input[name] ?: bitch("Gimme $name, motherfucker")) as Map<*, *>
 
         run error@{
-            provided = cast(value["provided"])
-            if (shouldBeProvided && !provided) return@error t("TOTE", "Файл обязателен")
+            valueKind = FileFieldValueKind.valueOf(cast(value["valueKind"]))
+            if (valueKind !in spec.allowedValueKinds) {
+                when {
+                    spec.allowedValueKinds == setOf(FileFieldValueKind.PROVIDED) -> return@error t("TOTE", "Файл обязателен")
+                    else -> return@error t("TOTE", "Я ебу, какой-то файл отстойный")
+                }
+            }
 
-            if (provided) {
+            if (valueKind == FileFieldValueKind.PROVIDED) {
                 fileName = cast(value["fileName"])
-                val testFileOnServerName: String? = cast(value["testFileOnServerName"])
-                base64 =
-                    if (testFileOnServerName != null)
-                        Base64.getEncoder().encodeToString(File(APS_HOME + "/back/testfiles/" + testFileOnServerName).readBytes())
-                    else
-                        cast(value["base64"])
+                base64 = cast(value["base64"])
             }
             null
         }?.let {error ->

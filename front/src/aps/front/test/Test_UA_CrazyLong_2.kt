@@ -13,7 +13,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     enum class FilesShortcutMode { ALL, A, B }
 
     object testdata {
-        val details = "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."
+        val trialDetails = "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."
+        val rapunzelDetails = "Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель."
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
@@ -47,7 +48,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                         badTextFieldValuesThenValid(fields.shebang.documentTitle_testRef, "Как я пинал хуи на практике"),
                         badIntFieldValuesThenValid(fields.shebang.numPages_testRef, 13),
                         badIntFieldValuesThenValid(fields.shebang.numSources_testRef, 5),
-                        badTextFieldValuesThenValid(fields.shebang.orderDetails_testRef, testdata.details),
+                        badTextFieldValuesThenValid(fields.shebang.orderDetails_testRef, testdata.trialDetails),
                         badTextFieldValuesThenValid(fields.shebang.anonymousCustomerName_testRef, "Пися Камушкин"),
                         badTextFieldValuesThenValid(fields.shebang.phone_testRef, "+38 (068) 123-45-67"),
                         badTextFieldValuesThenValid(fields.shebang.email_testRef, "pisia@test.shit.ua")
@@ -91,7 +92,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                         badTextFieldValuesThenValid(fields.shebang.documentTitle_testRef, "Как я пинал большие хуи на практике"),
                         badIntFieldValuesThenValid(fields.shebang.numPages_testRef, 23),
                         badIntFieldValuesThenValid(fields.shebang.numSources_testRef, 7),
-                        badTextFieldValuesThenValid(fields.shebang.orderDetails_testRef, "Это чисто на почитать... " + testdata.details),
+                        badTextFieldValuesThenValid(fields.shebang.orderDetails_testRef, "Это чисто на почитать... " + testdata.trialDetails),
                         badTextFieldValuesThenValid(fields.shebang.phone_testRef, "+38 (068) 321-45-67")
                     ))
                 )
@@ -139,7 +140,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     AddFileParams(fileName = "lousy writing 6.rtf", title = "Сказка о том, кто ходил страху учиться", details = "Один отец жил с двумя сыновьями, младший из которых был бесстрашен и очень хотел страху научиться, а ремеслу не желал. По жалобе отца решил его страху дьячок научить: послал юношу в полночь на колокольню, а сам притворился привидением, но парень, ничуть не испугавшись, спустил мнимое привидение с лестницы. После этого происшествия отправил его отец от себя прочь, дав денег лишь на первое время. По пути он ночует под виселицей с мертвецами, а затем от владельца постоялого двора узнаёт о заколдованном замке, полном сокровищ: кто проведёт в нём три ночи, за того король обещал отдать свою дочь замуж.", aid = "4e10f4d7-c0ca-47a5-baf9-1237a77fba77"),
                     AddFileParams(fileName = "lousy writing 7.rtf", title = "Волк и семеро козлят", details = "Мать-коза, отлучаясь из дома, предупреждает своих козлят остерегаться волка, бродящего неподалёку. Волк, воспользовавшись удачным моментом, стучится к козлятам и заявляет, что он их мать. Те в ответ говорят, что голос их матери мягкий, в то время как его голос грубый. Волк съедает кусок мела, чтобы смягчить свой голос. По другой версии кузнец выковывает волку новое певучее горло. Однако козлята всё равно не пускают его: лапы у их матери белые, а не чёрные, как у волка. Тот идёт на мельницу и пачкает свои лапы в муке. Козлята впускают волка, который тут же съедает их всех, кроме самого маленького, спрятавшегося в печке. По английской версии — в футляре часов.", aid = "1fcb256a-bef0-44a1-a581-89a1f5bdf16f"),
                     AddFileParams(fileName = "lousy writing 8.rtf", title = "Братец и сестрица", details = "С приходом мачехи в дом, жизнь в нём брата и сестры становится невыносимой. Дети принимают решение уйти. В скитаниях по полям и лесам их одолевают усталость, голод и жажда. Но злая мачеха-ведьма и теперь не может оставить детей в покое и заколдовывает водные источники на их пути. Братец нестерпимо хочет пить, но чуткая сестрица два раза удерживает его от этого, ведь, выпив из них воды, можно превратиться в диких животных: из первого источника — в тигра, а из второго — в волка. Но возле третьего источника жажда одолела брата, и сестра ничего не смогла сделать. Выпив воды, братец обернулся диким козликом.", aid = "3e9496a4-913c-47d1-b5ea-85cc2964117f"),
-                    AddFileParams(fileName = "lousy writing 9.rtf", title = "Рапунцель", details = "Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель.", aid = "fb70b826-3089-4ad7-a50c-367089033e47"),
+                    AddFileParams(fileName = "lousy writing 9.rtf", title = "Рапунцель", details = testdata.rapunzelDetails, aid = "fb70b826-3089-4ad7-a50c-367089033e47"),
                     AddFileParams(fileName = "lousy writing 10.rtf", title = "Три маленьких лесовика", details = "Вдова убеждает вдовца жениться на себе, обещая заботиться о его дочери больше, чем о родной. Но вдовец сначала хочет узнать высшую волю о своём повторном браке, и получает положительное знамение. Однако мачеха вскоре возненавидела свою падчерицу, надела на ту бумажную одежду, и зимой, в лютый мороз, отправила в лес за земляникой. В лесу девочка повстречала домик с тремя маленькими лесными человечками.", aid = "cca69a73-d5d5-490d-ad78-aed770941288")
                 )
                 check(bunch1.size == const.moreableChunkSize) {"bunch1.size"}
@@ -198,8 +199,18 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint(3) {
             run { // Edit file -- cancel
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
-                inputSetValue(fields.shebang.documentTitle_testRef, "Хуй")
+                inputSetValue(fields.shebang.fileTitle_testRef, "Хуй")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "74893db1-b1cb-4cae-8d17-441f715899d3")
+            }
+            run { // Edit file -- save, file not changed
+                step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "e0795fd9-64ad-417d-bcb7-1f4dcd2a2f05")
+                formSubmissionAttempts(
+                    testShit, baseID = "2639505f-4b8c-44fd-b0b7-99b252062a72",
+                    attempts = eachOrCombinationOfLasts(listOf(
+                        badTextFieldValuesThenValid(fields.shebang.fileTitle_testRef, "Рапунцель-распиздунцель"),
+                        badTextFieldValuesThenValid(fields.shebang.fileDetails_testRef, "Реальная история... " + testdata.rapunzelDetails)
+                    ))
+                )
             }
         }
     }
@@ -241,14 +252,16 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         testShit.imposeNextRequestTimestamp()
         send(UACreateOrderFileRequest()-{o->
             o.orderID.value = orderID
-            o.title.value = p.title
-            o.details.value = p.details
-            o.file.content = FileField.Content.FileToUpload(run {
+            o.file.content = FileField.Content.Provided(run {
                 val res = send(TestGetFileUploadDataRequest()-{o->
                     o.fileName.value = p.fileName
                 })
                 File(base64ToUint8ArraySlices(res.base64), res.name)
             })
+            o.fields1-{o->
+                o.title.value = p.title
+                o.details.value = p.details
+            }
         })
         dlog("addFileBackendOnly: sent ${p.fileName}")
     }

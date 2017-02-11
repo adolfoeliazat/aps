@@ -24,9 +24,9 @@ import java.util.*
                 val file = fileRepo.save(UAOrderFile(
                     order = order,
                     name = req.file.fileName,
-                    title = req.title.value,
+                    title = req.fields1.title.value,
                     mime = "application/octet-stream",
-                    details = req.details.value,
+                    details = req.fields1.details.value,
                     adminNotes = "",
                     sha1 = Hashing.sha1().hashBytes(content).toString(),
                     sizeBytes = content.size,
@@ -43,25 +43,20 @@ import java.util.*
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc, makeRequest = {UAUpdateOrderFileRequest()},
-            runShit = fun(ctx, req): aps.UAUpdateOrderFileRequest.Response {
-                die("fuuuuuuuuuuuck youuuuuuuuuuuuuuuuu")
-//                val order = orderRepo.findOrDie(req.orderID.value)
-//                // TODO:vgrechka @security Check permissions
-//
-//                val content = Base64.getDecoder().decode(req.file.base64)
-//                val file = fileRepo.save(UAOrderFile(
-//                    order = order,
-//                    name = req.file.fileName,
-//                    title = req.title.value,
-//                    mime = "application/octet-stream",
-//                    details = req.details.value,
-//                    adminNotes = "",
-//                    sha1 = Hashing.sha1().hashBytes(content).toString(),
-//                    sizeBytes = content.size,
-//                    content = content
-//                ))
-//
-//                return UAUpdateOrderFileRequest.Response(file.id!!)
+            runShit = fun(ctx, req): UAUpdateOrderFileRequest.Response {
+                val file = fileRepo.findOrDie(req.fileID.value)
+                // TODO:vgrechka @security Check permissions
+
+                file.title = req.fields1.title.value
+                file.details = req.fields1.details.value
+                if (req.file.valueKind == FileFieldValueKind.PROVIDED) {
+                    val content = Base64.getDecoder().decode(req.file.base64)
+                    file.sha1 = Hashing.sha1().hashBytes(content).toString()
+                    file.sizeBytes = content.size
+                    file.content = content
+                }
+
+                return UAUpdateOrderFileRequest.Response()
             }
         ))
     }

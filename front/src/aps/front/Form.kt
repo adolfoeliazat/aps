@@ -159,6 +159,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
 
         when (res) {
             is FormResponse.Shitty -> {
+                // res.fieldErrors.forEach {dlog("Field error:", it.field, it.error)}
                 error = res.error
                 (spec.onError)(res)
                 (spec.onErrora)(res)

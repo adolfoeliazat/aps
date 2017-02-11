@@ -17,13 +17,15 @@ object fields                                    : Fuckers<FieldSpec>(null) {
         val phone                                by namedFucker {TextFieldSpec(it, t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 50, minDigits = 6)}; val phone_testRef = TestRef(phone)
         val aboutMe                              by namedFucker {TextFieldSpec(it, t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300)}; val aboutMe_testRef = TestRef(aboutMe)
         val searchString                         by namedFucker {TextFieldSpec(it, "", TextFieldType.STRING, 0, 50)}; val searchString_testRef = TestRef(searchString)
-        val fileTitle                            by namedFucker {TextFieldSpec(it, t("TOTE", "Название"), TextFieldType.STRING, 3, 100)}; val fileTitle_testRef = TestRef(fileTitle)
-        val fileDetails                          by namedFucker {TextFieldSpec(it, t("TOTE", "Детали"), TextFieldType.TEXTAREA, 3, 2000)}; val fileDetails_testRef = TestRef(fileDetails)
         val orderDetails                         by namedFucker {TextFieldSpec(it, t("TOTE", "Детали работы (задание)"), TextFieldType.TEXTAREA, minLen = 3, maxLen = 2000)}; val orderDetails_testRef = TestRef(orderDetails)
         val agreeTerms                           by namedFucker {CheckboxFieldSpec(it, t("TOTE", "Title is not used here, but should"))}; val agreeTerms_testRef = TestRef(agreeTerms)
         val userState                            by namedFucker {SelectFieldSpec(it, t("TOTE", "Статус"), UserState.values())}; val userState_testRef = TestRef(userState)
         val numPages                             by namedFucker {IntFieldSpec(it, t("TOTE", "Количество страниц"), min = 1, max = 500)}; val numPages_testRef = TestRef(numPages)
         val numSources                           by namedFucker {IntFieldSpec(it, t("TOTE", "Количество источников"), min = 0, max = 50)}; val numSources_testRef = TestRef(numSources)
+        val fileFile_create                      by namedFucker {FileFieldSpec(it, t("TOTE", "Файл"), allowedValueKinds = setOf(FileFieldValueKind.PROVIDED))}; val fileFile_create_testRef = TestRef(fileFile_create)
+        val fileFile_update                      by namedFucker {fileFile_create.copy(allowedValueKinds = setOf(FileFieldValueKind.UNCHANGED, FileFieldValueKind.PROVIDED))}; val fileFile_update_testRef = TestRef(fileFile_update)
+        val fileTitle                            by namedFucker {TextFieldSpec(it, t("TOTE", "Название"), TextFieldType.STRING, 3, 100)}; val fileTitle_testRef = TestRef(fileTitle)
+        val fileDetails                          by namedFucker {TextFieldSpec(it, t("TOTE", "Детали"), TextFieldType.TEXTAREA, 3, 2000)}; val fileDetails_testRef = TestRef(fileDetails)
 
         object ua                                : Fuckers<FieldSpec>(this) {
             val documentType                     by namedFucker {SelectFieldSpec(it, t("TOTE", "Тип документа"), UADocumentType.values())}; val documentType_testRef = TestRef(documentType)
@@ -64,6 +66,15 @@ class IntFieldSpec(
     val max: Int
 ) : FieldSpec()
 
+data class FileFieldSpec(
+    val name: String,
+    val title: String,
+    val allowedValueKinds: Set<FileFieldValueKind>
+) : FieldSpec()
+
+enum class FileFieldValueKind {
+    NONE, UNCHANGED, PROVIDED
+}
 
 
 

@@ -2,41 +2,35 @@
 
 package aps
 
-import aps.Color.*
 import aps.front.*
 import into.kommon.*
 import org.w3c.files.File
 import org.w3c.files.FileList
 import org.w3c.files.FileReader
 import org.w3c.files.get
-import org.w3c.xhr.XMLHttpRequest
-import kotlin.browser.window
 import kotlin.js.Json
 import kotlin.js.json
 
 @Front class FileField(
     container: RequestMatumba,
-    key: String,
-    val title: String,
-    val shouldBeProvided: Boolean = true
-): FormFieldFront(container, key) {
+    spec: FileFieldSpec
+): FormFieldFront(container, spec.name) {
     companion object {
-        val instances = mutableMapOf<String, FileField>()
+        val instances = mutableMapOf<FileFieldSpec, FileField>()
 
-        fun instance(key: String): FileField {
-            return instances[key] ?: bitch("No FileField keyed `$key`")
+        fun instance(key: FileFieldSpec): FileField {
+            return instances[key] ?: bitch("No FileField keyed `${key.name}`")
         }
     }
 
     sealed class Content {
-        class FileToUpload(val file: File) : Content()
-        class ExistingFile(val name: String, val size: Int) : Content()
-        class NotProvided : Content()
-        class TestFileOnServer(val name: String) : Content()
+        class Provided(val file: File) : Content()
+        class Unchanged(val name: String, val size: Int) : Content()
+        class None : Content()
     }
 
     val noise = DebugNoise("FileField", mute = false)
-    var content: Content = Content.NotProvided()
+    var content: Content = Content.None()
 //    var fileChanged = ResolvableShit<Unit>()
 
     val control = object:Control2(Attrs()) {
@@ -45,7 +39,7 @@ import kotlin.js.json
         override fun render(): ToReactElementable {
             val _content = content
             return kdiv(className = "form-group"/*, marginTop = 10*/){o->
-                o- klabel {it-title}
+                o- label(spec.title)
                 o- reactCreateElement("input", json(
                     "id" to inputID,
                     "type" to "file",
@@ -57,7 +51,7 @@ import kotlin.js.json
                     }}
                 ), listOf())
                 when (_content) {
-                    is Content.ExistingFile -> {
+                    is Content.Unchanged -> {
                         o- kdiv(Style(display = "flex", alignItems = "center")){o->
                             o- kspan{o->
                                 o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
@@ -67,7 +61,7 @@ import kotlin.js.json
                             })
                         }
                     }
-                    is Content.FileToUpload -> {
+                    is Content.Provided -> {
                         o- kdiv(Style(display = "flex", alignItems = "center")){o->
                             o- kspan{o->
                                 o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
@@ -77,7 +71,7 @@ import kotlin.js.json
                             })
                         }
                     }
-                    is Content.NotProvided -> {
+                    is Content.None -> {
                         o- kdiv{o->
                             o- Button(icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), key = buttons.upload, onClick = {
                                 byid(inputID).click()
@@ -89,14 +83,12 @@ import kotlin.js.json
         }
 
         override fun componentDidMount() {
-            instances[instanceKey] = this@FileField
+            instances[spec] = this@FileField
         }
 
         override fun componentWillUnmount() {
-            instances.remove(instanceKey)
+            instances.remove(spec)
         }
-
-        val instanceKey get() = key + container.fieldInstanceKeySuffix
     }
 
     fun testUploadFileFast(fileName: String) {
@@ -113,7 +105,7 @@ import kotlin.js.json
     private suspend fun onGotFile(file: File) {
         noise.clog("Got file", file)
         gloshit.file = file
-        content = Content.FileToUpload(file)
+        content = Content.Provided(file)
         control.update()
         TestGlobal.fileFieldChangedLock.sutPause()
     }
@@ -134,11 +126,11 @@ import kotlin.js.json
         val _content = content
         val shit = ResolvableShit<Unit>()
         exhaustive/when (_content) {
-            is FileField.Content.FileToUpload -> {
+            is FileField.Content.Provided -> {
                 val reader = FileReader()
                 reader.onload = {
                     json[name] = json(
-                        "provided" to true,
+                        "valueKind" to FileFieldValueKind.PROVIDED.name,
                         "fileName" to _content.file.name,
                         "base64" to run {
                             val dataURL: String = reader.result
@@ -150,18 +142,15 @@ import kotlin.js.json
                 }
                 reader.readAsDataURL(_content.file)
             }
-            is FileField.Content.NotProvided,
-            is FileField.Content.ExistingFile  -> {
+            is FileField.Content.None -> {
                 json[name] = json(
-                    "provided" to false
+                    "valueKind" to FileFieldValueKind.NONE.name
                 )
                 shit.resolve(Unit)
             }
-            is FileField.Content.TestFileOnServer -> {
+            is FileField.Content.Unchanged -> {
                 json[name] = json(
-                    "provided" to true,
-                    "fileName" to _content.name,
-                    "testFileOnServerName" to _content.name
+                    "valueKind" to FileFieldValueKind.UNCHANGED.name
                 )
                 shit.resolve(Unit)
             }

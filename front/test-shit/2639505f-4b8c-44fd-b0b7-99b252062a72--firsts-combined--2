@@ -1,0 +1,95 @@
+-------------------- URL --------------------
+
+[uac]/order.html?id=1&tab=files
+
+
+-------------------- MODAL --------------------
+
+<div class="modal" style="display: block;">
+</div>
+<div class="modal fade in" style="display: block;">
+  <div class="modal-dialog" style="width: 80rem;">
+    <div class="modal-content" style="border-left: 0.5em solid rgb(144, 164, 174);">
+      <div class="modal-header">
+        <button class="btn btn-default close" data-dismiss="modal">
+          ×
+        </button>
+        <h4 class="modal-title">
+          Файл №27
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <blockquote style="background-color: rgb(255, 235, 238); border-left: 3px solid rgb(229, 115, 115); font-size: 14px; margin-bottom: 15px;">
+            <span class="">
+              Пожалуйста, исправьте ошибки ниже
+            </span>
+          </blockquote>
+          <div class="form-group">
+            <label>
+              Файл
+            </label>
+            <div style="display: flex; align-items: center;">
+              <span>
+                lousy writing 9.rtf (2 КБ)
+              </span>
+              <button class="btn btn-default " style="margin-left: 1em;">
+                <i class="fa fa-cloud-upload">
+                </i>
+                &nbsp;
+                Изменить...
+              </button>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 0px;">
+            <div class="textField-labelContainer">
+              <label>
+                Название
+              </label>
+            </div>
+            <div style="position: relative;">
+              <input type="text" rows="5" class="form-control" value="" style="resize: none; padding-right: 30px;">
+                <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
+                  <span class="">
+                    Поле обязательно
+                  </span>
+                </div>
+                <div style="width: 15px; height: 15px; background-color: rgb(229, 115, 115); border-radius: 10px; position: absolute; right: 8px; top: 10px;">
+                </div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0px;">
+              <div class="textField-labelContainer">
+                <label>
+                  Детали
+                </label>
+              </div>
+              <div style="position: relative;">
+                <textarea rows="5" type="text" class="form-control" style="resize: none; padding-right: 30px;">
+                </textarea>
+                <div style="color: rgb(229, 115, 115); margin-top: 5px; margin-right: 9px; text-align: right;">
+                  <span class="">
+                    Поле обязательно
+                  </span>
+                </div>
+                <div style="width: 15px; height: 15px; background-color: rgb(229, 115, 115); border-radius: 10px; position: absolute; right: 8px; top: 10px;">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div style="display: flex;">
+            <div style="display: flex; flex-grow: 1; justify-content: flex-start;">
+            </div>
+            <button class="btn btn-primary ">
+              Сохранить
+            </button>
+            <button class="btn btn-default " style="margin-left: 10px;">
+              Не стоит
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

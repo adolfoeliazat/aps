@@ -464,9 +464,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 ui = world,
                 req = UAUpdateOrderFileRequest()-{o->
                     o.fileID.value = file.id
-                    o.title.value = file.title
-                    o.details.value = file.details
-                    o.file.content = FileField.Content.ExistingFile(file.name, file.sizeBytes)
+                    o.file.content = FileField.Content.Unchanged(file.name, file.sizeBytes)
+                    o.fields1-{o->
+                        o.title.value = file.title
+                        o.details.value = file.details
+                    }
                 }
             ),
             onSuccessa = {
