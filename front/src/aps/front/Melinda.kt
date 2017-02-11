@@ -78,7 +78,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     ) {
         plusShit = EvaporatingButtonAndForm(
             ebafHost,
-            key = aps.front.fconst.key.button.plus.ref,
+            key = aps.front.fconst.button.plus,
             level = Button.Level.PRIMARY,
             icon = plusIcon,
             formSpec = plusFormSpec,
@@ -91,7 +91,7 @@ where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
     ) {
         editShit = EvaporatingButtonAndForm(
             ebafHost,
-            key = aps.front.fconst.key.button.edit.ref,
+            key = aps.front.fconst.button.edit,
             level = Button.Level.DEFAULT,
             icon = fa.edit,
             formSpec = editFormSpec,

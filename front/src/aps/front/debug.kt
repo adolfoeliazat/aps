@@ -16,7 +16,7 @@ fun dumpShames() {
 @Suppress("Unused")
 fun dumpControls() {
     for (key in Input.instances.keys) clog("Input: $key")
-    for (key in Button.instances.keys) clog("Button: ${key.name}")
+    for (key in Button.instances.keys) clog("Button: ${key.fqn}")
     for (key in Checkbox.instances.keys) clog("Checkbox: $key")
     for (key in DateTimePicker.instances.keys) clog("DateTimePicker: $key")
     for (key in FileField.instances.keys) clog("FileField: $key")
@@ -69,14 +69,14 @@ private object DebugShitToIgnite {
 
     fun shit1() = async {
         await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
-        buttonClick(fconst.key.button.assertionBanner.play.testRef)
+        buttonClick(fconst.button.assertionBanner.play_testRef)
         await(tillBodyHTMLContains("Assertion: 1"))
-        buttonClick(fconst.key.button.assertionBanner.vdiff.testRef)
+        buttonClick(fconst.button.assertionBanner.vdiff_testRef)
     }
 
     fun shit2() = async {
         await(tillBodyHTMLContains("Assertion: Customer breathe screen"))
-        buttonClick(fconst.key.button.assertionBanner.play.testRef)
+        buttonClick(fconst.button.assertionBanner.play_testRef)
         await(tillBodyHTMLContains("Assertion: 1"))
     }
 }

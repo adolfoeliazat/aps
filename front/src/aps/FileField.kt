@@ -62,7 +62,7 @@ import kotlin.js.json
                             o- kspan{o->
                                 o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
                             }
-                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = SubscriptButtonKey(fconst.key.button.upload.ref, container.fieldInstanceKeySuffix), onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = SubscriptButtonKey(fconst.button.upload, container.fieldInstanceKeySuffix), onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -72,14 +72,14 @@ import kotlin.js.json
                             o- kspan{o->
                                 o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
                             }
-                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = SubscriptButtonKey(fconst.key.button.upload.ref, container.fieldInstanceKeySuffix), onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = SubscriptButtonKey(fconst.button.upload, container.fieldInstanceKeySuffix), onClick = {
                                 byid(inputID).click()
                             })
                         }
                     }
                     is Content.NotProvided -> {
                         o- kdiv{o->
-                            o- Button(icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), key = fconst.key.button.upload.ref, onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Choose...", "Выбрать..."), key = fconst.button.upload, onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -197,7 +197,7 @@ suspend fun fileFieldChoose(fileName: String, aid: String, descr: String = "Desc
                 val ff = FileField.instances.values.first()
                 ff.testUploadFileFast(fileName)
             } else {
-                buttonUserInitiatedClick(fconst.key.button.upload.testRef)
+                buttonUserInitiatedClick(fconst.button.upload_testRef)
                 typeIntoOpenFileDialog(const.test.filesRoot + fileName)
             }
         },

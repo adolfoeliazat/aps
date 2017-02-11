@@ -88,7 +88,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
                     o- tickerBar
 
                 o- Button(
-                    key = buttonKey(fconst.key.button.primary.ref),
+                    key = buttonKey(fconst.button.primary),
                     level = Button.Level.PRIMARY,
                     title = spec.primaryButtonTitle,
                     disabled = working,
@@ -97,7 +97,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
 
                 if (spec.cancelButtonTitle != null) {
                     o- Button(
-                        key = buttonKey(fconst.key.button.cancel.ref),
+                        key = buttonKey(fconst.button.cancel),
                         title = spec.cancelButtonTitle,
                         disabled = working,
                         style = Style(marginLeft = 10),
@@ -286,7 +286,7 @@ suspend fun submitFormSequence(
                 shit.imposeNextRequestTimestamp()
             }
             val shit = action ?: {
-                buttonClick(buttonKey ?: fconst.key.button.primary.testRef)
+                buttonClick(buttonKey ?: fconst.button.primary_testRef)
             }
             shit()
         }},

@@ -5,14 +5,15 @@ import into.kommon.*
 import kotlin.browser.window
 import kotlin.js.json
 
-open class ButtonKey(override val name: String) : NamedItem
+open class ButtonKey(override val fqn: String) : Fucker(), FQNed
+//open class ButtonKey(override val name: String) : NamedItem
 
 data class SubscriptButtonKey(val key: ButtonKey, val subscript: Any?)
-    : ButtonKey(key.name + "-$subscript")
+    : ButtonKey(key.fqn + "-$subscript")
 
-abstract class ButtonKeyRefs(val group: NamedGroup<ButtonKey>) {
-    protected val key = ButtonKey(name = qualifyMe(group))
-}
+//abstract class ButtonKeyRefs(val group: NamedGroup<ButtonKey>) {
+//    protected val key = ButtonKey(name = qualifyMe(group))
+//}
 
 open class Button(
     val key: ButtonKey? = null,
@@ -44,7 +45,7 @@ open class Button(
         val instances = mutableMapOf<ButtonKey, Button>()
 
         fun instance(key: ButtonKey): Button {
-            return instances[key] ?: bitch("No Button keyed `${key.name}`")
+            return instances[key] ?: bitch("No Button keyed `${key.fqn}`")
         }
     }
 

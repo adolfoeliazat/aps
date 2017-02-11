@@ -51,18 +51,6 @@ class namedFucker<Base, out T>(val make: (fqn: String) -> T) where T : Base, Bas
     }
 }
 
-//class namedFucker<Base, out T>(val make: (ident: String) -> T) where T : Base, Base : Fucker {
-//    operator fun provideDelegate(thiz: Fuckers<Base>, property: KProperty<*>) = run {
-//        val fucker = make(property.name)
-//        thiz.fuckers += fucker
-//        fucker.belongsToFuckers = thiz
-//
-//        object:ReadOnlyProperty<Fuckers<Base>, T> {
-//            override fun getValue(thisRef: Fuckers<Base>, property: KProperty<*>): T = fucker
-//        }
-//    }
-//}
-
 
 
 

@@ -4,15 +4,17 @@ import aps.*
 import into.kommon.*
 
 class PageSpec (
-    val path: String,
+    val fqn: String,
     val navTitle: String?,
     val skipFirstTimeRendering: Boolean,
     val requiresSignIn: Boolean,
     val load: suspend (world: World) -> Unit
-) : Fucker()
+) : Fucker() {
+    val path get()= simpleName(fqn)
+}
 
 private fun staticPage(fqn: String, navTitle: String? = null) = PageSpec(
-    path = simpleName(fqn),
+    fqn = fqn,
     navTitle = navTitle,
     load = {world->
         val url = loc.baseWithoutSlash + "/${simpleName(fqn)}.html"
@@ -26,7 +28,7 @@ private fun staticPage(fqn: String, navTitle: String? = null) = PageSpec(
 )
 
 private fun privatePage(fqn: String, navTitle: String? = null, load: suspend (world: World) -> Unit) = PageSpec(
-    path = simpleName(fqn),
+    fqn = fqn,
     navTitle = navTitle,
     load = load,
     skipFirstTimeRendering = false,

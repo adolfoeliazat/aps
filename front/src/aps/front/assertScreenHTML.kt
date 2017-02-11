@@ -175,7 +175,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                         nextDiff().scrollBodyToShit(dy = -70)
                                     })
                                     if (captureExists) {
-                                        o- Button(title = "VDiff", style = bannerButtonStyle, key = fconst.key.button.assertionBanner.vdiff.ref, onClicka = {
+                                        o- Button(title = "VDiff", style = bannerButtonStyle, key = fconst.button.assertionBanner.vdiff, onClicka = {
                                             async<Unit> {
                                                 openVisualDiff()
                                             }
@@ -320,7 +320,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                         o- m.renderButton()
                                     }
                                     o- kdiv(width = "1rem")
-                                    o- Button(icon = fa.check, title = "Accept", style = bannerButtonStyle, key = fconst.key.button.assertionBanner.accept.ref, onClicka = {
+                                    o- Button(icon = fa.check, title = "Accept", style = bannerButtonStyle, key = fconst.button.assertionBanner.accept, onClicka = {
                                         old_debugPanes.remove(visualDiffPane)
                                         acceptCurrentShit()
                                     })
@@ -352,7 +352,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             }
 
             fun acceptButton() = Button(
-                key = fconst.key.button.assertionBanner.accept.ref,
+                key = fconst.button.assertionBanner.accept,
                 icon = fa.check,
                 style = bannerButtonStyle,
                 onClicka = {acceptCurrentShit()})
@@ -374,7 +374,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                     }
                     kdiv(className = className, baseStyle = style){o->
                         o- hor1(marginBottom = "0.5rem"){o->
-                            o- Button(key = fconst.key.button.assertionBanner.play.ref, icon = fa.play, style = bannerButtonStyle, onClick = {
+                            o- Button(key = fconst.button.assertionBanner.play, icon = fa.play, style = bannerButtonStyle, onClick = {
                                 assertionBannerPause.resolve()
                             })
                             o- killTestButton()

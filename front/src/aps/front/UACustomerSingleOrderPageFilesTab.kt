@@ -81,7 +81,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     }
 
     val ebafPlus = EvaporatingButtonAndForm(
-        host = ebafHost, key = fconst.key.button.plus.ref, level = Button.Level.PRIMARY, icon = fa.plus,
+        host = ebafHost, key = fconst.button.plus, level = Button.Level.PRIMARY, icon = fa.plus,
         formSpec = FormSpec<UACreateOrderFileRequest, UACreateOrderFileRequest.Response>(
             req = UACreateOrderFileRequest()-{o->
                 o.orderID.value = order.id
@@ -149,12 +149,12 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 o- orderingSelect
 
                 val refreshButtonID = puid()
-                o- Button(id = refreshButtonID, icon = fa.refresh, volatileDisabled = {ebafHost.headerControlsDisabled}, key = fconst.key.button.refreshPage.ref) {
+                o- Button(id = refreshButtonID, icon = fa.refresh, volatileDisabled = {ebafHost.headerControlsDisabled}, key = fconst.button.refreshPage) {
                     asu {reload(refreshButtonID)}
                 }
 
 //                o- ebafPlus.renderButton()
-                o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = fconst.key.button.plus.ref) {
+                o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = fconst.button.plus) {
                     openEditModal(
                         title = t("TOTE", "Новый файл"),
                         formSpec = FormSpec<UACreateOrderFileRequest, UACreateOrderFileRequest.Response>(
@@ -422,7 +422,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 moreFromID
                 val placeholder = Placeholder()
                 placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
-                    val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = fconst.key.button.loadMore.ref)
+                    val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = fconst.button.loadMore)
                     btn.onClicka = {
                         async {
                             await(effects).blinkOn(byid(btn.elementID))

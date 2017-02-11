@@ -19,20 +19,27 @@ object fconst {
         }
     }
 
-//    object tab                               : NamedGroup<TabKey>(null) {
-//        object order                         : NamedGroup<TabKey>(this) {
-//            object params                    : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-//            val files                        by namedFucker {TabKey(it)}; val files_testRef = files
-////            val files                        by X1; object X1:TabKeyRefs2<X1>() {val ref = key; val testRef = TestRef(key)}
-////            val files                     = object:TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-//            object messages                  : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-//        }
-//
-//        object shebang                       : NamedGroup<TabKey>(this) {
-//            object diff                      : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-//            object actualPaste               : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-//        }
-//    }
+    object button                            : Fuckers<ButtonKey>(null) {
+        val sendForApproval                  by namedFucker(::ButtonKey); val sendForApproval_testRef = TestRef(sendForApproval)
+        val edit                             by namedFucker(::ButtonKey); val edit_testRef = TestRef(edit)
+        val primary                          by namedFucker(::ButtonKey); val primary_testRef = TestRef(primary)
+        val plus                             by namedFucker(::ButtonKey); val plus_testRef = TestRef(plus)
+        val upload                           by namedFucker(::ButtonKey); val upload_testRef = TestRef(upload)
+        val cancel                           by namedFucker(::ButtonKey); val cancel_testRef = TestRef(cancel)
+        val refreshPage                      by namedFucker(::ButtonKey); val refreshPage_testRef = TestRef(refreshPage)
+        val loadMore                         by namedFucker(::ButtonKey); val loadMore_testRef = TestRef(loadMore)
+
+        object modal                         : Fuckers<ButtonKey>(this) {
+            val ok                           by namedFucker(::ButtonKey); val ok_testRef = TestRef(ok)
+            val cancel                       by namedFucker(::ButtonKey); val cancel_testRef = TestRef(cancel)
+        }
+
+        object assertionBanner               : Fuckers<ButtonKey>(this) {
+            val vdiff                        by namedFucker(::ButtonKey); val vdiff_testRef = TestRef(vdiff)
+            val accept                       by namedFucker(::ButtonKey); val accept_testRef = TestRef(accept)
+            val play                         by namedFucker(::ButtonKey); val play_testRef = TestRef(play)
+        }
+    }
 
     object key {
         object file : KeyDef() {val ref = name; val testRef = name}
@@ -45,28 +52,6 @@ object fconst {
             object signUp : KeyDef() {val decl = name; val testRef = name}
         }
 
-        // TODO:vgrechka Move out of `key`
-        object button                            : NamedGroup<ButtonKey>(null) {
-            object sendForApproval               : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object edit                          : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object primary                       : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object plus                          : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object upload                        : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object cancel                        : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object refreshPage                   : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object loadMore                      : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-
-            object modal                         : NamedGroup<ButtonKey>(this) {
-                object ok                        : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-                object cancel                    : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            }
-
-            object assertionBanner               : NamedGroup<ButtonKey>(this) {
-                object vdiff                     : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-                object accept                    : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-                object play                      : ButtonKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            }
-        }
     }
 
     object url {

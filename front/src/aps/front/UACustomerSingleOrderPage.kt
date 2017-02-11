@@ -64,7 +64,7 @@ class UACustomerSingleOrderPage(val world: World) {
                         o- kdiv(className = c.message){o->
                             o- t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...")
                         }
-                        o- Button(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = fconst.key.button.sendForApproval.ref)
+                        o- Button(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = fconst.button.sendForApproval)
                     }
                 }
                 o- h4(marginBottom = "0.7em"){o->
@@ -199,7 +199,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
             when (world.user.kind) {
                 UserKind.CUSTOMER -> {
                     if (order.state == UAOrderState.CUSTOMER_DRAFT) {
-                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.key.button.edit.ref) {
+                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = fconst.button.edit) {
                             openEditModal(
                                 title = t("TOTE", "Параметры заказа"),
                                 formSpec = FormSpec<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(

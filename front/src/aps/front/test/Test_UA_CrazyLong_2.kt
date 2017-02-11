@@ -17,7 +17,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 3
+    val startPoint = 2
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -77,13 +77,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- cancel
-                step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
+                step({buttonClick(fconst.button.edit_testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fieldSpecs.shebang.documentTitle.testRef, "Хуй")
-                step({buttonClick(fconst.key.button.cancel.testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
+                step({buttonClick(fconst.button.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
             run { // Edit params -- save
-                step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
+                step({buttonClick(fconst.button.edit_testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
                 selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.LAB)
                 formSubmissionAttempts(
                     testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
@@ -98,7 +98,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- save 2
-                step({buttonClick(fconst.key.button.edit.testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
+                step({buttonClick(fconst.button.edit_testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
                 selectSetValue(fieldSpecs.shebang.ua.documentType.testRef, UADocumentType.PRACTICE)
                 submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
@@ -173,14 +173,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 }
 
                 scrollBodyToBottomGradually()
-                sequence({buttonClick(fconst.key.button.loadMore.testRef)},
+                sequence({buttonClick(fconst.button.loadMore_testRef)},
                          steps = listOf(
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "efa418ce-873c-485b-9005-ec7a73e4bd2c"),
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "86500c2a-c99b-4c16-9eb1-b95a8000ccc9")
                          ))
 
                 scrollBodyToBottomGradually()
-                sequence({buttonClick(fconst.key.button.loadMore.testRef)},
+                sequence({buttonClick(fconst.button.loadMore_testRef)},
                          steps = listOf(
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "e799ccdf-58f6-44b4-9c8c-468e8694c30b"),
                              PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "81c65484-7584-49fb-84ea-b872dfaf9e5d")
@@ -251,7 +251,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun addFile(p: AddFileParams) {
-        seq({buttonClick(fconst.key.button.plus.testRef)}, TestGlobal.modalShownLock, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
+        seq({buttonClick(fconst.button.plus_testRef)}, TestGlobal.modalShownLock, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
         fileFieldChoose(p.fileName, "${p.aid}--1")
         inputSetValue(fieldSpecs.shebang.fileTitle.testRef, p.title)
         inputSetValue(fieldSpecs.shebang.fileDetails.testRef, p.details)

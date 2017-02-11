@@ -10,12 +10,13 @@ import aps.*
 import org.springframework.data.repository.findOrDie
 import javax.persistence.EntityManagerFactory
 
-@Servant class ServeUACustomerGetOrderFiles(val emf: EntityManagerFactory, val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
+@Servant class ServeUACustomerGetOrderFiles(val emf: EntityManagerFactory,
+                                            val orderRepo: UAOrderRepository,
+                                            val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,
             makeRequest = {ItemsRequest(CustomerFileFilter.values())},
-            needsUser = NeedsUser.YES,
             runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
                 val order = orderRepo.findOrDie(req.entityID.value)
                 // TODO:vgrechka @security Check permissions

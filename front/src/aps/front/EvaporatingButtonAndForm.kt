@@ -82,7 +82,7 @@ class EvaporatingButtonAndForm<Req : RequestMatumba, Res>(
 
 suspend fun sequence_openPlusForm(aid: String) = sequence(
     action = {
-        buttonClick(fconst.key.button.plus.testRef)
+        buttonClick(fconst.button.plus_testRef)
     },
     descr = "Opened plus form",
     steps = listOf(
