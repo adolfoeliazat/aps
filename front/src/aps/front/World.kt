@@ -187,7 +187,7 @@ class World(val name: String) {
                     UA_CUSTOMER -> pageSpecs.uaCustomer
                     UA_WRITER -> pageSpecs.uaWriter
                 }
-                bang(pages.fuckers.find {it.path == path})
+                bang(pages.items.find {it.path == path})
             }
 
             // TODO:vgrechka This is wrong if pushStating:

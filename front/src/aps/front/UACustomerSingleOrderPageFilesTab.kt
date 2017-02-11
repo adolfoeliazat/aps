@@ -18,7 +18,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     var chunksLoaded = 0
     var urlQuery by notNull<FilesTabURLQuery>()
 
-    override val tabSpec = TabSpec(fconst.tab.order.files.ref, t("Files", "Файлы"),
+    override val tabSpec = TabSpec(fconst.tab.order.files, t("Files", "Файлы"),
                                    ToReactElementable.from{content},
                                    ToReactElementable.from{stripContent})
 
@@ -167,7 +167,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                             val q = UACustomerSingleOrderPage.urlQuery
                             world.replaceNavigate(makeURL(pageSpecs.uaCustomer.order, listOf(
                                 URLParamValue(q.id, order.id.toString()),
-                                URLParamValue(q.tab, simpleName(fconst.tab.order.files.ref.name))
+                                URLParamValue(q.tab, simpleName(fconst.tab.order.files.fqn))
                             )))
                         }
                     )

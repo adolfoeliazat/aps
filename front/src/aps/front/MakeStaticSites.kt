@@ -94,7 +94,7 @@ object MakeStaticSites {
                              }.toReactElement())
         }
 
-        for (p in pageSpecs.uaWriter.fuckers) {
+        for (p in pageSpecs.uaWriter.items) {
             writePage(path = p.path, content = wholePageTicker().toToReactElementable())
         }
 
@@ -530,7 +530,7 @@ object MakeStaticSites {
                              }.toReactElement())
         }
 
-        for (p in pageSpecs.uaCustomer.fuckers) {
+        for (p in pageSpecs.uaCustomer.items) {
             writePage(path = p.path, content = wholePageTicker().toToReactElementable())
         }
 

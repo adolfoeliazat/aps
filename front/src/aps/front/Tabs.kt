@@ -3,12 +3,14 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-class TabKey(override val name: String) : NamedItem
-
-abstract class TabKeyRefs(val group: NamedGroup<TabKey>) {
-    protected val key = TabKey(name = qualifyMe(group))
-    init {group.items += key}
+interface FQNed {
+    val fqn: String
 }
+
+fun Iterable<FQNed>.findSimplyNamed(name: String?) =
+    find {simpleName(it.fqn) == name}
+
+class TabKey(override val fqn: String) : Fucker(), FQNed
 
 class TabSpec(
     val key: TabKey,
@@ -32,7 +34,7 @@ class Tabs2(
         val instances = mutableMapOf<TabKey, TabFiddling>()
 
         fun instance(key: TabKey): TabFiddling {
-            return instances[key] ?: bitch("No tab keyed `${key.name}`")
+            return instances[key] ?: bitch("No tab keyed `${key.fqn}`")
         }
     }
 
@@ -52,7 +54,7 @@ class Tabs2(
         o- kdiv(position="relative"){o->
             o- kul(className="nav nav-tabs"){o->
                 for (tab in tabs) {
-                    o- kli(id = tab.key.name,
+                    o- kli(id = tab.key.fqn,
                            className = if (tab.key == activeID) "active" else ""){o->
                         o- object:Control2() {
                             override fun render() =

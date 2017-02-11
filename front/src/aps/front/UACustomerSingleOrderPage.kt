@@ -22,8 +22,8 @@ class UACustomerSingleOrderPage(val world: World) {
 
     suspend fun load() {
         orderID = urlQuery.id.get(world) ?: return world.setShittyParamsPage()
-        val defaultTab = fconst.tab.order.params.ref
-        val tabKey = fconst.tab.order.itemSimplyNamed(urlQuery.tab.get(world)) ?: defaultTab
+        val defaultTab = fconst.tab.order.params
+        val tabKey = fconst.tab.order.items.findSimplyNamed(urlQuery.tab.get(world)) ?: defaultTab
 
         val res = await(send(world.token, LoadUAOrderRequest()-{o->
             o.id.value = orderID
@@ -82,10 +82,10 @@ class UACustomerSingleOrderPage(val world: World) {
     }
 
     suspend fun clickOnTab(key: TabKey) {
-        await(effects).blinkOn(byid(key.name), BlinkOpts(widthCalcSuffix = "- 0.15em"))
+        await(effects).blinkOn(byid(key.fqn), BlinkOpts(widthCalcSuffix = "- 0.15em"))
         TestGlobal.switchTabHalfwayLock.sutPause()
         try {
-            world.pushNavigate("order.html?id=$orderID&tab=${simpleName(key.name)}")
+            world.pushNavigate("order.html?id=$orderID&tab=${simpleName(key.fqn)}")
         } finally {
             await(effects).blinkOffFadingOut()
             TestGlobal.switchTabDoneLock.sutPause()
@@ -192,7 +192,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
     }
 
     override val tabSpec = TabSpec(
-        key = fconst.tab.order.params.ref,
+        key = fconst.tab.order.params,
         title = t("TOTE", "Параметры"),
         content = place,
         stripContent = kdiv{o->
@@ -244,7 +244,7 @@ private class MessagesTab(val order: UAOrderRTO) : CustomerSingleUAOrderPageTab 
         o- "fucking messages"
     }
 
-    override val tabSpec = TabSpec(fconst.tab.order.messages.ref, t("TOTE", "Сообщения"), content)
+    override val tabSpec = TabSpec(fconst.tab.order.messages, t("TOTE", "Сообщения"), content)
 }
 
 

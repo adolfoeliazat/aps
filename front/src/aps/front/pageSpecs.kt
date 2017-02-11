@@ -3,7 +3,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-data class PageSpec (
+class PageSpec (
     val path: String,
     val navTitle: String?,
     val skipFirstTimeRendering: Boolean,
@@ -11,11 +11,11 @@ data class PageSpec (
     val load: suspend (world: World) -> Unit
 ) : Fucker()
 
-private fun staticPage(ident: String, navTitle: String? = null) = PageSpec(
-    path = ident,
+private fun staticPage(fqn: String, navTitle: String? = null) = PageSpec(
+    path = simpleName(fqn),
     navTitle = navTitle,
     load = {world->
-        val url = loc.baseWithoutSlash + "/$ident.html"
+        val url = loc.baseWithoutSlash + "/${simpleName(fqn)}.html"
         val content = fetchFromURL("GET", url, null) {it}
         val from = content.indexOfOrDie("<!-- BEGIN CONTENT -->")
         val to = content.indexOfOrDie("<!-- END CONTENT -->")
@@ -25,8 +25,8 @@ private fun staticPage(ident: String, navTitle: String? = null) = PageSpec(
     requiresSignIn = false
 )
 
-private fun privatePage(ident: String, navTitle: String? = null, load: suspend (world: World) -> Unit) = PageSpec(
-    path = ident,
+private fun privatePage(fqn: String, navTitle: String? = null, load: suspend (world: World) -> Unit) = PageSpec(
+    path = simpleName(fqn),
     navTitle = navTitle,
     load = load,
     skipFirstTimeRendering = false,
@@ -34,7 +34,7 @@ private fun privatePage(ident: String, navTitle: String? = null, load: suspend (
 )
 
 object pageSpecs {
-    object uaCustomer : Fuckers<PageSpec>() {
+    object uaCustomer : Fuckers<PageSpec>(null) {
         val index by namedFucker {staticPage(it)}
         val why by namedFucker {staticPage(it, t("Why Us?", "Почему мы?"))}
         val prices by namedFucker {staticPage(it, t("Prices", "Цены"))}
@@ -52,7 +52,7 @@ object pageSpecs {
         val signIn by namedFucker {privatePage(it, t("Sign In", "Вход")) {SignInPage(it).load()}}; val signIn_testRef = TestRef(signIn)
     }
 
-    object uaWriter : Fuckers<PageSpec>() {
+    object uaWriter : Fuckers<PageSpec>(null) {
         val index by namedFucker {staticPage(it, "boobs")}
         val why by namedFucker {staticPage(it, t("Why Us?", "Почему мы?"))}
         val prices by namedFucker {staticPage(it, t("Prices", "Цены"))}

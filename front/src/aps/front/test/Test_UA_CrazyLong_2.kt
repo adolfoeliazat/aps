@@ -17,7 +17,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 2
+    val startPoint = 3
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -106,7 +106,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(2) {
             run { // Add some files
-                tabSequence(fconst.tab.order.files.testRef, "f727a9ea-c520-4613-97e0-c154f6506d3a", "f621673e-7f84-4a53-969f-8844614c4f30")
+                tabSequence(fconst.tab.order.files_testRef, "f727a9ea-c520-4613-97e0-c154f6506d3a", "f621673e-7f84-4a53-969f-8844614c4f30")
 
                 val bunch1 = listOf(
                     AddFileParams(fileName = "little pussy.rtf", title = "Задание на практику", details = "- Вам следовало остаться у себя в комнате! Разве Франц вам ничего не говорил?\n\n- Что вам, наконец, нужно? - спросил К., переводя взгляд с нового посетителя на того,  кого  назвали  Франц  (он  стоял  в дверях),  и  снова  на первого.  В  открытое окно видна была та старуха: в припадке старческого любопытства она уже  перебежала к другому окну - посмотреть, что дальше.", aid = "4c30a4f4-5bee-426a-ab7f-960367b2c198"),
@@ -190,9 +190,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Switch to Params and back to Files
                 scrollBodyToTopGradually()
-                tabSequence(fconst.tab.order.params.testRef, "f0526589-fa1e-4a2a-818f-3d4eca9e231a", "721ff1f7-093a-4752-a699-75debd0a2d99")
-                tabSequence(fconst.tab.order.files.testRef, "3c35734a-6cc1-4de4-a69d-421acd693603", "95b74865-e2dd-4b9c-a6b4-76dc967ad5dd")
+                tabSequence(fconst.tab.order.params_testRef, "f0526589-fa1e-4a2a-818f-3d4eca9e231a", "721ff1f7-093a-4752-a699-75debd0a2d99")
+                tabSequence(fconst.tab.order.files_testRef, "3c35734a-6cc1-4de4-a69d-421acd693603", "95b74865-e2dd-4b9c-a6b4-76dc967ad5dd")
             }
+        }
+
+        definePoint(3) {
+            clog("aaaaaaaaaaaaaaaaaaaa")
         }
     }
 
@@ -217,7 +221,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 morda.coitizeAndBoot()
             }
             script()
-            savePointState()
+
+            send(TestTakeTestPointSnapshotRequest()-{o->
+                o.snapshotName.value = pointToSnapshotName(currentPoint)
+                o.browseroidName.value = TestGlobal.currentMorda.browseroidName
+                o.href.value = Globus.currentBrowseroid.location.href
+                o.token.value = Globus.currentBrowseroid.typedStorageLocal.token
+                o.nextRequestTimestampIndex.value = testShit.nextRequestTimestampIndex
+            })
         }
     }
 
@@ -245,16 +256,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         inputSetValue(fieldSpecs.shebang.fileTitle.testRef, p.title)
         inputSetValue(fieldSpecs.shebang.fileDetails.testRef, p.details)
         submitFormSequence(testShit, aid = "${p.aid}--2")
-    }
-
-    suspend fun savePointState() {
-        send(TestTakeTestPointSnapshotRequest()-{o->
-            o.snapshotName.value = pointToSnapshotName(currentPoint)
-            o.browseroidName.value = TestGlobal.currentMorda.browseroidName
-            o.href.value = Globus.currentBrowseroid.location.href
-            o.token.value = Globus.currentBrowseroid.typedStorageLocal.token
-            o.nextRequestTimestampIndex.value = testShit.nextRequestTimestampIndex
-        })
     }
 }
 

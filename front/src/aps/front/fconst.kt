@@ -6,18 +6,33 @@ object fconst {
     val defaultScrollBursts = 8
     val scrollbarWidth = 17
 
-    object tab                               : NamedGroup<TabKey>(null) {
-        object order                         : NamedGroup<TabKey>(this) {
-            object params                    : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object files                     : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object messages                  : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+    object tab                               : Fuckers<TabKey>(null) {
+        object order                         : Fuckers<TabKey>(this) {
+            val params                       by namedFucker(::TabKey); val params_testRef = TestRef(params)
+            val files                        by namedFucker(::TabKey); val files_testRef = TestRef(files)
+            val messages                     by namedFucker(::TabKey); val messages_testRef = TestRef(messages)
         }
 
-        object shebang                       : NamedGroup<TabKey>(this) {
-            object diff                      : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
-            object actualPaste               : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+        object shebang                       : Fuckers<TabKey>(this) {
+            val diff                         by namedFucker(::TabKey); val diff_testRef = TestRef(diff)
+            val actualPaste                  by namedFucker(::TabKey); val actualPaste_testRef = TestRef(actualPaste)
         }
     }
+
+//    object tab                               : NamedGroup<TabKey>(null) {
+//        object order                         : NamedGroup<TabKey>(this) {
+//            object params                    : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+//            val files                        by namedFucker {TabKey(it)}; val files_testRef = files
+////            val files                        by X1; object X1:TabKeyRefs2<X1>() {val ref = key; val testRef = TestRef(key)}
+////            val files                     = object:TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+//            object messages                  : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+//        }
+//
+//        object shebang                       : NamedGroup<TabKey>(this) {
+//            object diff                      : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+//            object actualPaste               : TabKeyRefs(this) {val ref = key; val testRef = TestRef(key)}
+//        }
+//    }
 
     object key {
         object file : KeyDef() {val ref = name; val testRef = name}
