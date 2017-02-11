@@ -3,39 +3,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 
-class PageSpec (
-    val fqn: String,
-    val navTitle: String?,
-    val skipFirstTimeRendering: Boolean,
-    val requiresSignIn: Boolean,
-    val load: suspend (world: World) -> Unit
-) : Fucker() {
-    val path get()= simpleName(fqn)
-}
-
-private fun staticPage(fqn: String, navTitle: String? = null) = PageSpec(
-    fqn = fqn,
-    navTitle = navTitle,
-    load = {world->
-        val url = loc.baseWithoutSlash + "/${simpleName(fqn)}.html"
-        val content = fetchFromURL("GET", url, null) {it}
-        val from = content.indexOfOrDie("<!-- BEGIN CONTENT -->")
-        val to = content.indexOfOrDie("<!-- END CONTENT -->")
-        world.setRootContent(rawHTML(content.substring(from, to)))
-    },
-    skipFirstTimeRendering = true,
-    requiresSignIn = false
-)
-
-private fun privatePage(fqn: String, navTitle: String? = null, load: suspend (world: World) -> Unit) = PageSpec(
-    fqn = fqn,
-    navTitle = navTitle,
-    load = load,
-    skipFirstTimeRendering = false,
-    requiresSignIn = true
-)
-
-object pageSpecs {
+object pages {
     object uaCustomer : Fuckers<PageSpec>(null) {
         val index by namedFucker {staticPage(it)}
         val why by namedFucker {staticPage(it, t("Why Us?", "Почему мы?"))}
@@ -68,10 +36,40 @@ object pageSpecs {
         val debug by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {DebugPage(it).load()}} // TODO:vgrechka Remove debug pages from production builds
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}
     }
-
-//    object uaAdmin : Fuckers<PageSpec>() {
-//        val users by namedFucker {PageSpec(it, t("Users", "Засранцы")) {AdminUsersPage(it).load()}}
-//    }
 }
+
+
+class PageSpec (
+    val fqn: String,
+    val navTitle: String?,
+    val skipFirstTimeRendering: Boolean,
+    val requiresSignIn: Boolean,
+    val load: suspend (world: World) -> Unit
+) : Fucker() {
+    val path get()= simpleName(fqn)
+}
+
+private fun staticPage(fqn: String, navTitle: String? = null) = PageSpec(
+    fqn = fqn,
+    navTitle = navTitle,
+    load = {world->
+        val url = loc.baseWithoutSlash + "/${simpleName(fqn)}.html"
+        val content = fetchFromURL("GET", url, null) {it}
+        val from = content.indexOfOrDie("<!-- BEGIN CONTENT -->")
+        val to = content.indexOfOrDie("<!-- END CONTENT -->")
+        world.setRootContent(rawHTML(content.substring(from, to)))
+    },
+    skipFirstTimeRendering = true,
+    requiresSignIn = false
+)
+
+private fun privatePage(fqn: String, navTitle: String? = null, load: suspend (world: World) -> Unit) = PageSpec(
+    fqn = fqn,
+    navTitle = navTitle,
+    load = load,
+    skipFirstTimeRendering = false,
+    requiresSignIn = true
+)
+
 
 

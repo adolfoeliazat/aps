@@ -27,14 +27,14 @@ fun renderTopNavbar(clientKind: ClientKind,
         class Shit(val page: PageSpec, val title: String? = null)
         val shit = when (clientKind) {
             UA_CUSTOMER -> {
-                val q = pageSpecs.uaCustomer
+                val q = pages.uaCustomer
                 when (user) {
                     null -> Shit(q.signIn)
                     else -> Shit(q.dashboard, user.firstName)
                 }
             }
             UA_WRITER -> {
-                val q = pageSpecs.uaWriter
+                val q = pages.uaWriter
                 when (user) {
                     null -> Shit(q.signIn)
                     else -> Shit(q.dashboard, user.firstName)
@@ -46,11 +46,11 @@ fun renderTopNavbar(clientKind: ClientKind,
 
     val staticPages = when (clientKind) {
         UA_CUSTOMER -> {
-            val q = pageSpecs.uaCustomer
+            val q = pages.uaCustomer
             listOf(q.why, q.prices, q.samples, q.faq, q.contact, q.blog, q.makeOrder)
         }
         UA_WRITER -> {
-            val q = pageSpecs.uaWriter
+            val q = pages.uaWriter
             listOf(q.why, q.prices, q.samples, q.faq)
         }
     }
@@ -88,11 +88,11 @@ fun renderTopNavbar(clientKind: ClientKind,
 
             val privatePages = when (clientKind) {
                 UA_CUSTOMER -> {
-                    val q = pageSpecs.uaCustomer
+                    val q = pages.uaCustomer
                     listOf(q.orders)
                 }
                 UA_WRITER -> {
-                    val q = pageSpecs.uaWriter
+                    val q = pages.uaWriter
                     listOf(q.orders, q.store)
                 }
             }

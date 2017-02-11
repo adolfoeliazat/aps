@@ -165,7 +165,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                         ),
                         onSuccessa = {
                             val q = UACustomerSingleOrderPage.urlQuery
-                            world.replaceNavigate(makeURL(pageSpecs.uaCustomer.order, listOf(
+                            world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
                                 URLParamValue(q.id, order.id.toString()),
                                 URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
                             )))

@@ -184,8 +184,8 @@ class World(val name: String) {
             pathname.endsWith(".html") -> {
                 val path = pathname.substring(pathname.lastIndexOfOrDie("/") + 1, pathname.lastIndexOfOrDie("."))
                 val pages = when (clientKind) {
-                    UA_CUSTOMER -> pageSpecs.uaCustomer
-                    UA_WRITER -> pageSpecs.uaWriter
+                    UA_CUSTOMER -> pages.uaCustomer
+                    UA_WRITER -> pages.uaWriter
                 }
                 bang(pages.items.find {it.path == path})
             }
@@ -195,8 +195,8 @@ class World(val name: String) {
 
             user == null -> {
                 when (clientKind) {
-                    UA_CUSTOMER -> pageSpecs.uaCustomer.index
-                    UA_WRITER -> pageSpecs.uaWriter.index
+                    UA_CUSTOMER -> pages.uaCustomer.index
+                    UA_WRITER -> pages.uaWriter.index
                 }
             }
 
@@ -204,14 +204,14 @@ class World(val name: String) {
                 when (user.state) {
                     COOL -> {
                         when (clientKind) {
-                            UA_CUSTOMER -> pageSpecs.uaCustomer.dashboard
-                            UA_WRITER -> pageSpecs.uaWriter.dashboard
+                            UA_CUSTOMER -> pages.uaCustomer.dashboard
+                            UA_WRITER -> pages.uaWriter.dashboard
                         }
                     }
                     PROFILE_REJECTED, PROFILE_PENDING, PROFILE_APPROVAL_PENDING, BANNED -> {
                         when (clientKind) {
-                            UA_CUSTOMER -> pageSpecs.uaCustomer.profile
-                            UA_WRITER -> pageSpecs.uaWriter.profile
+                            UA_CUSTOMER -> pages.uaCustomer.profile
+                            UA_WRITER -> pages.uaWriter.profile
                         }
                     }
                 }.also {
@@ -222,8 +222,8 @@ class World(val name: String) {
 
         if (page.requiresSignIn && user == null) {
             page = when (clientKind) {
-                UA_CUSTOMER -> pageSpecs.uaCustomer.signIn
-                UA_WRITER -> pageSpecs.uaWriter.signIn
+                UA_CUSTOMER -> pages.uaCustomer.signIn
+                UA_WRITER -> pages.uaWriter.signIn
             }.also {
                 changeURLTo = it
             }
