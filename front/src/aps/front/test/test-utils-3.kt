@@ -17,3 +17,12 @@ fun TestScenarioBuilder.submitSignInForm(shit: TestShit, userData: TestUserData,
 suspend fun navigate(url: String) {
     Globus.currentBrowseroid.location.pushState(null, "", url)
 }
+
+suspend fun vanishSequence(action: suspend () -> Unit, aid: String) {
+    sequence(action,
+             steps = listOf(
+                 PauseAssertResumeStep(TestGlobal.fadeHalfwayLock, "$aid--1"),
+                 PauseAssertResumeStep(TestGlobal.shitVanished, "$aid--2")
+             ))
+}
+

@@ -23,6 +23,7 @@ data class FormSpec<Req: RequestMatumba, Res>(
     val containerStyle: Style = Style(),
     val errorBannerStyle: dynamic = js("undefined"),
     val primaryButtonTitle: String = t("Post", "Запостить"),
+    val primaryButtonLevel: Button.Level? = null,
     val cancelButtonTitle: String? = null,
 //    val deleteButtonTitle: String? = null,
     val dontShameButtons: Boolean = false,
@@ -89,7 +90,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
 
                 o- Button(
                     key = buttonKey(buttons.primary),
-                    level = Button.Level.PRIMARY,
+                    level = spec.primaryButtonLevel ?: Button.Level.PRIMARY,
                     title = spec.primaryButtonTitle,
                     disabled = working,
                     onClicka = {submit()}
@@ -279,7 +280,8 @@ suspend fun submitFormSequence(
     aid: String,
     buttonKey: TestRef<ButtonKey>? = null,
     imposeTimestamp: Boolean = true,
-    aopts: AssertScreenOpts? = null
+    aopts: AssertScreenOpts? = null,
+    useFormDoneLock: Boolean = true
 ) {
     sequence(
         action = {async{
@@ -294,8 +296,8 @@ suspend fun submitFormSequence(
         descr = descr,
         steps = listOf(
             PauseAssertResumeStep(TestGlobal.formTickingLock, "$aid--1"),
-            PauseAssertResumeStep(TestGlobal.formDoneLock, "$aid--2")
-        ),
+            ifOrNull(useFormDoneLock) {PauseAssertResumeStep(TestGlobal.formDoneLock, "$aid--2")})
+            .filterNotNull(),
         aopts = aopts
     )
 }

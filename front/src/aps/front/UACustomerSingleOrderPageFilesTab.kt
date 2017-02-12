@@ -326,12 +326,6 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         }
 
 
-        fun enterVanishedMode() = async {
-            await(effects).fadeOut(viewRootID)
-            itemPlace.setContent(NOTRE)
-            TestGlobal.shitVanished.resolve()
-        }
-
         fun renderFileTitle(editing: Boolean): ElementBuilder {
             return kdiv(className = "col-md-12"){o->
                 o- kdiv(className = if (editing) css.cunt.header.editing else css.cunt.header.viewing){o->
@@ -380,19 +374,24 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                             })
                             if (orderFile.editable) {
                                 o- kic("${fa.trash} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.delete, orderFile.id), onClicka = {
-                                    if (await(modalConfirmAndPerformDeletion(
-                                        t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.title}"),
-                                        DeleteUAOrderFileRequest()-{o->
-                                            o.id.value = orderFile.id
-                                        }))) {
-                                        enterVanishedMode()
-                                    }
+                                    onDelete()
                                 })
                                 o- kic("${fa.pencil} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = {onEdit()})
                             }
                         }
                     }
                 }
+            }
+        }
+
+        private suspend fun onDelete() {
+            if (modalConfirmAndDelete(t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.title}"),
+                                      UADeleteOrderFileRequest()-{o->
+                                          o.id.value = orderFile.id
+                                      })) {
+                await(effects).fadeOut(viewRootID)
+                itemPlace.setContent(NOTRE)
+                TestGlobal.shitVanished.sutPause()
             }
         }
 

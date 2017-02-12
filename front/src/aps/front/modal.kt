@@ -129,6 +129,39 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
     return modal
 }
 
+suspend fun modalConfirmAndDelete(msg: String, req: DeleteRequest): Boolean {
+    var modal by notNullOnce<ModalOperations>()
+    val ret = ResolvableShit<Boolean>()
+
+    val form = FormMatumba(FormSpec<DeleteRequest, Any?>(
+        req = req, ui = Globus.world,
+        buttonLocation = FormSpec.ButtonLocation.RIGHT,
+        primaryButtonTitle = t("TOTE", "Мочи!"),
+        primaryButtonLevel = Button.Level.DANGER,
+        cancelButtonTitle = t("TOTE", "Я очкую"),
+        onSuccessa = {
+            modal.close()
+            ret.resolve(true)
+        },
+        onCancela = {
+            modal.close()
+            ret.resolve(false)
+        }
+    ))
+
+    modal = openModal(OpenModalParams(
+        width = "60rem",
+        leftMarginColor = Color.RED_300,
+        title = t("No kidding?", "Серьезно?"),
+        body = kdiv{o->
+            o- form.fieldsAndBanner
+            o- msg
+        },
+        footer = form.buttonsAndTicker
+    ))
+
+    return await(ret.promise)
+}
 
 
 
@@ -225,7 +258,7 @@ fun modalConfirmDeletion(msg: String): Promisoid<Boolean> {
     return shit.promise
 }
 
-fun modalConfirmAndPerformDeletion(msg: String, req: DeleteRequest): Promisoid<Boolean> {
+fun modalConfirmAndDelete_killme(msg: String, req: DeleteRequest): Promisoid<Boolean> {
     val shit = ResolvableShit<Boolean>()
     var result = false
 

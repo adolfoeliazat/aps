@@ -33,7 +33,6 @@ object TestGlobal {
     var responseProcessedSignal by notNullNamed<ResolvableShit<Unit>>()
     var animationHalfwaySignal by notNullNamed<ResolvableShit<Unit>>()
     var animationHalfwaySignalProcessedSignal by notNullNamed<ResolvableShit<Unit>>()
-    var shitVanished by notNullNamed<ResolvableShit<Unit>>()
     var forcedTestOpts: TestOptions? = null
     var killAwait = false
     var formActionCompleted by notNullNamed<ResolvableShit<Unit>>()
@@ -76,6 +75,7 @@ object TestGlobal {
     val switchTabDoneLock by notNullNamed(TestLock())
     val loadMoreHalfwayLock by notNullNamed(TestLock())
     val loadMoreDoneLock by notNullNamed(TestLock())
+    var shitVanished by notNullNamed(TestLock())
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

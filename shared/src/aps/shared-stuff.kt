@@ -412,7 +412,7 @@ abstract class DeleteRequest : RequestMatumba() {
     val id by longHiddenField()
 }
 
-class DeleteUAOrderFileRequest : DeleteRequest()
+class UADeleteOrderFileRequest : DeleteRequest()
 
 enum class DocumentUrgency(override val title: String) : Titled {
     H12(t("TOTE", "12 часов")),

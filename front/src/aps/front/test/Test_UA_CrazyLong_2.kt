@@ -219,6 +219,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 testShit.imposeNextRequestTimestamp()
                 step({buttonClick(buttons.primary_testRef)}, TestGlobal.modalHiddenLock, "5d4f5e63-95f7-4ec8-b5cd-7e767edd484c")
             }
+            run { // Delete file -- no
+                step({kicClick(kics.order.file.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "e0bafefd-c7d5-4803-9f3b-df7f249b69e5")
+                step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "f02892f1-0cde-4bb0-ac1c-81f9fa69d080")
+            }
+            run { // Delete file -- yes
+                step({kicClick(kics.order.file.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "39b58462-7397-4f33-8a26-ec5624cc729b")
+                vanishSequence({submitFormSequence(testShit, useFormDoneLock = false, aid = "e7131723-e7d0-485c-aded-bbe798afdda7")}, "365d7113-246e-44a8-99f1-8f3396639e8f")
+            }
         }
     }
 
