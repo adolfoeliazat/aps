@@ -248,6 +248,7 @@ class World(val name: String) {
 
         navbarHighlight = page
         updateNavbar()
+        await(effects).unblinkAll()
     }
 
     fun setRootContent(newRootContent: dynamic) {

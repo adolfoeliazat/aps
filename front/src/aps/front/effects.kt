@@ -44,11 +44,16 @@ fun disposeEffects() {
 
 val effects_killme by PassivableHolder(EffectsInitializer())
 
+interface BlinkerOperations {
+    fun unblink()
+//    fun unblinkGradually()
+}
+
 class EffectsAPI {
     val legacyEffects: dynamic = makeLegacyEffects()
 
-    fun blinkOn(target: JQuery, opts: BlinkOpts = BlinkOpts()) {
-        legacyEffects.blinkOn(json(
+    fun blinkOn(target: JQuery, opts: BlinkOpts = BlinkOpts()): BlinkerOperations {
+        val legacyBlinker = legacyEffects.addBlinker(json(
             "target" to target,
             "fixed" to opts.fixed,
             "dleft" to opts.dleft,
@@ -56,16 +61,22 @@ class EffectsAPI {
             "dwidth" to opts.dwidth,
             "widthCountMargin" to opts.widthCountMargin,
             "heightCountMargin" to opts.heightCountMargin,
-            "widthCalcSuffix" to opts.widthCalcSuffix
+            "widthCalcSuffix" to opts.widthCalcSuffix,
+            "overHeader" to opts.overHeader
         ))
+
+        return object:BlinkerOperations {
+            override fun unblink() {
+                legacyEffects.removeBlinker(legacyBlinker)
+            }
+//            override fun unblinkGradually() {
+//                legacyEffects.removeBlinkerFadingOut(legacyBlinker)
+//            }
+        }
     }
 
-    fun blinkOff() {
-        legacyEffects.blinkOff()
-    }
-
-    fun blinkOffFadingOut() {
-        legacyEffects.blinkOffFadingOut()
+    fun unblinkAll() {
+        legacyEffects.removeAllBlinkers()
     }
 
     suspend fun fadeOut(elementID: String) = fade(elementID, decreaseOpacity = true)
@@ -119,7 +130,8 @@ data class BlinkOpts(
     val dwidth: Int = 0,
     val widthCountMargin: Boolean = true,
     val heightCountMargin: Boolean = true,
-    val widthCalcSuffix: String? = null
+    val widthCalcSuffix: String? = null,
+    val overHeader: Boolean = false
 )
 
 class EffectsInitializer : PassivableInitializer<EffectsAPI> {
@@ -149,41 +161,46 @@ class EffectsPassivated(val api: EffectsAPI) : Passivated<EffectsAPI> {
 private fun makeLegacyEffects(): dynamic {
     return Shitus.statefulElement(ctor@{update ->
         var me: dynamic = null
-        var blinker: dynamic = null
+        var blinkers = mutableListOf<ReactElement>()
         var blinkerInterval: dynamic = null
+        val blinkerToFuckingID = WeakMap<ReactElement, String>()
 
         me = json(
             "render" to {
-                Shitus.diva(json(), blinker)
+                kdiv{o->
+                    for (blinker in blinkers) {
+                        o- blinker
+                    }
+                }.toReactElement()
             },
 
-            "blinkOn" to {arg: dynamic ->
+            "addBlinker" to {arg: dynamic ->
                 val target: dynamic = arg.target
                 val fixed: dynamic = arg.fixed
                 val dleft: dynamic = arg.dleft ?: 0
                 val dtop: dynamic = arg.dtop ?: 0
                 val dwidth: dynamic = arg.dwidth ?: 0
+                val overHeader: Boolean = arg.overHeader
                 val widthCountMargin: dynamic = arg.widthCountMargin ?: true
                 val heightCountMargin: dynamic = arg.heightCountMargin ?: true
                 val widthCalcSuffix: String? = arg.widthCalcSuffix
-
-                me.blinkOff()
 
                 val targetOffset = target.offset()
                 val targetWidth = target.outerWidth(widthCountMargin)
                 val targetHeight = target.outerHeight(heightCountMargin)
                 val width = targetWidth + dwidth
-                val height = 3
+                val height = "0.3rem"
                 val left = targetOffset.left + dleft
-                var top = targetOffset.top + targetHeight - height + dtop
+                var top = "calc(${targetOffset.top}px + ${targetHeight}px - $height + ${dtop}px"
                 if (fixed) {
-                    top -= js("$")(aps.global.document).scrollTop()
+                    top += " - " + js("$")(aps.global.document).scrollTop() + "px"
                 }
+                top += ")"
                 // dlog({left, top, width, height})
 
                 val blinkerStyle = json(
                     "position" to if (fixed) "fixed" else "absolute",
-                    "zIndex" to 10000,
+                    "zIndex" to if (overHeader) 10000 else 1000,
                     "backgroundColor" to Color.BLUE_GRAY_600.toString(),
                     "left" to left,
                     "top" to top,
@@ -197,26 +214,40 @@ private fun makeLegacyEffects(): dynamic {
                     "height" to height)
                 // clog("blinkerStyle", blinkerStyle)
 
-                blinker = Shitus.diva(json(
-                    "id" to "fucking-blinker",
+                val id = puid()
+                val blinker = Shitus.diva(json(
+                    "id" to id,
                     "className" to "progressTicker",
                     "style" to blinkerStyle))
+                blinkerToFuckingID[blinker] = id
+                blinkers.add(blinker)
+                update()
+                blinker
+            },
+
+            "removeBlinker" to {blinker: ReactElement ->
+                blinkers.remove(blinker)
                 update()
             },
 
-            "blinkOff" to {
-                blinker = null
-                update()
-            },
+//            "removeBlinkerFadingOut" to {blinker: ReactElement ->
+//                async {
+//                    val el = byid0(bang(blinkerToFuckingID[blinker]))
+//                    if (el != null) {
+//                        el.className = ""
+//                        el.style.transition = "opacity 5s"
+//                        el.style.opacity = "0"
+////                        el.style.opacity = "0.5"
+//                        await(delay(5000)) // XXX requestAnimationFrame doesn't help
+//                    }
+//                    me.removeBlinker(blinker)
+//                }
+//            },
 
-            "blinkOffFadingOut" to {async<Unit> {
-                val el = byid0("fucking-blinker")!!
-                el.className = ""
-                el.style.opacity = "0.5"
-                el.style.transition = "opacity 0.5s"
-                await(delay(0)) // XXX requestAnimationFrame doesn't help
-                el.style.opacity = "0"
-            }}
+            "removeAllBlinkers" to {
+                blinkers.clear()
+                update()
+            }
         )
 
         return@ctor me

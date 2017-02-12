@@ -65,6 +65,8 @@ object css {
 
     var allShit = ""
 
+    val progressTicker = "progressTicker"
+
     object shebang : Group(null) {
         val paddingRightScrollbarWidthImportant by Style("""
             padding-right: ${fconst.scrollbarWidth}px !important;
@@ -171,6 +173,15 @@ object css {
                     cursor: pointer;""",
                 hover = """
                     color: #607d8b;""")
+
+            val ticker by Style("""
+                position: absolute;
+                right: 0;
+                top: 0;
+                background-color: $BLUE_GRAY_600;
+                width: 1.4rem;
+                height: 100%;
+            """)
         }
 
         val bodyEditing by Style("""

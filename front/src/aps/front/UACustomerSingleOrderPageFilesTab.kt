@@ -189,7 +189,6 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             try {
                 reloadFilesTab()
             } finally {
-                await(effects).blinkOffFadingOut()
                 ebafHost.headerControlsDisabled = false
                 stripContent.update() // TODO:vgrechka Redundant?
                 TestGlobal.loadPageForURLLock.sutPause2()
@@ -219,7 +218,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = buttons.loadMore)
                     btn.onClicka = {
                         async {
-                            await(effects).blinkOn(byid(btn.elementID))
+                            val blinker = await(effects).blinkOn(byid(btn.elementID))
                             TestGlobal.loadMoreHalfwayLock.sutPause()
                             try {
                                 val res = try {
@@ -244,7 +243,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                     }
                                 }
                             } finally {
-                                await(effects).blinkOff()
+                                blinker.unblink()
                                 TestGlobal.loadMoreDoneLock.sutPause()
                             }
                         }
@@ -261,6 +260,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         var itemPlace = Placeholder()
         var orderFile = initialOrderFile
         val viewRootID = puid()
+        val cloudIconID = puid()
+        val titleRightPlace = Placeholder(renderTitleControls())
 
         init {
             enterViewMode()
@@ -360,25 +361,31 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                         }
                     }
 
-                    if (!editing) {
-                        o- hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")) {o->
-                            o- kic("${fa.cloudDownload} ${css.cunt.header.rightIcon}", style = Style(marginTop = "0.45rem"), key = SubscriptKicKey(kics.order.file.download, orderFile.id), onClicka = {onDownload()})
-                            if (orderFile.editable) {
-                                o- kic("${fa.trash} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.delete, orderFile.id), onClicka = {
-                                    onDelete()
-                                })
-                                o- kic("${fa.pencil} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = {onEdit()})
-                            }
-                        }
-                    }
+                    o- titleRightPlace
                 }
             }
         }
 
+        fun renderTitleControls() =
+            hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")) {o->
+                o- kic("${fa.cloudDownload} ${css.cunt.header.rightIcon}", id = cloudIconID, style = Style(marginTop = "0.45rem"), key = SubscriptKicKey(kics.order.file.download, orderFile.id), onClicka = {onDownload()})
+                if (orderFile.editable) {
+                    o- kic("${fa.trash} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.delete, orderFile.id), onClicka = {onDelete()})
+                    o- kic("${fa.pencil} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = {onEdit()})
+                }
+            }
+
+        fun renderTitleTicker() =
+            kdiv(className = "${css.cunt.header.ticker} ${css.progressTicker}")
+
         private suspend fun onDownload() {
+            // titleRightPlace.setContent(renderTitleTicker())
+            await(effects).blinkOn(byid(cloudIconID), BlinkOpts())
+            sleepTillEndOfTime()
             val res = send(UADownloadOrderFileRequest()-{o->
                 o.fileID.value = orderFile.id
             })
+            titleRightPlace.setContent(renderTitleControls())
             exhaustive/when (res) {
                 is FormResponse2.Shitty -> {
                     imf("onDownload fuckup")

@@ -113,7 +113,7 @@ fun urlLink(
     val id = puid()
 
     fun doClick() = async {
-        await(effects).blinkOn(byid(id), BlinkOpts(dtop = 3))
+        val blinker = await(effects).blinkOn(byid(id), BlinkOpts(dtop = 3))
         TestGlobal.linkTickingLock.sutPause()
         Shitus.byid(id).css("text-decoration", "none")
 
@@ -123,7 +123,7 @@ fun urlLink(
 
         ui.pushNavigate(url)
 
-        await(effects).blinkOff()
+        blinker.unblink()
         Shitus.byid(id).css("text-decoration", "")
         TestGlobal.linkDoneLock.sutPause()
     }

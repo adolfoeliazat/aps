@@ -197,13 +197,13 @@ class TopNavItem(
             dwidth = 15
         }
 
-        await(effects).blinkOn(byid(aid).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth))
+        val blinker = await(effects).blinkOn(byid(aid).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth, overHeader = true))
         TestGlobal.topNavItemTickingLock.sutPause()
 
         ui!!.pushNavigate(href)
 
         await(delay(250))
-        await(effects).blinkOff()
+        blinker.unblink()
         ExternalGlobus.bsClearMenus()
         TestGlobal.topNavItemDoneLock.sutPause()
     }
@@ -291,7 +291,7 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
 //                        return
                 }
 
-                await(effects).blinkOn(byid(id).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth))
+                await(effects).blinkOn(byid(id).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth, overHeader = true))
 //                    TestGlobal["topNavbarLink_" + name + "_blinks"] = true
 
                 fuckOff("Don't use makeBrandLink")
@@ -300,11 +300,11 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
 //                }
                 ui!!.pushNavigate(href)
 
-                global.setTimeout({async{
-                                      await(effects).blinkOff()
-//                        TestGlobal["topNavbarLink_" + name + "_blinks"] = false
-                                      global.bsClearMenus()
-                                  }}, 250)
+//                global.setTimeout({async{
+//                                      await(effects).blinkOff()
+////                        TestGlobal["topNavbarLink_" + name + "_blinks"] = false
+//                                      global.bsClearMenus()
+//                                  }}, 250)
 
                 return@async Unit
             }

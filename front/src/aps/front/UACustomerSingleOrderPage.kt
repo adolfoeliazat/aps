@@ -87,7 +87,6 @@ class UACustomerSingleOrderPage(val world: World) {
         try {
             world.pushNavigate("order.html?id=$orderID&tab=${simpleName(key.fqn)}")
         } finally {
-            await(effects).blinkOffFadingOut()
             TestGlobal.switchTabDoneLock.sutPause()
         }
     }

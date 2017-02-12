@@ -139,6 +139,7 @@ class Input(
             var value = initialValue
             var loading = false
             var _isDisabled = false
+            var blinker: BlinkerOperations? = null
 
             var me: dynamic = null
             me = json(
@@ -234,9 +235,10 @@ class Input(
 
                 "setBlinking" to {b: dynamic -> async {
                     if (b) {
-                        await(effects).blinkOn(Shitus.byid(me.elementID), BlinkOpts(widthCountMargin = false))
+                        blinker = await(effects).blinkOn(Shitus.byid(me.elementID), BlinkOpts(widthCountMargin = false))
                     } else {
-                        await(effects).blinkOff()
+                        bang(blinker).unblink()
+                        blinker = null
                     }
                 }}
             )

@@ -28,8 +28,8 @@ class Select<E>(
     val onFocusa: suspend () -> Unit = {},
     val onBlur: () -> Unit = {},
     val onBlura: suspend () -> Unit = {}
-
 ) : Control2(attrs), Blinkable where E : Enum<E>, E : Titled {
+    var blinker: BlinkerOperations? = null
 
     companion object {
         val instances = mutableMapOf<String, Select<*>>()
@@ -162,9 +162,10 @@ class Select<E>(
 
     override fun setBlinking(b: Boolean) {async{
         if (b) {
-            await(effects).blinkOn(byid(elementID), BlinkOpts(widthCountMargin = false))
+            blinker = await(effects).blinkOn(byid(elementID), BlinkOpts(widthCountMargin = false))
         } else {
-            await(effects).blinkOff()
+            bang(blinker).unblink()
+            blinker = null
         }
     }}
 

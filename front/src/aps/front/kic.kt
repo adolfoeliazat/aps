@@ -10,11 +10,12 @@ data class SubscriptKicKey(val key: KicKey, val subscript: Any?)
 
 class kic(
     val className: String = "",
+    id: String? = null,
     val key: KicKey? = null,
     val style: Style = Style(),
     val onClick: () -> Unit = {},
     val onClicka: suspend () -> Unit = {}
-) : Control2(Attrs()) {
+) : Control2(Attrs(id = id)) {
 
     companion object {
         val instances = mutableMapOf<KicKey, kic>()

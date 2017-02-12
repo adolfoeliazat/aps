@@ -198,7 +198,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(3) {
             run { // Download
-                step({kicClick(kics.order.file.download_testRef, subscript = 28L)}, TestGlobal.somethingDownloadedLock, "dbeeffcb-f658-4fab-a579-caa42e933d48")
+                step({kicClick(kics.order.file.download_testRef, subscript = 26L)}, TestGlobal.somethingDownloadedLock, "dbeeffcb-f658-4fab-a579-caa42e933d48")
             }
             run { // Edit file -- cancel
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
