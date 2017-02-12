@@ -23,7 +23,7 @@ object fields                                    : Fuckers<FieldSpec>(null) {
         val numPages                             by namedFucker {IntFieldSpec(it, t("TOTE", "Количество страниц"), min = 1, max = 500)}; val numPages_testRef = TestRef(numPages)
         val numSources                           by namedFucker {IntFieldSpec(it, t("TOTE", "Количество источников"), min = 0, max = 50)}; val numSources_testRef = TestRef(numSources)
         val fileFile_create                      by namedFucker {FileFieldSpec(it, t("TOTE", "Файл"), allowedValueKinds = setOf(FileFieldValueKind.PROVIDED))}; val fileFile_create_testRef = TestRef(fileFile_create)
-        val fileFile_update                      by namedFucker {fileFile_create.copy(allowedValueKinds = setOf(FileFieldValueKind.UNCHANGED, FileFieldValueKind.PROVIDED))}; val fileFile_update_testRef = TestRef(fileFile_update)
+        val fileFile_update                      by namedFucker {fileFile_create.copy(name = it, allowedValueKinds = setOf(FileFieldValueKind.UNCHANGED, FileFieldValueKind.PROVIDED))}; val fileFile_update_testRef = TestRef(fileFile_update)
         val fileTitle                            by namedFucker {TextFieldSpec(it, t("TOTE", "Название"), TextFieldType.STRING, 3, 100)}; val fileTitle_testRef = TestRef(fileTitle)
         val fileDetails                          by namedFucker {TextFieldSpec(it, t("TOTE", "Детали"), TextFieldType.TEXTAREA, 3, 2000)}; val fileDetails_testRef = TestRef(fileDetails)
 

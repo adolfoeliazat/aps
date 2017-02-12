@@ -67,7 +67,8 @@ abstract class Fuckers<T : Fucker>(val parent: Fuckers<T>?) {
 
 class namedFucker<Base, out T>(val make: (fqn: String) -> T) where T : Base, Base : Fucker {
     operator fun provideDelegate(thiz: Fuckers<Base>, property: KProperty<*>) = run {
-        val fucker = make(qualify(property.name, thiz.qualifiedName))
+        val fqn = qualify(property.name, thiz.qualifiedName)
+        val fucker = make(fqn)
         thiz.items += fucker
         fucker.belongsToFuckers = thiz
 

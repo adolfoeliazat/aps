@@ -19,7 +19,7 @@ fun dumpControls() {
     for (key in Button.instances.keys) clog("Button: ${key.fqn}")
     for (key in Checkbox.instances.keys) clog("Checkbox: $key")
     for (key in DateTimePicker.instances.keys) clog("DateTimePicker: $key")
-    for (key in FileField.instances.keys) clog("FileField: $key")
+    for (key in FileField.instances.keys) clog("FileField: ${key.name}")
     for (key in Select.instances.keys) clog("Select: $key")
     for (key in kic.instances.keys) clog("kic: ${key.fqn}")
     for (key in TopNavItem.instances.keys) clog("TopNavItem: " + key.belongsToFuckers.name + " :: " + key.path)

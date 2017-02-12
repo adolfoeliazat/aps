@@ -212,6 +212,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     ))
                 )
             }
+            run { // Edit file -- save, file was changed
+                step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "422ae986-3f93-419c-8dd6-26ae8dedee19")
+                inputSetValue(fields.shebang.fileTitle_testRef, "Рапунцель -- девица-распиздунцель")
+                fileFieldChoose("fuck you.rtf", "aec4c792-dd9c-4a98-9279-4cd29453ee1d")
+                testShit.imposeNextRequestTimestamp()
+                step({buttonClick(buttons.primary_testRef)}, TestGlobal.modalHiddenLock, "5d4f5e63-95f7-4ec8-b5cd-7e767edd484c")
+            }
         }
     }
 

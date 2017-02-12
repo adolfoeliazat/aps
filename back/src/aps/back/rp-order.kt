@@ -51,6 +51,7 @@ import java.util.*
                 file.details = req.fields1.details.value
                 if (req.file.valueKind == FileFieldValueKind.PROVIDED) {
                     val content = Base64.getDecoder().decode(req.file.base64)
+                    file.name = req.file.fileName
                     file.sha1 = Hashing.sha1().hashBytes(content).toString()
                     file.sizeBytes = content.size
                     file.content = content

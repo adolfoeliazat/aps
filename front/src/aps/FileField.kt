@@ -56,7 +56,7 @@ import kotlin.js.json
                             o- kspan{o->
                                 o- (_content.name + " (${formatFileSizeApprox(Globus.lang, _content.size)})")
                             }
-                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = SubscriptButtonKey(buttons.upload, container.fieldInstanceKeySuffix), onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = buttons.upload, onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -66,7 +66,7 @@ import kotlin.js.json
                             o- kspan{o->
                                 o- (_content.file.name + " (${formatFileSizeApprox(Globus.lang, _content.file.size)})")
                             }
-                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = SubscriptButtonKey(buttons.upload, container.fieldInstanceKeySuffix), onClick = {
+                            o- Button(icon = fa.cloudUpload, title = t("Change...", "Изменить..."), style = Style(marginLeft = "1em"), key = buttons.upload, onClick = {
                                 byid(inputID).click()
                             })
                         }
@@ -182,9 +182,10 @@ suspend fun fileFieldChoose(fileName: String, aid: String, descr: String = "Desc
     sequence(
         action = {
             if (testOpts().fastFileUpload) {
-                if (FileField.instances.size != 1) bitch("I want exactly one FileField")
-                val ff = FileField.instances.values.first()
-                ff.testUploadFileFast(fileName)
+                die("No fucking fastFileUpload")
+//                if (FileField.instances.size != 1) bitch("I want exactly one FileField")
+//                val ff = FileField.instances.values.first()
+//                ff.testUploadFileFast(fileName)
             } else {
                 buttonUserInitiatedClick(buttons.upload_testRef)
                 typeIntoOpenFileDialog(const.test.filesRoot + fileName)
