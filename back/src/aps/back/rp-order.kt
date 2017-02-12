@@ -39,7 +39,7 @@ import java.util.*
     }
 }
 
-@Servant class ServeUAUpdateOrderFile(val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
+@Servant class ServeUAUpdateOrderFile(val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc, makeRequest = {UAUpdateOrderFileRequest()},
@@ -55,8 +55,9 @@ import java.util.*
                     file.sizeBytes = content.size
                     file.content = content
                 }
+                file.touch()
 
-                return UAUpdateOrderFileRequest.Response()
+                return UAUpdateOrderFileRequest.Response(file.toRTO())
             }
         ))
     }

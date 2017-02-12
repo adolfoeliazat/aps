@@ -209,73 +209,242 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             o- topPlace
 
             for ((fileIndex, _orderFile) in meat.items.withIndex()) {
-                object {
-                    var itemPlace = Placeholder()
-                    var orderFile = _orderFile
-                    val viewRootID = puid()
+                Pizda(_orderFile, o)
+            }
 
-                    init {
-                        enterViewMode()
-                        o- itemPlace
-                    }
+            meat.moreFromID?.let {moreFromID ->
+                moreFromID
+                val placeholder = Placeholder()
+                placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
+                    val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = buttons.loadMore)
+                    btn.onClicka = {
+                        async {
+                            await(effects).blinkOn(byid(btn.elementID))
+                            TestGlobal.loadMoreHalfwayLock.sutPause()
+                            try {
+                                val res = try {
+                                    await(requestChunk(meat.moreFromID))
+                                } catch(e: Exception) {
+                                    openErrorModal(const.msg.serviceFuckedUp)
+                                    null
+                                }
 
-                    fun enterViewMode() {
-                        itemPlace.setContent(renderView())
-                    }
-
-                    fun renderView(initiallyTransparent: Boolean = false): ElementBuilder {
-                        return when (world.user.kind) {
-                            UserKind.CUSTOMER -> {
-                                kdiv(id = viewRootID,
-                                     className = css.item,
-                                     opacity = if (initiallyTransparent) 0.0
-                                               else 1.0){o->
-                                    o- row{o->
-                                        o- renderFileTitle(editing = false)
-                                    }
-                                    o- row{o->
-                                        o- kdiv(className = "col-md-3"){o->
-                                            o- label(t("Created", "Создан"))
-                                            o- kdiv(){o->
-                                                o- formatUnixTime(orderFile.createdAt)
-                                            }
-                                        }
-                                        o- kdiv(className = "col-md-3"){o->
-                                            o- label(t("Updated", "Изменен"))
-                                            o- kdiv(){o->
-                                                o- formatUnixTime(orderFile.updatedAt)
-                                            }
-                                        }
-                                        o- kdiv(className = "col-md-3"){o->
-                                            o- label(t("File name", "Имя файла"))
-                                            o- kdiv(){o->
-                                                o- highlightedShit(orderFile.name, orderFile.nameHighlightRanges, tag = "span")
-                                            }
-                                        }
-                                        o- kdiv(className = "col-md-3"){o->
-                                            o- label(t("Size", "Размер"))
-                                            o- kdiv(){o->
-                                                o- formatFileSizeApprox(Globus.lang, orderFile.sizeBytes)
-                                            }
-                                        }
-                                    }
-                                    o- row{o->
-                                        o- kdiv(className = "col-md-12"){o->
-                                            o- label(t("Details", "Детали"))
-                                            o- kdiv(whiteSpace = "pre-wrap"){o->
-                                                o- highlightedShit(orderFile.details, orderFile.detailsHighlightRanges)
-                    //                                                o- file.details
-                                            }
+                                if (res != null) {
+                                    exhaustive / when (res) {
+                                        is ZimbabweResponse.Shitty -> openErrorModal(res.error)
+                                        is ZimbabweResponse.Hunky -> {
+                                            val newChunkContainerID = puid()
+                                            placeholder.setContent(
+                                                makeItemsControl(res.meat,
+                                                                 noItemsMessage = false,
+                                                                 chunkIndex = chunksLoaded - 1,
+                                                                 containerID = newChunkContainerID))
+                                            await(scrollBodyToShitGradually {byid(newChunkContainerID)})
                                         }
                                     }
                                 }
+                            } finally {
+                                await(effects).blinkOff()
+                                TestGlobal.loadMoreDoneLock.sutPause()
                             }
-
-                            UserKind.WRITER -> imf()
-
-                            UserKind.ADMIN -> imf()
                         }
                     }
+                    o- btn
+                })
+                o- placeholder
+            }
+        }
+    }
+
+
+    inner class Pizda(initialOrderFile: UAOrderFileRTO, o: ElementBuilder) {
+        var itemPlace = Placeholder()
+        var orderFile = initialOrderFile
+        val viewRootID = puid()
+
+        init {
+            enterViewMode()
+            o- itemPlace
+        }
+
+        fun enterViewMode() {
+            itemPlace.setContent(renderView())
+        }
+
+        fun renderView(initiallyTransparent: Boolean = false): ElementBuilder {
+            return when (world.user.kind) {
+                UserKind.CUSTOMER -> {
+                    kdiv(id = viewRootID,
+                         className = css.item,
+                         opacity = if (initiallyTransparent) 0.0
+                         else 1.0){o->
+                        o- row{o->
+                            o- renderFileTitle(editing = false)
+                        }
+                        o- row{o->
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(t("Created", "Создан"))
+                                o- kdiv(){o->
+                                    o- formatUnixTime(orderFile.createdAt)
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(t("Updated", "Изменен"))
+                                o- kdiv(){o->
+                                    o- formatUnixTime(orderFile.updatedAt)
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(t("File name", "Имя файла"))
+                                o- kdiv(){o->
+                                    o- highlightedShit(orderFile.name, orderFile.nameHighlightRanges, tag = "span")
+                                }
+                            }
+                            o- kdiv(className = "col-md-3"){o->
+                                o- label(t("Size", "Размер"))
+                                o- kdiv(){o->
+                                    o- formatFileSizeApprox(Globus.lang, orderFile.sizeBytes)
+                                }
+                            }
+                        }
+                        o- row{o->
+                            o- kdiv(className = "col-md-12"){o->
+                                o- label(t("Details", "Детали"))
+                                o- kdiv(whiteSpace = "pre-wrap"){o->
+                                    o- highlightedShit(orderFile.details, orderFile.detailsHighlightRanges)
+                                    //                                                o- file.details
+                                }
+                            }
+                        }
+                    }
+                }
+
+                UserKind.WRITER -> imf()
+
+                UserKind.ADMIN -> imf()
+            }
+        }
+
+
+        fun enterVanishedMode() = async {
+            await(effects).fadeOut(viewRootID)
+            itemPlace.setContent(NOTRE)
+            TestGlobal.shitVanished.resolve()
+        }
+
+        fun renderFileTitle(editing: Boolean): ElementBuilder {
+            return kdiv(className = "col-md-12"){o->
+                o- kdiv(className = if (editing) css.cunt.header.editing else css.cunt.header.viewing){o->
+                    o- ki(className = "${if (editing) css.cunt.header.leftIcon.editing else css.cunt.header.leftIcon.viewing} ${fa.file}")
+                    o- ki(className = "${if (editing) css.cunt.header.leftOverlayBottomLeftIcon.editing else css.cunt.header.leftOverlayBottomLeftIcon.viewing} " +
+                        when (orderFile.seenAsFrom) {
+                            UserKind.CUSTOMER -> fa.user
+                            UserKind.WRITER -> fa.pencil
+                            UserKind.ADMIN -> fa.cog
+                        })
+                    o- " "
+                    o- highlightedShit(orderFile.title, orderFile.titleHighlightRanges, tag = "span")
+
+                    val idColor: Color?; val idBackground: Color?
+                    if (urlQuery.search.split(Regex("\\s+")).contains(orderFile.id.toString())) {
+                        idColor = Color.GRAY_800
+                        idBackground = Color.AMBER_200
+                    } else {
+                        idColor = Color.GRAY_500
+                        idBackground = null
+                    }
+                    o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
+                        o- "$numberSign${orderFile.id}"
+                    }
+
+                    o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                        o- when (orderFile.seenAsFrom) {
+                            world.user.kind -> t("Mine", "Мой")
+                            UserKind.CUSTOMER -> t("From customer", "От заказчика")
+                            UserKind.WRITER -> t("From writer", "От писателя")
+                            UserKind.ADMIN -> t("From support", "От саппорта")
+                        }
+                    }
+
+                    if (!editing) {
+                        o- hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")) {o->
+                            o- kic("${fa.cloudDownload} ${css.cunt.header.rightIcon}", style = Style(marginTop = "0.45rem"), key = SubscriptKicKey(kics.order.file.download, orderFile.id), onClicka = {
+                                val iframeID = puid()
+                                jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
+                                val iframe = byid0(iframeID) as HTMLIFrameElement
+                                aps.gloshit.iframe = iframe
+                                iframe.onload = {
+                                    iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
+                                }
+                                iframe.src = "$backendURL/file?fileID=${orderFile.id}&databaseID=${ExternalGlobus.DB}&token=${world.tokenMaybe}"
+                            })
+                            if (orderFile.editable) {
+                                o- kic("${fa.trash} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.delete, orderFile.id), onClicka = {
+                                    if (await(modalConfirmAndPerformDeletion(
+                                        t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.title}"),
+                                        DeleteUAOrderFileRequest()-{o->
+                                            o.id.value = orderFile.id
+                                        }))) {
+                                        enterVanishedMode()
+                                    }
+                                })
+                                o- kic("${fa.pencil} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = {onEdit()})
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        fun label(title: String) = klabel(marginBottom = 0) {it - title}
+
+        fun row(build: (ElementBuilder) -> Unit) =
+            kdiv(className = "row", marginBottom = "0.5em"){o->
+                build(o)
+            }
+
+        private suspend fun onEdit() {
+            openEditModal(
+                title = t("TOTE", "Файл") + " " + numberSign + orderFile.id,
+                formSpec = FormSpec<UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response>(
+                    ui = world,
+                    req = UAUpdateOrderFileRequest()-{o->
+                        o.fileID.value = orderFile.id
+                        o.file.content = FileField.Content.Unchanged(orderFile.name, orderFile.sizeBytes)
+                        o.fields1-{o->
+                            o.title.value = orderFile.title
+                            o.details.value = orderFile.details
+                        }
+                    }
+                ),
+                onSuccessa = {res->
+                    orderFile = res.file
+                    enterViewMode()
+                }
+            )
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //                    fun enterEditMode(): Promisoid<Unit> = async {
 //                        val topShitID = puid()
@@ -333,155 +502,5 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 //
 //                        await(scrollBodyToShitGradually(dontScrollToTopItem = true){byid(topShitID)})
 //                    }
-
-                    fun enterVanishedMode() = async {
-                        await(effects).fadeOut(viewRootID)
-                        itemPlace.setContent(NOTRE)
-                        TestGlobal.shitVanished.resolve()
-                    }
-
-                    fun renderFileTitle(editing: Boolean): ElementBuilder {
-                        return kdiv(className = "col-md-12"){o->
-                            o- kdiv(className = if (editing) css.cunt.header.editing else css.cunt.header.viewing){o->
-                                o- ki(className = "${if (editing) css.cunt.header.leftIcon.editing else css.cunt.header.leftIcon.viewing} ${fa.file}")
-                                o- ki(className = "${if (editing) css.cunt.header.leftOverlayBottomLeftIcon.editing else css.cunt.header.leftOverlayBottomLeftIcon.viewing} " +
-                                    when (orderFile.seenAsFrom) {
-                                        UserKind.CUSTOMER -> fa.user
-                                        UserKind.WRITER -> fa.pencil
-                                        UserKind.ADMIN -> fa.cog
-                                    })
-                                o- " "
-                                o- highlightedShit(orderFile.title, orderFile.titleHighlightRanges, tag = "span")
-
-                                val idColor: Color?; val idBackground: Color?
-                                if (urlQuery.search.split(Regex("\\s+")).contains(orderFile.id.toString())) {
-                                    idColor = Color.GRAY_800
-                                    idBackground = Color.AMBER_200
-                                } else {
-                                    idColor = Color.GRAY_500
-                                    idBackground = null
-                                }
-                                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
-                                    o- "$numberSign${orderFile.id}"
-                                }
-
-                                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
-                                    o- when (orderFile.seenAsFrom) {
-                                        world.user.kind -> t("Mine", "Мой")
-                                        UserKind.CUSTOMER -> t("From customer", "От заказчика")
-                                        UserKind.WRITER -> t("From writer", "От писателя")
-                                        UserKind.ADMIN -> t("From support", "От саппорта")
-                                    }
-                                }
-
-                                if (!editing) {
-                                    o- hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")) {o->
-                                        o- kic("${fa.cloudDownload} ${css.cunt.header.rightIcon}", style = Style(marginTop = "0.45rem"), key = SubscriptKicKey(kics.order.file.download, orderFile.id), onClicka = {
-                                            val iframeID = puid()
-                                            jq("body").append("<iframe id='$iframeID' style='display: none;'></iframe>")
-                                            val iframe = byid0(iframeID) as HTMLIFrameElement
-                                            aps.gloshit.iframe = iframe
-                                            iframe.onload = {
-                                                iframe.contentWindow?.postMessage(const.windowMessage.whatsUp, "*")
-                                            }
-                                            iframe.src = "$backendURL/file?fileID=${orderFile.id}&databaseID=${ExternalGlobus.DB}&token=${world.tokenMaybe}"
-                                        })
-                                        if (orderFile.editable) {
-                                            o- kic("${fa.trash} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.delete, orderFile.id), onClicka = {
-                                                if (await(modalConfirmAndPerformDeletion(
-                                                    t("TOTE", "Удаляю файл $numberSign${orderFile.id}: ${orderFile.title}"),
-                                                    DeleteUAOrderFileRequest()-{o->
-                                                        o.id.value = orderFile.id
-                                                    }))) {
-                                                    enterVanishedMode()
-                                                }
-                                            })
-                                            o- kic("${fa.pencil} ${css.cunt.header.rightIcon}", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = {editFile(orderFile)})
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    fun label(title: String) = klabel(marginBottom = 0) {it - title}
-
-                    fun row(build: (ElementBuilder) -> Unit) =
-                        kdiv(className = "row", marginBottom = "0.5em"){o->
-                            build(o)
-                        }
-                }
-            }
-
-            meat.moreFromID?.let {moreFromID ->
-                moreFromID
-                val placeholder = Placeholder()
-                placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
-                    val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = buttons.loadMore)
-                    btn.onClicka = {
-                        async {
-                            await(effects).blinkOn(byid(btn.elementID))
-                            TestGlobal.loadMoreHalfwayLock.sutPause()
-                            try {
-                                val res = try {
-                                    await(requestChunk(meat.moreFromID))
-                                } catch(e: Exception) {
-                                    openErrorModal(const.msg.serviceFuckedUp)
-                                    null
-                                }
-
-                                if (res != null) {
-                                    exhaustive / when (res) {
-                                        is ZimbabweResponse.Shitty -> openErrorModal(res.error)
-                                        is ZimbabweResponse.Hunky -> {
-                                            val newChunkContainerID = puid()
-                                            placeholder.setContent(
-                                                makeItemsControl(res.meat,
-                                                                 noItemsMessage = false,
-                                                                 chunkIndex = chunksLoaded - 1,
-                                                                 containerID = newChunkContainerID))
-                                            await(scrollBodyToShitGradually {byid(newChunkContainerID)})
-                                        }
-                                    }
-                                }
-                            } finally {
-                                await(effects).blinkOff()
-                                TestGlobal.loadMoreDoneLock.sutPause()
-                            }
-                        }
-                    }
-                    o- btn
-                })
-                o- placeholder
-            }
-        }
-    }
-
-    private suspend fun editFile(file: UAOrderFileRTO) {
-        openEditModal(
-            title = t("TOTE", "Файл") + " " + numberSign + file.id,
-            formSpec = FormSpec<UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response>(
-                ui = world,
-                req = UAUpdateOrderFileRequest()-{o->
-                    o.fileID.value = file.id
-                    o.file.content = FileField.Content.Unchanged(file.name, file.sizeBytes)
-                    o.fields1-{o->
-                        o.title.value = file.title
-                        o.details.value = file.details
-                    }
-                }
-            ),
-            onSuccessa = {
-                imf("editFile")
-//                val q = UACustomerSingleOrderPage.urlQuery
-//                world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
-//                    URLParamValue(q.id, order.id.toString()),
-//                    URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
-//                )))
-            }
-        )
-    }
-}
-
 
 

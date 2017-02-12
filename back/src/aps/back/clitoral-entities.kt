@@ -20,6 +20,11 @@ abstract class ClitoralEntity {
     }
     var updatedAt = createdAt
     var deleted = false
+
+    fun touch() {
+        updatedAt = RequestGlobus.stamp
+    }
+
 }
 
 @Entity @Table(name = "users",
@@ -137,7 +142,25 @@ class UAOrderFile(
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderId", nullable = false)
     var order: UAOrder
-) : ClitoralEntity()
+) : ClitoralEntity() {
+
+    fun toRTO(): UAOrderFileRTO {
+        return UAOrderFileRTO(
+            id = id!!,
+            createdAt = createdAt.time,
+            updatedAt = updatedAt.time,
+            name = name,
+            title = title,
+            details = details,
+            sizeBytes = sizeBytes,
+            detailsHighlightRanges = listOf(),
+            editable = true,
+            nameHighlightRanges = listOf(),
+            seenAsFrom = UserKind.CUSTOMER,
+            titleHighlightRanges = listOf()
+        )
+    }
+}
 
 interface UAOrderFileRepository : CrudRepository<UAOrderFile, Long> {
 }

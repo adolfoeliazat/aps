@@ -58,20 +58,7 @@ import javax.persistence.EntityManagerFactory
 
                         val rtos = items.map {
                             val f = it as UAOrderFile
-                            UAOrderFileRTO(
-                                id = f.id!!,
-                                createdAt = f.createdAt.time,
-                                updatedAt = f.updatedAt.time,
-                                name = f.name,
-                                title = f.title,
-                                details = f.details,
-                                sizeBytes = f.sizeBytes,
-                                detailsHighlightRanges = listOf(),
-                                editable = true,
-                                nameHighlightRanges = listOf(),
-                                seenAsFrom = UserKind.CUSTOMER,
-                                titleHighlightRanges = listOf()
-                            )
+                            f.toRTO()
                         }
                         return@run Chunk(rtos, moreFromId = moreFromId)
                     } finally {

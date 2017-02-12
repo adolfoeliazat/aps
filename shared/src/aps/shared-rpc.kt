@@ -183,7 +183,7 @@ class UACreateOrderFileRequest : RequestMatumba() {
 }
 
 class UAUpdateOrderFileRequest : RequestMatumba() {
-    class Response : CommonResponseFieldsImpl()
+    class Response(val file: UAOrderFileRTO) : CommonResponseFieldsImpl()
     val fileID by longHiddenField()
     val file = FileField(this, fields.shebang.fileFile_update)
     val fields1 = FileFields1(this)
