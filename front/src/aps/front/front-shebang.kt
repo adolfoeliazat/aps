@@ -76,6 +76,7 @@ object TestGlobal {
     val loadMoreHalfwayLock by notNullNamed(TestLock())
     val loadMoreDoneLock by notNullNamed(TestLock())
     var shitVanished by notNullNamed(TestLock())
+    var somethingDownloadedLock by notNullNamed(TestLock())
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

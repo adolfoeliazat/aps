@@ -5,6 +5,7 @@ import aps.*
 object fconst {
     val defaultScrollBursts = 8
     val scrollbarWidth = 17
+    val backendURL = "http://127.0.0.1:8080"
 
     object key {
         object file : KeyDef() {val ref = name; val testRef = name}

@@ -36,10 +36,8 @@ fun fetchURL(url: String, method: String, data: String?): Promisoid<String> {
     }
 }
 
-val backendURL = "http://127.0.0.1:8080"
-
 fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promisoid<dynamic> = async {
-    val obj = await(fetchFromURL_killme("POST", "$backendURL/$path", global.JSON.stringify(requestJSONObject)) {
+    val obj = await(fetchFromURL_killme("POST", "${fconst.backendURL}/$path", global.JSON.stringify(requestJSONObject)) {
         global.JSON.parse(it)
     })
 

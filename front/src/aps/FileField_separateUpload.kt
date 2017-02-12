@@ -49,7 +49,7 @@ import kotlin.js.json
 //                            }
 
                             val xhr = XMLHttpRequest()
-                            xhr.open("POST", "$backendURL/upload")
+                            xhr.open("POST", "${fconst.backendURL}/upload")
                             xhr.upload.onload = {
                                 dwarnStriking("Uploaded shit")
                             }

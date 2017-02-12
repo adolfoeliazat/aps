@@ -28,7 +28,7 @@ import java.util.*
                     mime = "application/octet-stream",
                     details = req.fields1.details.value,
                     adminNotes = "",
-                    sha1 = Hashing.sha1().hashBytes(content).toString(),
+                    sha256 = Hashing.sha256().hashBytes(content).toString(),
                     sizeBytes = content.size,
                     content = content
                 ))
@@ -52,7 +52,7 @@ import java.util.*
                 if (req.file.valueKind == FileFieldValueKind.PROVIDED) {
                     val content = Base64.getDecoder().decode(req.file.base64)
                     file.name = req.file.fileName
-                    file.sha1 = Hashing.sha1().hashBytes(content).toString()
+                    file.sha256 = Hashing.sha256().hashBytes(content).toString()
                     file.sizeBytes = content.size
                     file.content = content
                 }
@@ -73,6 +73,23 @@ import java.util.*
                 // TODO:vgrechka @security Check permissions
                 fileRepo.delete(file)
                 return DeleteRequest.Response()
+            }
+        ))
+    }
+}
+
+@Servant class ServeUADownloadOrderFile(val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
+    override fun serve() {
+        fuckCustomer(FuckCustomerParams(
+            bpc = bpc, makeRequest = {UADownloadOrderFileRequest()},
+            runShit = fun(ctx, req): UADownloadOrderFileRequest.Response {
+                val file = fileRepo.findOrDie(req.fileID.value)
+                // TODO:vgrechka @security Check permissions
+                return UADownloadOrderFileRequest.Response(
+                    fileName = file.name,
+                    base64 = Base64.getEncoder().encodeToString(file.content),
+                    sha256 = Hashing.sha256().hashBytes(file.content).toString()
+                )
             }
         ))
     }

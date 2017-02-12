@@ -443,6 +443,7 @@ object MakeStaticSites {
             require('moment/locale/ru')
             global.Tether = require('tether')
             global.markdownIt = require('markdown-it')
+            global.downloadjs = require('downloadjs')
 
             ${if (mode == Mode.DEBUG) """
                 global.superagent = require('superagent')

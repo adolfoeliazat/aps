@@ -136,7 +136,7 @@ class UAOrderFile(
     @Column(length = MAX_STRING) var mime: String,
     @Column(length = MAX_STRING) var details: String,
     @Column(length = MAX_STRING) var adminNotes: String,
-    @Column(length = MAX_STRING) var sha1: String,
+    @Column(length = MAX_STRING) var sha256: String,
     var sizeBytes: Int,
     @Column(length = MAX_BLOB) var content: ByteArray,
 
