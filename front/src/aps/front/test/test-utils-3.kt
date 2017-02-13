@@ -26,3 +26,8 @@ suspend fun vanishSequence(action: suspend () -> Unit, aid: String) {
              ))
 }
 
+suspend fun condition(action: suspend () -> Unit, lock: TestLock) {
+    lock.reset()
+    action()
+    lock.pauseTestFromTest()
+}

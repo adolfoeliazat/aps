@@ -379,11 +379,16 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 pencilClass = c.rightIcon
             }
 
+            fun ifNotDownloading(f: suspend () -> Unit) = when {
+                downloadActive -> {{TestGlobal.disabledActionHitLock.resumeTestFromSut()}}
+                else -> f
+            }
+
             return hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")) {o->
-                o- kic("${fa.cloudDownload} $cloudClass", id = cloudIconID, style = Style(marginTop = "0.45rem"), key = SubscriptKicKey(kics.order.file.download, orderFile.id), onClicka = {onDownload()})
+                o- kic("${fa.cloudDownload} $cloudClass", id = cloudIconID, style = Style(marginTop = "0.45rem"), key = SubscriptKicKey(kics.order.file.download, orderFile.id), onClicka = ifNotDownloading {onDownload()})
                 if (orderFile.editable) {
-                    o- kic("${fa.trash} $trashClass", style = Style(), key = SubscriptKicKey(kics.order.file.delete, orderFile.id), onClicka = {onDelete()})
-                    o- kic("${fa.pencil} $pencilClass", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = {onEdit()})
+                    o- kic("${fa.trash} $trashClass", style = Style(), key = SubscriptKicKey(kics.order.file.delete, orderFile.id), onClicka = ifNotDownloading {onDelete()})
+                    o- kic("${fa.pencil} $pencilClass", style = Style(), key = SubscriptKicKey(kics.order.file.edit, orderFile.id), onClicka = ifNotDownloading {onEdit()})
                 }
             }
         }

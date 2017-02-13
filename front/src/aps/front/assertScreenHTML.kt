@@ -6,6 +6,7 @@ import into.kommon.*
 import jquery.*
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.properties.Delegates.notNull
 
@@ -69,6 +70,8 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
     TestGlobal.testShitBeingAssertedID = p.assertionID
     val expected = await(fuckingRemoteCall.loadTestShit(p.assertionID))
+
+    val scrollTopBeforeTakingHTML = document.body!!.scrollTop
 
     val actual = buildString {
         append("-------------------- URL --------------------\n\n")
@@ -459,6 +462,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                     pausedOnAssertion = ResolvableShit()
                     window.removeEventListener("keydown", keyListener)
                     old_debugPanes.remove(bannerPane)
+                    document.body!!.scrollTop = scrollTopBeforeTakingHTML
                 }
             }
         }.shit)

@@ -4,6 +4,15 @@ package aps.front
 
 import kotlin.properties.Delegates.notNull
 
+//suspend fun qwe() {
+//    // suspend fun localHelper(x: Int) {}             // Syntax error
+//    // val localHelper = suspend fun(x: Int) {}       // Syntax error
+//    val localHelper: suspend (x: Int) -> Unit = {}    // Works
+//
+//    localHelper(10)
+//    localHelper(20)
+//    localHelper(30)
+//}
 
 //fun main(args: Array<String>) {
 //    val x = "1450401485000".toLong()

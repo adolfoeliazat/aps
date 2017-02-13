@@ -30,7 +30,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         initialTestShit(this)
 
         definePoint(1) {
-            run { // Make order
+            run {
+                // Make order
                 val ivo1 = Morda("ivo1",
                                  url = fconst.test.url.customer,
                                  fillTypedStorageLocal = {},
@@ -59,7 +60,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             // TODO:vgrechka Try to access order page before it's confirmed (should say "fuck you" to user)
 
-            run { // Wrong confirmation secret
+            run {
+                // Wrong confirmation secret
                 val ivo2 = Morda("ivo2",
                                  url = fconst.test.url.customer + "/confirmOrder.html?secret=wrong-secret",
                                  fillTypedStorageLocal = {},
@@ -68,7 +70,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "45a5842e-ffe9-4e78-9261-9a5056a3c11f")})
             }
 
-            run { // Correct confirmation secret
+            run {
+                // Correct confirmation secret
                 val ivo3 = Morda("ivo3",
                                  url = fconst.test.url.customer + "/confirmOrder.html?secret=top-fucking-secret",
                                  fillTypedStorageLocal = {},
@@ -77,13 +80,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
             }
 
-            run { // Edit params -- cancel
+            run {
+                // Edit params -- cancel
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fields.shebang.documentTitle_testRef, "Хуй")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
-            run { // Edit params -- save
+            run {
+                // Edit params -- save
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
                 selectSetValue(fields.shebang.ua.documentType_testRef, UADocumentType.LAB)
                 formSubmissionAttempts(
@@ -98,7 +103,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 )
             }
 
-            run { // Edit params -- save 2
+            run {
+                // Edit params -- save 2
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
                 selectSetValue(fields.shebang.ua.documentType_testRef, UADocumentType.PRACTICE)
                 submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
@@ -106,7 +112,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(2) {
-            run { // Add some files
+            run {
+                // Add some files
                 tabSequence(tabs.order.files_testRef, "f727a9ea-c520-4613-97e0-c154f6506d3a", "f621673e-7f84-4a53-969f-8844614c4f30")
 
                 val bunch1 = listOf(
@@ -147,7 +154,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 check(bunch2.size == const.moreableChunkSize) {"bunch2.size"}
                 check(bunch3.size < const.moreableChunkSize) {"bunch3.size"}
 
-                exhaustive/when (filesShortcutMode1) {
+                exhaustive / when (filesShortcutMode1) {
                     FilesShortcutMode.ALL -> {
                         bunch1.forEach {addFile(it)}
                         bunch2.forEach {addFile(it)}
@@ -189,7 +196,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 scrollBodyToBottomGradually()
             }
 
-            run { // Switch to Params and back to Files
+            run {
+                // Switch to Params and back to Files
                 scrollBodyToTopGradually()
                 tabSequence(tabs.order.params_testRef, "f0526589-fa1e-4a2a-818f-3d4eca9e231a", "721ff1f7-093a-4752-a699-75debd0a2d99")
                 tabSequence(tabs.order.files_testRef, "3c35734a-6cc1-4de4-a69d-421acd693603", "95b74865-e2dd-4b9c-a6b4-76dc967ad5dd")
@@ -197,7 +205,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(3) {
-            run { // Download
+            run {
+                // Download
                 for (fileID in listOf(26L, 27L, 28L)) {
                     val lock = TestLock()
                     lock.reset()
@@ -207,15 +216,23 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     kicClick(kics.order.file.download_testRef, subscript = fileID)
                     lock.pauseTestFromTest()
                     assertScreenHTML(descr = lockName, assertionID = "c7d64d50-bca3-439a-b06b-1ac20d3ab0f9--$fileID")
+
+                    val checkActionDisabled: suspend (TestRef<KicKey>) -> Unit =
+                        {condition({kicClick(it, subscript = fileID)}, TestGlobal.disabledActionHitLock)}
+                    checkActionDisabled(kics.order.file.download_testRef)
+                    checkActionDisabled(kics.order.file.delete_testRef)
+                    checkActionDisabled(kics.order.file.edit_testRef)
                 }
             }
             dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()
-            run { // Edit file -- cancel
+            run {
+                // Edit file -- cancel
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
                 inputSetValue(fields.shebang.fileTitle_testRef, "Хуй")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "74893db1-b1cb-4cae-8d17-441f715899d3")
             }
-            run { // Edit file -- save, file not changed
+            run {
+                // Edit file -- save, file not changed
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "e0795fd9-64ad-417d-bcb7-1f4dcd2a2f05")
                 formSubmissionAttempts(
                     testShit, baseID = "2639505f-4b8c-44fd-b0b7-99b252062a72",
@@ -225,18 +242,21 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     ))
                 )
             }
-            run { // Edit file -- save, file was changed
+            run {
+                // Edit file -- save, file was changed
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "422ae986-3f93-419c-8dd6-26ae8dedee19")
                 inputSetValue(fields.shebang.fileTitle_testRef, "Рапунцель -- девица-распиздунцель")
                 fileFieldChoose("fuck you.rtf", "aec4c792-dd9c-4a98-9279-4cd29453ee1d")
                 testShit.imposeNextRequestTimestamp()
                 step({buttonClick(buttons.primary_testRef)}, TestGlobal.modalHiddenLock, "5d4f5e63-95f7-4ec8-b5cd-7e767edd484c")
             }
-            run { // Delete file -- no
+            run {
+                // Delete file -- no
                 step({kicClick(kics.order.file.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "e0bafefd-c7d5-4803-9f3b-df7f249b69e5")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "f02892f1-0cde-4bb0-ac1c-81f9fa69d080")
             }
-            run { // Delete file -- yes
+            run {
+                // Delete file -- yes
                 step({kicClick(kics.order.file.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "39b58462-7397-4f33-8a26-ec5624cc729b")
                 vanishSequence({submitFormSequence(testShit, useFormDoneLock = false, aid = "e7131723-e7d0-485c-aded-bbe798afdda7")}, "365d7113-246e-44a8-99f1-8f3396639e8f")
             }
@@ -251,7 +271,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         if (currentPoint >= startPoint) {
             if (currentPoint > 1 && currentPoint == startPoint) {
-                val state = send(TestRestoreTestPointSnapshotRequest()-{o->
+                val state = send(TestRestoreTestPointSnapshotRequest() - {o ->
                     o.snapshotName.value = pointToSnapshotName(currentPoint - 1)
                 })
                 dlog("TestRestoreDBSnapshotRequest response", state)
@@ -264,7 +284,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
             script()
 
-            send(TestTakeTestPointSnapshotRequest()-{o->
+            send(TestTakeTestPointSnapshotRequest() - {o ->
                 o.snapshotName.value = pointToSnapshotName(currentPoint)
                 o.browseroidName.value = TestGlobal.currentMorda.browseroidName
                 o.href.value = Globus.currentBrowseroid.location.href
@@ -278,15 +298,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     private suspend fun addFileBackendOnly(p: AddFileParams, orderID: Long) {
         testShit.imposeNextRequestTimestamp()
-        send(UACreateOrderFileRequest()-{o->
+        send(UACreateOrderFileRequest() - {o ->
             o.orderID.value = orderID
             o.file.content = FileField.Content.Provided(run {
-                val res = send(TestGetFileUploadDataRequest()-{o->
+                val res = send(TestGetFileUploadDataRequest() - {o ->
                     o.fileName.value = p.fileName
                 })
                 File(base64ToUint8ArraySlices(res.base64), res.name)
             })
-            o.fields1-{o->
+            o.fields1 - {o ->
                 o.title.value = p.title
                 o.details.value = p.details
             }
@@ -302,7 +322,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         submitFormSequence(testShit, aid = "${p.aid}--2")
     }
 }
-
 
 
 //send(TestCodeFiddleRequest()-{it.what.value = "fuck1"}) //; waitTillEndOfTime()
