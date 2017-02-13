@@ -32,7 +32,7 @@ object MakeStaticSites {
     lateinit var mode: Mode
     lateinit var lang: Language
     lateinit var out: String
-    val DEPS_JS = "${SharedGlobus.APS_TEMP}/deps.js"
+    val DEPS_JS = "${const.file.APS_TEMP}/deps.js"
 
     @JsName("runShit")
     fun runShit(argv: Array<String>) = async {
@@ -52,7 +52,7 @@ object MakeStaticSites {
             println("Mode: $mode")
 
             val outString: String? = margv.out
-            out = outString ?: "$APS_HOME/front/out/static"
+            out = outString ?: "${const.file.APS_HOME}/front/out/static"
             println("Out directory: $out")
 
             await(browserifyShit())
@@ -481,22 +481,22 @@ object MakeStaticSites {
         sh.rm("-rf", root)
         sh.mkdir("-p", root)
 
-        val nodeModules = "$APS_HOME/node_modules"
+        val nodeModules = "${const.file.APS_HOME}/node_modules"
         sh.cp("$nodeModules/jquery/dist/jquery.min.js", root)
         sh.cp("-r", "$nodeModules/bootstrap/dist", "$root/bootstrap")
-        sh.cp("$APS_HOME/front/static/hack/bootstrap-3.3.7-hacked.js", "$root/bootstrap/js")
-        sh.cp("$APS_HOME/front/static/hack/bootstrap-datetimepicker-4.17.43-hacked.js", root)
-        sh.cp("$APS_HOME/front/static/hack/bootstrap-datetimepicker-4.17.43-hacked.css", root)
+        sh.cp("${const.file.APS_HOME}/front/static/hack/bootstrap-3.3.7-hacked.js", "$root/bootstrap/js")
+        sh.cp("${const.file.APS_HOME}/front/static/hack/bootstrap-datetimepicker-4.17.43-hacked.js", root)
+        sh.cp("${const.file.APS_HOME}/front/static/hack/bootstrap-datetimepicker-4.17.43-hacked.css", root)
         sh.mkdir("$root/font-awesome")
         sh.cp("-r", "$nodeModules/font-awesome/css", "$root/font-awesome")
         sh.cp("-r", "$nodeModules/font-awesome/fonts", "$root/font-awesome")
-        sh.cp("$APS_HOME/front/static/asset/*", root)
+        sh.cp("${const.file.APS_HOME}/front/static/asset/*", root)
         sh.cp(DEPS_JS, root)
 
         // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
-        sh.cp("$APS_HOME/front/out/front-enhanced.js", root)
-        sh.cp("$APS_HOME/front/out/front.js.map", root)
-        sh.cp("$APS_HOME/front/out/lib/kotlin.js", root)
+        sh.cp("${const.file.APS_HOME}/front/out/front-enhanced.js", root)
+        sh.cp("${const.file.APS_HOME}/front/out/front.js.map", root)
+        sh.cp("${const.file.APS_HOME}/front/out/lib/kotlin.js", root)
     }
 
     fun wholePageTicker(): ReactElement {
@@ -1244,7 +1244,7 @@ object MakeStaticSites {
     }
 
     fun readStatic(file: String): String {
-        return fs.readFileSync("$APS_HOME/front/static/$file", "utf8")
+        return fs.readFileSync("${const.file.APS_HOME}/front/static/$file", "utf8")
     }
 
     fun renderToStaticMarkup(el: ReactElement): String {

@@ -231,7 +231,7 @@ val backendInstanceID = "" + UUID.randomUUID()
     {GetSoftwareVersionRequest()},
     logRequestJSON = false,
     runShit = fun(ctx, req): GetSoftwareVersionRequest.Response {
-        val path = Paths.get("$APS_HOME/front/out/front-enhanced.js")
+        val path = Paths.get("${const.file.APS_HOME}/front/out/front-enhanced.js")
         val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)
         return GetSoftwareVersionRequest.Response(
             ctime = "" + Math.max(attrs.creationTime().toMillis(), attrs.lastModifiedTime().toMillis()),
@@ -260,9 +260,9 @@ val backendInstanceID = "" + UUID.randomUUID()
         val filePart = sourceLocation.substring(0, filePartEnd)
         val file =
             if (filePart.startsWith("APS/")) {
-                APS_HOME + "/" + filePart.substring("APS/".length)
+                const.file.APS_HOME + "/" + filePart.substring("APS/".length)
             } else run {
-                for (f in File("$APS_HOME/back/src").walkTopDown())
+                for (f in File("${const.file.APS_HOME}/back/src").walkTopDown())
                     if (f.name == filePart) return@run f.absolutePath
                 bitch("Obscure backend file: $filePart")
             }
@@ -270,7 +270,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 
         val pb = ProcessBuilder()
         val cmd = pb.command()
-        cmd.addAll(listOf(bconst.ideaExe, APS_HOME, "--line", line, file))
+        cmd.addAll(listOf(bconst.ideaExe, const.file.APS_HOME, "--line", line, file))
         dlog("Executing external command:", cmd.joinToString(" "))
         pb.inheritIO()
         val proc = pb.start()
@@ -340,7 +340,7 @@ fun frp_getLastDownloadedPieceOfShit(rmap: Map<*, *>): PieceOfShitDownload? {
 
 fun frp_loadTestShit(rmap: Map<*, *>): String? {
     val id: String = cast(rmap["id"])
-    val file = File("$APS_HOME/front/test-shit/$id")
+    val file = File("${const.file.APS_HOME}/front/test-shit/$id")
     return if (file.exists()) file.readText()
     else null
 }
@@ -444,7 +444,7 @@ fun frp_luceneParseRussian(rmap: Map<*, *>): List<LuceneParseToken> {
 }
 
 fun serveHardenScreenHTMLRequest(req: HardenScreenHTMLRequest) {
-    val file = File("$APS_HOME/front/test-shit/${req.assertionID}")
+    val file = File("${const.file.APS_HOME}/front/test-shit/${req.assertionID}")
     if (file.exists()) {
         file.copyTo(File("${bconst.tempBakDir}/${req.assertionID}"), true)
     }

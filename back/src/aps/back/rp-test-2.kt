@@ -87,7 +87,7 @@ class TestState {
 }
 
 private fun snapshotFile(snapshotName: String) =
-    File("${SharedGlobus.APS_TEMP}/snapshot-$snapshotName.json")
+    File("${const.file.APS_TEMP}/snapshot-$snapshotName.json")
 
 
 @Servant class ServeTestSQLFiddle : BitchyProcedure() {
@@ -153,7 +153,7 @@ private fun snapshotFile(snapshotName: String) =
             bpc = bpc,
             makeRequest = {TestGetFileUploadDataRequest()},
             runShit = fun(ctx, req: TestGetFileUploadDataRequest): TestGetFileUploadDataRequest.Response {
-                val file = File(const.test.filesRoot + req.fileName.value)
+                val file = File(const.file.testFiles + "/" + req.fileName.value)
                 val bytes = file.readBytes()
                 return TestGetFileUploadDataRequest.Response(
                     name = file.name,

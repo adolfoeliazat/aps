@@ -189,8 +189,12 @@ class UAUpdateOrderFileRequest : RequestMatumba() {
     val fields1 = FileFields1(this)
 }
 
+class DownloadFileResponse(
+    val fileName: String,
+    val base64: String,
+    val sha256: String) : CommonResponseFieldsImpl()
+
 class UADownloadOrderFileRequest : RequestMatumba() {
-    class Response(val fileName: String, val base64: String, val sha256: String) : CommonResponseFieldsImpl()
     val fileID by longHiddenField()
 }
 

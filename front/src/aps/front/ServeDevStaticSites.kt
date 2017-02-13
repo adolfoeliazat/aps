@@ -38,7 +38,7 @@ object ServeDevStaticSites {
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
             next()
         }
-        app.use(express.static("$APS_HOME/front/out/static/$site"))
+        app.use(express.static("${const.file.APS_HOME}/front/out/static/$site"))
 
         app.listen(port) {
             println("Serving $site on 127.0.0.1:$port")

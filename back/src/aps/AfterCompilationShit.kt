@@ -17,14 +17,14 @@ class AfterCompilationShit {
     init {
         eprintln("Doing after-compilation shit")
 
-        val versionSourceFile = File("$APS_HOME/back/src/aps/version.txt")
+        val versionSourceFile = File("${const.file.APS_HOME}/back/src/aps/version.txt")
         val oldVersion = versionSourceFile.readText().toLong()
         val newVersion = oldVersion + 1
         versionSourceFile.writeText(newVersion.toString())
-        File("$APS_HOME/back/out/aps/version.txt").writeText(newVersion.toString())
+        File("${const.file.APS_HOME}/back/out/aps/version.txt").writeText(newVersion.toString())
 
-        val frontJSInPath = "$APS_HOME/front/out/front.js"
-        val frontJSOutPath = "$APS_HOME/front/out/front-enhanced.js"
+        val frontJSInPath = "${const.file.APS_HOME}/front/out/front.js"
+        val frontJSOutPath = "${const.file.APS_HOME}/front/out/front-enhanced.js"
         var frontJS = File(frontJSInPath).readText()
         val versionIndex = frontJS.indexOfOrDie("____VERSION____")
         frontJS = frontJS.replaceRange(versionIndex, versionIndex + "____VERSION____".length, newVersion.toString())
@@ -32,9 +32,9 @@ class AfterCompilationShit {
 
         for (site in listOf("customer-ua", "writer-ua")) {
             // TODO:vgrechka @duplication cb0e7275-0ce9-4819-9d5d-fdea8a37dfda
-            val todir = "$APS_HOME/front/out/static/$site"
+            val todir = "${const.file.APS_HOME}/front/out/static/$site"
             copyFileToDir(frontJSOutPath, todir)
-            copyFileToDir("$APS_HOME/front/out/front.js.map", todir)
+            copyFileToDir("${const.file.APS_HOME}/front/out/front.js.map", todir)
 //            copyFileToDir("$KOMMON_HOME/js/out/into-kommon-js-enhanced.js", todir)
 //            copyFileToDir("$KOMMON_HOME/js/out/into-kommon-js.js.map", todir)
 

@@ -82,10 +82,10 @@ import java.util.*
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc, makeRequest = {UADownloadOrderFileRequest()},
-            runShit = fun(ctx, req): UADownloadOrderFileRequest.Response {
+            runShit = fun(ctx, req): DownloadFileResponse {
                 val file = fileRepo.findOrDie(req.fileID.value)
                 // TODO:vgrechka @security Check permissions
-                return UADownloadOrderFileRequest.Response(
+                return DownloadFileResponse(
                     fileName = file.name,
                     base64 = Base64.getEncoder().encodeToString(file.content),
                     sha256 = Hashing.sha256().hashBytes(file.content).toString()

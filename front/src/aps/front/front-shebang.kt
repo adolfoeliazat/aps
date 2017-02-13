@@ -77,7 +77,7 @@ object TestGlobal {
     val loadMoreDoneLock by notNullNamed(TestLock())
     var shitVanished by notNullNamed(TestLock())
     var somethingDownloadedLock by notNullNamed(TestLock())
-    val downloadStartedLockByOrderFileID = mutableMapOf<Long, TestLock>()
+    val orderFileIDToDownloadContext = mutableMapOf<Long, TestDownloadContext>()
     val disabledActionHitLock by notNullNamed(TestLock())
 }
 

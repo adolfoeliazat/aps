@@ -114,6 +114,8 @@ class ResolvableShit<T> {
     fun resolve(value: T) = _resolve(value)
     fun reject(e: Throwable) = _reject(e)
 
+    suspend fun get(): T = await(promise)
+
     fun reset() {
         if (hasPromise) {
             NamesOfThings.unflow(this, promise)
@@ -202,6 +204,7 @@ class TwoStepTestLock(
 }
 
 class TestLock(
+    virgin: Boolean = false,
     val testPauseTimeout: Int = 10000,
     val sutPauseTimeout: Int = 10000
 ) {
@@ -209,9 +212,10 @@ class TestLock(
     private val sutPause by notNullNamed(ResolvableShit<Unit>(), parentNamed = this)
 
     init {
-        // Initially everything is resolved, so if not in test, shit just works
-        testPause.resolve()
-        sutPause.resolve()
+        if (!virgin) { // Initially everything is resolved, so if not in test, shit just works
+            testPause.resolve()
+            sutPause.resolve()
+        }
     }
 
     fun reset() {

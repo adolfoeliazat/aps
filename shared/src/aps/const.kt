@@ -1,5 +1,7 @@
 package aps
 
+import into.kommon.*
+
 object const {
 
     val moreableChunkSize = 10
@@ -82,8 +84,14 @@ object const {
         val uaCustomer = "APS UA"
     }
 
-    object test {
-        val filesRoot = "E:\\work\\aps\\back\\testfiles\\"
+    object file {
+        val APS_HOME: String get() = getenv("APS_HOME") ?: die("I want APS_HOME environment variable")
+        val GENERATOR_BAK_DIR: String get() = "c:/tmp/aps-bak" // TODO:vgrechka @unhardcode
+        val TMPDIR: String get() = getenv("TMPDIR") ?: die("I want TMPDIR environment variable")
+        val APS_CLOUD_BACK_HOST: String get() = getenv("APS_CLOUD_BACK_HOST") ?: die("I want APS_CLOUD_BACK_HOST environment variable")
+        val APS_TEMP: String get() = "c:/tmp/aps-tmp" // TODO:vgrechka @unhardcode
+
+        val testFiles = "$APS_HOME/back/testfiles"
     }
 }
 

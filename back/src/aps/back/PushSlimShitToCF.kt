@@ -13,19 +13,19 @@ import java.net.URL
 object PushSlimShitToCF {
     @JvmStatic
     fun main(args: Array<String>) {
-        val slimJar = "${SharedGlobus.APS_TEMP}/$slimJarName"
+        val slimJar = "${const.file.APS_TEMP}/$slimJarName"
         eprintln("Packing slim jar")
 
         Delete()-{o->
-            o.setDir(File("${SharedGlobus.APS_TEMP}/slim-override"))
+            o.setDir(File("${const.file.APS_TEMP}/slim-override"))
             o.execute()
         }
         Mkdir()-{o->
-            o.dir = File("${SharedGlobus.APS_TEMP}/slim-override/aps")
+            o.dir = File("${const.file.APS_TEMP}/slim-override/aps")
             o.execute()
         }
-        val normalVersion = File("$APS_HOME/back/out/aps/version.txt").readText()
-        File("${SharedGlobus.APS_TEMP}/slim-override/aps/version.txt").writeText(normalVersion + ".slim")
+        val normalVersion = File("${const.file.APS_HOME}/back/out/aps/version.txt").readText()
+        File("${const.file.APS_TEMP}/slim-override/aps/version.txt").writeText(normalVersion + ".slim")
 
         Jar()-{o->
             o.project = Project()
@@ -39,12 +39,12 @@ object PushSlimShitToCF {
                 o.setIncludes("**/*")
             })
             o.addFileset(FileSet()-{o->
-                o.dir = File("$APS_HOME/back/out")
+                o.dir = File("${const.file.APS_HOME}/back/out")
                 o.setIncludes("**/*")
                 o.setExcludes("aps/version.txt")
             })
             o.addFileset(FileSet()-{o->
-                o.dir = File("${SharedGlobus.APS_TEMP}/slim-override")
+                o.dir = File("${const.file.APS_TEMP}/slim-override")
                 o.setIncludes("**/*")
             })
             o.execute()
@@ -62,7 +62,7 @@ object PushSlimShitToCF {
         val res = runProcessAndWait(listOf("cf", "restart", "apsback"))
         if (res.exitValue != 0) bitch("Shitty exit code from cf restart: ${res.exitValue}")
 
-        eprintln("\n\nLive version: " + URL("http://$APS_CLOUD_BACK_HOST/version").readText())
+        eprintln("\n\nLive version: " + URL("http://${const.file.APS_CLOUD_BACK_HOST}/version").readText())
         eprintln("COOL")
     }
 }

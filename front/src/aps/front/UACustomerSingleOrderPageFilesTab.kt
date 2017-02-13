@@ -8,7 +8,11 @@ import org.w3c.dom.HTMLIFrameElement
 import kotlin.js.json
 import kotlin.properties.Delegates.notNull
 
-private val moveItemToTopOnEdit = true
+class TestDownloadContext {
+    val downloadStartedLock by notNullNamed(TestLock(virgin = true))
+    val bitsReceivedLock by notNullNamed(TestLock(virgin = true))
+    var shit by notNullOnce<DownloadFileResponse>()
+}
 
 class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
     lateinit var meat: ItemsResponse<UAOrderFileRTO>
@@ -397,8 +401,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             titleRightPlace.setContent(renderTitleControls(downloadActive = true))
             await(effects).blinkOn(byid(cloudIconID), BlinkOpts())
 
-            val downloadStartedLock: TestLock? = TestGlobal.downloadStartedLockByOrderFileID[orderFile.id]
-            downloadStartedLock?.resumeTestAndPauseSutFromSut()
+            val testCtx = TestGlobal.orderFileIDToDownloadContext[orderFile.id]
+            testCtx?.downloadStartedLock?.resumeTestAndPauseSutFromSut()
 
             val res = send(UADownloadOrderFileRequest()-{o->
                 o.fileID.value = orderFile.id
@@ -411,7 +415,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 is FormResponse2.Hunky -> {
                     val dataURL = "data:application/octet-stream;base64," + res.meat.base64
                     downloadjs(dataURL, res.meat.fileName, "application/octet-stream")
-                    imf("notify fucking test")
+
+                    testCtx?.let {
+                        it.shit = res.meat
+                        it.bitsReceivedLock.resumeTestFromSut()
+                    }
                 }
             }
         }
@@ -474,64 +482,5 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
 
 
-
-
-
-//                    fun enterEditMode(): Promisoid<Unit> = async {
-//                        val topShitID = puid()
-//                        itemPlace.setContent(
-//                            when (world.user.kind) {
-//                                UserKind.CUSTOMER -> {
-//                                    kdiv(id = topShitID, className = css.item){o->
-//                                        o- row{o->
-//                                            o- renderFileTitle(editing = true)
-//                                            o- kdiv(className = "col-md-12", marginTop = -1){o->
-//                                                o- FormMatumba(FormSpec<CustomerEditUAOrderFileRequest, EditUAOrderFileRequestBase.Response>(
-//                                                    req = CustomerEditUAOrderFileRequest()-{o->
-//                                                        o.fieldInstanceKeySuffix = "-${orderFile.id}"
-//                                                        o.orderFileID.value = orderFile.id
-//                                                        o.file.content = FileField.Content.ExistingFile(orderFile.name, orderFile.sizeBytes)
-//                                                        o.title.value = orderFile.title
-//                                                        o.details.value = orderFile.details
-//                                                    },
-//                                                    ui = world,
-//                                                    cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle,
-//                                                    containerClassName = css.cunt.bodyEditing,
-//                                                    onCancela = {async{
-//                                                        await(effects).fadeOut(topShitID)
-//                                                        enterViewMode()
-//                                                    }},
-//                                                    onSuccessa = {res-> async<Unit> {
-//                                                        orderFile = res.updatedOrderFile
-//
-//                                                        if (moveItemToTopOnEdit) {
-//                                                            itemPlace.setContent(NOTRE)
-//                                                            itemPlace = Placeholder(renderView(initiallyTransparent = true))
-//
-//                                                            await(scrollBodyGraduallyPromise(0.0))
-//                                                            val newTopPlace = Placeholder()
-//                                                            topPlace.setContent(kdiv{o->
-//                                                                o- newTopPlace
-//                                                                o- itemPlace
-//                                                            })
-//                                                            topPlace = newTopPlace
-//                                                            await(effects).fadeIn(viewRootID)
-//                                                        } else {
-//                                                            enterViewMode()
-//                                                        }
-//                                                    }}
-//                                                ))
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//
-//                                UserKind.WRITER -> imf()
-//
-//                                UserKind.ADMIN -> imf()
-//                            })
-//
-//                        await(scrollBodyToShitGradually(dontScrollToTopItem = true){byid(topShitID)})
-//                    }
 
 

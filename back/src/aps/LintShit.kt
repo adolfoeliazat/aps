@@ -18,7 +18,7 @@ class LintShit {
 
         val guids = mutableMapOf<String, GUIDEntry>()
 
-        visitSources("$APS_HOME/front/src") {f->
+        visitSources("${const.file.APS_HOME}/front/src") {f->
             f.useLines {
                 for ((lineIndex, line) in it.withIndex()) {
                     if (line.startsWith("//")) continue
@@ -49,7 +49,7 @@ class LintShit {
                             }
                     } catch (e: Shit) {
                         println("SHIT")
-                        val fname = f.path.substring(APS_HOME.length)
+                        val fname = f.path.substring(const.file.APS_HOME.length)
                         println("$fname:${lineIndex + 1}: ${e.message}")
                         exitProcess(1)
                     }

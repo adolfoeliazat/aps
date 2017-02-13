@@ -13,7 +13,7 @@ object PublishStaticSitesOnGH {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val root = "${SharedGlobus.APS_TEMP}/pizda"
+        val root = "${const.file.APS_TEMP}/pizda"
 
         Delete()-{o->
             o.setDir(File(root))
@@ -44,7 +44,7 @@ object PublishStaticSitesOnGH {
             o.execute()
         }
 
-        cwd = "$APS_HOME/front"
+        cwd = "${const.file.APS_HOME}/front"
         exec("node", "run.js", "MakeStaticSites", "--mode=prod", "--out=$root/fucking-sites")
 
         Copy()-{o->

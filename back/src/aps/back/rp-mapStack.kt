@@ -19,7 +19,7 @@ import java.io.File
 private val CACHE_MAPPINGS_BETWEEN_REQUESTS = false
 private val sharedMappingCache by lazy {makeMappingCache()}
 
-private val NORMAL_APS_HOME = normalizePath(APS_HOME)
+private val NORMAL_APS_HOME = normalizePath(const.file.APS_HOME)
 private val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
 
 private fun makeMappingCache(): LoadingCache<String, SourceMapping> {
@@ -68,7 +68,7 @@ private fun makeMappingCache(): LoadingCache<String, SourceMapping> {
                 if (line == 1) throw Skip("Ignoring line 1, as it's probably __awaiter() or some other junk")
 
                 val mapPath = when {
-                    resource.contains("/front-enhanced.js") -> "$APS_HOME/front/out/front.js.map"
+                    resource.contains("/front-enhanced.js") -> "${const.file.APS_HOME}/front/out/front.js.map"
                     resource.contains("/into-kommon-js-enhanced.js") -> "$KOMMON_HOME/js/out/into-kommon-js.js.map"
                     else -> throw Verbatim("No map file for $resource")
                 }

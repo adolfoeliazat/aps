@@ -42,7 +42,7 @@ suspend fun send(token: String?, req: SignInWithTokenRequest): FormResponse2<Sig
 suspend fun send(req: TestCodeFiddleRequest): TestCodeFiddleRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: TestGetFileUploadDataRequest): TestGetFileUploadDataRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: UACreateOrderFileRequest): FormResponse2<UACreateOrderFileRequest.Response> = _send3(req)
-suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<UADownloadOrderFileRequest.Response> = _send3(req)
+suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileResponse> = _send3(req)
 
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {

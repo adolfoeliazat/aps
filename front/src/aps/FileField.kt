@@ -188,7 +188,7 @@ suspend fun fileFieldChoose(fileName: String, aid: String, descr: String = "Desc
 //                ff.testUploadFileFast(fileName)
             } else {
                 buttonUserInitiatedClick(buttons.upload_testRef)
-                typeIntoOpenFileDialog(const.test.filesRoot + fileName)
+                typeIntoOpenFileDialog(const.file.testFiles + "/" + fileName)
             }
         },
         steps = listOf(

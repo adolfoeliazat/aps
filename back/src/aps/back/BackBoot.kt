@@ -16,7 +16,7 @@ object BackBoot {
             return
         }
 
-        val slimJar = "$TMPDIR/$slimJarName"
+        val slimJar = "${const.file.TMPDIR}/$slimJarName"
         eprintln("Downloading shit from Dropbox to $slimJar")
         FileOutputStream(slimJar).use {
             val downloader = dropboxClient.files().download("/$slimJarName")

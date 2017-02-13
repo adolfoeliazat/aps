@@ -27,20 +27,20 @@ fun main(args: Array<String>) {
     DB.apsTestOnTestServer.recreateSchema()
 
     Mkdir()-{o->
-        o.dir = File("$APS_HOME/back/bak")
+        o.dir = File("${const.file.APS_HOME}/back/bak")
         o.execute()
     }
 
     Delete()-{o->
-        o.setDir(File("$APS_HOME/back/bak/src-generated"))
+        o.setDir(File("${const.file.APS_HOME}/back/bak/src-generated"))
         o.execute()
     }
 
     Copy()-{o->
         o.project = Project() // Necessary dummy
-        o.setTodir(File("$APS_HOME/back/bak"))
+        o.setTodir(File("${const.file.APS_HOME}/back/bak"))
         o.addFileset(FileSet()-{o->
-            o.dir = File("$APS_HOME/back")
+            o.dir = File("${const.file.APS_HOME}/back")
             o.setIncludes("src-generated/**")
         })
         o.execute()
@@ -80,7 +80,7 @@ fun main(args: Array<String>) {
                 }
                 o.target = Target()-{o->
                     o.packageName = "aps.back.generated.jooq"
-                    o.directory = "$APS_HOME/back/src-generated"
+                    o.directory = "${const.file.APS_HOME}/back/src-generated"
                 }
             }
         })

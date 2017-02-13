@@ -16,20 +16,20 @@ class BundleForCloudFoundry {
         fun main(args: Array<String>) {
             Jar()-{o->
                 o.project = Project()
-                o.destFile = File("$APS_HOME/back/built/apsback.jar")
+                o.destFile = File("${const.file.APS_HOME}/back/built/apsback.jar")
                 o.setDuplicate(Zip.Duplicate()-{o->
                     o.value = "add"
                 })
                 addFuckingJar(o, "$KOMMON_HOME/lib/kotlin/1.1-m03/kotlin-runtime.jar")
                 addFuckingJar(o, "$KOMMON_HOME/lib/kotlin/1.1-m03/kotlin-reflect.jar")
-                addFuckingJarsFrom(o, "$APS_HOME/back/lib-gradle")
-                addFuckingJarsFrom(o, "$APS_HOME/back/lib")
+                addFuckingJarsFrom(o, "${const.file.APS_HOME}/back/lib-gradle")
+                addFuckingJarsFrom(o, "${const.file.APS_HOME}/back/lib")
                 o.addFileset(FileSet()-{o->
                     o.dir = File("$KOMMON_HOME/jvm/out")
                     o.setIncludes("**/*")
                 })
                 o.addFileset(FileSet()-{o->
-                    o.dir = File("$APS_HOME/back/out")
+                    o.dir = File("${const.file.APS_HOME}/back/out")
                     o.setIncludes("**/*")
                 })
                 o.addConfiguredManifest(Manifest()-{o->
