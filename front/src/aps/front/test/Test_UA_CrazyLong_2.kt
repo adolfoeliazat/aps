@@ -198,8 +198,19 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(3) {
             run { // Download
-                step({kicClick(kics.order.file.download_testRef, subscript = 26L)}, TestGlobal.somethingDownloadedLock, "dbeeffcb-f658-4fab-a579-caa42e933d48")
+                for (fileID in listOf(26L, 27L, 28L)) {
+                    val lock = TestLock()
+                    lock.reset()
+                    val lockName = "downloadStartedLock:orderFileID=$fileID"
+//                    NamesOfThings[lock] = lockName
+                    TestGlobal.downloadStartedLockByOrderFileID[fileID] = lock
+
+                    kicClick(kics.order.file.download_testRef, subscript = fileID)
+                    lock.pauseTestFromTest()
+                    assertScreenHTML(descr = lockName, assertionID = "c7d64d50-bca3-439a-b06b-1ac20d3ab0f9")
+                }
             }
+            dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()
             run { // Edit file -- cancel
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
                 inputSetValue(fields.shebang.fileTitle_testRef, "Хуй")

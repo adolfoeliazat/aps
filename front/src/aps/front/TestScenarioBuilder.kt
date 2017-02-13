@@ -416,9 +416,9 @@ class DumbStep(val block: suspend () -> Unit) : SequenceStep {
 }
 
 suspend fun pauseAssertResume(lock: TestLock, aid: String, descr: String? = null, aopts: AssertScreenOpts? = null) {
-    lock.testPause()
+    lock.pauseTestFromTest()
     assertScreenHTML(descr ?: "Describe me", assertionID = aid, opts = aopts)
-    lock.testResume()
+    lock.resumeSutFromTest()
 }
 
 class PauseAssertResumeStep(

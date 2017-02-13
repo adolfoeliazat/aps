@@ -185,14 +185,14 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             await(effects).blinkOn(byid(elementID))
             ebafHost.headerControlsDisabled = true
             stripContent.update()
-            TestGlobal.reloadPageTickingLock.sutPause()
+            TestGlobal.reloadPageTickingLock.resumeTestAndPauseSutFromSut()
             try {
                 reloadFilesTab()
             } finally {
                 ebafHost.headerControlsDisabled = false
                 stripContent.update() // TODO:vgrechka Redundant?
                 TestGlobal.loadPageForURLLock.sutPause2()
-                TestGlobal.reloadPageDoneLock.sutPause()
+                TestGlobal.reloadPageDoneLock.resumeTestAndPauseSutFromSut()
             }
         }
     }
@@ -219,7 +219,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     btn.onClicka = {
                         async {
                             val blinker = await(effects).blinkOn(byid(btn.elementID))
-                            TestGlobal.loadMoreHalfwayLock.sutPause()
+                            TestGlobal.loadMoreHalfwayLock.resumeTestAndPauseSutFromSut()
                             try {
                                 val res = try {
                                     await(requestChunk(meat.moreFromID))
@@ -244,7 +244,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                 }
                             } finally {
                                 blinker.unblink()
-                                TestGlobal.loadMoreDoneLock.sutPause()
+                                TestGlobal.loadMoreDoneLock.resumeTestAndPauseSutFromSut()
                             }
                         }
                     }
@@ -381,7 +381,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         private suspend fun onDownload() {
             // titleRightPlace.setContent(renderTitleTicker())
             await(effects).blinkOn(byid(cloudIconID), BlinkOpts())
-            sleepTillEndOfTime()
+
+            val downloadStartedLock: TestLock? = TestGlobal.downloadStartedLockByOrderFileID[orderFile.id]
+            downloadStartedLock?.resumeTestAndPauseSutFromSut()
+
             val res = send(UADownloadOrderFileRequest()-{o->
                 o.fileID.value = orderFile.id
             })
@@ -405,7 +408,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                       })) {
                 await(effects).fadeOut(viewRootID)
                 itemPlace.setContent(NOTRE)
-                TestGlobal.shitVanished.sutPause()
+                TestGlobal.shitVanished.resumeTestAndPauseSutFromSut()
             }
         }
 

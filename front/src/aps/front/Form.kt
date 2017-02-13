@@ -153,7 +153,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
         working = true
         updateAll()
 
-        TestGlobal.formTickingLock.sutPause()
+        TestGlobal.formTickingLock.resumeTestAndPauseSutFromSut()
 
         val theProcedureName = procedureName ?: remoteProcedureNameForRequest(req)
         val res: FormResponse = await(callMatumba(theProcedureName, spec.req, spec.ui.tokenMaybe, populateFields = spec.populateFields))
@@ -182,7 +182,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
         working = false
         updateAll()
 
-        TestGlobal.formDoneLock.sutPause()
+        TestGlobal.formDoneLock.resumeTestAndPauseSutFromSut()
     }
 
     fun updateAll() {

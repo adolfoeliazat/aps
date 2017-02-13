@@ -114,7 +114,7 @@ fun urlLink(
 
     fun doClick() = async {
         val blinker = await(effects).blinkOn(byid(id), BlinkOpts(dtop = 3))
-        TestGlobal.linkTickingLock.sutPause()
+        TestGlobal.linkTickingLock.resumeTestAndPauseSutFromSut()
         Shitus.byid(id).css("text-decoration", "none")
 
         if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
@@ -125,7 +125,7 @@ fun urlLink(
 
         blinker.unblink()
         Shitus.byid(id).css("text-decoration", "")
-        TestGlobal.linkDoneLock.sutPause()
+        TestGlobal.linkDoneLock.resumeTestAndPauseSutFromSut()
     }
 
     return link(

@@ -219,21 +219,21 @@ class TestLock(
         sutPause.reset()
     }
 
-    suspend fun testPause() {
+    suspend fun pauseTestFromTest() {
         await(testPause.promise.orTestTimeoutNamedAfter(testPauseTimeout, {testPause}))
     }
 
-    fun testResume() {
+    fun resumeSutFromTest() {
         sutPause.resolve()
     }
 
-    suspend fun sutPause() {
+    fun resumeTestFromSut() {
         testPause.resolve()
-        await(sutPause.promise.orTestTimeoutNamedAfter(sutPauseTimeout, {sutPause}))
     }
 
-    fun sutNotify() {
+    suspend fun resumeTestAndPauseSutFromSut() {
         testPause.resolve()
+        await(sutPause.promise.orTestTimeoutNamedAfter(sutPauseTimeout, {sutPause}))
     }
 }
 

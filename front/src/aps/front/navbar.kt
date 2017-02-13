@@ -198,14 +198,14 @@ class TopNavItem(
         }
 
         val blinker = await(effects).blinkOn(byid(aid).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth, overHeader = true))
-        TestGlobal.topNavItemTickingLock.sutPause()
+        TestGlobal.topNavItemTickingLock.resumeTestAndPauseSutFromSut()
 
         ui!!.pushNavigate(href)
 
         await(delay(250))
         blinker.unblink()
         ExternalGlobus.bsClearMenus()
-        TestGlobal.topNavItemDoneLock.sutPause()
+        TestGlobal.topNavItemDoneLock.resumeTestAndPauseSutFromSut()
     }
 
     override fun componentDidMount() {

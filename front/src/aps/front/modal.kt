@@ -74,7 +74,7 @@ fun openModal(p: OpenModalParams): ModalOperations {
         jq(".${css.test.crossWorld.locationPane}").addClass(css.shebang.paddingRightScrollbarWidthImportant)
     }
     jqModal.on("shown.bs.modal") {
-        TestGlobal.modalShownLock.sutNotify()
+        TestGlobal.modalShownLock.resumeTestFromSut()
     }
     jqModal.on("hide.bs.modal") {
     }
@@ -85,7 +85,7 @@ fun openModal(p: OpenModalParams): ModalOperations {
         jq(".${css.test.crossWorld.locationPane}").removeClass(css.shebang.paddingRightScrollbarWidthImportant)
         jqModal.data("bs.modal", null)
         old_panes.remove(pane)
-        TestGlobal.modalHiddenLock.sutNotify()
+        TestGlobal.modalHiddenLock.resumeTestFromSut()
         shit.resolve(result)
         Unit
     }

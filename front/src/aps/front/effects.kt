@@ -110,7 +110,7 @@ class EffectsAPI {
             setOpacity(opacity)
 
             if (opacity == midpoint) {
-                TestGlobal.fadeHalfwayLock.sutPause()
+                TestGlobal.fadeHalfwayLock.resumeTestAndPauseSutFromSut()
 //                if (isTest()) {
 //                    TestGlobal.animationHalfwaySignal.resolve()
 //                    await(TestGlobal.animationHalfwaySignalProcessedSignal.promise)
@@ -119,7 +119,7 @@ class EffectsAPI {
             }
         }
         check(midpointReached) {"midpointReached"}
-        TestGlobal.fadeDoneLock.sutPause()
+        TestGlobal.fadeDoneLock.resumeTestAndPauseSutFromSut()
     }
 }
 

@@ -107,7 +107,7 @@ import kotlin.js.json
         gloshit.file = file
         content = Content.Provided(file)
         control.update()
-        TestGlobal.fileFieldChangedLock.sutPause()
+        TestGlobal.fileFieldChangedLock.resumeTestAndPauseSutFromSut()
     }
 
     override fun render() = control.toReactElement()
