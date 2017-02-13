@@ -189,12 +189,12 @@ class TopNavItem(
     }
 
     suspend fun click() {
-        var dleft = 0
-        var dwidth = 0
+        var dleft = "0px"
+        var dwidth = "0px"
         // TODO:vgrechka Is this still needed?
         if (page.path == "index") { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
-            dleft = -15
-            dwidth = 15
+            dleft = "-15px"
+            dwidth = "15px"
         }
 
         val blinker = await(effects).blinkOn(byid(aid).parent(), BlinkOpts(fixed = true, dleft = dleft, dwidth = dwidth, overHeader = true))
@@ -250,10 +250,10 @@ private fun makeBrandLink(ui: World?, name: String, title: String, className: St
     val id = puid()
     val href = if (name == "home") "/" else "$name.html"
 
-    var dleft = 0; var dwidth = 0
+    var dleft = "0px"; var dwidth = "0px"
     if (name == "home") { // XXX For some reason jQuery cannot find width/offset of navbar-header element precisely
-        dleft = -15
-        dwidth = 15
+        dleft = "-15px"
+        dwidth = "15px"
     }
 
     return jsFacing_elcl(json(

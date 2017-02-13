@@ -54,12 +54,12 @@ object _DOMReact {
                 console.error(buildString {
                     appendln("${roots.size} leftover React root(s):")
                     for ((i, root) in roots.withIndex()) {
-                        lnappendln2("${i + 1}) Shit")
+                        lnappendln2("${i + 1}) Shit creation stack:")
                         appendln(await(root.stackCapture.prettyCapturedStack))
                     }
                 })
             }
-            throw IllegalStateException("checkNothingMounted")
+            throw IllegalStateException("checkNothingMounted -- see console for leftover React roots")
         }
     }
 

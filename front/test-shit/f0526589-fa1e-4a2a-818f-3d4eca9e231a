@@ -2502,3 +2502,12 @@
       </div>
     </div>
   </div>
+
+-------------------- PANES --------------------
+
+<div id="pane-whocares">
+  <div>
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: 25.6px; top: calc((237.2px - 0.3rem) + 0px); width: calc(108.238px + -0.15rem); height: 0.3rem;">
+    </div>
+  </div>
+</div>

@@ -20,6 +20,7 @@ import kotlin.browser.window
 import kotlin.dom.asList
 import kotlin.js.Json
 import kotlin.js.Math
+import kotlin.js.RegExp
 import kotlin.properties.Delegates.notNull
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
@@ -178,6 +179,19 @@ fun stripUninterestingElements(jqel: JQuery): HTMLElement {
         if (testArtifactClasses.any {classNames.contains(it)}) return el.remove()
 
         if (el.id.startsWith("MakeStaticSites-")) el.id = "whocares"
+        if (el.id.startsWith("pane-")) el.id = "pane-whocares"
+
+        // XXX
+//        if (el.className.contains("effects-blinker")) {
+//            val top = el.style.top
+//            dwarnStriking(el)
+//            val mr = Regex("calc\\(\\(\\((.*?)px - (.*?)\\) \\+ (.*?)\\) - (.*?)px\\)").matchEntire(top) ?: die("Unexpected `top` in `effects-blinker`: $top")
+//            val a = mr.groupValues[1].toDouble()
+//            val b = mr.groupValues[2]
+//            val c = mr.groupValues[3]
+//            val d = mr.groupValues[4].toDouble()
+//            el.style.top = "/*fiddled*/calc(((${a-d}px - $b) + $c) - 0px)"
+//        }
 
         val children = el.children.asList().toList() // Copying it because `children.asList()` is live
         for (child in children) {

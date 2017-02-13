@@ -504,7 +504,7 @@ object MakeStaticSites {
             <div class="container">
             <div style="display: flex; align-items: center; justify-content: center; position: absolute; left: 0px; top: 200px; width: 100%;">
             <span style="margin-left: 10">${t(en="Breathe slowly...", ua="Дышите глубоко...")}</span>
-            <div id="wholePageTicker" class="progressTicker" style="background-color: ${Color.BLUE_GRAY_600}; width: 14px; height: 28px; margin-left: 10px; margin-top: -5px"></div>
+            <div id="${fconst.elementID.wholePageTicker}" class="progressTicker" style="background-color: ${Color.BLUE_GRAY_600}; width: 14px; height: 28px; margin-left: 10px; margin-top: -5px"></div>
             </div>
             </div>""")
     }
@@ -1052,18 +1052,18 @@ object MakeStaticSites {
     </script>
     </head>
     <body style="padding-top: 50px; padding-bottom: 0px; overflow-y: scroll;">
-    <div id="topNavbarContainer">
+    <div id="${fconst.elementID.topNavbarContainer}">
     ${renderToStaticMarkup(renderTopNavbar(clientKind, {en, ua -> t(en, ua)}, highlight = highlight, rightLinkStyle = Style(display = "none")))}
     </div>
 
-    <div id="root" style="min-height: calc(100vh - 28px - 50px);">
-    <div id="staticShit" style="display: none;">
+    <div id="${fconst.elementID.root}" style="min-height: calc(100vh - 28px - 50px);">
+    <div id="${fconst.elementID.staticShit}" style="display: none;">
     <!-- BEGIN CONTENT -->
     ${renderToStaticMarkup(content)}
     <!-- END CONTENT -->
     </div>
 
-    <div id="ticker" style="display: none;">${renderToStaticMarkup(wholePageTicker())}</div>
+    <div id="${fconst.elementID.ticker}" style="display: none;">${renderToStaticMarkup(wholePageTicker())}</div>
 
     <script src="jquery.min.js"></script>
 
@@ -1098,20 +1098,21 @@ object MakeStaticSites {
             }
         """}
     </script>
-    </div> <!-- /#root -->
+    </div> <!-- /#${fconst.elementID.root} -->
 
-    <div id="footer" style="position: relative;">
-    <div style="background-color: #f8f8f8; border: 1px solid #e7e7e7; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding-top: 5px; padding-bottom: 5px; height: 28px;">
-        <div class="container">
-            ${when (clientKind) {
-                ClientKind.UA_CUSTOMER -> "© Copyright 2015-2016 AcademicPaperServed. All rights reserved"
-                ClientKind.UA_WRITER -> "© Copyright 2015-2016 Writer UA. All rights reserved"
-            }}
+    <div id="${fconst.elementID.footer}" style="position: relative;">
+        <div style="background-color: #f8f8f8; border: 1px solid #e7e7e7; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding-top: 5px; padding-bottom: 5px; height: 28px;">
+            <div class="container">
+                ${when (clientKind) {
+                    ClientKind.UA_CUSTOMER -> "© Copyright 2015-2016 AcademicPaperServed. All rights reserved"
+                    ClientKind.UA_WRITER -> "© Copyright 2015-2016 Writer UA. All rights reserved"
+                }}
+            </div>
         </div>
+        <div id="${fconst.elementID.underFooter}"></div>
     </div>
-    <div id="$ELID_UNDER_FOOTER">
-    </div>
-    </div>
+
+    <div id="${fconst.elementID.testablePanes}"></div>
 
     <script>if (typeof global === 'undefined') global = window</script>
 

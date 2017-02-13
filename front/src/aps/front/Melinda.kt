@@ -316,7 +316,7 @@ where Filter : Enum<Filter>, Filter : Titled {
                 "title" to t("Show More", "Показать еще"),
                 "style" to json("background" to Color.BLUE_GRAY_50, "width" to "100%", "marginTop" to 15),
                 "onClick" to onClick@{async{
-                    await(effects).blinkOn(Shitus.byid(moreButtonID), BlinkOpts(dtop = -16))
+                    await(effects).blinkOn(Shitus.byid(moreButtonID), BlinkOpts(dtop = "-16px"))
                     // testGlobal['button_showMore_blinks'] = true
 
                     imf("renderMoreable")

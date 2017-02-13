@@ -165,14 +165,18 @@ object css {
 
             val rightIcon by Style(
                 style = """
-                    color: #90a4ae;
-                    /*margin-left: 3px;
-                    position: absolute;
-                    right: 3px;
-                    top: 4px;*/
+                    color: $BLUE_GRAY_300;
                     cursor: pointer;""",
                 hover = """
-                    color: #607d8b;""")
+                    color: $BLUE_GRAY_500;""")
+
+            val rightIconActive by Style(
+                style = """
+                    color: $BLUE_GRAY_500;""")
+
+            val rightIconDisabled by Style(
+                style = """
+                    color: $GRAY_500;""")
 
             val ticker by Style("""
                 position: absolute;

@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import jquery.JQuery
+import jquery.jq
 import kotlin.js.json
 import kotlin.properties.Delegates.notNull
 
@@ -22,7 +23,7 @@ private var pane by notNull<String>()
 val effects: Promisoid<EffectsAPI> get() = async {
     if (!initialized) {
         val api = EffectsAPI()
-        pane = old_panes.put(oldShitAsToReactElementable(api.legacyEffects.element))
+        pane = putFuckingPane(api)
         await(tillAnimationFrame())
         _effects = api
         initialized = true
@@ -61,7 +62,6 @@ class EffectsAPI {
             "dwidth" to opts.dwidth,
             "widthCountMargin" to opts.widthCountMargin,
             "heightCountMargin" to opts.heightCountMargin,
-            "widthCalcSuffix" to opts.widthCalcSuffix,
             "overHeader" to opts.overHeader
         ))
 
@@ -125,23 +125,26 @@ class EffectsAPI {
 
 data class BlinkOpts(
     val fixed: Boolean = false,
-    val dleft: Int = 0,
-    val dtop: Int = 0,
-    val dwidth: Int = 0,
+    val dleft: String = "0px",
+    val dtop: String = "0px",
+    val dwidth: String = "0px",
     val widthCountMargin: Boolean = true,
     val heightCountMargin: Boolean = true,
-    val widthCalcSuffix: String? = null,
     val overHeader: Boolean = false
 )
 
 class EffectsInitializer : PassivableInitializer<EffectsAPI> {
     override fun initialize() = async {
         val api = EffectsAPI()
-        val pane = old_panes.put(oldShitAsToReactElementable(api.legacyEffects.element))
+        val pane = putFuckingPane(api)
         await(tillAnimationFrame())
         EffectsPassivable(pane, api)
     }
+
 }
+
+private fun putFuckingPane(api: EffectsAPI) =
+    old_panes.put(byid(fconst.elementID.testablePanes), oldShitAsToReactElementable(api.legacyEffects.element))
 
 class EffectsPassivable(val pane: String, override val api: EffectsAPI) : Passivable<EffectsAPI> {
     override fun passivate() = async {
@@ -152,7 +155,7 @@ class EffectsPassivable(val pane: String, override val api: EffectsAPI) : Passiv
 
 class EffectsPassivated(val api: EffectsAPI) : Passivated<EffectsAPI> {
     override fun activate(): Promisoid<Passivable<EffectsAPI>> = async {
-        val pane = old_panes.put(oldShitAsToReactElementable(api.legacyEffects.element))
+        val pane = putFuckingPane(api)
         await(tillAnimationFrame())
         EffectsPassivable(pane, api)
     }
@@ -177,21 +180,19 @@ private fun makeLegacyEffects(): dynamic {
             "addBlinker" to {arg: dynamic ->
                 val target: dynamic = arg.target
                 val fixed: dynamic = arg.fixed
-                val dleft: dynamic = arg.dleft ?: 0
-                val dtop: dynamic = arg.dtop ?: 0
-                val dwidth: dynamic = arg.dwidth ?: 0
+                val dleft: dynamic = arg.dleft ?: "0px"
+                val dtop: dynamic = arg.dtop ?: "0px"
+                val dwidth: dynamic = arg.dwidth ?: "0px"
                 val overHeader: Boolean = arg.overHeader
                 val widthCountMargin: dynamic = arg.widthCountMargin ?: true
                 val heightCountMargin: dynamic = arg.heightCountMargin ?: true
-                val widthCalcSuffix: String? = arg.widthCalcSuffix
 
                 val targetOffset = target.offset()
                 val targetWidth = target.outerWidth(widthCountMargin)
                 val targetHeight = target.outerHeight(heightCountMargin)
-                val width = targetWidth + dwidth
                 val height = "0.3rem"
                 val left = targetOffset.left + dleft
-                var top = "calc(${targetOffset.top}px + ${targetHeight}px - $height + ${dtop}px"
+                var top = "calc(${targetOffset.top}px + ${targetHeight}px - $height + $dtop"
                 if (fixed) {
                     top += " - " + js("$")(aps.global.document).scrollTop() + "px"
                 }
@@ -204,20 +205,14 @@ private fun makeLegacyEffects(): dynamic {
                     "backgroundColor" to Color.BLUE_GRAY_600.toString(),
                     "left" to left,
                     "top" to top,
-                    "width" to run {
-                        var s = width.toString() + "px"
-                        widthCalcSuffix?.let {
-                            s = "calc($s $it)"
-                        }
-                        s
-                    },
+                    "width" to "calc(${targetWidth}px + $dwidth)",
                     "height" to height)
                 // clog("blinkerStyle", blinkerStyle)
 
                 val id = puid()
                 val blinker = Shitus.diva(json(
                     "id" to id,
-                    "className" to "progressTicker",
+                    "className" to "progressTicker effects-blinker",
                     "style" to blinkerStyle))
                 blinkerToFuckingID[blinker] = id
                 blinkers.add(blinker)

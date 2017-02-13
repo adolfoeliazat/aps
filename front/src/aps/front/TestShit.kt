@@ -2,11 +2,8 @@ package aps.front
 
 import aps.*
 import aps.front.fconst.test.testOffClassSuffix
+import into.kommon.*
 import jquery.jq
-
-val SELECTOR_NAVBAR = "#topNavbarContainer"
-val SELECTOR_ROOT = "#root"
-
 
 fun fillTestProfile_Gaylord(o: TestSetUserFieldsRequest) {
     o.insertedAt.value = "2016-11-23 13:15:25"
@@ -16,7 +13,10 @@ fun fillTestProfile_Gaylord(o: TestSetUserFieldsRequest) {
 }
 
 fun takeHTMLForAssertion(under: CSSSelector): String {
-    var rawActual = stripUninterestingElements(jq(under)).innerHTML
+    val jqel = jq(under)
+    if (jqel.length != 1) wtf("Got ${jqel.length} pieces of shit at $under")
+
+    var rawActual = stripUninterestingElements(jqel).innerHTML
     if (testOpts().addTestOffClassSuffixes)
         rawActual = rawActual.replace(testOffClassSuffix, "")
     return rawActual

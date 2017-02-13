@@ -318,7 +318,7 @@ object art {
             }
         }
 
-        old_debugPanes.put(byid(ELID_UNDER_FOOTER), assertionErrorPane)
+        old_debugPanes.put(byid(fconst.elementID.underFooter), assertionErrorPane)
 
 //        val existingDiv = Shitus.byid("debug_assertionErrorPane")
 //        if (existingDiv[0]) {
@@ -1005,7 +1005,7 @@ fun openTestListPane() {
 //    val defaultOpts = TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true)
     val defaultOpts = TestOptions(stopOnAssertions = true, dontStopOnCorrectAssertions = true, animateUserActions = true, handPauses = true)
 
-    old_debugPanes.put("openTestListPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(className = css.test.pane.testList.pane){o->
+    old_debugPanes.put("openTestListPane", Shitus.byid(fconst.elementID.underFooter), kdiv(className = css.test.pane.testList.pane){o->
         o- kdiv(paddingBottom = 10){o->
             o- "Tests"
         }
@@ -1065,7 +1065,7 @@ fun openTestPassedPane() {
 }
 
 fun openShitPassedPane(title: String, details: ElementBuilder) {
-    old_debugPanes.put("openTestPassedPane", Shitus.byid(ELID_UNDER_FOOTER), kdiv(noStateContributions = true) {o ->
+    old_debugPanes.put("openTestPassedPane", Shitus.byid(fconst.elementID.underFooter), kdiv(noStateContributions = true) {o ->
         o - Style(backgroundColor = GREEN_700, color = WHITE,
                   marginTop = 10, padding = "10px 10px", textAlign = "center", fontWeight = "bold")
 
@@ -1083,7 +1083,7 @@ fun openShitPassedPane(title: String, details: ElementBuilder) {
     })
 
     if (!Globus.realTypedStorageLocal.dontScrollOnTestPassed)
-        art.scrollRevealing(ELID_UNDER_FOOTER)
+        art.scrollRevealing(fconst.elementID.underFooter)
 
     var notice = ""
     if (TestGlobal.hasScenarioTODOs) notice += " (with TODOs)"

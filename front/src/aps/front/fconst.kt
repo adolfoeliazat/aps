@@ -7,7 +7,18 @@ object fconst {
     val scrollbarWidth = 17
     val backendURL = "http://127.0.0.1:8080"
 
-    object key {
+    object elementID {
+        val topNavbarContainer = "topNavbarContainer"
+        val root = "root"
+        val staticShit = "staticShit"
+        val ticker = "ticker"
+        val footer = "footer"
+        val wholePageTicker = "wholePageTicker"
+        val underFooter = "underFooter"
+        val testablePanes = "testablePanes"
+    }
+
+    object key { // TODO:vgrechka Delete this shit
         object file : KeyDef() {val ref = name; val testRef = name}
         object search : KeyDef() {val ref = name; val testRef = name}
         object filter : KeyDef() {val ref = name; val testRef = name}

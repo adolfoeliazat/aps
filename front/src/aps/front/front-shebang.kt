@@ -785,8 +785,6 @@ fun <T : Any> typeSafeURLQuery(ui: World, make: () -> T): T {
     return inst
 }
 
-val ELID_UNDER_FOOTER = "underFooter"
-
 fun markdownTitledList(title: String, items: List<String>): String {
     return title + "\n" + items.map{"* $it"}.joinToString("\n")
 }

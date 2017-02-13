@@ -185,14 +185,14 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     }
 
     fun assertNavbarHTML(expected: String) {
-        assertHTML(under = SELECTOR_NAVBAR,
+        assertHTML(under = "#" + fconst.elementID.topNavbarContainer,
                    expected = expected,
                    transformLine = transformNavbarLineTidy)
     }
 
     fun assertNavbarHTMLExt(descr: String?, id: String) {
         act {TestGlobal.testShitBeingAssertedID = id}
-        assertHTML(inside = SELECTOR_NAVBAR,
+        assertHTML(inside = "#" + fconst.elementID.topNavbarContainer,
                    expected = {async{await(fuckingRemoteCall.loadTestShit(id)) ?: "--- kill me ---"}},
                    transformLine = transformNavbarLineTidy,
                    descr=descr)
@@ -200,12 +200,12 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     }
 
     fun assertRootHTML(expected: String) {
-        assertHTML(under = SELECTOR_ROOT, expected = expected, transformLine = {it})
+        assertHTML(under = "#" + fconst.elementID.root, expected = expected, transformLine = {it})
     }
 
     fun assertRootHTMLExt(descr: String?, id: String) {
         act {TestGlobal.testShitBeingAssertedID = id}
-        assertHTML(inside = SELECTOR_ROOT, expected = {async{await(fuckingRemoteCall.loadTestShit(id)) ?: "--- kill me ---"}}, transformLine = {it}, descr=descr)
+        assertHTML(inside = "#" + fconst.elementID.root, expected = {async{await(fuckingRemoteCall.loadTestShit(id)) ?: "--- kill me ---"}}, transformLine = {it}, descr=descr)
         act {TestGlobal.testShitBeingAssertedID = null}
     }
 
@@ -214,7 +214,7 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
     }
 
     fun assertUnderFooterHTML(descr: String, expected: String) {
-        assertHTML(inside = "#$ELID_UNDER_FOOTER", expected = {Promisoid.resolve(expected)}, transformLine = {it}, descr=descr)
+        assertHTML(inside = "#" + fconst.elementID.underFooter, expected = {Promisoid.resolve(expected)}, transformLine = {it}, descr=descr)
     }
 
     fun click(shame: String) {

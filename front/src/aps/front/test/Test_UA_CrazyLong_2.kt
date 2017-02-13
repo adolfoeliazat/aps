@@ -202,12 +202,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     val lock = TestLock()
                     lock.reset()
                     val lockName = "downloadStartedLock:orderFileID=$fileID"
-//                    NamesOfThings[lock] = lockName
                     TestGlobal.downloadStartedLockByOrderFileID[fileID] = lock
 
                     kicClick(kics.order.file.download_testRef, subscript = fileID)
                     lock.pauseTestFromTest()
-                    assertScreenHTML(descr = lockName, assertionID = "c7d64d50-bca3-439a-b06b-1ac20d3ab0f9")
+                    assertScreenHTML(descr = lockName, assertionID = "c7d64d50-bca3-439a-b06b-1ac20d3ab0f9--$fileID")
                 }
             }
             dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()

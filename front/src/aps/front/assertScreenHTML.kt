@@ -94,11 +94,15 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
         } else {
             gloshit.actualAssertionURL = toString()
             append("-------------------- NAVBAR --------------------\n\n")
-            append(tidyHTML(takeHTMLForAssertion(SELECTOR_NAVBAR), transformNavbarLineTidy))
+            append(tidyHTML(takeHTMLForAssertion("#" + fconst.elementID.topNavbarContainer), transformNavbarLineTidy))
             if (!endsWith("\n")) append("\n")
             append("\n-------------------- ROOT --------------------\n\n")
-            append(tidyHTML(takeHTMLForAssertion(SELECTOR_ROOT), transformRootLineTidy))
+            append(tidyHTML(takeHTMLForAssertion("#" + fconst.elementID.root), transformRootLineTidy))
         }
+
+        if (!endsWith("\n")) append("\n")
+        append("\n-------------------- PANES --------------------\n\n")
+        append(tidyHTML(takeHTMLForAssertion("#" + fconst.elementID.testablePanes)))
     }
 
     if (testOpts().stopOnAssertions) {
@@ -142,7 +146,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                     }
 
                     actual != expected -> {
-                        val pane = old_debugPanes.put(byid(ELID_UNDER_FOOTER), kdiv(
+                        val pane = old_debugPanes.put(byid(fconst.elementID.underFooter), kdiv(
                             id = "fuckingDiff",
                             backgroundColor = RED_700, color = WHITE, marginTop = 10, padding = "10px 10px",
                             textAlign = "center", fontWeight = "bold"
