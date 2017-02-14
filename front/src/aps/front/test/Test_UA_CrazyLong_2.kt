@@ -3,10 +3,10 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 import into.kommon.*
-import into.mochka.assertEquals
 import org.w3c.files.File
 
 // TODO:vgrechka Use paths from pageSpecs in URLs
+// TODO:vgrechka Test file download error
 
 class Test_UA_CrazyLong_2 : FuckingScenario() {
     // http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_2&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=false&handPauses=true
@@ -19,7 +19,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 3
+    val startPoint = 1
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -238,6 +238,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 step({kicClick(kics.order.file.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "39b58462-7397-4f33-8a26-ec5624cc729b")
                 vanishSequence({submitFormSequence(testShit, useFormDoneLock = false, aid = "e7131723-e7d0-485c-aded-bbe798afdda7")}, "365d7113-246e-44a8-99f1-8f3396639e8f")
             }
+            run { // Reload tab to show items in place of deleted ones. For sync with next point
+                tabSequence(tabs.order.files_testRef, "577c58e6-a4c2-4fb4-b2fe-9d7d6e828908", "77093925-8fe1-4dcd-8873-77dd8c41570c")
+            }
+        }
+
+        definePoint(4) {
+            run { // Ordering
+                assertScreenHTML(aid = "348ddf37-5a1a-44b4-8fb7-1b05a9d35563")
+            }
         }
     }
 
@@ -249,7 +258,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             kicClick(kics.order.file.download_testRef, subscript = fileID)
             ctx[fileID]!!.downloadStartedLock.pauseTestFromTest()
-            assertScreenHTML(descr = "downloadStartedLock:orderFileID=$fileID", assertionID = "$aid--downloadStarted-$fileID")
+            assertScreenHTML(descr = "downloadStartedLock:orderFileID=$fileID", aid = "$aid--downloadStarted-$fileID")
 
             checkActionDisabled(kics.order.file.download_testRef, fileID)
             checkActionDisabled(kics.order.file.delete_testRef, fileID)
@@ -259,7 +268,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         fileIDs.forEach {ctx[it]!!.downloadStartedLock.resumeSutFromTest()}
         idToFileName.forEach {(id, fileName) -> waitAndCheckDownload(id, fileName)}
 
-        assertScreenHTML(descr = "Everything is downloaded", assertionID = "$aid--everythingDownloaded")
+        assertScreenHTML(descr = "Everything is downloaded", aid = "$aid--everythingDownloaded")
     }
 
     fun pointToSnapshotName(i: Int) = "${this::class.simpleName}-$i"
@@ -270,7 +279,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         if (currentPoint >= startPoint) {
             if (currentPoint > 1 && currentPoint == startPoint) {
-                val state = send(TestRestoreTestPointSnapshotRequest() - {o ->
+                val state = send(TestRestoreTestPointSnapshotRequest()-{o->
                     o.snapshotName.value = pointToSnapshotName(currentPoint - 1)
                 })
                 dlog("TestRestoreDBSnapshotRequest response", state)
@@ -283,7 +292,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
             script()
 
-            send(TestTakeTestPointSnapshotRequest() - {o ->
+            send(TestTakeTestPointSnapshotRequest()-{o->
                 o.snapshotName.value = pointToSnapshotName(currentPoint)
                 o.browseroidName.value = TestGlobal.currentMorda.browseroidName
                 o.href.value = Globus.currentBrowseroid.location.href
@@ -297,15 +306,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     private suspend fun addFileBackendOnly(p: AddFileParams, orderID: Long) {
         testShit.imposeNextRequestTimestamp()
-        send(UACreateOrderFileRequest() - {o ->
+        send(UACreateOrderFileRequest()-{o->
             o.orderID.value = orderID
             o.file.content = FileField.Content.Provided(run {
-                val res = send(TestGetFileUploadDataRequest() - {o ->
+                val res = send(TestGetFileUploadDataRequest()-{o->
                     o.fileName.value = p.fileName
                 })
                 File(base64ToUint8ArraySlices(res.base64), res.name)
             })
-            o.fields1 - {o ->
+            o.fields1-{o->
                 o.title.value = p.title
                 o.details.value = p.details
             }

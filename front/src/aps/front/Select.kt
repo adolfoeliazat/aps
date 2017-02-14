@@ -10,12 +10,14 @@ import aps.*
 import into.kommon.*
 import kotlin.js.*
 
+class SelectKey(override val fqn: String) : Fucker(), FQNed
+
 interface ShitWithRenderFunction {
     val render: () -> ReactElement
 }
 
 class Select<E>(
-    val key: String? = null,
+    val key: SelectKey? = null,
     attrs: Attrs = Attrs(),
     val values: Array<E>,
     val initialValue: E?,
@@ -32,12 +34,13 @@ class Select<E>(
     var blinker: BlinkerOperations? = null
 
     companion object {
-        val instances = mutableMapOf<String, Select<*>>()
+        val instances = mutableMapOf<SelectKey, Select<*>>()
 
         @Suppress("UNCHECKED_CAST")
-        fun <E> instance(key: String, values: Array<E>): Select<E>
-            where E : Enum<E>, E : Titled {
-            val select = instances[key] as Select<E>? ?: bitch("No Select keyed `$key`")
+        fun <E> instance(key: SelectKey, values: Array<E>): Select<E>
+            where E : Enum<E>, E : Titled
+        {
+            val select = instances[key] as Select<E>? ?: bitch("No Select keyed `${key.fqn}`")
             val expectedEnumName = values[0]::class.js.name
             val actualEnumName = select.values[0]::class.js.name
             check(expectedEnumName == actualEnumName
@@ -192,7 +195,8 @@ class Select<E>(
 
 suspend fun <E> selectSetValue(spec: TestRef<SelectFieldSpec<E>>, value: E)
 where E : Enum<E>, E : Titled {
-    val select = Select.instance(spec.it.name, spec.it.values)
+    val key = SelectField.specToKey.getValue(spec.it)
+    val select = Select.instance(key, spec.it.values)
     select.setValueExt(value, notify = true)
 }
 

@@ -101,7 +101,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
     inner class StripContent : Control2(Attrs()) {
         val filterSelect = Select(
-            key = fconst.key.filter.ref,
+            key = selects.filter,
             values = CustomerFileFilter.values(),
             initialValue = urlQuery.filter,
             isAction = true,
@@ -110,7 +110,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         )
 
         val orderingSelect = Select(
-            key = fconst.key.ordering.ref,
+            key = selects.ordering,
             values = Ordering.values(),
             initialValue = urlQuery.ordering,
             isAction = true,

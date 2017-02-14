@@ -8,13 +8,18 @@ import kotlin.js.json
 
 @Front class SelectField<T>(
     container: RequestMatumba,
-    val spec: SelectFieldSpec<T>
-) : FormFieldFront(container, spec.name)
-where T : Enum<T>, T : Titled {
-
+    val spec: SelectFieldSpec<T>) : FormFieldFront(container, spec.name)
+where T : Enum<T>, T : Titled
+{
     override var error: String? = null
 
-    val select = Select(key = spec.name, attrs = Attrs(), values = spec.values, initialValue = null,
+    companion object {
+        val specToKey = mutableMapOf<SelectFieldSpec<*>, SelectKey>()
+    }
+
+    val selectKey = specToKey.getOrPut(spec) {SelectKey(spec.name)}
+
+    val select = Select(key = selectKey, attrs = Attrs(), values = spec.values, initialValue = null,
                         onChange = {
                             form.fieldChanged()
                         },

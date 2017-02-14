@@ -54,12 +54,13 @@ data class AssertScreenHTMLParams(
     val opts: AssertScreenOpts? = null
 )
 
-suspend fun assertScreenHTML(descr: String?, assertionID: String, opts: AssertScreenOpts? = null) {
-    assertScreenHTML(AssertScreenHTMLParams(descr, assertionID, opts))
+suspend fun assertScreenHTML(descr: String? = null, aid: String, opts: AssertScreenOpts? = null) {
+    assertScreenHTML(AssertScreenHTMLParams(descr, aid, opts))
 }
 
 suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
     val stackCapture: CaptureStackException? = CaptureStackException()
+    val assertionDescr = p.descr ?: "Describe me"
     val opts = p.opts ?: TestGlobal.defaultAssertScreenOpts
 //    lastAssertScreenHTMLParams = p
 //    act {TestGlobal.testShitBeingAssertedID = p.assertionID}
@@ -418,7 +419,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
                         descriptionPanel = Placeholder(kdiv{o->
                             o- kdiv{o->
-                                o- link(title = /*"Assertion: " + */"${p.descr}", color = BLACK, onClick = {
+                                o- link(title = /*"Assertion: " + */"${assertionDescr}", color = BLACK, onClick = {
                                     if (stackCapture != null) {
                                         revealStack(stackCapture, muteConsole = true)
                                     } else {
@@ -473,7 +474,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             actual != expected -> {
                 if (!testOpts().ignoreIncorrect) {
                     throw ArtAssertionError(
-                        bang(p.descr),
+                        bang(assertionDescr),
                         visualPayload = renderDiff(
                             expected = expected ?: "--- Not yet hardened ---",
                             actual = actual,

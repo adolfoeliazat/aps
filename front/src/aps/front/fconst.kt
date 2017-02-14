@@ -22,8 +22,6 @@ object fconst {
     object key { // TODO:vgrechka Delete this shit
         object file : KeyDef() {val ref = name; val testRef = name}
         object search : KeyDef() {val ref = name; val testRef = name}
-        object filter : KeyDef() {val ref = name; val testRef = name}
-        object ordering : KeyDef() {val ref = name; val testRef = name}
 
         object link {
             object createAccount : KeyDef() {val decl = name; val testRef = name}
