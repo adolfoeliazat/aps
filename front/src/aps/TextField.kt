@@ -8,12 +8,11 @@ import kotlin.js.json
 
 @Front class TextField(
     container: RequestMatumba,
-    spec: TextFieldSpec
-): FormFieldFront(container, spec.name) {
+    spec: TextFieldSpec)
+    : FormFieldFront(container, spec.name)
+{
     val _spec = spec
-
     override var error: String? = null
-
     private val c = css.textField
     private fun String.div(block: (ElementBuilder) -> Unit) = kdiv(Attrs(className = this), Style(), block)
 
@@ -32,14 +31,14 @@ import kotlin.js.json
                 else undefined
             }
         ),
-        key = makeKey(),
+        key = FieldSpecToCtrlKey[spec],
         onValueChanged = {
             testHint.update()
         })}
 
-    private fun makeKey(): String {
-        return name + (container.fieldInstanceKeySuffix ?: "")
-    }
+//    private fun makeKey(): String {
+//        return name + (container.fieldInstanceKeySuffix ?: "")
+//    }
 
     var value: String
         get() = input.getValue()

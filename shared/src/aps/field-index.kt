@@ -33,10 +33,12 @@ object fields                                    : Fuckers<FieldSpec>(null) {
     }
 }
 
-abstract class FieldSpec : Fucker()
+abstract class FieldSpec : Fucker() {
+    abstract val name: String
+}
 
 data class TextFieldSpec(
-    val name: String,
+    override val name: String,
     val title: String,
     val type: TextFieldType,
     val minLen: Int,
@@ -49,25 +51,25 @@ enum class TextFieldType {
 }
 
 class CheckboxFieldSpec(
-    val name: String,
+    override val name: String,
     val title: String
 ) : FieldSpec()
 
 class SelectFieldSpec<T>(
-    val name: String,
+    override val name: String,
     val title: String,
     val values: Array<T>
 ) : FieldSpec() where T : Enum<T>, T : Titled
 
 class IntFieldSpec(
-    val name: String,
+    override val name: String,
     val title: String,
     val min: Int,
     val max: Int
 ) : FieldSpec()
 
 data class FileFieldSpec(
-    val name: String,
+    override val name: String,
     val title: String,
     val allowedValueKinds: Set<FileFieldValueKind>
 ) : FieldSpec()

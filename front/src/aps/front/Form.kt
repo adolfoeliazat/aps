@@ -341,7 +341,7 @@ fun badTextFieldValuesThenValid(
 ): List<TestAttempt> {
     val f = field.it
     return mutableListOf<TestAttempt>()-{res->
-        val add = fuckingAdder(res, f.name, aopts, subIDSuffix)
+        val add = fuckingAdder(res, FieldSpecToCtrlKey[f], aopts, subIDSuffix)
 
         if (f.minLen >= 1) {
             add("empty", "")
@@ -373,7 +373,7 @@ fun badTextFieldValuesThenValid(
 fun badIntFieldValuesThenValid(field: TestRef<IntFieldSpec>, validValue: Int): List<TestAttempt> {
     val f = field.it
     return mutableListOf<TestAttempt>()-{res->
-        val add = fuckingAdder(res, f.name)
+        val add = fuckingAdder(res, FieldSpecToCtrlKey[f])
         add("empty", "")
         add("blank", "     ")
         add("fraction 1", "1.5")
@@ -392,11 +392,13 @@ fun badIntFieldValuesThenValid(field: TestRef<IntFieldSpec>, validValue: Int): L
 
 private class fuckingAdder(
     val res: MutableList<TestAttempt>,
-    val fieldName: String,
+//    val fieldName: String,
+    val fieldKey: InputKey,
     val aopts: AssertScreenOpts? = null,
     val subIDSuffix: String = ""
 ) {
     operator fun invoke(descr: String, value: String) {
+        val fieldName = fieldKey.fqn
         val lastDot = fieldName.lastIndexOf(".")
         val fieldNameForDescr = when {
             lastDot == -1 -> fieldName
@@ -406,7 +408,7 @@ private class fuckingAdder(
             subID = "$fieldName--" + descr.replace(" ", "-") + subIDSuffix,
             descr = "$fieldNameForDescr: $descr",
             prepare = {
-                inputSetValue(fieldName, value)
+                inputSetValue(fieldKey, value)
             },
             aopts = aopts
         )

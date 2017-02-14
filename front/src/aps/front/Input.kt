@@ -14,7 +14,10 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.js.Json
 import kotlin.js.json
 
-fun jsFacing_Input(legacySpec: Json, key: String? = null) {
+class InputKey(override val fqn: String) : Fucker(), FQNed
+
+// TODO:vgrechka Fuck, shit... kill this abomination already!
+fun jsFacing_Input(legacySpec: Json, key: InputKey? = null) {
     val input = Input(legacySpec, key)
     return input.legacyShit
 }
@@ -57,14 +60,14 @@ val inputReactClass by lazy {React.createClass(json(
 
 
 class Input(
-    val legacySpec: Json, val key: String? = null, val onValueChanged: () -> Unit = {}) : ToReactElementable, Blinkable {
+    val legacySpec: Json, val key: InputKey? = null, val onValueChanged: () -> Unit = {}) : ToReactElementable, Blinkable {
     enum class Kind {INPUT, TEXTAREA}
 
     companion object {
-        val instances = mutableMapOf<String, Input>()
+        val instances = mutableMapOf<InputKey, Input>()
 
-        fun instance(key: String): Input {
-            return instances[key] ?: bitch("No Input keyed `$key`")
+        fun instance(key: InputKey): Input {
+            return instances[key] ?: bitch("No Input keyed `${key.fqn}`")
         }
 
         fun kindToLegacy(kind: Kind): String = when (kind) {
@@ -74,7 +77,7 @@ class Input(
     }
 
     constructor(
-        key: String? = null,
+        key: InputKey? = null,
         kind: Kind = Kind.INPUT,
         rows: Int = 5,
         style: Style = Style(),
@@ -370,26 +373,26 @@ class Input(
 }
 
 suspend fun inputSetValue(field: TestRef<TextFieldSpec>, value: String) {
-    inputSetValue(field.it.name, value)
+    inputSetValue(FieldSpecToCtrlKey[field.it], value)
 }
 
 suspend fun inputSetValue(field: TestRef<IntFieldSpec>, value: String) {
-    inputSetValue(field.it.name, value)
+    inputSetValue(FieldSpecToCtrlKey[field.it], value)
 }
 
-suspend fun inputSetValue(key: String, value: String) {
+suspend fun inputSetValue(key: InputKey, value: String) {
     Input.instance(key).testSetValue(value)
 }
 
-suspend fun inputPrependValue(key: String, value: String) {
+suspend fun inputPrependValue(key: InputKey, value: String) {
     Input.instance(key).testPrependValue(value)
 }
 
 suspend fun inputPrependValue(field: TestRef<TextFieldSpec>, value: String) {
-    inputPrependValue(field.it.name, value)
+    inputPrependValue(FieldSpecToCtrlKey[field.it], value)
 }
 
-suspend fun inputAppendValue(key: String, value: String) {
+suspend fun inputAppendValue(key: InputKey, value: String) {
     Input.instance(key).testAppendValue(value)
 }
 

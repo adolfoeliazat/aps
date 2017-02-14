@@ -23,10 +23,8 @@ import kotlin.js.json
                 else undefined
             }
         ),
-        key = makeKey()
+        key = FieldSpecToCtrlKey[spec]
     )
-
-    private fun makeKey() = name + (container.fieldInstanceKeySuffix ?: "")
 
     fun setValue(value: Int) { input.setValue(value.toString()) }
 

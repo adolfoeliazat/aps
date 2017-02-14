@@ -119,7 +119,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         )
 
         val searchInput = Input(
-            key = fconst.key.search.ref,
+            key = inputs.search,
             style = Style(paddingLeft = 30, width = "100%"),
             placeholder = t("Search...", "Поиск..."),
             volatileDisabled  = {ebafHost.headerControlsDisabled}

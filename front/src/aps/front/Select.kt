@@ -195,8 +195,7 @@ class Select<E>(
 
 suspend fun <E> selectSetValue(spec: TestRef<SelectFieldSpec<E>>, value: E)
 where E : Enum<E>, E : Titled {
-    val key = SelectField.specToKey.getValue(spec.it)
-    val select = Select.instance(key, spec.it.values)
+    val select = Select.instance(FieldSpecToCtrlKey[spec.it], spec.it.values)
     select.setValueExt(value, notify = true)
 }
 

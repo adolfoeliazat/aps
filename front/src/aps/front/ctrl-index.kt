@@ -47,6 +47,10 @@ object kics                              : Fuckers<KicKey>(null) {
     }
 }
 
+object inputs                            : Fuckers<InputKey>(null) {
+    val search                           by namedFucker(::InputKey); val search_testRef = TestRef(search)
+}
+
 object selects                           : Fuckers<SelectKey>(null) {
     val ordering                         by namedFucker(::SelectKey); val ordering_testRef = TestRef(ordering)
     val filter                           by namedFucker(::SelectKey); val filter_testRef = TestRef(filter)
