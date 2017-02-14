@@ -19,7 +19,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1
+    val startPoint = 4
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -174,19 +174,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     }
                 }
 
-                scrollBodyToBottomGradually()
-                sequence({buttonClick(buttons.loadMore_testRef)},
-                         steps = listOf(
-                             PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "efa418ce-873c-485b-9005-ec7a73e4bd2c"),
-                             PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "86500c2a-c99b-4c16-9eb1-b95a8000ccc9")
-                         ))
-
-                scrollBodyToBottomGradually()
-                sequence({buttonClick(buttons.loadMore_testRef)},
-                         steps = listOf(
-                             PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "e799ccdf-58f6-44b4-9c8c-468e8694c30b"),
-                             PauseAssertResumeStep(TestGlobal.loadMoreHalfwayLock, "81c65484-7584-49fb-84ea-b872dfaf9e5d")
-                         ))
+                testShowMore("7e3e18fd-62e3-4cfb-8f75-a00778eca95a")
+                testShowMore("8f506811-4b7c-44a7-a9f7-37449fa320f7")
                 scrollBodyToBottomGradually()
             }
 
@@ -247,8 +236,22 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Ordering
                 assertScreenHTML(aid = "348ddf37-5a1a-44b4-8fb7-1b05a9d35563")
                 twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.ASC)}, "a862fd73-f127-4c23-a1da-ee1e8f82a35e")
+                testShowMore("c69f27bc-e9fe-4a4f-a9fd-c630f2904d6a")
+                scrollBodyToTopGradually()
+                twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.DESC)}, "be35468d-07f9-4f6b-8060-1d5cfec18ec7")
+                testShowMore("284f44ce-5650-46b7-a7cb-f0e3553bdee4")
+                scrollBodyToTopGradually()
             }
         }
+    }
+
+    private suspend fun testShowMore(aid: String) {
+        scrollBodyToBottomGradually()
+        sequence({buttonClick(buttons.showMore_testRef)},
+                 steps = listOf(
+                     PauseAssertResumeStep(TestGlobal.showMoreHalfwayLock, "$aid--halfway"),
+                     PauseAssertResumeStep(TestGlobal.showMoreDoneLock, "$aid--done")
+                 ))
     }
 
     private suspend fun testDownloads(aid: String, idToFileName: Map<Long, String>) {

@@ -23,7 +23,7 @@ object buttons                           : Fuckers<ButtonKey>(null) {
     val upload                           by namedFucker(::ButtonKey); val upload_testRef = TestRef(upload)
     val cancel                           by namedFucker(::ButtonKey); val cancel_testRef = TestRef(cancel)
     val refreshPage                      by namedFucker(::ButtonKey); val refreshPage_testRef = TestRef(refreshPage)
-    val loadMore                         by namedFucker(::ButtonKey); val loadMore_testRef = TestRef(loadMore)
+    val showMore                         by namedFucker(::ButtonKey); val showMore_testRef = TestRef(showMore)
 
     object modal                         : Fuckers<ButtonKey>(this) {
         val ok                           by namedFucker(::ButtonKey); val ok_testRef = TestRef(ok)

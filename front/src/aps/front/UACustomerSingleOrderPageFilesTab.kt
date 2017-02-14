@@ -219,11 +219,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 moreFromID
                 val placeholder = Placeholder()
                 placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
-                    val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = buttons.loadMore)
+                    val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = buttons.showMore)
                     btn.onClicka = {
                         async {
                             val blinker = await(effects).blinkOn(byid(btn.elementID))
-                            TestGlobal.loadMoreHalfwayLock.resumeTestAndPauseSutFromSut()
+                            TestGlobal.showMoreHalfwayLock.resumeTestAndPauseSutFromSut()
                             try {
                                 val res = try {
                                     await(requestChunk(meat.moreFromID))
@@ -248,7 +248,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                 }
                             } finally {
                                 blinker.unblink()
-                                TestGlobal.loadMoreDoneLock.resumeTestAndPauseSutFromSut()
+                                TestGlobal.showMoreDoneLock.resumeTestFromSut()
                             }
                         }
                     }
