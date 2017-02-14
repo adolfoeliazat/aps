@@ -11,7 +11,7 @@ import kotlin.properties.Delegates.notNull
 class TestDownloadContext {
     val downloadStartedLock by notNullNamed(TestLock(virgin = true))
     val bitsReceivedLock by notNullNamed(TestLock(virgin = true))
-    var shit by notNullOnce<DownloadFileResponse>()
+    var shit by notNull<DownloadFileResponse>()
 }
 
 class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {

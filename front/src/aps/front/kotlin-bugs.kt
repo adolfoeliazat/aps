@@ -2,7 +2,20 @@
 
 package aps.front
 
-import kotlin.properties.Delegates.notNull
+//fun main(args: Array<String>) {
+//    inline fun g(block: () -> Unit) {
+//        block()
+//    }
+//
+//    val f = {
+//        g {
+//            throw Exception("hi there, i'm f")
+//        }
+//    }
+//
+//    f()
+//}
+
 
 //suspend fun qwe() {
 //    // suspend fun localHelper(x: Int) {}             // Syntax error
