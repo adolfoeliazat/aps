@@ -22,13 +22,15 @@
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt" line="403" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/front-utils.kt" line="183" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" line="120" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" line="221" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/test-shit/72bdc717-c30b-495f-94c4-6f7e93d217de" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-3.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-3.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -94,26 +96,54 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="WatchAndEnhanceJS.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt">
+      <file leaf-file-name="Test_UA_CrazyLong_2.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="211" column="30" lean-forward="false" selection-start-line="211" selection-start-column="30" selection-end-line="211" selection-end-column="30" />
+            <state relative-caret-position="360">
+              <caret line="215" column="16" lean-forward="false" selection-start-line="215" selection-start-column="16" selection-end-line="215" selection-end-column="16" />
               <folding>
-                <element signature="e#75#529#0" expanded="true" />
+                <element signature="e#19#139#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Test_UA_CrazyLong_2.kt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
+      <file leaf-file-name="front-shebang.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-shebang.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="214" column="16" lean-forward="false" selection-start-line="214" selection-start-column="16" selection-end-line="214" selection-end-column="16" />
-              <folding>
-                <element signature="e#19#139#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="264">
+              <caret line="79" column="46" lean-forward="true" selection-start-line="79" selection-start-column="46" selection-end-line="79" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Maps.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib-js-sources.jar!/kotlin/collections/Maps.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="624">
+              <caret line="29" column="30" lean-forward="false" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Collections.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib-js-sources.jar!/native/kotlin/Collections.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="297" column="4" lean-forward="false" selection-start-line="297" selection-start-column="4" selection-end-line="297" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Annotations.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/kotlin/Annotations.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="719">
+              <caret line="138" column="24" lean-forward="false" selection-start-line="138" selection-start-column="24" selection-end-line="138" selection-end-column="24" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -160,41 +190,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="File.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/io/File.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="1177" column="18" lean-forward="false" selection-start-line="1177" selection-start-column="18" selection-end-line="1177" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UACustomerSingleOrderPageFilesTab.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UACustomerSingleOrderPageFilesTab.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="async.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/async.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="474">
-              <caret line="213" column="4" lean-forward="false" selection-start-line="213" selection-start-column="4" selection-end-line="213" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="const.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/const.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="6" column="29" lean-forward="false" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
+            <state relative-caret-position="264">
+              <caret line="409" column="20" lean-forward="false" selection-start-line="409" selection-start-column="20" selection-end-line="409" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -338,12 +338,12 @@
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
         <option value="$PROJECT_DIR$/tools/src/aps/WatchAndEnhanceJS.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/async.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-order.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/GenerateTestFileSHA256s.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/TestData.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/test-utils-3.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt" />
       </list>
     </option>
   </component>
@@ -505,7 +505,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib/postgresql-9.4.1211.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="tu3&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/test-utils-3.kt&#10;servefile&#9;null&#9;null&#10;g256&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/GenerateTestFileSHA256s.kt&#10;ondownload&#9;null&#9;null&#10;const&#9;null&#9;null&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;aps_ho&#9;null&#9;null&#10;generatetim&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/GenerateTimestamps.kt&#10;DOFR&#9;null&#9;null&#10;uaorderfilerequest&#9;null&#9;null&#10;testglobal&#9;null&#9;null&#10;ondown&#9;null&#9;null&#10;resol&#9;null&#9;null&#10;testdata&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/TestData.kt&#10;kotlin-bu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;page&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/UACustomerSingleOrderPage.kt&#10;test-&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/test-utils-3.kt&#10;_2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/Test_UA_CrazyLong_2.kt&#10;ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;ant-ms&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;stripunin&#9;null&#9;null&#10;effec&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/effects.kt&#10;_domre&#9;null&#9;null&#10;browseroid&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Browseroid.kt&#10;fconst&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fconst.kt&#10;effects&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/effects.kt&#10;stripun&#9;null&#9;null&#10;disposeeffe&#9;null&#9;null&#10;disposeeffects&#9;null&#9;null&#10;takeht&#9;null&#9;null&#10;testglo&#9;null&#9;null&#10;testlock&#9;null&#9;null&#10;assestep&#9;null&#9;null&#10;singleorde&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/UACustomerSingleOrderPage.kt&#10;loadpagefor&#9;null&#9;null&#10;weak&#9;null&#9;null&#10;singleorderpage&#9;null&#9;null&#10;tabs2&#9;null&#9;null&#10;tabs&#9;null&#9;null&#10;color&#9;null&#9;null&#10;ondownl&#9;null&#9;null&#10;freeze&#9;null&#9;null&#10;sharedrpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;rpc-glu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-rpc-glue.kt&#10;rpcglue&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-rpc-glue.kt&#10;front-utils-2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;godservlet&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/GodServlet.kt&#10;ondelete&#9;null&#9;null&#10;fcoo&#9;null&#9;null&#10;vanishse&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="ondownload&#9;null&#9;null&#10;tu3&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/test-utils-3.kt&#10;servefile&#9;null&#9;null&#10;g256&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/GenerateTestFileSHA256s.kt&#10;const&#9;null&#9;null&#10;mss&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/MakeStaticSites.kt&#10;aps_ho&#9;null&#9;null&#10;generatetim&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/GenerateTimestamps.kt&#10;DOFR&#9;null&#9;null&#10;uaorderfilerequest&#9;null&#9;null&#10;testglobal&#9;null&#9;null&#10;ondown&#9;null&#9;null&#10;resol&#9;null&#9;null&#10;testdata&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/TestData.kt&#10;kotlin-bu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;page&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/UACustomerSingleOrderPage.kt&#10;test-&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/test-utils-3.kt&#10;_2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/test/Test_UA_CrazyLong_2.kt&#10;ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;ant-ms&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;stripunin&#9;null&#9;null&#10;effec&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/effects.kt&#10;_domre&#9;null&#9;null&#10;browseroid&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Browseroid.kt&#10;fconst&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fconst.kt&#10;effects&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/effects.kt&#10;stripun&#9;null&#9;null&#10;disposeeffe&#9;null&#9;null&#10;disposeeffects&#9;null&#9;null&#10;takeht&#9;null&#9;null&#10;testglo&#9;null&#9;null&#10;testlock&#9;null&#9;null&#10;assestep&#9;null&#9;null&#10;singleorde&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/UACustomerSingleOrderPage.kt&#10;loadpagefor&#9;null&#9;null&#10;weak&#9;null&#9;null&#10;singleorderpage&#9;null&#9;null&#10;tabs2&#9;null&#9;null&#10;tabs&#9;null&#9;null&#10;color&#9;null&#9;null&#10;ondownl&#9;null&#9;null&#10;freeze&#9;null&#9;null&#10;sharedrpc&#9;FILE&#9;file://E:/work/aps/shared-front-junction/src/aps/shared-rpc.kt&#10;rpc-glu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-rpc-glue.kt&#10;rpcglue&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-rpc-glue.kt&#10;front-utils-2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;godservlet&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/GodServlet.kt&#10;ondelete&#9;null&#9;null&#10;fcoo&#9;null&#9;null&#10;vanishse&#9;null&#9;null" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
     <property name="last.edited.regexp" value="" />
   </component>
@@ -915,13 +915,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00335" summary="Tra-la-la, tru-la-la">
-      <created>1486324240895</created>
-      <option name="number" value="00335" />
-      <option name="presentableId" value="LOCAL-00335" />
-      <option name="project" value="LOCAL" />
-      <updated>1486324240895</updated>
-    </task>
     <task id="LOCAL-00336" summary="Tra-la-la, tru-la-la">
       <created>1486327355872</created>
       <option name="number" value="00336" />
@@ -1258,7 +1251,14 @@
       <option name="project" value="LOCAL" />
       <updated>1487019554560</updated>
     </task>
-    <option name="localTasksCounter" value="384" />
+    <task id="LOCAL-00384" summary="A piece of... code">
+      <created>1487040978395</created>
+      <option name="number" value="00384" />
+      <option name="presentableId" value="LOCAL-00384" />
+      <option name="project" value="LOCAL" />
+      <updated>1487040978395</updated>
+    </task>
+    <option name="localTasksCounter" value="385" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1511,29 +1511,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/Melinda.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="318" column="87" lean-forward="false" selection-start-line="318" selection-start-column="87" selection-end-line="318" selection-end-column="87" />
-          <folding>
-            <element signature="e#122#307#0" expanded="true" />
-            <marker date="1486986703282" expanded="false" signature="129:285" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/navbar.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="293" column="106" lean-forward="false" selection-start-line="293" selection-start-column="106" selection-end-line="293" selection-end-column="106" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#81#182#0" expanded="true" />
-            <marker date="1486986703286" expanded="true" signature="88:160" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="624">
@@ -1671,14 +1648,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-shebang.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="79" column="8" lean-forward="false" selection-start-line="79" selection-start-column="8" selection-end-line="79" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-rpc.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="456">
@@ -1752,14 +1721,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="463">
           <caret line="40" column="33" lean-forward="false" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib-js-sources.jar!/kotlin/collections/Maps.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="251" column="50" lean-forward="false" selection-start-line="251" selection-start-column="50" selection-end-line="251" selection-end-column="50" />
           <folding />
         </state>
       </provider>
@@ -1930,10 +1891,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt">
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-shebang.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+        <state relative-caret-position="264">
+          <caret line="79" column="46" lean-forward="true" selection-start-line="79" selection-start-column="46" selection-end-line="79" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/kotlin/Annotations.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="719">
+          <caret line="138" column="24" lean-forward="false" selection-start-line="138" selection-start-column="24" selection-end-line="138" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib-js-sources.jar!/native/kotlin/Collections.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="297" column="4" lean-forward="false" selection-start-line="297" selection-start-column="4" selection-end-line="297" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib-js-sources.jar!/kotlin/collections/Maps.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="29" column="30" lean-forward="false" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -1941,10 +1926,18 @@
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
-          <caret line="214" column="16" lean-forward="false" selection-start-line="214" selection-start-column="16" selection-end-line="214" selection-end-column="16" />
+          <caret line="215" column="16" lean-forward="false" selection-start-line="215" selection-start-column="16" selection-end-line="215" selection-end-column="16" />
           <folding>
             <element signature="e#19#139#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="409" column="20" lean-forward="false" selection-start-line="409" selection-start-column="20" selection-end-line="409" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>

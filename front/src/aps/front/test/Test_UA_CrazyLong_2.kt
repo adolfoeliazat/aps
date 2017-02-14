@@ -199,14 +199,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(3) {
             run { // Download
-                val co = TestGlobal.orderFileIDToDownloadContext
+                val ctx = TestGlobal.orderFileIDToDownloadContext
                 val fileIDs = listOf(26L, 27L, 28L)
                 for (fileID in fileIDs) {
-                    val ctx = TestDownloadContext()
-                    co[fileID] = ctx
+                    ctx[fileID] = TestDownloadContext()
 
                     kicClick(kics.order.file.download_testRef, subscript = fileID)
-                    ctx.downloadStartedLock.pauseTestFromTest()
+                    ctx[fileID]!!.downloadStartedLock.pauseTestFromTest()
                     assertScreenHTML(descr = "downloadStartedLock:orderFileID=$fileID", assertionID = "c7d64d50-bca3-439a-b06b-1ac20d3ab0f9--$fileID")
 
                     checkActionDisabled(kics.order.file.download_testRef, fileID)
@@ -214,12 +213,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     checkActionDisabled(kics.order.file.edit_testRef, fileID)
                 }
 
-                for (fileID in fileIDs)
-                    co[fileID]!!.downloadStartedLock.resumeSutFromTest()
-
+                fileIDs.forEach {ctx[it]!!.downloadStartedLock.resumeSutFromTest()}
                 waitAndCheckDownload(26L, "lousy writing 8.rtf")
                 waitAndCheckDownload(27L, "lousy writing 9.rtf")
                 waitAndCheckDownload(28L, "lousy writing 10.rtf")
+                assertScreenHTML(descr = "Everything is downloaded", assertionID = "72bdc717-c30b-495f-94c4-6f7e93d217de")
             }
             dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()
             run { // Edit file -- cancel

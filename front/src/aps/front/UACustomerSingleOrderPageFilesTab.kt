@@ -399,7 +399,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
         private suspend fun onDownload() {
             titleRightPlace.setContent(renderTitleControls(downloadActive = true))
-            await(effects).blinkOn(byid(cloudIconID), BlinkOpts())
+            val blinker = await(effects).blinkOn(byid(cloudIconID), BlinkOpts())
 
             val testCtx = TestGlobal.orderFileIDToDownloadContext[orderFile.id]
             testCtx?.downloadStartedLock?.resumeTestAndPauseSutFromSut()
@@ -415,7 +415,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 is FormResponse2.Hunky -> {
                     val dataURL = "data:application/octet-stream;base64," + res.meat.base64
                     downloadjs(dataURL, res.meat.fileName, "application/octet-stream")
-
+                    blinker.unblink()
+                    titleRightPlace.setContent(renderTitleControls(downloadActive = false))
                     testCtx?.let {
                         it.shit = res.meat
                         it.bitsReceivedLock.resumeTestFromSut()
