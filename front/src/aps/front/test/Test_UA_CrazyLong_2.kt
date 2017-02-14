@@ -199,27 +199,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(3) {
             run { // Download
-                val ctx = TestGlobal.orderFileIDToDownloadContext
-                val fileIDs = listOf(26L, 27L, 28L)
-                for (fileID in fileIDs) {
-                    ctx[fileID] = TestDownloadContext()
-
-                    kicClick(kics.order.file.download_testRef, subscript = fileID)
-                    ctx[fileID]!!.downloadStartedLock.pauseTestFromTest()
-                    assertScreenHTML(descr = "downloadStartedLock:orderFileID=$fileID", assertionID = "c7d64d50-bca3-439a-b06b-1ac20d3ab0f9--$fileID")
-
-                    checkActionDisabled(kics.order.file.download_testRef, fileID)
-                    checkActionDisabled(kics.order.file.delete_testRef, fileID)
-                    checkActionDisabled(kics.order.file.edit_testRef, fileID)
-                }
-
-                fileIDs.forEach {ctx[it]!!.downloadStartedLock.resumeSutFromTest()}
-                waitAndCheckDownload(26L, "lousy writing 8.rtf")
-                waitAndCheckDownload(27L, "lousy writing 9.rtf")
-                waitAndCheckDownload(28L, "lousy writing 10.rtf")
-                assertScreenHTML(descr = "Everything is downloaded", assertionID = "72bdc717-c30b-495f-94c4-6f7e93d217de")
+                testDownloads("c7d64d50-bca3-439a-b06b-1ac20d3ab0f9", mapOf(
+                    26L to "lousy writing 8.rtf",
+                    27L to "lousy writing 9.rtf",
+                    28L to "lousy writing 10.rtf"
+                ))
             }
-            dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()
+            // dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()
             run { // Edit file -- cancel
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
                 inputSetValue(fields.shebang.fileTitle_testRef, "Хуй")
@@ -251,6 +237,27 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 vanishSequence({submitFormSequence(testShit, useFormDoneLock = false, aid = "e7131723-e7d0-485c-aded-bbe798afdda7")}, "365d7113-246e-44a8-99f1-8f3396639e8f")
             }
         }
+    }
+
+    private suspend fun testDownloads(aid: String, idToFileName: Map<Long, String>) {
+        val fileIDs = idToFileName.keys
+        val ctx = TestGlobal.orderFileIDToDownloadContext
+        for (fileID in fileIDs) {
+            ctx[fileID] = TestDownloadContext()
+
+            kicClick(kics.order.file.download_testRef, subscript = fileID)
+            ctx[fileID]!!.downloadStartedLock.pauseTestFromTest()
+            assertScreenHTML(descr = "downloadStartedLock:orderFileID=$fileID", assertionID = "$aid--downloadStarted-$fileID")
+
+            checkActionDisabled(kics.order.file.download_testRef, fileID)
+            checkActionDisabled(kics.order.file.delete_testRef, fileID)
+            checkActionDisabled(kics.order.file.edit_testRef, fileID)
+        }
+
+        fileIDs.forEach {ctx[it]!!.downloadStartedLock.resumeSutFromTest()}
+        idToFileName.forEach {(id, fileName) -> waitAndCheckDownload(id, fileName)}
+
+        assertScreenHTML(descr = "Everything is downloaded", assertionID = "$aid--everythingDownloaded")
     }
 
     fun pointToSnapshotName(i: Int) = "${this::class.simpleName}-$i"

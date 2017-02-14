@@ -176,15 +176,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIconActive" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="fa fa-trash cunt-header-rightIcon">
+                            <i class="fa fa-trash cunt-header-rightIconDisabled">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="fa fa-pencil cunt-header-rightIcon">
+                            <i class="fa fa-pencil cunt-header-rightIconDisabled">
                             </i>
                           </div>
                         </div>
@@ -249,7 +249,7 @@
                         <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
                         </i>
                         <span>
-                          Рапунцель -- девица-распиздунцель
+                          Рапунцель
                         </span>
                         <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
                           №27
@@ -259,15 +259,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIconActive" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="fa fa-trash cunt-header-rightIcon">
+                            <i class="fa fa-trash cunt-header-rightIconDisabled">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="fa fa-pencil cunt-header-rightIcon">
+                            <i class="fa fa-pencil cunt-header-rightIconDisabled">
                             </i>
                           </div>
                         </div>
@@ -288,7 +288,7 @@
                         Изменен
                       </label>
                       <div>
-                        11.02.2016 20:42:05 (Киев)
+                        07.02.2016 10:42:05 (Киев)
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -297,7 +297,7 @@
                       </label>
                       <div>
                         <span>
-                          fuck you.rtf
+                          lousy writing 9.rtf
                         </span>
                       </div>
                     </div>
@@ -306,7 +306,7 @@
                         Размер
                       </label>
                       <div>
-                        244 Б
+                        2 КБ
                       </div>
                     </div>
                   </div>
@@ -317,7 +317,7 @@
                       </label>
                       <div style="white-space: pre-wrap;">
                         <p>
-                          Реальная история... Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель.
+                          Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель.
                         </p>
                       </div>
                     </div>
@@ -342,15 +342,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIconActive" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="fa fa-trash cunt-header-rightIcon">
+                            <i class="fa fa-trash cunt-header-rightIconDisabled">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="fa fa-pencil cunt-header-rightIcon">
+                            <i class="fa fa-pencil cunt-header-rightIconDisabled">
                             </i>
                           </div>
                         </div>
@@ -1004,5 +1004,11 @@
 
 <div id="pane-whocares">
   <div>
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: 887.725px; top: calc((645.4px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
+    </div>
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: 887.725px; top: calc((468px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
+    </div>
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: 887.725px; top: calc((270.6px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
+    </div>
   </div>
 </div>

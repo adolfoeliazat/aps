@@ -5,7 +5,8 @@ import aps.*
 object fconst {
     val defaultScrollBursts = 8
     val scrollbarWidth = 17
-    val backendURL = "http://127.0.0.1:8080"
+    val backendURL = "http://127.0.0.1:8080" // TODO:vgrechka @unhardcode
+    val testFilesDirAndSlash = "e:\\work\\aps\\back\\testfiles\\" // TODO:vgrechka @unhardcode
 
     object elementID {
         val topNavbarContainer = "topNavbarContainer"
