@@ -179,6 +179,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             }
         }
 
+        // TODO:vgrechka Use safe page and param refs    96996eef-306a-4b0b-b5a2-60f49b5dee06
         suspend fun reloadFilesTab() =
             world.pushNavigate("order.html?id=${order.id}&tab=files"
                                    + "&ordering=${orderingSelect.value.name}"
@@ -189,14 +190,13 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             await(effects).blinkOn(byid(elementID))
             ebafHost.headerControlsDisabled = true
             stripContent.update()
-            TestGlobal.reloadPageTickingLock.resumeTestAndPauseSutFromSut()
+            TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
             try {
                 reloadFilesTab()
             } finally {
                 ebafHost.headerControlsDisabled = false
                 stripContent.update() // TODO:vgrechka Redundant?
-                TestGlobal.loadPageForURLLock.sutPause2()
-                TestGlobal.reloadPageDoneLock.resumeTestAndPauseSutFromSut()
+                TestGlobal.shitDoneLock.resumeTestFromSut()
             }
         }
     }

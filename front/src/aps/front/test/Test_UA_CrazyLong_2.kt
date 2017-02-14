@@ -246,6 +246,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint(4) {
             run { // Ordering
                 assertScreenHTML(aid = "348ddf37-5a1a-44b4-8fb7-1b05a9d35563")
+                twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.ASC)}, "a862fd73-f127-4c23-a1da-ee1e8f82a35e")
             }
         }
     }

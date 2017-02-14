@@ -47,8 +47,8 @@ object TestGlobal {
     val formTickingLock by notNullNamed(TestLock())
     val formDoneLock by notNullNamed(TestLock())
     var browser by notNull<Browser>()
-    val reloadPageTickingLock by notNullNamed(TestLock())
-    val reloadPageDoneLock by notNullNamed(TestLock())
+    val shitHalfwayLock by notNullNamed(TestLock())
+    val shitDoneLock by notNullNamed(TestLock())
     var overriddenClientKind: ClientKind? = null
     val topNavItemTickingLock by notNullNamed(TestLock())
     val topNavItemDoneLock by notNullNamed(TestLock())

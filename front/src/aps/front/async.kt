@@ -150,6 +150,7 @@ suspend fun sleepTillEndOfTime() {
     sleep(Int.MAX_VALUE)
 }
 
+// TODO:vgrechka Kill?
 class TwoStepTestLock(
     val testPause1Timeout: Int = 5000,
     val testPause2Timeout: Int = 5000,

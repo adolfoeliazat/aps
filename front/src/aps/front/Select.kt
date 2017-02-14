@@ -10,14 +10,15 @@ import aps.*
 import into.kommon.*
 import kotlin.js.*
 
-class SelectKey(override val fqn: String) : Fucker(), FQNed
+class SelectKey<E>(override val fqn: String) : Fucker(), FQNed
+where E : Enum<E>, E : Titled
 
 interface ShitWithRenderFunction {
     val render: () -> ReactElement
 }
 
 class Select<E>(
-    val key: SelectKey? = null,
+    val key: SelectKey<E>? = null,
     attrs: Attrs = Attrs(),
     val values: Array<E>,
     val initialValue: E?,
@@ -34,18 +35,18 @@ class Select<E>(
     var blinker: BlinkerOperations? = null
 
     companion object {
-        val instances = mutableMapOf<SelectKey, Select<*>>()
+        val instances = mutableMapOf<SelectKey<*>, Select<*>>()
 
         @Suppress("UNCHECKED_CAST")
-        fun <E> instance(key: SelectKey, values: Array<E>): Select<E>
+        fun <E> instance(key: SelectKey<E>/*, values: Array<E>*/): Select<E>
             where E : Enum<E>, E : Titled
         {
             val select = instances[key] as Select<E>? ?: bitch("No Select keyed `${key.fqn}`")
-            val expectedEnumName = values[0]::class.js.name
-            val actualEnumName = select.values[0]::class.js.name
-            check(expectedEnumName == actualEnumName
-                      && arraysEquals(values, select.values)) {
-                "Select values mismatch. Expected $expectedEnumName, got $actualEnumName"}
+//            val expectedEnumName = values[0]::class.js.name
+//            val actualEnumName = select.values[0]::class.js.name
+//            check(expectedEnumName == actualEnumName
+//                      && arraysEquals(values, select.values)) {
+//                "Select values mismatch. Expected $expectedEnumName, got $actualEnumName"}
             return select
         }
     }
@@ -185,18 +186,18 @@ class Select<E>(
     }
 }
 
-//fun <E> TestScenarioBuilder.selectSetValueDescribingStep(key: String, values: Array<E>, value: E)
-//where E : Enum<E>, E : Titled {
-//    acta("Selecting in `$key`: ${markdownItalicVerbatim(value.title)}") {
-//        val select = Select.instance(key, values)
-//        select.setValueExt(value, notify = true)
-//    }
-//}
+suspend fun <E> selectSetValue(keyRef: TestRef<SelectKey<E>>, value: E)
+where E : Enum<E>, E : Titled {
+    _selectSetValue(keyRef.it, value)
+}
 
 suspend fun <E> selectSetValue(spec: TestRef<SelectFieldSpec<E>>, value: E)
 where E : Enum<E>, E : Titled {
-    val select = Select.instance(FieldSpecToCtrlKey[spec.it], spec.it.values)
-    select.setValueExt(value, notify = true)
+    _selectSetValue(FieldSpecToCtrlKey[spec.it], value)
+}
+
+private suspend fun <E> _selectSetValue(key: SelectKey<E>, value: E) where E : Enum<E>, E : Titled {
+    notAwait {Select.instance(key).setValueExt(value, notify = true)}
 }
 
 
