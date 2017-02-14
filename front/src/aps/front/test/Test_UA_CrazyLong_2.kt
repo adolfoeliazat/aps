@@ -199,34 +199,27 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(3) {
             run { // Download
-                val u = object {
-                    suspend fun checkActionDisabled(key: TestRef<KicKey>, subscript: Any?) {
-                        condition({kicClick(key, subscript)}, TestGlobal.disabledActionHitLock)
-                    }
-                }
-                for (fileID in listOf(26L, 27L, 28L)) {
+                val co = TestGlobal.orderFileIDToDownloadContext
+                val fileIDs = listOf(26L, 27L, 28L)
+                for (fileID in fileIDs) {
                     val ctx = TestDownloadContext()
-                    ctx.downloadStartedLock.reset()
-                    val lockName = "downloadStartedLock:orderFileID=$fileID"
-                    TestGlobal.orderFileIDToDownloadContext[fileID] = ctx
+                    co[fileID] = ctx
 
                     kicClick(kics.order.file.download_testRef, subscript = fileID)
                     ctx.downloadStartedLock.pauseTestFromTest()
-                    assertScreenHTML(descr = lockName, assertionID = "c7d64d50-bca3-439a-b06b-1ac20d3ab0f9--$fileID")
+                    assertScreenHTML(descr = "downloadStartedLock:orderFileID=$fileID", assertionID = "c7d64d50-bca3-439a-b06b-1ac20d3ab0f9--$fileID")
 
-                    u.checkActionDisabled(kics.order.file.download_testRef, fileID)
-                    u.checkActionDisabled(kics.order.file.delete_testRef, fileID)
-                    u.checkActionDisabled(kics.order.file.edit_testRef, fileID)
+                    checkActionDisabled(kics.order.file.download_testRef, fileID)
+                    checkActionDisabled(kics.order.file.delete_testRef, fileID)
+                    checkActionDisabled(kics.order.file.edit_testRef, fileID)
                 }
 
-                for (fileID in listOf(26L, 27L, 28L)) {
-                    TestGlobal.orderFileIDToDownloadContext.getValue(fileID).downloadStartedLock.resumeSutFromTest()
-                }
+                for (fileID in fileIDs)
+                    co[fileID]!!.downloadStartedLock.resumeSutFromTest()
 
-                val ctx = TestGlobal.orderFileIDToDownloadContext.getValue(26L)
-                ctx.bitsReceivedLock.pauseTestFromTest()
-                assertEquals("lousy writing 8.rtf", ctx.shit.fileName)
-                assertEquals(TestData.sha256["lousy writing 8.rtf"], ctx.shit.sha256)
+                waitAndCheckDownload(26L, "lousy writing 8.rtf")
+                waitAndCheckDownload(27L, "lousy writing 9.rtf")
+                waitAndCheckDownload(28L, "lousy writing 10.rtf")
             }
             dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()
             run { // Edit file -- cancel

@@ -3,6 +3,7 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 import into.kommon.*
+import into.mochka.assertEquals
 import kotlin.browser.window
 
 fun isTest(): Boolean = TestGlobal.testRunning
@@ -31,3 +32,38 @@ suspend fun condition(action: suspend () -> Unit, lock: TestLock) {
     action()
     lock.pauseTestFromTest()
 }
+
+suspend fun checkActionDisabled(key: TestRef<KicKey>, subscript: Any?) {
+    condition({kicClick(key, subscript)}, TestGlobal.disabledActionHitLock)
+}
+
+suspend fun waitAndCheckDownload(orderFileID: Long, expectedFileName: String) {
+    val ctx = TestGlobal.orderFileIDToDownloadContext.getValue(orderFileID)
+    ctx.bitsReceivedLock.pauseTestFromTest()
+    assertEquals(expectedFileName, ctx.shit.fileName)
+    assertEquals(TestData.sha256[expectedFileName], ctx.shit.sha256)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
