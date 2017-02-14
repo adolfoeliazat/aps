@@ -220,6 +220,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                         badTextFieldValuesThenValid(fields.shebang.fileDetails_testRef, "Реальная история... " + testdata.rapunzelDetails)
                     ))
                 )
+                testDownloads("68bfe30e-efd6-4f22-93c2-2b249f78ff5a", mapOf(27L to "lousy writing 9.rtf"))
             }
             run { // Edit file -- save, file was changed
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "422ae986-3f93-419c-8dd6-26ae8dedee19")
@@ -227,6 +228,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 fileFieldChoose("fuck you.rtf", "aec4c792-dd9c-4a98-9279-4cd29453ee1d")
                 testShit.imposeNextRequestTimestamp()
                 step({buttonClick(buttons.primary_testRef)}, TestGlobal.modalHiddenLock, "5d4f5e63-95f7-4ec8-b5cd-7e767edd484c")
+                testDownloads("5a0fe187-166f-4db3-b249-b318d4818fa9", mapOf(27L to "fuck you.rtf"))
             }
             run { // Delete file -- no
                 step({kicClick(kics.order.file.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "e0bafefd-c7d5-4803-9f3b-df7f249b69e5")
