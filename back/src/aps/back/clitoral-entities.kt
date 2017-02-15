@@ -139,6 +139,7 @@ class UAOrderFile(
     @Column(length = MAX_STRING) var sha256: String,
     var sizeBytes: Int,
     @Column(length = MAX_BLOB) var content: ByteArray,
+    // @Column(columnDefinition = "tsvector not null") var tsv: Any,
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderId", nullable = false)
     var order: UAOrder

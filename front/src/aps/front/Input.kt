@@ -380,6 +380,10 @@ suspend fun inputSetValue(field: TestRef<IntFieldSpec>, value: String) {
     inputSetValue(FieldSpecToCtrlKey[field.it], value)
 }
 
+suspend fun inputSetValue(key: TestRef<InputKey>, value: String) {
+    inputSetValue(key.it, value)
+}
+
 suspend fun inputSetValue(key: InputKey, value: String) {
     Input.instance(key).testSetValue(value)
 }
@@ -414,15 +418,12 @@ suspend fun inputAppendValue(key: InputKey, value: String) {
 //    }
 //}
 
-fun TestScenarioBuilder.inputPressEnter(key: String) {
-    imf("reimplement inputPressEnter")
-//    act("Pressing Enter in `$key`") {
-//        Input.instance(key).keyDown(json(
-//            "keyCode" to 13,
-//            "preventDefault" to {},
-//            "stopPropagation" to {}
-//        ).asDynamic())
-//    }
+suspend fun inputPressEnter(key: TestRef<InputKey>) {
+    Input.instance(key.it).keyDown(json(
+        "keyCode" to 13,
+        "preventDefault" to {},
+        "stopPropagation" to {}
+    ).asDynamic())
 }
 
 

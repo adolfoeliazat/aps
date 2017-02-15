@@ -121,42 +121,8 @@ testProcedure(
     {RecreateTestDatabaseSchemaRequest()},
     needsDB = false,
     runShit = fun(ctx, req): GenericResponse {
-        springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
-//        val beanFactory = springctx.beanFactory as BeanDefinitionRegistry
-//        beanFactory.removeBeanDefinition("transactionManager")
-//        beanFactory.removeBeanDefinition("entityManagerFactory")
-//        val beanFactory = springctx.beanFactory as DefaultListableBeanFactory
-//        beanFactory.destroySingleton("transactionManager")
-//        beanFactory.destroySingleton("entityManagerFactory")
-
-//        val templateDB =
-//            req.snapshotID.value?.let {DB.apsTestSnapshotOnTestServer(it)}
-//            ?: req.templateDB.value?.let {DB.byID(it)}
-//
-//        val db = DB.apsTestOnTestServer
-//        if (templateDB == null) {
-//            db.recreateSchema()
-//            db.joo {q->
-//                USERS.let {
-//                    tracingSQL("Insert Dasja") {q
-//                        .insertInto(USERS)
-//                        .set(it.INSERTED_AT, RequestGlobus.stamp)
-//                        .set(it.UPDATED_AT, RequestGlobus.stamp)
-//                        .set(it.EMAIL, "dasja@test.shit.ua")
-//                        .set(it.KIND, JQUserKind.ADMIN)
-//                        .set(it.LANG, ctx.lang.name)
-//                        .set(it.STATE, UserState.COOL.name)
-//                        .set(it.PASSWORD_HASH, BCrypt.hashpw("dasjasecret", BCrypt.gensalt()))
-//                        .set(it.FIRST_NAME, "Дася")
-//                        .set(it.LAST_NAME, "Админовна")
-//                        .set(it.ADMIN_NOTES, "")
-//                        .execute()
-//                    }
-//                }
-//            }
-//        } else {
-//            db.recreate(template = templateDB)
-//        }
+        springctx = AnnotationConfigApplicationContext(AppConfig::class.java) // New context -- new EMF
+        enhanceDBSchema()
         return GenericResponse()
     }
 )

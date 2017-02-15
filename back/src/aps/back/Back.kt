@@ -38,6 +38,8 @@ import net.bytebuddy.matcher.ElementMatchers
 import org.reflections.scanners.SubTypesScanner
 import java.beans.Introspector
 import java.lang.reflect.Modifier
+import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
 import kotlin.properties.Delegates.notNull
 import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
@@ -90,6 +92,8 @@ fun reallyBoot() {
         }
     }
 
+    enhanceDBSchema()
+
     val port = (System.getenv("PORT") ?: "8080").toInt()
     Server(port).apply {
         handler = ServletHandler().apply {
@@ -101,6 +105,7 @@ fun reallyBoot() {
         join()
     }
 }
+
 
 private fun selfSanityCheck() {
     val clazz = User::class.java

@@ -36,6 +36,7 @@ import java.util.*
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.Executor
 import javax.annotation.Generated
+import javax.persistence.EntityManagerFactory
 
 val PG_LOCAL_DATE_TIME = DateTimeFormatterBuilder()
     .parseCaseInsensitive()
@@ -369,6 +370,49 @@ class PostgresJSONBJacksonJsonNodeConverter : Converter<Any?, JsonNode> {
     }
 }
 
+fun enhanceDBSchema() {
+    // TODO:vgrechka Check if necessary columns/indexes are already there
+    val emf = springctx.getBean(EntityManagerFactory::class.java)
+    val em = emf.createEntityManager()
+    em.transaction.begin()
+    try {
+        val forTest = true
+        if (forTest) {
+            em.createNativeQuery("""
+                drop function if exists ua_order_files__tsv_trigger();
+            """).executeUpdate()
+        }
+
+        val q = em.createNativeQuery("""
+            alter table ua_order_files add column tsv tsvector not null;
+            create index ua_order_files__tsv_idx on ua_order_files using gin (tsv);
+
+            create function ua_order_files__tsv_trigger() returns trigger as $$
+            begin
+              new.tsv \:=
+                 setweight(to_tsvector('pg_catalog.russian', ' '
+                     ||' '|| regexp_replace(coalesce(new.name, ''), '\..*$', '')
+                     ||' '|| coalesce(new.title, '')
+                     ),'A')
+                 ||
+                 setweight(to_tsvector('pg_catalog.russian', ' '
+                     ||' '|| coalesce(new.details, '')
+                     ),'B')
+              ;
+              return new;
+            end
+            $$ language plpgsql;
+
+            create trigger ua_order_files__tsvector_update
+                before insert or update on ua_order_files
+                for each row execute procedure ua_order_files__tsv_trigger();
+        """)
+        q.executeUpdate()
+    } finally {
+        em.transaction.commit()
+        em.close()
+    }
+}
 
 
 

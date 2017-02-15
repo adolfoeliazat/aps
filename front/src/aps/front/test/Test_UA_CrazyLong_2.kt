@@ -19,7 +19,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 4
+    val startPoint = 1
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -234,13 +234,16 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(4) {
             run { // Ordering
-                assertScreenHTML(aid = "348ddf37-5a1a-44b4-8fb7-1b05a9d35563")
-                twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.ASC)}, "a862fd73-f127-4c23-a1da-ee1e8f82a35e")
-                testShowMore("c69f27bc-e9fe-4a4f-a9fd-c630f2904d6a")
-                scrollBodyToTopGradually()
-                twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.DESC)}, "be35468d-07f9-4f6b-8060-1d5cfec18ec7")
-                testShowMore("284f44ce-5650-46b7-a7cb-f0e3553bdee4")
-                scrollBodyToTopGradually()
+//                assertScreenHTML(aid = "348ddf37-5a1a-44b4-8fb7-1b05a9d35563")
+//                twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.ASC)}, "a862fd73-f127-4c23-a1da-ee1e8f82a35e")
+//                testShowMore("c69f27bc-e9fe-4a4f-a9fd-c630f2904d6a")
+//                scrollBodyToTopGradually()
+//                twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.DESC)}, "be35468d-07f9-4f6b-8060-1d5cfec18ec7")
+//                testShowMore("284f44ce-5650-46b7-a7cb-f0e3553bdee4")
+//                scrollBodyToTopGradually()
+
+                inputSetValue(inputs.search_testRef, "рапунцель")
+                inputPressEnter(inputs.search_testRef)
             }
         }
     }

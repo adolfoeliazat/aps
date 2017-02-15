@@ -119,6 +119,8 @@
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/args4j-2.33.jar!/OSGI-OPT/src" />
       <root url="jar://$PROJECT_DIR$/back/lib-gradle/closure-compiler-v20161024.jar!/OSGI-OPT/src" />
       <root url="jar://$USER_HOME$/.ideaLibSources/h2-1.4.193-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/hibernate-core-5.2.6.Final-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
