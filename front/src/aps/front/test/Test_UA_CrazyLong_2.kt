@@ -19,7 +19,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 4
+    val startPoint = 5
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -250,7 +250,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 testSearch("рапунцель | вдова & казак", "0319435d-2ae0-491d-894a-c36d2cefdc3b")
                 testSearch("15 | рапунцель | вдова & казак", "74816e98-e007-48c7-b139-3b11c4abb46d")
                 testSearch("", "73c164df-df82-4d92-befc-93bf1ee49790")
+
+                quickTabSequence(tabs.order.params_testRef)
             }
+        }
+
+        definePoint(5) {
+            assertScreenHTML(aid = "9459385d-4fe1-49b8-a403-6f265c758e8c")
         }
     }
 

@@ -422,10 +422,12 @@ suspend fun pauseAssertResume(lock: TestLock, aid: String, descr: String? = null
     lock.resumeSutFromTest()
 }
 
-class PauseAssertResumeStep(
-    val lock: TestLock,
-    val aid: String) : SequenceStep
-{
+suspend fun pauseResume(lock: TestLock) {
+    lock.pauseTestFromTest()
+    lock.resumeSutFromTest()
+}
+
+class PauseAssertResumeStep(val lock: TestLock, val aid: String) : SequenceStep {
     override val descr = NamesOfThings[lock] ?: "some lock"
 
     suspend override fun beforeAnySteps() {
@@ -434,6 +436,18 @@ class PauseAssertResumeStep(
 
     suspend override fun act(descr: String, aopts: AssertScreenOpts?) {
         pauseAssertResume(lock, aid = aid, descr = descr, aopts = aopts)
+    }
+}
+
+class PauseResumeStep(val lock: TestLock) : SequenceStep {
+    override val descr = NamesOfThings[lock] ?: "some lock"
+
+    suspend override fun beforeAnySteps() {
+        lock.reset()
+    }
+
+    suspend override fun act(descr: String, aopts: AssertScreenOpts?) {
+        pauseResume(lock)
     }
 }
 

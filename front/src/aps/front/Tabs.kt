@@ -106,6 +106,13 @@ suspend fun tabSequence(tab: TestRef<TabKey>, aidHalfway: String, aidDone: Strin
                  PauseAssertResumeStep(TestGlobal.switchTabDoneLock, aidDone)))
 }
 
+suspend fun quickTabSequence(tab: TestRef<TabKey>) {
+    sequence({tabClick(tab)},
+             steps = listOf(
+                 PauseResumeStep(TestGlobal.switchTabHalfwayLock),
+                 PauseResumeStep(TestGlobal.switchTabDoneLock)))
+}
+
 
 
 
