@@ -40,9 +40,13 @@ open class AppConfig {
         o.dataSource = dataSource
     }
 
-    @Bean open fun dataSource() = JdbcDataSource()-{o->
-        o.setURL("jdbc:h2:mem:pizdabase;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false") // XXX This DB_* shit is actually needed
-        o.user = "sa"
+    @Bean open fun dataSource(): DataSource {
+        val db = DB.apsTestOnTestServer
+        return db.ds
+//        return JdbcDataSource()-{o->
+//            o.setURL("jdbc:h2:mem:pizdabase;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false") // XXX This DB_* shit is actually needed
+//            o.user = "sa"
+//        }
     }
 
     @Bean open fun transactionManager(emf: EntityManagerFactory) = JpaTransactionManager()-{o->

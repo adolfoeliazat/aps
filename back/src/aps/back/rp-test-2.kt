@@ -18,7 +18,7 @@ class TestState {
     var browseroidName by notNull<String>()
     var href by notNull<String>()
     var token: String? = null
-    var sqlCommands by notNull<List<String>>()
+    var sqlFileName by notNull<String>()
     var nextRequestTimestampIndex by notNull<Int>()
 }
 
@@ -30,23 +30,32 @@ class TestState {
             bpc = bpc,
             makeRequest = {TestTakeTestPointSnapshotRequest()},
             runShit = fun(ctx, req: TestTakeTestPointSnapshotRequest): TestTakeTestPointSnapshotRequest.Response {
-                snapshotFile(req.snapshotName.value).writeText(
+                val snapshotName = req.snapshotName.value
+
+                val PG_HOME = getenv("PG_HOME") ?: die("No fucking PG_HOME")
+                val sqlFileName = snapshotDBDumpFile(snapshotName)
+                val res = runProcessAndWait(listOf(
+                    "$PG_HOME\\bin\\pg_dump.exe",
+                    // "--data-only",
+                    "--clean",
+                    "--no-owner",
+                    "--host=127.0.0.1",
+                    "--port=5433",
+                    "--username=postgres",
+                    "--no-password",
+                    "--file=$sqlFileName",
+                    "aps-test"
+                ))
+
+                if (res.exitValue != 0) die("pg_dump said us 'fuck you'")
+                snapshotJSONFile(snapshotName).writeText(
                     objectMapper.writeValueAsString(TestState()-{o->
-                        o.snapshotName = req.snapshotName.value
+                        o.snapshotName = snapshotName
                         o.browseroidName = req.browseroidName.value
                         o.token = req.token.value
                         o.href = req.href.value
                         o.nextRequestTimestampIndex = req.nextRequestTimestampIndex.value
-                        o.sqlCommands = run {
-                            val em = emf.createEntityManager()
-                            em.transaction.begin()
-                            try {
-                                cast(em.createNativeQuery("script").resultList)
-                            } finally {
-                                em.transaction.rollback()
-                                em.close()
-                            }
-                        }
+                        o.sqlFileName = sqlFileName
                     })
                 )
                 return TestTakeTestPointSnapshotRequest.Response()
@@ -61,19 +70,21 @@ class TestState {
             bpc = bpc,
             makeRequest = {TestRestoreTestPointSnapshotRequest()},
             runShit = fun(ctx, req: TestRestoreTestPointSnapshotRequest): TestRestoreTestPointSnapshotRequest.Response {
-                val testState = objectMapper.readValue(snapshotFile(req.snapshotName.value), TestState::class.java)
+                val snapshotName = req.snapshotName.value
+                val testState = objectMapper.readValue(snapshotJSONFile(snapshotName), TestState::class.java)
 
-                val ds = springctx.getBean(DataSource::class.java)
-                ds.connection.use {con->
-                    testState
-                        .sqlCommands
-                        .filter {it.toLowerCase().startsWith("insert into ")}
-                        .reversed()
-                        .forEach {sql->
-                            clog("Restoring: $sql")
-                            con.prepareStatement(sql).use(PreparedStatement::execute)
-                        }
-                }
+                val PG_HOME = getenv("PG_HOME") ?: die("No fucking PG_HOME")
+                val sqlFileName = snapshotDBDumpFile(snapshotName)
+                val res = runProcessAndWait(listOf(
+                    "$PG_HOME\\bin\\psql.exe",
+                    "--host=127.0.0.1",
+                    "--port=5433",
+                    "--username=postgres",
+                    "--no-password",
+                    "--dbname=aps-test",
+                    "--file=$sqlFileName"
+                ))
+                if (res.exitValue != 0) die("psql said us 'fuck you'")
 
                 return TestRestoreTestPointSnapshotRequest.Response(
                     browseroidName = testState.browseroidName,
@@ -86,9 +97,14 @@ class TestState {
     }
 }
 
-private fun snapshotFile(snapshotName: String) =
-    File("${const.file.APS_TEMP}/snapshot-$snapshotName.json")
+private fun snapshotJSONFile(snapshotName: String) =
+    File(snapshotFileNameBase(snapshotName) + ".json")
 
+private fun snapshotDBDumpFile(snapshotName: String) =
+    snapshotFileNameBase(snapshotName) + ".sql"
+
+private fun snapshotFileNameBase(snapshotName: String) =
+    "${const.file.APS_TEMP}/snapshot-$snapshotName"
 
 @Servant class ServeTestSQLFiddle : BitchyProcedure() {
     override fun serve() {
@@ -185,35 +201,11 @@ private fun snapshotFile(snapshotName: String) =
 
 
 
-//@RemoteProcedureFactory fun serveTestTakeSnapshot() = testProcedure(
-//    {TestTakeSnapshotRequest()},
-//    needsDB = true,
-//    runShit = fun(ctx, req): TestTakeSnapshotRequest.Response {
-//        dwarnStriking("Taking snapshot: ${req.name.value} @ ${req.url.value}")
-////        KEY_VALUE_STORE.let {t->
-////            ctx.insertShit("Store URL", t) {it
-////                .set(t.KEY, bconst.kvs.test.snapshotURL)
-////                .set(t.VALUE, objectMapper.valueToTree<JsonNode>(req.url.value))
-////                .onConflict(t.KEY)
-////                .doUpdate()
-////                .set(t.VALUE, objectMapper.valueToTree<JsonNode>(req.url.value))
-////                .execute()
-////            }
-////        }
-//        DB.apsTestSnapshotOnTestServer(req.name.value).recreate(template = DB.apsTestOnTestServer)
-//        return TestTakeSnapshotRequest.Response()
-//    }
-//)
-//
-//@RemoteProcedureFactory fun serveTestLoadSnapshot() = testProcedure(
-//    {TestLoadSnapshotRequest()},
-//    needsDB = true,
-//    runShit = fun(ctx, req): TestLoadSnapshotRequest.Response {
-//        val rec = tracingSQL("Load snapshot") {
-//            ctx.q.fetchOne(KEY_VALUE_STORE, KEY_VALUE_STORE.KEY.eq(bconst.kvs.test.snapshotURL))
-//        }
-//        val url = objectMapper.treeToValue(rec.value, String::class.java)
-//        dwarnStriking("Snapshot URL: $url")
-//        return TestLoadSnapshotRequest.Response(url)
-//    }
-//)
+
+
+
+
+
+
+
+
