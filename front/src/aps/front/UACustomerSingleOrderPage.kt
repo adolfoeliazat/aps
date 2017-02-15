@@ -35,10 +35,23 @@ class UACustomerSingleOrderPage(val world: World) {
             is ZimbabweResponse.Hunky -> res.meat.order
         }
 
-        hint = Placeholder(when (order.state) {
-            UAOrderState.CUSTOMER_DRAFT -> renderCustomerDraftHint()
-            else -> NOTRE
-        })
+        hint = Placeholder(
+            when (order.state) {
+                UAOrderState.CUSTOMER_DRAFT -> renderCustomerDraftHint()
+
+                UAOrderState.WAITING_ADMIN_APPROVAL -> run {
+                    val c = css.orderPage.customer.waitingAdminApprovalHint
+                    kdiv(className = c.container){o->
+                        o- kdiv(className = c.message){o->
+                            o- ki(className = c.icon + " " + fa.hourglassHalf)
+                            o- t("TOTE", "Мы проверяем заказ и скоро тебе позвоним")
+                        }
+                    }
+                }
+
+                else -> NOTRE
+            }
+        )
 
         val tabs = listOf(
             ParamsTab(world, order),

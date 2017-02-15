@@ -77,29 +77,26 @@ object css {
 
     object orderPage : Group(null) {
         object customer : Group(null) {
+            val containerBase = """
+                margin-top: -0.5em;
+                padding-top: 0.25em; padding-bottom: 0.25em;
+                padding-left: 0.5em; padding-right: 0;
+                display: flex;
+                align-items: center;
+                min-height: 40.6px;
+            """
+
+            object waitingAdminApprovalHint : Group(null) {
+                val container by Style("$containerBase; background-color: ${Color.LIGHT_GREEN_100};")
+                val message by Style("flex-grow: 1;")
+                val icon by Style("margin-right: 0.5em;")
+            }
+
             object draftHint : Group(null) {
-                val containerBase = """
-                    margin-top: -0.5em;
-                    padding: 0.25em;
-                    padding-right: 0;
-                    display: flex;
-                    align-items: center;
-                """
-                val container by Style("""
-                    $containerBase
-                    background-color: ${Color.BLUE_GRAY_50};
-                """)
-                val containerBusy by Style("""
-                    $containerBase
-                    background-color: ${Color.WHITE};
-                """)
-
-                val message by Style("""
-                    flex-grow: 1;
-                """)
-
-                val button by Style("""
-                """)
+                val container by Style("$containerBase background-color: ${Color.BLUE_GRAY_50};")
+                val containerBusy by Style("$containerBase background-color: ${Color.WHITE}; padding-left: 0;")
+                val message by Style("flex-grow: 1;")
+                val button by Style("")
             }
         }
     }

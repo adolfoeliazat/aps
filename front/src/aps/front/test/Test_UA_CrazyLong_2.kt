@@ -3,7 +3,10 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 import into.kommon.*
+import org.w3c.dom.events.Event
+import org.w3c.dom.events.KeyboardEvent
 import org.w3c.files.File
+import kotlin.browser.window
 
 // TODO:vgrechka Use paths from pageSpecs in URLs
 // TODO:vgrechka Test case: File download error
@@ -258,8 +261,23 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(5) {
             assertScreenHTML(aid = "9459385d-4fe1-49b8-a403-6f265c758e8c")
+//            waitNKey()
             buttonClick(buttons.sendForApproval_testRef)
         }
+    }
+
+    private suspend fun waitNKey() {
+        val lock = ResolvableShit<Unit>()
+        val lis = fun(e: Event) {
+            e as KeyboardEvent
+            when (e.key) {
+                "n" -> lock.resolve()
+            }
+        }
+        window.addEventListener("keydown", lis)
+        clog(">>>>>>>>>> Press freaking `n` key...")
+        lock.wait()
+        window.removeEventListener("keydown", lis)
     }
 
     private suspend fun testOrdering(ordering: Ordering, aid: String) {

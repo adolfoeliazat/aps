@@ -115,6 +115,7 @@ class ResolvableShit<T> {
     fun reject(e: Throwable) = _reject(e)
 
     suspend fun get(): T = await(promise)
+    suspend fun wait(): T = await(promise)
 
     fun reset() {
         if (hasPromise) {
