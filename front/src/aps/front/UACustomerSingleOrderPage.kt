@@ -19,6 +19,8 @@ class UACustomerSingleOrderPage(val world: World) {
     }
 
     var orderID by notNullOnce<String>()
+    var hint by notNullOnce<Placeholder>()
+    var order by notNullOnce<UAOrderRTO>()
 
     suspend fun load() {
         orderID = urlQuery.id.get(world) ?: return world.setShittyParamsPage()
@@ -28,10 +30,15 @@ class UACustomerSingleOrderPage(val world: World) {
         val res = await(send(world.token, LoadUAOrderRequest()-{o->
             o.id.value = orderID
         }))
-        val order = when (res) {
+        order = when (res) {
             is ZimbabweResponse.Shitty -> return world.setShittyResponsePage(res)
             is ZimbabweResponse.Hunky -> res.meat.order
         }
+
+        hint = Placeholder(when (order.state) {
+            UAOrderState.CUSTOMER_DRAFT -> renderCustomerDraftHint()
+            else -> NOTRE
+        })
 
         val tabs = listOf(
             ParamsTab(world, order),
@@ -58,15 +65,7 @@ class UACustomerSingleOrderPage(val world: World) {
             }),
 
             body = kdiv{o->
-                if (order.state == UAOrderState.CUSTOMER_DRAFT) {
-                    val c = css.orderPage.customer.draftHint
-                    o- kdiv(className = c.container){o->
-                        o- kdiv(className = c.message){o->
-                            o- t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...")
-                        }
-                        o- Button(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = buttons.sendForApproval)
-                    }
-                }
+                o- hint
                 o- h4(marginBottom = "0.7em"){o->
                     o- order.title
                 }
@@ -79,6 +78,37 @@ class UACustomerSingleOrderPage(val world: World) {
                 )
             }
         ))
+    }
+
+    private fun renderCustomerDraftHint(busy: Boolean = false): ElementBuilder {
+        val c = css.orderPage.customer.draftHint
+        return kdiv(className = if (busy) c.containerBusy else c.container){o->
+            o- kdiv(className = c.message){o->
+                if (busy) {
+                    o- renderTicker()
+                } else {
+                    o- t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...")
+                }
+            }
+            o- Button(title = t("TOTE", "Отправить на проверку"), disabled = busy, level = Button.Level.PRIMARY, key = buttons.sendForApproval, onClicka = {onSendForApproval()})
+        }
+    }
+
+    private suspend fun onSendForApproval() {
+        hint.setContent(renderCustomerDraftHint(busy = true))
+        val res = send(UACustomerSendOrderDraftForApprovalRequest()-{o->
+            o.orderID.value = order.id
+        })
+        // TODO:vgrechka Locks
+        // TODO:vgrechka Safe URLs
+        exhaustive/when (res) {
+            is FormResponse2.Hunky -> {
+                world.pushNavigate("order.html?id=$orderID")
+            }
+            is FormResponse2.Shitty -> {
+                imf("Handle shitty response in onSendForApproval")
+            }
+        }
     }
 
     suspend fun clickOnTab(key: TabKey) {

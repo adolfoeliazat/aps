@@ -6,7 +6,8 @@ import into.kommon.*
 import org.w3c.files.File
 
 // TODO:vgrechka Use paths from pageSpecs in URLs
-// TODO:vgrechka Test file download error
+// TODO:vgrechka Test case: File download error
+// TODO:vgrechka Test case: Unexpected backend error when sending order for approval
 
 class Test_UA_CrazyLong_2 : FuckingScenario() {
     // http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_2&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=false&handPauses=true
@@ -257,6 +258,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(5) {
             assertScreenHTML(aid = "9459385d-4fe1-49b8-a403-6f265c758e8c")
+            buttonClick(buttons.sendForApproval_testRef)
         }
     }
 

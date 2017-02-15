@@ -95,6 +95,20 @@ import java.util.*
     }
 }
 
+@Servant class ServeUACustomerSendOrderDraftForApproval(val orderRepo: UAOrderRepository) : BitchyProcedure() {
+    override fun serve() {
+        fuckCustomer(FuckCustomerParams(
+            bpc = bpc, makeRequest = {UACustomerSendOrderDraftForApprovalRequest()},
+            runShit = fun(ctx, req): UACustomerSendOrderDraftForApprovalRequest.Response {
+                // TODO:vgrechka @security Check permissions
+                val order = orderRepo.findOrDie(req.orderID.value)
+                order.state = UAOrderState.WAITING_ADMIN_APPROVAL
+                return UACustomerSendOrderDraftForApprovalRequest.Response()
+            }
+        ))
+    }
+}
+
 
 
 

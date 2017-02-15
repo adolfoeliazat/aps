@@ -78,13 +78,20 @@ object css {
     object orderPage : Group(null) {
         object customer : Group(null) {
             object draftHint : Group(null) {
-                val container by Style("""
+                val containerBase = """
                     margin-top: -0.5em;
-                    background-color: ${Color.BLUE_GRAY_50};
                     padding: 0.25em;
                     padding-right: 0;
                     display: flex;
                     align-items: center;
+                """
+                val container by Style("""
+                    $containerBase
+                    background-color: ${Color.BLUE_GRAY_50};
+                """)
+                val containerBusy by Style("""
+                    $containerBase
+                    background-color: ${Color.WHITE};
                 """)
 
                 val message by Style("""

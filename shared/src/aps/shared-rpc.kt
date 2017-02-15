@@ -198,7 +198,10 @@ class UADownloadOrderFileRequest : RequestMatumba() {
     val fileID by longHiddenField()
 }
 
-
+class UACustomerSendOrderDraftForApprovalRequest : RequestMatumba() {
+    class Response : CommonResponseFieldsImpl()
+    val orderID by longHiddenField()
+}
 
 
 
