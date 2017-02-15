@@ -20,6 +20,7 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 object TestGlobal {
+    var skipAllFreakingAssertions = false
     val shameToControl = mutableMapOf<String, dynamic>()
     var minimalGertrude = false
     lateinit var loadPageForURL_href: String

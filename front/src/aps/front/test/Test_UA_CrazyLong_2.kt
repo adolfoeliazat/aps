@@ -255,14 +255,18 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 testSearch("15 | рапунцель | вдова & казак", "74816e98-e007-48c7-b139-3b11c4abb46d")
                 testSearch("", "73c164df-df82-4d92-befc-93bf1ee49790")
 
-                quickTabSequence(tabs.order.params_testRef)
+                tabSequence(tabs.order.params_testRef, "7b88a344-664d-4538-93a3-c32e3915d37e", "23ad0d51-e956-4b5a-8882-f7cec0302f9d")
             }
         }
 
         definePoint(5) {
+            TestGlobal.skipAllFreakingAssertions = true
             assertScreenHTML(aid = "9459385d-4fe1-49b8-a403-6f265c758e8c")
 //            waitNKey()
-            buttonClick(buttons.sendForApproval_testRef)
+            twoStepSequence({buttonClick(buttons.sendForApproval_testRef)}, "7293affa-0102-4cca-935c-b5a2adc66692")
+            tabSequence(tabs.order.files_testRef,
+                        aidHalfway = "e5515942-f102-4f21-85a3-1d3b71f3c715",
+                        done = DescribedAssertionID("No file modification controls", "754ffb00-fad3-4d66-97a4-db82485599f1"))
         }
     }
 

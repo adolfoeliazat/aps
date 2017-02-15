@@ -128,7 +128,9 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                                 ctx.hasUser = false
                             } else {
                                 ctx.token = token
-                                ctx.user_killme = userByToken2(ctx.token)
+                                val u = userByToken2(ctx.token)
+                                ctx.user = u
+                                ctx.user_killme = u.toRTO()
                                 if (!spec.userKinds.contains(ctx.user_killme.kind))
                                     bitch("User kind not allowed: ${ctx.user_killme.kind}")
                                 ctx.hasUser = true
@@ -289,11 +291,11 @@ fun userByToken(q: DSLContext, token: String): UserRTO {
     return rows[0].toRTO(q)
 }
 
-fun userByToken2(token: String): UserRTO {
+fun userByToken2(token: String): User {
     val repo = springctx.getBean(UserTokenRepository::class.java)
     val ut = repo.findByToken(token) ?: bitch("Invalid token")
     val user = ut.user!!
-    return user.toRTO()
+    return user
 }
 
 

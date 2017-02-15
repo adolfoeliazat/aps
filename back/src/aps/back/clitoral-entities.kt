@@ -164,7 +164,10 @@ class UAOrderFile(
                 searchWords.isEmpty() -> listOf()
                 else -> luceneHighlightRanges(details, searchWords, analyzer)
             },
-            editable = true,
+            editable = run {
+                check(RequestGlobus.procedureCtx.user!!.kind == UserKind.CUSTOMER) // TODO:vgrechka Generalize
+                order.state == UAOrderState.CUSTOMER_DRAFT
+            },
             nameHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
                 else -> luceneHighlightRanges(name.chopOffFileExtension(), searchWords, analyzer)

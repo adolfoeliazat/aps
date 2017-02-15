@@ -418,7 +418,8 @@ class DumbStep(val block: suspend () -> Unit) : SequenceStep {
 
 suspend fun pauseAssertResume(lock: TestLock, aid: String, descr: String? = null, aopts: AssertScreenOpts? = null) {
     lock.pauseTestFromTest()
-    assertScreenHTML(descr ?: "Describe me", aid = aid, opts = aopts)
+    if (!TestGlobal.skipAllFreakingAssertions)
+        assertScreenHTML(descr ?: "Describe me", aid = aid, opts = aopts)
     lock.resumeSutFromTest()
 }
 
@@ -427,15 +428,18 @@ suspend fun pauseResume(lock: TestLock) {
     lock.resumeSutFromTest()
 }
 
-class PauseAssertResumeStep(val lock: TestLock, val aid: String) : SequenceStep {
-    override val descr = NamesOfThings[lock] ?: "some lock"
+fun PauseAssertResumeStep(lock: TestLock, aid: String) =
+    PauseAssertResumeStep(lock, DescribedAssertionID(aid = aid, descr = null))
+
+class PauseAssertResumeStep(val lock: TestLock, val daid: DescribedAssertionID) : SequenceStep {
+    override val descr = daid.descr ?: NamesOfThings[lock] ?: "some lock"
 
     suspend override fun beforeAnySteps() {
         lock.reset()
     }
 
     suspend override fun act(descr: String, aopts: AssertScreenOpts?) {
-        pauseAssertResume(lock, aid = aid, descr = descr, aopts = aopts)
+        pauseAssertResume(lock, aid = daid.aid, descr = descr, aopts = aopts)
     }
 }
 

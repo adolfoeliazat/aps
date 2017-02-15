@@ -108,6 +108,7 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
         val ctx = ProcedureContext()
 
         init {
+            RequestGlobus.procedureCtx = ctx
             try {
                 p.bpc.servletRequest.characterEncoding = "UTF-8"
                 val requestJSON = p.bpc.servletRequest.reader.readText()
@@ -150,7 +151,9 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                                 ctx.hasUser = false
                             } else {
                                 ctx.token = token
-                                ctx.user_killme = userByToken2(ctx.token)
+                                val u = userByToken2(ctx.token)
+                                ctx.user = u
+                                ctx.user_killme = u.toRTO()
                                 if (!p.userKinds.contains(ctx.user_killme.kind))
                                     bitch("User kind not allowed: ${ctx.user_killme.kind}")
                                 ctx.hasUser = true

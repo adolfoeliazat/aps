@@ -7,6 +7,8 @@ import aps.const.text.symbols.nbsp
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
 
+// TODO:vgrechka Safe URLs
+
 interface CustomerSingleUAOrderPageTab {
     val tabSpec: TabSpec
     fun load(): Promisoid<ZimbabweResponse.Shitty<*>?>
@@ -109,14 +111,15 @@ class UACustomerSingleOrderPage(val world: World) {
 
     private suspend fun onSendForApproval() {
         hint.setContent(renderCustomerDraftHint(busy = true))
+        TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
+
         val res = send(UACustomerSendOrderDraftForApprovalRequest()-{o->
             o.orderID.value = order.id
         })
-        // TODO:vgrechka Locks
-        // TODO:vgrechka Safe URLs
         exhaustive/when (res) {
             is FormResponse2.Hunky -> {
                 world.pushNavigate("order.html?id=$orderID")
+                TestGlobal.shitDoneLock.resumeTestFromSut()
             }
             is FormResponse2.Shitty -> {
                 imf("Handle shitty response in onSendForApproval")

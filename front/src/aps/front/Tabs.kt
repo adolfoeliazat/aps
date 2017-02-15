@@ -99,11 +99,23 @@ suspend fun tabClick(ref: TestRef<TabKey>) {
     Tabs2.instance(ref.it).click()
 }
 
-suspend fun tabSequence(tab: TestRef<TabKey>, aidHalfway: String, aidDone: String) {
+class DescribedAssertionID(val descr: String?, val aid: String)
+
+suspend fun tabSequence(tab: TestRef<TabKey>, halfway: DescribedAssertionID, done: DescribedAssertionID) {
     sequence({tabClick(tab)},
              steps = listOf(
-                 PauseAssertResumeStep(TestGlobal.switchTabHalfwayLock, aidHalfway),
-                 PauseAssertResumeStep(TestGlobal.switchTabDoneLock, aidDone)))
+                 PauseAssertResumeStep(TestGlobal.switchTabHalfwayLock, halfway),
+                 PauseAssertResumeStep(TestGlobal.switchTabDoneLock, done)))
+}
+
+suspend fun tabSequence(tab: TestRef<TabKey>, aidHalfway: String, aidDone: String) {
+    tabSequence(tab, halfway = DescribedAssertionID(descr = "Describe halfway", aid = aidHalfway),
+                     done = DescribedAssertionID(descr = "Describe done", aid = aidDone))
+}
+
+suspend fun tabSequence(tab: TestRef<TabKey>, aidHalfway: String, done: DescribedAssertionID) {
+    tabSequence(tab, halfway = DescribedAssertionID(descr = "Describe halfway", aid = aidHalfway),
+                     done = done)
 }
 
 suspend fun quickTabSequence(tab: TestRef<TabKey>) {

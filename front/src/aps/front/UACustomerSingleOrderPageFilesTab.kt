@@ -8,6 +8,8 @@ import org.w3c.dom.HTMLIFrameElement
 import kotlin.js.json
 import kotlin.properties.Delegates.notNull
 
+// TODO:vgrechka Kill plusFormContainer and related shit
+
 class TestDownloadContext {
     val downloadStartedLock by notNullNamed(TestLock(virgin = true))
     val bitsReceivedLock by notNullNamed(TestLock(virgin = true))
@@ -147,7 +149,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     o- searchInput
                     o- ki(className = "${fa.search}", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
                 }
-                if (order.state != UAOrderState.CUSTOMER_DRAFT) {
+                val showFilter = when (order.state) {
+                    UAOrderState.CUSTOMER_DRAFT, UAOrderState.WAITING_ADMIN_APPROVAL -> false
+                    else -> true
+                }
+                if (showFilter) {
                     o- filterSelect
                 }
                 o- orderingSelect
@@ -157,24 +163,25 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     asu {reload(refreshButtonID)}
                 }
 
-//                o- ebafPlus.renderButton()
-                o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = buttons.plus) {
-                    openEditModal(
-                        title = t("TOTE", "Новый файл"),
-                        formSpec = FormSpec<UACreateOrderFileRequest, UACreateOrderFileRequest.Response>(
-                            ui = world,
-                            req = UACreateOrderFileRequest()-{o->
-                                o.orderID.value = order.id
+                if (order.state == UAOrderState.CUSTOMER_DRAFT) {
+                    o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = buttons.plus) {
+                        openEditModal(
+                            title = t("TOTE", "Новый файл"),
+                            formSpec = FormSpec<UACreateOrderFileRequest, UACreateOrderFileRequest.Response>(
+                                ui = world,
+                                req = UACreateOrderFileRequest()-{o->
+                                    o.orderID.value = order.id
+                                }
+                            ),
+                            onSuccessa = {
+                                val q = UACustomerSingleOrderPage.urlQuery
+                                world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
+                                    URLParamValue(q.id, order.id.toString()),
+                                    URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
+                                )))
                             }
-                        ),
-                        onSuccessa = {
-                            val q = UACustomerSingleOrderPage.urlQuery
-                            world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
-                                URLParamValue(q.id, order.id.toString()),
-                                URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
-                            )))
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }

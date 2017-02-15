@@ -46,6 +46,7 @@ class RequestGlobusType {
     val redisLogParentIDs = Stack<String>()
     lateinit var commonRequestFields: CommonRequestFieldsHolder
     lateinit var servletRequest: HttpServletRequest
+    var procedureCtx by notNullOnce<ProcedureContext>()
 }
 
 class GodServlet : HttpServlet() {
