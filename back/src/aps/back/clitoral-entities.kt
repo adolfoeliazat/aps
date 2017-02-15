@@ -1,6 +1,7 @@
 package aps.back
 
 import aps.*
+import into.kommon.*
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.RepositoryDefinition
 import java.sql.Timestamp
@@ -145,7 +146,12 @@ class UAOrderFile(
     var order: UAOrder
 ) : ClitoralEntity() {
 
-    fun toRTO(): UAOrderFileRTO {
+    fun toRTO(searchWords: List<String> = listOf()): UAOrderFileRTO {
+        val lang = Language.UA
+        val analyzer = when (lang) {
+            Language.UA -> russianAnalyzer
+            else -> imf("Support analyzing for $lang")
+        }
         return UAOrderFileRTO(
             id = id!!,
             createdAt = createdAt.time,
@@ -154,11 +160,20 @@ class UAOrderFile(
             title = title,
             details = details,
             sizeBytes = sizeBytes,
-            detailsHighlightRanges = listOf(),
+            detailsHighlightRanges = when {
+                searchWords.isEmpty() -> listOf()
+                else -> luceneHighlightRanges(details, searchWords, analyzer)
+            },
             editable = true,
-            nameHighlightRanges = listOf(),
+            nameHighlightRanges = when {
+                searchWords.isEmpty() -> listOf()
+                else -> luceneHighlightRanges(name.chopOffFileExtension(), searchWords, analyzer)
+            },
             seenAsFrom = UserKind.CUSTOMER,
-            titleHighlightRanges = listOf()
+            titleHighlightRanges = when {
+                searchWords.isEmpty() -> listOf()
+                else -> luceneHighlightRanges(title, searchWords, analyzer)
+            }
         )
     }
 }

@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import into.kommon.*
 import org.springframework.data.repository.findOrDie
 import javax.persistence.EntityManagerFactory
 
@@ -18,11 +19,25 @@ import javax.persistence.EntityManagerFactory
             bpc = bpc,
             makeRequest = {ItemsRequest(CustomerFileFilter.values())},
             runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
-                val order = orderRepo.findOrDie(req.entityID.value)
                 // TODO:vgrechka @security Check permissions
                 // TODO:vgrechka Friendly (like "fuck you" or something) message if no such order (user may mistype URL, etc.)
 
-                val fromID = req.fromID.value?.toLong()
+                val tsqueryLanguage = "russian"
+
+                val order = orderRepo.findOrDie(req.entityID.value)
+
+                val searchString = req.searchString.value
+                val searchWords = searchString
+                    .split(Regex("\\s+"))
+                    .filter {it.contains(Regex("[a-zA-Zа-яА-Я0-9]"))}
+                    .map {it.replace(Regex("[^a-zA-Zа-яА-Я0-9]"), "")}
+                val tsquery = when {
+                    searchString.contains("&") || searchString.contains("|") || searchString.contains("!") -> searchString
+                    searchWords.isNotEmpty() -> searchWords.joinToString(" & ")
+                    else -> ""
+                }
+
+                    val fromID = req.fromID.value?.toLong()
                 val ordering = req.ordering.value
 
                 val chunk = run {
@@ -37,17 +52,35 @@ import javax.persistence.EntityManagerFactory
                     val em = emf.createEntityManager()
                     em.transaction.begin()
                     try {
-                        val query = em
-                            .createQuery(stringBuild{s->
-                                s += "select f from UAOrderFile f where"
-                                val idop = when (ordering) {
-                                    Ordering.ASC -> ">="
-                                    Ordering.DESC -> "<="
+                        val params = mutableListOf<Pair<String, Any>>()
+                        val query = em.createNativeQuery(stringBuild{s->
+                            s += "select * from ua_order_files f where true"
+
+                            if (tsquery.isNotBlank()) {
+                                s += " and (tsv @@ to_tsquery('$tsqueryLanguage', :tsquery)"
+                                params += Pair("tsquery", tsquery)
+                                var idIndex = 1
+                                for (word in searchWords) {
+                                    try {
+                                        val long = word.toLong()
+                                        val paramName = "id${idIndex++}"
+                                        s += " or id = :$paramName"
+                                        params += Pair(paramName, long)
+                                    } catch (e: NumberFormatException) {}
                                 }
-                                s += " id $idop $theFromID"
-                                s += " order by id ${ordering.name}"
-                            })
-                            .setMaxResults(const.moreableChunkSize + 1)
+                                s += ")"
+                            }
+
+                            val idop = when (ordering) {
+                                Ordering.ASC -> ">="
+                                Ordering.DESC -> "<="
+                            }
+                            s += " and id $idop $theFromID"
+                            s += " order by id ${ordering.name}"
+                        }, UAOrderFile::class.java)
+
+                        query.maxResults = const.moreableChunkSize + 1
+                        params.forEach {query.setParameter(it.first, it.second)}
 
                         var items: List<UAOrderFile> = cast(query.resultList)
                         var moreFromId: Long? = null
@@ -57,8 +90,7 @@ import javax.persistence.EntityManagerFactory
                         }
 
                         val rtos = items.map {
-                            val f = it as UAOrderFile
-                            f.toRTO()
+                            it.toRTO(searchWords)
                         }
                         return@run Chunk(rtos, moreFromId = moreFromId)
                     } finally {
