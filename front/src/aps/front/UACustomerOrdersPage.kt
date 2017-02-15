@@ -27,7 +27,9 @@ class UACustomerOrdersPage(val world: World) {
                 primaryButtonTitle = t("Create", "Создать"),
                 cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle),
             onPlusFormSuccessa = {res->
-                world.pushNavigate("order.html?id=${res.id}")
+                world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
+                    URLParamValue(UACustomerSingleOrderPage.urlQuery.id, res.id)
+                )))
             }
         )
 

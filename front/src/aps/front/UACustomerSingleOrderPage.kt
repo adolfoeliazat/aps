@@ -15,7 +15,7 @@ interface CustomerSingleUAOrderPageTab {
 }
 
 class UACustomerSingleOrderPage(val world: World) {
-    object urlQuery {
+    object urlQuery : URLQueryParamsMarker {
         val id by MaybeStringURLParam()
         val tab by MaybeStringURLParam()
     }
@@ -118,7 +118,9 @@ class UACustomerSingleOrderPage(val world: World) {
         })
         exhaustive/when (res) {
             is FormResponse2.Hunky -> {
-                world.pushNavigate("order.html?id=$orderID")
+                world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
+                    URLParamValue(UACustomerSingleOrderPage.urlQuery.id, orderID)
+                )))
                 TestGlobal.shitDoneLock.resumeTestFromSut()
             }
             is FormResponse2.Shitty -> {
@@ -131,7 +133,11 @@ class UACustomerSingleOrderPage(val world: World) {
         await(effects).blinkOn(byid(key.fqn), BlinkOpts(dwidth = "-0.15rem"))
         TestGlobal.switchTabHalfwayLock.resumeTestAndPauseSutFromSut()
         try {
-            world.pushNavigate("order.html?id=$orderID&tab=${simpleName(key.fqn)}")
+            val q = UACustomerSingleOrderPage.urlQuery
+            world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
+                URLParamValue(q.id, orderID),
+                URLParamValue(q.tab, simpleName(key.fqn))
+            )))
         } finally {
             TestGlobal.switchTabDoneLock.resumeTestAndPauseSutFromSut()
         }

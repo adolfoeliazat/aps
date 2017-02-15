@@ -13,7 +13,7 @@ object pages {
         val contact by namedFucker {staticPage(it, t("Contact Us", "Связь"))}
         val blog by namedFucker {staticPage(it, t("Blog", "Блог"))}
         val makeOrder by namedFucker {PageSpec(it, t("Make Order", "Заказать"), skipFirstTimeRendering = false, requiresSignIn = false) {MakeOrderPage(it).load()}}; val makeOrder_testRef = TestRef(makeOrder)
-        val confirmOrder by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {ConfirmOrderPage(it).load()}}
+        val confirmOrder by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {ConfirmOrderPage(it).load()}}; val confirmOrder_testRef = TestRef(confirmOrder)
         val orders by namedFucker {privatePage(it, t("My Orders", "Мои заказы")) {UACustomerOrdersPage(it).load()}}; val orders_testRef = TestRef(orders)
         val order by namedFucker {privatePage(it) {UACustomerSingleOrderPage(it).load()}}; val order_testRef = TestRef(orders)
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}

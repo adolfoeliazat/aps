@@ -33,6 +33,8 @@ external fun downloadjs(data: Any, fileName: String, mime: String)
 
 external fun decodeURI(encodedURI: String): String
 
+interface URLQueryParamsMarker
+
 
 
 

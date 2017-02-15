@@ -386,7 +386,7 @@
 
 <div id="pane-whocares">
   <div>
-    <div class="progressTicker effects-blinker" style="position: fixed; z-index: 10000; background-color: rgb(84, 110, 122); left: 537.463px; top: calc(((50px - 0.3rem) + 0px) - 0px); width: calc(87.9125px); height: 0.3rem;">
+    <div class="progressTicker effects-blinker" style="position: fixed; z-index: 10000; background-color: rgb(84, 110, 122); left: calc(537.463px); top: calc(((50px - 0.3rem) + 0px) - 0px); width: calc(87.9125px); height: 0.3rem;">
     </div>
   </div>
 </div>

@@ -16,11 +16,37 @@ class URLParamValue<T>(val param: URLParam<T>, val value: T)
 class MaybeStringURLParam : URLParam<String>, ReadOnlyProperty<Any?, MaybeStringURLParam> {
     override var name by notNull<String>()
 
-    fun get(world: World): String? {
+    fun get(world: World = Globus.world): String? {
         return world.urlQuery[name]
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): MaybeStringURLParam {
+        name = property.name
+        return this
+    }
+}
+
+class StringURLParam(val default: String) : URLParam<String>, ReadOnlyProperty<Any?, StringURLParam> {
+    override var name by notNull<String>()
+
+    fun get(world: World = Globus.world): String {
+        return world.urlQuery[name] ?: default
+    }
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): StringURLParam {
+        name = property.name
+        return this
+    }
+}
+
+class EnumURLParam<E: Enum<E>>(val values: Array<E>, val default: E) : URLParam<E>, ReadOnlyProperty<Any?, EnumURLParam<E>> {
+    override var name by notNull<String>()
+
+    fun get(world: World = Globus.world): E {
+        return world.urlQuery[name].relaxedToEnum(values, default)
+    }
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): EnumURLParam<E> {
         name = property.name
         return this
     }
@@ -56,6 +82,7 @@ fun makeURL(page: PageSpec, paramValues: List<URLParamValue<*>>) = stringBuild{s
     s += paramValues.joinToString("&") {it.param.name + "=" + it.value}
 }
 
+fun makeURL(page: TestRef<PageSpec>, paramValues: List<URLParamValue<*>>) = makeURL(page.it, paramValues)
 
 
 

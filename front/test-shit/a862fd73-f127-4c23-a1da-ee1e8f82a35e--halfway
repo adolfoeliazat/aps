@@ -1005,7 +1005,7 @@
 
 <div id="pane-whocares">
   <div>
-    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: 777.8px; top: calc((230.6px - 0.3rem) + 0px); width: calc(97.6px); height: 0.3rem;">
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: calc(777.8px); top: calc((230.6px - 0.3rem) + 0px); width: calc(97.6px); height: 0.3rem;">
     </div>
   </div>
 </div>

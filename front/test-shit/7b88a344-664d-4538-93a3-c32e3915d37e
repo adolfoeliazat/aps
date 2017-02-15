@@ -1,6 +1,6 @@
 -------------------- URL --------------------
 
-[uac]/order.html?id=1&tab=files
+[uac]/order.html?id=1&tab=files&ordering=DESC&filter=ALL&search=
 
 -------------------- NAVBAR --------------------
 
@@ -259,15 +259,15 @@
                         </span>
                         <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
                           <div style="margin-left: 0px;">
-                            <i class="fa fa-cloud-download cunt-header-rightIconActive" style="margin-top: 0.45rem;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="fa fa-trash cunt-header-rightIconDisabled">
+                            <i class="fa fa-trash cunt-header-rightIcon">
                             </i>
                           </div>
                           <div style="margin-left: 12px;">
-                            <i class="fa fa-pencil cunt-header-rightIconDisabled">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
                             </i>
                           </div>
                         </div>
@@ -318,89 +318,6 @@
                       <div style="white-space: pre-wrap;">
                         <p>
                           Реальная история... Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item" style="opacity: 1;">
-                  <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-12">
-                      <div class="cunt-header-viewing">
-                        <i class="cunt-header-leftIcon-viewing fa fa-file">
-                        </i>
-                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
-                        </i>
-                        <span>
-                          Братец и сестрица
-                        </span>
-                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                          №26
-                        </span>
-                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
-                          Мой
-                        </span>
-                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
-                          <div style="margin-left: 0px;">
-                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
-                            </i>
-                          </div>
-                          <div style="margin-left: 12px;">
-                            <i class="fa fa-trash cunt-header-rightIcon">
-                            </i>
-                          </div>
-                          <div style="margin-left: 12px;">
-                            <i class="fa fa-pencil cunt-header-rightIcon">
-                            </i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-3">
-                      <label style="margin-bottom: 0px;">
-                        Создан
-                      </label>
-                      <div>
-                        04.02.2016 18:46:05 (Киев)
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <label style="margin-bottom: 0px;">
-                        Изменен
-                      </label>
-                      <div>
-                        04.02.2016 18:46:05 (Киев)
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <label style="margin-bottom: 0px;">
-                        Имя файла
-                      </label>
-                      <div>
-                        <span>
-                          lousy writing 8.rtf
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <label style="margin-bottom: 0px;">
-                        Размер
-                      </label>
-                      <div>
-                        2 КБ
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 0.5em;">
-                    <div class="col-md-12">
-                      <label style="margin-bottom: 0px;">
-                        Детали
-                      </label>
-                      <div style="white-space: pre-wrap;">
-                        <p>
-                          С приходом мачехи в дом, жизнь в нём брата и сестры становится невыносимой. Дети принимают решение уйти. В скитаниях по полям и лесам их одолевают усталость, голод и жажда. Но злая мачеха-ведьма и теперь не может оставить детей в покое и заколдовывает водные источники на их пути. Братец нестерпимо хочет пить, но чуткая сестрица два раза удерживает его от этого, ведь, выпив из них воды, можно превратиться в диких животных: из первого источника — в тигра, а из второго — в волка. Но возле третьего источника жажда одолела брата, и сестра ничего не смогла сделать. Выпив воды, братец обернулся диким козликом.
                         </p>
                       </div>
                     </div>
@@ -987,6 +904,90 @@
                     </div>
                   </div>
                 </div>
+                <div class="item" style="opacity: 1;">
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <div class="cunt-header-viewing">
+                        <i class="cunt-header-leftIcon-viewing fa fa-file">
+                        </i>
+                        <i class="cunt-header-leftOverlayBottomLeftIcon-viewing fa fa-user">
+                        </i>
+                        <span>
+                          Невский проспект
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          №18
+                        </span>
+                        <span style="margin-left: 0.5em; color: rgb(158, 158, 158); font-size: 75%;">
+                          Мой
+                        </span>
+                        <div style="top: 0px; right: 0px; position: absolute; margin-top: 0.1rem; margin-right: 0.5rem; display: flex;">
+                          <div style="margin-left: 0px;">
+                            <i class="fa fa-cloud-download cunt-header-rightIcon" style="margin-top: 0.45rem;">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="fa fa-trash cunt-header-rightIcon">
+                            </i>
+                          </div>
+                          <div style="margin-left: 12px;">
+                            <i class="fa fa-pencil cunt-header-rightIcon">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Создан
+                      </label>
+                      <div>
+                        20.01.2016 17:55:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Изменен
+                      </label>
+                      <div>
+                        20.01.2016 17:55:05 (Киев)
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Имя файла
+                      </label>
+                      <div>
+                        <span>
+                          shitty document 15.rtf
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label style="margin-bottom: 0px;">
+                        Размер
+                      </label>
+                      <div>
+                        2 КБ
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 0.5em;">
+                    <div class="col-md-12">
+                      <label style="margin-bottom: 0px;">
+                        Детали
+                      </label>
+                      <div style="white-space: pre-wrap;">
+                        <p>
+                          Повесть начинается со слов «Нет ничего лучше Невского проспекта, по крайней мере в Петербурге; для него он составляет всё». Далее следует описание того, как Невский проспект меняется с раннего утра до поздней ночи.
+                          Два молодых человека — поручик Пирогов и художник Пискарёв — ухлёстывают вечером за гуляющими по Невскому проспекту дамами. Художник следует за брюнеткой, лелея на её счет романтическую влюблённость. Они доходят до Литейной и, поднявшись на верхний этаж ярко освещенного четырёхэтажного дома, оказываются в комнате, где находятся ещё три женщины, по виду которых Пискарев с ужасом догадывается, что попал в публичный дом.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div style="width: 100%; margin: 1em auto;">
                   <button class="btn btn-default btn btn-default" style="width: 100%; background-color: rgb(236, 239, 241);">
                     Показать еще
@@ -1004,7 +1005,7 @@
 
 <div id="pane-whocares">
   <div>
-    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: calc(887.725px); top: calc((468px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: calc(25.6px); top: calc((237.2px - 0.3rem) + 0px); width: calc(108.238px + -0.15rem); height: 0.3rem;">
     </div>
   </div>
 </div>

@@ -62,6 +62,7 @@ import java.util.*
                     else -> imf("ServeUACustomerCreateOrder -- signed-in customer")
                 }
 
+                // TODO:vgrechka Make `pages` shared (awkward), so it can be referenced here? Probably, not worth it...
                 val confirmationURL = ctx.clientRoot + "/confirmOrder.html?secret=$confirmationSecret"
                 EmailMatumba.send(Email(
                     to = "$customerName <$customerEmail>",

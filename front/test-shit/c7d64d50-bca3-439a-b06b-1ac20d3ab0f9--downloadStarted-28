@@ -1004,11 +1004,11 @@
 
 <div id="pane-whocares">
   <div>
-    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: 887.725px; top: calc((645.4px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: calc(887.725px); top: calc((645.4px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
     </div>
-    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: 887.725px; top: calc((468px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: calc(887.725px); top: calc((468px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
     </div>
-    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: 887.725px; top: calc((270.6px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
+    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: calc(887.725px); top: calc((270.6px - 0.3rem) + 0px); width: calc(19.2875px); height: 0.3rem;">
     </div>
   </div>
 </div>

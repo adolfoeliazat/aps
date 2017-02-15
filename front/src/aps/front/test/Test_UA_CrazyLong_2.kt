@@ -23,7 +23,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 5
+    val startPoint = 1
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -66,7 +66,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Wrong confirmation secret
                 val ivo2 = Morda("ivo2",
-                                 url = fconst.test.url.customer + "/confirmOrder.html?secret=wrong-secret",
+                                 url = makeConfirmationURL("wrong-secret"),
                                  fillTypedStorageLocal = {},
                                  fillRawStorageLocal = {})
                 ivo2.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "7d46b2b1-e303-4146-9a3f-a89e02a1fe23")},
@@ -75,7 +75,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Correct confirmation secret
                 val ivo3 = Morda("ivo3",
-                                 url = fconst.test.url.customer + "/confirmOrder.html?secret=top-fucking-secret",
+                                 url = makeConfirmationURL("top-fucking-secret"),
                                  fillTypedStorageLocal = {},
                                  fillRawStorageLocal = {})
                 ivo3.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "2acbad6a-e169-4c0d-9938-99fac621fef5")},
@@ -269,6 +269,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                         done = DescribedAssertionID("No file modification controls", "754ffb00-fad3-4d66-97a4-db82485599f1"))
         }
     }
+
+    private fun makeConfirmationURL(secret: String) =
+        fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.confirmOrder_testRef, listOf(
+            URLParamValue(ConfirmOrderPage.urlQuery.secret, secret)
+        ))
 
     private suspend fun waitNKey() {
         val lock = ResolvableShit<Unit>()

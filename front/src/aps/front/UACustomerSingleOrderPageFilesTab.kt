@@ -22,21 +22,18 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     lateinit var stripContent: Control2
     lateinit var plusFormContainer: Control2
     var chunksLoaded = 0
-    var urlQuery by notNull<FilesTabURLQuery>()
+
+    object urlQuery : URLQueryParamsMarker {
+        val ordering by EnumURLParam(Ordering.values(), default = Ordering.DESC)
+        val filter by EnumURLParam(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
+        val search by StringURLParam("")
+    }
 
     override val tabSpec = TabSpec(tabs.order.files, t("Files", "Файлы"),
                                    ToReactElementable.from{content},
                                    ToReactElementable.from{stripContent})
 
-    inner class FilesTabURLQuery : URLQueryBase_killme(world) {
-        val ordering by enumURLParam_killme(Ordering.values(), default = Ordering.DESC)
-        val filter by enumURLParam_killme(CustomerFileFilter.values(), default = CustomerFileFilter.ALL)
-        val search by stringURLParam_killme()
-    }
-
     override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {
-        urlQuery = FilesTabURLQuery()
-
         val res = await(requestChunk(null))
         when (res) {
             is ZimbabweResponse.Shitty -> res
@@ -62,9 +59,9 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     private fun requestChunk(fromID: Long?): Promisoid<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
         val res = sendUACustomerGetOrderFiles(world.token, ItemsRequest(CustomerFileFilter.values())-{o->
             o.entityID.value = order.id
-            o.filter.value = urlQuery.filter
-            o.ordering.value = urlQuery.ordering
-            o.searchString.value = urlQuery.search
+            o.filter.value = urlQuery.filter.get()
+            o.ordering.value = urlQuery.ordering.get()
+            o.searchString.value = urlQuery.search.get()
             o.fromID.value = fromID
         })
         ++chunksLoaded
@@ -97,7 +94,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle
         ),
         onSuccessa = {
-            world.pushNavigate("order.html?id=${order.id}&tab=files")
+            val q = UACustomerSingleOrderPage.urlQuery
+            world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
+                URLParamValue(q.id, order.id.toString()),
+                URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
+            )))
         }
     )
 
@@ -105,7 +106,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         val filterSelect = Select(
             key = selects.filter,
             values = CustomerFileFilter.values(),
-            initialValue = urlQuery.filter,
+            initialValue = urlQuery.filter.get(),
             isAction = true,
             style = json("width" to 160),
             volatileDisabled = {ebafHost.headerControlsDisabled}
@@ -114,7 +115,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         val orderingSelect = Select(
             key = selects.ordering,
             values = Ordering.values(),
-            initialValue = urlQuery.ordering,
+            initialValue = urlQuery.ordering.get(),
             isAction = true,
             style = json("width" to 160),
             volatileDisabled = {ebafHost.headerControlsDisabled}
@@ -128,7 +129,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         )
 
         init {
-            searchInput.setValue(urlQuery.search)
+            searchInput.setValue(urlQuery.search.get())
 
             filterSelect.onChanga = {reload(filterSelect.elementID)}
             orderingSelect.onChanga = {reload(orderingSelect.elementID)}
@@ -187,11 +188,17 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         }
 
         // TODO:vgrechka Use safe page and param refs    96996eef-306a-4b0b-b5a2-60f49b5dee06
-        suspend fun reloadFilesTab() =
-            world.pushNavigate("order.html?id=${order.id}&tab=files"
-                                   + "&ordering=${orderingSelect.value.name}"
-                                   + "&filter=${filterSelect.value.name}"
-                                   + "&search=${encodeURIComponent(searchInput.getValue())}")
+        suspend fun reloadFilesTab() {
+            val qPage = UACustomerSingleOrderPage.urlQuery
+            val qTab = UACustomerSingleOrderPageFilesTab.urlQuery
+            world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
+                URLParamValue(qPage.id, order.id.toString()),
+                URLParamValue(qPage.tab, simpleName(tabs.order.files.fqn)),
+                URLParamValue(qTab.ordering, orderingSelect.value),
+                URLParamValue(qTab.filter, filterSelect.value),
+                URLParamValue(qTab.search, encodeURIComponent(searchInput.getValue()))
+            )))
+        }
 
         suspend fun reload(elementID: String) {
             await(effects).blinkOn(byid(elementID))
@@ -352,7 +359,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     o- highlightedShit(orderFile.title, orderFile.titleHighlightRanges, tag = "span")
 
                     val idColor: Color?; val idBackground: Color?
-                    if (urlQuery.search.split(Regex("\\s+")).contains(orderFile.id.toString())) {
+                    if (urlQuery.search.get().split(Regex("\\s+")).contains(orderFile.id.toString())) {
                         idColor = Color.GRAY_800
                         idBackground = Color.AMBER_200
                     } else {

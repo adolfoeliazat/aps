@@ -4,7 +4,7 @@ import aps.*
 import into.kommon.*
 
 class ConfirmOrderPage(val world: World) {
-    object urlQuery {
+    object urlQuery : URLQueryParamsMarker {
         val secret by MaybeStringURLParam()
     }
 

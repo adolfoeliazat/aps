@@ -1,6 +1,6 @@
 -------------------- URL --------------------
 
-[uac]/order.html?id=1&tab=files&ordering=DESC&filter=ALL&search=%D1%80%D0%B0%D0%BF%D1%83%D0%BD%D1%86%D0%B5%D0%BB%D1%8C%20%D0%B2%D0%B4%D0%BE%D0%B2%D0%B0
+[uac]/order.html?id=1&tab=params
 
 -------------------- NAVBAR --------------------
 
@@ -105,70 +105,93 @@
       <div>
         <div style="position: relative;">
           <ul class="nav nav-tabs">
-            <li id="tabs.order.params" class="">
+            <li id="tabs.order.params" class="active">
               <a href="#">
                 Параметры
               </a>
             </li>
-            <li id="tabs.order.files" class="active">
+            <li id="tabs.order.files" class="">
               <a href="#">
                 Файлы
               </a>
             </li>
           </ul>
           <div style="top: 0px; right: 0px; position: absolute;">
-            <div style="display: flex;">
-              <div style="margin-left: 0px;">
-                <div style="position: relative;">
-                  <input type="text" rows="5" placeholder="Поиск..." class="form-control" disabled="" value="рапунцель | вдова" style="resize: none; width: 100%; padding-left: 30px;">
-                    <i class="fa fa-search" style="top: 10px; left: 10px; position: absolute; color: rgb(158, 158, 158);">
-                    </i>
-                  </div>
+            <div>
+              <button class="btn btn-default ">
+                <i class="fa fa-pencil">
+                </i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 5px;">
+          <div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Создан
+                </label>
+                <div>
+                  18.12.2015 03:18:05 (Киев)
                 </div>
-                <div style="margin-left: 8px;">
-                  <select class="form-control" data-value="DESC" disabled="">
-                    <option value="ASC">
-                      Старые
-                    </option>
-                    <option value="DESC">
-                      Новые
-                    </option>
-                  </select>
-                </div>
-                <div style="margin-left: 8px;">
-                  <button class="btn btn-default " disabled="">
-                    <i class="fa fa-refresh">
-                    </i>
-                  </button>
-                </div>
-                <div style="margin-left: 8px;">
-                  <button class="btn btn-primary ">
-                    <i class="fa fa-plus">
-                    </i>
-                  </button>
+              </div>
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Телефон
+                </label>
+                <div>
+                  +38 (068) 321-45-67
                 </div>
               </div>
             </div>
-          </div>
-          <div style="margin-top: 5px;">
-            <div>
-              <div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Тип документа
+                </label>
+                <div>
+                  Отчет по практике
+                </div>
               </div>
-              <span>
-                Савсэм ничего нэт, да...
-              </span>
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Количество страниц
+                </label>
+                <div>
+                  23
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Количество источников
+                </label>
+                <div>
+                  7
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-12">
+                <label style="margin-bottom: 0px;">
+                  Детали работы (задание)
+                </label>
+                <div style="white-space: pre-wrap;">
+                  Это чисто на почитать... Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.
+                  Кухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел.
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
 -------------------- PANES --------------------
 
 <div id="pane-whocares">
   <div>
-    <div class="progressTicker effects-blinker" style="position: absolute; z-index: 1000; background-color: rgb(84, 110, 122); left: calc(551.8px); top: calc((230.6px - 0.3rem) + 0px); width: calc(218px); height: 0.3rem;">
-    </div>
   </div>
 </div>
