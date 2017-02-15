@@ -31,6 +31,7 @@ class eagerNamed<out T>(val make: (ident: String) -> T) {
 
 external fun downloadjs(data: Any, fileName: String, mime: String)
 
+external fun decodeURI(encodedURI: String): String
 
 
 

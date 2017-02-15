@@ -12,7 +12,7 @@ object TestLocationBar {
             control = Control2.from {kdiv(className = css.test.crossWorld.locationPane){o->
                 o- kspan(className = css.test.crossWorld.label){o->
                     val bro = Globus.currentBrowseroid
-                    o- (bro.name + " :: " + bro.location.href)
+                    o- (bro.name + " :: " + decodeURI(bro.location.href))
                 }
             }}
 

@@ -8,6 +8,7 @@ package aps.back
 
 import aps.*
 import into.kommon.*
+import org.postgresql.util.PSQLException
 import org.springframework.data.repository.findOrDie
 import javax.persistence.EntityManagerFactory
 
@@ -53,7 +54,7 @@ import javax.persistence.EntityManagerFactory
                     em.transaction.begin()
                     try {
                         val params = mutableListOf<Pair<String, Any>>()
-                        val query = em.createNativeQuery(stringBuild{s->
+                        val query = em.createNativeQuery(stringBuild {s ->
                             s += "select * from ua_order_files f where true"
 
                             if (tsquery.isNotBlank()) {
@@ -66,7 +67,8 @@ import javax.persistence.EntityManagerFactory
                                         val paramName = "id${idIndex++}"
                                         s += " or id = :$paramName"
                                         params += Pair(paramName, long)
-                                    } catch (e: NumberFormatException) {}
+                                    } catch (e: NumberFormatException) {
+                                    }
                                 }
                                 s += ")"
                             }
@@ -93,6 +95,9 @@ import javax.persistence.EntityManagerFactory
                             it.toRTO(searchWords)
                         }
                         return@run Chunk(rtos, moreFromId = moreFromId)
+                    } catch (e: PSQLException) {
+                        // TODO:vgrechka Return some code to client, so it knows what went wrong and can show query syntax help
+                        bitchExpectedly(t("TOTE", "Отстойный поисковый запрос"))
                     } finally {
                         em.transaction.rollback()
                         em.close()

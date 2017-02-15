@@ -233,19 +233,34 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(4) {
-            run { // Ordering
-//                assertScreenHTML(aid = "348ddf37-5a1a-44b4-8fb7-1b05a9d35563")
-//                twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.ASC)}, "a862fd73-f127-4c23-a1da-ee1e8f82a35e")
-//                testShowMore("c69f27bc-e9fe-4a4f-a9fd-c630f2904d6a")
-//                scrollBodyToTopGradually()
-//                twoStepSequence({selectSetValue(selects.ordering_testRef, Ordering.DESC)}, "be35468d-07f9-4f6b-8060-1d5cfec18ec7")
-//                testShowMore("284f44ce-5650-46b7-a7cb-f0e3553bdee4")
-//                scrollBodyToTopGradually()
+            run { // Ordering and search
+                assertScreenHTML(aid = "348ddf37-5a1a-44b4-8fb7-1b05a9d35563")
+                testOrdering(Ordering.ASC, "a862fd73-f127-4c23-a1da-ee1e8f82a35e")
+                testShowMore("c69f27bc-e9fe-4a4f-a9fd-c630f2904d6a")
+                scrollBodyToTopGradually()
+                testOrdering(Ordering.DESC, "be35468d-07f9-4f6b-8060-1d5cfec18ec7")
+                testShowMore("284f44ce-5650-46b7-a7cb-f0e3553bdee4")
+                scrollBodyToTopGradually()
 
-                inputSetValue(inputs.search_testRef, "рапунцель")
-                inputPressEnter(inputs.search_testRef)
+                testSearch("рапунцель", "7aeb3111-f760-43bf-aaed-db645570a658")
+                testSearch("рапунцель вдова", "a2fd753b-a979-46af-8f40-53fafb25ae12")
+                testSearch("рапунцель | вдова", "897658fe-7750-4bfc-a0b6-e751c6630f72")
+                testOrdering(Ordering.ASC, "6647aabb-8194-45b1-9d7b-f81c81350708")
+                testOrdering(Ordering.DESC, "26d09614-1957-403b-b433-d28862c24c0a")
+                testSearch("рапунцель | вдова & казак", "0319435d-2ae0-491d-894a-c36d2cefdc3b")
+                testSearch("15 | рапунцель | вдова & казак", "74816e98-e007-48c7-b139-3b11c4abb46d")
+                testSearch("", "73c164df-df82-4d92-befc-93bf1ee49790")
             }
         }
+    }
+
+    private suspend fun testOrdering(ordering: Ordering, aid: String) {
+        twoStepSequence({selectSetValue(selects.ordering_testRef, ordering)}, aid)
+    }
+
+    private suspend fun testSearch(query: String, aid: String) {
+        inputSetValue(inputs.search_testRef, query)
+        twoStepSequence({inputPressEnter(inputs.search_testRef)}, aid)
     }
 
     private suspend fun testShowMore(aid: String) {

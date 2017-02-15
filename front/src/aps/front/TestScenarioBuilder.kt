@@ -378,6 +378,7 @@ fun rerunTestSlowlyButton(): Button {
         })
 }
 
+@Deprecated("Ditch me")
 suspend fun twoStepLockSequence(
     action: suspend () -> Unit,
     lock: TwoStepTestLock,
