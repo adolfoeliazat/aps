@@ -191,7 +191,8 @@ private fun makeLegacyEffects(): dynamic {
                 val targetWidth = target.outerWidth(widthCountMargin)
                 val targetHeight = target.outerHeight(heightCountMargin)
                 val height = "0.3rem"
-                val left = targetOffset.left + dleft
+                val left = "calc(${targetOffset.left}px + $dleft)"
+                // dlog("left = $left; targetOffset.left = ${targetOffset.left}; dleft = $dleft")
                 var top = "calc(${targetOffset.top}px + ${targetHeight}px - $height + $dtop"
                 if (fixed) {
                     top += " - " + js("$")(aps.global.document).scrollTop() + "px"
