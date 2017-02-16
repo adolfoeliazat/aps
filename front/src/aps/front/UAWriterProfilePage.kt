@@ -13,7 +13,7 @@ import into.kommon.*
 import kotlin.js.json
 
 class UAWriterProfilePage(val ui: World) {
-    suspend fun load() {
+    suspend fun load(): PageLoadingError? {
         val primaryButtonTitle = t("TOTE", "Отправить на проверку")
 
         var pageBody: ReactElement
@@ -81,6 +81,7 @@ class UAWriterProfilePage(val ui: World) {
             body = oldShitAsToReactElementable(pageBody),
             headerControls = headerControls
         ))
+        return null
     }
 }
 

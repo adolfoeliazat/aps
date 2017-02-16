@@ -3,8 +3,6 @@ package aps.front
 import aps.*
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
-import jquery.jq
-import org.w3c.dom.HTMLIFrameElement
 import kotlin.js.json
 import kotlin.properties.Delegates.notNull
 
@@ -33,11 +31,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                                    ToReactElementable.from{content},
                                    ToReactElementable.from{stripContent})
 
-    override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {
-        val res = await(requestChunk(null))
-        when (res) {
-            is ZimbabweResponse.Shitty -> res
-            is ZimbabweResponse.Hunky -> {
+    override suspend fun load(): FormResponse2.Shitty<*>? {
+        val res = requestChunk(null)
+        return when (res) {
+            is FormResponse2.Shitty -> res
+            is FormResponse2.Hunky -> {
                 meat = res.meat
                 stripContent = StripContent()
 
@@ -56,8 +54,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         }
     }
 
-    private fun requestChunk(fromID: Long?): Promisoid<ZimbabweResponse<ItemsResponse<UAOrderFileRTO>>> = async {
-        val res = sendUACustomerGetOrderFiles(world.token, ItemsRequest(CustomerFileFilter.values())-{o->
+    private suspend fun requestChunk(fromID: Long?): FormResponse2<ItemsResponse<UAOrderFileRTO>> {
+        val res = sendUACustomerGetOrderFiles(ItemsRequest(CustomerFileFilter.values())-{o->
             o.entityID.value = order.id
             o.filter.value = urlQuery.filter.get()
             o.ordering.value = urlQuery.ordering.get()
@@ -65,7 +63,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             o.fromID.value = fromID
         })
         ++chunksLoaded
-        res
+        return res
     }
 
     val ebafHost = EBAFHost()
@@ -240,7 +238,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                             TestGlobal.showMoreHalfwayLock.resumeTestAndPauseSutFromSut()
                             try {
                                 val res = try {
-                                    await(requestChunk(meat.moreFromID))
+                                    requestChunk(meat.moreFromID)
                                 } catch(e: Exception) {
                                     openErrorModal(const.msg.serviceFuckedUp)
                                     null
@@ -248,8 +246,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
                                 if (res != null) {
                                     exhaustive / when (res) {
-                                        is ZimbabweResponse.Shitty -> openErrorModal(res.error)
-                                        is ZimbabweResponse.Hunky -> {
+                                        is FormResponse2.Shitty -> openErrorModal(res.error)
+                                        is FormResponse2.Hunky -> {
                                             val newChunkContainerID = puid()
                                             placeholder.setContent(
                                                 makeItemsControl(res.meat,

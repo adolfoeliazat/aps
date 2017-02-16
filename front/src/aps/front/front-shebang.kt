@@ -801,7 +801,7 @@ fun World.setShittyParamsPage() {
     setErrorPage(t("TOTE", "Не надо мне всякую херню передавать в параметрах, OK?"))
 }
 
-fun <T> World.setShittyResponsePage(res: ZimbabweResponse.Shitty<T>) {
+fun <T> World.setShittyResponsePage(res: FormResponse2.Shitty<T>) {
     setErrorPage(res.error)
 }
 

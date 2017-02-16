@@ -275,8 +275,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             inputSetValue(fields.shebang.emailInSignInForm_testRef, "dasja@test.shit.ua")
             inputSetValue(fields.shebang.passwordInSignInForm_testRef, "dasja-secret")
             submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
-            // TestGlobal.skipAllFreakingAssertions = false
-            twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
+
+            run { // Error loading orders to approve
+                // TestGlobal.skipAllFreakingAssertions = false
+                imposeNextRequestGenericError()
+                halfwayThenModalSequence(action = {linkClick(links.adminDashboard.ordersToApprove_testRef)},
+                                         modalAction = {buttonClick(buttons.primary_testRef)},
+                                         aid = "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
+            }
         }
     }
 

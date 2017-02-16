@@ -11,7 +11,7 @@ import kotlin.js.json
 
 class SignInPage(val ui: World) {
 
-    suspend fun load() {
+    suspend fun load(): PageLoadingError? {
         ui.setPage(Page(
             header = oldShitAsToReactElementable(pageHeader(t("Sign In", "Вход"))),
             body = kdiv{o->
@@ -60,6 +60,7 @@ class SignInPage(val ui: World) {
                 }}
             }
         ))
+        return null
     }
 }
 

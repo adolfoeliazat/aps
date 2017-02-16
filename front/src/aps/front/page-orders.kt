@@ -8,10 +8,25 @@ class UAAdminOrdersPage(val world: World) {
         val filter by EnumURLParam(AdminOrderFilter.values(), default = AdminOrderFilter.ALL)
     }
 
-    suspend fun load() {
-        setPage(kdiv{o->
-            o- "fuck you"
+    suspend fun load(): PageLoadingError? {
+        val res = sendUAAdminGetOrders(ItemsRequest(AdminOrderFilter.values())-{o->
+            o.entityID.value = 10L
+            o.filter.value = urlQuery.filter.get()
+            o.ordering.value = Ordering.ASC
+            o.searchString.value = ""
+            o.fromID.value = 0L
         })
+        return when (res) {
+            is FormResponse2.Shitty -> {
+                PageLoadingError(res.error)
+            }
+            is FormResponse2.Hunky -> {
+                setPage(kdiv{o->
+                    o- "fuck you"
+                })
+                pageLoadedFine
+            }
+        }
     }
 
     private fun setPage(body: ToReactElementable) {
@@ -25,7 +40,7 @@ class UAAdminOrdersPage(val world: World) {
 }
 
 class UACustomerOrdersPage(val world: World) {
-    suspend fun load() {
+    suspend fun load(): PageLoadingError? {
         val m = Melinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
             ui = world,
             urlPath = "orders.html",
@@ -55,6 +70,7 @@ class UACustomerOrdersPage(val world: World) {
         )
 
         m.ignita()
+        return null
     }
 }
 

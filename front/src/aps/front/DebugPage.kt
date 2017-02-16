@@ -10,7 +10,7 @@ class DebugPage(val world: World) {
         var page: String? = null
     }
 
-    suspend fun load() {
+    suspend fun load(): PageLoadingError? {
         val urlQuery = typeSafeURLQuery(world){URLQuery()}
         when (urlQuery.page) {
             "log" -> DebugLogPage(world).load()
@@ -19,6 +19,7 @@ class DebugPage(val world: World) {
             "sqlfiddle" -> SQLFiddlePage(world).load()
             else -> wtf("Fucky page: ${urlQuery.page}")
         }
+        return null
     }
 }
 

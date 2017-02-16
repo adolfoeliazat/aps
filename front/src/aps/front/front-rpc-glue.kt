@@ -5,8 +5,6 @@ import into.kommon.*
 
 fun send(req: RecreateTestDatabaseSchemaRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 fun send(req: ResetTestDatabaseRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
-fun send(req: ImposeNextRequestErrorRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
-fun send(token: String, req: LoadUAOrderRequest): Promisoid<ZimbabweResponse<LoadUAOrderRequest.Response>> = callZimbabwe(req, token)
 fun send(token: String?, req: SignUpRequest): Promisoid<FormResponse2<SignUpRequest.Response>> = _send(token, req)
 fun sendSafe(token: String?, req: SignUpRequest): Promisoid<FormResponse2<GenericResponse>> = _sendSafe(token, req)
 fun send(token: String?, req: SignInWithPasswordRequest): Promisoid<FormResponse2<SignInResponse>> = _send(token, req)
@@ -29,13 +27,16 @@ fun send(req: TestTakeSnapshotRequest): Promisoid<TestTakeSnapshotRequest.Respon
 fun send(req: TestLoadSnapshotRequest): Promisoid<TestLoadSnapshotRequest.Response> = callDangerousMatumba(req)
 fun send(req: GetSentEmailsRequest): Promisoid<GetSentEmailsRequest.Response> = callDangerousMatumba(req)
 fun send(req: ClearSentEmailsRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
+suspend fun send(req: LoadUAOrderRequest): FormResponse2<LoadUAOrderRequest.Response> = _send3SofteningShit(req)
 suspend fun send(req: TestSQLFiddleRequest): TestSQLFiddleRequest.Response = callDangerousMatumba2(req)
-suspend fun send(req: ImposeNextGeneratedPasswordRequest): Promisoid<ImposeNextGeneratedPasswordRequest.Response> = callDangerousMatumba(req)
-suspend fun send(req: ImposeNextGeneratedConfirmationSecretRequest): Promisoid<ImposeNextGeneratedConfirmationSecretRequest.Response> = callDangerousMatumba(req)
-suspend fun send(req: ImposeNextRequestTimestampRequest): Promisoid<ImposeNextRequestTimestampRequest.Response> = callDangerousMatumba(req)
+suspend fun send(req: ImposeNextRequestErrorRequest): GenericResponse = callDangerousMatumba2(req)
+suspend fun send(req: ImposeNextGeneratedPasswordRequest): ImposeNextGeneratedPasswordRequest.Response = callDangerousMatumba2(req)
+suspend fun send(req: ImposeNextGeneratedConfirmationSecretRequest): ImposeNextGeneratedConfirmationSecretRequest.Response = callDangerousMatumba2(req)
+suspend fun send(req: ImposeNextRequestTimestampRequest): ImposeNextRequestTimestampRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: ConfirmOrderRequest): FormResponse2<ConfirmOrderRequest.Response> = _send2(null, req)
 suspend fun send(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequest.Response = await(sendDangerousJSONProcedure(req))
-suspend fun sendUACustomerGetOrderFiles(token: String, req: ItemsRequest<CustomerFileFilter>): ZimbabweResponse<ItemsResponse<UAOrderFileRTO>> = await(callZimbabwe("UACustomerGetOrderFiles", req, token))
+suspend fun sendUACustomerGetOrderFiles(req: ItemsRequest<CustomerFileFilter>): FormResponse2<ItemsResponse<UAOrderFileRTO>> = _send3SofteningShit(req, "UACustomerGetOrderFiles")
+suspend fun sendUAAdminGetOrders(req: ItemsRequest<AdminOrderFilter>): FormResponse2<ItemsResponse<UAOrderFileRTO>> = _send3SofteningShit(req, "UAAdminGetOrders")
 suspend fun send(req: TestTakeTestPointSnapshotRequest): TestTakeTestPointSnapshotRequest.Response = await(callDangerousMatumba(req))
 suspend fun send(req: TestRestoreTestPointSnapshotRequest): TestRestoreTestPointSnapshotRequest.Response = await(callDangerousMatumba(req))
 suspend fun send(token: String?, req: SignInWithTokenRequest): FormResponse2<SignInResponse> = _send2(token, req)
@@ -54,17 +55,25 @@ private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     dejsonize<R>(jpres.json)
 }
 
-private suspend fun <Req: RequestMatumba, Meat> _send2(token: String?, req: Req): FormResponse2<Meat> {
-    return await(_send(token, req))
+private suspend fun <Req: RequestMatumba, Meat> _send2(token: String?, req: Req, procName: String? = null): FormResponse2<Meat> {
+    return await(_send(token, req, procName = procName))
 }
 
-private suspend fun <Req: RequestMatumba, Meat> _send3(req: Req): FormResponse2<Meat> {
-    return _send2(Globus.worldMaybe?.tokenMaybe, req)
+private suspend fun <Req: RequestMatumba, Meat> _send3(req: Req, procName: String? = null): FormResponse2<Meat> {
+    return _send2(Globus.worldMaybe?.tokenMaybe, req, procName = procName)
 }
 
-private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req) = async<FormResponse2<Meat>> {
+private suspend fun <Req: RequestMatumba, Meat> _send3SofteningShit(req: Req, procName: String? = null): FormResponse2<Meat> {
+    return try {
+        _send2(Globus.worldMaybe?.tokenMaybe, req, procName = procName)
+    } catch (e: dynamic) {
+        FormResponse2.Shitty<Meat>(const.msg.serviceFuckedUp, fieldErrors = listOf())
+    }
+}
+
+private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req, procName: String? = null) = async<FormResponse2<Meat>> {
     Globus.lastAttemptedRPCName = ctorName(req)
-    val res: FormResponse = await(callMatumba(req, token))
+    val res: FormResponse = await(callMatumba(procName ?: remoteProcedureNameForRequest(req), req, token))
     when (res) {
         is FormResponse.Shitty -> {
             FormResponse2.Shitty(res.error, res.fieldErrors)

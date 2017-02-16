@@ -12,9 +12,10 @@ import aps.*
 import into.kommon.*
 
 class DashboardPage(val world: World) {
-    suspend fun load() {
+    suspend fun load(): PageLoadingError? {
         if (world.user.kind != UserKind.ADMIN) imf("DashboardPage for ${world.user.kind}")
         loadForFuckingAdmin()
+        return null
     }
 
     val c = css.dashboard

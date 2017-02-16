@@ -11,7 +11,7 @@ import into.kommon.*
 
 interface CustomerSingleUAOrderPageTab {
     val tabSpec: TabSpec
-    fun load(): Promisoid<ZimbabweResponse.Shitty<*>?>
+    suspend fun load(): FormResponse2.Shitty<*>?
 }
 
 class UACustomerSingleOrderPage(val world: World) {
@@ -24,17 +24,23 @@ class UACustomerSingleOrderPage(val world: World) {
     var hint by notNullOnce<Placeholder>()
     var order by notNullOnce<UAOrderRTO>()
 
-    suspend fun load() {
-        orderID = urlQuery.id.get(world) ?: return world.setShittyParamsPage()
+    suspend fun load(): PageLoadingError? {
+        orderID = urlQuery.id.get(world) ?: run {
+            world.setShittyParamsPage()
+            return null
+        }
         val defaultTab = tabs.order.params
         val tabKey = tabs.order.items.findSimplyNamed(urlQuery.tab.get(world)) ?: defaultTab
 
-        val res = await(send(world.token, LoadUAOrderRequest()-{o->
+        val res = send(LoadUAOrderRequest()-{o->
             o.id.value = orderID
-        }))
+        })
         order = when (res) {
-            is ZimbabweResponse.Shitty -> return world.setShittyResponsePage(res)
-            is ZimbabweResponse.Hunky -> res.meat.order
+            is FormResponse2.Shitty -> {
+                world.setShittyResponsePage(res)
+                return null
+            }
+            is FormResponse2.Hunky -> res.meat.order
         }
 
         hint = Placeholder(
@@ -62,8 +68,11 @@ class UACustomerSingleOrderPage(val world: World) {
         )
         val tab = tabs.find {it.tabSpec.key == tabKey} ?: tabs.first()
 
-        val error = await(tab.load())
-        error?.let {return world.setShittyResponsePage(it)}
+        val error = tab.load()
+        error?.let {
+            world.setShittyResponsePage(it)
+            return null
+        }
 
         world.setPage(Page(
             header = pageHeader3(kdiv{o->
@@ -93,6 +102,7 @@ class UACustomerSingleOrderPage(val world: World) {
                 )
             }
         ))
+        return null
     }
 
     private fun renderCustomerDraftHint(busy: Boolean = false): ElementBuilder {
@@ -146,8 +156,8 @@ class UACustomerSingleOrderPage(val world: World) {
 }
 
 private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
-    override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {
-        null
+    override suspend fun load(): FormResponse2.Shitty<*>? {
+        return null
     }
 
     private val place = Placeholder(renderView())
@@ -287,7 +297,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
 
 
 private class MessagesTab(val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
-    override fun load(): Promisoid<ZimbabweResponse.Shitty<*>?> = async {
+    override suspend fun load(): FormResponse2.Shitty<*>? {
         throw UnsupportedOperationException("Implement me, please, fuck you")
     }
 

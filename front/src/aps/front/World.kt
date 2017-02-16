@@ -244,7 +244,9 @@ class World(val name: String) {
         if (!skipBodyRendering) {
             ExternalGlobus.disposeStaticShit()
             footer.setBurgerMenu(null)
-            page.load(this)
+            page.load(this)?.let {error->
+                openErrorModal(error.msg)
+            }
             jqbody.scrollTop(0)
             ExternalGlobus.initStaticShit()
         }

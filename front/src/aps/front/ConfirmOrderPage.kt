@@ -3,12 +3,14 @@ package aps.front
 import aps.*
 import into.kommon.*
 
+// TODO:vgrechka Use PageLoadingError
+
 class ConfirmOrderPage(val world: World) {
     object urlQuery : URLQueryParamsMarker {
         val secret by MaybeStringURLParam()
     }
 
-    suspend fun load() {
+    suspend fun load(): PageLoadingError? {
         val res = send(ConfirmOrderRequest()-{o->
             o.secret.value = urlQuery.secret.get(world)
         })
@@ -37,6 +39,7 @@ class ConfirmOrderPage(val world: World) {
                         + "?${UACustomerSingleOrderPage.urlQuery.id.name}=${res.meat.orderId}")
             }
         }
+        return null
     }
 }
 

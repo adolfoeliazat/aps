@@ -43,13 +43,18 @@ object pages {
     }
 }
 
+class PageLoadingError(val msg: String)
+
+val pageLoadedFine: PageLoadingError? = null
+
+typealias PageLoader = suspend (world: World) -> PageLoadingError?
 
 class PageSpec (
     val fqn: String,
     val navTitle: String?,
     val skipFirstTimeRendering: Boolean,
     val requiresSignIn: Boolean,
-    val load: suspend (world: World) -> Unit
+    val load: PageLoader
 ) : Fucker() {
     val path get()= simpleName(fqn)
 }
@@ -63,12 +68,13 @@ private fun staticPage(fqn: String, navTitle: String? = null) = PageSpec(
         val from = content.indexOfOrDie("<!-- BEGIN CONTENT -->")
         val to = content.indexOfOrDie("<!-- END CONTENT -->")
         world.setRootContent(rawHTML(content.substring(from, to)))
+        null
     },
     skipFirstTimeRendering = true,
     requiresSignIn = false
 )
 
-private fun privatePage(fqn: String, navTitle: String? = null, load: suspend (world: World) -> Unit) = PageSpec(
+private fun privatePage(fqn: String, navTitle: String? = null, load: PageLoader) = PageSpec(
     fqn = fqn,
     navTitle = navTitle,
     load = load,

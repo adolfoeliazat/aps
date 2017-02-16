@@ -22,11 +22,12 @@ class MakeOrderPage(val world: World) {
             }
     ))
 
-    suspend fun load() {
+    suspend fun load(): PageLoadingError? {
         world.setPage(Page(
             header = usualHeader(t("TOTE", "Заказ")),
             body = place
         ))
+        return null
     }
 }
 
