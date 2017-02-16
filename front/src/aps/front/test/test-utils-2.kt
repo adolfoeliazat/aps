@@ -122,12 +122,13 @@ suspend fun assertAnonymousCustomerDynamicIndexScreen() {
 }
 
 suspend fun assertAnonymousWriterStaticIndexScreen() {
-    assertScreenHTML("assertWriterAnonymousStaticIndexScreen", "fef22d58-3da9-4651-bd59-019f74944ada")
+    assertScreenHTML("assertAnonymousWriterStaticIndexScreen", "f90c390a-aaf3-4889-9ca0-4c73b9a3d848")
 }
 
 suspend fun assertAnonymousWriterDynamicIndexScreen() {
-    assertScreenHTML("assertWriterAnonymousDynamicIndexScreen", "bda202ba-4f0e-4fb7-b8ca-8b94aa01cd7f")
+    assertScreenHTML("assertAnonymousWriterDynamicIndexScreen", "ab66c1e0-5509-465b-bfdc-c96c3bfe88c4")
 }
+
 
 inline fun fiddlingWithGlobals(block: () -> Unit) {
     val old_overriddenClientKind = TestGlobal.overriddenClientKind

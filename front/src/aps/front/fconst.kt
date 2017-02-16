@@ -46,6 +46,7 @@ object fconst {
 
         object url {
             val customer = "http://aps-ua-customer.local:3012"
+            val writer = "http://aps-ua-writer.local:3022"
         }
 
         object sha1 {

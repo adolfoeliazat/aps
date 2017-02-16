@@ -23,7 +23,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1
+    val startPoint = 6
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -268,6 +268,17 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                         aidHalfway = "e5515942-f102-4f21-85a3-1d3b71f3c715",
                         done = DescribedAssertionID("No file modification controls", "754ffb00-fad3-4d66-97a4-db82485599f1"))
         }
+
+        definePoint(6) { // Admin comes into play
+//            val ivo1 = Morda("dasja1",
+//                             url = fconst.test.url.writer,
+//                             fillTypedStorageLocal = {},
+//                             fillRawStorageLocal = {})
+//            ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()},
+//                                         assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
+//            topNavItemSequence(page = pages.uaWriter.makeOrder_testRef,
+//                               aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
+        }
     }
 
     private fun makeConfirmationURL(secret: String) =
@@ -334,12 +345,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         ++currentPoint
         if (currentPoint != index) die("Expected point index $index, got $currentPoint")
 
-        if (currentPoint >= startPoint) {
-            if (currentPoint > 1 && currentPoint == startPoint) {
+        val shouldSkip = currentPoint < startPoint
+        if (!shouldSkip) {
+            val shouldRestoreState = currentPoint > 1 && currentPoint == startPoint
+            if (shouldRestoreState) {
                 val state = send(TestRestoreTestPointSnapshotRequest()-{o->
                     o.snapshotName.value = pointToSnapshotName(currentPoint - 1)
                 })
-                dlog("TestRestoreDBSnapshotRequest response", state)
+                // dlog("TestRestoreDBSnapshotRequest response", state)
                 testShit.nextRequestTimestampIndex = state.nextRequestTimestampIndex
                 val morda = Morda(state.browseroidName,
                                   url = state.href,

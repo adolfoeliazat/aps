@@ -35,6 +35,7 @@ class World(val name: String) {
     lateinit var topNavbarElement: ReactElement
     lateinit var footer: DynamicFooter
     var navbarHighlight: PageSpec? = null
+    var booted = false
 
     val token: String get() = tokenMaybe!!
     val user: UserRTO get() = userMaybe.let {it ?: bitch("I want a fucking user")}
@@ -56,8 +57,8 @@ class World(val name: String) {
 //        if (MODE == "debug") {
 //            Shitus.initDebugFunctionsShit()
 //        }
-        bootKillme()
         Globus.worldMaybe = this
+        bootKillme()
 
         if (isTest()) {
             TestLocationBar.update()
@@ -138,10 +139,9 @@ class World(val name: String) {
         })
 
         _DOMReact.render(topNavbarElement, navbarContainer())
-
         initDynamicFooter()
-
         loadPageForURL()
+        booted = true
     }
 
     private fun initDynamicFooter() {

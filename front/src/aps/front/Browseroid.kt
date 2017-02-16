@@ -198,7 +198,7 @@ class Morda(
     }
 
     private var state: State = State.VIRGIN
-    private var world by notNullOnce<World >()
+    private var world by notNullOnce<World>()
     private var bro by notNullOnce<TestBrowseroid>()
     private var stols by notNullOnce<IStorage>()
     private var bodyScrollTop by notNull<Double>()

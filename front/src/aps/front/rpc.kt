@@ -43,7 +43,7 @@ fun fetchFromBackend(path: String, requestJSONObject: dynamic = null): Promisoid
 
     val fields: CommonResponseFields = obj
     Globus.worldMaybe?.let {
-        if (!path.contains("getSoftwareVersion"))
+        if (it.booted && !path.contains("getSoftwareVersion"))
             it.footer.setBackendVersion(fields.backendVersion)
     }
 
