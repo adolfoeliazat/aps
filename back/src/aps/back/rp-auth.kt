@@ -1,13 +1,12 @@
 /*
  * APS
  *
- * (C) Copyright 2015-2016 Vladimir Grechka
+ * (C) Copyright 2015-2017 Vladimir Grechka
  */
 
 package aps.back
 
 import aps.*
-import aps.back.generated.jooq.Tables.*
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
 

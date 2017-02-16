@@ -117,15 +117,23 @@ testProcedure(
     }
 )
 
-@RemoteProcedureFactory fun serveRecreateTestDatabaseSchema() = testProcedure(
-    {RecreateTestDatabaseSchemaRequest()},
-    needsDB = false,
-    runShit = fun(ctx, req): GenericResponse {
-        springctx = AnnotationConfigApplicationContext(AppConfig::class.java) // New context -- new EMF
-        enhanceDBSchema()
-        return GenericResponse()
+@Servant class ServeRecreateTestDatabaseSchema(val userRepo: UserRepository) : BitchyProcedure() {
+    override fun serve() {
+        fuckDangerously(FuckDangerouslyParams(
+            bpc = bpc, makeRequest = {RecreateTestDatabaseSchemaRequest()},
+            runShit = fun(ctx, req): GenericResponse {
+                springctx = AnnotationConfigApplicationContext(AppConfig::class.java) // New context -- new EMF
+                enhanceDBSchema()
+                seedUsers()
+                return GenericResponse()
+            }
+        ))
     }
-)
+
+    fun seedUsers() {
+        userRepo.save(User(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", phone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt())))
+    }
+}
 
 @RemoteProcedureFactory fun resetTestDatabaseAlongWithTemplate() = testProcedure(
     {ResetTestDatabaseAlongWithTemplateRequest()},

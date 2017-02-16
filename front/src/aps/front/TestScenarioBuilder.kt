@@ -628,8 +628,7 @@ fun TestScenarioBuilder.initialShit_killme(test: TestScenario) {
 suspend fun initialTestShit(test: TestScenario) {
     setDocInnerHTML("<h3>Running Test: ${ctorName(test)}</h3><hr>")
     measureAndReportToDocumentElement("Resetting database") {
-        await(send(RecreateTestDatabaseSchemaRequest()-{o->
-        }))
+        await(send(RecreateTestDatabaseSchemaRequest()))
     }
 }
 

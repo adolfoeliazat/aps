@@ -83,8 +83,6 @@ class ImposeNextRequestErrorRequest : RequestMatumba() {
 class ResetTestDatabaseRequest() : RequestMatumba()
 
 class RecreateTestDatabaseSchemaRequest() : RequestMatumba() {
-    val templateDB by maybeStringHiddenField()
-    val snapshotID by maybeStringHiddenField()
 }
 
 class ResetTestDatabaseAlongWithTemplateRequest() : RequestMatumba() {
