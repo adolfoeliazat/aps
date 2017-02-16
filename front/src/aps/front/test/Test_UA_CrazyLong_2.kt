@@ -260,9 +260,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(5) {
-            TestGlobal.skipAllFreakingAssertions = true
             assertScreenHTML(aid = "9459385d-4fe1-49b8-a403-6f265c758e8c")
-//            waitNKey()
             twoStepSequence({buttonClick(buttons.sendForApproval_testRef)}, "7293affa-0102-4cca-935c-b5a2adc66692")
             tabSequence(tabs.order.files_testRef,
                         aidHalfway = "e5515942-f102-4f21-85a3-1d3b71f3c715",
@@ -270,12 +268,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(6) { // Admin comes into play
-//            val ivo1 = Morda("dasja1",
-//                             url = fconst.test.url.writer,
-//                             fillTypedStorageLocal = {},
-//                             fillRawStorageLocal = {})
-//            ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()},
-//                                         assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
+            TestGlobal.skipAllFreakingAssertions = true
+            val ivo1 = Morda("dasja1",
+                             url = fconst.test.url.writer,
+                             fillTypedStorageLocal = {},
+                             fillRawStorageLocal = {})
+            ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()},
+                                         assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
 //            topNavItemSequence(page = pages.uaWriter.makeOrder_testRef,
 //                               aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
         }

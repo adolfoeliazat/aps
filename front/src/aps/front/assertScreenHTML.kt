@@ -59,6 +59,7 @@ suspend fun assertScreenHTML(descr: String? = null, aid: String, opts: AssertScr
 }
 
 suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
+    if (TestGlobal.skipAllFreakingAssertions) return
     val stackCapture: CaptureStackException? = CaptureStackException()
     val assertionDescr = p.descr ?: "Describe me"
     val opts = p.opts ?: TestGlobal.defaultAssertScreenOpts
