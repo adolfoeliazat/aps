@@ -32,7 +32,7 @@ object pages {
         val store by namedFucker {privatePage(it, t("Store", "Стор")) {imf()}}
         val profile by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = true) {UAWriterProfilePage(it).load()}}
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
-        val signIn by namedFucker {privatePage(it, t("Sign In", "Вход")) {SignInPage(it).load()}}
+        val signIn by namedFucker {privatePage(it, t("Sign In", "Вход")) {SignInPage(it).load()}}; val signIn_testRef = TestRef(signIn)
         val debug by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {DebugPage(it).load()}} // TODO:vgrechka Remove debug pages from production builds
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}
     }

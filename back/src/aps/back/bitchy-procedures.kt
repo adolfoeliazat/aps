@@ -17,6 +17,28 @@ class BitchyProcedureContext(
     val servletResponse: HttpServletResponse
 )
 
+class FuckAnonymousParams<Req : RequestMatumba, out Res : CommonResponseFields>(
+    val bpc: BitchyProcedureContext,
+    val makeRequest: (ProcedureContext) -> Req,
+    val runShit: (ProcedureContext, Req) -> Res)
+
+fun <Req : RequestMatumba, Res : CommonResponseFields>
+    fuckAnonymous(p: FuckAnonymousParams<Req, Res>)
+{
+    fuckSomeone(FuckSomeoneParams(
+        bpc = p.bpc,
+        req = p.makeRequest,
+        runShit = p.runShit,
+        wrapInFormResponse = true,
+        needsDB = true,
+        needsDangerousToken = false,
+        needsUser = NeedsUser.NO,
+        userKinds = setOf(UserKind.CUSTOMER, UserKind.WRITER, UserKind.ADMIN),
+        considerNextRequestTimestampFiddling = true,
+        logRequestJSON = true
+    ))
+}
+
 class FuckAnyUserParams<Req : RequestMatumba, out Res : CommonResponseFields>(
     val bpc: BitchyProcedureContext,
     val makeRequest: (ProcedureContext) -> Req,

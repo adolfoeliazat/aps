@@ -269,14 +269,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(6) { // Admin comes into play
             TestGlobal.skipAllFreakingAssertions = true
-            val ivo1 = Morda("dasja1",
-                             url = fconst.test.url.writer,
-                             fillTypedStorageLocal = {},
-                             fillRawStorageLocal = {})
-            ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()},
-                                         assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
-//            topNavItemSequence(page = pages.uaWriter.makeOrder_testRef,
-//                               aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
+            val ivo1 = Morda("dasja1", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
+            ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
+            topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
+            inputSetValue(fields.shebang.emailInSignInForm_testRef, "dasja@test.shit.ua")
+            inputSetValue(fields.shebang.passwordInSignInForm_testRef, "dasja-secret")
+            submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
         }
     }
 
