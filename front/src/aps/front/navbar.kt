@@ -34,10 +34,14 @@ fun renderTopNavbar(clientKind: ClientKind,
                 }
             }
             UA_WRITER -> {
-                val q = pages.uaWriter
                 when (user) {
-                    null -> Shit(q.signIn)
-                    else -> Shit(q.dashboard, user.firstName)
+                    null -> Shit(pages.uaWriter.signIn)
+                    else -> Shit(when (user.kind) {
+                                     UserKind.CUSTOMER -> wtf("Customer on writer's site")
+                                     UserKind.WRITER -> pages.uaWriter.dashboard
+                                     UserKind.ADMIN -> pages.uaAdmin.dashboard
+                                 },
+                                 user.firstName)
                 }
             }
         }
@@ -56,35 +60,37 @@ fun renderTopNavbar(clientKind: ClientKind,
     }
 
     val leftEls = mutableListOf<ReactElement>()
-    when (user) {
-        null -> {
+    when {
+        user == null -> {
             leftEls += staticPages.map {renderItem(it)}
         }
         else -> {
-            leftEls += reactCreateElement(
-                "li",
-                json("className" to "dropdown"),
-                listOf(
-                    reactCreateElement(
-                        "a",
-                        json("href" to "#",
-                             "className" to "dropdown-toggle skipClearMenus",
-                             "style" to when {
-                                 staticPages.any {it == highlight} -> Style(backgroundColor = "#e7e7e7")
-                                 else -> Style()
-                             }.toReactStyle(),
-                             "data-toggle" to "dropdown",
-                             "role" to "button"),
-                        listOf(
-                            t("Stuff", "Стафф").asReactElement(),
-                            reactCreateElement(
-                                "span",
-                                json("className" to "caret",
-                                     "style" to json("marginLeft" to 5))))),
-                    reactCreateElement(
-                        "ul",
-                        json("className" to "dropdown-menu"),
-                        staticPages.map {renderItem(it)})))
+            if (user.kind != ADMIN) {
+                leftEls += reactCreateElement(
+                    "li",
+                    json("className" to "dropdown"),
+                    listOf(
+                        reactCreateElement(
+                            "a",
+                            json("href" to "#",
+                                 "className" to "dropdown-toggle skipClearMenus",
+                                 "style" to when {
+                                     staticPages.any {it == highlight} -> Style(backgroundColor = "#e7e7e7")
+                                     else -> Style()
+                                 }.toReactStyle(),
+                                 "data-toggle" to "dropdown",
+                                 "role" to "button"),
+                            listOf(
+                                t("Stuff", "Стафф").asReactElement(),
+                                reactCreateElement(
+                                    "span",
+                                    json("className" to "caret",
+                                         "style" to json("marginLeft" to 5))))),
+                        reactCreateElement(
+                            "ul",
+                            json("className" to "dropdown-menu"),
+                            staticPages.map {renderItem(it)})))
+            }
 
             val privatePages = when (clientKind) {
                 UA_CUSTOMER -> {
@@ -92,8 +98,17 @@ fun renderTopNavbar(clientKind: ClientKind,
                     listOf(q.orders)
                 }
                 UA_WRITER -> {
-                    val q = pages.uaWriter
-                    listOf(q.orders, q.store)
+                    when (user.kind) {
+                        UserKind.WRITER -> {
+                            val q = pages.uaWriter
+                            listOf(q.orders, q.store)
+                        }
+                        UserKind.ADMIN -> {
+                            val q = pages.uaAdmin
+                            listOf(q.orders)
+                        }
+                        UserKind.CUSTOMER -> wtf("Customer on writer's site")
+                    }
                 }
             }
             leftEls += privatePages.map {renderItem(it)}

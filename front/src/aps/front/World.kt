@@ -185,7 +185,10 @@ class World(val name: String) {
                 val path = pathname.substring(pathname.lastIndexOfOrDie("/") + 1, pathname.lastIndexOfOrDie("."))
                 val pages = when (clientKind) {
                     UA_CUSTOMER -> pages.uaCustomer
-                    UA_WRITER -> pages.uaWriter
+                    UA_WRITER -> when {
+                        user?.kind == UserKind.ADMIN -> pages.uaAdmin
+                        else -> pages.uaWriter
+                    }
                 }
                 bang(pages.items.find {it.path == path})
             }

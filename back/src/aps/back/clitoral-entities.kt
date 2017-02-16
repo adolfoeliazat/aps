@@ -110,6 +110,7 @@ class UAOrder(
 
 interface UAOrderRepository : CrudRepository<UAOrder, Long> {
     fun findByConfirmationSecret(x: String): UAOrder?
+    fun countByState(x: UAOrderState): Long
 }
 
 @Entity @Table(name = "user_tokens",

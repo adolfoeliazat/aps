@@ -14,9 +14,10 @@ import aps.*
             bpc = bpc, makeRequest = {UAAdminGetStuffToDoRequest()},
             runShit = fun(ctx, req): UAAdminGetStuffToDoRequest.Response {
                 return UAAdminGetStuffToDoRequest.Response(
-                    ordersToApprove = 15
+                    ordersToApprove = orderRepo.countByState(UAOrderState.WAITING_ADMIN_APPROVAL)
                 )
             }
         ))
     }
 }
+

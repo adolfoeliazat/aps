@@ -36,6 +36,11 @@ object pages {
         val debug by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {DebugPage(it).load()}} // TODO:vgrechka Remove debug pages from production builds
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}
     }
+
+    object uaAdmin : Fuckers<PageSpec>(null) {
+        val orders by namedFucker {privatePage(it, t("Orders", "Заказы")) {UAAdminOrdersPage(it).load()}}
+        val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
+    }
 }
 
 

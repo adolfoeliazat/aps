@@ -14,6 +14,8 @@ import org.w3c.dom.events.MouseEvent
 import kotlin.js.Json
 import kotlin.js.json
 
+open class LinkKey(override val fqn: String) : Fucker(), FQNed
+
 fun jsFacing_link(def: Json): ReactElement {
     var content: dynamic = def["content"]
     val title: String? = def["title"].asDynamic()
@@ -101,7 +103,7 @@ fun jsFacing_pageLink(ui: World, def: dynamic) {
 
 @GenerateSignatureMixes
 fun urlLink(
-    key: String? = null,
+    key: LinkKey? = null,
     url: String,
     delayActionForFanciness: Boolean = false,
     blinkOpts: dynamic = null,
@@ -114,7 +116,7 @@ fun urlLink(
 
     val doClick: suspend () -> Unit = {
         val blinker = await(effects).blinkOn(byid(id), BlinkOpts(dtop = "3px"))
-        TestGlobal.linkTickingLock.resumeTestAndPauseSutFromSut()
+        TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
         Shitus.byid(id).css("text-decoration", "none")
 
         if (delayActionForFanciness && !(isInTestScenario() && art.testSpeed == "fast")) {
@@ -125,7 +127,7 @@ fun urlLink(
 
         blinker.unblink()
         Shitus.byid(id).css("text-decoration", "")
-        TestGlobal.linkDoneLock.resumeTestAndPauseSutFromSut()
+        TestGlobal.shitDoneLock.resumeTestFromSut()
     }
 
     return link(
@@ -151,7 +153,7 @@ class Link(
     val params: LinkParams,
     attrs: Attrs = Attrs(),
     val style: Style = Style(),
-    val key: String? = null,
+    val key: LinkKey? = null,
     val doClick: (suspend () -> Unit)? = null
 ) : Control2(attrs) {
     init {
@@ -161,10 +163,10 @@ class Link(
     val content = params.content ?: oldShitAsToReactElementable(jsFacing_spancTitle(json("title" to params.title)))
 
     companion object {
-        val instances = mutableMapOf<String, Link>()
+        val instances = mutableMapOf<LinkKey, Link>()
 
-        fun instance(key: String): Link {
-            return instances[key] ?: bitch("No Link keyed `$key`")
+        fun instance(key: LinkKey): Link {
+            return instances[key] ?: bitch("No Link keyed `${key.fqn}`")
         }
     }
 
@@ -212,7 +214,7 @@ fun link(
     @Mix params: LinkParams,
     @Mix attrs: Attrs = Attrs(),
     @Mix style: Style = Style(),
-    key: String? = null,
+    key: LinkKey? = null,
     doClick: (suspend () -> Unit)? = null
 ): ToReactElementable {
     return Link(params, attrs, style, key = key, doClick = doClick)
@@ -220,28 +222,29 @@ fun link(
 
 fun DummyMouseEvent() = MouseEvent("dummyTypeArg")
 
-suspend fun linkClick(key: String, handOpts: HandOpts = HandOpts()) {
-    val target = Link.instance(key)
+
+suspend fun linkClick(key: TestRef<LinkKey>, handOpts: HandOpts = HandOpts()) {
+    val target = Link.instance(key.it)
     await(TestUserActionAnimation.hand(target, handOpts))
     target.click()
 }
 
-suspend fun linkSequence(
-    descr: String,
-    key: String,
-    aid: String
-) {
-    sequence(
-        action = {
-            linkClick(key)
-        },
-        descr = descr,
-        steps = listOf(
-            PauseAssertResumeStep(TestGlobal.linkTickingLock, "$aid--1"),
-            PauseAssertResumeStep(TestGlobal.linkDoneLock, "$aid--2")
-        )
-    )
-}
+//suspend fun linkSequence(
+//    descr: String,
+//    key: String,
+//    aid: String
+//) {
+//    sequence(
+//        action = {
+//            linkClick(key)
+//        },
+//        descr = descr,
+//        steps = listOf(
+//            PauseAssertResumeStep(TestGlobal.linkTickingLock, "$aid--1"),
+//            PauseAssertResumeStep(TestGlobal.linkDoneLock, "$aid--2")
+//        )
+//    )
+//}
 
 
 

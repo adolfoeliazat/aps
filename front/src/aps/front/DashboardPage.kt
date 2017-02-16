@@ -36,20 +36,20 @@ class DashboardPage(val world: World) {
                                 if (r.ordersToApprove > 0) {
                                     o- kdiv(className = c.workItem){o->
                                         o- kdiv(className = c.workItemDots){o->
-                                            o- ".".repeat(200)
-                                        }
-                                        o- link(className = c.workItemLink,
-                                                content = kspan(className = c.workItemLinkText){o->
-                                                    o- t("TOTE", "Новых заказов рассмотреть")
-                                                },
-                                                onClicka = {
-                                                }
-                                        )
+                                            o- ".".repeat(200)}
+                                        o- kdiv(className = c.workItemLinkWideContainer){o->
+                                            o- kspan(className = c.workItemLinkNarrowContainer){o->
+                                                o- urlLink(key = links.adminDashboard.ordersToApprove,
+                                                           url = makeURL(pages.uaAdmin.orders, listOf(
+                                                               URLParamValue(UAAdminOrdersPage.urlQuery.filter, AdminOrderFilter.TO_APPROVE)
+                                                           )),
+                                                           attrs = Attrs(className = c.workItemLink),
+                                                           linkParams = LinkParams(
+                                                               title = t("TOTE", "Новых заказов рассмотреть")
+                                                           ))}}
                                         o- kdiv(className = c.workItemBadgeContainer){o->
                                             o- kspan(className = "badge ${c.workItemBadge}"){o->
-                                                o- r.ordersToApprove.toString()
-                                            }
-                                        }
+                                                o- r.ordersToApprove.toString()}}
                                     }
                                 }
                             }

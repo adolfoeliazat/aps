@@ -56,6 +56,15 @@ object selects                           : Fuckers<SelectKey<*>>(null) {
     val filter                           by namedFucker({SelectKey<CustomerFileFilter>(it)}); val filter_testRef = TestRef(filter)
 }
 
+object links                             : Fuckers<LinkKey>(null) {
+    val createAccount                    by namedFucker(::LinkKey); val createAccount_testRef = TestRef(createAccount)
+    val signUp                           by namedFucker(::LinkKey); val signUp_testRef = TestRef(signUp)
+
+    object adminDashboard                : Fuckers<LinkKey>(null) {
+        val ordersToApprove              by namedFucker(::LinkKey); val ordersToApprove_testRef = TestRef(ordersToApprove)
+    }
+}
+
 
 
 

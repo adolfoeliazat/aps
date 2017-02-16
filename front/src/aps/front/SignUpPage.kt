@@ -32,7 +32,7 @@ class SignUpPage(val world: World) {
                     hr(),
                     Shitus.diva(json("tame" to "signInSuggestion", "style" to json("textAlign" to "left")),
                                 Shitus.spanc(json("tame" to "prose", "content" to t("TOTE", "Уже есть аккаунт? Тогда "))),
-                                urlLink(linkParams = LinkParams(title = t("TOTE", "входим сюда")), url = "sign-in.html", key = fconst.key.link.signUp.decl).toReactElement(),
+                                urlLink(linkParams = LinkParams(title = t("TOTE", "входим сюда")), url = "sign-in.html", key = links.signUp).toReactElement(),
                                 "."))
                 ))
         ))

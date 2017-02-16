@@ -85,8 +85,9 @@ object css {
         val workItem by Style(style = "position: relative; display: flex; margin-top: 0.25rem;",
                               firstChild = "margin-top: 0;")
         val workItemDots by Style("position: absolute; left: 0; top: 0; overflow: hidden; width: 100%;")
-        val workItemLink by Style("position: relative; color: ${Color.BLACK_BOOT}; flex-grow: 1;")
-        val workItemLinkText by Style("background-color: white; padding-right: 0.5rem;")
+        val workItemLinkWideContainer by Style("flex-grow: 1; position: relative;")
+        val workItemLinkNarrowContainer by Style("background-color: white; padding-right: 0.5rem;")
+        val workItemLink by Style("position: relative; color: ${Color.BLACK_BOOT};")
         val workItemBadgeContainer by Style("position: relative; padding-left: 0.5rem; background-color: white;")
         val workItemBadge by Style("background-color: ${Color.BLUE_GRAY_500}")
     }

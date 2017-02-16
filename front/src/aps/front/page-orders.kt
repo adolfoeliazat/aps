@@ -3,6 +3,27 @@ package aps.front
 import aps.*
 import into.kommon.*
 
+class UAAdminOrdersPage(val world: World) {
+    object urlQuery : URLQueryParamsMarker {
+        val filter by EnumURLParam(AdminOrderFilter.values(), default = AdminOrderFilter.ALL)
+    }
+
+    suspend fun load() {
+        setPage(kdiv{o->
+            o- "fuck you"
+        })
+    }
+
+    private fun setPage(body: ToReactElementable) {
+        world.setPage(Page(
+            header = usualHeader(t("Orders", "Заказы")),
+            body = kdiv{o->
+                o- body
+            }
+        ))
+    }
+}
+
 class UACustomerOrdersPage(val world: World) {
     suspend fun load() {
         val m = Melinda<UAOrderRTO, Nothing, CustomerOrderFilter>(

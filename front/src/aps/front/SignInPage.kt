@@ -27,7 +27,7 @@ class SignInPage(val ui: World) {
                         spec.req.password.value = ""
                     },
 
-                    onSuccessa = {res -> async {
+                    onSuccessa = {res ->
                         ui.userMaybe = res.user
                         ui.tokenMaybe = res.token
                         Globus.currentBrowseroid.typedStorageLocal.token = ui.tokenMaybe
@@ -37,7 +37,7 @@ class SignInPage(val ui: World) {
                                 UserState.COOL -> "dashboard.html"
                                 else -> "profile.html"
                             })
-                    }}
+                    }
                 ))
 
                 if (ui.signedUpOK) {
@@ -54,7 +54,7 @@ class SignInPage(val ui: World) {
                             linkParams = LinkParams(title=t("TOTE", "Срочно создать!")),
                             url = "/sign-up.html",
                             delayActionForFanciness = true,
-                            key = fconst.key.link.createAccount.decl
+                            key = links.createAccount
                         )
                     }
                 }}

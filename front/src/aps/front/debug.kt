@@ -23,7 +23,7 @@ fun dumpControls() {
     for (key in Select.instances.keys) clog("Select: ${key.fqn}")
     for (key in kic.instances.keys) clog("kic: ${key.fqn}")
     for (key in TopNavItem.instances.keys) clog("TopNavItem: " + key.belongsToFuckers.name + " :: " + key.path)
-    for (key in Link.instances.keys) clog("Link: $key")
+    for (key in Link.instances.keys) clog("Link: ${key.fqn}")
     for (key in Tabs2.instances.keys) clog("Tab: ${key.fqn}")
 }
 
