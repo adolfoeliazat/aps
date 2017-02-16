@@ -1,7 +1,7 @@
 /*
  * APS
  *
- * (C) Copyright 2015-2016 Vladimir Grechka
+ * (C) Copyright 2015-2017 Vladimir Grechka
  */
 
 package aps.back

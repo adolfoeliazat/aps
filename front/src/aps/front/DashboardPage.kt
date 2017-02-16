@@ -1,7 +1,7 @@
 /*
  * APS
  *
- * (C) Copyright 2015-2016 Vladimir Grechka
+ * (C) Copyright 2015-2017 Vladimir Grechka
  */
 
 @file:Suppress("UnsafeCastFromDynamic")
@@ -9,35 +9,66 @@
 package aps.front
 
 import aps.*
-import kotlin.js.json
+import into.kommon.*
 
 class DashboardPage(val world: World) {
     suspend fun load() {
+        if (world.user.kind != UserKind.ADMIN) imf("DashboardPage for ${world.user.kind}")
         loadForFuckingAdmin()
     }
 
     val c = css.dashboard
 
     private suspend fun loadForFuckingAdmin() {
-        world.setPage(Page(
-            header = usualHeader(t("Dashboard", "Панель")),
-            body = kdiv{o->
-                o- kdiv(className = "row"){o->
-//                    o- kdiv(className = "col-sm-6"){o->
-//                        o- renderSection2(
-//                            title = t("Stuff to do", "Работенка"),
-//                            emptyText = t("TOTE", "Сюшай, савсэм нэт работы..."),
-//                            items = listOf()
-//                        )
-//                    }
+        val res = send(UAAdminGetStuffToDoRequest())
+        exhaustive/when(res) {
+            is FormResponse2.Shitty -> {
+                setPage(renderErrorBanner(res.error))
+            }
+            is FormResponse2.Hunky -> {
+                setPage(kdiv(className = "row"){o->
                     o- section(t("Stuff to do", "Работенка"), kdiv{o->
-                        o- "shiiiiit"
+                        val r = res.meat
+                        val total = r.ordersToApprove
+                        when (total) {
+                            0L -> o- div(t("TOTE", "Сюшай, савсэм нэт работы..."))
+                            else -> {
+                                if (r.ordersToApprove > 0) {
+                                    o- kdiv(className = c.workItem){o->
+                                        o- kdiv(className = c.workItemDots){o->
+                                            o- ".".repeat(200)
+                                        }
+                                        o- link(className = c.workItemLink,
+                                                content = kspan(className = c.workItemLinkText){o->
+                                                    o- t("TOTE", "Новых заказов рассмотреть")
+                                                },
+                                                onClicka = {
+                                                }
+                                        )
+                                        o- kdiv(className = c.workItemBadgeContainer){o->
+                                            o- kspan(className = "badge ${c.workItemBadge}"){o->
+                                                o- r.ordersToApprove.toString()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     })
                     o- section(t("My account", "Мой аккаунт"), kdiv{o->
                         o- chevronLink(t("Change password", "Сменить пароль")) {}
                         o- chevronLink(t("Sign out", "Выйти прочь")) {}
                     })
-                }
+                })
+            }
+        }
+    }
+
+    private fun setPage(body: ToReactElementable) {
+        world.setPage(Page(
+            header = usualHeader(t("Dashboard", "Панель")),
+            body = kdiv{o->
+                o- body
             }
         ))
     }
@@ -94,6 +125,13 @@ class DashboardPage(val world: World) {
 
 
 
+//                    o- kdiv(className = "col-sm-6"){o->
+//                        o- renderSection2(
+//                            title = t("Stuff to do", "Работенка"),
+//                            emptyText = t("TOTE", "Сюшай, савсэм нэт работы..."),
+//                            items = listOf()
+//                        )
+//                    }
 
 
 

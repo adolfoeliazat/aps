@@ -61,6 +61,28 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
     ))
 }
 
+class FuckAdminParams<Req : RequestMatumba, out Res : CommonResponseFields>(
+    val bpc: BitchyProcedureContext,
+    val makeRequest: (ProcedureContext) -> Req,
+    val runShit: (ProcedureContext, Req) -> Res)
+
+fun <Req : RequestMatumba, Res : CommonResponseFields>
+    fuckAdmin(p: FuckAdminParams<Req, Res>)
+{
+    fuckSomeone(FuckSomeoneParams(
+        bpc = p.bpc,
+        req = p.makeRequest,
+        runShit = p.runShit,
+        wrapInFormResponse = true,
+        needsDB = true,
+        needsDangerousToken = false,
+        needsUser = NeedsUser.YES,
+        userKinds = setOf(UserKind.ADMIN),
+        considerNextRequestTimestampFiddling = true,
+        logRequestJSON = true
+    ))
+}
+
 class FuckCustomerParams<Req : RequestMatumba, out Res : CommonResponseFields>(
     val bpc: BitchyProcedureContext,
     val makeRequest: (ProcedureContext) -> Req,

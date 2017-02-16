@@ -203,6 +203,10 @@ class UACustomerSendOrderDraftForApprovalRequest : RequestMatumba() {
     val orderID by longHiddenField()
 }
 
+class UAAdminGetStuffToDoRequest : RequestMatumba() {
+    class Response(val ordersToApprove: Long) : CommonResponseFieldsImpl()
+}
+
 
 
 
