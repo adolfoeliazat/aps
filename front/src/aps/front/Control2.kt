@@ -27,11 +27,11 @@ data class Attrs(
     val href: String? = null,
     val tabIndex: Int? = null,
     val onClick: ((MouseEvent) -> Unit)? = null,
-    val onClicka: ((MouseEvent) -> Promisoid<Unit>)? = null,
+    val onClicka: (suspend (MouseEvent) -> Unit)? = null,
     val onMouseEnter: ((MouseEvent) -> Unit)? = null,
-    val onMouseEntera: ((MouseEvent) -> Promisoid<Unit>)? = null,
+    val onMouseEntera: (suspend (MouseEvent) -> Unit)? = null,
     val onMouseLeave: ((MouseEvent) -> Unit)? = null,
-    val onMouseLeava: ((MouseEvent) -> Promisoid<Unit>)? = null
+    val onMouseLeava: (suspend (MouseEvent) -> Unit)? = null
 )
 
 abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, FuckingControl {
@@ -265,7 +265,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, Fuckin
             e.preventDefault()
             e.stopPropagation()
             attrs.onClick?.let {it(e)}
-            attrs.onClicka?.let {await(it(e))}
+            attrs.onClicka?.let {it(e)}
         }
     }
 

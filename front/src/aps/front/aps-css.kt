@@ -75,8 +75,16 @@ object css {
         val modalPane by Style("")
     }
 
+    object dashboard : Group(null) {
+        val sectionTitle by Style("background: ${Color.BLUE_GRAY_50}; padding: 0.15rem 0.5rem; margin-bottom: 0.5rem; font-weight: bold;")
+        val sectionItem by Style(style = "margin-top: 0.25rem;",
+                                 firstChild = "margin-top: 0;")
+        val sectionItemIcon by Style("color: ${Color.BLUE_GRAY_600}; margin-right: 0.3em;")
+        val sectionItemLink by Style("color: ${Color.BLACK_BOOT}")
+    }
+
     object orderPage : Group(null) {
-        object customer : Group(null) {
+        object customer : Group(this) {
             val containerBase = """
                 margin-top: -0.5em;
                 padding-top: 0.25em; padding-bottom: 0.25em;
@@ -86,13 +94,13 @@ object css {
                 min-height: 40.6px;
             """
 
-            object waitingAdminApprovalHint : Group(null) {
+            object waitingAdminApprovalHint : Group(this) {
                 val container by Style("$containerBase; background-color: ${Color.LIGHT_GREEN_100};")
                 val message by Style("flex-grow: 1;")
                 val icon by Style("margin-right: 0.5em;")
             }
 
-            object draftHint : Group(null) {
+            object draftHint : Group(this) {
                 val container by Style("$containerBase background-color: ${Color.BLUE_GRAY_50};")
                 val containerBusy by Style("$containerBase background-color: ${Color.WHITE}; padding-left: 0;")
                 val message by Style("flex-grow: 1;")

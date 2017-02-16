@@ -112,7 +112,7 @@ fun urlLink(
     val ui = hrss.browserOld.ui
     val id = puid()
 
-    fun doClick() = async {
+    val doClick: suspend () -> Unit = {
         val blinker = await(effects).blinkOn(byid(id), BlinkOpts(dtop = "3px"))
         TestGlobal.linkTickingLock.resumeTestAndPauseSutFromSut()
         Shitus.byid(id).css("text-decoration", "none")
@@ -133,11 +133,11 @@ fun urlLink(
         attrs.copy(
             controlTypeName = attrs.controlTypeName ?: "urlLink",
             id = id,
-            onClicka = fun(_): Promisoid<Unit> = doClick()
+            onClicka = {doClick()}
         ),
         style,
         key = key,
-        doClick = ::doClick
+        doClick = {async{doClick()}}
     )
 }
 
@@ -152,7 +152,7 @@ class Link(
     attrs: Attrs = Attrs(),
     val style: Style = Style(),
     val key: String? = null,
-    val doClick: (() -> Promisoid<Unit>)? = null
+    val doClick: (suspend () -> Unit)? = null
 ) : Control2(attrs) {
     init {
         check(params.content != null || params.title != null) {"Either content or title"}
@@ -181,7 +181,7 @@ class Link(
     }
 
     fun click() {
-        doClick!!()
+        async {doClick!!()}
     }
 
     override fun defaultControlTypeName() = "link"
@@ -196,11 +196,11 @@ class Link(
                  "href" to "#",
                  "onMouseEnter" to {e: MouseEvent -> async {
                      attrs.onMouseEnter?.let {it(e)}
-                     attrs.onMouseEntera?.let {await(it(e))}
+                     attrs.onMouseEntera?.let {it(e)}
                  }},
                  "onMouseLeave" to {e: MouseEvent -> async {
                      attrs.onMouseLeave?.let {it(e)}
-                     attrs.onMouseLeava?.let {await(it(e))}
+                     attrs.onMouseLeava?.let {it(e)}
                  }}),
             content.toReactElement()
         ))
@@ -213,7 +213,7 @@ fun link(
     @Mix attrs: Attrs = Attrs(),
     @Mix style: Style = Style(),
     key: String? = null,
-    doClick: (() -> Promisoid<Unit>)? = null
+    doClick: (suspend () -> Unit)? = null
 ): ToReactElementable {
     return Link(params, attrs, style, key = key, doClick = doClick)
 }

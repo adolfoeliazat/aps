@@ -78,6 +78,9 @@ class namedFucker<Base, out T>(val make: (fqn: String) -> T) where T : Base, Bas
     }
 }
 
+fun threeTimes(block: () -> Unit) {
+    for (i in 1..3) block()
+}
 
 
 
