@@ -12,12 +12,19 @@ fun Iterable<FQNed>.findSimplyNamed(name: String?) =
 
 class TabKey(override val fqn: String) : Fucker(), FQNed
 
-class TabSpec(
-    val key: TabKey,
-    val title: String,
-    val content: ToReactElementable,
-    val stripContent: ToReactElementable = kdiv()
-)
+interface TabSpec {
+    val key: TabKey
+    val title: String
+    val content: ToReactElementable
+    val stripContent: ToReactElementable
+}
+
+class SimpleTabSpec(
+    override val key: TabKey,
+    override val title: String,
+    override val content: ToReactElementable,
+    override val stripContent: ToReactElementable = kdiv()
+) : TabSpec
 
 interface TabFiddling {
     fun click()

@@ -252,7 +252,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
         }
     }
 
-    override val tabSpec = TabSpec(
+    override val tabSpec = SimpleTabSpec(
         key = tabs.order.params,
         title = t("TOTE", "Параметры"),
         content = place,
@@ -305,7 +305,7 @@ private class MessagesTab(val order: UAOrderRTO) : CustomerSingleUAOrderPageTab 
         o- "fucking messages"
     }
 
-    override val tabSpec = TabSpec(tabs.order.messages, t("TOTE", "Сообщения"), content)
+    override val tabSpec = SimpleTabSpec(tabs.order.messages, t("TOTE", "Сообщения"), content)
 }
 
 

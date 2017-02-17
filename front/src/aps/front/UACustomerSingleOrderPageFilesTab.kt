@@ -3,18 +3,7 @@ package aps.front
 import aps.*
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
-import kotlin.js.json
 import kotlin.properties.Delegates.notNull
-
-interface LipsInterface {
-    fun renderItem(initiallyTransparent: Boolean): ToReactElementable
-}
-
-interface TongueInterface<Item> {
-    suspend fun onEdit()
-    suspend fun onDelete()
-    fun getItem(): Item
-}
 
 class TestDownloadContext {
     val downloadStartedLock by notNullNamed(TestLock(virgin = true))
@@ -22,353 +11,39 @@ class TestDownloadContext {
     var shit by notNull<DownloadFileResponse>()
 }
 
-class Boobs<CreateRequest,
-            CreateResponse,
-            Filter,
-            Item,
-            UpdateItemRequest,
-            UpdateItemResponse>
-(
-    val hasCreateButton: Boolean,
-    val plusModalTitle: String,
-    val makeCreateRequest: () -> CreateRequest,
-    val makeURLAfterCreation: () -> String,
-    val makeURLForReload: (List<URLParamValue<*>>) -> String,
-    val filterValues: Array<Filter>,
-    val defaultFilterValue: Filter,
-    val filterSelectKey: SelectKey<Filter>,
-    val vaginalInterface: VaginalInterface<Filter,
-                                           Item,
-                                           UpdateItemRequest,
-                                           UpdateItemResponse>
-)
-    where Filter: Enum<Filter>,
-          Filter: Titled,
-          Item : MelindaItemRTO,
-          CreateRequest : RequestMatumba,
-          CreateResponse : CommonResponseFields,
-          UpdateItemRequest : RequestMatumba,
-          UpdateItemResponse : CommonResponseFields
-{
-    val urlQuery = _URLQuery()
-    inner class _URLQuery : URLQueryParamsMarker {
-        val ordering by EnumURLParam(Ordering.values(), default = Ordering.DESC)
-        val filter by EnumURLParam(filterValues, default = defaultFilterValue)
-        val search by StringURLParam("")
-    }
-
-    var headerControlsDisabled = false
-    var chunksLoaded = 0
-    var stripContent by notNullOnce<Control2>()
-    var mainContent by notNullOnce<ToReactElementable>()
-
-    fun makeStripContent() {
-        stripContent = object:Control2(Attrs()) {
-            override fun render(): ToReactElementable {
-                return hor2{o->
-                    o- kdiv(position = "relative"){o->
-                        o- searchInput
-                        o- ki(className = "${fa.search}", position = "absolute", left = 10, top = 10, color = Color.GRAY_500)
-                    }
-                    if (vaginalInterface.shouldShowFilter()) {
-                        o- filterSelect
-                    }
-                    o- orderingSelect
-
-                    val refreshButtonID = puid()
-                    o- Button(id = refreshButtonID, icon = fa.refresh, volatileDisabled = {headerControlsDisabled}, key = buttons.refreshPage) {
-                        asu {reload(refreshButtonID)}
-                    }
-
-                    if (hasCreateButton) {
-                        o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = buttons.plus) {
-                            openEditModal( // TODO:vgrechka Replace `Edit` with something more general
-                                title = plusModalTitle,
-                                formSpec = FormSpec<CreateRequest, CreateResponse>(
-                                    ui = Globus.world,
-                                    req = makeCreateRequest()
-                                ),
-                                onSuccessa = {
-                                    Globus.world.replaceNavigate(makeURLAfterCreation())
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    val boobsInterface = object:BoobsInterface {
-        override val mainContent get()= this@Boobs.mainContent
-        override val stripContent get()= this@Boobs.stripContent
-        override fun getSearchString() = urlQuery.search.get()
-    }
-
-    val filterSelect = Select(
-        key = filterSelectKey,
-        values = filterValues,
-        initialValue = urlQuery.filter.get(),
-        isAction = true,
-        style = json("width" to 160),
-        volatileDisabled = {headerControlsDisabled}
-    )
-
-    val orderingSelect = Select(
-        key = selects.ordering,
-        values = Ordering.values(),
-        initialValue = urlQuery.ordering.get(),
-        isAction = true,
-        style = json("width" to 160),
-        volatileDisabled = {headerControlsDisabled}
-    )
-
-    val searchInput = Input(
-        key = inputs.search,
-        style = Style(paddingLeft = 30, width = "100%"),
-        placeholder = t("Search...", "Поиск..."),
-        volatileDisabled  = {headerControlsDisabled}
-    )
-
-    init {
-        searchInput.setValue(urlQuery.search.get())
-
-        filterSelect.onChanga = {reload(filterSelect.elementID)}
-        orderingSelect.onChanga = {reload(orderingSelect.elementID)}
-        searchInput.onKeyDowna = {e->
-            if (e.keyCode == 13) {
-                preventAndStop(e)
-                asu {reload(searchInput.elementID)}
-            }
-        }
-    }
-
-
-    suspend fun reload(elementID: String) {
-        await(effects).blinkOn(byid(elementID))
-        headerControlsDisabled = true
-        stripContent.update()
-        TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
-        try {
-            val paramValuesFromVagina = listOf(
-                URLParamValue(urlQuery.ordering, orderingSelect.value),
-                URLParamValue(urlQuery.filter, filterSelect.value),
-                URLParamValue(urlQuery.search, encodeURIComponent(searchInput.getValue()))
-            )
-            Globus.world.pushNavigate(makeURLForReload(paramValuesFromVagina))
-        } finally {
-            headerControlsDisabled = false    // TODO:vgrechka Redundant?
-            stripContent.update()                          // TODO:vgrechka Redundant?
-
-            TestGlobal.shitDoneLock.resumeTestFromSut()
-        }
-    }
-
-    private suspend fun requestChunk(fromID: Long?): FormResponse2<ItemsResponse<Item>> {
-        val res = vaginalInterface.sendItemsRequest(ItemsRequest(filterValues) - {o ->
-            o.entityID.value = vaginalInterface.getParentEntityID()
-            o.filter.value = urlQuery.filter.get()
-            o.ordering.value = urlQuery.ordering.get()
-            o.searchString.value = urlQuery.search.get()
-            o.fromID.value = fromID
-        })
-        ++chunksLoaded
-        return res
-    }
-
-    suspend fun load(): FormResponse2.Shitty<*>? {
-        val res = requestChunk(null)
-        return when (res) {
-            is FormResponse2.Shitty -> res
-            is FormResponse2.Hunky -> {
-                val meat = res.meat
-                makeStripContent()
-
-                val items = makeItemsControl(meat, noItemsMessage = true, chunkIndex = chunksLoaded - 1)
-                mainContent = ToReactElementable.from {kdiv{o->
-                    o- items
-                }}
-
-                null
-            }
-        }
-    }
-
-    private fun makeItemsControl(meat: ItemsResponse<Item>, noItemsMessage: Boolean, chunkIndex: Int, containerID: String? = null): ToReactElementable {
-        if (meat.items.isEmpty()) {
-            return if (noItemsMessage) span(const.msg.noItems)
-            else NOTRE
-        }
-
-        return kdiv(id = containerID){o->
-            var topPlace = Placeholder()
-            o- topPlace
-
-            for ((fileIndex, _orderFile) in meat.items.withIndex()) {
-                Pizda(_orderFile, o)
-            }
-
-            meat.moreFromID?.let {moreFromID ->
-                moreFromID
-                val placeholder = Placeholder()
-                placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
-                    val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = buttons.showMore)
-                    btn.onClicka = {
-                        async {
-                            val blinker = await(effects).blinkOn(byid(btn.elementID))
-                            TestGlobal.showMoreHalfwayLock.resumeTestAndPauseSutFromSut()
-                            try {
-                                val res = try {
-                                    requestChunk(meat.moreFromID)
-                                } catch(e: Exception) {
-                                    openErrorModal(const.msg.serviceFuckedUp)
-                                    null
-                                }
-
-                                if (res != null) {
-                                    exhaustive / when (res) {
-                                        is FormResponse2.Shitty -> openErrorModal(res.error)
-                                        is FormResponse2.Hunky -> {
-                                            val newChunkContainerID = puid()
-                                            placeholder.setContent(
-                                                makeItemsControl(res.meat,
-                                                                 noItemsMessage = false,
-                                                                 chunkIndex = chunksLoaded - 1,
-                                                                 containerID = newChunkContainerID))
-                                            await(scrollBodyToShitGradually {byid(newChunkContainerID)})
-                                        }
-                                    }
-                                }
-                            } finally {
-                                blinker.unblink()
-                                TestGlobal.showMoreDoneLock.resumeTestFromSut()
-                            }
-                        }
-                    }
-                    o- btn
-                })
-                o- placeholder
-            }
-        }
-    }
-
-    // TODO:vgrechka Rename class
-    inner class Pizda(initialItem: Item, o: ElementBuilder) {
-        var itemPlace = Placeholder()
-        var item = initialItem
-        val viewRootID = puid()
-
-        val tongueInterface = object:TongueInterface<Item> {
-            override fun getItem(): Item = item
-
-            override suspend fun onDelete() {
-                val deletionConfirmed = modalConfirmAndDelete(
-                    t("TOTE", "Удаляю ${vaginalInterface.humanItemTypeName} $numberSign${item.id}: ${item.title}"),
-                    vaginalInterface.makeDeleteItemRequest() - {o ->
-                        o.id.value = item.id
-                    }
-                )
-
-                if (deletionConfirmed) {
-                    await(effects).fadeOut(viewRootID)
-                    itemPlace.setContent(NOTRE)
-                    TestGlobal.shitVanished.resumeTestAndPauseSutFromSut()
-                }
-            }
-
-            override suspend fun onEdit() {
-                openEditModal(
-                    title = t("TOTE", "Файл") + " " + numberSign + item.id,
-                    formSpec = FormSpec<UpdateItemRequest, UpdateItemResponse>(
-                        ui = Globus.world,
-                        req = vaginalInterface.makeUpdateItemRequest(item)
-                    ),
-                    onSuccessa = {res->
-                        item = vaginalInterface.getItemFromUpdateItemResponse(res)
-                        enterViewMode()
-                    }
-                )
-            }
-        }
-
-        val lipsInterface = vaginalInterface.makeLipsInterface(viewRootID = viewRootID, tongueInterface = tongueInterface)
-
-        init {
-            enterViewMode()
-            o- itemPlace
-        }
-
-        fun enterViewMode() {
-            itemPlace.setContent(renderView())
-        }
-
-        fun renderView(initiallyTransparent: Boolean = false): ToReactElementable {
-            return lipsInterface.renderItem(initiallyTransparent = false)
-        }
-
-    }
-}
-
-interface VaginalInterface<Filter, Item, UpdateItemRequest, UpdateItemResponse>
-where Filter : Enum<Filter>, Filter : Titled, UpdateItemRequest : RequestMatumba, UpdateItemResponse : CommonResponseFields
-{
-    suspend fun sendItemsRequest(req: ItemsRequest<Filter>): FormResponse2<ItemsResponse<Item>>
-    fun shouldShowFilter(): Boolean
-    fun getParentEntityID(): Long
-    val humanItemTypeName: String
-    fun makeDeleteItemRequest(): DeleteRequest
-    fun makeUpdateItemRequest(item: Item): UpdateItemRequest
-    fun getItemFromUpdateItemResponse(res: UpdateItemResponse): Item
-    fun makeLipsInterface(viewRootID: String, tongueInterface: TongueInterface<Item>): LipsInterface
-}
-
-interface BoobsInterface {
-    val stripContent: ToReactElementable
-    val mainContent: ToReactElementable
-    fun getSearchString(): String
-}
-
 class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
-    lateinit var meat: ItemsResponse<UAOrderFileRTO>
-    var boobsInterface by notNullOnce<BoobsInterface>()
+    var boobsInterface by notNullOnce<MelindaBoobsInterface>()
 
-    override val tabSpec = TabSpec(tabs.order.files, t("Files", "Файлы"),
-                                   ToReactElementable.from{boobsInterface.mainContent},
-                                   ToReactElementable.from{boobsInterface.stripContent})
+    override val tabSpec = object:TabSpec {
+        override val key = tabs.order.files
+        override val title = t("Files", "Файлы")
+        override val content get()= boobsInterface.mainContent
+        override val stripContent get()= boobsInterface.stripContent
+    }
 
     override suspend fun load(): FormResponse2.Shitty<*>? {
-        val boobs = Boobs<
+        val boobs = MelindaBoobs<
+            UAOrderFileRTO,
+            CustomerFileFilter,
             UACreateOrderFileRequest,
             UACreateOrderFileRequest.Response,
-            CustomerFileFilter,
-            UAOrderFileRTO,
             UAUpdateOrderFileRequest,
             UAUpdateOrderFileRequest.Response
         >(
             hasCreateButton = order.state == UAOrderState.CUSTOMER_DRAFT,
-            plusModalTitle = t("TOTE", "Новый файл"),
-            makeCreateRequest = {
-                UACreateOrderFileRequest() - {o ->
-                    o.orderID.value = order.id
-                }
-            },
+            createModalTitle = t("TOTE", "Новый файл"),
+            makeCreateRequest = {UACreateOrderFileRequest()-{o->
+                o.orderID.value = order.id
+            }},
             makeURLAfterCreation = {
-                val q = UACustomerSingleOrderPage.urlQuery
-                makeURL(pages.uaCustomer.order, listOf(
-                    URLParamValue(q.id, order.id.toString()),
-                    URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
-                ))
+                makeURL(pages.uaCustomer.order, myURLParamValues())
             },
-            makeURLForReload = {paramValuesFromVagina: List<URLParamValue<*>> ->
-                val qPage = UACustomerSingleOrderPage.urlQuery
-                val paramValues = listOf(
-                    URLParamValue(qPage.id, order.id.toString()),
-                    URLParamValue(qPage.tab, simpleName(tabs.order.files.fqn)))
-                makeURL(pages.uaCustomer.order, paramValues + paramValuesFromVagina)
+            makeURLForReload = {boobsParams->
+                makeURL(pages.uaCustomer.order, myURLParamValues() + boobsParams)
             },
             filterValues = CustomerFileFilter.values(),
             defaultFilterValue = CustomerFileFilter.ALL,
-            filterSelectKey = selects.filter,
+            filterSelectKey = selects.customerFileFilter,
             vaginalInterface = vaginalInterface
         )
 
@@ -377,23 +52,86 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         return boobs.load()
     }
 
-    val vaginalInterface = object:VaginalInterface<CustomerFileFilter, UAOrderFileRTO, UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response> {
+    private fun myURLParamValues(): List<URLParamValue<String>> {
+        val q = UACustomerSingleOrderPage.urlQuery
+        val paramValues = listOf(
+            URLParamValue(q.id, order.id.toString()),
+            URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
+        )
+        return paramValues
+    }
 
-        override fun makeLipsInterface(viewRootID: String, tongueInterface: TongueInterface<UAOrderFileRTO>): LipsInterface {
-            return object:LipsInterface {
-                val titleRightPlace = Placeholder(renderTitleControls())
-                val cloudIconID = puid()
-
+    val vaginalInterface = object:MelindaVaginalInterface
+    <
+        CustomerFileFilter,
+        UAOrderFileRTO,
+        UAUpdateOrderFileRequest,
+        UAUpdateOrderFileRequest.Response
+    > {
+        override fun makeLipsInterface(viewRootID: String, tongueInterface: MelindaTongueInterface<UAOrderFileRTO>): MelindaLipsInterface {
+            return object:MelindaLipsInterface {
+                private val titleRightPlace = Placeholder(renderTitleControls())
+                private val cloudIconID = puid()
                 private val item get()= tongueInterface.getItem()
 
-                fun label(title: String) = klabel(marginBottom = 0) {it - title}
+                override fun renderItem(): ToReactElementable {
+                    return when (world.user.kind) {
+                        UserKind.CUSTOMER -> {
+                            kdiv(id = viewRootID, className = css.item, opacity = 1.0){o->
+                                o- row{o->
+                                    o- renderFileTitle()
+                                }
+                                o- row{o->
+                                    o- kdiv(className = "col-md-3"){o->
+                                        o- label(t("Created", "Создан"))
+                                        o- kdiv{o->
+                                            o- formatUnixTime(item.createdAt)
+                                        }
+                                    }
+                                    o- kdiv(className = "col-md-3"){o->
+                                        o- label(t("Updated", "Изменен"))
+                                        o- kdiv{o->
+                                            o- formatUnixTime(item.updatedAt)
+                                        }
+                                    }
+                                    o- kdiv(className = "col-md-3"){o->
+                                        o- label(t("File name", "Имя файла"))
+                                        o- kdiv{o->
+                                            o- highlightedShit(item.name, item.nameHighlightRanges, tag = "span")
+                                        }
+                                    }
+                                    o- kdiv(className = "col-md-3"){o->
+                                        o- label(t("Size", "Размер"))
+                                        o- kdiv{o->
+                                            o- formatFileSizeApprox(Globus.lang, item.sizeBytes)
+                                        }
+                                    }
+                                }
+                                o- row{o->
+                                    o- kdiv(className = "col-md-12"){o->
+                                        o- label(t("Details", "Детали"))
+                                        o- kdiv(whiteSpace = "pre-wrap"){o->
+                                            o- highlightedShit(item.details, item.detailsHighlightRanges)
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
-                fun row(build: (ElementBuilder) -> Unit) =
+                        UserKind.WRITER -> imf()
+                        UserKind.ADMIN -> imf()
+                    }
+                }
+
+                private fun label(title: String) =
+                    klabel(marginBottom = 0) {it - title}
+
+                private fun row(build: (ElementBuilder) -> Unit) =
                     kdiv(className = "row", marginBottom = "0.5em"){o->
                         build(o)
                     }
 
-                fun renderTitleControls(downloadActive: Boolean = false): ElementBuilder {
+                private fun renderTitleControls(downloadActive: Boolean = false): ToReactElementable {
                     val cloudClass: String; val trashClass: String; val pencilClass: String
                     val c = css.cunt.header
                     if (downloadActive) {
@@ -448,7 +186,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     }
                 }
 
-                fun renderFileTitle(item: UAOrderFileRTO): ElementBuilder {
+                private fun renderFileTitle(): ToReactElementable {
                     val editing = false // TODO:vgrechka @kill
                     return kdiv(className = "col-md-12"){o->
                         o- kdiv(className = if (editing) css.cunt.header.editing else css.cunt.header.viewing){o->
@@ -487,67 +225,12 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                         }
                     }
                 }
-
-                override fun renderItem(initiallyTransparent: Boolean): ToReactElementable {
-                    return when (world.user.kind) {
-                        UserKind.CUSTOMER -> {
-                            kdiv(id = viewRootID,
-                                 className = css.item,
-                                 opacity = if (initiallyTransparent) 0.0
-                                 else 1.0){o->
-                                o- row{o->
-                                    o- renderFileTitle(item)
-                                }
-                                o- row{o->
-                                    o- kdiv(className = "col-md-3"){o->
-                                        o- label(t("Created", "Создан"))
-                                        o- kdiv(){o->
-                                            o- formatUnixTime(item.createdAt)
-                                        }
-                                    }
-                                    o- kdiv(className = "col-md-3"){o->
-                                        o- label(t("Updated", "Изменен"))
-                                        o- kdiv(){o->
-                                            o- formatUnixTime(item.updatedAt)
-                                        }
-                                    }
-                                    o- kdiv(className = "col-md-3"){o->
-                                        o- label(t("File name", "Имя файла"))
-                                        o- kdiv(){o->
-                                            o- highlightedShit(item.name, item.nameHighlightRanges, tag = "span")
-                                        }
-                                    }
-                                    o- kdiv(className = "col-md-3"){o->
-                                        o- label(t("Size", "Размер"))
-                                        o- kdiv(){o->
-                                            o- formatFileSizeApprox(Globus.lang, item.sizeBytes)
-                                        }
-                                    }
-                                }
-                                o- row{o->
-                                    o- kdiv(className = "col-md-12"){o->
-                                        o- label(t("Details", "Детали"))
-                                        o- kdiv(whiteSpace = "pre-wrap"){o->
-                                            o- highlightedShit(item.details, item.detailsHighlightRanges)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        UserKind.WRITER -> imf()
-
-                        UserKind.ADMIN -> imf()
-                    }
-                }
             }
         }
 
         override val humanItemTypeName = t("TOTE", "файл")
 
-        override fun getItemFromUpdateItemResponse(res: UAUpdateOrderFileRequest.Response): UAOrderFileRTO {
-            return res.file
-        }
+        override fun getItemFromUpdateItemResponse(res: UAUpdateOrderFileRequest.Response) = res.file
 
         override fun makeUpdateItemRequest(item: UAOrderFileRTO): UAUpdateOrderFileRequest {
             return UAUpdateOrderFileRequest()-{o->
@@ -570,20 +253,15 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
         override fun shouldShowFilter(): Boolean {
             return when (order.state) {
-                    UAOrderState.CUSTOMER_DRAFT, UAOrderState.WAITING_ADMIN_APPROVAL -> false
-                    else -> true
-                }
+                UAOrderState.CUSTOMER_DRAFT, UAOrderState.WAITING_ADMIN_APPROVAL -> false
+                else -> true
+            }
         }
 
-        override suspend fun sendItemsRequest(req: ItemsRequest<CustomerFileFilter>)
-            : FormResponse2<ItemsResponse<UAOrderFileRTO>>
-        {
+        override suspend fun sendItemsRequest(req: ItemsRequest<CustomerFileFilter>): FormResponse2<ItemsResponse<UAOrderFileRTO>> {
             return sendUACustomerGetOrderFiles(req)
         }
-
-
     }
-
 }
 
 

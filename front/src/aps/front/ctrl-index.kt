@@ -53,7 +53,7 @@ object inputs                            : Fuckers<InputKey>(null) {
 
 object selects                           : Fuckers<SelectKey<*>>(null) {
     val ordering                         by namedFucker({SelectKey<Ordering>(it)}); val ordering_testRef = TestRef(ordering)
-    val filter                           by namedFucker({SelectKey<CustomerFileFilter>(it)}); val filter_testRef = TestRef(filter)
+    val customerFileFilter               by namedFucker({SelectKey<CustomerFileFilter>(it)}); val customerFileFilter_testRef = TestRef(customerFileFilter)
 }
 
 object links                             : Fuckers<LinkKey>(null) {
