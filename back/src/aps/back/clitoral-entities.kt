@@ -87,10 +87,15 @@ class UAOrder(
 
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "customerID", nullable = true)
     var customer: User? // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
-) : ClitoralEntity() {
+)
+    : ClitoralEntity(), MeganItem<UAOrderRTO>
+{
     override fun toString() = "UAOrder(id=$id, title='$title', documentType=$documentType, numPages=$numPages, numSources=$numSources, details='$details', state=$state)"
 
-    fun toRTO(): UAOrderRTO {
+//    @field:Transient
+    override val idBang get()= id!!
+
+    override fun toRTO(searchWords: List<String>): UAOrderRTO {
         return UAOrderRTO(
             id = id!!,
             title = title,
@@ -145,9 +150,13 @@ class UAOrderFile(
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderID", nullable = false)
     var order: UAOrder
-) : ClitoralEntity() {
+)
+    : ClitoralEntity(), MeganItem<UAOrderFileRTO>
+{
+//    @field:Transient
+    override val idBang get()= id!!
 
-    fun toRTO(searchWords: List<String> = listOf()): UAOrderFileRTO {
+    override fun toRTO(searchWords: List<String>): UAOrderFileRTO {
         val lang = Language.UA
         val analyzer = when (lang) {
             Language.UA -> russianAnalyzer

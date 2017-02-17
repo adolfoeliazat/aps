@@ -24,8 +24,8 @@ class UserRTO(
 )
 
 class UAOrderRTO(
-    val id: Long,
-    val title: String,
+    override var id: Long,
+    override var title: String,
     val insertedAt: Long,
     val customer: UserRTO,
     val documentType: UADocumentType,
@@ -36,7 +36,7 @@ class UAOrderRTO(
     val adminNotes: String,
     val state: UAOrderState,
     val phone: String
-)
+) : MelindaItemRTO
 
 data class IntRangeRTO(
     val start: Int,
@@ -44,6 +44,7 @@ data class IntRangeRTO(
 )
 
 interface MelindaItemRTO {
+    // XXX `var`s are needed because of KJS "reflection" hack...
     var id: Long
     var title: String
 }

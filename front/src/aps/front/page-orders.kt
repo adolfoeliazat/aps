@@ -9,27 +9,55 @@ class UAAdminOrdersPage(val world: World) {
     }
 
     suspend fun load(): PageLoadingError? {
-        val res = sendUAAdminGetOrders(ItemsRequest(AdminOrderFilter.values())-{o->
-            o.parentEntityID.value = 10L
-            o.filter.value = urlQuery.filter.get()
-            o.ordering.value = Ordering.ASC
-            o.searchString.value = ""
-            o.fromID.value = 0L
-        })
-        return when (res) {
-            is FormResponse2.Shitty -> {
-                PageLoadingError(res.error)
-            }
-            is FormResponse2.Hunky -> {
-                world.setPage(Page(
-                    header = usualHeader(t("Orders", "Заказы")),
-                    body = kdiv{o->
-                        o- "qwe"
+        val boobs = MelindaBoobs<UAOrderRTO, AdminOrderFilter, UACreateOrderRequest, UACreateOrderRequest.Response, UAUpdateOrderRequest, UAUpdateOrderRequest.Response>(
+            hasCreateButton = false,
+            createModalTitle = t("TOTE", "Новый заказ"),
+            makeCreateRequest = {UACreateOrderRequest()},
+            makeURLAfterCreation = {
+                makeURL(pages.uaAdmin.order, listOf())
+            },
+            makeURLForReload = {boobsParams->
+                makeURL(pages.uaAdmin.order, boobsParams)
+            },
+            filterValues = AdminOrderFilter.values(),
+            defaultFilterValue = AdminOrderFilter.ALL,
+            filterSelectKey = selects.adminOrderFilter,
+            vaginalInterface = object:MelindaVaginalInterface<UAOrderRTO, AdminOrderFilter, UAUpdateOrderRequest, UAUpdateOrderRequest.Response>
+            {
+                suspend override fun sendItemsRequest(req: ItemsRequest<AdminOrderFilter>) = sendUAAdminGetOrders(req)
+                override fun shouldShowFilter() = true
+                override fun getParentEntityID() = null
+                override val humanItemTypeName = t("TOTE", "заказ")
+                override fun makeDeleteItemRequest() = UADeleteOrderRequest()
+                override fun getItemFromUpdateItemResponse(res: UAUpdateOrderRequest.Response) = res.updatedOrder
+
+                override fun makeUpdateItemRequest(item: UAOrderRTO): UAUpdateOrderRequest {
+                    return UAUpdateOrderRequest()-{o->
+                        // TODO:vgrechka ...
                     }
-                ))
-                pageLoadedFineResult
+                }
+
+                override fun makeLipsInterface(viewRootID: String, tongueInterface: MelindaTongueInterface<UAOrderRTO>): MelindaLipsInterface {
+                    return object:MelindaLipsInterface {
+                        override fun renderItem(): ToReactElementable {
+                            val item = tongueInterface.getItem()
+                            return kdiv{o->
+                                o- item.title
+                            }
+                        }
+                    }
+                }
             }
-        }
+        )
+
+        boobs.load()?.let {return PageLoadingError(it.error)}
+        val bint = boobs.boobsInterface
+        world.setPage(Page(header = usualHeader(t("TOTE", "Заказы")),
+                           headerControls = kdiv{o->
+                               o- bint.controlsContent
+                           },
+                           body = bint.mainContent))
+        return pageLoadedFineResult
     }
 }
 

@@ -416,6 +416,7 @@ abstract class DeleteRequest : RequestMatumba() {
 }
 
 class UADeleteOrderFileRequest : DeleteRequest()
+class UADeleteOrderRequest : DeleteRequest()
 
 enum class DocumentUrgency(override val title: String) : Titled {
     H12(t("TOTE", "12 часов")),

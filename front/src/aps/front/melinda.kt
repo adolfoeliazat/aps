@@ -5,8 +5,8 @@ import aps.const.text.numberSign
 import kotlin.js.json
 
 interface MelindaVaginalInterface<
-    Filter,
     Item,
+    Filter,
     out UpdateItemRequest,
     in UpdateItemResponse>
 where
@@ -17,7 +17,7 @@ where
 {
     suspend fun sendItemsRequest(req: ItemsRequest<Filter>): FormResponse2<ItemsResponse<Item>>
     fun shouldShowFilter(): Boolean
-    fun getParentEntityID(): Long
+    fun getParentEntityID(): Long?
     val humanItemTypeName: String
     fun makeDeleteItemRequest(): DeleteRequest
     fun makeUpdateItemRequest(item: Item): UpdateItemRequest
@@ -58,8 +58,8 @@ class MelindaBoobs<
     val defaultFilterValue: Filter,
     val filterSelectKey: SelectKey<Filter>,
     val vaginalInterface: MelindaVaginalInterface<
-        Filter,
         Item,
+        Filter,
         UpdateItemRequest,
         UpdateItemResponse>
 ) where
@@ -78,13 +78,13 @@ class MelindaBoobs<
         val search by StringURLParam("")
     }
 
-    var headerControlsDisabled = false
-    var chunksLoaded = 0
-    var stripContent by notNullOnce<Control2>()
-    var mainContent by notNullOnce<ToReactElementable>()
+    private var headerControlsDisabled = false
+    private var chunksLoaded = 0
+    private var controlsContent by notNullOnce<Control2>()
+    private var mainContent by notNullOnce<ToReactElementable>()
 
     fun makeStripContent() {
-        stripContent = object:Control2(Attrs()) {
+        controlsContent = object:Control2(Attrs()) {
             override fun render(): ToReactElementable {
                 return hor2{o->
                     o- kdiv(position = "relative"){o->
@@ -122,7 +122,7 @@ class MelindaBoobs<
 
     val boobsInterface = object:MelindaBoobsInterface {
         override val mainContent get()= this@MelindaBoobs.mainContent
-        override val controlsContent get()= this@MelindaBoobs.stripContent
+        override val controlsContent get()= this@MelindaBoobs.controlsContent
         override fun getSearchString() = urlQuery.search.get()
     }
 
@@ -167,7 +167,7 @@ class MelindaBoobs<
     suspend fun reload(elementID: String) {
         await(effects).blinkOn(byid(elementID))
         headerControlsDisabled = true
-        stripContent.update()
+        controlsContent.update()
         TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
         try {
             val paramValuesFromVagina = listOf(
@@ -178,7 +178,7 @@ class MelindaBoobs<
             Globus.world.pushNavigate(makeURLForReload(paramValuesFromVagina))
         } finally {
             headerControlsDisabled = false    // TODO:vgrechka Redundant?
-            stripContent.update()                          // TODO:vgrechka Redundant?
+            controlsContent.update()                          // TODO:vgrechka Redundant?
 
             TestGlobal.shitDoneLock.resumeTestFromSut()
         }

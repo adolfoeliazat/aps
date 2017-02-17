@@ -58,7 +58,7 @@ import java.util.*
                 }
                 file.touch()
 
-                return UAUpdateOrderFileRequest.Response(file.toRTO())
+                return UAUpdateOrderFileRequest.Response(file.toRTO(listOf()))
             }
         ))
     }

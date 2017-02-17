@@ -23,7 +23,7 @@ import aps.*
 
                 val order = orderRepo.findOne(req.id.value.toLong()) ?: bitchNotFound()
                 // TODO:vgrechka Check access
-                return LoadUAOrderRequest.Response(order.toRTO())
+                return LoadUAOrderRequest.Response(order.toRTO(listOf()))
             }
         ))
     }

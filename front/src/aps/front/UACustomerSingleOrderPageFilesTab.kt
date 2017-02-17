@@ -23,12 +23,9 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
     override suspend fun load(): FormResponse2.Shitty<*>? {
         val boobs = MelindaBoobs<
-            UAOrderFileRTO,
-            CustomerFileFilter,
-            UACreateOrderFileRequest,
-            UACreateOrderFileRequest.Response,
-            UAUpdateOrderFileRequest,
-            UAUpdateOrderFileRequest.Response
+            UAOrderFileRTO, CustomerFileFilter,
+            UACreateOrderFileRequest, UACreateOrderFileRequest.Response,
+            UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response
         >(
             hasCreateButton = order.state == UAOrderState.CUSTOMER_DRAFT,
             createModalTitle = t("TOTE", "Новый файл"),
@@ -63,8 +60,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
     val vaginalInterface = object:MelindaVaginalInterface
     <
-        CustomerFileFilter,
         UAOrderFileRTO,
+        CustomerFileFilter,
         UAUpdateOrderFileRequest,
         UAUpdateOrderFileRequest.Response
     > {
@@ -230,7 +227,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
 
         override val humanItemTypeName = t("TOTE", "файл")
 
-        override fun getItemFromUpdateItemResponse(res: UAUpdateOrderFileRequest.Response) = res.file
+        override fun getItemFromUpdateItemResponse(res: UAUpdateOrderFileRequest.Response) = res.updatedFile
 
         override fun makeUpdateItemRequest(item: UAOrderFileRTO): UAUpdateOrderFileRequest {
             return UAUpdateOrderFileRequest()-{o->
