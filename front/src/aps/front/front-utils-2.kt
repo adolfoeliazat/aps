@@ -35,6 +35,13 @@ external fun decodeURI(encodedURI: String): String
 
 interface URLQueryParamsMarker
 
+fun disableableHandler(disabled: Boolean, f: suspend () -> Unit) = when {
+    disabled -> {
+        {TestGlobal.disabledActionHitLock.resumeTestFromSut()}
+    }
+    else -> f
+}
+
 
 
 

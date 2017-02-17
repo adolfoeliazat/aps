@@ -107,7 +107,8 @@ class UAOrder(
             details = details,
             adminNotes = "boobs",
             state = state,
-            phone = phone
+            phone = phone,
+            editable = true // TODO:vgrechka ...
         )
     }
 }

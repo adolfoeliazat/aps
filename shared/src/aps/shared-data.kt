@@ -26,6 +26,7 @@ class UserRTO(
 class UAOrderRTO(
     override var id: Long,
     override var title: String,
+    override var editable: Boolean,
     val insertedAt: Long,
     val customer: UserRTO,
     val documentType: UADocumentType,
@@ -47,13 +48,13 @@ interface MelindaItemRTO {
     // XXX `var`s are needed because of KJS "reflection" hack...
     var id: Long
     var title: String
+    var editable: Boolean
 }
-
 
 class UAOrderFileRTO(
     override var id: Long,
     val seenAsFrom: UserKind,
-    val editable: Boolean,
+    override var editable: Boolean,
     val createdAt: Long,
     val updatedAt: Long,
     val name: String,

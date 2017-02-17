@@ -345,6 +345,76 @@ object MelindaTools {
             }
         }
 
+    fun titleBar(item: UAOrderFileRTO, boobsInterface: MelindaBoobsInterface, controls: ToReactElementable): ToReactElementable {
+        return kdiv(className = "col-md-12"){o->
+            o- kdiv(className = css.cunt.header.viewing){o->
+                o- ki(className = "${css.cunt.header.leftIcon.viewing} ${fa.file}")
+                o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon.viewing} " +
+                    when (item.seenAsFrom) {
+                        UserKind.CUSTOMER -> fa.user
+                        UserKind.WRITER -> fa.pencil
+                        UserKind.ADMIN -> fa.cog
+                    })
+                o- " "
+                o- highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
+
+                val idColor: Color?;
+                val idBackground: Color?
+                if (boobsInterface.getSearchString().split(Regex("\\s+")).contains(item.id.toString())) {
+                    idColor = Color.GRAY_800
+                    idBackground = Color.AMBER_200
+                } else {
+                    idColor = Color.GRAY_500
+                    idBackground = null
+                }
+                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
+                    o- "$numberSign${item.id}"
+                }
+
+                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                    o- when (item.seenAsFrom) {
+                        Globus.world.user.kind -> t("Mine", "Мой")
+                        UserKind.CUSTOMER -> t("From customer", "От заказчика")
+                        UserKind.WRITER -> t("From writer", "От писателя")
+                        UserKind.ADMIN -> t("From support", "От саппорта")
+                    }
+                }
+
+                o- controls
+            }
+        }
+    }
+
+    fun titleControls(item: MelindaItemRTO,
+                      tongueInterface: MelindaTongueInterface<UAOrderFileRTO>,
+                      disabled: Boolean,
+                      renderAdditionalControls: (ElementBuilder) -> Unit): ToReactElementable {
+        val trashClass: String
+        val pencilClass: String
+        val c = css.cunt.header
+        if (disabled) {
+            trashClass = c.rightIconDisabled
+            pencilClass = c.rightIconDisabled
+        } else {
+            trashClass = c.rightIcon
+            pencilClass = c.rightIcon
+        }
+
+        return hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")){o->
+            renderAdditionalControls(o)
+            if (item.editable) {
+                o- kic("${fa.trash} $trashClass",
+                        style = Style(),
+                        key = SubscriptKicKey(kics.order.file.delete, item.id),
+                        onClicka = disableableHandler(disabled) {tongueInterface.onDelete()})
+                o- kic("${fa.pencil} $pencilClass",
+                        style = Style(),
+                        key = SubscriptKicKey(kics.order.file.edit, item.id),
+                        onClicka = disableableHandler(disabled) {tongueInterface.onEdit()})
+            }
+        }
+    }
+
 }
 
 
