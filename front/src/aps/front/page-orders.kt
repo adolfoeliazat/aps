@@ -24,7 +24,7 @@ class UAAdminOrdersPage(val world: World) {
                 setPage(kdiv{o->
                     o- "fuck you"
                 })
-                pageLoadedFine
+                pageLoadedFineResult
             }
         }
     }

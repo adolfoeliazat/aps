@@ -23,7 +23,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1 // 6
+    val startPoint = 6
     var currentPoint = 0
 
     override suspend fun run1() {

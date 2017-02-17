@@ -17,6 +17,7 @@ import javax.persistence.EntityManagerFactory
             bpc = bpc,
             makeRequest = {ItemsRequest(AdminOrderFilter.values())},
             runShit = fun(ctx, req): ItemsResponse<UserRTO> {
+                TestServerFiddling.nextRequestError.getAndReset()?.let(::bitchExpectedly)
                 return ItemsResponse(listOf(), null)
             }
         ))

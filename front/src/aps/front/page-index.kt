@@ -45,7 +45,7 @@ object pages {
 
 class PageLoadingError(val msg: String)
 
-val pageLoadedFine: PageLoadingError? = null
+val pageLoadedFineResult: PageLoadingError? = null
 
 typealias PageLoader = suspend (world: World) -> PageLoadingError?
 
