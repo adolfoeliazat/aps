@@ -175,7 +175,6 @@ class World(val name: String) {
     suspend fun loadPageForURL() {
         val user = userMaybe
         dwarnStriking("loadPageForURL", loc.href)
-        TestGlobal.loadPageForURLLock.sutPause1()
         urlQuery = parseQueryString(loc.href) // TODO:vgrechka @kill
         val pathname = loc.pathname
 

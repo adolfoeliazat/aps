@@ -26,7 +26,7 @@ where
 }
 
 interface MelindaBoobsInterface {
-    val stripContent: ToReactElementable
+    val controlsContent: ToReactElementable
     val mainContent: ToReactElementable
     fun getSearchString(): String
 }
@@ -122,7 +122,7 @@ class MelindaBoobs<
 
     val boobsInterface = object:MelindaBoobsInterface {
         override val mainContent get()= this@MelindaBoobs.mainContent
-        override val stripContent get()= this@MelindaBoobs.stripContent
+        override val controlsContent get()= this@MelindaBoobs.stripContent
         override fun getSearchString() = urlQuery.search.get()
     }
 
@@ -186,7 +186,7 @@ class MelindaBoobs<
 
     private suspend fun requestChunk(fromID: Long?): FormResponse2<ItemsResponse<Item>> {
         val res = vaginalInterface.sendItemsRequest(ItemsRequest(filterValues)-{o->
-            o.entityID.value = vaginalInterface.getParentEntityID()
+            o.parentEntityID.value = vaginalInterface.getParentEntityID()
             o.filter.value = urlQuery.filter.get()
             o.ordering.value = urlQuery.ordering.get()
             o.searchString.value = urlQuery.search.get()

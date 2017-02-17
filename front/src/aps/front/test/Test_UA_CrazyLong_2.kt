@@ -23,7 +23,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 6
+    val startPoint = 1//6
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -277,11 +277,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
 
             run { // Error loading orders to approve
-                // TestGlobal.skipAllFreakingAssertions = false
                 imposeNextRequestGenericError()
                 halfwayThenModalSequence(action = {linkClick(links.adminDashboard.ordersToApprove_testRef)},
                                          modalAction = {buttonClick(buttons.primary_testRef)},
                                          aid = "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
+            }
+
+            run { // What?
+                // TestGlobal.skipAllFreakingAssertions = false
+                twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
             }
         }
     }

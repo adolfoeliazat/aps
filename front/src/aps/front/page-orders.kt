@@ -10,7 +10,7 @@ class UAAdminOrdersPage(val world: World) {
 
     suspend fun load(): PageLoadingError? {
         val res = sendUAAdminGetOrders(ItemsRequest(AdminOrderFilter.values())-{o->
-            o.entityID.value = 10L
+            o.parentEntityID.value = 10L
             o.filter.value = urlQuery.filter.get()
             o.ordering.value = Ordering.ASC
             o.searchString.value = ""
@@ -21,21 +21,15 @@ class UAAdminOrdersPage(val world: World) {
                 PageLoadingError(res.error)
             }
             is FormResponse2.Hunky -> {
-                setPage(kdiv{o->
-                    o- "fuck you"
-                })
+                world.setPage(Page(
+                    header = usualHeader(t("Orders", "Заказы")),
+                    body = kdiv{o->
+                        o- "qwe"
+                    }
+                ))
                 pageLoadedFineResult
             }
         }
-    }
-
-    private fun setPage(body: ToReactElementable) {
-        world.setPage(Page(
-            header = usualHeader(t("Orders", "Заказы")),
-            body = kdiv{o->
-                o- body
-            }
-        ))
     }
 }
 

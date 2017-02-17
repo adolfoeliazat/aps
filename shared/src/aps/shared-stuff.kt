@@ -313,7 +313,7 @@ class EntityResponse<Item> (
 
 class ItemsRequest<Filter>(filterValues: Array<Filter>) : RequestMatumba()
 where Filter: Enum<Filter>, Filter: Titled {
-    val entityID by longHiddenField()
+    val parentEntityID by maybeLongHiddenField()
     val filter = EnumHiddenField(this, "filter", filterValues)
     val ordering = EnumHiddenField(this, "ordering", Ordering.values())
     val searchString = TextField(this, fields.shebang.searchString)

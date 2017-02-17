@@ -37,7 +37,7 @@ import javax.persistence.EntityManagerFactory
 
                 val tsqueryLanguage = "russian"
 
-                val order = orderRepo.findOrDie(req.entityID.value)
+                val order = orderRepo.findOrDie(req.parentEntityID.value!!)
 
                 val searchString = req.searchString.value
                 val searchWords = searchString
@@ -50,7 +50,7 @@ import javax.persistence.EntityManagerFactory
                     else -> ""
                 }
 
-                    val fromID = req.fromID.value?.toLong()
+                val fromID = req.fromID.value?.toLong()
                 val ordering = req.ordering.value
 
                 val chunk = run {
@@ -67,7 +67,8 @@ import javax.persistence.EntityManagerFactory
                     try {
                         val params = mutableListOf<Pair<String, Any>>()
                         val query = em.createNativeQuery(stringBuild {s ->
-                            s += "select * from ua_order_files f where true"
+                            s += "select * from ua_order_files f where orderID = :orderID"
+                            params += Pair("orderID", req.parentEntityID.value!!)
 
                             if (tsquery.isNotBlank()) {
                                 s += " and (tsv @@ to_tsquery('$tsqueryLanguage', :tsquery)"

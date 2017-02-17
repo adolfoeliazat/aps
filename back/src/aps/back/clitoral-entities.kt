@@ -85,7 +85,7 @@ class UAOrder(
     @Column(length = MAX_STRING) var anonymousCustomerName: String?,
     @Column(length = MAX_STRING) var phone: String,
 
-    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "customerId", nullable = true)
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "customerID", nullable = true)
     var customer: User? // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
 ) : ClitoralEntity() {
     override fun toString() = "UAOrder(id=$id, title='$title', documentType=$documentType, numPages=$numPages, numSources=$numSources, details='$details', state=$state)"
@@ -120,7 +120,7 @@ interface UAOrderRepository : CrudRepository<UAOrder, Long> {
 class UserToken(
     @Column(length = MAX_STRING) var token: String,
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "userId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "userID", nullable = false)
     var user: User?
 ) : ClitoralEntity() {
 }
@@ -143,7 +143,7 @@ class UAOrderFile(
     @Column(length = MAX_BLOB) var content: ByteArray,
     // @Column(columnDefinition = "tsvector not null") var tsv: Any,
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderID", nullable = false)
     var order: UAOrder
 ) : ClitoralEntity() {
 

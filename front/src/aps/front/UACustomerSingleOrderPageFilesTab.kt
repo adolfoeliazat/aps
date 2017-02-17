@@ -18,7 +18,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         override val key = tabs.order.files
         override val title = t("Files", "Файлы")
         override val content get()= boobsInterface.mainContent
-        override val stripContent get()= boobsInterface.stripContent
+        override val stripContent get()= boobsInterface.controlsContent
     }
 
     override suspend fun load(): FormResponse2.Shitty<*>? {

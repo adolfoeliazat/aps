@@ -32,16 +32,9 @@ object TestGlobal {
     var lastTestOptsMaybe: TestOptions? = null
     var requestPause: ResolvableShit<Unit>? = null
     var responseProcessedSignal by notNullNamed<ResolvableShit<Unit>>()
-    var animationHalfwaySignal by notNullNamed<ResolvableShit<Unit>>()
-    var animationHalfwaySignalProcessedSignal by notNullNamed<ResolvableShit<Unit>>()
     var forcedTestOpts: TestOptions? = null
     var killAwait = false
-    var formActionCompleted by notNullNamed<ResolvableShit<Unit>>()
-    var formActionHalfway by notNullNamed<ResolvableShit<Unit>>()
-    var formActionHalfwayConsidered by notNullNamed<ResolvableShit<Unit>>()
     var testRunning = false
-    val loadPageForURLLock by notNullNamed(TwoStepTestLock())
-    val plusSequenceLock by notNullNamed(TwoStepTestLock())
     val fadeHalfwayLock by notNullNamed(TestLock())
     val fadeDoneLock by notNullNamed(TestLock())
     val fileFieldChangedLock by notNullNamed(TestLock())
@@ -53,13 +46,9 @@ object TestGlobal {
     var overriddenClientKind: ClientKind? = null
     val topNavItemTickingLock by notNullNamed(TestLock())
     val topNavItemDoneLock by notNullNamed(TestLock())
-    val linkTickingLock by notNullNamed(TestLock())
-    val linkDoneLock by notNullNamed(TestLock())
     var currentMordaMaybe: Morda? = null
     val currentMorda get() = bang(currentMordaMaybe)
     var instructionCondition: () -> Boolean = {true}
-    val openEditFormHalfwayLock by notNullNamed(TestLock())
-    val openEditFormDoneLock by notNullNamed(TestLock())
     val modalShownLock by notNullNamed(TestLock())
     val modalHiddenLock by notNullNamed(TestLock())
     val lastTest get() = lastTestMaybe!!
@@ -77,7 +66,6 @@ object TestGlobal {
     val showMoreHalfwayLock by notNullNamed(TestLock())
     val showMoreDoneLock by notNullNamed(TestLock())
     var shitVanished by notNullNamed(TestLock())
-    var somethingDownloadedLock by notNullNamed(TestLock())
     val orderFileIDToDownloadContext = mutableMapOf<Long, TestDownloadContext>()
     val disabledActionHitLock by notNullNamed(TestLock())
 }
