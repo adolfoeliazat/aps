@@ -328,6 +328,31 @@ class MelindaBoobs<
     }
 }
 
+object MelindaTools {
+    fun label(title: String) =
+        klabel(marginBottom = 0) {it - title}
+
+    fun row(build: (ElementBuilder) -> Unit) =
+        kdiv(className = "row", marginBottom = "0.5em"){o->
+            build(o)
+        }
+
+    fun col(size: Int, title: String, contentStyle: Style? = null, build: (ElementBuilder) -> Unit) =
+        kdiv(className = "col-md-$size"){o->
+            o- label(title)
+            o- kdiv(style = contentStyle ?: Style()){o->
+                build(o)
+            }
+        }
+
+}
+
+
+
+
+
+
+
 
 
 

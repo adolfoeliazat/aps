@@ -72,44 +72,30 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 private val item get()= tongueInterface.getItem()
 
                 override fun renderItem(): ToReactElementable {
+                    val m = MelindaTools
                     return when (world.user.kind) {
                         UserKind.CUSTOMER -> {
                             kdiv(id = viewRootID, className = css.item, opacity = 1.0){o->
-                                o- row{o->
+                                o- m.row{o->
                                     o- renderFileTitle()
                                 }
-                                o- row{o->
-                                    o- kdiv(className = "col-md-3"){o->
-                                        o- label(t("Created", "Создан"))
-                                        o- kdiv{o->
-                                            o- formatUnixTime(item.createdAt)
-                                        }
+                                o- m.row{o->
+                                    o- m.col(3, t("Created", "Создан")){o->
+                                        o- formatUnixTime(item.createdAt)
                                     }
-                                    o- kdiv(className = "col-md-3"){o->
-                                        o- label(t("Updated", "Изменен"))
-                                        o- kdiv{o->
-                                            o- formatUnixTime(item.updatedAt)
-                                        }
+                                    o- m.col(3, t("Updated", "Изменен")){o->
+                                        o- formatUnixTime(item.updatedAt)
                                     }
-                                    o- kdiv(className = "col-md-3"){o->
-                                        o- label(t("File name", "Имя файла"))
-                                        o- kdiv{o->
-                                            o- highlightedShit(item.name, item.nameHighlightRanges, tag = "span")
-                                        }
+                                    o- m.col(3, t("File name", "Имя файла")){o->
+                                        o- highlightedShit(item.name, item.nameHighlightRanges, tag = "span")
                                     }
-                                    o- kdiv(className = "col-md-3"){o->
-                                        o- label(t("Size", "Размер"))
-                                        o- kdiv{o->
-                                            o- formatFileSizeApprox(Globus.lang, item.sizeBytes)
-                                        }
+                                    o- m.col(3, t("Size", "Размер")){o->
+                                        o- formatFileSizeApprox(Globus.lang, item.sizeBytes)
                                     }
                                 }
-                                o- row{o->
-                                    o- kdiv(className = "col-md-12"){o->
-                                        o- label(t("Details", "Детали"))
-                                        o- kdiv(whiteSpace = "pre-wrap"){o->
-                                            o- highlightedShit(item.details, item.detailsHighlightRanges)
-                                        }
+                                o- m.row{o->
+                                    o- m.col(12, t("Details", "Детали"), Style(whiteSpace = "pre-wrap")){o->
+                                        o- highlightedShit(item.details, item.detailsHighlightRanges)
                                     }
                                 }
                             }
@@ -119,14 +105,6 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                         UserKind.ADMIN -> imf()
                     }
                 }
-
-                private fun label(title: String) =
-                    klabel(marginBottom = 0) {it - title}
-
-                private fun row(build: (ElementBuilder) -> Unit) =
-                    kdiv(className = "row", marginBottom = "0.5em"){o->
-                        build(o)
-                    }
 
                 private fun renderTitleControls(downloadActive: Boolean = false): ToReactElementable {
                     val cloudClass: String; val trashClass: String; val pencilClass: String
@@ -184,11 +162,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                 }
 
                 private fun renderFileTitle(): ToReactElementable {
-                    val editing = false // TODO:vgrechka @kill
                     return kdiv(className = "col-md-12"){o->
-                        o- kdiv(className = if (editing) css.cunt.header.editing else css.cunt.header.viewing){o->
-                            o- ki(className = "${if (editing) css.cunt.header.leftIcon.editing else css.cunt.header.leftIcon.viewing} ${fa.file}")
-                            o- ki(className = "${if (editing) css.cunt.header.leftOverlayBottomLeftIcon.editing else css.cunt.header.leftOverlayBottomLeftIcon.viewing} " +
+                        o- kdiv(className = css.cunt.header.viewing){o->
+                            o- ki(className = "${css.cunt.header.leftIcon.viewing} ${fa.file}")
+                            o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon.viewing} " +
                                 when (item.seenAsFrom) {
                                     UserKind.CUSTOMER -> fa.user
                                     UserKind.WRITER -> fa.pencil

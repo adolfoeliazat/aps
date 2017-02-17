@@ -92,7 +92,6 @@ class UAOrder(
 {
     override fun toString() = "UAOrder(id=$id, title='$title', documentType=$documentType, numPages=$numPages, numSources=$numSources, details='$details', state=$state)"
 
-//    @field:Transient
     override val idBang get()= id!!
 
     override fun toRTO(searchWords: List<String>): UAOrderRTO {
@@ -153,7 +152,6 @@ class UAOrderFile(
 )
     : ClitoralEntity(), MeganItem<UAOrderFileRTO>
 {
-//    @field:Transient
     override val idBang get()= id!!
 
     override fun toRTO(searchWords: List<String>): UAOrderFileRTO {
