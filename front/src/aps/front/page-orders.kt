@@ -41,7 +41,7 @@ class UAAdminOrdersPage(val world: World) {
 
 class UACustomerOrdersPage(val world: World) {
     suspend fun load(): PageLoadingError? {
-        val m = Melinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
+        val m = Pizdalinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
             ui = world,
             urlPath = "orders.html",
             procedureName = "customerGetOrders",

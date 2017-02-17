@@ -91,9 +91,9 @@
       </div>
     </div>
     <div>
-      <div class="waitingAdminApprovalHint-container">
-        <div class="waitingAdminApprovalHint-message">
-          <i class="waitingAdminApprovalHint-icon fa fa-hourglass-half">
+      <div class="orderPage-customer-waitingAdminApprovalHint-container">
+        <div class="orderPage-customer-waitingAdminApprovalHint-message">
+          <i class="orderPage-customer-waitingAdminApprovalHint-icon fa fa-hourglass-half">
           </i>
           Мы проверяем заказ и скоро тебе позвоним
         </div>

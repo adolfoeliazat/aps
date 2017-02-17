@@ -43,20 +43,26 @@ data class IntRangeRTO(
     val endInclusive: Int
 )
 
+interface MelindaItemRTO {
+    var id: Long
+    var title: String
+}
+
+
 class UAOrderFileRTO(
-    val id: Long,
+    override var id: Long,
     val seenAsFrom: UserKind,
     val editable: Boolean,
     val createdAt: Long,
     val updatedAt: Long,
     val name: String,
     val nameHighlightRanges: List<IntRangeRTO>,
-    val title: String,
+    override var title: String,
     val titleHighlightRanges: List<IntRangeRTO>,
     val details: String,
     val detailsHighlightRanges: List<IntRangeRTO>,
     val sizeBytes: Int
-)
+) : MelindaItemRTO
 
 enum class UADocumentType(override val title: String) : Titled {
     ABSTRACT(t("TOTE", "Реферат")),

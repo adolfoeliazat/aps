@@ -24,7 +24,7 @@ enum class HeaderMode {
 fun usualHeader(title: String): ToReactElementable =
     pageHeader0(title)
 
-class Melinda<Item, Entity, Filter>(
+class Pizdalinda<Item, Entity, Filter>(
     val ui: World,
     val urlPath: String,
     val procedureName: String,
@@ -41,8 +41,8 @@ class Melinda<Item, Entity, Filter>(
     val renderItem: (Int, Item) -> ToReactElementable,
     val emptyMessage: String? = null,
     val tabsSpec: Any? = null,
-    val header: (Melinda<Item, Entity, Filter>).() -> String,
-    val aboveItems: (Melinda<Item, Entity, Filter>).() -> ToReactElementable = {reactNull}
+    val header: (Pizdalinda<Item, Entity, Filter>).() -> String,
+    val aboveItems: (Pizdalinda<Item, Entity, Filter>).() -> ToReactElementable = {reactNull}
 )
 where Entity : Any, Filter : Enum<Filter>, Filter : Titled {
 

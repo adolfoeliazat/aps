@@ -14,7 +14,7 @@ import kotlin.js.json
 
 class AdminUsersPage(val ui: World) {
     suspend fun load() {
-        val m = Melinda<UserRTO, Nothing, UserFilter>(
+        val m = Pizdalinda<UserRTO, Nothing, UserFilter>(
             ui,
             urlPath = "admin-users.html",
             procedureName = "getUsers",

@@ -91,8 +91,8 @@
       </div>
     </div>
     <div>
-      <div class="draftHint-containerBusy">
-        <div class="draftHint-message">
+      <div class="orderPage-customer-draftHint-containerBusy">
+        <div class="orderPage-customer-draftHint-message">
           <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122);">
           </div>
         </div>
