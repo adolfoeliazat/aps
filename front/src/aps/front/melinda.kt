@@ -392,12 +392,13 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
             return kdiv(id = viewRootID, className = css.item, opacity = 1.0){o->
                 o- m.row{o->
                     o- kdiv(className = "col-md-12"){o->
-                        o- kdiv(className = css.cunt.header.bar){o->
-                            o- kdiv(className = css.cunt.header.titleAndStuff){o->
-                                o- ki(className = "${css.cunt.header.leftIcon} $icon")
+                        val c = css.cunt.header
+                        o- kdiv(className = c.bar){o->
+                            o- kdiv(className = c.titleAndStuff){o->
+                                o- ki(className = "${c.leftIcon} $icon")
                                 val theSmallOverlayIcon = smallOverlayIcon()
                                 if (theSmallOverlayIcon != null) {
-                                    o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon} $theSmallOverlayIcon")
+                                    o- ki(className = "${c.leftOverlayBottomLeftIcon} $theSmallOverlayIcon")
                                 }
                                 o- " "
                                 o- highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
@@ -420,6 +421,10 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                                     o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
                                         o- theTinySubtitle
                                     }
+                                }
+
+                                o- kdiv(className = c.stateLabel(UAOrderState.WAITING_ADMIN_APPROVAL)){o->
+                                    o- UAOrderState.WAITING_ADMIN_APPROVAL.title
                                 }
                             }
 

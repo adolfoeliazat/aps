@@ -77,7 +77,7 @@ class UACustomerSingleOrderPage(val world: World) {
         world.setPage(Page(
             header = pageHeader3(kdiv{o->
                 o- t("TOTE", "Заказ $numberSign${order.id}")
-                o- kspan(backgroundColor = order.state.labelBackground,
+                o- kspan(backgroundColor = order.state.labelBackground, // TODO:vgrechka Extract CSS
                          fontSize = "60%",
                          padding = "0.1em 0.3em",
                          borderRadius = "0.3em",

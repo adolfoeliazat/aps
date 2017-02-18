@@ -10,36 +10,70 @@ import aps.*
 import aps.Color.*
 import into.kommon.*
 import kotlin.properties.Delegates.notNull
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
+
+typealias CSSClassName = String
+typealias EnumStyleClassNameGetter<E> = (E) -> String
 
 object css {
     abstract class Group(val parent: Group?)
 
-    private class Style(
+    fun styleFQN(thisRef: Any, prop: KProperty<*>): String {
+        var name = prop.name
+
+        var group = thisRef as? Group
+        while (group != null) {
+            val groupName = group!!::class.simpleName
+            name = groupName + "-" + name
+            group = group.parent
+        }
+
+        return name
+    }
+
+    fun appendStyleToAllShit(name: CSSClassName, def: Style) {
+        def.style?.let {allShit += ".$name {$it}"}
+        def.hover?.let {allShit += ".$name:hover {$it}"}
+        def.firstChild?.let {allShit += ".$name:first-child {$it}"}
+        def.notFirstChild?.let {allShit += ".$name:nth-child(1n+2) {$it}"}
+    }
+
+    class Style(
         val style: String? = null,
         val hover: String? = null,
         val firstChild: String? = null,
         val notFirstChild: String? = null
-    ) {
-        var name: String? = null
+    )
+        : ReadOnlyProperty<Any, CSSClassName>
+    {
+        var propValue: CSSClassName? = null
 
-        operator fun getValue(thiz: Any, prop: KProperty<*>): String {
-            if (name == null) {
-                name = prop.name
-
-                var group: Group? = thiz as? Group
-                while (group != null) {
-                    val groupName = group!!::class.simpleName
-                    name = groupName + "-" + name
-                    group = group.parent
-                }
-
-                style?.let {allShit += ".$name {$it}"}
-                hover?.let {allShit += ".$name:hover {$it}"}
-                firstChild?.let {allShit += ".$name:first-child {$it}"}
-                notFirstChild?.let {allShit += ".$name:nth-child(1n+2) {$it}"}
+        override fun getValue(thisRef: Any, property: KProperty<*>): String {
+            if (propValue == null) {
+                propValue = styleFQN(thisRef, property)
+                appendStyleToAllShit(propValue!!, this)
             }
-            return name!!
+            return propValue!!
+        }
+    }
+
+    class EnumStyle<E : Enum<E>>(val enumValues: Array<E>, val enumValueToStyle: (E) -> Style)
+        : ReadOnlyProperty<Any, EnumStyleClassNameGetter<E>>
+    {
+        var propValue: EnumStyleClassNameGetter<E>? = null
+
+        override fun getValue(thisRef: Any, property: KProperty<*>): EnumStyleClassNameGetter<E> {
+            if (propValue == null) {
+                val namePrefix = styleFQN(thisRef, property) + "_"
+                for (enumValue in enumValues) {
+                    appendStyleToAllShit(namePrefix + enumValue.name, enumValueToStyle(enumValue))
+                }
+                propValue = {enumValue: E ->
+                    namePrefix + enumValue.name
+                }
+            }
+            return propValue!!
         }
     }
 
@@ -118,6 +152,8 @@ object css {
                 val button by Style("")
             }
         }
+
+
     }
 
     object textField : Group(null) {
@@ -170,6 +206,16 @@ object css {
 
             val controls by Style("padding-right: 0.5rem;")
             val titleAndStuff by Style("flex-grow: 1;")
+
+            val stateLabel by EnumStyle(UAOrderState.values(), {when (it) {
+                UAOrderState.CREATED -> Style("background-color: green;")
+                UAOrderState.CUSTOMER_DRAFT -> Style("background-color: green;")
+                UAOrderState.LOOKING_FOR_WRITERS -> Style("background-color: green;")
+                UAOrderState.WAITING_FOR_PAYMENT -> Style("background-color: green;")
+                UAOrderState.WRITER_ASSIGNED -> Style("background-color: green;")
+                UAOrderState.WAITING_EMAIL_CONFIRMATION -> Style("background-color: green;")
+                UAOrderState.WAITING_ADMIN_APPROVAL -> Style("background-color: yellow;")
+            }})
         }
 
         val bodyEditing by Style("""
