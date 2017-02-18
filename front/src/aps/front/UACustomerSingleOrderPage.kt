@@ -179,7 +179,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                             o- kdiv(className = "col-md-3"){o->
                                 o- label(t("Created", "Создан"))
                                 o- kdiv{o->
-                                    o- formatUnixTime(order.insertedAt)
+                                    o- formatUnixTime(order.createdAt)
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->
@@ -206,7 +206,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                             o- kdiv(className = "col-md-3"){o->
                                 o- label(t("Created", "Создан"))
                                 o- kdiv{o->
-                                    o- formatUnixTime(order.insertedAt)
+                                    o- formatUnixTime(order.createdAt)
                                 }
                             }
                             o- kdiv(className = "col-md-3"){o->

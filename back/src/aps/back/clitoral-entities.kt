@@ -98,18 +98,20 @@ class UAOrder(
         return UAOrderRTO(
             id = id!!,
             title = title,
-            insertedAt = createdAt.time,
+            titleHighlightRanges = listOf(), // TODO:vgrechka ...
+            createdAt = createdAt.time,
+            updatedAt = updatedAt.time,
             customer = customer!!.toRTO(),
             documentType = documentType,
             price = -1,
             numPages = numPages,
             numSources = numSources,
             details = details,
+            detailsHighlightRanges = listOf(), // TODO:vgrechka ...
             adminNotes = "boobs",
             state = state,
             phone = phone,
-            editable = true, // TODO:vgrechka ...
-            titleHighlightRanges = listOf() // TODO:vgrechka ...
+            editable = true // TODO:vgrechka ...
         )
     }
 }

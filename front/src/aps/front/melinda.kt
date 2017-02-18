@@ -343,18 +343,36 @@ object MelindaTools {
                 build(o)
             }
         }
+
+    fun createdAtCol(size: Int, value: Long) =
+        col(size, t("Created", "Создан")){o->
+            o- formatUnixTime(value)
+        }
+
+    fun updatedAtCol(size: Int, value: Long) =
+        col(size, t("Updated", "Изменен")){o->
+            o- formatUnixTime(value)
+        }
+
+    fun detailsRow(value: String, highlightRanges: List<IntRangeRTO>): ElementBuilder {
+        return row{o->
+            o- col(12, t("Details", "Детали"), Style(whiteSpace = "pre-wrap")){o->
+                o- highlightedShit(value, highlightRanges)
+            }
+        }
+    }
 }
 
-fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualLips(
+fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     tongueInterface: MelindaTongueInterface<ItemRTO>,
     viewRootID: String,
     boobsInterface: MelindaBoobsInterface,
-    smallOverlayIcon: () -> IconClass?,
-    tinySubtitle: () -> String?,
-    renderAdditionalControls: (ElementBuilder, LipsState, updateTitleControls: (LipsState) -> Unit) -> Unit,
+    smallOverlayIcon: () -> IconClass? = {null},
+    tinySubtitle: () -> String? = {null},
+    renderAdditionalControls: (ElementBuilder, LipsState, updateTitleControls: (LipsState) -> Unit) -> Unit = {_,_,_->},
     renderContent: (ElementBuilder) -> Unit,
     initialState: LipsState,
-    controlsDisabled: (LipsState) -> Boolean,
+    controlsDisabled: (LipsState) -> Boolean = {false},
     icon: IconClass
 )
     : MelindaLipsInterface

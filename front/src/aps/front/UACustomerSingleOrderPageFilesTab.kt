@@ -65,7 +65,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
             if (world.user.kind != UserKind.CUSTOMER) imf("order vaginalInterface for ${world.user.kind}")
 
             val cloudIconID = puid()
-            return makeUsualLips(
+            return makeUsualMelindaLips(
                 tongue, viewRootID, boobsInterface,
                 icon = fa.file,
                 initialState = FileLipsState(downloadActive = false),
@@ -96,12 +96,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     val m = MelindaTools
                     val item = tongue.getItem()
                     o- m.row{o->
-                        o- m.col(3, t("Created", "Создан")){o->
-                            o- formatUnixTime(item.createdAt)
-                        }
-                        o- m.col(3, t("Updated", "Изменен")){o->
-                            o- formatUnixTime(item.updatedAt)
-                        }
+                        o- m.createdAtCol(3, item.createdAt)
+                        o- m.updatedAtCol(3, item.updatedAt)
                         o- m.col(3, t("File name", "Имя файла")){o->
                             o- highlightedShit(item.name, item.nameHighlightRanges, tag = "span")
                         }
@@ -109,11 +105,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                             o- formatFileSizeApprox(Globus.lang, item.sizeBytes)
                         }
                     }
-                    o- m.row{o->
-                        o- m.col(12, t("Details", "Детали"), Style(whiteSpace = "pre-wrap")){o->
-                            o- highlightedShit(item.details, item.detailsHighlightRanges)
-                        }
-                    }
+                    o- m.detailsRow(item.details, item.detailsHighlightRanges)
                 }
             )
         }

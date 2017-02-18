@@ -8,6 +8,8 @@ class UAAdminOrdersPage(val world: World) {
         val filter by EnumURLParam(AdminOrderFilter.values(), default = AdminOrderFilter.ALL)
     }
 
+    private var bint by notNullOnce<MelindaBoobsInterface>()
+
     suspend fun load(): PageLoadingError? {
         val boobs = MelindaBoobs<UAOrderRTO, AdminOrderFilter, UACreateOrderRequest, UACreateOrderRequest.Response, UAUpdateOrderRequest, UAUpdateOrderRequest.Response>(
             hasCreateButton = false,
@@ -37,21 +39,25 @@ class UAAdminOrdersPage(val world: World) {
                     }
                 }
 
-                override fun makeLipsInterface(viewRootID: String, tongueInterface: MelindaTongueInterface<UAOrderRTO>): MelindaLipsInterface {
-                    return object:MelindaLipsInterface {
-                        override fun renderItem(): ToReactElementable {
-                            val item = tongueInterface.getItem()
-                            return kdiv{o->
-                                o- item.title
+                override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UAOrderRTO>): MelindaLipsInterface {
+                    return makeUsualMelindaLips(
+                        tongue, viewRootID, bint, icon = fa.folderOpen, initialState = Unit,
+                        renderContent = {o->
+                            val m = MelindaTools
+                            val item = tongue.getItem()
+                            o- m.row{o->
+                                o- m.createdAtCol(3, item.createdAt)
+                                o- m.updatedAtCol(3, item.updatedAt)
                             }
+                            o- m.detailsRow(item.details, item.detailsHighlightRanges)
                         }
-                    }
+                    )
                 }
             }
         )
 
+        bint = boobs.boobsInterface
         boobs.load()?.let {return PageLoadingError(it.error)}
-        val bint = boobs.boobsInterface
         world.setPage(Page(header = usualHeader(t("TOTE", "Заказы")),
                            headerControls = kdiv{o->
                                o- bint.controlsContent
