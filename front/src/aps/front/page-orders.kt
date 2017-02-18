@@ -43,13 +43,7 @@ class UAAdminOrdersPage(val world: World) {
                     return makeUsualMelindaLips(
                         tongue, viewRootID, bint, icon = fa.folderOpen, initialState = Unit,
                         renderContent = {o->
-                            val m = MelindaTools
-                            val item = tongue.getItem()
-                            o- m.row{o->
-                                o- m.createdAtCol(3, item.createdAt)
-                                o- m.updatedAtCol(3, item.updatedAt)
-                            }
-                            o- m.detailsRow(item.details, item.detailsHighlightRanges)
+                            renderOrderParams(o, tongue.getItem())
                         }
                     )
                 }

@@ -144,71 +144,32 @@ object css {
 
     object cunt : Group(null) {
         object header : Group(this) {
-            val viewing by Style("""
-                font-size: 18px;
-                background-color: #eceff1;
-                border-bottom: 1px solid #cfd8dc;
-                position: relative;""")
-
-            val editing by Style("""
+            val bar by Style("""
                 font-size: 18px;
                 background-color: #eceff1;
                 border-bottom: 1px solid #cfd8dc;
                 position: relative;
-                border-left: 4px solid $BLUE_GRAY_400;
-                padding-left: 0.6rem;""")
+                display: flex;""")
 
-            object leftIcon : Group(this) {
-                val viewing by Style("""
+            val leftIcon by Style("""
                     color: #90a4ae;
                     margin-left: 3px;""")
 
-                val editing by Style("""
-                    color: #90a4ae;
-                    margin-left: 0px;""")
-            }
-
-            object leftOverlayBottomLeftIcon : Group(this) {
-                val viewing by Style("""
-                    margin-left: 3px;
-                    position: absolute;
-                    left: 2px;
-                    top: 9px;
-                    color: #cfd8dc;
-                    font-size: 60%;""")
-
-                val editing by Style("""
-                    margin-left: 0.6rem;
-                    position: absolute;
-                    left: 2px;
-                    top: 9px;
-                    color: #cfd8dc;
-                    font-size: 60%;""")
-            }
-
-            val rightIcon by Style(
-                style = """
-                    color: $BLUE_GRAY_300;
-                    cursor: pointer;""",
-                hover = """
-                    color: $BLUE_GRAY_500;""")
-
-            val rightIconActive by Style(
-                style = """
-                    color: $BLUE_GRAY_500;""")
-
-            val rightIconDisabled by Style(
-                style = """
-                    color: $GRAY_500;""")
-
-            val ticker by Style("""
+            val leftOverlayBottomLeftIcon by Style("""
+                margin-left: 3px;
                 position: absolute;
-                right: 0;
-                top: 0;
-                background-color: $BLUE_GRAY_600;
-                width: 1.4rem;
-                height: 100%;
-            """)
+                left: 2px;
+                top: 9px;
+                color: #cfd8dc;
+                font-size: 60%;""")
+
+            val rightIcon by Style(style = "color: $BLUE_GRAY_300; cursor: pointer;",
+                                   hover = "color: $BLUE_GRAY_500;")
+            val rightIconActive by Style(style = "color: $BLUE_GRAY_500;")
+            val rightIconDisabled by Style(style = "color: $GRAY_500;")
+
+            val controls by Style("padding-right: 0.5rem;")
+            val titleAndStuff by Style("flex-grow: 1;")
         }
 
         val bodyEditing by Style("""

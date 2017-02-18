@@ -392,32 +392,34 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
             return kdiv(id = viewRootID, className = css.item, opacity = 1.0){o->
                 o- m.row{o->
                     o- kdiv(className = "col-md-12"){o->
-                        o- kdiv(className = css.cunt.header.viewing){o->
-                            o- ki(className = "${css.cunt.header.leftIcon.viewing} $icon")
-                            val theSmallOverlayIcon = smallOverlayIcon()
-                            if (theSmallOverlayIcon != null) {
-                                o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon.viewing} $theSmallOverlayIcon")
-                            }
-                            o- " "
-                            o- highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
+                        o- kdiv(className = css.cunt.header.bar){o->
+                            o- kdiv(className = css.cunt.header.titleAndStuff){o->
+                                o- ki(className = "${css.cunt.header.leftIcon} $icon")
+                                val theSmallOverlayIcon = smallOverlayIcon()
+                                if (theSmallOverlayIcon != null) {
+                                    o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon} $theSmallOverlayIcon")
+                                }
+                                o- " "
+                                o- highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
 
-                            val idColor: Color?;
-                            val idBackground: Color?
-                            if (boobsInterface.getSearchString().split(Regex("\\s+")).contains(item.id.toString())) {
-                                idColor = Color.GRAY_800
-                                idBackground = Color.AMBER_200
-                            } else {
-                                idColor = Color.GRAY_500
-                                idBackground = null
-                            }
-                            o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
-                                o- "$numberSign${item.id}"
-                            }
+                                val idColor: Color?
+                                val idBackground: Color?
+                                if (boobsInterface.getSearchString().split(Regex("\\s+")).contains(item.id.toString())) {
+                                    idColor = Color.GRAY_800
+                                    idBackground = Color.AMBER_200
+                                } else {
+                                    idColor = Color.GRAY_500
+                                    idBackground = null
+                                }
+                                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
+                                    o- "$numberSign${item.id}"
+                                }
 
-                            val theTinySubtitle = tinySubtitle()
-                            if (theTinySubtitle != null) {
-                                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
-                                    o- theTinySubtitle
+                                val theTinySubtitle = tinySubtitle()
+                                if (theTinySubtitle != null) {
+                                    o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                                        o- theTinySubtitle
+                                    }
                                 }
                             }
 
@@ -444,7 +446,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                 pencilClass = c.rightIcon
             }
 
-            return hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")){o->
+            return hor3(Attrs(className = c.controls)){o->
                 val updateTitleControls = {state: LipsState ->
                     titleControlsPlace.setContent(renderTitleControls(state))
                 }

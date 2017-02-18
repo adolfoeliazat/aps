@@ -173,25 +173,7 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
 
             exhaustive / when (world.user.kind) {
                 UserKind.CUSTOMER -> {
-                    val m = MelindaTools
-                    o- m.row{o->
-                        if (order.state != UAOrderState.CUSTOMER_DRAFT) {
-                            o- m.createdAtCol(3, order.createdAt)
-                        }
-                        o- m.col(3, fields.orderCustomerFirstName.title, order.customerFirstName)
-                        if (order.customerLastName.isNotBlank()) {
-                            o- m.col(3, fields.orderCustomerLastName.title, order.customerLastName)
-                        }
-                        o- m.col(3, fields.orderCustomerPhone.title, order.customerPhone)
-                    }
-
-                    o- m.row{o->
-                        o- m.col(3, fields.uaDocumentType.title, order.documentType.title)
-                        o- m.col(3, fields.numPages.title, order.numPages.toString())
-                        o- m.col(3, fields.numSources.title, order.numSources.toString())
-                    }
-
-                    o- m.detailsRow(order.details, highlightRanges = listOf(), title = fields.orderDetails.title)
+                    renderOrderParams(o, order)
                 }
 
                 UserKind.WRITER -> imf()
@@ -200,6 +182,7 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
             }
         }
     }
+
 
     override val tabSpec = SimpleTabSpec(
         key = tabs.order.params,
@@ -257,7 +240,27 @@ private class MessagesTab(val order: UAOrderRTO) : CustomerSingleUAOrderPageTab 
     override val tabSpec = SimpleTabSpec(tabs.order.messages, t("TOTE", "Сообщения"), content)
 }
 
+fun renderOrderParams(o: ElementBuilder, order: UAOrderRTO) {
+    val m = MelindaTools
+    o- m.row{o->
+        if (order.state != UAOrderState.CUSTOMER_DRAFT) {
+            o- m.createdAtCol(3, order.createdAt)
+        }
+        o- m.col(3, fields.orderCustomerFirstName.title, order.customerFirstName)
+        if (order.customerLastName.isNotBlank()) {
+            o- m.col(3, fields.orderCustomerLastName.title, order.customerLastName)
+        }
+        o- m.col(3, fields.orderCustomerPhone.title, order.customerPhone)
+    }
 
+    o- m.row{o->
+        o- m.col(3, fields.uaDocumentType.title, order.documentType.title)
+        o- m.col(3, fields.numPages.title, order.numPages.toString())
+        o- m.col(3, fields.numSources.title, order.numSources.toString())
+    }
+
+    o- m.detailsRow(order.details, highlightRanges = listOf(), title = fields.orderDetails.title)
+}
 
 
 
