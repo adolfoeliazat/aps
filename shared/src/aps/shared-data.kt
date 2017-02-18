@@ -27,6 +27,7 @@ class UAOrderRTO(
     override var id: Long,
     override var title: String,
     override var editable: Boolean,
+    override var titleHighlightRanges: List<IntRangeRTO>,
     val insertedAt: Long,
     val customer: UserRTO,
     val documentType: UADocumentType,
@@ -49,6 +50,7 @@ interface MelindaItemRTO {
     var id: Long
     var title: String
     var editable: Boolean
+    var titleHighlightRanges: List<IntRangeRTO>
 }
 
 class UAOrderFileRTO(
@@ -60,7 +62,7 @@ class UAOrderFileRTO(
     val name: String,
     val nameHighlightRanges: List<IntRangeRTO>,
     override var title: String,
-    val titleHighlightRanges: List<IntRangeRTO>,
+    override var titleHighlightRanges: List<IntRangeRTO>,
     val details: String,
     val detailsHighlightRanges: List<IntRangeRTO>,
     val sizeBytes: Int

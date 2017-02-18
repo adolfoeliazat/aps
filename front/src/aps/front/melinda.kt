@@ -2,10 +2,12 @@ package aps.front
 
 import aps.*
 import aps.const.text.numberSign
+import into.kommon.*
+import org.w3c.dom.Element
 import kotlin.js.json
 
 interface MelindaVaginalInterface<
-    Item,
+    ItemRTO,
     Filter,
     out UpdateItemRequest,
     in UpdateItemResponse>
@@ -15,14 +17,14 @@ where
     UpdateItemRequest : RequestMatumba,
     UpdateItemResponse : CommonResponseFields
 {
-    suspend fun sendItemsRequest(req: ItemsRequest<Filter>): FormResponse2<ItemsResponse<Item>>
+    suspend fun sendItemsRequest(req: ItemsRequest<Filter>): FormResponse2<ItemsResponse<ItemRTO>>
     fun shouldShowFilter(): Boolean
     fun getParentEntityID(): Long?
     val humanItemTypeName: String
     fun makeDeleteItemRequest(): DeleteRequest
-    fun makeUpdateItemRequest(item: Item): UpdateItemRequest
-    fun getItemFromUpdateItemResponse(res: UpdateItemResponse): Item
-    fun makeLipsInterface(viewRootID: String, tongueInterface: MelindaTongueInterface<Item>): MelindaLipsInterface
+    fun makeUpdateItemRequest(item: ItemRTO): UpdateItemRequest
+    fun getItemFromUpdateItemResponse(res: UpdateItemResponse): ItemRTO
+    fun makeLipsInterface(viewRootID: String, tongueInterface: MelindaTongueInterface<ItemRTO>): MelindaLipsInterface
 }
 
 interface MelindaBoobsInterface {
@@ -345,16 +347,14 @@ object MelindaTools {
             }
         }
 
-    fun titleBar(item: UAOrderFileRTO, boobsInterface: MelindaBoobsInterface, controls: ToReactElementable): ToReactElementable {
+    fun <ItemRTO : MelindaItemRTO> titleBar(item: ItemRTO, boobsInterface: MelindaBoobsInterface, controls: ToReactElementable, icon: IconClass, smallOverlayIcon: (ItemRTO) -> IconClass?, tinySubtitle: (ItemRTO) -> String?): ToReactElementable {
         return kdiv(className = "col-md-12"){o->
             o- kdiv(className = css.cunt.header.viewing){o->
-                o- ki(className = "${css.cunt.header.leftIcon.viewing} ${fa.file}")
-                o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon.viewing} " +
-                    when (item.seenAsFrom) {
-                        UserKind.CUSTOMER -> fa.user
-                        UserKind.WRITER -> fa.pencil
-                        UserKind.ADMIN -> fa.cog
-                    })
+                o- ki(className = "${css.cunt.header.leftIcon.viewing} $icon")
+                val theSmallOverlayIcon = smallOverlayIcon(item)
+                if (theSmallOverlayIcon != null) {
+                    o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon.viewing} $theSmallOverlayIcon")
+                }
                 o- " "
                 o- highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
 
@@ -371,12 +371,10 @@ object MelindaTools {
                     o- "$numberSign${item.id}"
                 }
 
-                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
-                    o- when (item.seenAsFrom) {
-                        Globus.world.user.kind -> t("Mine", "Мой")
-                        UserKind.CUSTOMER -> t("From customer", "От заказчика")
-                        UserKind.WRITER -> t("From writer", "От писателя")
-                        UserKind.ADMIN -> t("From support", "От саппорта")
+                val theTinySubtitle = tinySubtitle(item)
+                if (theTinySubtitle != null) {
+                    o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                        o- theTinySubtitle
                     }
                 }
 
@@ -385,10 +383,10 @@ object MelindaTools {
         }
     }
 
-    fun titleControls(item: MelindaItemRTO,
-                      tongueInterface: MelindaTongueInterface<UAOrderFileRTO>,
-                      disabled: Boolean,
-                      renderAdditionalControls: (ElementBuilder) -> Unit): ToReactElementable {
+    fun <ItemRTO : MelindaItemRTO> titleControls(item: MelindaItemRTO,
+                                                 tongueInterface: MelindaTongueInterface<ItemRTO>,
+                                                 disabled: Boolean,
+                                                 renderAdditionalControls: (ElementBuilder) -> Unit): ToReactElementable {
         val trashClass: String
         val pencilClass: String
         val c = css.cunt.header
@@ -417,7 +415,48 @@ object MelindaTools {
 
 }
 
+fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualLips(
+    tongueInterface: MelindaTongueInterface<ItemRTO>,
+    viewRootID: String,
+    boobsInterface: MelindaBoobsInterface,
+    smallOverlayIcon: (ItemRTO) -> IconClass?,
+    tinySubtitle: (ItemRTO) -> String?,
+    renderAdditionalControls: (ElementBuilder, ItemRTO, LipsState, updateTitleControls: (LipsState) -> Unit) -> Unit,
+    renderContent: (ElementBuilder) -> Unit,
+    initialState: LipsState,
+    controlsDisabled: (LipsState) -> Boolean
+)
+    : MelindaLipsInterface
+{
+    return object:MelindaLipsInterface {
+        private val titleControlsPlace = Placeholder(renderTitleControls(initialState))
 
+        override fun renderItem(): ToReactElementable {
+            val m = MelindaTools
+            val item = tongueInterface.getItem()
+            return kdiv(id = viewRootID, className = css.item, opacity = 1.0){o->
+                o- m.row{o->
+                    o- m.titleBar(item, boobsInterface, titleControlsPlace, fa.file, smallOverlayIcon, tinySubtitle)
+                }
+                renderContent(o)
+            }
+        }
+
+        private fun renderTitleControls(state: LipsState): ToReactElementable {
+            val item = tongueInterface.getItem()
+            return MelindaTools.titleControls(
+                item, tongueInterface,
+                disabled = controlsDisabled(state),
+                renderAdditionalControls = {o->
+                    val updateTitleControls = {state: LipsState ->
+                        titleControlsPlace.setContent(renderTitleControls(state))
+                    }
+                    renderAdditionalControls(o, item, state, updateTitleControls)
+                }
+            )
+        }
+    }
+}
 
 
 

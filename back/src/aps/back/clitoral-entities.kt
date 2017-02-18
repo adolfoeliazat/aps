@@ -108,7 +108,8 @@ class UAOrder(
             adminNotes = "boobs",
             state = state,
             phone = phone,
-            editable = true // TODO:vgrechka ...
+            editable = true, // TODO:vgrechka ...
+            titleHighlightRanges = listOf() // TODO:vgrechka ...
         )
     }
 }
