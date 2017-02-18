@@ -34,16 +34,11 @@ import java.util.*
                     details = f1.documentDetails.value,
                     state = UAOrderState.WAITING_EMAIL_CONFIRMATION,
                     confirmationSecret = confirmationSecret,
-                    phone = f2.phone.value,
+                    customerPhone = f2.phone.value,
                     customer = user,
-                    anonymousCustomerEmail = when {
-                        user == null -> req.anonymousCustomerEmail.value
-                        else -> null
-                    },
-                    anonymousCustomerName = when {
-                        user == null -> req.anonymousCustomerName.value
-                        else -> null
-                    }
+                    customerFirstName = req.firstName.value,
+                    customerLastName = req.lastName.value,
+                    customerEmail = req.email.value
                 ))
 
                 val vspacing = "0.5em"
@@ -53,14 +48,14 @@ import java.util.*
                         <td style='padding: 0; padding-left: 1em; padding-bottom: $vspacing; white-space: pre-wrap;'>${escapeHTML(value.toString())}</td>
                     </tr>"""
 
-                val customerName = when {
-                    ctx.user == null -> req.anonymousCustomerName.value
-                    else -> imf("ServeUACustomerCreateOrder -- signed-in customer")
+                val customerName = stringBuild {s->
+                    s += order.customerFirstName
+                    order.customerLastName.let {
+                        if (it.isNotBlank())
+                            s += " " + it
+                    }
                 }
-                val customerEmail = when {
-                    ctx.user == null -> req.anonymousCustomerEmail.value
-                    else -> imf("ServeUACustomerCreateOrder -- signed-in customer")
-                }
+                val customerEmail = req.email.value
 
                 // TODO:vgrechka Make `pages` shared (awkward), so it can be referenced here? Probably, not worth it...
                 val confirmationURL = ctx.clientRoot + "/confirmOrder.html?secret=$confirmationSecret"
@@ -77,12 +72,12 @@ import java.util.*
                                         Заказ №${order.id}
                                     </h3>
                                     <table style='border-spacing: 0; border-collapse: collapse;'>
-                                        ${row(fields.shebang.ua.documentType.title, order.documentType.title)}
-                                        ${row(fields.shebang.documentTitle.title, order.title)}
-                                        ${row(fields.shebang.numPages.title, order.numPages)}
-                                        ${row(fields.shebang.numSources.title, order.numSources)}
+                                        ${row(fields.uaDocumentType.title, order.documentType.title)}
+                                        ${row(fields.documentTitle.title, order.title)}
+                                        ${row(fields.numPages.title, order.numPages)}
+                                        ${row(fields.numSources.title, order.numSources)}
                                     </table>
-                                    <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fields.shebang.orderDetails.title}</div>
+                                    <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fields.orderDetails.title}</div>
                                     <div style='white-space: pre-wrap;'>${escapeHTML(order.details)}</div>
                                     <div style='padding-top: 2em; font-style: italic;'>${const.productName.uaCustomer}</div>
                                 </div>
@@ -113,7 +108,7 @@ import java.util.*
                     o.numPages = f1.numPages.value
                     o.numSources = f1.numSources.value
                     o.details = f1.documentDetails.value
-                    o.phone = f2.phone.value
+                    o.customerPhone = f2.phone.value
                 }
                 repo.save(order)
                 return UACustomerUpdateOrderRequest.Response()

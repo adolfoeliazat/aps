@@ -81,9 +81,10 @@ class UAOrder(
     @Column(length = MAX_STRING) var details: String,
     @Enumerated(EnumType.STRING) var state: UAOrderState,
     @Column(length = MAX_STRING) var confirmationSecret: String,
-    @Column(length = MAX_STRING) var anonymousCustomerEmail: String?,
-    @Column(length = MAX_STRING) var anonymousCustomerName: String?,
-    @Column(length = MAX_STRING) var phone: String,
+    @Column(length = MAX_STRING) var customerFirstName: String,
+    @Column(length = MAX_STRING) var customerLastName: String,
+    @Column(length = MAX_STRING) var customerPhone: String,
+    @Column(length = MAX_STRING) var customerEmail: String,
 
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "customerID", nullable = true)
     var customer: User? // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
@@ -110,7 +111,9 @@ class UAOrder(
             detailsHighlightRanges = listOf(), // TODO:vgrechka ...
             adminNotes = "boobs",
             state = state,
-            phone = phone,
+            customerPhone = customerPhone,
+            customerFirstName = customerFirstName,
+            customerLastName = customerLastName,
             editable = true // TODO:vgrechka ...
         )
     }

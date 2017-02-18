@@ -54,7 +54,15 @@ import kotlin.js.json
         return kdiv(className = "form-group", marginBottom = if (error != null) 0 else null){o->
             o- c.labelContainer.div{o->
                 o- testHint
-                o- klabel {it-_spec.title}
+                o- klabel {o->
+                    o- _spec.title
+                    if (_spec.optionalHint) {
+                        o- " "
+                        o- kspan(className = css.formFieldLabelOptionalHint){o->
+                            o- t("(optional)", "(не обязательно)")
+                        }
+                    }
+                }
             }
             o- kdiv(position = "relative"){o->
                 o- input

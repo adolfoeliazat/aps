@@ -62,7 +62,7 @@ class UACustomerSingleOrderPage(val world: World) {
         )
 
         val tabs = listOf(
-            ParamsTab(world, order),
+            OrderParamsTab(world, order),
             UACustomerSingleOrderPageFilesTab(this, world, order)/*,
             MessagesTab(order)*/
         )
@@ -155,7 +155,7 @@ class UACustomerSingleOrderPage(val world: World) {
 
 }
 
-private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
+private class OrderParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
     override suspend fun load(): FormResponse2.Shitty<*>? {
         return null
     }
@@ -173,76 +173,25 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
 
             exhaustive / when (world.user.kind) {
                 UserKind.CUSTOMER -> {
-                    val option = 2
-                    if (option == 1) {
-                        o- row{o->
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(t("Created", "Создан"))
-                                o- kdiv{o->
-                                    o- formatUnixTime(order.createdAt)
-                                }
-                            }
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(fields.shebang.ua.documentType.title)
-                                o- kdiv{o->
-                                    o- order.documentType.title
-                                }
-                            }
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(fields.shebang.numPages.title)
-                                o- kdiv{o->
-                                    o- order.numPages.toString()
-                                }
-                            }
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(fields.shebang.numSources.title)
-                                o- kdiv{o->
-                                    o- order.numSources.toString()
-                                }
-                            }
+                    val m = MelindaTools
+                    o- m.row{o->
+                        if (order.state != UAOrderState.CUSTOMER_DRAFT) {
+                            o- m.createdAtCol(3, order.createdAt)
                         }
-                    } else if (option == 2) {
-                        o- row{o->
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(t("Created", "Создан"))
-                                o- kdiv{o->
-                                    o- formatUnixTime(order.createdAt)
-                                }
-                            }
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(fields.shebang.phone.title)
-                                o- div(order.phone)
-                            }
+                        o- m.col(3, fields.orderCustomerFirstName.title, order.customerFirstName)
+                        if (order.customerLastName.isNotBlank()) {
+                            o- m.col(3, fields.orderCustomerLastName.title, order.customerLastName)
                         }
-                        o- row{o->
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(fields.shebang.ua.documentType.title)
-                                o- kdiv{o->
-                                    o- order.documentType.title
-                                }
-                            }
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(fields.shebang.numPages.title)
-                                o- kdiv{o->
-                                    o- order.numPages.toString()
-                                }
-                            }
-                            o- kdiv(className = "col-md-3"){o->
-                                o- label(fields.shebang.numSources.title)
-                                o- kdiv{o->
-                                    o- order.numSources.toString()
-                                }
-                            }
-                        }
+                        o- m.col(3, fields.orderCustomerPhone.title, order.customerPhone)
                     }
-                    o- row{o->
-                        o- kdiv(className = "col-md-12"){o->
-                            o- label(fields.shebang.orderDetails.title)
-                            o- kdiv(whiteSpace = "pre-wrap"){o->
-                                o- order.details
-                            }
-                        }
+
+                    o- m.row{o->
+                        o- m.col(3, fields.uaDocumentType.title, order.documentType.title)
+                        o- m.col(3, fields.numPages.title, order.numPages.toString())
+                        o- m.col(3, fields.numSources.title, order.numSources.toString())
                     }
+
+                    o- m.detailsRow(order.details, highlightRanges = listOf(), title = fields.orderDetails.title)
                 }
 
                 UserKind.WRITER -> imf()
@@ -275,7 +224,7 @@ private class ParamsTab(val world: World, val order: UAOrderRTO) : CustomerSingl
                                             o.documentDetails.value = order.details
                                         }
                                         o.fields2-{o->
-                                            o.phone.value = order.phone
+                                            o.phone.value = order.customerPhone
                                         }
                                     }
                                 ),

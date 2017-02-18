@@ -121,8 +121,8 @@ sealed class FormResponse2<Meat> {
 class SignInResponse(val token: String, val user: UserRTO) : CommonResponseFieldsImpl()
 
 class SignInWithPasswordRequest : RequestMatumba() {
-    val email = TextField(this, fields.shebang.emailInSignInForm)
-    val password = TextField(this, fields.shebang.passwordInSignInForm)
+    val email = TextField(this, fields.emailInSignInForm)
+    val password = TextField(this, fields.passwordInSignInForm)
 }
 
 class SignInWithTokenRequest : RequestMatumba() {
@@ -132,7 +132,7 @@ class SignUpRequest : RequestMatumba() {
     class Response(val userID: String) : CommonResponseFieldsImpl()
     val immutableSignUpFields = ImmutableSignUpFields(this)
     val mutableSignUpFields = MutableSignUpFields(this)
-    val agreeTerms = CheckboxField(this, fields.shebang.agreeTerms)
+    val agreeTerms = CheckboxField(this, fields.agreeTerms)
 }
 
 class UpdateProfileRequest() : RequestMatumba() {
@@ -149,26 +149,26 @@ open class UpdateUserRequest() : RequestMatumba() {
     val immutableSignUpFields = ImmutableSignUpFields(this)
     val mutableSignUpFields = MutableSignUpFields(this)
     val profileFields = ProfileFields(this)
-    val state = SelectField(this, fields.shebang.userState)
-    val profileRejectionReason = TextField(this, fields.shebang.profileRejectionReason)
-    val banReason = TextField(this, fields.shebang.banReason)
-    val adminNotes = TextField(this, fields.shebang.adminNotes)
+    val state = SelectField(this, fields.userState)
+    val profileRejectionReason = TextField(this, fields.profileRejectionReason)
+    val banReason = TextField(this, fields.banReason)
+    val adminNotes = TextField(this, fields.adminNotes)
 }
 
 class AdminCreateUserRequest: UpdateUserRequest()
 
 class ImmutableSignUpFields(container: RequestMatumba) {
-    val email = TextField(container, fields.shebang.email)
+    val email = TextField(container, fields.orderCustomerEmail)
 }
 
 class MutableSignUpFields(container: RequestMatumba) {
-    val firstName = TextField(container, fields.shebang.firstName)
-    val lastName = TextField(container, fields.shebang.lastName)
+    val firstName = TextField(container, fields.firstName)
+    val lastName = TextField(container, fields.lastName)
 }
 
 class ProfileFields(container: RequestMatumba) {
-    val phone = TextField(container, fields.shebang.phone)
-    val aboutMe = TextField(container, fields.shebang.aboutMe)
+    val phone = TextField(container, fields.orderCustomerPhone)
+    val aboutMe = TextField(container, fields.aboutMe)
 }
 
 
@@ -316,7 +316,7 @@ where Filter: Enum<Filter>, Filter: Titled {
     val parentEntityID by maybeLongHiddenField()
     val filter = EnumHiddenField(this, "filter", filterValues)
     val ordering = EnumHiddenField(this, "ordering", Ordering.values())
-    val searchString = TextField(this, fields.shebang.searchString)
+    val searchString = TextField(this, fields.searchString)
     val fromID by maybeLongHiddenField()
 }
 

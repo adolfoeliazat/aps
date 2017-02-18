@@ -16,6 +16,7 @@ private var assertionBannerPause by notNull<ResolvableShit<Unit>>()
 private var _currentAssertionBannerKind by notNull<AssertionBannerKind>()
 
 val currentAssertionBannerKind get() = _currentAssertionBannerKind
+private var prevDiffResult: RenderDiffResult? = null
 
 enum class AssertionBannerKind(val className: String) {
     NOT_HARDENED(css.test.popup.assertion.notHardened),
@@ -164,7 +165,15 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                 backgroundColor = WHITE, color = BLACK_BOOT,
                                 fontWeight = "normal", textAlign = "left", padding = 5
                             ){o->
-                                o- renderDiff(expected = expected, actual = actual, actualTestShit = actual)
+                                val diffResult = renderDiff(expected = expected, actual = actual, actualTestShit = actual)
+                                val thePrevDiffResult = prevDiffResult
+                                prevDiffResult = diffResult
+                                if (thePrevDiffResult != null && thePrevDiffResult.diffSummary == diffResult.diffSummary) {
+                                    clog("************************************")
+                                    clog("* Diff is the same as previous one *")
+                                    clog("************************************")
+                                }
+                                o- diffResult.tre
                             }
                         })
 
@@ -480,7 +489,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                             expected = expected ?: "--- Not yet hardened ---",
                             actual = actual,
                             actualTestShit = actual
-                        )
+                        ).tre
                     )
                 }
             }

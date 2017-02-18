@@ -11,6 +11,7 @@ import kotlin.browser.window
 // TODO:vgrechka Use paths from pageSpecs in URLs
 // TODO:vgrechka Test case: File download error
 // TODO:vgrechka Test case: Unexpected backend error when sending order for approval
+// TODO:vgrechka Test case: Customer chooses to not specify last name during anonymous order creation
 
 class Test_UA_CrazyLong_2 : FuckingScenario() {
     // http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_2&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=false&handPauses=true
@@ -23,7 +24,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 6
+    val startPoint = 1
+//    val startPoint = 6
     var currentPoint = 0
 
     override suspend fun run1() {
@@ -45,18 +47,19 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 topNavItemSequence(page = pages.uaCustomer.makeOrder_testRef,
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
                 debugMailboxClear()
-                selectSetValue(fields.shebang.ua.documentType_testRef, UADocumentType.PRACTICE)
+                selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
                 formSubmissionAttempts(
                     testShit, baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
                     attempts = eachOrCombinationOfLasts(listOf(
-                        badTextFieldValuesThenValid(fields.shebang.documentTitle_testRef, "Как я пинал хуи на практике"),
-                        badIntFieldValuesThenValid(fields.shebang.numPages_testRef, 13),
-                        badIntFieldValuesThenValid(fields.shebang.numSources_testRef, 5),
-                        badTextFieldValuesThenValid(fields.shebang.orderDetails_testRef, testdata.trialDetails),
-                        badTextFieldValuesThenValid(fields.shebang.anonymousCustomerName_testRef, "Пися Камушкин"),
-                        badTextFieldValuesThenValid(fields.shebang.phone_testRef, "+38 (068) 123-45-67"),
-                        badTextFieldValuesThenValid(fields.shebang.email_testRef, "pisia@test.shit.ua")
+                        badTextFieldValuesThenValid(fields.documentTitle_testRef, "Как я пинал хуи на практике"),
+                        badIntFieldValuesThenValid(fields.numPages_testRef, 13),
+                        badIntFieldValuesThenValid(fields.numSources_testRef, 5),
+                        badTextFieldValuesThenValid(fields.orderDetails_testRef, testdata.trialDetails),
+                        badTextFieldValuesThenValid(fields.orderCustomerFirstName_testRef, "Пися"),
+                        badTextFieldValuesThenValid(fields.orderCustomerLastName_testRef, "Камушкин"),
+                        badTextFieldValuesThenValid(fields.orderCustomerPhone_testRef, "+38 (068) 123-45-67"),
+                        badTextFieldValuesThenValid(fields.orderCustomerEmail_testRef, "pisia@test.shit.ua")
                     ))
                 )
                 debugMailboxCheck("b9196719-9e01-45f3-987c-cb8259c7f9e6")
@@ -84,28 +87,28 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Edit params -- cancel
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
-                inputSetValue(fields.shebang.documentTitle_testRef, "Хуй")
+                inputSetValue(fields.documentTitle_testRef, "Хуй")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
             run { // Edit params -- save
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
-                selectSetValue(fields.shebang.ua.documentType_testRef, UADocumentType.LAB)
+                selectSetValue(fields.uaDocumentType_testRef, UADocumentType.LAB)
                 formSubmissionAttempts(
                     testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
                     attempts = eachOrCombinationOfLasts(listOf(
-                        badTextFieldValuesThenValid(fields.shebang.documentTitle_testRef, "Как я пинал большие хуи на практике"),
-                        badIntFieldValuesThenValid(fields.shebang.numPages_testRef, 23),
-                        badIntFieldValuesThenValid(fields.shebang.numSources_testRef, 7),
-                        badTextFieldValuesThenValid(fields.shebang.orderDetails_testRef, "Это чисто на почитать... " + testdata.trialDetails),
-                        badTextFieldValuesThenValid(fields.shebang.phone_testRef, "+38 (068) 321-45-67")
+                        badTextFieldValuesThenValid(fields.documentTitle_testRef, "Как я пинал большие хуи на практике"),
+                        badIntFieldValuesThenValid(fields.numPages_testRef, 23),
+                        badIntFieldValuesThenValid(fields.numSources_testRef, 7),
+                        badTextFieldValuesThenValid(fields.orderDetails_testRef, "Это чисто на почитать... " + testdata.trialDetails),
+                        badTextFieldValuesThenValid(fields.orderCustomerPhone_testRef, "+38 (068) 321-45-67")
                     ))
                 )
             }
 
             run { // Edit params -- save 2
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
-                selectSetValue(fields.shebang.ua.documentType_testRef, UADocumentType.PRACTICE)
+                selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
         }
@@ -201,7 +204,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             // dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()
             run { // Edit file -- cancel
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
-                inputSetValue(fields.shebang.fileTitle_testRef, "Хуй")
+                inputSetValue(fields.fileTitle_testRef, "Хуй")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "74893db1-b1cb-4cae-8d17-441f715899d3")
             }
             run { // Edit file -- save, file not changed
@@ -209,15 +212,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 formSubmissionAttempts(
                     testShit, baseID = "2639505f-4b8c-44fd-b0b7-99b252062a72",
                     attempts = eachOrCombinationOfLasts(listOf(
-                        badTextFieldValuesThenValid(fields.shebang.fileTitle_testRef, "Рапунцель-распиздунцель"),
-                        badTextFieldValuesThenValid(fields.shebang.fileDetails_testRef, "Реальная история... " + testdata.rapunzelDetails)
+                        badTextFieldValuesThenValid(fields.fileTitle_testRef, "Рапунцель-распиздунцель"),
+                        badTextFieldValuesThenValid(fields.fileDetails_testRef, "Реальная история... " + testdata.rapunzelDetails)
                     ))
                 )
                 testDownloads("68bfe30e-efd6-4f22-93c2-2b249f78ff5a", mapOf(27L to "lousy writing 9.rtf"))
             }
             run { // Edit file -- save, file was changed
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "422ae986-3f93-419c-8dd6-26ae8dedee19")
-                inputSetValue(fields.shebang.fileTitle_testRef, "Рапунцель -- девица-распиздунцель")
+                inputSetValue(fields.fileTitle_testRef, "Рапунцель -- девица-распиздунцель")
                 fileFieldChoose("fuck you.rtf", "aec4c792-dd9c-4a98-9279-4cd29453ee1d")
                 testShit.imposeNextRequestTimestamp()
                 step({buttonClick(buttons.primary_testRef)}, TestGlobal.modalHiddenLock, "5d4f5e63-95f7-4ec8-b5cd-7e767edd484c")
@@ -272,8 +275,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             val ivo1 = Morda("dasja1", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
             ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
             topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
-            inputSetValue(fields.shebang.emailInSignInForm_testRef, "dasja@test.shit.ua")
-            inputSetValue(fields.shebang.passwordInSignInForm_testRef, "dasja-secret")
+            inputSetValue(fields.emailInSignInForm_testRef, "dasja@test.shit.ua")
+            inputSetValue(fields.passwordInSignInForm_testRef, "dasja-secret")
             submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
 
             run { // Error loading orders to approve
@@ -404,8 +407,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     private suspend fun addFile(p: AddFileParams) {
         seq({buttonClick(buttons.plus_testRef)}, TestGlobal.modalShownLock, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
         fileFieldChoose(p.fileName, "${p.aid}--1")
-        inputSetValue(fields.shebang.fileTitle_testRef, p.title)
-        inputSetValue(fields.shebang.fileDetails_testRef, p.details)
+        inputSetValue(fields.fileTitle_testRef, p.title)
+        inputSetValue(fields.fileDetails_testRef, p.details)
         submitFormSequence(testShit, aid = "${p.aid}--2")
     }
 }

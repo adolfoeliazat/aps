@@ -179,7 +179,7 @@ class TestScenarioBuilder(val scenario: StepBasedTestScenario) {
                     expected = tidyExpected,
                     actual = tidyActual,
                     actualTestShit = rawActual.trim(),
-                    actualPaste = threeQuotes + rawActual.trim() + threeQuotes))
+                    actualPaste = threeQuotes + rawActual.trim() + threeQuotes).tre)
             }
         }}
     }

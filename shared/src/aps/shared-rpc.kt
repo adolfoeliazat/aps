@@ -90,28 +90,37 @@ interface Xlobal {
 }
 
 class UACustomerOrderRequestFields1(cont: RequestMatumba) {
-    val documentType = SelectField(cont, fields.shebang.ua.documentType)
-    val documentTitle = TextField(cont, fields.shebang.documentTitle)
-    val numPages = IntField(cont, fields.shebang.numPages)
-    val numSources = IntField(cont, fields.shebang.numSources)
-    val documentDetails = TextField(cont, fields.shebang.orderDetails)
+    val documentType = SelectField(cont, fields.uaDocumentType)
+    val documentTitle = TextField(cont, fields.documentTitle)
+    val numPages = IntField(cont, fields.numPages)
+    val numSources = IntField(cont, fields.numSources)
+    val documentDetails = TextField(cont, fields.orderDetails)
 }
 
 class UACustomerOrderRequestFields2(cont: RequestMatumba) {
-    val phone = TextField(cont, fields.shebang.phone)
+    val phone = TextField(cont, fields.orderCustomerPhone)
 }
 
 class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
     class Response(val id: String) : CommonResponseFieldsImpl()
 
     val fields1 = UACustomerOrderRequestFields1(this)
-    var anonymousCustomerName by notNullOnce<TextField>()
-        init {if (xlobal.user == null)
-            anonymousCustomerName  = TextField(this, fields.shebang.anonymousCustomerName)}
+
+    var firstName by notNullOnce<TextField>()
+    init { // TODO:vgrechka Simplify this shit
+        if (xlobal.user == null)
+            firstName = TextField(this, fields.orderCustomerFirstName)
+    }
+
+    val lastName = TextField(this, fields.orderCustomerLastName)
+
     val fields2 = UACustomerOrderRequestFields2(this)
-    var anonymousCustomerEmail by notNullOnce<TextField>()
-        init {if (xlobal.user == null)
-            anonymousCustomerEmail = TextField(this, fields.shebang.email)}
+
+    var email by notNullOnce<TextField>()
+    init { // TODO:vgrechka Simplify this shit
+        if (xlobal.user == null)
+            email = TextField(this, fields.orderCustomerEmail)
+    }
 }
 
 class UACustomerUpdateOrderRequest : RequestMatumba() {
@@ -171,20 +180,20 @@ class TestGetFileUploadDataRequest : RequestMatumba() {
 }
 
 class FileFields1(cont: RequestMatumba) {
-    val title = TextField(cont, fields.shebang.fileTitle)
-    val details = TextField(cont, fields.shebang.fileDetails)
+    val title = TextField(cont, fields.fileTitle)
+    val details = TextField(cont, fields.fileDetails)
 }
 
 class UACreateOrderFileRequest : RequestMatumba() {
     val orderID by longHiddenField()
-    val file = FileField(this, fields.shebang.fileFile_create)
+    val file = FileField(this, fields.fileFile_create)
     val fields1 = FileFields1(this)
     class Response(val id: Long) : CommonResponseFieldsImpl()
 }
 
 class UAUpdateOrderFileRequest : RequestMatumba() {
     val fileID by longHiddenField()
-    val file = FileField(this, fields.shebang.fileFile_update)
+    val file = FileField(this, fields.fileFile_update)
     val fields1 = FileFields1(this)
     class Response(val updatedFile: UAOrderFileRTO) : CommonResponseFieldsImpl()
 }

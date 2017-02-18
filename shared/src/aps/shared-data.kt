@@ -39,7 +39,9 @@ class UAOrderRTO(
     val detailsHighlightRanges: List<IntRangeRTO>,
     val adminNotes: String,
     val state: UAOrderState,
-    val phone: String
+    val customerPhone: String,
+    val customerFirstName: String,
+    val customerLastName: String
 ) : MelindaItemRTO
 
 data class IntRangeRTO(

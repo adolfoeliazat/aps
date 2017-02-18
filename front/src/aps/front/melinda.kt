@@ -344,6 +344,12 @@ object MelindaTools {
             }
         }
 
+    fun col(size: Int, title: String, value: String) =
+        col(3, title){o->
+            o- value
+        }
+
+
     fun createdAtCol(size: Int, value: Long) =
         col(size, t("Created", "Создан")){o->
             o- formatUnixTime(value)
@@ -354,9 +360,9 @@ object MelindaTools {
             o- formatUnixTime(value)
         }
 
-    fun detailsRow(value: String, highlightRanges: List<IntRangeRTO>): ElementBuilder {
+    fun detailsRow(value: String, highlightRanges: List<IntRangeRTO>, title: String? = null): ToReactElementable {
         return row{o->
-            o- col(12, t("Details", "Детали"), Style(whiteSpace = "pre-wrap")){o->
+            o- col(12, title ?: t("Details", "Детали"), Style(whiteSpace = "pre-wrap")){o->
                 o- highlightedShit(value, highlightRanges)
             }
         }

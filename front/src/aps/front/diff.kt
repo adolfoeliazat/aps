@@ -14,89 +14,64 @@ external interface JsDiffItem {
     val value: String
 }
 
+class RenderDiffResult(val tre: ToReactElementable, val diffSummary: String)
+
 fun renderDiff(
     expected: String, actual: String,
     actualTestShit: String,
     actualPaste: String? = null,
     expectedTitle: String = "Expected",
     actualTitle: String = "Actual"
-): ToReactElementable {
-    val noisy = false
+): RenderDiffResult {
+    val diffSummary = StringBuilder()
 
     val tabSpecs = mutableListOf<TabSpec>()
-    tabSpecs.add(SimpleTabSpec(key = tabs.shebang.diff,
-                         title = "Diff",
-                         content = kdiv(whiteSpace = "pre") {o ->
-                             val placeholders = mutableListOf<Placeholder>()
-                             var prevLabel: String? = null
-                             val JsDiff = global.JsDiff
-                             val diffLineItems = jsArrayToList<JsDiffItem>(JsDiff.diffLines(expected, actual))
-                             for ((i, item) in diffLineItems.withIndex()) {
-//                                 val backgroundColor: Color
-                                 var titleClass by notNull<String>()
-                                 val contentClass: String
-                                 val label: String?
+    tabSpecs.add(SimpleTabSpec(
+        key = tabs.shebang.diff,
+        title = "Diff",
+        content = kdiv(whiteSpace = "pre"){o->
+            val placeholders = mutableListOf<Placeholder>()
+            var prevLabel: String? = null
+            val JsDiff = global.JsDiff
+            val diffLineItems = jsArrayToList<JsDiffItem>(JsDiff.diffLines(expected, actual))
+            for ((i, item) in diffLineItems.withIndex()) {
+                var titleClass by notNull<String>()
+                val contentClass: String
+                val label: String?
 
-                                 if (item.added) {
-                                     titleClass = css.diff.actual.title
-                                     contentClass = css.diff.actual.content
-                                     label = actualTitle
-                                 } else if (item.removed) {
-                                     titleClass = css.diff.expected.title
-                                     contentClass = css.diff.expected.content
-                                     label = expectedTitle
-                                 } else {
-                                     contentClass = css.diff.same.content
-                                     label = null
-                                 }
-                                 if (label != null && label != prevLabel) {
-                                     o - kdiv(className = titleClass) {o ->
-                                         o - label
-                                     }
-                                 }
-                                 prevLabel = label
+                if (item.added) {
+                    diffSummary += "Added: ${item.value}\n\n"
+                    titleClass = css.diff.actual.title
+                    contentClass = css.diff.actual.content
+                    label = actualTitle
+                } else if (item.removed) {
+                    diffSummary += "Removed: ${item.value}\n\n"
+                    titleClass = css.diff.expected.title
+                    contentClass = css.diff.expected.content
+                    label = expectedTitle
+                } else {
+                    contentClass = css.diff.same.content
+                    label = null
+                }
+                if (label != null && label != prevLabel) {
+                    o- kdiv(className = titleClass){o->
+                        o- label
+                    }
+                }
+                prevLabel = label
 
-                                 o - kdiv(className = contentClass) {o ->
-                                     placeholders += Placeholder(span(item.value))
-                                     o - placeholders.last()
-                                 }
-
-             //                        if (i > 0) {
-             //                            val prevItem = diffLineItems[i - 1]
-             //                            if (item.added && prevItem.removed) {
-             //                                val diffCharItems = jsArrayToList<JsDiffItem>(JsDiff.diffChars(item.value, prevItem.value))
-             //
-             //                                if (noisy) {
-             //                                    clog("--------------")
-             //                                    for (dci in diffCharItems) {
-             //                                        clog("DCI", dci)
-             //                                    }
-             //                                }
-             //
-             //                                for (idx in i-1..i) {
-             //                                    val shit = diffLineItems[idx]
-             //                                    placeholders[idx].setContent(kdiv{o->
-             //                                        for (dci in diffCharItems) {
-             //                                            if (dci.added && shit.removed || dci.removed && shit.added)
-             //                                                o- kspan(border = "1px solid ${if (idx == i - 1) GREEN_900 else RED_900}",
-             //                                                         backgroundColor = if (idx == i - 1) GREEN_200 else RED_200,
-             //                                                         padding = 2, margin = 2){o->
-             //                                                    o- dci.value}
-             //                                            else if (!dci.added && !dci.removed)
-             //                                                o- dci.value
-             //                                        }
-             //                                    })
-             //                                }
-             //                            }
-             //                        }
-                             }
-                         }))
+                o- kdiv(className = contentClass){o->
+                    placeholders += Placeholder(span(item.value))
+                    o- placeholders.last()
+                }
+            }
+        }))
 
     if (actualPaste != null) {
         tabSpecs.add(SimpleTabSpec(key = tabs.shebang.actualPaste,
                              title = "Actual Paste",
-                             content = kdiv {o ->
-                                 o - Input(json("initialValue" to actualPaste,
+                             content = kdiv{o->
+                                 o- Input(json("initialValue" to actualPaste,
                                                 "kind" to "textarea",
                                                 "rows" to 10,
                                                 "style" to json("width" to "100%",
@@ -108,26 +83,30 @@ fun renderDiff(
     val tabs = Tabs2(initialActiveKey = tabs.shebang.diff, tabs = tabSpecs)
 
 
-    return kdiv(position = "relative"){o->
-        o- tabs
+    return RenderDiffResult(
+        tre = kdiv(position = "relative"){o->
+            o- tabs
 
-        TestGlobal.testShitBeingAssertedID?.let {id->
-            o- kdiv(position = "absolute", right = 0, top = 0){o->
-                val holder = Placeholder()
-                holder.setContent(button2(span("Update Test Shit"), level = "primary") {async<Unit>{
-                    holder.setContent(span("Working like a dog..."))
-                    try {
-                        await(fuckingRemoteCall.updateTestShit(id, actualTestShit))
-                        Globus.realLocation.href = TestGlobal.lastTestHref
-                    } catch(e: Throwable) {
-                        holder.setContent(kspan(color = RED_900){it-"No fucking way"})
-                        throw e
-                    }
-                }})
-                o- holder
+            TestGlobal.testShitBeingAssertedID?.let {id->
+                o- kdiv(position = "absolute", right = 0, top = 0){o->
+                    val holder = Placeholder()
+                    holder.setContent(button2(span("Update Test Shit"), level = "primary") {async<Unit>{
+                        holder.setContent(span("Working like a dog..."))
+                        try {
+                            await(fuckingRemoteCall.updateTestShit(id, actualTestShit))
+                            Globus.realLocation.href = TestGlobal.lastTestHref
+                        } catch(e: Throwable) {
+                            holder.setContent(kspan(color = RED_900){it-"No fucking way"})
+                            throw e
+                        }
+                    }})
+                    o- holder
+                }
             }
-        }
-    }
+        },
+
+        diffSummary = diffSummary.toString()
+    )
 }
 
 

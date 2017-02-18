@@ -67,6 +67,8 @@ object css {
 
     val progressTicker = "progressTicker"
 
+    val formFieldLabelOptionalHint by Style("font-weight: normal; font-style: italic;")
+
     object shebang : Group(null) {
         val paddingRightScrollbarWidthImportant by Style("""
             padding-right: ${fconst.scrollbarWidth}px !important;

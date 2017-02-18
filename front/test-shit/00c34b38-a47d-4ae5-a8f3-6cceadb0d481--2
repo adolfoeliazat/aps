@@ -164,7 +164,7 @@
                 <div class="form-group">
                   <div class="textField-labelContainer">
                     <label>
-                      Имя
+                      Контактное имя
                     </label>
                   </div>
                   <div style="position: relative;">
@@ -174,7 +174,10 @@
                   <div class="form-group">
                     <div class="textField-labelContainer">
                       <label>
-                        Телефон
+                        Фамилия
+                        <span class="formFieldLabelOptionalHint">
+                          (не обязательно)
+                        </span>
                       </label>
                     </div>
                     <div style="position: relative;">
@@ -184,25 +187,35 @@
                     <div class="form-group">
                       <div class="textField-labelContainer">
                         <label>
-                          Почта
+                          Телефон
                         </label>
                       </div>
                       <div style="position: relative;">
                         <input type="text" rows="5" class="form-control" value="" style="resize: none;">
                         </div>
                       </div>
-                    </form>
-                    <div style="display: flex;">
-                      <button class="btn btn-primary ">
-                        Продолжить
-                      </button>
-                      <div style="display: flex; flex-grow: 1; justify-content: flex-end;">
+                      <div class="form-group">
+                        <div class="textField-labelContainer">
+                          <label>
+                            Почта
+                          </label>
+                        </div>
+                        <div style="position: relative;">
+                          <input type="text" rows="5" class="form-control" value="" style="resize: none;">
+                          </div>
+                        </div>
+                      </form>
+                      <div style="display: flex;">
+                        <button class="btn btn-primary ">
+                          Продолжить
+                        </button>
+                        <div style="display: flex; flex-grow: 1; justify-content: flex-end;">
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
 -------------------- PANES --------------------
 
