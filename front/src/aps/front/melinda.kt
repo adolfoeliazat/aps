@@ -24,7 +24,7 @@ where
     fun makeDeleteItemRequest(): DeleteRequest
     fun makeUpdateItemRequest(item: ItemRTO): UpdateItemRequest
     fun getItemFromUpdateItemResponse(res: UpdateItemResponse): ItemRTO
-    fun makeLipsInterface(viewRootID: String, tongueInterface: MelindaTongueInterface<ItemRTO>): MelindaLipsInterface
+    fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<ItemRTO>): MelindaLipsInterface
 }
 
 interface MelindaBoobsInterface {
@@ -312,7 +312,7 @@ class MelindaBoobs<
             }
         }
 
-        val lipsInterface = vaginalInterface.makeLipsInterface(viewRootID = viewRootID, tongueInterface = tongueInterface)
+        val lipsInterface = vaginalInterface.makeLipsInterface(viewRootID = viewRootID, tongue = tongueInterface)
 
         init {
             enterViewMode()
@@ -331,9 +331,6 @@ class MelindaBoobs<
 }
 
 object MelindaTools {
-    fun label(title: String) =
-        klabel(marginBottom = 0) {it - title}
-
     fun row(build: (ElementBuilder) -> Unit) =
         kdiv(className = "row", marginBottom = "0.5em"){o->
             build(o)
@@ -341,90 +338,24 @@ object MelindaTools {
 
     fun col(size: Int, title: String, contentStyle: Style? = null, build: (ElementBuilder) -> Unit) =
         kdiv(className = "col-md-$size"){o->
-            o- label(title)
+            o- klabel(marginBottom = 0) {it - title}
             o- kdiv(style = contentStyle ?: Style()){o->
                 build(o)
             }
         }
-
-    fun <ItemRTO : MelindaItemRTO> titleBar(item: ItemRTO, boobsInterface: MelindaBoobsInterface, controls: ToReactElementable, icon: IconClass, smallOverlayIcon: (ItemRTO) -> IconClass?, tinySubtitle: (ItemRTO) -> String?): ToReactElementable {
-        return kdiv(className = "col-md-12"){o->
-            o- kdiv(className = css.cunt.header.viewing){o->
-                o- ki(className = "${css.cunt.header.leftIcon.viewing} $icon")
-                val theSmallOverlayIcon = smallOverlayIcon(item)
-                if (theSmallOverlayIcon != null) {
-                    o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon.viewing} $theSmallOverlayIcon")
-                }
-                o- " "
-                o- highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
-
-                val idColor: Color?;
-                val idBackground: Color?
-                if (boobsInterface.getSearchString().split(Regex("\\s+")).contains(item.id.toString())) {
-                    idColor = Color.GRAY_800
-                    idBackground = Color.AMBER_200
-                } else {
-                    idColor = Color.GRAY_500
-                    idBackground = null
-                }
-                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
-                    o- "$numberSign${item.id}"
-                }
-
-                val theTinySubtitle = tinySubtitle(item)
-                if (theTinySubtitle != null) {
-                    o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
-                        o- theTinySubtitle
-                    }
-                }
-
-                o- controls
-            }
-        }
-    }
-
-    fun <ItemRTO : MelindaItemRTO> titleControls(item: MelindaItemRTO,
-                                                 tongueInterface: MelindaTongueInterface<ItemRTO>,
-                                                 disabled: Boolean,
-                                                 renderAdditionalControls: (ElementBuilder) -> Unit): ToReactElementable {
-        val trashClass: String
-        val pencilClass: String
-        val c = css.cunt.header
-        if (disabled) {
-            trashClass = c.rightIconDisabled
-            pencilClass = c.rightIconDisabled
-        } else {
-            trashClass = c.rightIcon
-            pencilClass = c.rightIcon
-        }
-
-        return hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")){o->
-            renderAdditionalControls(o)
-            if (item.editable) {
-                o- kic("${fa.trash} $trashClass",
-                        style = Style(),
-                        key = SubscriptKicKey(kics.order.file.delete, item.id),
-                        onClicka = disableableHandler(disabled) {tongueInterface.onDelete()})
-                o- kic("${fa.pencil} $pencilClass",
-                        style = Style(),
-                        key = SubscriptKicKey(kics.order.file.edit, item.id),
-                        onClicka = disableableHandler(disabled) {tongueInterface.onEdit()})
-            }
-        }
-    }
-
 }
 
 fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualLips(
     tongueInterface: MelindaTongueInterface<ItemRTO>,
     viewRootID: String,
     boobsInterface: MelindaBoobsInterface,
-    smallOverlayIcon: (ItemRTO) -> IconClass?,
-    tinySubtitle: (ItemRTO) -> String?,
-    renderAdditionalControls: (ElementBuilder, ItemRTO, LipsState, updateTitleControls: (LipsState) -> Unit) -> Unit,
+    smallOverlayIcon: () -> IconClass?,
+    tinySubtitle: () -> String?,
+    renderAdditionalControls: (ElementBuilder, LipsState, updateTitleControls: (LipsState) -> Unit) -> Unit,
     renderContent: (ElementBuilder) -> Unit,
     initialState: LipsState,
-    controlsDisabled: (LipsState) -> Boolean
+    controlsDisabled: (LipsState) -> Boolean,
+    icon: IconClass
 )
     : MelindaLipsInterface
 {
@@ -436,7 +367,39 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualLips(
             val item = tongueInterface.getItem()
             return kdiv(id = viewRootID, className = css.item, opacity = 1.0){o->
                 o- m.row{o->
-                    o- m.titleBar(item, boobsInterface, titleControlsPlace, fa.file, smallOverlayIcon, tinySubtitle)
+                    o- kdiv(className = "col-md-12"){o->
+                        o- kdiv(className = css.cunt.header.viewing){o->
+                            o- ki(className = "${css.cunt.header.leftIcon.viewing} $icon")
+                            val theSmallOverlayIcon = smallOverlayIcon()
+                            if (theSmallOverlayIcon != null) {
+                                o- ki(className = "${css.cunt.header.leftOverlayBottomLeftIcon.viewing} $theSmallOverlayIcon")
+                            }
+                            o- " "
+                            o- highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
+
+                            val idColor: Color?;
+                            val idBackground: Color?
+                            if (boobsInterface.getSearchString().split(Regex("\\s+")).contains(item.id.toString())) {
+                                idColor = Color.GRAY_800
+                                idBackground = Color.AMBER_200
+                            } else {
+                                idColor = Color.GRAY_500
+                                idBackground = null
+                            }
+                            o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
+                                o- "$numberSign${item.id}"
+                            }
+
+                            val theTinySubtitle = tinySubtitle()
+                            if (theTinySubtitle != null) {
+                                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                                    o- theTinySubtitle
+                                }
+                            }
+
+                            o- titleControlsPlace
+                        }
+                    }
                 }
                 renderContent(o)
             }
@@ -444,16 +407,36 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualLips(
 
         private fun renderTitleControls(state: LipsState): ToReactElementable {
             val item = tongueInterface.getItem()
-            return MelindaTools.titleControls(
-                item, tongueInterface,
-                disabled = controlsDisabled(state),
-                renderAdditionalControls = {o->
-                    val updateTitleControls = {state: LipsState ->
-                        titleControlsPlace.setContent(renderTitleControls(state))
-                    }
-                    renderAdditionalControls(o, item, state, updateTitleControls)
+            val disabled = controlsDisabled(state)
+
+            val trashClass: String
+            val pencilClass: String
+            val c = css.cunt.header
+            if (disabled) {
+                trashClass = c.rightIconDisabled
+                pencilClass = c.rightIconDisabled
+            } else {
+                trashClass = c.rightIcon
+                pencilClass = c.rightIcon
+            }
+
+            return hor3(style = Style(position = "absolute", right = 0, top = 0, marginRight = "0.5rem", marginTop = "0.1rem")){o->
+                val updateTitleControls = {state: LipsState ->
+                    titleControlsPlace.setContent(renderTitleControls(state))
                 }
-            )
+                renderAdditionalControls(o, state, updateTitleControls)
+
+                if (item.editable) {
+                    o- kic("${fa.trash} $trashClass",
+                           style = Style(),
+                           key = SubscriptKicKey(kics.order.file.delete, item.id),
+                           onClicka = disableableHandler(disabled) {tongueInterface.onDelete()})
+                    o- kic("${fa.pencil} $pencilClass",
+                           style = Style(),
+                           key = SubscriptKicKey(kics.order.file.edit, item.id),
+                           onClicka = disableableHandler(disabled) {tongueInterface.onEdit()})
+                }
+            }
         }
     }
 }

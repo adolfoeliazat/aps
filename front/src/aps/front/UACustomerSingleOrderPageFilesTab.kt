@@ -61,26 +61,27 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
     val vaginalInterface = object:MelindaVaginalInterface<UAOrderFileRTO, CustomerFileFilter, UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response> {
         private inner class FileLipsState(val downloadActive: Boolean)
 
-        override fun makeLipsInterface(viewRootID: String, tongueInterface: MelindaTongueInterface<UAOrderFileRTO>): MelindaLipsInterface {
+        override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UAOrderFileRTO>): MelindaLipsInterface {
             if (world.user.kind != UserKind.CUSTOMER) imf("order vaginalInterface for ${world.user.kind}")
 
             val cloudIconID = puid()
             return makeUsualLips(
-                tongueInterface, viewRootID, boobsInterface,
+                tongue, viewRootID, boobsInterface,
+                icon = fa.file,
                 initialState = FileLipsState(downloadActive = false),
                 controlsDisabled = {state-> state.downloadActive},
-                smallOverlayIcon = {item-> when (item.seenAsFrom) {
+                smallOverlayIcon = {when (tongue.getItem().seenAsFrom) {
                     UserKind.CUSTOMER -> fa.user
                     UserKind.WRITER -> fa.pencil
                     UserKind.ADMIN -> fa.cog
                 }},
-                tinySubtitle = {item-> when (item.seenAsFrom) {
+                tinySubtitle = {when (tongue.getItem().seenAsFrom) {
                     Globus.world.user.kind -> t("Mine", "Мой")
                     UserKind.CUSTOMER -> t("From customer", "От заказчика")
                     UserKind.WRITER -> t("From writer", "От писателя")
                     UserKind.ADMIN -> t("From support", "От саппорта")
                 }},
-                renderAdditionalControls = {o, item, state, updateTitleControls ->
+                renderAdditionalControls = {o, state, updateTitleControls ->
                     val cloudClass = when {
                         state.downloadActive -> css.cunt.header.rightIconActive
                         else -> css.cunt.header.rightIcon
@@ -88,12 +89,12 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                     o- kic("${fa.cloudDownload} $cloudClass",
                             id = cloudIconID,
                             style = Style(marginTop = "0.45rem"),
-                            key = SubscriptKicKey(kics.order.file.download, item.id),
-                            onClicka = disableableHandler(state.downloadActive) {onDownload(cloudIconID, item, updateTitleControls)})
+                            key = SubscriptKicKey(kics.order.file.download, tongue.getItem().id),
+                            onClicka = disableableHandler(state.downloadActive) {onDownload(cloudIconID, tongue.getItem(), updateTitleControls)})
                 },
                 renderContent = {o->
                     val m = MelindaTools
-                    val item = tongueInterface.getItem()
+                    val item = tongue.getItem()
                     o- m.row{o->
                         o- m.col(3, t("Created", "Создан")){o->
                             o- formatUnixTime(item.createdAt)
