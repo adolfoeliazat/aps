@@ -16,6 +16,9 @@ import kotlin.js.json
 
 open class LinkKey(override val fqn: String) : Fucker(), FQNed
 
+data class SubscriptLinkKey(val key: LinkKey, val subscript: Any?)
+    : LinkKey(key.fqn + "-$subscript")
+
 fun jsFacing_link(def: Json): ReactElement {
     var content: dynamic = def["content"]
     val title: String? = def["title"].asDynamic()
@@ -223,8 +226,9 @@ fun link(
 fun DummyMouseEvent() = MouseEvent("dummyTypeArg")
 
 
-suspend fun linkClick(key: TestRef<LinkKey>, handOpts: HandOpts = HandOpts()) {
-    val target = Link.instance(key.it)
+suspend fun linkClick(key: TestRef<LinkKey>, subscript: Any? = null, handOpts: HandOpts = HandOpts()) {
+    val target = Link.instance(if (subscript == null) key.it
+                              else SubscriptLinkKey(key.it, subscript))
     await(TestUserActionAnimation.hand(target, handOpts))
     target.click()
 }

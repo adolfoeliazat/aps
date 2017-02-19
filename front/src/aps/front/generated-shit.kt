@@ -265,6 +265,7 @@ fun urlLink (
     baseLinkParams: LinkParams? = null,
     content: ToReactElementable? = null,
     title: String? = null,
+    key: LinkKey? = null,
     // @Mix Attrs
     baseAttrs: Attrs? = null,
     tame: String? = null,
@@ -325,6 +326,7 @@ fun urlLink (
     zIndex: Any? = null
 ) = urlLink(
     url = url,
+    key = key,
     delayActionForFanciness = delayActionForFanciness,
     blinkOpts = blinkOpts,
     linkParams = LinkParams(

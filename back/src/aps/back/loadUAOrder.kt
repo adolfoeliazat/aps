@@ -14,10 +14,9 @@ import aps.*
     val userTokenRepo: UserTokenRepository
 ) : BitchyProcedure() {
     override fun serve() {
-        fuckCustomer(FuckCustomerParams(
+        fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
             makeRequest = {LoadUAOrderRequest()},
-            needsUser = NeedsUser.YES,
             runShit = fun(ctx, req: LoadUAOrderRequest): LoadUAOrderRequest.Response {
                 fun bitchNotFound(): Nothing = bitchExpectedly(t("TOTE", "Нет такого заказа (по крайней мере, для тебя)"))
 

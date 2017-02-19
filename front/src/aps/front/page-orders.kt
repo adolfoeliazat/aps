@@ -46,7 +46,7 @@ class UAAdminOrdersPage(val world: World) {
                             renderOrderParams(o, tongue.getItem())
                         },
                         titleLinkURL = makeURL(pages.uaAdmin.order, listOf(
-                            URLParamValue(UACustomerSingleOrderPage.urlQuery.id, tongue.getItem().id)
+                            URLParamValue(UASingleOrderPage.urlQuery.id, tongue.getItem().id)
                         )),
                         hasEditControl = {false},
                         hasDeleteControl = {false}
@@ -91,7 +91,7 @@ class UACustomerOrdersPage(val world: World) {
                 cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle),
             onPlusFormSuccessa = {res->
                 world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
-                    URLParamValue(UACustomerSingleOrderPage.urlQuery.id, res.id)
+                    URLParamValue(UASingleOrderPage.urlQuery.id, res.id)
                 )))
             }
         )

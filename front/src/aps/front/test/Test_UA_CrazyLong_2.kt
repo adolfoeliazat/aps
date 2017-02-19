@@ -286,9 +286,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                          aid = "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
             }
 
-            run { // What?
-                // TestGlobal.skipAllFreakingAssertions = false
+            run { // Describe me
                 twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
+                // TestGlobal.skipAllFreakingAssertions = false
+                twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
             }
         }
     }

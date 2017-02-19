@@ -12,7 +12,7 @@ interface CustomerSingleUAOrderPageTab {
     suspend fun load(): FormResponse2.Shitty<*>?
 }
 
-class UACustomerSingleOrderPage(val world: World) {
+class UASingleOrderPage(val world: World) {
     object urlQuery : URLQueryParamsMarker {
         val id by LongURLParam()
         val tab by MaybeStringURLParam()
@@ -125,7 +125,7 @@ class UACustomerSingleOrderPage(val world: World) {
         exhaustive/when (res) {
             is FormResponse2.Hunky -> {
                 world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
-                    URLParamValue(UACustomerSingleOrderPage.urlQuery.id, orderID)
+                    URLParamValue(UASingleOrderPage.urlQuery.id, orderID)
                 )))
                 TestGlobal.shitDoneLock.resumeTestFromSut()
             }
@@ -139,7 +139,7 @@ class UACustomerSingleOrderPage(val world: World) {
         await(effects).blinkOn(byid(key.fqn), BlinkOpts(dwidth = "-0.15rem"))
         TestGlobal.switchTabHalfwayLock.resumeTestAndPauseSutFromSut()
         try {
-            val q = UACustomerSingleOrderPage.urlQuery
+            val q = UASingleOrderPage.urlQuery
             world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
                 URLParamValue(q.id, orderID),
                 URLParamValue(q.tab, simpleName(key.fqn))
@@ -160,22 +160,7 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
 
     private fun renderView(): ToReactElementable {
         return kdiv{o->
-            fun label(title: String) = klabel(marginBottom = 0) {it - title}
-
-            fun row(build: (ElementBuilder) -> Unit) =
-                kdiv(className = "row", marginBottom = "0.5em"){o->
-                    build(o)
-                }
-
-            exhaustive / when (world.user.kind) {
-                UserKind.CUSTOMER -> {
-                    renderOrderParams(o, order)
-                }
-
-                UserKind.WRITER -> imf()
-
-                UserKind.ADMIN -> imf()
-            }
+            renderOrderParams(o, order)
         }
     }
 
@@ -209,7 +194,7 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
                                 ),
                                 onSuccessa = {
                                     world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
-                                        URLParamValue(UACustomerSingleOrderPage.urlQuery.id, order.id)
+                                        URLParamValue(UASingleOrderPage.urlQuery.id, order.id)
                                     )))
                                 }
                             )

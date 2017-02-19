@@ -406,7 +406,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                                 o- " "
                                 val titleContent = highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
                                 if (titleLinkURL != null)
-                                    o- urlLink(url = titleLinkURL, content = titleContent, className = c.titleLink)
+                                    o- urlLink(url = titleLinkURL, content = titleContent, className = c.titleLink, key = SubscriptLinkKey(links.lips, item.id))
                                 else
                                     o- titleContent
 
