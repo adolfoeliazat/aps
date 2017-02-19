@@ -7,8 +7,6 @@ import aps.const.text.symbols.nbsp
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
 
-// TODO:vgrechka Safe URLs
-
 interface CustomerSingleUAOrderPageTab {
     val tabSpec: TabSpec
     suspend fun load(): FormResponse2.Shitty<*>?
@@ -16,19 +14,17 @@ interface CustomerSingleUAOrderPageTab {
 
 class UACustomerSingleOrderPage(val world: World) {
     object urlQuery : URLQueryParamsMarker {
-        val id by MaybeStringURLParam()
+        val id by LongURLParam()
         val tab by MaybeStringURLParam()
     }
 
-    var orderID by notNullOnce<String>()
+    var orderID by notNullOnce<Long>()
     var hint by notNullOnce<Placeholder>()
     var order by notNullOnce<UAOrderRTO>()
 
     suspend fun load(): PageLoadingError? {
-        orderID = urlQuery.id.get(world) ?: run {
-            world.setShittyParamsPage()
-            return null
-        }
+        // TODO:vgrechka Handle shitty params
+        orderID = urlQuery.id.get()
         val defaultTab = tabs.order.params
         val tabKey = tabs.order.items.findSimplyNamed(urlQuery.tab.get(world)) ?: defaultTab
 
@@ -213,7 +209,7 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
                                 ),
                                 onSuccessa = {
                                     world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
-                                        URLParamValue(UACustomerSingleOrderPage.urlQuery.id, order.id.toString())
+                                        URLParamValue(UACustomerSingleOrderPage.urlQuery.id, order.id)
                                     )))
                                 }
                             )

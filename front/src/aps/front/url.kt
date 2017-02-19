@@ -39,6 +39,19 @@ class StringURLParam(val default: String) : URLParam<String>, ReadOnlyProperty<A
     }
 }
 
+class LongURLParam : URLParam<Long>, ReadOnlyProperty<Any?, LongURLParam> {
+    override var name by notNull<String>()
+
+    fun get(): Long {
+        return bang(Globus.world.urlQuery[name]).toLong()
+    }
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): LongURLParam {
+        name = property.name
+        return this
+    }
+}
+
 class EnumURLParam<E: Enum<E>>(val values: Array<E>, val default: E) : URLParam<E>, ReadOnlyProperty<Any?, EnumURLParam<E>> {
     override var name by notNull<String>()
 

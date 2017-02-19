@@ -379,7 +379,10 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     renderContent: (ElementBuilder) -> Unit,
     initialState: LipsState,
     controlsDisabled: (LipsState) -> Boolean = {false},
-    icon: IconClass
+    icon: IconClass,
+    titleLinkURL: String?,
+    hasEditControl: (ItemRTO) -> Boolean,
+    hasDeleteControl: (ItemRTO) -> Boolean
 )
     : MelindaLipsInterface
 {
@@ -401,7 +404,11 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                                     o- ki(className = "${c.leftOverlayBottomLeftIcon} $theSmallOverlayIcon")
                                 }
                                 o- " "
-                                o- highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
+                                val titleContent = highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
+                                if (titleLinkURL != null)
+                                    o- urlLink(url = titleLinkURL, content = titleContent, className = c.titleLink)
+                                else
+                                    o- titleContent
 
                                 val idColor: Color?
                                 val idBackground: Color?
@@ -454,14 +461,16 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                 renderAdditionalControls(o, state, updateTitleControls)
 
                 if (item.editable) {
-                    o- kic("${fa.trash} $trashClass",
-                           style = Style(),
-                           key = SubscriptKicKey(kics.order.file.delete, item.id),
-                           onClicka = disableableHandler(disabled) {tongueInterface.onDelete()})
-                    o- kic("${fa.pencil} $pencilClass",
-                           style = Style(),
-                           key = SubscriptKicKey(kics.order.file.edit, item.id),
-                           onClicka = disableableHandler(disabled) {tongueInterface.onEdit()})
+                    if (hasDeleteControl(item))
+                        o- kic("${fa.trash} $trashClass",
+                               style = Style(),
+                               key = SubscriptKicKey(kics.order.file.delete, item.id),
+                               onClicka = disableableHandler(disabled) {tongueInterface.onDelete()})
+                    if (hasEditControl(item))
+                        o- kic("${fa.pencil} $pencilClass",
+                               style = Style(),
+                               key = SubscriptKicKey(kics.order.file.edit, item.id),
+                               onClicka = disableableHandler(disabled) {tongueInterface.onEdit()})
                 }
             }
         }

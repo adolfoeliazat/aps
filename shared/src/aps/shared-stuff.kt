@@ -474,8 +474,8 @@ abstract class CommonResponseFieldsImpl : CommonResponseFields {
 }
 
 class LoadUAOrderRequest : RequestMatumba() {
+    val id by longHiddenField()
     class Response(val order: UAOrderRTO) : CommonResponseFieldsImpl()
-    val id = StringHiddenField(this, "id")
 }
 
 enum class Color(val string: String) {

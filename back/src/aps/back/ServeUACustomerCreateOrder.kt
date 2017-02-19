@@ -84,7 +84,7 @@ import java.util.*
                             """
                     ))
                 ))
-                return UACustomerCreateOrderRequest.Response(order.id.toString())
+                return UACustomerCreateOrderRequest.Response(order.id!!)
             }
         ))
     }

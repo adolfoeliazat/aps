@@ -102,8 +102,6 @@ class UACustomerOrderRequestFields2(cont: RequestMatumba) {
 }
 
 class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
-    class Response(val id: String) : CommonResponseFieldsImpl()
-
     val fields1 = UACustomerOrderRequestFields1(this)
 
     var firstName by notNullOnce<TextField>()
@@ -121,6 +119,9 @@ class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
         if (xlobal.user == null)
             email = TextField(this, fields.orderCustomerEmail)
     }
+
+
+    class Response(val id: Long) : CommonResponseFieldsImpl()
 }
 
 class UACustomerUpdateOrderRequest : RequestMatumba() {

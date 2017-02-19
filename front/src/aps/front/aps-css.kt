@@ -34,14 +34,20 @@ object css {
 
     fun appendStyleToAllShit(name: CSSClassName, def: Style) {
         def.style?.let {allShit += ".$name {$it}"}
+        def.link?.let {allShit += ".$name:link {$it}"}
+        def.visited?.let {allShit += ".$name:visited {$it}"}
         def.hover?.let {allShit += ".$name:hover {$it}"}
+        def.active?.let {allShit += ".$name:active {$it}"}
         def.firstChild?.let {allShit += ".$name:first-child {$it}"}
         def.notFirstChild?.let {allShit += ".$name:nth-child(1n+2) {$it}"}
     }
 
     class Style(
         val style: String? = null,
+        val link: String? = null,
+        val visited: String? = null,
         val hover: String? = null,
+        val active: String? = null,
         val firstChild: String? = null,
         val notFirstChild: String? = null
     )
@@ -212,6 +218,9 @@ object css {
 
             val controls by Style("padding-right: 0.5rem;")
             val titleAndStuff by Style("flex-grow: 1;")
+
+            val linkStyle = "color: $BLACK_BOOT;"
+            val titleLink by Style(link = linkStyle, visited = linkStyle, hover = linkStyle, active = linkStyle)
         }
 
         val bodyEditing by Style("""

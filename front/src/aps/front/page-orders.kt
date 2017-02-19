@@ -44,7 +44,12 @@ class UAAdminOrdersPage(val world: World) {
                         tongue, viewRootID, bint, icon = fa.folderOpen, initialState = Unit,
                         renderContent = {o->
                             renderOrderParams(o, tongue.getItem())
-                        }
+                        },
+                        titleLinkURL = makeURL(pages.uaAdmin.order, listOf(
+                            URLParamValue(UACustomerSingleOrderPage.urlQuery.id, tongue.getItem().id)
+                        )),
+                        hasEditControl = {false},
+                        hasDeleteControl = {false}
                     )
                 }
             }

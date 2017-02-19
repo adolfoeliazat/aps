@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import aps.front.frontSymbols.numberSign
 import into.kommon.*
 import kotlin.properties.Delegates.notNull
 
@@ -49,10 +48,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
         return boobs.load()
     }
 
-    private fun myURLParamValues(): List<URLParamValue<String>> {
+    private fun myURLParamValues(): List<URLParamValue<*>> {
         val q = UACustomerSingleOrderPage.urlQuery
         val paramValues = listOf(
-            URLParamValue(q.id, order.id.toString()),
+            URLParamValue(q.id, order.id),
             URLParamValue(q.tab, simpleName(tabs.order.files.fqn))
         )
         return paramValues
@@ -106,7 +105,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UACustomerSingleOrderPage, val
                         }
                     }
                     o- m.detailsRow(item.details, item.detailsHighlightRanges)
-                }
+                },
+                titleLinkURL = null,
+                hasEditControl = {true},
+                hasDeleteControl = {true}
             )
         }
 
