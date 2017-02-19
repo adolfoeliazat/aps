@@ -17,14 +17,16 @@ typealias CSSClassName = String
 typealias EnumStyleClassNameGetter<E> = (E) -> String
 
 object css {
-    abstract class Group(val parent: Group?)
+    abstract class Group(val parent: Group?) {
+        open val groupName get() = this::class.simpleName
+    }
 
     fun styleFQN(thisRef: Any, prop: KProperty<*>): String {
         var name = prop.name
 
         var group = thisRef as? Group
         while (group != null) {
-            val groupName = group!!::class.simpleName
+            val groupName = group!!.groupName
             name = groupName + "-" + name
             group = group.parent
         }
@@ -134,6 +136,29 @@ object css {
         val workItemBadge by Style("background-color: ${Color.BLUE_GRAY_500}")
     }
 
+    private val dollyLikeContainerBase = """
+        margin-top: -0.5em;
+        padding-top: 0.25em; padding-bottom: 0.25em;
+        padding-left: 0.5em; padding-right: 0;
+        display: flex;
+        align-items: center;
+        min-height: 40.6px;
+    """
+
+    object dolly : Group(null) {
+        class UsualDollyStyles(_groupName: String, backgroundColor: Color) : Group(dolly), DollyStyles {
+            override val groupName = _groupName
+            override val container by Style("$dollyLikeContainerBase background-color: $backgroundColor;")
+            override val containerBusy by Style("$dollyLikeContainerBase background-color: $WHITE; padding-left: 0;")
+            override val message by Style("flex-grow: 1;")
+            override val button by Style("")
+        }
+
+        val normal by named {UsualDollyStyles(it, backgroundColor = BLUE_GRAY_50)}
+        val danger by named {UsualDollyStyles(it, backgroundColor = RED_50)}
+    }
+
+
     object order : Group(null) {
         val stateLabel by EnumStyle(UAOrderState.values(), {when (it) {
             UAOrderState.CREATED -> Style("background-color: green;")
@@ -142,29 +167,15 @@ object css {
             UAOrderState.WAITING_FOR_PAYMENT -> Style("background-color: green;")
             UAOrderState.WRITER_ASSIGNED -> Style("background-color: green;")
             UAOrderState.WAITING_EMAIL_CONFIRMATION -> Style("background-color: green;")
-            UAOrderState.WAITING_ADMIN_APPROVAL -> Style("background-color: ${Color.AMBER_100};")
+            UAOrderState.WAITING_ADMIN_APPROVAL -> Style("background-color: $AMBER_100;")
         }})
 
-        private val containerBase = """
-            margin-top: -0.5em;
-            padding-top: 0.25em; padding-bottom: 0.25em;
-            padding-left: 0.5em; padding-right: 0;
-            display: flex;
-            align-items: center;
-            min-height: 40.6px;
-        """
-
-        object customerWaitingAdminApprovalHint : Group(this) {
-            val container by Style("$containerBase; background-color: ${Color.LIGHT_GREEN_100};")
-            val message by Style("flex-grow: 1;")
-            val icon by Style("margin-right: 0.5em;")
-        }
-
-        object customerDraftHint : Group(this) {
-            val container by Style("$containerBase background-color: ${Color.BLUE_GRAY_50};")
-            val containerBusy by Style("$containerBase background-color: ${Color.WHITE}; padding-left: 0;")
-            val message by Style("flex-grow: 1;")
-            val button by Style("")
+        object forCustomer : Group(this) {
+            object waitingApprovalBanner : Group(this) {
+                val container by Style("$dollyLikeContainerBase; background-color: $LIGHT_GREEN_100;")
+                val message by Style("flex-grow: 1;")
+                val icon by Style("margin-right: 0.5em;")
+            }
         }
     }
 

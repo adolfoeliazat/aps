@@ -3,13 +3,19 @@
 package aps.front
 
 import aps.*
-import aps.const.text.symbols.nbsp
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
 
 interface CustomerSingleUAOrderPageTab {
     val tabSpec: TabSpec
     suspend fun load(): FormResponse2.Shitty<*>?
+}
+
+interface DollyStyles {
+    val container: String
+    val containerBusy: String
+    val message: String
+    val button: String
 }
 
 class UASingleOrderPage(val world: World) {
@@ -19,7 +25,6 @@ class UASingleOrderPage(val world: World) {
     }
 
     var orderID by notNullOnce<Long>()
-    var hint by notNullOnce<Placeholder>()
     var order by notNullOnce<UAOrderRTO>()
 
     suspend fun load(): PageLoadingError? {
@@ -39,12 +44,27 @@ class UASingleOrderPage(val world: World) {
             is FormResponse2.Hunky -> res.meat.order
         }
 
-        hint = Placeholder(
-            when (order.state) {
-                UAOrderState.CUSTOMER_DRAFT -> renderCustomerDraftHint()
+        val dolly = when (order.state) {
+            UAOrderState.CUSTOMER_DRAFT -> when (world.user.kind) {
+                UserKind.CUSTOMER -> Dolly(DollyParams(
+                    styles = css.dolly.normal,
+                    message = t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите..."),
+                    buttons = listOf(
+                        DollyButton(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = buttons.sendForApproval,
+                                    sendRequest = {
+                                        send(UACustomerSendOrderDraftForApprovalRequest()-{o->
+                                            o.orderID.value = order.id
+                                        })},
+                                    onSuccess = {
+                                        reloadOrderPage()
+                                    }))))
+                UserKind.ADMIN -> NOTRE
+                UserKind.WRITER -> wtf()
+            }
 
-                UAOrderState.WAITING_ADMIN_APPROVAL -> run {
-                    val c = css.order.customerWaitingAdminApprovalHint
+            UAOrderState.WAITING_ADMIN_APPROVAL -> when (world.user.kind) {
+                UserKind.CUSTOMER -> {
+                    val c = css.order.forCustomer.waitingApprovalBanner
                     kdiv(className = c.container){o->
                         o- kdiv(className = c.message){o->
                             o- ki(className = c.icon + " " + fa.hourglassHalf)
@@ -52,10 +72,38 @@ class UASingleOrderPage(val world: World) {
                         }
                     }
                 }
-
-                else -> NOTRE
+                UserKind.ADMIN -> Dolly(DollyParams(
+                    styles = css.dolly.normal,
+                    message = t("TOTE", "Что будем делать с заказом?"),
+                    buttons = listOf(
+                        DollyButton(
+                            title = t("TOTE", "Завернуть"), level = Button.Level.DANGER, key = buttons.returnToCustomerForFixing,
+                            sendRequest = {
+                                imf("1111")
+                                send(UACustomerSendOrderDraftForApprovalRequest()-{o->
+                                    o.orderID.value = order.id
+                                })},
+                            onSuccess = {
+                                imf("2222")
+                                reloadOrderPage()
+                            }),
+                        DollyButton(
+                            title = t("TOTE", "В стор"), level = Button.Level.PRIMARY, key = buttons.moveToStore,
+                            sendRequest = {
+                                imf("1111")
+                                send(UACustomerSendOrderDraftForApprovalRequest()-{o->
+                                    o.orderID.value = order.id
+                                })},
+                            onSuccess = {
+                                imf("2222")
+                                reloadOrderPage()
+                            })
+                    )))
+                UserKind.WRITER -> wtf()
             }
-        )
+
+            else -> NOTRE
+        }
 
         val tabs = listOf(
             OrderParamsTab(world, order),
@@ -85,7 +133,7 @@ class UASingleOrderPage(val world: World) {
             }),
 
             body = kdiv{o->
-                o- hint
+                o- dolly
                 o- h4(marginBottom = "0.7em"){o->
                     o- order.title
                 }
@@ -101,38 +149,12 @@ class UASingleOrderPage(val world: World) {
         return null
     }
 
-    private fun renderCustomerDraftHint(busy: Boolean = false): ElementBuilder {
-        val c = css.order.customerDraftHint
-        return kdiv(className = if (busy) c.containerBusy else c.container){o->
-            o- kdiv(className = c.message){o->
-                if (busy) {
-                    o- renderTicker()
-                } else {
-                    o- t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите...")
-                }
-            }
-            o- Button(title = t("TOTE", "Отправить на проверку"), disabled = busy, level = Button.Level.PRIMARY, key = buttons.sendForApproval, onClicka = {onSendForApproval()})
-        }
-    }
 
-    private suspend fun onSendForApproval() {
-        hint.setContent(renderCustomerDraftHint(busy = true))
-        TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
-
-        val res = send(UACustomerSendOrderDraftForApprovalRequest()-{o->
-            o.orderID.value = order.id
-        })
-        exhaustive/when (res) {
-            is FormResponse2.Hunky -> {
-                world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
-                    URLParamValue(UASingleOrderPage.urlQuery.id, orderID)
-                )))
-                TestGlobal.shitDoneLock.resumeTestFromSut()
-            }
-            is FormResponse2.Shitty -> {
-                imf("Handle shitty response in onSendForApproval")
-            }
-        }
+    private suspend fun reloadOrderPage() {
+        // TODO:vgrechka Should use replaceNavigate?
+        world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
+            URLParamValue(urlQuery.id, orderID)
+        )))
     }
 
     suspend fun clickOnTab(key: TabKey) {
@@ -163,7 +185,6 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
             renderOrderParams(o, order)
         }
     }
-
 
     override val tabSpec = SimpleTabSpec(
         key = tabs.order.params,
