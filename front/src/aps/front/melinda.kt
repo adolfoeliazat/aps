@@ -336,16 +336,16 @@ object MelindaTools {
             build(o)
         }
 
-    fun col(size: Int, title: String, contentStyle: Style? = null, build: (ElementBuilder) -> Unit) =
+    fun col(size: Int, title: String, contentStyle: Style? = null, contentClassName: String? = null, build: (ElementBuilder) -> Unit) =
         kdiv(className = "col-md-$size"){o->
             o- klabel(marginBottom = 0) {it - title}
-            o- kdiv(style = contentStyle ?: Style()){o->
+            o- kdiv(Attrs(className = contentClassName), contentStyle ?: Style()){o->
                 build(o)
             }
         }
 
-    fun col(size: Int, title: String, value: String) =
-        col(3, title){o->
+    fun col(size: Int, title: String, value: String, className: String? = null) =
+        col(3, title, contentClassName = className){o->
             o- value
         }
 
@@ -421,10 +421,6 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                                     o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
                                         o- theTinySubtitle
                                     }
-                                }
-
-                                o- kdiv(className = c.stateLabel(UAOrderState.WAITING_ADMIN_APPROVAL)){o->
-                                    o- UAOrderState.WAITING_ADMIN_APPROVAL.title
                                 }
                             }
 

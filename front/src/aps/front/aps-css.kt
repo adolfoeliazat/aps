@@ -128,32 +128,38 @@ object css {
         val workItemBadge by Style("background-color: ${Color.BLUE_GRAY_500}")
     }
 
-    object orderPage : Group(null) {
-        object customer : Group(this) {
-            val containerBase = """
-                margin-top: -0.5em;
-                padding-top: 0.25em; padding-bottom: 0.25em;
-                padding-left: 0.5em; padding-right: 0;
-                display: flex;
-                align-items: center;
-                min-height: 40.6px;
-            """
+    object order : Group(null) {
+        val stateLabel by EnumStyle(UAOrderState.values(), {when (it) {
+            UAOrderState.CREATED -> Style("background-color: green;")
+            UAOrderState.CUSTOMER_DRAFT -> Style("background-color: green;")
+            UAOrderState.LOOKING_FOR_WRITERS -> Style("background-color: green;")
+            UAOrderState.WAITING_FOR_PAYMENT -> Style("background-color: green;")
+            UAOrderState.WRITER_ASSIGNED -> Style("background-color: green;")
+            UAOrderState.WAITING_EMAIL_CONFIRMATION -> Style("background-color: green;")
+            UAOrderState.WAITING_ADMIN_APPROVAL -> Style("background-color: ${Color.AMBER_100};")
+        }})
 
-            object waitingAdminApprovalHint : Group(this) {
-                val container by Style("$containerBase; background-color: ${Color.LIGHT_GREEN_100};")
-                val message by Style("flex-grow: 1;")
-                val icon by Style("margin-right: 0.5em;")
-            }
+        private val containerBase = """
+            margin-top: -0.5em;
+            padding-top: 0.25em; padding-bottom: 0.25em;
+            padding-left: 0.5em; padding-right: 0;
+            display: flex;
+            align-items: center;
+            min-height: 40.6px;
+        """
 
-            object draftHint : Group(this) {
-                val container by Style("$containerBase background-color: ${Color.BLUE_GRAY_50};")
-                val containerBusy by Style("$containerBase background-color: ${Color.WHITE}; padding-left: 0;")
-                val message by Style("flex-grow: 1;")
-                val button by Style("")
-            }
+        object customerWaitingAdminApprovalHint : Group(this) {
+            val container by Style("$containerBase; background-color: ${Color.LIGHT_GREEN_100};")
+            val message by Style("flex-grow: 1;")
+            val icon by Style("margin-right: 0.5em;")
         }
 
-
+        object customerDraftHint : Group(this) {
+            val container by Style("$containerBase background-color: ${Color.BLUE_GRAY_50};")
+            val containerBusy by Style("$containerBase background-color: ${Color.WHITE}; padding-left: 0;")
+            val message by Style("flex-grow: 1;")
+            val button by Style("")
+        }
     }
 
     object textField : Group(null) {
@@ -206,16 +212,6 @@ object css {
 
             val controls by Style("padding-right: 0.5rem;")
             val titleAndStuff by Style("flex-grow: 1;")
-
-            val stateLabel by EnumStyle(UAOrderState.values(), {when (it) {
-                UAOrderState.CREATED -> Style("background-color: green;")
-                UAOrderState.CUSTOMER_DRAFT -> Style("background-color: green;")
-                UAOrderState.LOOKING_FOR_WRITERS -> Style("background-color: green;")
-                UAOrderState.WAITING_FOR_PAYMENT -> Style("background-color: green;")
-                UAOrderState.WRITER_ASSIGNED -> Style("background-color: green;")
-                UAOrderState.WAITING_EMAIL_CONFIRMATION -> Style("background-color: green;")
-                UAOrderState.WAITING_ADMIN_APPROVAL -> Style("background-color: yellow;")
-            }})
         }
 
         val bodyEditing by Style("""

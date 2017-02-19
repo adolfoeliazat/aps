@@ -48,7 +48,7 @@ class UACustomerSingleOrderPage(val world: World) {
                 UAOrderState.CUSTOMER_DRAFT -> renderCustomerDraftHint()
 
                 UAOrderState.WAITING_ADMIN_APPROVAL -> run {
-                    val c = css.orderPage.customer.waitingAdminApprovalHint
+                    val c = css.order.customerWaitingAdminApprovalHint
                     kdiv(className = c.container){o->
                         o- kdiv(className = c.message){o->
                             o- ki(className = c.icon + " " + fa.hourglassHalf)
@@ -77,15 +77,15 @@ class UACustomerSingleOrderPage(val world: World) {
         world.setPage(Page(
             header = pageHeader3(kdiv{o->
                 o- t("TOTE", "Заказ $numberSign${order.id}")
-                o- kspan(backgroundColor = order.state.labelBackground, // TODO:vgrechka Extract CSS
-                         fontSize = "60%",
-                         padding = "0.1em 0.3em",
-                         borderRadius = "0.3em",
-                         marginLeft = "1em",
-                         position = "relative",
-                         top = "-0.2em"){o->
-                    o- order.state.title.replace(" ", nbsp)
-                }
+//                o- kspan(backgroundColor = order.state.labelBackground,
+//                         fontSize = "60%",
+//                         padding = "0.1em 0.3em",
+//                         borderRadius = "0.3em",
+//                         marginLeft = "1em",
+//                         position = "relative",
+//                         top = "-0.2em"){o->
+//                    o- order.state.title.replace(" ", nbsp)
+//                }
             }),
 
             body = kdiv{o->
@@ -106,7 +106,7 @@ class UACustomerSingleOrderPage(val world: World) {
     }
 
     private fun renderCustomerDraftHint(busy: Boolean = false): ElementBuilder {
-        val c = css.orderPage.customer.draftHint
+        val c = css.order.customerDraftHint
         return kdiv(className = if (busy) c.containerBusy else c.container){o->
             o- kdiv(className = c.message){o->
                 if (busy) {
@@ -242,10 +242,13 @@ private class MessagesTab(val order: UAOrderRTO) : CustomerSingleUAOrderPageTab 
 
 fun renderOrderParams(o: ElementBuilder, order: UAOrderRTO) {
     val m = MelindaTools
-    o- m.row{o->
+    o- m.row {o->
         if (order.state != UAOrderState.CUSTOMER_DRAFT) {
             o- m.createdAtCol(3, order.createdAt)
         }
+        o- m.col(3, t("TOTE", "Статус"), order.state.title, className = css.order.stateLabel(order.state))
+    }
+    o- m.row{o->
         o- m.col(3, fields.orderCustomerFirstName.title, order.customerFirstName)
         if (order.customerLastName.isNotBlank()) {
             o- m.col(3, fields.orderCustomerLastName.title, order.customerLastName)
