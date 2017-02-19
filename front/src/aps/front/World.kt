@@ -253,6 +253,7 @@ class World(val name: String) {
         navbarHighlight = page
         updateNavbar()
         await(effects).unblinkAll()
+        TestGlobal.pageLoadedLock.resumeTestFromSut()
     }
 
     fun setRootContent(newRootContent: dynamic) {

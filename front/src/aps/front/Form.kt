@@ -307,7 +307,8 @@ suspend fun formSubmissionAttempts(
     descr: String = "Describe me",
     baseID: String,
     buttonKey: TestRef<ButtonKey>? = null,
-    attempts: List<TestAttempt>
+    attempts: List<TestAttempt>,
+    useFormDoneLockOnLastAttempt: Boolean = true
 ) {
     for (i in 0 until attempts.size)
         for (j in i+1 until attempts.size)
@@ -321,8 +322,27 @@ suspend fun formSubmissionAttempts(
             aid = "$baseID--${attempt.subID}",
             imposeTimestamp = i == attempts.lastIndex,
             buttonKey = buttonKey,
-            aopts = attempt.aopts)
+            aopts = attempt.aopts,
+            useFormDoneLock = i < attempts.lastIndex || useFormDoneLockOnLastAttempt)
     }
+}
+
+suspend fun formSubmissionAttemptsThenPageLoad(
+    testShit: TestShit,
+    descr: String = "Describe me",
+    aid: String,
+    buttonKey: TestRef<ButtonKey>? = null,
+    attempts: List<TestAttempt>
+) {
+    step(
+        action = {
+            formSubmissionAttempts(
+                testShit = testShit, descr = descr, baseID = aid, buttonKey = buttonKey, attempts = attempts,
+                useFormDoneLockOnLastAttempt = false)
+        },
+        lock = TestGlobal.pageLoadedLock,
+        aid = "$aid-pageLoaded"
+    )
 }
 
 class TestAttempt(

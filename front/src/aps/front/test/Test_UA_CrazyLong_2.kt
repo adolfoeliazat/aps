@@ -34,6 +34,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             bannerHorizontalPosition = HorizontalPosition.RIGHT)
 
         forceFast()
+        // TestGlobal.skipAllFreakingAssertions = true
         initialTestShit(this)
 
         definePoint(1) {
@@ -288,9 +289,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Describe me
                 twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
-                // TestGlobal.skipAllFreakingAssertions = false
                 twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
-                twoStepSequence({buttonClick(buttons.returnToCustomerForFixing_testRef)}, "8c94fb50-702f-4393-895b-aa2e4decfca1")
+                // TestGlobal.skipAllFreakingAssertions = false
+                step({buttonClick(buttons.returnToCustomerForFixing_testRef)}, TestGlobal.modalShownLock, "0417ea80-b99b-498e-9e51-c4f829d08499")
+                formSubmissionAttemptsThenPageLoad(
+                    testShit, aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
+                    attempts = eachOrCombinationOfLasts(listOf(
+                        badTextFieldValuesThenValid(fields.rejectionReason_testRef, "А не дохуя ты файлов позаливал? Оставь пару штук где-то...")
+                    ))
+                )
             }
         }
     }

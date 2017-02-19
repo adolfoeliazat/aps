@@ -109,6 +109,20 @@ import java.util.*
     }
 }
 
+@Servant class ServeReturnOrderToCustomerForFixing(val orderRepo: UAOrderRepository) : BitchyProcedure() {
+    override fun serve() {
+        fuckAdmin(FuckAdminParams(
+            bpc = bpc, makeRequest = {ReturnOrderToCustomerForFixingRequest()},
+            runShit = fun(ctx, req): ReturnOrderToCustomerForFixingRequest.Response {
+                val order = orderRepo.findOrDie(req.orderID.value)
+                order.state = UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING
+                order.whatShouldBeFixedByCustomer = req.rejectionReason.value
+                return ReturnOrderToCustomerForFixingRequest.Response()
+            }
+        ))
+    }
+}
+
 
 
 

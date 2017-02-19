@@ -68,6 +68,7 @@ object TestGlobal {
     var shitVanished by notNullNamed(TestLock())
     val orderFileIDToDownloadContext = mutableMapOf<Long, TestDownloadContext>()
     val disabledActionHitLock by notNullNamed(TestLock())
+    val pageLoadedLock by notNullNamed(TestLock())
 }
 
 fun requestAnimationFrame(block: () -> Unit) {
