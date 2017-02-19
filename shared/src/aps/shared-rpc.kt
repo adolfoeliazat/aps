@@ -225,6 +225,12 @@ class UAAdminGetStuffToDoRequest : RequestMatumba() {
     class Response(val ordersToApprove: Long) : CommonResponseFieldsImpl()
 }
 
+class ReturnOrderToCustomerForFixingRequest : RequestMatumba() {
+    val orderID by longHiddenField()
+    val rejectionReason = TextField(this, fields.rejectionReason)
+    class Response : CommonResponseFieldsImpl()
+}
+
 
 
 

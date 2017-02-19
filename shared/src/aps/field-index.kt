@@ -5,6 +5,7 @@ object fields                                              : Fuckers<FieldSpec>(
     val genericLastName                                    by namedFucker {TextFieldSpec(it, t("TOTE", "Фамилия"), TextFieldType.STRING, minLen = 1, maxLen = 50)}
     val genericEmail                                       by namedFucker {TextFieldSpec(it, t("TOTE", "Почта"), TextFieldType.EMAIL, minLen = 3, maxLen = 50)}
     val genericPhone                                       by namedFucker {TextFieldSpec(it, t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 50, minDigits = 6)}
+    val genericRejectionReason                             by namedFucker {TextFieldSpec(it, t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 10, 5000)}
 
     val firstName                                          by namedFucker {genericFirstName.copy(name = it)}; val firstName_testRef = TestRef(firstName)
     val lastName                                           by namedFucker {genericLastName.copy(name = it)}; val lastName_testRef = TestRef(lastName)
@@ -31,6 +32,7 @@ object fields                                              : Fuckers<FieldSpec>(
     val fileTitle                                          by namedFucker {TextFieldSpec(it, t("TOTE", "Название"), TextFieldType.STRING, 3, 100)}; val fileTitle_testRef = TestRef(fileTitle)
     val fileDetails                                        by namedFucker {TextFieldSpec(it, t("TOTE", "Детали"), TextFieldType.TEXTAREA, 3, 2000)}; val fileDetails_testRef = TestRef(fileDetails)
     val uaDocumentType                                     by namedFucker {SelectFieldSpec(it, t("TOTE", "Тип документа"), UADocumentType.values())}; val uaDocumentType_testRef = TestRef(uaDocumentType)
+    val rejectionReason                                    by namedFucker {genericRejectionReason.copy(name = it)}; val rejectionReason_testRef = TestRef(rejectionReason)
 }
 
 abstract class FieldSpec : Fucker() {

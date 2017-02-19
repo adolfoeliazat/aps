@@ -7,9 +7,33 @@ class DollyButton(
     val title: String,
     val level: Button.Level,
     val key: ButtonKey,
-    val sendRequest: suspend () -> FormResponse2<*>,
-    val onSuccess: suspend () -> Unit
+    val onClick: suspend (DollyInterface) -> Unit
 )
+
+interface DollyInterface {
+    fun setBusy()
+}
+
+fun sendingDollyButtonHandler(
+    sendRequest: suspend () -> FormResponse2<*>,
+    onSuccess: suspend () -> Unit
+)
+    : suspend (DollyInterface) -> Unit =
+{di->
+    di.setBusy()
+    TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
+
+    val res = sendRequest()
+    exhaustive / when (res) {
+        is FormResponse2.Shitty -> {
+            imf("Handle shitty response in lalala")
+        }
+        is FormResponse2.Hunky -> {
+            onSuccess()
+            TestGlobal.shitDoneLock.resumeTestFromSut()
+        }
+    }
+}
 
 data class DollyParams(
     val busy: Boolean = false,
@@ -37,27 +61,22 @@ class Dolly(val p: DollyParams): ToReactElementable {
                     o- Button(
                         title = button.title, disabled = p.busy, level = button.level, className = p.styles.button, key = button.key,
                         onClicka = {
-                            place.setContent(renderDolly(p.copy(busy = true)))
-                            TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
-
-                            val res = button.sendRequest()
-                            exhaustive/when (res) {
-                                is FormResponse2.Shitty -> {
-                                    imf("Handle shitty response in lalala")
+                            button.onClick(object:DollyInterface {
+                                override fun setBusy() {
+                                    place.setContent(renderDolly(p.copy(busy = true)))
                                 }
-                                is FormResponse2.Hunky -> {
-                                    button.onSuccess()
-                                    TestGlobal.shitDoneLock.resumeTestFromSut()
-                                }
-                            }
+                            })
                         }
                     )
                 }
             }
         }
     }
+
 }
 
 
+//private suspend fun pizda(button: DollyButton, onSuccess: DollyButton, p: DollyParams, sendRequest: DollyButton) {
+//}
 
 

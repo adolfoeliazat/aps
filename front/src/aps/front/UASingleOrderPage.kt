@@ -51,13 +51,14 @@ class UASingleOrderPage(val world: World) {
                     message = t("TOTE", "Проверьте / подредактируйте параметры. Загрузите файлы, если нужно. Затем нажмите..."),
                     buttons = listOf(
                         DollyButton(title = t("TOTE", "Отправить на проверку"), level = Button.Level.PRIMARY, key = buttons.sendForApproval,
-                                    sendRequest = {
-                                        send(UACustomerSendOrderDraftForApprovalRequest()-{o->
-                                            o.orderID.value = order.id
-                                        })},
-                                    onSuccess = {
-                                        reloadOrderPage()
-                                    }))))
+                                    onClick = sendingDollyButtonHandler(
+                                        sendRequest = {
+                                            send(UACustomerSendOrderDraftForApprovalRequest()-{o->
+                                                o.orderID.value = order.id
+                                            })},
+                                        onSuccess = {
+                                            reloadOrderPage()
+                                        })))))
                 UserKind.ADMIN -> NOTRE
                 UserKind.WRITER -> wtf()
             }
@@ -78,27 +79,29 @@ class UASingleOrderPage(val world: World) {
                     buttons = listOf(
                         DollyButton(
                             title = t("TOTE", "Завернуть"), level = Button.Level.DANGER, key = buttons.returnToCustomerForFixing,
-                            sendRequest = {
-                                imf("1111")
-                                send(UACustomerSendOrderDraftForApprovalRequest()-{o->
-                                    o.orderID.value = order.id
-                                })},
-                            onSuccess = {
-                                imf("2222")
-                                reloadOrderPage()
+                            onClick = {
+                                val executed = openDangerFormModalAndWaitExecution(
+                                    title = t("TOTE", "Возвращаем на доработку"),
+                                    primaryButtonTitle = t("TOTE", "Завернуть"),
+                                    cancelButtonTitle = t("TOTE", "Не надо"),
+                                    req = ReturnOrderToCustomerForFixingRequest()-{o->
+                                        o.orderID.value = order.id
+                                        o.rejectionReason.value = t("TOTE", "Что заказчику нужно исправить?")
+                                    }
+                                )
+                                if (executed)
+                                    reloadOrderPage()
                             }),
                         DollyButton(
                             title = t("TOTE", "В стор"), level = Button.Level.PRIMARY, key = buttons.moveToStore,
-                            sendRequest = {
-                                imf("1111")
-                                send(UACustomerSendOrderDraftForApprovalRequest()-{o->
-                                    o.orderID.value = order.id
-                                })},
-                            onSuccess = {
-                                imf("2222")
-                                reloadOrderPage()
-                            })
-                    )))
+                            onClick = sendingDollyButtonHandler(
+                                sendRequest = {
+                                    imf("3333")
+                                },
+                                onSuccess = {
+                                    imf("4444")
+                                    reloadOrderPage()
+                                })))))
                 UserKind.WRITER -> wtf()
             }
 

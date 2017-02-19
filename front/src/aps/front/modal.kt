@@ -130,15 +130,36 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
 }
 
 suspend fun modalConfirmAndDelete(msg: String, req: DeleteRequest): Boolean {
+    return openDangerFormModalAndWaitExecution(
+        title = t("No kidding?", "Серьезно?"),
+        primaryButtonTitle = t("TOTE", "Мочи!"),
+        cancelButtonTitle = t("TOTE", "Я очкую"),
+        renderBelowFieldsAndBanner = {o->
+            o- msg
+        },
+        width = "60rem",
+        req = req)
+}
+
+suspend fun <Request : RequestMatumba> openDangerFormModalAndWaitExecution(
+    title: String,
+    primaryButtonTitle: String,
+    cancelButtonTitle: String,
+    renderBelowFieldsAndBanner: (ElementBuilder) -> Unit = {},
+    width: String = "80rem",
+    req: Request
+)
+    : Boolean
+{
     var modal by notNullOnce<ModalOperations>()
     val ret = ResolvableShit<Boolean>()
 
-    val form = FormMatumba(FormSpec<DeleteRequest, Any?>(
+    val form = FormMatumba(FormSpec<Request, Any?>(
         req = req, ui = Globus.world,
         buttonLocation = FormSpec.ButtonLocation.RIGHT,
-        primaryButtonTitle = t("TOTE", "Мочи!"),
+        primaryButtonTitle = primaryButtonTitle,
         primaryButtonLevel = Button.Level.DANGER,
-        cancelButtonTitle = t("TOTE", "Я очкую"),
+        cancelButtonTitle = cancelButtonTitle,
         onSuccessa = {
             modal.close()
             ret.resolve(true)
@@ -150,12 +171,12 @@ suspend fun modalConfirmAndDelete(msg: String, req: DeleteRequest): Boolean {
     ))
 
     modal = openModal(OpenModalParams(
-        width = "60rem",
+        width = width,
         leftMarginColor = Color.RED_300,
-        title = t("No kidding?", "Серьезно?"),
+        title = title,
         body = kdiv{o->
             o- form.fieldsAndBanner
-            o- msg
+            renderBelowFieldsAndBanner(o)
         },
         footer = form.buttonsAndTicker
     ))

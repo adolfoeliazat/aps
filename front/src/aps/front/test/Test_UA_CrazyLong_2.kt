@@ -290,6 +290,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
                 // TestGlobal.skipAllFreakingAssertions = false
                 twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
+                twoStepSequence({buttonClick(buttons.returnToCustomerForFixing_testRef)}, "8c94fb50-702f-4393-895b-aa2e4decfca1")
             }
         }
     }
