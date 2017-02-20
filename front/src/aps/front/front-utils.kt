@@ -17,7 +17,6 @@ import org.w3c.dom.events.Event
 import org.w3c.dom.events.EventTarget
 import kotlin.browser.document
 import kotlin.browser.window
-import kotlin.dom.asList
 import kotlin.js.Json
 import kotlin.js.Math
 import kotlin.js.RegExp
@@ -195,7 +194,7 @@ fun stripUninterestingElements(jqel: JQuery): HTMLElement {
 
         val children = el.children.asList().toList() // Copying it because `children.asList()` is live
         for (child in children) {
-            descend_stripUninterestingElements(child)
+            descend_stripUninterestingElements(child as HTMLElement)
         }
     }
 
