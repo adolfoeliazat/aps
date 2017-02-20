@@ -144,7 +144,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
         }
     }
 
-    suspend fun submit() {
+    suspend fun submit(): FormResponse {
         for (field: FormFieldFront in spec.req._fields) {
             field.error = null
             field.disabled = true
@@ -183,6 +183,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
         updateAll()
 
         TestGlobal.formDoneLock.resumeTestAndPauseSutFromSut()
+        return res
     }
 
     fun updateAll() {

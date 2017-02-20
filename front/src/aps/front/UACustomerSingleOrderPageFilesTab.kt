@@ -26,7 +26,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
             UACreateOrderFileRequest, UACreateOrderFileRequest.Response,
             UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response
         >(
-            hasCreateButton = order.state == UAOrderState.CUSTOMER_DRAFT,
+            hasCreateButton = order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING),
             createModalTitle = t("TOTE", "Новый файл"),
             makeCreateRequest = {UACreateOrderFileRequest()-{o->
                 o.orderID.value = order.id
@@ -164,7 +164,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
 
         override fun shouldShowFilter(): Boolean {
             return when (order.state) {
-                UAOrderState.CUSTOMER_DRAFT, UAOrderState.WAITING_ADMIN_APPROVAL -> false
+                UAOrderState.CUSTOMER_DRAFT,
+                UAOrderState.WAITING_ADMIN_APPROVAL,
+                UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING -> false
+
                 else -> true
             }
         }

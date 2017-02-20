@@ -3,6 +3,13 @@ package aps.front
 import aps.*
 import into.kommon.*
 
+interface DollyStyles {
+    val container: String
+    val containerBusy: String
+    val message: String
+    val button: String
+}
+
 class DollyButton(
     val title: String,
     val level: Button.Level,

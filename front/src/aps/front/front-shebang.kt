@@ -70,6 +70,7 @@ object TestGlobal {
     val disabledActionHitLock by notNullNamed(TestLock())
     val pageLoadedLock by notNullNamed(TestLock())
     var describeStateConfig = DescribeStateConfig(showBanners = true)
+    var deleteWithoutConfirmation = false
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

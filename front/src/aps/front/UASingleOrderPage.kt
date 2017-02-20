@@ -11,13 +11,6 @@ interface CustomerSingleUAOrderPageTab {
     suspend fun load(): FormResponse2.Shitty<*>?
 }
 
-interface DollyStyles {
-    val container: String
-    val containerBusy: String
-    val message: String
-    val button: String
-}
-
 class UASingleOrderPage(val world: World) {
     object urlQuery : URLQueryParamsMarker {
         val id by LongURLParam()
@@ -114,10 +107,10 @@ class UASingleOrderPage(val world: World) {
                             title = t("TOTE", "Исправил"), level = Button.Level.PRIMARY, key = buttons.sendForApprovalAfterFixing,
                             onClick = sendingDollyButtonHandler(
                                 sendRequest = {
-                                    imf("3333")
+                                    imf("55555")
                                 },
                                 onSuccess = {
-                                    imf("4444")
+                                    imf("66666")
                                     reloadOrderPage()
                                 })))))
                 UserKind.ADMIN -> imf()

@@ -240,8 +240,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "f02892f1-0cde-4bb0-ac1c-81f9fa69d080")
             }
             run { // Delete file -- yes
-                step({kicClick(kics.order.file.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "39b58462-7397-4f33-8a26-ec5624cc729b")
-                vanishSequence({submitFormSequence(testShit, useFormDoneLock = false, aid = "e7131723-e7d0-485c-aded-bbe798afdda7")}, "365d7113-246e-44a8-99f1-8f3396639e8f")
+                testDeleteFile(26L, "39b58462-7397-4f33-8a26-ec5624cc729b", "e7131723-e7d0-485c-aded-bbe798afdda7", "365d7113-246e-44a8-99f1-8f3396639e8f")
             }
             run { // Reload tab to show items in place of deleted ones. For sync with next point
                 tabSequence(tabs.order.files_testRef, "577c58e6-a4c2-4fb4-b2fe-9d7d6e828908", "77093925-8fe1-4dcd-8873-77dd8c41570c")
@@ -328,7 +327,32 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  fillRawStorageLocal = {})
                 ivo4.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "b47798c3-e6cb-4821-82f2-93022cfeed4a")},
                                              assertDynamic = {assertScreenHTML(aid = "fb1a72f2-8f96-4d6f-a021-a5afc4c083cd")})
+                describeState("Customer sees what should be fixed")
+
+                tabSequence(tabs.order.files_testRef, aidHalfway = "8d64fd56-a914-42f9-a522-791b8f2ac7ae", aidDone = "a9588231-f5fc-480c-9739-72cd438f2589")
+                for (id in listOf(28L, 27L, 25L, 24L, 23L, 22L, 21L, 20L)) {
+                    testDeleteFile(id, "3ef8d439-c6cd-41d0-9e87-11c74df4a22e--$id", deleteWithoutConfirmation = id < 28L)
+                }
             }
+        }
+    }
+
+    private suspend fun testDeleteFile(subscript: Long, aid: String, deleteWithoutConfirmation: Boolean = false) {
+        testDeleteFile(subscript, "$aid--1", "$aid--2", "$aid--3", deleteWithoutConfirmation = deleteWithoutConfirmation)
+    }
+
+    private suspend fun testDeleteFile(subscript: Long, aid1: String, aid2: String, aid3: String, deleteWithoutConfirmation: Boolean = false) {
+        val orig_deleteWithoutConfirmation = TestGlobal.deleteWithoutConfirmation
+        try {
+            TestGlobal.deleteWithoutConfirmation = deleteWithoutConfirmation
+            if (deleteWithoutConfirmation) {
+                vanishSequence({kicClick(kics.order.file.delete_testRef, subscript = subscript)}, aid3)
+            } else {
+                step({kicClick(kics.order.file.delete_testRef, subscript = subscript)}, TestGlobal.modalShownLock, aid1)
+                vanishSequence({submitFormSequence(testShit, useFormDoneLock = false, aid = aid2)}, aid3)
+            }
+        } finally {
+            TestGlobal.deleteWithoutConfirmation = orig_deleteWithoutConfirmation
         }
     }
 

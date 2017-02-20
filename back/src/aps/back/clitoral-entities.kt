@@ -182,8 +182,12 @@ class UAOrderFile(
                 else -> luceneHighlightRanges(details, searchWords, analyzer)
             },
             editable = run {
-                check(RequestGlobus.procedureCtx.user!!.kind == UserKind.CUSTOMER) // TODO:vgrechka Generalize
-                order.state == UAOrderState.CUSTOMER_DRAFT
+                val user = RequestGlobus.procedureCtx.user!!
+                when (user.kind) {
+                    UserKind.ADMIN -> true
+                    UserKind.CUSTOMER -> order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING)
+                    UserKind.WRITER -> imf("UAOrderFileRTO.editable for writer")
+                }
             },
             nameHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()

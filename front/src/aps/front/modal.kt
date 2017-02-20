@@ -130,6 +130,15 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
 }
 
 suspend fun modalConfirmAndDelete(msg: String, req: DeleteRequest): Boolean {
+    if (TestGlobal.deleteWithoutConfirmation) {
+        val form = FormMatumba(FormSpec<DeleteRequest, Any?>(
+            req = req, ui = Globus.world))
+        val res = form.submit()
+        if (res is FormResponse.Shitty)
+            die("Tried to delete shit without confirmation, got shitty response: ${res.error}")
+        return true
+    }
+
     return openDangerFormModalAndWaitExecution(
         title = t("No kidding?", "Серьезно?"),
         primaryButtonTitle = t("TOTE", "Мочи!"),

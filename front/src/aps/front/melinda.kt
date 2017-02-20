@@ -283,14 +283,14 @@ class MelindaBoobs<
             override fun getItem(): Item = item
 
             override suspend fun onDelete() {
-                val deletionConfirmed = modalConfirmAndDelete(
+                val executed = modalConfirmAndDelete(
                     t("TOTE", "Удаляю ${vaginalInterface.humanItemTypeName} $numberSign${item.id}: ${item.title}"),
                     vaginalInterface.makeDeleteItemRequest()-{o->
                         o.id.value = item.id
                     }
                 )
 
-                if (deletionConfirmed) {
+                if (executed) {
                     await(effects).fadeOut(viewRootID)
                     itemPlace.setContent(NOTRE)
                     TestGlobal.shitVanished.resumeTestAndPauseSutFromSut()
